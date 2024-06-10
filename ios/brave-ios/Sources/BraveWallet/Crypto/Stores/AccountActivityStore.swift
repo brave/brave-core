@@ -333,7 +333,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
             tokenInfoCache.append(contentsOf: unknownTokens)
           }
         case .sol:
-          solEstimatedTxFees = await solTxManagerProxy.estimatedTxFees(for: transactions)
+          solEstimatedTxFees = await solTxManagerProxy.solanaTxFeeEstimations(for: transactions)
           self.solEstimatedTxFeesCache.merge(with: solEstimatedTxFees)
         default:
           break

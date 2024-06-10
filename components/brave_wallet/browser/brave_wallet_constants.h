@@ -1569,6 +1569,8 @@ const std::vector<std::string>& GetEthSupportedNftInterfaces();
 // Returns the URL for the Ratios service.
 const std::string GetAssetRatioBaseURL();
 const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
+// https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
+inline constexpr int kSolanaValidBlockHeightThreshold = 150;
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

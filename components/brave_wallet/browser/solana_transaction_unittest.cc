@@ -540,6 +540,12 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
       std::vector<uint8_t>(2, 1), "public_key2"));
   transaction.set_sign_tx_param(sign_tx_param->Clone());
 
+  auto fee_estimation = mojom::SolanaFeeEstimation::New();
+  fee_estimation->base_fee = 5000;
+  fee_estimation->compute_units = 200;
+  fee_estimation->fee_per_compute_unit = 25;
+  transaction.set_fee_estimation(std::move(fee_estimation));
+
   base::Value::Dict value = transaction.ToValue();
   auto expect_tx_value = base::test::ParseJson(R"(
       {
@@ -639,6 +645,11 @@ TEST_F(SolanaTransactionUnitTest, FromToValue) {
             {"public_key": "public_key1"},
             {"signature": "AQE=", "public_key": "public_key2"}
           ]
+        },
+        "fee_estimation": {
+          "base_fee": "5000",
+          "compute_units": "200",
+          "fee_per_compute_unit": "25"
         }
       }
   )");
@@ -956,6 +967,55 @@ TEST_F(SolanaTransactionUnitTest, IsPartialSigned) {
       std::vector<uint8_t>(kSolanaSignatureSize, 1), kFromAccount));
   tx.set_sign_tx_param(param.Clone());
   EXPECT_TRUE(tx.IsPartialSigned());
+}
+
+TEST_F(SolanaTransactionUnitTest, GetUnsignedTransaction) {
+  auto msg1 =
+      SolanaMessage::CreateLegacyMessage(kRecentBlockhash, 0, kFromAccount, {});
+  auto tx1 = SolanaTransaction(std::move(*msg1));
+  EXPECT_EQ(tx1.GetUnsignedTransaction(), "");
+
+  SolanaInstruction ins1(
+      mojom::kSolanaSystemProgramId,
+      {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
+       SolanaAccountMeta(kToAccount, std::nullopt, true, true),
+       SolanaAccountMeta(kTestAccount, std::nullopt, true, true)},
+      {});
+
+  auto msg2 = SolanaMessage::CreateLegacyMessage(kRecentBlockhash, 0,
+                                                 kFromAccount, {ins1});
+  ASSERT_TRUE(msg2);
+  auto tx2 = SolanaTransaction(std::move(*msg2));
+  EXPECT_EQ(tx2.GetUnsignedTransaction(),
+            "AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAQQi"
+            "Qpz5e+d8NwrhAMqG/WfddvN4Tz69QaQxYsK2YW+h/v/"
+            "g5PVe7heEzihS+dvLZ55u2135j4bPrLNMQwappJUmItA1NksucDd7D+"
+            "gJLbL8xD5AqdVCV8AQmGz+"
+            "lLcnM8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIO/U8lswd7/"
+            "sEOI0dsqBqnwiY65qQYRV3sGKjeiQHhbAQMDAAECAA==");
+
+  // Test unsigned transaction over kSolanaMaxTransactionSize.
+  std::vector<SolanaAccountMeta> large_accounts;
+  for (size_t i = 0; i < 50; ++i) {
+    large_accounts.emplace_back(kFromAccount, std::nullopt, true, true);
+    large_accounts.emplace_back(kToAccount, std::nullopt, true, true);
+  }
+
+  std::vector<uint8_t> large_data(1000, 0xAA);
+
+  SolanaInstruction large_instruction(mojom::kSolanaSystemProgramId,
+                                      std::move(large_accounts), large_data,
+                                      std::nullopt);
+
+  auto large_message = SolanaMessage::CreateLegacyMessage(
+      kRecentBlockhash, 0, kFromAccount, {large_instruction});
+  ASSERT_TRUE(large_message);
+
+  SolanaTransaction large_tx(std::move(*large_message));
+  EXPECT_EQ(large_tx.GetUnsignedTransaction(), "");
 }
 
 }  // namespace brave_wallet

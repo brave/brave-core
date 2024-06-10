@@ -87,8 +87,16 @@ class AssetDetailStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = {
-      $2(UInt64(0.1), .success, "")
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      completion(
+        BraveWallet.SolanaFeeEstimation(
+          baseFee: UInt64(1),
+          computeUnits: UInt32(0),
+          feePerComputeUnit: UInt64(0)
+        ),
+        .success,
+        ""
+      )
     }
 
     let swapService = BraveWallet.TestSwapService()

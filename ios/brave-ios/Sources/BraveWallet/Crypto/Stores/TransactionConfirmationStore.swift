@@ -501,11 +501,15 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
     for transaction in transactions where transaction.coin == .sol {
-      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.estimatedTxFee(
+      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.solanaTxFeeEstimation(
         chainId: transaction.chainId,
         txMetaId: transaction.id
       )
-      self.solEstimatedTxFeeCache[transaction.id] = solEstimatedTxFee
+      let priorityFee =
+        UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
+        * BraveWallet.MicroLamportsPerLamport
+      let totalFee = solEstimatedTxFee.baseFee + priorityFee
+      self.solEstimatedTxFeeCache[transaction.id] = totalFee
     }
     updateTransaction(
       with: activeTransaction,

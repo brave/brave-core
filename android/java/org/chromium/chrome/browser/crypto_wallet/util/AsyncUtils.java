@@ -13,8 +13,10 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.SolanaFeeEstimation;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
@@ -324,7 +326,7 @@ public class AsyncUtils {
     }
 
     public static class GetSolanaEstimatedTxFeeResponseContext extends SingleResponseBaseContext
-            implements SolanaTxManagerProxy.GetEstimatedTxFee_Response {
+            implements SolanaTxManagerProxy.GetSolanaTxFeeEstimation_Response {
         public Long fee;
         public Integer error;
         public String errorMessage;
@@ -335,8 +337,11 @@ public class AsyncUtils {
         }
 
         @Override
-        public void call(long fee, int error, String errorMessage) {
-            this.fee = fee;
+        public void call(SolanaFeeEstimation fee, int error, String errorMessage) {
+            this.fee =
+                    fee.baseFee
+                            + (((long) fee.computeUnits * fee.feePerComputeUnit)
+                                    / BraveWalletConstants.MICRO_LAMPORTS_PER_LAMPORT);
             this.error = error;
             this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();

@@ -3495,4 +3495,89 @@ void JsonRpcService::ContinueGetSPLTokenProgramByMint(
   std::move(callback).Run(program, mojom::SolanaProviderError::kSuccess, "");
 }
 
+void JsonRpcService::SimulateSolanaTransaction(
+    const std::string& chain_id,
+    const std::string& unsigned_tx,
+    SimulateSolanaTransactionCallback callback) {
+  if (unsigned_tx.empty()) {
+    std::move(callback).Run(
+        0, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnSimulateSolanaTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(
+      solana::simulateTransaction(unsigned_tx), true,
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
+      std::move(internal_callback),
+      base::BindOnce(&ConvertUint64ToString, "/result/value/unitsConsumed"));
+}
+
+void JsonRpcService::OnSimulateSolanaTransaction(
+    SimulateSolanaTransactionCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        0, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  std::optional<uint64_t> compute_units =
+      solana::ParseSimulateTransaction(api_request_result.value_body());
+  if (!compute_units) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
+    std::move(callback).Run(0, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(*compute_units, mojom::SolanaProviderError::kSuccess,
+                          "");
+}
+
+void JsonRpcService::GetRecentSolanaPrioritizationFees(
+    const std::string& chain_id,
+    GetRecentSolanaPrioritizationFeesCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetRecentSolanaPrioritizationFees,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(
+      solana::getRecentPrioritizationFees(), true,
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
+      std::move(internal_callback),
+      base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result", "",
+                     std::vector<std::string>{"slot", "prioritizationFee"}));
+}
+
+void JsonRpcService::OnGetRecentSolanaPrioritizationFees(
+    GetRecentSolanaPrioritizationFeesCallback callback,
+    APIRequestResult api_request_result) {
+  std::vector<std::pair<uint64_t, uint64_t>> recent_fees;
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(
+        recent_fees, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto recent_fees_opt =
+      solana::ParseGetSolanaPrioritizationFees(api_request_result.value_body());
+  if (!recent_fees_opt) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(
+        api_request_result.value_body(), &error, &error_message);
+    std::move(callback).Run(recent_fees, error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(*recent_fees_opt,
+                          mojom::SolanaProviderError::kSuccess, "");
+}
+
 }  // namespace brave_wallet

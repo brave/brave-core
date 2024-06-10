@@ -14,6 +14,7 @@
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/browser/solana_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -559,6 +560,172 @@ TEST(SolanaMessageUnitTest, UsesDurableNonce) {
     message->SetInstructionsForTesting(vec);
     EXPECT_TRUE(message->UsesDurableNonce());
   }
+}
+
+TEST(SolanaMessageUnitTest, AddPriorityFee) {
+  auto legacy_message = GetTestLegacyMessage();
+  auto static_account_keys_before = legacy_message.static_account_keys();
+  auto legacy_message_header_before = legacy_message.message_header();
+  auto instructions_size_before = legacy_message.instructions().size();
+  ASSERT_TRUE(legacy_message.AddPriorityFee(300, 1000));
+
+  // Should have two more instrucitons, one to modify compute units, one to
+  // specify the priority fee.
+  EXPECT_EQ(instructions_size_before + 2, legacy_message.instructions().size());
+  EXPECT_EQ(legacy_message.instructions()[0].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+  EXPECT_EQ(legacy_message.instructions()[1].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+  EXPECT_EQ(static_account_keys_before.size() + 1,
+            legacy_message.static_account_keys().size());
+
+  // Compute budget program ID should only be found in the new static account
+  // keys
+  bool found_compute_budge_program_id = false;
+  for (const auto& key : legacy_message.static_account_keys()) {
+    if (key.ToBase58() == mojom::kSolanaComputeBudgetProgramId) {
+      found_compute_budge_program_id = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(found_compute_budge_program_id);
+
+  found_compute_budge_program_id = false;
+  for (const auto& key : static_account_keys_before) {
+    if (key.ToBase58() == mojom::kSolanaComputeBudgetProgramId) {
+      found_compute_budge_program_id = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(found_compute_budge_program_id);
+
+  // Header should be the same except for the number of readonly unsigned
+  // accounts.
+  EXPECT_EQ(legacy_message_header_before.num_required_signatures,
+            legacy_message.message_header().num_required_signatures);
+  EXPECT_EQ(legacy_message_header_before.num_readonly_signed_accounts,
+            legacy_message.message_header().num_readonly_signed_accounts);
+  EXPECT_EQ(legacy_message_header_before.num_readonly_unsigned_accounts + 1,
+            legacy_message.message_header().num_readonly_unsigned_accounts);
+
+  auto legacy_message_with_durable_nonce = GetTestLegacyMessage();
+  SolanaInstruction instruction = GetAdvanceNonceAccountInstruction();
+  std::vector<SolanaInstruction> vec;
+  vec.emplace_back(instruction);
+  vec.emplace_back(legacy_message_with_durable_nonce.instructions()[0]);
+  legacy_message_with_durable_nonce.SetInstructionsForTesting(vec);
+  instructions_size_before =
+      legacy_message_with_durable_nonce.instructions().size();
+  ASSERT_TRUE(legacy_message_with_durable_nonce.AddPriorityFee(300, 1000));
+  EXPECT_EQ(instructions_size_before + 2,
+            legacy_message_with_durable_nonce.instructions().size());
+  EXPECT_EQ(instructions_size_before + 2,
+            legacy_message_with_durable_nonce.instructions().size());
+  EXPECT_EQ(legacy_message_with_durable_nonce.instructions()[0].GetProgramId(),
+            mojom::kSolanaSystemProgramId);  // Nonce instruction
+  EXPECT_EQ(legacy_message_with_durable_nonce.instructions()[1].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+  EXPECT_EQ(legacy_message_with_durable_nonce.instructions()[2].GetProgramId(),
+            mojom::kSolanaComputeBudgetProgramId);
+}
+
+TEST(SolanaMessageUnitTest, AddPriorityFeeV0) {
+  // Test without durable nonce
+  auto v0_message = GetTestV0Message();
+  auto v0_instructions_size_before = v0_message.instructions().size();
+  ASSERT_TRUE(v0_message.AddPriorityFee(300, 1000));
+
+  // Check instruction count and positions
+  EXPECT_EQ(v0_instructions_size_before + 2, v0_message.instructions().size());
+  EXPECT_EQ(
+      v0_message.instructions()[0].GetProgramId(),
+      mojom::kSolanaComputeBudgetProgramId);  // First priority fee instruction
+  EXPECT_EQ(
+      v0_message.instructions()[1].GetProgramId(),
+      mojom::kSolanaComputeBudgetProgramId);  // Second priority fee instruction
+
+  // Test with durable nonce
+  auto v0_message_with_nonce = GetTestV0Message();
+  SolanaInstruction nonce_instruction = GetAdvanceNonceAccountInstruction();
+  std::vector<SolanaInstruction> nonce_vec = {
+      nonce_instruction, v0_message_with_nonce.instructions()[0]};
+  v0_message_with_nonce.SetInstructionsForTesting(nonce_vec);
+  v0_instructions_size_before = v0_message_with_nonce.instructions().size();
+  ASSERT_TRUE(v0_message_with_nonce.AddPriorityFee(300, 1000));
+
+  // Check instruction count and positions with nonce
+  EXPECT_EQ(v0_instructions_size_before + 2,
+            v0_message_with_nonce.instructions().size());
+  EXPECT_EQ(v0_message_with_nonce.instructions()[0].GetProgramId(),
+            mojom::kSolanaSystemProgramId);  // Nonce instruction remains first
+  EXPECT_EQ(
+      v0_message_with_nonce.instructions()[1].GetProgramId(),
+      mojom::kSolanaComputeBudgetProgramId);  // First priority fee instruction
+  EXPECT_EQ(
+      v0_message_with_nonce.instructions()[2].GetProgramId(),
+      mojom::kSolanaComputeBudgetProgramId);  // Second priority fee instruction
+}
+
+TEST(SolanaMessageUnitTest, UsesPriorityFee) {
+  // Legacy message without durable nonce
+  SolanaMessage message1 = GetTestLegacyMessage();
+  EXPECT_FALSE(message1.UsesPriorityFee());
+  ASSERT_TRUE(message1.AddPriorityFee(0, 0));
+  EXPECT_TRUE(message1.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitLimit
+  SolanaMessage message1a = GetTestLegacyMessage();
+  SolanaInstruction set_compute_unit_limit_instruction =
+      solana::compute_budget_program::SetComputeUnitLimit(0);
+  std::vector<SolanaInstruction> vec1a = {set_compute_unit_limit_instruction};
+  message1a.SetInstructionsForTesting(vec1a);
+  EXPECT_TRUE(message1a.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitPrice
+  SolanaMessage message1b = GetTestLegacyMessage();
+  SolanaInstruction set_compute_unit_price_instruction =
+      solana::compute_budget_program::SetComputeUnitPrice(0);
+  std::vector<SolanaInstruction> vec1b = {set_compute_unit_price_instruction};
+  message1b.SetInstructionsForTesting(vec1b);
+  EXPECT_TRUE(message1b.UsesPriorityFee());
+
+  // Legacy message with durable nonce
+  SolanaMessage message2 = GetTestLegacyMessage();
+  EXPECT_FALSE(message2.UsesPriorityFee());
+  SolanaInstruction instruction1 = GetAdvanceNonceAccountInstruction();
+  std::vector<SolanaInstruction> vec1 = {instruction1,
+                                         message2.instructions()[0]};
+  message2.SetInstructionsForTesting(vec1);
+  ASSERT_TRUE(message2.AddPriorityFee(0, 0));
+  EXPECT_TRUE(message2.UsesPriorityFee());
+
+  // V0 message without durable nonce
+  SolanaMessage message3 = GetTestV0Message();
+  EXPECT_FALSE(message3.UsesPriorityFee());
+  ASSERT_TRUE(message3.AddPriorityFee(0, 0));
+  EXPECT_TRUE(message3.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitLimit in V0 message
+  SolanaMessage message3a = GetTestV0Message();
+  std::vector<SolanaInstruction> vec3a = {set_compute_unit_limit_instruction};
+  message3a.SetInstructionsForTesting(vec3a);
+  EXPECT_TRUE(message3a.UsesPriorityFee());
+
+  // Add a specific test for kSetComputeUnitPrice in V0 message
+  SolanaMessage message3b = GetTestV0Message();
+  std::vector<SolanaInstruction> vec3b = {set_compute_unit_price_instruction};
+  message3b.SetInstructionsForTesting(vec3b);
+  EXPECT_TRUE(message3b.UsesPriorityFee());
+
+  // V0 message with durable nonce
+  SolanaMessage message4 = GetTestV0Message();
+  EXPECT_FALSE(message4.UsesPriorityFee());
+  SolanaInstruction instruction2 = GetAdvanceNonceAccountInstruction();
+  std::vector<SolanaInstruction> vec2 = {instruction2,
+                                         message4.instructions()[0]};
+  message4.SetInstructionsForTesting(vec2);
+  ASSERT_TRUE(message4.AddPriorityFee(0, 0));
+  EXPECT_TRUE(message4.UsesPriorityFee());
 }
 
 }  // namespace brave_wallet

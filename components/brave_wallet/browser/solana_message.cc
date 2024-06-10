@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -140,34 +141,18 @@ std::optional<SolanaMessage> SolanaMessage::CreateLegacyMessage(
   std::vector<SolanaAccountMeta> unique_account_metas;
   GetUniqueAccountMetas(fee_payer, instructions, &unique_account_metas);
   std::vector<SolanaAddress> static_accounts;
+
+  // Check for non-legacy meta
   for (const auto& meta : unique_account_metas) {
-    if (meta.address_table_lookup_index) {  // Not legacy.
+    if (meta.address_table_lookup_index) {
       return std::nullopt;
     }
+  }
 
-    auto addr = SolanaAddress::FromBase58(meta.pubkey);
-    if (!addr) {
-      return std::nullopt;
-    }
-
-    if (meta.is_signer) {
-      num_required_signatures++;
-    }
-    if (meta.is_signer && !meta.is_writable) {
-      num_readonly_signed_accounts++;
-    }
-    if (!meta.is_signer && !meta.is_writable) {
-      num_readonly_unsigned_accounts++;
-    }
-
-    if (num_required_signatures > UINT8_MAX ||
-        num_readonly_signed_accounts > UINT8_MAX ||
-        num_readonly_unsigned_accounts > UINT8_MAX ||
-        static_accounts.size() == UINT8_MAX) {
-      return std::nullopt;
-    }
-
-    static_accounts.emplace_back(*addr);
+  if (!ProcessAccountMetas(
+          unique_account_metas, static_accounts, num_required_signatures,
+          num_readonly_signed_accounts, num_readonly_unsigned_accounts)) {
+    return std::nullopt;
   }
 
   return SolanaMessage(
@@ -714,6 +699,102 @@ bool SolanaMessage::UsesDurableNonce() const {
   // Nonce account is writable.
   if (!account.is_writable) {
     return false;
+  }
+
+  return true;
+}
+
+bool SolanaMessage::UsesPriorityFee() const {
+  for (const auto& instruction : instructions_) {
+    auto instruction_type =
+        solana_ins_data_decoder::GetComputeBudgetInstructionType(
+            instruction.data(), instruction.GetProgramId());
+    if (instruction_type ==
+            mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice ||
+        instruction_type ==
+            mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool SolanaMessage::AddPriorityFee(uint32_t compute_units,
+                                   uint64_t fee_per_compute_unit) {
+  SolanaInstruction modify_compute_units_instruction =
+      solana::compute_budget_program::SetComputeUnitLimit(compute_units);
+  SolanaInstruction add_priority_fee_instruction =
+      solana::compute_budget_program::SetComputeUnitPrice(fee_per_compute_unit);
+
+  // Do not add a priority fee if there already is one added.
+  if (UsesPriorityFee()) {
+    return false;
+  }
+
+  if (UsesDurableNonce()) {
+    // The first instruction should remain the advance nonce instruction.
+    // https://solana.com/developers/guides/advanced/how-to-use-priority-fees#special-considerations
+    instructions_.insert(
+        instructions_.begin() + 1,
+        {modify_compute_units_instruction, add_priority_fee_instruction});
+  } else {
+    instructions_.insert(
+        instructions_.begin(),
+        {modify_compute_units_instruction, add_priority_fee_instruction});
+  }
+
+  uint16_t num_required_signatures = 0;
+  uint16_t num_readonly_signed_accounts = 0;
+  uint16_t num_readonly_unsigned_accounts = 0;
+  std::vector<SolanaAccountMeta> unique_account_metas;
+  GetUniqueAccountMetas(fee_payer_, instructions_, &unique_account_metas);
+  std::vector<SolanaAddress> static_accounts;
+
+  if (!ProcessAccountMetas(
+          unique_account_metas, static_accounts, num_required_signatures,
+          num_readonly_signed_accounts, num_readonly_unsigned_accounts)) {
+    return false;
+  }
+
+  static_account_keys_ = static_accounts;
+  message_header_ =
+      SolanaMessageHeader(num_required_signatures, num_readonly_signed_accounts,
+                          num_readonly_unsigned_accounts);
+  return true;
+}
+
+// static
+bool SolanaMessage::ProcessAccountMetas(
+    const std::vector<SolanaAccountMeta>& unique_account_metas,
+    std::vector<SolanaAddress>& static_accounts,
+    uint16_t& num_required_signatures,
+    uint16_t& num_readonly_signed_accounts,
+    uint16_t& num_readonly_unsigned_accounts) {
+  static_accounts.clear();
+  for (const auto& meta : unique_account_metas) {
+    auto addr = SolanaAddress::FromBase58(meta.pubkey);
+    if (!addr) {
+      return false;
+    }
+
+    if (meta.is_signer) {
+      num_required_signatures++;
+    }
+    if (meta.is_signer && !meta.is_writable) {
+      num_readonly_signed_accounts++;
+    }
+    if (!meta.is_signer && !meta.is_writable) {
+      num_readonly_unsigned_accounts++;
+    }
+
+    if (num_required_signatures > UINT8_MAX ||
+        num_readonly_signed_accounts > UINT8_MAX ||
+        num_readonly_unsigned_accounts > UINT8_MAX ||
+        static_accounts.size() == UINT8_MAX) {
+      return false;
+    }
+    static_accounts.emplace_back(*addr);
   }
 
   return true;

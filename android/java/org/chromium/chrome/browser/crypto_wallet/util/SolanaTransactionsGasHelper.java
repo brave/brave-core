@@ -60,20 +60,23 @@ public class SolanaTransactionsGasHelper {
             estimatesContexts.add(estimatesContext);
 
             if (mActivity.get() != null)
-                mActivity.get().getSolanaTxManagerProxy().getEstimatedTxFee(
-                        txInfo.chainId, txInfo.id, estimatesContext);
+                mActivity
+                        .get()
+                        .getSolanaTxManagerProxy()
+                        .getSolanaTxFeeEstimation(txInfo.chainId, txInfo.id, estimatesContext);
         }
 
-        estimatesMultiResponse.setWhenAllCompletedAction(() -> {
-            for (AsyncUtils.GetSolanaEstimatedTxFeeResponseContext estimatesContext :
-                    estimatesContexts) {
-                if (estimatesContext.error != SolanaProviderError.SUCCESS) {
-                    continue;
-                }
-                mPerTxFee.put(estimatesContext.txMetaId, estimatesContext.fee);
-            }
+        estimatesMultiResponse.setWhenAllCompletedAction(
+                () -> {
+                    for (AsyncUtils.GetSolanaEstimatedTxFeeResponseContext estimatesContext :
+                            estimatesContexts) {
+                        if (estimatesContext.error != SolanaProviderError.SUCCESS) {
+                            continue;
+                        }
+                        mPerTxFee.put(estimatesContext.txMetaId, estimatesContext.fee);
+                    }
 
-            runWhenDone.run();
-        });
+                    runWhenDone.run();
+                });
     }
 }

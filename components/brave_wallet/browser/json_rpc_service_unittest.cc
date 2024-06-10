@@ -1656,6 +1656,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestSimulateSolanaTransaction(
+      const std::string& chain_id,
+      uint64_t expected_compute_units,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message,
+      const std::string& unsigned_tx = "unsigned_tx") {
+    base::RunLoop run_loop;
+    json_rpc_service_->SimulateSolanaTransaction(
+        chain_id, unsigned_tx,
+        base::BindLambdaForTesting([&](uint64_t compute_units,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(compute_units, expected_compute_units);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
   void TestGetSolanaLatestBlockhash(const std::string& chain_id,
                                     const std::string& expected_hash,
                                     uint64_t expected_last_valid_block_height,
@@ -1840,6 +1860,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
           EXPECT_EQ(error_message, expected_error_message);
           run_loop.Quit();
         }));
+    run_loop.Run();
+  }
+
+  void TestGetRecentSolanaPrioritizationFees(
+      const std::string& chain_id,
+      const std::vector<std::pair<uint64_t, uint64_t>>& expected_recent_fees,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetRecentSolanaPrioritizationFees(
+        chain_id,
+        base::BindLambdaForTesting(
+            [&](std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
+                mojom::SolanaProviderError error,
+                const std::string& error_message) {
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              EXPECT_EQ(expected_recent_fees, recent_fees);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -7824,6 +7864,158 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
       FROM_HERE, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       mojom::kSolanaMainnet, mojom::SPLTokenProgram::kUnknown,
       mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, SimulateSolanaTransaction) {
+  // Empty transaction yields invalid params error
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS), "");
+
+  auto network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+  std::string response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.17.25",
+        "slot": 259225005
+      },
+      "value": {
+        "accounts": null,
+        "err": null,
+        "logs": [
+          "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+          "Program log: Instruction: Transfer",
+          "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY success"
+        ],
+        "returnData": null,
+        "unitsConsumed": 69017
+      }
+    },
+    "id": 1
+  })";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+
+  TestSimulateSolanaTransaction(mojom::kSolanaMainnet, 69017,
+                                mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  response = R"({"jsonrpc":"2.0","id":1,"result":0})";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC Error
+  response = R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+      "code": -32601,
+      "message": "method does not exist"
+    }
+  })";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+  TestSimulateSolanaTransaction(mojom::kSolanaMainnet, 0,
+                                mojom::SolanaProviderError::kMethodNotFound,
+                                "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Blockhash not found error
+  response = R"({
+    "jsonrpc": "2.0",
+    "result": {
+      "context": {
+        "apiVersion": "1.18.11",
+        "slot": 262367830
+      },
+      "value": {
+        "accounts": null,
+        "err": "BlockhashNotFound",
+        "innerInstructions": null,
+        "logs": [],
+        "returnData": null,
+        "unitsConsumed": 0
+      }
+    },
+    "id": 1
+  })";
+  SetInterceptor(network_url, "simulateTransaction", "", response);
+  TestSimulateSolanaTransaction(
+      mojom::kSolanaMainnet, 0, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetRecentSolanaPrioritizationFees) {
+  auto network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+
+  // Successful response
+  std::string response = R"({
+    "jsonrpc": "2.0",
+    "result": [
+      {
+        "prioritizationFee": 100,
+        "slot": 293251906
+      },
+      {
+        "prioritizationFee": 200,
+        "slot": 293251906
+      },
+      {
+        "prioritizationFee": 0,
+        "slot": 293251805
+      }
+    ],
+    "id": 1
+  })";
+  SetInterceptor(network_url, "getRecentPrioritizationFees", "", response);
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet,
+      {{293251906, 100}, {293251906, 200}, {293251805, 0}},
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  response = R"({
+    "jsonrpc": "2.0",
+    "result": [
+      {
+      },
+      {
+        "prioritizationFee": 0,
+        "slot": 293251805
+      }
+    ],
+    "id": 1
+  })";
+  SetInterceptor(network_url, "getRecentPrioritizationFees", "", response);
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC Error
+  response = R"({
+    "jsonrpc": "2.0",
+    "id": 1,
+    "error": {
+      "code": -32601,
+      "message": "method does not exist"
+    }
+  })";
+  SetInterceptor(network_url, "getRecentPrioritizationFees", "", response);
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kMethodNotFound,
+      "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetRecentSolanaPrioritizationFees(
+      mojom::kSolanaMainnet, {}, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 

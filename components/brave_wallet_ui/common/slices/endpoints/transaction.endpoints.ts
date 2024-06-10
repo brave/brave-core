@@ -1772,14 +1772,22 @@ export const transactionEndpoints = ({
         try {
           const { solanaTxManagerProxy } = baseQuery(undefined).data
           const { errorMessage, fee } =
-            await solanaTxManagerProxy.getEstimatedTxFee(arg.chainId, arg.txId)
+            await solanaTxManagerProxy.getSolanaTxFeeEstimation(
+              arg.chainId,
+              arg.txId
+            )
 
           if (!fee) {
             throw new Error(errorMessage)
           }
 
+          const priorityFee = (BigInt(fee.computeUnits)
+                            * BigInt(fee.feePerComputeUnit))
+            / BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT);
+          const totalFee = BigInt(fee.baseFee) + priorityFee;
+
           return {
-            data: fee.toString()
+            data: totalFee.toString()
           }
         } catch (error) {
           return handleEndpointError(

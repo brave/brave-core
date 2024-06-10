@@ -98,7 +98,19 @@ std::string getAccountInfo(const std::string& pubkey) {
 }
 
 std::string getFeeForMessage(const std::string& message) {
-  return GetJsonRpcString("getFeeForMessage", message);
+  base::Value::List params;
+  params.Append(message);
+
+  base::Value::Dict configuration;
+  // dApps may supply a blockhash with a confirmed commitment level,
+  // so fetching a fee for those transactions requires us using
+  // a confirmed commitment level.
+  configuration.Set("commitment", "confirmed");
+  params.Append(std::move(configuration));
+
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("getFeeForMessage", std::move(params));
+  return GetJSON(dictionary);
 }
 
 std::string getBlockHeight() {
@@ -141,6 +153,27 @@ std::string isBlockhashValid(const std::string& blockhash,
   base::Value::Dict dictionary =
       GetJsonRpcDictionary("isBlockhashValid", std::move(params));
   return GetJSON(dictionary);
+}
+
+std::string simulateTransaction(const std::string& unsigned_tx) {
+  base::Value::List params;
+  params.Append(unsigned_tx);
+
+  base::Value::Dict configuration;
+  configuration.Set("encoding", "base64");
+  // dApps may supply a blockhash with a confirmed commitment level,
+  // so simulating that transaction requires us using
+  // a confirmed commitment level.
+  configuration.Set("commitment", "confirmed");
+  params.Append(std::move(configuration));
+
+  base::Value::Dict dictionary =
+      GetJsonRpcDictionary("simulateTransaction", std::move(params));
+  return GetJSON(dictionary);
+}
+
+std::string getRecentPrioritizationFees() {
+  return GetJsonRpcString("getRecentPrioritizationFees");
 }
 
 }  // namespace solana
