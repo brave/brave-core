@@ -21,6 +21,8 @@
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
     _mainBrowserState = mainBrowserState;
+    _nftIpfsGateway = net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
+    _ipfsGateway = net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
   }
   return self;
 }
@@ -49,18 +51,10 @@
   return nullptr;
 }
 
-- (NSURL*)nftIpfsGateway {
-  return net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
-}
-
 - (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash {
   auto content_hash = brave::ns_to_vector<std::uint8_t>(contentHash);
   GURL gurl = ipfs::ContentHashToCIDv1URL(content_hash);
   return net::NSURLWithGURL(gurl);
-}
-
-- (NSURL*)ipfsGateway {
-  return net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
 }
 
 @end
