@@ -866,9 +866,13 @@ void SolanaTxManager::OnFetchCompressedNftProof(
     return;
   }
 
-  // TODO
-  // If the from_wallet address does not match the proof.owner or delegate,
-  // we're done.
+  if (from_wallet_address != proof->owner &&
+      from_wallet_address != proof->delegate) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
 
   // Get the Merkle tree account
   auto internal_callback =
@@ -924,9 +928,7 @@ void SolanaTxManager::OnGetMerkleTreeAccountInfo(
 
   // recent_blockhash will be updated when we are going to send out the tx.
   auto msg = SolanaMessage::CreateLegacyMessage("" /* recent_blockhash*/, 0,
-                                                // from_wallet_address,
-                                                proof.owner,  // Should probably
-                                                std::move(vec));
+                                                proof.owner, std::move(vec));
   if (!msg) {
     std::move(callback).Run(
         nullptr, mojom::SolanaProviderError::kInternalError,
@@ -937,7 +939,6 @@ void SolanaTxManager::OnGetMerkleTreeAccountInfo(
   SolanaTransaction transaction(std::move(*msg));
   transaction.set_to_wallet_address(to_wallet_address);
   transaction.set_tx_type(mojom::TransactionType::SolanaCompressedNftTransfer);
-  // transaction.set_lamports(lamports); // why not ?
   auto tx_data = transaction.ToSolanaTxData();
   DCHECK(tx_data);
   std::move(callback).Run(std::move(tx_data),
