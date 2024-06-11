@@ -46,8 +46,9 @@ import org.chromium.chrome.browser.bookmarks.BookmarkMoveSnackbarManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkOpener;
 import org.chromium.chrome.browser.bookmarks.BookmarkUiPrefs;
 import org.chromium.chrome.browser.bookmarks.BookmarkUndoController;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
@@ -66,6 +67,7 @@ import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
+import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
@@ -1039,7 +1041,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "org/chromium/chrome/browser/toolbar/BraveToolbarManager",
                         AppCompatActivity.class,
-                        BrowserControlsSizer.class,
+                        BottomControlsStacker.class,
+                        BrowserControlsVisibilityManager.class,
                         FullscreenManager.class,
                         ObservableSupplier.class,
                         ToolbarControlContainer.class,
@@ -1092,7 +1095,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
                         WindowAndroid.class,
                         PropertyModel.class,
-                        BrowserControlsSizer.class,
+                        BottomControlsStacker.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
                         int.class,
@@ -1172,6 +1175,7 @@ public class BytecodeTest {
                         Activity.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
+                        ModalDialogManager.class,
                         SnackbarManager.class,
                         ActivityLifecycleDispatcher.class,
                         TabModelSelector.class,
@@ -1493,7 +1497,6 @@ public class BytecodeTest {
                         StatusBarColorProvider.class,
                         ObservableSupplierImpl.class,
                         IntentRequestTracker.class,
-                        int.class,
                         InsetObserver.class,
                         Function.class,
                         OneshotSupplier.class,
@@ -1502,7 +1505,8 @@ public class BytecodeTest {
                         Bundle.class,
                         MultiInstanceManager.class,
                         ObservableSupplier.class,
-                        View.class));
+                        View.class,
+                        ManualFillingComponentSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1733,7 +1737,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mBrowserControlsSizer"));
+                        "mBottomControlsStacker"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -1870,7 +1874,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
-                        "mBrowserControlsSizer"));
+                        "mBottomControlsStacker"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout",
