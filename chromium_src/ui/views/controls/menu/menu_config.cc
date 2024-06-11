@@ -25,6 +25,7 @@ const MenuConfig& MenuConfig::instance() {
       // Each platform sets its own config in its Init().
       // Apply our config globally at once after Init() is done.
       mutable_config.item_vertical_margin = 4;
+      mutable_config.item_horizontal_border_padding = 4;
       mutable_config.item_horizontal_padding =
           16 - config.item_horizontal_border_padding;
       mutable_config.corner_radius = 8;
