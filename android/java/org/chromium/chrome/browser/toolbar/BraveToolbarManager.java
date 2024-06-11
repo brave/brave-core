@@ -28,7 +28,9 @@ import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingControlle
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.bottombar.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
@@ -87,7 +89,7 @@ public class BraveToolbarManager extends ToolbarManager {
     // To delete in bytecode, members from parent class will be used instead.
     private ObservableSupplierImpl<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
     private CallbackController mCallbackController;
-    private BrowserControlsSizer mBrowserControlsSizer;
+    private BottomControlsStacker mBottomControlsStacker;
     private FullscreenManager mFullscreenManager;
     private ActivityTabProvider mActivityTabProvider;
     private AppThemeColorProvider mAppThemeColorProvider;
@@ -130,10 +132,12 @@ public class BraveToolbarManager extends ToolbarManager {
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
     private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
     private ObservableSupplier<Profile> mProfileSupplier;
+    private BrowserControlsVisibilityManager mBrowserControlsVisibilityManager;
 
     public BraveToolbarManager(
             AppCompatActivity activity,
-            BrowserControlsSizer controlsSizer,
+            BottomControlsStacker bottomControlsStacker,
+            BrowserControlsVisibilityManager controlsVisibilityManager,
             FullscreenManager fullscreenManager,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ToolbarControlContainer controlContainer,
@@ -184,7 +188,8 @@ public class BraveToolbarManager extends ToolbarManager {
             @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
         super(
                 activity,
-                controlsSizer,
+                bottomControlsStacker,
+                controlsVisibilityManager,
                 fullscreenManager,
                 edgeToEdgeControllerSupplier,
                 controlContainer,
@@ -239,6 +244,7 @@ public class BraveToolbarManager extends ToolbarManager {
         mCompositorViewHolder = compositorViewHolder;
         mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
         mProfileSupplier = profileSupplier;
+        mBrowserControlsVisibilityManager = controlsVisibilityManager;
 
         if (isToolbarPhone()) {
             updateBottomToolbarVisibility();
@@ -277,7 +283,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             .createTabGroupUi(
                                     mActivity,
                                     mBottomControls.findViewById(R.id.bottom_container_slot),
-                                    mBrowserControlsSizer,
+                                    mBrowserControlsVisibilityManager,
                                     mIncognitoStateProvider,
                                     mScrimCoordinator,
                                     mOmniboxFocusStateSupplier,
@@ -313,7 +319,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             mWindowAndroid,
                             mLayoutManager,
                             mCompositorViewHolder.getResourceManager(),
-                            mBrowserControlsSizer,
+                            mBottomControlsStacker,
                             mFullscreenManager,
                             mEdgeToEdgeControllerSupplier,
                             mBottomControls,
