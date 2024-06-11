@@ -248,23 +248,12 @@ void BatAdsClientMojoBridge::RunDBTransaction(
                                                         std::move(callback));
 }
 
-void BatAdsClientMojoBridge::GetScheduledCaptcha(
-    const std::string& payment_id,
-    brave_ads::GetScheduledCaptchaCallback callback) {
-  if (!bat_ads_client_associated_receiver_.is_bound()) {
-    return std::move(callback).Run({});
-  }
-
-  bat_ads_client_associated_receiver_->GetScheduledCaptcha(payment_id,
-                                                           std::move(callback));
-}
-
-void BatAdsClientMojoBridge::ShowScheduledCaptchaNotification(
+void BatAdsClientMojoBridge::ShowScheduledCaptcha(
     const std::string& payment_id,
     const std::string& captcha_id) {
   if (bat_ads_client_associated_receiver_.is_bound()) {
-    bat_ads_client_associated_receiver_->ShowScheduledCaptchaNotification(
-        payment_id, captcha_id);
+    bat_ads_client_associated_receiver_->ShowScheduledCaptcha(payment_id,
+                                                              captcha_id);
   }
 }
 

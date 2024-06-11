@@ -125,14 +125,9 @@ std::string LoadDataResource(const std::string& name) {
   return GetInstance()->LoadDataResource(name);
 }
 
-void GetScheduledCaptcha(const std::string& payment_id,
-                         GetScheduledCaptchaCallback callback) {
-  GetInstance()->GetScheduledCaptcha(payment_id, std::move(callback));
-}
-
-void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                      const std::string& captcha_id) {
-  GetInstance()->ShowScheduledCaptchaNotification(payment_id, captcha_id);
+void ShowScheduledCaptcha(const std::string& payment_id,
+                          const std::string& captcha_id) {
+  GetInstance()->ShowScheduledCaptcha(payment_id, captcha_id);
 }
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,

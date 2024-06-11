@@ -105,8 +105,7 @@ interface BatAdsClient {
   [Sync]
   LoadDataResource(string name) => (mojo_base.mojom.BigString value);
 
-  GetScheduledCaptcha(string payment_id) => (string captcha_id);
-  ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
+  ShowScheduledCaptcha(string payment_id, string captcha_id);
 
   RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
       (brave_ads.mojom.DBCommandResponseInfo response);

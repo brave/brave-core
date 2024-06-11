@@ -173,14 +173,4 @@ void MockUrlResponses(AdsClientMock& mock,
           }));
 }
 
-void MockGetScheduledCaptcha(AdsClientMock& mock,
-                             const std::string& captcha_id) {
-  ON_CALL(mock, GetScheduledCaptcha)
-      .WillByDefault(
-          ::testing::Invoke([captcha_id](const std::string& /*payment_id*/,
-                                         GetScheduledCaptchaCallback callback) {
-            std::move(callback).Run(captcha_id);
-          }));
-}
-
 }  // namespace brave_ads

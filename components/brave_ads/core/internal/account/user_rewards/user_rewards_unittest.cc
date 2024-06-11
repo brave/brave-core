@@ -261,7 +261,8 @@ TEST_F(BraveAdsUserRewardsTest, DoNotMigrateVerifiedRewardsUser) {
   EXPECT_FALSE(GetProfileBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser));
 }
 
-TEST_F(BraveAdsUserRewardsTest, CaptchaRequiredToRefillConfirmationTokens) {
+TEST_F(BraveAdsUserRewardsTest,
+       RequireCaptchaToRefillConfirmationTokensIfCaptchaIdExists) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -278,7 +279,54 @@ TEST_F(BraveAdsUserRewardsTest, CaptchaRequiredToRefillConfirmationTokens) {
           )"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(ads_client_mock_, ShowScheduledCaptchaNotification);
+  EXPECT_CALL(ads_client_mock_,
+              ShowScheduledCaptcha(
+                  kWalletPaymentId,
+                  /*captcha_id=*/"daf85dc8-164e-4eb9-a4d4-1836055004b3"));
+
+  // Act & Assert
+  user_rewards_->MaybeRefillConfirmationTokens();
+}
+
+TEST_F(BraveAdsUserRewardsTest,
+       DoNotRequireCaptchaToRefillConfirmationTokensIfCaptchaIdIsEmpty) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+
+  const URLResponseMap url_responses = {
+      {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
+       {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
+      {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
+       {{net::HTTP_UNAUTHORIZED, /*response_body=*/R"(
+            {
+              "captcha_id": ""
+            }
+          )"}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  EXPECT_CALL(ads_client_mock_, ShowScheduledCaptcha).Times(0);
+
+  // Act & Assert
+  user_rewards_->MaybeRefillConfirmationTokens();
+}
+
+TEST_F(BraveAdsUserRewardsTest,
+       DoNotRequireCaptchaToRefillConfirmationTokensIfCaptchaIdDoesNotExist) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
+
+  const URLResponseMap url_responses = {
+      {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
+       {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
+      {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
+       {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  EXPECT_CALL(ads_client_mock_, ShowScheduledCaptcha).Times(0);
 
   // Act & Assert
   user_rewards_->MaybeRefillConfirmationTokens();

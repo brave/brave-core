@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_CLIENT_MOJO_BRIDGE_H_
 
-#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -89,11 +88,8 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   std::string LoadDataResource(const std::string& name) override;
 
-  void GetScheduledCaptcha(
-      const std::string& payment_id,
-      brave_ads::GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                        const std::string& captcha_id) override;
+  void ShowScheduledCaptcha(const std::string& payment_id,
+                            const std::string& captcha_id) override;
 
   void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
                         brave_ads::RunDBTransactionCallback callback) override;
