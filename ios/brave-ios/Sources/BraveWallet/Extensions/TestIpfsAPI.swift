@@ -8,8 +8,8 @@ import BraveCore
 #if DEBUG
 
 class TestIpfsAPI: IpfsAPI {
-  var ipfsGateway: URL
-  var nftIpfsGateway: URL
+  var ipfsGateway: URL?
+  var nftIpfsGateway: URL?
 
   var _resolveGatewayUrl: ((_ input: URL) -> URL?)?
   func resolveGatewayUrl(for input: URL) -> URL? {
