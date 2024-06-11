@@ -65,7 +65,7 @@ export const _ConfirmSwapTransaction = {
                 keyringId: BraveWallet.KeyringId.kDefault,
                 kind: BraveWallet.AccountKind.kDerived,
                 uniqueKey: '',
-                accountIndex: 0,
+                accountIndex: 0
               },
               address: mockTransactionInfo.fromAddress || '',
               hardware: undefined,

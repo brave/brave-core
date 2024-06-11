@@ -29,6 +29,7 @@ import { ConfirmSimulatedTransactionPanel } from './confirm_simulated_tx_panel'
 import {
   mockERC721ApproveForAllSim,
   mockEvmSimulatedERC20Approval,
+  mockEvmSimulatedResponse,
   mockReceiveSolSimulation,
   mockSendSolNftEvent,
   mockSimulatedBuyERC1155Token,
@@ -36,10 +37,11 @@ import {
   mockSimulatedERC721Approve,
   mockSimulatedSwapETHForDAI,
   mockSolStakingChangeSimulation,
-  mockSolanaAccount
+  mockSvmSimulationResult
 } from '../../../common/constants/mocks'
 import {
-  mockSolanaTransactionInfo,
+  mockSolanaTransactionInfoAccount,
+  mockSvmTxInfos,
   mockTransactionInfo //
 } from '../../../stories/mock-data/mock-transaction-info'
 
@@ -130,33 +132,10 @@ const evmSimulationResponse: BraveWallet.EVMSimulationResponse = {
   ]
 }
 
-const _mockSvmAccountInfos: BraveWallet.AccountInfo[] = [
-  {
-    ...mockSolanaAccount,
-    address: mockSolanaTransactionInfo.fromAddress || '',
-    accountId: mockSolanaTransactionInfo.fromAccountId
-  }
-]
-
 const mockAccountsRegistry = accountInfoEntityAdaptor.addMany(
   accountInfoEntityAdaptor.getInitialState(),
-  _mockEvmAccountInfos.concat(_mockSvmAccountInfos)
+  _mockEvmAccountInfos.concat([mockSolanaTransactionInfoAccount])
 )
-
-const mockSvmTxInfos: BraveWallet.TransactionInfo[] = [
-  deserializeTransaction({
-    ...mockSolanaTransactionInfo,
-    fromAddress: _mockSvmAccountInfos[0].address,
-    txStatus: BraveWallet.TransactionStatus.Unapproved,
-    txType: BraveWallet.TransactionType.SolanaSystemTransfer
-  }),
-  deserializeTransaction({
-    ...mockSolanaTransactionInfo,
-    fromAddress: _mockSvmAccountInfos[0].address,
-    txStatus: BraveWallet.TransactionStatus.Unapproved,
-    txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer
-  })
-]
 
 const svmSimulationResponse: BraveWallet.SolanaSimulationResponse = {
   ...mockReceiveSolSimulation,
@@ -200,7 +179,7 @@ export const _ConfirmSimulatedEvmTransactionPanel = () => {
         <LongWrapper padding='0px'>
           <ConfirmSimulatedTransactionPanel
             simulationType='EVM'
-            txSimulation={evmSimulationResponse}
+            txSimulation={mockEvmSimulatedResponse}
           />
         </LongWrapper>
       </PanelWrapper>
@@ -226,7 +205,7 @@ export const _ConfirmSimulatedSvmTransactionPanel = () => {
         selectedPendingTransactionId: mockSvmTxInfos[0].id
       }}
       walletApiDataOverrides={{
-        accountInfos: _mockSvmAccountInfos,
+        accountInfos: [mockSolanaTransactionInfoAccount],
         svmSimulationResponse: svmSimulationResponse,
         selectedAccountId: findAccountByAccountId(
           mockSvmTxInfos[0].fromAccountId,
@@ -237,7 +216,7 @@ export const _ConfirmSimulatedSvmTransactionPanel = () => {
     >
       <ConfirmSimulatedTransactionPanel
         simulationType='SVM'
-        txSimulation={svmSimulationResponse}
+        txSimulation={mockSvmSimulationResult}
       />
     </WalletPanelStory>
   )

@@ -21,7 +21,7 @@ interface Props {
 
 export const LoadingPanel: React.FC<Props> = ({ message }) => {
   return (
-    <Background>
+    <Background data-testid='loading-panel'>
       <Backdrop>
         <FloatingCard>
           <Column

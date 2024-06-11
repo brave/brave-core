@@ -40,8 +40,6 @@ import {
 // Style
 import { LongWrapper } from '../../../stories/style'
 
-// Components
-
 interface Props {
   selectedPendingTransaction: SerializableTransactionInfo
 }
@@ -190,7 +188,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
 
   // Defaults
   return (
-    <LongWrapper>
+    <LongWrapper data-testid='confirm-tx-panel'>
       <ConfirmTransactionPanel
         showSimulationNotSupportedMessage={
           isSimulationPermitted && !networkHasTxSimulationSupport

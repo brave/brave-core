@@ -135,6 +135,9 @@ export interface ParsedTransaction
   // Fiat values
   fiatValue: string
   fiatTotal: string
+
+  // Solana Specific
+  isAssociatedTokenAccountCreation: boolean
 }
 
 export type ParsedTransactionWithoutFiatValues = Omit<
@@ -1737,7 +1740,8 @@ export const parseTransactionWithoutPrices = ({
     value: normalizedTransferredValue,
     valueExact: normalizedTransferredValueExact,
     weiTransferredValue,
-    formattedSendCurrencyTotal
+    formattedSendCurrencyTotal,
+    isAssociatedTokenAccountCreation: isAssociatedTokenAccountCreationTx(tx)
   }
 }
 
@@ -1860,3 +1864,10 @@ export function getTxDatasFromQueuedSolSignRequest(
 
   return []
 }
+
+export const isAssociatedTokenAccountCreationTx = (
+  tx: Pick<BraveWallet.TransactionInfo, 'txType'> | undefined
+) =>
+  tx?.txType ===
+  BraveWallet.TransactionType
+    .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation
