@@ -121,7 +121,7 @@ export function useZeroEx(params: SwapParams) {
           fromAccount,
           to,
           value: new Amount(value).toHex(),
-          gas: new Amount(estimatedGas).toHex(),
+          gasLimit: new Amount(estimatedGas).toHex(),
           data: hexStrToNumberArray(data),
           network: fromNetwork
         })

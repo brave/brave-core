@@ -396,7 +396,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.clearAllAmount()
       return false
     }
-    var gasPrice: String?
     var gasLimit: String?
     var to: String?
     var value: String?
@@ -413,8 +412,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return false
       }
       // these values are already in wei
-      gasPrice =
-        "0x\(weiFormatter.weiString(from: zeroExQuote.gasPrice, radix: .hex, decimals: 0) ?? "0")"
       gasLimit =
         "0x\(weiFormatter.weiString(from: zeroExQuote.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
       to = zeroExQuote.to
@@ -439,8 +436,6 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return false
       }
       // these values are already in wei
-      gasPrice =
-        "0x\(weiFormatter.weiString(from: evmTransaction.gasPrice, radix: .hex, decimals: 0) ?? "0")"
       gasLimit =
         "0x\(weiFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
       to = evmTransaction.to
@@ -454,8 +449,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return false
     }
 
-    guard let gasPrice,
-      let gasLimit,
+    guard let gasLimit,
       let to,
       let value,
       let data
@@ -464,41 +458,17 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.clearAllAmount()
       return false
     }
-    let success: Bool
-    if network.isEip1559 {
-      let baseData: BraveWallet.TxData = .init(
-        nonce: "",
-        gasPrice: "",  // no gas price in eip1559
-        gasLimit: gasLimit,
-        to: to,
-        value: value,
-        data: data,
-        signOnly: false,
-        signedTransaction: nil
-      )
-      success = await self.makeEIP1559Tx(
-        chainId: network.chainId,
-        baseData: baseData,
-        from: accountInfo
-      )
-    } else {
-      let baseData: BraveWallet.TxData = .init(
-        nonce: "",
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        to: to,
-        value: value,
-        data: data,
-        signOnly: false,
-        signedTransaction: nil
-      )
-      let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      (success, _, _) = await txService.addUnapprovedTransaction(
-        txDataUnion: txDataUnion,
-        chainId: network.chainId,
-        from: accountInfo.accountId
-      )
-    }
+    let params = BraveWallet.NewEvmTransactionParams(
+      chainId: network.chainId,
+      from: accountInfo.accountId,
+      to: to,
+      value: value,
+      gasLimit: gasLimit,
+      data: data
+    )
+    let (success, _, _) = await txService.addUnapprovedEvmTransaction(
+      params: params
+    )
     if !success {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
@@ -538,80 +508,22 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     guard success else {
       return false
     }
-    let baseData = BraveWallet.TxData(
-      nonce: "",
-      gasPrice: "",
-      gasLimit: "",
+    let params = BraveWallet.NewEvmTransactionParams(
+      chainId: network.chainId,
+      from: accountInfo.accountId,
       to: fromToken.contractAddress(in: network),
       value: "0x0",
-      data: data,
-      signOnly: false,
-      signedTransaction: nil
+      gasLimit: "",
+      data: data
     )
-    if network.isEip1559 {
-      let success = await self.makeEIP1559Tx(
-        chainId: network.chainId,
-        baseData: baseData,
-        from: accountInfo
-      )
-      if !success {
-        self.state = .error(Strings.Wallet.unknownError)
-        self.clearAllAmount()
-      }
-      return success
-    } else {
-      let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(
-        txDataUnion: txDataUnion,
-        chainId: network.chainId,
-        from: accountInfo.accountId
-      )
-      if !success {
-        self.state = .error(Strings.Wallet.unknownError)
-        self.clearAllAmount()
-      }
-      return success
-    }
-  }
-
-  @MainActor private func makeEIP1559Tx(
-    chainId: String,
-    baseData: BraveWallet.TxData,
-    from account: BraveWallet.AccountInfo
-  ) async -> Bool {
-    var maxPriorityFeePerGas = ""
-    var maxFeePerGas = ""
-    let gasEstimation = await ethTxManagerProxy.gasEstimation1559(chainId: chainId)
-    if let gasEstimation = gasEstimation {
-      // Bump fast priority fee and max fee by 1 GWei if same as average fees.
-      if gasEstimation.fastMaxPriorityFeePerGas == gasEstimation.avgMaxPriorityFeePerGas {
-        maxPriorityFeePerGas =
-          "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxPriorityFeePerGas) ?? "0")"
-        maxFeePerGas = "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxFeePerGas) ?? "0")"
-      } else {
-        // Always suggest fast gas fees as default
-        maxPriorityFeePerGas = gasEstimation.fastMaxPriorityFeePerGas
-        maxFeePerGas = gasEstimation.fastMaxFeePerGas
-      }
-    }
-    let eip1559Data = BraveWallet.TxData1559(
-      baseData: baseData,
-      chainId: chainId,
-      maxPriorityFeePerGas: maxPriorityFeePerGas,
-      maxFeePerGas: maxFeePerGas,
-      gasEstimation: gasEstimation
+    let (addSuccess, _, _) = await txService.addUnapprovedEvmTransaction(
+      params: params
     )
-    let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    let (success, _, _) = await txService.addUnapprovedTransaction(
-      txDataUnion: txDataUnion,
-      chainId: chainId,
-      from: account.accountId
-    )
-    if !success {
+    if !addSuccess {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
     }
-    return success
+    return addSuccess
   }
 
   private func bumpFeeByOneGWei(with value: String) -> String? {
@@ -1227,10 +1139,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           self.selectedFromToken = prefilledToken
           continueClosure(network)
         } else {
-          self.rpcService.allNetworks(coin: prefilledToken.coin) { allNetworksForTokenCoin in
+          self.rpcService.allNetworks { allNetworks in
             guard
-              let networkForToken = allNetworksForTokenCoin.first(where: {
-                $0.chainId == prefilledToken.chainId
+              let networkForToken = allNetworks.first(where: {
+                $0.coin == prefilledToken.coin && $0.chainId == prefilledToken.chainId
               })
             else {
               // don't set prefilled token if it belongs to a network we don't know

@@ -44,6 +44,9 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
         brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
             browser()->profile());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+    brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
+        browser()->profile())
+        ->SetGasPriceForTesting("0x123");
 
     StartRPCServer(
         base::BindRepeating(&WalletButtonNotificationSourceTest::HandleRequest,
@@ -380,15 +383,12 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     const auto from_account = GetAccountUtils().EnsureEthAccount(0);
     const std::string to_account = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
 
-    auto tx_data = brave_wallet::mojom::TxData::New(
-        "0x06", "0x09184e72a000", "0x0974", to_account, "0x016345785d8a0000",
-        std::vector<uint8_t>(), false, std::nullopt);
-    tx_service()->AddUnapprovedTransaction(
-        brave_wallet::mojom::TxDataUnion::NewEthTxData(std::move(tx_data)),
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::ETH,
-                                        std::nullopt),
-        from_account->account_id.Clone(),
+    auto params = brave_wallet::mojom::NewEvmTransactionParams::New(
+        "0x06", from_account->account_id.Clone(),
+        "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000", "",
+        std::vector<uint8_t>());
+    tx_service()->AddUnapprovedEvmTransaction(
+        std::move(params),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           second_tx_meta_id = id;

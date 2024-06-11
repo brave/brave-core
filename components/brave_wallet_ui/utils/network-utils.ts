@@ -6,11 +6,7 @@
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 
 // types
-import {
-  BraveWallet,
-  SerializableSolanaTxData,
-  WalletAccountTypeName
-} from '../constants/types'
+import { BraveWallet, SerializableSolanaTxData } from '../constants/types'
 
 export const emptyNetwork: BraveWallet.NetworkInfo = {
   chainId: '',
@@ -23,8 +19,7 @@ export const emptyNetwork: BraveWallet.NetworkInfo = {
   symbolName: '',
   decimals: 0,
   coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: [],
-  isEip1559: true
+  supportedKeyrings: []
 }
 
 export const getNetworkInfo = (
@@ -114,35 +109,6 @@ export const getCoinFromTxDataUnion = <T extends TxDataPresence>(
   }
 
   assertNotReached('Unknown transaction coin')
-}
-
-const EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES = [
-  'Primary',
-  'Secondary',
-  'Ledger',
-  'Trezor'
-]
-
-/**
- * Check if the keyring associated with the given account AND the network
- * support the EIP-1559 fee market for paying gas fees.
- *
- * This method can also be used to determine if the given parameters support
- * EVM Type-2 transactions. The return value is always false for non-EVM
- * networks.
- *
- * @param {BraveWallet.AccountInfo} account
- * @param {BraveWallet.NetworkInfo} network
- * @returns {boolean} Returns a boolean result indicating EIP-1559 support.
- */
-export const hasEIP1559Support = (
-  accountType: WalletAccountTypeName,
-  network: BraveWallet.NetworkInfo
-) => {
-  return (
-    EIP1559_SUPPORTED_ACCOUNT_TYPE_NAMES.includes(accountType) &&
-    network.isEip1559
-  )
 }
 
 export const reduceNetworkDisplayName = (name?: string) => {

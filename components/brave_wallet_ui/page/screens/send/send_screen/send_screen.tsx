@@ -304,7 +304,9 @@ export const SendScreen = React.memo((props: Props) => {
             fromAccount,
             to: toAddress,
             value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
-            contractAddress: tokenFromParams.contractAddress
+            gasLimit: '',
+            contractAddress: tokenFromParams.contractAddress,
+            data: []
           })
           resetSendFields()
           return
@@ -316,8 +318,10 @@ export const SendScreen = React.memo((props: Props) => {
             fromAccount,
             to: toAddress,
             value: '',
+            gasLimit: '',
             contractAddress: tokenFromParams.contractAddress,
-            tokenId: tokenFromParams.tokenId ?? ''
+            tokenId: tokenFromParams.tokenId ?? '',
+            data: []
           })
           resetSendFields()
           return
@@ -335,7 +339,9 @@ export const SendScreen = React.memo((props: Props) => {
             fromAccount,
             to: toAddress,
             value: ethToWeiAmount(sendAmount, tokenFromParams).toHex(),
-            contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225'
+            gasLimit: '',
+            contractAddress: '0x2b3ef6906429b580b7b2080de5ca893bc282c225',
+            data: []
           })
           resetSendFields()
           return
@@ -347,7 +353,9 @@ export const SendScreen = React.memo((props: Props) => {
           to: toAddress,
           value: new Amount(sendAmount)
             .multiplyByDecimals(tokenFromParams.decimals)
-            .toHex()
+            .toHex(),
+          gasLimit: '',
+          data: []
         })
         resetSendFields()
         return

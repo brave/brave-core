@@ -58,19 +58,13 @@ class SelectAccountTokenStoreTests: XCTestCase {
     ]
   }
 
-  private let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [
-      .mockMainnet,
-      .mockGoerli,
-    ],
-    .sol: [
-      .mockSolana,
-      .mockSolanaTestnet,
-    ],
-    .fil: [
-      .mockFilecoinMainnet,
-      .mockFilecoinTestnet,
-    ],
+  private let allNetworks: [BraveWallet.NetworkInfo] = [
+    .mockMainnet,
+    .mockGoerli,
+    .mockSolana,
+    .mockSolanaTestnet,
+    .mockFilecoinMainnet,
+    .mockFilecoinTestnet,
   ]
 
   private let mockEthAccount2: BraveWallet.AccountInfo = .init(
@@ -171,8 +165,8 @@ class SelectAccountTokenStoreTests: XCTestCase {
       )
     }
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { coin, completion in
-      completion(self.allNetworks[coin] ?? [])
+    rpcService._allNetworks = {
+      $0(self.allNetworks)
     }
     rpcService._hiddenNetworks = { $1([]) }
     rpcService._balance = { accountAddress, coin, _, completion in

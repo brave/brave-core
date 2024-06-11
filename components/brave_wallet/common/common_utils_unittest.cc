@@ -143,6 +143,43 @@ TEST(CommonUtils, GetActiveEndpointUrl) {
   EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
 }
 
+TEST(CommonUtils, GetSupportedCoins) {
+  base::test::ScopedFeatureList disabled_feature_list;
+  const std::vector<base::test::FeatureRef> coin_features = {
+      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature};
+  disabled_feature_list.InitWithFeatures({}, coin_features);
+
+  uint32_t test_cases_count = (1 << coin_features.size());
+  for (uint32_t test_case = 0; test_case < test_cases_count; ++test_case) {
+    std::vector<base::test::FeatureRef> enabled_features;
+    for (uint32_t feature = 0; feature < coin_features.size(); ++feature) {
+      if ((1 << feature) & test_case) {
+        enabled_features.emplace_back(coin_features[feature]);
+      }
+    }
+
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitWithFeatures(enabled_features, {});
+
+    auto coins = GetSupportedCoins();
+    size_t last_pos = 0;
+
+    EXPECT_EQ(coins[last_pos++], mojom::CoinType::ETH);
+    EXPECT_EQ(coins[last_pos++], mojom::CoinType::SOL);
+    EXPECT_EQ(coins[last_pos++], mojom::CoinType::FIL);
+
+    if (IsBitcoinEnabled()) {
+      EXPECT_EQ(coins[last_pos++], mojom::CoinType::BTC);
+    }
+
+    if (IsZCashEnabled()) {
+      EXPECT_EQ(coins[last_pos++], mojom::CoinType::ZEC);
+    }
+
+    EXPECT_EQ(last_pos, coins.size());
+  }
+}
+
 TEST(CommonUtils, GetSupportedKeyrings) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {

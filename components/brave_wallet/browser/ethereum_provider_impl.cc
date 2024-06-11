@@ -287,8 +287,10 @@ void EthereumProviderImpl::SendOrSignTransactionInternal(
     return;
   }
 
-  if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
-                         keyring_service_->GetAllAccountInfos(), account_id)) {
+  if (ShouldCreate1559Tx(
+          tx_data_1559.Clone(),
+          IsEip1559Chain(prefs_, chain->chain_id).value_or(false),
+          keyring_service_->GetAllAccountInfos(), account_id)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
     tx_service_->AddUnapprovedTransactionWithOrigin(

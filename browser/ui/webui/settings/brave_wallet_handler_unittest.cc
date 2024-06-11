@@ -297,8 +297,7 @@ TEST(TestBraveWalletHandler, GetNetworkListEth) {
   const auto& networks = *data.arg3()->GetDict().FindList("networks");
 
   size_t index = 0u;
-  for (auto& known_chain :
-       brave_wallet::GetAllKnownChains(handler.prefs(), CoinType::ETH)) {
+  for (auto& known_chain : brave_wallet::GetAllKnownChains(CoinType::ETH)) {
     EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]),
               *known_chain);
   }
@@ -322,8 +321,7 @@ TEST(TestBraveWalletHandler, GetNetworkListFilSol) {
     const auto& networks = *data.arg3()->GetDict().FindList("networks");
 
     size_t index = 0u;
-    for (auto& known_chain :
-         brave_wallet::GetAllKnownChains(handler.prefs(), coin)) {
+    for (auto& known_chain : brave_wallet::GetAllKnownChains(coin)) {
       EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]),
                 *known_chain);
     }

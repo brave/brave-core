@@ -10,7 +10,6 @@
 #include <memory>
 #include <optional>
 #include <set>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -129,6 +128,7 @@ EthTxManager::EthTxManager(TxService* tx_service,
           std::make_unique<EthPendingTxTracker>(GetEthTxStateManager(),
                                                 json_rpc_service,
                                                 nonce_tracker_.get())),
+      prefs_(prefs),
       json_rpc_service_(json_rpc_service),
       account_resolver_delegate_(account_resolver_delegate) {
   GetEthBlockTracker()->AddObserver(this);
@@ -156,6 +156,29 @@ void EthTxManager::AddUnapprovedTransaction(
     AddUnapproved1559Transaction(
         chain_id, std::move(tx_data_union->get_eth_tx_data_1559()), from,
         std::move(origin_val), std::move(callback));
+  }
+}
+
+void EthTxManager::AddUnapprovedEvmTransaction(
+    mojom::NewEvmTransactionParamsPtr params,
+    const std::optional<url::Origin>& origin,
+    AddUnapprovedEvmTransactionCallback callback) {
+  auto origin_val =
+      origin.value_or(url::Origin::Create(GURL("chrome://wallet")));
+
+  auto tx_data =
+      mojom::TxData::New("", "", params->gas_limit, params->to, params->value,
+                         params->data, false, std::nullopt);
+
+  if (!IsEip1559Chain(prefs_, params->chain_id).value_or(false)) {
+    AddUnapprovedTransaction(params->chain_id, std::move(tx_data), params->from,
+                             std::move(origin_val), std::move(callback));
+  } else {
+    auto tx_data_1559 = mojom::TxData1559::New(
+        std::move(tx_data), params->chain_id, "", "", nullptr);
+    AddUnapproved1559Transaction(params->chain_id, std::move(tx_data_1559),
+                                 params->from, std::move(origin_val),
+                                 std::move(callback));
   }
 }
 

@@ -62,14 +62,11 @@ base::Value::Dict TransactionReceiptToValue(
 std::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value);
 
-std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(PrefService* prefs,
-                                                     mojom::CoinType coin);
+std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(mojom::CoinType coin);
 std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
                                                       mojom::CoinType coin);
-std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs,
-                                                mojom::CoinType coin);
-mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
-                                    const std::string& chain_id,
+std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs);
+mojom::NetworkInfoPtr GetKnownChain(const std::string& chain_id,
                                     mojom::CoinType coin);
 mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
                                      const std::string& chain_id,
@@ -113,11 +110,17 @@ GURL GetEnsRpcUrl();
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 GURL GetSnsRpcUrl();
 
+std::optional<bool> IsEip1559Chain(PrefService* prefs,
+                                   const std::string& chain_id);
+void SetEip1559ForCustomChain(PrefService* prefs,
+                              const std::string& chain_id,
+                              std::optional<bool> is_eip1559);
+
 // Append chain value to kBraveWalletCustomNetworks dictionary pref.
 void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
 
 void RemoveCustomNetwork(PrefService* prefs,
-                         const std::string& chain_id_to_remove,
+                         const std::string& chain_id,
                          mojom::CoinType coin);
 
 std::vector<std::string> GetHiddenNetworks(PrefService* prefs,

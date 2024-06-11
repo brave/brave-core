@@ -554,8 +554,7 @@ struct NetworkDetailsView: View {
       symbolName: model.networkSymbol.input,
       decimals: Int32(model.networkDecimals.input) ?? 18,
       coin: .eth,
-      supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
-      isEip1559: false
+      supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
     )
     Task { @MainActor in
       let (accepted, errMsg) = await networkStore.addCustomNetwork(network)

@@ -125,7 +125,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
-                  const std::string& chaind_id,
+                  const std::string& chain_id,
                   GetBalanceCallback callback) override;
   void GetCode(const std::string& address,
                mojom::CoinType coin,
@@ -273,8 +273,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   std::vector<mojom::SwitchChainRequestPtr> GetPendingSwitchChainRequestsSync();
   void NotifySwitchChainRequestProcessed(const std::string& request_id,
                                          bool approved) override;
-  void GetAllNetworks(mojom::CoinType coin,
-                      GetAllNetworksCallback callback) override;
+  void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetCustomNetworks(mojom::CoinType coin,
                          GetCustomNetworksCallback callback) override;
   void GetKnownNetworks(mojom::CoinType coin,
@@ -289,10 +288,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            RemoveHiddenNetworkCallback callback) override;
   std::string GetNetworkUrl(mojom::CoinType coin,
                             const std::optional<::url::Origin>& origin) const;
-  void GetNetworkUrl(
-      mojom::CoinType coin,
-      const std::optional<::url::Origin>& origin,
-      mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
@@ -462,6 +457,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void SetSkipEthChainIdValidationForTesting(bool skipped) {
     skip_eth_chain_id_validation_for_testing_ = skipped;
+  }
+
+  void SetGasPriceForTesting(const std::optional<std::string>& gas_price) {
+    gas_price_for_testing_ = gas_price;
   }
 
   // Solana JSON RPCs
@@ -802,6 +801,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
 
   bool skip_eth_chain_id_validation_for_testing_ = false;
+  std::optional<std::string> gas_price_for_testing_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   const raw_ptr<PrefService> prefs_ = nullptr;

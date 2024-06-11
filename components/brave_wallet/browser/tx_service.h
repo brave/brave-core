@@ -80,16 +80,24 @@ class TxService : public KeyedService,
       mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver);
 
   // mojom::TxService
-  void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
-                                const std::string& chain_id,
-                                mojom::AccountIdPtr from,
-                                AddUnapprovedTransactionCallback) override;
+  void AddUnapprovedTransaction(
+      mojom::TxDataUnionPtr tx_data_union,
+      const std::string& chain_id,
+      mojom::AccountIdPtr from,
+      AddUnapprovedTransactionCallback callback) override;
   void AddUnapprovedTransactionWithOrigin(
       mojom::TxDataUnionPtr tx_data_union,
       const std::string& chain_id,
       mojom::AccountIdPtr from,
       const std::optional<url::Origin>& origin,
-      AddUnapprovedTransactionCallback);
+      AddUnapprovedTransactionCallback callback);
+  void AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParamsPtr params,
+      AddUnapprovedEvmTransactionCallback callback) override;
+  void AddUnapprovedEvmTransactionWithOrigin(
+      mojom::NewEvmTransactionParamsPtr params,
+      const std::optional<url::Origin>& origin,
+      AddUnapprovedEvmTransactionCallback callback);
   void ApproveTransaction(mojom::CoinType coin_type,
                           const std::string& chain_id,
                           const std::string& tx_meta_id,

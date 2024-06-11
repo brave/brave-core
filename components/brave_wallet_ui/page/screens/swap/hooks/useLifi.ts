@@ -103,7 +103,7 @@ export function useLifi({
             fromAccount,
             to: evmTransaction.to,
             value: new Amount(evmTransaction.value).toHex(),
-            gas: new Amount(evmTransaction.gasLimit).toHex(),
+            gasLimit: new Amount(evmTransaction.gasLimit).toHex(),
             data: hexStrToNumberArray(evmTransaction.data),
             network: fromNetwork
           }).unwrap()

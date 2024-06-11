@@ -71,8 +71,7 @@ constexpr char kNetworkDataValue[] = R"({
         "http://127.0.0.1/",
         "https://goerli.etherscan.io",
         2
-      ],
-      "is_eip1559": true
+      ]
     })";
 
 }  // namespace
@@ -104,7 +103,6 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
                    "https://xdaichain.com/fake/example/url/xdai.png"}));
 
     EXPECT_EQ(chain->coin, mojom::CoinType::ETH);
-    EXPECT_FALSE(chain->is_eip1559);
   }
   {
     mojom::NetworkInfoPtr chain = ParseEip3085Payload(base::test::ParseJson(R"({
@@ -120,7 +118,6 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
     ASSERT_TRUE(chain->symbol_name.empty());
     ASSERT_TRUE(chain->symbol.empty());
     ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
-    ASSERT_FALSE(chain->is_eip1559);
     EXPECT_EQ(chain->decimals, 0);
   }
 
@@ -168,7 +165,6 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
     EXPECT_EQ(chain->coin, mojom::CoinType::ETH);
     EXPECT_THAT(chain->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kDefault}));
-    EXPECT_TRUE(chain->is_eip1559);
   }
   {
     mojom::NetworkInfoPtr chain =
@@ -185,7 +181,6 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
     ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
     EXPECT_THAT(chain->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kDefault}));
-    ASSERT_FALSE(chain->is_eip1559);
     EXPECT_EQ(chain->decimals, 0);
   }
 
@@ -212,7 +207,6 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
             chain.symbol);
   EXPECT_EQ(*value.FindIntByDottedPath("nativeCurrency.decimals"),
             chain.decimals);
-  EXPECT_EQ(value.FindBool("is_eip1559").value(), false);
   auto* rpc_urls = value.FindList("rpcUrls");
   for (const auto& entry : *rpc_urls) {
     ASSERT_TRUE(base::Contains(chain.rpc_endpoints, entry.GetString()));
@@ -235,11 +229,6 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
       test_chain.coin = coin;
       auto network_value = NetworkInfoToValue(test_chain);
       EXPECT_EQ(network_value.FindInt("coin"), static_cast<int>(coin));
-      if (coin == mojom::CoinType::ETH) {
-        EXPECT_FALSE(network_value.FindBool("is_eip1559").value());
-      } else {
-        EXPECT_FALSE(network_value.FindBool("is_eip1559"));
-      }
     }
 
     EXPECT_TRUE(AllCoinsTested());

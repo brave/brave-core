@@ -58,11 +58,6 @@ export function makeJsonRpcServiceObserver(store: Store) {
             'PendingSwitchChainRequests'
           ])
         )
-      },
-      onIsEip1559Changed: function (chainId, isEip1559) {
-        store.dispatch(
-          walletApi.endpoints.isEip1559Changed.initiate({ chainId, isEip1559 })
-        )
       }
     })
   return jsonRpcServiceObserverReceiver
