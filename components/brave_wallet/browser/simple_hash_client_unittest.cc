@@ -1811,7 +1811,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->attributes[0]->value, "Red");
   EXPECT_EQ(it->second->attributes[1]->trait_type, "Size");
   EXPECT_EQ(it->second->attributes[1]->value, "Small");
-  EXPECT_EQ(it->second->background_color, "#000000");
+  EXPECT_EQ(it->second->background_color, "");
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
 }
