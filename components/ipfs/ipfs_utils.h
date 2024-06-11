@@ -10,9 +10,17 @@
 
 namespace ipfs {
 
+inline constexpr char kIPFSScheme[] = "ipfs";
+
 bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       bool use_subdomain);
+
+GURL GetDefaultIPFSGateway();
+
+std::optional<GURL> ExtractSourceFromGateway(const GURL& url);
+
+GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
 
 }  // namespace ipfs
 

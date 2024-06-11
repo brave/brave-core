@@ -9,6 +9,7 @@
 
 #include "base/command_line.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
@@ -122,6 +123,8 @@ void AndroidWalletPageUI::CreatePageHandler(
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
         brave_wallet_p3a_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+        ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
         meld_integration_service) {
   auto* profile = Profile::FromWebUI(web_ui());

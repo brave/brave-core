@@ -59,6 +59,8 @@ static_library("browser") {
     "blockchain_list_parser.h",
     "blockchain_registry.cc",
     "blockchain_registry.h",
+    "brave_wallet_ipfs_service.cc",
+    "brave_wallet_ipfs_service.h",
     "brave_wallet_p3a.cc",
     "brave_wallet_p3a.h",
     "brave_wallet_p3a_private.cc",

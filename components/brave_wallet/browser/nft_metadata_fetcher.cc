@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -172,7 +173,8 @@ void NftMetadataFetcher::FetchMetadata(
   // HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
   std::string scheme = url.scheme();
-  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme) {
+  if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
+      scheme != ipfs::kIPFSScheme) {
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kInternalError),
         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -192,6 +194,13 @@ void NftMetadataFetcher::FetchMetadata(
         std::move(metadata_json),
         base::BindOnce(&NftMetadataFetcher::OnSanitizeTokenMetadata,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
+  }
+  if (scheme == ipfs::kIPFSScheme &&
+      !ipfs::TranslateIPFSURI(url, &url, false)) {
+    std::move(callback).Run(
+        "", static_cast<int>(mojom::JsonRpcError::kParsingError),
+        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
 

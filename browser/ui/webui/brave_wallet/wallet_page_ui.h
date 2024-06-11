@@ -60,6 +60,8 @@ class WalletPageUI : public ui::MojoWebUIController,
           brave_wallet_service,
       mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
           brave_wallet_p3a,
+      mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+          brave_wallet_ipfs_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
           meld_integration_service) override;
 

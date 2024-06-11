@@ -58,6 +58,7 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -80,7 +81,7 @@ using testing::Eq;
 using testing::Not;
 
 MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
-  return decentralized_dns::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
+  return ifps::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
 }
 
 namespace brave_wallet {
