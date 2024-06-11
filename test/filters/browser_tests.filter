@@ -1458,6 +1458,7 @@
 
 # This test fails because the default search engine is Brave instead of Google.
 -DevToolsTest.TestOpenSearchResultsInNewTab
+-LensOverlayControllerBrowserTest.EnterprisePolicy
 
 # This test fails because it requires chromium OAuth key configured
 -AutofillSigninPromoTabHelperTest.MoveSavedPasswordToAccountStoreNoExistingAccount
