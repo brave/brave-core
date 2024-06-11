@@ -97,7 +97,7 @@ struct BraveRegionDetailsView: View {
     }
     .navigationBarTitle("Brazil Server", displayMode: .inline)
     .background {
-      BraveVPNRegionChangedContentView(
+      BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
         regionTitle: "Brazil",
         regionSubtitle: "Rio de Janeiro"
