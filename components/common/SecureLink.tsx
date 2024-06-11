@@ -27,11 +27,11 @@ export const validateScheme = (href: string | undefined, allowedSchemes: string[
  * @param href The href to open
  * @param e The mouse event
  */
-export const handleOpenURLClick = (href: string | undefined, e: React.MouseEvent) => {
+export const handleOpenURLClick = (href: string | undefined, e: { ctrlKey: boolean, metaKey: boolean, buttons?: number }) => {
   validateScheme(href)
 
   // Control click, command click or middle click
-  if (e.ctrlKey || e.metaKey || e.buttons & 4) {
+  if (e.ctrlKey || e.metaKey || (e.buttons ?? 0) & 4) {
     window.open(href, '_blank', 'noopener noreferrer')
   } else {
     window.location.href = href!
