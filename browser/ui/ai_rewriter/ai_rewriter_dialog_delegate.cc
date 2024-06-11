@@ -129,9 +129,12 @@ void AIRewriterDialogDelegate::OnFocusChangedInPage(
   CloseDialog();
 }
 void AIRewriterDialogDelegate::ShowDialog() {
+  const gfx::Size min_size(600, 550);
+  const gfx::Size max_size(600, 2000);
   ConstrainedWebDialogDelegate* dialog_delegate =
-      ShowConstrainedWebDialog(target_contents_->GetBrowserContext(),
-                               base::WrapUnique(this), &*target_contents_);
+      ShowConstrainedWebDialogWithAutoResize(
+          target_contents_->GetBrowserContext(), base::WrapUnique(this),
+          &*target_contents_, min_size, max_size);
 
   DCHECK(dialog_delegate);
   content::WebContents* dialog_contents = dialog_delegate->GetWebContents();
