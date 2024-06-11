@@ -31,7 +31,6 @@
     return nullptr;
   }
   GURL output;
-  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
   if (ipfs::TranslateIPFSURI(input_gurl, &output, false)) {
     return net::NSURLWithGURL(output);
   }
@@ -44,7 +43,6 @@
     return nullptr;
   }
   GURL output;
-  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
   if (ipfs::TranslateIPFSURI(input_gurl, &output, false)) {
     return net::NSURLWithGURL(output);
   }
@@ -52,15 +50,7 @@
 }
 
 - (NSURL*)nftIpfsGateway {
-  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway = ipfs::GetDefaultIPFSGateway();
-  return net::NSURLWithGURL(gateway);
-}
-
-- (void)setNftIpfsGateway:(NSURL*)input {
-  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  GURL input_gurl = net::GURLWithNSURL(input);
-  ipfs::SetDefaultNFTIPFSGateway(prefs, input_gurl);
+  return net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
 }
 
 - (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash {
@@ -70,9 +60,7 @@
 }
 
 - (NSURL*)ipfsGateway {
-  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway = ipfs::GetDefaultIPFSGateway();
-  return net::NSURLWithGURL(gateway);
+  return net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
 }
 
 @end
