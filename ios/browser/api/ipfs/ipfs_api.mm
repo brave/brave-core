@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/ipfs/ipfs_api.h"
 
 #import "brave/base/mac/conversions.h"
-#include "brave/components/ipfs/ipfs_constants.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
@@ -32,8 +32,7 @@
   }
   GURL output;
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway_url = ipfs::GetDefaultIPFSGateway(prefs);
-  if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
+  if (ipfs::TranslateIPFSURI(input_gurl, &output, false)) {
     return net::NSURLWithGURL(output);
   }
   return nullptr;
@@ -46,8 +45,7 @@
   }
   GURL output;
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway_url = ipfs::GetDefaultNFTIPFSGateway(prefs);
-  if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
+  if (ipfs::TranslateIPFSURI(input_gurl, &output, false)) {
     return net::NSURLWithGURL(output);
   }
   return nullptr;
@@ -55,7 +53,7 @@
 
 - (NSURL*)nftIpfsGateway {
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway = ipfs::GetDefaultNFTIPFSGateway(prefs);
+  auto gateway = ipfs::GetDefaultIPFSGateway();
   return net::NSURLWithGURL(gateway);
 }
 
@@ -73,14 +71,8 @@
 
 - (NSURL*)ipfsGateway {
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway = ipfs::GetDefaultIPFSGateway(prefs);
+  auto gateway = ipfs::GetDefaultIPFSGateway();
   return net::NSURLWithGURL(gateway);
-}
-
-- (void)setIpfsGateway:(NSURL*)input {
-  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  GURL input_gurl = net::GURLWithNSURL(input);
-  ipfs::SetDefaultIPFSGateway(prefs, input_gurl);
 }
 
 @end
