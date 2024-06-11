@@ -146,7 +146,6 @@ void SidebarContainerView::Init() {
   panel_registry_observations_.AddObservation(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
-    DVLOG(1) << "Observing panel entry in ctor: " << entry->name();
     panel_entry_observations_.AddObservation(entry.get());
   }
 
@@ -728,7 +727,6 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   // Make sure item is selected. We need to observe the SidePanel system
   // as well as Sidebar as there are other ways than Sidebar for SidePanel
   // items to be shown and hidden, e.g. toolbar button.
-  DVLOG(1) << "Panel shown: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -760,7 +758,6 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Make sure item is deselected
-  DVLOG(1) << "Panel hidden: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -795,14 +792,12 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
 void SidebarContainerView::OnEntryRegistered(SidePanelRegistry* registry,
                                              SidePanelEntry* entry) {
   // Observe when it's shown or hidden
-  DVLOG(1) << "Observing panel entry in registry observer: " << entry->name();
   panel_entry_observations_.AddObservation(entry);
 }
 
 void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
                                                  SidePanelEntry* entry) {
   // Stop observing
-  DVLOG(1) << "Unobserving panel entry in registry observer: " << entry->name();
   panel_entry_observations_.RemoveObservation(entry);
 }
 
@@ -844,9 +839,6 @@ void SidebarContainerView::StopObservingContextualSidePanelRegistry(
 
   for (const auto& entry : registry->entries()) {
     if (panel_entry_observations_.IsObservingSource(entry.get())) {
-      DVLOG(1) << "Removing panel entry observation from removed contextual "
-                  "registry : "
-               << entry->name();
       panel_entry_observations_.RemoveObservation(entry.get());
     }
   }
@@ -863,9 +855,6 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
 
   for (const auto& entry : registry->entries()) {
     if (!panel_entry_observations_.IsObservingSource(entry.get())) {
-      DVLOG(1) << "Observing existing panel entry from newly added contextual "
-                  "registry : "
-               << entry->name();
       panel_entry_observations_.AddObservation(entry.get());
     }
   }
