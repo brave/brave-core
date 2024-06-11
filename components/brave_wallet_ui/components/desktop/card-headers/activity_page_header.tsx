@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
 // Selectors
 import { UISelectors } from '../../../common/selectors'
 
@@ -35,7 +38,10 @@ export const ActivityPageHeader = (props: Props) => {
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return isPanel ? (
-    <DefaultPanelHeader title={getLocale('braveWalletActivity')} />
+    <DefaultPanelHeader
+      title={getLocale('braveWalletActivity')}
+      expandRoute={WalletRoutes.Activity}
+    />
   ) : (
     <Row
       padding='24px 0px'
