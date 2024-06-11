@@ -1106,6 +1106,8 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   //                    uint256 fromAmount,
   //                    bytes callData,
   //                    bool requiresDeposit)[] swapData)
+
+  // Swap 0.504913 USDC.e → 0.6797397017301765 MATIC
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x4630a0d8"  // function selector
 
@@ -1213,6 +1215,88 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // MATIC
   EXPECT_EQ(tx_args[1], "0x7b451");                       // 0.504913 USDC.e
   EXPECT_EQ(tx_args[2], "0x96eeba8455b6e35");  // 0.6797397017301765 MATIC
+
+  // Swap 1 MATIC → Y USDC.e
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x4630a0d8"  // function selector
+
+      /***************************** HEAD ****************************/
+      // transactionId
+      "73bc2c896381e1296eefd4ddbbe7efbb62ae1d1968de6d764364d762f1fd9b9e"
+      // integrator (offset)
+      "00000000000000000000000000000000000000000000000000000000000000c0"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000100"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmountOut
+      "0000000000000000000000000000000000000000000000000000000000098647"
+
+      // offset to start data part of swapData
+      "0000000000000000000000000000000000000000000000000000000000000160"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of referrer
+      // size of referrer string
+      "000000000000000000000000000000000000000000000000000000000000002a"
+      "3078303030303030303030303030303030303030303030303030303030303030"
+      "3030303030303030303000000000000000000000000000000000000000000000"
+
+      // size(swapData) = 1
+      "0000000000000000000000000000000000000000000000000000000000000001"
+      // swapData[0] offset
+      "0000000000000000000000000000000000000000000000000000000000000020"
+
+      /************************** swapData[0] *************************/
+      // callTo
+      "000000000000000000000000a5e0829caced8ffdd4de3c43696c57f7d7a678ff"
+      // approveTo
+      "000000000000000000000000a5e0829caced8ffdd4de3c43696c57f7d7a678ff"
+      // sendingAssetId
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // receivingAssetId
+      "0000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa84174"
+      // fromAmount
+      "0000000000000000000000000000000000000000000000000de0b6b3a7640000"
+      // callData
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // requiresDeposit
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      "00000000000000000000000000000000000000000000000000000000000000e4"
+      "7ff36ab500000000000000000000000000000000000000000000000000000000"
+      "0009864700000000000000000000000000000000000000000000000000000000"
+      "000000800000000000000000000000001231deb6f5749ef6ce6943a275a1d3e7"
+      "486f4eae00000000000000000000000000000000000000000000000000000000"
+      "6668bc8800000000000000000000000000000000000000000000000000000000"
+      "000000020000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d"
+      "3adf12700000000000000000000000002791bca1f2de4661ed88a30c99a7a944"
+      "9aa8417400000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint256");
+  EXPECT_EQ(tx_params[2], "uint256");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // MATIC
+            "2791bca1f2de4661ed88a30c99a7a9449aa84174");  // USDC.e
+  EXPECT_EQ(tx_args[1], "0xde0b6b3a7640000");             // 1 MATIC
+  EXPECT_EQ(tx_args[2], "0x98647");                       // 0.624199 USDC.e
 }
 
 }  // namespace brave_wallet
