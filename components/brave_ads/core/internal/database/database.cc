@@ -168,7 +168,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Execute(
     return mojom::DBCommandResponseInfo::StatusType::INITIALIZATION_ERROR;
   }
 
-  if (!db_.Execute(command->sql.c_str())) {
+  if (!db_.Execute(command->sql)) {
     VLOG(0) << "Database error: " << db_.GetErrorMessage();
     return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
   }
@@ -185,7 +185,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Run(
   }
 
   sql::Statement statement;
-  statement.Assign(db_.GetUniqueStatement(command->sql.c_str()));
+  statement.Assign(db_.GetUniqueStatement(command->sql));
   if (!statement.is_valid()) {
     VLOG(0) << "Invalid database statement " << statement.GetSQLStatement();
     return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
@@ -213,7 +213,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Read(
   }
 
   sql::Statement statement;
-  statement.Assign(db_.GetUniqueStatement(command->sql.c_str()));
+  statement.Assign(db_.GetUniqueStatement(command->sql));
   if (!statement.is_valid()) {
     VLOG(0) << "Invalid database statement " << statement.GetSQLStatement();
     return mojom::DBCommandResponseInfo::StatusType::COMMAND_ERROR;
