@@ -1621,7 +1621,8 @@ interface JsonRpcService {
        SolanaProviderError error, string error_message);
 
   // Returns the metadata json associated with the NFT. Uses the SimpleHash API, not
-  // the JSON RPC API.
+  // the JSON RPC API. Callers should only supply NFT identifiers owned by a single
+  // account at a time.
   GetNftMetadatas(CoinType coin,
                    array<NftIdentifier> nft_identifiers) => (array<NftMetadata> metadatas,
                                                              string error_message);
