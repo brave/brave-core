@@ -55,9 +55,7 @@
 #undef RecentlyClosedTabsFromCurrentSession
 #undef RecentlyClosedGroupsFromCurrentSession
 
-// This override is in place because we insert "Clear Browsing Data" command
-// into the menu and need to add a corresponding entry into the model data
-// against which the menu is checked. We also replace the "Sign in to see tabs
+// This override is in place because we replace the "Sign in to see tabs
 // from other devices" menu command with the non-command string "No tabs from
 // other devices" and need to adjust the data. Additionally, we disable
 // kSidePanelPinning feature, so we need to also remove the "History Cluster"
@@ -69,7 +67,6 @@ void RecentTabsSubMenuModelTest::VerifyModel(
   if (GetParam()) {
     v_data.erase(std::next(v_data.begin()));
   }
-  v_data.insert(v_data.begin() + 1, {ui::MenuModel::TYPE_COMMAND, true});
   auto& item_data = v_data.back();
   if (item_data.type == ui::MenuModel::TYPE_COMMAND) {
     item_data.enabled = false;
