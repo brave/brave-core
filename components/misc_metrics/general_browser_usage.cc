@@ -64,9 +64,7 @@ void GeneralBrowserUsage::ReportWeeklyUse() {
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 void GeneralBrowserUsage::ReportInstallTime() {
-  int days_since_install =
-      (base::Time::Now().LocalMidnight() - first_run_time_.LocalMidnight())
-          .InDays();
+  int days_since_install = (base::Time::Now() - first_run_time_).InDays();
   if (days_since_install < 0 || days_since_install > 30) {
     return;
   }
