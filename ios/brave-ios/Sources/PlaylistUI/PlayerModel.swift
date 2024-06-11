@@ -237,17 +237,24 @@ public final class PlayerModel: ObservableObject {
   }
 
   private var sleepTimer: Timer?
-  @MainActor @Published var sleepTimerFireDate: Date? {
+  enum SleepTimerCondition {
+    case date(Date)
+    case itemPlaybackCompletion
+  }
+  @MainActor @Published var sleepTimerCondition: SleepTimerCondition? {
     didSet {
       sleepTimer?.invalidate()
-      if let sleepTimerFireDate {
+      guard let sleepTimerCondition else {
+        return
+      }
+      if case .date(let date) = sleepTimerCondition {
         let timer = Timer(
-          fire: sleepTimerFireDate,
+          fire: date,
           interval: 0,
           repeats: false,
           block: { [weak self] _ in
             self?.pause()
-            self?.sleepTimerFireDate = nil
+            self?.sleepTimerCondition = nil
           }
         )
         RunLoop.main.add(timer, forMode: .default)
@@ -667,7 +674,12 @@ public final class PlayerModel: ObservableObject {
             playTime: 0
           )
         }
-        self.playNextItem()
+        if case .itemPlaybackCompletion = self.sleepTimerCondition {
+          self.pause()
+          self.sleepTimerCondition = nil
+        } else {
+          self.playNextItem()
+        }
       }
     }
     let interruption = center.addObserver(

@@ -283,7 +283,7 @@ extension MediaContentView {
                 ForEach(timeOptions, id: \.self) { option in
                   Button {
                     withAnimation(.snappy) {
-                      model.sleepTimerFireDate = .now.addingTimeInterval(option)
+                      model.sleepTimerCondition = .date(.now.addingTimeInterval(option))
                     }
                   } label: {
                     Text(
@@ -296,14 +296,22 @@ extension MediaContentView {
                     )
                   }
                 }
+                Button {
+                  withAnimation(.snappy) {
+                    model.sleepTimerCondition = .itemPlaybackCompletion
+                  }
+                } label: {
+                  // FIXME: Needs better copy
+                  Text("End of Item")
+                }
               } header: {
-                Text("Stop Playback In…")
+                Text("Stop Playback After…")
               }
-              if model.sleepTimerFireDate != nil {
+              if model.sleepTimerCondition != nil {
                 Divider()
                 Button("Cancel Timer") {
                   withAnimation(.snappy) {
-                    model.sleepTimerFireDate = nil
+                    model.sleepTimerCondition = nil
                   }
                 }
               }
@@ -312,15 +320,16 @@ extension MediaContentView {
                 // FIXME: iOS 16 - Menu doesn't apply button styles
                 Label("Sleep Timer", braveSystemImage: "leo.sleep.timer")
                   .labelStyle(.iconOnly)
-                if let sleepTimerFireDate = model.sleepTimerFireDate {
+                if case .date(let sleepTimerFireDate) = model.sleepTimerCondition {
                   Text(timerInterval: .now...sleepTimerFireDate, countsDown: true)
                     .font(.callout.weight(.semibold))
                     .transition(.opacity)
                 }
               }
             }
+            .menuOrder(.fixed)
             .tint(
-              model.sleepTimerFireDate != nil
+              model.sleepTimerCondition != nil
                 ? Color(braveSystemName: .textInteractive) : Color(braveSystemName: .textSecondary)
             )
             Spacer()
