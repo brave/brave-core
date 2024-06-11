@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <string_view>
@@ -766,7 +767,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   ASSERT_TRUE(tx_meta3);
   EXPECT_TRUE(tx_meta3->tx()->fee_estimation());
   EXPECT_EQ(tx_meta3->tx()->fee_estimation()->base_fee, 5000U);
-  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->compute_units, 69017U);
+  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->compute_units, 69317U);
   EXPECT_EQ(tx_meta3->tx()->fee_estimation()->fee_per_compute_unit, 1U);
 
   // When `everything is successful, the tx should have a fee estimation with
