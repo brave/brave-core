@@ -102,7 +102,21 @@ std::optional<std::string> FinishJoin(
 std::optional<std::vector<const uint8_t>> PerformSign(
     anonymous_credentials::CredentialManager* anonymous_credential_manager,
     std::vector<const uint8_t> msg,
-    std::vector<const uint8_t> basename) {
+    std::vector<const uint8_t> basename,
+    std::optional<std::vector<uint8_t>> gsk_bytes,
+    std::optional<std::vector<uint8_t>> credential_bytes) {
+  if (gsk_bytes && credential_bytes) {
+    auto set_res = anonymous_credential_manager->set_gsk_and_credentials(
+        rust::Slice(reinterpret_cast<const uint8_t*>(gsk_bytes->data()),
+                    gsk_bytes->size()),
+        rust::Slice(reinterpret_cast<const uint8_t*>(credential_bytes->data()),
+                    credential_bytes->size()));
+    if (!set_res.error_message.empty()) {
+      VLOG(1) << "Failed to sign due to credential set failure: "
+              << set_res.error_message.c_str();
+      return std::nullopt;
+    }
+  }
   auto sig_res = anonymous_credential_manager->sign(
       rust::Slice(msg.data(), msg.size()),
       rust::Slice(basename.data(), basename.size()));
@@ -377,6 +391,8 @@ bool CredentialManager::Sign(std::vector<const uint8_t> msg,
   auto today_date = FormatServerDate(base::Time::Now().UTCMidnight());
   const auto& anon_creds_dict =
       profile_prefs_->GetDict(kAnonymousCredentialsDict);
+  std::optional<std::vector<uint8_t>> gsk_bytes;
+  std::optional<std::vector<uint8_t>> credential_bytes;
   if (!loaded_credential_date_ || loaded_credential_date_ != today_date) {
     auto* today_cred_dict = anon_creds_dict.FindDict(today_date);
     if (!today_cred_dict) {
@@ -389,34 +405,30 @@ bool CredentialManager::Sign(std::vector<const uint8_t> msg,
       VLOG(1) << "Failed to sign due to unavailability of gsk/credential";
       return false;
     }
-    auto gsk_bytes = base::Base64Decode(*gsk_b64);
-    auto credential_bytes = base::Base64Decode(*credential_b64);
+    gsk_bytes = base::Base64Decode(*gsk_b64);
+    credential_bytes = base::Base64Decode(*credential_b64);
     if (!gsk_bytes || !credential_bytes) {
       VLOG(1) << "Failed to sign due to bad gsk/credential base64";
       return false;
     }
-    auto set_res =
-        (*anonymous_credential_manager_)
-            ->set_gsk_and_credentials(
-                rust::Slice(reinterpret_cast<const uint8_t*>(gsk_bytes->data()),
-                            gsk_bytes->size()),
-                rust::Slice(
-                    reinterpret_cast<const uint8_t*>(credential_bytes->data()),
-                    credential_bytes->size()));
-    if (!set_res.error_message.empty()) {
-      VLOG(1) << "Failed to sign due to credential set failure: "
-              << set_res.error_message.c_str();
-      return false;
-    }
-    loaded_credential_date_ = today_date;
   }
 
   pool_sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&PerformSign, &**anonymous_credential_manager_, msg,
-                     basename),
-      std::move(callback));
+                     basename, gsk_bytes, credential_bytes),
+      base::BindOnce(&CredentialManager::OnSignResult,
+                     weak_ptr_factory_.GetWeakPtr(), today_date,
+                     std::move(callback)));
   return true;
+}
+
+void CredentialManager::OnSignResult(
+    std::string credential_date,
+    SignCallback callback,
+    std::optional<std::vector<const uint8_t>> signed_message) {
+  loaded_credential_date_ = credential_date;
+  std::move(callback).Run(signed_message);
 }
 
 }  // namespace web_discovery

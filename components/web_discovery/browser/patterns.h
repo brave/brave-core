@@ -80,6 +80,7 @@ struct PatternsURLDetails {
   std::unique_ptr<re2::RE2> url_regex;
   bool is_search_engine;
   std::string id;
+  std::optional<std::string> search_template_prefix;
   base::flat_map<std::string, ScrapeRuleGroup> scrape_rule_groups;
   std::vector<PayloadRuleGroup> payload_rule_groups;
 };

@@ -7,11 +7,16 @@
 
 #include <utility>
 
+#include "brave/components/web_discovery/browser/privacy_guard.h"
+
 namespace web_discovery {
 
 namespace {
 
 constexpr char kCountryCodeFieldName[] = "ctry";
+constexpr char kSearchResultKey[] = "r";
+constexpr char kSearchResultURLKey[] = "u";
+constexpr size_t kMinSearchResultSize = 4;
 
 bool ValueHasContent(const base::Value& value) {
   const auto* value_str = value.GetIfString();
@@ -39,6 +44,27 @@ bool AggregatedDictHasContent(const base::Value::Dict& dict) {
   return false;
 }
 
+bool IsPrivateResult(const PayloadRule& rule,
+                     const PatternsURLDetails* matching_url_details,
+                     const base::Value::Dict& dict) {
+  if (rule.key != kSearchResultKey) {
+    return false;
+  }
+  const auto* url = dict.FindString(kSearchResultURLKey);
+  if (!url) {
+    return false;
+  }
+  return IsPrivateURLLikely(GURL(*url), matching_url_details);
+}
+
+bool ShouldDropSearchResultPayload(const PayloadRule& rule,
+                                   size_t result_size) {
+  if (rule.key != kSearchResultKey) {
+    return false;
+  }
+  return result_size < kMinSearchResultSize;
+}
+
 base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
                                     base::Value::Dict inner_payload) {
   base::Value::Dict payload;
@@ -47,8 +73,36 @@ base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
   return payload;
 }
 
+std::optional<base::Value> GenerateClusteredJoinedPayload(
+    const PayloadRule& rule,
+    const PatternsURLDetails* matching_url_details,
+    const std::vector<base::Value::Dict>& attribute_values) {
+  base::Value::Dict joined_data;
+  size_t counter = 0;
+  for (const auto& value : attribute_values) {
+    if (value.empty()) {
+      continue;
+    }
+    if (IsPrivateResult(rule, matching_url_details, value)) {
+      VLOG(1) << "Omitting private search result";
+      continue;
+    }
+    joined_data.Set(base::NumberToString(counter++), value.Clone());
+  }
+  if (!AggregatedDictHasContent(joined_data)) {
+    VLOG(1) << "Skipped joined clustered payload";
+    return std::nullopt;
+  }
+  if (ShouldDropSearchResultPayload(rule, joined_data.size())) {
+    VLOG(1) << "Skipped search result payload due to too few results";
+    return std::nullopt;
+  }
+  return base::Value(std::move(joined_data));
+}
+
 std::optional<base::Value::Dict> GenerateClusteredPayload(
     const PayloadRuleGroup& rule_group,
+    const PatternsURLDetails* matching_url_details,
     const PageScrapeResult* scrape_result) {
   base::Value::Dict inner_payload;
   for (const auto& rule : rule_group.rules) {
@@ -59,20 +113,12 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
       return std::nullopt;
     }
     if (rule.is_join) {
-      base::Value::Dict joined_data;
-      size_t counter = 0;
-      for (const auto& value : attribute_values_it->second) {
-        if (value.empty()) {
-          continue;
-        }
-        joined_data.Set(base::NumberToString(counter++), value.Clone());
-      }
-      if (!AggregatedDictHasContent(joined_data)) {
-        VLOG(1) << "Skipped joined clustered payload, action = "
-                << rule_group.action;
+      auto joined_payload = GenerateClusteredJoinedPayload(
+          rule, matching_url_details, attribute_values_it->second);
+      if (!joined_payload) {
         return std::nullopt;
       }
-      payload_rule_data = base::Value(std::move(joined_data));
+      payload_rule_data = std::move(*joined_payload);
     } else {
       const auto* value = attribute_values_it->second[0].FindString(rule.key);
       if (!value || value->empty()) {
@@ -112,7 +158,8 @@ std::vector<base::Value::Dict> GeneratePayloads(
   for (const auto& rule_group : url_details->payload_rule_groups) {
     if (rule_group.rule_type == PayloadRuleType::kQuery &&
         rule_group.result_type == PayloadResultType::kClustered) {
-      auto payload = GenerateClusteredPayload(rule_group, scrape_result.get());
+      auto payload = GenerateClusteredPayload(rule_group, url_details,
+                                              scrape_result.get());
       if (payload) {
         payloads.push_back(std::move(*payload));
       }

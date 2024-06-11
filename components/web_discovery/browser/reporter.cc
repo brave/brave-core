@@ -179,7 +179,7 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
   credential_manager_->Sign(
       std::vector<const uint8_t>(payload_hash.begin(), payload_hash.end()),
       basename_result->basename,
-      base::BindOnce(&Reporter::OnRequestSigned, weak_ptr_factory_.GetWeakPtr(),
+      base::BindOnce(&Reporter::OnRequestSigned, base::Unretained(this),
                      final_payload_json, basename_result->count_tag_hash,
                      basename_result->count));
 }

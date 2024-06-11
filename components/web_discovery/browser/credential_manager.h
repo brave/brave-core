@@ -79,6 +79,10 @@ class CredentialManager {
                           std::vector<const uint8_t> gsk,
                           std::optional<std::string> credentials);
 
+  void OnSignResult(std::string credential_date,
+                    SignCallback callback,
+                    std::optional<std::vector<const uint8_t>> signed_message);
+
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;

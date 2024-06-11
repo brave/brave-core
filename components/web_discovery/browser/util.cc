@@ -7,6 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/brave_domains/service_domains.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace web_discovery {
 
@@ -15,6 +16,7 @@ constexpr char kCollectorHostPrefix[] = "collector.wdp";
 constexpr char kQuorumHostPrefix[] = "quorum.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
 constexpr char kPatternsPath[] = "/patterns.gz";
+constexpr char kNotAlphanumericRegex[] = "[^A-Za-z0-9]";
 }  // namespace
 
 std::string GetCollectorHost() {
@@ -49,6 +51,11 @@ std::string FormatServerDate(const base::Time& date) {
   date.UTCExplode(&exploded);
   return base::StringPrintf("%04d%02d%02d", exploded.year, exploded.month,
                             exploded.day_of_month);
+}
+
+void TransformToAlphanumeric(std::string& value) {
+  re2::RE2 cleaning_regex(kNotAlphanumericRegex);
+  re2::RE2::GlobalReplace(&value, cleaning_regex, "");
 }
 
 }  // namespace web_discovery

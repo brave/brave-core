@@ -34,6 +34,10 @@ struct PageScrapeResult {
   GURL url;
   base::flat_map<std::string, std::vector<base::Value::Dict>> fields;
   std::string id;
+
+  // Only available for non-strict scrapes with "searchQuery"/"widgetTitle"
+  // scrape rules
+  std::optional<std::string> query;
 };
 
 class ContentScraper {
@@ -75,10 +79,6 @@ class ContentScraper {
       std::unique_ptr<PageScrapeResult> scrape_result,
       PageScrapeResultCallback callback,
       rust::Vec<rust_document_extractor::AttributeResult> attribute_results);
-  std::string MaybeExecuteRefineFunctions(const PatternsURLDetails* url_details,
-                                          const std::string& root_selector,
-                                          const std::string& report_key,
-                                          std::string value);
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 
