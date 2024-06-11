@@ -2886,6 +2886,21 @@ void JsonRpcService::GetNftMetadatas(
     return;
   }
 
+  if (coin == mojom::CoinType::ETH) {
+    for (auto& nft_identifier : nft_identifiers) {
+      auto checksum_address =
+          brave_wallet::EthAddress::ToEip1191ChecksumAddress(
+              nft_identifier->contract_address, nft_identifier->chain_id);
+      if (checksum_address) {
+        nft_identifier->contract_address = checksum_address.value();
+      } else {
+        std::move(callback).Run(
+            {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+        return;
+      }
+    }
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetNftMetadatas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -2921,6 +2936,22 @@ void JsonRpcService::GetNftBalances(
     std::move(callback).Run(
         {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
+  }
+
+  // Convert contract addresses to checksum addresses if coin type is ETH
+  if (coin == mojom::CoinType::ETH) {
+    for (auto& nft_identifier : nft_identifiers) {
+      auto checksum_address =
+          brave_wallet::EthAddress::ToEip1191ChecksumAddress(
+              nft_identifier->contract_address, nft_identifier->chain_id);
+      if (checksum_address) {
+        nft_identifier->contract_address = checksum_address.value();
+      } else {
+        std::move(callback).Run(
+            {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+        return;
+      }
+    }
   }
 
   auto internal_callback =

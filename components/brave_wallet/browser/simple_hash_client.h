@@ -164,15 +164,12 @@ class SimpleHashClient {
   std::optional<SolCompressedNftProofData> ParseSolCompressedNftProofData(
       const base::Value& json_value);
 
-  std::optional<base::flat_map<std::string, std::string>> ParseTokenUrls(
-      const base::Value& json_value);
-
   std::optional<base::flat_map<mojom::NftIdentifierPtr,
                                base::flat_map<std::string, uint64_t>>>
-  ParseBalances(const base::Value& json_value);
+  ParseBalances(const base::Value& json_value, mojom::CoinType coin);
 
   std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-  ParseMetadatas(const base::Value& json_value);
+  ParseMetadatas(const base::Value& json_value, mojom::CoinType coin);
 
   static GURL GetSimpleHashNftsByWalletUrl(
       const std::string& account_address,

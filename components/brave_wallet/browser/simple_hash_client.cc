@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
@@ -330,7 +331,7 @@ void SimpleHashClient::OnGetNftsForBalances(
 
   std::optional<base::flat_map<mojom::NftIdentifierPtr,
                                base::flat_map<std::string, uint64_t>>>
-      owners = ParseBalances(api_request_result.TakeBody());
+      owners = ParseBalances(api_request_result.TakeBody(), coin);
 
   if (!owners) {
     std::move(callback).Run({});
@@ -398,7 +399,7 @@ void SimpleHashClient::OnGetNftsForMetadatas(
 
   // A map of NftIdentifierPtr to their metadata
   std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-      metadatas = ParseMetadatas(api_request_result.TakeBody());
+      metadatas = ParseMetadatas(api_request_result.TakeBody(), coin);
   if (!metadatas) {
     std::move(callback).Run({});
     return;
@@ -900,7 +901,8 @@ SimpleHashClient::ParseSolCompressedNftProofData(
 
 std::optional<base::flat_map<mojom::NftIdentifierPtr,
                              base::flat_map<std::string, uint64_t>>>
-SimpleHashClient::ParseBalances(const base::Value& json_value) {
+SimpleHashClient::ParseBalances(const base::Value& json_value,
+                                mojom::CoinType coin) {
   const base::Value::Dict* dict = json_value.GetIfDict();
   if (!dict) {
     return std::nullopt;
@@ -939,7 +941,21 @@ SimpleHashClient::ParseBalances(const base::Value& json_value) {
 
     mojom::NftIdentifierPtr nft_identifier = mojom::NftIdentifier::New();
     nft_identifier->chain_id = *chain_id_str;
-    nft_identifier->contract_address = *contract_address;
+
+    // Perform checksum conversion only if coin type is ETH
+    if (coin == mojom::CoinType::ETH) {
+      auto checksum_address =
+          brave_wallet::EthAddress::ToEip1191ChecksumAddress(*contract_address,
+                                                             *chain_id_str);
+      if (!checksum_address) {
+        continue;
+      }
+      nft_identifier->contract_address =
+          *checksum_address;  // Set the checksum address
+    } else {
+      nft_identifier->contract_address = *contract_address;
+    }
+
     if (token_id) {
       nft_identifier->token_id = *token_id;
     }
@@ -975,73 +991,9 @@ SimpleHashClient::ParseBalances(const base::Value& json_value) {
   return owners;
 }
 
-std::optional<base::flat_map<std::string, std::string>>
-SimpleHashClient::ParseTokenUrls(const base::Value& json_value) {
-  const base::Value::Dict* dict = json_value.GetIfDict();
-  if (!dict) {
-    return std::nullopt;
-  }
-
-  base::flat_map<std::string, std::string> token_urls;
-  const base::Value::List* nfts = dict->FindList("nfts");
-  if (!nfts) {
-    return std::nullopt;
-  }
-
-  // For each NFT, create a composite key of chain_id.contract_address or
-  // chain_id.contract_address.token_id if token_id is present.
-  for (const auto& nft_value : *nfts) {
-    const base::Value::Dict* nft = nft_value.GetIfDict();
-    if (!nft) {
-      continue;
-    }
-
-    const std::string* chain_id = nft->FindString("chain");
-    if (!chain_id) {
-      continue;
-    }
-
-    const std::string* contract_address = nft->FindString("contract_address");
-    if (!contract_address) {
-      continue;
-    }
-
-    const std::string* token_id = nft->FindString("token_id");
-
-    const base::Value::Dict* extra_metadata = nft->FindDict("extra_metadata");
-    if (!extra_metadata) {
-      continue;
-    }
-
-    const std::string* metadata_original_url =
-        extra_metadata->FindString("metadata_original_url");
-    if (!metadata_original_url) {
-      continue;
-    }
-
-    std::optional<std::string> chain_id_str =
-        SimpleHashChainIdToChainId(*chain_id);
-    if (!chain_id_str) {
-      continue;
-    }
-
-    // Create the composite key and convert to lowercase using
-    // base::ToLowerASCII.
-    std::string composite_key =
-        base::StrCat({*chain_id_str, ".", *contract_address});
-    if (token_id && !token_id->empty()) {
-      composite_key += "." + *token_id;
-    }
-    composite_key = base::ToLowerASCII(composite_key);
-
-    token_urls[composite_key] = *metadata_original_url;
-  }
-
-  return token_urls;
-}
-
 std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
+SimpleHashClient::ParseMetadatas(const base::Value& json_value,
+                                 mojom::CoinType coin) {
   const base::Value::Dict* dict = json_value.GetIfDict();
   if (!dict) {
     return std::nullopt;
@@ -1079,7 +1031,19 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
 
     mojom::NftIdentifierPtr nft_identifier = mojom::NftIdentifier::New();
     nft_identifier->chain_id = *chain_id_str;
-    nft_identifier->contract_address = *contract_address;
+
+    if (coin == mojom::CoinType::ETH) {
+      auto checksum_address =
+          brave_wallet::EthAddress::ToEip1191ChecksumAddress(*contract_address,
+                                                             *chain_id_str);
+      if (!checksum_address) {
+        continue;
+      }
+      nft_identifier->contract_address = *checksum_address;
+    } else {
+      nft_identifier->contract_address = *contract_address;
+    }
+
     if (token_id) {
       nft_identifier->token_id = *token_id;
     }

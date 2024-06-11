@@ -8048,8 +8048,125 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
-  // Add two metadata responses
-  std::string json = R"({
+  // Add Ethereum NFT identifiers with non-checksum addresses
+  auto eth_nft_identifier1 = mojom::NftIdentifier::New();
+  eth_nft_identifier1->chain_id = mojom::kMainnetChainId;
+  eth_nft_identifier1->contract_address =
+      "0xed5af388653567af2f388e6224dc7c4b3241c544";
+  eth_nft_identifier1->token_id = "2767";
+  nft_identifiers.push_back(std::move(eth_nft_identifier1));
+
+  auto eth_nft_identifier2 = mojom::NftIdentifier::New();
+  eth_nft_identifier2->chain_id = mojom::kMainnetChainId;
+  eth_nft_identifier2->contract_address =
+      "0xabc1230000000000000000000000000000000000";
+  eth_nft_identifier2->token_id = "1234";
+  nft_identifiers.push_back(std::move(eth_nft_identifier2));
+
+  // Expected Ethereum metadata
+  std::vector<mojom::NftMetadataPtr> expected_eth_metadata;
+  mojom::NftMetadataPtr eth_metadata1 = mojom::NftMetadata::New();
+  eth_metadata1->name = "Azuki #2767";
+  eth_metadata1->description = "Azuki is a cute little bean";
+  eth_metadata1->image = "https://cdn.simplehash.wallet.brave.com/assets/1.png";
+  eth_metadata1->external_url = "";
+  eth_metadata1->background_color = "";
+  mojom::NftAttributePtr eth_attribute1 = mojom::NftAttribute::New();
+  eth_attribute1->trait_type = "Color";
+  eth_attribute1->value = "Red";
+  eth_metadata1->attributes.push_back(std::move(eth_attribute1));
+  mojom::NftAttributePtr eth_attribute2 = mojom::NftAttribute::New();
+  eth_attribute2->trait_type = "Size";
+  eth_attribute2->value = "Small";
+  eth_metadata1->attributes.push_back(std::move(eth_attribute2));
+  expected_eth_metadata.push_back(std::move(eth_metadata1));
+
+  mojom::NftMetadataPtr eth_metadata2 = mojom::NftMetadata::New();
+  eth_metadata2->name = "NFT #1234";
+  eth_metadata2->description = "Description of NFT #1234";
+  eth_metadata2->image = "https://cdn.simplehash.wallet.brave.com/assets/2.png";
+  eth_metadata2->external_url = "";
+  eth_metadata2->background_color = "";
+  mojom::NftAttributePtr eth_attribute3 = mojom::NftAttribute::New();
+  eth_attribute3->trait_type = "Attribute";
+  eth_attribute3->value = "Value";
+  eth_metadata2->attributes.push_back(std::move(eth_attribute3));
+  expected_eth_metadata.push_back(std::move(eth_metadata2));
+
+  std::map<GURL, std::string> responses_eth;
+  responses_eth[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=ethereum.0xED5AF388653567Af2F388E6224dC7C4b3241C544.2767%"
+      "2Cethereum.0xAbc1230000000000000000000000000000000000.1234")] = R"({
+    "nfts": [
+      {
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "description": "Azuki is a cute little bean",
+        "image_url": "https://cdn.simplehash.com/assets/1.png",
+        "external_url": null,
+        "background_color": null,
+        "extra_metadata": {
+          "attributes": [
+            {
+              "trait_type": "Color",
+              "value": "Red"
+            },
+            {
+              "trait_type": "Size",
+              "value": "Small"
+            }
+          ]
+        }
+      },
+      {
+        "chain": "ethereum",
+        "contract_address": "0xAbC1230000000000000000000000000000000000",
+        "token_id": "1234",
+        "name": "NFT #1234",
+        "description": "Description of NFT #1234",
+        "image_url": "https://cdn.simplehash.com/assets/2.png",
+        "external_url": null,
+        "background_color": null,
+        "extra_metadata": {
+          "attributes": [
+            {
+              "trait_type": "Attribute",
+              "value": "Value"
+            }
+          ]
+        }
+      }
+    ]
+  })";
+
+  SetInterceptors(responses_eth);
+  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers),
+                      std::move(expected_eth_metadata), "");
+
+  // Add Solana NFT identifiers
+  std::vector<mojom::NftIdentifierPtr> sol_nft_identifiers;
+  auto sol_nft_identifier1 = mojom::NftIdentifier::New();
+  sol_nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier1->contract_address =
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  sol_nft_identifier1->token_id = "";
+  sol_nft_identifiers.push_back(std::move(sol_nft_identifier1));
+
+  auto sol_nft_identifier2 = mojom::NftIdentifier::New();
+  sol_nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier2->contract_address =
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
+  sol_nft_identifier2->token_id = "";
+  sol_nft_identifiers.push_back(std::move(sol_nft_identifier2));
+
+  std::map<GURL, std::string> responses_sol;
+  responses_sol[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
+      "2Csolana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8")] = R"({
     "nfts": [
       {
         "chain": "solana",
@@ -8083,7 +8200,8 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
         "token_id": null,
         "name": "Sneaker #432819057",
         "description": "NFT Sneaker, use it in STEPN to move2earn",
-        "image_url": "https://cdn.simplehash.com/assets/8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png",
+        "image_url":
+        "https://cdn.simplehash.com/assets/8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png",
         "external_url": "https://stepn.com",
         "background_color": null,
         "extra_metadata": {
@@ -8110,111 +8228,90 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
     ]
   })";
 
-  // Add the chain_id, contract, and token_id from simple hash response
-  auto nft_identifier3 = mojom::NftIdentifier::New();
-  nft_identifier3->chain_id = mojom::kSolanaMainnet;
-  nft_identifier3->contract_address =
-      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
-  nft_identifier3->token_id = "";
-  nft_identifiers.push_back(std::move(nft_identifier3));
-
-  auto nft_identifier4 = mojom::NftIdentifier::New();
-  nft_identifier4->chain_id = mojom::kSolanaMainnet;
-  nft_identifier4->contract_address =
-      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
-  nft_identifier4->token_id = "";
-  nft_identifiers.push_back(std::move(nft_identifier4));
-
-  std::map<GURL, std::string> responses;
-  responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
-      "2Csolana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8")] = json;
-
-  // Add the expected metadata
-  std::vector<mojom::NftMetadataPtr> expected_metadata;
-  mojom::NftMetadataPtr metadata1 = mojom::NftMetadata::New();
-  metadata1->name = "Common Water Warrior #19";
-  metadata1->description =
+  // Add the expected Solana metadata
+  std::vector<mojom::NftMetadataPtr> expected_sol_metadata;
+  mojom::NftMetadataPtr sol_metadata1 = mojom::NftMetadata::New();
+  sol_metadata1->name = "Common Water Warrior #19";
+  sol_metadata1->description =
       "A true gladiator standing with his two back legs, big wings that make "
       "him move and attack quickly, and his tail like a big sword that can "
       "easily cut-off enemies into slices.";
-  metadata1->image =
+  sol_metadata1->image =
       "https://cdn.simplehash.wallet.brave.com/assets/"
       "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
-  metadata1->external_url = "";
-  metadata1->background_color = "";
-  mojom::NftAttributePtr attribute1 = mojom::NftAttribute::New();
-  attribute1->trait_type = "rarity";
-  attribute1->value = "Common";
-  metadata1->attributes.push_back(std::move(attribute1));
-  mojom::NftAttributePtr attribute2 = mojom::NftAttribute::New();
-  attribute2->trait_type = "dragonType";
-  attribute2->value = "Water";
-  metadata1->attributes.push_back(std::move(attribute2));
-  mojom::NftAttributePtr attribute3 = mojom::NftAttribute::New();
-  attribute3->trait_type = "dragonClass";
-  attribute3->value = "Warrior";
-  metadata1->attributes.push_back(std::move(attribute3));
-  metadata1->background_color = "";
-  metadata1->animation_url = "";
-  metadata1->youtube_url = "";
+  sol_metadata1->external_url = "";
+  sol_metadata1->background_color = "";
+  mojom::NftAttributePtr sol_attribute1 = mojom::NftAttribute::New();
+  sol_attribute1->trait_type = "rarity";
+  sol_attribute1->value = "Common";
+  sol_metadata1->attributes.push_back(std::move(sol_attribute1));
+  mojom::NftAttributePtr sol_attribute2 = mojom::NftAttribute::New();
+  sol_attribute2->trait_type = "dragonType";
+  sol_attribute2->value = "Water";
+  sol_metadata1->attributes.push_back(std::move(sol_attribute2));
+  mojom::NftAttributePtr sol_attribute3 = mojom::NftAttribute::New();
+  sol_attribute3->trait_type = "dragonClass";
+  sol_attribute3->value = "Warrior";
+  sol_metadata1->attributes.push_back(std::move(sol_attribute3));
+  sol_metadata1->background_color = "";
+  sol_metadata1->animation_url = "";
+  sol_metadata1->youtube_url = "";
 
-  expected_metadata.push_back(std::move(metadata1));
+  expected_sol_metadata.push_back(std::move(sol_metadata1));
 
-  mojom::NftMetadataPtr metadata2 = mojom::NftMetadata::New();
-  metadata2->name = "Sneaker #432819057";
-  metadata2->description = "NFT Sneaker, use it in STEPN to move2earn";
-  metadata2->image =
+  mojom::NftMetadataPtr sol_metadata2 = mojom::NftMetadata::New();
+  sol_metadata2->name = "Sneaker #432819057";
+  sol_metadata2->description = "NFT Sneaker, use it in STEPN to move2earn";
+  sol_metadata2->image =
       "https://cdn.simplehash.wallet.brave.com/assets/"
       "8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png";
-  metadata2->external_url = "https://stepn.com";
-  metadata2->background_color = "";
-  mojom::NftAttributePtr attribute4 = mojom::NftAttribute::New();
-  attribute4->trait_type = "Sneaker type";
-  attribute4->value = "Jogger";
-  metadata2->attributes.push_back(std::move(attribute4));
-  mojom::NftAttributePtr attribute5 = mojom::NftAttribute::New();
-  attribute5->trait_type = "Sneaker quality";
-  attribute5->value = "Common";
-  metadata2->attributes.push_back(std::move(attribute5));
-  mojom::NftAttributePtr attribute6 = mojom::NftAttribute::New();
-  attribute6->trait_type = "Level";
-  attribute6->value = "6";
-  metadata2->attributes.push_back(std::move(attribute6));
-  mojom::NftAttributePtr attribute7 = mojom::NftAttribute::New();
-  attribute7->trait_type = "Optimal Speed";
-  attribute7->value = "4.0-10.0km/h";
-  metadata2->attributes.push_back(std::move(attribute7));
-  metadata2->background_color = "";
-  metadata2->animation_url = "";
-  metadata2->youtube_url = "";
-  expected_metadata.push_back(std::move(metadata2));
+  sol_metadata2->external_url = "https://stepn.com";
+  sol_metadata2->background_color = "";
+  mojom::NftAttributePtr sol_attribute4 = mojom::NftAttribute::New();
+  sol_attribute4->trait_type = "Sneaker type";
+  sol_attribute4->value = "Jogger";
+  sol_metadata2->attributes.push_back(std::move(sol_attribute4));
+  mojom::NftAttributePtr sol_attribute5 = mojom::NftAttribute::New();
+  sol_attribute5->trait_type = "Sneaker quality";
+  sol_attribute5->value = "Common";
+  sol_metadata2->attributes.push_back(std::move(sol_attribute5));
+  mojom::NftAttributePtr sol_attribute6 = mojom::NftAttribute::New();
+  sol_attribute6->trait_type = "Level";
+  sol_attribute6->value = "6";
+  sol_metadata2->attributes.push_back(std::move(sol_attribute6));
+  mojom::NftAttributePtr sol_attribute7 = mojom::NftAttribute::New();
+  sol_attribute7->trait_type = "Optimal Speed";
+  sol_attribute7->value = "4.0-10.0km/h";
+  sol_metadata2->attributes.push_back(std::move(sol_attribute7));
+  sol_metadata2->background_color = "";
+  sol_metadata2->animation_url = "";
+  sol_metadata2->youtube_url = "";
+  expected_sol_metadata.push_back(std::move(sol_metadata2));
 
   // First try with timeout response interceptor
   SetHTTPRequestTimeoutInterceptor();
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers), {},
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(sol_nft_identifiers), {},
                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
-  // Then try with the expected metadata
-  SetInterceptors(responses);
-  std::vector<mojom::NftIdentifierPtr> nft_identifiers2;
-  auto nft_identifier5 = mojom::NftIdentifier::New();
-  nft_identifier5->chain_id = mojom::kSolanaMainnet;
-  nft_identifier5->contract_address =
+  // Then try with the expected Solana metadata
+  SetInterceptors(responses_sol);
+  std::vector<mojom::NftIdentifierPtr> sol_nft_identifiers2;
+  auto sol_nft_identifier3 = mojom::NftIdentifier::New();
+  sol_nft_identifier3->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier3->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
-  nft_identifier5->token_id = "";
-  nft_identifiers2.push_back(std::move(nft_identifier5));
+  sol_nft_identifier3->token_id = "";
+  sol_nft_identifiers2.push_back(std::move(sol_nft_identifier3));
 
-  auto nft_identifier6 = mojom::NftIdentifier::New();
-  nft_identifier6->chain_id = mojom::kSolanaMainnet;
-  nft_identifier6->contract_address =
+  auto sol_nft_identifier4 = mojom::NftIdentifier::New();
+  sol_nft_identifier4->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier4->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
-  nft_identifier6->token_id = "";
-  nft_identifiers2.push_back(std::move(nft_identifier6));
+  sol_nft_identifier4->token_id = "";
+  sol_nft_identifiers2.push_back(std::move(sol_nft_identifier4));
 
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers2),
-                      std::move(expected_metadata), "");
+  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(sol_nft_identifiers2),
+                      std::move(expected_sol_metadata), "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
