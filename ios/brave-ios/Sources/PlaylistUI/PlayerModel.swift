@@ -279,7 +279,7 @@ public final class PlayerModel: ObservableObject {
         queue: .global()
       ) { [weak self] time in
         guard let self,
-          self.isPlaying,
+          self.videoDecorationOutput.hasNewPixelBuffer(forItemTime: time),
           let buffer = self.videoDecorationOutput.copyPixelBuffer(
             forItemTime: time,
             itemTimeForDisplay: nil
@@ -767,6 +767,7 @@ extension AVPlayer {
 
 // MARK: -
 
+// FIXME: Move to Data target
 extension PlaylistItem {
   var cachedDataURL: URL? {
     guard let cachedData else { return nil }

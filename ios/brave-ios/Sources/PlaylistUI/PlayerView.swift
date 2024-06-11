@@ -42,9 +42,11 @@ struct PlayerView: View {
       VideoPlayer(playerLayer: playerModel.playerLayer)
     }
     .background {
-      if !isFullScreen, playerModel.isPlaying {
+      if !isFullScreen {
         VideoAmbianceBackground(playerModel: playerModel)
           .transition(.opacity.animation(.snappy))
+          .opacity(playerModel.isPlaying ? 1 : 0.5)
+          .animation(.default, value: playerModel.isPlaying)
       }
     }
     // For some reason this is required or the status bar breaks when touching anything on the
@@ -277,7 +279,7 @@ struct VideoAmbianceBackground: View {
     .task(priority: .medium) {
       for await image in playerModel.videoAmbianceImageStream {
         withAnimation {
-          videoAmbianceDecorationImage = image
+          videoAmbianceDecorationImage = image.size == .zero ? nil : image
         }
       }
     }
