@@ -1015,9 +1015,15 @@ SolanaTxManager::DecodeMerkleTreeAuthorityAndDepth(
   auto canopy_byte_length = data.size() - offset;
 
   uint32_t canopy_depth;
+  // If there are no bytes remaining for the canopy, set the depth to 0.
   if (canopy_byte_length == 0) {
     canopy_depth = 0;
   } else {
+    // Calculate the canopy depth using the logarithm base 2.
+    // The expression std::log2(canopy_byte_length / 32.0 + 2) - 1 is used to
+    // determine the depth. canopy_byte_length / 32.0 calculates the number of
+    // 32-byte chunks. Adding 2 and taking the logarithm base 2 adjusts the
+    // scale, and subtracting 1 normalizes the depth.
     canopy_depth = std::log2(canopy_byte_length / 32.0 + 2) - 1;
   }
 
