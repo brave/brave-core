@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
-    "check_security": "node ./build/commands/scripts/checkSecurity.js",
     "cibuild": "node ./build/commands/scripts/commands.js cibuild",
     "init": "cd ../../ && npm run --prefix src/brave sync -- --init",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
@@ -29,7 +28,6 @@
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
-    "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
     "tslint": "npm run eslint",
     "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
