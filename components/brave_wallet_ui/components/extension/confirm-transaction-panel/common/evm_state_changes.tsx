@@ -213,6 +213,7 @@ export const NonFungibleErcTokenTransfer = ({
 }): JSX.Element => {
   // queries
   const { data: tokensRegistry } = useGetCombinedTokensRegistryQuery()
+  const { data: accountsRegistry } = useGetAccountInfosRegistryQuery()
 
   // memos
   const asset: IconAsset = React.useMemo(() => {
@@ -282,7 +283,12 @@ export const NonFungibleErcTokenTransfer = ({
             </TooltipContent>
             <CopyLabel textToCopy={transfer.counterparty.address}>
               {getLocale('braveWalletSwapTo')}{' '}
-              <strong>{reduceAddress(transfer.counterparty.address)}</strong>
+              <strong>
+                {getAddressLabel(
+                  transfer.counterparty.address,
+                  accountsRegistry
+                )}
+              </strong>
             </CopyLabel>
           </Tooltip>
         )}

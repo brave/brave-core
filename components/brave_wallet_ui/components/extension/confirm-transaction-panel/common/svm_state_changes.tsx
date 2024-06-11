@@ -15,6 +15,7 @@ import Amount from '../../../../utils/amount'
 import { getLocale } from '../../../../../common/locale'
 import { reduceAddress } from '../../../../utils/reduce-address'
 import { IconAsset } from '../../../shared/create-placeholder-icon'
+import { getAddressLabel } from '../../../../utils/account-utils'
 import {
   getNetworkId //
 } from '../../../../common/slices/entities/network.entity'
@@ -24,6 +25,9 @@ import {
   useGetCombinedTokensRegistryQuery,
   useGetIsRegistryTokenQuery
 } from '../../../../common/slices/api.slice.extra'
+import {
+  useGetAccountInfosRegistryQuery //
+} from '../../../../common/slices/api.slice'
 
 // components
 import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
@@ -103,6 +107,8 @@ export const SOLTransfer = ({
 
   // computed
   const isReceive = transfer.diff.sign !== BraveWallet.BlowfishDiffSign.kMinus
+  const isAssociatedTokenAccountCreation =
+    transactionDetails?.isAssociatedTokenAccountCreation ?? false
 
   // render
   return (
@@ -127,8 +133,9 @@ export const SOLTransfer = ({
          * show the account/address only if it is a simple transfer TX type
          */}
         {!isReceive &&
-          transactionDetails?.txType ===
-            BraveWallet.TransactionType.SolanaSystemTransfer &&
+          (transactionDetails?.txType ===
+            BraveWallet.TransactionType.SolanaSystemTransfer ||
+            isAssociatedTokenAccountCreation) &&
           transactionDetails?.recipient && (
             <Tooltip>
               <TooltipContent slot='content'>
@@ -186,6 +193,7 @@ export const SPLTokenTransfer = ({
     address: transfer.asset.mint,
     chainId: network.chainId
   })
+  const { data: accountsRegistry } = useGetAccountInfosRegistryQuery()
 
   const { data: combinedTokensRegistry } = useGetCombinedTokensRegistryQuery()
 
@@ -248,7 +256,9 @@ export const SPLTokenTransfer = ({
             </TooltipContent>
             <CopyLabel textToCopy={transfer.counterparty}>
               {getLocale('braveWalletSwapTo')}{' '}
-              <strong>{reduceAddress(transfer.counterparty)}</strong>
+              <strong>
+                {getAddressLabel(transfer.counterparty, accountsRegistry)}
+              </strong>
             </CopyLabel>
           </Tooltip>
         )}
