@@ -33,7 +33,7 @@ const Container = styled.div`
   text-wrap: nowrap;
 `
 
-export const openMatch = (match: AutocompleteMatch, line: number, event: MouseEvent | KeyboardEvent) => {
+export const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent) => {
   if (line === -1) {
     handleOpenURLClick(match.destinationUrl.url, event)
     return
@@ -63,6 +63,7 @@ export default function SearchResults() {
         },
         contents: stringToMojoString16(url.toString()),
         description: stringToMojoString16(''),
+        imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`
       } as AutocompleteMatch
     } catch {
       return null
