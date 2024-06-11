@@ -126,8 +126,9 @@ export const SOLTransfer = ({
          * counterparty not currently provided by Blowfish
          * show the account/address only if it is a simple transfer TX type
          */}
-        {transactionDetails?.txType ===
-          BraveWallet.TransactionType.SolanaSystemTransfer &&
+        {!isReceive &&
+          transactionDetails?.txType ===
+            BraveWallet.TransactionType.SolanaSystemTransfer &&
           transactionDetails?.recipient && (
             <Tooltip>
               <TooltipContent slot='content'>
@@ -240,7 +241,7 @@ export const SPLTokenTransfer = ({
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
-        {transfer.counterparty && (
+        {!isReceive && transfer.counterparty && (
           <Tooltip>
             <TooltipContent slot='content'>
               {transfer.counterparty}

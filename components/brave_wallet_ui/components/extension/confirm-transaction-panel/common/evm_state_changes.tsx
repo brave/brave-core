@@ -137,7 +137,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
-        {transfer.counterparty?.address && (
+        {!isReceive && transfer.counterparty?.address && (
           <Tooltip>
             <TooltipContent slot='content'>
               {transfer.counterparty.address}
@@ -275,7 +275,7 @@ export const NonFungibleErcTokenTransfer = ({
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
         </Text>
-        {transfer.counterparty?.address && (
+        {!isReceive && transfer.counterparty?.address && (
           <Tooltip>
             <TooltipContent slot='content'>
               {transfer.counterparty.address}
