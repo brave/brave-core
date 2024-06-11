@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.flags.ActivityType;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.hub.HubManager;
+import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
@@ -101,7 +102,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull
                     ObservableSupplierImpl<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             @NonNull IntentRequestTracker intentRequestTracker,
-            int controlContainerHeightResource,
             @NonNull InsetObserver insetObserver,
             @NonNull Function<Tab, Boolean> backButtonShouldCloseTabFn,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
@@ -110,7 +110,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @Nullable Bundle savedInstanceState,
             @Nullable MultiInstanceManager multiInstanceManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
-            @Nullable View baseChromeLayout) {
+            @Nullable View baseChromeLayout,
+            @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -151,7 +152,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 statusBarColorProvider,
                 ephemeralTabCoordinatorSupplier,
                 intentRequestTracker,
-                controlContainerHeightResource,
                 insetObserver,
                 backButtonShouldCloseTabFn,
                 tabReparentingControllerSupplier,
@@ -160,7 +160,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 savedInstanceState,
                 multiInstanceManager,
                 overviewColorSupplier,
-                baseChromeLayout);
+                baseChromeLayout,
+                manualFillingComponentSupplier);
 
         mActivity = activity;
     }

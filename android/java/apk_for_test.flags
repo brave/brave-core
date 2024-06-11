@@ -121,7 +121,7 @@
     public <init>(...);
     *** mBottomControlsCoordinatorSupplier;
     *** mCallbackController;
-    *** mBrowserControlsSizer;
+    *** mBottomControlsStacker;
     *** mFullscreenManager;
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
@@ -292,7 +292,7 @@
     <init>(...);
     *** mBottomControlsHeight;
     *** mModel;
-    *** mBrowserControlsSizer;
+    *** mBottomControlsStacker;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
