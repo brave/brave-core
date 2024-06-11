@@ -11,7 +11,7 @@ type Updater<T> = <K extends keyof T>(key: K, value: T[K]) => void
 /**
  * A class to help wrapping mojom pref access in a React hook.
  */
-export class PrefHookManager<T> {
+export class PrefHookManager<T extends {}> {
     #listeners: Map<keyof T, Array<PrefListener<T, keyof T>>> = new Map()
     #lastValue?: T
     #savePref: Updater<T>
@@ -22,7 +22,7 @@ export class PrefHookManager<T> {
      * @param savePref A function for saving a single pref and it's value.
      * @param addListener A function allowing the |PrefHookManager| to subscribe to updates.
      */
-    constructor (getInitialValue: () => Promise<T>, savePref: Updater<T>, addListener: (listener: (prefs: T) => void) => void) {
+    constructor(getInitialValue: () => Promise<T>, savePref: Updater<T>, addListener: (listener: (prefs: T) => void) => void) {
         this.#savePref = savePref
 
         // Subscribe to all changes in the prefs, and notify individual pref
@@ -104,9 +104,9 @@ export class PrefHookManager<T> {
  * @returns A hook which can be used to subscribe to and update prefs managed by
  * |prefManager|.
  */
-export function createPrefsHook<OnType> (prefManager: PrefHookManager<OnType>) {
+export function createPrefsHook<OnType extends {}>(prefManager: PrefHookManager<OnType>) {
     return <PrefType extends keyof OnType>(pref: PrefType) => {
-        const [value, setValue] = useState(prefManager.getPref(pref))
+        const [, setValue] = useState(prefManager.getPref(pref))
         const setPref = useCallback((value: OnType[PrefType]) => prefManager.savePref(pref, value), [prefManager, pref])
         useEffect(() => {
             // Update the value here - the value could have been updated between
@@ -114,9 +114,7 @@ export function createPrefsHook<OnType> (prefManager: PrefHookManager<OnType>) {
             // useEffect).
             setValue(prefManager.getPref(pref))
 
-            const handler: PrefListener<OnType, PrefType> = (_, newValue) => {
-                setValue(newValue as typeof value)
-            }
+            const handler: PrefListener<OnType, PrefType> = (_, newValue) => setValue(newValue)
             prefManager.addPrefListener(pref, handler)
             return () => {
                 prefManager.removePrefListener(pref, handler)
@@ -124,7 +122,7 @@ export function createPrefsHook<OnType> (prefManager: PrefHookManager<OnType>) {
         }, [prefManager, pref])
 
         return [
-            value,
+            prefManager.getPref(pref),
             setPref
         ] as const
     }
