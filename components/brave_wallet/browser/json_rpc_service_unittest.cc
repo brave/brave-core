@@ -81,7 +81,7 @@ using testing::Eq;
 using testing::Not;
 
 MATCHER_P(MatchesCIDv1URL, ipfs_url, "") {
-  return ifps::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
+  return ipfs::ContentHashToCIDv1URL(arg).spec() == ipfs_url;
 }
 
 namespace brave_wallet {
