@@ -11,7 +11,7 @@ import getNTPBrowserAPI from '../../api/background'
 import { omniboxController, search, useSearchContext } from './SearchContext'
 import { braveSearchHost } from './config'
 import { stringToMojoString16 } from 'gen/ui/webui/resources/tsc/js/mojo_type_util';
-import { handleOpenURLClick } from '$web-common/SecureLink';
+import { handleOpenURLClick, validateScheme } from '$web-common/SecureLink';
 
 const Container = styled.div`
   border-top: 1px solid ${color.divider.subtle};
@@ -33,6 +33,8 @@ const Container = styled.div`
   text-wrap: nowrap;
 `
 
+// Handles opening an autocomplete match, which may or may not be part of an
+// autocomplete result.
 const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent) => {
   if (line === -1) {
     handleOpenURLClick(match.destinationUrl.url, event)
@@ -51,9 +53,13 @@ const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
       return null;
     }
 
-    // Force a scheme to be included
+    // Force a scheme to be included - we validate whether the scheme is
+    // allowed later.
     const q = query.includes('://') ? query : 'https://' + query
     const url = new URL(q)
+
+    validateScheme(url.toString())
+
     return {
       destinationUrl: {
         url: url.toString()
@@ -75,10 +81,11 @@ export default function SearchResults() {
   // An optional result when a URL is entered.
   const urlWhatYouTyped = useUrlWhatYouTyped(query)
 
-  // The autocomplete provider generates a 'search-what-you-typed' result which includes
-  // the keyword (and is always for the default search engine). We filter it out, as it
-  // makes the results neater.
-  const matches = React.useMemo(() => [urlWhatYouTyped!, ...(result?.matches ?? [])].filter(r => r && r.type !== 'search-what-you-typed'), [urlWhatYouTyped, result])
+  // Filter out empty results (from urlWhatYouTyped) and the
+  // 'search-what-you-typed', which always from from the default search engine.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  const matches = React.useMemo(() => [urlWhatYouTyped!, ...(result?.matches ?? [])]
+    .filter(r => r && r.type !== 'search-what-you-typed'), [urlWhatYouTyped, result])
   const [selectedMatch, setSelectedMatch] = React.useState<number>();
 
   React.useEffect(() => {
