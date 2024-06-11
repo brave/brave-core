@@ -11,11 +11,10 @@ import { AutocompleteMatch } from 'gen/ui/webui/resources/cr_components/searchbo
 import * as React from 'react';
 import styled from 'styled-components';
 import { useUnpaddedImageUrl } from '../../../brave_news/browser/resources/shared/useUnpaddedImageUrl';
-import { openMatch } from './SearchResults';
 
 interface Props {
   match: AutocompleteMatch
-  line: number
+  onClick: (e: React.MouseEvent) => void
   selected: boolean
 }
 
@@ -119,7 +118,7 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
       : <RichImage url={match.imageUrl} />
 }
 
-export default function SearchResult({ match, line, selected }: Props) {
+export default function SearchResult({ match, selected, onClick }: Props) {
   const contents = mojoString16ToString(match.swapContentsAndDescription ? match.description : match.contents)
   const description = mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
   const isAskLeo = description === getLocale('searchAskLeo')
@@ -130,7 +129,7 @@ export default function SearchResult({ match, line, selected }: Props) {
 
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
-    openMatch(match, line, e)
+    onClick(e)
   }}>
     <IconContainer>
       <Image key={match.imageUrl ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />

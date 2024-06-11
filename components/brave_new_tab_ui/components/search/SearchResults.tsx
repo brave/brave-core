@@ -33,7 +33,7 @@ const Container = styled.div`
   text-wrap: nowrap;
 `
 
-export const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent) => {
+const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEvent | KeyboardEvent) => {
   if (line === -1) {
     handleOpenURLClick(match.destinationUrl.url, event)
     return
@@ -43,32 +43,37 @@ export const openMatch = (match: AutocompleteMatch, line: number, event: React.M
   omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, event.altKey, event.ctrlKey, event.metaKey, event.shiftKey)
 }
 
+const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
+  try {
+    // There should be at least one `.` to be a URL and no spaces.
+    const bits = query.split('.')
+    if (bits.length <= 1 || bits.some(b => !b) || query.includes(' ')) {
+      return null;
+    }
+
+    // Force a scheme to be included
+    const q = query.includes('://') ? query : 'https://' + query
+    const url = new URL(q)
+    return {
+      destinationUrl: {
+        url: url.toString()
+      },
+      contents: stringToMojoString16(url.toString()),
+      description: stringToMojoString16(''),
+      imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`,
+      allowedToBeDefaultMatch: true
+    } as AutocompleteMatch
+  } catch {
+    return null
+  }
+}, [query])
+
 export default function SearchResults() {
   const { query, searchEngine } = useSearchContext()
   const [result, setResult] = React.useState<AutocompleteResult>()
-  const urlWhatYouTyped = React.useMemo(() => {
-    try {
-      // There should be at least one `.` to be a URL and no spaces.
-      const bits = query.split('.')
-      if (bits.length <= 1 || bits.some(b => !b) || query.includes(' ')) {
-        return null;
-      }
 
-      // Force a scheme to be included
-      const q = query.includes('://') ? query : 'https://' + query
-      const url = new URL(q)
-      return {
-        destinationUrl: {
-          url: url.toString()
-        },
-        contents: stringToMojoString16(url.toString()),
-        description: stringToMojoString16(''),
-        imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`
-      } as AutocompleteMatch
-    } catch {
-      return null
-    }
-  }, [query])
+  // An optional result when a URL is entered.
+  const urlWhatYouTyped = useUrlWhatYouTyped(query)
 
   // The autocomplete provider generates a 'search-what-you-typed' result which includes
   // the keyword (and is always for the default search engine). We filter it out, as it
@@ -77,31 +82,29 @@ export default function SearchResults() {
   const [selectedMatch, setSelectedMatch] = React.useState<number>();
 
   React.useEffect(() => {
-    const listener = (result?: AutocompleteResult) => {
-      setResult(result)
-
-      // TODO: Handle this better
-      setSelectedMatch(prev => {
-        if (!result) return undefined
-
-        if (!prev) {
-          const defaultMatchIndex = result.matches.findIndex(r => r.allowedToBeDefaultMatch)
-          if (defaultMatchIndex !== -1) return defaultMatchIndex
-
-          // Fall back to setting the first item as the selected match.
-          return 0
-        }
-
-        if (prev >= result.matches.length) {
-          return result.matches.length - 1
-        }
-
-        return prev
-      })
-    }
-    search.addResultListener(listener)
-    return () => search.removeResultListener(listener)
+    search.addResultListener(setResult)
+    return () => search.removeResultListener(setResult)
   }, [])
+
+  React.useEffect(() => {
+    setSelectedMatch(prev => {
+      if (!matches.length) return undefined
+
+      if (!prev) {
+        const defaultMatchIndex = matches.findIndex(r => r.allowedToBeDefaultMatch)
+        if (defaultMatchIndex !== -1) return defaultMatchIndex
+
+        // Fall back to setting the first item as the selected match.
+        return 0
+      }
+
+      if (prev >= matches.length) {
+        return matches.length - 1
+      }
+
+      return prev
+    })
+  }, [matches])
 
   React.useEffect(() => {
     const listener = (selection: OmniboxPopupSelection) => setSelectedMatch(selection.line)
@@ -122,12 +125,12 @@ export default function SearchResults() {
 
       const direction = e.key === 'ArrowUp' ? -1 : 1
       setSelectedMatch(s => {
-        if (!result || result.matches.length === 0) return undefined
+        if (matches.length === 0) return undefined
 
         const start = s ?? -1
         const next = start + direction
-        if (next < 0) return (result.matches.length - 1)
-        if (next >= result.matches.length) return 0
+        if (next < 0) return (matches.length - 1)
+        if (next >= matches.length) return 0
         return next
       })
     }
@@ -157,7 +160,13 @@ export default function SearchResults() {
       document.removeEventListener('keydown', handler)
     }
   }, [matches, selectedMatch, query, searchEngine])
+
+  const onSearchResultClick = (match: AutocompleteMatch) => {
+    const line = result?.matches.indexOf(match) ?? -1
+    return (e: React.MouseEvent) => openMatch(match, line, e)
+  }
+
   return matches.length ? <Container data-theme="dark" className='search-results'>
-    {matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} line={i} match={r} />)}
+    {matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} onClick={onSearchResultClick(r)} match={r} />)}
   </Container> : null
 }
