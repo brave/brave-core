@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
@@ -20,7 +21,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr char kNativeAssetContractAddress[] =
+constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 constexpr char kERC20TransferSelector[] = "0xa9059cbb";
@@ -39,6 +40,7 @@ constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
 constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
+constexpr char kLiFiSwapTokensGeneric[] = "0x4630a0d8";
 
 }  // namespace
 
@@ -61,51 +63,87 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   std::string selector = "0x" + HexEncodeLower(data.data(), 4);
   std::vector<uint8_t> calldata(data.begin() + 4, data.end());
   if (selector == kFilForwarderTransferSelector) {
-    auto decoded = ABIDecode({"bytes"}, calldata);
+    auto type = eth_abi::Tuple().AddTupleType(eth_abi::Bytes()).build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
-    const auto& tx_args = std::get<1>(*decoded);
-    if (tx_args.empty()) {
-      return std::nullopt;
-    }
-    return std::make_tuple(mojom::TransactionType::ETHFilForwarderTransfer,
-                           std::vector<std::string>{"bytes"},  // recipient
-                           std::vector<std::string>{tx_args.at(0)});
+
+    return std::make_tuple(
+        mojom::TransactionType::ETHFilForwarderTransfer,
+        std::vector<std::string>{"bytes"},  // recipient
+        std::vector<std::string>{decoded.value()[0].GetString()});
 
   } else if (selector == kERC20TransferSelector) {
-    auto decoded = ABIDecode({"address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
 
-    return std::tuple_cat(
-        std::make_tuple(mojom::TransactionType::ERC20Transfer), *decoded);
+    return std::make_tuple(
+        mojom::TransactionType::ERC20Transfer,
+        std::vector<std::string>{"address",   // recipient
+                                 "uint256"},  // amount
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 decoded.value()[1].GetString()});
   } else if (selector == kERC20ApproveSelector) {
-    auto decoded = ABIDecode({"address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
 
-    return std::tuple_cat(std::make_tuple(mojom::TransactionType::ERC20Approve),
-                          *decoded);
+    return std::make_tuple(
+        mojom::TransactionType::ERC20Approve,
+        std::vector<std::string>{"address",   // spender
+                                 "uint256"},  // amount
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 decoded.value()[1].GetString()});
   } else if (selector == kERC721TransferFromSelector) {
-    auto decoded = ABIDecode({"address", "address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
 
-    return std::tuple_cat(
-        std::make_tuple(mojom::TransactionType::ERC721TransferFrom), *decoded);
+    return std::make_tuple(
+        mojom::TransactionType::ERC721TransferFrom,
+        std::vector<std::string>{"address",   // to
+                                 "address",   // from
+                                 "uint256"},  // tokenId
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 decoded.value()[1].GetString(),
+                                 decoded.value()[2].GetString()});
   } else if (selector == kERC721SafeTransferFromSelector) {
-    auto decoded = ABIDecode({"address", "address", "uint256"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
 
-    return std::tuple_cat(
-        std::make_tuple(mojom::TransactionType::ERC721SafeTransferFrom),
-        *decoded);
+    return std::make_tuple(
+        mojom::TransactionType::ERC721SafeTransferFrom,
+        std::vector<std::string>{"address",   // to
+                                 "address",   // from
+                                 "uint256"},  // tokenId
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 decoded.value()[1].GetString(),
+                                 decoded.value()[2].GetString()});
   } else if (selector == kSellEthForTokenToUniswapV3Selector) {
     // Function:
     // sellEthForTokenToUniswapV3(bytes encodedPath,
@@ -114,14 +152,18 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L29-L41
-    auto decoded_calldata =
-        ABIDecode({"bytes", "uint256", "address"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Bytes())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Address())
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
 
-    const auto& tx_args = std::get<1>(*decoded_calldata);
-    auto decoded_path = UniswapEncodedPathDecode(tx_args.at(0));
+    auto decoded_path =
+        UniswapEncodedPathDecode(decoded_calldata.value()[0].GetString());
     if (!decoded_path) {
       return std::nullopt;
     }
@@ -138,7 +180,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  "uint256"},  // taker amount
         std::vector<std::string>{fill_path,
                                  "",  // maker asset is ETH, amount is txn value
-                                 tx_args.at(1)});
+                                 decoded_calldata.value()[1].GetString()});
   } else if (selector == kSellTokenForEthToUniswapV3Selector ||
              selector == kSellTokenForTokenToUniswapV3Selector) {
     // Function: 0x803ba26d
@@ -159,14 +201,19 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L58-L71
-    auto decoded_calldata =
-        ABIDecode({"bytes", "uint256", "uint256", "address"}, calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Bytes())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Address())
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
 
-    const auto& tx_args = std::get<1>(*decoded_calldata);
-    auto decoded_path = UniswapEncodedPathDecode(tx_args.at(0));
+    auto decoded_path =
+        UniswapEncodedPathDecode(decoded_calldata.value()[0].GetString());
     if (!decoded_path) {
       return std::nullopt;
     }
@@ -180,7 +227,9 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         std::vector<std::string>{"bytes",     // fill path,
                                  "uint256",   // maker amount
                                  "uint256"},  // taker amount
-        std::vector<std::string>{fill_path, tx_args.at(1), tx_args.at(2)});
+        std::vector<std::string>{fill_path,
+                                 decoded_calldata.value()[1].GetString(),
+                                 decoded_calldata.value()[2].GetString()});
   } else if (selector == kSellToUniswapSelector) {
     // Function:
     // sellToUniswap(address[] tokens,
@@ -190,19 +239,36 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/8d6f6e76e053f7b065d3315ddb31d2c35caddca7/contracts/zero-ex/contracts/src/features/UniswapFeature.sol#L93-L104
-    auto decoded_calldata =
-        ABIDecode({"address[]", "uint256", "uint256", "bool"}, calldata);
+    auto type =
+        eth_abi::Tuple()
+            .AddTupleType(
+                eth_abi::Array().SetArrayType(eth_abi::Address()).build())
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Bool())
+            .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
 
-    const auto& tx_args = std::get<1>(*decoded_calldata);
+    std::string fill_path = "0x";
+    for (const auto& address : decoded_calldata.value()[0].GetList()) {
+      if (!address.is_string()) {
+        return std::nullopt;
+      }
+
+      base::StrAppend(&fill_path, {address.GetString().substr(2)});
+    }
+
     return std::make_tuple(
         mojom::TransactionType::ETHSwap,
         std::vector<std::string>{"bytes",     // fill path,
                                  "uint256",   // maker amount
                                  "uint256"},  // taker amount
-        std::vector<std::string>{tx_args.at(0), tx_args.at(1), tx_args.at(2)});
+        std::vector<std::string>{fill_path,
+                                 decoded_calldata.value()[1].GetString(),
+                                 decoded_calldata.value()[2].GetString()});
   } else if (selector == kTransformERC20Selector) {
     // Function:
     // transformERC20(address inputToken,
@@ -213,21 +279,34 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/ITransformERC20Feature.sol#L113-L134
-    auto decoded_calldata = ABIDecode(
-        {"address", "address", "uint256", "uint256", "(uint32,bytes)[]"},
-        calldata);
+    auto type =
+        eth_abi::Tuple()
+            .AddTupleType(eth_abi::Address())
+            .AddTupleType(eth_abi::Address())
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(eth_abi::Array()
+                              .SetArrayType(eth_abi::Tuple()
+                                                .AddTupleType(eth_abi::Uint(32))
+                                                .AddTupleType(eth_abi::Bytes())
+                                                .build())
+                              .build())
+            .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
 
-    const auto& tx_args = std::get<1>(*decoded_calldata);
     return std::make_tuple(
         mojom::TransactionType::ETHSwap,
         std::vector<std::string>{"bytes",     // fill path,
                                  "uint256",   // maker amount
                                  "uint256"},  // taker amount
-        std::vector<std::string>{tx_args.at(0) + tx_args.at(1).substr(2),
-                                 tx_args.at(2), tx_args.at(3)});
+        std::vector<std::string>{
+            decoded_calldata.value()[0].GetString() +
+                decoded_calldata.value()[1].GetString().substr(2),
+            decoded_calldata.value()[2].GetString(),
+            decoded_calldata.value()[3].GetString()});
   } else if (selector == kFillOtcOrderForEthSelector ||
              selector == kFillOtcOrderWithEthSelector ||
              selector == kFillOtcOrderSelector) {
@@ -299,28 +378,27 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // For the purpose of parsing transaction data corresponding to ETHSwap, we
     // are only interested in the first four fields. Ignore the rest of the
     // arguments as extraneous data.
-    auto decoded_calldata = ABIDecode(
-        {
-            "address",  // buyToken
-            "address",  // sellToken
-            "uint128",  // buyAmount
-            "uint128",  // sellAmount
-        },
-        calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(128))
+                    .AddTupleType(eth_abi::Uint(128))
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
 
-    const auto& raw_args = std::get<1>(*decoded_calldata);
     std::vector<std::string> tx_args;
 
     if (selector == kFillOtcOrderForEthSelector) {
       // The output of the swap is actually WETH but fillOtcOrderForEth()
       // automatically unwraps it to ETH. The buyToken is therefore the
       // 0x native asset contract.
-      tx_args = {
-          raw_args.at(1) + std::string(kNativeAssetContractAddress).substr(2),
-          raw_args.at(3), raw_args.at(2)};
+      tx_args = {decoded_calldata.value()[1].GetString() +
+                     std::string(kNativeEVMAssetContractAddress).substr(2),
+                 decoded_calldata.value()[3].GetString(),
+                 decoded_calldata.value()[2].GetString()};
     } else if (selector == kFillOtcOrderWithEthSelector) {
       // The input of the swap is actually ETH but fillOtcOrderWithEth()
       // automatically wraps it to WETH. The sellToken is therefore the 0x
@@ -330,12 +408,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       // the value field of the swap transaction. The latter is more reliable
       // since OTC trades may include protocol fees payable in ETH that get
       // added to the sellAmount.
-      tx_args = {
-          std::string(kNativeAssetContractAddress) + raw_args.at(0).substr(2),
-          raw_args.at(3), raw_args.at(2)};
+      tx_args = {std::string(kNativeEVMAssetContractAddress) +
+                     decoded_calldata.value()[0].GetString().substr(2),
+                 decoded_calldata.value()[3].GetString(),
+                 decoded_calldata.value()[2].GetString()};
     } else if (selector == kFillOtcOrderSelector) {
-      tx_args = {raw_args.at(1) + raw_args.at(0).substr(2), raw_args.at(3),
-                 raw_args.at(2)};
+      tx_args = {decoded_calldata.value()[1].GetString() +
+                     decoded_calldata.value()[0].GetString().substr(2),
+                 decoded_calldata.value()[3].GetString(),
+                 decoded_calldata.value()[2].GetString()};
     }
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
@@ -371,37 +452,127 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     // For the purpose of parsing transaction data corresponding to ETHSwap, we
     // are only interested in the first four fields. Ignore the rest of the
     // arguments as extraneous data.
-    auto decoded_calldata = ABIDecode(
-        {
-            "address",  // buyToken
-            "address",  // receiver
-            "uint256",  // sellAmount
-            "uint256",  // buyAmount
-        },
-        calldata);
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    auto decoded_calldata = ABIDecode(type, calldata);
     if (!decoded_calldata) {
       return std::nullopt;
     }
 
-    const auto& tx_args = std::get<1>(*decoded_calldata);
     return std::make_tuple(
         mojom::TransactionType::ETHSwap,
         std::vector<std::string>{"bytes",     // fill path,
                                  "uint256",   // sell amount
                                  "uint256"},  // buy amount
         std::vector<std::string>{
-            std::string(kNativeAssetContractAddress) + tx_args.at(0).substr(2),
-            tx_args.at(2), tx_args.at(3)});
-  } else if (selector == kERC1155SafeTransferFromSelector) {
-    auto decoded = ABIDecode(
-        {"address", "address", "uint256", "uint256", "bytes"}, calldata);
+            std::string(kNativeEVMAssetContractAddress) +
+                decoded_calldata.value()[0].GetString().substr(2),
+            decoded_calldata.value()[2].GetString(),
+            decoded_calldata.value()[3].GetString()});
+  } else if (selector == kLiFiSwapTokensGeneric) {
+    // The following block handles decoding of calldata for LiFi swap orders.
+    //
+    // TXN: token → token
+    // Function:
+    // swapTokensGeneric(bytes32 transactionId,
+    //                   string integrator,
+    //                   string referrer,
+    //                   address receiver,
+    //                   uint256 minAmountOut,
+    //                   (address callTo,
+    //                    address approveTo,
+    //                    address sendingAssetId,
+    //                    address receivingAssetId,
+    //                    uint256 fromAmount,
+    //                    bytes callData,
+    //                    bool requiresDeposit)[] swapData)
+    //
+    // Ref:
+    // https://github.com/lifinance/contracts/blob/fe89ad34a9d2bff4dbf27c2d09b71363c282cd0b/src/Facets/GenericSwapFacet.sol#L207-L221
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .AddTupleType(eth_abi::String())
+                    .AddTupleType(eth_abi::String())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(
+                        eth_abi::Array()
+                            .SetArrayType(eth_abi::Tuple()
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Address())
+                                              .AddTupleType(eth_abi::Uint(256))
+                                              .AddTupleType(eth_abi::Bytes())
+                                              .AddTupleType(eth_abi::Bool())
+                                              .build())
+                            .build())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
     }
 
-    return std::tuple_cat(
-        std::make_tuple(mojom::TransactionType::ERC1155SafeTransferFrom),
-        *decoded);
+    CHECK_EQ(6u, decoded.value().size());
+
+    auto min_amount_out = decoded.value()[4].GetString();
+
+    // The swapData field is an array of tuples, each representing a swap fill
+    // operation. We are only interested in the first and last elements of the
+    // array, which represent the sending and receiving assets, respectively.
+    auto& swap_data_list = decoded.value()[5].GetList();
+    if (swap_data_list.size() < 2) {
+      return std::nullopt;
+    }
+
+    auto& swap_data_front = swap_data_list.front().GetList();
+    auto sending_asset_id = swap_data_front[2].GetString();
+    if (sending_asset_id == kLiFiNativeEVMAssetContractAddress) {
+      sending_asset_id = kNativeEVMAssetContractAddress;
+    }
+    auto from_amount = swap_data_front[4].GetString();
+
+    auto& swap_data_back = swap_data_list.back().GetList();
+    auto receiving_asset_id = swap_data_back[3].GetString();
+    if (receiving_asset_id == kLiFiNativeEVMAssetContractAddress) {
+      receiving_asset_id = kNativeEVMAssetContractAddress;
+    }
+
+    return std::make_tuple(mojom::TransactionType::ETHSwap,
+                           std::vector<std::string>{"bytes",     // fill path,
+                                                    "uint256",   // sell amount
+                                                    "uint256"},  // buy amount
+                           std::vector<std::string>{
+                               sending_asset_id + receiving_asset_id.substr(2),
+                               from_amount, min_amount_out});
+  } else if (selector == kERC1155SafeTransferFromSelector) {
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(eth_abi::Bytes())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    return std::make_tuple(
+        mojom::TransactionType::ERC1155SafeTransferFrom,
+        std::vector<std::string>{"address",  // from
+                                 "address",  // to
+                                 "uint256",  // id
+                                 "uint256",  // amount
+                                 "bytes"},   // data
+        std::vector<std::string>{
+            decoded.value()[0].GetString(), decoded.value()[1].GetString(),
+            decoded.value()[2].GetString(), decoded.value()[3].GetString(),
+            decoded.value()[4].GetString()});
   } else {
     return std::make_tuple(mojom::TransactionType::Other,
                            std::vector<std::string>(),
