@@ -8,7 +8,7 @@ import BraveUI
 import Shared
 import SwiftUI
 
-public struct BraveVPNRegionChangedView: View {
+public struct BraveVPNRegionConfirmationView: View {
   var regionTitle: String
   var regionSubtitle: String
 
@@ -50,13 +50,13 @@ public struct BraveVPNRegionChangedView: View {
   }
 }
 
-struct BraveVPNRegionChangedView_Previews: PreviewProvider {
+struct BraveVPNRegionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveVPNRegionChangedView(regionTitle: "Brazil", regionSubtitle: "Rio de Janeiro")
+    BraveVPNRegionConfirmationView(regionTitle: "Brazil", regionSubtitle: "Rio de Janeiro")
   }
 }
 
-public struct BraveVPNRegionChangedContentView: UIViewControllerRepresentable {
+public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentable {
   @Binding
   var isPresented: Bool
 
@@ -84,7 +84,7 @@ public struct BraveVPNRegionChangedContentView: UIViewControllerRepresentable {
       }
 
       let controller = PopupViewController(
-        rootView: BraveVPNRegionChangedView(
+        rootView: BraveVPNRegionConfirmationView(
           regionTitle: regionTitle,
           regionSubtitle: regionSubtitle
         )
