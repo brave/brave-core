@@ -16,7 +16,6 @@ extension PlaylistSheetDetent.DetentAnchorID {
 struct MediaContentView: View {
   @ObservedObject var model: PlayerModel
   var selectedItem: PlaylistItem
-  @Binding var selectedDetent: PlaylistSheetDetent
 
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.isFullScreen) private var isFullScreen
@@ -37,15 +36,28 @@ struct MediaContentView: View {
               .transition(.opacity.animation(.default))
           }
         }
-        .gesture(
-          isFullScreen
-            ? nil
-            : TapGesture().onEnded {
-              withAnimation(.snappy) {
-                selectedDetent = .small
-              }
+        .overlay {
+          if !isFullScreen {
+            GeometryReader { proxy in
+              Color.clear
+                .contentShape(.rect)
+                .onTapGesture(count: 2) { point in
+                  if point.x < proxy.size.width / 2 {
+                    Task {
+                      await model.seekBackwards()
+                    }
+                  } else {
+                    Task {
+                      await model.seekForwards()
+                    }
+                  }
+                }
+                .onTapGesture {
+                  model.isPlaying.toggle()
+                }
             }
-        )
+          }
+        }
       if !isFullScreen {
         PlaybackControlsView(model: model, selectedItemTitle: selectedItem.name)
           .padding(24)
@@ -297,7 +309,9 @@ extension MediaContentView {
               }
             } label: {
               HStack {
+                // FIXME: iOS 16 - Menu doesn't apply button styles
                 Label("Sleep Timer", braveSystemImage: "leo.sleep.timer")
+                  .labelStyle(.iconOnly)
                 if let sleepTimerFireDate = model.sleepTimerFireDate {
                   Text(timerInterval: .now...sleepTimerFireDate, countsDown: true)
                     .font(.callout.weight(.semibold))
@@ -345,8 +359,7 @@ extension MediaContentView {
       duration: 100,
       mimeType: "",
       mediaSrc: ""
-    ),
-    selectedDetent: .constant(.small)
+    )
   )
   .environment(\.managedObjectContext, DataController.swiftUIContext)
   .preparePlaylistEnvironment()

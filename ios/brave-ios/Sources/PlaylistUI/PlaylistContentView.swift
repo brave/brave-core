@@ -119,8 +119,7 @@ struct PlaylistContentView: View {
         if let selectedItem {
           MediaContentView(
             model: playerModel,
-            selectedItem: selectedItem,
-            selectedDetent: $selectedDetent
+            selectedItem: selectedItem
           )
           .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
         } else {

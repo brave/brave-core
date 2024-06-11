@@ -169,13 +169,25 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
     }
   }
 
+  @State private var isDraggingHeaderVertically: Bool?
   private var sidebarHeaderDragGesture: some Gesture {
     DragGesture(coordinateSpace: .global)
       .onChanged { value in
-        handleBottomSheetDragGestureChanged(translation: value.translation)
+        // SwiftUI gestures don't have the ability to _not_ start a gesture based on some condition
+        // like you can do with UIGestureRecognizerDelegate, so we have to only react to changes
+        // to a gesture that started valid.
+        if isDraggingHeaderVertically == nil {
+          isDraggingHeaderVertically = abs(value.velocity.height) > abs(value.velocity.width)
+        }
+        if isDraggingHeaderVertically == true {
+          handleBottomSheetDragGestureChanged(translation: value.translation)
+        }
       }
       .onEnded { value in
-        handleBottomSheetDragGestureEnded(predictedEndTranslation: value.predictedEndTranslation)
+        if isDraggingHeaderVertically == true {
+          handleBottomSheetDragGestureEnded(predictedEndTranslation: value.predictedEndTranslation)
+        }
+        isDraggingHeaderVertically = nil
       }
   }
 
@@ -233,6 +245,7 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
           }
         }
         .coordinateSpace(name: "PlaylistSplitView.Content")
+        .simultaneousGesture(sidebarLayoutMode == .bottomSheet ? sidebarHeaderDragGesture : nil)
     }
     .background(Color(braveSystemName: .pageBackground))
     .safeAreaInset(edge: .top, spacing: 0) {
