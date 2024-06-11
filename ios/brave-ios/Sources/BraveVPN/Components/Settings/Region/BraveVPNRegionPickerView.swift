@@ -60,6 +60,8 @@ public struct BraveVPNRegionPickerView: View {
     if let serverRegionDetail = serverRegionDetail {
       self.serverRegionDetail = serverRegionDetail
     }
+
+    BraveVPN.populateRegionDataIfNecessary()
   }
 
   public var body: some View {
@@ -154,11 +156,11 @@ public struct BraveVPNRegionPickerView: View {
       }
     }
     .background {
-      BraveVPNRegionChangedContentView(
-        isPresented: $isConfirmationPresented,
-        regionTitle: "Brazil",
-        regionSubtitle: "Rio de Janeiro"
-      )
+      //      BraveVPNRegionConfirmationContentView(
+      //        isPresented: $isConfirmationPresented,
+      //        regionTitle: "Brazil",
+      //        regionSubtitle: "Rio de Janeiro"
+      //      )
     }
   }
 
@@ -168,7 +170,7 @@ public struct BraveVPNRegionPickerView: View {
         guard !isLoading else {
           return
         }
-        
+
         isRegionDetailsPresented = true
       },
       label: {

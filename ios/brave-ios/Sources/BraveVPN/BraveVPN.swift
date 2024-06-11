@@ -24,6 +24,8 @@ public class BraveVPN {
   /// This list is not static and should be refetched every now and then.
   static var regions: [GRDRegion] = []
 
+  static var allCountryRegions: [GRDRegion] = []
+
   /// Record last used region
   /// It is used to hold details of the region when automatic selection is used
   static var lastKnownRegion: GRDRegion?
@@ -579,6 +581,52 @@ public class BraveVPN {
     serverManager.regions { regions, _ in
       self.regions = regions ?? []
     }
+
+    Task { @MainActor in
+      allCountryRegions = await BraveVPNRegionManager.shared.getAllRegionsWithDetails()
+    }
+
+    // TODO: Remove Debugging information
+
+    //    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
+    //
+    //    print("Precision \(helper.regionPrecision)")
+    //
+    //    let delayTime = DispatchTime.now() + .seconds(2)
+    //    DispatchQueue.main.asyncAfter(deadline: delayTime) {
+    //      helper.allRegions { regions, error in
+    //        print("All Regions Default with HELPER")
+    //
+    //        print("=======================")
+    //
+    //        print("\(regions)")
+    //
+    //        print("=======================")
+    //
+    //      }
+    //
+    //      let serverManagerx = GRDServerManager(
+    //        regionPrecision: helper.regionPrecision,
+    //        serverFeatureEnvironment: helper.featureEnvironment,
+    //        betaCapableServers: false
+    //      )
+    //
+    //      serverManagerx.allRegions { regions, error in
+    //
+    //        print("All Regions Default with MANAGER")
+    //
+    //        print("=======================")
+    //
+    //        print("\(regions)")
+    //
+    //        print("=======================")
+    //
+    //      }
+    //
+    //      Task { @MainActor in
+    //        await BraveVPNRegion.shared.getAllRegionsWithDetails()
+    //      }
+    //    }
   }
 
   // MARK: - VPN Alerts and notifications
