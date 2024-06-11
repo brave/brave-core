@@ -36,12 +36,15 @@ class AIRewriterDialogDelegate : public ui::WebDialogDelegate,
   void CloseDialog();
   content::WebContents* GetDialogWebContents();
 
+  void UpdateBounds();
+
   // content::WebContentsObserver:
   void DidFinishNavigation(content::NavigationHandle* handle) override;
   void OnFocusChangedInPage(content::FocusedNodeDetails* details) override;
 
  private:
   class DialogContentsObserver;
+  class DialogPositioner;
 
   explicit AIRewriterDialogDelegate(content::WebContents* contents);
 
@@ -52,6 +55,7 @@ class AIRewriterDialogDelegate : public ui::WebDialogDelegate,
 
   base::WeakPtr<content::WebContents> target_contents_;
   std::unique_ptr<DialogContentsObserver> dialog_observer_;
+  std::unique_ptr<DialogPositioner> positioner_;
 };
 
 }  // namespace ai_rewriter

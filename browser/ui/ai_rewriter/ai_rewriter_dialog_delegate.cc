@@ -14,11 +14,15 @@
 #include "base/memory/ptr_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/process/kill.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/tab_contents/web_contents_collection.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/focused_node_details.h"
 #include "content/public/browser/host_zoom_map.h"
@@ -40,6 +44,7 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
+#include "ui/views/widget/widget_observer.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 
 using content::WebContents;
@@ -84,6 +89,72 @@ class AIRewriterDialogDelegate::DialogContentsObserver
   }
 
   const raw_ptr<AIRewriterDialogDelegate> dialog_;
+};
+
+class AIRewriterDialogDelegate::DialogPositioner
+    : public views::WidgetObserver {
+ public:
+  DialogPositioner(content::WebContents* target_contents,
+                   views::Widget* dialog_widget)
+      : target_contents_(target_contents->GetWeakPtr()),
+        dialog_widget_(dialog_widget->GetWeakPtr()) {
+    auto* browser = chrome::FindBrowserWithTab(target_contents);
+    CHECK(browser);
+
+    auto* widget = BrowserView::GetBrowserViewForBrowser(browser)->GetWidget();
+
+    observation_.Observe(widget);
+
+    UpdatePosition();
+  }
+
+  DialogPositioner(const DialogPositioner&) = delete;
+  DialogPositioner& operator=(const DialogPositioner&) = delete;
+  ~DialogPositioner() override = default;
+
+  void OnWidgetBoundsChanged(views::Widget* widget,
+                             const gfx::Rect& new_bounds) override {
+    UpdatePosition();
+  }
+
+ private:
+  void UpdatePosition() {
+    if (!target_contents_) {
+      return;
+    }
+    auto* browser = chrome::FindBrowserWithTab(target_contents_.get());
+    CHECK(browser);
+
+    mojo::Remote<mojom::AIRewriterAgent> agent;
+    auto* frame = target_contents_->GetFocusedFrame();
+    frame->GetRemoteInterfaces()->GetInterface(
+        agent.BindNewPipeAndPassReceiver());
+    auto* raw_agent = agent.get();
+    raw_agent->GetFocusBounds(base::BindOnce(
+        [](mojo::Remote<mojom::AIRewriterAgent> agent,
+           base::WeakPtr<views::Widget> widget,
+           content::WeakDocumentPtr document_pointer,
+           const gfx::RectF& focus_rect) {
+          auto* host = document_pointer.AsRenderFrameHostIfValid();
+          if (!widget || !host) {
+            return;
+          }
+
+          auto transformed = TransformFrameRectToView(host, focus_rect);
+          auto widget_bounds = widget->GetWindowBoundsInScreen();
+
+          widget_bounds.set_x(transformed.CenterPoint().x() -
+                              widget_bounds.width() / 2);
+          widget_bounds.set_y(transformed.bottom());
+          widget->SetBounds(widget_bounds);
+        },
+        std::move(agent), dialog_widget_, frame->GetWeakDocumentPtr()));
+  }
+
+  base::WeakPtr<content::WebContents> target_contents_;
+  base::WeakPtr<views::Widget> dialog_widget_;
+  base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
+      this};
 };
 
 // static
@@ -144,31 +215,8 @@ void AIRewriterDialogDelegate::ShowDialog() {
 
   auto* widget = views::Widget::GetWidgetForNativeWindow(
       dialog_delegate->GetNativeDialog());
-
-  mojo::Remote<mojom::AIRewriterAgent> agent;
-  auto* frame = target_contents_->GetFocusedFrame();
-  frame->GetRemoteInterfaces()->GetInterface(
-      agent.BindNewPipeAndPassReceiver());
-  auto* raw_agent = agent.get();
-  raw_agent->GetFocusBounds(base::BindOnce(
-      [](mojo::Remote<mojom::AIRewriterAgent> agent,
-         base::WeakPtr<views::Widget> widget,
-         content::WeakDocumentPtr document_pointer,
-         const gfx::RectF& focus_rect) {
-        auto* host = document_pointer.AsRenderFrameHostIfValid();
-        if (!widget || !host) {
-          return;
-        }
-
-        auto transformed = TransformFrameRectToView(host, focus_rect);
-        auto widget_bounds = widget->GetWindowBoundsInScreen();
-
-        widget_bounds.set_x(transformed.CenterPoint().x() -
-                            widget_bounds.width() / 2);
-        widget_bounds.set_y(transformed.bottom());
-        widget->SetBounds(widget_bounds);
-      },
-      std::move(agent), widget->GetWeakPtr(), frame->GetWeakDocumentPtr()));
+  positioner_ =
+      std::make_unique<DialogPositioner>(target_contents_.get(), widget);
 }
 
 void AIRewriterDialogDelegate::CloseDialog() {
