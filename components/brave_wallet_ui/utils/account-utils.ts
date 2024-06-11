@@ -7,7 +7,12 @@ import { assertNotReached } from 'chrome://resources/js/assert.js'
 import { getLocale } from '../../common/locale'
 
 // types
-import { BraveWallet, WalletAccountTypeName } from '../constants/types'
+import {
+  BraveWallet,
+  WalletAccountTypeName,
+  BitcoinMainnetKeyringIds,
+  BitcoinTestnetKeyringIds
+} from '../constants/types'
 
 // constants
 import registry from '../common/constants/registry'
@@ -211,4 +216,45 @@ export const isFVMAccount = (
     (network.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID &&
       account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet)
   )
+}
+
+export const getAccountsForNetwork = (
+  network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>,
+  accounts: BraveWallet.AccountInfo[]
+) => {
+  if (network.chainId === BraveWallet.BITCOIN_MAINNET) {
+    return accounts.filter((account) =>
+      BitcoinMainnetKeyringIds.includes(account.accountId.keyringId)
+    )
+  }
+  if (network.chainId === BraveWallet.BITCOIN_TESTNET) {
+    return accounts.filter((account) =>
+      BitcoinTestnetKeyringIds.includes(account.accountId.keyringId)
+    )
+  }
+  if (network.chainId === BraveWallet.Z_CASH_MAINNET) {
+    return accounts.filter(
+      (account) =>
+        account.accountId.keyringId === BraveWallet.KeyringId.kZCashMainnet
+    )
+  }
+  if (network.chainId === BraveWallet.Z_CASH_TESTNET) {
+    return accounts.filter(
+      (account) =>
+        account.accountId.keyringId === BraveWallet.KeyringId.kZCashTestnet
+    )
+  }
+  if (network.chainId === BraveWallet.FILECOIN_MAINNET) {
+    return accounts.filter(
+      (account) =>
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin
+    )
+  }
+  if (network.chainId === BraveWallet.FILECOIN_TESTNET) {
+    return accounts.filter(
+      (account) =>
+        account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet
+    )
+  }
+  return accounts.filter((account) => account.accountId.coin === network.coin)
 }
