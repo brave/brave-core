@@ -210,6 +210,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onNewUnapprovedTx: { _ in
@@ -1001,4 +1002,17 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 struct TransactionProviderError {
   let code: Int
   let message: String
+}
+
+extension TransactionConfirmationStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    updateTransaction(
+      with: activeTransaction,
+      shouldFetchCurrentAllowance: false,
+      shouldFetchGasTokenBalance: true
+    )
+  }
+
+  public func userAssetUpdated() {
+  }
 }

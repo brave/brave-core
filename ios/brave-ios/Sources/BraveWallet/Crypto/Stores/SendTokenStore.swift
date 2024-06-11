@@ -226,6 +226,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _selectedWalletAccountChanged: { [weak self] _ in
@@ -922,5 +923,14 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     tokens: [BraveWallet.BlockchainToken]
   ) async -> [String: NFTMetadata] {
     return await rpcService.fetchNFTMetadata(tokens: tokens, ipfsApi: ipfsApi)
+  }
+}
+
+extension SendTokenStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    update()
+  }
+
+  public func userAssetUpdated() {
   }
 }

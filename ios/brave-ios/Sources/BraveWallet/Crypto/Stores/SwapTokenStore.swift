@@ -244,6 +244,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _selectedWalletAccountChanged: { [weak self] account in
@@ -1236,4 +1237,17 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     selectedFromToken = .previewToken
   }
   #endif
+}
+
+extension SwapTokenStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    if let token = selectedFromToken {
+      fetchTokenBalance(for: token) { [weak self] balance in
+        self?.selectedFromTokenBalance = balance
+      }
+    }
+  }
+
+  public func userAssetUpdated() {
+  }
 }

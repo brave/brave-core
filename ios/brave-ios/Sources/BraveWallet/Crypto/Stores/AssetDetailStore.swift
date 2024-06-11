@@ -170,6 +170,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _accountsChanged: { [weak self] in
@@ -697,5 +698,14 @@ extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
   }
 
   func onResetWallet() {
+  }
+}
+
+extension AssetDetailStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    update()
+  }
+
+  func userAssetUpdated() {
   }
 }

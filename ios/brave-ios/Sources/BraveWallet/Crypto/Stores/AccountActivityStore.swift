@@ -515,6 +515,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
 extension AccountActivityStore: WalletUserAssetDataObserver {
   public func cachedBalanceRefreshed() {
+    update()
   }
 
   public func userAssetUpdated() {

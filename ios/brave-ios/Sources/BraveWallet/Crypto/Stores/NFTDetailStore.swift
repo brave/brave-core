@@ -118,6 +118,8 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
   }
 
   func setupObservers() {
+    guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onTransactionStatusChanged: { [weak self] txInfo in
@@ -142,9 +144,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
         networkInfo = network
       }
 
-      if owner == nil {
-        updateOwner()
-      }
+      updateOwner()
 
       if nftMetadata == nil {
         isLoading = true
@@ -222,5 +222,14 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
         owner = nil
       }
     }
+  }
+}
+
+extension NFTDetailStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    update()
+  }
+
+  func userAssetUpdated() {
   }
 }

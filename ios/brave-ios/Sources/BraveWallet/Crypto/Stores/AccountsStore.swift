@@ -72,6 +72,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.userAssetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _accountsChanged: { [weak self] in
@@ -324,5 +325,14 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     account: BraveWallet.AccountInfo
   ) -> Double? {
     tokenBalancesCache[account.id]?[tokenId]
+  }
+}
+
+extension AccountsStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    update()
+  }
+
+  func userAssetUpdated() {
   }
 }
