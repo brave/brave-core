@@ -72,11 +72,10 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
     prefs_.SetInteger(kCountryIDAtInstall, digit1 << 8 | digit2);
     prefs_.SetInteger(prefs::kBraveDefaultSearchVersion,
                       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
-    size_t default_index;
-    std::vector<std::unique_ptr<TemplateURLData>> t_urls =
-        TemplateURLPrepopulateData::GetPrepopulatedEngines(
-            &prefs_, &search_engine_choice_service_, &default_index);
-    EXPECT_EQ(prepopulate_id, t_urls[default_index]->prepopulate_id);
+    std::unique_ptr<TemplateURLData> fallback_t_url_data =
+        TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
+            &prefs_, &search_engine_choice_service_);
+    EXPECT_EQ(fallback_t_url_data->prepopulate_id, prepopulate_id);
   }
 
  protected:
@@ -119,8 +118,8 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
 
   for (int country_id : kCountryIds) {
     prefs_.SetInteger(kCountryIDAtInstall, country_id);
-    std::vector<std::unique_ptr<TemplateURLData>> urls = GetPrepopulatedEngines(
-        &prefs_, &search_engine_choice_service_, nullptr);
+    std::vector<std::unique_ptr<TemplateURLData>> urls =
+        GetPrepopulatedEngines(&prefs_, &search_engine_choice_service_);
     std::set<int> unique_ids;
     for (auto& url : urls) {
       ASSERT_TRUE(unique_ids.find(url->prepopulate_id) == unique_ids.end());
@@ -131,10 +130,9 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
 
 // Verifies that each prepopulate data entry has required fields
 TEST_F(BraveTemplateURLPrepopulateDataTest, ProvidersFromPrepopulated) {
-  size_t default_index;
   std::vector<std::unique_ptr<TemplateURLData>> t_urls =
       TemplateURLPrepopulateData::GetPrepopulatedEngines(
-          &prefs_, &search_engine_choice_service_, &default_index);
+          &prefs_, &search_engine_choice_service_);
 
   // Ensure all the URLs have the required fields populated.
   ASSERT_FALSE(t_urls.empty());
