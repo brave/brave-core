@@ -393,6 +393,10 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
             )
           )
         } else {
+          guard (tokenBalances[token.id] ?? 0) > 0 else {
+            // only show assets belonging to this account
+            continue
+          }
           updatedUserAssets.append(
             AssetViewModel(
               groupType: .none,

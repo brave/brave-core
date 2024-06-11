@@ -42,6 +42,8 @@ class AccountActivityStoreTests: XCTestCase {
       assetTimeframeChange: "-57.23"
     ),
   ]
+  let solTestnetBalance: UInt64 = 1_000_000_000  // 1 SOL
+  let solTestnetDecimalBalance: Double = 1  // 1 SOL
 
   private func setupServices(
     mockEthBalanceWei: String = "",
@@ -93,7 +95,7 @@ class AccountActivityStoreTests: XCTestCase {
       if chainId == BraveWallet.SolanaMainnet {
         completion(mockLamportBalance, .success, "")
       } else {  // testnet balance
-        completion(0, .success, "")
+        completion(self.solTestnetBalance, .success, "")
       }
     }
     rpcService._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
@@ -281,7 +283,7 @@ class AccountActivityStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedAssets.count, 3)
+        XCTAssertEqual(lastUpdatedAssets.count, 2)
 
         XCTAssertEqual(
           lastUpdatedAssets[0].token.symbol,
@@ -299,13 +301,8 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(lastUpdatedAssets[1].totalBalance, mockERC20DecimalBalance)
         XCTAssertEqual(lastUpdatedAssets[1].price, self.mockAssetPrices[safe: 1]?.price ?? "")
 
-        XCTAssertEqual(
-          lastUpdatedAssets[2].token.symbol,
-          BraveWallet.NetworkInfo.mockGoerli.nativeToken.symbol
-        )
-        XCTAssertEqual(lastUpdatedAssets[2].network, BraveWallet.NetworkInfo.mockGoerli)
-        XCTAssertEqual(lastUpdatedAssets[2].totalBalance, 0)
-        XCTAssertEqual(lastUpdatedAssets[2].price, self.mockAssetPrices[safe: 0]?.price ?? "")
+        // 0 balance asset is hidden
+        XCTAssertNil(lastUpdatedAssets[safe: 2])
 
         // Verify brave/brave-browser#36806
         let daiTokenVisible = lastUpdatedAssets.contains(where: {
@@ -384,7 +381,8 @@ class AccountActivityStoreTests: XCTestCase {
     let mockLamportBalance: UInt64 = 3_876_535_000  // ~3.8765 SOL
     let mockSolDecimalBalance: Double = 3.8765  // rounded
 
-    let mockSpdTokenBalance: Double = 0
+    let mockSpdTokenBalance: Double = 1_000_000_000  // 1000
+    let mockSpdTokenDecimalBalance: Double = 1000
     let mockSolanaNFTTokenBalance: Double = 1
 
     let mockSplTokenBalances: [String: String] = [
@@ -473,24 +471,38 @@ class AccountActivityStoreTests: XCTestCase {
 
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.token.symbol,
-          BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol
+          BraveWallet.BlockchainToken.mockSpdToken.symbol
         )
         XCTAssertEqual(lastUpdatedAssets[safe: 0]?.network, BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockSolDecimalBalance)
+        XCTAssertEqual(lastUpdatedAssets[safe: 0]?.totalBalance, mockSpdTokenDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 0]?.price,
-          self.mockAssetPrices[safe: 2]?.price ?? ""
+          self.mockAssetPrices[safe: 3]?.price ?? ""
         )
 
         XCTAssertEqual(
           lastUpdatedAssets[safe: 1]?.token.symbol,
-          BraveWallet.BlockchainToken.mockSpdToken.symbol
+          BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol
         )
         XCTAssertEqual(lastUpdatedAssets[safe: 1]?.network, BraveWallet.NetworkInfo.mockSolana)
-        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockSpdTokenBalance)
+        XCTAssertEqual(lastUpdatedAssets[safe: 1]?.totalBalance, mockSolDecimalBalance)
         XCTAssertEqual(
           lastUpdatedAssets[safe: 1]?.price,
-          self.mockAssetPrices[safe: 3]?.price ?? ""
+          self.mockAssetPrices[safe: 2]?.price ?? ""
+        )
+
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 2]?.token.symbol,
+          BraveWallet.NetworkInfo.mockSolana.nativeToken.symbol
+        )
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 2]?.network,
+          BraveWallet.NetworkInfo.mockSolanaTestnet
+        )
+        XCTAssertEqual(lastUpdatedAssets[safe: 2]?.totalBalance, self.solTestnetDecimalBalance)
+        XCTAssertEqual(
+          lastUpdatedAssets[safe: 2]?.price,
+          self.mockAssetPrices[safe: 2]?.price ?? ""
         )
       }
       .store(in: &cancellables)
