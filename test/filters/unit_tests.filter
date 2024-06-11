@@ -541,11 +541,6 @@
 -All/FirstPartySetsPolicyServicePrefTest.ForEachEffectiveSetEntry_WithNonEmptyConfig/0
 -EncryptedReportingUploadProviderTest.SuccessfullyUploadsRecord
 
-# These tests fail because we disable kSidePanelPinning (the /1 param in these tests)
--All/RecentTabsSubMenuModelTest.NoTabs/1
--All/RecentTabsSubMenuModelTest.OtherDevices/1
--All/RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate/1
-
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -TestAppMenuModelCR2023.ModelHasIcons
