@@ -52,11 +52,3 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
         views::kCaptionButtonInkDropDefaultCornerRadius);
   }
 }
-
-int BrowserFrameViewLayoutLinux::GetNonClientRestoredExtraThickness() const {
-  if (base::FeatureList::IsEnabled(
-          tabs::features::kBraveHorizontalTabsUpdate)) {
-    return 0;
-  }
-  return OpaqueBrowserFrameViewLayout::GetNonClientRestoredExtraThickness();
-}
