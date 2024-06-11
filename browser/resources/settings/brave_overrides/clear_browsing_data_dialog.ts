@@ -16,6 +16,9 @@ RegisterStyleOverride(
   'settings-clear-browsing-data-dialog',
   html`
     <style>
+      :host {
+        --body-container-height: 372px !important;
+      }
       #rewards-reset-data {
         display: block;
         margin-top: 10px;
