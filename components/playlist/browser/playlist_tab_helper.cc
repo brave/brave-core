@@ -121,37 +121,6 @@ base::WeakPtr<PlaylistTabHelper> PlaylistTabHelper::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-std::u16string PlaylistTabHelper::GetSavedFolderName() {
-  CHECK(*playlist_enabled_pref_) << "Playlist pref must be enabled";
-
-  // Use saved folder's name when all saved items belong to the single same
-  // parent folder. Otherwise, returns placeholder name, which is the feature
-  // name.
-
-  CHECK(saved_items_.size()) << "Caller should check if there are saved items";
-  constexpr auto* kPlaceholderName = u"Playlist";
-  if (const auto& parents = saved_items_.front()->parents;
-      parents.empty() || parents.size() >= 2) {
-    return kPlaceholderName;
-  }
-
-  const auto parent_id = saved_items_.front()->parents.front();
-  if (std::any_of(saved_items_.begin() + 1, saved_items_.end(),
-                  [&parent_id](const auto& item) {
-                    return item->parents.empty() || item->parents.size() >= 2 ||
-                           parent_id != item->parents.front();
-                  })) {
-    return kPlaceholderName;
-  }
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (parent_id == kDefaultPlaylistID) {
-    return l10n_util::GetStringUTF16(IDS_PLAYLIST_DEFAULT_PLAYLIST_NAME);
-  }
-#endif
-
-  return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
-}
 
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
