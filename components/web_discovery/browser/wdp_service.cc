@@ -12,6 +12,7 @@
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -123,6 +124,14 @@ void WDPService::OnFinishNavigation(
   if (!content_scraper_) {
     return;
   }
+  const auto* matching_url_details =
+      last_loaded_patterns_->GetMatchingURLPattern(url, false);
+  if (!matching_url_details) {
+    return;
+  }
+  if (IsPrivateURLLikely(url, matching_url_details)) {
+    return;
+  }
   mojo::Remote<mojom::DocumentExtractor> remote;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       remote.BindNewPipeAndPassReceiver());
@@ -143,15 +152,21 @@ void WDPService::OnContentScraped(bool is_strict,
   if (!url_details) {
     return;
   }
-  if (!is_strict) {
-    double_fetcher_->ScheduleDoubleFetch(result->url,
-                                         result->SerializeToValue());
-  } else {
-    auto payloads = GeneratePayloads(*last_loaded_server_config_, url_details,
-                                     std::move(result));
-    for (auto& payload : payloads) {
-      reporter_->ScheduleSend(std::move(payload));
+  if (!is_strict && url_details->is_search_engine) {
+    auto url = result->url;
+    if (!result->query) {
+      return;
     }
+    if (IsPrivateQueryLikely(*result->query)) {
+      return;
+    }
+    url = GeneratePrivateSearchURL(url, *result->query, *url_details);
+    double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
+  }
+  auto payloads = GeneratePayloads(*last_loaded_server_config_, url_details,
+                                   std::move(result));
+  for (auto& payload : payloads) {
+    reporter_->ScheduleSend(std::move(payload));
   }
 }
 

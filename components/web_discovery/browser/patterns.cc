@@ -32,6 +32,8 @@ constexpr char kFieldsKey[] = "fields";
 constexpr char kPayloadsKey[] = "payloads";
 constexpr char kJoinFieldAction[] = "join";
 constexpr char kFunctionsAppliedKey[] = "functionsApplied";
+constexpr char kQueryTemplateKey[] = "queryTemplate";
+constexpr char kQueryTemplatePrefixKey[] = "prefix";
 
 constexpr auto kScrapeRuleTypeMap =
     base::MakeFixedFlatMap<std::string_view, ScrapeRuleType>({
@@ -191,10 +193,11 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
   auto* scrape_dict = root_dict->FindDict(kScrapeRulesKey);
   auto* payloads_dict = root_dict->FindDict(kPayloadsKey);
   auto* id_mapping_dict = root_dict->FindDict(kIdMappingKey);
+  auto* query_templates_dict = root_dict->FindDict(kQueryTemplateKey);
   if (!url_patterns_list || !search_engines_list || !scrape_dict ||
-      !id_mapping_dict) {
-    VLOG(1)
-        << "Missing URL patterns, search engines, scrape rules or id mapping";
+      !id_mapping_dict || query_templates_dict) {
+    VLOG(1) << "Missing URL patterns, search engines, scrape rules, id "
+               "mapping, or query templates";
     return std::nullopt;
   }
 
@@ -215,6 +218,7 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
     auto* id = id_mapping_dict->FindString(i_str);
     auto* scrape_url_dict = scrape_dict->FindDict(i_str);
     auto* payloads_url_dict = payloads_dict->FindDict(i_str);
+    auto* query_template_dict = query_templates_dict->FindDict(i_str);
     if (!id || !scrape_url_dict) {
       VLOG(1) << "ID or scrape dict missing for pattern";
       return std::nullopt;
@@ -237,6 +241,12 @@ std::optional<std::vector<PatternsURLDetails>> ParsePatternsURLDetails(
         return std::nullopt;
       }
       details.payload_rule_groups = std::move(*payload_rule_groups);
+    }
+    if (query_template_dict) {
+      auto* prefix = query_template_dict->FindString(kQueryTemplatePrefixKey);
+      if (prefix) {
+        details.search_template_prefix = *prefix;
+      }
     }
   }
 

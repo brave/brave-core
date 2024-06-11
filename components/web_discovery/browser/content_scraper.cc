@@ -11,6 +11,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/web_discovery/browser/patterns.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -59,6 +60,16 @@ std::string ExecuteRefineFunctions(const RefineFunctionList& function_list,
     }
   }
   return result;
+}
+
+void MaybeSetQueryInResult(const ScrapeRule& rule,
+                           const std::string& value,
+                           PageScrapeResult* result) {
+  if (rule.rule_type != ScrapeRuleType::kSearchQuery &&
+      rule.rule_type != ScrapeRuleType::kWidgetTitle) {
+    return;
+  }
+  result->query = value;
 }
 
 }  // namespace
@@ -235,12 +246,24 @@ void ContentScraper::OnScrapedElementAttributes(
     return;
   }
   for (const auto& attribute_result : attribute_results) {
+    const auto rule_group =
+        url_details->scrape_rule_groups.find(attribute_result->root_selector);
+    if (rule_group == url_details->scrape_rule_groups.end()) {
+      continue;
+    }
     base::Value::Dict attribute_values;
     for (const auto& [key, value_str] : attribute_result->attribute_values) {
+      const auto rule = rule_group->second.find(key);
+      if (rule == rule_group->second.end()) {
+        continue;
+      }
       base::Value value;
       if (value_str) {
-        value = base::Value(MaybeExecuteRefineFunctions(
-            url_details, attribute_result->root_selector, key, *value_str));
+        std::string final_value_str =
+            ExecuteRefineFunctions(rule->second->functions_applied, *value_str);
+        MaybeSetQueryInResult(*rule->second, final_value_str,
+                              scrape_result.get());
+        value = base::Value(final_value_str);
       }
       attribute_values.Set(key, std::move(value));
     }
@@ -261,36 +284,30 @@ void ContentScraper::OnRustElementAttributes(
     return;
   }
   for (const auto& attribute_result : attribute_results) {
+    const auto root_selector = std::string(attribute_result.root_selector);
+    const auto rule_group = url_details->scrape_rule_groups.find(root_selector);
+    if (rule_group == url_details->scrape_rule_groups.end()) {
+      continue;
+    }
     base::Value::Dict attribute_values;
     for (const auto& pair : attribute_result.attribute_pairs) {
+      const auto key_str = std::string(pair.key);
+      const auto rule = rule_group->second.find(key_str);
+      if (rule == rule_group->second.end()) {
+        continue;
+      }
       base::Value value;
       if (!pair.value.empty()) {
-        value = base::Value(MaybeExecuteRefineFunctions(
-            url_details, std::string(attribute_result.root_selector),
-            std::string(pair.key), std::string(pair.value)));
+        std::string value_str = ExecuteRefineFunctions(
+            rule->second->functions_applied, std::string(pair.value));
+        MaybeSetQueryInResult(*rule->second, value_str, scrape_result.get());
+        value = base::Value(value_str);
       }
-      attribute_values.Set(std::string(pair.key), std::move(value));
+      attribute_values.Set(key_str, std::move(value));
     }
-    scrape_result->fields[std::string(attribute_result.root_selector)]
-        .push_back(std::move(attribute_values));
+    scrape_result->fields[root_selector].push_back(std::move(attribute_values));
   }
   std::move(callback).Run(std::move(scrape_result));
-}
-
-std::string ContentScraper::MaybeExecuteRefineFunctions(
-    const PatternsURLDetails* url_details,
-    const std::string& root_selector,
-    const std::string& report_key,
-    std::string value) {
-  const auto rule_group = url_details->scrape_rule_groups.find(root_selector);
-  if (rule_group != url_details->scrape_rule_groups.end()) {
-    auto rule = rule_group->second.find(report_key);
-    if (rule != rule_group->second.end() &&
-        !rule->second->functions_applied.empty()) {
-      return ExecuteRefineFunctions(rule->second->functions_applied, value);
-    }
-  }
-  return value;
 }
 
 }  // namespace web_discovery

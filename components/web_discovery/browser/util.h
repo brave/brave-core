@@ -38,6 +38,8 @@ std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url);
 
 std::string FormatServerDate(const base::Time& date);
 
+void TransformToAlphanumeric(std::string& value);
+
 }  // namespace web_discovery
 
 #endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_UTIL_H_
