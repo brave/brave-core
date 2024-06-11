@@ -105,6 +105,9 @@
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
 <translation id="7276554663454265692">आप ब्राउज़र सेटिंग में जाकर कभी भी <ph name="SETTING_TEXT"/> बदल सकते हैं</translation>
 <translation id="6873781976650514089">यह सेटिंग</translation>
+<translation id="4684633335323013758">इस साइट ने आपसे<ph name="PART_ONE"/>जेनरल लोकेशन<ph name="PART_ONE_END"/>का अनुरोध किया है. <ph name="PART_TWO"/><ph name="PART_TWO_END"/> और जानें.</translation>
+<translation id="8117247596084706514">इस साइट ने आपसे<ph name="PART_ONE"/>सटीक लोकेशन<ph name="PART_ONE_END"/>का अनुरोध किया है. <ph name="PART_TWO"/><ph name="PART_TWO_END"/> और जानें.</translation>
+<translation id="5486652646100591203">इस साइट ने आपसे<ph name="PART_ONE"/>आपकी सटीक लोकेशन<ph name="PART_ONE_END"/> का अनुरोध किया है. Brave <ph name="PART_TWO"/>बस जेनरल लोकेशन<ph name="PART_TWO_END"/> की जानकारी दे सकता है क्योंकि <ph name="PART_THREE"/>लोकेशन सर्विस<ph name="PART_THREE_END"/> अभी डिसेबल हैं. <ph name="PART_FOUR"/><ph name="PART_FOUR_END"/> पर और ज़्यादा जानें.</translation>
 <translation id="8915916167043355778">सभी बंद करें</translation>
 <translation id="7658239707568436148">रद्द करें</translation>
 <translation id="4870911314065352661">क्या आप सभी टैब बंद करना चाहते हैं?</translation>
@@ -164,7 +167,8 @@
 <translation id="6959315322491671328">हटाने के लिए राइट क्लिक करें</translation>
 <translation id="495046168593986294">ऊपर स्क्रॉल करें</translation>
 <translation id="4021716437419160885">नीचे स्क्रॉल करें</translation>
-<translation id="2702801445560668637">रीडिंग लिस्ट</translation>
+<translation id="1907157509746585817">बुकमार्क</translation>
+<translation id="4840597165888262798">रीडिंग लिस्ट</translation>
 <translation id="2533715613366623756">बुकमार्क मैनेजर</translation>
 <translation id="3405021928725149239">बुकमार्क मैनेजर</translation>
 <translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
@@ -244,9 +248,11 @@
 <translation id="8025559074845816210">आपके बुकमार्क को Safari से इम्पोर्ट करने के लिए Brave को पुरे डिस्क के एक्सेस के आवश्यकता है।</translation>
 <translation id="8515328844674404333">अपने सिस्टम प्रेफ़रेंस से पूर्ण डिस्क एक्सेस देने का तरीका जानें.</translation>
 <translation id="6414878884710400018">सिस्टम प्रेफ़रेंस शुरू करें</translation>
+<translation id="4759238208242260848">डाउनलोड</translation>
 <translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
+<translation id="2702801445560668637">रीडिंग लिस्ट</translation>
 <translation id="1968543937259008435">बेहतरीन ऑनलाइन गोपनीयता के लिए तैयार हैं?</translation>
 <translation id="6817415381278637662">Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें ताकि आपको सभी वेब पेज पर Brave की गोपनीयता सुरक्षा मिले.</translation>
 <translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
@@ -405,6 +411,7 @@ Binance
 <translation id="5448570825852364919">खाली पेज</translation>
 <translation id="8244387390464017490">नए टैब पेज को कस्टमाइज़ करें</translation>
 <translation id="7461924472993315131">पिन करें</translation>
+<translation id="735832369569964359">पिन पर क्लिक करें और यह सभी विंडोज नोटिफ़िकेशन को कन्फ़र्म करें</translation>
 <translation id="7506648566440714944">Brave पहले से ही पिन किया हुआ है</translation>
 <translation id="239275665037555969">डॉक</translation>
 <translation id="4057614912106618659">Brave पहले से ही डॉक में है</translation>
@@ -460,6 +467,10 @@ Binance
 <translation id="7889605993994647168">अपडेट पूरा नहीं हो सका</translation>
 <translation id="5438573563213942361">कस्टम लिस्ट</translation>
 <translation id="4182731739150761577">पूरी लिस्ट दिखाएँ</translation>
+<translation id="2776571540844891267">लिस्ट अपडेट करें</translation>
+<translation id="7424267932649051704">अपडेट पूरा नहीं हो सका- दोबारा कोशिश करें</translation>
+<translation id="8426801388284487512">लिस्ट को अपडेट किया गया</translation>
+<translation id="3422250445565385437">लिस्ट को अपडेट किया जा रहा है</translation>
 <translation id="1340263054776016283">फ़िल्टर लिस्ट का URL डालें</translation>
 <translation id="8578397014396032341">कंटेंट फ़िल्टर</translation>
 <translation id="3020183492814296499">शॉर्टकट</translation>

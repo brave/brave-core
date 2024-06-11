@@ -612,7 +612,6 @@
 <translation id="6896758677409633944">Копиране</translation>
 <translation id="3726490322412361740">Въвеждане на парола</translation>
 <translation id="3038243139480464605">Потвърдете паролата</translation>
-<translation id="3043677904160378840">Паролите трябва да съдържат най-малко 8 символа.</translation>
 <translation id="7396672979287122068">Паролата за потвърждение не съвпада</translation>
 <translation id="1566412704591731844">Създаване на вашия портфейл...</translation>
 <translation id="7779823116893018906">Може да отнеме няколко секунди...</translation>
@@ -656,8 +655,11 @@
 <translation id="5981303441790732480">Импортирайте съществуващия си портфейл</translation>
 <translation id="9111102763498581341">Отключване</translation>
 <translation id="6657585470893396449">Парола</translation>
+<translation id="7553242001898162573">Въведете паролата си</translation>
 <translation id="5619264711680220002">Отключване с биометрични данни</translation>
+<translation id="9195657745688986798">Отключване на портфейла</translation>
 <translation id="5168349973342709369">Въвеждане на паролата за отключване на портфейла</translation>
+<translation id="3043677904160378840">Паролите трябва да съдържат най-малко 8 символа.</translation>
 <translation id="1144810021918451336">Не ви предпазва от опасни уебсайтове, изтегляния и разширения.</translation>
 <translation id="5760476995887363522">Фразите не съвпадат. Опитайте отново.</translation>
 <translation id="2360588547830602174">Неуспешно възстановяване на акаунта. Опитайте отново.</translation>
@@ -701,7 +703,7 @@
 <translation id="6748319398471481216">Месечно подновяване</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> /месечно.</translation>
 <translation id="1163809943099641131">Една година</translation>
-<translation id="7574007394522199115">Годишното подновяване спестява <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Подновявайте ежегодно, за да спестите<ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /годишно.</translation>
 <translation id="2655185358771731232">Опитайте безплатно за 7 дни. След 7 дни ще бъдете таксувани за цената на плана. Всички абонаменти се подновяват автоматично, но могат да бъдат отказани преди подновяването.</translation>
 <translation id="6053992191006521518">Опитайте БЕЗПЛАТНО</translation>
@@ -1189,4 +1191,13 @@
 <translation id="6891382640886173702">Обединяване на прозорци</translation>
 <translation id="2912247081180973411">Затваряне на прозорци</translation>
 <translation id="4010699428656610296">Моля, обединете останалите раздели в друг прозорец на Brave.</translation>
+<translation id="208634871997892083">Винаги активен VPN</translation>
+<translation id="1599073346542156922">Как да включите:</translation>
+<translation id="7001163334415463127">1. Отворете настройките на устройството от лентата на приложението или като натиснете бутона по-долу.</translation>
+<translation id="887443138775437899">2. Намерете Brave VPN и докоснете иконата за настройки отдясно.</translation>
+<translation id="3776051499611941773">3. Превключете на<ph name="ALWAYS_ON_TUTORIAL_START"/>Винаги активен VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> , за да го активирате.</translation>
+<translation id="4776146737004271126">Отваряне на настройките за Android</translation>
+<translation id="2728518864712716830">Актуализацията е изтеглена.</translation>
+<translation id="8403338849301491865">Списъкът с филтри е успешно актуализиран</translation>
+<translation id="4650851936784160359">Списъкът с филтри не може да бъде актуализиран. Моля, опитайте отново</translation>
 </translationbundle>

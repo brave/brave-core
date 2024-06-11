@@ -611,7 +611,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6896758677409633944">Kopiëren</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
 <translation id="3038243139480464605">Wachtwoord verifiëren</translation>
-<translation id="3043677904160378840">Wachtwoorden moeten minimaal 8 tekens lang zijn</translation>
 <translation id="7396672979287122068">Geverifieerd wachtwoord komt niet overeen</translation>
 <translation id="1566412704591731844">Uw wallet wordt aangemaakt...</translation>
 <translation id="7779823116893018906">Dit kan enkele seconden duren...</translation>
@@ -655,8 +654,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5981303441790732480">Uw bestaande wallet importeren</translation>
 <translation id="9111102763498581341">Ontsluit</translation>
 <translation id="6657585470893396449">Wachtwoord</translation>
+<translation id="7553242001898162573">Voer uw wachtwoord in</translation>
 <translation id="5619264711680220002">Biometrisch ontgrendelen</translation>
+<translation id="9195657745688986798">Wallet ontgrendelen</translation>
 <translation id="5168349973342709369">Voer het wachtwoord in om de wallet te ontgrendelen</translation>
+<translation id="3043677904160378840">Wachtwoorden moeten minimaal 8 tekens lang zijn</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
 <translation id="5760476995887363522">Woorden komen niet overeen. Probeer het opnieuw.</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
@@ -700,7 +702,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> per maand.</translation>
 <translation id="1163809943099641131">Eén jaar</translation>
-<translation id="7574007394522199115">Verleng jaarlijks, bespaar <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Met een jaarlijks abonnement bespaart u <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Probeer 7 dagen gratis uit. Na 7 dagen wordt de abonnementsprijs in rekening gebracht. Alle abonnementen worden automatisch verlengd, maar kunnen voor verlenging worden geannuleerd.</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>
@@ -1188,4 +1190,13 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6891382640886173702">Vensters samenvoegen</translation>
 <translation id="2912247081180973411">Vensters sluiten</translation>
 <translation id="4010699428656610296">Voeg andere tabbladen samen in een ander Brave-venster.</translation>
+<translation id="208634871997892083">VPN altijd aan</translation>
+<translation id="1599073346542156922">Hoe u deze aanzet:</translation>
+<translation id="7001163334415463127">1. Open uw apparaatinstellingen in uw applade of door op de onderstaande knop te tikken.</translation>
+<translation id="887443138775437899">2. Zoek naar Brave VPN en tik op de instellingenpictogram aan de rechterkant.</translation>
+<translation id="3776051499611941773">3. Zet <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN altijd aan<ph name="ALWAYS_ON_TUTORIAL_END"/> aan.</translation>
+<translation id="4776146737004271126">Android-instellingen openen</translation>
+<translation id="2728518864712716830">Update is gedownload.</translation>
+<translation id="8403338849301491865">Filterlijst is bijgewerkt</translation>
+<translation id="4650851936784160359">Filterlijst kon niet worden bijgewerkt. Probeer het opnieuw.</translation>
 </translationbundle>

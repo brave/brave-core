@@ -182,6 +182,9 @@
 <translation id="4759608598194750161">看得越多，赚得越多。</translation>
 <translation id="7526443283522395161">新标签页广告</translation>
 <translation id="7968650944098083708">通知广告</translation>
+<translation id="8289546216379862569">搜索广告</translation>
+<translation id="4758111936363146244">Brave 搜索广告将显示在 <ph name="BEGIN_LINK"/>Brave 搜索<ph name="END_LINK"/> 中。</translation>
+<translation id="7596536223419118193">您尚无法从 Brave 搜索广告中赚取 BAT，但您可以通过打开这些广告来支持 Brave。</translation>
 <translation id="6390952132783970876">Brave 新闻广告</translation>
 <translation id="7516281787184495886">Brave 新闻包含无法单独禁用的广告。</translation>
 <translation id="8008378848677625233">Brave 新闻目前已停用。</translation>
@@ -458,6 +461,7 @@
 <translation id="412480955826088549">正在下载组件...</translation>
 <translation id="4894106830958548828">我理解</translation>
 <translation id="326118736933420687">您正在查看 WebTorrent 网页</translation>
+<translation id="2729085694451916573"><ph name="PART_ONE"/>预留位置<ph name="PART_ONE_END"/>的测试字串。 <ph name="PART_TWO"/>了解更多<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
 <translation id="4492298165410552103">是否在 Brave 中启用对不可阻挡域的支持？</translation>
 <translation id="5015092481905019948">Brave 将使用 <ph name="PROVIDER_NAME"/> 來解析 <ph name="DOMAIN_PROVIDER_NAME"/> 上的 <ph name="DOMAIN_LIST"/> 域名。Brave 将隐藏你的 IP 地址。如果你啟用这项功能，<ph name="PROVIDER_NAME"/> 只会看到有人正在尝试访这些域，不会看到其他资料。请查阅 <ph name="PROVIDER_NAME"/> 的<ph name="BEGIN_PROVIDER_TOU_LINK"/>使用条款<ph name="END_PROVIDER_TOU_LINK"/>和<ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>隐私权政策<ph name="END_PROVIDER_PRIVACY_LINK"/>。</translation>
@@ -711,6 +715,11 @@
 <translation id="5382339341735118861">发生了一般的请求处理错误</translation>
 <translation id="7123780456696055383">请求的资源不可用</translation>
 <translation id="1680597601664421644">导入的助记符对 Brave 钱包无效</translation>
+<translation id="372898731091371291">您想要导入哪种类型的钱包？</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin 钱包</translation>
+<translation id="8659668419772278776">从现有的钱包导入您的种子密语</translation>
+<translation id="8110492767853188065">硬件钱包</translation>
+<translation id="7437218084485869007">将硬件钱包与 Brave 连接</translation>
 <translation id="4641919696349069826">请求已在进行中</translation>
 <translation id="872806943696014633">交易数据缺失</translation>
 <translation id="7068183357903252127">必须指定交易数据“to”或“data”</translation>
@@ -804,19 +813,21 @@
 <translation id="1426410128494586442">是</translation>
 <translation id="4250680216510889253">否</translation>
 <translation id="1201402288615127009">下一步</translation>
-<translation id="8712637175834984815">知道了</translation>
+<translation id="3214453326297774895">显示我的恢复密语</translation>
 <translation id="6896758677409633944">复制</translation>
 <translation id="7885157704277298658">已复制</translation>
 <translation id="6518133107902771759">验证</translation>
 <translation id="6042308850641462728">更多</translation>
-<translation id="768236965975208017">安全、多链、且非常容易使用。只需点击几下即可使用您的 Brave Wallet</translation>
 <translation id="3157931365184549694">恢复</translation>
-<translation id="2484275747844666540">创建新钱包</translation>
-<translation id="3662348701117072366">导入现有钱包</translation>
-<translation id="7150150391368236519">连接硬件钱包</translation>
+<translation id="414070570958255222">浏览器本地化。自托管。并采用多链机制。</translation>
+<translation id="1350120992777389959">掌控您的加密货币和 NFT。Brave 钱包支持以太坊、EVM 链、Solana、Filecoin、比特币等。</translation>
+<translation id="165255193061631296">需要新钱包？</translation>
+<translation id="1939235910515558387">只需几分钟，即可开始使用 Brave 钱包。</translation>
+<translation id="5844138175312846408">已经有钱包？</translation>
+<translation id="772643556080081594">我需要一个仅供查看的钱包</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave 和 Brave 标志是 Brave Software, Inc. 的注册商标。其他产品名称和标志均为其各自公司的商标。保留所有权利。</translation>
 <translation id="7501957181231305652">或</translation>
 <translation id="375882617301124395">备份加密钱包</translation>
-<translation id="180032279811483155">接下来，您将看到一个 <ph name="RECOVERY_PHRASE_LENGTH"/> 个单词的恢复短语，可以将其用于恢复主加密账户。确保其安全。当您忘记密码、设备丢失或被盗、或想切换钱包时，您的恢复短语是恢复账户访问的唯一方法。</translation>
 <translation id="5024543173656851695">我理解一旦我丢失我的恢复语句，我将无法访问我的加密钱包。</translation>
 <translation id="8281886186245836920">跳过</translation>
 <translation id="6532106788206463496">保存更改</translation>
@@ -829,7 +840,7 @@
 <translation id="2339124864228588937">验证恢复密语</translation>
 <translation id="3747079125031086337">按照正确的顺序选择恢复短语中的单词。</translation>
 <translation id="802060020117206314">恢复短语不匹配，请重试。</translation>
-<translation id="8412783472871103529">验证您的恢复短语</translation>
+<translation id="7345730059518887993">检查一下</translation>
 <translation id="2226686084760581391">点击<ph name="FIRST_BEFORE"/><ph name="FIRST"/>（第 <ph name="FIRST_ORDINAL"/> 个）<ph name="FIRST_AFTER"/>、<ph name="SECOND_BEFORE"/><ph name="SECOND"/>（第 <ph name="SECOND_ORDINAL"/> 个）<ph name="SECOND_AFTER"/>和<ph name="THIRD_BEFORE"/><ph name="THIRD"/>（第 <ph name="THIRD_ORDINAL"/> ）<ph name="THIRD_AFTER"/> 个恢复短语。</translation>
 <translation id="7575574239720542222">恢复短语不匹配</translation>
 <translation id="8692301574305033504">创建新密码</translation>
@@ -859,7 +870,10 @@
 <translation id="4359319875297001084">从旧的 Brave 加密钱包导入？</translation>
 <translation id="3331452756822160641">新密码</translation>
 <translation id="8624315169751085215">复制到剪贴板</translation>
+<translation id="2598171223363459366">现在可以跳过这一步，但仍需备份恢复密语，以确保账号安全。</translation>
+<translation id="5303015959766064022">稍后备份</translation>
 <translation id="6346952829206698721">从剪贴板粘贴</translation>
+<translation id="2610561535971892504">点击即可复制</translation>
 <translation id="1121335910737476837">主加密账户</translation>
 <translation id="6969147029062037757">导入的账户</translation>
 <translation id="3926119534765499672">连接硬件钱包</translation>
@@ -895,16 +909,23 @@
 <translation id="6892232036314454524">当在 Ledger 设备上打开错误的应用程序时，可能会发生此错误。</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">允许 Brave 访问您的 Ledger 设备。</translation>
+<translation id="8012452656725205792">授权 Brave 访问您的 <ph name="HARDWARE_DEVICE"/> 设备。</translation>
 <translation id="4378551569595875038">正在连接…</translation>
 <translation id="1943188256166395881">添加选中的账户</translation>
 <translation id="8554010658308662631">加载更多</translation>
 <translation id="6998738230710304743">正在加载更多...</translation>
 <translation id="5592304751234049046">搜索账户</translation>
+<translation id="3168978475376026497">HD 路径</translation>
 <translation id="6151024411349343484">如果找不到查找的帐户，试着切换 HD 路径（上方）。</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">旧式 (MEW/MyCrypto）</translation>
 <translation id="4549853322523631092">未找到结果。</translation>
+<translation id="7261362517244085362">授权您的钱包</translation>
+<translation id="7150150391368236519">连接硬件钱包</translation>
+<translation id="5400782314657008092">我们目前支持 <ph name="HARDWARE_DEVICE"/> 和 <ph name="HARDWARE_DEVICE1"/> 设备。</translation>
+<translation id="8144305264680648043">连接硬件钱包，直接从 Brave 钱包管理资产</translation>
+<translation id="1329837291200753515">选择区块链导入硬件钱包</translation>
+<translation id="6983390509997396124">将您的 <ph name="HARDWARE_DEVICE"/> 设备连接到 Brave 钱包</translation>
 <translation id="5149944858285555235">未知错误，请重新连接硬件钱包并重试。</translation>
 <translation id="4522570452068850558">详细信息</translation>
 <translation id="9220525904950070496">移除帐号</translation>
@@ -943,8 +964,6 @@
 <translation id="1613627717923045622">测试网络</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">塞波利亚</translation>
-<translation id="1260818237399583903">Binance 智能链</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">本地主机</translation>
 <translation id="3792938779249970121">选择账户</translation>
 <translation id="6797737193502014008">搜索账户</translation>
@@ -1058,6 +1077,7 @@
 <translation id="6383204195803840504">交易将出现在此处</translation>
 <translation id="6079696972035130497">无金额限制</translation>
 <translation id="2916401020782528840">未找到交易</translation>
+<translation id="1690963073120772693">无法重试这项交易。</translation>
 <translation id="2833661570529295305">未批准</translation>
 <translation id="8034530868111548216">批准</translation>
 <translation id="6015436276085482001">拒绝</translation>
@@ -1152,8 +1172,8 @@
 <translation id="8523768065044261559">处理交易出错，请重试</translation>
 <translation id="971552837551838642">签署消息出错，请重试</translation>
 <translation id="8273603707418703324">签署消息出错，请求了未知的 keyring，请重试</translation>
-<translation id="5265455943786954050">Trezor 命令已在进行中</translation>
-<translation id="7017116822583380542">Trezor 网桥未就绪</translation>
+<translation id="6200074323131367633"><ph name="DEVICE_NAME"/> 指令正在处理中</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> 桥接器未就绪</translation>
 <translation id="3378339846292573874">添加建议的代币</translation>
 <translation id="2322227405137827074">要导入此代币吗？</translation>
 <translation id="4378475168089649292">区块链</translation>
@@ -1347,17 +1367,22 @@
 <translation id="1792917191129448067">开启 Rainbow Bridge 应用程序</translation>
 <translation id="1522775706527775647">通往 Aurora</translation>
 <translation id="4903322403594141291">了解有关 Brave Wallet 的更多信息</translation>
-<translation id="3875185448438395303">至少：</translation>
-<translation id="2029465635925899949">8 个字符</translation>
-<translation id="6697810017029555732">匹配上了！</translation>
+<translation id="4427684901715566795">密码应包含：</translation>
+<translation id="8521329076169776625">至少 8 个字符</translation>
+<translation id="3665035348242240953">密码相符</translation>
 <translation id="8918368616587206671">强！</translation>
 <translation id="574392208103952083">中等</translation>
 <translation id="8297006494302853456">弱</translation>
+<translation id="3282258437441351851">Brave 钱包将在以下时间后自动锁定</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> 分钟</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> 小时</translation>
 <translation id="7084181009966710506">正在创建钱包…</translation>
-<translation id="6782556046178425980">在开始备份钱包之前</translation>
+<translation id="3259102562570606417">保存您的恢复密语</translation>
 <translation id="7119749028647909394">由 12 到 24 个字组成的助记词是一个私钥。万一您丢失连接的设备，您可以用它来重新获得对钱包的访问权限。将其存放在安全的地方，并按照下面显示的确切顺序存放。</translation>
 <translation id="3259018319025894691">Brave 无法访问您的秘密恢复短语。请妥善保管，切勿与他人分享。</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>重要提示：<ph name="TAG_AFTER"/>切勿分享您的恢复短语。任何有这句话的人都可以永远拿走您的资产。</translation>
+<translation id="426648489149930289">将其保存在他人无法接触到的安全地方，避免与任何人共享。</translation>
+<translation id="119185410022731300">输入您的恢复密语中第 <ph name="VALUE"/> 个字词。</translation>
+<translation id="2193954488469999829">忘记保存？立即返回</translation>
 <translation id="7509948206688764960">备份您的钱包恢复短语</translation>
 <translation id="8052898407431791827">已复制到剪贴板</translation>
 <translation id="4576741736874242970">点击查看您的短语</translation>
@@ -1376,8 +1401,9 @@
 <translation id="2781276194026093899">​</translation>
 <translation id="7992766987062040279">​</translation>
 <translation id="2295726992010694229">​</translation>
-<translation id="8241405611628876973">恭喜！您的 Brave Wallet 已准备就绪！</translation>
-<translation id="6828327990705355767">要访问您的钱包，只需单击任何 Brave 浏览器窗口右上角的钱包图标即可。</translation>
+<translation id="1148624853678088576">您已准备就绪！</translation>
+<translation id="1656439328205762155">您的 Brave 钱包现已设置完毕，随时可供使用。</translation>
+<translation id="3342494025742308764">前往投资组合</translation>
 <translation id="396152018598329740">如何使用加密货币钱包？</translation>
 <translation id="7512061585041489067">什么是最好的加密货币钱包？</translation>
 <translation id="1342755158522323177">什么是加密货币浏览器？</translation>
@@ -1385,24 +1411,31 @@
 <translation id="4674552515763857735">什么是恢复短语？</translation>
 <translation id="7328255859839881981">什么是 DApp？</translation>
 <translation id="3852489285890032403">什么是网络 3？</translation>
-<translation id="5448233694500869445">我们在您的浏览器中检测到了 MetaMask 扩展程序</translation>
-<translation id="8436080536329710282">输入您的 MetaMask 钱包密码即可轻松导入 Brave Wallet。</translation>
+<translation id="2349224271234429946">导入 MetaMask 钱包</translation>
+<translation id="6715906859822319136">只需输入密码，即可轻松导入 MetaMask 钱包。</translation>
 <translation id="7543512765962444927">连接到您现有的钱包</translation>
 <translation id="3551682252653406110">要连接您已有的钱包，您可能需要输入您的恢复短语。目前我们支持从以太坊和 Solana 钱包恢复/导入。</translation>
-<translation id="346929827081904572">从助记词短语恢复</translation>
+<translation id="3961126209136843111">导入现有钱包</translation>
 <translation id="5645597512426471834">12-24 个字</translation>
-<translation id="8158505311297755780">输入您的 Brave Wallet 的助记词（ 12-24 个字）。</translation>
+<translation id="2321396552035646646">您可以将整个恢复密语粘贴到任何字段中。</translation>
 <translation id="5419707890586509000">从 MetaMask 导入</translation>
 <translation id="2265945811107390939">使用您的 MetaMask 密码导入您的助记词</translation>
 <translation id="7060680423657442298">没关系，我会创建一个新钱包</translation>
+<translation id="1932878136775815535">我的恢复密语共有 <ph name="LENGTH"/> 个字词</translation>
+<translation id="7877416315564177070">查看您的恢复密语并重试。</translation>
+<translation id="6503538941917874992">使用恢复密语导入</translation>
+<translation id="782167880151571109">检测到 Metamask 钱包！</translation>
+<translation id="3619071361843652814">检测到旧版钱包！</translation>
+<translation id="4634124774493850572">使用密码</translation>
+<translation id="7697478310235189459">字词 <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">输入您的 MetaMaskt 的助记词（ 12-24 个字）。</translation>
 <translation id="7720392926833259937">输入 MetaMask 密码</translation>
 <translation id="6657585470893396449">密码</translation>
 <translation id="6260144012548445299">详细了解我的新钱包</translation>
-<translation id="8746910870914151528">法律相关内容</translation>
-<translation id="5148123176978018397">请确认以下内容：</translation>
-<translation id="6088314935678153800">我了解这是一个自我保管的钱包，我独自负责任何相关的资金、资产或账户，并负责采取适当的行动来保护和备份我的钱包。我了解 Brave 不能代表我访问我的钱包或进行反向交易，并且我的恢复短语是在密码丢失、设备被盗或类似情况下重新获得访问权限的唯一方法。</translation>
-<translation id="7781090633800450517">我已阅读并同意<ph name="LINK_BEFORE"/>使用条款<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">开始之前</translation>
+<translation id="5333225216561354793">我们需要你确认以下事项</translation>
+<translation id="4284971227128011550">我明白这是一个自我保管的钱包，我独自对任何相关的资金、资产或账户负责，并采取适当措施确保钱包的安全、保护和备份。我明白 Brave 无法代表我访问我的钱包或反向交易，我的恢复密语是在密码丢失、设备被盗或类似情况下重新访问钱包的唯一方法。</translation>
+<translation id="3604445540387095708">我已阅读并同意<ph name="LINK_BEFORE"/>使用条款<ph name="LINK_AFTER"/>。</translation>
 <translation id="1422451606553326863">购买加密货币</translation>
 <translation id="3887541341068007345">正在检查钱包扩展程序...</translation>
 <translation id="3567994771568272606">从旧版 Brave 加密货币钱包导入</translation>
@@ -1603,6 +1636,7 @@
 <translation id="5667702863609780570">有损失风险的不安全操作</translation>
 <translation id="6405354572620970908">该请求可能有恶意，可能会让你遭受盗窃。除非你信任该应用程序，否则请勿继续操作。</translation>
 <translation id="786261184916565476">我们发现 <ph name="VALUE"/> 个问题。</translation>
+<translation id="2826600321627372011">未找到路径</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1681,6 +1715,7 @@ other {# 个来源}
 <translation id="7948579849190819732">当前标签页</translation>
 <translation id="7056969230130642253">没有更多内容</translation>
 <translation id="7292242212818928219">有新内容，要刷新吗？</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">快捷指令</translation>
 <translation id="7481312909269577407">前进</translation>
 <translation id="302781076327338683">绕过缓存重新加载</translation>
@@ -1717,7 +1752,7 @@ other {# 个来源}
 <translation id="926046137238708033">将所有标签页取消静音</translation>
 <translation id="855081842937141170">固定标签页</translation>
 <translation id="2805351816064694332">关闭未固定标签页</translation>
-<translation id="8657641252283410630">组标签页</translation>
+<translation id="8657641252283410630">分组标签页</translation>
 <translation id="8908724110993882115">切换已展开的群组</translation>
 <translation id="8813600493701436462">从当前群组中删除标签页</translation>
 <translation id="3170171381379098900">取消当前标签页群组的分组</translation>
@@ -1833,13 +1868,11 @@ other {# 个来源}
 <translation id="831931573200952705">该组合用于<ph name="COMMAND"/>，无法修改。</translation>
 <translation id="3537006124004887164">该组合用于<ph name="COMMAND"/>，无法修改。请尝试通过系统设置中的“应用程序快捷方式”对其进行修改。</translation>
 <translation id="712598284361781729">新增分屏视图</translation>
-<translation id="6655450014966273037">关闭分屏视图</translation>
 <translation id="1130188644637295274">在分屏视图打开</translation>
-<translation id="7195519370590486580">分成多个标签页</translation>
+<translation id="6459036216700972269">取消分割标签页</translation>
 <translation id="3617523374417810198">新的分屏视图</translation>
-<translation id="9053179124396567872">关闭分屏视图</translation>
 <translation id="8571323456914890254">在分屏视图打开</translation>
-<translation id="2397258152713354053">分成多个标签页</translation>
+<translation id="5329136173514538969">取消分割标签页</translation>
 <translation id="8591883849678260674">查看原文</translation>
 <translation id="1969654232209826429">分钟读取</translation>
 <translation id="4101707289420716287">关闭 Speedreader</translation>
@@ -1884,28 +1917,29 @@ other {# 个来源}
 <translation id="7921782882718083488">总结本网页</translation>
 <translation id="7932221068776853847">断开连接以停止向 Leo 发送此页面内容，并开始新的对话</translation>
 <translation id="1167803637855350748">连接 Leo 时出现网络问题，请检查您的连接并重试。</translation>
-<translation id="5095201428204952524">Leo 现在太忙了。请几分钟后再试一次。</translation>
+<translation id="1996126325390835277">Leo 现在太忙了。请几分钟后再试一次。</translation>
 <translation id="7144878232160441200">重试</translation>
-<translation id="2505565639170795978">嗨，我是 Leo。我是由 Brave 托管的人工智能助手。我由 Llama 13B 提供支持，Llama 13B 是由 Meta 创建的模型，性能卓越，适用于多种用例。</translation>
-<translation id="8030558642460377506">你好，我是 Leo。我是由 Brave 托管的人工智能助手。我使用的是 Mixtral 8x7B，这是由 Mistral AI 开发的模型，可以处理高级任务。</translation>
-<translation id="2489317965865266353">嗨，我是 Leo。我由 Brave 代理，并由 Claude Instant 支持，该模型由 Anthropic 创建，用于支持对话和文本处理任务。</translation>
+<translation id="8570488829560315702">您好，我是 Leo。我是由 Brave 完全管理的 AI 助手。我的技术支持来自 Llama 3 8B，这是由 Meta 创建的模型，适用于多种使用案例并可提供高效能。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">您好，我是 Leo。我是由 Brave 完全管理的 AI 助手。我的技术支持来自 Mixtral 8x7B，这是由 Mistral AI 创建的模型，适用于处理进阶工作。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">您好，我是 Leo。我是由 Brave 代理并由 Claude Instant 提供技术支持，Claude Instant 是 Anthropic 创建的模型，用于为会话和文字处理任务提供技术支持。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">嗨，我是 Leo。我是由 Brave 代理 ，并使用 Anthropic 创建的 Claude 3 Haiku 模型来处理对话和文字工作。</translation>
 <translation id="4147243042852964992">嗨，我是 Leo。我由 Brave 代理，并由 Claude 3 Sonnet 支持，该模型由 Anthropic 创建，用于支持对话和文本处理任务。</translation>
 <translation id="6206029817087805290">由<ph name="COMPANY_NAME"/>提供的<ph name="MODEL_NAME"/></translation>
-<translation id="8944485226638699751">限制</translation>
 <translation id="6187065185557150870">会话</translation>
 <translation id="2961040541145689181">新会话</translation>
 <translation id="7557539689487606886">订阅 Premium</translation>
 <translation id="1691256669639196606">管理订阅</translation>
+<translation id="2304783958703511257">高级设置</translation>
 <translation id="3037594989275592390">语言模型</translation>
 <translation id="6637015365469044269">立即升级</translation>
+<translation id="5543505256451301851">免费试用 7 天</translation>
 <translation id="849535826888024304">响应率达到极限</translation>
-<translation id="6149863263423821329">通过订阅高级版，您可以解锁更高的响应速度。您也可以切换到我们功能较弱的 Llama2 13b 免费模型继续使用。</translation>
+<translation id="2252128900328632803">通过订阅高级版，您可以解锁更高的响应速度。您也可以切换到我们功能较弱的 Llama2 13b 免费模型继续使用。</translation>
 <translation id="4173478269537830374">探索不同的人工智能模型</translation>
 <translation id="3245401959451976966">解锁您的创意</translation>
 <translation id="4165928407303989823">保持话题一致</translation>
 <translation id="2389665228467129817">更长时间聊天</translation>
-<translation id="8556044455877152001">美金  <ph name="PRICE_VALUE"/> /月</translation>
+<translation id="8556044455877152001"><ph name="PRICE_VALUE"/> 美金$ /月</translation>
 <translation id="5151923271944811339">切换到免费模式</translation>
 <translation id="5474757891469990756">通过高级版释放 Leo 的全部能力：</translation>
 <translation id="5552332211527367850">优先访问具有不同技能的强大模型</translation>
@@ -1933,8 +1967,11 @@ other {# 个来源}
 <translation id="8742658901413346500">这段对话很长，Leo 可能很快就会开始忘记事情。您可以切换到高级模式来获得更长的对话时间，也可以清除聊天来重置对话。</translation>
 <translation id="7550152963854770123">清除会话</translation>
 <translation id="7494736170250048402">发送消息给 Leo</translation>
+<translation id="8712637175834984815">知道了</translation>
 <translation id="1093419424466417703">对 Leo 来说，此页面过于冗长。对话可能遗漏某些内容。因此 Leo 无法读取该页面内容的 <ph name="PERCENTAGE"/> 。</translation>
 <translation id="4370698775470316661">对话时间太长，无法继续。可能有其他机型，Leo 能够在较长时间的对话中保持准确性。</translation>
+<translation id="5719170755629028558">正在改善您在 Brave 搜索中的搜索结果...</translation>
+<translation id="5794962229997281366">已改善<ph name="SEARCH_TERMS"/>的搜索结果。</translation>
 <translation id="6291843235651817590">通用聊天工具</translation>
 <translation id="8193130769524604031">高级聊天任务</translation>
 <translation id="3185367320601718531">对话和文本生成</translation>
@@ -1974,6 +2011,8 @@ other {# 个来源}
 <translation id="3130793786899299931">更改长度</translation>
 <translation id="6320643499534852464">社交媒体</translation>
 <translation id="2370739752330685659">回头再说</translation>
+<translation id="983013125018250242">Leo 工具</translation>
+<translation id="49269513399674318">使用麦克风</translation>
 <translation id="6303294677342628402">盾牌</translation>
 <translation id="8458987127502506209">启用 Brave 盾牌</translation>
 <translation id="7509914170164691086">Shields 已为<ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>

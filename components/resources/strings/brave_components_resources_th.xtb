@@ -183,6 +183,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4759608598194750161">ยิ่งคุณดูมากเท่าไหร่ คุณก็ยิ่งได้รับมากเท่านั้น</translation>
 <translation id="7526443283522395161">โฆษณาหน้าแท็บใหม่</translation>
 <translation id="7968650944098083708">การแจ้งเตือนโฆษณา</translation>
+<translation id="8289546216379862569">ค้นหาโฆษณา</translation>
+<translation id="4758111936363146244">Brave Search Ads จะปรากฏใน <ph name="BEGIN_LINK"/>Brave Search<ph name="END_LINK"/></translation>
+<translation id="7596536223419118193">คุณยังไม่สามารถรับ BAT จาก Brave Search Ads ได้ แต่คุณสามารถช่วยสนับสนุน Brave ได้ด้วยการเปิดใช้งาน</translation>
 <translation id="6390952132783970876">โฆษณา Brave News</translation>
 <translation id="7516281787184495886">Brave News มีโฆษณาที่ไม่สามารถปิดการใช้งานได้อย่างอิสระ</translation>
 <translation id="8008378848677625233">ปิดการใช้งาน Brave News อยู่ในขณะนี้</translation>
@@ -459,6 +462,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="412480955826088549">กำลังดาวน์โหลดส่วนประกอบ...</translation>
 <translation id="4894106830958548828">ฉันเข้าใจ</translation>
 <translation id="326118736933420687">คุณกำลังดูหน้า WebTorrent</translation>
+<translation id="2729085694451916573">ทดสอบสตริงสำหรับ <ph name="PART_ONE"/>เพลซโฮลเดอร์<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>เรียนรู้เพิ่มเติม<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">เปิดใช้การรองรับ Unstoppable Domains ใน Brave หรือไม่</translation>
 <translation id="5015092481905019948">Brave จะทำการใช้ <ph name="PROVIDER_NAME"/> เพื่อแปลง <ph name="DOMAIN_LIST"/> ที่อยู่โดเมนที่อยู่บน <ph name="DOMAIN_PROVIDER_NAME"/> โดย Brave จะซ่อนที่อยู่ IP ของคุณ หากคุณเปิดใช้งาน <ph name="PROVIDER_NAME"/> จะเห็นว่ามีคนพยายามเข้าถึงโดเมนเหล่านี้เท่านั้น โปรดดู <ph name="PROVIDER_NAME"/><ph name="BEGIN_PROVIDER_TOU_LINK"/> ข้อกำหนดในการให้บริการ <ph name="END_PROVIDER_TOU_LINK"/> และ <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/> นโยบายความเป็นส่วนตัวของ <ph name="END_PROVIDER_PRIVACY_LINK"/></translation>
@@ -712,6 +716,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5382339341735118861">เกิดข้อผิดพลาดในการประมวลผลคำขอทั่วไป</translation>
 <translation id="7123780456696055383">ทรัพยากรที่ร้องขอไม่พร้อมใช้งาน</translation>
 <translation id="1680597601664421644">ตัวช่วยจำที่นำเข้าสำหรับกระเป๋าเงิน Brave ไม่ถูกต้อง</translation>
+<translation id="372898731091371291">วอลเล็ทที่คุณต้องการนำเข้าเป็นวอลเล็ทประเภทใด</translation>
+<translation id="1430728084670406473">Ethereum/Solana/Filecoin วอลเล็ท</translation>
+<translation id="8659668419772278776">นำเข้ารหัส Seed ของคุณจากวอลเล็ทที่มีอยู่</translation>
+<translation id="8110492767853188065">ฮาร์ดแวร์วอลเล็ท</translation>
+<translation id="7437218084485869007">เชื่อมต่อฮาร์ดแวร์วอลเล็ทของคุณกับ Brave</translation>
 <translation id="4641919696349069826">กำลังดำเนินการตามคำขออยู่</translation>
 <translation id="872806943696014633">ข้อมูลธุรกรรมขาดหายไป</translation>
 <translation id="7068183357903252127">ต้องระบุข้อมูลธุรกรรม 'to' หรือ 'data'</translation>
@@ -805,19 +814,21 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1426410128494586442">ใช่</translation>
 <translation id="4250680216510889253">ไม่มี</translation>
 <translation id="1201402288615127009">ถัดไป</translation>
-<translation id="8712637175834984815">สำเร็จ</translation>
+<translation id="3214453326297774895">แสดงวลีกู้คืนของฉัน</translation>
 <translation id="6896758677409633944">Copy</translation>
 <translation id="7885157704277298658">คัดลอกแล้ว!</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
 <translation id="6042308850641462728">เพิ่มเติม</translation>
-<translation id="768236965975208017">ปลอดภัย โครงสร้างแบบมัลติเชน และใช้งานง่ายมาก เพียงไม่กี่คลิกก็สามารถใช้ Brave Wallet ของคุณได้แล้ว</translation>
 <translation id="3157931365184549694">Restore</translation>
-<translation id="2484275747844666540">สร้างกระเป๋าเงินใหม่</translation>
-<translation id="3662348701117072366">นำเข้ากระเป๋าเงินที่มีอยู่</translation>
-<translation id="7150150391368236519">เชื่อมต่อ Hardware Wallet</translation>
+<translation id="414070570958255222">เบราว์เซอร์ดั้งเดิม รูปแบบควบคุมได้เอง และมัลติเชน</translation>
+<translation id="1350120992777389959">ควบคุมคริปโตและ NFT ของคุณ Brave วอลเล็ทรองรับ Ethereum, EVM Chains, Solana, Filecoin, Bitcoin และอื่นๆ อีกมากมาย</translation>
+<translation id="165255193061631296">ต้องการวอลเล็ทใหม่หรือไม่</translation>
+<translation id="1939235910515558387">เริ่มต้นใช้งาน Brave วอลเล็ทในอีกไม่กี่นาที</translation>
+<translation id="5844138175312846408">มีวอลเล็ทอยู่แล้วหรือไม่</translation>
+<translation id="772643556080081594">ฉันต้องการวอลเล็ทแบบดูอย่างเดียว</translation>
+<translation id="4878034296528175352">©2024 Brave Software Inc. Brave และโลโก้ Brave เป็นเครื่องหมายการค้าจดทะเบียนของ Brave Software, Inc. ชื่อผลิตภัณฑ์และโลโก้อื่นๆ อาจเป็นเครื่องหมายการค้าของบริษัทในเครือ สงวนลิขสิทธิ์</translation>
 <translation id="7501957181231305652">หรือ</translation>
 <translation id="375882617301124395">เก็บสำรองคริปโตวอลเล็ตของคุณ</translation>
-<translation id="180032279811483155">ในขั้นตอนถัดไป คุณจะได้เห็นกลุ่มคำสำหรับการกู้คืน (Recovery Phrase) <ph name="RECOVERY_PHRASE_LENGTH"/> คำ ซึ่งคุณสามารถใช้ในการกู้คืนบัญชีคริปโตหลักของคุณได้ โดยเก็บรักษากลุ่มคำไว้ในที่ที่ปลอดภัย ซึ่งกลุ่มคำสำหรับการกู้คืนของคุณคือวิธีเดียวที่คุณจะสามารถเข้าถึงบัญชีของคุณได้อีกครั้งในกรณีที่ลืมรหัสผ่าน อุปกรณ์สูญหายหรือถูกขโมย หรือคุณต้องการสลับใช้งานกระเป๋าเงิน</translation>
 <translation id="5024543173656851695">ฉันเข้าใจว่าหากฉันลืมคำกู้คืน ฉันจะไม่สามารถเข้าถึงกระเป๋าเงินคริปโตของฉันได้</translation>
 <translation id="8281886186245836920">ข้าม</translation>
 <translation id="6532106788206463496">บันทึกการเปลี่ยนแปลง</translation>
@@ -830,7 +841,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2339124864228588937">ยืนยันวลีกู้คืน</translation>
 <translation id="3747079125031086337">เลือกคำในกลุ่มคำสำหรับการกู้คืนของคุณตามลำดับที่ถูกต้อง</translation>
 <translation id="802060020117206314">กลุ่มคำสำหรับการกู้คืนไม่ตรงกัน โปรดลองอีกครั้ง</translation>
-<translation id="8412783472871103529">ตรวจสอบวลีกู้คืนของคุณ</translation>
+<translation id="7345730059518887993">ตรวจสอบ</translation>
 <translation id="2226686084760581391">คลิก <ph name="FIRST_BEFORE"/><ph name="FIRST"/> (<ph name="FIRST_ORDINAL"/>)<ph name="FIRST_AFTER"/>, <ph name="SECOND_BEFORE"/><ph name="SECOND"/> (<ph name="SECOND_ORDINAL"/>)<ph name="SECOND_AFTER"/> และ <ph name="THIRD_BEFORE"/><ph name="THIRD"/> (<ph name="THIRD_ORDINAL"/>)<ph name="THIRD_AFTER"/> คำในวลีกู้คืนของคุณ</translation>
 <translation id="7575574239720542222">วลีกู้คืนไม่ตรงกัน</translation>
 <translation id="8692301574305033504">สร้างรหัสผ่านใหม่</translation>
@@ -860,7 +871,10 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4359319875297001084">นำเข้าจากคริปโตวอลเล็ตของ Brave ที่มีอยู่เดิมหรือไม่</translation>
 <translation id="3331452756822160641">รหัสผ่านใหม่</translation>
 <translation id="8624315169751085215">คัดลอกไปยังคลิปบอร์ด</translation>
+<translation id="2598171223363459366">คุณสามารถข้ามขั้นตอนนี้ได้ แต่คุณต้องสำรองวลีกู้คืนของคุณเอาไว้เพื่อความปลอดภัยของบัญชี</translation>
+<translation id="5303015959766064022">สำรองทีหลัง</translation>
 <translation id="6346952829206698721">วางจากคลิปบอร์ด</translation>
+<translation id="2610561535971892504">คลิกเพื่อคัดลอก</translation>
 <translation id="1121335910737476837">บัญชีคริปโตหลัก</translation>
 <translation id="6969147029062037757">บัญชีที่นำเข้า</translation>
 <translation id="3926119534765499672">Hardware Wallet ที่เชื่อมต่อ</translation>
@@ -896,16 +910,23 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6892232036314454524">ข้อผิดพลาดนี้อาจเกิดขึ้นเมื่อมีการเปิดแอปพลิเคชันที่ไม่ถูกต้องบนอุปกรณ์ Ledger</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
-<translation id="4247752006222818397">ให้สิทธิ์ Brave เข้าถึงอุปกรณ์ Ledger ของคุณ</translation>
+<translation id="8012452656725205792">ให้สิทธิ์ Brave เข้าถึงอุปกรณ์ <ph name="HARDWARE_DEVICE"/> ของคุณ</translation>
 <translation id="4378551569595875038">กำลังเชื่อมต่อ...</translation>
 <translation id="1943188256166395881">เพิ่มบัญชีที่ทำเครื่องหมายถูกไว้</translation>
 <translation id="8554010658308662631">โหลดเพิ่มเติม</translation>
 <translation id="6998738230710304743">กำลังโหลดเพิ่มเติม...</translation>
 <translation id="5592304751234049046">ค้นหาบัญชี</translation>
+<translation id="3168978475376026497">พาธ HD</translation>
 <translation id="6151024411349343484">ลองสลับพาธ HD (ข้างต้น) หากคุณไม่พบบัญชีที่คุณกำลังมองหา</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
 <translation id="4549853322523631092">ไม่พบผลการค้นหา</translation>
+<translation id="7261362517244085362">อนุญาตวอลเล็ทของคุณ</translation>
+<translation id="7150150391368236519">เชื่อมต่อ Hardware Wallet</translation>
+<translation id="5400782314657008092">ขณะนี้ เรารองรับอุปกรณ์ <ph name="HARDWARE_DEVICE"/> และ <ph name="HARDWARE_DEVICE1"/></translation>
+<translation id="8144305264680648043">เชื่อมต่อฮาร์ดแวร์วอลเล็ทของคุณเพื่อจัดการสินทรัพย์ของคุณโดยตรงจาก Brave วอลเล็ท</translation>
+<translation id="1329837291200753515">เลือกบล็อกเชนเพื่อนำเข้าฮาร์ดแวร์วอลเล็ทของคุณ</translation>
+<translation id="6983390509997396124">เชื่อมต่ออุปกรณ์ <ph name="HARDWARE_DEVICE"/> ของคุณกับ Brave วอลเล็ท</translation>
 <translation id="5149944858285555235">ข้อผิดพลาดที่ไม่รู้จัก โปรดเชื่อมต่อฮาร์ดแวร์วอลเล็ตของคุณใหม่แล้วลองอีกครั้ง</translation>
 <translation id="4522570452068850558">รายละเอียด</translation>
 <translation id="9220525904950070496">Remove account</translation>
@@ -944,8 +965,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1613627717923045622">Test Network</translation>
 <translation id="4022672158058543834">Goerli</translation>
 <translation id="6742767287935968736">Sepolia</translation>
-<translation id="1260818237399583903">Binance Smart Chain</translation>
-<translation id="9047549342128428249">BSC</translation>
 <translation id="6749024162985917640">Localhost</translation>
 <translation id="3792938779249970121">เลือกบัญชี</translation>
 <translation id="6797737193502014008">ค้นหาบัญชี</translation>
@@ -1059,6 +1078,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6383204195803840504">ธุรกรรมจะปรากฏที่นี่</translation>
 <translation id="6079696972035130497">ไม่จำกัด</translation>
 <translation id="2916401020782528840">ไม่พบการทำธุรกรรม</translation>
+<translation id="1690963073120772693">ไม่สามารถทำธุรกรรมนี้อีกครั้งได้</translation>
 <translation id="2833661570529295305">Unapproved</translation>
 <translation id="8034530868111548216">Approved</translation>
 <translation id="6015436276085482001">ถูกปฏิเสธ</translation>
@@ -1153,8 +1173,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8523768065044261559">เกิดข้อผิดพลาดในการประมวลผลธุรกรรม กรุณาลองอีกครั้ง</translation>
 <translation id="971552837551838642">เกิดข้อผิดพลาดในการเซ็นชื่อในข้อความ กรุณาลองอีกครั้ง</translation>
 <translation id="8273603707418703324">เกิดข้อผิดพลาดในการเซ็นชื่อในข้อความ มีคำขอพวงกุญแจที่ไม่รู้จัก กรุณาลองอีกครั้ง</translation>
-<translation id="5265455943786954050">คำสั่ง Trezor อยู่ระหว่างดำเนินการ</translation>
-<translation id="7017116822583380542">Trezor Bridge ไม่พร้อม</translation>
+<translation id="6200074323131367633">คำสั่ง <ph name="DEVICE_NAME"/> อยู่ระหว่างดำเนินการ</translation>
+<translation id="4213183402991860207"><ph name="DEVICE_NAME"/> Bridge ไม่พร้อมใช้งาน</translation>
 <translation id="3378339846292573874">เพิ่มโทเค็นที่แนะนำ</translation>
 <translation id="2322227405137827074">คุณต้องการนำเข้าโทเค็นเหล่านี้หรือไม่</translation>
 <translation id="4378475168089649292">บล็อกเชน</translation>
@@ -1348,17 +1368,22 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="1792917191129448067">เปิดแอป Rainbow Bridge</translation>
 <translation id="1522775706527775647">เชื่อมต่อ Aurora</translation>
 <translation id="4903322403594141291">เรียนรู้เพิ่มเติมเกี่ยวกับ Brave Wallet</translation>
-<translation id="3875185448438395303">อย่างน้อย:</translation>
-<translation id="2029465635925899949">8 ตัวอักษร</translation>
-<translation id="6697810017029555732">ตรงกัน!</translation>
+<translation id="4427684901715566795">รหัสผ่านต้องประกอบด้วย:</translation>
+<translation id="8521329076169776625">อักขระอย่างน้อย 8 ตัว</translation>
+<translation id="3665035348242240953">รหัสผ่านตรงกัน</translation>
 <translation id="8918368616587206671">แข็งแกร่ง!</translation>
 <translation id="574392208103952083">ปานกลาง</translation>
 <translation id="8297006494302853456">อ่อน</translation>
+<translation id="3282258437441351851">Brave วอลเล็ทจะล็อคอัตโนมัติในภายหลัง</translation>
+<translation id="114276356113671828"><ph name="VALUE"/> นาที</translation>
+<translation id="5408337686677411363"><ph name="VALUE"/> ชั่วโมง</translation>
 <translation id="7084181009966710506">กำลังสร้างกระเป๋าเงิน...</translation>
-<translation id="6782556046178425980">ก่อนที่คุณจะเริ่มสำรองข้อมูลกระเป๋าเงิน</translation>
+<translation id="3259102562570606417">บันทึกวลีกู้คืนของคุณ</translation>
 <translation id="7119749028647909394">วลีกู้คืน 12-24 คำเป็นกุญแจส่วนบุคคลที่คุณสามารถใช้เพื่อเข้าถึงกระเป๋าเงินของคุณอีกครั้งในกรณีที่อุปกรณ์เชื่อมต่อสูญหาย โปรดเก็บไว้ในที่ปลอดภัยและเรียงตามลำดับที่ปรากฏด้านล่าง</translation>
 <translation id="3259018319025894691">Brave ไม่สามารถเข้าถึงวลีกู้คืนของคุณได้ โปรดเก็บไว้ในที่ปลอดภัยและอย่าเปิดเผยกับผู้อื่น</translation>
-<translation id="7650284207965419234"><ph name="TAG_BEFORE"/>คำเตือน: <ph name="TAG_AFTER"/>โปรดอย่าเปิดเผยวลีกู้คืนของคุณ เนื่องจากใครก็ตามที่มีวลีนี้จะสามารถนำสินทรัพย์ของคุณไปตลอดกาล</translation>
+<translation id="426648489149930289">เก็บไว้ในพื้นที่ที่ปลอดภัยที่ผู้อื่นไม่สามารถเข้าถึงได้และหลีกเลี่ยงการแบ่งปันวลีนี้กับบุคคลอื่น</translation>
+<translation id="119185410022731300">ใส่คำในตำแหน่ง <ph name="VALUE"/> จากวลีกู้คืนของคุณ</translation>
+<translation id="2193954488469999829">ไม่ได้บันทึกใช่หรือไม่ คลิกย้อนกลับ</translation>
 <translation id="7509948206688764960">สำรองวลีกู้คืนกระเป๋าเงินของคุณ</translation>
 <translation id="8052898407431791827">คัดลอกไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="4576741736874242970">คลิกเพื่อดูวลีของคุณ</translation>
@@ -1377,8 +1402,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2781276194026093899">ที่สอง</translation>
 <translation id="7992766987062040279">ที่สาม</translation>
 <translation id="2295726992010694229">ที่สี่</translation>
-<translation id="8241405611628876973">ยินดีด้วย! Brave Wallet ของคุณพร้อมใช้งานแล้ว!</translation>
-<translation id="6828327990705355767">ในการเข้าถึงกระเป๋าเงินของคุณ เพียงคลิกไอคอนกระเป๋าเงินที่ด้านบนฝั่งขวาของหน้าต่างเบราว์เซอร์ Brave</translation>
+<translation id="1148624853678088576">คุณพร้อมแล้ว!</translation>
+<translation id="1656439328205762155">Brave วอลเล็ทของคุณตั้งค่าเรียบร้อยและพร้อมใช้งานแล้ว</translation>
+<translation id="3342494025742308764">ไปที่พอร์ตโฟลิโอ</translation>
 <translation id="396152018598329740">วิธีการใช้กระเป๋าเงินคริปโต</translation>
 <translation id="7512061585041489067">กระเป๋าเงินคริปโตที่ดีที่สุดคืออะไร</translation>
 <translation id="1342755158522323177">เบราว์เซอร์คริปโตคืออะไร</translation>
@@ -1386,24 +1412,31 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4674552515763857735">วลีกู้คืนคืออะไร</translation>
 <translation id="7328255859839881981">DApps คืออะไร</translation>
 <translation id="3852489285890032403">เว็บ 3 คืออะไร</translation>
-<translation id="5448233694500869445">เราตรวจพบส่วนขยาย MetaMask ในเบราว์เซอร์ของคุณ</translation>
-<translation id="8436080536329710282">ป้อนรหัสผ่านกระเป๋าเงิน MetaMask ของคุณเพื่อนำเข้า Brave Wallet ได้ง่ายๆ</translation>
+<translation id="2349224271234429946">นำเข้า MetaMask วอลเล็ท</translation>
+<translation id="6715906859822319136">คุณสามารถนำเข้า MetaMask วอลเล็ทได้ง่ายๆ เพียงป้อนรหัสผ่านของคุณ</translation>
 <translation id="7543512765962444927">เชื่อมต่อกับกระเป๋าเงินที่คุณมีอยู่</translation>
 <translation id="3551682252653406110">ในการเชื่อมต่อกระเป๋าเงินที่คุณมีอยู่แล้ว คุณอาจต้องป้อนวลีกู้คืน ขณะนี้เรารองรับการกู้คืน/นำเข้าจากกระเป๋าเงิน Ethereum และ Solana</translation>
-<translation id="346929827081904572">กู้คืนจากวลีชุดคำศัพท์</translation>
+<translation id="3961126209136843111">นำเข้าวอลเล็ทที่มีอยู่</translation>
 <translation id="5645597512426471834">12-24 คำ</translation>
-<translation id="8158505311297755780">พิมพ์วลีกู้คืน Brave Wallet ของคุณ 12-24 คำ</translation>
+<translation id="2321396552035646646">คุณสามารถวางวลีกู้คืนทั้งหมดของคุณลงในช่องใดก็ได้</translation>
 <translation id="5419707890586509000">นำเข้าจาก MetaMask</translation>
 <translation id="2265945811107390939">ใช้รหัสผ่าน MetaMask เพื่อนำเข้าวลีชุดคำศัพท์ของคุณ</translation>
 <translation id="7060680423657442298">ไม่เป็นไร ฉันจะสร้างกระเป๋าเงินใหม่</translation>
+<translation id="1932878136775815535">ฉันมีวลีกู้คืน <ph name="LENGTH"/> คำ</translation>
+<translation id="7877416315564177070">ตรวจสอบวลีกู้คืนของคุณและลองอีกครั้ง</translation>
+<translation id="6503538941917874992">นำเข้าโดยใช้วลีกู้คืนของคุณ</translation>
+<translation id="782167880151571109">ตรวจพบ Metamask วอลเล็ท!</translation>
+<translation id="3619071361843652814">ตรวจพบวอลเล็ทเดิม!</translation>
+<translation id="4634124774493850572">ใช้รหัสผ่าน</translation>
+<translation id="7697478310235189459">คำ <ph name="VALUE"/></translation>
 <translation id="5913194823092185468">พิมพ์วลีกู้คืน MetaMask ของคุณ 12-24 คำ</translation>
 <translation id="7720392926833259937">พิมพ์รหัสผ่าน MetaMask</translation>
 <translation id="6657585470893396449">รหัสผ่าน</translation>
 <translation id="6260144012548445299">เรียนรู้เพิ่มเติมเกี่ยวกับกระเป๋าเงินใหม่ของฉัน</translation>
-<translation id="8746910870914151528">ของถูกกฎหมาย</translation>
-<translation id="5148123176978018397">โปรดรับทราบสิ่งต่อไปนี้:</translation>
-<translation id="6088314935678153800">ฉันเข้าใจว่านี่คือกระเป๋าเงินแบบดูแลเอง และฉันมีหน้าที่รับผิดชอบเงินทุน สินทรัพย์ หรือบัญชีที่เกี่ยวข้องใดๆ แต่เพียงผู้เดียว และจะดำเนินการตามความเหมาะสมเพื่อรักษาความปลอดภัย ปกป้อง และสำรองข้อมูลกระเป๋าเงินของฉัน ฉันรับทราบว่า Brave ไม่สามารถเข้าถึงกระเป๋าเงินของฉันหรือทำธุรกรรมย้อนกลับในนามของฉันได้ และวลีกู้คืนของฉันเป็นวิธีเดียวที่จะเข้าถึงได้อีกครั้งในกรณีที่รหัสผ่านสูญหาย อุปกรณ์ถูกขโมย หรือเกิดเหตุการณ์ที่คล้ายคลึงกัน</translation>
-<translation id="7781090633800450517">ฉันได้อ่านและยอมรับ <ph name="LINK_BEFORE"/>ข้อกำหนดและเงื่อนไขการใช้งาน<ph name="LINK_AFTER"/></translation>
+<translation id="2502258949541727762">ก่อนที่เราจะเริ่ม</translation>
+<translation id="5333225216561354793">เราจำเป็นต้องให้คุณรับทราบรายการต่อไปนี้</translation>
+<translation id="4284971227128011550">ฉันเข้าใจว่านี่คือวอลเล็ทแบบควบคุมได้เอง และฉันมีหน้าที่รับผิดชอบเงินทุน สินทรัพย์ หรือบัญชีที่เกี่ยวข้องใดๆ แต่เพียงผู้เดียว และจะดำเนินการตามความเหมาะสมเพื่อรักษาความปลอดภัย ปกป้อง และสำรองข้อมูลวอลเล็ทของฉัน ฉันรับทราบว่า Brave ไม่สามารถเข้าถึงวอลเล็ทของฉันหรือทำธุรกรรมย้อนกลับในนามของฉันได้ และวลีกู้คืนของฉันเป็นวิธีเดียวที่จะเข้าถึงได้อีกครั้งในกรณีที่รหัสผ่านสูญหาย อุปกรณ์ถูกขโมย หรือเกิดเหตุการณ์ที่คล้ายคลึงกัน</translation>
+<translation id="3604445540387095708">ฉันได้อ่านและยอมรับ <ph name="LINK_BEFORE"/>ข้อกำหนดการใช้งาน<ph name="LINK_AFTER"/></translation>
 <translation id="1422451606553326863">ซื้อ Crypto</translation>
 <translation id="3887541341068007345">กำลังตรวจสอบส่วนขยายกระเป๋าเงิน...</translation>
 <translation id="3567994771568272606">นำเข้าจากกระเป๋าเงินคริปโต Brave ดั้งเดิม</translation>
@@ -1604,6 +1637,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5667702863609780570">การดำเนินการที่ไม่ปลอดภัยและเสี่ยงต่อการสูญเสีย</translation>
 <translation id="6405354572620970908">คำขอนี้ดูเป็ยอันตราย และอาจทำให้คุณเสี่ยงต่อการถูกขโมย อย่าดำเนินการต่อเว้นแต่คุณจะเชื่อถือแอป</translation>
 <translation id="786261184916565476">เราพบปัญหา <ph name="VALUE"/> รายการ</translation>
+<translation id="2826600321627372011">ไม่พบเส้นทาง</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -1682,6 +1716,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7948579849190819732">แท็บปัจจุบัน</translation>
 <translation id="7056969230130642253">คุณตามทันทุกอย่างแล้ว</translation>
 <translation id="7292242212818928219">เนื้อหาใหม่พร้อมแล้ว ต้องการโหลดใหม่หรือไม่</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4144468798716165316">คำสั่งด่วน</translation>
 <translation id="7481312909269577407">ส่งต่อ</translation>
 <translation id="302781076327338683">โหลดแคชการเลี่ยงใหม่</translation>
@@ -1834,13 +1869,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="831931573200952705">ชุดผสมนี้ใช้สำหรับ <ph name="COMMAND"/> และไม่สามารถแก้ไขได้</translation>
 <translation id="3537006124004887164">ชุดผสมนี้ใช้สำหรับ<ph name="COMMAND"/> และไม่สามารถแก้ไขได้ ลองแก้ไขผ่าน 'App Shortcuts' ในการตั้งค่าระบบ</translation>
 <translation id="712598284361781729">มุมมองแบบแยกใหม่</translation>
-<translation id="6655450014966273037">ปิดมุมมองแบบแยก</translation>
 <translation id="1130188644637295274">เปิดในมุมมองแบบแยก</translation>
-<translation id="7195519370590486580">แบ่งออกเป็นแท็บ</translation>
+<translation id="6459036216700972269">เลิกแยกแท็บ</translation>
 <translation id="3617523374417810198">มุมมองแบบแยกใหม่</translation>
-<translation id="9053179124396567872">ปิดมุมมองแบบแยก</translation>
 <translation id="8571323456914890254">เปิดในมุมมองแบบแยก</translation>
-<translation id="2397258152713354053">แบ่งออกเป็นแท็บ</translation>
+<translation id="5329136173514538969">เลิกแยกแท็บ</translation>
 <translation id="8591883849678260674">ดูต้นฉบับ</translation>
 <translation id="1969654232209826429">นาทีในการอ่าน</translation>
 <translation id="4101707289420716287">ปิด Speedreader</translation>
@@ -1885,23 +1918,24 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="7921782882718083488">สรุปหน้านี้</translation>
 <translation id="7932221068776853847">ยกเลิกการเชื่อมต่อเพื่อหยุดส่งเนื้อหาของเพจนี้ให้ Leo และเริ่มการสนทนาใหม่</translation>
 <translation id="1167803637855350748">เกิดปัญหาในการเชื่อมต่อเครือข่ายกับ Leo โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</translation>
-<translation id="5095201428204952524">ตอนนี้ Leo กำลังวุ่นวายมาก โปรดลองอีกครั้งในอีกสักครู่</translation>
+<translation id="1996126325390835277">ตอนนี้ Leo กำลังวุ่นวายมาก โปรดลองอีกครั้งในอีกสักครู่</translation>
 <translation id="7144878232160441200">ลองใหม่</translation>
-<translation id="2505565639170795978">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Llama 13B ซึ่งเป็นโมเดลที่สร้างโดย Meta เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีต้องการใช้</translation>
-<translation id="8030558642460377506">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Mixtral 8x7B ซึ่งเป็นโมเดลที่สร้างโดย Mistral AI เพื่อจัดการงานขั้นสูง</translation>
-<translation id="2489317965865266353">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude Instant ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ</translation>
+<translation id="8570488829560315702">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Llama 3 8B ซึ่งเป็นโมเดลที่สร้างโดย Meta เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีต้องการใช้ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="6500567629965936637">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Mixtral 8x7B ซึ่งเป็นโมเดลที่สร้างโดย Mistral AI เพื่อจัดการงานขั้นสูง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="4590776109659811206">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude Instant ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="8583558415545871403">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude 3 Haiku ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ</translation>
 <translation id="4147243042852964992">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude 3 Sonnet ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> โดย <ph name="COMPANY_NAME"/></translation>
-<translation id="8944485226638699751">ถูกจำกัด</translation>
 <translation id="6187065185557150870">แชท</translation>
 <translation id="2961040541145689181">แชทใหม่</translation>
 <translation id="7557539689487606886">ใช้งาน Premium</translation>
 <translation id="1691256669639196606">จัดการการสมัครสมาชิก</translation>
+<translation id="2304783958703511257">การตั้งค่าขั้นสูง</translation>
 <translation id="3037594989275592390">โมเดลภาษา</translation>
 <translation id="6637015365469044269">อัปเกรดตอนนี้</translation>
+<translation id="5543505256451301851">ทดลองใช้ฟรี 7 วัน</translation>
 <translation id="849535826888024304">ถึงขีดจำกัดอัตราการตอบสนองแล้ว</translation>
-<translation id="6149863263423821329">ปลดล็อกอัตราการตอบกลับที่สูงขึ้นโดยสมัครใช้งาน Premium คุณยังสามารถเปลี่ยนไปใช้โมเดล Llama2 13b ฟรีที่มีประสิทธิภาพน้อยกว่าเพื่อดำเนินการต่อได้</translation>
+<translation id="2252128900328632803">ปลดล็อกอัตราการตอบกลับที่สูงขึ้นโดยสมัครใช้งาน Premium คุณยังสามารถเปลี่ยนไปใช้โมเดล Llama2 13b ฟรีที่มีประสิทธิภาพน้อยกว่าเพื่อดำเนินการต่อได้</translation>
 <translation id="4173478269537830374">สำรวจโมเดล AI อื่นๆ</translation>
 <translation id="3245401959451976966">ปลดล็อกความคิดสร้างสรรค์ของคุณ</translation>
 <translation id="4165928407303989823">ไม่หลุดประเด็น</translation>
@@ -1934,8 +1968,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8742658901413346500">บทสนทนานี้เริ่มมีความยาวและ Leo อาจลืมข้อมูลต่างๆ ไปในไม่ช้า คุณสามารถมีบทสนทนาที่ยาวนานขึ้นโดยสลับไปใช้โมเดล Premium หรือคุณสามารถล้างแชทเพื่อรีเซ็ตได้</translation>
 <translation id="7550152963854770123">ล้างแชท</translation>
 <translation id="7494736170250048402">ส่งข้อความถึง Leo</translation>
+<translation id="8712637175834984815">สำเร็จ</translation>
 <translation id="1093419424466417703">หน้านี้มีความยาวเกินไปสำหรับ Leo บางข้อความอาจหายไปจากการสนทนา Leo สามารถอ่านเนื้อหาของหน้าได้เพียง <ph name="PERCENTAGE"/></translation>
 <translation id="4370698775470316661">บทสนทนานี้มีความยาวเกินไปและไม่สามารถดำเนินการต่อได้ อาจมีโมเดลอื่นๆ ที่ Leo สามารถใช้เพื่อรักษาความถูกต้องในบทสนทนาได้ยาวนานขึ้น</translation>
+<translation id="5719170755629028558">ปรับปรุงคำตอบของคุณด้วย Brave Search…</translation>
+<translation id="5794962229997281366">ปรับปรุงการค้นหาคำตอบสำหรับ <ph name="SEARCH_TERMS"/></translation>
 <translation id="6291843235651817590">การแชทด้วยวัตถุประสงค์ทั่วไป</translation>
 <translation id="8193130769524604031">งานด้านการแชทขั้นสูง</translation>
 <translation id="3185367320601718531">การสนทนาและการสร้างข้อความ</translation>
@@ -1975,6 +2012,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3130793786899299931">เปลี่ยนความยาว</translation>
 <translation id="6320643499534852464">โซเชียลมีเดีย</translation>
 <translation id="2370739752330685659">ภายหลัง</translation>
+<translation id="983013125018250242">เครื่องมือ Leo</translation>
+<translation id="49269513399674318">ใช้ไมโครโฟน</translation>
 <translation id="6303294677342628402">ปกป้อง</translation>
 <translation id="8458987127502506209">เปิดใช้งานการป้องกันของ Brave</translation>
 <translation id="7509914170164691086"><ph name="LINK_BEFORE"/>เปิดใช้งาน<ph name="LINK_AFTER"/>โล่สำหรับ</translation>
