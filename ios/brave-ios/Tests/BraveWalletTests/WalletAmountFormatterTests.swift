@@ -9,9 +9,9 @@ import XCTest
 
 @testable import BraveWallet
 
-class WeiFormatterTests: XCTestCase {
+class WalletAmountFormatterTests: XCTestCase {
   func testWeiToDecimal() throws {
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 5))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 5))
     // Above 0
     XCTAssertEqual(
       try XCTUnwrap(formatter.decimalString(for: "31050382080585020020", decimals: 18)),
@@ -34,7 +34,7 @@ class WeiFormatterTests: XCTestCase {
     )
   }
   func testWeiToBalance() throws {
-    let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .balance)
     // Round up
     XCTAssertEqual(
       try XCTUnwrap(formatter.decimalString(for: "31050382080585020020", decimals: 18)),
@@ -47,20 +47,20 @@ class WeiFormatterTests: XCTestCase {
     )
   }
   func testWeiToGasFee() throws {
-    let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: "100"))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .gasFee(limit: "100"))
     XCTAssertEqual(
       try XCTUnwrap(formatter.decimalString(for: "31050382080585020020", decimals: 18)),
       "3105.038208"
     )
   }
   func testInvalidString() {
-    let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .balance)
     XCTAssertNil(formatter.decimalString(for: "0x429d069189e0000", radix: .decimal, decimals: 18))
     XCTAssertNil(formatter.decimalString(for: "", decimals: 18))
     XCTAssertNil(formatter.decimalString(for: "hello, world", radix: .hex, decimals: 18))
   }
   func testDecimalToWei() throws {
-    let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .balance)
     XCTAssertEqual(
       try XCTUnwrap(formatter.weiString(from: "1", radix: .decimal, decimals: 18)),
       "1000000000000000000"
@@ -115,7 +115,7 @@ class WeiFormatterTests: XCTestCase {
     let solValueString = "1000000000"
     let spdValueString = "1000000"
 
-    let solFormatted = WeiFormatter.decimalToAmount(
+    let solFormatted = WalletAmountFormatter.decimalToAmount(
       decimalInputString,
       tokenDecimals: Int(BraveWallet.BlockchainToken.mockSolToken.decimals)
     )
@@ -124,7 +124,7 @@ class WeiFormatterTests: XCTestCase {
     XCTAssertNotNil(solFormatted)
     XCTAssertEqual(UInt64(solValueString)!, solFormatted!)
 
-    let spdformatted = WeiFormatter.decimalToAmount(
+    let spdformatted = WalletAmountFormatter.decimalToAmount(
       decimalInputString,
       tokenDecimals: Int(BraveWallet.BlockchainToken.mockSpdToken.decimals)
     )

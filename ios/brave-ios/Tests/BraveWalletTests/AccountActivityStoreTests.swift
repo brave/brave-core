@@ -189,7 +189,7 @@ class AccountActivityStoreTests: XCTestCase {
     // Monday, November 8, 2021 7:27:51 PM
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockEthAccount
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockEthDecimalBalance: Double = 0.0896
     let numEthDecimals = Int(BraveWallet.NetworkInfo.mockMainnet.nativeToken.decimals)
     let mockEthBalanceWei =
@@ -594,7 +594,7 @@ class AccountActivityStoreTests: XCTestCase {
     transactionCopy.id = UUID().uuidString
     transactionCopy.chainId = BraveWallet.FilecoinTestnet
 
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockFilDecimalBalance: Double = 2
     let filecoinMainnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinMainnet.decimals)
     let mockFilDecimalBalanceInWei =

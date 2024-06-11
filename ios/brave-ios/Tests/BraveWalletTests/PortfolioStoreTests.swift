@@ -166,7 +166,7 @@ import XCTest
 
   private func setupStore() -> PortfolioStore {
     let mockSOLLamportBalance: UInt64 = 3_876_535_000  // ~3.8765 SOL
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     // config filecoin on mainnet
     let mockFilUserAssets: [BraveWallet.BlockchainToken] = [

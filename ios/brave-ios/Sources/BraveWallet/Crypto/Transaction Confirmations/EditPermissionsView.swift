@@ -36,9 +36,11 @@ struct EditPermissionsView: View {
     if case .ethErc20Approve(let details) = confirmationStore.activeParsedTransaction.details {
       decimals = Int(details.token?.decimals ?? networkStore.defaultSelectedChain.decimals)
     }
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: decimals))
+    let walletAmountFormatter = WalletAmountFormatter(
+      decimalFormatStyle: .decimals(precision: decimals)
+    )
     let customAllowanceInWei =
-      weiFormatter.weiString(from: customAllowance, radix: .hex, decimals: decimals) ?? "0"
+      walletAmountFormatter.weiString(from: customAllowance, radix: .hex, decimals: decimals) ?? "0"
     return customAllowanceInWei.addingHexPrefix
   }
 

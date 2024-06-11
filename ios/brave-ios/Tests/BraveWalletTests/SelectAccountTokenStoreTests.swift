@@ -81,7 +81,7 @@ class SelectAccountTokenStoreTests: XCTestCase {
     hardware: nil
   )
 
-  private let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+  private let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
   private let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
 
   /// Test `update()` will update `accountSections` for each account, and verify

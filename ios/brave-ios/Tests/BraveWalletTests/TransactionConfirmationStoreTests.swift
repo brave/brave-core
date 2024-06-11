@@ -60,7 +60,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       price: "62117.0",
       assetTimeframeChange: "-57.23"
     )
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     let mockFILBalanceWei = formatter.weiString(from: 1, decimals: 18) ?? ""
     // setup test services

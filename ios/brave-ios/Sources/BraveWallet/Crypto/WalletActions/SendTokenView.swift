@@ -56,8 +56,10 @@ struct SendTokenView: View {
     guard let sendAmount = BDouble(sendTokenStore.sendAmount.normalizedDecimals) else {
       return true
     }
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
-    if weiFormatter.weiString(
+    let walletAmountFormatter = WalletAmountFormatter(
+      decimalFormatStyle: .decimals(precision: Int(token.decimals))
+    )
+    if walletAmountFormatter.weiString(
       from: sendTokenStore.sendAmount.normalizedDecimals,
       radix: .decimal,
       decimals: Int(token.decimals)

@@ -239,7 +239,7 @@ class SendTokenStoreTests: XCTestCase {
     let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken, .previewDaiToken]
     let mockDecimalBalance: Double = 0.0896
     let numDecimals = Int(mockUserAssets[0].decimals)
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: numDecimals))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: numDecimals))
     let mockBalanceWei =
       formatter.weiString(from: mockDecimalBalance, radix: .hex, decimals: numDecimals) ?? ""
 
@@ -478,7 +478,7 @@ class SendTokenStoreTests: XCTestCase {
       bitcoinWalletService, _
     ) =
       setupServices()
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalance = "47.156499657504857477"
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
 

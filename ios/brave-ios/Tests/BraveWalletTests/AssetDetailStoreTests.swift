@@ -14,7 +14,7 @@ class AssetDetailStoreTests: XCTestCase {
 
   func testUpdateWithBlockchainToken() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
@@ -248,7 +248,7 @@ class AssetDetailStoreTests: XCTestCase {
 
   func testUpdateWithBlockchainTokenBitcoin() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     let mockBtcPrice: Double = 63503
@@ -462,7 +462,7 @@ class AssetDetailStoreTests: XCTestCase {
   }
 
   func testUpdateWithCoinMarket() {
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in

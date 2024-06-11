@@ -98,7 +98,7 @@ import XCTest
     BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken
   ]
 
-  let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+  let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
   func updateHelper(bitcoinTestnetEnabled: Bool) async {
     Preferences.Wallet.isBitcoinTestnetEnabled.value = bitcoinTestnetEnabled

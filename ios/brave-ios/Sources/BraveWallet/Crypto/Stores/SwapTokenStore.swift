@@ -323,7 +323,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       let buyToken = selectedToToken
     else { return nil }
 
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let sellAddress = sellToken.contractAddress(in: network)
     let buyAddress = buyToken.contractAddress(in: network)
     let sellAmountInWei: String
@@ -336,7 +336,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return nil
       }
       sellAmountInWei =
-        weiFormatter.weiString(
+        walletAmountFormatter.weiString(
           from: sellAmount.normalizedDecimals,
           radix: .decimal,
           decimals: Int(sellToken.decimals)
@@ -349,7 +349,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       sellAmountInWei = ""
       buyAmountInWei =
-        weiFormatter.weiString(
+        walletAmountFormatter.weiString(
           from: buyAmount.normalizedDecimals,
           radix: .decimal,
           decimals: Int(buyToken.decimals)
@@ -400,7 +400,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     var to: String?
     var value: String?
     var data: [NSNumber]?
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     if currentSwapQuoteInfo.swapQuote?.zeroExQuote != nil {
       let (swapTransactionUnion, _, _) = await swapService.transaction(
@@ -413,10 +413,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       // these values are already in wei
       gasLimit =
-        "0x\(weiFormatter.weiString(from: zeroExQuote.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
+        "0x\(walletAmountFormatter.weiString(from: zeroExQuote.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
       to = zeroExQuote.to
       value =
-        "0x\(weiFormatter.weiString(from: zeroExQuote.value, radix: .hex, decimals: 0) ?? "0")"
+        "0x\(walletAmountFormatter.weiString(from: zeroExQuote.value, radix: .hex, decimals: 0) ?? "0")"
       data = .init(hexString: zeroExQuote.data) ?? .init()
 
     } else if let lifiQuote = currentSwapQuoteInfo.swapQuote?.lifiQuote {
@@ -437,10 +437,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       // these values are already in wei
       gasLimit =
-        "0x\(weiFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
+        "0x\(walletAmountFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
       to = evmTransaction.to
       value =
-        "0x\(weiFormatter.weiString(from: evmTransaction.value, radix: .hex, decimals: 0) ?? "0")"
+        "0x\(walletAmountFormatter.weiString(from: evmTransaction.value, radix: .hex, decimals: 0) ?? "0")"
       data = .init(hexString: evmTransaction.data) ?? .init()
     } else {
       assertionFailure("Only ZeroEx and LiFi supported for Ethereum swaps")
@@ -545,12 +545,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       spenderAddress: spenderAddress,
       chainId: network.chainId
     )
-    let weiFormatter = WeiFormatter(
+    let walletAmountFormatter = WalletAmountFormatter(
       decimalFormatStyle: .decimals(precision: Int(fromToken.decimals))
     )
     let allowanceValue =
       BDouble(
-        weiFormatter.decimalString(
+        walletAmountFormatter.decimalString(
           for: allowance.removingHexPrefix,
           radix: .hex,
           decimals: Int(fromToken.decimals)
@@ -635,7 +635,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     zeroExQuote: BraveWallet.ZeroExQuote
   ) async {
     guard !Task.isCancelled else { return }
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     switch base {
     case .perSellAsset:
       var decimal = 18
@@ -643,7 +643,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         decimal = Int(buyToken.decimals)
       }
       let decimalString =
-        weiFormatter.decimalString(for: zeroExQuote.buyAmount, decimals: decimal) ?? ""
+        walletAmountFormatter.decimalString(for: zeroExQuote.buyAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
         buyAmount = bv.decimalDescription
       }
@@ -653,7 +653,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         decimal = Int(sellToken.decimals)
       }
       let decimalString =
-        weiFormatter.decimalString(for: zeroExQuote.sellAmount, decimals: decimal) ?? ""
+        walletAmountFormatter.decimalString(for: zeroExQuote.sellAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
         sellAmount = bv.decimalDescription
       }
@@ -689,7 +689,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       chainId: network.chainId
     )
     let fee = gasLimit * gasPrice
-    let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
+    let balanceFormatter = WalletAmountFormatter(decimalFormatStyle: .balance)
     let ethBalance =
       BDouble(
         balanceFormatter.decimalString(
@@ -730,7 +730,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     _ jupiterQuote: BraveWallet.JupiterQuote
   ) async {
     guard !Task.isCancelled else { return }
-    let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .balance)
     if let selectedToToken {
       buyAmount =
         formatter.decimalString(
@@ -787,19 +787,19 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.state = .error(Strings.Wallet.unknownError)
       return
     }
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let walletAmountFormatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     switch base {
     case .perSellAsset:
       let decimal = Int(route.toToken.decimals)
       let decimalString =
-        weiFormatter.decimalString(for: route.toAmount, decimals: decimal) ?? ""
+        walletAmountFormatter.decimalString(for: route.toAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
         buyAmount = bv.decimalDescription
       }
     case .perBuyAsset:
       let decimal = Int(route.fromToken.decimals)
       let decimalString =
-        weiFormatter.decimalString(for: route.fromAmount, decimals: decimal) ?? ""
+        walletAmountFormatter.decimalString(for: route.fromAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
         sellAmount = bv.decimalDescription
       }
@@ -822,7 +822,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       )
       let ethBalance =
         BDouble(
-          weiFormatter.decimalString(
+          walletAmountFormatter.decimalString(
             for: ethBalanceString.removingHexPrefix,
             radix: .hex,
             decimals: 18
@@ -833,7 +833,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       let fee =
         BDouble(
-          weiFormatter.decimalString(
+          walletAmountFormatter.decimalString(
             for: "\(feeTotal)",
             decimals: Int(network.decimals)
           ) ?? ""
