@@ -731,6 +731,7 @@ export function getTransactionGasLimit(transaction: TransactionInfo) {
     : transaction.txDataUnion.ethTxData1559?.baseData.gasLimit || ''
 }
 
+/** For EVM and FIL transactions only */
 export const getTransactionGas = (
   transaction: TransactionInfo
 ): {
@@ -738,10 +739,6 @@ export const getTransactionGas = (
   maxFeePerGas: string
   maxPriorityFeePerGas: string
 } => {
-  assert(
-    isEthereumTransaction(transaction) || isFilecoinTransaction(transaction)
-  )
-
   if (isFilecoinTransaction(transaction)) {
     const { filTxData } = transaction.txDataUnion
     return {
