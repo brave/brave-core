@@ -31,7 +31,7 @@
 -ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
 
 # kWebAppUniversalInstall is disabled
-# -*WebApp*
+-*WebApp*
 
 # Unknown
 -ShareMenuControllerTest.*
