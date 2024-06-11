@@ -3,22 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "build/build_config.h"
-#include "ui/base/ui_base_features.h"
-
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-namespace {
-bool ShouldTabSearchAppearBeforeTabStrip() {
+// We always want the tab search button to render after the tab strip (i.e., on
+// the right side of the frame), regardless of platform.
+#define BRAVE_TAB_SEARCH_BUBBLE_HOST_SHOULD_TAB_SEARCH_RENDER_BEFORE_TAB_STRIP \
   return false;
-}
-}  // namespace
-
-#define IsChromeRefresh2023 \
-  IsChromeRefresh2023() && ShouldTabSearchAppearBeforeTabStrip
-#endif
-
 #include "src/chrome/browser/ui/views/tab_search_bubble_host.cc"
-
-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
-#undef IsChromeRefresh2023
-#endif
+#undef BRAVE_TAB_SEARCH_BUBBLE_HOST_SHOULD_TAB_SEARCH_RENDER_BEFORE_TAB_STRIP
