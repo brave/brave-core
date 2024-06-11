@@ -293,7 +293,9 @@ import os.log
     do {
       do {
         let filterSet = try String(contentsOf: localFileURL)
-        result = try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+        result = try await Task.detached {
+          try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+        }.value
         Self.signpost.endInterval("convertRules", state)
       } catch {
         Self.signpost.endInterval("convertRules", state, "\(error.localizedDescription)")
@@ -321,7 +323,6 @@ import os.log
     modes: [BlockingMode]
   ) async throws {
     guard !modes.isEmpty else { return }
-    var foundError: Error?
     let ruleList = try decode(encodedContentRuleList: encodedContentRuleList)
 
     guard !ruleList.isEmpty else {
@@ -335,7 +336,7 @@ import os.log
       return
     }
 
-    for mode in modes {
+    try await modes.asyncConcurrentForEach { mode in
       let identifier = type.makeIdentifier(for: mode)
 
       do {
@@ -343,7 +344,7 @@ import os.log
           ruleList: ruleList,
           for: mode
         )
-        let ruleList = try await compile(
+        let ruleList = try await self.compile(
           encodedContentRuleList: moddedRuleList ?? encodedContentRuleList,
           for: type,
           version: version,
@@ -357,14 +358,10 @@ import os.log
         Self.log.debug(
           "Failed to compile rule list for `\(identifier)` v\(version): \(String(describing: error))"
         )
-        foundError = error
+        throw error
       }
 
       self.versions.value[identifier] = version
-    }
-
-    if let error = foundError {
-      throw error
     }
   }
 
@@ -418,10 +415,12 @@ import os.log
     )
 
     do {
-      let ruleList = try await ruleStore.compileContentRuleList(
-        forIdentifier: identifier,
-        encodedContentRuleList: encodedContentRuleList
-      )
+      let ruleList = try await Task.detached {
+        return try await self.ruleStore.compileContentRuleList(
+          forIdentifier: identifier,
+          encodedContentRuleList: encodedContentRuleList
+        )
+      }.value
       guard let ruleList = ruleList else { throw CompileError.noRuleListReturned }
       Self.signpost.endInterval("compileRuleList", state)
       return ruleList

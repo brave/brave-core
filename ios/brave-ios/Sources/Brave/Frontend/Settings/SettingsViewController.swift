@@ -1027,6 +1027,17 @@ class SettingsViewController: TableViewController {
           accessory: .disclosureIndicator
         ),
         Row(
+          text: "AdBlock Debugger",
+          selection: { [unowned self] in
+            self.navigationController?.pushViewController(
+              UIHostingController(rootView: AdBlockDebugView()),
+              animated: true
+            )
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "Secure Content State Debug",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(

@@ -36,9 +36,9 @@ import os
     sourceProvider: DefaultSourceProvider()
   )
 
-  private let standardManager: AdBlockEngineManager
-  private let aggressiveManager: AdBlockEngineManager
-  private let sourceProvider: SourceProvider
+  let standardManager: AdBlockEngineManager
+  let aggressiveManager: AdBlockEngineManager
+  let sourceProvider: SourceProvider
   /// The info for the resource file. This is a shared file used by all filter lists that contain scriplets. This information is used for lazy loading.
   public var resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   /// The content blocker manager that will be used to compile and manage content blockers
@@ -543,7 +543,7 @@ import os
   }
 
   /// Get the appropriate manager for the given engine type.
-  private func getManager(for engineType: GroupedAdBlockEngine.EngineType) -> AdBlockEngineManager {
+  func getManager(for engineType: GroupedAdBlockEngine.EngineType) -> AdBlockEngineManager {
     switch engineType {
     case .standard: return standardManager
     case .aggressive: return aggressiveManager
@@ -602,7 +602,7 @@ extension AdBlockEngineManager.FileInfo {
   }
 }
 
-@MainActor private class DefaultSourceProvider: AdBlockGroupsManager.SourceProvider {
+@MainActor class DefaultSourceProvider: AdBlockGroupsManager.SourceProvider {
   /// Return an array of all sources that are enabled according to user's settings
   /// - Note: This does not take into account the domain or global adblock toggle
   var enabledSources: [GroupedAdBlockEngine.Source] {
