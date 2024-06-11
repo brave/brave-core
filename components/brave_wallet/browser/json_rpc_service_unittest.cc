@@ -8114,22 +8114,22 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   auto nft_identifier3 = mojom::NftIdentifier::New();
   nft_identifier3->chain_id = mojom::kSolanaMainnet;
   nft_identifier3->contract_address =
-      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_identifier3->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier3));
 
   auto nft_identifier4 = mojom::NftIdentifier::New();
   nft_identifier4->chain_id = mojom::kSolanaMainnet;
   nft_identifier4->contract_address =
-      "3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8";
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_identifier4->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier4));
 
   std::map<GURL, std::string> responses;
   responses[GURL(
       "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "assets?nft_ids=solana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr%"
-      "2Csolana.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8")] = json;
+      "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
+      "2Csolana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8")] = json;
 
   // Add the expected metadata
   std::vector<mojom::NftMetadataPtr> expected_metadata;
@@ -8202,14 +8202,14 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   auto nft_identifier5 = mojom::NftIdentifier::New();
   nft_identifier5->chain_id = mojom::kSolanaMainnet;
   nft_identifier5->contract_address =
-      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_identifier5->token_id = "";
   nft_identifiers2.push_back(std::move(nft_identifier5));
 
   auto nft_identifier6 = mojom::NftIdentifier::New();
   nft_identifier6->chain_id = mojom::kSolanaMainnet;
   nft_identifier6->contract_address =
-      "3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8";
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_identifier6->token_id = "";
   nft_identifiers2.push_back(std::move(nft_identifier6));
 

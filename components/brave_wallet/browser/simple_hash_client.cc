@@ -396,27 +396,19 @@ void SimpleHashClient::OnGetNftsForMetadatas(
     return;
   }
 
-  // A map of composite token IDs to their metadata
-  std::optional<base::flat_map<std::string, mojom::NftMetadataPtr>> metadatas =
-      ParseMetadatas(api_request_result.TakeBody());
+  // A map of NftIdentifierPtr to their metadata
+  std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
+      metadatas = ParseMetadatas(api_request_result.TakeBody());
+  if (!metadatas) {
+    std::move(callback).Run({});
+    return;
+  }
 
-  // For each contract address, create the composite key from the corresponding
-  // chain_id and contract_address at the same index, and look up the metadata
-  // in the map using the case insensitive composite key and add it to the token
-  // urls vector (keeping the original order).
+  // For each NFT identifier, look up the metadata in the map and add it to the
+  // nft_metadatas vector (keeping the original order).
   std::vector<mojom::NftMetadataPtr> nft_metadatas;
-  for (size_t i = 0; i < nft_identifiers.size(); i++) {
-    std::string composite_key;
-    if (coin == mojom::CoinType::ETH) {
-      composite_key = nft_identifiers[i]->chain_id + "." +
-                      nft_identifiers[i]->contract_address + "." +
-                      nft_identifiers[i]->token_id;
-    } else {
-      composite_key = nft_identifiers[i]->chain_id + "." +
-                      nft_identifiers[i]->contract_address;
-    }
-
-    auto it = metadatas->find(base::ToLowerASCII(composite_key));
+  for (const auto& nft_identifier : nft_identifiers) {
+    auto it = metadatas->find(nft_identifier);
     if (it != metadatas->end()) {
       nft_metadatas.push_back(std::move(it->second));
     }
@@ -842,16 +834,9 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
     }
 
     // is_compressed
-    bool is_compressed = false;
-    auto* extra_metadata = nft->FindDict("extra_metadata");
-    if (extra_metadata) {
-      auto compressed =
-          extra_metadata->FindBoolByDottedPath("compression.compressed");
-      if (compressed) {
-        is_compressed = *compressed;
-      }
-      token->is_compressed = is_compressed;
-    }
+    token->is_compressed =
+        nft->FindBoolByDottedPath("extra_metadata.compression.compressed")
+            .value_or(false);
 
     // coin
     token->coin = coin;
@@ -1055,7 +1040,7 @@ SimpleHashClient::ParseTokenUrls(const base::Value& json_value) {
   return token_urls;
 }
 
-std::optional<base::flat_map<std::string, mojom::NftMetadataPtr>>
+std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
 SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
   const base::Value::Dict* dict = json_value.GetIfDict();
   if (!dict) {
@@ -1067,7 +1052,7 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
     return std::nullopt;
   }
 
-  base::flat_map<std::string, mojom::NftMetadataPtr> nft_metadatas;
+  base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr> nft_metadatas;
   for (const auto& nft_value : *nfts) {
     const base::Value::Dict* nft = nft_value.GetIfDict();
     if (!nft) {
@@ -1092,12 +1077,12 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
       continue;
     }
 
-    std::string composite_key =
-        base::StrCat({*chain_id_str, ".", *contract_address});
-    if (token_id && !token_id->empty()) {
-      composite_key += "." + *token_id;
+    mojom::NftIdentifierPtr nft_identifier = mojom::NftIdentifier::New();
+    nft_identifier->chain_id = *chain_id_str;
+    nft_identifier->contract_address = *contract_address;
+    if (token_id) {
+      nft_identifier->token_id = *token_id;
     }
-    composite_key = base::ToLowerASCII(composite_key);
 
     mojom::NftMetadataPtr nft_metadata = mojom::NftMetadata::New();
 
@@ -1164,7 +1149,7 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value) {
       }
     }
 
-    nft_metadatas[composite_key] = std::move(nft_metadata);
+    nft_metadatas[std::move(nft_identifier)] = std::move(nft_metadata);
   }
 
   return nft_metadatas;

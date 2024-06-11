@@ -171,7 +171,7 @@ class SimpleHashClient {
                                base::flat_map<std::string, uint64_t>>>
   ParseBalances(const base::Value& json_value);
 
-  std::optional<base::flat_map<std::string, mojom::NftMetadataPtr>>
+  std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
   ParseMetadatas(const base::Value& json_value);
 
   static GURL GetSimpleHashNftsByWalletUrl(

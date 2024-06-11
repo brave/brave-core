@@ -1671,14 +1671,20 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  std::optional<base::flat_map<std::string, mojom::NftMetadataPtr>> result =
-      simple_hash_client_->ParseMetadatas(*json_value);
+  std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
+      result = simple_hash_client_->ParseMetadatas(*json_value);
   ASSERT_TRUE(result);
 
   // Verify there are three entries.
   EXPECT_EQ(result->size(), 3u);
 
-  auto it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+  mojom::NftIdentifierPtr azuki_identifier = mojom::NftIdentifier::New();
+  azuki_identifier->chain_id = mojom::kMainnetChainId;
+  azuki_identifier->contract_address =
+      "0xED5AF388653567Af2F388E6224dC7C4b3241C544";
+  azuki_identifier->token_id = "2767";
+
+  auto it = result->find(azuki_identifier);
   ASSERT_NE(it, result->end());
   EXPECT_EQ(it->second->name, "Azuki #2767");
   EXPECT_EQ(it->second->description, "Azuki is a cute little bean");
@@ -1697,7 +1703,12 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
 
-  it = result->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
+  mojom::NftIdentifierPtr warrior_identifier = mojom::NftIdentifier::New();
+  warrior_identifier->chain_id = mojom::kSolanaMainnet;
+  warrior_identifier->contract_address =
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+
+  it = result->find(warrior_identifier);
   ASSERT_NE(it, result->end());
   EXPECT_EQ(it->second->name, "Common Water Warrior #19");
   EXPECT_EQ(
@@ -1716,7 +1727,12 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
 
-  it = result->find("0x65.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8");
+  mojom::NftIdentifierPtr ste_nft_identifier = mojom::NftIdentifier::New();
+  ste_nft_identifier->chain_id = mojom::kSolanaMainnet;
+  ste_nft_identifier->contract_address =
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
+
+  it = result->find(ste_nft_identifier);
   ASSERT_NE(it, result->end());
   EXPECT_EQ(it->second->name, "");
   EXPECT_EQ(it->second->description, "");
@@ -1779,7 +1795,8 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   result = simple_hash_client_->ParseMetadatas(*json_value);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->size(), 1u);
-  it = result->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
+
+  it = result->find(azuki_identifier);
   ASSERT_NE(it, result->end());
   EXPECT_EQ(it->second->name, "Azuki #2767");
   EXPECT_EQ(it->second->description, "Azuki is a cute little bean");
@@ -1794,7 +1811,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->attributes[0]->value, "Red");
   EXPECT_EQ(it->second->attributes[1]->trait_type, "Size");
   EXPECT_EQ(it->second->attributes[1]->value, "Small");
-  EXPECT_EQ(it->second->background_color, "");
+  EXPECT_EQ(it->second->background_color, "#000000");
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
 }
@@ -1885,22 +1902,22 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   auto nft_identifier1 = mojom::NftIdentifier::New();
   nft_identifier1->chain_id = mojom::kSolanaMainnet;
   nft_identifier1->contract_address =
-      "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_identifier1->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier1));
 
   auto nft_identifier2 = mojom::NftIdentifier::New();
   nft_identifier2->chain_id = mojom::kSolanaMainnet;
   nft_identifier2->contract_address =
-      "3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8";
+      "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_identifier2->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier2));
 
   std::map<GURL, std::string> responses;
   responses[GURL(
       "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "assets?nft_ids=solana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr%"
-      "2Csolana.3knghmwnuamxkiuqxrqzjl7gldurw6dkkzcw7f4mvkk8")] = json;
+      "assets?nft_ids=solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR%"
+      "2Csolana.3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8")] = json;
 
   // Add the expected metadatas
   mojom::NftMetadataPtr metadata1 = mojom::NftMetadata::New();
@@ -2087,103 +2104,114 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   // Verify there are two entries.
   EXPECT_EQ(owners->size(), 2u);
 
-  // auto it =
-  // owners->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
-  // ASSERT_NE(it, owners->end());
-  // EXPECT_EQ(it->second.size(), 2u);
-  // EXPECT_EQ(it->second["0x123"], 1u);
-  // EXPECT_EQ(it->second["0x456"], 2u);
+  mojom::NftIdentifierPtr azuki_identifier = mojom::NftIdentifier::New();
+  azuki_identifier->chain_id = mojom::kMainnetChainId;
+  azuki_identifier->contract_address =
+      "0xED5AF388653567Af2F388E6224dC7C4b3241C544";
+  azuki_identifier->token_id = "2767";
 
-  // it = owners->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
-  // ASSERT_NE(it, owners->end());
-  // EXPECT_EQ(it->second.size(), 1u);
-  // EXPECT_EQ(it->second["0x123"], 3u);
+  auto it = owners->find(azuki_identifier);
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 2u);
+  EXPECT_EQ(it->second["0x123"], 1u);
+  EXPECT_EQ(it->second["0x456"], 2u);
 
-  // // NFT missing owners key should be skipped, but the rest should be added.
-  // json = R"({
-  //   "nfts": [
-  //     {
-  //       "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
-  //       "chain": "ethereum",
-  //       "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
-  //       "token_id": "2767",
-  //       "name": "Azuki #2767"
-  //     },
-  //     {
-  //       "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
-  //       "chain": "solana",
-  //       "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
-  //       "token_id": null,
-  //       "name": "Common Water Warrior #19",
-  //       "owners": [
-  //         {
-  //           "owner_address": "0x123",
-  //           "quantity": 3
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // })";
+  mojom::NftIdentifierPtr warrior_identifier = mojom::NftIdentifier::New();
+  warrior_identifier->chain_id = mojom::kSolanaMainnet;
+  warrior_identifier->contract_address =
+      "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  warrior_identifier->token_id = "";
 
-  // json_value = base::JSONReader::Read(json);
-  // ASSERT_TRUE(json_value);
+  it = owners->find(warrior_identifier);
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 1u);
+  EXPECT_EQ(it->second["0x123"], 3u);
 
-  // owners = simple_hash_client_->ParseBalances(*json_value);
-  // ASSERT_TRUE(owners);
-  // EXPECT_EQ(owners->size(), 1u);
-  // it = owners->find("0x65.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr");
-  // ASSERT_NE(it, owners->end());
-  // EXPECT_EQ(it->second.size(), 1u);
+  // NFT missing owners key should be skipped, but the rest should be added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767"
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
 
-  // // NFT missing owner_address key should be skipped, but the rest should be
-  // // added.
-  // json = R"({
-  //   "nfts": [
-  //     {
-  //       "nft_id": "ethereum.0xed5af388653567af2f388e6224dc7c4b3241c544.2767",
-  //       "chain": "ethereum",
-  //       "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
-  //       "token_id": "2767",
-  //       "name": "Azuki #2767",
-  //       "owners": [
-  //         {
-  //           "quantity": 1
-  //         },
-  //         {
-  //           "owner_address": "0x456",
-  //           "quantity": 2
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
-  //       "chain": "solana",
-  //       "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
-  //       "token_id": null,
-  //       "name": "Common Water Warrior #19",
-  //       "extra_metadata": {
-  //         "metadata_original_url":
-  //         "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
-  //       },
-  //       "owners": [
-  //         {
-  //           "owner_address": "0x123",
-  //           "quantity": 3
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // })";
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
 
-  // json_value = base::JSONReader::Read(json);
-  // ASSERT_TRUE(json_value);
+  owners = simple_hash_client_->ParseBalances(*json_value);
+  ASSERT_TRUE(owners);
+  EXPECT_EQ(owners->size(), 1u);
+  it = owners->find(warrior_identifier);
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 1u);
 
-  // owners = simple_hash_client_->ParseBalances(*json_value);
-  // ASSERT_TRUE(owners);
-  // EXPECT_EQ(owners->size(), 2u);
-  // it = owners->find("0x1.0xed5af388653567af2f388e6224dc7c4b3241c544.2767");
-  // ASSERT_NE(it, owners->end());
-  // EXPECT_EQ(it->second.size(), 1u);
+  // NFT missing owner_address key should be skipped, but the rest should be
+  // added.
+  json = R"({
+    "nfts": [
+      {
+        "nft_id": "ethereum.0.ed5af388653567af2f388e6224dc7c4b3241c544.2767",
+        "chain": "ethereum",
+        "contract_address": "0xED5AF388653567Af2F388E6224dC7C4b3241C544",
+        "token_id": "2767",
+        "name": "Azuki #2767",
+        "owners": [
+          {
+            "quantity": 1
+          },
+          {
+            "owner_address": "0x456",
+            "quantity": 2
+          }
+        ]
+      },
+      {
+        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "chain": "solana",
+        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "extra_metadata": {
+          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        },
+        "owners": [
+          {
+            "owner_address": "0x123",
+            "quantity": 3
+          }
+        ]
+      }
+    ]
+  })";
+
+  json_value = base::JSONReader::Read(json);
+  ASSERT_TRUE(json_value);
+
+  owners = simple_hash_client_->ParseBalances(*json_value);
+  ASSERT_TRUE(owners);
+  EXPECT_EQ(owners->size(), 2u);
+  it = owners->find(azuki_identifier);
+  ASSERT_NE(it, owners->end());
+  EXPECT_EQ(it->second.size(), 1u);
+  EXPECT_EQ(it->second["0x456"], 2u);
 }
 
 }  // namespace brave_wallet
