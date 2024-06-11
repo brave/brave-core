@@ -4,3 +4,41 @@
 ## When adding a new filter to this list, please include a short description of
 ## why the filter is required and create an associated tracking issue.
 ##
+
+# Bookmarks Bar -> Bookmarks
+-BrowserCrApplicationAppleScriptTest.BookmarkFolders
+
+# Native apps are disabled
+-NativeAppWindowCocoaBrowserTest.*
+
+# MacOS overrides `DIR_USER_NATIVE_MESSAGING` to use Google dir
+-NativeMessagingLaunchApiTest.*
+-NativeMessagingApiTestBase.SendNativeMessage
+-NativeMessagingApiTestBase.UserLevelSendNativeMessage
+-EventPage/NativeMessagingApiTest.NativeMessagingBasic
+-EventPage/NativeMessagingApiTest.ConnectNative/0
+-EventPage/NativeMessagingApiTest.UserLevelNativeMessaging/0
+-EventPage/NativeMessagingApiTest.UserLevelNativeMessagingConnectNative/0
+-ServiceWorker/NativeMessagingApiTest.ConnectNative/0
+-ServiceWorker/NativeMessagingApiTest.NativeMessagingBasic/0
+-ServiceWorker/NativeMessagingApiTest.UserLevelNativeMessaging/0
+-ServiceWorker/NativeMessagingApiTest.UserLevelNativeMessagingConnectNative/0
+-ServiceWorkerMessagingTest.WorkerShutsDownWhileNativeMessagePortIsOpen
+
+# prefetch is disabled
+-ZeroSuggestPrefetchTabHelperBrowserTestOnNTP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnSRP.StartPrefetch
+-ZeroSuggestPrefetchTabHelperBrowserTestOnWeb.StartPrefetch
+
+# kWebAppUniversalInstall is disabled
+# -*WebApp*
+
+# Unknown
+-ShareMenuControllerTest.*
+-All/PasswordGeneration*
+-ChromeRegisterProtocolHandlerBrowserTest.*
+-AppControllerFirstRunBrowserTest.*
+-All/ContextMenuBrowserTest.OpenProfileNoneReferrer/LinkPreviewDisabled
+-EnableLinkCapturingInfobarBrowserTest.*
+-CustomTabBarViewBrowserTest.*
+-ParentPermissionDialogViewTest.*
