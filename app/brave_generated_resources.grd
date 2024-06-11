@@ -785,6 +785,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar
         </message>
+        <message name="IDS_APP_MENU_SIDEBAR_TITLE" desc="Tile of a group of buttons to set visibility of sidebar">
+          Sidebar
+        </message>
+        <message name="IDS_APP_MENU_SIDEBAR_ON" desc="Label for a button to always show sidebar">
+          On
+        </message>
+        <message name="IDS_APP_MENU_SIDEBAR_OFF" desc="Label for a button to hide sidebar">
+          Off
+        </message>
+        <message name="IDS_APP_MENU_SIDEBAR_HOVER" desc="Label for a button to show sidebar on hover">
+          Autohide
+        </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
         </message>

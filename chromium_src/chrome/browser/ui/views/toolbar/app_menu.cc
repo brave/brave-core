@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
 
+#include <memory>
+
 // Upstream uses wrong api for setting color. It comes from
 // https://chromium-review.googlesource.com/c/chromium/src/+/4395705
 #define SetTextColor SetTextColorId
@@ -12,3 +14,9 @@
 #include "src/chrome/browser/ui/views/toolbar/app_menu.cc"
 
 #undef SetTextColor
+
+std::unique_ptr<views::Background>
+AppMenu::CreateInMenuButtonBackgroundWithLeadingBorder() {
+  return std::make_unique<InMenuButtonBackground>(
+      InMenuButtonBackground::ButtonType::kLeadingBorder);
+}
