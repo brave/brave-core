@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
 // Selectors
 import { UISelectors } from '../../../common/selectors'
 
@@ -48,7 +51,10 @@ export const AccountsHeader = () => {
   )
 
   return isPanel ? (
-    <DefaultPanelHeader title={getLocale('braveWalletTopNavAccounts')} />
+    <DefaultPanelHeader
+      title={getLocale('braveWalletTopNavAccounts')}
+      expandRoute={WalletRoutes.Accounts}
+    />
   ) : (
     <Row
       padding='24px 0px'

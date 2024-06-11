@@ -145,6 +145,7 @@ export const DepositFundsScreen = ({ isAndroid }: Props) => {
           cardHeader={
             <PageTitleHeader
               title={getLocale('braveWalletDepositCryptoButton')}
+              expandRoute={WalletRoutes.DepositFundsPage}
             />
           }
         >

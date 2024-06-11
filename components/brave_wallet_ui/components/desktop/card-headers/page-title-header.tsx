@@ -4,6 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+// Types
+import { WalletRoutes } from '../../../constants/types'
+
 // Selectors
 import { UISelectors } from '../../../common/selectors'
 
@@ -25,14 +28,23 @@ interface Props {
   title: string
   showBackButton?: boolean
   onBack?: () => void
+  expandRoute?: WalletRoutes
 }
 
-export const PageTitleHeader = ({ title, showBackButton, onBack }: Props) => {
+export const PageTitleHeader = ({
+  title,
+  showBackButton,
+  onBack,
+  expandRoute
+}: Props) => {
   // UI Selectors (safe)
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   return isPanel && !showBackButton ? (
-    <DefaultPanelHeader title={title} />
+    <DefaultPanelHeader
+      title={title}
+      expandRoute={expandRoute}
+    />
   ) : (
     <Row
       padding={isPanel ? '17px 20px' : '24px 0px'}
