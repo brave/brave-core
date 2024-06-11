@@ -11,7 +11,10 @@ import { useUnpaddedImageUrl } from '../../../brave_news/browser/resources/share
 import { AutocompleteMatch } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
-import { omniboxController } from './SearchContext';
+import Flex from '$web-common/Flex';
+import { getLocale } from '$web-common/locale';
+import Icon from '@brave/leo/react/icon';
+import { openMatch } from './SearchResults';
 
 interface Props {
   match: AutocompleteMatch
@@ -115,7 +118,7 @@ export default function SearchResult({ match, line, selected }: Props) {
 
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
-    omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, e.button, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey)
+    openMatch(match, line, e as any)
   }}>
     <IconContainer>
       <Image key={match.imageUrl ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />

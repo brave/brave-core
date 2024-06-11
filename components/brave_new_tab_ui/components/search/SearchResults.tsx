@@ -3,13 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
-import { AutocompleteResult, OmniboxPopupSelection } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
+import { AutocompleteMatch, AutocompleteResult, OmniboxPopupSelection } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react'
 import styled from 'styled-components'
 import SearchResult from './SearchResult'
 import getNTPBrowserAPI from '../../api/background'
 import { omniboxController, search, useSearchContext } from './SearchContext'
 import { braveSearchHost } from './config'
+import { stringToMojoString16 } from 'gen/ui/webui/resources/tsc/js/mojo_type_util';
+import { handleOpenURLClick } from '$web-common/SecureLink';
 
 const Container = styled.div`
   border-top: 1px solid ${color.divider.subtle};
@@ -31,20 +33,53 @@ const Container = styled.div`
   text-wrap: nowrap;
 `
 
+export const openMatch = (match: AutocompleteMatch, line: number, event: MouseEvent | KeyboardEvent) => {
+  if (line === -1) {
+    handleOpenURLClick(match.destinationUrl.url, event)
+    return
+  }
+
+  const button = 'button' in event ? event.button : 0
+  omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, event.altKey, event.ctrlKey, event.metaKey, event.shiftKey)
+}
+
 export default function SearchResults() {
   const { query, searchEngine } = useSearchContext()
   const [result, setResult] = React.useState<AutocompleteResult>()
+  const urlWhatYouTyped = React.useMemo(() => {
+    try {
+      // There should be at least one `.` to be a URL and no spaces.
+      const bits = query.split('.')
+      if (bits.length <= 1 || bits.some(b => !b) || query.includes(' ')) {
+        return null;
+      }
+
+      // Force a scheme to be included
+      const q = query.includes('://') ? query : 'https://' + query
+      const url = new URL(q)
+      return {
+        destinationUrl: {
+          url: url.toString()
+        },
+        contents: stringToMojoString16(url.toString()),
+        description: stringToMojoString16(''),
+      } as AutocompleteMatch
+    } catch {
+      return null
+    }
+  }, [query])
+
+  // The autocomplete provider generates a 'search-what-you-typed' result which includes
+  // the keyword (and is always for the default search engine). We filter it out, as it
+  // makes the results neater.
+  const matches = React.useMemo(() => [urlWhatYouTyped!, ...(result?.matches ?? [])].filter(r => r && r.type !== 'search-what-you-typed'), [urlWhatYouTyped, result])
   const [selectedMatch, setSelectedMatch] = React.useState<number>();
 
   React.useEffect(() => {
     const listener = (result?: AutocompleteResult) => {
-      // The autocomplete provider generates a 'search-what-you-typed' result which includes
-      // the keyword (and is always for the default search engine). We filter it out, as it
-      // makes the results neater.
-      if (result) {
-        result.matches = result.matches.filter(r => r.type !== 'search-what-you-typed')
-      }
       setResult(result)
+
+      // TODO: Handle this better
       setSelectedMatch(prev => {
         if (!result) return undefined
 
@@ -108,20 +143,20 @@ export default function SearchResults() {
 
       e.preventDefault()
 
-      const match = result?.matches[selectedMatch!]
+      const match = matches[selectedMatch!]
       if (!match) {
         getNTPBrowserAPI().pageHandler.searchWhatYouTyped(searchEngine?.host ?? braveSearchHost, query, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
         return;
       }
 
-      omniboxController.openAutocompleteMatch(selectedMatch!, match.destinationUrl, true, 0, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
+      openMatch(match, result?.matches.indexOf(match) ?? -1, e)
     }
     document.addEventListener('keydown', handler)
     return () => {
       document.removeEventListener('keydown', handler)
     }
-  }, [result, selectedMatch, query, searchEngine])
-  return result && result?.matches.length ? <Container data-theme="dark" className='search-results'>
-    {result?.matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} line={i} match={r} />)}
+  }, [matches, selectedMatch, query, searchEngine])
+  return matches.length ? <Container data-theme="dark" className='search-results'>
+    {matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} line={i} match={r} />)}
   </Container> : null
 }
