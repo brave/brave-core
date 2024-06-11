@@ -46,6 +46,7 @@ class AdsTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
+  bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToNotificationAds() const;
 
   bool IsVisible() const;

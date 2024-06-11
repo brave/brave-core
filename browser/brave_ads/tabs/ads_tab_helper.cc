@@ -79,6 +79,14 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
+bool AdsTabHelper::UserHasJoinedBraveRewards() const {
+  const PrefService* const prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
+
+  return prefs->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
 bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
   const PrefService* const prefs =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext())
@@ -234,6 +242,17 @@ void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
   CHECK(ads_service_);
   CHECK(!redirect_chain_.empty());
 
+  if (!UserHasJoinedBraveRewards()) {
+    // HTML is not required because verifiable conversions are only supported
+    // for Brave Rewards users. However, we must notify that the tab content has
+    // changed with empty HTML to ensure that regular conversions are processed.
+    return ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(),
+                                                       redirect_chain_,
+                                                       /*html=*/"");
+  }
+
+  // Only utilized for verifiable conversions, which requires the user to
+  // have joined Brave Rewards.
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kSerializeDocumentToStringJavaScript,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
