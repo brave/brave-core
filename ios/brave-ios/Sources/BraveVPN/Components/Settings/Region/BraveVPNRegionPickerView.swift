@@ -7,33 +7,6 @@ import BraveShared
 import GuardianConnect
 import SwiftUI
 
-public struct ServerRegion: Identifiable, Equatable {
-  public let id = UUID()
-  let name: String
-  let servers: Int
-  let countryISOCode: String
-}
-
-public class ServerRegionDetail: ObservableObject {
-  public var serverRegions: [ServerRegion] = [
-    ServerRegion(name: "Australia", servers: 5, countryISOCode: "AU"),
-    ServerRegion(name: "Brazil", servers: 4, countryISOCode: "BR"),
-    ServerRegion(name: "Canada", servers: 2, countryISOCode: "CA"),
-    ServerRegion(name: "France", servers: 3, countryISOCode: "FR"),
-    ServerRegion(name: "Germany", servers: 5, countryISOCode: "DE"),
-    ServerRegion(name: "Italy", servers: 3, countryISOCode: "IT"),
-    ServerRegion(name: "Japan", servers: 7, countryISOCode: "JP"),
-    ServerRegion(name: "Mexico", servers: 9, countryISOCode: "MX"),
-    ServerRegion(name: "Netherlands", servers: 1, countryISOCode: "NL"),
-  ]
-
-  @Published var selectedRegion: ServerRegion? = nil
-
-  public init() {
-    selectedRegion = serverRegions.first
-  }
-}
-
 public struct BraveVPNRegionPickerView: View {
 
   @State
@@ -75,26 +48,7 @@ public struct BraveVPNRegionPickerView: View {
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
           ) {
-            Toggle(
-              isOn: Binding(
-                get: { isAutomatic },
-                set: { enableAutomaticServer($0) }
-              )
-            ) {
-              VStack(alignment: .leading) {
-                Text("Automatic")
-                  .font(.body)
-                if isAutomatic, let regionAutomaticName = serverRegionDetail.selectedRegion?.name {
-                  Text(regionAutomaticName)
-                    .font(.footnote)
-                    .foregroundStyle(Color(braveSystemName: .textSecondary))
-                }
-              }
-            }
-            .disabled(isLoading)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-            .tint(.accentColor)
-            .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
+            automaticRegionToggle
           }
 
           if !isAutomatic {
@@ -102,40 +56,7 @@ public struct BraveVPNRegionPickerView: View {
               ForEach(Array(serverRegionDetail.serverRegions.enumerated()), id: \.offset) {
                 index,
                 region in
-                Button {
-                  selectDesignatedVPNRegion(at: index)
-                } label: {
-                  HStack {
-                    region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
-                    VStack(alignment: .leading) {
-                      Text("\(region.name)")
-                        .font(.body)
-                        .foregroundStyle(
-                          region == serverRegionDetail.selectedRegion
-                            ? Color(braveSystemName: .iconInteractive)
-                            : Color(braveSystemName: .textPrimary)
-                        )
-                      Text("\(region.servers) servers")
-                        .font(.footnote)
-                        .foregroundStyle(
-                          region == serverRegionDetail.selectedRegion
-                            ? Color(braveSystemName: .iconInteractive)
-                            : Color(braveSystemName: .textSecondary)
-                        )
-                    }
-                    Spacer()
-                    if region == serverRegionDetail.selectedRegion {
-                      Text("Connected")
-                        .font(.body)
-                        .foregroundStyle(Color(braveSystemName: .textSecondary))
-                    }
-                    infoButtonView(index: index)
-                      .hidden()
-                  }
-                }
-                .overlay(alignment: .trailing) {
-                  infoButtonView(index: index)
-                }
+                regionItem(at: index, region: region)
               }
             }
             .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
@@ -156,11 +77,11 @@ public struct BraveVPNRegionPickerView: View {
       }
     }
     .background {
-      //      BraveVPNRegionConfirmationContentView(
-      //        isPresented: $isConfirmationPresented,
-      //        regionTitle: "Brazil",
-      //        regionSubtitle: "Rio de Janeiro"
-      //      )
+      BraveVPNRegionConfirmationContentView(
+        isPresented: $isConfirmationPresented,
+        regionTitle: "Brazil",
+        regionSubtitle: "Rio de Janeiro"
+      )
     }
   }
 
@@ -207,6 +128,66 @@ public struct BraveVPNRegionPickerView: View {
     }
   }
 
+  @ViewBuilder
+  private func regionItem(at index: Int, region: ServerRegion) -> some View {
+    Button {
+      selectDesignatedVPNRegion(at: index)
+    } label: {
+      HStack {
+        region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
+        VStack(alignment: .leading) {
+          Text("\(region.name)")
+            .font(.body)
+            .foregroundStyle(
+              region == serverRegionDetail.selectedRegion
+                ? Color(braveSystemName: .iconInteractive)
+                : Color(braveSystemName: .textPrimary)
+            )
+          Text("\(region.servers) servers")
+            .font(.footnote)
+            .foregroundStyle(
+              region == serverRegionDetail.selectedRegion
+                ? Color(braveSystemName: .iconInteractive)
+                : Color(braveSystemName: .textSecondary)
+            )
+        }
+        Spacer()
+        if region == serverRegionDetail.selectedRegion {
+          Text("Connected")
+            .font(.body)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+        }
+        infoButtonView(index: index)
+          .hidden()
+      }
+    }
+    .overlay(alignment: .trailing) {
+      infoButtonView(index: index)
+    }
+  }
+
+  private var automaticRegionToggle: some View {
+    Toggle(
+      isOn: Binding(
+        get: { isAutomatic },
+        set: { enableAutomaticServer($0) }
+      )
+    ) {
+      VStack(alignment: .leading) {
+        Text("Automatic")
+          .font(.body)
+        if isAutomatic, let regionAutomaticName = serverRegionDetail.selectedRegion?.name {
+          Text(regionAutomaticName)
+            .font(.footnote)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+        }
+      }
+    }
+    .disabled(isLoading)
+    .foregroundStyle(Color(braveSystemName: .textPrimary))
+    .tint(.accentColor)
+    .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
+  }
 }
 
 struct ServerRegionView_Previews: PreviewProvider {
