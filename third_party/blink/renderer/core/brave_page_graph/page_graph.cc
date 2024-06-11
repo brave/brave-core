@@ -185,7 +185,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.7.0";
+constexpr char kPageGraphVersion[] = "0.7.1";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -428,8 +428,8 @@ void PageGraph::DidInsertDOMNode(blink::Node* node) {
   const blink::DOMNodeId sibling_node_id =
       sibling ? blink::DOMNodeIds::IdForNode(sibling) : 0;
 
-  if (IsA<blink::CharacterData>(node)) {
-    RegisterHTMLTextNodeInserted(node, parent, sibling_node_id);
+  if (auto* character_data_node = DynamicTo<blink::CharacterData>(node)) {
+    RegisterHTMLTextNodeInserted(character_data_node, parent, sibling_node_id);
     return;
   }
 
@@ -437,8 +437,8 @@ void PageGraph::DidInsertDOMNode(blink::Node* node) {
 }
 
 void PageGraph::WillRemoveDOMNode(blink::Node* node) {
-  if (IsA<blink::CharacterData>(node)) {
-    RegisterHTMLTextNodeRemoved(node);
+  if (auto* character_data_node = DynamicTo<blink::CharacterData>(node)) {
+    RegisterHTMLTextNodeRemoved(character_data_node);
     return;
   }
 
@@ -1290,26 +1290,25 @@ void PageGraph::RegisterHTMLTextNodeCreated(blink::CharacterData* node) {
 void PageGraph::RegisterHTMLElementNodeCreated(blink::Node* node) {
   const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
   String local_tag_name = node->nodeName();
+  FrameId frame_id = GetFrameId(node);
 
   VLOG(1) << "RegisterHTMLElementNodeCreated) node id: " << node_id << " ("
-          << local_tag_name << ")";
+          << local_tag_name << ") " << ", frame id: " << frame_id;
   NodeActor* const acting_node =
       GetCurrentActingNode(node->GetExecutionContext());
 
   NodeHTMLElement* new_node = nullptr;
   if (node->IsFrameOwnerElement()) {
     new_node = AddNode<NodeFrameOwner>(node_id, local_tag_name);
-    VLOG(1) << "(type = FrameOwnerElement";
   } else {
     new_node = AddNode<NodeHTMLElement>(node_id, local_tag_name);
   }
 
-  FrameId frame_id = GetFrameId(node);
   AddEdge<EdgeNodeCreate>(acting_node, new_node, frame_id);
 }
 
 void PageGraph::RegisterHTMLTextNodeInserted(
-    blink::Node* node,
+    blink::CharacterData* node,
     blink::Node* parent_node,
     const DOMNodeId before_sibling_id) {
   const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
@@ -1361,9 +1360,26 @@ void PageGraph::RegisterHTMLElementNodeInserted(
 
   AddEdge<EdgeNodeInsert>(acting_node, inserted_node, frame_id,
                           parent_graph_node, prior_graph_sibling_node);
+
+  // If this node is being inserted by the parser, then it may have attributes
+  // created by the parser as well, that we need to register.
+  // Also, we need to add any attributes that are on the node
+  // at creation time. This will happen if there the node is being
+  // created by the parser and has inline attributes in the text.
+  if (acting_node->IsNodeParser()) {
+    blink::Element* element = DynamicTo<blink::Element>(node);
+    if (element && element->hasAttributes()) {
+      for (auto&& attr : element->Attributes()) {
+        const String attr_name = attr.GetName().ToString();
+        const String attr_value = attr.Value();
+        AddEdge<EdgeAttributeSet>(acting_node, inserted_node, frame_id,
+                                  attr_name, attr_value, false);
+      }
+    }
+  }
 }
 
-void PageGraph::RegisterHTMLTextNodeRemoved(blink::Node* node) {
+void PageGraph::RegisterHTMLTextNodeRemoved(blink::CharacterData* node) {
   const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
   VLOG(1) << "RegisterHTMLTextNodeRemoved) node id: " << node_id;
   NodeActor* const acting_node =
@@ -1427,69 +1443,69 @@ void PageGraph::RegisterEventListenerRemove(blink::Node* node,
                                     listener_script_id));
 }
 
-void PageGraph::RegisterInlineStyleSet(blink::Node* node,
+void PageGraph::RegisterInlineStyleSet(blink::Element* element,
                                        const String& attr_name,
                                        const String& attr_value) {
-  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
+  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(element);
 
   VLOG(1) << "RegisterInlineStyleSet) node id: " << node_id
           << ", attr: " << attr_name << ", value: " << attr_value;
   NodeActor* const acting_node =
-      GetCurrentActingNode(node->GetExecutionContext());
+      GetCurrentActingNode(element->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
-  FrameId frame_id = GetFrameId(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(element);
+  FrameId frame_id = GetFrameId(element);
   AddEdge<EdgeAttributeSet>(acting_node, target_node, frame_id, attr_name,
                             attr_value, true);
 }
 
-void PageGraph::RegisterInlineStyleDelete(blink::Node* node,
+void PageGraph::RegisterInlineStyleDelete(blink::Element* element,
                                           const String& attr_name) {
-  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
+  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(element);
 
   VLOG(1) << "RegisterInlineStyleDelete) node id: " << node_id
           << ", attr: " << attr_name;
   NodeActor* const acting_node =
-      GetCurrentActingNode(node->GetExecutionContext());
+      GetCurrentActingNode(element->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
-  FrameId frame_id = GetFrameId(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(element);
+  FrameId frame_id = GetFrameId(element);
   AddEdge<EdgeAttributeDelete>(acting_node, target_node, frame_id, attr_name,
                                true);
 }
 
-void PageGraph::RegisterAttributeSet(blink::Node* node,
+void PageGraph::RegisterAttributeSet(blink::Element* element,
                                      const String& attr_name,
                                      const String& attr_value) {
-  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
+  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(element);
 
   VLOG(1) << "RegisterAttributeSet) node id: " << node_id
           << ", attr: " << attr_name << ", value: " << attr_value;
 
   NodeActor* const acting_node =
-      GetCurrentActingNode(node->GetExecutionContext());
+      GetCurrentActingNode(element->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
-  FrameId frame_id = GetFrameId(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(element);
+  FrameId frame_id = GetFrameId(element);
   AddEdge<EdgeAttributeSet>(acting_node, target_node, frame_id, attr_name,
                             attr_value);
 }
 
-void PageGraph::RegisterAttributeDelete(blink::Node* node,
+void PageGraph::RegisterAttributeDelete(blink::Element* element,
                                         const String& attr_name) {
-  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
+  const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(element);
 
   VLOG(1) << "RegisterAttributeDelete) node id: " << node_id
           << ", attr: " << attr_name;
   NodeActor* const acting_node =
-      GetCurrentActingNode(node->GetExecutionContext());
+      GetCurrentActingNode(element->GetExecutionContext());
 
-  NodeHTMLElement* const target_node = GetHTMLElementNode(node);
-  FrameId frame_id = GetFrameId(node);
+  NodeHTMLElement* const target_node = GetHTMLElementNode(element);
+  FrameId frame_id = GetFrameId(element);
   AddEdge<EdgeAttributeDelete>(acting_node, target_node, frame_id, attr_name);
 }
 
-void PageGraph::RegisterTextNodeChange(blink::Node* node,
+void PageGraph::RegisterTextNodeChange(blink::CharacterData* node,
                                        const String& new_text) {
   const blink::DOMNodeId node_id = blink::DOMNodeIds::IdForNode(node);
   VLOG(1) << "RegisterNewTextNodeText) node id: " << node_id;
