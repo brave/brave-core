@@ -123,22 +123,20 @@ void InlineContentAdHandler::MaybeServeCallback(
 
 void InlineContentAdHandler::CacheAdPlacement(const int32_t tab_id,
                                               const InlineContentAdInfo& ad) {
-  BLOG(1, "Cached inline content ad with placement id "
-              << ad.placement_id << " and tab id " << tab_id);
+  BLOG(1, "Cached inline content ad placement id " << ad.placement_id
+                                                   << " for tab id " << tab_id);
 
   placement_ids_[tab_id].push_back(ad.placement_id);
 }
 
 void InlineContentAdHandler::PurgeOrphanedCachedAdPlacements(
     const int32_t tab_id) {
+  if (placement_ids_[tab_id].empty()) {
+    return;
+  }
+
   BLOG(1,
        "Purging orphaned inline content ad placements for tab id " << tab_id);
-
-  if (placement_ids_[tab_id].empty()) {
-    return BLOG(1,
-                "There are no orphaned inline content ad placements for tab id "
-                    << tab_id);
-  }
 
   PurgeOrphanedAdEvents(
       placement_ids_[tab_id],

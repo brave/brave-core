@@ -25,7 +25,7 @@ namespace {
 bool DoesRequireResource() {
   // Require resource only if:
   // - The user has joined Brave Rewards and opted into notification ads.
-  return UserHasJoinedBraveRewards() && UserHasOptedInToNotificationAds();
+  return UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
