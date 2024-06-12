@@ -45,8 +45,11 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await waitFor(() => result.current.tokenInfo !== undefined)
-    await waitFor(() => !result.current.isLoading)
+    await waitFor(() =>
+      expect(
+        result.current.tokenInfo !== undefined && !result.current.isLoading
+      ).toBeTruthy()
+    )
 
     // done loading
     expect(result.current.isLoading).toBe(false)
@@ -78,8 +81,11 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await waitFor(() => !result.current.isLoading)
-    await waitFor(() => result.current.tokenInfo !== undefined)
+    await waitFor(() =>
+      expect(
+        result.current.tokenInfo !== undefined && !result.current.isLoading
+      ).toBeTruthy()
+    )
 
     // done loading
     expect(result.current.isLoading).toBe(false)

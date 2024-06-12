@@ -41,8 +41,9 @@ describe('useCombinedTokensList', () => {
     expect(result.current.isLoading).toBe(true)
 
     // loading
-    await waitFor(() => !result.current.isLoading)
-    await waitFor(() => result.current.data)
+    await waitFor(() =>
+      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+    )
 
     // done loading
     expect(result.current.isLoading).toBe(false)

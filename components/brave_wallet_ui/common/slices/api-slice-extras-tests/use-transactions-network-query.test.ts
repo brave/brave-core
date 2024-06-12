@@ -69,8 +69,11 @@ describe('api slice extra hooks', () => {
       expect(result.current.isLoading).toBe(true)
 
       // loading
-      await waitFor(() => !result.current.isLoading)
-      await waitFor(() => result.current.data)
+      await waitFor(() =>
+        expect(
+          !result.current.isLoading && result.current.data !== undefined
+        ).toBe(true)
+      )
 
       // done loading
       expect(result.current.isLoading).toBe(false)
