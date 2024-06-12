@@ -3,29 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import GuardianConnect
 import SwiftUI
-
-struct Server: Identifiable, Equatable {
-  let id = UUID()
-  let name: String
-  var isAutomatic = false
-}
-
-class ServerDetail: ObservableObject {
-  var servers = [
-    Server(name: "Optimal", isAutomatic: true),
-    Server(name: "São Paulo"),
-    Server(name: "Rio de Janeiro"),
-    Server(name: "Brasília"),
-    Server(name: "Fortaleza"),
-  ]
-
-  @Published var selectedServer: Server? = nil
-
-  init(isAutoSelectEnabled: Bool = true) {
-    selectedServer = servers.first
-  }
-}
 
 struct BraveRegionDetailsView: View {
 
@@ -39,50 +18,36 @@ struct BraveRegionDetailsView: View {
   private var isConfirmationPresented = false
 
   @ObservedObject
-  private var serverDetail = ServerDetail()
+  private var cityRegionDetail: CityRegionDetail
 
-  public init(isAutoSelectEnabled: Bool = false, serverDetail: ServerDetail? = nil) {
+  public init(
+    countryRegion: GRDRegion?,
+    with cityRegions: [GRDRegion] = [],
+    isAutoSelectEnabled: Bool = true
+  ) {
     self.isAutoSelectEnabled = isAutoSelectEnabled
 
-    if let serverDetail = serverDetail {
-      self.serverDetail = serverDetail
+    var regions: [CityRegion] = []
+
+    for cityRegion in cityRegions {
+      regions.append(
+        CityRegion(displayName: cityRegion.displayName, regionName: cityRegion.regionName)
+      )
     }
+
+    cityRegionDetail = CityRegionDetail(
+      countryName: countryRegion?.country ?? "",
+      countryISOCode: countryRegion?.countryISOCode ?? "",
+      cityRegions: regions
+    )
   }
 
   var body: some View {
     ZStack {
       List {
         Section(header: Text("AVAILABLE SERVERS")) {
-          ForEach(serverDetail.servers) { server in
-            HStack {
-              VStack(alignment: .leading) {
-                Text(server.name)
-                  .foregroundStyle(
-                    serverDetail.selectedServer == server
-                      ? Color(braveSystemName: .textInteractive)
-                      : Color(braveSystemName: .textPrimary)
-                  )
-
-                if server.isAutomatic == true {
-                  Text("Use the best server available")
-                    .foregroundStyle(
-                      serverDetail.selectedServer == server
-                        ? Color(braveSystemName: .textInteractive)
-                        : Color(braveSystemName: .textPrimary)
-                    )
-                }
-              }
-              Spacer()
-
-              if serverDetail.selectedServer == server {
-                Image(systemName: "checkmark")
-                  .foregroundStyle(Color(braveSystemName: .iconInteractive))
-              }
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
-              selectDesignatedVPNServer(server)
-            }
+          ForEach(cityRegionDetail.cityRegions) { server in
+            cityRegionItem(at: 0, region: server)
           }
         }
         .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
@@ -95,18 +60,54 @@ struct BraveRegionDetailsView: View {
           .zIndex(1)
       }
     }
-    .navigationBarTitle("Brazil Server", displayMode: .inline)
+    .navigationBarTitle("\(cityRegionDetail.countryName) Server", displayMode: .inline)
     .background {
-      BraveVPNRegionConfirmationContentView(
-        isPresented: $isConfirmationPresented,
-        regionTitle: "Brazil",
-        regionSubtitle: "Rio de Janeiro"
-      )
+      if let region = cityRegionDetail.selectedRegion {
+        BraveVPNRegionConfirmationContentView(
+          isPresented: $isConfirmationPresented,
+          regionCountry: cityRegionDetail.countryName,
+          regionCity: region.displayName,
+          regionCountryISOCode: cityRegionDetail.countryISOCode
+        )
+      }
     }
   }
 
-  private func selectDesignatedVPNServer(_ server: Server) {
-    guard !isLoading else {
+  @ViewBuilder
+  private func cityRegionItem(at index: Int, region: CityRegion) -> some View {
+    HStack {
+      VStack(alignment: .leading) {
+        Text(region.displayName.capitalizeFirstLetter)
+          .foregroundStyle(
+            cityRegionDetail.selectedRegion == region
+              ? Color(braveSystemName: .textInteractive)
+              : Color(braveSystemName: .textPrimary)
+          )
+
+        if region.isAutomatic == true {
+          Text("Use the best server available")
+            .foregroundStyle(
+              cityRegionDetail.selectedRegion == region
+                ? Color(braveSystemName: .textInteractive)
+                : Color(braveSystemName: .textPrimary)
+            )
+        }
+      }
+      Spacer()
+
+      if cityRegionDetail.selectedRegion == region {
+        Image(systemName: "checkmark")
+          .foregroundStyle(Color(braveSystemName: .iconInteractive))
+      }
+    }
+    .contentShape(Rectangle())
+    .onTapGesture {
+      selectDesignatedVPNServer(region)
+    }
+  }
+
+  private func selectDesignatedVPNServer(_ region: CityRegion) {
+    guard !isLoading, cityRegionDetail.selectedRegion?.regionName != region.regionName else {
       return
     }
 
@@ -114,7 +115,7 @@ struct BraveRegionDetailsView: View {
 
     // TODO: Select Region
     Task.delayed(bySeconds: 3) { @MainActor in
-      serverDetail.selectedServer = server
+      cityRegionDetail.selectedRegion = region
 
       isLoading = false
       isConfirmationPresented = true
@@ -126,8 +127,8 @@ struct BraveRegionDetailsView: View {
   }
 }
 
-struct ServerViewModel_Previews: PreviewProvider {
+struct BraveRegionDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveRegionDetailsView()
+    BraveRegionDetailsView(countryRegion: GRDRegion(dictionary: [:]))
   }
 }

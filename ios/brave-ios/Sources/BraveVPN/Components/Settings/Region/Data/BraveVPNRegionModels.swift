@@ -4,32 +4,37 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
-import Foundation
 import GuardianConnect
 
-public struct ServerRegion: Identifiable, Equatable {
-  public let id = UUID()
-  let name: String
-  let servers: Int
-  let countryISOCode: String
+struct CityRegion: Identifiable, Equatable {
+  let id = UUID()
+  let displayName: String
+  let regionName: String
+  var isAutomatic = false
 }
 
-public class ServerRegionDetail: ObservableObject {
-  public var serverRegions: [ServerRegion] = [
-    ServerRegion(name: "Australia", servers: 5, countryISOCode: "AU"),
-    ServerRegion(name: "Brazil", servers: 4, countryISOCode: "BR"),
-    ServerRegion(name: "Canada", servers: 2, countryISOCode: "CA"),
-    ServerRegion(name: "France", servers: 3, countryISOCode: "FR"),
-    ServerRegion(name: "Germany", servers: 5, countryISOCode: "DE"),
-    ServerRegion(name: "Italy", servers: 3, countryISOCode: "IT"),
-    ServerRegion(name: "Japan", servers: 7, countryISOCode: "JP"),
-    ServerRegion(name: "Mexico", servers: 9, countryISOCode: "MX"),
-    ServerRegion(name: "Netherlands", servers: 1, countryISOCode: "NL"),
+class CityRegionDetail: ObservableObject {
+  var cityRegions = [
+    CityRegion(displayName: "Optimal", regionName: "auto", isAutomatic: true)
   ]
 
-  @Published var selectedRegion: ServerRegion? = nil
+  var countryName: String
+  var countryISOCode: String
 
-  public init() {
-    selectedRegion = serverRegions.first
+  @Published var selectedRegion: CityRegion? = nil
+
+  init(
+    isAutoSelectEnabled: Bool = true,
+    countryName: String,
+    countryISOCode: String,
+    cityRegions: [CityRegion]
+  ) {
+    self.countryName = countryName
+    self.countryISOCode = countryISOCode
+    self.cityRegions.append(contentsOf: cityRegions)
+
+    if isAutoSelectEnabled {
+      selectedRegion = self.cityRegions.first
+    }
   }
 }

@@ -24,17 +24,14 @@ public struct BraveVPNRegionPickerView: View {
   @State
   private var selectedIndex = 0
 
-  @ObservedObject
-  private var serverRegionDetail = ServerRegionDetail()
+  @State
+  private var selectedRegion: GRDRegion?
 
-  public init(isAutomatic: Bool, serverRegionDetail: ServerRegionDetail? = nil) {
+  @State
+  private var selectedRegionCities: [GRDRegion] = []
+
+  public init(isAutomatic: Bool) {
     self.isAutomatic = isAutomatic
-
-    if let serverRegionDetail = serverRegionDetail {
-      self.serverRegionDetail = serverRegionDetail
-    }
-
-    BraveVPN.populateRegionDataIfNecessary()
   }
 
   public var body: some View {
@@ -53,19 +50,14 @@ public struct BraveVPNRegionPickerView: View {
 
           if !isAutomatic {
             Section {
-              ForEach(Array(serverRegionDetail.serverRegions.enumerated()), id: \.offset) {
+              ForEach(Array(BraveVPN.allCountryRegions.enumerated()), id: \.offset) {
                 index,
                 region in
-                regionItem(at: index, region: region)
+                countryRegionItem(at: index, region: region)
               }
             }
             .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
           }
-        }
-      }
-      .background {
-        NavigationLink("", isActive: $isRegionDetailsPresented) {
-          BraveRegionDetailsView()
         }
       }
       .opacity(isLoading ? 0.5 : 1.0)
@@ -77,10 +69,19 @@ public struct BraveVPNRegionPickerView: View {
       }
     }
     .background {
+      NavigationLink("", isActive: $isRegionDetailsPresented) {
+        BraveRegionDetailsView(
+          countryRegion: selectedRegion,
+          with: selectedRegionCities
+        )
+      }
+    }
+    .background {
       BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
-        regionTitle: "Brazil",
-        regionSubtitle: "Rio de Janeiro"
+        regionCountry: selectedRegion?.displayName,
+        regionCity: "Automatic",
+        regionCountryISOCode: selectedRegion?.countryISOCode
       )
     }
   }
@@ -93,6 +94,12 @@ public struct BraveVPNRegionPickerView: View {
         }
 
         isRegionDetailsPresented = true
+        if let designatedRegion = BraveVPN.allCountryRegions[safe: index],
+          let desiredRegion = BraveVPN.allCountryRegions[safe: index]
+        {
+          selectedRegion = desiredRegion
+          selectedRegionCities = designatedRegion.cities
+        }
       },
       label: {
         Image(systemName: "info.circle")
@@ -107,20 +114,21 @@ public struct BraveVPNRegionPickerView: View {
   }
 
   private func selectDesignatedVPNRegion(at index: Int) {
-    guard !isLoading, let desiredRegion = serverRegionDetail.serverRegions[safe: index],
-      desiredRegion.id != serverRegionDetail.selectedRegion?.id
+    guard !isLoading, let desiredRegion = BraveVPN.allCountryRegions[safe: index],
+      desiredRegion.regionName != BraveVPN.selectedRegion?.regionName
     else {
       return
     }
 
     isLoading = true
 
-    // TODO: Select Region
     Task.delayed(bySeconds: 3) { @MainActor in
-      serverRegionDetail.selectedRegion = desiredRegion
+      // TODO: Swap with selection logic
 
       isLoading = false
       isConfirmationPresented = true
+
+      selectedRegion = desiredRegion
 
       Task.delayed(bySeconds: 2) { @MainActor in
         isConfirmationPresented = false
@@ -129,30 +137,31 @@ public struct BraveVPNRegionPickerView: View {
   }
 
   @ViewBuilder
-  private func regionItem(at index: Int, region: ServerRegion) -> some View {
+  private func countryRegionItem(at index: Int, region: GRDRegion) -> some View {
+    let isSelectedRegion = region.regionName == BraveVPN.selectedRegion?.regionName
+    let serverCount = region.cities.count
+
     Button {
       selectDesignatedVPNRegion(at: index)
     } label: {
       HStack {
         region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
         VStack(alignment: .leading) {
-          Text("\(region.name)")
+          Text("\(region.displayName)")
             .font(.body)
             .foregroundStyle(
-              region == serverRegionDetail.selectedRegion
-                ? Color(braveSystemName: .iconInteractive)
-                : Color(braveSystemName: .textPrimary)
+              isSelectedRegion
+                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
             )
-          Text("\(region.servers) servers")
+          Text(serverCount > 1 ? "\(serverCount) servers" : "1 server")
             .font(.footnote)
             .foregroundStyle(
-              region == serverRegionDetail.selectedRegion
-                ? Color(braveSystemName: .iconInteractive)
-                : Color(braveSystemName: .textSecondary)
+              isSelectedRegion
+                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
             )
         }
         Spacer()
-        if region == serverRegionDetail.selectedRegion {
+        if isSelectedRegion {
           Text("Connected")
             .font(.body)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
@@ -176,7 +185,7 @@ public struct BraveVPNRegionPickerView: View {
       VStack(alignment: .leading) {
         Text("Automatic")
           .font(.body)
-        if isAutomatic, let regionAutomaticName = serverRegionDetail.selectedRegion?.name {
+        if isAutomatic, let regionAutomaticName = BraveVPN.lastKnownRegion?.displayName {
           Text(regionAutomaticName)
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textSecondary))

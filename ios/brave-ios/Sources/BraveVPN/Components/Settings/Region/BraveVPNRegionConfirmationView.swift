@@ -9,12 +9,14 @@ import Shared
 import SwiftUI
 
 public struct BraveVPNRegionConfirmationView: View {
-  var regionTitle: String
-  var regionSubtitle: String
+  var regionCountry: String?
+  var regionCity: String?
+  var regionCountryFlag: Image?
 
-  public init(regionTitle: String, regionSubtitle: String) {
-    self.regionTitle = regionTitle
-    self.regionSubtitle = regionSubtitle
+  public init(regionCountry: String?, regionCity: String?, regionCountryISOCode: String?) {
+    self.regionCountry = regionCountry
+    self.regionCity = regionCity
+    self.regionCountryFlag = regionCountryISOCode?.regionFlag ?? Image(braveSystemName: "leo.globe")
   }
 
   public var body: some View {
@@ -27,32 +29,41 @@ public struct BraveVPNRegionConfirmationView: View {
         .font(.headline)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
       HStack {
-        "BR".regionFlag
+        regionCountryFlag
           .frame(width: 32, height: 32)
           .padding(4)
           .overlay(
-            RoundedRectangle(cornerRadius: 4.0, style: .continuous)
+            RoundedRectangle(cornerRadius: 12.0, style: .continuous)
               .strokeBorder(Color(.lightGray), lineWidth: 1.0)
           )
         VStack(alignment: .leading) {
-          Text(regionTitle)
-            .font(.headline)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-          Text(regionSubtitle)
-            .font(.subheadline)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+          if let regionCountry = regionCountry {
+            Text(regionCountry)
+              .font(.headline)
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+          }
+          if let regionCity = regionCity {
+            Text(regionCity)
+              .font(.subheadline)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+          }
         }
         Spacer()
       }
     }
     .padding(48)
     .background(Color(braveSystemName: .containerBackgroundMobile))
+    .frame(maxWidth: 350)
   }
 }
 
 struct BraveVPNRegionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveVPNRegionConfirmationView(regionTitle: "Brazil", regionSubtitle: "Rio de Janeiro")
+    BraveVPNRegionConfirmationView(
+      regionCountry: "Canada",
+      regionCity: "Saskatchewan",
+      regionCountryISOCode: "CA"
+    )
   }
 }
 
@@ -60,17 +71,20 @@ public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentab
   @Binding
   var isPresented: Bool
 
-  var regionTitle: String
-  var regionSubtitle: String
+  var regionCountry: String?
+  var regionCity: String?
+  var regionCountryISOCode: String?
 
   public init(
     isPresented: Binding<Bool>,
-    regionTitle: String,
-    regionSubtitle: String
+    regionCountry: String?,
+    regionCity: String? = nil,
+    regionCountryISOCode: String? = nil
   ) {
     _isPresented = isPresented
-    self.regionTitle = regionTitle
-    self.regionSubtitle = regionSubtitle
+    self.regionCountry = regionCountry
+    self.regionCity = regionCity
+    self.regionCountryISOCode = regionCountryISOCode
   }
 
   public func makeUIViewController(context: Context) -> UIViewController {
@@ -85,8 +99,9 @@ public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentab
 
       let controller = PopupViewController(
         rootView: BraveVPNRegionConfirmationView(
-          regionTitle: regionTitle,
-          regionSubtitle: regionSubtitle
+          regionCountry: regionCountry,
+          regionCity: regionCity,
+          regionCountryISOCode: regionCountryISOCode
         )
       )
 
