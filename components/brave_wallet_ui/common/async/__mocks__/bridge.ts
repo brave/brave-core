@@ -753,8 +753,7 @@ export class MockedWalletApiProxy {
               contractAddress: contract,
               isErc721: false,
               tokenId: '',
-              isNft: false,
-              isCompressed: false
+              isNft: false
             })
           ] || '0',
         error: 0,
@@ -776,8 +775,7 @@ export class MockedWalletApiProxy {
               contractAddress: contractAddress,
               isErc721: true,
               tokenId,
-              isNft: false,
-              isCompressed: false
+              isNft: false
             })
           ] || '0',
         error: 0,
@@ -799,8 +797,7 @@ export class MockedWalletApiProxy {
               contractAddress: contractAddress,
               isErc721: true,
               tokenId,
-              isNft: false,
-              isCompressed: false
+              isNft: false
             })
           ] || '0',
         error: 0,
@@ -821,8 +818,7 @@ export class MockedWalletApiProxy {
               contractAddress: tokenMintAddress,
               isErc721: false,
               tokenId: '',
-              isNft: true,
-              isCompressed: false
+              isNft: true
             })
           ] || '0',
         decimals: 9,
