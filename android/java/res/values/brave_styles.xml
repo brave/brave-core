@@ -73,7 +73,13 @@
     </style>
 
     <style name="BraveWalletCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
-        <item name="buttonTint">@color/brave_wallet_checkbox_color</item>
+        <item name="buttonTint">@color/wallet_checkbox_background_color_selector</item>
+        <item name="buttonIconTint">@color/wallet_checkbox_color_selector</item>
+
+        <item name="android:textSize">@dimen/default_regular</item>
+        <item name="lineHeight">20sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">400</item>
     </style>
 
     <style name="BraveWalletInputLayoutTheme">
@@ -380,6 +386,27 @@
         <item name="lineHeight">20sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
+    </style>
+
+    <style name="XSmallSemibold">
+        <item name="android:textSize">@dimen/x_small_semibold</item>
+        <item name="lineHeight">16sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
+    </style>
+
+    <style name="HeadingH1">
+        <item name="android:textSize">@dimen/heading_h1</item>
+        <item name="lineHeight">40sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">500</item>
+    </style>
+
+    <style name="HeadingH3">
+        <item name="android:textSize">@dimen/heading_h3</item>
+        <item name="lineHeight">28sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">500</item>
     </style>
 
     <style name="HeadingH4">

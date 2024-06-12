@@ -15,27 +15,26 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
         <TextView
+            style="@style/HeadingH1"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
-            android:lineSpacingExtra="2sp"
             android:text="@string/defi_secure_storage"
             android:lines="3"
             android:textColor="@color/wallet_text_color"
-            android:textSize="36sp"
-            style="@style/BraveWalletTextViewTitle"/>
+            android:textStyle="bold" />
 
         <TextView
+            style="@style/LargeRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
             android:text="@string/defi_secure_storage_text"
-            android:textColor="@color/wallet_onboarding_secondary_text_color"
-            android:lineSpacingExtra="5sp"
-            android:textSize="16sp"/>
+            android:textColor="@color/text_secondary" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/new_wallet_card_view"
@@ -65,31 +64,26 @@
                     android:layout_alignParentStart="true"/>
 
                 <TextView
+                    style="@style/HeadingH3"
                     android:id="@+id/setup_crypto_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/setup_crypto"
                     android:textColor="@color/wallet_text_color"
-                    android:textSize="22sp"
-                    android:lineSpacingExtra="2sp"
                     android:layout_toEndOf="@+id/add_new_wallet_icon"
-                    style="@style/BraveWalletTextViewTitle"
-                    />
+                    android:textStyle="bold" />
 
                 <TextView
+                    style="@style/DefaultRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/setup_crypto_description"
-                    android:textColor="@color/wallet_onboarding_secondary_text_color"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="4sp"
+                    android:textColor="@color/text_secondary"
                     android:layout_toEndOf="@+id/add_new_wallet_icon"
                     android:layout_below="@+id/setup_crypto_text_view"
                     />
             </RelativeLayout>
-
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -120,27 +114,24 @@
                     android:layout_alignParentStart="true"/>
 
                 <TextView
+                    style="@style/HeadingH3"
                     android:id="@+id/restore_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/already_have_a_wallet"
                     android:textColor="@color/wallet_text_color"
-                    android:textSize="22sp"
-                    android:lineSpacingExtra="2sp"
                     android:layout_toEndOf="@+id/restore_wallet_icon"
-                    style="@style/BraveWalletTextViewTitle"
-                    />
+                    android:textStyle="bold" />
 
                 <TextView
+                    style="@style/DefaultRegular"
                     android:id="@+id/restore_description_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@string/already_have_a_wallet_description"
-                    android:textColor="@color/wallet_onboarding_secondary_text_color"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="4sp"
+                    android:textColor="@color/text_secondary"
                     android:layout_toEndOf="@+id/restore_wallet_icon"
                     android:layout_below="@+id/restore_text_view"
                     />
@@ -187,5 +178,4 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>

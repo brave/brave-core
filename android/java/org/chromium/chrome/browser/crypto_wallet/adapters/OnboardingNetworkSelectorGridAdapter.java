@@ -262,8 +262,12 @@ public class OnboardingNetworkSelectorGridAdapter
             final NetworkViewHolder networkViewHolder = (NetworkViewHolder) viewHolder;
 
             NetworkInfo networkInfo = getNetworkInfo(position);
-            networkViewHolder.mSelectionCheckbox.setEnabled(
-                    !ALWAYS_SELECTED_CHAIN_IDS.contains(networkInfo.chainId));
+            final boolean enableSelection =
+                    !ALWAYS_SELECTED_CHAIN_IDS.contains(networkInfo.chainId);
+
+            networkViewHolder.mSelectionCheckbox.setEnabled(enableSelection);
+            networkViewHolder.itemView.setEnabled(enableSelection);
+
             boolean selected = mSelectedNetworks.contains(networkInfo.hashCode());
             networkViewHolder.mSelectionCheckbox.setChecked(selected);
             networkViewHolder.itemView.setSelected(selected);
