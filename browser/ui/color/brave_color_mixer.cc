@@ -581,6 +581,8 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorBraveExtensionMenuIcon] = {
       leo::GetColor(leo::Color::kColorIconActive, leo::Theme::kLight)};
+
+  mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0xDF, 0xE1, 0xFF)};
 }
 
 void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -696,6 +698,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorBraveExtensionMenuIcon] = {
       leo::GetColor(leo::Color::kColorIconActive, leo::Theme::kDark)};
+
+  mixer[kColorBraveAppMenuAccentColor] = {SkColorSetRGB(0x37, 0x2C, 0xBF)};
 }
 
 // Handling dark or light theme on normal profile.
