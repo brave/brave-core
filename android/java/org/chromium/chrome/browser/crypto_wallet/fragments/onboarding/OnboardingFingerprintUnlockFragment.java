@@ -46,28 +46,31 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mSkip = view.findViewById(R.id.skip);
-        mSkip.setOnClickListener(v -> {
-            if (mUseFingerprintUnlockClicked) {
-                return;
-            }
-            mUseFingerprintUnlockClicked = true;
-            goToTheNextPage();
-        });
+        mSkip.setOnClickListener(
+                v -> {
+                    if (mUseFingerprintUnlockClicked) {
+                        return;
+                    }
+                    mUseFingerprintUnlockClicked = true;
+                    goToTheNextPage();
+                });
 
         mUseFingerprintUnlockButton = view.findViewById(R.id.button_fingerprint_unlock_continue);
-        mUseFingerprintUnlockButton.setOnClickListener(v -> {
-            if (mUseFingerprintUnlockClicked || !Utils.isBiometricSupported(requireContext())) {
-                return;
-            }
-            mUseFingerprintUnlockClicked = true;
+        mUseFingerprintUnlockButton.setOnClickListener(
+                v -> {
+                    if (mUseFingerprintUnlockClicked
+                            || !Utils.isBiometricSupported(requireContext())) {
+                        return;
+                    }
+                    mUseFingerprintUnlockClicked = true;
 
-            if (Utils.isBiometricSupported(requireContext())) {
-                // noinspection NewApi
-                setUpBiometric(mOnboardingViewModel.getPassword());
-            } else {
-                goToTheNextPage();
-            }
-        });
+                    if (Utils.isBiometricSupported(requireContext())) {
+                        // noinspection NewApi
+                        setUpBiometric(mOnboardingViewModel.getPassword());
+                    } else {
+                        goToTheNextPage();
+                    }
+                });
     }
 
     @Override
@@ -98,7 +101,8 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
                         if (!TextUtils.isEmpty(errString)) {
-                            Toast.makeText(ContextUtils.getApplicationContext(),
+                            Toast.makeText(
+                                            ContextUtils.getApplicationContext(),
                                             errString,
                                             Toast.LENGTH_SHORT)
                                     .show();
