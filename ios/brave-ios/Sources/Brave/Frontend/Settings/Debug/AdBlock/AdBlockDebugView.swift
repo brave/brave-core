@@ -128,15 +128,11 @@ private struct CompileContentBlockersSectionView: View {
           }
       })
 
-      do {
-        let resource = BraveS3Resource.adBlockRules
-        if let slimListURL = resource.downloadedFileURL,
-          let version = try resource.cachedResult()?.version
-        {
-          availableSelections.insert(.slimList(slimListURL, version: version), at: 0)
-        }
-      } catch {
-        // Do nothing. The list is simply unavailable
+      let resource = BraveS3Resource.adBlockRules
+      if let slimListURL = resource.downloadedFileURL,
+        let version = try? resource.cachedResult()?.version
+      {
+        availableSelections.insert(.slimList(slimListURL, version: version), at: 0)
       }
 
       self.availableSelections = availableSelections
