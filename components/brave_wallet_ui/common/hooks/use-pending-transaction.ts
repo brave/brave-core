@@ -184,6 +184,7 @@ export const usePendingTransactions = () => {
     isError: hasEvmFeeEstimatesError
   } = useGetGasEstimation1559Query(
     transactionsNetwork &&
+      transactionsNetwork.coin === BraveWallet.CoinType.ETH &&
       transactionInfo &&
       isEIP1559Transaction(transactionInfo)
       ? transactionsNetwork.chainId
