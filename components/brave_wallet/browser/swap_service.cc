@@ -329,8 +329,15 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
 
-  if (params->from_chain_id == params->to_chain_id &&
-      IsNetworkSupportedByZeroEx(params->from_chain_id)) {
+  auto has_zero_ex_support = params->from_chain_id == params->to_chain_id &&
+                             IsNetworkSupportedByZeroEx(params->from_chain_id);
+  auto has_jupiter_support = params->from_chain_id == params->to_chain_id &&
+                             IsNetworkSupportedByJupiter(params->from_chain_id);
+  auto has_lifi_support = IsNetworkSupportedByLiFi(params->from_chain_id) &&
+                          IsNetworkSupportedByLiFi(params->to_chain_id);
+
+  // EVM swaps are served via 0x only if the provider is set to kZeroEx.
+  if (params->provider == mojom::SwapProvider::kZeroEx && has_zero_ex_support) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
@@ -346,8 +353,10 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  if (params->from_chain_id == params->to_chain_id &&
-      IsNetworkSupportedByJupiter(params->from_chain_id)) {
+  // If the provider is set to Auto, Solana swaps are served via Jupiter.
+  if ((params->provider == mojom::SwapProvider::kJupiter ||
+       params->provider == mojom::SwapProvider::kAuto) &&
+      has_jupiter_support) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
@@ -363,8 +372,10 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  if (IsNetworkSupportedByLiFi(params->from_chain_id) &&
-      IsNetworkSupportedByLiFi(params->to_chain_id)) {
+  // EVM swaps are served via LiFi if the provider is set to kLiFi or kAuto.
+  if ((params->provider == mojom::SwapProvider::kLiFi ||
+       params->provider == mojom::SwapProvider::kAuto) &&
+      has_lifi_support) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 

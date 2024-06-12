@@ -42,6 +42,14 @@ constexpr char kFilForwarderTransferSelector[] =
 constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
 constexpr char kLiFiSwapTokensGeneric[] = "0x4630a0d8";
 
+std::string TransformLiFiAddress(const std::string& address) {
+  if (address == kLiFiNativeEVMAssetContractAddress) {
+    return kNativeEVMAssetContractAddress;
+  }
+
+  return address;
+}
+
 }  // namespace
 
 std::optional<std::tuple<mojom::TransactionType,     // tx_type
@@ -522,24 +530,32 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto min_amount_out = decoded.value()[4].GetString();
 
     // The swapData field is an array of tuples, each representing a swap fill
-    // operation. We are only interested in the first and last elements of the
-    // array, which represent the sending and receiving assets, respectively.
+    // operation.
     auto& swap_data_list = decoded.value()[5].GetList();
-    if (swap_data_list.size() < 2) {
+    std::string from_amount = "";
+    std::string sending_asset_id = "";
+    std::string receiving_asset_id = "";
+
+    if (swap_data_list.size() == 1) {
+      // Direct swap.
+      auto& swap_data = swap_data_list.front().GetList();
+      sending_asset_id = TransformLiFiAddress(swap_data[2].GetString());
+      from_amount = swap_data[4].GetString();
+      receiving_asset_id = TransformLiFiAddress(swap_data[3].GetString());
+    } else if (swap_data_list.size() >= 2) {
+      // Multi-hop swap.
+      //
+      // We are only interested in the first and last elements of the
+      // array, which represent the sending and receiving assets, respectively.
+      auto& swap_data_front = swap_data_list.front().GetList();
+      sending_asset_id = TransformLiFiAddress(swap_data_front[2].GetString());
+      from_amount = swap_data_front[4].GetString();
+
+      auto& swap_data_back = swap_data_list.back().GetList();
+      receiving_asset_id = TransformLiFiAddress(swap_data_back[3].GetString());
+    } else {
+      // Invalid transaction.
       return std::nullopt;
-    }
-
-    auto& swap_data_front = swap_data_list.front().GetList();
-    auto sending_asset_id = swap_data_front[2].GetString();
-    if (sending_asset_id == kLiFiNativeEVMAssetContractAddress) {
-      sending_asset_id = kNativeEVMAssetContractAddress;
-    }
-    auto from_amount = swap_data_front[4].GetString();
-
-    auto& swap_data_back = swap_data_list.back().GetList();
-    auto receiving_asset_id = swap_data_back[3].GetString();
-    if (receiving_asset_id == kLiFiNativeEVMAssetContractAddress) {
-      receiving_asset_id = kNativeEVMAssetContractAddress;
     }
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,

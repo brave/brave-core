@@ -437,7 +437,8 @@ export const useSwap = () => {
           routePriority:
             params.fromToken.chainId === params.toToken.chainId
               ? BraveWallet.RoutePriority.kCheapest
-              : BraveWallet.RoutePriority.kRecommended
+              : BraveWallet.RoutePriority.kRecommended,
+          provider: BraveWallet.SwapProvider.kAuto
         }).unwrap()
       } catch (e) {
         setIsFetchingQuote(false)
