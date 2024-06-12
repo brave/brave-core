@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.7.1 (swiftlang-5.7.1.135.3 clang-1400.0.29.51)
-// swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name GRDWireGuardKit
-// swift-module-flags-ignorable: -enable-bare-slash-regex
+// swift-compiler-version: Apple Swift version 6.0 effective-5.10 (swiftlang-6.0.0.3.300 clang-1600.0.20.10)
+// swift-module-flags: -target x86_64-apple-ios16.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name GRDWireGuardKit
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
 import Foundation
 @_exported import GRDWireGuardKit
 import Network
@@ -10,6 +10,7 @@ import Security
 import Swift
 import _Concurrency
 import _StringProcessing
+import _SwiftConcurrencyShims
 import os.log
 import os
 public struct PeerConfiguration {
@@ -53,35 +54,69 @@ extension GRDWireGuardKit.Endpoint {
   public var stringRepresentation: Swift.String {
     get
   }
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public init?(from string: Swift.String)
+  #else
+  public init?(from string: Swift.String)
+  #endif
 }
 extension GRDWireGuardKit.Endpoint {
   public func hasHostAsIPAddress() -> Swift.Bool
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public func hostname() -> Swift.String?
+  #else
+  public func hostname() -> Swift.String?
+  #endif
 }
 public enum WireGuardAdapterError : Swift.Error {
   case cannotLocateTunnelFileDescriptor
   case invalidState
   case dnsResolution([GRDWireGuardKit.DNSResolutionError])
-  case setNetworkSettings(Swift.Error)
+  case setNetworkSettings(any Swift.Error)
   case startWireGuardBackend(Swift.Int32)
 }
 public class WireGuardAdapter {
   public typealias LogHandler = (GRDWireGuardKit.WireGuardLogLevel, Swift.String) -> Swift.Void
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public var interfaceName: Swift.String? {
     get
   }
+  #else
+  public var interfaceName: Swift.String? {
+    get
+  }
+  #endif
   public init(with packetTunnelProvider: NetworkExtension.NEPacketTunnelProvider, logHandler: @escaping GRDWireGuardKit.WireGuardAdapter.LogHandler)
   @objc deinit
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public func getRuntimeConfiguration(completionHandler: @escaping (Swift.String?) -> Swift.Void)
+  #else
+  public func getRuntimeConfiguration(completionHandler: @escaping (Swift.String?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public func start(tunnelConfiguration: GRDWireGuardKit.TunnelConfiguration, completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  #else
+  public func start(tunnelConfiguration: GRDWireGuardKit.TunnelConfiguration, completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public func stop(completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  #else
+  public func stop(completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public func update(tunnelConfiguration: GRDWireGuardKit.TunnelConfiguration, completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  #else
+  public func update(tunnelConfiguration: GRDWireGuardKit.TunnelConfiguration, completionHandler: @escaping (GRDWireGuardKit.WireGuardAdapterError?) -> Swift.Void)
+  #endif
 }
 public enum WireGuardLogLevel : Swift.Int32 {
   case verbose
   case error
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public init?(rawValue: Swift.Int32)
+  #else
+  public init?(rawValue: Swift.Int32)
+  #endif
   public typealias RawValue = Swift.Int32
   public var rawValue: Swift.Int32 {
     get
@@ -91,25 +126,41 @@ final public class TunnelConfiguration {
   final public var name: Swift.String?
   final public var interface: GRDWireGuardKit.InterfaceConfiguration
   final public let peers: [GRDWireGuardKit.PeerConfiguration]
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public init(name: Swift.String?, interface: GRDWireGuardKit.InterfaceConfiguration, peers: [GRDWireGuardKit.PeerConfiguration])
+  #else
+  public init(name: Swift.String?, interface: GRDWireGuardKit.InterfaceConfiguration, peers: [GRDWireGuardKit.PeerConfiguration])
+  #endif
   @objc deinit
 }
 extension GRDWireGuardKit.TunnelConfiguration : Swift.Equatable {
   public static func == (lhs: GRDWireGuardKit.TunnelConfiguration, rhs: GRDWireGuardKit.TunnelConfiguration) -> Swift.Bool
 }
 @_inheritsConvenienceInitializers @objc open class GRDPacketTunnelProvider : NetworkExtension.NEPacketTunnelProvider {
-  @objc override dynamic public func startTunnel(options: [Swift.String : ObjectiveC.NSObject]?, completionHandler: @escaping (Swift.Error?) -> Swift.Void)
+  #if compiler(>=5.3) && $NoncopyableGenerics
+  @objc override dynamic public func startTunnel(options: [Swift.String : ObjectiveC.NSObject]?, completionHandler: @escaping ((any Swift.Error)?) -> Swift.Void)
+  #else
+  @objc override dynamic public func startTunnel(options: [Swift.String : ObjectiveC.NSObject]?, completionHandler: @escaping ((any Swift.Error)?) -> Swift.Void)
+  #endif
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public func grdTunnelConfig(config: Swift.String? = nil, named: Swift.String? = nil) -> GRDWireGuardKit.TunnelConfiguration?
+  #else
+  public func grdTunnelConfig(config: Swift.String? = nil, named: Swift.String? = nil) -> GRDWireGuardKit.TunnelConfiguration?
+  #endif
   @objc override dynamic public func stopTunnel(with reason: NetworkExtension.NEProviderStopReason, completionHandler: @escaping () -> Swift.Void)
   public struct PTPMessage : Swift.Decodable {
-    public init(from decoder: Swift.Decoder) throws
+    public init(from decoder: any Swift.Decoder) throws
   }
+  #if compiler(>=5.3) && $NoncopyableGenerics
   @objc override dynamic public func handleAppMessage(_ messageData: Foundation.Data, completionHandler: ((Foundation.Data?) -> Swift.Void)? = nil)
+  #else
+  @objc override dynamic public func handleAppMessage(_ messageData: Foundation.Data, completionHandler: ((Foundation.Data?) -> Swift.Void)? = nil)
+  #endif
   @objc override dynamic public init()
   @objc deinit
 }
 public struct IPAddressRange {
-  public let address: Network.IPAddress
+  public let address: any Network.IPAddress
   public let networkPrefixLength: Swift.UInt8
 }
 extension GRDWireGuardKit.IPAddressRange : Swift.Equatable {
@@ -125,13 +176,17 @@ extension GRDWireGuardKit.IPAddressRange {
   public var stringRepresentation: Swift.String {
     get
   }
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public init?(from string: Swift.String)
-  public func subnetMask() -> Network.IPAddress
-  public func maskedAddress() -> Network.IPAddress
+  #else
+  public init?(from string: Swift.String)
+  #endif
+  public func subnetMask() -> any Network.IPAddress
+  public func maskedAddress() -> any Network.IPAddress
 }
 public struct DNSServer {
-  public let address: Network.IPAddress
-  public init(address: Network.IPAddress)
+  public let address: any Network.IPAddress
+  public init(address: any Network.IPAddress)
 }
 extension GRDWireGuardKit.DNSServer : Swift.Equatable {
   public static func == (lhs: GRDWireGuardKit.DNSServer, rhs: GRDWireGuardKit.DNSServer) -> Swift.Bool
@@ -140,14 +195,24 @@ extension GRDWireGuardKit.DNSServer {
   public var stringRepresentation: Swift.String {
     get
   }
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public init?(from addressString: Swift.String)
+  #else
+  public init?(from addressString: Swift.String)
+  #endif
 }
 public struct DNSResolutionError : Foundation.LocalizedError {
   public let errorCode: Swift.Int32
   public let address: Swift.String
+  #if compiler(>=5.3) && $NoncopyableGenerics
   public var errorDescription: Swift.String? {
     get
   }
+  #else
+  public var errorDescription: Swift.String? {
+    get
+  }
+  #endif
 }
 public struct InterfaceConfiguration {
   public var privateKey: GRDWireGuardKit.PrivateKey
@@ -166,15 +231,27 @@ extension GRDWireGuardKit.InterfaceConfiguration : Swift.Equatable {
     get
   }
   convenience public init()
+  #if compiler(>=5.3) && $NoncopyableGenerics
   required public init?(rawValue: Foundation.Data)
+  #else
+  required public init?(rawValue: Foundation.Data)
+  #endif
   @objc deinit
 }
 @_inheritsConvenienceInitializers public class PublicKey : GRDWireGuardKit.BaseKey {
+  #if compiler(>=5.3) && $NoncopyableGenerics
   required public init?(rawValue: Foundation.Data)
+  #else
+  required public init?(rawValue: Foundation.Data)
+  #endif
   @objc deinit
 }
 @_inheritsConvenienceInitializers public class PreSharedKey : GRDWireGuardKit.BaseKey {
+  #if compiler(>=5.3) && $NoncopyableGenerics
   required public init?(rawValue: Foundation.Data)
+  #else
+  required public init?(rawValue: Foundation.Data)
+  #endif
   @objc deinit
 }
 public class BaseKey : Swift.RawRepresentable, Swift.Equatable, Swift.Hashable {
@@ -185,9 +262,21 @@ public class BaseKey : Swift.RawRepresentable, Swift.Equatable, Swift.Hashable {
   public var base64Key: Swift.String {
     get
   }
+  #if compiler(>=5.3) && $NoncopyableGenerics
   required public init?(rawValue: Foundation.Data)
+  #else
+  required public init?(rawValue: Foundation.Data)
+  #endif
+  #if compiler(>=5.3) && $NoncopyableGenerics
   convenience public init?(hexKey: Swift.String)
+  #else
+  convenience public init?(hexKey: Swift.String)
+  #endif
+  #if compiler(>=5.3) && $NoncopyableGenerics
   convenience public init?(base64Key: Swift.String)
+  #else
+  convenience public init?(base64Key: Swift.String)
+  #endif
   public static func == (lhs: GRDWireGuardKit.BaseKey, rhs: GRDWireGuardKit.BaseKey) -> Swift.Bool
   public typealias RawValue = Foundation.Data
   @objc deinit
