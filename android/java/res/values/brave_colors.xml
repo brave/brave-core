@@ -107,7 +107,7 @@
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
     <color name="brave_sync_main_button_color">@color/button_background</color>
     <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
-    <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
+    <color name="brave_sync_btn_transparent_text_color">@color/text_interactive_3</color>
 
     <!--
         The colors below with "_2" suffix are used in Sync layouts. The reason why it
@@ -126,6 +126,7 @@
     <color name="systemfeedback_info_icon_2">@color/systemfeedback_info_icon</color>
     <color name="systemfeedback_info_text_2">@color/systemfeedback_info_text</color>
     <color name="text_interactive_2">@color/text_interactive</color>
+    <color name="text_interactive_3">@color/text_interactive</color>
     <color name="text_primary_2">@color/text_primary</color>
     <color name="divider_interactive_2">@color/divider_interactive</color>
 
