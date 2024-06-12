@@ -39,6 +39,7 @@
         android:title="@string/index_other_search_engines_title"
         android:summary="@string/index_other_search_engines_text" />
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchFragment"
         android:key="quick_search_engine"
         android:order="7"
         android:title="@string/quick_search_engine"/>
