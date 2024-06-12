@@ -7,13 +7,14 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
-#include "url/url_util.h"
+#include "brave/components/web_discovery/browser/util.h"
 
 namespace web_discovery {
 
@@ -27,6 +28,10 @@ constexpr char kUrlValueKey[] = "url";
 
 constexpr char kRefineSplitFuncId[] = "splitF";
 constexpr char kRefineMaskURLFuncId[] = "maskU";
+constexpr char kRefineParseURLFuncId[] = "parseU";
+constexpr char kRefineJsonExtractFuncId[] = "json";
+
+constexpr char kParseURLQueryExtractType[] = "qs";
 
 std::string RefineSplit(const std::string& value,
                         const std::string& delimiter,
@@ -40,10 +45,45 @@ std::string RefineSplit(const std::string& value,
   } else {
     encoded_result = split[index];
   }
-  url::RawCanonOutputT<char16_t> result;
-  url::DecodeURLEscapeSequences(encoded_result,
-                                url::DecodeURLMode::kUTF8OrIsomorphic, &result);
-  return base::UTF16ToUTF8(result.view());
+  return DecodeURLComponent(encoded_result);
+}
+
+std::optional<std::string> RefineParseURL(const std::string& value,
+                                          const std::string& extract_type,
+                                          const std::string& key) {
+  if (extract_type != kParseURLQueryExtractType) {
+    return std::nullopt;
+  }
+  GURL url(value);
+  if (!url.is_valid() || !url.has_query()) {
+    return std::nullopt;
+  }
+  auto query_value = ExtractValueFromQueryString(url.query_piece(), key);
+  return query_value;
+}
+
+std::optional<std::string> RefineJsonExtract(const std::string& value,
+                                             const std::string& path,
+                                             bool extract_objects) {
+  auto parsed = base::JSONReader::Read(value);
+  if (!parsed || !parsed->is_dict()) {
+    return std::nullopt;
+  }
+  const auto* found_value = parsed->GetDict().FindByDottedPath(path);
+  if (!found_value) {
+    return std::nullopt;
+  }
+  if (found_value->is_string()) {
+    return found_value->GetString();
+  }
+  if ((found_value->is_dict() || found_value->is_list()) && !extract_objects) {
+    return std::nullopt;
+  }
+  std::string encoded_value;
+  if (!base::JSONWriter::Write(*found_value, &encoded_value)) {
+    return std::nullopt;
+  }
+  return encoded_value;
 }
 
 std::optional<std::string> ExecuteRefineFunctions(
@@ -63,6 +103,18 @@ std::optional<std::string> ExecuteRefineFunctions(
       }
     } else if (func_name == kRefineMaskURLFuncId) {
       result = MaskURL(GURL(value));
+    } else if (func_name == kRefineParseURLFuncId) {
+      if (function_args.size() >= 3 && function_args[1].is_string() &&
+          function_args[2].is_string()) {
+        result = RefineParseURL(*result, function_args[1].GetString(),
+                                function_args[2].GetString());
+      }
+    } else if (func_name == kRefineJsonExtractFuncId) {
+      if (function_args.size() >= 3 && function_args[1].is_string() &&
+          function_args[2].is_bool()) {
+        result = RefineJsonExtract(*result, function_args[1].GetString(),
+                                   function_args[2].GetBool());
+      }
     }
     if (!result) {
       break;
@@ -237,15 +289,21 @@ void ContentScraper::ProcessStandardRule(const std::string& report_key,
                                          const std::string& root_selector,
                                          const GURL& url,
                                          PageScrapeResult* scrape_result) {
+  std::string value;
+  if (rule.attribute == kUrlAttrId) {
+    value = url.spec();
+  } else if (rule.attribute == kCountryCodeAttrId) {
+    value = (*last_loaded_server_config_)->location;
+  }
+  auto refined_value = ExecuteRefineFunctions(rule.functions_applied, value);
+  if (!refined_value) {
+    return;
+  }
   auto& fields = scrape_result->fields[root_selector];
   if (fields.empty()) {
     fields.emplace_back();
   }
-  if (rule.attribute == kUrlAttrId) {
-    fields[0].Set(report_key, url.spec());
-  } else if (rule.attribute == kCountryCodeAttrId) {
-    fields[0].Set(report_key, (*last_loaded_server_config_)->location);
-  }
+  fields[0].Set(report_key, *refined_value);
 }
 
 void ContentScraper::OnScrapedElementAttributes(

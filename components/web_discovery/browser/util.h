@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_UTIL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/time/time.h"
@@ -39,6 +40,12 @@ std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url);
 std::string FormatServerDate(const base::Time& date);
 
 void TransformToAlphanumeric(std::string& value);
+
+std::string DecodeURLComponent(const std::string_view value);
+
+std::optional<std::string> ExtractValueFromQueryString(
+    const std::string_view query_string,
+    const std::string_view key);
 
 }  // namespace web_discovery
 
