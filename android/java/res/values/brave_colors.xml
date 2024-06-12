@@ -389,6 +389,7 @@
 
     <color name="text_primary">#0D1214</color>
     <color name="text_secondary">#3f4e55</color>
+    <color name="text_tertiary">#62757e</color>
     <color name="primary_20">#d5dcff</color>
     <color name="button_background">#3F39E8</color>
     <color name="primitive_primary_20">#d5dcff</color>

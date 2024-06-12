@@ -30,7 +30,7 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="8dp"
             android:text="@string/creating_wallet_onboarding_text"
-            android:textColor="@color/wallet_text_color"
+            android:textColor="@color/text_primary"
             android:textStyle="bold" />
 
         <TextView
