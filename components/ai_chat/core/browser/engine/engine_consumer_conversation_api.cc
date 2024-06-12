@@ -154,8 +154,8 @@ EngineConsumerConversationAPI::GetAssociatedContentConversationEvent(
   ConversationEvent event;
   event.role = mojom::CharacterType::HUMAN;
   event.content = truncated_page_content;
-  // TODO(petemill): Differentiate video XML / VTT
-  event.type = is_video ? ConversationEventType::VideoTranscriptXML
+  // TODO(petemill): Differentiate video transcript / XML / VTT
+  event.type = is_video ? ConversationEventType::VideoTranscript
                         : ConversationEventType::PageText;
   return event;
 }

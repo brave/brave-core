@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
 #include <cmath>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -114,6 +115,7 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::UserText, "userText"},
            {ConversationEventType::PageText, "pageText"},
            {ConversationEventType::PageExcerpt, "pageExcerpt"},
+           {ConversationEventType::VideoTranscript, "videoTranscript"},
            {ConversationEventType::VideoTranscriptXML, "videoTranscriptXML"},
            {ConversationEventType::VideoTranscriptVTT, "videoTranscriptVTT"},
            {ConversationEventType::ChatMessage, "chatMessage"},
