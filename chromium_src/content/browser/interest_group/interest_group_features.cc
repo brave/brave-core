@@ -12,7 +12,6 @@ namespace features {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnableUpdatingExecutionModeToFrozenContext,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {kEnableUpdatingUserBiddingSignals, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
