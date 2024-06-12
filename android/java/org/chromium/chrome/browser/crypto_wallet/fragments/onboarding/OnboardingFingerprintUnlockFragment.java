@@ -10,6 +10,7 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,10 +97,13 @@ public class OnboardingFingerprintUnlockFragment extends BaseOnboardingWalletFra
                     @Override
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
-                        Toast.makeText(ContextUtils.getApplicationContext(),
-                                        errString,
-                                        Toast.LENGTH_SHORT)
-                                .show();
+                        if (!TextUtils.isEmpty(errString)) {
+                            Toast.makeText(ContextUtils.getApplicationContext(),
+                                            errString,
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        mUseFingerprintUnlockClicked = false;
                     }
                 };
         Executor executor = ContextCompat.getMainExecutor(requireContext());
