@@ -663,13 +663,6 @@ extension String {
   }
 }
 
-extension URL {
-  /// Returns true if url's scheme is supported to be resolved using IPFS public gateway
-  public var isIPFSScheme: Bool {
-    guard let scheme = self.scheme?.lowercased() else { return false }
-    return WalletConstants.supportedIPFSSchemes.contains(scheme)
-  }
-}
 
 extension BraveWallet.SwapFees {
   /// If swap has a Brave Fee that is not free.

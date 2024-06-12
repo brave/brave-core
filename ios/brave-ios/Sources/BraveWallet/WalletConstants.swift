@@ -142,8 +142,6 @@ public struct WalletConstants {
     ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy",
   ]
 
-  /// The supported IPFS schemes
-  static let supportedIPFSSchemes = ["ipfs", "ipns"]
 
   /// The supported send transaction types, used for P3A reporting.
   static let sendTransactionTypes: [BraveWallet.TransactionType] = [
@@ -202,11 +200,5 @@ public struct WalletConstants {
   /// The link for for users to learn more about sign transactions
   static let signTransactionRiskLink: URL = URL(
     string: "https://support.brave.com/hc/en-us/articles/4409513799693"
-  )!
-
-  /// The link for for users to learn more about IPFS
-  public static let ipfsLearnMoreLink: URL = URL(
-    string:
-      "https://support.brave.com/hc/en-us/articles/360051406452-How-does-IPFS-Impact-my-Privacy-"
   )!
 }

@@ -1847,25 +1847,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  func showIPFSInterstitialPage(originalURL: URL) {
-    topToolbar.leaveOverlayMode()
-
-    guard let tab = tabManager.selectedTab,
-      let encodedURL = originalURL.absoluteString.addingPercentEncoding(
-        withAllowedCharacters: .alphanumerics
-      ),
-      let internalUrl = URL(
-        string: "\(InternalURL.baseUrl)/\(IPFSSchemeHandler.path)?url=\(encodedURL)"
-      )
-    else {
-      return
-    }
-    let scriptHandler =
-      tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler
-    scriptHandler?.originalURL = originalURL
-
-    tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
-  }
 
   func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL) {
     topToolbar.leaveOverlayMode()
@@ -2694,7 +2675,6 @@ extension BrowserViewController: TabDelegate {
       URLPartinessScriptHandler(tab: tab),
       FaviconScriptHandler(tab: tab),
       Web3NameServiceScriptHandler(tab: tab),
-      Web3IPFSScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
       BraveLeoScriptHandler(tab: tab),
 
@@ -2750,8 +2730,6 @@ extension BrowserViewController: TabDelegate {
       as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
-    (tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler)?
-      .delegate = self
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2907,10 +2885,6 @@ extension BrowserViewController: TabDelegate {
     } else {
       topToolbar.updateWalletButtonState(.inactive)
     }
-  }
-
-  func reloadIPFSSchemeUrl(_ url: URL) {
-    handleIPFSSchemeURL(url)
   }
 
   func didReloadTab(_ tab: Tab) {

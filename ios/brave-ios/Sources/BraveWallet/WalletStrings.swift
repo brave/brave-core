@@ -4585,54 +4585,6 @@ extension Strings {
       value: "Use ENS Domain",
       comment: "Button title when requesting to do an ENS off chain lookup."
     )
-    public static let web3IPFSInterstitialProceedButton = NSLocalizedString(
-      "wallet.web3IPFSInterstitialProceedButton",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Use a Public Gateway",
-      comment:
-        "The title of the button that user will click to let Brave to resolve IPFS shceme url."
-    )
-    public static let web3IPFSInterstitialIPFSTitle = NSLocalizedString(
-      "wallet.web3IPFSInterstitialIPFSTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Set your IPFS preference",
-      comment:
-        "The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling."
-    )
-    public static let web3IPFSInterstitialIPFSPrivacy = NSLocalizedString(
-      "wallet.web3IPFSInterstitialIPFSPrivacy",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "IPFS (InterPlanetary File System) is the public network for peer-to-peer data storage and delivery. This protocol has different privacy considerations from HTTP(S). <a href=%@>%@</a>",
-      comment:
-        "A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'."
-    )
-    public static let web3IPFSInterstitialIPFSPublicGateway = NSLocalizedString(
-      "wallet.web3IPFSInterstitialIPFSPublicGateway",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "Protects your IP address and content you’re requesting from potential third-party observers, but not from the public gateway operator.  The gateway operator is responsible for ensuring that the content served to you over a gateway is the content you requested. Also, your device does not contribute to the public IPFS network.",
-      comment: "A brief explaination of resolving IPFS scheme url using a public gateway."
-    )
-    public static let ipfsErrorTitle = NSLocalizedString(
-      "wallet.ipfsErrorTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "This site can't be reached",
-      comment: "A title will displayed in the IPFS error page when IPFS is disabled."
-    )
-    public static let ipfsResolveMethodDescription = NSLocalizedString(
-      "wallet.ipfsResolveMethodDescription",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "[Learn more](%@) about IPFS gateway privacy considerations.",
-      comment:
-        "The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy."
-    )
     public static let web3DomainInterstitialPageTAndU = NSLocalizedString(
       "wallet.web3DomainInterstitialPageTAndU",
       tableName: "BraveWallet",

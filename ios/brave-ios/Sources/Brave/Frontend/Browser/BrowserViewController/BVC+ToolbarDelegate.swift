@@ -63,11 +63,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
     if let url = topToolbar.currentURL {
-      if url.isIPFSScheme {
-        if !handleIPFSSchemeURL(url) {
-          tabManager.selectedTab?.reload()
-        }
-      } else if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
+      if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
         topToolbarDidPressReloadTask?.cancel()
         topToolbarDidPressReloadTask = Task { @MainActor in
           topToolbar.locationView.loading = true
@@ -80,11 +76,7 @@ extension BrowserViewController: TopToolbarDelegate {
           case .loadInterstitial(let service):
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
           case .load(let resolvedURL):
-            if resolvedURL.isIPFSScheme {
-              handleIPFSSchemeURL(resolvedURL)
-            } else {
               tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
-            }
           case .none:
             tabManager.selectedTab?.reload()
           }
@@ -256,9 +248,6 @@ extension BrowserViewController: TopToolbarDelegate {
     _ text: String,
     isUserDefinedURLNavigation: Bool
   ) async -> Bool {
-    if let url = URL(string: text), url.isIPFSScheme {
-      return handleIPFSSchemeURL(url)
-    }
 
     if let url = URL(string: text), url.scheme == "brave" {
       topToolbar.leaveOverlayMode()
@@ -286,12 +275,8 @@ extension BrowserViewController: TopToolbarDelegate {
           showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
           return true
         case .load(let resolvedURL):
-          if resolvedURL.isIPFSScheme {
-            return handleIPFSSchemeURL(resolvedURL)
-          } else {
             finishEditingAndSubmit(resolvedURL)
             return true
-          }
         case .none:
           break
         }
@@ -343,56 +328,6 @@ extension BrowserViewController: TopToolbarDelegate {
     )
     self.present(container, animated: true)
     return true
-  }
-
-  @discardableResult
-  func handleIPFSSchemeURL(_ url: URL) -> Bool {
-    guard !privateBrowsingManager.isPrivateBrowsing else {
-      topToolbar.leaveOverlayMode()
-      if let errorPageHelper = tabManager.selectedTab?.getContentScript(
-        name: ErrorPageHelper.scriptName
-      ) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
-        errorPageHelper.loadPage(
-          IPFSErrorPageHandler.privateModeError,
-          forUrl: url,
-          inWebView: webView
-        )
-      }
-      return true
-    }
-
-    guard
-      let ipfsPref = Preferences.Wallet.Web3IPFSOption(
-        rawValue: Preferences.Wallet.resolveIPFSResources.value
-      )
-    else {
-      return false
-    }
-
-    switch ipfsPref {
-    case .ask:
-      showIPFSInterstitialPage(originalURL: url)
-      return true
-    case .enabled:
-      if let resolvedUrl = braveCore.ipfsAPI.resolveGatewayUrl(for: url) {
-        finishEditingAndSubmit(resolvedUrl)
-        return true
-      }
-    case .disabled:
-      topToolbar.leaveOverlayMode()
-      if let errorPageHelper = tabManager.selectedTab?.getContentScript(
-        name: ErrorPageHelper.scriptName
-      ) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
-        errorPageHelper.loadPage(
-          IPFSErrorPageHandler.privateModeError,
-          forUrl: url,
-          inWebView: webView
-        )
-      }
-      return true
-    }
-
-    return false
   }
 
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
