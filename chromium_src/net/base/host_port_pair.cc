@@ -132,10 +132,13 @@ void HostPortPair::set_password(const std::string& in_password) {
 
 std::strong_ordering HostPortPair::operator<=>(
     const HostPortPair& other) const {
+  if (port() != other.port()) {
+    // note: port() is r-value, can't be used with std::tie
+    return port() <=> other.port();
+  }
+
   auto tie = [](const HostPortPair& v) {
-    // note: std::pair is used because port() is r-value.
-    return std::make_pair(v.port(),
-                          std::tie(v.host(), v.username(), v.password()));
+    return std::tie(v.host(), v.username(), v.password());
   };
   return tie(*this) <=> tie(other);
 }
