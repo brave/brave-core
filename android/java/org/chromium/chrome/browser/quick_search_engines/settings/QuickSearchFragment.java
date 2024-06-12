@@ -10,24 +10,68 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
+import org.chromium.components.favicon.LargeIconBridge;
+import org.chromium.components.favicon.LargeIconBridge.GoogleFaviconServerCallback;
+import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.net.NetworkTrafficAnnotationTag;
+import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuickSearchFragment extends BravePreferenceFragment {
+public class QuickSearchFragment extends BravePreferenceFragment
+        implements TemplateUrlService.LoadListener, QuickSearchCallback {
     private RecyclerView mRecyclerView;
     private QuickSearchAdapter mAdapter;
+    private boolean mHasLoadObserver;
+    private LargeIconBridge mLargeIconBridge;
+
+    private TemplateUrlService mTemplateUrlService;
+
+    private static final NetworkTrafficAnnotationTag TRAFFIC_ANNOTATION =
+            NetworkTrafficAnnotationTag.createComplete(
+                    "quick_search_engines_fragment",
+                    """
+            semantics {
+                sender: 'QuickSearchEnginesFragment'
+                description: 'Sends a request to a Google server to retrieve the favicon bitmap.'
+                trigger:
+                    'A request is sent when the user opens search engine settings and Chrome does '
+                    'not have a favicon.'
+                data: 'Search engine URL and desired icon size.'
+                destination: GOOGLE_OWNED_SERVICE
+                internal {
+                    contacts {
+                        email: 'chrome-signin-team@google.com'
+                    }
+                    contacts {
+                        email: 'triploblastic@google.com'
+                    }
+                }
+                user_data {
+                    type: NONE
+                }
+                last_reviewed: '2023-12-04'
+            }
+            policy {
+    cookies_allowed:
+        NO policy_exception_justification : 'Not implemented.' setting
+            : 'This feature cannot be disabled by settings.'
+            }""");
 
     @Override
     public View onCreateView(
@@ -46,6 +90,7 @@ public class QuickSearchFragment extends BravePreferenceFragment {
             getActivity().setTitle(R.string.quick_search_engines);
         }
         super.onActivityCreated(savedInstanceState);
+        mLargeIconBridge = new LargeIconBridge(getProfile());
         refreshData();
     }
 
@@ -55,35 +100,100 @@ public class QuickSearchFragment extends BravePreferenceFragment {
     }
 
     private void refreshData() {
-        TemplateUrlService templateUrlService =
-                TemplateUrlServiceFactory.getForProfile(getProfile());
-        // if (!templateUrlService.isLoaded()) {
-        //     mHasLoadObserver = true;
-        //     templateUrlService.registerLoadListener(this);
-        //     templateUrlService.load();
-        //     return; // Flow continues in onTemplateUrlServiceLoaded below.
-        // }
+        mTemplateUrlService = TemplateUrlServiceFactory.getForProfile(getProfile());
+        if (!mTemplateUrlService.isLoaded()) {
+            mHasLoadObserver = true;
+            mTemplateUrlService.registerLoadListener(this);
+            mTemplateUrlService.load();
+            return; // Flow continues in onTemplateUrlServiceLoaded below.
+        }
 
-        List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
+        List<TemplateUrl> templateUrls = mTemplateUrlService.getTemplateUrls();
         TemplateUrl defaultSearchEngineTemplateUrl =
-                templateUrlService.getDefaultSearchEngineTemplateUrl();
+                mTemplateUrlService.getDefaultSearchEngineTemplateUrl();
         SearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl(
                 templateUrls,
                 defaultSearchEngineTemplateUrl,
-                templateUrlService.isEeaChoiceCountry(),
-                templateUrlService.shouldShowUpdatedSettings());
+                mTemplateUrlService.isEeaChoiceCountry(),
+                mTemplateUrlService.shouldShowUpdatedSettings());
 
         List<TemplateUrl> searchEngines = new ArrayList<>();
         for (int i = 0; i < templateUrls.size(); i++) {
             TemplateUrl templateUrl = templateUrls.get(i);
             searchEngines.add(templateUrl);
         }
-        mAdapter = new QuickSearchAdapter(getActivity(), searchEngines);
+        mAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onDestroy() {
+        mLargeIconBridge.destroy();
+        if (mHasLoadObserver) {
+            TemplateUrlServiceFactory.getForProfile(getProfile()).unregisterLoadListener(this);
+            mHasLoadObserver = false;
+        }
         super.onDestroy();
+    }
+
+    // TemplateUrlService.LoadListener
+    @Override
+    public void onTemplateUrlServiceLoaded() {
+        TemplateUrlServiceFactory.getForProfile(getProfile()).unregisterLoadListener(this);
+        mHasLoadObserver = false;
+        refreshData();
+    }
+
+    // QuickSearchCallback
+
+    @Override
+    public void onSearchEngineClick(TemplateUrl templateUrl) {
+        Log.e("quick_search : onSearchEngineClick", templateUrl.getShortName());
+    }
+
+    @Override
+    public void onSearchEngineLongClick() {}
+
+    @Override
+    public void loadSearchEngineLogo(ImageView logoView, TemplateUrl templateUrl) {
+        Log.e("quick_search : loadSearchEngineLogo", templateUrl.getShortName());
+        GURL faviconUrl =
+                new GURL(
+                        mTemplateUrlService.getSearchEngineUrlFromTemplateUrl(
+                                templateUrl.getKeyword()));
+        // Use a placeholder image while trying to fetch the logo.
+        int uiElementSizeInPx =
+                getActivity()
+                        .getResources()
+                        .getDimensionPixelSize(R.dimen.search_engine_favicon_size);
+        logoView.setImageBitmap(
+                FaviconUtils.createGenericFaviconBitmap(getActivity(), uiElementSizeInPx, null));
+        LargeIconCallback onFaviconAvailable =
+                (icon, fallbackColor, isFallbackColorDefault, iconType) -> {
+                    if (icon != null) {
+                        logoView.setImageBitmap(icon);
+                    }
+                };
+        GoogleFaviconServerCallback googleServerCallback =
+                (status) -> {
+                    // Update the time the icon was last requested to avoid automatic eviction
+                    // from cache.
+                    mLargeIconBridge.touchIconFromGoogleServer(faviconUrl);
+                    // The search engine logo will be fetched from google servers, so the actual
+                    // size of the image is controlled by LargeIconService configuration.
+                    // minSizePx=1 is used to accept logo of any size.
+                    mLargeIconBridge.getLargeIconForUrl(
+                            faviconUrl,
+                            /* minSizePx= */ 1,
+                            /* desiredSizePx= */ uiElementSizeInPx,
+                            onFaviconAvailable);
+                };
+        // If the icon already exists in the cache no network request will be made, but the
+        // callback will be triggered nonetheless.
+        mLargeIconBridge.getLargeIconOrFallbackStyleFromGoogleServerSkippingLocalCache(
+                faviconUrl,
+                /* shouldTrimPageUrlPath= */ true,
+                TRAFFIC_ANNOTATION,
+                googleServerCallback);
     }
 }
