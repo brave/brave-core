@@ -6,6 +6,7 @@
 brave_history_web_component_files = [ "brave_history_item.ts" ]
 
 brave_history_non_web_component_files = [
+  "brave_overrides/app.ts",
   "brave_overrides/side_bar.ts",
   "brave_overrides/index.ts",
 ]
