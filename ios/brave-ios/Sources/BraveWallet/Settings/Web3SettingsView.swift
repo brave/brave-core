@@ -74,30 +74,6 @@ public struct Web3SettingsView: View {
             }
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          NavigationLink(destination: IPFSCustomGatewayView(ipfsAPI: settingsStore.ipfsApi)) {
-            VStack(alignment: .leading, spacing: 6) {
-              Text(Strings.Wallet.ipfsPublicGatewayAddressTitle)
-                .foregroundColor(Color(.braveLabel))
-              Text(ipfsGatewayURL)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
-            }
-            .padding(.vertical, 4)
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
-          NavigationLink(
-            destination: IPFSCustomGatewayView(ipfsAPI: settingsStore.ipfsApi, isForNFT: true)
-          ) {
-            VStack(alignment: .leading, spacing: 6) {
-              Text(Strings.Wallet.ipfsPublicGatewayAddressNFTTitle)
-                .foregroundColor(Color(.braveLabel))
-              Text(ipfsNFTGatewayURL)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
-            }
-            .padding(.vertical, 4)
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
 
       }
