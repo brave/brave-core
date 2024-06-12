@@ -103,7 +103,8 @@ void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
       credential_manager_.get(), &last_loaded_server_config_);
 }
 
-void WDPService::OnDoubleFetched(const base::Value& associated_data,
+void WDPService::OnDoubleFetched(const GURL& url,
+                                 const base::Value& associated_data,
                                  std::optional<std::string> response_body) {
   if (!response_body) {
     return;
@@ -113,7 +114,7 @@ void WDPService::OnDoubleFetched(const base::Value& associated_data,
     return;
   }
   content_scraper_->ParseAndScrapePage(
-      true, std::move(prev_scrape_result), *response_body,
+      url, true, std::move(prev_scrape_result), *response_body,
       base::BindOnce(&WDPService::OnContentScraped, base::Unretained(this),
                      true));
 }
@@ -129,6 +130,7 @@ void WDPService::OnFinishNavigation(
   if (!matching_url_details) {
     return;
   }
+  VLOG(1) << "URL matched pattern " << matching_url_details->id << ": " << url;
   if (IsPrivateURLLikely(url, matching_url_details)) {
     return;
   }
@@ -147,24 +149,29 @@ void WDPService::OnContentScraped(bool is_strict,
   if (!result) {
     return;
   }
-  auto* url_details =
-      last_loaded_patterns_->GetMatchingURLPattern(result->url, true);
-  if (!url_details) {
+  auto* original_url_details =
+      last_loaded_patterns_->GetMatchingURLPattern(result->url, is_strict);
+  if (!original_url_details) {
     return;
   }
-  if (!is_strict && url_details->is_search_engine) {
-    auto url = result->url;
-    if (!result->query) {
-      return;
+  if (!is_strict && original_url_details->is_search_engine) {
+    auto* strict_url_details =
+        last_loaded_patterns_->GetMatchingURLPattern(result->url, true);
+    if (strict_url_details) {
+      auto url = result->url;
+      if (!result->query) {
+        return;
+      }
+      if (IsPrivateQueryLikely(*result->query)) {
+        return;
+      }
+      url = GeneratePrivateSearchURL(url, *result->query, *strict_url_details);
+      VLOG(1) << "Double fetching search page: " << url;
+      double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
     }
-    if (IsPrivateQueryLikely(*result->query)) {
-      return;
-    }
-    url = GeneratePrivateSearchURL(url, *result->query, *url_details);
-    double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
   }
-  auto payloads = GeneratePayloads(*last_loaded_server_config_, url_details,
-                                   std::move(result));
+  auto payloads = GeneratePayloads(*last_loaded_server_config_,
+                                   original_url_details, std::move(result));
   for (auto& payload : payloads) {
     reporter_->ScheduleSend(std::move(payload));
   }

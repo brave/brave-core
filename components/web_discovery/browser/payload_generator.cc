@@ -90,7 +90,7 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     joined_data.Set(base::NumberToString(counter++), value.Clone());
   }
   if (!AggregatedDictHasContent(joined_data)) {
-    VLOG(1) << "Skipped joined clustered payload";
+    VLOG(1) << "Skipped joined clustered payload due to lack of content";
     return std::nullopt;
   }
   if (ShouldDropSearchResultPayload(rule, joined_data.size())) {
@@ -110,12 +110,17 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
     auto attribute_values_it = scrape_result->fields.find(rule.selector);
     if (attribute_values_it == scrape_result->fields.end() ||
         attribute_values_it->second.empty()) {
+      VLOG(1) << "Skipped clustered payload due to no values for root "
+                 "selector, action = "
+              << rule_group.action;
       return std::nullopt;
     }
     if (rule.is_join) {
       auto joined_payload = GenerateClusteredJoinedPayload(
           rule, matching_url_details, attribute_values_it->second);
       if (!joined_payload) {
+        VLOG(1) << "Skipped joined clustered payload, action = "
+                << rule_group.action;
         return std::nullopt;
       }
       payload_rule_data = std::move(*joined_payload);

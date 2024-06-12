@@ -81,22 +81,25 @@ void DoubleFetcher::ScheduleDoubleFetch(const GURL& url,
 
 void DoubleFetcher::OnFetchTimer(const base::Value& request_data) {
   const auto* fetch_dict = request_data.GetIfDict();
-  const auto* url = fetch_dict ? fetch_dict->FindString(kUrlKey) : nullptr;
-  if (!url) {
+  const auto* url_str = fetch_dict ? fetch_dict->FindString(kUrlKey) : nullptr;
+  if (!url_str) {
     request_queue_.NotifyRequestComplete(true);
     return;
   }
 
-  auto resource_request = CreateResourceRequest(GURL(*url));
+  GURL url(*url_str);
+  auto resource_request = CreateResourceRequest(url);
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), kFetchNetworkTrafficAnnotation);
   url_loader_->DownloadToString(
       shared_url_loader_factory_.get(),
-      base::BindOnce(&DoubleFetcher::OnRequestComplete, base::Unretained(this)),
+      base::BindOnce(&DoubleFetcher::OnRequestComplete, base::Unretained(this),
+                     url),
       kMaxDoubleFetchResponseSize);
 }
 
 void DoubleFetcher::OnRequestComplete(
+    GURL url,
     std::optional<std::string> response_body) {
   auto result = ProcessCompletedRequest(&response_body);
 
@@ -106,7 +109,7 @@ void DoubleFetcher::OnRequestComplete(
     const auto& request_dict = request_data->GetDict();
     const auto* assoc_data = request_dict.Find(kAssociatedDataKey);
     if (assoc_data) {
-      callback_.Run(*assoc_data, response_body);
+      callback_.Run(url, *assoc_data, response_body);
     }
   }
 }

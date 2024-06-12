@@ -24,6 +24,8 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
 
 bool ShouldDropLongURL(const GURL& url);
 
+std::optional<std::string> MaskURL(const GURL& url);
+
 }  // namespace web_discovery
 
 #endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PRIVACY_GUARD_H_

@@ -27,7 +27,8 @@ namespace web_discovery {
 class DoubleFetcher {
  public:
   using FetchedCallback =
-      base::RepeatingCallback<void(const base::Value& associated_data,
+      base::RepeatingCallback<void(const GURL& url,
+                                   const base::Value& associated_data,
                                    std::optional<std::string> response_body)>;
   DoubleFetcher(PrefService* profile_prefs,
                 network::SharedURLLoaderFactory* shared_url_loader_factory,
@@ -41,7 +42,7 @@ class DoubleFetcher {
 
  private:
   void OnFetchTimer(const base::Value& request_data);
-  void OnRequestComplete(std::optional<std::string> response_body);
+  void OnRequestComplete(GURL url, std::optional<std::string> response_body);
   bool ProcessCompletedRequest(std::optional<std::string>* response_body);
 
   raw_ptr<PrefService> profile_prefs_;
