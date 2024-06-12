@@ -160,9 +160,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacyGuidePreloadAndroid,
 #endif
       &features::kPrivacySandboxAdsAPIsOverride,
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kReadAnything,
-#endif
       &features::kResourceTimingForCancelledNavigationInFrame,
       &features::kSCTAuditing,
       &features::kServiceWorkerAutoPreload,

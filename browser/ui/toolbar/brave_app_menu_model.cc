@@ -457,6 +457,12 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     }
   }
 
+  // Remove upstream's `Reading Mode` item as we have our own `Speed reader`.
+  if (const auto index = more_tools_model->GetIndexOfCommandId(
+          IDC_SHOW_READING_MODE_SIDE_PANEL)) {
+    more_tools_model->RemoveItemAt(*index);
+  }
+
   // Remove upstream's about menu. It's moved into help sub menu.
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
     RemoveItemAt(*index);
