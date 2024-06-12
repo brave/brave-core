@@ -156,7 +156,6 @@ import XCTest
       if coin == .eth {
         completion(
           [
-            BraveWallet.NetworkInfo.mockGoerli.chainId,
             BraveWallet.NetworkInfo.mockSepolia.chainId,
             BraveWallet.NetworkInfo.mockPolygon.chainId,
           ]
@@ -194,7 +193,6 @@ import XCTest
       .mockSolana,
       .mockSolanaTestnet,
       .mockMainnet,
-      .mockGoerli,
       .mockSepolia,
       .mockPolygon,
       .mockCustomNetwork,
@@ -208,7 +206,6 @@ import XCTest
     ]
 
     let expectedHiddenChains: [BraveWallet.NetworkInfo] = [
-      .mockGoerli,
       .mockSepolia,
       .mockPolygon,
     ]

@@ -339,7 +339,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let sendCopy =
       BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
-    sendCopy.chainId = BraveWallet.GoerliChainId
+    sendCopy.chainId = BraveWallet.SepoliaChainId
     sendCopy.txStatus = .unapproved
     let swapCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
@@ -384,7 +384,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
 
-    await store.prepare()  // `sendCopy` on Goerli Testnet
+    await store.prepare()  // `sendCopy` on Sepolia Testnet
     store.nextTransaction()  // `swapCopy` on Ethereum Mainnet
     store.nextTransaction()  // `solanaSendCopy` on Solana Mainnet
     store.nextTransaction()  // `solanaSPLSendCopy` on Solana Testnet

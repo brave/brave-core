@@ -248,7 +248,7 @@ class BuyTokenStoreTests: XCTestCase {
       blockchainRegistry, keyringService,
       rpcService, walletService,
       assetRatioService, bitcoinWalletService
-    ) = setupServices(selectedNetwork: .mockGoerli)
+    ) = setupServices(selectedNetwork: .mockSepolia)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,

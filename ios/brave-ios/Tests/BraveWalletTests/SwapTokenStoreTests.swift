@@ -930,8 +930,8 @@ class SwapStoreTests: XCTestCase {
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
 
     let rpcService = MockJsonRpcService()
-    rpcService._chainIdForOrigin = { $2(BraveWallet.NetworkInfo.mockGoerli.chainId) }
-    rpcService._network = { $2(BraveWallet.NetworkInfo.mockGoerli) }
+    rpcService._chainIdForOrigin = { $2(BraveWallet.NetworkInfo.mockSepolia.chainId) }
+    rpcService._network = { $2(BraveWallet.NetworkInfo.mockSepolia) }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }

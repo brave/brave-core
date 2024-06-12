@@ -186,9 +186,9 @@ class AccountActivityStoreTests: XCTestCase {
     // default in mainnet
     let ethSendTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
-    let goerliSwapTxCopy =
+    let sepoliaSwapTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
-    goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
+    sepoliaSwapTxCopy.chainId = BraveWallet.SepoliaChainId
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
@@ -197,7 +197,7 @@ class AccountActivityStoreTests: XCTestCase {
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
-      transactions: [goerliSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
+      transactions: [sepoliaSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
         // transactions sorted by created time, make sure they are in-order
         tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index) * 1.days)
         return tx
@@ -219,8 +219,8 @@ class AccountActivityStoreTests: XCTestCase {
           sortOrder: 0
         ),
         NetworkAssets(
-          network: .mockGoerli,
-          tokens: [BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)],
+          network: .mockSepolia,
+          tokens: [BraveWallet.NetworkInfo.mockSepolia.nativeToken.copy(asVisibleAsset: true)],
           sortOrder: 1
         ),
       ]
@@ -332,8 +332,8 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, ethSendTxCopy)
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, ethSendTxCopy.chainId)
         let secondSectionTxs = transactionSections[safe: 1]?.transactions ?? []
-        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, goerliSwapTxCopy)
-        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, goerliSwapTxCopy.chainId)
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, sepoliaSwapTxCopy)
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, sepoliaSwapTxCopy.chainId)
       }.store(in: &cancellables)
 
     accountActivityStore.update()

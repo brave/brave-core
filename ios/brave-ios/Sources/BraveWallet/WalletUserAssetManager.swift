@@ -624,7 +624,15 @@ public class TestableWalletUserAssetManager: WalletUserAssetManagerType {
   ) -> [NetworkAssets] {
     let defaultAssets: [NetworkAssets] = [
       NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0),
-      NetworkAssets(network: .mockGoerli, tokens: [.previewToken], sortOrder: 1),
+      NetworkAssets(
+        network: .mockSepolia,
+        tokens: [
+          (BraveWallet.BlockchainToken.previewToken.copy() as! BraveWallet.BlockchainToken).then {
+            $0.chainId = BraveWallet.SepoliaChainId
+          }
+        ],
+        sortOrder: 1
+      ),
     ]
     let chainIds = networks.map { $0.chainId }
     return _getAllUserAssetsInNetworkAssets?(networks, includingUserDeleted)

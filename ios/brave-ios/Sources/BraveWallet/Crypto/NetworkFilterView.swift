@@ -110,7 +110,7 @@ struct NetworkFilterView_Previews: PreviewProvider {
           .init(isSelected: true, model: .mockMainnet),
           .init(isSelected: true, model: .mockSolana),
           .init(isSelected: true, model: .mockPolygon),
-          .init(isSelected: true, model: .mockGoerli),
+          .init(isSelected: true, model: .mockSepolia),
           .init(isSelected: true, model: .mockSolanaTestnet),
         ],
         networkStore: .previewStore,

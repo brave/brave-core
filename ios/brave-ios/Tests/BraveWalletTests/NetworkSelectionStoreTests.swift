@@ -71,10 +71,10 @@ import XCTest
     await networkStore.setup()
 
     let store = NetworkSelectionStore(networkStore: networkStore)
-    let success = await store.selectNetwork(.mockGoerli)
+    let success = await store.selectNetwork(.mockSepolia)
     XCTAssertTrue(
       success,
-      "Expected success for selecting Goerli because we have ethereum accounts."
+      "Expected success for selecting Sepolia because we have ethereum accounts."
     )
   }
 
@@ -101,10 +101,10 @@ import XCTest
       mode: .select(isForOrigin: true),
       networkStore: networkStore
     )
-    let success = await store.selectNetwork(.mockGoerli)
+    let success = await store.selectNetwork(.mockSepolia)
     XCTAssertTrue(
       success,
-      "Expected success for selecting Goerli because we have ethereum accounts."
+      "Expected success for selecting Sepolia because we have ethereum accounts."
     )
   }
 
@@ -145,9 +145,9 @@ import XCTest
     await networkStore.setup()
 
     let store = NetworkSelectionStore(mode: .formSelection, networkStore: networkStore)
-    let success = await store.selectNetwork(.mockGoerli)
-    XCTAssertTrue(success, "Expected success for selecting Goerli")
-    XCTAssertEqual(store.networkSelectionInForm, .mockGoerli)
+    let success = await store.selectNetwork(.mockSepolia)
+    XCTAssertTrue(success, "Expected success for selecting Sepolia")
+    XCTAssertEqual(store.networkSelectionInForm, .mockSepolia)
   }
 
   func testAlertResponseCreateAccount() async {

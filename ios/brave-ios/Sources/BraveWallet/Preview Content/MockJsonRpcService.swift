@@ -13,7 +13,7 @@ import Foundation
 /// Override `_*` functions to implement unit test specific responses as needed.
 class MockJsonRpcService: BraveWallet.TestJsonRpcService {
   static let allKnownNetworks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet, .mockPolygon, .mockSepolia, .mockGoerli,
+    .mockMainnet, .mockPolygon, .mockSepolia,
     .mockSolana, .mockSolanaTestnet,
     .mockFilecoinMainnet, .mockFilecoinTestnet,
     .mockBitcoinMainnet, .mockBitcoinTestnet,
@@ -28,7 +28,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
 
   var allCustomNetworks: [BraveWallet.NetworkInfo] = []
   var hiddenNetworks: [BraveWallet.NetworkInfo] = [
-    .mockSepolia, .mockGoerli,
+    .mockSepolia,
     .mockSolanaTestnet,
     .mockFilecoinTestnet,
     .mockBitcoinTestnet,
@@ -161,19 +161,6 @@ extension BraveWallet.NetworkInfo {
     chainId: BraveWallet.MainnetChainId,
     chainName: "Mainnet",
     blockExplorerUrls: ["https://etherscan.io"],
-    iconUrls: [],
-    activeRpcEndpointIndex: 0,
-    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
-    symbol: "ETH",
-    symbolName: "Ethereum",
-    decimals: 18,
-    coin: .eth,
-    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
-  )
-  static let mockGoerli: BraveWallet.NetworkInfo = .init(
-    chainId: BraveWallet.GoerliChainId,
-    chainName: "Goerli",
-    blockExplorerUrls: ["https://goerli.etherscan.io"],
     iconUrls: [],
     activeRpcEndpointIndex: 0,
     rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],

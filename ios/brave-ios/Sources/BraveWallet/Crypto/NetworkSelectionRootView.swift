@@ -130,7 +130,7 @@ struct NetworkSelectionRootView_Previews: PreviewProvider {
         allNetworks: [
           .mockMainnet, .mockSolana,
           .mockPolygon,
-          .mockGoerli, .mockSolanaTestnet,
+          .mockSepolia, .mockSolanaTestnet,
         ],
         selectNetwork: { _ in
 
