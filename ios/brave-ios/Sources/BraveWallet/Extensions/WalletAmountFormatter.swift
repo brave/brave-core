@@ -7,7 +7,7 @@ import BigNumber
 import Foundation
 
 /// Handles formatting between Wei and decimal values
-struct WeiFormatter {
+struct WalletAmountFormatter {
   /// The style to use when formatting wei to decimals
   var decimalFormatStyle: DecimalFormatStyle
 

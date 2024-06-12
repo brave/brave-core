@@ -18,7 +18,7 @@ extension BraveWalletJsonRpcService {
     for token: BraveWallet.BlockchainToken,
     in account: BraveWallet.AccountInfo,
     network: BraveWallet.NetworkInfo,
-    decimalFormatStyle: WeiFormatter.DecimalFormatStyle = .balance,
+    decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle = .balance,
     completion: @escaping (Double?) -> Void
   ) {
     switch network.coin {
@@ -32,7 +32,7 @@ extension BraveWalletJsonRpcService {
             completion(nil)
             return
           }
-          let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+          let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
           if let valueString = formatter.decimalString(
             for: wei.removingHexPrefix,
             radix: .hex,
@@ -54,7 +54,7 @@ extension BraveWalletJsonRpcService {
             completion(nil)
             return
           }
-          let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+          let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
           if let valueString = formatter.decimalString(
             for: "\(lamports)",
             radix: .decimal,
@@ -75,7 +75,7 @@ extension BraveWalletJsonRpcService {
             completion(nil)
             return
           }
-          let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+          let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
           if let valueString = formatter.decimalString(
             for: "\(amount)",
             radix: .decimal,
@@ -96,7 +96,7 @@ extension BraveWalletJsonRpcService {
           completion(nil)
           return
         }
-        let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+        let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
         if let valueString = formatter.decimalString(
           for: "\(amount)",
           radix: .decimal,
@@ -141,7 +141,7 @@ extension BraveWalletJsonRpcService {
     for token: BraveWallet.BlockchainToken,
     in accountAddress: String,
     network: BraveWallet.NetworkInfo,
-    decimalFormatStyle: WeiFormatter.DecimalFormatStyle,
+    decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle,
     completion: @escaping (BDouble?) -> Void
   ) {
     switch network.coin {
@@ -155,7 +155,7 @@ extension BraveWalletJsonRpcService {
             completion(nil)
             return
           }
-          let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+          let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
           if let valueString = formatter.decimalString(
             for: wei.removingHexPrefix,
             radix: .hex,
@@ -177,7 +177,7 @@ extension BraveWalletJsonRpcService {
             completion(nil)
             return
           }
-          let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+          let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
           if let valueString = formatter.decimalString(
             for: "\(lamports)",
             radix: .decimal,
@@ -198,7 +198,7 @@ extension BraveWalletJsonRpcService {
             completion(nil)
             return
           }
-          let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+          let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
           if let valueString = formatter.decimalString(
             for: "\(amount)",
             radix: .decimal,
@@ -219,7 +219,7 @@ extension BraveWalletJsonRpcService {
           completion(nil)
           return
         }
-        let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle)
+        let formatter = WalletAmountFormatter(decimalFormatStyle: decimalFormatStyle)
         if let valueString = formatter.decimalString(
           for: "\(amount)",
           radix: .decimal,
@@ -244,7 +244,7 @@ extension BraveWalletJsonRpcService {
     for token: BraveWallet.BlockchainToken,
     in accountAddress: String,
     network: BraveWallet.NetworkInfo,
-    decimalFormatStyle: WeiFormatter.DecimalFormatStyle
+    decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle
   ) async -> BDouble? {
     await withCheckedContinuation { continuation in
       balance(

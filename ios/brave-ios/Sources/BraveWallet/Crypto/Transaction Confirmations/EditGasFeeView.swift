@@ -28,7 +28,10 @@ struct EditGasFeeView: View {
 
   private func setup() {
     perGasPrice =
-      WeiFormatter.weiToDecimalGwei(transaction.ethTxGasPrice.removingHexPrefix, radix: .hex) ?? "0"
+      WalletAmountFormatter.weiToDecimalGwei(
+        transaction.ethTxGasPrice.removingHexPrefix,
+        radix: .hex
+      ) ?? "0"
     // Gas limit is already in Gwei…
     gasLimit = {
       guard let value = BDouble(transaction.ethTxGasLimit.removingHexPrefix, radix: 16) else {
@@ -44,7 +47,11 @@ struct EditGasFeeView: View {
   private func save() {
     // Gas limit is already in Gwei, so doesn't need additional conversion other than to hex
     guard let limit = BDouble(gasLimit)?.rounded().asString(radix: 16),
-      let gasFeeInWei = WeiFormatter.gweiToWei(perGasPrice, radix: .decimal, outputRadix: .hex)
+      let gasFeeInWei = WalletAmountFormatter.gweiToWei(
+        perGasPrice,
+        radix: .decimal,
+        outputRadix: .hex
+      )
     else {
       return
     }

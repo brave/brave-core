@@ -60,7 +60,7 @@ extension BraveWalletBitcoinWalletService {
     guard let btcBalance = await self.balance(accountId: accountId).0
     else { return [:] }
 
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
     var balances: [BTCBalanceType: Double] = [:]
     for type in BTCBalanceType.allCases {
       let balanceString: String

@@ -53,11 +53,14 @@ struct EditPriorityFeeView: View {
       return value.decimalExpansion(precisionAfterDecimalPoint: 2)
     }()
     maximumTipPrice =
-      WeiFormatter.weiToDecimalGwei(selectedMaxTip.removingHexPrefix, radix: .hex) ?? "0"
+      WalletAmountFormatter.weiToDecimalGwei(selectedMaxTip.removingHexPrefix, radix: .hex) ?? "0"
     maximumGasPrice =
-      WeiFormatter.weiToDecimalGwei(selectedMaxPrice.removingHexPrefix, radix: .hex) ?? "0"
+      WalletAmountFormatter.weiToDecimalGwei(selectedMaxPrice.removingHexPrefix, radix: .hex) ?? "0"
     baseInGwei =
-      WeiFormatter.weiToDecimalGwei(gasEstimation.baseFeePerGas.removingHexPrefix, radix: .hex)
+      WalletAmountFormatter.weiToDecimalGwei(
+        gasEstimation.baseFeePerGas.removingHexPrefix,
+        radix: .hex
+      )
       ?? "0"
 
     // Comparing from high to low as sometimes avg/slow fees are the same
@@ -96,8 +99,16 @@ struct EditPriorityFeeView: View {
     case .custom:
       // Gas limit is already in Gwei, so doesn't need additional conversion other than to hex
       guard let limit = BDouble(gasLimit)?.rounded().asString(radix: 16),
-        let gasFee = WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex),
-        let gasTip = WeiFormatter.gweiToWei(maximumTipPrice, radix: .decimal, outputRadix: .hex)
+        let gasFee = WalletAmountFormatter.gweiToWei(
+          maximumGasPrice,
+          radix: .decimal,
+          outputRadix: .hex
+        ),
+        let gasTip = WalletAmountFormatter.gweiToWei(
+          maximumTipPrice,
+          radix: .decimal,
+          outputRadix: .hex
+        )
       else {
         // Show error?
         return
@@ -122,7 +133,9 @@ struct EditPriorityFeeView: View {
   }
 
   private var calculatedMaximumFee: String {
-    let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: gasLimit, radix: .decimal))
+    let formatter = WalletAmountFormatter(
+      decimalFormatStyle: .gasFee(limit: gasLimit, radix: .decimal)
+    )
     let gasFeeInWei: String
     switch gasFeeKind {
     case .low:
@@ -133,7 +146,7 @@ struct EditPriorityFeeView: View {
       gasFeeInWei = gasEstimation.fastMaxFeePerGas
     case .custom:
       gasFeeInWei =
-        WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex) ?? ""
+        WalletAmountFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex) ?? ""
     }
     let proposedGasValue =
       formatter.decimalString(for: gasFeeInWei.removingHexPrefix, radix: .hex, decimals: 18) ?? ""
