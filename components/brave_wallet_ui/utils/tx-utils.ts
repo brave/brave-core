@@ -45,15 +45,6 @@ import { makeNetworkAsset } from '../options/asset-options'
 import { getAccountLabel, getAddressLabel } from './account-utils'
 import { makeSerializableTimeDelta } from './model-serialization-utils'
 
-export type EIP1559TransactionInfo = TransactionInfo & {
-  txDataUnion: {
-    ethTxData1559: BraveWallet.TxData1559
-    ethTxData: undefined
-    solanaTxData: undefined
-    filTxData: undefined
-  }
-}
-
 export type FileCoinTransactionInfo = TransactionInfo & {
   txDataUnion: {
     filTxData: BraveWallet.FilTxData
@@ -760,9 +751,14 @@ export const getTransactionGas = (
   }
 }
 
-export const isEIP1559Transaction = (
-  transaction: TransactionInfo
-): transaction is EIP1559TransactionInfo => {
+export const isEIP1559Transaction = (transaction: TransactionInfo) => {
+  if (
+    !isEthereumTransaction(transaction) &&
+    !isFilecoinTransaction(transaction)
+  ) {
+    return false
+  }
+
   const { maxFeePerGas, maxPriorityFeePerGas } = getTransactionGas(transaction)
   return maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
 }
