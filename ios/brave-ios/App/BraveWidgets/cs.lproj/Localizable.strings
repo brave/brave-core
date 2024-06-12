@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Soukromá karta";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Rychlý přístup k vyhledávání na webu nebo otevírání webových stránek v Brave.";
+"widgets.shortcutsWidgetDescription" = "Rychlý přístup k vyhledávání na webu nebo otevírání webových stránek v Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Zástupci";

@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "¿Establecer Ping como navegador predeterminado?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Si usas Ping como navegador predeterminado, todos los enlaces que pulses se abrirán con la protección de privacidad de Brave.";
+"callout.defaultBrowserCalloutDescription" = "Si usas Ping como navegador predeterminado, todos los enlaces que pulses se abrirán con la protección de privacidad de Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Establecer como predeterminado";
@@ -278,13 +278,13 @@
 "callout.defaultBrowserTitle" = "Privacidad con total simplicidad.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Esto nos permite averiguar cuáles son las funciones de Ping que se usan con más frecuencia. Puedes cambiar esto cuando quieras en los apartados \"Protecciones de Brave\" y \"Otros ajustes de privacidad\" de la configuración de Brave.";
+"callout.p3aCalloutDescription" = "Esto nos permite averiguar cuáles son las funciones de Ping que se usan con más frecuencia. Puedes cambiar esto cuando quieras en los apartados \"Protecciones de Brave\" y \"Otros ajustes de privacidad\" de la configuración de Ping.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Obtén más información sobre nuestras estadísticas de productos que preservan la privacidad (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Ayuda a mejorar Brave.";
+"callout.p3aCalloutTitle" = "Ayuda a mejorar Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Comparte opiniones totalmente anónimas y privadas sobre los productos.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields bloquea rastreadores y anuncios, guarda datos y te ayuda a ahorrar tiempo cada vez que visitas un sitio";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Abre Ajustes, toca en \"Aplicación de navegador predeterminado\" y selecciona Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Abre Ajustes, toca en \"Aplicación de navegador predeterminado\" y selecciona Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Establecer Ping como navegador predeterminado";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Reclamar tokens";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Has ganado %@ por navegar con Brave.";
+"ntp.earningsReport" = "Has ganado %@ por navegar con Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "¡Sigue así!";
@@ -1115,7 +1115,7 @@
 "ntp.hideSponsoredImages" = "Ocultar las imágenes de patrocinadores";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "\"Patrocinados\" son fondos de marca adicionales que puedes conseguir si tienes activadas las recompensas de Brave.";
+"ntp.imageTypeSelectionDescription" = "\"Patrocinados\" son fondos de marca adicionales que puedes conseguir si tienes activadas las recompensas de Ping.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Más información sobre Ping Rewards";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Vincula tu suscripción a la VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Tu suscripción a la VPN de Ping puede proteger hasta cinco dispositivos, ya sean de Android, iOS o de escritorio. Solo tienes que vincular tu suscripción del App Store con tu cuenta de Brave.";
+"onboarding.linkReceiptDescription" = "Tu suscripción a la VPN de Ping puede proteger hasta cinco dispositivos, ya sean de Android, iOS o de escritorio. Solo tienes que vincular tu suscripción del App Store con tu cuenta de Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Amplía tu protección de Firewall + VPN de Ping";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "¡Ha ocurrido un problema al cargar el recurso!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Si se habilita esta opción, se mostrará una marca en el icono del menú principal que indicará que los archivos multimedia de la página se pueden añadir a la lista de reproducción de Brave.";
+"playlist.menuBadgeOptionFooterText" = "Si se habilita esta opción, se mostrará una marca en el icono del menú principal que indicará que los archivos multimedia de la página se pueden añadir a la lista de reproducción de Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Mostrar marca de notificación del menú";
@@ -2285,7 +2285,7 @@
 "rewards.braveTalkRewardsOptInButtonTitle" = "Activar Ping Rewards";
 
 /* Body for successful Ping Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Haz clic en cualquier lugar de la pantalla para continuar hacia Charla de Brave.";
+"rewards.braveTalkRewardsOptInSuccessBody" = "Haz clic en cualquier lugar de la pantalla para continuar hacia Charla de Ping.";
 
 /* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Ya puedes iniciar una llamada gratuita";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Escudos";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Todos los días ahorro datos al navegar con Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Todos los días ahorro datos al navegar con Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Todos los días ahorro datos al navegar con Brave.";
+"socialSharing.shareDescriptionTitle" = "Todos los días ahorro datos al navegar con Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Pestaña estándar";

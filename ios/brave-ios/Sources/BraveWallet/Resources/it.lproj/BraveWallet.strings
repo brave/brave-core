@@ -86,7 +86,7 @@
 "wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
-"wallet.addNetworkDescription" = "Questa rete potrà essere utilizzata nel Portafoglio di Brave.";
+"wallet.addNetworkDescription" = "Questa rete potrà essere utilizzata nel Portafoglio di Ping.";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
 "wallet.addNetworkSubtitle" = "Vuoi permettere a questo sito di aggiungere una rete?";

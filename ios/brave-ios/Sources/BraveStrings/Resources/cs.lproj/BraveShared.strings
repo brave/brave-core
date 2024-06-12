@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Nastavit Ping jako výchozí prohlížeč?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Pokud je Ping nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Brave.";
+"callout.defaultBrowserCalloutDescription" = "Pokud je Ping nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Nastavit výchozí";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Další informace o naší analýze produktů pro zachování soukromí (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Pomozte vylepšit Brave.";
+"callout.p3aCalloutTitle" = "Pomozte vylepšit Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Sdílejte zcela soukromé a anonymní informace o produktu.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Štíty Ping blokují trackery a reklamy, ukládají data a šetří vám čas na každé vámi navštívené stránce";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Otevřete Nastavení, klepněte na Výchozí aplikace prohlížeče a vyberte Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Otevřete Nastavení, klepněte na Výchozí aplikace prohlížeče a vyberte Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Nastavte si Ping jako výchozí prohlížeč";
@@ -1115,7 +1115,7 @@
 "ntp.hideSponsoredImages" = "Skrýt sponzorované obrázky";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "„Sponzorované“ jsou dodatečná značková pozadí, ze kterých můžete něco získat, pokud povolíte odměny Brave.";
+"ntp.imageTypeSelectionDescription" = "„Sponzorované“ jsou dodatečná značková pozadí, ze kterých můžete něco získat, pokud povolíte odměny Ping.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Další informace o odměnách Ping";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Povolte Ping zkontrolovat v mé schránce odpovídající referenční kód";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Pravděpodobně jste si stáhli Ping na podporu svého referera. Aby Ping mohl detekovat vašeho referera, provede jednorázovou kontrolu ve vaší schránce, zda neobsahuje odpovídající referenční kód. Tato kontrola je omezena pouze na kód a nedojde k předání žádných dalších osobních údajů. Pokud se odhlásíte, váš referer neobdrží odměny od Brave.";
+"OBPrivacyConsentDetail" = "Pravděpodobně jste si stáhli Ping na podporu svého referera. Aby Ping mohl detekovat vašeho referera, provede jednorázovou kontrolu ve vaší schránce, zda neobsahuje odpovídající referenční kód. Tato kontrola je omezena pouze na kód a nedojde k předání žádných dalších osobních údajů. Pokud se odhlásíte, váš referer neobdrží odměny od Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Nepovolit tuto kontrolu";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Propojit předplatné VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Vaše předplatné Ping VPN může chránit až 5 zařízení na Androidu, iOS a stolním počítači. Stačí propojit vaše předplatné App Store s vaším účtem Brave.";
+"onboarding.linkReceiptDescription" = "Vaše předplatné Ping VPN může chránit až 5 zařízení na Androidu, iOS a stolním počítači. Stačí propojit vaše předplatné App Store s vaším účtem Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Rozšiřte ochranu Ping Firewall + VPN";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Došlo k problému při načítání zdroje!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Při povolení se na ikoně hlavní nabídky zobrazí symbol, který označuje, že média na stránce mohou být přidána do seznamu skladeb Brave.";
+"playlist.menuBadgeOptionFooterText" = "Při povolení se na ikoně hlavní nabídky zobrazí symbol, který označuje, že média na stránce mohou být přidána do seznamu skladeb Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Zobrazit symbol oznámení nabídky";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Štíty ";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Každý den ukládám data procházením webu přes prohlížeč Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Každý den ukládám data procházením webu přes prohlížeč Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Každý den ukládám data procházením webu přes prohlížeč Brave.";
+"socialSharing.shareDescriptionTitle" = "Každý den ukládám data procházením webu přes prohlížeč Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Standardní karta";
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "Obnovit ";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Chcete-li obnovit vaši relaci VPN, přihlaste se prosím ke svému účtu Brave.";
+"vpn.sessionExpiredDescription" = "Chcete-li obnovit vaši relaci VPN, přihlaste se prosím ke svému účtu Ping.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Dismiss";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Jste připraveni zabezpečit každou aplikaci ve vašem telefonu? Vraťte se k VPN Ping a získejte 20% slevu na další 3 měsíce.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Brave. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Brave. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Věděli jste, že VPN Ping vás chrání i mimo prohlížeč Brave?";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Nemějte strach. Během vaší aktualizace platebních údajů ponecháme VPN aktivní několik dní.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Aktualizovat své platební údaje, abyste zůstali chráněni pomocí VPN Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Aktualizovat své platební údaje, abyste zůstali chráněni pomocí VPN Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Chcete i nadále chránit každou aplikaci ve vašem telefonu? Stačí aktualizovat své platební údaje.";

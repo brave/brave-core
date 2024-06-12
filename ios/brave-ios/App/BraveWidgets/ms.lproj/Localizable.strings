@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Tab Peribadi";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Capaian cepat untuk membuat carian melalui web atau membuka halaman web dalam Brave.";
+"widgets.shortcutsWidgetDescription" = "Capaian cepat untuk membuat carian melalui web atau membuka halaman web dalam Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Pintasan";

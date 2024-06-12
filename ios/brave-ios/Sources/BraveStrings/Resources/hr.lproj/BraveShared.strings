@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Postaviti preglednik Ping kao zadani preglednik?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Kad je Ping postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.";
+"callout.defaultBrowserCalloutDescription" = "Kad je Ping postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Postavi kao zadano";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Doznajte više o našoj analitici proizvoda kojom se čuva privatnost (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Pomognite poboljšati Brave.";
+"callout.p3aCalloutTitle" = "Pomognite poboljšati Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Podijelite potpuno privatne i anonimne uvide u proizvode.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Značajkom Štitovi Ping blokiraju se elementi za praćenje i oglasi te štede podatci i vrijeme na svakom mrežnom mjestu koje posjetite.";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Otvorite Postavke, dodirnite Zadana aplikacija preglednika i odaberite Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Otvorite Postavke, dodirnite Zadana aplikacija preglednika i odaberite Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Postavite Ping kao zadani preglednik";
@@ -1115,7 +1115,7 @@
 "ntp.hideSponsoredImages" = "Sakrij sponzorirane slike";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "„Sponzorirano” označava dodatne markirane pozadine koje može zaraditi kada su omogućene Nagrade Brave.";
+"ntp.imageTypeSelectionDescription" = "„Sponzorirano” označava dodatne markirane pozadine koje može zaraditi kada su omogućene Nagrade Ping.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Doznajte više o značajki Nagrade Ping";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Dopusti pregledniku Ping provjeravanje međuspremnika za otkrivanje podudarajuće šifre preporuke";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Možda ste preuzeli preglednik Ping za davanje podrške svom preporučitelju. Kako bi se otkrio vaš preporučitelj, preglednikom Ping jednokratno se provjerava vaš međuspremnik za odgovarajuću šifru preporuke. Provjera je ograničena samo na šifru i ne prenose se nikakvi drugi osobni podatci. Ako povučete svoju privolu, vaš preporučitelj ne prima nagrade preglednika Brave.";
+"OBPrivacyConsentDetail" = "Možda ste preuzeli preglednik Ping za davanje podrške svom preporučitelju. Kako bi se otkrio vaš preporučitelj, preglednikom Ping jednokratno se provjerava vaš međuspremnik za odgovarajuću šifru preporuke. Provjera je ograničena samo na šifru i ne prenose se nikakvi drugi osobni podatci. Ako povučete svoju privolu, vaš preporučitelj ne prima nagrade preglednika Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Ne dopusti ovu provjeru";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Povežite svoju pretplatu na VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Vašom pretplatom na mrežu VPN preglednika Ping može se zaštititi do pet (5) uređaja diljem sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu iz trgovine App Store s računom Brave.";
+"onboarding.linkReceiptDescription" = "Vašom pretplatom na mrežu VPN preglednika Ping može se zaštititi do pet (5) uređaja diljem sustava Android, iOS i stolnog računala. Samo povežite svoju pretplatu iz trgovine App Store s računom Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Proširite svoj vatrozid Ping + zaštitu mreže VPN";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Nastao je problem pri učitavanju resursa!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Kad je omogućeno, značka se prikazuje na ikoni glavnog izbornika, a time se pokazuje da se mediji na stranici mogu dodati popisu za reprodukciju preglednika Brave.";
+"playlist.menuBadgeOptionFooterText" = "Kad je omogućeno, značka se prikazuje na ikoni glavnog izbornika, a time se pokazuje da se mediji na stranici mogu dodati popisu za reprodukciju preglednika Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Prikaz značke obavijesti izbornika";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Štitovi";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.";
+"socialSharing.shareDescriptionTitle" = "Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Standardna kartica";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Jeste li spremni zaštititi svaku aplikaciju na svom telefonu? Vratite se mreži VPN preglednika Ping i ostvarite 20 % popusta tijekom sljedeća 3 mjeseca.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Mrežom VPN preglednika Ping uvijek su se blokirali elementi za praćenje u svakoj aplikaciji, čak izvan preglednika Brave. Sada možete vidjeti tko vas je pokušao pratiti uz čvorište privatnosti preglednika Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "Mrežom VPN preglednika Ping uvijek su se blokirali elementi za praćenje u svakoj aplikaciji, čak izvan preglednika Brave. Sada možete vidjeti tko vas je pokušao pratiti uz čvorište privatnosti preglednika Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Jeste li znali da imate zaštitu mreže VPN preglednika Ping i izvan samog preglednika Brave?";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Ne brinite se. Držimo mrežu VPN aktivnom nekoliko dana dok ažurirate pojedinosti o plaćanju.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Ažurirajte informacije o plaćanju kako biste ostali zaštićeni mrežom VPN preglednika Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Ažurirajte informacije o plaćanju kako biste ostali zaštićeni mrežom VPN preglednika Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Želite li nastaviti štititi svaku aplikaciju na svom telefonu? Samo ažurirajte pojedinosti o plaćanju.";

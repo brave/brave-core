@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Karta w trybie prywatnym";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Szybki dostęp do przeglądania Internetu lub otwierania stron w przeglądarce Brave.";
+"widgets.shortcutsWidgetDescription" = "Szybki dostęp do przeglądania Internetu lub otwierania stron w przeglądarce Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Skróty";

@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Privat Fane";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Hurtig adgang til at søge på nettet eller åbne websider i Brave.";
+"widgets.shortcutsWidgetDescription" = "Hurtig adgang til at søge på nettet eller åbne websider i Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Genveje";

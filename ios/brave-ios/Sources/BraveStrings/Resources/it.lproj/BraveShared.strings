@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Vuoi impostare Ping come browser predefinito?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Con Ping come browser predefinito, ogni link che premi si apre con le protezioni alla privacy fornite da Brave.";
+"callout.defaultBrowserCalloutDescription" = "Con Ping come browser predefinito, ogni link che premi si apre con le protezioni alla privacy fornite da Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Imposta come predefinito";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Scopri di più sulle analisi di prodotto a tutela della privacy (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Contribuisci a migliorare Brave.";
+"callout.p3aCalloutTitle" = "Contribuisci a migliorare Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Condividi informazioni di prodotto totalmente private e anonime.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields blocca i tracker e gli annunci pubblicitari, tutela i dati e ti fa risparmiare tempo ogni volta che visiti un sito";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Apri Impostazioni, seleziona App per il browser di default, poi scegli Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Apri Impostazioni, seleziona App per il browser di default, poi scegli Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Imposta Ping come browser predefinito";
@@ -1115,7 +1115,7 @@
 "ntp.hideSponsoredImages" = "Nascondi le immagini sponsorizzate";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Le immagini “Sponsorizzate” sono sfondi aggiuntivi da cui puoi guadagnare tramite le Ricompense Brave.";
+"ntp.imageTypeSelectionDescription" = "Le immagini “Sponsorizzate” sono sfondi aggiuntivi da cui puoi guadagnare tramite le Ricompense Ping.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Scopri di più su Ping Rewards";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Autorizzo Ping a verificare i miei appunti per cercare il codice di sponsorizzazione";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Forse hai scaricato Ping per sostenere il tuo sponsor. Per individuare il tuo sponsor, Ping esegue una verifica una tantum mei tuoi appunti e cerca il codice collegato allo sponsor. La verifica si limita al codice e non saranno inviati altri dati personali. Se rinunci, il tuo sponsor non riceverà ricompense da Brave.";
+"OBPrivacyConsentDetail" = "Forse hai scaricato Ping per sostenere il tuo sponsor. Per individuare il tuo sponsor, Ping esegue una verifica una tantum mei tuoi appunti e cerca il codice collegato allo sponsor. La verifica si limita al codice e non saranno inviati altri dati personali. Se rinunci, il tuo sponsor non riceverà ricompense da Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Non autorizzo questa verifica";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Non preoccuparti. Manterremo attiva la VPN ancora per qualche giorno quando aggiorneremo le informazioni di pagamento.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Aggiorna le tue informazioni di pagamento per conservare la protezione garantita dalla VPN di Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Aggiorna le tue informazioni di pagamento per conservare la protezione garantita dalla VPN di Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Vuoi continuare a mantenere al sicuro tutte le app presenti sul tuo telefono? Devi solo aggiornare le informazioni di pagamento.";

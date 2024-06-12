@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Vols establir Ping com a navegador predeterminat?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Si Ping és el teu navegador predeterminat, tots els enllaços en què facis clic s'obriran amb les proteccions de privacitat de Brave.";
+"callout.defaultBrowserCalloutDescription" = "Si Ping és el teu navegador predeterminat, tots els enllaços en què facis clic s'obriran amb les proteccions de privacitat de Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Estableix com a predeterminat";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Obtingues més informació sobre la nostra anàlisi de productes per a la preservació de la privacitat (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Ajuda a millorar Brave.";
+"callout.p3aCalloutTitle" = "Ajuda a millorar Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Comparteix informacions de producte completament privada i anònima.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Escuts de Ping bloqueja els rastrejadors i els anuncis, desa dades i t'estalvia temps a cada lloc que visites";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Obre Configuració, prem l'app del navegador predeterminat i selecciona Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Obre Configuració, prem l'app del navegador predeterminat i selecciona Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Defineix Ping com a navegador predeterminat";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Reclama tokens";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Has guanyat %@ navegant amb Brave.";
+"ntp.earningsReport" = "Has guanyat %@ navegant amb Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Via lliure!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Permet que Ping comprovi el meu porta-retalls per trobar un codi de referència coincident";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "És possible que hagis descarregat Ping per donar suport al teu referent. Per detectar el teu remitent, Ping fa una comprovació única del porta-retalls per trobar el codi de referència coincident. Aquesta comprovació es limita només al codi i no es transmetrà cap altra dada personal. Si ho desactives, el teu referent no rebrà recompenses de Brave.";
+"OBPrivacyConsentDetail" = "És possible que hagis descarregat Ping per donar suport al teu referent. Per detectar el teu remitent, Ping fa una comprovació única del porta-retalls per trobar el codi de referència coincident. Aquesta comprovació es limita només al codi i no es transmetrà cap altra dada personal. Si ho desactives, el teu referent no rebrà recompenses de Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "No permetis aquesta comprovació";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Enllaça la teva subscripció VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "La teva subscripció VPN de Ping pot protegir fins a 5 dispositius a Android, iOS i escriptori. Només has d'enllaçar la teva subscripció a l'App Store al teu compte de Brave.";
+"onboarding.linkReceiptDescription" = "La teva subscripció VPN de Ping pot protegir fins a 5 dispositius a Android, iOS i escriptori. Només has d'enllaçar la teva subscripció a l'App Store al teu compte de Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Amplia la protecció del Tallafocs + VPN de Ping";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Hi ha hagut un problema en carregar el recurs!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Quan està activat, es mostrarà una insígnia a la icona del menú principal, que indica que els continguts multimèdia de la pàgina es poden afegir a la Llista de reproducció de Brave.";
+"playlist.menuBadgeOptionFooterText" = "Quan està activat, es mostrarà una insígnia a la icona del menú principal, que indica que els continguts multimèdia de la pàgina es poden afegir a la Llista de reproducció de Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Mostra la insígnia de notificació del menú";
@@ -2285,7 +2285,7 @@
 "rewards.braveTalkRewardsOptInButtonTitle" = "Activa les recompenses";
 
 /* Body for successful Ping Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Clica a qualsevol lloc de la pantalla per continuar a Conversa de Brave.";
+"rewards.braveTalkRewardsOptInSuccessBody" = "Clica a qualsevol lloc de la pantalla per continuar a Conversa de Ping.";
 
 /* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Ara pots iniciar una trucada gratuïta";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Escuts";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Cada dia deso les dades explorant la web amb Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Cada dia deso les dades explorant la web amb Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Cada dia deso les dades explorant la web amb Brave.";
+"socialSharing.shareDescriptionTitle" = "Cada dia deso les dades explorant la web amb Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Pestanya estàndard";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Estàs preparat per protegir totes les aplicacions del teu telèfon? Torna a la VPN de Ping i aconsegueix un 20% de descompte durant els pròxims 3 mesos.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "La VPN de Ping sempre ha bloquejat els rastrejadors a totes les aplicacions, fins i tot fora del navegador de Brave. Ara pots veure qui t'ha intentat rastrejar amb el Centre de Privacitat de Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "La VPN de Ping sempre ha bloquejat els rastrejadors a totes les aplicacions, fins i tot fora del navegador de Brave. Ara pots veure qui t'ha intentat rastrejar amb el Centre de Privacitat de Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Sabies que la VPN de Ping et protegeix fora del navegador de Brave?";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "No et preocupis. Mantindrem la VPN activa durant uns dies mentre actualitzes la informació de pagament.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Actualitza la teva informació de pagament per mantenir-te protegit amb la VPN de Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Actualitza la teva informació de pagament per mantenir-te protegit amb la VPN de Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Vols continuar protegint totes les aplicacions del teu telèfon? Només has d'actualitzar les teves dades de pagament.";

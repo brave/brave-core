@@ -53,7 +53,7 @@
 "AlwaysShow" = "Включить";
 
 /* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "Так вы подтвердите, что именно вы выполняете вход в Brave.";
+"AuthenticationLoginsTouchReason" = "Так вы подтвердите, что именно вы выполняете вход в Ping.";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Отмена";
@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Установить Ping браузером по умолчанию?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "При открытии всех ссылок будут использоваться средства защиты конфиденциальности Brave.";
+"callout.defaultBrowserCalloutDescription" = "При открытии всех ссылок будут использоваться средства защиты конфиденциальности Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установить по умолчанию";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Пользуйтесь Интернетом без помех. Ping Shields блокирует рекламу и трекеры, а также защищает данные.";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Откройте настройки, нажмите «Браузерное приложение по умолчанию» и выберите Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Откройте настройки, нажмите «Браузерное приложение по умолчанию» и выберите Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Сделать Ping браузером по умолчанию";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Получить баллы";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Вы заработали %@, пользуясь Brave.";
+"ntp.earningsReport" = "Вы заработали %@, пользуясь Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Так держать!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Разрешить Ping доступ к буферу обмена, чтобы автоматически вставить код реферала";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Вероятно, вы скачали Ping по пригласительной ссылке. Чтобы определить ее источник, Ping однократно проверит ваш буфер обмена на наличие кода реферала. Никакие другие данные проверяться или передаваться не будут. Если вы не предоставите разрешение, пользователь, пригласивший вас, не получит вознаграждения от Brave.";
+"OBPrivacyConsentDetail" = "Вероятно, вы скачали Ping по пригласительной ссылке. Чтобы определить ее источник, Ping однократно проверит ваш буфер обмена на наличие кода реферала. Никакие другие данные проверяться или передаваться не будут. Если вы не предоставите разрешение, пользователь, пригласивший вас, не получит вознаграждения от Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Запретить проверку";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Привяжите подписку на VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Вы можете использовать Ping VPN максимум на пяти устройствах Android, iOS и компьютерах. Для этого привяжите подписку  App Store к аккаунту Brave.";
+"onboarding.linkReceiptDescription" = "Вы можете использовать Ping VPN максимум на пяти устройствах Android, iOS и компьютерах. Для этого привяжите подписку  App Store к аккаунту Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Получите больше от функции «Brave Брандмауэр + VPN»";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "При загрузке этого ресурса произошла ошибка.";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Когда настройка включена, на значке главного меню будет отображаться пометка, если медиафайлы на странице можно добавить в плейлист Brave.";
+"playlist.menuBadgeOptionFooterText" = "Когда настройка включена, на значке главного меню будет отображаться пометка, если медиафайлы на странице можно добавить в плейлист Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Включить уведомления на значке меню";
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "Восстановить";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Чтобы обновить сеанс VPN, войдите в аккаунт Brave.";
+"vpn.sessionExpiredDescription" = "Чтобы обновить сеанс VPN, войдите в аккаунт Ping.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Отклонить";

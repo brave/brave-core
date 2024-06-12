@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields blokkeert niet alleen trackers en advertenties, maar zorgt er ook voor dat je data en tijd bespaart wanneer je sites bezoekt";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Open Instellingen, tik op 'Standaard browserapp' en selecteer Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Open Instellingen, tik op 'Standaard browserapp' en selecteer Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Stel Ping in als je standaardbrowser";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Sta toe dat Ping op het klembord zoekt naar een passende verwijzingscode";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Misschien heb je Ping gedownload om je verwijzer te steunen. Ping kan deze verwijzer achterhalen door eenmalig op het klembord te zoeken naar de passende verwijzingscode. Hierbij wordt alleen de code gezocht en worden geen andere persoonsgegevens overgedragen. Als je je afmeldt, ontvangt de verwijzer geen beloningen van Brave.";
+"OBPrivacyConsentDetail" = "Misschien heb je Ping gedownload om je verwijzer te steunen. Ping kan deze verwijzer achterhalen door eenmalig op het klembord te zoeken naar de passende verwijzingscode. Hierbij wordt alleen de code gezocht en worden geen andere persoonsgegevens overgedragen. Als je je afmeldt, ontvangt de verwijzer geen beloningen van Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Zoek niet";

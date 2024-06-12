@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Tato webová stránka začala blokovat některé blokátory reklam, což znamená, že jejich webová stránka nemusí fungovat podle očekávání.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Chcete-li tento problém vyřešit, může za vás Ping upravit nastavení vašich štítů. Po úpravě můžete zkusit sledovat tento obsah v přehrávači Brave.";
+"AntiAdBlockWarningDescription2" = "Chcete-li tento problém vyřešit, může za vás Ping upravit nastavení vašich štítů. Po úpravě můžete zkusit sledovat tento obsah v přehrávači Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Zachovat aktuální nastavení";

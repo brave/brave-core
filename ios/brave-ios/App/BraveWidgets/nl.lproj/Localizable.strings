@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Privétabblad";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Zoek meteen op het web of open snel webpagina's in Brave.";
+"widgets.shortcutsWidgetDescription" = "Zoek meteen op het web of open snel webpagina's in Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Opdrachten";

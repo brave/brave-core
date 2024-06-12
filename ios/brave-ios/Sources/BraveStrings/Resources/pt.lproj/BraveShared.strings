@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Definir o Ping como navegador predefinido?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Com o Ping como predefinido, todas as ligações em que tocar abrem com as proteções de privacidade do Brave.";
+"callout.defaultBrowserCalloutDescription" = "Com o Ping como predefinido, todas as ligações em que tocar abrem com as proteções de privacidade do Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Predefinir";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Saiba mais sobre a nossa Análise de Produtos com Preservação de Privacidade (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Ajude a melhorar o Brave.";
+"callout.p3aCalloutTitle" = "Ajude a melhorar o Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Partilhe informações detalhadas de produtos completamte privadas e anónimas";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Reivindicar tokens";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Você ganhou %@ navegando com o Brave.";
+"ntp.earningsReport" = "Você ganhou %@ navegando com o Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Muito bem!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Permitir que o Ping verifique se há um código de indicação correspondente na minha área de transferência";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Talvez você tenha baixado o Ping para apoiar a pessoa que indicou você. Para detectar o responsável pela indicação, o Ping realiza uma verificação única da sua área de transferência em busca do código de indicação correspondente. Essa verificação se limita apenas ao código, e nenhum outro dado pessoal será transmitido. Se você desativar essa opção, o autor da indicação não receberá recompensas do Brave.";
+"OBPrivacyConsentDetail" = "Talvez você tenha baixado o Ping para apoiar a pessoa que indicou você. Para detectar o responsável pela indicação, o Ping realiza uma verificação única da sua área de transferência em busca do código de indicação correspondente. Essa verificação se limita apenas ao código, e nenhum outro dado pessoal será transmitido. Se você desativar essa opção, o autor da indicação não receberá recompensas do Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Não permitir essa verificação";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Associar a sua assinatura de VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "A sua assinatura da VPN Ping pode proteger até 5 dispositivos, incluindo Android, iOS e computadores. Basta associar sua assinatura da App Store à sua conta do Brave.";
+"onboarding.linkReceiptDescription" = "A sua assinatura da VPN Ping pode proteger até 5 dispositivos, incluindo Android, iOS e computadores. Basta associar sua assinatura da App Store à sua conta do Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Expanda a sua proteção de Firewall + VPN Ping";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Houve um problema ao carregar o recurso.";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Quando essa opção for ativada, um aviso será exibido no ícone do menu principal, indicando que a mídia presente na página poderá ser adicionada à Playlist do Brave.";
+"playlist.menuBadgeOptionFooterText" = "Quando essa opção for ativada, um aviso será exibido no ícone do menu principal, indicando que a mídia presente na página poderá ser adicionada à Playlist do Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Mostrar aviso de notificação no menu";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Proteções";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Economizo dados diariamente navegando na web com o Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Economizo dados diariamente navegando na web com o Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Economizo dados diariamente navegando na web com o Brave.";
+"socialSharing.shareDescriptionTitle" = "Economizo dados diariamente navegando na web com o Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Aba padrão";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Pronto para proteger todas as aplicações do seu telefone? Volte a usar a Ping VPN e receba um desconto de 20% nos próximos 3 meses.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "A Ping VPN sempre bloqueou os rastreadores em todas as aplicações, mesmo fora do navegador Brave. Agora pode ver quem o tentou rastrear, com o Centro de privacidade Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "A Ping VPN sempre bloqueou os rastreadores em todas as aplicações, mesmo fora do navegador Brave. Agora pode ver quem o tentou rastrear, com o Centro de privacidade Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Sabia que a Ping VPN o protege fora do navegador Brave?";

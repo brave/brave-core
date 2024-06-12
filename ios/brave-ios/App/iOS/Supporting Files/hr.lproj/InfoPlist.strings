@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Na mrežnim mjestima koja posjećujete može se zahtijevati vaša lokacija.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ovim se omogućava upotreba vašeg mikrofona pri upotrebi preglednika Brave.";
+"NSMicrophoneUsageDescription" = "Ovim se omogućava upotreba vašeg mikrofona pri upotrebi preglednika Ping.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Omogućava vam spremanje fotografija.";

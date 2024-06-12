@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Приватна вкладка";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Швидкий доступ до пошуку в Інтернеті або відкривання вебсторінок у Brave.";
+"widgets.shortcutsWidgetDescription" = "Швидкий доступ до пошуку в Інтернеті або відкривання вебсторінок у Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Ярлики швидкого доступу";

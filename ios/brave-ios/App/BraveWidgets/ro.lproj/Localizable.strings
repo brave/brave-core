@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Filă privată";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Acces rapid pentru a căuta pe web sau pentru a accesa site-uri în Brave.";
+"widgets.shortcutsWidgetDescription" = "Acces rapid pentru a căuta pe web sau pentru a accesa site-uri în Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Comenzi rapide";

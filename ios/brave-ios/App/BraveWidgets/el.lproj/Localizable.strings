@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Ιδιωτική καρτέλα";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Αποκτήστε γρήγορα πρόσβαση για αναζήτηση στον ιστό ή άνοιγμα ιστοσελίδων στο Brave.";
+"widgets.shortcutsWidgetDescription" = "Αποκτήστε γρήγορα πρόσβαση για αναζήτηση στον ιστό ή άνοιγμα ιστοσελίδων στο Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Συντομεύσεις";

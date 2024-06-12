@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields blokerer trackere og annoncer, gemmer data og sparer dig tid på hvert eneste websted, du besøger";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Åbn Indstillinger, tryk på Standardbrowserapp, og vælg Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Åbn Indstillinger, tryk på Standardbrowserapp, og vælg Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Angiv Ping som din standardbrowser";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Få tokens";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Du tjente %@ ved at browse med Brave.";
+"ntp.earningsReport" = "Du tjente %@ ved at browse med Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Godt gået!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Tillad Ping at tjekke min udklipsholder for en tilhørende henvisningskode";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Du har muligvis downloadet Ping for at støtte din henviser. For at finde ud af, hvem din henviser er, udfører Ping en engangskontrol af din udklipsholder for at tjekke den tilhørende henvisningskode. Denne kontrol er udelukkende begrænset til koden, og ingen andre personlige data vil blive overført. Hvis du fravælger, vil din henviser ikke modtage belønninger fra Brave.";
+"OBPrivacyConsentDetail" = "Du har muligvis downloadet Ping for at støtte din henviser. For at finde ud af, hvem din henviser er, udfører Ping en engangskontrol af din udklipsholder for at tjekke den tilhørende henvisningskode. Denne kontrol er udelukkende begrænset til koden, og ingen andre personlige data vil blive overført. Hvis du fravælger, vil din henviser ikke modtage belønninger fra Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Tillad ikke denne kontrol";

@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Ustawić jako domyślną przeglądarkę?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Jeśli przeglądarka Ping jest ustawiona jako domyślna, każde otwierane łącze uruchamia się z aktywnymi zabezpieczeniami prywatności Brave.";
+"callout.defaultBrowserCalloutDescription" = "Jeśli przeglądarka Ping jest ustawiona jako domyślna, każde otwierane łącze uruchamia się z aktywnymi zabezpieczeniami prywatności Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Ustaw jako domyślną";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Dowiedz się więcej o naszej analizie produktów z zachowaniem prywatności (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Pomóż ulepszyć Brave.";
+"callout.p3aCalloutTitle" = "Pomóż ulepszyć Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Dziel się zupełnie anonimowo uwagami na temat produktów.";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Odbierz tokeny";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Udało Ci się zarobić %@, przeglądając z Brave.";
+"ntp.earningsReport" = "Udało Ci się zarobić %@, przeglądając z Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Świetnie!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Pozwól Ping sprawdzać mój schowek w poszukiwaniu kodu polecającego";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Być może pobrałeś/pobrałaś Brave, wspierając osobę polecającą. Aby zidentyfikować tę osobę, Ping wykona jednorazowe sprawdzenie schowka w poszukiwaniu pasującego kodu polecającego. To sprawdzenie będzie ograniczone tylko do kodu i nie zostaną przesłane żadne inne dane osobowe. Jeśli zrezygnujesz z tej operacji, Twoja osoba polecająca nie otrzyma nagród od Brave.";
+"OBPrivacyConsentDetail" = "Być może pobrałeś/pobrałaś Brave, wspierając osobę polecającą. Aby zidentyfikować tę osobę, Ping wykona jednorazowe sprawdzenie schowka w poszukiwaniu pasującego kodu polecającego. To sprawdzenie będzie ograniczone tylko do kodu i nie zostaną przesłane żadne inne dane osobowe. Jeśli zrezygnujesz z tej operacji, Twoja osoba polecająca nie otrzyma nagród od Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Nie pozwalaj na to sprawdzenie";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Subskrypcja połączenia VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Twoja subskrypcja połączenia VPN Ping może chronić do 5 urządzeń stacjonarnych lub z systemami Android oraz iOS. Wystarczy, że połączysz swoją subskrypcję App Store z kontem Brave.";
+"onboarding.linkReceiptDescription" = "Twoja subskrypcja połączenia VPN Ping może chronić do 5 urządzeń stacjonarnych lub z systemami Android oraz iOS. Wystarczy, że połączysz swoją subskrypcję App Store z kontem Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Rozszerz swoją ochronę Firewall Ping + VPN";
@@ -1352,7 +1352,7 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Aby rozpocząć, ustaw łańcuch synchronizacji i włącz \"Otwarte karty\" w Ustawieniach synchronizacji.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "W Ustawieniach możesz zarządzać z czym synchronizuje się Brave.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "W Ustawieniach możesz zarządzać z czym synchronizuje się Ping.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Brak aktywnych sesji z innych urządzeń do wyświetlenia.";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Wystąpił problem z załadowaniem zasobu!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Po aktywacji na ikonie głównego menu pojawi się znaczek wskazujący, że pliki multimedialne na stronie mogą być dodane do listy odtwarzania Brave.";
+"playlist.menuBadgeOptionFooterText" = "Po aktywacji na ikonie głównego menu pojawi się znaczek wskazujący, że pliki multimedialne na stronie mogą być dodane do listy odtwarzania Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Wyświetl znaczek powiadomienia w menu";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Zabezpieczenia";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Każdego dnia oszczędzam dane, przeglądając Internet z Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Każdego dnia oszczędzam dane, przeglądając Internet z Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Każdego dnia oszczędzam dane, przeglądając Internet z Brave.";
+"socialSharing.shareDescriptionTitle" = "Każdego dnia oszczędzam dane, przeglądając Internet z Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Domyślna karta";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Czy chcesz chronić wszystkie aplikacje na telefonie? Zacznij ponownie korzystać z VPN Ping i uzyskaj 20% zniżkę przez 3 miesiące.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping zawsze blokuje pliki śledzące w każdej aplikacji – nawet poza przeglądarką Brave. Od teraz możesz sprawdzić, kto usiłował Cię śledzić dzięki Centrum prywatności Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping zawsze blokuje pliki śledzące w każdej aplikacji – nawet poza przeglądarką Brave. Od teraz możesz sprawdzić, kto usiłował Cię śledzić dzięki Centrum prywatności Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Czy wiesz, że VPN Ping chroni Cię również poza przeglądarką Brave?";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Nie martw się. Usługa VPN będzie nadal aktywna przez kilka dni, aż zaktualizujesz swoje informacje dotyczące płatności.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Zaktualizuj informacje dotyczące płatności, żeby zachować ochronę VPN Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Zaktualizuj informacje dotyczące płatności, żeby zachować ochronę VPN Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Czy chcesz chronić każdą aplikację na telefonie? Wystarczy, że zaktualizujesz dane dotyczące płatności.";

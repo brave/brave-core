@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Ta strona zaczęła wykrywać niektóre blokery reklam, z tego powodu może ona nie działać prawidłowo.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Aby rozwiązać ten problem, Ping może dostosować ustawienia tarcz. Po wprowadzeniu zmian można spróbować obejrzeć tę treść w Odtwarzaczu Brave.";
+"AntiAdBlockWarningDescription2" = "Aby rozwiązać ten problem, Ping może dostosować ustawienia tarcz. Po wprowadzeniu zmian można spróbować obejrzeć tę treść w Odtwarzaczu Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Zachowaj obecne ustawienia";

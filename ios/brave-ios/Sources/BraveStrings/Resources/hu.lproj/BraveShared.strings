@@ -1352,7 +1352,7 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "A kezdéshez állítson be egy szinkronizálási láncot, és kapcsolja be a „Nyitott lapok\" lehetőséget a Szinkronizálási beállításokban.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "A Beállításokban kezelheti, hogy mit szinkronizáljon a Brave.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "A Beállításokban kezelheti, hogy mit szinkronizáljon a Ping.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Nincsenek megjeleníthető aktív munkamenetek a többi eszközről.";

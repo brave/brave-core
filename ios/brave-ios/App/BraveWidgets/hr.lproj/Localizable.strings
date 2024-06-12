@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Kartica Privatno";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Brzo pristupite za pretraživanje mreže ili otvaranje mrežnih stranica u pregledniku Brave.";
+"widgets.shortcutsWidgetDescription" = "Brzo pristupite za pretraživanje mreže ili otvaranje mrežnih stranica u pregledniku Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Prečice";

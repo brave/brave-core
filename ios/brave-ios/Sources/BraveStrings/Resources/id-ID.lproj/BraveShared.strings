@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Ping sebagai Peramban Bawaan?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Dengan Ping sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.";
+"callout.defaultBrowserCalloutDescription" = "Dengan Ping sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan Bawaan";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields dirancang untuk memblokir pelacak & iklan, menghemat data dan waktu Anda di setiap situs yang Anda kunjungi";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Buka pengaturan, ketuk Default Browser App, dan pilih Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Buka pengaturan, ketuk Default Browser App, dan pilih Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Setel Ping sebagai browser default Anda";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Klaim Token";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Anda memperoleh %@ dengan menjelajahi dengan Brave.";
+"ntp.earningsReport" = "Anda memperoleh %@ dengan menjelajahi dengan Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Berhasil!";
@@ -1115,7 +1115,7 @@
 "ntp.hideSponsoredImages" = "Sembunyikan gambar bersponsor";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "'Disponsori' adalah latar belakang bermerek tambahan yang bisa Anda dapatkan dengan diaktifkannya Imbalan Brave.";
+"ntp.imageTypeSelectionDescription" = "'Disponsori' adalah latar belakang bermerek tambahan yang bisa Anda dapatkan dengan diaktifkannya Imbalan Ping.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Pelajari lebih lanjut tentang Ping Rewards";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Izinkan Ping memeriksa clipboard saya atas kode rujukan yang cocok";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Anda mungkin telah mengunduh Ping untuk mendukung pemberi rujukan Anda. Untuk mendeteksi pemberi rujukan tersebut, Ping melakukan pemeriksaan satu kali di clipboard Anda atas kode rujukan yang cocok. Pemeriksaan ini terbatas hanya pada kode dan tidak ada data pribadi yang akan ditransfer. Jika Anda memilih untuk tidak ikut, pemberi rujukan Anda tidak akan menerima reward dari Brave.";
+"OBPrivacyConsentDetail" = "Anda mungkin telah mengunduh Ping untuk mendukung pemberi rujukan Anda. Untuk mendeteksi pemberi rujukan tersebut, Ping melakukan pemeriksaan satu kali di clipboard Anda atas kode rujukan yang cocok. Pemeriksaan ini terbatas hanya pada kode dan tidak ada data pribadi yang akan ditransfer. Jika Anda memilih untuk tidak ikut, pemberi rujukan Anda tidak akan menerima reward dari Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Jangan izinkan pemeriksaan ini";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Terjadi masalah saat memuat sumber!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Saat diaktifkan, sebuah emblem akan ditampilkan pada lambang menu utama, yang menunjukkan bahwa media pada halaman tersebut dapat ditambahkan ke Daftar Putar Brave.";
+"playlist.menuBadgeOptionFooterText" = "Saat diaktifkan, sebuah emblem akan ditampilkan pada lambang menu utama, yang menunjukkan bahwa media pada halaman tersebut dapat ditambahkan ke Daftar Putar Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Tampilkan Emblem Notifikasi Menu";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Perisai";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
+"socialSharing.shareDescriptionTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Tab Standar";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Siap untuk melindungi setiap app dalam ponsel Anda? Kembalilah ke VPN Ping dan dapatkan potongan 20% selama 3 bulan ke depan.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping selalu memblokir pelacak di setiap app, yang bahkan di luar peramban Brave. Kini Anda dapat melihat siapa yang ingin melacak Anda, dengan Hub Kerahasiaan Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping selalu memblokir pelacak di setiap app, yang bahkan di luar peramban Brave. Kini Anda dapat melihat siapa yang ingin melacak Anda, dengan Hub Kerahasiaan Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Apakah Anda tahu bahwa VPN Ping melindungi Anda di luar Peramban Brave?";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Jangan khawatir. Kami terus mengaktifkan VPN selama beberapa hari sambil menunggu Anda memperbarui info pembayaran.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Perbarui info pembayaran  Anda agar tetap terlindungi dengan VPN Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Perbarui info pembayaran  Anda agar tetap terlindungi dengan VPN Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Ingin tetap melindungi semua app dalam ponsel Anda? Perbaruilah detail pembayaran Anda.";

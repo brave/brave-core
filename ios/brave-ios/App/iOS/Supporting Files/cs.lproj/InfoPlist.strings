@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Webové stránky, které navštívíte, mohou požadovat vaši polohu.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Toto vám umožňuje používat mikrofon při používání Brave.";
+"NSMicrophoneUsageDescription" = "Toto vám umožňuje používat mikrofon při používání Ping.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Toto vám umožňuje ukládat fotografie.";

@@ -1037,7 +1037,7 @@
 "MyFirstAdBody" = "Tippen Sie hier, um mehr zu erfahren.";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "Dies ist Ihre erste Anzeige von Brave.";
+"MyFirstAdTitle" = "Dies ist Ihre erste Anzeige von Ping.";
 
 /* Bookmark title / Device name */
 "Name" = "Name";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Ping erlauben, in meiner Zwischenablage nach einem passenden Referenzcode zu suchen";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Möglicherweise haben Sie Ping zur Unterstützung Ihres Empfehlers heruntergeladen. Um Ihren Empfehler zu erkennen, führt Ping eine einmalige Überprüfung Ihrer Zwischenablage auf den passenden Empfehlungscode durch. Diese Prüfung ist nur auf den Code beschränkt und es werden keine weiteren personenbezogenen Daten übertragen. Wenn Sie nicht zustimmen, erhält Ihr Empfehler keine Belohnungen von Brave.";
+"OBPrivacyConsentDetail" = "Möglicherweise haben Sie Ping zur Unterstützung Ihres Empfehlers heruntergeladen. Um Ihren Empfehler zu erkennen, führt Ping eine einmalige Überprüfung Ihrer Zwischenablage auf den passenden Empfehlungscode durch. Diese Prüfung ist nur auf den Code beschränkt und es werden keine weiteren personenbezogenen Daten übertragen. Wenn Sie nicht zustimmen, erhält Ihr Empfehler keine Belohnungen von Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Diese Prüfung nicht zulassen";

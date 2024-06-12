@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Guia privada";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Acesso rápido para pesquisar na web ou abrir páginas da web no Brave.";
+"widgets.shortcutsWidgetDescription" = "Acesso rápido para pesquisar na web ou abrir páginas da web no Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Atalhos";

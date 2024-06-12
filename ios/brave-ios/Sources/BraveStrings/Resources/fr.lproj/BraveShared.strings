@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Définir Ping comme navigateur par défaut ?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Lorsque Ping est défini comme navigateur par défaut, tous les liens sur lesquels vous appuyez s'ouvrent avec les protections de confidentialité de Brave.";
+"callout.defaultBrowserCalloutDescription" = "Lorsque Ping est défini comme navigateur par défaut, tous les liens sur lesquels vous appuyez s'ouvrent avec les protections de confidentialité de Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Définir par défaut";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "En savoir plus sur nos analyses produits respectueuses de la vie privée (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Aidez-nous à améliorer Brave.";
+"callout.p3aCalloutTitle" = "Aidez-nous à améliorer Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Partagez des données de produits complètement privées et anonymes.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields bloque les traceurs et les publicités, économise les données et vous fait gagner du temps sur chaque site que vous consultez";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Ouvrez les paramètres, appuyez sur Application de navigateur par défaut et sélectionnez Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Ouvrez les paramètres, appuyez sur Application de navigateur par défaut et sélectionnez Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Définir Ping comme navigateur par défaut";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Récupérer mes jetons";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Vous avez gagné %@ en naviguant avec Brave.";
+"ntp.earningsReport" = "Vous avez gagné %@ en naviguant avec Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bravo !";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Autoriser Ping à rechercher un code de parrainage dans mon presse-papier";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Vous avez peut-être téléchargé Ping pour soutenir votre parrain. Pour détecter votre parrain, Ping effectue une vérification unique de votre presse-papier pour récupérer le code de parrainage correspondant. Cette vérification se limite au code uniquement, et aucune autre donnée personnelle ne sera transmise. Si vous refusez, votre parrain ne recevra pas de récompenses de la part de Brave.";
+"OBPrivacyConsentDetail" = "Vous avez peut-être téléchargé Ping pour soutenir votre parrain. Pour détecter votre parrain, Ping effectue une vérification unique de votre presse-papier pour récupérer le code de parrainage correspondant. Cette vérification se limite au code uniquement, et aucune autre donnée personnelle ne sera transmise. Si vous refusez, votre parrain ne recevra pas de récompenses de la part de Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Ne pas autoriser la vérification";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Associer votre abonnement VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Votre abonnement à VPN Ping peut protéger jusqu'à 5 appareils (Android, iOS ou ordinateur). Pour ce faire, il vous suffit d'associer votre abonnement App Store à votre compte Brave.";
+"onboarding.linkReceiptDescription" = "Votre abonnement à VPN Ping peut protéger jusqu'à 5 appareils (Android, iOS ou ordinateur). Pour ce faire, il vous suffit d'associer votre abonnement App Store à votre compte Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Étendre votre protection Pare-feu + VPN Ping";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Un problème est survenu lors du chargement de la ressource !";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Lorsque cette fonction est activée, un badge sera affiché sur l'icône du menu principal pour indiquer qu'un contenu multimédia sur la page peut être ajouté à la liste de lecture Brave.";
+"playlist.menuBadgeOptionFooterText" = "Lorsque cette fonction est activée, un badge sera affiché sur l'icône du menu principal pour indiquer qu'un contenu multimédia sur la page peut être ajouté à la liste de lecture Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Afficher le badge de notification du menu";
@@ -2285,7 +2285,7 @@
 "rewards.braveTalkRewardsOptInButtonTitle" = "Activer Ping Rewards";
 
 /* Body for successful Ping Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Cliquez sur l'écran pour continuer vers la discussion Brave.";
+"rewards.braveTalkRewardsOptInSuccessBody" = "Cliquez sur l'écran pour continuer vers la discussion Ping.";
 
 /* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Vous pouvez désormais lancer un appel gratuit";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Protections";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
+"socialSharing.shareDescriptionTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Onglet standard";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Vous avez envie de protéger chaque application présente sur votre téléphone ? Revenez sur Ping VPN et profitez de 20 % de remise sur les 3 prochains mois.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN a toujours bloqué les traqueurs sur toutes les applications, même en dehors du navigateur Brave. Vous pouvez désormais voir qui a essayé de vous suivre grâce au centre de confidentialité Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN a toujours bloqué les traqueurs sur toutes les applications, même en dehors du navigateur Brave. Vous pouvez désormais voir qui a essayé de vous suivre grâce au centre de confidentialité Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Saviez-vous que Ping VPN vous protège en dehors du navigateur Brave ?";

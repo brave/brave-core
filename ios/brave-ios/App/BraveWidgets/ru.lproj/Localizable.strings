@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Приватная вкладка";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Быстрый доступ к поиску и веб-страницам в Brave.";
+"widgets.shortcutsWidgetDescription" = "Быстрый доступ к поиску и веб-страницам в Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Ярлыки";

@@ -86,7 +86,7 @@
 "wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
-"wallet.addNetworkDescription" = "Time se omogućuje upotreba mreže unutar novčanika preglednika Brave.";
+"wallet.addNetworkDescription" = "Time se omogućuje upotreba mreže unutar novčanika preglednika Ping.";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
 "wallet.addNetworkSubtitle" = "Dopustiti ovom mrežnom mjestu dodavanje mreže?";
@@ -227,7 +227,7 @@
 "wallet.braveFeeLabel" = "Naknada preglednika Brave: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
-"wallet.braveSwapFeeDisclaimer" = "Ponudom se uključuje naknada od %@ za preglednik Brave.";
+"wallet.braveSwapFeeDisclaimer" = "Ponudom se uključuje naknada od %@ za preglednik Ping.";
 
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Besplatno";

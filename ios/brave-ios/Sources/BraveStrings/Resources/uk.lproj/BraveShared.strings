@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Установити Ping як браузер за замовчуванням?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Якщо Ping буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Brave.";
+"callout.defaultBrowserCalloutDescription" = "Якщо Ping буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установити за замовчуванням";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням конфіденційності (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Допоможіть поліпшити Brave.";
+"callout.p3aCalloutTitle" = "Допоможіть поліпшити Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Ділитися повністю конфіденційною й анонімною статистикою продукта.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields блокує трекери та рекламу, а також дозволяє заощадити дані й час під час перегляду вебсайтів";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Відкрийте меню «Параметри», торкніться пункту «Програма браузера за замовчуванням» і виберіть Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Відкрийте меню «Параметри», торкніться пункту «Програма браузера за замовчуванням» і виберіть Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Зробити Ping веб-переглядачем за умовчанням";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Отримати токени";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Ви заробили %@ під час використання Brave.";
+"ntp.earningsReport" = "Ви заробили %@ під час використання Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Так тримати!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Дозволити Ping перевіряти код рекомендації в моєму буфері обміну";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Ви могли завантажити Ping за рекомендацією користувача. Щоб його виявити, Ping одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Brave.";
+"OBPrivacyConsentDetail" = "Ви могли завантажити Ping за рекомендацією користувача. Щоб його виявити, Ping одноразово перевірить код рекомендації у вашому буфері обміну. Буде перевірено лише наявність коду, і жодні персональні дані не буде передано. Якщо ви забороните перевірку, користувач, шо надіслав вам рекомендацію, не отримає винагороду від Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Не дозволяти перевірку";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Зв’язати підписку на VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Ping можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Brave.";
+"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Ping можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Розширений захист брандмауера Firewall + VPN";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Виникла проблема із завантаженням ресурсу!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Якщо увімкнути цю функцію, на піктограмі головного меню відображатиметься позначка про те, що медіафайли на сторінці можна додати до списку відтворення Brave.";
+"playlist.menuBadgeOptionFooterText" = "Якщо увімкнути цю функцію, на піктограмі головного меню відображатиметься позначка про те, що медіафайли на сторінці можна додати до списку відтворення Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Показувати позначку сповіщення на меню";
@@ -2276,7 +2276,7 @@
 "RestoreTabOnCrashAlertMessage" = "Роботу додатка Ping було аварійно завершено або його було неналежно закрито.\nВідновити вкладки?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Неочікуване закриття Brave.";
+"RestoreTabOnCrashAlertTitle" = "Неочікуване закриття Ping.";
 
 /* Body for Ping Talk rewards opt-in screen */
 "rewards.braveTalkRewardsOptInBody" = "Завдяки Ping Rewards ви можете переглядати рекламу, що не порушує вашої конфіденційності, з мережі Ping Ads. Жодних трекерів. Жодних затримок. Ваші дані в безпеці.";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Shields";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
+"socialSharing.shareDescriptionTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Стандартна вкладка";

@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Este sitio ha comenzado a bloquear algunos bloqueadores de anuncios, lo que significa que es posible que no funcione como debería.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Para corregir este problema, Ping puede ajustar la configuración de tus protecciones. Una vez que lo haga, prueba a ver este contenido en Reproductor de Brave.";
+"AntiAdBlockWarningDescription2" = "Para corregir este problema, Ping puede ajustar la configuración de tus protecciones. Una vez que lo haga, prueba a ver este contenido en Reproductor de Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Mantener la configuración actual";

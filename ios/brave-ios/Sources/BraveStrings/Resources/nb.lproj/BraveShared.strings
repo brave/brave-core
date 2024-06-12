@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields blokkerer sporere og annonser, sparer data og sparer deg tid på hvert nettsted du besøker";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Åpne Innstillinger, trykk på Standard Nettleser-appen, og velg Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Åpne Innstillinger, trykk på Standard Nettleser-appen, og velg Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Sett Ping som standardnettleser";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Krev inn tokener";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Du tjente %@ ved å surfe med Brave.";
+"ntp.earningsReport" = "Du tjente %@ ved å surfe med Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bra jobba!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "La Ping sjekke utklippstavlen min for en samsvarende henvisningskode";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Du har kanskje lastet ned Ping for å støtte henviseren din. For å oppdage henviseren din, utfører Ping en engangskontroll av utklippstavlen for samsvarende henvisningskode. Denne kontrollen er begrenset til koden, og ingen andre personlige data vil bli overført. Hvis du velger bort dette, mottar henviseren ikke belønninger fra Brave.";
+"OBPrivacyConsentDetail" = "Du har kanskje lastet ned Ping for å støtte henviseren din. For å oppdage henviseren din, utfører Ping en engangskontroll av utklippstavlen for samsvarende henvisningskode. Denne kontrollen er begrenset til koden, og ingen andre personlige data vil bli overført. Hvis du velger bort dette, mottar henviseren ikke belønninger fra Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Ikke tillat denne kontrollen";
@@ -2954,10 +2954,10 @@
 "SiteShieldSettings" = "Skjold";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Hver dag sparer jeg data ved å surfe på nettet med Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Hver dag sparer jeg data ved å surfe på nettet med Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Hver dag sparer jeg data ved å surfe på nettet med Brave.";
+"socialSharing.shareDescriptionTitle" = "Hver dag sparer jeg data ved å surfe på nettet med Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Standard fane";

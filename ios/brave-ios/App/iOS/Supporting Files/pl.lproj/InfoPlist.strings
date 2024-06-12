@@ -14,7 +14,7 @@
 "NSLocationWhenInUseUsageDescription" = "Odwiedzane strony mogą żądać Twojej lokalizacji.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Umożliwia to korzystanie z mikrofonu podczas używania Brave.";
+"NSMicrophoneUsageDescription" = "Umożliwia to korzystanie z mikrofonu podczas używania Ping.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Pozwala to na zapisywanie zdjęć.";

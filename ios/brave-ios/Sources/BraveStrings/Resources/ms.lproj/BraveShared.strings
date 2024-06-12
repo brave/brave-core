@@ -263,7 +263,7 @@
 "callout.defaultBrowserCalloutButtonDescription" = "Tetapkan Ping sebagai Pelayar Lalai?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Dengan Ping sebagai lalai, setiap pautan yang anda ketik dibuka dengan perlindungan privasi Brave.";
+"callout.defaultBrowserCalloutDescription" = "Dengan Ping sebagai lalai, setiap pautan yang anda ketik dibuka dengan perlindungan privasi Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Tetapkan sebagai Lalai";
@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Ketahui lebih lanjut tentang Analitik Produk Pengekalan Privasi (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Bantu usaha menambah baik Brave.";
+"callout.p3aCalloutTitle" = "Bantu usaha menambah baik Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Kongsi Cerapan Produk Peribadi dan Awanama Menyeluruh";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Tuntut Token";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Anda mendapat %@ dengan menyemak lalu dengan Brave.";
+"ntp.earningsReport" = "Anda mendapat %@ dengan menyemak lalu dengan Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Begitu caranya!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Benarkan Ping untuk menyemak papan klip saya untuk kod rujukan yang sepadan";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Anda mungkin telah memuat turun Ping untuk menyokong perujuk anda. Untuk mengesan perujuk anda, Ping melakukan pemeriksaan satu kali pada papan klip anda untuk mengetahui kod rujukan yang sepadan. Pemeriksaan ini terhad kepada kod sahaja dan tidak ada data peribadi lain yang akan dihantar. Sekiranya anda memilih keluar, perujuk anda tidak akan menerima ganjaran daripada Brave.";
+"OBPrivacyConsentDetail" = "Anda mungkin telah memuat turun Ping untuk menyokong perujuk anda. Untuk mengesan perujuk anda, Ping melakukan pemeriksaan satu kali pada papan klip anda untuk mengetahui kod rujukan yang sepadan. Pemeriksaan ini terhad kepada kod sahaja dan tidak ada data peribadi lain yang akan dihantar. Sekiranya anda memilih keluar, perujuk anda tidak akan menerima ganjaran daripada Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Jangan benarkan semakan ini";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Terdapat masalah memuatkan sumber!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Apabila didayakan, lencana akan dipaparkan pada ikon menu utama, menunjukkan bahawa media pada halaman mungkin ditambahkan pada Senarai Main Brave.";
+"playlist.menuBadgeOptionFooterText" = "Apabila didayakan, lencana akan dipaparkan pada ikon menu utama, menunjukkan bahawa media pada halaman mungkin ditambahkan pada Senarai Main Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Tunjukkan Lencana Pemberitahuan Menu";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Perisai";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menjimatkan data dengan melayari web menggunakan Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menjimatkan data dengan melayari web menggunakan Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "Setiap hari saya menjimatkan data dengan melayari web menggunakan Brave.";
+"socialSharing.shareDescriptionTitle" = "Setiap hari saya menjimatkan data dengan melayari web menggunakan Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Tab Standard";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Bersedia untuk melindungi setiap apl pada telefon anda? Gunakan VPN Ping kembali dan dapatkan potongan 20% untuk 3 bulan yang seterusnya.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping sentiasa menyekat penjejak pada setiap apl, walau pun di luar penyemak imbas Brave. Kini anda boleh melihat orang yang cuba menjejak anda dengan Hab Privasi Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping sentiasa menyekat penjejak pada setiap apl, walau pun di luar penyemak imbas Brave. Kini anda boleh melihat orang yang cuba menjejak anda dengan Hab Privasi Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Adakah anda tahu bahawa VPN Ping melindungi anda di luar Penyemak Imbas Brave?";
@@ -3863,7 +3863,7 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Usah bimbang. Kami akan pastikan VPN terus aktif selama beberapa hari sementara anda mengemaskinikan maklumat pembayaran anda.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Kemas kinikan maklumat pembayaran anda agar sentiasa dilindungi dengan VPN Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Kemas kinikan maklumat pembayaran anda agar sentiasa dilindungi dengan VPN Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Ingin sentiasa melindungi setiap apl pada telefon anda? Hanya kemas kinikan butiran pembayaran anda.";

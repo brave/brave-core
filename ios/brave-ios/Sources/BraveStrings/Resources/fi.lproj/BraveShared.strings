@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Brave-suojaus estää seurantaohjelmat ja mainokset sekä säästää dataa ja aikaa jokaisella vierailemallasi sivulla.";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Avaa asetukset, napauta Oletusarvoinen selainsovellus ja valitse Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Avaa asetukset, napauta Oletusarvoinen selainsovellus ja valitse Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Aseta Ping oletusselaimeksi";

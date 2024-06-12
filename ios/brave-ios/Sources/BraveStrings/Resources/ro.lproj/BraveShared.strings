@@ -284,7 +284,7 @@
 "callout.p3aCalloutLinkTitle" = "Află mai multe despre statisticile noastre de produs cu protecția confidențialității (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Ajută-ne să îmbunătățim Brave.";
+"callout.p3aCalloutTitle" = "Ajută-ne să îmbunătățim Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Trimite informații complet confidențiale și anonime despre produs.";
@@ -617,7 +617,7 @@
 "defaultBrowserCallout.introSecondaryText" = "Ping Shields blochează reclamele și urmăritorii și îți economisește date și timp la fiecare site vizitat";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Deschide Setările, apasă pe \"Aplicație implicită browser\" și selectează Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Deschide Setările, apasă pe \"Aplicație implicită browser\" și selectează Ping.";
 
 /* Notification body to promote setting Ping app as default browser */
 "defaultBrowserCallout.notificationBody" = "Setează Ping ca browser implicit";
@@ -1106,7 +1106,7 @@
 "ntp.claimRewards" = "Revendică token-uri";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Ai câștigat %@ navigând cu Brave.";
+"ntp.earningsReport" = "Ai câștigat %@ navigând cu Ping.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bravo!";
@@ -1187,7 +1187,7 @@
 "OBPrivacyConsentClipboardPermission" = "Permite ca Ping să verifice clipboard-ul pentru un cod de recomandare ce corespunde";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Este posibil să fi descărcat Ping în sprijinul celui care te-a recomandat. Pentru a îl putea detecta, Ping efectuează o verificare unică a clipboard-ului pentru a găsi codul de recomandare corespunzător. Această verificare se limitează doar la acest cod și nu vor fi transmise alte date personale.  Dacă renunți, persoana care te-a recomandat nu va primi recompense din partea Brave.";
+"OBPrivacyConsentDetail" = "Este posibil să fi descărcat Ping în sprijinul celui care te-a recomandat. Pentru a îl putea detecta, Ping efectuează o verificare unică a clipboard-ului pentru a găsi codul de recomandare corespunzător. Această verificare se limitează doar la acest cod și nu vor fi transmise alte date personale.  Dacă renunți, persoana care te-a recomandat nu va primi recompense din partea Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Nu permite această verificare";
@@ -1259,7 +1259,7 @@
 "onboarding.linkReceiptButton" = "Conectează-ți abonamentul VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Abonamentul tău la Ping VPN poate proteja până la 5 dispozitive, pe Android, iOS și desktop. Trebuie doar să îți asociezi abonamentul din App Store cu contul tău Brave.";
+"onboarding.linkReceiptDescription" = "Abonamentul tău la Ping VPN poate proteja până la 5 dispozitive, pe Android, iOS și desktop. Trebuie doar să îți asociezi abonamentul din App Store cu contul tău Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Extinde protecția Ping Firewall + VPN";
@@ -2960,10 +2960,10 @@
 "SiteShieldSettings" = "Shields";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "În fiecare zi economisesc date folosind browserul Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "În fiecare zi economisesc date folosind browserul Ping.";
 
 /* Text used for social sharing together with Ping Shield values */
-"socialSharing.shareDescriptionTitle" = "În fiecare zi economisesc date folosind browserul Brave.";
+"socialSharing.shareDescriptionTitle" = "În fiecare zi economisesc date folosind browserul Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Filă standard";
@@ -3851,7 +3851,7 @@
 "vpn.subscribeVPNPopOverSubDescription" = "Ești gata să protejezi fiecare aplicație de pe telefonul tău? Revino la Ping VPN și beneficiezi de 20% reducere pentru următoarele 3 luni.";
 
 /* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN a blocat întotdeauna trackerele pe fiecare aplicație, chiar și în afara browserului Brave. Acum poți vedea cine a încercat să te urmărească cu ajutorul centrului de confidențialitate Brave.";
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN a blocat întotdeauna trackerele pe fiecare aplicație, chiar și în afara browserului Brave. Acum poți vedea cine a încercat să te urmărească cu ajutorul centrului de confidențialitate Ping.";
 
 /* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
 "vpn.subscribeVPNProtectionPopOverTitle" = "Știai că Ping VPN te protejează și în afara browserului Brave?";

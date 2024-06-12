@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Ovim su se mrežnim mjestom počeli blokirati neki programi za blokiranje oglasa, a to znači da mrežno mjesto možda neće raditi prema očekivanome.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Ping mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Brave.";
+"AntiAdBlockWarningDescription2" = "Kako bi se riješio problem, preglednikom Ping mogu se namjestiti postavke štitova umjesto vas. Nakon namještanja možete pokušati gledati sadržaj u Reproduktoru Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Zadrži trenutačne postavke";

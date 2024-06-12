@@ -35,7 +35,7 @@
 "aichat.chatIntroJustTalkTitle" = "Просто нужен чат?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Умный ассистент, работающий на основе ИИ и встроенный в Brave.";
+"aichat.chatIntroSubTitle" = "Умный ассистент, работающий на основе ИИ и встроенный в Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Привет, я Лео!";

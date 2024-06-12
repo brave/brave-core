@@ -35,7 +35,7 @@
 "aichat.chatIntroJustTalkTitle" = "Vous voulez simplement discuter ?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Un assistant intelligent optimisé par l'IA, directement intégré à Brave.";
+"aichat.chatIntroSubTitle" = "Un assistant intelligent optimisé par l'IA, directement intégré à Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Bonjour, je m'appelle Leo !";

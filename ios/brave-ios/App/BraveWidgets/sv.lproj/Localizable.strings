@@ -59,7 +59,7 @@
 "widgets.shortcutsPrivateTabButton" = "Privat flik";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Snabbåtkomst till webbsökningar och webbsidor i Brave.";
+"widgets.shortcutsWidgetDescription" = "Snabbåtkomst till webbsökningar och webbsidor i Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Genvägar";

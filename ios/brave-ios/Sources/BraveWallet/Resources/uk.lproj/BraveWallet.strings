@@ -86,7 +86,7 @@
 "wallet.addCustomTokenTitle" = "Токен";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
-"wallet.addNetworkDescription" = "Це дозволить використовувати цю мережу в гаманці Brave.";
+"wallet.addNetworkDescription" = "Це дозволить використовувати цю мережу в гаманці Ping.";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
 "wallet.addNetworkSubtitle" = "Дозволити цьому сайту додавати мережу?";

@@ -230,7 +230,7 @@
 "wallet.braveFeeLabel" = "Yuran Brave: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
-"wallet.braveSwapFeeDisclaimer" = "Sebut harga termasuk %@ yuran Brave.";
+"wallet.braveSwapFeeDisclaimer" = "Sebut harga termasuk %@ yuran Ping.";
 
 /* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "Percuma";
