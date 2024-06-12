@@ -121,15 +121,15 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingList,
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
-      &companion::features::internal::
-          kCompanionEnabledByObservingExpsNavigations,
-      &companion::features::internal::kSidePanelCompanion,
-      &companion::features::internal::kSidePanelCompanion2,
       &companion::visual_query::features::kVisualQuerySuggestions,
       &compose::features::kEnableCompose,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
 #if !BUILDFLAG(IS_ANDROID)
+      &companion::features::internal::
+          kCompanionEnabledByObservingExpsNavigations,
+      &companion::features::internal::kSidePanelCompanion,
+      &companion::features::internal::kSidePanelCompanion2,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionsManifestV3Only,
