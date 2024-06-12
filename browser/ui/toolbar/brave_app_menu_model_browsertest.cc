@@ -12,6 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -205,6 +206,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
+#if defined(TOOLKIT_VIEWS)
+      IDC_SIDEBAR_SHOW_OPTION_MENU,
+#endif
       IDC_RECENT_TABS_MENU,
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
@@ -236,8 +240,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   CheckHelpCommandsAreInOrderInMenuModel(browser(), help_commands_in_order);
 
   std::vector<int> more_tools_in_order = {
-      IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SIDEBAR_SHOW_OPTION_MENU,
-      IDC_SHOW_BRAVE_SYNC, IDC_DEV_TOOLS,          IDC_TASK_MANAGER,
+      IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SHOW_BRAVE_SYNC,
+      IDC_DEV_TOOLS,       IDC_TASK_MANAGER,
   };
 
   if (!syncer::IsSyncAllowedByFlag()) {
@@ -259,6 +263,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_NEW_OFFTHERECORD_WINDOW_TOR,
 #endif
       IDC_SHOW_BRAVE_WALLET,
+#if defined(TOOLKIT_VIEWS)
+      IDC_SIDEBAR_SHOW_OPTION_MENU,
+#endif
       IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
       IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS,
@@ -329,7 +336,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   CheckHelpCommandsAreInOrderInMenuModel(guest_browser, help_commands_in_order);
 
   std::vector<int> more_tools_in_order_for_guest_profile = {
-      IDC_SIDEBAR_SHOW_OPTION_MENU,
       IDC_DEV_TOOLS,
       IDC_TASK_MANAGER,
   };
