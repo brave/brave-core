@@ -448,17 +448,17 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
     AddMaterialSidePanelColorMixer(provider, key);
   }
 
-  // Upstream started to use same colors for all severity. But, we want to use
-  // upstream's previous non-material color to app menu highlight. These colors
-  // are copied from AddChromeColorMixer() because it's overwritten by
-  // AddMaterialChromeColorMixer().
+  // TODO(simonhong): Use leo color when it's ready.
   ui::ColorMixer& mixer = provider->AddMixer();
-  mixer[kColorAppMenuHighlightSeverityLow] = AdjustHighlightColorForContrast(
-      ui::kColorAlertLowSeverity, kColorToolbar);
+  mixer[kColorAppMenuHighlightSeverityLow] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x00, 0x46, 0x07),
+                                    SkColorSetRGB(0x58, 0xE1, 0x55))};
+  mixer[kColorAppMenuHighlightSeverityMedium] = {
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x4A, 0x39, 0x00),
+                                    SkColorSetRGB(0xF1, 0xC0, 0x0F))};
   mixer[kColorAppMenuHighlightSeverityHigh] = {
-      kColorAvatarButtonHighlightSyncError};
-  mixer[kColorAppMenuHighlightSeverityMedium] = AdjustHighlightColorForContrast(
-      ui::kColorAlertMediumSeverityIcon, kColorToolbar);
+      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x7D, 0x00, 0x1A),
+                                    SkColorSetRGB(0xFF, 0xB3, 0xB2))};
 
   if (key.custom_theme) {
     return;
