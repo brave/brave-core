@@ -24,7 +24,17 @@ const getConfig = () => {
   return cache!
 }
 
-export const setEngineEnabled = (engine: SearchEngineInfo, enabled: boolean) => {
+// Determines whether any search engines are enabled
+export const hasEnabledEngine = () => Object.values(getConfig()).find(c => c)
+
+export const maybeEnableDefaultEngine = () => {
+  // If no engines are enabled, enable the default one.
+  if (!hasEnabledEngine()) {
+    setEngineEnabled({ host: braveSearchHost }, true)
+  }
+}
+
+export const setEngineEnabled = (engine: { host: string }, enabled: boolean) => {
   const config = getConfig()
   config[engine.host] = enabled
 
@@ -34,7 +44,16 @@ export const setEngineEnabled = (engine: SearchEngineInfo, enabled: boolean) => 
 export const isSearchEngineEnabled = (engine: SearchEngineInfo) => getConfig()[engine.host]
 
 export const getDefaultSearchEngine = () => {
-  return localStorage.getItem(LAST_SEARCH_ENGINE_KEY) ?? braveSearchHost
+  const config = getConfig()
+  const last = localStorage.getItem(LAST_SEARCH_ENGINE_KEY)
+
+  // If the last search engine we used has been disabled, return the first enabled
+  // one, or Brave Search.
+  if (!config[last!]) {
+    return Object.entries(config).find(([key, value]) => value)?.[0]
+      ?? braveSearchHost
+  }
+  return last
 }
 
 export const setDefaultSearchEngine = (engine: SearchEngineInfo) => {
