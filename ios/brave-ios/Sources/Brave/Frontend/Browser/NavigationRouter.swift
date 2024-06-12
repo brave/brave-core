@@ -25,8 +25,7 @@ public enum NavigationPath: Equatable {
 
   public init?(url: URL, isPrivateBrowsing: Bool) {
     let urlString = url.absoluteString
-    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https"
-    {
+    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" {
       self = .url(webURL: url, isPrivate: isPrivateBrowsing)
       return
     }

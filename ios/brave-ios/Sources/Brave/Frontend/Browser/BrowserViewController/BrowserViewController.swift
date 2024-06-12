@@ -1847,7 +1847,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-
   func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL) {
     topToolbar.leaveOverlayMode()
 

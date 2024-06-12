@@ -14,7 +14,6 @@ public struct Web3SettingsView: View {
   var networkStore: NetworkStore?
   var keyringStore: KeyringStore?
 
-
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
   /// If we are showing the modal so the user can enter their password to enable unlock via biometrics.
@@ -33,16 +32,16 @@ public struct Web3SettingsView: View {
   public var body: some View {
     List {
       if let settingsStore = settingsStore {
-          if let networkStore = networkStore, let keyringStore = keyringStore {
-              WalletSettingsView(
-                  settingsStore: settingsStore,
-                  networkStore: networkStore,
-                  keyringStore: keyringStore,
-                  isShowingResetWalletAlert: $isShowingResetWalletAlert,
-                  isShowingResetTransactionAlert: $isShowingResetTransactionAlert,
-                  isShowingBiometricsPasswordEntry: $isShowingBiometricsPasswordEntry
-              )
-          }
+        if let networkStore = networkStore, let keyringStore = keyringStore {
+          WalletSettingsView(
+            settingsStore: settingsStore,
+            networkStore: networkStore,
+            keyringStore: keyringStore,
+            isShowingResetWalletAlert: $isShowingResetWalletAlert,
+            isShowingResetTransactionAlert: $isShowingResetTransactionAlert,
+            isShowingBiometricsPasswordEntry: $isShowingBiometricsPasswordEntry
+          )
+        }
       }
       if let settingsStore {
         Web3DomainSettingsView(settingsStore: settingsStore)

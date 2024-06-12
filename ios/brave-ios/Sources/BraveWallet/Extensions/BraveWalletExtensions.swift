@@ -663,7 +663,6 @@ extension String {
   }
 }
 
-
 extension BraveWallet.SwapFees {
   /// If swap has a Brave Fee that is not free.
   var hasBraveFee: Bool {

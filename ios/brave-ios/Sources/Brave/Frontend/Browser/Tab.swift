@@ -830,7 +830,7 @@ class Tab: NSObject {
     if let url = webView?.url, let internalUrl = InternalURL(url),
       let page = internalUrl.originalURLFromErrorPage
     {
-        webView?.replaceLocation(with: page)
+      webView?.replaceLocation(with: page)
       return
     }
 

@@ -311,7 +311,6 @@ export class BaseQueryCache {
 
   /** Extracts ipfs:// url from gateway-like url */
   getExtractedIPFSUrlFromGatewayLikeUrl = async (urlArg: string) => {
-    console.log('getExtractedIPFSUrlFromGatewayLikeUrl')    
     const trimmedURL = urlArg ? urlArg.trim() : ''
     if (!this._extractedIPFSUrlRegistry[trimmedURL]) {
       if (isIpfs(trimmedURL)) {
@@ -332,7 +331,6 @@ export class BaseQueryCache {
   /** Translates ipfs:// url or gateway-like url to the NFT gateway url */
   getIpfsGatewayTranslatedNftUrl = async (urlArg: string) => {
     const trimmedURL = urlArg.trim()
-console.log('getIpfsGatewayTranslatedNftUrl')
     if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
       const { braveWalletIpfsService } = getAPIProxy()
 
@@ -342,8 +340,6 @@ console.log('getIpfsGatewayTranslatedNftUrl')
 
       const { translatedUrl } =
         await braveWalletIpfsService.translateToGatewayURL(testUrl || '')
-
-      console.log('getIpfsGatewayTranslatedNftUrl trimmedURL:' + trimmedURL + ' testUrl:' + testUrl + ' translatedUrl:' +translatedUrl)
 
       this._nftImageIpfsGateWayUrlRegistry[trimmedURL] =
         translatedUrl || trimmedURL

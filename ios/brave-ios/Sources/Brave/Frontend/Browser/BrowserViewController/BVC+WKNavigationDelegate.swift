@@ -261,7 +261,6 @@ extension BrowserViewController: WKNavigationDelegate {
       return (shouldOpen ? .allow : .cancel, preferences)
     }
 
-
     // handles Decentralized DNS
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
       navigationAction.targetFrame?.isMainFrame == true
@@ -279,7 +278,7 @@ extension BrowserViewController: WKNavigationDelegate {
         showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
         return (.cancel, preferences)
       case .load(let resolvedURL):
-          requestURL = resolvedURL
+        requestURL = resolvedURL
       case .none:
         break
       }

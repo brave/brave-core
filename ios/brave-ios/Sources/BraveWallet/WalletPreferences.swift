@@ -116,7 +116,6 @@ extension Preferences {
       }
     }
 
-
     /// Used to track whether to prompt user to enable NFT discovery
     public static let shouldShowNFTDiscoveryPermissionCallout = Option<Bool>(
       key: "wallet.show-nft-discovery-permission-callout",
