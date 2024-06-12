@@ -16,7 +16,7 @@
             android:id="@+id/ellipse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ellipse_217"
+            android:src="@drawable/fingerprint_unlock_layer_list"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="97dp"
             android:contentDescription="@null"/>

@@ -738,6 +738,7 @@ brave_java_resources = [
   "java/res/drawable/vpn_plan_action_gradient.xml",
   "java/res/drawable/vpn_plan_bg.xml",
   "java/res/drawable/vpn_plan_selected_bg.xml",
+  "java/res/drawable/fingerprint_unlock_layer_list.xml",
   "java/res/drawable/wallet_hollow_button_background.xml",
   "java/res/drawable/wallet_sign_msg_err_bg.xml",
   "java/res/drawable/wallet_toolbar_panel_gradient_bg.xml",
