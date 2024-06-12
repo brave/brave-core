@@ -20,7 +20,8 @@ const icons = {
   'www.qwant.com': 'qwant-color',
   'www.startpage.com': 'startpage-color',
   'search.yahoo.com': 'yahoo-color',
-  'yandex.com': 'yandex-color'
+  'yandex.com': 'yandex-color',
+  'ecosia.org': 'ecosia-color',
 }
 
 const hide = { opacity: 0 }
