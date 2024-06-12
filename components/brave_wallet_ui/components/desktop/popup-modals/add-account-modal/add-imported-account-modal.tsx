@@ -117,7 +117,9 @@ export const ImportAccountModal = () => {
 
   // state
   const [hasImportError, setHasImportError] = React.useState(false)
-  const [accountName, setAccountName] = React.useState<string>('')
+  const [fullLengthAccountName, setFullLengthAccountName] =
+    React.useState<string>('')
+  const accountName = fullLengthAccountName.substring(0, 30)
   const [filecoinNetwork, setFilecoinNetwork] =
     React.useState<FilecoinNetwork>('f')
   const [bitcoinNetwork, setBitcoinNetwork] = React.useState<BitcoinNetwork>(
@@ -129,9 +131,7 @@ export const ImportAccountModal = () => {
   const [password, setPassword] = React.useState<string>('')
 
   // computed
-  const isAccountNameTooLong =
-    accountName.length > BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH
-  const hasAccountNameError = accountName === '' || isAccountNameTooLong
+  const hasAccountNameError = accountName === ''
   const hasImportTypeError = importOption === 'key' ? !privateKey : !file
   const isDisabled = hasAccountNameError || hasImportTypeError
   const modalTitle = selectedAccountType
@@ -153,7 +153,7 @@ export const ImportAccountModal = () => {
 
   const handleAccountNameChanged = React.useCallback(
     (detail: InputEventDetail) => {
-      setAccountName(detail.value)
+      setFullLengthAccountName(detail.value)
       setHasImportError(false)
     },
     []
@@ -525,35 +525,12 @@ export const ImportAccountModal = () => {
               onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
               showErrors={hasAccountNameError}
+              maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
             >
               {
                 // Label
                 getLocale('braveWalletAddAccountPlaceholder')
               }
-
-              <div slot='errors'>
-                <ErrorText>
-                  {isAccountNameTooLong
-                    ? getLocale('braveWalletAccountNameTooLongError').replace(
-                        '$1',
-                        BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH.toString()
-                      )
-                    : ''}
-                </ErrorText>
-              </div>
-              <div slot='extra'>
-                {isAccountNameTooLong ? (
-                  <ErrorText>
-                    {accountName.length}/
-                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
-                  </ErrorText>
-                ) : (
-                  <span>
-                    {accountName.length}/
-                    {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
-                  </span>
-                )}
-              </div>
             </Input>
 
             <LeoSquaredButton

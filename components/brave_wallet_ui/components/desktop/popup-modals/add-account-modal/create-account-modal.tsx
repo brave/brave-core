@@ -40,11 +40,7 @@ import PopupModal from '..'
 import { SelectAccountType } from './select-account-type'
 
 // style
-import {
-  SubmitButtonWrapper,
-  CreateAccountStyledWrapper,
-  ErrorText
-} from './style'
+import { SubmitButtonWrapper, CreateAccountStyledWrapper } from './style'
 
 // selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -80,7 +76,9 @@ export const CreateAccountModal = () => {
   const [addAccount] = useAddAccountMutation()
 
   // state
-  const [accountName, setAccountName] = React.useState<string>('')
+  const [fullLengthAccountName, setFullLengthAccountName] =
+    React.useState<string>('')
+  const accountName = fullLengthAccountName.substring(0, 30)
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>(
     BraveWallet.FILECOIN_MAINNET
   )
@@ -134,9 +132,7 @@ export const CreateAccountModal = () => {
   }, [selectedAccountType, filecoinNetwork, bitcoinNetwork, zcashNetwork])
 
   // computed
-  const isAccountNameTooLong =
-    accountName.length > BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH
-  const isDisabled = accountName === '' || isAccountNameTooLong
+  const isDisabled = accountName === ''
   const modalTitle = selectedAccountType
     ? getLocale('braveWalletCreateAccount').replace(
         '$1',
@@ -151,7 +147,7 @@ export const CreateAccountModal = () => {
 
   const handleAccountNameChanged = React.useCallback(
     (detail: InputEventDetail) => {
-      setAccountName(detail.value)
+      setFullLengthAccountName(detail.value)
     },
     []
   )
@@ -224,7 +220,7 @@ export const CreateAccountModal = () => {
 
   // effects
   React.useEffect(() => {
-    setAccountName(suggestedAccountName)
+    setFullLengthAccountName(suggestedAccountName)
   }, [suggestedAccountName])
 
   // render
@@ -318,34 +314,12 @@ export const CreateAccountModal = () => {
             onInput={handleAccountNameChanged}
             onKeyDown={handleKeyDown}
             showErrors={isDisabled}
+            maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
           >
             {
               // Label
               getLocale('braveWalletAddAccountPlaceholder')
             }
-            <div slot='errors'>
-              <ErrorText>
-                {isAccountNameTooLong
-                  ? getLocale('braveWalletAccountNameTooLongError').replace(
-                      '$1',
-                      BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH.toString()
-                    )
-                  : ''}
-              </ErrorText>
-            </div>
-            <div slot='extra'>
-              {isAccountNameTooLong ? (
-                <ErrorText>
-                  {accountName.length}/
-                  {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
-                </ErrorText>
-              ) : (
-                <span>
-                  {accountName.length}/
-                  {BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
-                </span>
-              )}
-            </div>
           </Input>
 
           <SubmitButtonWrapper>

@@ -53,8 +53,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_PRIVATE_KEY_IMPORT_TYPE},
     {"braveWalletEnterPasswordIfApplicable",
      IDS_BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE},
-    {"braveWalletAccountNameTooLongError",
-     IDS_BRAVE_WALLET_ACCOUNT_NAME_TOO_LONG_ERROR},
     {"braveWalletFoundIssues", IDS_BRAVE_WALLET_FOUND_ISSUES},
     {"braveWalletContract", IDS_BRAVE_WALLET_CONTRACT},
     {"braveWalletFoundRisks", IDS_BRAVE_WALLET_FOUND_RISKS},
