@@ -14,7 +14,9 @@ import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
 
 // utils
 import { loadTimeData } from '../../common/loadTimeData'
-import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
+import {
+  runLocalStorageMigrations //
+} from '../common/constants/local-storage-keys'
 
 // actions
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -48,7 +50,7 @@ function App() {
   }, [])
 
   React.useEffect(() => {
-    removeDeprecatedLocalStorageKeys()
+    runLocalStorageMigrations()
   }, [])
 
   return (
