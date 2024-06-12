@@ -6,8 +6,10 @@
 #include "brave/components/web_discovery/browser/util.h"
 
 #include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "url/url_util.h"
 
 namespace web_discovery {
 
@@ -56,6 +58,30 @@ std::string FormatServerDate(const base::Time& date) {
 void TransformToAlphanumeric(std::string& value) {
   re2::RE2 cleaning_regex(kNotAlphanumericRegex);
   re2::RE2::GlobalReplace(&value, cleaning_regex, "");
+}
+
+std::string DecodeURLComponent(const std::string_view value) {
+  url::RawCanonOutputT<char16_t> result;
+  url::DecodeURLEscapeSequences(value, url::DecodeURLMode::kUTF8OrIsomorphic,
+                                &result);
+  return base::UTF16ToUTF8(result.view());
+}
+
+std::optional<std::string> ExtractValueFromQueryString(
+    const std::string_view query_string,
+    const std::string_view key) {
+  url::Component query_slice(0, query_string.length());
+  url::Component key_slice;
+  url::Component value_slice;
+  while (url::ExtractQueryKeyValue(query_string, &query_slice, &key_slice,
+                                   &value_slice)) {
+    if (query_string.substr(key_slice.begin, key_slice.len) != key) {
+      continue;
+    }
+    return DecodeURLComponent(
+        query_string.substr(value_slice.begin, value_slice.len));
+  }
+  return std::nullopt;
 }
 
 }  // namespace web_discovery

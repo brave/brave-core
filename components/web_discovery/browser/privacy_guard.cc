@@ -11,7 +11,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/components/web_discovery/browser/hash_detection.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -294,22 +293,10 @@ std::optional<std::string> MaskURL(const GURL& url) {
 
   if (url.host_piece().find(kGoogleHostSubstring) != std::string::npos &&
       url.has_query()) {
-    auto query_piece = url.query_piece();
-    url::Component query_slice(0, query_piece.size());
-    url::Component key_slice;
-    url::Component value_slice;
-    while (url::ExtractQueryKeyValue(query_piece, &query_slice, &key_slice,
-                                     &value_slice)) {
-      if (query_piece.substr(key_slice.begin, key_slice.len) !=
-          kGoogleURLQueryParam) {
-        continue;
-      }
-      url::RawCanonOutputT<char16_t> decoded_embedded_url_str;
-      url::DecodeURLEscapeSequences(
-          query_piece.substr(value_slice.begin, value_slice.len),
-          url::DecodeURLMode::kUTF8OrIsomorphic, &decoded_embedded_url_str);
-      GURL decoded_embedded_url(
-          base::UTF16ToUTF8(decoded_embedded_url_str.view()));
+    auto google_url_param =
+        ExtractValueFromQueryString(url.query_piece(), kGoogleURLQueryParam);
+    if (google_url_param) {
+      GURL decoded_embedded_url(*google_url_param);
       if (!decoded_embedded_url.is_valid()) {
         return std::nullopt;
       }
