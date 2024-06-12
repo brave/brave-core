@@ -120,7 +120,9 @@ const char kRemovalsInjectScript[] =
     R"((function() {
           const CC = window.content_cosmetic;
           CC.selectorsToRemove = %s;
-          const dictToMap = (d) => d === undefined ? d : new Map(Object.entries(d));
+          const dictToMap = (d) => d === undefined
+            ? d
+            : new Map(Object.entries(d));
           CC.classesToRemoveBySelector = dictToMap(%s);
           CC.attributesToRemoveBySelector = dictToMap(%s);
           CC.hasRemovals = (

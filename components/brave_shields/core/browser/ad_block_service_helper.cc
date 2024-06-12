@@ -63,9 +63,9 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  std::vector<std::string> dict_list_keys = {"style_selectors",
-                                             "remove_classes", "remove_attrs"};
-  for (const auto& key_ : dict_list_keys) {
+  constexpr std::string_view kDictListKeys[] = {
+      "style_selectors", "remove_classes", "remove_attrs"};
+  for (const auto& key_ : kDictListKeys) {
     base::Value::Dict* resources = into.FindDict(key_);
     base::Value::Dict* from_resources = from.FindDict(key_);
     if (resources && from_resources) {
@@ -83,8 +83,8 @@ void MergeResourcesInto(base::Value::Dict from,
     }
   }
 
-  std::vector<std::string> list_keys = {"exceptions", "remove_selectors"};
-  for (const auto& key_ : list_keys) {
+  constexpr std::string_view kListKeys[] = {"exceptions", "remove_selectors"};
+  for (const auto& key_ : kListKeys) {
     base::Value::List* resources = into.FindList(key_);
     base::Value::List* from_resources = from.FindList(key_);
     if (resources && from_resources) {
