@@ -5,11 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
-import android.annotation.SuppressLint;
-import android.hardware.biometrics.BiometricPrompt;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +13,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.PasswordStrengthMeterView;
-import org.chromium.ui.widget.Toast;
-
-import java.util.concurrent.Executor;
 
 public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragment {
     private boolean mCreateWalletClicked;
@@ -57,7 +46,7 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
                         return;
                     }
                     mCreateWalletClicked = true;
-                    proceedWithStrongPassword(text.toString());
+                    goToTheNextPage(text.toString());
                 });
 
         mPasswordStrengthMeterView = view.findViewById(R.id.password_strength_meter);
@@ -70,58 +59,13 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
         mCreateWalletClicked = false;
     }
 
-    private void proceedWithStrongPassword(@NonNull final String password) {
-        if (Utils.isBiometricSupported(requireContext())) {
-            // noinspection NewApi
-            setUpBiometric(password);
-        } else {
-            goToTheNextPage(password);
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    private void setUpBiometric(@NonNull final String password) {
-        final BiometricPrompt.AuthenticationCallback authenticationCallback =
-                new BiometricPrompt.AuthenticationCallback() {
-                    @Override
-                    public void onAuthenticationSucceeded(
-                            BiometricPrompt.AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-                        KeystoreHelper.useBiometricOnUnlock(password);
-                        goToTheNextPage(password);
-                    }
-
-                    @Override
-                    public void onAuthenticationError(int errorCode, CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
-                        // Even though we have an error, we still let to proceed
-                        Toast.makeText(
-                                        ContextUtils.getApplicationContext(),
-                                        errString,
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                        goToTheNextPage(password);
-                    }
-                };
-        Executor executor = ContextCompat.getMainExecutor(requireContext());
-        new BiometricPrompt.Builder(requireContext())
-                .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
-                .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-                .setNegativeButton(
-                        getResources().getString(android.R.string.cancel),
-                        executor,
-                        (dialog, which) ->
-                                authenticationCallback.onAuthenticationError(
-                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
-                .build()
-                .authenticate(new CancellationSignal(), executor, authenticationCallback);
-    }
-
     private void goToTheNextPage(@NonNull final String passwordInput) {
         mOnboardingViewModel.setPassword(passwordInput);
         if (mOnNextPage != null) {
-            mOnNextPage.gotoNextPage();
+            // If biometric authentication is not supported, we should skip
+            // the fingerprint setup screen, incrementing by 2 pages.
+            final int numberOfPages = Utils.isBiometricSupported(requireContext()) ? 1 : 2;
+            mOnNextPage.incrementPages(numberOfPages);
         }
     }
 }
