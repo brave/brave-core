@@ -331,12 +331,20 @@ bool CanOpenSplitViewForWebContents(
     return false;
   }
 
+  if (!web_contents) {
+    return false;
+  }
+
   Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
   return browser->is_type_normal() && brave::CanOpenNewSplitViewForTab(browser);
 }
 
 void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
                          const GURL& url) {
+  if (!web_contents) {
+    return;
+  }
+
   Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
   brave::NewSplitViewForTab(browser, std::nullopt, url);
 }
@@ -740,7 +748,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   if (CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr()) &&
       params_.link_url.is_valid()) {
     index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
-    DCHECK(index.has_value());
+    CHECK(index.has_value());
 
     menu_model_.InsertItemWithStringIdAt(
         index.value() + 1, IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
