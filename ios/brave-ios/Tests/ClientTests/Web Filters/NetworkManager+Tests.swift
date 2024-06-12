@@ -49,9 +49,6 @@ extension NetworkManager {
         )
         let data = try Data(contentsOf: resourceURL!)
         return data
-      case .deprecatedGeneralCosmeticFilters:
-        // Because of the retry timeout we don't throw any errors but return some empty data
-        return Data()
       }
     }.value
   }

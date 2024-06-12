@@ -92,19 +92,6 @@ final class AdBlockEngineManagerTests: XCTestCase {
     XCTAssertEqual(group?.fileType, .text)
     XCTAssertEqual(compiledResources, resourcesInfo)
 
-    // Test that the grouped content blockers were created
-    let hasStandardRuleList = await contentBlockerManager.hasRuleList(
-      for: engineManager.blocklistType,
-      mode: .standard
-    )
-    let hasAggressiveRuleList = await contentBlockerManager.hasRuleList(
-      for: engineManager.blocklistType,
-      mode: .aggressive
-    )
-    XCTAssertTrue(hasStandardRuleList)
-    XCTAssertTrue(hasAggressiveRuleList)
-    try await contentBlockerManager.removeRuleLists(for: engineManager.blocklistType)
-
     // When
     // We load from cache using another manager with the same cache folder name
     let engineManager2 = await AdBlockEngineManager(
