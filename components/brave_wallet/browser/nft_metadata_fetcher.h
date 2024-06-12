@@ -75,8 +75,6 @@ class NftMetadataFetcher {
                         const GURL& uri,
                         mojom::ProviderError error,
                         const std::string& error_message);
-  // GetTokenMetadataIntermediateCallbacks convert the int error to a
-  // mojom::ProviderError or mojom::SolanaProviderError
   void OnSanitizeTokenMetadata(GetTokenMetadataIntermediateCallback callback,
                                api_request_helper::ValueOrError result);
   void OnGetTokenMetadataPayload(GetTokenMetadataIntermediateCallback callback,

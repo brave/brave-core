@@ -32,8 +32,8 @@ struct SolCompressedNftProofData {
   std::vector<std::string> proof;
   std::string merkle_tree;
   std::string delegate;
-  uint64_t leaf_index = 0;
-  uint64_t canopy_depth = 0;
+  uint32_t leaf_index = 0;
+  uint32_t canopy_depth = 0;
 
   SolCompressedNftProofData();
   SolCompressedNftProofData(const SolCompressedNftProofData& data);

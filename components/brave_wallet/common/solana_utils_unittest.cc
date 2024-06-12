@@ -103,8 +103,8 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
       std::vector<uint8_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}));
 
-  EXPECT_TRUE(Base58Decode(recent_blockhash, &recent_blockhash_bytes,
-                           kSolanaBlockhashSize));
+  EXPECT_TRUE(
+      Base58Decode(recent_blockhash, &recent_blockhash_bytes, kSolanaHashSize));
   EXPECT_EQ(recent_blockhash_bytes,
             std::vector<uint8_t>({131, 191, 83,  201, 108, 193, 222, 255,
                                   176, 67,  136, 209, 219, 42,  6,   169,

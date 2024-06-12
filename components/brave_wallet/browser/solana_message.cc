@@ -301,7 +301,7 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
   }
 
   // Recent blockhash.
-  std::vector<uint8_t> recent_blockhash_bytes(kSolanaBlockhashSize);
+  std::vector<uint8_t> recent_blockhash_bytes(kSolanaHashSize);
   if (!Base58Decode(recent_blockhash_, &recent_blockhash_bytes,
                     recent_blockhash_bytes.size())) {
     return std::nullopt;
@@ -403,13 +403,13 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
   std::string fee_payer = accounts[0].ToBase58();
 
   // Blockhash
-  if (bytes_index + kSolanaBlockhashSize > bytes.size()) {
+  if (bytes_index + kSolanaHashSize > bytes.size()) {
     return std::nullopt;
   }
   const std::vector<uint8_t> blockhash_bytes(
       bytes.begin() + bytes_index,
-      bytes.begin() + bytes_index + kSolanaBlockhashSize);
-  bytes_index += kSolanaBlockhashSize;
+      bytes.begin() + bytes_index + kSolanaHashSize);
+  bytes_index += kSolanaHashSize;
   const std::string recent_blockhash = Base58Encode(blockhash_bytes);
 
   // Instructions length

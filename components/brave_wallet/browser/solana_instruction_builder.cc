@@ -224,35 +224,27 @@ std::optional<SolanaInstruction> Transfer(
     const std::string& tree_authority,
     const std::string& new_leaf_owner,
     const SolCompressedNftProofData& proof) {
-  const std::string compression_program =
-      "cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK";
   const std::string log_wrapper = "noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV";
 
-  std::vector<uint8_t> instruction_data;
-
-  // Transfer instruction discriminator
-  std::vector<uint8_t> transfer_instruction_discriminator = {163, 52, 200, 231,
-                                                             140, 3,  69,  186};
-  instruction_data.insert(instruction_data.end(),
-                          transfer_instruction_discriminator.begin(),
-                          transfer_instruction_discriminator.end());
+  // Init instruction data with the instruction discriminator.
+  std::vector<uint8_t> instruction_data = {163, 52, 200, 231, 140, 3, 69, 186};
 
   std::vector<uint8_t> root_bytes;
-  if (!Base58Decode(proof.root, &root_bytes, 32)) {
+  if (!Base58Decode(proof.root, &root_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
   instruction_data.insert(instruction_data.end(), root_bytes.begin(),
                           root_bytes.end());
 
   std::vector<uint8_t> data_hash_bytes;
-  if (!Base58Decode(proof.data_hash, &data_hash_bytes, 32)) {
+  if (!Base58Decode(proof.data_hash, &data_hash_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
   instruction_data.insert(instruction_data.end(), data_hash_bytes.begin(),
                           data_hash_bytes.end());
 
   std::vector<uint8_t> creator_hash_bytes;
-  if (!Base58Decode(proof.creator_hash, &creator_hash_bytes, 32)) {
+  if (!Base58Decode(proof.creator_hash, &creator_hash_bytes, kSolanaHashSize)) {
     return std::nullopt;
   }
   instruction_data.insert(instruction_data.end(), creator_hash_bytes.begin(),
@@ -262,13 +254,15 @@ std::optional<SolanaInstruction> Transfer(
 
   // Nonce
   tempVec.clear();
+  // Use leaf.index for nonce like the example
+  // https://solana.com/developers/guides/javascript/compressed-nfts#build-the-transfer-instruction
   UintToLEBytes(static_cast<uint64_t>(proof.leaf_index), &tempVec);
   instruction_data.insert(instruction_data.end(), tempVec.begin(),
                           tempVec.end());
 
   // Index
   tempVec.clear();
-  UintToLEBytes(static_cast<uint32_t>(proof.leaf_index), &tempVec);
+  UintToLEBytes(proof.leaf_index, &tempVec);
   instruction_data.insert(instruction_data.end(), tempVec.begin(),
                           tempVec.end());
 
@@ -280,7 +274,8 @@ std::optional<SolanaInstruction> Transfer(
       SolanaAccountMeta(new_leaf_owner, std::nullopt, false, false),
       SolanaAccountMeta(proof.merkle_tree, std::nullopt, false, true),
       SolanaAccountMeta(log_wrapper, std::nullopt, false, false),
-      SolanaAccountMeta(compression_program, std::nullopt, false, false),
+      SolanaAccountMeta(mojom::kSolanaAccountCompressionProgramId, std::nullopt,
+                        false, false),
       SolanaAccountMeta(mojom::kSolanaSystemProgramId, std::nullopt, false,
                         false),
   });

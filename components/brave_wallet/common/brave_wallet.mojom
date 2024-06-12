@@ -1294,8 +1294,10 @@ const string kSolanaToken2022ProgramId =
 const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
 const string kSolanaMetadataProgramId = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
-const string kSolanaBubbleGumProgramId = "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY";
-const string kSolanaAccountCompressionProgramId ="cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK";
+const string kSolanaBubbleGumProgramId =
+  "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY";
+const string kSolanaAccountCompressionProgramId =
+  "cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK";
 const string kSolanaConfigProgramId =
   "Config1111111111111111111111111111111111111";
 const string kSolanaStakeProgramId =
