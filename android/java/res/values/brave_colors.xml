@@ -398,4 +398,5 @@
     <color name="primitive_primary_80">#2a118e</color>
 
     <color name="divider_interactive">#545ff8</color>
+    <color name="container_background">#ffffff</color>
 </resources>

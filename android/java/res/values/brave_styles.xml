@@ -382,6 +382,13 @@
         <item name="fontWeight">600</item>
     </style>
 
+    <style name="HeadingH3">
+        <item name="android:textSize">@dimen/heading_h3</item>
+        <item name="lineHeight">28sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">500</item>
+    </style>
+
     <style name="HeadingH4">
         <item name="android:textSize">@dimen/heading_h4</item>
         <item name="lineHeight">24sp</item>
