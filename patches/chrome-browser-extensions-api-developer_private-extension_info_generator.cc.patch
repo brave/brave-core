@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index ccc491bd65fcd9b3a3abd172a76e047e6e8ba506..2d85a7c44d37ba8ee4d69620403ffce7d352601d 100644
+index 9c74877ad8fc36dde6112116adb138541af302b4..6d848bfa2fd1b8b96138964d2be687e021269211 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-@@ -809,6 +809,7 @@ void ExtensionInfoGenerator::CreateExtensionInfoHelper(
+@@ -670,6 +670,7 @@ void ExtensionInfoGenerator::CreateExtensionInfoHelper(
    info->incognito_access.is_enabled = util::CanBeIncognitoEnabled(&extension);
    info->incognito_access.is_active =
        util::IsIncognitoEnabled(extension.id(), browser_context_);
 +  BRAVE_CREATE_EXTENSION_INFO_HELPER
  
-   // Safety check warning acknowledge status.
-   extension_prefs_->ReadPrefAsBoolean(
+   // Install warnings, but only if unpacked, the error console isn't enabled
+   // (otherwise it shows these), and we're in developer mode (normal users don't

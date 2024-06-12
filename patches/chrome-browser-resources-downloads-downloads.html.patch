@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/downloads/downloads.html b/chrome/browser/resources/downloads/downloads.html
-index 35e377d76a4a47bb990832edf8dd1b3dd2c48301..2654b4ff65a59629a7f93001df08a659026ce730 100644
+index 0bc2e45d32d4c590189606aefd7cfbd4c79c14bd..15e26fc0951b61e236ae6a520f9c5551b5a80fcf 100644
 --- a/chrome/browser/resources/downloads/downloads.html
 +++ b/chrome/browser/resources/downloads/downloads.html
-@@ -6,6 +6,7 @@
-   <base href="chrome://downloads">
+@@ -7,6 +7,7 @@
    <title>$i18n{title}</title>
    <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
+   <link rel="stylesheet" href="safebrowsing_shared.css">
 +  <link rel="stylesheet" href="chrome://resources/brave/page_specific/downloads/downloads_loading_shim.css"><link rel="stylesheet" href="chrome://resources/brave/leo/css/variables.css">
    <style>
      html {
