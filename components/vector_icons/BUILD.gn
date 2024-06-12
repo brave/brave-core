@@ -78,6 +78,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_reading_list.icon",
     "leo_reading_list_add.icon",
     "leo_reload.icon",
+    "leo_rocket.icon",
     "leo_rss.icon",
     "leo_screenshot.icon",
     "leo_search_zoom_in.icon",

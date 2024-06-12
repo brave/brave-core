@@ -23,6 +23,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
   static const base::NoDestructor<std::map<int, const gfx::VectorIcon&>>
       kCommandIcons({
           // The `App` menu
+          {IDC_UPGRADE_DIALOG, kLeoRocketIcon},
           {IDC_NEW_TAB, kLeoBrowserAddIcon},
           {IDC_NEW_WINDOW, kLeoWindowTabNewIcon},
           {IDC_NEW_INCOGNITO_WINDOW, kLeoWindowTabPrivateIcon},
