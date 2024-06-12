@@ -63,7 +63,8 @@ class WDPService : public KeyedService {
   void OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns);
   void OnContentScraped(bool is_strict,
                         std::unique_ptr<PageScrapeResult> result);
-  void OnDoubleFetched(const base::Value& associated_data,
+  void OnDoubleFetched(const GURL& url,
+                       const base::Value& associated_data,
                        std::optional<std::string> response_body);
 
   raw_ptr<PrefService> local_state_;

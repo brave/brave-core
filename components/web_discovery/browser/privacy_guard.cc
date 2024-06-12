@@ -11,9 +11,12 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/web_discovery/browser/hash_detection.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "url/third_party/mozilla/url_parse.h"
+#include "url/url_constants.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -49,6 +52,10 @@ constexpr char kDefaultSearchPrefix[] = "search?q=";
 constexpr char kOnionSiteSuffix[] = ".onion";
 constexpr char kLocalDomainSuffix[] = ".local";
 constexpr char kLocalhost[] = "localhost";
+
+constexpr char kGoogleHostSubstring[] = "google";
+constexpr char kGoogleURLQueryParam[] = "url";
+constexpr char kMaskedURLSuffix[] = "/ (PROTECTED)";
 
 constexpr std::array<std::string_view, 10> kPathAndQueryStringCheckRegexes = {
     "(?i)\\/admin([\\/\\?#=]|$)",
@@ -274,6 +281,44 @@ bool ShouldDropLongURL(const GURL& url) {
     }
   }
   return ContainsForbiddenKeywords(url);
+}
+
+std::optional<std::string> MaskURL(const GURL& url) {
+  if (!url.SchemeIsHTTPOrHTTPS() || !url.is_valid()) {
+    return std::nullopt;
+  }
+
+  if (!ShouldDropLongURL(url)) {
+    return url.spec();
+  }
+
+  if (url.host_piece().find(kGoogleHostSubstring) != std::string::npos &&
+      url.has_query()) {
+    auto query_piece = url.query_piece();
+    url::Component query_slice(0, query_piece.size());
+    url::Component key_slice;
+    url::Component value_slice;
+    while (url::ExtractQueryKeyValue(query_piece, &query_slice, &key_slice,
+                                     &value_slice)) {
+      if (query_piece.substr(key_slice.begin, key_slice.len) !=
+          kGoogleURLQueryParam) {
+        continue;
+      }
+      url::RawCanonOutputT<char16_t> decoded_embedded_url_str;
+      url::DecodeURLEscapeSequences(
+          query_piece.substr(value_slice.begin, value_slice.len),
+          url::DecodeURLMode::kUTF8OrIsomorphic, &decoded_embedded_url_str);
+      GURL decoded_embedded_url(
+          base::UTF16ToUTF8(decoded_embedded_url_str.view()));
+      if (!decoded_embedded_url.is_valid()) {
+        return std::nullopt;
+      }
+      return MaskURL(decoded_embedded_url);
+    }
+  }
+
+  return base::StrCat({url.scheme(), url::kStandardSchemeSeparator, url.host(),
+                       kMaskedURLSuffix});
 }
 
 }  // namespace web_discovery

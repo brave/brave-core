@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -25,6 +26,7 @@ constexpr char kIdValueKey[] = "id";
 constexpr char kUrlValueKey[] = "url";
 
 constexpr char kRefineSplitFuncId[] = "splitF";
+constexpr char kRefineMaskURLFuncId[] = "maskU";
 
 std::string RefineSplit(const std::string& value,
                         const std::string& delimiter,
@@ -44,29 +46,39 @@ std::string RefineSplit(const std::string& value,
   return base::UTF16ToUTF8(result.view());
 }
 
-std::string ExecuteRefineFunctions(const RefineFunctionList& function_list,
-                                   const std::string& value) {
-  std::string result = value;
+std::optional<std::string> ExecuteRefineFunctions(
+    const RefineFunctionList& function_list,
+    const std::string& value) {
+  std::optional<std::string> result = value;
   for (const auto& function_args : function_list) {
     if (function_args.empty()) {
       continue;
     }
-    if (function_args[0] == kRefineSplitFuncId) {
+    const auto& func_name = function_args[0];
+    if (func_name == kRefineSplitFuncId) {
       if (function_args.size() >= 3 && function_args[1].is_string() &&
           function_args[2].is_int()) {
-        result = RefineSplit(result, function_args[1].GetString(),
+        result = RefineSplit(*result, function_args[1].GetString(),
                              function_args[2].GetInt());
       }
+    } else if (func_name == kRefineMaskURLFuncId) {
+      result = MaskURL(GURL(value));
+    }
+    if (!result) {
+      break;
     }
   }
   return result;
 }
 
 void MaybeSetQueryInResult(const ScrapeRule& rule,
-                           const std::string& value,
+                           const std::optional<std::string>& value,
                            PageScrapeResult* result) {
   if (rule.rule_type != ScrapeRuleType::kSearchQuery &&
       rule.rule_type != ScrapeRuleType::kWidgetTitle) {
+    return;
+  }
+  if (!value) {
     return;
   }
   result->query = value;
@@ -179,12 +191,13 @@ void ContentScraper::ScrapePage(const GURL& url,
 }
 
 void ContentScraper::ParseAndScrapePage(
+    const GURL& url,
     bool is_strict_scrape,
     std::unique_ptr<PageScrapeResult> prev_result,
     std::string html,
     PageScrapeResultCallback callback) {
   const auto* url_details =
-      (*patterns_)->GetMatchingURLPattern(prev_result->url, is_strict_scrape);
+      (*patterns_)->GetMatchingURLPattern(url, is_strict_scrape);
   if (!url_details) {
     return;
   }
@@ -196,7 +209,7 @@ void ContentScraper::ParseAndScrapePage(
     select_request.root_selector = selector;
     for (const auto& [report_key, rule] : group) {
       if (rule->rule_type == ScrapeRuleType::kStandard) {
-        ProcessStandardRule(report_key, *rule, selector, interim_result->url,
+        ProcessStandardRule(report_key, *rule, selector, url,
                             interim_result.get());
         continue;
       }
@@ -259,11 +272,13 @@ void ContentScraper::OnScrapedElementAttributes(
       }
       base::Value value;
       if (value_str) {
-        std::string final_value_str =
+        auto final_value_str =
             ExecuteRefineFunctions(rule->second->functions_applied, *value_str);
         MaybeSetQueryInResult(*rule->second, final_value_str,
                               scrape_result.get());
-        value = base::Value(final_value_str);
+        if (final_value_str) {
+          value = base::Value(*final_value_str);
+        }
       }
       attribute_values.Set(key, std::move(value));
     }
@@ -298,10 +313,13 @@ void ContentScraper::OnRustElementAttributes(
       }
       base::Value value;
       if (!pair.value.empty()) {
-        std::string value_str = ExecuteRefineFunctions(
+        auto final_value_str = ExecuteRefineFunctions(
             rule->second->functions_applied, std::string(pair.value));
-        MaybeSetQueryInResult(*rule->second, value_str, scrape_result.get());
-        value = base::Value(value_str);
+        MaybeSetQueryInResult(*rule->second, final_value_str,
+                              scrape_result.get());
+        if (final_value_str) {
+          value = base::Value(*final_value_str);
+        }
       }
       attribute_values.Set(key_str, std::move(value));
     }

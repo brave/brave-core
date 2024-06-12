@@ -58,7 +58,8 @@ class ContentScraper {
                   mojom::DocumentExtractor* document_extractor,
                   PageScrapeResultCallback callback);
   // For subsequent double fetches after initial scrape
-  void ParseAndScrapePage(bool is_strict_scrape,
+  void ParseAndScrapePage(const GURL& url,
+                          bool is_strict_scrape,
                           std::unique_ptr<PageScrapeResult> prev_result,
                           std::string html,
                           PageScrapeResultCallback callback);
