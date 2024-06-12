@@ -34,7 +34,7 @@ TEST_F(BraveAdsLocaleUserDataTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(BuildLocaleUserData().empty());
+  EXPECT_THAT(BuildLocaleUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
@@ -42,11 +42,8 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
 
-  // Act
-  const base::Value::Dict user_data = BuildLocaleUserData();
-
-  // Assert
-  EXPECT_TRUE(user_data.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildLocaleUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
@@ -54,11 +51,8 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_MC"};
 
-  // Act
-  const base::Value::Dict user_data = BuildLocaleUserData();
-
-  // Assert
-  EXPECT_TRUE(user_data.empty());
+  // Act & Assert
+  EXPECT_THAT(BuildLocaleUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,

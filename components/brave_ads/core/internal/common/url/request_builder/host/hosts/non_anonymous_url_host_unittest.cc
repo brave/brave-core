@@ -16,6 +16,7 @@ class BraveAdsNonAnonymousUrlHostTest : public UnitTestBase {};
 
 TEST_F(BraveAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kProduction;
 
@@ -25,6 +26,7 @@ TEST_F(BraveAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
 
 TEST_F(BraveAdsNonAnonymousUrlHostTest, GetStagingUrlHost) {
   // Arrange
+  ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->Flags().environment_type =
       mojom::EnvironmentType::kStaging;
 

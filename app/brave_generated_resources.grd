@@ -785,6 +785,18 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar
         </message>
+        <message name="IDS_APP_MENU_SIDEBAR_TITLE" desc="Tile of a group of buttons to set visibility of sidebar">
+          Sidebar
+        </message>
+        <message name="IDS_APP_MENU_SIDEBAR_ON" desc="Label for a button to always show sidebar">
+          On
+        </message>
+        <message name="IDS_APP_MENU_SIDEBAR_OFF" desc="Label for a button to hide sidebar">
+          Off
+        </message>
+        <message name="IDS_APP_MENU_SIDEBAR_HOVER" desc="Label for a button to show sidebar on hover">
+          Autohide
+        </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
         </message>
@@ -1232,13 +1244,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_PLAYLIST_MEDIA_FOUND_IN_THIS_PAGE" desc="A sub title in a bubble to add media files to playlist">
             Media found in this page
           </message>
-          <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST_FOLDER" desc="A label on a bubble that shows up when items were added from the current page">
-            Added to <ph name="PLAYLIST_FOLDER_NAME">$1<ex>Play Later</ex></ph>
-          </message>
           <message name="IDS_PLAYLIST_MEDIA_NOT_FOUND_IN_THIS_PAGE" desc="An error message that shows up when we fail to extract media from a page">
             Sorry, we couldn't find any media on this page.
           </message>
         <if expr="use_titlecase">
+          <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST" desc="A title label on a bubble to show media file is added to Playlist">
+            Added to Playlist
+          </message>
           <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
             Open in Playlist
           </message>
@@ -1256,6 +1268,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
         <if expr="not use_titlecase">
+          <message name="IDS_PLAYLIST_ADDED_TO_PLAYLIST" desc="A title label on a bubble to show media file is added to Playlist">
+            Added to playlist
+          </message>
           <message name="IDS_PLAYLIST_OPEN_IN_PLAYLIST" desc="A menu name to open added media files on Playlist">
             Open in playlist
           </message>
@@ -1263,7 +1278,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             Change folder
           </message>
           <message name="IDS_PLAYLIST_REMOVE_FROM_PLAYLIST" desc="A menu name to remove items">
-            Remove from Playlist
+            Remove from playlist
           </message>
           <message name="IDS_PLAYLIST_MORE_MEDIA_IN_THIS_PAGE" desc="A menu name to see found media files">
             More media on this page...

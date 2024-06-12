@@ -116,6 +116,22 @@ const char kHideSelectorsInjectScript[] =
           };
         })();)";
 
+const char kRemovalsInjectScript[] =
+    R"((function() {
+          const CC = window.content_cosmetic;
+          CC.selectorsToRemove = %s;
+          const dictToMap = (d) => d === undefined
+            ? d
+            : new Map(Object.entries(d));
+          CC.classesToRemoveBySelector = dictToMap(%s);
+          CC.attributesToRemoveBySelector = dictToMap(%s);
+          CC.hasRemovals = (
+            CC.selectorsToRemove !== undefined
+            || CC.classesToRemoveBySelector !== undefined
+            || CC.attributesToRemoveBySelector !== undefined
+          );
+        })();)";
+
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
@@ -459,6 +475,48 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
   ExecuteObservingBundleEntryPoint();
 
   CSSRulesRoutine(*resources_dict_);
+
+  bool has_removals = false;
+  //: remove()
+  std::string remove_selectors_json;
+  const auto* remove_selectors_list =
+      resources_dict_->FindList("remove_selectors");
+  if (remove_selectors_list && !remove_selectors_list->empty()) {
+    base::JSONWriter::Write(*remove_selectors_list, &remove_selectors_json);
+    has_removals = true;
+  } else {
+    remove_selectors_json = "undefined";
+  }
+
+  //: remove_classes
+  std::string remove_classes_json;
+  const auto* remove_classes_dictionary =
+      resources_dict_->FindDict("remove_classes");
+  if (remove_classes_dictionary && !remove_classes_dictionary->empty()) {
+    base::JSONWriter::Write(*remove_classes_dictionary, &remove_classes_json);
+    has_removals = true;
+  }
+
+  //: remove_attrs
+  std::string remove_attrs_json;
+  const auto* remove_attrs_dictionary =
+      resources_dict_->FindDict("remove_attrs");
+  if (remove_attrs_dictionary && !remove_attrs_dictionary->empty()) {
+    base::JSONWriter::Write(*remove_attrs_dictionary, &remove_attrs_json);
+    has_removals = true;
+  }
+
+  if (has_removals) {
+    // Building a script for removals
+    std::string new_selectors_script = base::StringPrintf(
+        kRemovalsInjectScript, remove_selectors_json.c_str(),
+        remove_classes_json.c_str(), remove_attrs_json.c_str());
+    web_frame->ExecuteScriptInIsolatedWorld(
+        isolated_world_id_,
+        blink::WebScriptSource(
+            blink::WebString::FromUTF8(new_selectors_script)),
+        blink::BackForwardCacheAware::kAllow);
+  }
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(

@@ -69,7 +69,7 @@ std::string Dayparts::GetTableName() const {
   return kTableName;
 }
 
-void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
+void Dayparts::Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -105,7 +105,7 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Dayparts::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+void Dayparts::MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // We can safely recreate the table because it will be repopulated after

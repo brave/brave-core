@@ -23,7 +23,7 @@
 
 namespace brave_ads {
 
-Confirmations::Confirmations(TokenGeneratorInterface* token_generator)
+Confirmations::Confirmations(TokenGeneratorInterface* const token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 

@@ -32,14 +32,14 @@ inline constexpr char kNotificationAdDidFallbackToCustom[] =
 inline constexpr char kSupportedCountryCodesLastSchemaVersion[] =
     "brave.brave_ads.supported_regions_last_schema_version_number";
 
-// Stores whether user has opted-in to notifications ads
+// Stores whether user has opted into notifications ads
 inline constexpr char kOptedInToNotificationAds[] = "brave.brave_ads.enabled";
 inline constexpr char kEnabledForLastProfile[] =
     "brave.brave_ads.enabled_last_profile";
 inline constexpr char kEverEnabledForAnyProfile[] =
     "brave.brave_ads.ever_enabled_any_profile";
 
-// Stores whether user has opted-in to search ads
+// Stores whether user has opted into search ads
 inline constexpr char kOptedInToSearchResultAds[] =
     "brave.brave_ads.opted_in_to_search_result_ads";
 

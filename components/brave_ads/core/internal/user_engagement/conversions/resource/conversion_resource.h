@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_RESOURCE_CONVERSION_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_RESOURCE_CONVERSION_RESOURCE_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -27,22 +28,35 @@ class ConversionResource final : public AdsClientNotifierObserver {
 
   ~ConversionResource() override;
 
-  bool IsInitialized() const { return is_initialized_; }
+  bool IsLoaded() const { return !!resource_; }
 
-  const ConversionResourceInfo& get() const { return conversion_resource_; }
+  std::optional<std::string> GetManifestVersion() const {
+    return manifest_version_;
+  }
+
+  const std::optional<ConversionResourceInfo>& get() const { return resource_; }
 
  private:
+  void MaybeLoad();
+  void MaybeLoadOrUnload();
+
   void Load();
-  void LoadCallback(ResourceParsingErrorOr<ConversionResourceInfo> result);
+  void LoadCallback(
+      ResourceComponentParsingErrorOr<ConversionResourceInfo> result);
+
+  void MaybeUnload();
+  void Unload();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyDidUpdateResourceComponent(const std::string& manifest_version,
                                           const std::string& id) override;
+  void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  bool is_initialized_ = false;
+  std::optional<std::string> manifest_version_;
 
-  ConversionResourceInfo conversion_resource_;
+  std::optional<ConversionResourceInfo> resource_;
 
   base::WeakPtrFactory<ConversionResource> weak_factory_{this};
 };

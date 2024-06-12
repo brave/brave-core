@@ -9,6 +9,11 @@ import { useHistory } from 'react-router-dom'
 // Types
 import { NavOption, WalletRoutes } from '../../../../../../constants/types'
 
+// Hooks
+import {
+  useOnClickOutside //
+} from '../../../../../../common/hooks/useOnClickOutside'
+
 // Selectors
 import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../../../common/selectors'
@@ -21,13 +26,19 @@ import {
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 
+// Components
+import {
+  PortfolioAccountMenu //
+} from '../../../../wallet-menus/portfolio_actions_more_menu'
+
 // Styled Components
 import {
   Button,
   ButtonIcon,
   ButtonText,
   ButtonWrapper,
-  ButtonsRow
+  ButtonsRow,
+  MoreMenuWrapper
 } from './buy-send-swap-deposit-nav.style'
 
 export const BuySendSwapDepositNav = () => {
@@ -36,6 +47,15 @@ export const BuySendSwapDepositNav = () => {
 
   // redux
   const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // state
+  const [showMoreMenu, setShowMoreMenu] = React.useState<boolean>(false)
+
+  // refs
+  const moreMenuRef = React.useRef<HTMLDivElement>(null)
+
+  // hooks
+  useOnClickOutside(moreMenuRef, () => setShowMoreMenu(false), showMoreMenu)
 
   // methods
   const onClick = React.useCallback(
@@ -55,7 +75,7 @@ export const BuySendSwapDepositNav = () => {
 
   return (
     <ButtonsRow width='unset'>
-      {BuySendSwapDepositOptions.map((option) => (
+      {BuySendSwapDepositOptions.slice(0, 3).map((option) => (
         <ButtonWrapper key={option.id}>
           <Button onClick={() => onClick(option)}>
             <ButtonIcon name={option.icon} />
@@ -63,6 +83,13 @@ export const BuySendSwapDepositNav = () => {
           <ButtonText>{getLocale(option.name)}</ButtonText>
         </ButtonWrapper>
       ))}
+      <MoreMenuWrapper ref={moreMenuRef}>
+        <Button onClick={() => setShowMoreMenu(true)}>
+          <ButtonIcon name='more-horizontal' />
+        </Button>
+        <ButtonText>{getLocale('braveWalletButtonMore')}</ButtonText>
+        {showMoreMenu && <PortfolioAccountMenu onClick={onClick} />}
+      </MoreMenuWrapper>
     </ButtonsRow>
   )
 }

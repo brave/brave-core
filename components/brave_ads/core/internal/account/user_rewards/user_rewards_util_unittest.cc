@@ -25,16 +25,16 @@ class BraveAdsUserRewardsUtilTest : public AdsClientNotifierObserverMock,
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AddAdsClientNotifierObserver(&observer_mock_);
+    AddAdsClientNotifierObserver(&ads_client_notifier_observer_mock_);
   }
 
   void TearDown() override {
-    RemoveAdsClientNotifierObserver(&observer_mock_);
+    RemoveAdsClientNotifierObserver(&ads_client_notifier_observer_mock_);
 
     UnitTestBase::TearDown();
   }
 
-  AdsClientNotifierObserverMock observer_mock_;
+  AdsClientNotifierObserverMock ads_client_notifier_observer_mock_;
 };
 
 TEST_F(BraveAdsUserRewardsUtilTest, ShouldMigrateVerifiedRewardsUser) {
@@ -58,8 +58,10 @@ TEST_F(BraveAdsUserRewardsUtilTest,
 
 TEST_F(BraveAdsUserRewardsUtilTest, UpdateIssuers) {
   // Arrange
-  EXPECT_CALL(observer_mock_, OnNotifyPrefDidChange(prefs::kIssuerPing));
-  EXPECT_CALL(observer_mock_, OnNotifyPrefDidChange(prefs::kIssuers));
+  EXPECT_CALL(ads_client_notifier_observer_mock_,
+              OnNotifyPrefDidChange(prefs::kIssuerPing));
+  EXPECT_CALL(ads_client_notifier_observer_mock_,
+              OnNotifyPrefDidChange(prefs::kIssuers));
 
   const IssuersInfo issuers = test::BuildIssuers();
 
@@ -74,11 +76,12 @@ TEST_F(BraveAdsUserRewardsUtilTest, DoNotUpdateIfIssuersHasNotChanged) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&observer_mock_));
-
-  EXPECT_CALL(observer_mock_, OnNotifyPrefDidChange(prefs::kIssuerPing))
+  EXPECT_CALL(ads_client_notifier_observer_mock_,
+              OnNotifyPrefDidChange(prefs::kIssuerPing))
       .Times(0);
-  EXPECT_CALL(observer_mock_, OnNotifyPrefDidChange(prefs::kIssuers)).Times(0);
+  EXPECT_CALL(ads_client_notifier_observer_mock_,
+              OnNotifyPrefDidChange(prefs::kIssuers))
+      .Times(0);
 
   // Act
   UpdateIssuers(test::BuildIssuers());

@@ -63,28 +63,6 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
 
 class BraveAdsHashVectorizerTest : public UnitTestBase {};
 
-TEST_F(BraveAdsHashVectorizerTest, ValidJsonScheme) {
-  // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(
-      R"(
-          {
-            "test": {
-              "foo": true,
-              "bar": 3.14,
-              "baz": "qux",
-              "quux": "corge"
-            },
-            "list": [
-              "grault",
-              "garply"
-            ]
-          })");
-
-  // Act & Assert
-  EXPECT_TRUE(dict.FindDict("test"));
-  EXPECT_TRUE(dict.FindList("list"));
-}
-
 TEST_F(BraveAdsHashVectorizerTest, EmptyText) {
   RunHashingExtractorTestCase("empty");
 }

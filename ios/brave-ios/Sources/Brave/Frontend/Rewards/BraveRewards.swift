@@ -214,7 +214,7 @@ public class BraveRewards: NSObject {
   func reportLoadedPage(
     redirectChain: [URL],
     tabId: Int,
-    htmlContent: String,
+    htmlContent: String?,
     textContent: String?
   ) {
     guard let url = redirectChain.last else {
@@ -226,7 +226,7 @@ public class BraveRewards: NSObject {
       ads.notifyTabHtmlContentDidChange(
         tabId,
         redirectChain: redirectChain,
-        html: htmlContent
+        html: htmlContent ?? ""
       )
       if let textContent {
         ads.notifyTabTextContentDidChange(

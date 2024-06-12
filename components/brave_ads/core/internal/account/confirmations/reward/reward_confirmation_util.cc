@@ -32,8 +32,9 @@ namespace brave_ads {
 
 namespace {
 
-std::optional<RewardInfo> BuildReward(TokenGeneratorInterface* token_generator,
-                                      const ConfirmationInfo& confirmation) {
+std::optional<RewardInfo> BuildReward(
+    TokenGeneratorInterface* const token_generator,
+    const ConfirmationInfo& confirmation) {
   CHECK(token_generator);
   CHECK(IsValid(confirmation));
   CHECK(UserHasJoinedBraveRewards());
@@ -124,7 +125,7 @@ std::optional<std::string> BuildRewardCredential(
 }
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
-    TokenGeneratorInterface* token_generator,
+    TokenGeneratorInterface* const token_generator,
     const TransactionInfo& transaction,
     base::Value::Dict user_data) {
   CHECK(token_generator);

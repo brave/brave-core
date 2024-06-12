@@ -51,7 +51,8 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
 
   // Act & Assert
-  EXPECT_TRUE(BuildCreatedAtTimestampUserData(transaction).empty());
+  EXPECT_THAT(BuildCreatedAtTimestampUserData(transaction),
+              ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

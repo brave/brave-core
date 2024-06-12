@@ -39,7 +39,7 @@ constexpr char kTableName[] = "creative_new_tab_page_ads";
 
 constexpr int kDefaultBatchSize = 50;
 
-void BindRecords(mojom::DBCommandInfo* command) {
+void BindRecords(mojom::DBCommandInfo* const command) {
   CHECK(command);
 
   command->record_bindings = {
@@ -100,7 +100,7 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
+CreativeNewTabPageAdInfo GetFromRecord(mojom::DBRecordInfo* const record) {
   CHECK(record);
 
   CreativeNewTabPageAdInfo creative_ad;
@@ -481,7 +481,8 @@ std::string CreativeNewTabPageAds::GetTableName() const {
   return kTableName;
 }
 
-void CreativeNewTabPageAds::Create(mojom::DBTransactionInfo* transaction) {
+void CreativeNewTabPageAds::Create(
+    mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -514,7 +515,7 @@ void CreativeNewTabPageAds::Migrate(mojom::DBTransactionInfo* transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeNewTabPageAds::MigrateToV35(
-    mojom::DBTransactionInfo* transaction) {
+    mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // We can safely recreate the table because it will be repopulated after

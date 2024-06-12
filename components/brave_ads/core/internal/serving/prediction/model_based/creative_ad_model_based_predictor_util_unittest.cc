@@ -50,10 +50,11 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       InterestUserModelInfo{SegmentList{"parent"}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad_2, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, Now() - base::Hours(3),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
+                         ConfirmationType::kViewedImpression,
+                         /*created_at=*/Now() - base::Hours(3),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>

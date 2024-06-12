@@ -36,6 +36,8 @@ inline constexpr char kBraveWalletP3AActiveWalletDict[] =
     "brave.wallet.wallet_p3a_active_wallets";
 inline constexpr char kBraveWalletCustomNetworks[] =
     "brave.wallet.custom_networks";
+inline constexpr char kBraveWalletEip1559CustomChains[] =
+    "brave.wallet.eip1559_chains";
 inline constexpr char kBraveWalletHiddenNetworks[] =
     "brave.wallet.hidden_networks";
 inline constexpr char kBraveWalletSelectedNetworks[] =
@@ -58,8 +60,6 @@ inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
     "brave.wallet.user.assets.default_hidden_networks_version";
 inline constexpr char kBraveWalletAutoLockMinutes[] =
     "brave.wallet.auto_lock_minutes";
-inline constexpr char kSupportEip1559OnLocalhostChain[] =
-    "brave.wallet.support_eip1559_on_localhost_chain";
 inline constexpr char kBraveWalletP3AFirstUnlockTime[] =
     "brave.wallet.p3a_first_unlock_time";
 inline constexpr char kBraveWalletP3ALastUnlockTime[] =
@@ -105,6 +105,12 @@ inline constexpr char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
 // to a custom network.
 inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
     "brave.wallet.custom_networks.fantom_mainnet_migrated";
+// Added 01/2024 to migrate transactions DB to one-level dict.
+inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
+    "brave.wallet.transactions_db_format_migrated";
+// Added 06/2024 to migrate Eip1559 flag to a separate pref.
+inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
+    "brave.wallet.eip1559_chains_migrated";
 
 // 06/2023
 inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
@@ -112,8 +118,8 @@ inline constexpr char kBraveWalletSelectedCoinDeprecated[] =
 // 01/2024
 inline constexpr char kBraveWalletUserAssetsDeprecated[] =
     "brave.wallet.wallet_user_assets";
-// Added 01/2024 to migrate transactions DB to one-level dict.
-inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
-    "brave.wallet.transactions_db_format_migrated";
+// 06/2024 migrated to kBraveWalletEip1559CustomChains.
+inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
+    "brave.wallet.support_eip1559_on_localhost_chain";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

@@ -36,21 +36,24 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   ~TextClassificationResource() override;
 
-  bool IsInitialized() const { return !!text_processing_pipeline_; }
+  bool IsLoaded() const { return !!text_processing_pipeline_; }
+
+  std::optional<std::string> GetManifestVersion() const {
+    return manifest_version_;
+  }
 
   void ClassifyPage(const std::string& text, ClassifyPageCallback callback);
 
  private:
   void MaybeLoad();
-  void MaybeLoadOrReset();
+  void MaybeLoadOrUnload();
 
-  bool DidLoad() const { return did_load_; }
   void Load();
   void LoadComponentResourceCallback(base::File file);
-  void LoadPipelineCallback(base::expected<bool, std::string> result);
+  void LoadCallback(base::expected<bool, std::string> result);
 
-  void MaybeReset();
-  void Reset();
+  void MaybeUnload();
+  void Unload();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
@@ -59,11 +62,10 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
                                           const std::string& id) override;
   void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
+  std::optional<std::string> manifest_version_;
+
   std::optional<const base::SequenceBound<ml::pipeline::TextProcessing>>
       text_processing_pipeline_;
-
-  bool did_load_ = false;
-  std::optional<std::string> manifest_version_;
 
   base::WeakPtrFactory<TextClassificationResource> weak_factory_{this};
 };

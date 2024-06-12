@@ -172,6 +172,9 @@ export const useSwap = () => {
   const [selectedSwapSendAccount, setSelectedSwapSendAccount] = useState<
     AccountInfoEntity | undefined
   >(undefined)
+  const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
+    number | undefined
+  >(undefined)
 
   // Mutations
   const [generateSwapQuote] = useGenerateSwapQuoteMutation()
@@ -434,7 +437,8 @@ export const useSwap = () => {
           routePriority:
             params.fromToken.chainId === params.toToken.chainId
               ? BraveWallet.RoutePriority.kCheapest
-              : BraveWallet.RoutePriority.kRecommended
+              : BraveWallet.RoutePriority.kRecommended,
+          provider: BraveWallet.SwapProvider.kAuto
         }).unwrap()
       } catch (e) {
         setIsFetchingQuote(false)
@@ -532,6 +536,7 @@ export const useSwap = () => {
 
       setIsFetchingQuote(false)
       setAbortController(undefined)
+      setTimeUntilNextQuote(10000)
     },
     [
       fromAccount,
@@ -1014,6 +1019,10 @@ export const useSwap = () => {
   ])
 
   const submitButtonText = useMemo(() => {
+    if (isFetchingQuote) {
+      return getLocale('braveWalletFetchingQuote')
+    }
+
     const defaultText = isBridge
       ? getLocale('braveWalletReviewBridge')
       : getLocale('braveWalletReviewSwap')
@@ -1052,7 +1061,7 @@ export const useSwap = () => {
     }
 
     return defaultText
-  }, [isBridge, fromToken, fromNetwork, swapValidationError])
+  }, [isBridge, fromToken, fromNetwork, swapValidationError, isFetchingQuote])
 
   const isSubmitButtonDisabled = useMemo(() => {
     return (
@@ -1106,12 +1115,18 @@ export const useSwap = () => {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      await handleQuoteRefresh({})
-    }, 10000)
+      if (timeUntilNextQuote && timeUntilNextQuote !== 0) {
+        setTimeUntilNextQuote(timeUntilNextQuote - 1000)
+        return
+      }
+      if (!isFetchingQuote) {
+        await handleQuoteRefresh({})
+      }
+    }, 1000)
     return () => {
       clearInterval(interval)
     }
-  }, [handleQuoteRefresh])
+  }, [handleQuoteRefresh, timeUntilNextQuote, isFetchingQuote])
 
   return {
     fromAccount,
@@ -1161,7 +1176,8 @@ export const useSwap = () => {
     tokenBalancesRegistry,
     isLoadingBalances,
     isBridge,
-    toAccount
+    toAccount,
+    timeUntilNextQuote
   }
 }
 export default useSwap

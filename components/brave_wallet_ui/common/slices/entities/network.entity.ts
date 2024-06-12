@@ -12,13 +12,14 @@ import {
 import { BraveWallet } from '../../../constants/types'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
-export const getNetworkId = ({ chainId, coin }: {
+export const getNetworkId = ({
+  chainId,
+  coin
+}: {
   chainId: string
   coin: BraveWallet.CoinType
 }): string =>
-chainId === BraveWallet.LOCALHOST_CHAIN_ID
-  ? `${chainId}-${coin}`
-  : chainId
+  chainId === BraveWallet.LOCALHOST_CHAIN_ID ? `${chainId}-${coin}` : chainId
 
 export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
   selectId: (network: {
@@ -37,7 +38,7 @@ export type NetworksRegistry = ReturnType<
 > & {
   hiddenIds: string[]
   hiddenIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
-  idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
+  visibleIdsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
   mainnetIds: string[]
   testnetIds: string[]
   onRampIds: string[]
@@ -49,7 +50,7 @@ export const emptyNetworksRegistry: NetworksRegistry = {
   ...networkEntityAdapter.getInitialState(),
   hiddenIds: [],
   hiddenIdsByCoinType: {},
-  idsByCoinType: {},
+  visibleIdsByCoinType: {},
   mainnetIds: [],
   testnetIds: [],
   onRampIds: [],

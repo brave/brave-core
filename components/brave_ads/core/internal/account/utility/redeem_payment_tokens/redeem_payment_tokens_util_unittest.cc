@@ -41,9 +41,6 @@ TEST_F(BraveAdsRedeemPaymentTokensUtilTest,
 
 TEST_F(BraveAdsRedeemPaymentTokensUtilTest,
        CalculateDelayBeforeRedeemingTokensIfHasNotPreviouslyRedeemedTokens) {
-  // Arrange
-  SetNextTokenRedemptionAt({});
-
   // Act & Assert
   EXPECT_FALSE(ScheduleNextTokenRedemptionAt().is_null());
 }

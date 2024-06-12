@@ -44,7 +44,7 @@ TEST_F(BraveAdsCatalogUserDataTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(BuildCatalogUserData().empty());
+  EXPECT_THAT(BuildCatalogUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

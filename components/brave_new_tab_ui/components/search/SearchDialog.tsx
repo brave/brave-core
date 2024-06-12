@@ -2,12 +2,13 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { color } from '@brave/leo/tokens/css/variables';
 import * as React from 'react';
-import styled, { keyframes } from 'styled-components'
+import { createPortal } from 'react-dom';
+import styled, { keyframes } from 'styled-components';
 import SearchBox, { Backdrop } from './SearchBox';
 import SearchResults from './SearchResults';
-import { color, radius } from '@brave/leo/tokens/css/variables';
-import { createPortal } from 'react-dom';
+import { searchBoxRadius } from './config';
 
 interface Props {
   onClose: () => void
@@ -63,7 +64,7 @@ const Dialog = styled.dialog<{ offsetY: number }>`
 
   outline: none;
   border: none;
-  border-radius: ${radius.m};
+  border-radius: ${searchBoxRadius};
   background: transparent;
   margin-top: var(--margin-top);
   padding: 0px;

@@ -43,7 +43,7 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
     return {};
   }
 
-  auto* text_data = static_cast<TextData*>(input_data.get());
+  const auto* const text_data = static_cast<TextData*>(input_data.get());
 
   const std::map<unsigned, double> frequences =
       hash_vectorizer_->GetFrequencies(text_data->GetText());

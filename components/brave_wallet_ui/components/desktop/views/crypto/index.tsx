@@ -319,7 +319,10 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletTopNavMarket')} />
+              <PageTitleHeader
+                title={getLocale('braveWalletTopNavMarket')}
+                expandRoute={WalletRoutes.Market}
+              />
             }
           >
             <StyledWrapper>

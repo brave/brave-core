@@ -15,8 +15,10 @@ namespace brave_page_graph {
 
 NodeDOMRoot::NodeDOMRoot(GraphItemContext* context,
                          const DOMNodeId dom_node_id,
-                         const String& tag_name)
-    : NodeHTMLElement(context, dom_node_id, tag_name) {}
+                         const String& tag_name,
+                         bool is_attached)
+    : NodeHTMLElement(context, dom_node_id, tag_name),
+      is_attached_{is_attached} {}
 
 ItemName NodeDOMRoot::GetItemName() const {
   return "DOM root";
@@ -25,11 +27,11 @@ ItemName NodeDOMRoot::GetItemName() const {
 ItemDesc NodeDOMRoot::GetItemDesc() const {
   WTF::TextStream ts;
   ts << NodeHTMLElement::GetItemDesc();
-
+  ts << " [is attached: " << is_attached_;
   if (!url_.empty()) {
-    ts << " [" << url_ << "]";
+    ts << " url: " << url_;
   }
-
+  ts << "]";
   return ts.Release();
 }
 
@@ -38,6 +40,8 @@ void NodeDOMRoot::AddGraphMLAttributes(xmlDocPtr doc,
   NodeHTMLElement::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefURL)
       ->AddValueNode(doc, parent_node, url_);
+  GraphMLAttrDefForType(kGraphMLAttrDefIsFrameAttached)
+      ->AddValueNode(doc, parent_node, is_attached_);
 }
 
 bool NodeDOMRoot::IsNodeDOMRoot() const {

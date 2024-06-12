@@ -77,7 +77,6 @@
 <translation id="1426410128494586442">होय</translation>
 <translation id="4250680216510889253">नाही</translation>
 <translation id="1201402288615127009">पुढील</translation>
-<translation id="8712637175834984815">समजले</translation>
 <translation id="6896758677409633944">कॉपी करा</translation>
 <translation id="6518133107902771759">सत्यापित करा</translation>
 <translation id="6042308850641462728">अधिक</translation>
@@ -119,6 +118,7 @@
 <translation id="6129953537138746214">जागा</translation>
 <translation id="4412698727486357573">मदत केंद्र</translation>
 <translation id="8297006494302853456">कमकुवत</translation>
+<translation id="4634124774493850572">पासवर्ड वापरा</translation>
 <translation id="6657585470893396449">पासवर्ड</translation>
 <translation id="6680650203439190394">रेट करा</translation>
 <translation id="8044899503464538266">धीमी</translation>
@@ -134,12 +134,14 @@
 <translation id="7751260505918304024">सर्व दर्शवा</translation>
 <translation id="5138227688689900538">कमी दाखवा</translation>
 <translation id="5233638681132016545">नवीन टॅब</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">पुढील</translation>
 <translation id="5210365745912300556">टॅब बंद करा</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">मोनोस्पेस</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="7138678301420049075">इतर</translation>
+<translation id="8712637175834984815">समजले</translation>
 <translation id="6303294677342628402">शिल्ड्स</translation>
 <translation id="7053983685419859001">अवरोधित करा</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>

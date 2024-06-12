@@ -334,8 +334,10 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         Task { @MainActor [self] in
           if let addNetworkDappRequestCompletion = self?.addNetworkDappRequestCompletion[chainId] {
             if error.isEmpty {
-              let allNetworks = await self?.rpcService.allNetworks(coin: .eth)
-              if let network = allNetworks?.first(where: { $0.chainId == chainId }) {
+              let allNetworks = await self?.rpcService.allNetworks()
+              if let network = allNetworks?.first(where: {
+                $0.coin == .eth && $0.chainId == chainId
+              }) {
                 self?.userAssetManager.addUserAsset(network.nativeToken) {
                   self?.updateAssets()
                 }
@@ -730,9 +732,9 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   func fetchPendingTransactions() async -> [BraveWallet.TransactionInfo] {
     let allAccounts = await keyringService.allAccounts().accounts
     var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
+    let allNetworks = await rpcService.allNetworks()
     for coin in WalletConstants.supportedCoinTypes() {
-      let allNetworks = await rpcService.allNetworks(coin: coin)
-      allNetworksForCoin[coin] = allNetworks
+      allNetworksForCoin[coin] = allNetworks.filter({ $0.coin == coin })
     }
     return await txService.pendingTransactions(
       networksForCoin: allNetworksForCoin,

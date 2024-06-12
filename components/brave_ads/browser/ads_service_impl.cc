@@ -62,7 +62,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/storage_partition.h"  // IWYU pragma: keep
+#include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -270,7 +270,10 @@ bool AdsServiceImpl::IsBatAdsServiceBound() const {
 
 void AdsServiceImpl::RegisterResourceComponents() const {
   RegisterResourceComponentsForCurrentCountryCode();
+
   if (UserHasOptedInToNotificationAds()) {
+    // Only utilized for text classification, which requires the user to have
+    // joined Brave Rewards and opted into notification ads.
     RegisterResourceComponentsForDefaultLanguageCode();
   }
 }
@@ -310,7 +313,8 @@ bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
 }
 
 bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
-  return profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
+  return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         profile_->GetPrefs()->GetBoolean(prefs::kOptedInToNotificationAds);
 }
 
 bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
@@ -618,6 +622,7 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
   InitializeBraveNewsAdsPrefChangeRegistrar();
   InitializeNewTabPageAdsPrefChangeRegistrar();
   InitializeNotificationAdsPrefChangeRegistrar();
+  InitializeSearchResultAdsPrefChangeRegistrar();
 }
 
 void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
@@ -689,15 +694,23 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
                              notification_ad_position_callback);
 }
 
+void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
+  pref_change_registrar_.Add(
+      prefs::kOptedInToSearchResultAds,
+      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
+                          base::Unretained(this)));
+}
+
 void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
   if (!CanStartBatAdsService()) {
     return Shutdown();
   }
 
-  // Register language resource components if the user has just opted-in to
-  // notification ads and Bat Ads Service was already started
   if (IsBatAdsServiceBound() && UserHasOptedInToNotificationAds() &&
       path == prefs::kOptedInToNotificationAds) {
+    // Register language resource components if the user has joined Brave
+    // Rewards, opted into notification ads, and the Bat Ads Service has
+    // already started.
     RegisterResourceComponentsForDefaultLanguageCode();
   }
 
@@ -1028,6 +1041,16 @@ void AdsServiceImpl::URLRequestCallback(
   std::move(callback).Run(std::move(url_response));
 }
 
+void AdsServiceImpl::ShowScheduledCaptchaCallback(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
+}
+
+void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
+  adaptive_captcha_service_->SnoozeScheduledCaptcha();
+}
+
 void AdsServiceImpl::OnNotificationAdPositionChanged() {
   RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(),
                                      profile_->GetPrefs());
@@ -1089,15 +1112,6 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   }
 
   return ads_per_hour;
-}
-
-void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
-                                          const std::string& captcha_id) {
-  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
-}
-
-void AdsServiceImpl::SnoozeScheduledCaptcha() {
-  adaptive_captcha_service_->SnoozeScheduledCaptcha();
 }
 
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
@@ -1671,17 +1685,10 @@ void AdsServiceImpl::LoadDataResource(const std::string& name,
   std::move(callback).Run(data_resource);
 }
 
-void AdsServiceImpl::GetScheduledCaptcha(const std::string& payment_id,
-                                         GetScheduledCaptchaCallback callback) {
-  adaptive_captcha_service_->GetScheduledCaptcha(payment_id,
-                                                 std::move(callback));
-}
-
-void AdsServiceImpl::ShowScheduledCaptchaNotification(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
+void AdsServiceImpl::ShowScheduledCaptcha(const std::string& payment_id,
+                                          const std::string& captcha_id) {
 #if BUILDFLAG(IS_ANDROID)
-  ShowScheduledCaptcha(payment_id, captcha_id);
+  ShowScheduledCaptchaCallback(payment_id, captcha_id);
 #else   // BUILDFLAG(IS_ANDROID)
   if (profile_->GetPrefs()->GetBoolean(
           brave_adaptive_captcha::prefs::kScheduledCaptchaPaused)) {
@@ -1695,8 +1702,10 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 
   ads_tooltips_delegate_->ShowCaptchaTooltip(
       payment_id, captcha_id, snooze_count == 0,
-      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptcha, AsWeakPtr()),
-      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptcha, AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::ShowScheduledCaptchaCallback,
+                     AsWeakPtr()),
+      base::BindOnce(&AdsServiceImpl::SnoozeScheduledCaptchaCallback,
+                     AsWeakPtr()));
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 

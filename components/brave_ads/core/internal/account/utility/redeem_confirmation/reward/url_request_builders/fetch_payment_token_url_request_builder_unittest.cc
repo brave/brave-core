@@ -41,7 +41,8 @@ TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       "https://anonymous.ads.bravesoftware.com/v3/confirmation/"
       "8b742869-6e4a-490c-ac31-31b49130098a/paymentToken");

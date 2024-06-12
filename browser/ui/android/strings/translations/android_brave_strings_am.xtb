@@ -609,7 +609,6 @@
 <translation id="6896758677409633944">ቅጂ</translation>
 <translation id="3726490322412361740">የይለፍ ቃል ያስገቡ</translation>
 <translation id="3038243139480464605">የይለፍ ቃል ያረጋግጡ</translation>
-<translation id="3043677904160378840">የይለፍ ቃሎች ቢያንስ 8 ቁምፊዎች መሆን አለባቸው።</translation>
 <translation id="7396672979287122068">የተረጋገጠው የይለፍ ቃል አልተዛመደም።</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/> መለያ <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">መለያ ያክሉ</translation>
@@ -649,8 +648,11 @@
 <translation id="5981303441790732480">ነባር የገንዘብ መያዣዎን ያስመጡ</translation>
 <translation id="9111102763498581341">ክፈት</translation>
 <translation id="6657585470893396449">የይለፍ ቃል፦</translation>
+<translation id="7553242001898162573">የይለፍ ቃልዎን ያስገቡ</translation>
 <translation id="5619264711680220002">Biometric ክፈት</translation>
+<translation id="9195657745688986798">የኪስ ቦርሳ ይክፈቱ</translation>
 <translation id="5168349973342709369">walletዎን ለመክፈት የይለፍ ቃል ያስገቡ</translation>
+<translation id="3043677904160378840">የይለፍ ቃሎች ቢያንስ 8 ቁምፊዎች መሆን አለባቸው።</translation>
 <translation id="1144810021918451336">ከአደገኛ ድርጣቢያዎች፣ ዳውንሎዶች እና ቅጥያዎች አይከላከልልዎትም።</translation>
 <translation id="5760476995887363522">ሐረጎች አልተመሳሰሉም። እባክዎ እንደገና ይሞክሩ።</translation>
 <translation id="2360588547830602174">የመለያ መልሶ ማግኘት አልተሳካም። እባክዎ እንደገና ይሞክሩ።</translation>
@@ -694,7 +696,6 @@
 <translation id="6748319398471481216">በየወሩ ያድሳል</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / mo.</translation>
 <translation id="1163809943099641131">አንድ ዓመት</translation>
-<translation id="7574007394522199115">በየዓመቱ ያድሱ <ph name="PERCENTAGE_AMOUNT"/>%% ይቆጥቡ</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ዓመት.</translation>
 <translation id="2655185358771731232">ለ 7 ቀናት በነፃ ይሞክሩ። ከ 7 ቀናት በኋላ፣ የእቅዱን ዋጋ እንዲከፍሉ ይደረጋሉ። ሁሉም የደንበኝነት ምዝገባዎች በራስ-ሰር ይታደሳሉ፣ ግን እንደገና ከመታደሱ በፊት ሊሰረዙ ይችላሉ።</translation>
 <translation id="6053992191006521518">በነጻ ይሞክሩ</translation>
@@ -1176,4 +1177,5 @@
 <translation id="3251885322612056119">የዘመኑ የአገልግሎት ውሎች</translation>
 <translation id="4049035689681585146">ለBrave ሽልማቶች የአገልግሎት ውሎችን አዘምነናል። ውሎቻችንን ግልጽ ለማድረግ እና አዳዲስ ባህርያትን እንደሸፈኑ ለማረጋገጥ፣ እነዚህን ዝማኔዎች አድርገናል። የBrave ሽልማቶችን ለመጠቀም ከቀጠሉ፣ ለዘመኑ የአገልግሎት ውሎች እየተስማሙ ነው። ካልተስማሙ፣ የBrave ሽልማቶችን<ph name="RESET_START"/>ዳግም ማስጀመር<ph name="RESET_END"/> ይችላሉ፣ ይህም ባህሪውን ያሰናክላል።</translation>
 <translation id="2165953574528546737">የ <ph name="TOS_START"/>Brave ሽልማቶች የአገልግሎት ውሎች<ph name="TOS_END"/> የሚለውን ይመልከቱ</translation>
+<translation id="4776146737004271126">የAndroid ቅንብሮችን ክፈት</translation>
 </translationbundle>

@@ -613,7 +613,6 @@
 <translation id="6896758677409633944">کپی</translation>
 <translation id="3726490322412361740">گذرواژه را وارد کنید</translation>
 <translation id="3038243139480464605">تأیید گذرواژه</translation>
-<translation id="3043677904160378840">رمزهای عبور باید حداقل 8 کاراکتر باشد.</translation>
 <translation id="7396672979287122068">گذرواژه‌ی تأییدشده مطابقت ندارد</translation>
 <translation id="1566412704591731844">در حال ایجاد کیف پول...</translation>
 <translation id="7779823116893018906">ممکن است چند ثانیه طول بکشد...</translation>
@@ -657,8 +656,11 @@
 <translation id="5981303441790732480">کیف پول موجود خود را وارد کنید</translation>
 <translation id="9111102763498581341">باز کردن قفل</translation>
 <translation id="6657585470893396449">گذرواژه</translation>
+<translation id="7553242001898162573">رمز عبور خود را وارد کنید</translation>
 <translation id="5619264711680220002">باز کردن قفل با داده‌های زیست‌سنجشی</translation>
+<translation id="9195657745688986798">باز کردن قفل کیف پول</translation>
 <translation id="5168349973342709369">برای قفل‌گشایی کیف پول، گذرواژه را وارد کنید</translation>
+<translation id="3043677904160378840">رمزهای عبور باید حداقل 8 کاراکتر باشد.</translation>
 <translation id="1144810021918451336">از شما در برابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌های خطرناک محافظت نمی‌کند.</translation>
 <translation id="5760476995887363522">عبارت‌ها مطابقت نداشتند. لطفاً دوباره امتحان کنید.</translation>
 <translation id="2360588547830602174">حساب بازیابی نشد. لطفاً دوباره امتحان کنید</translation>
@@ -702,7 +704,7 @@
 <translation id="6748319398471481216">ماهانه تمدید می‌شود</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ماه.</translation>
 <translation id="1163809943099641131">یک سال</translation>
-<translation id="7574007394522199115">با تمدید سالانه <ph name="PERCENTAGE_AMOUNT"/> درصد صرفه‌جویی کنید</translation>
+<translation id="7574007394522199115">تمدید سالانه پس‌انداز <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / سال.</translation>
 <translation id="2655185358771731232">7 روز رایگان استفاده کنید. بعد از 7 روز، قیمت طرح از شما دریافت خواهد شد. همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند اما ممکن است قبل از تمدید لغو شوند.</translation>
 <translation id="6053992191006521518">به‌صورت رایگان امتحان کنید</translation>
@@ -1190,4 +1192,13 @@
 <translation id="6891382640886173702">ادغام پنجره‌ها</translation>
 <translation id="2912247081180973411">بستن پنجره‌ها</translation>
 <translation id="4010699428656610296">لطفاً زبانه‌های دیگر را در یک پنجره دیگر Brave ادغام کنید.</translation>
+<translation id="208634871997892083">VPN همیشه روشن</translation>
+<translation id="1599073346542156922">نحوه روشن کردن:</translation>
+<translation id="7001163334415463127">۱. تنظیمات دستگاه خود را از کشوی برنامه باز کنید یا روی دکمه زیر ضربه بزنید.</translation>
+<translation id="887443138775437899">۲. Brave VPN را پیدا کنید و روی نماد تنظیمات در سمت راست ضربه بزنید.</translation>
+<translation id="3776051499611941773">۳. برای فعال کردن <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN همیشه روشن<ph name="ALWAYS_ON_TUTORIAL_END"/>آن را روشن کنید.</translation>
+<translation id="4776146737004271126">‏باز کردن تنظیمات Android</translation>
+<translation id="2728518864712716830">به‌روزرسانی دانلود می‌شود.</translation>
+<translation id="8403338849301491865">فهرست فیلتر با موفقیت به‌روز شد</translation>
+<translation id="4650851936784160359">فهرست فیلتر به‌روزرسانی نشد. لطفاً دوباره تلاش کنید</translation>
 </translationbundle>

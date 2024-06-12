@@ -694,8 +694,8 @@ void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
                 18,
                 mojom::CoinType::ETH,
                 GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                               mojom::kFantomMainnetChainId),
-                true});
+                                               mojom::kFantomMainnetChainId)});
+    SetEip1559ForCustomChain(prefs, mojom::kFantomMainnetChainId, true);
   }
 
   prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
@@ -742,6 +742,47 @@ void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
   prefs->SetList(kBraveWalletUserAssetsList, std::move(assets_list));
 
   prefs->ClearPref(kBraveWalletUserAssetsDeprecated);
+}
+
+// static
+void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated)) {
+    return;
+  }
+  prefs->SetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated, true);
+
+  if (prefs->HasPrefPath(kSupportEip1559OnLocalhostChainDeprecated)) {
+    SetEip1559ForCustomChain(
+        prefs, mojom::kLocalhostChainId,
+        prefs->GetBoolean(kSupportEip1559OnLocalhostChainDeprecated));
+    prefs->ClearPref(kSupportEip1559OnLocalhostChainDeprecated);
+  }
+
+  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  for (auto&& [coin_key, value] : update.Get()) {
+    auto* value_list = value.GetIfList();
+    if (!value_list) {
+      continue;
+    }
+
+    bool eth_custom_networks =
+        coin_key == GetPrefKeyForCoinType(mojom::CoinType::ETH);
+
+    for (auto& custom_network : *value_list) {
+      if (!custom_network.is_dict()) {
+        continue;
+      }
+      if (eth_custom_networks) {
+        auto* chain_id = custom_network.GetDict().FindString("chainId");
+        auto is_eip1559 = custom_network.GetDict().FindBool("is_eip1559");
+        if (chain_id && is_eip1559) {
+          SetEip1559ForCustomChain(prefs, *chain_id, *is_eip1559);
+        }
+      }
+
+      custom_network.GetDict().Remove("is_eip1559");
+    }
+  }
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(

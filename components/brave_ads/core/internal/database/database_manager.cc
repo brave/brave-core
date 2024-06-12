@@ -28,13 +28,15 @@ DatabaseManager& DatabaseManager::GetInstance() {
   return GlobalState::GetInstance()->GetDatabaseManager();
 }
 
-void DatabaseManager::AddObserver(DatabaseManagerObserver* observer) {
+void DatabaseManager::AddObserver(DatabaseManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void DatabaseManager::RemoveObserver(DatabaseManagerObserver* observer) {
+void DatabaseManager::RemoveObserver(DatabaseManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
@@ -78,8 +80,8 @@ void DatabaseManager::CreateOrOpenCallback(
   }
 
   CHECK(command_response->result);
-  CHECK(command_response->result->get_value()->which() ==
-        mojom::DBValue::Tag::kIntValue);
+  CHECK_EQ(command_response->result->get_value()->which(),
+           mojom::DBValue::Tag::kIntValue);
   const int from_version =
       command_response->result->get_value()->get_int_value();
 

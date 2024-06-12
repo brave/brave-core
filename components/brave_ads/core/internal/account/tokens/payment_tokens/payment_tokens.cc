@@ -61,6 +61,7 @@ void PaymentTokens::RemoveTokens(const PaymentTokenList& payment_tokens) {
 
 void PaymentTokens::RemoveAllTokens() {
   payment_tokens_.clear();
+  payment_tokens_.shrink_to_fit();
 }
 
 bool PaymentTokens::TokenExists(const PaymentTokenInfo& payment_token) {

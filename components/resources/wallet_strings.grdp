@@ -924,10 +924,11 @@
   <message name="IDS_BRAVE_SWAP_HALF" desc="Amount preset button text for half">Half</message>
   <message name="IDS_BRAVE_SWAP_MAX" desc="Amount preset button text for max">Max</message>
   <message name="IDS_BRAVE_SWAP_ENTER_AN_AMOUNT" desc="Text prompting to enter an amount">Enter an amount</message>
-  <message name="IDS_BRAVE_SWAP_FINDING_PRICE" desc="Loader text while quotes are fetched">Finding the best quote...</message>
+  <message name="IDS_BRAVE_WALLET_FETCHING_QUOTE" desc="Loader text while quotes are fetched">Fetching quote</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE_ESTIMATE" desc="Swap receive estimate label">Receive (est.)</message>
   <message name="IDS_BRAVE_WALLET_FROM_TOKEN" desc="Swap from token label">From token</message>
   <message name="IDS_BRAVE_WALLET_TO_TOKEN" desc="Swap to token label">To token</message>
+  <message name="IDS_BRAVE_WALLET_NEW_QUOTE_IN" desc="Swap new quote in label">New quote in <ph name="COUNTDOWN_BEFORE">$1</ph><ph name="COUNTDOWN">$3<ex>00:05</ex></ph><ph name="COUNTDOWN_AFTER">$2</ph></message>
   <message name="IDS_BRAVE_SWAP_BALANCE" desc="Text indicating account balance">Balance:</message>
   <message name="IDS_BRAVE_SWAP_SELECT_A_TOKEN" desc="Text prompting to select a token to swap">Select a token to swap</message>
   <message name="IDS_BRAVE_SWAP_SHOW_TOKENS_WITH_ZERO_BALANCES" desc="Button text to show tokens with zero balance">Show tokens with no balance</message>
@@ -1090,4 +1091,5 @@
   <message name="IDS_BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE" desc="A label for the input field for entering the password for an imported file">Enter password (if applicable)</message>
   <message name="IDS_BRAVE_WALLET_PRIVATE_KEY_IMPORT_TYPE" desc="Label for the dropdown to select the format to use for importing a private key">Import type</message>
   <message name="IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS" desc="Toggle label to enable or disable the display of NFTs that are not owned by any wallet account">Hide not owned NFTs</message>
+  <message name="IDS_BRAVE_WALLET_GROUP_BY_COLLECTION" desc="Toggle label for grouping NFTs by collection">Group by collection</message>
 </grit-part>

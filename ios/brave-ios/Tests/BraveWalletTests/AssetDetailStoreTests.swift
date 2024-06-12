@@ -14,7 +14,7 @@ class AssetDetailStoreTests: XCTestCase {
 
   func testUpdateWithBlockchainToken() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
@@ -49,7 +49,7 @@ class AssetDetailStoreTests: XCTestCase {
       ) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = {
-      $1([.mockMainnet])
+      $0([.mockMainnet])
     }
     rpcService._network = {
       $2(.mockMainnet)
@@ -87,8 +87,16 @@ class AssetDetailStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = {
-      $2(UInt64(0.1), .success, "")
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      completion(
+        BraveWallet.SolanaFeeEstimation(
+          baseFee: UInt64(1),
+          computeUnits: UInt32(0),
+          feePerComputeUnit: UInt64(0)
+        ),
+        .success,
+        ""
+      )
     }
 
     let swapService = BraveWallet.TestSwapService()
@@ -240,7 +248,7 @@ class AssetDetailStoreTests: XCTestCase {
 
   func testUpdateWithBlockchainTokenBitcoin() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     let mockBtcPrice: Double = 63503
@@ -269,7 +277,7 @@ class AssetDetailStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = {
-      $1([.mockBitcoinMainnet])
+      $0([.mockBitcoinMainnet])
     }
     rpcService._network = {
       $2(.mockBitcoinMainnet)
@@ -454,7 +462,7 @@ class AssetDetailStoreTests: XCTestCase {
   }
 
   func testUpdateWithCoinMarket() {
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
@@ -492,7 +500,7 @@ class AssetDetailStoreTests: XCTestCase {
       $2(.mockMainnet)
     }
     rpcService._allNetworks = {
-      $1([.mockMainnet])
+      $0([.mockMainnet])
     }
     rpcService._hiddenNetworks = {
       $1([])

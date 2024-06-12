@@ -79,7 +79,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, ServeAd) {
                   AdType::kInlineContentAd, /*segments=*/{})));
 
   base::MockCallback<MaybeServeInlineContentAdCallback> callback;
-  EXPECT_CALL(callback, Run(kDimensions, ::testing::Ne(std::nullopt)));
+  EXPECT_CALL(callback, Run(kDimensions, /*ad=*/::testing::Ne(std::nullopt)));
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
 }
 

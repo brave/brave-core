@@ -79,7 +79,7 @@ std::string CreativeNewTabPageAdWallpapers::GetTableName() const {
 }
 
 void CreativeNewTabPageAdWallpapers::Create(
-    mojom::DBTransactionInfo* transaction) {
+    mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -117,7 +117,7 @@ void CreativeNewTabPageAdWallpapers::Migrate(
 ///////////////////////////////////////////////////////////////////////////////
 
 void CreativeNewTabPageAdWallpapers::MigrateToV35(
-    mojom::DBTransactionInfo* transaction) {
+    mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // We can safely recreate the table because it will be repopulated after

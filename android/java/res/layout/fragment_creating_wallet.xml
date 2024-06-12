@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/creating_wallet_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,25 +23,24 @@
             android:layout_gravity="center_horizontal" />
 
         <TextView
-            style="@style/BraveWalletTextViewTitle"
+            style="@style/HeadingH3"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="8dp"
             android:text="@string/creating_wallet_onboarding_text"
-            android:textColor="@color/wallet_text_color"
-            android:lineSpacingExtra="2sp"
-            android:textSize="22sp"/>
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
 
         <TextView
+            style="@style/DefaultRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
             android:text="@string/creating_wallet_subtitle_text"
-            android:textColor="@color/wallet_onboarding_secondary_text_color"
-            android:lineSpacingExtra="4sp"
-            android:textSize="14sp"/>
+            android:textColor="@color/text_secondary" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

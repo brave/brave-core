@@ -118,8 +118,8 @@ class SwapStoreTests: XCTestCase {
     rpcService._splTokenAccountBalance = { _, _, _, completion in
       completion("", 0, "", .success, "")
     }
-    rpcService._allNetworks = { coin, completion in
-      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    rpcService._allNetworks = {
+      $0([.mockMainnet, .mockSolana])
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
@@ -763,48 +763,15 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  /// Test creating ERC20 approve transaction on EIP1559 network
-  @MainActor func testSwapERC20ApproveEIP1559Transaction() async {
-    let (
-      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
-      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
-    ) = setupServices()
-    var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, completion in
-      submittedTxData = txData
-      completion(true, "tx-meta-id", "")
-    }
-    let store = SwapTokenStore(
-      keyringService: keyringService,
-      blockchainRegistry: blockchainRegistry,
-      rpcService: rpcService,
-      swapService: swapService,
-      txService: txService,
-      walletService: walletService,
-      ethTxManagerProxy: ethTxManagerProxy,
-      solTxManagerProxy: solTxManagerProxy,
-      userAssetManager: mockAssetManager,
-      prefilledToken: nil
-    )
-    store.setUpTest()
-    store.state = .lowAllowance("test-spender-address")
-    let success = await store.createSwapTransaction()
-    XCTAssertTrue(success, "Expected to successfully create transaction")
-    XCTAssertFalse(store.isMakingTx)
-    XCTAssertNotNil(submittedTxData?.ethTxData1559)
-    XCTAssertNil(submittedTxData?.ethTxData)
-  }
-
-  /// Test creating ERC20 approve transaction on non-EIP1559 network
+  /// Test creating ERC20 approve transaction
   @MainActor func testSwapERC20ApproveTransaction() async {
-    // Celo Mainnet / `.mockCelo` is not EIP1559
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
-    ) = setupServices(network: .mockCelo)
-    var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, completion in
-      submittedTxData = txData
+    ) = setupServices()
+    var submittedParams: BraveWallet.NewEvmTransactionParams?
+    txService._addUnapprovedEvmTransaction = { params, completion in
+      submittedParams = params
       completion(true, "tx-meta-id", "")
     }
     let store = SwapTokenStore(
@@ -825,19 +792,18 @@ class SwapStoreTests: XCTestCase {
     let success = await store.createSwapTransaction()
     XCTAssertTrue(success, "Expected to successfully create transaction")
     XCTAssertFalse(store.isMakingTx)
-    XCTAssertNotNil(submittedTxData?.ethTxData)
-    XCTAssertNil(submittedTxData?.ethTxData1559)
+    XCTAssertNotNil(submittedParams)
   }
 
-  /// Test creating a eth swap transaction on EIP1559 network
-  @MainActor func testZeroExSwapETHEIP1559Transaction() async {
+  /// Test creating a eth swap transaction using ZeroEx quote
+  @MainActor func testZeroExSwapETHTransaction() async {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
     ) = setupServices()
-    var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, completion in
-      submittedTxData = txData
+    var submittedParams: BraveWallet.NewEvmTransactionParams?
+    txService._addUnapprovedEvmTransaction = { params, completion in
+      submittedParams = params
       completion(true, "tx-meta-id", "")
     }
     let store = SwapTokenStore(
@@ -864,59 +830,18 @@ class SwapStoreTests: XCTestCase {
     let success = await store.createSwapTransaction()
     XCTAssertTrue(success, "Expected to successfully create transaction")
     XCTAssertFalse(store.isMakingTx)
-    XCTAssertNotNil(submittedTxData?.ethTxData1559)
-    XCTAssertNil(submittedTxData?.ethTxData)
+    XCTAssertNotNil(submittedParams)
   }
 
-  /// Test creating a eth swap transaction on non-EIP1559 network using ZeroEx quote
-  @MainActor func testZeroExSwapETHTransaction() async {
-    // Celo Mainnet / `.mockCelo` is not EIP1559
-    let (
-      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
-      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
-    ) = setupServices(network: .mockCelo)
-    var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, completion in
-      submittedTxData = txData
-      completion(true, "tx-meta-id", "")
-    }
-    let store = SwapTokenStore(
-      keyringService: keyringService,
-      blockchainRegistry: blockchainRegistry,
-      rpcService: rpcService,
-      swapService: swapService,
-      txService: txService,
-      walletService: walletService,
-      ethTxManagerProxy: ethTxManagerProxy,
-      solTxManagerProxy: solTxManagerProxy,
-      userAssetManager: mockAssetManager,
-      prefilledToken: nil
-    )
-    store.setUpTest(
-      currentSwapQuoteInfo: .init(
-        base: .perSellAsset,
-        swapQuote: .init(zeroExQuote: .mockOneETHToBATQuote),
-        swapFees: nil
-      )
-    )
-    store.state = .swap
-
-    let success = await store.createSwapTransaction()
-    XCTAssertTrue(success, "Expected to successfully create transaction")
-    XCTAssertFalse(store.isMakingTx)
-    XCTAssertNotNil(submittedTxData?.ethTxData)
-    XCTAssertNil(submittedTxData?.ethTxData1559)
-  }
-
-  /// Test creating a eth swap transaction on non-EIP1559 network using LiFi quote
+  /// Test creating a eth swap transaction using LiFi quote
   @MainActor func testLiFiSwapETHTransaction() async {
     let (
       keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
       ethTxManagerProxy, solTxManagerProxy, mockAssetManager
-    ) = setupServices(network: .mockCelo)
-    var submittedTxData: BraveWallet.TxDataUnion?
-    txService._addUnapprovedTransaction = { txData, _, _, completion in
-      submittedTxData = txData
+    ) = setupServices()
+    var submittedParams: BraveWallet.NewEvmTransactionParams?
+    txService._addUnapprovedEvmTransaction = { params, completion in
+      submittedParams = params
       completion(true, "tx-meta-id", "")
     }
     let store = SwapTokenStore(
@@ -943,8 +868,7 @@ class SwapStoreTests: XCTestCase {
     let success = await store.createSwapTransaction()
     XCTAssertTrue(success, "Expected to successfully create transaction")
     XCTAssertFalse(store.isMakingTx)
-    XCTAssertNotNil(submittedTxData?.ethTxData)
-    XCTAssertNil(submittedTxData?.ethTxData1559)
+    XCTAssertNotNil(submittedParams)
   }
 
   /// Test creating a sol swap transaction
@@ -1017,7 +941,7 @@ class SwapStoreTests: XCTestCase {
   }
 
   func testSwapFullBalanceNoRounding() {
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalance = "47.156499657504857477"
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
 

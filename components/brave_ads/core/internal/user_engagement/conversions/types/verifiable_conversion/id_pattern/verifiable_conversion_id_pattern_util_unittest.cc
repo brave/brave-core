@@ -72,7 +72,7 @@ TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
   // Act & Assert
   EXPECT_FALSE(MaybeParseVerifiableConversionId(
       /*redirect_chain=*/{GURL("https://foo.com/bar?qux_id=xyzzy")},
-      /*html=*/{}, /*resource_id_patterns=*/{}));
+      /*html=*/"", /*resource_id_patterns=*/{}));
 }
 
 }  // namespace brave_ads

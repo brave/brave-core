@@ -185,7 +185,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/JavaUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/KeystoreHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NavigationItem.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NetworkResponsesCollector.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NetworkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ParsedTransaction.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ParsedTransactionFees.java",

@@ -23,24 +23,19 @@ class BraveAdsTopSegmentUserDataTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    targeting_ = std::make_unique<test::TargetingHelper>();
+    targeting_helper_ =
+        std::make_unique<test::TargetingHelper>(task_environment_);
 
-    LoadResource();
-  }
-
-  void LoadResource() {
     NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
                                      kLanguageComponentId);
-    task_environment_.RunUntilIdle();
   }
 
-  std::unique_ptr<test::TargetingHelper> targeting_;
+  std::unique_ptr<test::TargetingHelper> targeting_helper_;
 };
 
 TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
   // Arrange
-  targeting_->MockInterest();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->MockInterest();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
@@ -64,29 +59,27 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  targeting_->MockInterest();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->MockInterest();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
+  EXPECT_THAT(BuildTopSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,
        DoNotBuildTopSegmentUserDataForNonViewedConfirmationType) {
   // Arrange
-  targeting_->MockInterest();
-  task_environment_.RunUntilIdle();
+  targeting_helper_->MockInterest();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_TRUE(BuildTopSegmentUserData(transaction).empty());
+  EXPECT_THAT(BuildTopSegmentUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,

@@ -44,7 +44,7 @@ void FailedToInitialize(InitializeCallback callback) {
 
 }  // namespace
 
-AdsImpl::AdsImpl(AdsClient* ads_client)
+AdsImpl::AdsImpl(AdsClient* const ads_client)
     : global_state_(ads_client),
       account_(&token_generator_),
       ad_handler_(account_),
@@ -54,6 +54,7 @@ AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::AddBatAdsObserver(
     std::unique_ptr<AdsObserverInterface> observer) {
+  // `AdsNotifierManager` takes ownership of `observer`.
   AdsNotifierManager::GetInstance().AddObserver(std::move(observer));
 }
 

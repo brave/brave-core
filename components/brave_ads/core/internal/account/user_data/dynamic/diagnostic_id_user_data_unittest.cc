@@ -41,7 +41,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
                             "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2");
 
   // Act & Assert
-  EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
+  EXPECT_THAT(BuildDiagnosticIdUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
@@ -50,7 +50,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   SetProfileStringPrefValue(prefs::kDiagnosticId, "INVALID");
 
   // Act & Assert
-  EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
+  EXPECT_THAT(BuildDiagnosticIdUserData(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsDiagnosticIdUserDataTest,
@@ -59,7 +59,7 @@ TEST_F(BraveAdsDiagnosticIdUserDataTest,
   SetProfileStringPrefValue(prefs::kDiagnosticId, "");
 
   // Act & Assert
-  EXPECT_TRUE(BuildDiagnosticIdUserData().empty());
+  EXPECT_THAT(BuildDiagnosticIdUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

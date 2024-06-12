@@ -421,7 +421,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       return
     }
 
-    let formatter = WeiFormatter(decimalFormatStyle: .balance)
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .balance)
     let ownerAddress = parsedTransaction.fromAccountInfo.address
     let (allowance, _, _) = await rpcService.erc20TokenAllowance(
       contract: details.token?.contractAddress(in: selectedChain) ?? "",
@@ -475,7 +475,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let ethTransactions = transactions.filter { $0.coin == .eth }
     guard !ethTransactions.isEmpty else { return }  // we can only fetch unknown Ethereum tokens
     let coin: BraveWallet.CoinType = .eth
-    let allNetworks = await rpcService.allNetworks(coin: coin)
+    let allNetworks = await rpcService.allNetworks().filter({ $0.coin == coin })
     let userAssets = assetManager.getAllUserAssetsInNetworkAssets(
       networks: allNetworks,
       includingUserDeleted: true
@@ -501,11 +501,15 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
     for transaction in transactions where transaction.coin == .sol {
-      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.estimatedTxFee(
+      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.solanaTxFeeEstimation(
         chainId: transaction.chainId,
         txMetaId: transaction.id
       )
-      self.solEstimatedTxFeeCache[transaction.id] = solEstimatedTxFee
+      let priorityFee =
+        UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
+        * BraveWallet.MicroLamportsPerLamport
+      let totalFee = solEstimatedTxFee.baseFee + priorityFee
+      self.solEstimatedTxFeeCache[transaction.id] = totalFee
     }
     updateTransaction(
       with: activeTransaction,
@@ -810,7 +814,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     let allAccounts = await keyringService.allAccounts().accounts
     var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
     for coin in WalletConstants.supportedCoinTypes() {
-      let allNetworks = await rpcService.allNetworks(coin: coin)
+      let allNetworks = await rpcService.allNetworks().filter({ $0.coin == coin })
       allNetworksForCoin[coin] = allNetworks
     }
     return await txService.pendingTransactions(

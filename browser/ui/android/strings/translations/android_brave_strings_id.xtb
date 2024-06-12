@@ -611,7 +611,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6896758677409633944">Salin</translation>
 <translation id="3726490322412361740">Masukkan Kata Sandi</translation>
 <translation id="3038243139480464605">Verifikasi kata sandi</translation>
-<translation id="3043677904160378840">Kata sandi harus terdiri dari minimal 8 karakter.</translation>
 <translation id="7396672979287122068">Kata sandi yang diverifikasi tidak sesuai</translation>
 <translation id="1566412704591731844">Membuat dompet Anda...</translation>
 <translation id="7779823116893018906">Ini mungkin akan memakan waktu beberapa detik...</translation>
@@ -655,8 +654,11 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5981303441790732480">Impor dompet Anda yang telah ada.</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
 <translation id="6657585470893396449">Sandi</translation>
+<translation id="7553242001898162573">Masukkan kata sandi Anda</translation>
 <translation id="5619264711680220002">Buka kunci biometrik</translation>
+<translation id="9195657745688986798">Buka Kunci Dompet</translation>
 <translation id="5168349973342709369">Masukkan kata sandi untuk membuka kunci dompet</translation>
+<translation id="3043677904160378840">Kata sandi harus terdiri dari minimal 8 karakter.</translation>
 <translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
 <translation id="5760476995887363522">Frasa tidak sesuai. Silakan coba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akun gagal. Silakan coba lagi.</translation>
@@ -700,7 +702,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6748319398471481216">Perpanjang setiap bulan</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/ bulan</translation>
 <translation id="1163809943099641131">Satu Tahun</translation>
-<translation id="7574007394522199115">Perpanjang setiap tahun hemat <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Perbarui setiap tahun dan hemat <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / tahun</translation>
 <translation id="2655185358771731232">Coba gratis selama 7 hari. Setelah 7 hari, Anda akan dikenai harga paket. Semua paket langganan dapat diperpanjang secara otomatis namun dapat dibatalkan sebelum perpanjangan.</translation>
 <translation id="6053992191006521518">Cobalah secara GRATIS</translation>
@@ -1189,4 +1191,13 @@ riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo.
 <translation id="6891382640886173702">Gabungkan jendela</translation>
 <translation id="2912247081180973411">Tutup jendela</translation>
 <translation id="4010699428656610296">Silakan gabungkan tab lain ke jendela Brave yang lain.</translation>
+<translation id="208634871997892083">VPN yang selalu aktif</translation>
+<translation id="1599073346542156922">Cara mengaktifkan:</translation>
+<translation id="7001163334415463127">1. Buka pengaturan perangkat Anda dari laci aplikasi Anda atau ketuk tombol di bawah ini.</translation>
+<translation id="887443138775437899">2. Temukan VPN Brave dan ketuk ikon pengaturan kw sebelah kanan.</translation>
+<translation id="3776051499611941773">3. Pilih <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN Selalu Aktif<ph name="ALWAYS_ON_TUTORIAL_END"/> untuk mengaktifkannya.</translation>
+<translation id="4776146737004271126">Buka setelan Android</translation>
+<translation id="2728518864712716830">Pembaruan diunduh.</translation>
+<translation id="8403338849301491865">Daftar filter telah berhasil diperbarui</translation>
+<translation id="4650851936784160359">Daftar filter tidak dapat diperbarui. Silakan coba lagi.</translation>
 </translationbundle>

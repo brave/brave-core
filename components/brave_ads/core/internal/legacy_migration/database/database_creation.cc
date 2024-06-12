@@ -31,7 +31,7 @@ namespace brave_ads::database {
 
 namespace {
 
-void Create(mojom::DBTransactionInfo* transaction) {
+void Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   table::ConfirmationQueue confirmation_queue_database_table;

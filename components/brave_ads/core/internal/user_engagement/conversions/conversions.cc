@@ -39,13 +39,15 @@ Conversions::~Conversions() {
   TabManager::GetInstance().RemoveObserver(this);
 }
 
-void Conversions::AddObserver(ConversionsObserver* observer) {
+void Conversions::AddObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void Conversions::RemoveObserver(ConversionsObserver* observer) {
+void Conversions::RemoveObserver(ConversionsObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
@@ -175,9 +177,17 @@ void Conversions::CheckForConversions(
     for (const auto& creative_set_conversion :
          GetCreativeSetConversionsWithinObservationWindow(
              creative_set_conversion_bucket, ad_event)) {
-      Convert(ad_event, MaybeBuildVerifiableConversion(
-                            redirect_chain, html, resource_.get().id_patterns,
-                            creative_set_conversion));
+      std::optional<VerifiableConversionInfo> verifiable_conversion;
+      if (const std::optional<ConversionResourceInfo>& conversion_resource =
+              resource_.get()) {
+        // Attempt to build a verifiable conversion only if the conversion
+        // resource is available.
+        verifiable_conversion = MaybeBuildVerifiableConversion(
+            redirect_chain, html, conversion_resource->id_patterns,
+            creative_set_conversion);
+      }
+
+      Convert(ad_event, verifiable_conversion);
 
       did_convert = true;
 
@@ -196,8 +206,8 @@ void Conversions::CheckForConversions(
     }
 
     if (did_convert) {
-      // Remove the bucket for this creative set so that we debounce conversions
-      // for the remainder of the ad events.
+      // Remove the bucket for this creative set so that we deduplicate
+      // conversions for the remainder of the ad events.
       creative_set_conversion_buckets.erase(creative_set_id);
     }
   }

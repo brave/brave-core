@@ -6,9 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TOOLBAR_APP_MENU_H_
 
-#define RunMenu              \
-  UnusedMethod1() {}         \
-  friend class BraveAppMenu; \
+#define RunMenu                                    \
+  UnusedMethod1() {}                               \
+  friend class BraveAppMenu;                       \
+                                                   \
+  std::unique_ptr<views::Background>               \
+  CreateInMenuButtonBackgroundWithLeadingBorder(); \
+                                                   \
   virtual void RunMenu
 
 #include "src/chrome/browser/ui/views/toolbar/app_menu.h"  // IWYU pragma: export

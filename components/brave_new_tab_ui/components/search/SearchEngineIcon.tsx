@@ -15,12 +15,13 @@ const icons = {
   // The Google search provider has the empty origin :O
   '': 'google-color',
   'duckduckgo.com': 'duckduckgo-color',
-  'search.brave.com': 'brave-search-big-color',
+  'search.brave.com': 'social-brave-release-favicon-fullheight-color',
   'www.bing.com': 'bing-color',
   'www.qwant.com': 'qwant-color',
   'www.startpage.com': 'startpage-color',
   'search.yahoo.com': 'yahoo-color',
-  'yandex.com': 'yandex-color'
+  'yandex.com': 'yandex-color',
+  'ecosia.org': 'ecosia-color',
 }
 
 const hide = { opacity: 0 }

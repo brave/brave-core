@@ -13,7 +13,7 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
@@ -34,11 +34,6 @@ class AdsServiceMock : public AdsService {
               (mojo::PendingRemote<bat_ads::mojom::BatAdsObserver> observer));
 
   MOCK_METHOD(int64_t, GetMaximumNotificationAdsPerHour, (), (const));
-
-  MOCK_METHOD(void,
-              ShowScheduledCaptcha,
-              (const std::string&, const std::string&));
-  MOCK_METHOD(void, SnoozeScheduledCaptcha, ());
 
   MOCK_METHOD(void, OnNotificationAdShown, (const std::string&));
   MOCK_METHOD(void, OnNotificationAdClosed, (const std::string&, bool));

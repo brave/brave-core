@@ -156,9 +156,7 @@ class BuyTokenStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = { $2(selectedNetwork) }
-    rpcService._allNetworks = { coin, completion in
-      completion([selectedNetwork])
-    }
+    rpcService._allNetworks = { $0([selectedNetwork]) }
     rpcService._addObserver = { _ in }
 
     let walletService = BraveWallet.TestBraveWalletService()
@@ -223,8 +221,8 @@ class BuyTokenStoreTests: XCTestCase {
     rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
     }
-    rpcService._allNetworks = { coin, completion in
-      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    rpcService._allNetworks = {
+      $0([.mockMainnet, .mockSolana])
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in

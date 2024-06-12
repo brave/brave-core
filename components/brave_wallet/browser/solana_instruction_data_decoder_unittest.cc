@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -383,6 +385,45 @@ TEST_F(SolanaInstructionDecoderTest, Decode_InitializeMint2) {
        0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0},
       mojom::SolanaTokenInstruction::kInitializeMint2,
       {{"decimals", "9"}, {"mint_authority", kPubkey1}}, true);
+}
+
+TEST_F(SolanaInstructionDecoderTest, GetComputeBudgetInstructionType) {
+  // Recognizes compute limit instruction
+  auto instruction = solana::compute_budget_program::SetComputeUnitLimit(0);
+  auto instruction_type = GetComputeBudgetInstructionType(
+      instruction.data(), instruction.GetProgramId());
+  ASSERT_TRUE(instruction_type);
+  EXPECT_EQ(*instruction_type,
+            mojom::SolanaComputeBudgetInstruction::kSetComputeUnitLimit);
+
+  // Recognizes compute unit instruction
+  instruction = solana::compute_budget_program::SetComputeUnitPrice(0);
+  instruction_type = GetComputeBudgetInstructionType(
+      instruction.data(), instruction.GetProgramId());
+  ASSERT_TRUE(instruction_type);
+  EXPECT_EQ(*instruction_type,
+            mojom::SolanaComputeBudgetInstruction::kSetComputeUnitPrice);
+
+  // Returns nullopt for system instruction
+  std::string from_pubkey = "5PfVQ7u360kP2uvPX9oeKtp3bpHbSYKJyQEEMKB3eF7V";
+  std::string to_pubkey = "H5sGH5Avk14e6h6gV8vXuBwYxVtT1VkmmVU5sPMinHho";
+  auto system_instruction =
+      solana::system_program::Transfer(from_pubkey, to_pubkey, 1000);
+  ASSERT_TRUE(system_instruction);
+  instruction_type = GetComputeBudgetInstructionType(
+      (*system_instruction).data(), (*system_instruction).GetProgramId());
+  ASSERT_FALSE(instruction_type);
+
+  // Returns nullopt for empty data
+  instruction_type =
+      GetComputeBudgetInstructionType({}, mojom::kSolanaComputeBudgetProgramId);
+  ASSERT_FALSE(instruction_type);
+
+  // Returns nullopt for invalid instruction type
+  std::vector<uint8_t> invalid_data = {255};  // 255 is not a valid enum value
+  instruction_type = GetComputeBudgetInstructionType(
+      invalid_data, mojom::kSolanaComputeBudgetProgramId);
+  ASSERT_FALSE(instruction_type);
 }
 
 }  // namespace brave_wallet::solana_ins_data_decoder

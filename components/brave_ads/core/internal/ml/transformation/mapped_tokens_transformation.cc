@@ -37,7 +37,7 @@ MappedTokensTransformation::~MappedTokensTransformation() = default;
 std::optional<std::map<uint32_t, double>>
 MappedTokensTransformation::GetCategoryFrequencies(
     const std::vector<std::string>& words) const {
-  const auto* token_categories = mapped_token_transformation_->mapping();
+  const auto* const token_categories = mapped_token_transformation_->mapping();
   if (!token_categories) {
     return std::nullopt;
   }
@@ -56,7 +56,8 @@ MappedTokensTransformation::GetCategoryFrequencies(
       std::string token_candidate_addition = token_separator + words[i + j];
       token_candidate += token_candidate_addition;
 
-      const auto* iter = token_categories->LookupByKey(token_candidate.c_str());
+      const auto* const iter =
+          token_categories->LookupByKey(token_candidate.c_str());
       if (!iter || !iter->segment_indices()) {
         continue;
       }
@@ -77,7 +78,7 @@ std::unique_ptr<Data> MappedTokensTransformation::Apply(
     return {};
   }
 
-  auto* text_data = static_cast<TextData*>(input_data.get());
+  const auto* const text_data = static_cast<TextData*>(input_data.get());
   CHECK(text_data);
 
   std::vector<std::string> words = GetWordsFromText(*text_data);

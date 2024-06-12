@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 // TODO(apaymyshev): refactor utility methods to return std::optional instead
 // of bool + out-parameter.
@@ -42,7 +43,7 @@ std::optional<std::string> ParseEthSendRawTransaction(
 std::optional<std::string> ParseEthCall(const base::Value& json_value);
 std::optional<std::vector<std::string>> DecodeEthCallResponse(
     const std::string& data,
-    const std::vector<std::string>& abi_types);
+    const eth_abi::Type& abi_type);
 std::optional<std::vector<std::optional<std::string>>>
 DecodeGetERC20TokenBalancesEthCallResponse(const std::string& data);
 std::optional<std::string> ParseEthEstimateGas(const base::Value& json_value);

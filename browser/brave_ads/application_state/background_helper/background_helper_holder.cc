@@ -7,7 +7,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
-#include "build/build_config.h"
+#include "build/build_config.h"  // IWYU pragma: keep
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper_android.h"

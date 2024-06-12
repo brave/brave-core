@@ -208,9 +208,11 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       switch assetDetailType {
       case .blockchainToken(let token):
         // not come from Market tab
-        let allNetworks = await rpcService.allNetworks(coin: token.coin)
+        let allNetworks = await rpcService.allNetworks()
         let selectedNetwork = await rpcService.network(coin: token.coin, origin: nil)
-        let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
+        let network =
+          allNetworks.first(where: { $0.coin == token.coin && $0.chainId == token.chainId })
+          ?? selectedNetwork
         self.network = network
         self.isBuySupported = await self.isBuyButtonSupported(in: network, for: token.symbol)
         self.isSendSupported = true
@@ -540,7 +542,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   @MainActor private func updateSolEstimatedTxFeesCache(
     _ solTransactions: [BraveWallet.TransactionInfo]
   ) async {
-    let fees = await solTxManagerProxy.estimatedTxFees(for: solTransactions)
+    let fees = await solTxManagerProxy.solanaTxFeeEstimations(for: solTransactions)
     for (key, value) in fees {  // update cached values
       self.solEstimatedTxFeesCache[key] = value
     }

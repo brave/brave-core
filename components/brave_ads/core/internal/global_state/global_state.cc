@@ -21,7 +21,7 @@
 
 namespace brave_ads {
 
-GlobalState::GlobalState(AdsClient* ads_client)
+GlobalState::GlobalState(AdsClient* const ads_client)
     : ads_client_(ads_client),
       global_state_holder_(std::make_unique<GlobalStateHolder>(this)) {
   CHECK(ads_client_);
@@ -45,6 +45,7 @@ GlobalState::~GlobalState() {
 // static
 GlobalState* GlobalState::GetInstance() {
   CHECK(GlobalStateHolder::GetGlobalState());
+
   return GlobalStateHolder::GetGlobalState();
 }
 

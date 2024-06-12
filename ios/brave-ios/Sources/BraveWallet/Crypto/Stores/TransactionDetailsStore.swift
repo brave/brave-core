@@ -118,7 +118,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   func update() {
     Task { @MainActor in
       let coin = transaction.coin
-      let networksForCoin = await rpcService.allNetworks(coin: coin)
+      let networksForCoin = await rpcService.allNetworks().filter({ $0.coin == coin })
       guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234
@@ -185,11 +185,15 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
 
       if transaction.coin == .sol, solEstimatedTxFeesCache[transaction.id] == nil {
-        let (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(
+        let (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.solanaTxFeeEstimation(
           chainId: network.chainId,
           txMetaId: transaction.id
         )
-        self.solEstimatedTxFeesCache[transaction.id] = solEstimatedTxFee
+        let priorityFee =
+          UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
+          * BraveWallet.MicroLamportsPerLamport
+        let totalFee = solEstimatedTxFee.baseFee + priorityFee
+        self.solEstimatedTxFeesCache[transaction.id] = totalFee
       }
       guard
         let parsedTransaction = transaction.parsedTransaction(

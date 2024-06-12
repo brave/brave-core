@@ -46,6 +46,7 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletGroupByCollection", IDS_BRAVE_WALLET_GROUP_BY_COLLECTION},
     {"braveWalletHideNotOwnedNfTs", IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS},
     {"braveWalletNoRoutesFound", IDS_BRAVE_WALLET_NO_ROUTES_FOUND},
     {"braveWalletPrivateKeyImportType",
@@ -1309,10 +1310,11 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveSwapHalf", IDS_BRAVE_SWAP_HALF},
     {"braveSwapMax", IDS_BRAVE_SWAP_MAX},
     {"braveSwapEnterAnAmount", IDS_BRAVE_SWAP_ENTER_AN_AMOUNT},
-    {"braveSwapFindingPrice", IDS_BRAVE_SWAP_FINDING_PRICE},
+    {"braveWalletFetchingQuote", IDS_BRAVE_WALLET_FETCHING_QUOTE},
     {"braveWalletReceiveEstimate", IDS_BRAVE_WALLET_RECEIVE_ESTIMATE},
     {"braveWalletFromToken", IDS_BRAVE_WALLET_FROM_TOKEN},
     {"braveWalletToToken", IDS_BRAVE_WALLET_TO_TOKEN},
+    {"braveWalletNewQuoteIn", IDS_BRAVE_WALLET_NEW_QUOTE_IN},
     {"braveSwapBalance", IDS_BRAVE_SWAP_BALANCE},
     {"braveSwapSelectAToken", IDS_BRAVE_SWAP_SELECT_A_TOKEN},
     {"braveSwapShowTokensWithZeroBalances",
@@ -1569,6 +1571,8 @@ const std::vector<std::string>& GetEthSupportedNftInterfaces();
 // Returns the URL for the Ratios service.
 const std::string GetAssetRatioBaseURL();
 const base::flat_map<std::string, std::string>& GetAnkrBlockchains();
+// https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
+inline constexpr int kSolanaValidBlockHeightThreshold = 150;
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

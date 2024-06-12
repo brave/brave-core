@@ -149,8 +149,7 @@ export const PortfolioNftAsset = () => {
           onBack={history.goBack}
           assetName={selectedAssetFromParams?.name}
           tokenId={selectedAssetFromParams?.tokenId}
-          showSendButton={showSendButton}
-          onSend={onSend}
+          onSend={showSendButton ? onSend : undefined}
         />
       }
     >

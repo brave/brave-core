@@ -79,7 +79,7 @@ class BraveWalletService : public KeyedService,
       ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
       PrefService* local_state,
-      bool is_private_window_);
+      bool is_private_window);
 
   ~BraveWalletService() override;
 
@@ -92,6 +92,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateFantomMainnetAsCustomNetwork(PrefService* prefs);
   static void MigrateAssetsPrefToList(PrefService* prefs);
+  static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>

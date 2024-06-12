@@ -215,6 +215,7 @@ export const {
   useGetIsWalletBackedUpQuery,
   useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
+  useGetNftCollectionNameRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery,
@@ -262,7 +263,6 @@ export const {
   useInvalidateAccountInfosMutation,
   useInvalidateSelectedAccountMutation,
   useInvalidateTransactionsCacheMutation,
-  useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
@@ -324,6 +324,7 @@ export const {
   useSendSolTransactionMutation,
   useSendSPLTransferMutation,
   useSendZecTransactionMutation,
+  useSetAutoLockMinutesMutation,
   useSetAutopinEnabledMutation,
   useSetDefaultFiatCurrencyMutation,
   useSetIsTxSimulationOptInStatusMutation,
@@ -343,7 +344,6 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useSetAutoLockMinutesMutation,
   useValidateUnifiedAddressQuery
 } = walletApi
 

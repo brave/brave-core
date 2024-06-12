@@ -27,11 +27,11 @@ class BraveAdsSubdivisionTest : public UnitTestBase {
     UnitTestBase::SetUp();
 
     subdivision_ = std::make_unique<Subdivision>();
-    subdivision_->AddObserver(&observer_mock_);
+    subdivision_->AddObserver(&subdivision_observer_mock_);
   }
 
   void TearDown() override {
-    subdivision_->RemoveObserver(&observer_mock_);
+    subdivision_->RemoveObserver(&subdivision_observer_mock_);
 
     UnitTestBase::TearDown();
   }
@@ -48,14 +48,14 @@ class BraveAdsSubdivisionTest : public UnitTestBase {
  protected:
   std::unique_ptr<Subdivision> subdivision_;
 
-  SubdivisionObserverMock observer_mock_;
+  SubdivisionObserverMock subdivision_observer_mock_;
 };
 
 TEST_F(BraveAdsSubdivisionTest, OnDidInitializeAds) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision("US-CA"));
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
   // Act
   NotifyDidInitializeAds();
@@ -71,7 +71,7 @@ TEST_F(BraveAdsSubdivisionTest, PrefsNotEnabledOnDidInitializeAds) {
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision).Times(0);
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
   NotifyDidInitializeAds();
@@ -87,7 +87,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidJoinBraveRewards) {
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision("US-CA"));
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
   // Act
   SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
@@ -104,7 +104,7 @@ TEST_F(BraveAdsSubdivisionTest,
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision("US-CA"));
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
   // Act
   SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
@@ -137,7 +137,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidOptOutBraveNews) {
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision("US-CA"));
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
   NotifyDidInitializeAds();
 
@@ -162,7 +162,7 @@ TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision("US-CA"));
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
   NotifyDidInitializeAds();
 
@@ -178,7 +178,8 @@ TEST_F(BraveAdsSubdivisionTest, NoRegionSubdivisionCode) {
   MockHttpOkUrlResponse(/*country_code=*/"US",
                         /*subdivision_code=*/"NO REGION");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision("US-NO REGION"));
+  EXPECT_CALL(subdivision_observer_mock_,
+              OnDidUpdateSubdivision("US-NO REGION"));
 
   // Act
   NotifyDidInitializeAds();
@@ -191,7 +192,7 @@ TEST_F(BraveAdsSubdivisionTest, EmptySubdivisionCode) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision).Times(0);
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
   NotifyDidInitializeAds();
@@ -204,7 +205,7 @@ TEST_F(BraveAdsSubdivisionTest, EmptyCountryCode) {
   // Arrange
   MockHttpOkUrlResponse(/*country_code=*/"", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision).Times(0);
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
   NotifyDidInitializeAds();
@@ -219,7 +220,7 @@ TEST_F(BraveAdsSubdivisionTest, NotValidSubdivisionResonse) {
       {BuildSubdivisionUrlPath(), {{net::HTTP_OK, /*response_body=*/"{}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision).Times(0);
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 
   // Act
   NotifyDidInitializeAds();

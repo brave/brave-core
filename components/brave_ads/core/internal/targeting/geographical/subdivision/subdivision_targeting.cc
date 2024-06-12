@@ -9,19 +9,36 @@
 #include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_util.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {
 
 namespace {
 
+bool DoesRequireResourceForNewTabPageAds() {
+  // Resource is only required if:
+  // - The user has opted into new tab page ads and has either joined Brave
+  //   Rewards or new tab page ad events should always be triggered.
+  return UserHasOptedInToNewTabPageAds() &&
+         (UserHasJoinedBraveRewards() ||
+          ShouldAlwaysTriggerNewTabPageAdEvents());
+}
+
 bool DoesRequireResource() {
-  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNotificationAds();
+  // Require resource only if:
+  // - User has opted into Brave News ads.
+  // - User has opted into new tab page ads and either joined Brave Rewards or
+  //   new tab page ad events should always be triggered.
+  // - User has joined Brave Rewards and opted into notification ads.
+  return UserHasOptedInToBraveNewsAds() ||
+         DoesRequireResourceForNewTabPageAds() ||
+         UserHasOptedInToNotificationAds();
 }
 
 }  // namespace
@@ -215,9 +232,12 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
     UpdateAutoDetectedSubdivision();
   } else if (path == prefs::kSubdivisionTargetingSubdivision) {
     UpdateUserSelectedSubdivision();
-  } else if (path == brave_news::prefs::kBraveNewsOptedIn ||
-             path == brave_news::prefs::kNewTabPageShowToday ||
-             path == prefs::kOptedInToNotificationAds) {
+  } else if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
+             DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
+             DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
+             DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+    // This condition should include all the preferences that are present in the
+    // `DoesRequireResource` function.
     MaybeInitialize();
   }
 }

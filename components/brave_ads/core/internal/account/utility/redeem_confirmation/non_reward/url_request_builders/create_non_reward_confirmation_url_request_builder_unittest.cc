@@ -49,7 +49,8 @@ TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
   expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedUrlRequestContent;

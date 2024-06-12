@@ -30,11 +30,11 @@ std::string ExtractApiRequestPath(const GURL& request_url) {
   std::string spec = request_url.spec();
 
   auto mainnet_url_spec =
-      GetKnownChain(nullptr, mojom::kBitcoinMainnet, mojom::CoinType::BTC)
+      GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
           ->rpc_endpoints[0]
           .spec();
   auto testnet_url_spec =
-      GetKnownChain(nullptr, mojom::kBitcoinTestnet, mojom::CoinType::BTC)
+      GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC)
           ->rpc_endpoints[0]
           .spec();
 

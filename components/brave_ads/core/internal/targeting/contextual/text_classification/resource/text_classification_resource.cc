@@ -13,26 +13,19 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/language_components.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
 bool DoesRequireResource() {
+  // Require resource only if:
+  // - The user has joined Brave Rewards and opted into notification ads.
   return UserHasOptedInToNotificationAds();
-}
-
-const char* GetResourceId() {
-  return kFlatBuffersTextClassificationResourceId;
-}
-
-int GetResourceVersion() {
-  return kFlatBuffersTextClassificationResourceVersion.Get();
 }
 
 }  // namespace
@@ -47,9 +40,8 @@ TextClassificationResource::~TextClassificationResource() {
 
 void TextClassificationResource::ClassifyPage(const std::string& text,
                                               ClassifyPageCallback callback) {
-  if (!IsInitialized()) {
-    BLOG(1,
-         "Failed to process text classification as resource not initialized");
+  if (!IsLoaded()) {
+    BLOG(1, "Failed to process text classification as resource not loaded");
 
     return std::move(callback).Run(/*probabilities=*/{});
   }
@@ -68,15 +60,13 @@ void TextClassificationResource::MaybeLoad() {
   }
 }
 
-void TextClassificationResource::MaybeLoadOrReset() {
-  DidLoad() ? MaybeReset() : MaybeLoad();
+void TextClassificationResource::MaybeLoadOrUnload() {
+  IsLoaded() ? MaybeUnload() : MaybeLoad();
 }
 
 void TextClassificationResource::Load() {
-  did_load_ = true;
-
   LoadComponentResource(
-      GetResourceId(), GetResourceVersion(),
+      kTextClassificationResourceId, kTextClassificationResourceVersion.Get(),
       base::BindOnce(&TextClassificationResource::LoadComponentResourceCallback,
                      weak_factory_.GetWeakPtr()));
 }
@@ -84,7 +74,8 @@ void TextClassificationResource::Load() {
 void TextClassificationResource::LoadComponentResourceCallback(
     base::File file) {
   if (!file.IsValid()) {
-    return BLOG(0, "Failed to load invalid resource file");
+    return BLOG(0, "Failed to load " << kTextClassificationResourceId
+                                     << " text classification resource");
   }
 
   text_processing_pipeline_.emplace(
@@ -92,40 +83,38 @@ void TextClassificationResource::LoadComponentResourceCallback(
   text_processing_pipeline_
       ->AsyncCall(&ml::pipeline::TextProcessing::LoadPipeline)
       .WithArgs(std::move(file))
-      .Then(base::BindOnce(&TextClassificationResource::LoadPipelineCallback,
+      .Then(base::BindOnce(&TextClassificationResource::LoadCallback,
                            weak_factory_.GetWeakPtr()));
 }
 
-void TextClassificationResource::LoadPipelineCallback(
+void TextClassificationResource::LoadCallback(
     base::expected<bool, std::string> result) {
   if (!result.has_value()) {
     text_processing_pipeline_.reset();
-    return BLOG(0, "Failed to initialize " << GetResourceId()
-                                           << " text classification resource ("
-                                           << result.error() << ")");
+
+    return BLOG(0, "Failed to load " << kTextClassificationResourceId
+                                     << " text classification resource ("
+                                     << result.error() << ")");
   }
 
-  const bool is_neural = result.value();
-  const std::string pipeline_type = is_neural ? "neural" : "linear";
-  BLOG(1, "Successfully loaded " << GetResourceId() << " " << pipeline_type
-                                 << " text classification resource");
-
-  BLOG(1, "Successfully initialized "
-              << GetResourceId() << " " << pipeline_type
+  BLOG(1, "Successfully loaded "
+              << kTextClassificationResourceId << " "
+              << (/*is_neural*/ result.value() ? "neural" : "linear")
               << " text classification resource version "
-              << GetResourceVersion());
+              << kTextClassificationResourceVersion.Get());
 }
 
-void TextClassificationResource::MaybeReset() {
-  if (DidLoad() && !DoesRequireResource()) {
-    Reset();
+void TextClassificationResource::MaybeUnload() {
+  if (manifest_version_ && !DoesRequireResource()) {
+    Unload();
   }
 }
 
-void TextClassificationResource::Reset() {
-  BLOG(1, "Reset " << GetResourceId() << " text classification resource");
+void TextClassificationResource::Unload() {
+  BLOG(1, "Unloaded " << kTextClassificationResourceId
+                      << " text classification resource");
+
   text_processing_pipeline_.reset();
-  did_load_ = false;
 }
 
 void TextClassificationResource::OnNotifyLocaleDidChange(
@@ -135,9 +124,11 @@ void TextClassificationResource::OnNotifyLocaleDidChange(
 
 void TextClassificationResource::OnNotifyPrefDidChange(
     const std::string& path) {
-  if (path == brave_rewards::prefs::kEnabled ||
-      path == prefs::kOptedInToNotificationAds) {
-    MaybeLoadOrReset();
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
+      DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
+    // This condition should include all the preferences that are present in the
+    // `DoesRequireResource` function.
+    MaybeLoadOrUnload();
   }
 }
 
@@ -149,7 +140,20 @@ void TextClassificationResource::OnNotifyDidUpdateResourceComponent(
   }
 
   if (manifest_version == manifest_version_) {
+    // No need to load the resource if the manifest version is the same.
     return;
+  }
+
+  if (!manifest_version_) {
+    BLOG(1, "Registering "
+                << id
+                << " text classification resource component manifest version "
+                << manifest_version);
+  } else {
+    BLOG(1, "Updating "
+                << id
+                << " text classification resource component manifest version "
+                << *manifest_version_ << " to " << manifest_version);
   }
 
   manifest_version_ = manifest_version;
@@ -163,9 +167,11 @@ void TextClassificationResource::OnNotifyDidUnregisterResourceComponent(
     return;
   }
 
+  BLOG(1, "Unregistering " << id << " text classification resource component");
+
   manifest_version_.reset();
 
-  Reset();
+  Unload();
 }
 
 }  // namespace brave_ads

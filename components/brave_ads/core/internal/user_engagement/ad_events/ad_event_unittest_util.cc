@@ -54,7 +54,7 @@ void RecordAdEvents(const AdType ad_type,
   const std::string& id = GetInstanceId();
 
   for (int i = 0; i < count; ++i) {
-    CacheAdEventForInstanceId(id, ad_type, confirmation_type, Now());
+    CacheAdEventForInstanceId(id, ad_type, confirmation_type, /*time=*/Now());
   }
 }
 

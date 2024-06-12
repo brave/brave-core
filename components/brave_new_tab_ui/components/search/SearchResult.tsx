@@ -2,19 +2,19 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import Flex from '$web-common/Flex';
+import { getLocale } from '$web-common/locale';
+import Icon from '@brave/leo/react/icon';
 import { color, font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables';
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js';
 import { AutocompleteMatch } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
-import Flex from '$web-common/Flex';
-import { omniboxController } from './SearchContext';
-import { getLocale } from '$web-common/locale';
-import Icon from '@brave/leo/react/icon';
+import { useUnpaddedImageUrl } from '../../../brave_news/browser/resources/shared/useUnpaddedImageUrl';
 
 interface Props {
   match: AutocompleteMatch
-  line: number
+  onClick: (e: React.MouseEvent) => void
   selected: boolean
 }
 
@@ -44,14 +44,22 @@ const IconContainer = styled.div`
   justify-content: center;
 
   flex-shrink: 0;
+
+  > span, > img {
+    width: 20px;
+    height: 20px;
+  }
 `
 
-const FavIcon = styled.span<{ url: string }>`
-  width: 20px;
-  height: 20px;
+const SearchIcon = styled.span<{ url: string }>`
   background: rgba(255, 255, 255, 0.5);
   mask-image: url(${p => p.url});
   mask-size: contain;
+`
+
+const FavIcon = styled.span<{ url: string }>`
+  background-image: url(${p => p.url});
+  background-size: contain;
 `
 
 const Content = styled.span`
@@ -84,7 +92,33 @@ const Divider = styled.hr`
   opacity: 0.1;
 `
 
-export default function SearchResult({ match, line, selected }: Props) {
+const hide = { opacity: 0 }
+const show = { opacity: 1 }
+function RichImage({ url }: { url: string }) {
+  const [loaded, setLoaded] = React.useState(false)
+  const iconUrl = useUnpaddedImageUrl(url, () => setLoaded(true))
+  return <img src={iconUrl} style={loaded ? show : hide} />
+}
+function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolean }) {
+  // AskLeo is a case we treat specially. It's included on most queries.
+  if (isAskLeo) return <LeoIcon name='product-brave-leo' />
+
+  // We have three separate cases here:
+  // 1. A chromium generic search result icon:
+  //    We display the icon as a mask-image, so we can change the color
+  // 2. An `imageUrl` with the chrome:// scheme, which we can load on the NTP:
+  //    We display the image as a background, as its safe on the NTP
+  // 3. A web resource, which we need to load from the WebUI via the unpadded
+  //    url machinery.
+  const isGeneric = !match.imageUrl
+  return isGeneric
+    ? <SearchIcon url={match.iconUrl} />
+    : match.imageUrl.startsWith('chrome')
+      ? <FavIcon url={match.imageUrl} />
+      : <RichImage url={match.imageUrl} />
+}
+
+export default function SearchResult({ match, selected, onClick }: Props) {
   const contents = mojoString16ToString(match.swapContentsAndDescription ? match.description : match.contents)
   const description = mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
   const isAskLeo = description === getLocale('searchAskLeo')
@@ -95,12 +129,10 @@ export default function SearchResult({ match, line, selected }: Props) {
 
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
-    omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, e.button, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey)
+    onClick(e)
   }}>
     <IconContainer>
-      {isAskLeo
-        ? <LeoIcon name="product-brave-leo" />
-        : <FavIcon url={match.iconUrl} />}
+      <Image key={match.imageUrl ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}<Hint>{hint ? ` - ${hint}` : ''}</Hint></Content>

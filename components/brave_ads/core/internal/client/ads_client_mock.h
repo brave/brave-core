@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/client/ads_client.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
 
@@ -87,11 +87,7 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD(std::string, LoadDataResource, (const std::string& name));
 
   MOCK_METHOD(void,
-              GetScheduledCaptcha,
-              (const std::string& payment_id,
-               GetScheduledCaptchaCallback callback));
-  MOCK_METHOD(void,
-              ShowScheduledCaptchaNotification,
+              ShowScheduledCaptcha,
               (const std::string& payment_id, const std::string& captcha_id));
 
   MOCK_METHOD(void,

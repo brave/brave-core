@@ -16,8 +16,8 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_signal_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_funnel_info.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_info.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -37,7 +37,7 @@ PurchaseIntentProcessor::~PurchaseIntentProcessor() {
 }
 
 void PurchaseIntentProcessor::Process(const GURL& url) {
-  if (!resource_->IsInitialized()) {
+  if (!resource_->IsLoaded()) {
     return;
   }
 
@@ -119,7 +119,8 @@ PurchaseIntentProcessor::MaybeExtractSignalForSearchQuery(
 std::optional<SegmentList>
 PurchaseIntentProcessor::MaybeGetSegmentsForSearchQuery(
     const KeywordList& search_query_keywords) const {
-  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  const std::optional<PurchaseIntentResourceInfo>& purchase_intent =
+      resource_->get();
   if (!purchase_intent) {
     return std::nullopt;
   }
@@ -140,7 +141,8 @@ PurchaseIntentProcessor::MaybeGetSegmentsForSearchQuery(
 
 int PurchaseIntentProcessor::ComputeFunnelKeyphraseWeightForSearchQuery(
     const KeywordList& search_query_keywords) const {
-  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  const std::optional<PurchaseIntentResourceInfo>& purchase_intent =
+      resource_->get();
   if (!purchase_intent) {
     return kDefaultFunnelKeyphraseWeightForSearchQuery;
   }
@@ -176,7 +178,8 @@ PurchaseIntentProcessor::MaybeExtractSignalForUrl(const GURL& url) const {
 
 std::optional<PurchaseIntentFunnelInfo>
 PurchaseIntentProcessor::MaybeGetFunnelForUrl(const GURL& url) const {
-  const std::optional<PurchaseIntentInfo>& purchase_intent = resource_->get();
+  const std::optional<PurchaseIntentResourceInfo>& purchase_intent =
+      resource_->get();
   if (!purchase_intent) {
     return std::nullopt;
   }

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_info.h"
 
-#include <optional>
-
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 
@@ -38,7 +36,7 @@ ConversionResourceInfo::CreateFromValue(const base::Value::Dict dict) {
     if (kConversionResourceVersion.Get() != *version) {
       return base::unexpected("Failed to load from JSON, version mismatch");
     }
-    conversions.version = *version;
+    conversions.version = version;
   }
 
   const auto* conversion_id_patterns_dict =

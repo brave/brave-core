@@ -56,7 +56,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_TRUE(BuildRotatingHashUserData(transaction).empty());
+  EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
@@ -67,7 +67,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_EQ(base::Value::Dict(), BuildRotatingHashUserData(transaction));
+  EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -66,6 +66,7 @@ void ConfirmationTokens::Remove(
 
 void ConfirmationTokens::RemoveAll() {
   confirmation_tokens_.clear();
+  confirmation_tokens_.shrink_to_fit();
 }
 
 bool ConfirmationTokens::Exists(

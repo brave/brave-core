@@ -13,9 +13,7 @@
 
 namespace brave_ads {
 
-class BraveAdsConfirmationTokensPermissionRuleTest : public UnitTestBase {
- protected:
-};
+class BraveAdsConfirmationTokensPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {

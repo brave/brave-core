@@ -611,7 +611,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6896758677409633944">Salin</translation>
 <translation id="3726490322412361740">Masukkan Kata Laluan</translation>
 <translation id="3038243139480464605">Sahkan kata laluan</translation>
-<translation id="3043677904160378840">Kata laluan mestilah sekurang-kurangnya 8 aksara.</translation>
 <translation id="7396672979287122068">Kata laluan yang disahkan tidak sepadan</translation>
 <translation id="1566412704591731844">Mencipta dompet anda…</translation>
 <translation id="7779823116893018906">Mungkin mengambil masa beberapa saat…</translation>
@@ -655,8 +654,11 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5981303441790732480">Import dompet anda yang sedia ada</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
 <translation id="6657585470893396449">Kata laluan</translation>
+<translation id="7553242001898162573">Masukkan kata laluan anda</translation>
 <translation id="5619264711680220002">Buka kunci biometrik</translation>
+<translation id="9195657745688986798">Buka kunci Dompet</translation>
 <translation id="5168349973342709369">Masukkan kata laluan untuk membuka kunci dompet</translation>
+<translation id="3043677904160378840">Kata laluan mestilah sekurang-kurangnya 8 aksara.</translation>
 <translation id="1144810021918451336">Tidak melindungi anda daripada laman web, muat turun, dan sambungan berbahaya.</translation>
 <translation id="5760476995887363522">Frasa tidak sepadan. Sila cuba lagi.</translation>
 <translation id="2360588547830602174">Pemulihan akaun gagal. Sila cuba lagi.</translation>
@@ -700,7 +702,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6748319398471481216">Diperbaharui secara bulanan</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / bulan.</translation>
 <translation id="1163809943099641131">Satu Tahun</translation>
-<translation id="7574007394522199115">Perbaharui secara tahunan dan jimat <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="7574007394522199115">Perbaharu setiap tahun menjimatkan <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / thn.</translation>
 <translation id="2655185358771731232">Cuba secara percuma untuk 7 hari. Selepas 7 hari, anda akan dikenakan caj harga pelan. Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.</translation>
 <translation id="6053992191006521518">Cuba secara PERCUMA</translation>
@@ -1188,4 +1190,13 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6891382640886173702">Gabungkan tetingkap</translation>
 <translation id="2912247081180973411">Tutup tetingkap</translation>
 <translation id="4010699428656610296">Sila gabungkan tab lain ke tetingkap Brave yang lain.</translation>
+<translation id="208634871997892083">VPN sentiasa hidup</translation>
+<translation id="1599073346542156922">Cara menghidupkan:</translation>
+<translation id="7001163334415463127">1. Buka tetapan peranti anda daripada laci aplikasi anda atau ketik butang di bawah.</translation>
+<translation id="887443138775437899">2. Cari VPN Brave dan ketik pada ikon tetapan di sebelah kanan.</translation>
+<translation id="3776051499611941773">3. Togol <ph name="ALWAYS_ON_TUTORIAL_START"/>VPN sentiasa hidup<ph name="ALWAYS_ON_TUTORIAL_END"/> untuk mendayakannya.</translation>
+<translation id="4776146737004271126">Buka tetapan Android</translation>
+<translation id="2728518864712716830">Kemas kini dimuat turun.</translation>
+<translation id="8403338849301491865">Senarai penapis berjaya dikemas kini</translation>
+<translation id="4650851936784160359">Senarai penapis tidak dapat dikemas kini. Sila cuba semula</translation>
 </translationbundle>

@@ -44,12 +44,13 @@ class ADS_EXPORT Database final {
       mojom::DBCommandResponseInfo* command_response);
 
   mojom::DBCommandResponseInfo::StatusType Execute(
-      mojom::DBCommandInfo* command);
+      const mojom::DBCommandInfo* command);
 
-  mojom::DBCommandResponseInfo::StatusType Run(mojom::DBCommandInfo* command);
+  mojom::DBCommandResponseInfo::StatusType Run(
+      const mojom::DBCommandInfo* command);
 
   mojom::DBCommandResponseInfo::StatusType Read(
-      mojom::DBCommandInfo* command,
+      const mojom::DBCommandInfo* command,
       mojom::DBCommandResponseInfo* command_response);
 
   mojom::DBCommandResponseInfo::StatusType Migrate(int version,

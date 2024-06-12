@@ -18,20 +18,20 @@ TEST_F(BraveAdsConfirmationTokensTest, GetToken) {
   // Arrange
   const ConfirmationTokenList tokens =
       test::BuildConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, tokens.size());
+  ASSERT_THAT(tokens, ::testing::SizeIs(2));
 
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.Set(tokens);
 
   // Act & Assert
-  EXPECT_EQ(tokens.at(0), confirmation_tokens.Get());
+  EXPECT_EQ(tokens.front(), confirmation_tokens.Get());
 }
 
 TEST_F(BraveAdsConfirmationTokensTest, GetAllTokens) {
   // Arrange
   const ConfirmationTokenList tokens =
       test::BuildConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, tokens.size());
+  ASSERT_THAT(tokens, ::testing::SizeIs(2));
 
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.Set(tokens);
@@ -44,7 +44,7 @@ TEST_F(BraveAdsConfirmationTokensTest, SetTokens) {
   // Arrange
   const ConfirmationTokenList tokens =
       test::BuildConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, tokens.size());
+  ASSERT_THAT(tokens, ::testing::SizeIs(2));
 
   ConfirmationTokens confirmation_tokens;
 
@@ -70,7 +70,7 @@ TEST_F(BraveAdsConfirmationTokensTest, AddTokens) {
   // Arrange
   const ConfirmationTokenList tokens =
       test::BuildConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, tokens.size());
+  ASSERT_THAT(tokens, ::testing::SizeIs(2));
 
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.Set({tokens.at(0)});
@@ -112,7 +112,7 @@ TEST_F(BraveAdsConfirmationTokensTest, RemoveToken) {
   // Arrange
   const ConfirmationTokenList tokens =
       test::BuildConfirmationTokens(/*count=*/2);
-  ASSERT_EQ(2U, tokens.size());
+  ASSERT_THAT(tokens, ::testing::SizeIs(2));
 
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.Set(tokens);
@@ -131,7 +131,7 @@ TEST_F(BraveAdsConfirmationTokensTest, RemoveTokens) {
   // Arrange
   const ConfirmationTokenList tokens =
       test::BuildConfirmationTokens(/*count=*/3);
-  ASSERT_EQ(3U, tokens.size());
+  ASSERT_THAT(tokens, ::testing::SizeIs(3));
 
   ConfirmationTokens confirmation_tokens;
   confirmation_tokens.Set(tokens);

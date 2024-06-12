@@ -44,8 +44,8 @@ void ShutdownCommandLineSwitches() {
 }
 
 std::optional<bool>& DidAppendCommandLineSwitches() {
-  static std::optional<bool> command_line;
-  return command_line;
+  static std::optional<bool> did_append;
+  return did_append;
 }
 
 void AppendCommandLineSwitches(
@@ -55,15 +55,14 @@ void AppendCommandLineSwitches(
   }
 
   CHECK(base::CommandLine::InitializedForCurrentProcess());
-  base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
+  base::CommandLine* const command_line =
+      base::CommandLine::ForCurrentProcess();
 
   for (const auto& command_line_switch : command_line_switches) {
-    if (command_line_switch.key.empty()) {
-      continue;
+    if (!command_line_switch.key.empty()) {
+      command_line->AppendSwitchASCII(command_line_switch.key,
+                                      command_line_switch.value);
     }
-
-    command_line->AppendSwitchASCII(command_line_switch.key,
-                                    command_line_switch.value);
   }
 
   DidAppendCommandLineSwitches() = true;

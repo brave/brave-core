@@ -5,17 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
@@ -25,20 +24,29 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_registry.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/database/database_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/database/database.h"
 
 namespace brave_ads {
+
+namespace {
+
+constexpr char kIfTimeStoodStill[] =
+    "If time stood still, each moment would be stopped; frozen";
+
+constexpr char kYouCantTravelBackInTime[] =
+    "You Can't Travel Back in Time, Scientists Say! Unless, of course, you are "
+    "travelling at 88 mph";
+
+}  // namespace
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       scoped_default_locale_(
           brave_l10n::test::ScopedDefaultLocale(kDefaultLocale)) {
   CHECK(temp_dir_.CreateUniqueTempDir());
+
+  set_ads_client_notifier_task_environment(&task_environment_);
 }
 
 UnitTestBase::~UnitTestBase() {
@@ -50,7 +58,7 @@ UnitTestBase::~UnitTestBase() {
 }
 
 void UnitTestBase::SetUp() {
-  SetUp(/*is_integration_test=*/false);
+  SetUp(/*is_integration_test=*/false);  // Default to unit test.
 }
 
 void UnitTestBase::TearDown() {
@@ -69,6 +77,8 @@ void UnitTestBase::SetUp(const bool is_integration_test) {
   RegisterProfilePrefs();
 
   RegisterLocalStatePrefs();
+
+  MockAdsClientNotifier();
 
   MockAdsClient();
 
@@ -119,24 +129,16 @@ bool UnitTestBase::CopyDirectoryFromTestPathToTempPath(
 }
 
 void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
-  CHECK(!time_delta.is_zero())
-      << "If time stood still, each moment would be stopped; frozen";
-
-  CHECK(time_delta.is_positive())
-      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
-         "you are travelling at 88 mph";
+  CHECK(!time_delta.is_zero()) << kIfTimeStoodStill;
+  CHECK(time_delta.is_positive()) << kYouCantTravelBackInTime;
 
   task_environment_.FastForwardBy(time_delta);
 }
 
 void UnitTestBase::SuspendedFastForwardClockBy(
     const base::TimeDelta time_delta) {
-  CHECK(!time_delta.is_zero())
-      << "If time stood still, each moment would be stopped; frozen";
-
-  CHECK(time_delta.is_positive())
-      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
-         "you are travelling at 88 mph";
+  CHECK(!time_delta.is_zero()) << kIfTimeStoodStill;
+  CHECK(time_delta.is_positive()) << kYouCantTravelBackInTime;
 
   task_environment_.SuspendedFastForwardBy(time_delta);
 }
@@ -163,12 +165,8 @@ bool UnitTestBase::HasPendingTasks() const {
 }
 
 void UnitTestBase::AdvanceClockBy(const base::TimeDelta time_delta) {
-  CHECK(!time_delta.is_zero())
-      << "If time stood still, each moment would be stopped; frozen";
-
-  CHECK(time_delta.is_positive())
-      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
-         "you are travelling at 88 mph";
+  CHECK(!time_delta.is_zero()) << kIfTimeStoodStill;
+  CHECK(time_delta.is_positive()) << kYouCantTravelBackInTime;
 
   task_environment_.AdvanceClock(time_delta);
 }
@@ -187,24 +185,30 @@ void UnitTestBase::AdvanceClockToUTCMidnight() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void UnitTestBase::MockAdsClientAddObserver() {
-  ON_CALL(ads_client_mock_, AddObserver)
-      .WillByDefault(
-          ::testing::Invoke([=](AdsClientNotifierObserver* observer) {
-            CHECK(observer);
-            AddObserver(observer);
-          }));
+void UnitTestBase::MockAdsClientNotifier() {
+  MockAdsClientNotifierAddObserver(ads_client_mock_, *this);
 }
 
 void UnitTestBase::MockAdsClient() {
-  MockAdsClientAddObserver();
+  // See to `common/unittest/unittest_mock_util.h`. `MockUrlRequest`,
+  // `ShowScheduledCaptcha`, `RecordP2PAdEvents`, and `Log` are not mocked here;
+  // they should be mocked as needed.
 
+  MockIsNetworkConnectionAvailable(ads_client_mock_, true);
+
+  MockIsBrowserActive(ads_client_mock_, true);
+  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
+
+  MockCanShowNotificationAds(ads_client_mock_, true);
+  MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);
   MockShowNotificationAd(ads_client_mock_);
   MockCloseNotificationAd(ads_client_mock_);
 
   MockCacheAdEventForInstanceId(ads_client_mock_);
   MockGetCachedAdEvents(ads_client_mock_);
   MockResetAdEventCacheForInstanceId(ads_client_mock_);
+
+  MockGetBrowsingHistory(ads_client_mock_, /*history=*/{});
 
   MockSave(ads_client_mock_);
   MockLoad(ads_client_mock_, temp_dir_);
@@ -218,52 +222,25 @@ void UnitTestBase::MockAdsClient() {
   MockRunDBTransaction(ads_client_mock_, *database_);
 
   MockGetProfilePref(ads_client_mock_);
-  MockSetProfilePref();
+  MockSetProfilePref(ads_client_mock_, *this);
   MockClearProfilePref(ads_client_mock_);
   MockHasProfilePrefPath(ads_client_mock_);
 
   MockGetLocalStatePref(ads_client_mock_);
-  MockSetLocalStatePref();
+  MockSetLocalStatePref(ads_client_mock_, *this);
   MockClearLocalStatePref(ads_client_mock_);
   MockHasLocalStatePrefPath(ads_client_mock_);
+}
 
+void UnitTestBase::Mock() {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  MockIsNetworkConnectionAvailable(ads_client_mock_, true);
-
-  MockIsBrowserActive(ads_client_mock_, true);
-
-  MockIsBrowserInFullScreenMode(ads_client_mock_, false);
-
-  MockCanShowNotificationAds(ads_client_mock_, true);
-  MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);
-
-  MockGetBrowsingHistory(ads_client_mock_, /*history=*/{});
-}
-
-void UnitTestBase::MockSetProfilePref() {
-  ON_CALL(ads_client_mock_, SetProfilePref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, base::Value value) {
-            SetProfilePrefValue(path, std::move(value));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::MockSetLocalStatePref() {
-  ON_CALL(ads_client_mock_, SetLocalStatePref)
-      .WillByDefault(
-          ::testing::Invoke([=](const std::string& path, base::Value value) {
-            SetLocalStatePrefValue(path, std::move(value));
-            NotifyPrefDidChange(path);
-          }));
-}
-
-void UnitTestBase::SetUpTest() {
   MockBuildChannel(BuildChannelType::kRelease);
 
   SetUpMocks();
 
+  // Must be called after `SetUpMocks` because `SetupMocks` may call
+  // `AppendCommandLineSwitches`.
   MockFlags();
 }
 
@@ -274,7 +251,8 @@ void UnitTestBase::SetUpIntegrationTest() {
 
   ads_ = std::make_unique<AdsImpl>(&ads_client_mock_);
 
-  SetUpTest();
+  // Must be called after `AdsImpl` is instantiated but prior to `Initialize`.
+  Mock();
 
   ads_->Initialize(test::GetWalletPtr(),
                    base::BindOnce(&UnitTestBase::SetUpIntegrationTestCallback,
@@ -282,13 +260,17 @@ void UnitTestBase::SetUpIntegrationTest() {
 }
 
 void UnitTestBase::SetUpIntegrationTestCallback(const bool success) {
-  ASSERT_TRUE(success) << "Failed to initialize ads";
+  CHECK(success) << "Failed to initialize ads";
 
-  NotifyDidInitializeAds();
-
+  // By default, integration tests are run while the browser is in the
+  // foreground and active. If tests require the browser to be in the background
+  // and inactive, you can call `NotifyBrowserDidEnterBackground` and
+  // `NotifyBrowserDidResignActive`. Refer to `AdsClientNotifierForTesting` for
+  // more information.
+  NotifyBrowserDidEnterForeground();
   NotifyBrowserDidBecomeActive();
 
-  task_environment_.RunUntilIdle();
+  NotifyDidInitializeAds();
 }
 
 void UnitTestBase::SetUpUnitTest() {
@@ -298,26 +280,11 @@ void UnitTestBase::SetUpUnitTest() {
 
   global_state_ = std::make_unique<GlobalState>(&ads_client_mock_);
 
-  SetUpTest();
+  // Must be called after `GlobalState` is instantiated but prior to
+  // `LoadState`.
+  Mock();
 
-  global_state_->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](const bool success) {
-        ASSERT_TRUE(success) << "Failed to create or open database";
-      }));
-
-  global_state_->GetClientStateManager().LoadState(
-      base::BindOnce([](const bool success) {
-        ASSERT_TRUE(success) << "Failed to load client state";
-      }));
-
-  global_state_->GetConfirmationStateManager().LoadState(
-      test::GetWallet(), base::BindOnce([](const bool success) {
-        ASSERT_TRUE(success) << "Failed to load confirmation state";
-      }));
-
-  task_environment_.FastForwardUntilNoTasksRemain();
-
-  NotifyPendingAdsClientObservers();
+  LoadState();
 }
 
 }  // namespace brave_ads

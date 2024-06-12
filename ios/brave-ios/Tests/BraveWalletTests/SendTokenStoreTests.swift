@@ -53,7 +53,7 @@ class SendTokenStoreTests: XCTestCase {
     }
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = { $2(selectedNetwork) }
-    rpcService._allNetworks = { $1(allNetworks) }
+    rpcService._allNetworks = { $0(allNetworks) }
     rpcService._setNetwork = { _, _, _, completion in completion(true) }
     rpcService._addObserver = { _ in }
     rpcService._balance = { $3(balance, .success, "") }
@@ -195,8 +195,8 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._network = { coin, _, completion in
       completion(selectedNetwork)
     }
-    rpcService._allNetworks = { coin, completion in
-      completion(coin == .eth ? [.mockMainnet] : [.mockSolana])
+    rpcService._allNetworks = {
+      $0([.mockMainnet, .mockSolana])
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
@@ -239,7 +239,7 @@ class SendTokenStoreTests: XCTestCase {
     let mockUserAssets: [BraveWallet.BlockchainToken] = [.previewToken, .previewDaiToken]
     let mockDecimalBalance: Double = 0.0896
     let numDecimals = Int(mockUserAssets[0].decimals)
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: numDecimals))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: numDecimals))
     let mockBalanceWei =
       formatter.weiString(from: mockDecimalBalance, radix: .hex, decimals: numDecimals) ?? ""
 
@@ -478,13 +478,13 @@ class SendTokenStoreTests: XCTestCase {
       bitcoinWalletService, _
     ) =
       setupServices()
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalance = "47.156499657504857477"
     let mockBalanceWei = formatter.weiString(from: mockBalance, radix: .hex, decimals: 18) ?? ""
 
     rpcService._chainIdForOrigin = { $2(BraveWallet.NetworkInfo.mockGoerli.chainId) }
     rpcService._network = { $2(BraveWallet.NetworkInfo.mockGoerli) }
-    rpcService._allNetworks = { $1([.mockGoerli]) }
+    rpcService._allNetworks = { $0([.mockGoerli]) }
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }

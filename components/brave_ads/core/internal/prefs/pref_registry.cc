@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* const registry) {
   registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
 
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,

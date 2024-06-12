@@ -99,6 +99,11 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
       LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
       false
     )
+  const [groupNftsByCollection, setGroupNftsByCollection] =
+    useLocalStorage<boolean>(
+      LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_NFTS_BY_COLLECTION,
+      false
+    )
 
   // Synced Local-Storage
   const [showNetworkLogoOnNfts, setShowNetworkLogoOnNfts] =
@@ -133,6 +138,8 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
   )
   const [hideUnownedNftsToggle, setHideUnownedNftsToggle] =
     React.useState(hideUnownedNfts)
+  const [groupNftsByCollectionToggle, setGroupNftsByCollectionToggle] =
+    React.useState(groupNftsByCollection)
 
   // Memos
   const hideSmallBalancesDescription = React.useMemo(() => {
@@ -157,6 +164,7 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
     setHidePortfolioSmallBalances(hideSmallBalances)
     setShowNetworkLogoOnNfts(showNetworkLogo)
     setHideUnownedNfts(hideUnownedNftsToggle)
+    setGroupNftsByCollection(groupNftsByCollectionToggle)
     onSave?.()
     onClose()
   }, [
@@ -174,6 +182,8 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
     showNetworkLogo,
     setHideUnownedNfts,
     hideUnownedNftsToggle,
+    setGroupNftsByCollection,
+    groupNftsByCollectionToggle,
     onSave,
     onClose
   ])
@@ -205,6 +215,18 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
                 icon='web3'
                 isSelected={showNetworkLogo}
                 setIsSelected={() => setShowNetworkLogo((prev) => !prev)}
+              />
+
+              <FilterToggleSection
+                title={getLocale('braveWalletGroupByCollection')}
+                description={getLocale(
+                  'braveWalletPortfolioGroupByDescription'
+                )}
+                icon='stack'
+                isSelected={groupNftsByCollectionToggle}
+                setIsSelected={() =>
+                  setGroupNftsByCollectionToggle((prev) => !prev)
+                }
               />
 
               <FilterToggleSection

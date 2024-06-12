@@ -104,7 +104,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Act & Assert
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction_2}));
-  database_table.GetForDateRange(Now(), DistantFuture(), callback.Get());
+  database_table.GetForDateRange(/*from_time=*/Now(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {

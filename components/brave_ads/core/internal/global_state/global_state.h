@@ -14,6 +14,9 @@
 
 namespace brave_ads {
 
+// TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
+// state.
+
 class AdsClient;
 class AdsNotifierManager;
 class BrowserManager;

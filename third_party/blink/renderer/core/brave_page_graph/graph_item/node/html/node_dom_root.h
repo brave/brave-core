@@ -16,7 +16,8 @@ class NodeDOMRoot final : public NodeHTMLElement {
  public:
   NodeDOMRoot(GraphItemContext* context,
               const blink::DOMNodeId dom_node_id,
-              const String& tag_name);
+              const String& tag_name,
+              bool is_attached);
 
   void SetURL(const String& url) { url_ = url; }
   const String& GetURL() const { return url_; }
@@ -31,6 +32,7 @@ class NodeDOMRoot final : public NodeHTMLElement {
 
  private:
   String url_;
+  const bool is_attached_;
 };
 
 }  // namespace brave_page_graph

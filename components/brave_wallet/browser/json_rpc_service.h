@@ -125,7 +125,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
-                  const std::string& chaind_id,
+                  const std::string& chain_id,
                   GetBalanceCallback callback) override;
   void GetCode(const std::string& address,
                mojom::CoinType coin,
@@ -273,8 +273,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   std::vector<mojom::SwitchChainRequestPtr> GetPendingSwitchChainRequestsSync();
   void NotifySwitchChainRequestProcessed(const std::string& request_id,
                                          bool approved) override;
-  void GetAllNetworks(mojom::CoinType coin,
-                      GetAllNetworksCallback callback) override;
+  void GetAllNetworks(GetAllNetworksCallback callback) override;
   void GetCustomNetworks(mojom::CoinType coin,
                          GetCustomNetworksCallback callback) override;
   void GetKnownNetworks(mojom::CoinType coin,
@@ -289,10 +288,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            RemoveHiddenNetworkCallback callback) override;
   std::string GetNetworkUrl(mojom::CoinType coin,
                             const std::optional<::url::Origin>& origin) const;
-  void GetNetworkUrl(
-      mojom::CoinType coin,
-      const std::optional<::url::Origin>& origin,
-      mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
@@ -464,6 +459,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
     skip_eth_chain_id_validation_for_testing_ = skipped;
   }
 
+  void SetGasPriceForTesting(const std::optional<std::string>& gas_price) {
+    gas_price_for_testing_ = gas_price;
+  }
+
   // Solana JSON RPCs
   void GetSolanaBalance(const std::string& pubkey,
                         const std::string& chain_id,
@@ -555,6 +554,22 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void AnkrGetAccountBalances(const std::string& account,
                               const std::vector<std::string>& chain_ids,
                               AnkrGetAccountBalancesCallback callback) override;
+
+  using SimulateSolanaTransactionCallback =
+      base::OnceCallback<void(uint64_t compute_units_consumed,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void SimulateSolanaTransaction(const std::string& chain_id,
+                                 const std::string& unsigned_tx,
+                                 SimulateSolanaTransactionCallback callback);
+
+  using GetRecentSolanaPrioritizationFeesCallback = base::OnceCallback<void(
+      std::vector<std::pair<uint64_t, uint64_t>>& recent_fees,
+      mojom::SolanaProviderError error,
+      const std::string& error_message)>;
+  void GetRecentSolanaPrioritizationFees(
+      const std::string& chain_id,
+      GetRecentSolanaPrioritizationFeesCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin,
@@ -755,6 +770,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnAnkrGetAccountBalances(AnkrGetAccountBalancesCallback callback,
                                 APIRequestResult api_request_result);
 
+  void OnSimulateSolanaTransaction(SimulateSolanaTransactionCallback callback,
+                                   APIRequestResult api_request_result);
+
+  void OnGetRecentSolanaPrioritizationFees(
+      GetRecentSolanaPrioritizationFeesCallback callback,
+      APIRequestResult api_request_result);
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::unique_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
@@ -779,6 +801,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
 
   bool skip_eth_chain_id_validation_for_testing_ = false;
+  std::optional<std::string> gas_price_for_testing_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   const raw_ptr<PrefService> prefs_ = nullptr;

@@ -11,7 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_parsing_error_or.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_info.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
@@ -28,20 +28,24 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
 
   ~AntiTargetingResource() override;
 
-  bool IsInitialized() const { return !!anti_targeting_; }
+  bool IsLoaded() const { return !!resource_; }
+
+  std::optional<std::string> GetManifestVersion() const {
+    return manifest_version_;
+  }
 
   AntiTargetingSiteList GetSites(const std::string& creative_set_id) const;
 
  private:
   void MaybeLoad();
-  void MaybeLoadOrReset();
+  void MaybeLoadOrUnload();
 
-  bool DidLoad() const { return did_load_; }
   void Load();
-  void LoadCallback(ResourceParsingErrorOr<AntiTargetingInfo> result);
+  void LoadCallback(
+      ResourceComponentParsingErrorOr<AntiTargetingResourceInfo> result);
 
-  void MaybeReset();
-  void Reset();
+  void MaybeUnload();
+  void Unload();
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
@@ -50,10 +54,9 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
                                           const std::string& id) override;
   void OnNotifyDidUnregisterResourceComponent(const std::string& id) override;
 
-  std::optional<AntiTargetingInfo> anti_targeting_;
-
-  bool did_load_ = false;
   std::optional<std::string> manifest_version_;
+
+  std::optional<AntiTargetingResourceInfo> resource_;
 
   base::WeakPtrFactory<AntiTargetingResource> weak_factory_{this};
 };

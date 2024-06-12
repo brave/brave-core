@@ -40,12 +40,6 @@ export type TokenPriceHistory = {
   close: number
 }
 
-export type WalletAccountTypeName =
-  | 'Primary'
-  | 'Secondary'
-  | 'Ledger'
-  | 'Trezor'
-
 export interface AssetOptionType {
   id: string
   name: string
@@ -258,19 +252,6 @@ export type SwapValidationErrorType =
   | 'insufficientLiquidity'
   | 'unknownError'
 
-export interface GetAllTokensReturnInfo {
-  tokens: BraveWallet.BlockchainToken[]
-}
-
-export interface GetNativeAssetBalancesReturnInfo {
-  balances: BraveWallet.JsonRpcService_GetBalance_ResponseParams[][]
-}
-
-export interface GetFlattenedAccountBalancesReturnInfo {
-  token: BraveWallet.BlockchainToken
-  balance: number
-}
-
 export interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
   fromAccount: Pick<
@@ -282,14 +263,8 @@ export interface BaseTransactionParams {
 }
 
 interface BaseEthTransactionParams extends BaseTransactionParams {
-  gas?: string
-
-  // Legacy gas pricing
-  gasPrice?: string
-
-  // EIP-1559 gas pricing
-  maxPriorityFeePerGas?: string
-  maxFeePerGas?: string
+  gasLimit: string
+  data: number[]
 }
 
 export interface SendFilTransactionParams extends BaseTransactionParams {
@@ -307,14 +282,7 @@ export interface SPLTransferFromParams extends BaseTransactionParams {
   decimals: number
 }
 
-export interface SendEthTransactionParams extends BaseEthTransactionParams {
-  data?: number[]
-}
-
-export type SendTransactionParams =
-  | SendEthTransactionParams
-  | SendFilTransactionParams
-  | SendSolTransactionParams
+export interface SendEthTransactionParams extends BaseEthTransactionParams {}
 
 export interface ER20TransferParams extends BaseEthTransactionParams {
   contractAddress: string
@@ -336,11 +304,6 @@ export interface ApproveERC20Params {
   contractAddress: string
   spenderAddress: string
   allowance: string
-}
-
-export interface SendETHFilForwardTransactionParams
-  extends BaseTransactionParams {
-  contractAddress: string
 }
 
 export interface SendBtcTransactionParams extends BaseTransactionParams {
@@ -407,17 +370,6 @@ export type TransactionInfo =
   | BraveWallet.TransactionInfo
   | SerializableTransactionInfo
 
-export type GetUnstoppableDomainsWalletAddrReturnInfo =
-  BraveWallet.JsonRpcService_UnstoppableDomainsGetWalletAddr_ResponseParams
-
-export type GetIsStrongPassswordReturnInfo =
-  BraveWallet.KeyringService_IsStrongPassword_ResponseParams
-
-export interface RecoveryObject {
-  value: string
-  id: number
-}
-
 export interface GetTransactionMessageToSignReturnInfo {
   message: string
 }
@@ -459,8 +411,6 @@ export interface AmountPresetObjectType {
   value: AmountPresetTypes
 }
 
-export type ToOrFromType = 'to' | 'from'
-
 export type TransactionDataType = {
   functionName: string
   parameters: string
@@ -490,14 +440,6 @@ export const BuySupportedChains = [
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID
 ]
-
-export interface GetAllNetworksList {
-  networks: BraveWallet.NetworkInfo[]
-}
-
-export interface SwitchChainRequestsList {
-  requests: BraveWallet.SwitchChainRequest[]
-}
 
 export type TransactionPanelPayload = {
   transactionAmount: string
@@ -609,6 +551,7 @@ export enum WalletRoutes {
   Portfolio = '/crypto/portfolio',
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
+  PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionId',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
   PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
 
@@ -687,6 +630,10 @@ export interface NFTMetadataReturnType {
     logo: string
   }
   attributes?: NFTAttribute[]
+  collection?: {
+    name?: string
+    family?: string
+  }
 }
 
 export interface TransactionProviderError {
@@ -783,6 +730,16 @@ export const CustomAssetSupportedCoinTypes = [
 export const DAppSupportedPrimaryChains = [
   BraveWallet.MAINNET_CHAIN_ID,
   BraveWallet.SOLANA_MAINNET
+]
+
+export const BitcoinMainnetKeyringIds = [
+  BraveWallet.KeyringId.kBitcoin84,
+  BraveWallet.KeyringId.kBitcoinImport
+]
+
+export const BitcoinTestnetKeyringIds = [
+  BraveWallet.KeyringId.kBitcoin84Testnet,
+  BraveWallet.KeyringId.kBitcoinImportTestnet
 ]
 
 /**
@@ -944,6 +901,11 @@ export interface CommonNftMetadata {
   image?: string
   image_url?: string
   name?: string
+  /** common in Solana NFTs */
+  collection?: {
+    name?: string
+    family?: string
+  }
 }
 
 export enum AddressMessageInfoIds {

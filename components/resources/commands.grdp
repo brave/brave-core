@@ -269,7 +269,7 @@
     Customize touch bar
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT_APPLE_EVENTS">
-    Toggle javascript apple events
+    Toggle JavaScript Apple Events
   </message>
   <message name="IDS_IDC_INSTALL_PWA">
     Install PWA
@@ -413,7 +413,7 @@
     Toggle shields
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT">
-    Toggle javascript
+    Toggle JavaScript
   </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble

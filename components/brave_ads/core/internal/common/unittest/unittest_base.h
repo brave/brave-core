@@ -16,10 +16,10 @@
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_notifier_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace base {
@@ -32,7 +32,8 @@ namespace brave_ads {
 class Database;
 class GlobalState;
 
-class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
+class UnitTestBase : public AdsClientNotifierForTesting,
+                     public ::testing::Test {
  public:
   UnitTestBase();
 
@@ -49,21 +50,21 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   void TearDown() override;
 
  protected:
-  // Override `SetUp()` and call `SetUp()` with `is_integration_test` set to
-  // `true` to test functionality and performance under product-like
-  // circumstances with data to replicate live settings to simulate what a real
-  // user scenario looks like from start to finish.
+  // Override `SetUp` and call `SetUp` with `is_integration_test` set to `true`
+  // to test functionality and performance under product-like circumstances with
+  // data to replicate live settings to simulate what a real user scenario looks
+  // like from start to finish.
   void SetUp(bool is_integration_test);
 
-  // Override `SetUpMocks()` to mock command line switches, file system, prefs,
-  // and the `AdsClient` before initialization.
+  // Override `SetUpMocks` to mock command-line switches, file system, prefs,
+  // and `AdsClient` before initialization.
   virtual void SetUpMocks() {}
 
   // Convenience function for accessing AdsImpl from integration tests.
   AdsImpl& GetAds() const;
 
   // Copies a single file from "data/test" to the temp path. Use
-  // `CopyDirectoryFromTestPathToTempPath()` to copy directories.
+  // `CopyDirectoryFromTestPathToTempPath` to copy directories.
   [[nodiscard]] bool CopyFileFromTestPathToTempPath(
       const std::string& from_path,
       const std::string& to_path) const;
@@ -81,7 +82,7 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   // Fast-forwards virtual time by `time_delta`, causing all tasks on the main
   // thread and thread pool with a remaining delay less than or equal to
   // `time_delta` to be executed in their natural order before this returns. For
-  // debugging purposes use `task_environment_.DescribeCurrentTasks()` to dump
+  // debugging purposes use `task_environment_.DescribeCurrentTasks` to dump
   // information about pending tasks. See `TaskEnvironment` for more detail.
   void FastForwardClockBy(base::TimeDelta time_delta);
 
@@ -93,33 +94,33 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   // Fast-forwards virtual time to `time`, causing all tasks on the main thread
   // and thread pool with a remaining delay less than or equal to `time` to be
   // executed in their natural order before this returns. For debugging purposes
-  // use `task_environment_.DescribeCurrentTasks()` to dump information about
+  // use `task_environment_.DescribeCurrentTasks` to dump information about
   // pending tasks. See `TaskEnvironment` for more detail.
   void FastForwardClockTo(base::Time time);
 
   // Fast-forwards virtual time to the next pending task, causing the task on
   // the main thread and thread pool to be executed before this returns. For
-  // debugging purposes use `task_environment_.DescribeCurrentTasks()` to dump
+  // debugging purposes use `task_environment_.DescribeCurrentTasks` to dump
   // information about pending tasks. See `TaskEnvironment` for more detail.
   void FastForwardClockToNextPendingTask();
 
   // Returns the delay until the next pending task on the main thread's
-  // TaskRunner if there is one, otherwise it returns TimeDelta::Max(). See
+  // TaskRunner if there is one, otherwise it returns `TimeDelta::Max`. See
   // `TaskEnvironment` for more detail.
   base::TimeDelta NextPendingTaskDelay() const;
 
   // Returns the number of pending tasks on the main thread's TaskRunner. When
-  // debugging, you can use `task_environment_.DescribeCurrentTasks()` to see
+  // debugging, you can use `task_environment_.DescribeCurrentTasks` to see
   // what those are. See `TaskEnvironment` for more detail.
   size_t GetPendingTaskCount() const;
 
   // Returns `true` if there are pending tasks on the main thread's TaskRunner.
-  // When debugging, use `task_environment_.DescribeCurrentTasks()` to see what
+  // When debugging, use `task_environment_.DescribeCurrentTasks` to see what
   // those are. See `TaskEnvironment` for more detail.
   bool HasPendingTasks() const;
 
-  // Unlike `FastForwardClockToNextPendingTask()`, `FastForwardClockTo()`,
-  // `FastForwardClockBy()` and `SuspendedFastForwardClockBy()`, `AdvanceClock*`
+  // Unlike `FastForwardClockToNextPendingTask`, `FastForwardClockTo`,
+  // `FastForwardClockBy` and `SuspendedFastForwardClockBy`, `AdvanceClock*`
   // does not run tasks. See `TaskEnvironment` for more detail.
   void AdvanceClockBy(base::TimeDelta time_delta);
   void AdvanceClockTo(base::Time time);
@@ -133,15 +134,10 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   ::testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
 
  private:
-  void MockAdsClientAddObserver();
-
+  void MockAdsClientNotifier();
   void MockAdsClient();
+  void Mock();
 
-  void MockSetProfilePref();
-
-  void MockSetLocalStatePref();
-
-  void SetUpTest();
   void SetUpIntegrationTest();
   void SetUpIntegrationTestCallback(bool success);
   void SetUpUnitTest();
@@ -151,16 +147,18 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  bool is_integration_test_ = false;
-
   brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
 
   ScopedBrowserVersionSetterForTesting scoped_browser_version_setter_;
 
   std::unique_ptr<Database> database_;
 
+  bool is_integration_test_ = false;
+
+  // Integration tests only.
   std::unique_ptr<AdsImpl> ads_;
 
+  // Unit tests only.
   std::unique_ptr<GlobalState> global_state_;
 
   base::WeakPtrFactory<UnitTestBase> weak_factory_{this};

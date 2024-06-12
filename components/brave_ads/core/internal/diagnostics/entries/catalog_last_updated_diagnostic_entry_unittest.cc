@@ -41,7 +41,7 @@ TEST_F(BraveAdsCatalogLastUpdatedDiagnosticEntryTest, CatalogNeverUpdated) {
   EXPECT_EQ(DiagnosticEntryType::kCatalogLastUpdated,
             diagnostic_entry.GetType());
   EXPECT_EQ("Catalog last updated", diagnostic_entry.GetName());
-  EXPECT_EQ("", diagnostic_entry.GetValue());
+  EXPECT_THAT(diagnostic_entry.GetValue(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

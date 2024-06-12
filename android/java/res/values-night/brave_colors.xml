@@ -46,11 +46,12 @@
     <color name="brave_wallet_dn_error_text_bg_color">#453e2d</color>
     <color name="brave_wallet_dn_highlight_bg_color">#1F1F27</color>
     <color name="brave_wallet_onboarding_card_view_background">#0D1214</color>
-    <color name="brave_wallet_checkbox_color">#7C91FF</color>
+    <color name="brave_wallet_dn_button_color">#C1C4FF</color>
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">@color/wallet_bg</color>
     <color name="text_disabled">#80EBEEF0</color>
+    <color name="text_on_primary">#251491</color>
     <color name="icon_interactive">#7C91FF</color>
     <color name="divider_subtle">#66687B85</color>
     <color name="system_feedback_error">#FFB1B0</color>
@@ -133,7 +134,6 @@
 
     <color name="wallet_text_color">#F6F7F8</color>
     <color name="wallet_secondary_text_color">#84889C</color>
-    <color name="wallet_onboarding_secondary_text_color">#DADFE1</color>
     <color name="wallet_secondary_layout_text_color">#C2C4CF</color>
     <color name="recovery_phrase_text_color">#1E2029</color>
     <color name="wallet_toolbar_bg_color">#000000</color>
@@ -256,6 +256,7 @@
 
     <color name="text_primary">#F3F5F7</color>
     <color name="text_secondary">#BECAD0</color>
+    <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
     <color name="container_background">#0d1214</color>
 </resources>

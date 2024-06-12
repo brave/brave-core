@@ -665,8 +665,8 @@ export class MockedWalletApiProxy {
   jsonRpcService: Partial<
     InstanceType<typeof BraveWallet.JsonRpcServiceInterface>
   > = {
-    getAllNetworks: async (coin: BraveWallet.CoinType) => {
-      return { networks: this.networks.filter((n) => n.coin === coin) }
+    getAllNetworks: async () => {
+      return { networks: this.networks }
     },
     getHiddenNetworks: async () => {
       return { chainIds: [] }
@@ -998,11 +998,15 @@ export class MockedWalletApiProxy {
   solanaTxManagerProxy: Partial<
     InstanceType<typeof BraveWallet.SolanaTxManagerProxyInterface>
   > = {
-    getEstimatedTxFee: async (chainId, txMetaId) => {
+    getSolanaTxFeeEstimation: async (chainId, txMetaId) => {
       return {
         error: 0,
         errorMessage: '',
-        fee: BigInt(100)
+        fee: {
+          baseFee: BigInt(0),
+          computeUnits: 0,
+          feePerComputeUnit: BigInt(0),
+        }
       }
     }
   }

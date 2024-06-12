@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -20,10 +21,13 @@
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/toolbar/app_menu_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "ui/base/models/button_menu_item_model.h"
+#include "ui/base/models/menu_separator_types.h"
 #include "ui/base/ui_base_features.h"
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -42,7 +46,6 @@
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/components/sidebar/browser/sidebar_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -73,70 +76,6 @@ class BraveHelpMenuModel : public ui::SimpleMenuModel {
                         IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER);
   }
 };
-
-#if defined(TOOLKIT_VIEWS)
-using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
-
-class SidebarMenuModel : public ui::SimpleMenuModel,
-                         public ui::SimpleMenuModel::Delegate {
- public:
-  explicit SidebarMenuModel(Browser* browser)
-      : SimpleMenuModel(this), browser_(browser) {
-    Build(browser_);
-  }
-
-  ~SidebarMenuModel() override = default;
-  SidebarMenuModel(const SidebarMenuModel&) = delete;
-  SidebarMenuModel& operator=(const SidebarMenuModel&) = delete;
-
-  // ui::SimpleMenuModel::Delegate overrides:
-  void ExecuteCommand(int command_id, int event_flags) override {
-    auto* service =
-        sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
-    service->SetSidebarShowOption(ConvertIDCToSidebarShowOptions(command_id));
-  }
-
-  bool IsCommandIdChecked(int command_id) const override {
-    const auto* service =
-        sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
-    return ConvertIDCToSidebarShowOptions(command_id) ==
-           service->GetSidebarShowOption();
-  }
-
- private:
-  void Build(Browser* browser) {
-    // IDC_XXX is used instead of direct kShowXXX and it's translated by
-    // ConvertIDCToSidebarShowOptions() to avoid any issue with app menu.
-    // Ex, id with 0 is always disabled state in the app menu.
-    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_ALWAYS,
-                 brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
-    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER,
-                 brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
-    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_NEVER,
-                 brave_l10n::GetLocalizedResourceUTF16String(
-                     IDS_SIDEBAR_SHOW_OPTION_NEVER));
-  }
-
-  ShowSidebarOption ConvertIDCToSidebarShowOptions(int id) const {
-    switch (id) {
-      case IDC_SIDEBAR_SHOW_OPTION_ALWAYS:
-        return ShowSidebarOption::kShowAlways;
-      case IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER:
-        return ShowSidebarOption::kShowOnMouseOver;
-      case IDC_SIDEBAR_SHOW_OPTION_NEVER:
-        return ShowSidebarOption::kShowNever;
-      default:
-        break;
-    }
-    NOTREACHED();
-    return ShowSidebarOption::kShowAlways;
-  }
-
-  raw_ptr<Browser> browser_ = nullptr;
-};
-#endif
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // For convenience, we show the last part of the key in the context menu item.
@@ -181,6 +120,24 @@ BraveAppMenuModel::BraveAppMenuModel(
 }
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
+
+#if defined(TOOLKIT_VIEWS)
+// static
+sidebar::SidebarService::ShowSidebarOption
+BraveAppMenuModel::ConvertIDCToSidebarShowOptions(int id) {
+  switch (id) {
+    case IDC_SIDEBAR_SHOW_OPTION_ALWAYS:
+      return sidebar::SidebarService::ShowSidebarOption::kShowAlways;
+    case IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER:
+      return sidebar::SidebarService::ShowSidebarOption::kShowOnMouseOver;
+    case IDC_SIDEBAR_SHOW_OPTION_NEVER:
+      return sidebar::SidebarService::ShowSidebarOption::kShowNever;
+    default:
+      break;
+  }
+  NOTREACHED_NORETURN();
+}
+#endif  // defined(TOOLKIT_VIEWS)
 
 void BraveAppMenuModel::Build() {
   // Customize items after build chromium items.
@@ -291,6 +248,30 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
   }
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+  if (sidebar::CanUseSidebar(browser())) {
+    sidebar_show_option_model_ = std::make_unique<ui::ButtonMenuItemModel>(
+        IDS_APP_MENU_SIDEBAR_TITLE, this);
+
+    sidebar_show_option_model_->AddGroupItemWithStringId(
+        IDC_SIDEBAR_SHOW_OPTION_ALWAYS, IDS_APP_MENU_SIDEBAR_ON);
+    sidebar_show_option_model_->AddGroupItemWithStringId(
+        IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER, IDS_APP_MENU_SIDEBAR_HOVER);
+    sidebar_show_option_model_->AddGroupItemWithStringId(
+        IDC_SIDEBAR_SHOW_OPTION_NEVER, IDS_APP_MENU_SIDEBAR_OFF);
+    const auto index = GetNextIndexOfBraveProductsSection();
+    AddButtonItemAt(IDC_SIDEBAR_SHOW_OPTION_MENU,
+                    sidebar_show_option_model_.get(),
+                    static_cast<size_t>(index));
+    // Insert separator to the top and bottom
+    InsertSeparatorAt(index, ui::LOWER_SEPARATOR);
+    InsertSeparatorAt(index + 2, ui::UPPER_SEPARATOR);
+
+    // Already added separator.
+    need_separator = false;
+  }
+#endif
+
   if (need_separator) {
     InsertSeparatorAt(GetNextIndexOfBraveProductsSection(),
                       ui::NORMAL_SEPARATOR);
@@ -368,17 +349,6 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
                                              ui::NORMAL_SEPARATOR);
     need_separator = false;
   }
-
-#if defined(TOOLKIT_VIEWS)
-  if (sidebar::CanUseSidebar(browser())) {
-    sub_menus().push_back(std::make_unique<SidebarMenuModel>(browser()));
-    more_tools_menu_model->InsertSubMenuWithStringIdAt(
-        next_target_index++, IDC_SIDEBAR_SHOW_OPTION_MENU,
-        IDS_SIDEBAR_SHOW_OPTION_TITLE, sub_menus().back().get());
-    more_tools_menu_model->InsertSeparatorAt(next_target_index++,
-                                             ui::NORMAL_SEPARATOR);
-  }
-#endif
 
   if (media_router::MediaRouterEnabled(browser()->profile())) {
     more_tools_menu_model->InsertItemWithStringIdAt(
@@ -517,7 +487,19 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
       ExecuteIPFSCommand(id, std::string());
       return;
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+
+#if defined(TOOLKIT_VIEWS)
+  if (id == IDC_SIDEBAR_SHOW_OPTION_ALWAYS ||
+      id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
+      id == IDC_SIDEBAR_SHOW_OPTION_NEVER) {
+    auto* service =
+        sidebar::SidebarServiceFactory::GetForProfile(browser()->profile());
+    service->SetSidebarShowOption(ConvertIDCToSidebarShowOptions(id));
+    return;
+  }
+#endif  // defined(TOOLKIT_VIEWS)
+
   return AppMenuModel::ExecuteCommand(id, event_flags);
 }
 
@@ -549,6 +531,15 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
     // used.
     return true;
   }
+
+#if defined(TOOLKIT_VIEWS)
+  if (id == IDC_SIDEBAR_SHOW_OPTION_ALWAYS ||
+      id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
+      id == IDC_SIDEBAR_SHOW_OPTION_NEVER) {
+    return sidebar::CanUseSidebar(browser());
+  }
+#endif  // defined(TOOLKIT_VIEWS)
+
   return AppMenuModel::IsCommandIdEnabled(id);
 }
 
@@ -629,13 +620,11 @@ int BraveAppMenuModel::AddIpfsImportMenuItem(int action_command_id,
 #endif
 
 size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {
-  std::vector<int> commands_to_check = {IDC_APP_MENU_IPFS,
-                                        IDC_SHOW_BRAVE_VPN_PANEL,
-                                        IDC_BRAVE_VPN_MENU,
-                                        IDC_SHOW_BRAVE_WALLET,
-                                        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-                                        IDC_NEW_INCOGNITO_WINDOW,
-                                        IDC_NEW_WINDOW};
+  std::vector<int> commands_to_check = {
+      IDC_SIDEBAR_SHOW_OPTION_MENU, IDC_APP_MENU_IPFS,
+      IDC_SHOW_BRAVE_VPN_PANEL,     IDC_BRAVE_VPN_MENU,
+      IDC_SHOW_BRAVE_WALLET,        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+      IDC_NEW_INCOGNITO_WINDOW,     IDC_NEW_WINDOW};
   const auto last_index_of_second_section =
       GetProperItemIndex(commands_to_check, false).value();
   const auto last_cmd_id_of_second_section =

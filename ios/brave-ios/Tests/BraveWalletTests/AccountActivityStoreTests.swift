@@ -14,10 +14,10 @@ class AccountActivityStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
-  let networks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-    .eth: [.mockMainnet, .mockGoerli],
-    .sol: [.mockSolana, .mockSolanaTestnet],
-    .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
+  let networks: [BraveWallet.NetworkInfo] = [
+    .mockMainnet, .mockGoerli,
+    .mockSolana, .mockSolanaTestnet,
+    .mockFilecoinMainnet, .mockFilecoinTestnet,
   ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
@@ -68,8 +68,8 @@ class AccountActivityStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._addObserver = { _ in }
-    rpcService._allNetworks = { coin, completion in
-      completion(self.networks[coin] ?? [])
+    rpcService._allNetworks = {
+      $0(self.networks)
     }
     rpcService._balance = { _, coin, chainId, completion in
       switch chainId {
@@ -165,7 +165,12 @@ class AccountActivityStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
+    let feeEstimation = BraveWallet.SolanaFeeEstimation(
+      baseFee: UInt64(0),
+      computeUnits: UInt32(0),
+      feePerComputeUnit: UInt64(0)
+    )
+    solTxManagerProxy._solanaTxFeeEstimation = { $2(feeEstimation, .success, "") }
 
     let ipfsApi = TestIpfsAPI()
 
@@ -184,7 +189,7 @@ class AccountActivityStoreTests: XCTestCase {
     // Monday, November 8, 2021 7:27:51 PM
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockEthAccount
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockEthDecimalBalance: Double = 0.0896
     let numEthDecimals = Int(BraveWallet.NetworkInfo.mockMainnet.nativeToken.decimals)
     let mockEthBalanceWei =
@@ -589,7 +594,7 @@ class AccountActivityStoreTests: XCTestCase {
     transactionCopy.id = UUID().uuidString
     transactionCopy.chainId = BraveWallet.FilecoinTestnet
 
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockFilDecimalBalance: Double = 2
     let filecoinMainnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinMainnet.decimals)
     let mockFilDecimalBalanceInWei =

@@ -62,11 +62,11 @@ class BitcoinBlockTrackerUnitTest : public testing::Test {
     tracker_ = std::make_unique<BitcoinBlockTracker>(bitcoin_rpc_.get());
 
     auto btc_mainnet =
-        GetKnownChain(&prefs_, mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+        GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
     btc_mainnet->rpc_endpoints[0] = GURL("https://btc-mainnet.com");
     AddCustomNetwork(&prefs_, *btc_mainnet);
     auto btc_testnet =
-        GetKnownChain(&prefs_, mojom::kBitcoinTestnet, mojom::CoinType::BTC);
+        GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC);
     btc_testnet->rpc_endpoints[0] = GURL("https://btc-testnet.com");
     AddCustomNetwork(&prefs_, *btc_testnet);
   }

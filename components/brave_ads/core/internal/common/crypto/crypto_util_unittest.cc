@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT
 
@@ -34,7 +35,7 @@ TEST(BraveAdsCryptoUtilTest, Sha256) {
 
 TEST(BraveAdsCryptoUtilTest, Sha256WithEmptyString) {
   // Act
-  const std::vector<uint8_t> sha256 = Sha256({});
+  const std::vector<uint8_t> sha256 = Sha256(/*value=*/{});
 
   // Assert
   EXPECT_EQ("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
@@ -51,38 +52,37 @@ TEST(BraveAdsCryptoUtilTest, GenerateSignKeyPairFromSeed) {
   const std::optional<KeyPairInfo> key_pair =
       GenerateSignKeyPairFromSeed(*seed);
   ASSERT_TRUE(key_pair);
+  ASSERT_THAT(key_pair->public_key,
+              ::testing::SizeIs(crypto_sign_ed25519_PUBLICKEYBYTES));
+  ASSERT_THAT(key_pair->secret_key,
+              ::testing::SizeIs(crypto_sign_ed25519_SECRETKEYBYTES));
 
   // Assert
-  EXPECT_EQ(crypto_sign_ed25519_PUBLICKEYBYTES,
-            static_cast<int>(key_pair->public_key.size()));
-  EXPECT_EQ(crypto_sign_ed25519_SECRETKEYBYTES,
-            static_cast<int>(key_pair->secret_key.size()));
   EXPECT_TRUE(key_pair->IsValid());
 }
 
 TEST(BraveAdsCryptoUtilTest, GenerateBoxKeyPair) {
   // Act
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
+  ASSERT_THAT(key_pair.public_key,
+              ::testing::SizeIs(crypto_box_PUBLICKEYBYTES));
+  ASSERT_THAT(key_pair.secret_key,
+              ::testing::SizeIs(crypto_box_SECRETKEYBYTES));
 
   // Assert
-  EXPECT_EQ(crypto_box_PUBLICKEYBYTES,
-            static_cast<int>(key_pair.public_key.size()));
-  EXPECT_EQ(crypto_box_SECRETKEYBYTES,
-            static_cast<int>(key_pair.secret_key.size()));
   EXPECT_TRUE(key_pair.IsValid());
 }
 
 TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
-  // Act
-  const std::vector<uint8_t> nonce = GenerateRandomNonce();
-
-  // Assert
-  EXPECT_EQ(crypto_box_NONCEBYTES, static_cast<int>(nonce.size()));
+  // Act & Assert
+  EXPECT_THAT(GenerateRandomNonce(), ::testing::SizeIs(crypto_box_NONCEBYTES));
 }
 
 TEST(BraveAdsCryptoUtilTest, Sign) {
-  // Act & Assert
+  // Act
   const std::optional<std::string> signature = Sign(kMessage, kSecretKey);
+
+  // Assert
   EXPECT_TRUE(signature);
   EXPECT_TRUE(Verify(kMessage, kPublicKey, *signature));
 }

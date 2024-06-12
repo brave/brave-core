@@ -137,7 +137,8 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& dict) {
 
   if (const auto* const brand_url = dict.FindString(kBrandUrl)) {
     ad_content.brand_url = GURL(*brand_url);
-  } else if (const auto* legacy_brand_url = dict.FindString(kLegacyBrandUrl)) {
+  } else if (const auto* const legacy_brand_url =
+                 dict.FindString(kLegacyBrandUrl)) {
     ad_content.brand_url = GURL(*legacy_brand_url);
   }
 

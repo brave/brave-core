@@ -12,7 +12,12 @@
 
 namespace brave_ads {
 
+class UnitTestBase;
+
 void MockFlags();
+
+void MockAdsClientNotifierAddObserver(AdsClientMock& mock,
+                                      UnitTestBase& unit_test_base);
 
 void MockShowNotificationAd(AdsClientMock& mock);
 void MockCloseNotificationAd(AdsClientMock& mock);
@@ -32,12 +37,18 @@ void MockLoadDataResource(AdsClientMock& mock);
 void MockRunDBTransaction(AdsClientMock& mock, Database& database);
 
 void MockGetProfilePref(const AdsClientMock& mock);
+void MockSetProfilePref(const AdsClientMock& mock,
+                        UnitTestBase& unit_test_base);
 void MockClearProfilePref(AdsClientMock& mock);
 void MockHasProfilePrefPath(const AdsClientMock& mock);
 
 void MockGetLocalStatePref(const AdsClientMock& mock);
+void MockSetLocalStatePref(const AdsClientMock& mock,
+                           UnitTestBase& unit_test_base);
 void MockClearLocalStatePref(AdsClientMock& mock);
 void MockHasLocalStatePrefPath(const AdsClientMock& mock);
+
+void LoadState();
 
 }  // namespace brave_ads
 

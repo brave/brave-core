@@ -398,12 +398,70 @@ class SolanaProviderTest : public InProcessBrowserTest {
     } else if (*method == "getBlockHeight") {
       std::string reply = R"({ "jsonrpc": "2.0", "id": 1, "result": 1233 })";
       http_response->set_content(reply);
+    } else if (*method == "getLatestBlockhash") {
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "context": {
+            "slot": 1069
+          },
+          "value": {
+            "blockhash": "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N",
+            "lastValidBlockHeight": 18446744073709551615
+          }
+        }
+      })";
+      http_response->set_content(reply);
+    } else if (*method == "simulateTransaction") {
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": {
+          "context": {
+            "apiVersion": "1.17.25",
+            "slot": 259225005
+          },
+          "value": {
+            "accounts": null,
+            "err": null,
+            "logs": [
+              "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY invoke [1]",
+              "Program log: Instruction: Transfer",
+              "Program BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY success"
+            ],
+            "returnData": null,
+            "unitsConsumed": 69017
+          }
+        }
+      })";
+      http_response->set_content(reply);
+    } else if (*method == "getSignatureStatuses") {
+      std::string reply =
+          R"({"jsonrpc":"2.0", "id":1, "result":"signature status not provided"})";
+      http_response->set_content(reply);
+    } else if (*method == "getFeeForMessage") {
+      std::string reply =
+          R"({"jsonrpc":"2.0", "id":1, "result":{"value":5000}})";
+      http_response->set_content(reply);
+    } else if (*method == "getRecentPrioritizationFees") {
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": [
+          {"prioritizationFee": 100, "slot": 293251906},
+          {"prioritizationFee": 200, "slot": 293251906},
+          {"prioritizationFee": 0, "slot": 293251805}
+        ]
+      })";
+      http_response->set_content(reply);
     } else {
-      http_response->set_content(R"({
-      "jsonrpc": "2.0",
-      "id": 1,
-      "result": "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbVmPBrie3o9yuyB"
-    })");
+      std::string reply = R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": "ns1aBL6AowxpiPzQL3ZeBK1RpCSLq1VfhqNw9KFSsytayARYdYrqrmbmhaizUTTkT4SXEnjnbVmPBrie3o9yuyB"
+      })";
+      http_response->set_content(reply);
     }
     return std::move(http_response);
   }

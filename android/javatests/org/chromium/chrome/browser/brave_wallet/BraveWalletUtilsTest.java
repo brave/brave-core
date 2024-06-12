@@ -523,11 +523,15 @@ public class BraveWalletUtilsTest {
                 java.lang.Object v = f.get(testStruct);
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
-                    if (varName.equals("chainId") || varName.equals("chainName")
-                            || varName.equals("blockExplorerUrls") || varName.equals("iconUrls")
-                            || varName.equals("rpcEndpoints") || varName.equals("supportedKeyrings")
-                            || varName.equals("activeRpcEndpointIndex") || varName.equals("symbol")
-                            || varName.equals("symbolName") || varName.equals("isEip1559")) {
+                    if (varName.equals("chainId")
+                            || varName.equals("chainName")
+                            || varName.equals("blockExplorerUrls")
+                            || varName.equals("iconUrls")
+                            || varName.equals("rpcEndpoints")
+                            || varName.equals("supportedKeyrings")
+                            || varName.equals("activeRpcEndpointIndex")
+                            || varName.equals("symbol")
+                            || varName.equals("symbolName")) {
                         continue;
                     }
                     if (v == null) {

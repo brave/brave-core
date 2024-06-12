@@ -28,13 +28,15 @@ TabManager& TabManager::GetInstance() {
   return GlobalState::GetInstance()->GetTabManager();
 }
 
-void TabManager::AddObserver(TabManagerObserver* observer) {
+void TabManager::AddObserver(TabManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.AddObserver(observer);
 }
 
-void TabManager::RemoveObserver(TabManagerObserver* observer) {
+void TabManager::RemoveObserver(TabManagerObserver* const observer) {
   CHECK(observer);
+
   observers_.RemoveObserver(observer);
 }
 
@@ -148,7 +150,7 @@ void TabManager::OnNotifyTabHtmlContentDidChange(
   CHECK(!redirect_chain.empty());
 
   const uint32_t hash = base::FastHash(html);
-  if (hash == last_html_content_hash_) {
+  if (!html.empty() && hash == last_html_content_hash_) {
     // No change.
     return;
   }

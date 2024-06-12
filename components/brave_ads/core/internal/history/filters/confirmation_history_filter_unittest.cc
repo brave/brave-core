@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
-#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

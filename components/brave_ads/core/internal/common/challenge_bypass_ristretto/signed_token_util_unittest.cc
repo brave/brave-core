@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_unittest_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -27,15 +28,8 @@ TEST(BraveAdsSignedTokenUtilTest, TokensToRawTokens) {
 }
 
 TEST(BraveAdsSignedTokenUtilTest, EmptyTokensToRawTokens) {
-  // Arrange
-  const std::vector<SignedToken> tokens;
-
-  // Act
-  const std::vector<challenge_bypass_ristretto::SignedToken> raw_tokens =
-      ToRawSignedTokens(tokens);
-
-  // Assert
-  EXPECT_TRUE(raw_tokens.empty());
+  // Act & Assert
+  EXPECT_THAT(ToRawSignedTokens(/*tokens=*/{}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

@@ -60,12 +60,12 @@ class BitcoinRpcUnitTest : public testing::Test {
         &prefs_, shared_url_loader_factory_);
 
     mainnet_rpc_url_ =
-        GetKnownChain(&prefs_, mojom::kBitcoinMainnet, mojom::CoinType::BTC)
+        GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
             ->rpc_endpoints.front()
             .spec();
 
     auto btc_testnet =
-        GetKnownChain(&prefs_, mojom::kBitcoinTestnet, mojom::CoinType::BTC);
+        GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC);
     btc_testnet->rpc_endpoints[0] = GURL(testnet_rpc_url_);
     AddCustomNetwork(&prefs_, *btc_testnet);
   }

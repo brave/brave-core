@@ -26,16 +26,10 @@ function addElementsDynamically() {
 
 let didWait = false;
 
-function checkSelector(selector, property, expected) {
+function check(selector, predicate) {
   const checkSelectorInner = () => {
     let elements = [].slice.call(document.querySelectorAll(selector));
-    if (elements.length === 0)
-      return false
-    let result = elements.every(e => {
-      let style = window.getComputedStyle(e);
-      return style[property] === expected;
-    })
-    return result;
+    return predicate(elements);
   };
 
   // The first selector check must occur after the page has had time to load,
@@ -52,28 +46,72 @@ function checkSelector(selector, property, expected) {
   }
 }
 
-async function waitCSSSelector(selector, property, expected) {
-  if (await checkSelector(selector, property, expected)) {
+async function wait(selector, predicate) {
+  if (await check(selector, predicate)) {
     return true;
   } else {
-    console.log('still waiting for css selector');
+    console.log('still waiting for css selector ' + selector);
     return new Promise(resolve => {
       setTimeout(function () {
-        resolve(waitCSSSelector(selector, property, expected));
+        resolve(wait(selector, predicate));
       }, 200);
     });
   }
 }
+
+// true if matches and the CSS style of every matched element has the expected value for the property
+const cssSelector = (property, expected) =>
+  (elements) => {
+    if (elements.length === 0)
+      return false
+    let result = elements.every(e => {
+      let style = window.getComputedStyle(e);
+      return style[property] === expected;
+    })
+    return result;
+  };
+
+function checkSelector(selector, property, expected) {
+  return check(selector, cssSelector(property, expected));
+}
+
+const waitCSSSelector = async (selector, property, expected) => wait(selector, cssSelector(property, expected));
+
+// true if the selector matches some elements or no elements
+const existence = (expectedToHaveElements) =>
+  (elements) => {
+    return !!elements.length === expectedToHaveElements;
+  };
+
+// true if matched and every matched element has exactly the specified named attributes
+const attributes = (expectedAttributes) =>
+  (elements) => {
+    if (elements.length === 0)
+      return false;
+    return elements.every(e => {
+      return e.attributes.length === expectedAttributes.length && expectedAttributes.every(a => e.hasAttribute(a));
+    });
+  };
+
+// true if matches and every matched element has exactly the specified classes
+const classes = (expectedClasses) =>
+  (elements) => {
+    if (elements.length === 0)
+      return false;
+    return elements.every(e => {
+      return e.classList.length === expectedClasses.length && expectedClasses.every(c => e.classList.contains(c));
+    });
+  };
 
 </script>
 </head>
 <body>
     <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad-banner">
-        <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+        <div class="ad abc def" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
     </div>
-    <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
-    <div class="ad" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad ghi jkl" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad mno pqr" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
     <iframe id="iframe" src="about:blank"></iframe>
 
     <!-- Assume that the document host is test.lion.appspot.com (see AdBlockServiceTest.*) -->

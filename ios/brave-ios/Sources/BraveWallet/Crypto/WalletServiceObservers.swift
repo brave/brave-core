@@ -201,19 +201,16 @@ class JsonRpcServiceObserver: BraveWalletJsonRpcServiceObserver {
   var _chainChangedEvent:
     ((_ chainId: String, _ coin: BraveWallet.CoinType, _ origin: URLOrigin?) -> Void)?
   var _onAddEthereumChainRequestCompleted: ((_ chainId: String, _ error: String) -> Void)?
-  var _onIsEip1559Changed: ((_ chainId: String, _ isEip1559: Bool) -> Void)?
 
   init(
     rpcService: BraveWalletJsonRpcService,
     _chainChangedEvent: (
       (_ chainId: String, _ coin: BraveWallet.CoinType, _ origin: URLOrigin?) -> Void
     )? = nil,
-    _onAddEthereumChainRequestCompleted: ((_ chainId: String, _ error: String) -> Void)? = nil,
-    _onIsEip1559Changed: ((_ chainId: String, _ isEip1559: Bool) -> Void)? = nil
+    _onAddEthereumChainRequestCompleted: ((_ chainId: String, _ error: String) -> Void)? = nil
   ) {
     self._chainChangedEvent = _chainChangedEvent
     self._onAddEthereumChainRequestCompleted = _onAddEthereumChainRequestCompleted
-    self._onIsEip1559Changed = _onIsEip1559Changed
     rpcService.addObserver(self)
   }
 
@@ -225,7 +222,4 @@ class JsonRpcServiceObserver: BraveWalletJsonRpcServiceObserver {
     _onAddEthereumChainRequestCompleted?(chainId, error)
   }
 
-  func onIsEip1559Changed(chainId: String, isEip1559: Bool) {
-    _onIsEip1559Changed?(chainId, isEip1559)
-  }
 }

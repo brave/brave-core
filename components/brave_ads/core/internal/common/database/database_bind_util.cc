@@ -39,7 +39,7 @@ std::string BuildBindingParameterPlaceholders(
   return base::JoinString(placeholders, ", ");
 }
 
-void Bind(sql::Statement* statement,
+void Bind(sql::Statement* const statement,
           const mojom::DBCommandBindingInfo& binding) {
   CHECK(statement);
 
@@ -76,7 +76,7 @@ void Bind(sql::Statement* statement,
   }
 }
 
-void BindNull(mojom::DBCommandInfo* command, const int32_t index) {
+void BindNull(mojom::DBCommandInfo* const command, const int32_t index) {
   CHECK(command);
 
   mojom::DBCommandBindingInfoPtr binding = mojom::DBCommandBindingInfo::New();
@@ -134,7 +134,7 @@ void BindBool(mojom::DBCommandInfo* command,
   command->bindings.push_back(std::move(binding));
 }
 
-void BindString(mojom::DBCommandInfo* command,
+void BindString(mojom::DBCommandInfo* const command,
                 const int32_t index,
                 const std::string& value) {
   CHECK(command);

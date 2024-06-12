@@ -42,57 +42,60 @@ class AdsClientNotifier {
   void RemoveObserver(AdsClientNotifierObserver* observer);
 
   // Invoked to fire all pending observer events.
-  void NotifyPendingObservers();
+  virtual void NotifyPendingObservers();
 
   // Invoked when ads did initialize.
-  void NotifyDidInitializeAds() const;
+  virtual void NotifyDidInitializeAds();
 
   // Invoked when the user changes the locale of their operating system. This
   // call is not required if the operating system restarts the browser when
   // changing the locale. `locale` should be specified in either
   // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
-  void NotifyLocaleDidChange(const std::string& locale) const;
+  virtual void NotifyLocaleDidChange(const std::string& locale);
 
   // Invoked when a preference has changed for the specified `path`.
-  void NotifyPrefDidChange(const std::string& path) const;
+  virtual void NotifyPrefDidChange(const std::string& path);
 
   // Invoked when a resource component with `id` has been updated to
   // `manifest_version`.
-  void NotifyDidUpdateResourceComponent(const std::string& manifest_version,
-                                        const std::string& id) const;
+  virtual void NotifyDidUpdateResourceComponent(
+      const std::string& manifest_version,
+      const std::string& id);
 
   // Invoked when a resource component with `id` has been unregistered.
-  void NotifyDidUnregisterResourceComponent(const std::string& id) const;
+  virtual void NotifyDidUnregisterResourceComponent(const std::string& id);
 
   // Invoked when the Brave Rewards wallet did update.
-  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
-                                    const std::string& recovery_seed) const;
+  virtual void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
+                                            const std::string& recovery_seed);
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
   // the list). `text` containing the page content as text.
-  void NotifyTabTextContentDidChange(int32_t tab_id,
-                                     const std::vector<GURL>& redirect_chain,
-                                     const std::string& text) const;
+  virtual void NotifyTabTextContentDidChange(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::string& text);
 
   // Invoked when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
   // occurred on the way to the current page. The current page is the last one
   // in the list (so even when there's no redirect, there should be one entry in
   // the list). `html` containing the page content as HTML.
-  void NotifyTabHtmlContentDidChange(int32_t tab_id,
-                                     const std::vector<GURL>& redirect_chain,
-                                     const std::string& html) const;
+  virtual void NotifyTabHtmlContentDidChange(
+      int32_t tab_id,
+      const std::vector<GURL>& redirect_chain,
+      const std::string& html);
 
   // Invoked when media starts playing on a browser tab for the specified
   // `tab_id`.
-  void NotifyTabDidStartPlayingMedia(int32_t tab_id) const;
+  virtual void NotifyTabDidStartPlayingMedia(int32_t tab_id);
 
   // Invoked when media stops playing on a browser tab for the specified
   // `tab_id`.
-  void NotifyTabDidStopPlayingMedia(int32_t tab_id) const;
+  virtual void NotifyTabDidStopPlayingMedia(int32_t tab_id);
 
   // Invoked when a browser tab is updated with the specified `redirect_chain`
   // containing a list of redirect URLs that occurred on the way to the current
@@ -102,46 +105,46 @@ class AdsClientNotifier {
   // `is_error_page` should be set to `true` if an error occurred otherwise
   // should be set to `false`. `is_visible` should be set to `true` if `tab_id`
   // refers to the currently visible tab otherwise should be set to `false`.
-  void NotifyTabDidChange(int32_t tab_id,
-                          const std::vector<GURL>& redirect_chain,
-                          bool is_new_navigation,
-                          bool is_restoring,
-                          bool is_error_page,
-                          bool is_visible) const;
+  virtual void NotifyTabDidChange(int32_t tab_id,
+                                  const std::vector<GURL>& redirect_chain,
+                                  bool is_new_navigation,
+                                  bool is_restoring,
+                                  bool is_error_page,
+                                  bool is_visible);
 
   // Invoked when a browser tab with the specified `tab_id` is closed.
-  void NotifyDidCloseTab(int32_t tab_id) const;
+  virtual void NotifyDidCloseTab(int32_t tab_id);
 
   // Invoked when a page navigation was initiated by a user gesture.
   // `page_transition_type` containing the page transition type, see enums for
   // `PageTransitionType`.
-  void NotifyUserGestureEventTriggered(int32_t page_transition_type) const;
+  virtual void NotifyUserGestureEventTriggered(int32_t page_transition_type);
 
   // Invoked when a user has been idle for the given threshold. NOTE: This
   // should not be called on mobile devices.
-  void NotifyUserDidBecomeIdle() const;
+  virtual void NotifyUserDidBecomeIdle();
 
   // Invoked when a user is no longer idle. `idle_time` is the duration of time
   // that the user was idle. `screen_was_locked` should be `true` if the screen
   // was locked, otherwise `false`. NOTE: This should not be called on mobile
   // devices.
-  void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
-                                 bool screen_was_locked) const;
+  virtual void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                         bool screen_was_locked);
 
   // Invoked when the browser did enter the foreground.
-  void NotifyBrowserDidEnterForeground() const;
+  virtual void NotifyBrowserDidEnterForeground();
 
   // Invoked when the browser did enter the background.
-  void NotifyBrowserDidEnterBackground() const;
+  virtual void NotifyBrowserDidEnterBackground();
 
   // Invoked when the browser did become active.
-  void NotifyBrowserDidBecomeActive() const;
+  virtual void NotifyBrowserDidBecomeActive();
 
   // Invoked when the browser did resign active.
-  void NotifyBrowserDidResignActive() const;
+  virtual void NotifyBrowserDidResignActive();
 
-  // Invoked when the user solves an adaptive captch.
-  void NotifyDidSolveAdaptiveCaptcha() const;
+  // Invoked when the user solves an adaptive captcha.
+  virtual void NotifyDidSolveAdaptiveCaptcha();
 
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;

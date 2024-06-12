@@ -35,6 +35,9 @@ class KeyringService;
 
 class EthTxManager : public TxManager, public EthBlockTracker::Observer {
  public:
+  using AddUnapprovedEvmTransactionCallback =
+      mojom::TxService::AddUnapprovedEvmTransactionCallback;
+
   EthTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
                KeyringService* keyring_service,
@@ -44,6 +47,11 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
   ~EthTxManager() override;
   EthTxManager(const EthTxManager&) = delete;
   EthTxManager operator=(const EthTxManager&) = delete;
+
+  void AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParamsPtr params,
+      const std::optional<url::Origin>& origin,
+      AddUnapprovedEvmTransactionCallback callback);
 
   // TxManager
   void AddUnapprovedTransaction(const std::string& chain_id,
@@ -288,6 +296,7 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
 
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
+  raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
 

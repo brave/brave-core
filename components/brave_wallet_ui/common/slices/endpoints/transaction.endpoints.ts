@@ -44,15 +44,11 @@ import {
   navigateToConnectHardwareWallet
 } from '../../../utils/api-utils'
 import {
-  getAccountType,
   findAccountByAccountId,
   isHardwareAccount
 } from '../../../utils/account-utils'
 import { makeSerializableTransaction } from '../../../utils/model-serialization-utils'
-import {
-  hasEIP1559Support,
-  getCoinFromTxDataUnion
-} from '../../../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
 import { sortTransactionByDate, toTxDataUnion } from '../../../utils/tx-utils'
 import {
@@ -882,10 +878,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: payload.value,
-              gas: payload.gas,
-              gasPrice: payload.gasPrice,
-              maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
-              maxFeePerGas: payload.maxFeePerGas,
+              gasLimit: payload.gasLimit,
               data
             },
             txService
@@ -976,10 +969,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: '0x0',
-              gas: payload.gas,
-              gasPrice: payload.gasPrice,
-              maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
-              maxFeePerGas: payload.maxFeePerGas,
+              gasLimit: payload.gasLimit,
               data
             },
             txService
@@ -1038,10 +1028,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: '0x0',
-              gas: payload.gas,
-              gasPrice: payload.gasPrice,
-              maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
-              maxFeePerGas: payload.maxFeePerGas,
+              gasLimit: payload.gasLimit,
               data
             },
             txService
@@ -1094,6 +1081,7 @@ export const transactionEndpoints = ({
               fromAccount: payload.fromAccount,
               to: payload.contractAddress,
               value: '0x0',
+              gasLimit: '',
               data
             },
             txService
@@ -1772,14 +1760,22 @@ export const transactionEndpoints = ({
         try {
           const { solanaTxManagerProxy } = baseQuery(undefined).data
           const { errorMessage, fee } =
-            await solanaTxManagerProxy.getEstimatedTxFee(arg.chainId, arg.txId)
+            await solanaTxManagerProxy.getSolanaTxFeeEstimation(
+              arg.chainId,
+              arg.txId
+            )
 
           if (!fee) {
             throw new Error(errorMessage)
           }
 
+          const priorityFee = (BigInt(fee.computeUnits)
+                            * BigInt(fee.feePerComputeUnit))
+            / BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT);
+          const totalFee = BigInt(fee.baseFee) + priorityFee;
+
           return {
-            data: fee.toString()
+            data: totalFee.toString()
           }
         } catch (error) {
           return handleEndpointError(
@@ -1804,62 +1800,17 @@ async function sendEvmTransaction({
   payload: SendEthTransactionParams
   txService: BraveWallet.TxServiceRemote
 }): Promise<{ data: { success: boolean } }> {
-  /***
-   * Determine whether to create a legacy or EIP-1559
-   * transaction.
-   *
-   * isEIP1559 is true IFF:
-   *   - network supports EIP-1559
-   *
-   *     AND
-   *
-   *   - keyring supports EIP-1559
-   *     (ex: certain hardware wallets vendors)
-   *
-   *     AND
-   *
-   *   - payload: SendEthTransactionParams has NOT specified
-   *     legacy gas-pricing fields.
-   *
-   * In all other cases, fallback to legacy gas-pricing fields.
-   * For example, if network and keyring support EIP-1559, but
-   * the legacy gasPrice field is specified in the payload, then
-   * type-0 transaction should be created.
-   */
-  const isEIP1559 =
-    payload.gasPrice === undefined &&
-    hasEIP1559Support(getAccountType(payload.fromAccount), payload.network)
-
-  const txData: BraveWallet.TxData = {
-    nonce: '',
-    // Estimated by eth_tx_service
-    // if value is '' for legacy transactions
-    gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
-    // Estimated by eth_tx_service if value is ''
-    gasLimit: payload.gas || '',
+  const params: BraveWallet.NewEvmTransactionParams = {
+    chainId: payload.network.chainId,
+    from: payload.fromAccount.accountId,
+    gasLimit: payload.gasLimit,
     to: payload.to,
     value: payload.value,
-    data: payload.data || [],
-    signOnly: false,
-    signedTransaction: ''
+    data: payload.data
   }
 
-  const txData1559: BraveWallet.TxData1559 = {
-    baseData: txData,
-    chainId: payload.network.chainId,
-    // Estimated by eth_tx_service if value is ''
-    maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
-    // Estimated by eth_tx_service if value is ''
-    maxFeePerGas: payload.maxFeePerGas || '',
-    gasEstimation: undefined
-  }
-
-  const { errorMessage, success } = await txService.addUnapprovedTransaction(
-    isEIP1559
-      ? toTxDataUnion({ ethTxData1559: txData1559 })
-      : toTxDataUnion({ ethTxData: txData }),
-    payload.network.chainId,
-    payload.fromAccount.accountId
+  const { errorMessage, success } = await txService.addUnapprovedEvmTransaction(
+    params
   )
 
   if (!success && errorMessage) {

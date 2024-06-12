@@ -21,7 +21,7 @@ enum TransactionParser {
     case .eth:
       let isEIP1559Transaction = transaction.isEIP1559Transaction
       let limit = transaction.ethTxGasLimit
-      let formatter = WeiFormatter(
+      let formatter = WalletAmountFormatter(
         decimalFormatStyle: .gasFee(limit: limit.removingHexPrefix, radix: .hex)
       )
       let hexFee =
@@ -44,7 +44,9 @@ enum TransactionParser {
     case .sol:
       guard let solEstimatedTxFee = solEstimatedTxFee else { return nil }
       let estimatedTxFee = "\(solEstimatedTxFee)"
-      let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(network.decimals)))
+      let formatter = WalletAmountFormatter(
+        decimalFormatStyle: .decimals(precision: Int(network.decimals))
+      )
       if let value = formatter.decimalString(
         for: estimatedTxFee,
         radix: .decimal,
@@ -87,7 +89,7 @@ enum TransactionParser {
       }
     case .btc:
       guard let btcTxData = transaction.txDataUnion.btcTxData,
-        case let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8)),
+        case let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8)),
         let gasFeeString = formatter.decimalString(
           for: "\(btcTxData.fee)",
           radix: .decimal,
@@ -132,11 +134,11 @@ enum TransactionParser {
     nftMetadata: [String: NFTMetadata],
     solEstimatedTxFee: UInt64?,
     currencyFormatter: NumberFormatter,
-    decimalFormatStyle: WeiFormatter.DecimalFormatStyle? = nil
+    decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle? = nil
   ) -> ParsedTransaction? {
     let fromAccountInfo =
       accountInfos.first(where: { $0.accountId == transaction.fromAccountId }) ?? .init()
-    let formatter = WeiFormatter(
+    let formatter = WalletAmountFormatter(
       decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: Int(network.decimals))
     )
     switch transaction.txType {
@@ -216,7 +218,7 @@ enum TransactionParser {
         )
       } else if let btcTxData = transaction.txDataUnion.btcTxData {  // BTC send tx
         // Require 8 decimals precision for BTC parsing
-        let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 8))
+        let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
         let namedFromAccount = fromAccountInfo.name
         let fromValue = "\(btcTxData.amount)"
         let fromValueFormatted =
@@ -844,7 +846,7 @@ enum TransactionParser {
 
   static func parseSolanaInstruction(
     _ instruction: BraveWallet.SolanaInstruction,
-    decimalFormatStyle: WeiFormatter.DecimalFormatStyle? = nil
+    decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle? = nil
   ) -> SolanaTxDetails.ParsedSolanaInstruction {
     guard let decodedData = instruction.decodedData else {
       let title = Strings.Wallet.solanaUnknownInstructionName
@@ -859,7 +861,9 @@ enum TransactionParser {
       )
       return .init(name: title, details: [programId] + accounts + [data], instruction: instruction)
     }
-    let formatter = WeiFormatter(decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: 9))
+    let formatter = WalletAmountFormatter(
+      decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: 9)
+    )
     var details: [SolanaTxDetails.ParsedSolanaInstruction.KeyValue] = []
     if instruction.isSystemProgram {
       let accounts = instruction.accountKeyValues
@@ -1204,7 +1208,7 @@ extension BraveWallet.TransactionInfo {
     nftMetadata: [String: NFTMetadata],
     solEstimatedTxFee: UInt64? = nil,
     currencyFormatter: NumberFormatter,
-    decimalFormatStyle: WeiFormatter.DecimalFormatStyle? = nil
+    decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle? = nil
   ) -> ParsedTransaction? {
     TransactionParser.parseTransaction(
       transaction: self,

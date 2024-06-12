@@ -31,7 +31,7 @@ TEST_F(BraveAdsPlatformUserDataTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  EXPECT_TRUE(BuildPlatformUserData().empty());
+  EXPECT_THAT(BuildPlatformUserData(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -10,7 +10,7 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/attribute/edge_attribute_set.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_structure.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/edge_document.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/event_listener/edge_event_listener.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_add.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/event_listener/edge_event_listener_remove.h"
@@ -64,9 +64,9 @@ void NodeHTMLElement::AddGraphMLTag(xmlDocPtr doc,
   NodeHTML::AddGraphMLTag(doc, parent_node);
 
   for (NodeHTML* child_node : child_nodes_) {
-    EdgeStructure html_edge(GetContext(), const_cast<NodeHTMLElement*>(this),
-                            child_node);
-    html_edge.AddGraphMLTag(doc, parent_node);
+    EdgeDocument document_edge(GetContext(), const_cast<NodeHTMLElement*>(this),
+                               child_node);
+    document_edge.AddGraphMLTag(doc, parent_node);
   }
 
   // For each event listener, draw an edge from the listener script to the DOM

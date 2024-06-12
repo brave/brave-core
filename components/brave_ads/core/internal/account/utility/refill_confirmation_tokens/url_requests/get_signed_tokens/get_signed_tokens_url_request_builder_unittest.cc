@@ -21,10 +21,11 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
       test::GetWallet(), /*nonce=*/"716c3381-66e6-46e4-962f-15d01455b5b9");
 
   // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
+  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
 
   // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
+  const mojom::UrlRequestInfoPtr expected_url_request =
+      mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(
       "https://mywallet.ads.bravesoftware.com/v3/confirmation/token/"
       "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7?nonce=716c3381-66e6-46e4-962f-"

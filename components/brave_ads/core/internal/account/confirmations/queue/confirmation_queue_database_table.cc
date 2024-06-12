@@ -43,7 +43,7 @@ constexpr int kDefaultBatchSize = 50;
 
 constexpr base::TimeDelta kMaximumRetryDelay = base::Hours(1);
 
-void BindRecords(mojom::DBCommandInfo* command) {
+void BindRecords(mojom::DBCommandInfo* const command) {
   CHECK(command);
 
   command->record_bindings = {
@@ -150,7 +150,7 @@ size_t BindParameters(
   return count;
 }
 
-ConfirmationQueueItemInfo GetFromRecord(mojom::DBRecordInfo* record) {
+ConfirmationQueueItemInfo GetFromRecord(mojom::DBRecordInfo* const record) {
   CHECK(record);
 
   ConfirmationQueueItemInfo confirmation_queue_item;
@@ -410,7 +410,7 @@ std::string ConfirmationQueue::GetTableName() const {
   return kTableName;
 }
 
-void ConfirmationQueue::Create(mojom::DBTransactionInfo* transaction) {
+void ConfirmationQueue::Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -440,7 +440,7 @@ void ConfirmationQueue::Create(mojom::DBTransactionInfo* transaction) {
   CreateTableIndex(transaction, GetTableName(), /*columns=*/{"process_at"});
 }
 
-void ConfirmationQueue::Migrate(mojom::DBTransactionInfo* transaction,
+void ConfirmationQueue::Migrate(mojom::DBTransactionInfo* const transaction,
                                 const int to_version) {
   CHECK(transaction);
 
@@ -460,7 +460,7 @@ void ConfirmationQueue::Migrate(mojom::DBTransactionInfo* transaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 void ConfirmationQueue::MigrateToV36(
-    mojom::DBTransactionInfo* transaction) const {
+    mojom::DBTransactionInfo* const transaction) const {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -491,7 +491,8 @@ void ConfirmationQueue::MigrateToV36(
 }
 
 // static
-void ConfirmationQueue::MigrateToV38(mojom::DBTransactionInfo* transaction) {
+void ConfirmationQueue::MigrateToV38(
+    mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // The conversion queue is deprecated since all confirmations are now being

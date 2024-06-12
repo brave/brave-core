@@ -149,10 +149,10 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
       self.selectedBuyToken = prefilledToken
     } else {
       // need to try and select correct network.
-      let allNetworksForTokenCoin = await rpcService.allNetworks(coin: prefilledToken.coin)
+      let allNetworksForTokenCoin = await rpcService.allNetworks()
       guard
         let networkForToken = allNetworksForTokenCoin.first(where: {
-          $0.chainId == prefilledToken.chainId
+          $0.coin == prefilledToken.coin && $0.chainId == prefilledToken.chainId
         })
       else {
         // don't set prefilled token if it belongs to a network we don't know

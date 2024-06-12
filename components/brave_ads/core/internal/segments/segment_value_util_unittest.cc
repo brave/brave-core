@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_value_util.h"
 
 #include "base/test/values_test_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -33,11 +34,8 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsToValue) {
 }
 
 TEST(BraveAdsSegmentValueUtilTest, NoSegmentsToValue) {
-  // Act
-  const base::Value::List list = SegmentsToValue({});
-
-  // Assert
-  EXPECT_TRUE(list.empty());
+  // Act & Assert
+  EXPECT_THAT(SegmentsToValue(/*segments=*/{}), ::testing::IsEmpty());
 }
 
 TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
@@ -55,11 +53,8 @@ TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList("[]");
 
-  // Act
-  const SegmentList segments = SegmentsFromValue(list);
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(SegmentsFromValue(list), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

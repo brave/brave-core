@@ -1498,15 +1498,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   return std::string(contents.UTF8String);
 }
 
-- (void)getScheduledCaptcha:(const std::string&)payment_id
-                   callback:(brave_ads::GetScheduledCaptchaCallback)callback {
-  // TODO(https://github.com/brave/brave-browser/issues/33794): Unify Brave Ads
-  // adaptive captcha.
-  std::move(callback).Run("");
-}
-
-- (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id {
+- (void)showScheduledCaptcha:(const std::string&)payment_id
+                   captchaId:(const std::string&)captcha_id {
   [self.captchaHandler
       handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
                               captchaId:base::SysUTF8ToNSString(captcha_id)];

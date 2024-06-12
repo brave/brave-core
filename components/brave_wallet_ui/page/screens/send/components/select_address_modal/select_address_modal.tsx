@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // Types
 import {
@@ -117,7 +118,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
 
     // Mutations
     const [enableEnsOffchainLookup] = useEnableEnsOffchainLookupMutation()
-    const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
+    const [generateReceiveAddress, { isLoading: isGeneratingAddress }] =
+      useGenerateReceiveAddressMutation()
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>(
@@ -420,109 +422,119 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               onInput={(e) => setSearchValue(e.value)}
               placeholder={getLocale('braveWalletAddressOrDomainPlaceholder')}
               type='text'
+              disabled={isGeneratingAddress}
             >
               <div slot='right-icon'>
                 <Icon name='copy-plain-text' />
               </div>
             </AddressInput>
           </SearchBoxContainer>
-          <ScrollContainer
-            fullWidth={true}
-            justifyContent='flex-start'
-          >
-            {filteredAccounts.length !== 0 && (
-              <>
-                <Row
-                  width='100%'
-                  justifyContent='flex-start'
-                  padding='0px 8px'
-                  marginBottom={4}
-                >
-                  <LabelText
-                    textSize='12px'
-                    isBold={true}
+          {isGeneratingAddress ? (
+            <Column
+              fullHeight
+              fullWidth
+            >
+              <ProgressRing mode='indeterminate' />
+            </Column>
+          ) : (
+            <ScrollContainer
+              fullWidth={true}
+              justifyContent='flex-start'
+            >
+              {filteredAccounts.length !== 0 && (
+                <>
+                  <Row
+                    width='100%'
+                    justifyContent='flex-start'
+                    padding='0px 8px'
+                    marginBottom={4}
                   >
-                    {getLocale('braveWalletMyAddresses')}
-                  </LabelText>
-                </Row>
-                {filteredAccounts.map((account) => (
-                  <AccountListItem
-                    key={account.accountId.uniqueKey}
-                    account={account}
-                    onClick={() => onSelectAccount(account)}
-                    isSelected={
-                      account.accountId.uniqueKey === fromAccountId?.uniqueKey
-                    }
-                    accountAlias={
-                      fevmTranslatedAddresses?.[account.accountId.address]
-                    }
-                  />
-                ))}
-              </>
-            )}
-            {isSearchingForDomain && (
-              <Row margin='26px 0px 0px 0px'>
-                <DomainLoadIcon />
-                <Text
-                  textSize='14px'
-                  isBold={false}
-                  textColor='secondary'
-                >
-                  {getLocale('braveWalletSearchingForDomain')}
-                </Text>
-              </Row>
-            )}
-            {filteredAccounts.length === 0 &&
-              !isSearchingForDomain &&
-              !showEnsOffchainWarning &&
-              addressMessageInformation?.type !== 'error' && (
-                <AddressButton onClick={() => onSelectAddress(searchValue)}>
-                  <WalletIcon />
-                  <Column alignItems='flext-start'>
-                    <AddressButtonText
-                      textSize='14px'
+                    <LabelText
+                      textSize='12px'
                       isBold={true}
-                      textColor='primary'
-                      textAlign='left'
                     >
-                      {searchValue}
-                    </AddressButtonText>
-                    {searchValueHasValidExtension && (
+                      {getLocale('braveWalletMyAddresses')}
+                    </LabelText>
+                  </Row>
+                  {filteredAccounts.map((account) => (
+                    <AccountListItem
+                      key={account.accountId.uniqueKey}
+                      account={account}
+                      onClick={() => onSelectAccount(account)}
+                      isSelected={
+                        account.accountId.uniqueKey === fromAccountId?.uniqueKey
+                      }
+                      accountAlias={
+                        fevmTranslatedAddresses?.[account.accountId.address]
+                      }
+                    />
+                  ))}
+                </>
+              )}
+              {isSearchingForDomain && (
+                <Row margin='26px 0px 0px 0px'>
+                  <DomainLoadIcon />
+                  <Text
+                    textSize='14px'
+                    isBold={false}
+                    textColor='secondary'
+                  >
+                    {getLocale('braveWalletSearchingForDomain')}
+                  </Text>
+                </Row>
+              )}
+              {filteredAccounts.length === 0 &&
+                !isSearchingForDomain &&
+                !showEnsOffchainWarning &&
+                addressMessageInformation?.type !== 'error' && (
+                  <AddressButton onClick={() => onSelectAddress(searchValue)}>
+                    <WalletIcon />
+                    <Column alignItems='flext-start'>
                       <AddressButtonText
                         textSize='14px'
-                        isBold={false}
-                        textColor='secondary'
+                        isBold={true}
+                        textColor='primary'
                         textAlign='left'
                       >
-                        {resolvedDomainAddress}
+                        {searchValue}
                       </AddressButtonText>
-                    )}
-                  </Column>
-                </AddressButton>
+                      {searchValueHasValidExtension && (
+                        <AddressButtonText
+                          textSize='14px'
+                          isBold={false}
+                          textColor='secondary'
+                          textAlign='left'
+                        >
+                          {resolvedDomainAddress}
+                        </AddressButtonText>
+                      )}
+                    </Column>
+                  </AddressButton>
+                )}
+              {showAddressMessage && (
+                <>
+                  <VerticalSpace space='8px' />
+                  <AddressMessage
+                    addressMessageInfo={addressMessageInformation}
+                    onClickEnableENSOffchain={
+                      addressMessageInformation.id ===
+                      AddressMessageInfoIds.ensOffchainLookupWarning
+                        ? onENSConsent
+                        : undefined
+                    }
+                    onClickHowToSolve={
+                      addressMessageInformation.id ===
+                        AddressMessageInfoIds.invalidChecksumError ||
+                      addressMessageInformation.id ===
+                        AddressMessageInfoIds.missingChecksumWarning
+                        ? () => setShowChecksumInfo(true)
+                        : undefined
+                    }
+                  />
+                </>
               )}
-            {showAddressMessage && (
-              <>
-                <VerticalSpace space='8px' />
-                <AddressMessage
-                  addressMessageInfo={addressMessageInformation}
-                  onClickEnableENSOffchain={
-                    addressMessageInformation.id ===
-                    AddressMessageInfoIds.ensOffchainLookupWarning
-                      ? onENSConsent
-                      : undefined
-                  }
-                  onClickHowToSolve={
-                    addressMessageInformation.id ===
-                      AddressMessageInfoIds.invalidChecksumError ||
-                    addressMessageInformation.id ===
-                      AddressMessageInfoIds.missingChecksumWarning
-                      ? () => setShowChecksumInfo(true)
-                      : undefined
-                  }
-                />
-              </>
-            )}
-          </ScrollContainer>
+            </ScrollContainer>
+          )}
         </Wrapper>
       </PopupModal>
     )

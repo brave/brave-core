@@ -38,7 +38,7 @@ class TransactionDetailsStoreTests: XCTestCase {
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { $1([.mockSepolia]) }
+    rpcService._allNetworks = { $0([.mockSepolia]) }
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
       let mockAssetPrices: [BraveWallet.AssetPrice] = [

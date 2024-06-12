@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator.h"
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,7 +21,7 @@ TEST(BraveAdsTokenGeneratorTest, Generate) {
   const std::vector<cbr::Token> tokens = token_generator.Generate(5);
 
   // Assert
-  EXPECT_EQ(5U, tokens.size());
+  EXPECT_THAT(tokens, ::testing::SizeIs(5));
 }
 
 TEST(BraveAdsTokenGeneratorTest, GenerateZero) {
@@ -31,7 +32,7 @@ TEST(BraveAdsTokenGeneratorTest, GenerateZero) {
   const std::vector<cbr::Token> tokens = token_generator.Generate(0);
 
   // Assert
-  EXPECT_TRUE(tokens.empty());
+  EXPECT_THAT(tokens, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -107,10 +107,11 @@ provideStrings({
     "It looks like you've entered an ENS address. " +
     "We'll need to use a third-party resolver to resolve this request, " +
     'which may be able to see your IP address and domain.',
-  braveSwapFindingPrice: 'Finding the best quote...',
+  braveWalletFetchingQuote: 'Fetching quote',
   braveWalletReceiveEstimate: 'Receive (est.)',
   braveWalletFromToken: 'From token',
   braveWalletToToken: 'To token',
+  braveWalletNewQuoteIn: 'New quote in $1$3$2',
 
   // Send Tab
   braveWalletChooseAssetToSend: 'Choose asset to send',
@@ -1028,6 +1029,7 @@ provideStrings({
   braveWalletNone: 'None',
   braveWalletNetworks: 'Networks',
   braveWalletPortfolioGroupByTitle: 'Group by',
+  braveWalletGroupByCollection: 'Group by collection',
   braveWalletPortfolioGroupByDescription: 'Group assets by',
 
   // Portfolio Filters

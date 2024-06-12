@@ -12,7 +12,8 @@
 
 namespace brave_ads::test {
 
-TargetingHelper::TargetingHelper() = default;
+TargetingHelper::TargetingHelper(base::test::TaskEnvironment& task_environment)
+    : task_environment_(task_environment) {}
 
 TargetingHelper::~TargetingHelper() = default;
 
@@ -31,6 +32,9 @@ UserModelInfo TargetingHelper::Expectation() {
 
 void TargetingHelper::MockIntent() {
   purchase_intent_.Mock();
+
+  // Run the task environment until idle to ensure all tasks are processed.
+  task_environment_->RunUntilIdle();
 }
 
 // static
@@ -49,6 +53,9 @@ LatentInterestUserModelInfo TargetingHelper::LatentInterestExpectation() {
 
 void TargetingHelper::MockInterest() {
   text_classification_.Mock();
+
+  // Run the task environment until idle to ensure all tasks are processed.
+  task_environment_->RunUntilIdle();
 }
 
 // static

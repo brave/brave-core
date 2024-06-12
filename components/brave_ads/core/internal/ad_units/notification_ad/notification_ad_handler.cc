@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
@@ -25,7 +26,6 @@
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
@@ -122,7 +122,7 @@ void NotificationAdHandler::OnNotifyDidInitializeAds() {
 }
 
 void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
-  if (path == prefs::kOptedInToNotificationAds) {
+  if (DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
     MaybeCloseAllNotifications();
 
     MaybeServeAtRegularIntervals();

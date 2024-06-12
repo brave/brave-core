@@ -98,7 +98,8 @@ std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     return std::nullopt;
   }
 
-  std::string response_body = url_response->second;
+  auto [response_status_code, response_body] = *url_response;
+
   if (ShouldReadResponseBodyFromFile(response_body)) {
     const base::FilePath path = TestDataPath().AppendASCII(
         ParseFilenameFromResponseBody(response_body));
@@ -109,7 +110,7 @@ std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     ParseAndReplaceTags(response_body);
   }
 
-  return mojom::UrlResponseInfo(url_request->url, url_response->first,
+  return mojom::UrlResponseInfo(url_request->url, response_status_code,
                                 response_body,
                                 ToUrlResponseHeaders(url_request->headers));
 }

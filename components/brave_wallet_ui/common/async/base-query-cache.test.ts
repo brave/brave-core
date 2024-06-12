@@ -45,24 +45,24 @@ describe('BaseQueryCache', () => {
   })
 
   it('should cache accounts after fetching', async () => {
-    const getAllAcountsSpy = jest.spyOn(
+    const getAllAccountsSpy = jest.spyOn(
       getAPIProxy().keyringService,
       'getAllAccounts'
     )
-    expect(getAllAcountsSpy).toHaveBeenCalledTimes(0)
+    expect(getAllAccountsSpy).toHaveBeenCalledTimes(0)
 
     const cache = new BaseQueryCache()
 
     // access the uncached registry
     const accounts = await cache.getAccountsRegistry()
     expect(accounts).toBeDefined()
-    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAccountsSpy).toHaveBeenCalledTimes(1)
 
     // re-access the registry, this time from cache
     const cachedAccounts = await cache.getAccountsRegistry()
     expect(cachedAccounts).toBeDefined()
     // no additional calls made
-    expect(getAllAcountsSpy).toHaveBeenCalledTimes(1)
+    expect(getAllAccountsSpy).toHaveBeenCalledTimes(1)
 
     // clear the cache manually
     cache.clearWalletInfo()
@@ -70,11 +70,11 @@ describe('BaseQueryCache', () => {
     // access again, repopulating cache with fresh value
     const reCachedAccounts = await cache.getAccountsRegistry()
     expect(reCachedAccounts).toBeDefined()
-    expect(getAllAcountsSpy).toHaveBeenCalledTimes(2)
+    expect(getAllAccountsSpy).toHaveBeenCalledTimes(2)
 
     // reset spy
-    getAllAcountsSpy.mockReset()
-    getAllAcountsSpy.mockRestore()
+    getAllAccountsSpy.mockReset()
+    getAllAccountsSpy.mockRestore()
   })
 
   it('should cache networks after fetching', async () => {
@@ -102,7 +102,7 @@ describe('BaseQueryCache', () => {
     // once per coin type (ETH, FIL, SOL, BTC, ZEC)
     const numberOfCoins = 5
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
-    expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
+    expect(getAllNetworksSpy).toHaveBeenCalledTimes(1)
     expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
 
     // re-access the registry, this time from cache
@@ -110,7 +110,7 @@ describe('BaseQueryCache', () => {
     expect(cachedRegistry.entities[cachedRegistry.ids[0]]).toBeDefined()
     // no additional calls made
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)
-    expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
+    expect(getAllNetworksSpy).toHaveBeenCalledTimes(1)
     expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins)
 
     // clear the cache manually
@@ -119,7 +119,7 @@ describe('BaseQueryCache', () => {
     // access again, repopulating cache with fresh value
     const reCachedRegistry = await cache.getNetworksRegistry()
     expect(reCachedRegistry).toBeDefined()
-    expect(getAllNetworksSpy).toHaveBeenCalledTimes(numberOfCoins * 2)
+    expect(getAllNetworksSpy).toHaveBeenCalledTimes(2)
     expect(getHiddenNetworksSpy).toHaveBeenCalledTimes(numberOfCoins * 2)
     // no need to update wallet-info
     expect(getWalletInfoSpy).toHaveBeenCalledTimes(1)

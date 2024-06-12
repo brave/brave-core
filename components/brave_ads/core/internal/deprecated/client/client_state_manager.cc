@@ -30,7 +30,7 @@ constexpr size_t kMaximumPurchaseIntentSignalHistoryEntriesPerSegment = 100;
 
 FilteredAdvertiserList::iterator FindFilteredAdvertiser(
     const std::string& advertiser_id,
-    FilteredAdvertiserList* filtered_advertisers) {
+    FilteredAdvertiserList* const filtered_advertisers) {
   CHECK(!advertiser_id.empty());
   CHECK(filtered_advertisers);
 
@@ -40,7 +40,7 @@ FilteredAdvertiserList::iterator FindFilteredAdvertiser(
 
 FilteredCategoryList::iterator FindFilteredCategory(
     const std::string& category,
-    FilteredCategoryList* filtered_categories) {
+    FilteredCategoryList* const filtered_categories) {
   CHECK(!category.empty());
   CHECK(filtered_categories);
 
@@ -340,7 +340,7 @@ bool ClientStateManager::ToggleMarkAdAsInappropriate(
         base::ranges::remove(client_.ad_preferences.flagged_ads,
                              ad_content.creative_set_id,
                              &FlaggedAdInfo::creative_set_id),
-        client_.ad_preferences.flagged_ads.end());
+        client_.ad_preferences.flagged_ads.cend());
   }
 
   const auto iter = base::ranges::find_if(

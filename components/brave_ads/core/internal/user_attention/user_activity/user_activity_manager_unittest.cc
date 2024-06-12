@@ -529,10 +529,9 @@ TEST_F(BraveAdsUserActivityManagerTest, DoNotRecordEventForNonRewardsUser) {
   UserActivityManager::GetInstance().RecordEvent(event_type);
 
   // Assert
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Hours(1));
-  EXPECT_TRUE(events.empty());
+  EXPECT_THAT(UserActivityManager::GetInstance().GetHistoryForTimeWindow(
+                  base::Hours(1)),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
@@ -589,12 +588,7 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
 
   AdvanceClockBy(base::Hours(1));
 
-  // Act
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Hours(1));
-
-  // Assert
+  // Act & Assert
   UserActivityEventList expected_events;
 
   UserActivityEventInfo event;
@@ -619,7 +613,10 @@ TEST_F(BraveAdsUserActivityManagerTest, GetHistoryForTimeWindow) {
   event.created_at = now;
   expected_events.push_back(event);
 
-  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
+  EXPECT_THAT(expected_events,
+              ::testing::ElementsAreArray(
+                  UserActivityManager::GetInstance().GetHistoryForTimeWindow(
+                      base::Hours(1))));
 }
 
 TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
@@ -632,12 +629,7 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
-  const UserActivityEventList events =
-      UserActivityManager::GetInstance().GetHistoryForTimeWindow(
-          base::Hours(1));
-
-  // Assert
+  // Act & Assert
   UserActivityEventList expected_events;
   UserActivityEventInfo event;
 
@@ -651,7 +643,10 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   event.created_at = Now();
   expected_events.push_back(event);
 
-  EXPECT_THAT(expected_events, ::testing::ElementsAreArray(events));
+  EXPECT_THAT(expected_events,
+              ::testing::ElementsAreArray(
+                  UserActivityManager::GetInstance().GetHistoryForTimeWindow(
+                      base::Hours(1))));
 }
 
 }  // namespace brave_ads

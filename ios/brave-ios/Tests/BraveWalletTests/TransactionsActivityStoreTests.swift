@@ -57,19 +57,11 @@ class TransactionsActivityStoreTests: XCTestCase {
     }
 
     let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = { coin, completion in
-      switch coin {
-      case .eth:
-        completion([.mockMainnet, .mockGoerli])
-      case .sol:
-        completion([.mockSolana, .mockSolanaTestnet])
-      case .fil:
-        completion([.mockFilecoinMainnet, .mockFilecoinTestnet])
-      case .btc, .zec:
-        completion([])
-      @unknown default:
-        completion([])
-      }
+    rpcService._allNetworks = {
+      $0([
+        .mockMainnet, .mockGoerli, .mockSolana, .mockSolanaTestnet, .mockFilecoinMainnet,
+        .mockFilecoinTestnet,
+      ])
     }
     rpcService._hiddenNetworks = { $1([]) }
     rpcService._erc721Metadata = { _, _, _, completion in
@@ -144,7 +136,17 @@ class TransactionsActivityStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $2(UInt64(1), .success, "") }
+    solTxManagerProxy._solanaTxFeeEstimation = { _, _, completion in
+      completion(
+        BraveWallet.SolanaFeeEstimation(
+          baseFee: UInt64(1),
+          computeUnits: UInt32(0),
+          feePerComputeUnit: UInt64(0)
+        ),
+        .success,
+        ""
+      )
+    }
 
     let mockUserManager = TestableWalletUserAssetManager()
     mockUserManager._getAllUserAssetsInNetworkAssets = { [weak self] networks, _ in

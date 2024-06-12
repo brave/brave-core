@@ -121,7 +121,7 @@ class SignMessageRequestStore: ObservableObject {
           return
         }
 
-        let formatter = WeiFormatter(
+        let formatter = WalletAmountFormatter(
           decimalFormatStyle: .decimals(precision: Int(network.decimals))
         )
 

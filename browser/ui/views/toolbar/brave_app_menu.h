@@ -18,6 +18,9 @@ class BraveAppMenu : public AppMenu {
   BraveAppMenu(const BraveAppMenu&) = delete;
   BraveAppMenu& operator=(const BraveAppMenu&) = delete;
 
+  Browser* browser() { return browser_; }
+  const Browser* browser() const { return browser_; }
+
   // AppMenu overrides:
   void RunMenu(views::MenuButtonController* host) override;
   void ExecuteCommand(int command_id, int mouse_event_flags) override;

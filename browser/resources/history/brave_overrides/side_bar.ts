@@ -29,7 +29,7 @@ RegisterStyleOverride(
         background: transparent !important;
       }
 
-      .cr-nav-menu-item iron-icon {
+      .cr-nav-menu-item cr-icon {
         display: none !important;
       }
 

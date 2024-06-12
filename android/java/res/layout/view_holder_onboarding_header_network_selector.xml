@@ -9,20 +9,24 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="4dp">
     <TextView
+        style="@style/XSmallSemibold"
+        android:textStyle="bold"
         android:id="@+id/network_selector_label_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingVertical="4dp"
         android:layout_gravity="start"
         android:textColor="@color/wallet_tertiary_layout_text_color"
-        android:textSize="12sp"/>
+        />
 
     <TextView
+        style="@style/XSmallSemibold"
+        android:textStyle="bold"
         android:id="@+id/select_all_networks"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingVertical="4dp"
         android:layout_gravity="end"
         android:textColor="@color/brave_wallet_dn_button_color"
-        android:textSize="12sp" />
+        />
 </FrameLayout>

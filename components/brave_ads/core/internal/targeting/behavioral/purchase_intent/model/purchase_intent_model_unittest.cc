@@ -25,13 +25,6 @@ class BraveAdsPurchaseIntentModelTest : public UnitTestBase {
     resource_ = std::make_unique<PurchaseIntentResource>();
   }
 
-  bool LoadResource() {
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
-    task_environment_.RunUntilIdle();
-    return resource_->IsInitialized();
-  }
-
   std::unique_ptr<PurchaseIntentResource> resource_;
 };
 
@@ -41,16 +34,15 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -59,42 +51,39 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
 
   processor.Process(GURL("https://www.basicattentiontoken.org/test?bar=foo"));
 
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://duckduckgo.com/?q=segment+keyword+1"));
 
-  // Act
-  const SegmentList segments = GetPurchaseIntentSegments();
-
-  // Assert
-  EXPECT_TRUE(segments.empty());
+  // Act & Assert
+  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -109,7 +98,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeyphrases) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
 
@@ -126,7 +117,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
-  ASSERT_TRUE(LoadResource());
+  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
+                                   kCountryComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(

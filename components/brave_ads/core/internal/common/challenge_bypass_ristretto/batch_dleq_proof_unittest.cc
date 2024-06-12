@@ -314,7 +314,7 @@ TEST_F(BraveAdsBatchDLEQProofTest, OutputStreamWhenUninitialized) {
   ss << batch_dleq_proof;
 
   // Assert
-  EXPECT_TRUE(ss.str().empty());
+  EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

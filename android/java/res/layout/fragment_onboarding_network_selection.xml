@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/supported_networks"
-            style="@style/BraveWalletTextViewTitle"
+            style="@style/HeadingH3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -23,11 +23,11 @@
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
             android:text="@string/supported_networks"
-            android:textColor="@color/wallet_text_color"
-            android:lineSpacingExtra="2sp"
-            android:textSize="22sp"/>
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
 
         <TextView
+            style="@style/DefaultRegular"
             android:id="@+id/choose_blockchains"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,9 +37,7 @@
             android:layout_below="@+id/supported_networks"
             android:layout_alignParentStart="true"
             android:text="@string/choose_blockchains"
-            android:textColor="@color/wallet_onboarding_secondary_text_color"
-            android:lineSpacingExtra="4sp"
-            android:textSize="14sp"/>
+            android:textColor="@color/text_secondary" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/BraveWalletInputLayout"
@@ -72,9 +70,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/network_search_layout"
             android:text="@string/show_testnets"
-            android:textColor="@color/wallet_text_color"
-            android:lineSpacingExtra="4sp"
-            android:textSize="14sp" />
+            android:textColor="@color/text_primary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_networks"
@@ -100,6 +96,7 @@
             style="@style/BraveWalletOnboardingButton"/>
 
         <TextView
+            style="@style/SmallRegular"
             android:id="@+id/add_networks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,7 +107,5 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:text="@string/add_networks"
-            android:textColor="@color/wallet_tertiary_layout_text_color"
-            android:lineSpacingExtra="2sp"
-            android:textSize="12sp"/>
+            android:textColor="@color/text_tertiary" />
 </RelativeLayout>

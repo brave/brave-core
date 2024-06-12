@@ -10,6 +10,8 @@ brave_java_resources = [
   "java/res/anim/slide_out_bottom.xml",
   "java/res/anim/slide_out_top.xml",
   "java/res/color/crypto_wallet_onboarding_button_text_color.xml",
+  "java/res/color/wallet_checkbox_background_color_selector.xml",
+  "java/res/color/wallet_checkbox_color_selector.xml",
   "java/res/color/wallet_onboarding_input_field_stroke_color.xml",
   "java/res/color/wallet_onboarding_network_item_stroke_selector.xml",
   "java/res/drawable-hdpi/brave_ads_launch_graphic.png",

@@ -26,6 +26,8 @@ import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
+import java.util.Arrays;
+
 /**
  * Brave Wallet network preference hosted by {@link BraveWalletNetworksPreferenceFragment}. It shows
  * all the networks available and let the user add, edit, or remove them.
@@ -182,6 +184,11 @@ public class BraveWalletNetworksPreference extends Preference
                 });
     }
 
+    private NetworkInfo[] filterNetworksByCoin(
+            @CoinType.EnumType final int coinType, NetworkInfo[] networks) {
+        return Arrays.stream(networks).filter(n -> n.coin == coinType).toArray(NetworkInfo[]::new);
+    }
+
     /**
      * Gets all the available networks including default chain ID, custom chain IDs, and hidden
      * chain IDs. The method can be called ONLY after the JSON RPC service has been correctly
@@ -198,7 +205,6 @@ public class BraveWalletNetworksPreference extends Preference
                 coinType,
                 defaultChainId ->
                         mJsonRpcService.getAllNetworks(
-                                coinType,
                                 networks ->
                                         mJsonRpcService.getCustomNetworks(
                                                 coinType,
@@ -208,7 +214,9 @@ public class BraveWalletNetworksPreference extends Preference
                                                                 hiddenChainIds ->
                                                                         callback.call(
                                                                                 defaultChainId,
-                                                                                networks,
+                                                                                filterNetworksByCoin(
+                                                                                        coinType,
+                                                                                        networks),
                                                                                 customChainIds,
                                                                                 hiddenChainIds)))));
     }

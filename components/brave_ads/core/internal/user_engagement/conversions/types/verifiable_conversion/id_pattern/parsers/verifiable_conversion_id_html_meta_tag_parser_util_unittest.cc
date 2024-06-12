@@ -32,7 +32,7 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
 TEST_F(BraveAdsVerifiableConversionIdHtmlMetaTagParserUtilTest,
        DoNotParseVerifableConversionIdFromEmptyHtmlMetaTag) {
   // Act & Assert
-  EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtmlMetaTag(/*html=*/{}));
+  EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtmlMetaTag(/*html=*/""));
 }
 
 }  // namespace brave_ads

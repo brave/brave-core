@@ -35,7 +35,7 @@ class BraveAdsNeuralTest : public UnitTestBase {
       return std::nullopt;
     }
 
-    const auto* raw_model =
+    const auto* const raw_model =
         neural_text_classification::flat::GetModel(buffer_.data());
     if (!raw_model) {
       return std::nullopt;
@@ -74,20 +74,20 @@ TEST_F(BraveAdsNeuralTest, Prediction) {
   ASSERT_TRUE(sample_predictions);
 
   // Assert
-  EXPECT_TRUE(
-      (std::fabs(0.78853326 - sample_predictions->at("class_1")) <
-       kTolerance) &&
-      (std::fabs(0.01296594 - sample_predictions->at("class_2")) <
-       kTolerance) &&
-      (std::fabs(0.19850080 - sample_predictions->at("class_3")) < kTolerance));
+  EXPECT_LT(std::fabs(0.78853326 - sample_predictions->at("class_1")),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.01296594 - sample_predictions->at("class_2")),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.19850080 - sample_predictions->at("class_3")),
+            kTolerance);
 }
 
 TEST_F(BraveAdsNeuralTest, PredictionNomatrices) {
   // Arrange
   constexpr double kTolerance = 1e-6;
 
-  std::vector<std::vector<VectorData>> matrices = {};
-  std::vector<std::string> activation_functions = {};
+  std::vector<std::vector<VectorData>> matrices;
+  std::vector<std::string> activation_functions;
   std::vector<std::string> segments = {"class_1", "class_2", "class_3"};
 
   std::optional<NeuralModel> neural(
@@ -101,10 +101,9 @@ TEST_F(BraveAdsNeuralTest, PredictionNomatrices) {
   ASSERT_TRUE(sample_predictions);
 
   // Assert
-  EXPECT_TRUE(
-      (std::fabs(0.2 - sample_predictions->at("class_1")) < kTolerance) &&
-      (std::fabs(0.65 - sample_predictions->at("class_2")) < kTolerance) &&
-      (std::fabs(0.15 - sample_predictions->at("class_3")) < kTolerance));
+  EXPECT_LT(std::fabs(0.2 - sample_predictions->at("class_1")), kTolerance);
+  EXPECT_LT(std::fabs(0.65 - sample_predictions->at("class_2")), kTolerance);
+  EXPECT_LT(std::fabs(0.15 - sample_predictions->at("class_3")), kTolerance);
 }
 
 TEST_F(BraveAdsNeuralTest, PredictionDefaultPostMatrixFunctions) {
@@ -133,10 +132,9 @@ TEST_F(BraveAdsNeuralTest, PredictionDefaultPostMatrixFunctions) {
   ASSERT_TRUE(sample_predictions);
 
   // Assert
-  EXPECT_TRUE(
-      (std::fabs(4.4425 - sample_predictions->at("class_1")) < kTolerance) &&
-      (std::fabs(-4.0985 - sample_predictions->at("class_2")) < kTolerance) &&
-      (std::fabs(2.025 - sample_predictions->at("class_3")) < kTolerance));
+  EXPECT_LT(std::fabs(4.4425 - sample_predictions->at("class_1")), kTolerance);
+  EXPECT_LT(std::fabs(-4.0985 - sample_predictions->at("class_2")), kTolerance);
+  EXPECT_LT(std::fabs(2.025 - sample_predictions->at("class_3")), kTolerance);
 }
 
 TEST_F(BraveAdsNeuralTest, TopPredictions) {
@@ -163,24 +161,26 @@ TEST_F(BraveAdsNeuralTest, TopPredictions) {
   const std::optional<PredictionMap> sample_predictions =
       neural->GetTopPredictions(sample_observation);
   ASSERT_TRUE(sample_predictions);
+  ASSERT_THAT(*sample_predictions, ::testing::SizeIs(3));
+
   const std::optional<PredictionMap> sample_predictions_constrained =
       neural->GetTopCountPredictions(sample_observation, 2);
   ASSERT_TRUE(sample_predictions_constrained);
+  ASSERT_THAT(*sample_predictions_constrained, ::testing::SizeIs(2));
 
   // Assert
-  EXPECT_TRUE((sample_predictions->size() == 3) &&
-              sample_predictions_constrained->size() == 2);
-  EXPECT_TRUE(
-      (std::fabs(0.78853326 - sample_predictions->at("class_1")) <
-       kTolerance) &&
-      (std::fabs(0.01296594 - sample_predictions->at("class_2")) <
-       kTolerance) &&
-      (std::fabs(0.19850080 - sample_predictions->at("class_3")) < kTolerance));
-  EXPECT_TRUE(
-      (std::fabs(0.78853326 - sample_predictions_constrained->at("class_1")) <
-       kTolerance) &&
-      (std::fabs(0.19850080 - sample_predictions_constrained->at("class_3")) <
-       kTolerance));
+  EXPECT_LT(std::fabs(0.78853326 - sample_predictions->at("class_1")),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.01296594 - sample_predictions->at("class_2")),
+            kTolerance);
+  EXPECT_LT(std::fabs(0.19850080 - sample_predictions->at("class_3")),
+            kTolerance);
+  EXPECT_LT(
+      std::fabs(0.78853326 - sample_predictions_constrained->at("class_1")),
+      kTolerance);
+  EXPECT_LT(
+      std::fabs(0.19850080 - sample_predictions_constrained->at("class_3")),
+      kTolerance);
 }
 
 }  // namespace brave_ads::ml

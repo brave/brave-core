@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_MOCK_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_MOCK_UTIL_H_
 
+#include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
@@ -19,9 +20,9 @@ namespace brave_ads {
 
 void MockDeviceId();
 
-void MockBuildChannel(BuildChannelType type);
-
 void MockPlatformHelper(const PlatformHelperMock& mock, PlatformType type);
+
+void MockBuildChannel(BuildChannelType type);
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
                                       bool is_available);

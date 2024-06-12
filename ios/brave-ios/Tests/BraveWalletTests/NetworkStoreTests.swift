@@ -20,11 +20,11 @@ import XCTest
   ) {
     let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
     let currentChainId = currentNetwork.chainId
-    let allNetworks: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-      .eth: [.mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork],
-      .sol: [.mockSolana, .mockSolanaTestnet],
-      .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
-      .btc: [.mockBitcoinMainnet],
+    let allNetworks: [BraveWallet.NetworkInfo] = [
+      .mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork,
+      .mockSolana, .mockSolanaTestnet,
+      .mockFilecoinMainnet, .mockFilecoinTestnet,
+      .mockBitcoinMainnet,
     ]
 
     let keyringService = BraveWallet.TestKeyringService()
@@ -45,8 +45,8 @@ import XCTest
     rpcService._addObserver = { _ in }
     rpcService._chainIdForOrigin = { $2(currentChainId) }
     rpcService._network = { $2(currentNetwork) }
-    rpcService._allNetworks = { coinType, completion in
-      completion(allNetworks[coinType, default: []])
+    rpcService._allNetworks = {
+      $0(allNetworks)
     }
     rpcService._setNetwork = { chainId, coin, origin, completion in
       completion(true)
@@ -316,7 +316,6 @@ extension BraveWallet.NetworkInfo {
     symbolName: "TEST",
     decimals: 18,
     coin: .eth,
-    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
-    isEip1559: false
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
   )
 }

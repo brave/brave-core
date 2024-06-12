@@ -23,11 +23,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   const CreativeInlineContentAdList creative_ads =
       test::BuildCreativeInlineContentAds(/*count=*/1);
 
-  // Act
-  const CreativeAdModelBasedPredictorWeightsInfo weights =
-      BuildCreativeAdModelBasedPredictorWeights(creative_ads);
-
-  // Assert
+  // Act & Assert
   CreativeAdModelBasedPredictorWeightsInfo expected_weights;
   expected_weights.intent_segment.child = 0.0;
   expected_weights.intent_segment.parent = 0.0;
@@ -37,7 +33,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.parent = 0.0;
   expected_weights.untargeted_segment = 0.0001;
   expected_weights.last_seen_ad = 1.0;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_EQ(expected_weights,
+            BuildCreativeAdModelBasedPredictorWeights(creative_ads));
 }
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
@@ -46,11 +43,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   const CreativeNewTabPageAdList creative_ads =
       test::BuildCreativeNewTabPageAds(/*count=*/1);
 
-  // Act
-  const CreativeAdModelBasedPredictorWeightsInfo weights =
-      BuildCreativeAdModelBasedPredictorWeights(creative_ads);
-
-  // Assert
+  // Act & Assert
   CreativeAdModelBasedPredictorWeightsInfo expected_weights;
   expected_weights.intent_segment.child = 0.0;
   expected_weights.intent_segment.parent = 0.0;
@@ -60,7 +53,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.parent = 0.0;
   expected_weights.untargeted_segment = 0.0001;
   expected_weights.last_seen_ad = 1.0;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_EQ(expected_weights,
+            BuildCreativeAdModelBasedPredictorWeights(creative_ads));
 }
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
@@ -69,11 +63,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   const CreativeNotificationAdList creative_ads =
       test::BuildCreativeNotificationAds(/*count=*/1);
 
-  // Act
-  const CreativeAdModelBasedPredictorWeightsInfo weights =
-      BuildCreativeAdModelBasedPredictorWeights(creative_ads);
-
-  // Assert
+  // Act & Assert
   CreativeAdModelBasedPredictorWeightsInfo expected_weights;
   expected_weights.intent_segment.child = 1.0;
   expected_weights.intent_segment.parent = 1.0;
@@ -83,7 +73,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorWeightsBuilderTest,
   expected_weights.interest_segment.parent = 1.0;
   expected_weights.untargeted_segment = 0.0001;
   expected_weights.last_seen_ad = 1.0;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_EQ(expected_weights,
+            BuildCreativeAdModelBasedPredictorWeights(creative_ads));
 }
 
 }  // namespace brave_ads

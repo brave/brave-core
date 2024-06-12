@@ -44,7 +44,7 @@ TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
     CreativeNotificationAdList creative_ads =
         GetCreativeAds(/*pass_through_rate=*/0.0);
     PaceCreativeAds(creative_ads);
-    EXPECT_TRUE(creative_ads.empty());
+    EXPECT_THAT(creative_ads, ::testing::IsEmpty());
   }
 }
 
@@ -80,7 +80,7 @@ TEST_F(BraveAdsPacingTest,
   PaceCreativeAds(creative_ads);
 
   // Assert
-  EXPECT_TRUE(creative_ads.empty());
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPacingTest,

@@ -29,38 +29,70 @@ namespace brave_ads {
 namespace {
 
 struct ParamInfo final {
-  const char* country;
-  const char* region;
-} constexpr kTests[] = {
-    {.country = "US", .region = "AL"}, {.country = "US", .region = "AK"},
-    {.country = "US", .region = "AZ"}, {.country = "US", .region = "AR"},
-    {.country = "US", .region = "CA"}, {.country = "US", .region = "CO"},
-    {.country = "US", .region = "CT"}, {.country = "US", .region = "DE"},
-    {.country = "US", .region = "FL"}, {.country = "US", .region = "GA"},
-    {.country = "US", .region = "HI"}, {.country = "US", .region = "ID"},
-    {.country = "US", .region = "IL"}, {.country = "US", .region = "IN"},
-    {.country = "US", .region = "IA"}, {.country = "US", .region = "KS"},
-    {.country = "US", .region = "KY"}, {.country = "US", .region = "LA"},
-    {.country = "US", .region = "ME"}, {.country = "US", .region = "MD"},
-    {.country = "US", .region = "MA"}, {.country = "US", .region = "MI"},
-    {.country = "US", .region = "MN"}, {.country = "US", .region = "MS"},
-    {.country = "US", .region = "MO"}, {.country = "US", .region = "MT"},
-    {.country = "US", .region = "NE"}, {.country = "US", .region = "NV"},
-    {.country = "US", .region = "NH"}, {.country = "US", .region = "NJ"},
-    {.country = "US", .region = "NM"}, {.country = "US", .region = "NY"},
-    {.country = "US", .region = "NC"}, {.country = "US", .region = "ND"},
-    {.country = "US", .region = "OH"}, {.country = "US", .region = "OK"},
-    {.country = "US", .region = "OR"}, {.country = "US", .region = "PA"},
-    {.country = "US", .region = "RI"}, {.country = "US", .region = "SC"},
-    {.country = "US", .region = "SD"}, {.country = "US", .region = "TN"},
-    {.country = "US", .region = "TX"}, {.country = "US", .region = "UT"},
-    {.country = "US", .region = "VT"}, {.country = "US", .region = "VA"},
-    {.country = "US", .region = "WA"}, {.country = "US", .region = "WV"},
-    {.country = "US", .region = "WI"}, {.country = "US", .region = "WY"},
-    {.country = "CA", .region = "AB"}, {.country = "CA", .region = "BC"},
-    {.country = "CA", .region = "MB"}, {.country = "CA", .region = "NB"},
-    {.country = "CA", .region = "NS"}, {.country = "CA", .region = "ON"},
-    {.country = "CA", .region = "QC"}, {.country = "CA", .region = "SK"}};
+  const char* const country_code;
+  const char* const subdivision_code;
+} constexpr kTests[] = {{.country_code = "US", .subdivision_code = "AL"},
+                        {.country_code = "US", .subdivision_code = "AK"},
+                        {.country_code = "US", .subdivision_code = "AZ"},
+                        {.country_code = "US", .subdivision_code = "AR"},
+                        {.country_code = "US", .subdivision_code = "CA"},
+                        {.country_code = "US", .subdivision_code = "CO"},
+                        {.country_code = "US", .subdivision_code = "CT"},
+                        {.country_code = "US", .subdivision_code = "DE"},
+                        {.country_code = "US", .subdivision_code = "FL"},
+                        {.country_code = "US", .subdivision_code = "GA"},
+                        {.country_code = "US", .subdivision_code = "HI"},
+                        {.country_code = "US", .subdivision_code = "ID"},
+                        {.country_code = "US", .subdivision_code = "IL"},
+                        {.country_code = "US", .subdivision_code = "IN"},
+                        {.country_code = "US", .subdivision_code = "IA"},
+                        {.country_code = "US", .subdivision_code = "KS"},
+                        {.country_code = "US", .subdivision_code = "KY"},
+                        {.country_code = "US", .subdivision_code = "LA"},
+                        {.country_code = "US", .subdivision_code = "ME"},
+                        {.country_code = "US", .subdivision_code = "MD"},
+                        {.country_code = "US", .subdivision_code = "MA"},
+                        {.country_code = "US", .subdivision_code = "MI"},
+                        {.country_code = "US", .subdivision_code = "MN"},
+                        {.country_code = "US", .subdivision_code = "MS"},
+                        {.country_code = "US", .subdivision_code = "MO"},
+                        {.country_code = "US", .subdivision_code = "MT"},
+                        {.country_code = "US", .subdivision_code = "NE"},
+                        {.country_code = "US", .subdivision_code = "NV"},
+                        {.country_code = "US", .subdivision_code = "NH"},
+                        {.country_code = "US", .subdivision_code = "NJ"},
+                        {.country_code = "US", .subdivision_code = "NM"},
+                        {.country_code = "US", .subdivision_code = "NY"},
+                        {.country_code = "US", .subdivision_code = "NC"},
+                        {.country_code = "US", .subdivision_code = "ND"},
+                        {.country_code = "US", .subdivision_code = "OH"},
+                        {.country_code = "US", .subdivision_code = "OK"},
+                        {.country_code = "US", .subdivision_code = "OR"},
+                        {.country_code = "US", .subdivision_code = "PA"},
+                        {.country_code = "US", .subdivision_code = "RI"},
+                        {.country_code = "US", .subdivision_code = "SC"},
+                        {.country_code = "US", .subdivision_code = "SD"},
+                        {.country_code = "US", .subdivision_code = "TN"},
+                        {.country_code = "US", .subdivision_code = "TX"},
+                        {.country_code = "US", .subdivision_code = "UT"},
+                        {.country_code = "US", .subdivision_code = "VT"},
+                        {.country_code = "US", .subdivision_code = "VA"},
+                        {.country_code = "US", .subdivision_code = "WA"},
+                        {.country_code = "US", .subdivision_code = "WV"},
+                        {.country_code = "US", .subdivision_code = "WI"},
+                        {.country_code = "US", .subdivision_code = "WY"},
+                        {.country_code = "CA", .subdivision_code = "AB"},
+                        {.country_code = "CA", .subdivision_code = "BC"},
+                        {.country_code = "CA", .subdivision_code = "MB"},
+                        {.country_code = "CA", .subdivision_code = "NB"},
+                        {.country_code = "CA", .subdivision_code = "NS"},
+                        {.country_code = "CA", .subdivision_code = "NT"},
+                        {.country_code = "CA", .subdivision_code = "NU"},
+                        {.country_code = "CA", .subdivision_code = "ON"},
+                        {.country_code = "CA", .subdivision_code = "PE"},
+                        {.country_code = "CA", .subdivision_code = "QC"},
+                        {.country_code = "CA", .subdivision_code = "SK"},
+                        {.country_code = "CA", .subdivision_code = "YT"}};
 
 }  // namespace
 
@@ -73,7 +105,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
 
     scoped_default_locale_ =
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>(
-            base::StrCat({"en", "_", GetParam().country}));
+            base::StrCat({"en", "_", GetParam().country_code}));
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     subdivision_ = std::make_unique<Subdivision>();
@@ -83,35 +115,37 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   }
 
   static std::string BuildSubdivisionForTestParam() {
-    return test::BuildSubdivision(GetParam().country, GetParam().region);
+    return test::BuildSubdivision(GetParam().country_code,
+                                  GetParam().subdivision_code);
   }
 
   static std::string BuildOtherSubdivisionForTestParam() {
-    const char* region = "";
+    const char* subdivision_code = "";
 
-    if (GetParam().country ==
+    if (GetParam().country_code ==
         std::string_view("US") /*United States of America*/) {
-      if (GetParam().region == std::string_view("FL") /*Florida*/) {
-        region = "CA";  // Alabama
+      if (GetParam().subdivision_code == std::string_view("FL") /*Florida*/) {
+        subdivision_code = "CA";  // Alabama
       } else {
-        region = "FL";  // Florida
+        subdivision_code = "FL";  // Florida
       }
-    } else if (GetParam().country == std::string_view("CA") /*Canada*/) {
-      if (GetParam().region == std::string_view("QC") /*Quebec*/) {
-        region = "AB";  // Alberta
+    } else if (GetParam().country_code == std::string_view("CA") /*Canada*/) {
+      if (GetParam().subdivision_code == std::string_view("QC") /*Quebec*/) {
+        subdivision_code = "AB";  // Alberta
       } else {
-        region = "QC";  // Quebec
+        subdivision_code = "QC";  // Quebec
       }
     }
 
-    return test::BuildSubdivision(GetParam().country, region);
+    return test::BuildSubdivision(GetParam().country_code, subdivision_code);
   }
 
   void MockUrlResponseForTestParam() {
     const URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
-         {{net::HTTP_OK, test::BuildSubdivisionUrlResponseBody(
-                             GetParam().country, GetParam().region)}}}};
+         {{net::HTTP_OK,
+           test::BuildSubdivisionUrlResponseBody(
+               GetParam().country_code, GetParam().subdivision_code)}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
@@ -122,8 +156,9 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
   std::unique_ptr<SubdivisionTargetingExclusionRule> exclusion_rule_;
 };
 
-TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
-       ShouldExcludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithRegion) {
+TEST_P(
+    BraveAdsSubdivisionTargetingExclusionRuleTest,
+    ShouldExcludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithSubdivisionCode) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
@@ -135,13 +170,13 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    ShouldIncludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoRegion) {
+    ShouldIncludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithNoSubdivisionCode) {
   // Arrange
   SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, false);
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {GetParam().country};
+  creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -185,7 +220,7 @@ TEST_P(
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoRegion) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndAutoDetectedForGeoTargetWithNoSubdivisionCode) {
   // Arrange
   SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -195,7 +230,7 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {GetParam().country};
+  creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -246,7 +281,7 @@ TEST_P(
 
 TEST_P(
     BraveAdsSubdivisionTargetingExclusionRuleTest,
-    ShouldIncludeIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoRegion) {
+    ShouldIncludeIfSubdivisionTargetingIsSupportedAndManuallySelectedForGeoTargetWithNoSubdivisionCode) {
   // Arrange
   SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, true);
 
@@ -259,7 +294,7 @@ TEST_P(
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.geo_targets = {GetParam().country};
+  creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_->ShouldInclude(creative_ad).has_value());
@@ -368,7 +403,8 @@ TEST_P(
 
 std::string TestParamToString(::testing::TestParamInfo<ParamInfo> test_param) {
   return base::ReplaceStringPlaceholders(
-      "Country$1_Region$2", {test_param.param.country, test_param.param.region},
+      "CountryCode$1SubdivisionCode$2",
+      {test_param.param.country_code, test_param.param.subdivision_code},
       nullptr);
 }
 

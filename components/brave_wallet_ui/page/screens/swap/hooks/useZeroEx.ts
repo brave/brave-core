@@ -93,7 +93,8 @@ export function useZeroEx(params: SwapParams) {
                 routePriority:
                   fromToken.chainId === toToken.chainId
                     ? BraveWallet.RoutePriority.kCheapest
-                    : BraveWallet.RoutePriority.kRecommended
+                    : BraveWallet.RoutePriority.kRecommended,
+                provider: BraveWallet.SwapProvider.kZeroEx
               },
               jupiterTransactionParams: undefined,
               lifiTransactionParams: undefined
@@ -121,7 +122,7 @@ export function useZeroEx(params: SwapParams) {
           fromAccount,
           to,
           value: new Amount(value).toHex(),
-          gas: new Amount(estimatedGas).toHex(),
+          gasLimit: new Amount(estimatedGas).toHex(),
           data: hexStrToNumberArray(data),
           network: fromNetwork
         })

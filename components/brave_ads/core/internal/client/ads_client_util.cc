@@ -25,7 +25,7 @@ bool HasInstance() {
 AdsClient* GetInstance() {
   CHECK(HasInstance());
 
-  AdsClient* ads_client = GlobalState::GetInstance()->GetAdsClient();
+  AdsClient* const ads_client = GlobalState::GetInstance()->GetAdsClient();
   CHECK(ads_client);
 
   return ads_client;
@@ -33,11 +33,12 @@ AdsClient* GetInstance() {
 
 }  // namespace
 
-void AddAdsClientNotifierObserver(AdsClientNotifierObserver* observer) {
+void AddAdsClientNotifierObserver(AdsClientNotifierObserver* const observer) {
   GetInstance()->AddObserver(observer);
 }
 
-void RemoveAdsClientNotifierObserver(AdsClientNotifierObserver* observer) {
+void RemoveAdsClientNotifierObserver(
+    AdsClientNotifierObserver* const observer) {
   GetInstance()->RemoveObserver(observer);
 }
 
@@ -124,14 +125,9 @@ std::string LoadDataResource(const std::string& name) {
   return GetInstance()->LoadDataResource(name);
 }
 
-void GetScheduledCaptcha(const std::string& payment_id,
-                         GetScheduledCaptchaCallback callback) {
-  GetInstance()->GetScheduledCaptcha(payment_id, std::move(callback));
-}
-
-void ShowScheduledCaptchaNotification(const std::string& payment_id,
-                                      const std::string& captcha_id) {
-  GetInstance()->ShowScheduledCaptchaNotification(payment_id, captcha_id);
+void ShowScheduledCaptcha(const std::string& payment_id,
+                          const std::string& captcha_id) {
+  GetInstance()->ShowScheduledCaptcha(payment_id, captcha_id);
 }
 
 void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
@@ -234,13 +230,7 @@ uint64_t GetProfileUint64Pref(const std::string& path) {
   CHECK(value->is_string()) << "Wrong type for GetProfileUint64Pref: " << path;
 
   uint64_t integer;
-  const bool success = base::StringToUint64(value->GetString(), &integer);
-  DCHECK(success) << "GetProfileUint64Pref failed: " << path;
-  if (!success) {
-    return 0;
-  }
-
-  return integer;
+  return base::StringToUint64(value->GetString(), &integer) ? integer : 0;
 }
 
 base::Time GetProfileTimePref(const std::string& path) {
@@ -413,13 +403,7 @@ uint64_t GetLocalStateUint64Pref(const std::string& path) {
   CHECK(value->is_string()) << "Wrong type for GetProfileBooleanPref: " << path;
 
   uint64_t integer;
-  const bool success = base::StringToUint64(value->GetString(), &integer);
-  DCHECK(success) << "GetLocalStateUint64Pref failed: " << path;
-  if (!success) {
-    return 0;
-  }
-
-  return integer;
+  return base::StringToUint64(value->GetString(), &integer) ? integer : 0;
 }
 
 base::Time GetLocalStateTimePref(const std::string& path) {
@@ -502,7 +486,7 @@ bool HasLocalStatePrefPath(const std::string& path) {
   return GetInstance()->HasLocalStatePrefPath(path);
 }
 
-void Log(const char* file,
+void Log(const char* const file,
          int line,
          int verbose_level,
          const std::string& message) {

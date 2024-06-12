@@ -21,11 +21,11 @@ class TransactionConfirmationStoreTests: XCTestCase {
       .fil: BraveWallet.NetworkInfo.mockFilecoinMainnet,
       .btc: BraveWallet.NetworkInfo.mockBitcoinMainnet,
     ],
-    allNetworksForCoinType: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
-      .eth: [.mockMainnet, .mockGoerli],
-      .sol: [.mockSolana, .mockSolanaTestnet],
-      .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
-      .btc: [.mockBitcoinMainnet, .mockBitcoinTestnet],
+    allNetworks: [BraveWallet.NetworkInfo] = [
+      .mockMainnet, .mockGoerli,
+      .mockSolana, .mockSolanaTestnet,
+      .mockFilecoinMainnet, .mockFilecoinTestnet,
+      .mockBitcoinMainnet, .mockBitcoinTestnet,
     ],
     accountInfos: [BraveWallet.AccountInfo] = [
       .mockEthAccount, .mockSolAccount, .mockFilAccount, .mockBtcAccount,
@@ -60,7 +60,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       price: "62117.0",
       assetTimeframeChange: "-57.23"
     )
-    let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     let mockFILBalanceWei = formatter.weiString(from: 1, decimals: 18) ?? ""
     // setup test services
@@ -78,8 +78,8 @@ class TransactionConfirmationStoreTests: XCTestCase {
     rpcService._network = { coin, origin, completion in
       completion(selectedNetworkForCoinType[coin] ?? .mockMainnet)
     }
-    rpcService._allNetworks = { coin, completion in
-      completion(allNetworksForCoinType[coin] ?? [])
+    rpcService._allNetworks = {
+      $0(allNetworks)
     }
     rpcService._hiddenNetworks = { $1([]) }
     rpcService._balance = { _, coin, _, completion in
@@ -147,7 +147,13 @@ class TransactionConfirmationStoreTests: XCTestCase {
     }
 
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
-    solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
+    let feeEstimation = BraveWallet.SolanaFeeEstimation(
+      baseFee: UInt64(0),
+      computeUnits: UInt32(0),
+      feePerComputeUnit: UInt64(0)
+    )
+
+    solTxManagerProxy._solanaTxFeeEstimation = { $2(feeEstimation, .success, "") }
 
     let bitcoinWalletService = BraveWallet.TestBitcoinWalletService()
     bitcoinWalletService._balance = { accountId, completion in

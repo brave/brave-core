@@ -28,7 +28,7 @@ namespace {
 
 constexpr char kTableName[] = "deposits";
 
-void BindRecords(mojom::DBCommandInfo* command) {
+void BindRecords(mojom::DBCommandInfo* const command) {
   CHECK(command);
 
   command->record_bindings = {
@@ -58,7 +58,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
+void BindParameters(mojom::DBCommandInfo* const command,
+                    const DepositInfo& deposit) {
   CHECK(command);
   CHECK(deposit.IsValid());
 
@@ -69,7 +70,7 @@ void BindParameters(mojom::DBCommandInfo* command, const DepositInfo& deposit) {
       ToChromeTimestampFromTime(deposit.expire_at.value_or(base::Time())));
 }
 
-DepositInfo GetFromRecord(mojom::DBRecordInfo* record) {
+DepositInfo GetFromRecord(mojom::DBRecordInfo* const record) {
   CHECK(record);
 
   DepositInfo deposit;
@@ -122,7 +123,7 @@ void GetForCreativeInstanceIdCallback(
   std::move(callback).Run(/*success=*/true, std::move(deposit));
 }
 
-void MigrateToV24(mojom::DBTransactionInfo* transaction) {
+void MigrateToV24(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // Recreate table to address a migration problem from older versions.
@@ -140,7 +141,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-void MigrateToV29(mojom::DBTransactionInfo* transaction) {
+void MigrateToV29(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // Migrate `expire_at` column from a UNIX timestamp to a WebKit/Chrome
@@ -256,7 +257,7 @@ std::string Deposits::GetTableName() const {
   return kTableName;
 }
 
-void Deposits::Create(mojom::DBTransactionInfo* transaction) {
+void Deposits::Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();

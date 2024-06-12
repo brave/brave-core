@@ -18,21 +18,22 @@ class BraveAdsBrowserManagerTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    BrowserManager::GetInstance().AddObserver(&observer_mock_);
+    BrowserManager::GetInstance().AddObserver(&browser_manager_observer_mock_);
   }
 
   void TearDown() override {
-    BrowserManager::GetInstance().RemoveObserver(&observer_mock_);
+    BrowserManager::GetInstance().RemoveObserver(
+        &browser_manager_observer_mock_);
 
     UnitTestBase::TearDown();
   }
 
-  BrowserManagerObserverMock observer_mock_;
+  BrowserManagerObserverMock browser_manager_observer_mock_;
 };
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
   // Arrange
-  EXPECT_CALL(observer_mock_, OnBrowserDidBecomeActive);
+  EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidBecomeActive);
 
   // Act
   NotifyBrowserDidBecomeActive();
@@ -45,7 +46,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
   // Arrange
   NotifyBrowserDidBecomeActive();
 
-  EXPECT_CALL(observer_mock_, OnBrowserDidResignActive);
+  EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidResignActive);
 
   // Act
   NotifyBrowserDidResignActive();
@@ -56,7 +57,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
   // Arrange
-  EXPECT_CALL(observer_mock_, OnBrowserDidEnterForeground);
+  EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidEnterForeground);
 
   // Act
   NotifyBrowserDidEnterForeground();
@@ -69,7 +70,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
   // Arrange
   NotifyBrowserDidEnterForeground();
 
-  EXPECT_CALL(observer_mock_, OnBrowserDidEnterBackground);
+  EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidEnterBackground);
 
   // Act
   NotifyBrowserDidEnterBackground();

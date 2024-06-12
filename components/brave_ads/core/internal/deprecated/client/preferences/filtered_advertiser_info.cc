@@ -8,9 +8,7 @@
 namespace brave_ads {
 
 base::Value::Dict FilteredAdvertiserInfo::ToValue() const {
-  base::Value::Dict dict;
-  dict.Set("id", id);
-  return dict;
+  return base::Value::Dict().Set("id", id);
 }
 
 void FilteredAdvertiserInfo::FromValue(const base::Value::Dict& dict) {

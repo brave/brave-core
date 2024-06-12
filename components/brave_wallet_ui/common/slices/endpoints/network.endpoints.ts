@@ -13,7 +13,6 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
-import { IsEip1559Changed } from '../../constants/action_types'
 import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
 import { ACCOUNT_TAG_IDS } from './account.endpoints'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
@@ -31,11 +30,6 @@ export const NETWORK_TAG_IDS = {
   CUSTOM_ASSET_SUPPORTED: 'CUSTOM_ASSET_SUPPORTED'
 } as const
 
-interface IsEip1559ChangedMutationArg {
-  id: string
-  isEip1559: boolean
-}
-
 export const networkEndpoints = ({
   mutation,
   query
@@ -46,39 +40,12 @@ export const networkEndpoints = ({
     getAllKnownNetworks: query<BraveWallet.NetworkInfo[], void>({
       queryFn: async (_arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          const { data: api, cache } = baseQuery(undefined)
+          const { data: api } = baseQuery(undefined)
 
-          const { isBitcoinEnabled, isZCashEnabled } =
-            cache.walletInfo || (await cache.getWalletInfo())
+          const { networks } = await api.jsonRpcService.getAllNetworks()
 
-          const { networks: ethNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
-          const { networks: solNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.SOL)
-          const { networks: filNetworks } =
-            await api.jsonRpcService.getAllNetworks(BraveWallet.CoinType.FIL)
-          const btcNetworks = isBitcoinEnabled
-            ? (
-                await api.jsonRpcService.getAllNetworks(
-                  BraveWallet.CoinType.BTC
-                )
-              ).networks
-            : []
-          const zecNetworks = isZCashEnabled
-            ? (
-                await api.jsonRpcService.getAllNetworks(
-                  BraveWallet.CoinType.ZEC
-                )
-              ).networks
-            : []
           return {
-            data: [
-              ...ethNetworks,
-              ...solNetworks,
-              ...filNetworks,
-              ...btcNetworks,
-              ...zecNetworks
-            ]
+            data: [...networks]
           }
         } catch (error) {
           return handleEndpointError(
@@ -405,18 +372,6 @@ export const networkEndpoints = ({
         { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
         { type: 'AccountInfos', id: ACCOUNT_TAG_IDS.SELECTED }
       ]
-    }),
-    isEip1559Changed: mutation<IsEip1559ChangedMutationArg, IsEip1559Changed>({
-      queryFn: async (arg, _, __, baseQuery) => {
-        // invalidate base cache of networks
-        baseQuery(undefined).cache.clearNetworksRegistry()
-
-        const { chainId, isEip1559 } = arg
-        return {
-          data: { id: chainId, isEip1559 }
-        }
-      },
-      invalidatesTags: ['Network']
     }),
     refreshNetworkInfo: mutation<boolean, void>({
       queryFn: async (arg, api, extraOptions, baseQuery) => {

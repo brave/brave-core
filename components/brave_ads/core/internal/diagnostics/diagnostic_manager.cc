@@ -14,10 +14,10 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/locale_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_brave_news_ads_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_new_tab_page_ads_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_search_result_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_brave_news_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_new_tab_page_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_notification_ads_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_into_search_result_ads_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {

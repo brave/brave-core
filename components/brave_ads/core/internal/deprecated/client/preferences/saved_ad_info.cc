@@ -8,9 +8,7 @@
 namespace brave_ads {
 
 base::Value::Dict SavedAdInfo::ToValue() const {
-  base::Value::Dict dict;
-  dict.Set("uuid", creative_instance_id);
-  return dict;
+  return base::Value::Dict().Set("uuid", creative_instance_id);
 }
 
 void SavedAdInfo::FromValue(const base::Value::Dict& dict) {

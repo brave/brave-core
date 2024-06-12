@@ -24,7 +24,7 @@
 
 namespace brave_ads {
 
-UserRewards::UserRewards(TokenGeneratorInterface* token_generator,
+UserRewards::UserRewards(TokenGeneratorInterface* const token_generator,
                          WalletInfo wallet)
     : refill_confirmation_tokens_(token_generator), wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());
@@ -141,7 +141,7 @@ void UserRewards::OnDidRetryRefillingConfirmationTokens() {
 
 void UserRewards::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
-  ShowScheduledCaptchaNotification(wallet_.payment_id, captcha_id);
+  ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
 }
 
 }  // namespace brave_ads

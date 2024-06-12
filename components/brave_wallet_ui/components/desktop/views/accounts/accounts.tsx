@@ -17,7 +17,6 @@ import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  getAccountType,
   groupAccountsById,
   sortAccountsByName
 } from '../../../../utils/account-utils'
@@ -86,16 +85,22 @@ export const Accounts = () => {
   }, [accounts])
 
   const trezorAccounts = React.useMemo(() => {
-    const foundTrezorAccounts = accounts.filter(
-      (account) => getAccountType(account) === 'Trezor'
-    )
+    const foundTrezorAccounts = accounts.filter((account) => {
+      return (
+        account.accountId.kind === BraveWallet.AccountKind.kHardware &&
+        account.hardware?.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR
+      )
+    })
     return groupAccountsById(foundTrezorAccounts, 'deviceId')
   }, [accounts])
 
   const ledgerAccounts = React.useMemo(() => {
-    const foundLedgerAccounts = accounts.filter(
-      (account) => getAccountType(account) === 'Ledger'
-    )
+    const foundLedgerAccounts = accounts.filter((account) => {
+      return (
+        account.accountId.kind === BraveWallet.AccountKind.kHardware &&
+        account.hardware?.vendor === BraveWallet.LEDGER_HARDWARE_VENDOR
+      )
+    })
     return groupAccountsById(foundLedgerAccounts, 'deviceId')
   }, [accounts])
 

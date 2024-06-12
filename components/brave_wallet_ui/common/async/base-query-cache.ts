@@ -159,20 +159,20 @@ export class BaseQueryCache {
 
       const visibleIds: string[] = []
       const hiddenIds: string[] = []
-      const idsByCoinType: Record<EntityId, EntityId[]> = {}
+      const visibleIdsByCoinType: Record<EntityId, EntityId[]> = {}
       const hiddenIdsByCoinType: Record<EntityId, string[]> = {}
       const mainnetIds: string[] = []
       const testnetIds: string[] = []
       const onRampIds: string[] = []
       const offRampIds: string[] = []
 
+      const { networks } = await jsonRpcService.getAllNetworks()
+
       // Get all networks for supported coin types
       const networkLists: BraveWallet.NetworkInfo[][] = await mapLimit(
         filteredSupportedCoinTypes,
         10,
         async (coin: BraveWallet.CoinType) => {
-          const { networks } = await jsonRpcService.getAllNetworks(coin)
-
           // hidden networks for coin
           let hiddenNetworkIds: string[] = []
           try {
@@ -198,10 +198,13 @@ export class BaseQueryCache {
             )
           }
 
-          idsByCoinType[coin] = []
+          visibleIdsByCoinType[coin] = []
           hiddenIdsByCoinType[coin] = []
 
-          networks.forEach(({ chainId, coin }) => {
+          networks.forEach(({ chainId, coin: networkCoin }) => {
+            if (networkCoin !== coin) {
+              return
+            }
             const networkId = networkEntityAdapter
               .selectId({
                 chainId,
@@ -220,7 +223,7 @@ export class BaseQueryCache {
               hiddenIds.push(networkId)
             } else {
               // visible networks for coin
-              idsByCoinType[coin].push(networkId)
+              visibleIdsByCoinType[coin].push(networkId)
               visibleIds.push(networkId)
             }
 
@@ -246,7 +249,7 @@ export class BaseQueryCache {
       const normalizedNetworksState = networkEntityAdapter.setAll(
         {
           ...emptyNetworksRegistry,
-          idsByCoinType,
+          visibleIdsByCoinType,
           hiddenIds,
           hiddenIdsByCoinType,
           visibleIds,

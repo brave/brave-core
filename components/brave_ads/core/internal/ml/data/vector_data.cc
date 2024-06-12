@@ -37,7 +37,7 @@ class VectorDataStorage {
       : dimension_count_(dimension_count),
         points_(std::move(points)),
         values_(std::move(values)) {
-    CHECK((points_.size() == values_.size() || points_.empty()));
+    CHECK(points_.size() == values_.size() || points_.empty());
   }
 
   size_t GetSize() const { return values_.size(); }
@@ -233,7 +233,8 @@ void VectorData::Tanh() {
 }
 
 float VectorData::ComputeSimilarity(const VectorData& other) const {
-  CHECK(GetDimensionCount() == other.GetDimensionCount());
+  CHECK_EQ(GetDimensionCount(), other.GetDimensionCount());
+
   return (*this * other) / (GetNorm() * other.GetNorm());
 }
 

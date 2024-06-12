@@ -9,6 +9,8 @@
 namespace brave_ads {
 
 inline constexpr char kLanguageComponentManifestVersion[] = "1.0.0";
+inline constexpr char kLanguageComponentManifestVersionUpdate[] = "9.9.9";
+
 inline constexpr char kLanguageComponentId[] =
     "ijmgabghpbflfadffhpmjklamndnonha";
 inline constexpr char kInvalidLanguageComponentId[] =

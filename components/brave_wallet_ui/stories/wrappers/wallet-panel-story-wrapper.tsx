@@ -16,6 +16,11 @@ import { WalletActions } from '../../common/actions'
 // types
 import { PanelState, UIState, WalletState } from '../../constants/types'
 
+// theme
+import LightDarkThemeProvider from '../../../common/BraveCoreThemeProvider'
+import walletDarkTheme from '../../theme/wallet-dark'
+import walletLightTheme from '../../theme/wallet-light'
+
 // Mocks
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { createMockStore } from '../../utils/test-utils'
@@ -72,5 +77,17 @@ export const WalletPanelStory: React.FC<
     </MemoryRouter>
   )
 }
+
+export const WalletPanelTestWrapper = (
+  props: React.PropsWithChildren<WalletPanelStoryProps>
+) => (
+  <LightDarkThemeProvider
+    initialThemeType={'Light'}
+    dark={walletDarkTheme}
+    light={walletLightTheme}
+  >
+    <WalletPanelStory {...props} />
+  </LightDarkThemeProvider>
+)
 
 export default WalletPanelStory

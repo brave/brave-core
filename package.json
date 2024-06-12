@@ -1,11 +1,10 @@
 {
   "name": "brave-core",
-  "version": "1.69.7",
+  "version": "1.69.16",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
-    "check_security": "node ./build/commands/scripts/checkSecurity.js",
     "cibuild": "node ./build/commands/scripts/commands.js cibuild",
     "init": "cd ../../ && npm run --prefix src/brave sync -- --init",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
@@ -29,7 +28,6 @@
     "mass_rename": "node ./build/commands/scripts/commands.js mass_rename",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "cross-env NODE_OPTIONS=--no-experimental-fetch jest build/commands/lib build/commands/scripts",
-    "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
     "tslint": "npm run eslint",
     "eslint": "eslint ./components",
     "pep8": "pycodestyle --max-line-length 120 -r script",
@@ -66,7 +64,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "126.0.6478.40",
+        "tag": "126.0.6478.56",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -85,12 +83,13 @@
     "@storybook/addons": "7.6.17",
     "@storybook/react": "7.6.17",
     "@storybook/react-webpack5": "7.6.17",
+    "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "15.0.6",
     "@types/array-move": "2.0.0",
     "@types/async": "3.2.20",
     "@types/chrome": "0.0.241",
     "@types/dom-navigation": "1.0.3",
-    "@types/jest": "26.0.24",
+    "@types/jest": "27.5.2",
     "@types/qr-image": "3.2.5",
     "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24",
@@ -131,7 +130,7 @@
     "fs-extra": "8.1.0",
     "https-browserify": "1.0.0",
     "identity-obj-proxy": "3.0.0",
-    "jest": "26.6.3",
+    "jest": "27.5.1",
     "jest-junit": "13.0.0",
     "less": "3.13.1",
     "less-loader": "11.1.3",
@@ -158,7 +157,7 @@
     "teamcity-service-messages": "0.1.14",
     "terser": "5.16.2",
     "timers-browserify": "2.0.12",
-    "ts-jest": "26.5.6",
+    "ts-jest": "27.1.4",
     "ts-loader": "8.4.0",
     "typesafe-actions": "2.2.0",
     "typescript": "4.9.4",

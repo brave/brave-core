@@ -18,7 +18,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kInvalidJsonFilename[] = "invalid.json";
+constexpr char kMalformedJsonFilename[] = "malformed.json";
 }  // namespace
 
 class BraveAdsLegacyConfirmationMigrationTest : public UnitTestBase {
@@ -40,9 +40,9 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest, Migrate) {
   EXPECT_TRUE(HasMigratedConfirmation());
 }
 
-TEST_F(BraveAdsLegacyConfirmationMigrationTest, ResetInvalidState) {
+TEST_F(BraveAdsLegacyConfirmationMigrationTest, ResetMalformedState) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kInvalidJsonFilename,
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kMalformedJsonFilename,
                                              kConfirmationStateFilename));
 
   // Act & Assert

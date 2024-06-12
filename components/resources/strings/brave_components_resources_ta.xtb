@@ -236,7 +236,6 @@
 <translation id="1426410128494586442">ஆம்</translation>
 <translation id="4250680216510889253">இல்லை</translation>
 <translation id="1201402288615127009">அடுத்து</translation>
-<translation id="8712637175834984815">புரிந்தது</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="7885157704277298658">நகலெடுக்கப்பட்டது!</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
@@ -290,6 +289,7 @@
 <translation id="2687968143695057804">புதிய கணக்கு</translation>
 <translation id="4412698727486357573">உதவி மையம்</translation>
 <translation id="8297006494302853456">வலுவாக இல்லை</translation>
+<translation id="4634124774493850572">கடவுச்சொல்லைப் பயன்படுத்து</translation>
 <translation id="6657585470893396449">கடவுச்சொல்</translation>
 <translation id="5026874946691314267">மீண்டும் இதை காட்டாதே</translation>
 <translation id="6680650203439190394">மதிப்பிடு</translation>
@@ -309,6 +309,7 @@
 <translation id="7751260505918304024">அனைத்தையும் காண்பி</translation>
 <translation id="5138227688689900538">குறைவாகக் காட்டு</translation>
 <translation id="5233638681132016545">புதிய தாவல்</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="7481312909269577407">அடுத்த பக்கம்</translation>
 <translation id="5210365745912300556">தாவலை மூடுக</translation>
 <translation id="2345974803401546682">பிரேவ் VPN பற்றி</translation>
@@ -316,6 +317,7 @@
 <translation id="2593272815202181319">மோனோஸ்பேஸ்</translation>
 <translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
 <translation id="7138678301420049075">மற்றவை</translation>
+<translation id="8712637175834984815">புரிந்தது</translation>
 <translation id="6303294677342628402">கவசங்கள்</translation>
 <translation id="7053983685419859001">தடு</translation>
 <translation id="5716230673298034837">அனைத்தையும் அனுமதி</translation>

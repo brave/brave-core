@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_util.h"
 
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -69,7 +70,10 @@ TEST(SearchResultAdUtilTest, CheckGetPlacementIdFromSearchResultAdClickedUrl) {
       "https://search.brave.software/a/"
       "redirect?click_url=https:%3A%2F%2Fexample.com&placement_id&"
       "creative_instance_id=creative");
-  EXPECT_EQ("", GetPlacementIdFromSearchResultAdClickedUrl(url));
+  const std::optional<std::string> placement_id =
+      GetPlacementIdFromSearchResultAdClickedUrl(url);
+  ASSERT_TRUE(placement_id);
+  EXPECT_THAT(*placement_id, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

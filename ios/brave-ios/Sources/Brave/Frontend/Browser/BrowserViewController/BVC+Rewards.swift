@@ -172,19 +172,20 @@ extension Tab {
     let group = DispatchGroup()
 
     var htmlContent: String?
-    group.enter()
-    webView.evaluateSafeJavaScript(
-      functionName: "new XMLSerializer().serializeToString",
-      args: ["document"],
-      contentWorld: WKContentWorld.defaultClient,
-      escapeArgs: false
-    ) { html, _ in
-      htmlContent = html as? String
-      group.leave()
-    }
-
     var textContent: String?
+
     if rewards.isEnabled {
+      group.enter()
+      webView.evaluateSafeJavaScript(
+        functionName: "new XMLSerializer().serializeToString",
+        args: ["document"],
+        contentWorld: WKContentWorld.defaultClient,
+        escapeArgs: false
+      ) { html, _ in
+        htmlContent = html as? String
+        group.leave()
+      }
+
       group.enter()
       webView.evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
@@ -200,7 +201,7 @@ extension Tab {
       rewards.reportLoadedPage(
         redirectChain: redirectChain,
         tabId: Int(self.rewardsId),
-        htmlContent: htmlContent ?? "",
+        htmlContent: htmlContent,
         textContent: textContent
       )
     }

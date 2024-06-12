@@ -25,7 +25,7 @@ constexpr char kEpsilonGreedyBanditEligibleSegments[] =
 }  // namespace
 
 void RegisterProfilePrefsForMigration(
-    user_prefs::PrefRegistrySyncable* registry) {
+    user_prefs::PrefRegistrySyncable* const registry) {
   // Added 11/2023.
   registry->RegisterDoublePref(kNotificationAdLastNormalizedDisplayCoordinateX,
                                0.0);
@@ -37,7 +37,7 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterListPref(kEpsilonGreedyBanditEligibleSegments);
 }
 
-void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   // Added 11/2023.
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateX);
   prefs->ClearPref(kNotificationAdLastNormalizedDisplayCoordinateY);

@@ -611,7 +611,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6896758677409633944">Kopyahin</translation>
 <translation id="3726490322412361740">Ilagay ang Password</translation>
 <translation id="3038243139480464605">I-verify ang password</translation>
-<translation id="3043677904160378840">Dapat na hindi bababa sa 8 na mga character ang mga password.</translation>
 <translation id="7396672979287122068">Hindi tumugma ang na-verify na password</translation>
 <translation id="1566412704591731844">Paggawa ng wallet mo...</translation>
 <translation id="7779823116893018906">Baka abutin ito nang ilang segundo...</translation>
@@ -655,8 +654,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5981303441790732480">I-import ang umiiral na wallet mo</translation>
 <translation id="9111102763498581341">I-unlock</translation>
 <translation id="6657585470893396449">Password</translation>
+<translation id="7553242001898162573">Ilagay ang iyong password</translation>
 <translation id="5619264711680220002">I-unlock ang biometric</translation>
+<translation id="9195657745688986798">I-unlock ang Wallet</translation>
 <translation id="5168349973342709369">Ilagay ang password para i-unlock ang wallet</translation>
+<translation id="3043677904160378840">Dapat na hindi bababa sa 8 na mga character ang mga password.</translation>
 <translation id="1144810021918451336">Hindi ka pinoprotektahan laban sa mga mapanganib na website, pag-download, at extension.</translation>
 <translation id="5760476995887363522">Hindi tugma ang mga parirala. Pakisubukan ulit.</translation>
 <translation id="2360588547830602174">Hindi na-recover ang account. Pakisubukan ulit.</translation>
@@ -700,7 +702,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6748319398471481216">Nagre-renew buwan-buwan</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / buwan</translation>
 <translation id="1163809943099641131">Isang Taon</translation>
-<translation id="7574007394522199115">Makakatipid ng <ph name="PERCENTAGE_AMOUNT"/>%% ang pag-renew taon-taon</translation>
+<translation id="7574007394522199115">I-renew taon-taon at makatipid ng <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / taon</translation>
 <translation id="2655185358771731232">Libreng subukan sa loob ng 7 araw. Makalipas ang 7 araw, sisingilin ka para sa presyo ng plano. Awtomatikong nare-renew ang mga subscription pero pwede itong kanselahin bago ma-renew.</translation>
 <translation id="6053992191006521518">Subukan nang LIBRE</translation>
@@ -1188,4 +1190,13 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="6891382640886173702">I-merge ang mga window</translation>
 <translation id="2912247081180973411">Isara ang mga window</translation>
 <translation id="4010699428656610296">I-merge ang iba pang mga tab sa iba pang window ng Brave.</translation>
+<translation id="208634871997892083">Laging naka-on na VPN</translation>
+<translation id="1599073346542156922">Paano i-on:</translation>
+<translation id="7001163334415463127">1. Buksan ang mga setting ng device mo mula sa app drawer mo o sa pag-tap ng button sa iba.</translation>
+<translation id="887443138775437899">2. Hanapin ang Brave VPN at i-tap ang icon ng mga setting sa kanan.</translation>
+<translation id="3776051499611941773">3. I-toggle ang <ph name="ALWAYS_ON_TUTORIAL_START"/>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END"/> para i-enable ito.</translation>
+<translation id="4776146737004271126">Buksan ang mga setting ng Android</translation>
+<translation id="2728518864712716830">Na-download na ang update.</translation>
+<translation id="8403338849301491865">Na-update na ang filter list</translation>
+<translation id="4650851936784160359">Hindi ma-update ang filter list. Subukan ulit.</translation>
 </translationbundle>

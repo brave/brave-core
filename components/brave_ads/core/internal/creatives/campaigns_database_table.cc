@@ -73,7 +73,7 @@ std::string Campaigns::GetTableName() const {
   return kTableName;
 }
 
-void Campaigns::Create(mojom::DBTransactionInfo* transaction) {
+void Campaigns::Create(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
@@ -109,7 +109,7 @@ void Campaigns::Migrate(mojom::DBTransactionInfo* transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Campaigns::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+void Campaigns::MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // We can safely recreate the table because it will be repopulated after

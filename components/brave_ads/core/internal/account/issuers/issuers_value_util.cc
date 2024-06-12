@@ -138,7 +138,7 @@ std::optional<IssuerList> ValueToIssuers(const base::Value::List& list) {
   issuers.reserve(list.size());
 
   for (const auto& item : list) {
-    const auto* item_dict = item.GetIfDict();
+    const auto* const item_dict = item.GetIfDict();
     if (!item_dict) {
       continue;
     }
