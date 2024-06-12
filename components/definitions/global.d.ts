@@ -44,6 +44,10 @@ declare global {
       switchToSelectorsPollingThreshold : number | undefined
       fetchNewClassIdRulesThrottlingMs : number | undefined
       tryScheduleQueuePump: (() => void)
+      selectorsToRemove: string[] | undefined
+      classesToRemoveBySelector: Map<string, string[]> | undefined
+      attributesToRemoveBySelector: Map<string, string[]> | undefined
+      hasRemovals: boolean
     }
   }
 }
