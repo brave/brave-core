@@ -281,7 +281,8 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
         }
         .frame(
           height: activeSheetDragState?.activeHeight
-            ?? min(maxDetentHeight, selectedDetent.heightInContext(detentContext))
+            ?? min(maxDetentHeight, selectedDetent.heightInContext(detentContext)),
+          alignment: .top
         )
         .background(Color(braveSystemName: .gray10), ignoresSafeAreaEdges: .bottom)
         .containerShape(
@@ -316,6 +317,9 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
     .onChange(of: maxDetentHeight) { _ in
       computeDetentHeights()
     }
+    // FIXME: Figure out what to do in AX sizes
+    // XXXL may even have issues with DisplayZoom on
+    .dynamicTypeSize(.xSmall...DynamicTypeSize.xxxLarge)
   }
 }
 

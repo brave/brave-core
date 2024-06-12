@@ -10,6 +10,7 @@ import SwiftUI
 
 extension PlaylistSheetDetent.DetentAnchorID {
   static let mediaPlayer: Self = .init(id: "player")
+  static let mediaControls: Self = .init(id: "controls")
 }
 
 /// The view shown when the user is playing video or audio
@@ -61,6 +62,7 @@ struct MediaContentView: View {
       if !isFullScreen {
         PlaybackControlsView(model: model, selectedItemTitle: selectedItem.name)
           .padding(24)
+          .playlistSheetDetentAnchor(id: .mediaControls)
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isFullScreen ? .center : .top)
@@ -191,9 +193,14 @@ extension MediaContentView {
     var selectedItemTitle: String
 
     @Environment(\.toggleFullScreen) private var toggleFullScreen
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var verticalStackSpacing: CGFloat {
+      dynamicTypeSize >= .xxxLarge ? 14 : 28
+    }
 
     var body: some View {
-      VStack(spacing: 28) {
+      VStack(spacing: verticalStackSpacing) {
         HStack(alignment: .firstTextBaseline) {
           Text(selectedItemTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
@@ -207,7 +214,7 @@ extension MediaContentView {
         }
         // FIXME: Handle live video better
         PlaybackScrubber(model: model)
-        VStack(spacing: 28) {
+        VStack(spacing: verticalStackSpacing) {
           HStack {
             Toggle(isOn: $model.isShuffleEnabled) {
               if model.isShuffleEnabled {

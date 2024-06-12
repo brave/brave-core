@@ -41,11 +41,11 @@ public final class PlayerModel: ObservableObject {
     setupPlayerNotifications()
     setupPictureInPictureKeyPathObservation()
     setupRemoteCommandCenterHandlers()
+
     Task { @MainActor in
       updateSystemPlayer()
+      UIApplication.shared.beginReceivingRemoteControlEvents()
     }
-
-    UIApplication.shared.beginReceivingRemoteControlEvents()
 
     // FIXME: Maybe only set this before first playback
     DispatchQueue.global().async {
@@ -62,7 +62,9 @@ public final class PlayerModel: ObservableObject {
     }
     try? AVAudioSession.sharedInstance().setActive(false)
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
-    UIApplication.shared.endReceivingRemoteControlEvents()
+    Task { @MainActor in
+      UIApplication.shared.endReceivingRemoteControlEvents()
+    }
   }
 
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "PlayerModel")

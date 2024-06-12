@@ -26,7 +26,7 @@ struct PlaylistContentView: View {
     predicate: .init(format: "sharedFolderUrl == nil")
   ) private var folders: FetchedResults<PlaylistFolder>
 
-  @State private var selectedDetent: PlaylistSheetDetent = .small
+  @State private var selectedDetent: PlaylistSheetDetent = .anchor(.mediaControls)
   @State private var isNewPlaylistAlertPresented: Bool = false
   @State private var isEditModePresented: Bool = false
   @State private var newPlaylistName: String = ""
@@ -61,7 +61,7 @@ struct PlaylistContentView: View {
             // Make the item queue prior to setting the `selectedItemID`, which will start playing
             // said item
             withAnimation(.snappy) {
-              selectedDetent = .small
+              selectedDetent = .anchor(.mediaControls)
             }
             // FIXME: Move this into PlayerModel
             playerModel.makeItemQueue(selectedItemID: newValue)
@@ -121,7 +121,7 @@ struct PlaylistContentView: View {
             model: playerModel,
             selectedItem: selectedItem
           )
-          .playlistSheetDetents([.small, .anchor(.mediaPlayer), .large])
+          .playlistSheetDetents([.anchor(.mediaControls), .anchor(.mediaPlayer), .large])
         } else {
           PlaylistContentUnavailableView(isPlaylistEmpty: PlaylistItem.count() == 0)
             .playlistSheetDetents([.anchor(.emptyPlaylistContent), .large])
@@ -145,7 +145,7 @@ struct PlaylistContentView: View {
     .onAppear {
       playerModel.prepareItemQueue()
       if selectedItem != nil {
-        selectedDetent = .small
+        selectedDetent = .anchor(.mediaControls)
       } else {
         selectedDetent = .anchor(.emptyPlaylistContent)
       }
