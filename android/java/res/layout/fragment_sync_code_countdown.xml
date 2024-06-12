@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/brave_sync_count_down_text_color"
+            android:textColor="@color/systemfeedback_info_text_2"
             android:gravity="center_vertical"
             android:textSize="14sp"
             app:drawableTint="@android:color/white" />
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/warning_circle_filled"
+            app:srcCompat="@drawable/warning_circle_filled_theme_color"
             android:layout_margin="8dp" />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/brave_sync_code_expired_block_text"
-            android:textColor="@color/brave_sync_expired_block_text_color"
+            android:textColor="@color/systemfeedback_error_text_2"
             android:gravity="center_vertical"
             android:textSize="14sp"
             app:drawableTint="@android:color/white" />

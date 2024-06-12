@@ -8,6 +8,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@android:color/transparent" />
-    <stroke android:width="1dip" android:color="@color/brave_sync_main_button_color"/>
+    <stroke android:width="1dip" android:color="@color/divider_interactive_2"/>
     <corners android:radius="12dp" />
 </shape>

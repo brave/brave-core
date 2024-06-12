@@ -94,6 +94,7 @@
     <!-- From src/brave/node_modules/@brave/leo/tokens/android/values/colors.xml -->
     <color name="systemfeedback_error_background">#ffe8e7</color>
     <color name="systemfeedback_error_text">#b3002a</color>
+    <color name="systemfeedback_error_icon">#b3002a</color>
     <color name="systemfeedback_info_background">#e2f0ff</color>
     <color name="systemfeedback_info_icon">#0061aa</color>
     <color name="systemfeedback_info_text">#0061aa</color>
@@ -104,17 +105,29 @@
     <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/baseline_neutral_95</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
-    <color name="brave_sync_stop_watch_icon_color">@color/systemfeedback_info_icon</color>
-    <color name="brave_sync_code_expired_bg_color">@color/systemfeedback_error_background</color>
-    <color name="brave_sync_count_down_text_color">@color/systemfeedback_info_text</color>
-    <color name="brave_sync_expired_block_text_color">@color/systemfeedback_error_text</color>
     <color name="brave_sync_main_button_color">@color/button_background</color>
     <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
     <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
-    <color name="brave_sync_toggle_off_btn_text_color">@color/text_secondary</color>
-    <color name="brave_sync_toggle_on_btn_text_color">@color/text_interactive</color>
-    <color name="brave_sync_code_countdown_bg_color">@color/systemfeedback_info_background</color>
-    <color name="brave_sync_top_rounded_bg_color">@color/container_background</color>
+
+    <!--
+        The colors below with "_2" suffix are used in Sync layouts. The reason why it
+        is done - mismatch of values between Figma sketches and
+        @brave/leo/tokens/android/values-night/colors.xml. Therefore values from Figma are in
+        priority and kept under modified names.
+        TODO(alexeybarabash): remove "***_2" colors when the names and values will match
+        with the  main values.
+    -->
+    <color name="container_background_2">@color/container_background</color>
+    <color name="divider_subtle_2">@color/divider_subtle</color>
+    <color name="systemfeedback_error_background_2">@color/systemfeedback_error_background</color>
+    <color name="systemfeedback_error_icon_2">@color/systemfeedback_error_icon</color>
+    <color name="systemfeedback_error_text_2">@color/systemfeedback_error_text</color>
+    <color name="systemfeedback_info_background_2">@color/systemfeedback_info_background</color>
+    <color name="systemfeedback_info_icon_2">@color/systemfeedback_info_icon</color>
+    <color name="systemfeedback_info_text_2">@color/systemfeedback_info_text</color>
+    <color name="text_interactive_2">@color/text_interactive</color>
+    <color name="text_primary_2">@color/text_primary</color>
+    <color name="divider_interactive_2">@color/divider_interactive</color>
 
     <!-- Sync informer icon colors -->
     <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>

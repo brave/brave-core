@@ -201,7 +201,7 @@
         <item name="android:translationY">-0.97sp</item>
         <item name="android:gravity">top</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#B3002A</item>
+        <item name="android:textColor">@color/systemfeedback_error_text</item>
         <item name="android:textStyle">bold</item>
     </style>
 

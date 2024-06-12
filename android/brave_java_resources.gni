@@ -747,6 +747,7 @@ brave_java_resources = [
   "java/res/drawable/wallet_top_banner_bg.xml",
   "java/res/drawable/wallet_verify_button.xml",
   "java/res/drawable/warning_circle_filled.xml",
+  "java/res/drawable/warning_circle_filled_theme_color.xml",
   "java/res/drawable/web_notification_small_icon_background.xml",
   "java/res/drawable/white_rounded_holo_button_thin.xml",
   "java/res/font/roboto_mono_regular.ttf",
