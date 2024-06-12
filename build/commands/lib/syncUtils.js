@@ -38,7 +38,9 @@ function buildDefaultGClientConfig(
       name: 'src',
       url: config.chromiumRepo,
       custom_deps: {
+        // wasm_corpus has around 50k files, not used in the build.
         'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
+        // chromium-variations .git takes ~4 GB, not used in the build.
         'src/third_party/chromium-variations': null
       },
       custom_vars: {
