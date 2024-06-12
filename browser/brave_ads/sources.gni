@@ -21,6 +21,10 @@ brave_browser_brave_ads_sources = [
   "//brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h",
   "//brave/browser/brave_ads/tabs/ads_tab_helper.cc",
   "//brave/browser/brave_ads/tabs/ads_tab_helper.h",
+  "//brave/browser/brave_ads/tabs/html_content_body_handler.cc",
+  "//brave/browser/brave_ads/tabs/html_content_body_handler.h",
+  "//brave/browser/brave_ads/tabs/tabs_util.cc",
+  "//brave/browser/brave_ads/tabs/tabs_util.h",
 ]
 
 brave_browser_brave_ads_deps = [

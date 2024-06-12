@@ -69,10 +69,6 @@ class AdsTabHelper : public content::WebContentsObserver,
   void MaybeNotifyTabDidChange();
 
   void MaybeNotifyTabContentDidChange();
-  void MaybeNotifyTabHtmlContentDidChange();
-  void OnMaybeNotifyTabHtmlContentDidChange(
-      const std::vector<GURL>& redirect_chain,
-      base::Value value);
   void MaybeNotifyTabTextContentDidChange();
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,
@@ -105,7 +101,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
 
-  SessionID tab_id_;
+  const SessionID tab_id_;
 
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
 

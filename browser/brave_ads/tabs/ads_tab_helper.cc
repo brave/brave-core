@@ -8,12 +8,12 @@
 #include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_ads/tabs/tabs_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
-#include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -30,12 +30,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr int kHtmlClientErrorResponseCodeClass = 4;
-constexpr int kHtmlServerErrorResponseCodeClass = 5;
-
-constexpr char16_t kSerializeDocumentToStringJavaScript[] =
-    u"new XMLSerializer().serializeToString(document)";
-
 constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
 
@@ -50,7 +44,7 @@ std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AdsTabHelper>(*web_contents),
-      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
+      tab_id_(GetTabIdFromWebContents(web_contents)) {
   if (!tab_id_.is_valid()) {
     // Invalid session id instance.
     return;
@@ -139,9 +133,7 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
 
   if (const net::HttpResponseHeaders* const response_headers =
           navigation_handle->GetResponseHeaders()) {
-    const int response_code_class = response_headers->response_code() / 100;
-    return response_code_class == kHtmlClientErrorResponseCodeClass ||
-           response_code_class == kHtmlServerErrorResponseCodeClass;
+    return HttpResponseHasErrorCode(response_headers);
   }
 
   return false;
@@ -226,28 +218,11 @@ void AdsTabHelper::MaybeNotifyTabContentDidChange() {
     return;
   }
 
-  MaybeNotifyTabHtmlContentDidChange();
-  MaybeNotifyTabTextContentDidChange();
-}
-
-void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
-  CHECK(ads_service_);
-  CHECK(!redirect_chain_.empty());
-
-  web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      kSerializeDocumentToStringJavaScript,
-      base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
-                     weak_factory_.GetWeakPtr(), redirect_chain_),
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-}
-
-void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
-    const std::vector<GURL>& redirect_chain,
-    base::Value value) {
-  if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain,
-                                                /*html=*/value.GetString());
+  for (const auto& url : redirect_chain_) {
+    LOG(ERROR) << "FOOBAR.url in redirect_chain_: " << url.spec();
   }
+
+  MaybeNotifyTabTextContentDidChange();
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {

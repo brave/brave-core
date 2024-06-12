@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_ads/tabs/html_content_body_handler.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -41,6 +42,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -996,9 +998,20 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
     if (isMainFrame) {
       // De-AMP
-      auto handler = de_amp::DeAmpBodyHandler::Create(request, wc_getter);
-      if (handler) {
-        body_sniffer_throttle->AddHandler(std::move(handler));
+      auto de_amp_handler =
+          de_amp::DeAmpBodyHandler::Create(request, wc_getter);
+      if (de_amp_handler) {
+        body_sniffer_throttle->AddHandler(std::move(de_amp_handler));
+      }
+
+      brave_ads::AdsService* const ads_service =
+          brave_ads::AdsServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(browser_context));
+      auto ads_html_content_handler =
+          brave_ads::HtmlContentBodyHandler::MaybeCreate(ads_service,
+                                                         wc_getter);
+      if (ads_html_content_handler) {
+        body_sniffer_throttle->AddHandler(std::move(ads_html_content_handler));
       }
     }
 
