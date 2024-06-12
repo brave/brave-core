@@ -4,9 +4,24 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ipfs/ipfs_constants.h"
+#include "components/strings/grit/components_strings.h"
+
+namespace {
+constexpr int kDangerousVerboseState = IDS_DANGEROUS_VERBOSE_STATE;
+}  // namespace
 
 #define BRAVE_SHOULD_SHOW_URL_IPFS_CHECK \
   url.SchemeIs(ipfs::kIPFSScheme) || url.SchemeIs(ipfs::kIPNSScheme) ||
 
+// To make |is_text_dangerous| false always.
+// It prevents to get color from LocationIconView. We want to get color
+// from its delegate.
+#undef IDS_DANGEROUS_VERBOSE_STATE
+#define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState) && (false
+
 #include "src/chrome/browser/ui/views/location_bar/location_icon_view.cc"
+
+#undef IDS_DANGEROUS_VERBOSE_STATE
 #undef BRAVE_SHOULD_SHOW_URL_IPFS_CHECK
+
+#define IDS_DANGEROUS_VERBOSE_STATE kDangerousVerboseState
