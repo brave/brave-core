@@ -1,24 +1,24 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index b05865f1122730fd6f689b9152c199491dafd905..4770e225a679beb0d1b55630c96dcffb500c68f1 100644
+index f1166be2b458d7796dcea5504a35f1099eb3190d..f75e4665a667e6a515d0bc33b6f5f7b47e2df30b 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
-@@ -40,6 +40,7 @@ js_files = [
- ]
+@@ -43,6 +43,7 @@ if (is_chromeos) {
+ }
  
  if (is_chromeos_ash) {
 +} if (!is_android) {
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-behaviors/iron-control-state.js",
-@@ -271,6 +272,7 @@ ts_library("library") {
-   ]
+@@ -276,6 +277,7 @@ ts_library("library") {
+   }
  
    if (is_chromeos_ash) {
 +  } if (!is_android) {
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
-       "components-chromium/iron-dropdown/iron-dropdown.d.ts",
-@@ -293,4 +295,5 @@ ts_library("library") {
+       "components-chromium/iron-collapse/iron-collapse.d.ts",
+@@ -300,4 +302,5 @@ ts_library("library") {
        "components-chromium/paper-tooltip/paper-tooltip.d.ts",
      ]
    }

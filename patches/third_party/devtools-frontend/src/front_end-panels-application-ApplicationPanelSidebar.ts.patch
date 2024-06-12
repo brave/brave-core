@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 809af49a61559f31db2507d4639d46166c0ad93c..87e5324168b427835b1303e535e17dd2828cfad5 100644
+index 87d1563e3bf5236375033fa07ede2d9b7fe3fe93..7ba74098061ae447079ebbd2fcd2584dfcef4b24 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
 @@ -445,6 +445,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
@@ -9,4 +9,4 @@ index 809af49a61559f31db2507d4639d46166c0ad93c..87e5324168b427835b1303e535e17dd2
 +    [this.trustTokensTreeElement, this.interestGroupTreeElement, this.sharedStorageListTreeElement].forEach(e => storageTreeElement.removeChild(e)); [this.backgroundFetchTreeElement, this.backgroundSyncTreeElement, this.periodicBackgroundSyncTreeElement, this.reportingApiTreeElement].forEach(e => backgroundServiceTreeElement.removeChild(e));
    }
  
-   private addSidebarSection(title: string): UI.TreeOutline.TreeElement {
+   private addSidebarSection(title: string, jslogContext: string): UI.TreeOutline.TreeElement {
