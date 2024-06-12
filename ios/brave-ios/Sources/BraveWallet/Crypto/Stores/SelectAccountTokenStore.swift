@@ -129,6 +129,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.walletServiceObserver = WalletServiceObserver(
       walletService: walletService,
       _onDefaultBaseCurrencyChanged: { [weak self] currency in
@@ -442,5 +443,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     }
 
     return accountSections
+  }
+}
+
+extension SelectAccountTokenStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    setup()
+  }
+
+  func userAssetUpdated() {
   }
 }
