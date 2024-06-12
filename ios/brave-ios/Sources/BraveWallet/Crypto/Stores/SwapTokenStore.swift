@@ -368,7 +368,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       toAmount: buyAmountInWei,
       slippagePercentage: "\(slippagePercentage)",
       routePriority: .recommended,
-      provider: .auto
+      // TODO(stephenheaps): Enable Lifi support https://github.com/brave/brave-browser/issues/36436
+      provider: sellToken.coin == .sol ? .jupiter : .zeroEx
     )
 
     return swapQuoteParams
