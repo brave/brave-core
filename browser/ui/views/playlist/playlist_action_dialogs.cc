@@ -14,7 +14,9 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
@@ -244,7 +246,7 @@ void ClosePanel(content::WebContents* contents) {
   // TODO(): If this not opened in the Side Panel, we should consider
   // closing the tab.
   if (SidePanelUI* ui =
-          SidePanelUI::GetSidePanelUIForBrowser(browser_view->browser())) {
+          browser_view->browser()->GetFeatures().side_panel_ui()) {
     ui->Close();
   }
 }
