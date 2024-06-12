@@ -18,12 +18,7 @@ extension AnimationView {
     animationView.play()
 
     Task {
-      do {
-        try await Task.sleep(seconds: 0.6)
-      } catch {
-        // Ignore
-      }
-
+      try? await Task.sleep(seconds: 0.6)
       callback()
       UIView.animate(withDuration: 0.4) {
         animationView.alpha = 0
