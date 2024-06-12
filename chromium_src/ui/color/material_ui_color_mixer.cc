@@ -67,7 +67,9 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
       ui::kColorSysStateDisabledContainer};
 
   mixer[kColorAppMenuRowBackgroundHovered] = {kColorSysStateHoverOnSubtle};
-  mixer[kColorAppMenuUpgradeRowBackground] = {kColorSysTonalContainer};
+  mixer[kColorAppMenuUpgradeRowBackground] = {
+      is_dark ? SkColorSetRGB(0x37, 0x2C, 0xBF)
+              : SkColorSetRGB(0xDF, 0xE1, 0xFF)};
 }
 
 }  // namespace ui
