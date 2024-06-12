@@ -22,17 +22,41 @@ import java.util.List;
 public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHolder> {
     private Context mContext;
     private List<TemplateUrl> mSearchEngines;
+    private QuickSearchCallback mQuickSearchCallback;
 
-    public QuickSearchAdapter(Context context, List<TemplateUrl> searchEngines) {
+    public QuickSearchAdapter(
+            Context context,
+            List<TemplateUrl> searchEngines,
+            QuickSearchCallback quickSearchCallback) {
         mContext = context;
         mSearchEngines = searchEngines;
+        mQuickSearchCallback = quickSearchCallback;
     }
 
     @Override
     public void onBindViewHolder(@NonNull QuickSearchViewHolder holder, int position) {
         TemplateUrl templateUrl = mSearchEngines.get(position);
         Log.e("quick_search", templateUrl.getShortName());
-        holder.searchEngineText.setText(templateUrl.getShortName());
+        holder.mSearchEngineText.setText(templateUrl.getShortName());
+        holder.mView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mQuickSearchCallback.onSearchEngineClick(templateUrl);
+                        holder.searchEngineSwitch.setChecked(
+                                !holder.searchEngineSwitch.isChecked());
+                    }
+                });
+
+        holder.mView.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        mQuickSearchCallback.onSearchEngineLongClick();
+                        return true;
+                    }
+                });
+        mQuickSearchCallback.loadSearchEngineLogo(holder.mSearchEngineLogo, templateUrl);
     }
 
     @NonNull

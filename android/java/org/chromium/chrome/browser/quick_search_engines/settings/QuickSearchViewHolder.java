@@ -9,20 +9,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import org.chromium.chrome.R;
 
 public class QuickSearchViewHolder extends RecyclerView.ViewHolder {
-    ImageView searchEngineLogo;
-    TextView searchEngineText;
-    SwitchCompat toggleSwitch;
+    ImageView mSearchEngineLogo;
+    TextView mSearchEngineText;
+    MaterialSwitch mSearchEngineSwitch;
+    View mView;
 
     QuickSearchViewHolder(View itemView) {
         super(itemView);
-        this.searchEngineLogo = (ImageView) itemView.findViewById(R.id.search_engine_logo);
-        this.searchEngineText = (TextView) itemView.findViewById(R.id.search_engine_text);
-        this.toggleSwitch = (SwitchCompat) itemView.findViewById(R.id.search_engine_switch);
+        this.mView = itemView;
+        this.mSearchEngineLogo = (ImageView) itemView.findViewById(R.id.search_engine_logo);
+        this.mSearchEngineText = (TextView) itemView.findViewById(R.id.search_engine_text);
+        this.mSearchEngineSwitch =
+                (MaterialSwitch) itemView.findViewById(R.id.search_engine_switch);
     }
 }
