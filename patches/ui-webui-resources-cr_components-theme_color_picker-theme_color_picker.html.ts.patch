@@ -1,10 +1,10 @@
 diff --git a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts
-index ca3a7a919ad7b67e615d85daea47354a12aeb69f..3cef0b74c170adb37503bf675e6b39c15b9fd5f6 100644
+index 0e887e6b2966fead91e9ced9b2963ae716c015c0..f4d9918ef82dcbf880c1e9e9a24d0b8772996cb4 100644
 --- a/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts
 +++ b/ui/webui/resources/cr_components/theme_color_picker/theme_color_picker.html.ts
-@@ -27,21 +27,6 @@ export function getHtml(this: ThemeColorPickerElement) {
-       @click="${this.onDefaultColorClick_}"
-       basic-color>
+@@ -25,19 +25,6 @@ export function getHtml(this: ThemeColorPickerElement) {
+       tabindex="${this.tabIndex_(this.isDefaultColorSelected_)}"
+       @click="${this.onDefaultColorClick_}">
    </cr-theme-color>
 -  <cr-theme-color
 -      id="greyDefaultColor"
@@ -15,11 +15,9 @@ index ca3a7a919ad7b67e615d85daea47354a12aeb69f..3cef0b74c170adb37503bf675e6b39c1
 -      aria-label="${this.i18n('greyDefaultColorName')}"
 -      role="radio"
 -      ?checked="${this.isGreyDefaultColorSelected_}"
--      checkmark-border-hidden
 -      aria-checked="${this.isGreyDefaultColorSelected_}"
 -      tabindex="${this.tabIndex_(this.isGreyDefaultColorSelected_)}"
--      @click="${this.onGreyDefaultColorClick_}"
--      basic-color>
+-      @click="${this.onGreyDefaultColorClick_}">
 -  </cr-theme-color>
    ${this.colors_.map((item, index) => html`
      <cr-theme-color

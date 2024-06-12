@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/serde/v1/BUILD.gn b/third_party/rust/serde/v1/BUILD.gn
-index 68a458b3a5a0dad192757cc4b15a9e99e72946c3..136a7abebf6c471820b605c9e4073106ed4aa7fc 100644
+index b761c32d8ddb554db0898bef2b547208734ba5f9..e26ccc0c39fa922650c377c1cae87add74555a41 100644
 --- a/third_party/rust/serde/v1/BUILD.gn
 +++ b/third_party/rust/serde/v1/BUILD.gn
 @@ -55,6 +55,7 @@ cargo_crate("lib") {
@@ -8,5 +8,5 @@ index 68a458b3a5a0dad192757cc4b15a9e99e72946c3..136a7abebf6c471820b605c9e4073106
    ]
 +  features += [ "alloc", "rc" ]
    build_root =
-       "//third_party/rust/chromium_crates_io/vendor/serde-1.0.203/build.rs"
+       "//third_party/rust/chromium_crates_io/vendor/serde-1.0.204/build.rs"
    build_sources =

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index e9e83637f2a462ef7ddb502f854e8dc7770eaa4c..cd474d6e8e9a45a6b6eca6fa72c65443281272d7 100644
+index 99101411ce40137b106131e12e2f0cd8b16659f3..5e5776c8afed519fe018d75736f03eadcc07068e 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 @@ -95,6 +95,7 @@ class ChromeBrowsingDataRemoverDelegate
@@ -10,17 +10,14 @@ index e9e83637f2a462ef7ddb502f854e8dc7770eaa4c..cd474d6e8e9a45a6b6eca6fa72c65443
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -152,11 +153,12 @@ class ChromeBrowsingDataRemoverDelegate
+@@ -150,8 +151,9 @@ class ChromeBrowsingDataRemoverDelegate
      kMediaDeviceSalts = 45,
      // See also kDisableAutoSigninForProfilePasswords.
      kDisableAutoSigninForAccountPasswords = 46,
 +    kIPFSCache = 47,
  
-     // Please update ChromeBrowsingDataRemoverTasks in enums.xml and
-     // History.ClearBrowsingData.Duration.ChromeTask.{Task}
-     // in histograms/metadata/history/histograms.xml when adding entries!
 -    kMaxValue = kDisableAutoSigninForAccountPasswords,
 +    kMaxValue = kIPFSCache,
    };
+   // LINT.ThenChange(//tools/metrics/histograms/metadata/history/enums.xml:ChromeBrowsingDataRemoverTasks)
  
-   // Returns the suffix for the

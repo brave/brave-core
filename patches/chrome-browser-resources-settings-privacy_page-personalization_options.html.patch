@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 753448a6e816747918970833814f41330949266a..2a4af63436dce81f685b5671cd23f0d6185cb732 100644
+index 90943cda4959b3e2eb2559652db3fb14de5af6ac..94262a26c04a8d7db5fb5d7ee7fb58fe5ab2787e 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -23,7 +23,7 @@
@@ -9,7 +9,7 @@ index 753448a6e816747918970833814f41330949266a..2a4af63436dce81f685b5671cd23f0d6
 -
 +<if expr="_google_chrome">
  <if expr="not is_chromeos">
-     <div id="chromeSigninUserChoiceSetting" class="hr cr-row"
+     <div id="chromeSigninUserChoiceSetting" class="hr cr-row" role="group"
          hidden="[[!chromeSigninUserChoiceInfo_.shouldShowSettings]]"
 @@ -66,6 +66,7 @@
          no-set-pref>

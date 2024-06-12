@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index eb56ea4bd8c50e6e63b6150c92ec2cd8ecc4985f..8ad81f26fcd84a752693ee720066532efb5d7991 100644
+index ba1a3b2ef273d6da214ed157a0d031c306b2bbd6..a67ed7b6e51faed9839e17ca375a9d3a8879b538 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -229,6 +229,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     {ContentSettingsType::DIRECT_SOCKETS, nullptr},
-     {ContentSettingsType::REVOKED_ABUSIVE_NOTIFICATION_PERMISSIONS, nullptr},
+@@ -232,6 +232,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::TOP_LEVEL_TPCD_ORIGIN_TRIAL, nullptr},
+     {ContentSettingsType::DISPLAY_MEDIA_SYSTEM_AUDIO, nullptr},
+     {ContentSettingsType::STORAGE_ACCESS_HEADER_ORIGIN_TRIAL, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
  static_assert(
-@@ -473,6 +474,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -476,6 +477,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index eb56ea4bd8c50e6e63b6150c92ec2cd8ecc4985f..8ad81f26fcd84a752693ee720066532e
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -487,6 +489,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -490,6 +492,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {

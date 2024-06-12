@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index 2756c23c4214eeb49a1a7b026c87e6bc6b019df8..1b4d82a2b034218c81259ad7e541257bfa382be8 100644
+index b0774e70e2cc67e0c9d6163b7d1efdc3de3c8fa1..33c6d76759c5d51db9b2b51a786c1267020f097f 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
 @@ -19,6 +19,7 @@
@@ -8,8 +8,8 @@ index 2756c23c4214eeb49a1a7b026c87e6bc6b019df8..1b4d82a2b034218c81259ad7e541257b
  #include "base/trace_event/trace_event.h"
 +#include "brave/browser/brave_browser_main_loop.h"
  #include "build/build_config.h"
- #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
+ #include "content/browser/browser_main_loop.h"
 @@ -106,7 +107,7 @@ int BrowserMainRunnerImpl::Initialize(MainFunctionParams parameters) {
      auto created_main_parts_closure =
          std::move(parameters.created_main_parts_closure);

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 40d3b54f622ad37495f6521460d33d698839b4cf..94d8cb3c3ec01de0e354228aaf1e92e37e58cc38 100644
+index 0be66656020a11f62f5086be9194d952884c08ea..8179c3f4f1005ecbe1a62a2026926f1c7dd9ce1b 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
-@@ -46,7 +46,7 @@
- #include "components/prefs/pref_service.h"
+@@ -54,7 +54,7 @@
+ #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
  #include "ui/base/ui_base_switches.h"
  
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
@@ -11,8 +11,8 @@ index 40d3b54f622ad37495f6521460d33d698839b4cf..94d8cb3c3ec01de0e354228aaf1e92e3
  #include "chrome/updater/app/server/win/updater_legacy_idl.h"
  #endif
  
-@@ -60,7 +60,7 @@ bool GetNewerChromeFile(base::FilePath* path) {
- }
+@@ -180,7 +180,7 @@ Microsoft::WRL::ComPtr<IUnknown> CreateProcessLauncher() {
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
  bool InvokeGoogleUpdateForRename() {
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)

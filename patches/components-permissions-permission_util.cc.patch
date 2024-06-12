@@ -1,9 +1,9 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 4cad8b8ea0c169ad3c147edef6c80c1b244a886a..eced6971b621e0fe55294c27cd0ea90e81ac6052 100644
+index 43d22e3ede54888554374efd939962d8d5a0d8d8..e793f02aede0024cdc045e731cd8bb54f12a0b7b 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -356,6 +356,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(
-       return ContentSettingsType::POINTER_LOCK;
+       return ContentSettingsType::AUTOMATIC_FULLSCREEN;
      case PermissionType::NUM:
        break;
 +    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE

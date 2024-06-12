@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index c35f1b734745addf3a495b1d69957ad13fe954fb..808b550da0120f4ae196d2438baf32bed013d508 100644
+index 34aa742ac4d7657500e1a78cf1f08256dbe3a6ba..d59b98fa149eeea418abb01b75bba18ff20cceae 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -191,6 +191,7 @@ if (!is_android && !is_mac) {
@@ -61,7 +61,7 @@ index c35f1b734745addf3a495b1d69957ad13fe954fb..808b550da0120f4ae196d2438baf32be
  
        extra_substitutions = [
 @@ -928,6 +935,7 @@ if (is_win) {
-         sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
+         sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
 +        import("//brave/updater/config.gni") if (!brave_enable_updater) { sources -= [ "$root_out_dir/${updater_product_full_name}.app" ] }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts b/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
-index bdf40b110f5a576960c505114b95ccc0ce1d506e..75a34652546a2d93ff999fc23bf9021b7d23528b 100644
+index 2d902fe3dabf0bd0a70b7f03d3a53b66b6d46c91..092e904a39c6b13ffbc422fc2992ff246651b87f 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
 @@ -8,6 +8,7 @@
@@ -8,5 +8,5 @@ index bdf40b110f5a576960c505114b95ccc0ce1d506e..75a34652546a2d93ff999fc23bf9021b
  
 +import '../brave_overrides/config.js'
  import 'chrome://resources/cr_elements/icons.html.js';
+ import 'chrome://resources/cr_elements/cr_collapse/cr_collapse.js';
  import 'chrome://resources/cr_elements/cr_expand_button/cr_expand_button.js';
- import 'chrome://resources/cr_elements/cr_link_row/cr_link_row.js';

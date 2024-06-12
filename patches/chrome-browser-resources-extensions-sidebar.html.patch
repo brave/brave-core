@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/resources/extensions/sidebar.html b/chrome/browser/resources/extensions/sidebar.html
-index f8978473aea4b6a2adbdb8c668c0088785fd2326..33249c0e573f8b2b3407a4bbf968e891d9e2fc00 100644
+index 2b4871cf3e8f417b0520d7600ca0625cd20691fc..b473989cb31beeefb84654b1f90b76bd755b264a 100644
 --- a/chrome/browser/resources/extensions/sidebar.html
 +++ b/chrome/browser/resources/extensions/sidebar.html
-@@ -72,6 +72,7 @@
-   </a>
- </iron-selector>
- <div>
-+<!--
-   <div class="separator"></div>
-   <div class="cr-nav-menu-item" id="moreExtensions">
-     <iron-icon id="web-store-icon" icon="extensions-icons:web_store">
-@@ -82,3 +83,4 @@
+@@ -70,6 +70,7 @@
      <cr-ripple></cr-ripple>
-   </div>
+   </a>
+ </cr-menu-selector>
++<!--
+ <div class="separator"></div>
+ <div class="cr-nav-menu-item" id="moreExtensions">
+   <iron-icon id="web-store-icon" icon="extensions-icons:web_store">
+@@ -79,3 +80,4 @@
+       inner-h-t-m-l="[[discoverMoreText_]]"></span>
+   <cr-ripple></cr-ripple>
  </div>
 +-->
