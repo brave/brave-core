@@ -8079,6 +8079,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   eth_attribute2->trait_type = "Size";
   eth_attribute2->value = "Small";
   eth_metadata1->attributes.push_back(std::move(eth_attribute2));
+  eth_metadata1->collection = "Azuki";
   expected_eth_metadata.push_back(std::move(eth_metadata1));
 
   mojom::NftMetadataPtr eth_metadata2 = mojom::NftMetadata::New();
@@ -8119,6 +8120,9 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
               "value": "Small"
             }
           ]
+        },
+        "collection": {
+          "name": "Azuki"
         }
       },
       {

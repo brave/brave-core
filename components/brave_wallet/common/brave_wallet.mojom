@@ -1453,6 +1453,8 @@ struct NftAttribute {
 };
 
 struct NftMetadata {
+  // "Official" metadata fields as per OpenSea
+  // https://docs.opensea.io/docs/metadata-standards#metadata-structure.
   string name;
   string description;
   string image;
@@ -1462,6 +1464,9 @@ struct NftMetadata {
   string background_color;
   string animation_url;
   string youtube_url;
+
+  // Other metadata fields
+  string collection;
 };
 
 struct NftIdentifier {

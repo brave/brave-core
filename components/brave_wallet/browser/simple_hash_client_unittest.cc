@@ -1501,7 +1501,10 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
             }
           ]
         },
-        "background_color": "#000000"
+        "background_color": "#000000",
+        "collection": {
+          "name": "Azuki"
+        }
       }
     ]
   })";
@@ -1541,6 +1544,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->background_color, "#000000");
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
+  EXPECT_EQ(it->second->collection, "Azuki");
 
   // Solana test data
   json = R"({
@@ -1555,6 +1559,9 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
         "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
         "extra_metadata": {
           "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
+        },
+        "collection": {
+          "name": null
         }
       },
       {
@@ -1600,6 +1607,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->background_color, "");
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
+  EXPECT_EQ(it->second->collection, "");
 
   mojom::NftIdentifierPtr ste_nft_identifier = mojom::NftIdentifier::New();
   ste_nft_identifier->chain_id = mojom::kSolanaMainnet;
@@ -1617,6 +1625,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->background_color, "");
   EXPECT_EQ(it->second->animation_url, "");
   EXPECT_EQ(it->second->youtube_url, "");
+  EXPECT_EQ(it->second->collection, "");
 
   // Missing nfts key should return nullopt.
   json = R"({"foo": "bar"})";

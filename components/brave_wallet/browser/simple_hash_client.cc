@@ -1112,6 +1112,13 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value,
         }
       }
     }
+    // collection
+    // Use find by dotted path to get collection.name, which may be null
+    const std::string* collection_name =
+        nft->FindStringByDottedPath("collection.name");
+    if (collection_name) {
+      nft_metadata->collection = *collection_name;
+    }
 
     nft_metadatas[std::move(nft_identifier)] = std::move(nft_metadata);
   }
