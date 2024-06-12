@@ -131,7 +131,7 @@ export const AddNftForm = (props: Props) => {
         coingeckoId: '',
         logo: '',
         tokenId: tokenId ? new Amount(tokenId).toHex() : '',
-        isCompressed: false,
+        isCompressed: false, // isCompressed will be set by the backend
         isErc20: false,
         isErc721:
           customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenId,
