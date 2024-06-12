@@ -37,8 +37,12 @@ describe('useGetIsRegistryTokenQuery', () => {
     expect(hook.result.current.isVerified).not.toBeDefined()
 
     // loading
-    await waitFor(() => !hook.result.current.isLoading)
-    await waitFor(() => hook.result.current.isVerified !== undefined)
+    await waitFor(() =>
+      expect(
+        !hook.result.current.isLoading &&
+          hook.result.current.isVerified !== undefined
+      ).toBe(true)
+    )
 
     // loaded
     expect(hook.result.current.isLoading).toBe(false)
@@ -64,8 +68,12 @@ describe('useGetIsRegistryTokenQuery', () => {
     expect(hook.result.current.isVerified).not.toBeDefined()
 
     // loading
-    await waitFor(() => !hook.result.current.isLoading)
-    await waitFor(() => hook.result.current.isVerified !== undefined)
+    await waitFor(() =>
+      expect(
+        !hook.result.current.isLoading &&
+          hook.result.current.isVerified !== undefined
+      ).toBe(true)
+    )
 
     // loaded
     expect(hook.result.current.isLoading).toBe(false)

@@ -97,8 +97,11 @@ describe('api slice: useGetTransactionsQuery', () => {
       renderHookOptionsWithCustomStore(store)
     )
 
-    await waitFor(() => !result.current.isLoading)
-    await waitFor(() => result.current.data)
+    // loading
+    await waitFor(() =>
+      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+    )
+
     const { data: txs, isLoading, error } = result.current
 
     expect(isLoading).toBe(false)
@@ -134,8 +137,11 @@ describe('api slice: useGetTransactionsQuery', () => {
       renderHookOptionsWithCustomStore(store)
     )
 
-    await waitFor(() => !result.current.isLoading)
-    await waitFor(() => result.current.data)
+    // loading
+    await waitFor(() =>
+      expect(result.current.data && !result.current.isLoading).toBeTruthy()
+    )
+
     const { data: txs = [], isLoading, error } = result.current
 
     const txIds = txs?.map(({ id }) => id)
