@@ -33,6 +33,8 @@ default_replacements = [
     (r'Incognito', r'Private'),
     (r'inco&gnito', r'&private'),
     (r'Inco&gnito', r'&Private'),
+    (r'People', r'Profiles'),
+    # 'people' but only in the context of profiles, not humans.
     (r'(?<!authenticate )people', r'profiles'),
     (r'(Person)(?!\w)', r'Profile'),
     (r'(person)(?!\w)', r'profile'),
