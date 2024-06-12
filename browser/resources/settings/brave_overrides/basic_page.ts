@@ -124,36 +124,6 @@ RegisterPolymerTemplateModifications({
       } else {
         privacyGuidePromoSection.remove()
       }
-      const safetyCheckTemplate = actualTemplate.content.querySelector(
-        'template[is="dom-if"][if="[[showSafetyCheckPage_(pageVisibility.safetyCheck)]]"]')
-      if (!safetyCheckTemplate) {
-        console.error(
-          '[Brave Settings Overrides] Could not find safetyCheck template')
-      } else {
-        const safetyCheckSettingsSection = safetyCheckTemplate.content.
-          querySelector('#safetyCheckSettingsSection')
-        if (!safetyCheckSettingsSection) {
-          console.error('[Brave Settings Overrides] Could not find '
-            + 'safetyCheckSettingsSection element to hide')
-        } else {
-          safetyCheckSettingsSection.remove()
-        }
-      }
-      const safetyHubTemplate = actualTemplate.content.querySelector(
-        'template[is="dom-if"][if="[[showSafetyHubEntryPointPage_(pageVisibility.safetyHub)]]"]')
-      if (!safetyHubTemplate) {
-        console.error(
-          '[Brave Settings Overrides] Could not find safetyHub template')
-      } else {
-        const safetyHubEntryPointSection = safetyHubTemplate.content.
-          querySelector('#safetyHubEntryPointSection')
-        if (!safetyHubEntryPointSection) {
-          console.error('[Brave Settings Overrides] Could not find '
-            + 'safetyHubEntryPointSection element to hide')
-        } else {
-          safetyHubEntryPointSection.remove()
-        }
-      }
       const sectionGetStarted = document.createElement('template')
       sectionGetStarted.setAttribute('is', 'dom-if')
       sectionGetStarted.setAttribute('restamp', 'true')
