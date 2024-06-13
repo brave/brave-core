@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -38,6 +40,7 @@ class ConversationAPIClient {
     UserText,
     PageText,
     PageExcerpt,
+    VideoTranscript,
     VideoTranscriptXML,
     VideoTranscriptVTT,
     BraveSearchResults,
