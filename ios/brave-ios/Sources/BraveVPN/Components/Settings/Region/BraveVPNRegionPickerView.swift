@@ -30,8 +30,11 @@ public struct BraveVPNRegionPickerView: View {
   @State
   private var selectedRegionCities: [GRDRegion] = []
 
-  public init(isAutomatic: Bool) {
-    self.isAutomatic = isAutomatic
+  @State
+  private var regionModificationTimer: Timer?
+
+  public init() {
+    self.isAutomatic = BraveVPN.isAutomaticRegion
   }
 
   public var body: some View {
@@ -80,9 +83,21 @@ public struct BraveVPNRegionPickerView: View {
       BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
         regionCountry: selectedRegion?.displayName,
-        regionCity: "Automatic",
         regionCountryISOCode: selectedRegion?.countryISOCode
       )
+    }
+    .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
+      let isVPNEnabled = BraveVPN.isConnected
+
+      if isVPNEnabled {
+        cancelTimer()
+        isConfirmationPresented = true
+
+        // Dismiss confirmation dialog automatically
+        Task.delayed(bySeconds: 2) { @MainActor in
+          isConfirmationPresented = false
+        }
+      }
     }
   }
 
@@ -109,36 +124,9 @@ public struct BraveVPNRegionPickerView: View {
     .buttonStyle(.plain)
   }
 
-  private func enableAutomaticServer(_ enabled: Bool) {
-    isAutomatic = enabled
-  }
-
-  private func selectDesignatedVPNRegion(at index: Int) {
-    guard !isLoading, let desiredRegion = BraveVPN.allCountryRegions[safe: index],
-      desiredRegion.regionName != BraveVPN.selectedRegion?.regionName
-    else {
-      return
-    }
-
-    isLoading = true
-
-    Task.delayed(bySeconds: 3) { @MainActor in
-      // TODO: Swap with selection logic
-
-      isLoading = false
-      isConfirmationPresented = true
-
-      selectedRegion = desiredRegion
-
-      Task.delayed(bySeconds: 2) { @MainActor in
-        isConfirmationPresented = false
-      }
-    }
-  }
-
   @ViewBuilder
   private func countryRegionItem(at index: Int, region: GRDRegion) -> some View {
-    let isSelectedRegion = region.regionName == BraveVPN.selectedRegion?.regionName
+    let isSelectedRegion = region.countryISOCode == BraveVPN.activatedRegion?.countryISOCode
     let serverCount = region.cities.count
 
     Button {
@@ -197,10 +185,65 @@ public struct BraveVPNRegionPickerView: View {
     .tint(.accentColor)
     .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
   }
+
+  private func enableAutomaticServer(_ enabled: Bool) {
+    isAutomatic = enabled
+
+    // Implementation detail: nil region means we use an automatic way to connect to the host.
+    changeCountryRegion(with: nil) {
+      // TODO: Show Alert if it fails
+
+    }
+  }
+
+  private func selectDesignatedVPNRegion(at index: Int, isAutomatic: Bool = false) {
+    guard !isLoading, let desiredRegion = BraveVPN.allCountryRegions[safe: index],
+      desiredRegion.regionName != BraveVPN.selectedRegion?.regionName,
+      desiredRegion.countryISOCode != BraveVPN.selectedRegion?.countryISOCode
+    else {
+      return
+    }
+
+    changeCountryRegion(with: desiredRegion) {
+      // TODO: Show Alert if it fails
+    }
+  }
+
+  private func changeCountryRegion(with region: GRDRegion?, failure: @escaping () -> Void) {
+    isLoading = true
+
+    Task { @MainActor in
+      let success = await BraveVPNRegionManager.shared.changeVPNRegionAsync(to: region)
+
+      isLoading = false
+
+      if success {
+        selectedRegion = region
+
+        // Changing vpn server settings takes lot of time,
+        // and nothing we can do about it as it relies on Apple apis.
+        // Here we observe vpn status and we show success alert if it connected,
+        // otherwise an error alert is show if it did not manage to connect in 60 seconds.
+        cancelTimer()
+        regionModificationTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: false) {
+          _ in
+          failure()
+        }
+      } else {
+        failure()
+      }
+    }
+  }
+
+  private func cancelTimer() {
+    // Invalidate the modification timer if it is still running
+    regionModificationTimer?.invalidate()
+    regionModificationTimer = nil
+  }
 }
 
 struct ServerRegionView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveVPNRegionPickerView(isAutomatic: false)
+    BraveVPNRegionPickerView()
   }
 }
