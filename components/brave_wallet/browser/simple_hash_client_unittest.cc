@@ -109,6 +109,19 @@ class SimpleHashClientUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestFetchSolCompressedNftProofData(
+      const std::string& token_address,
+      const std::optional<SolCompressedNftProofData>& expected_proof_data) {
+    base::RunLoop run_loop;
+    simple_hash_client_->FetchSolCompressedNftProofData(
+        token_address, base::BindLambdaForTesting(
+                           [&](std::optional<SolCompressedNftProofData> proof) {
+                             EXPECT_EQ(proof, expected_proof_data);
+                             run_loop.Quit();
+                           }));
+    run_loop.Run();
+  }
+
   void TestGetNfts(
       mojom::CoinType coin,
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
@@ -859,10 +872,10 @@ TEST_F(SimpleHashClientUnitTest, ParseSolCompressedNftProofData) {
   "merkle_tree": "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd",
   "data_hash": "4yfgTevXs3x93pS8tfaqh92y22gAqcRS6Ptt8s6uR3u2",
   "creator_hash": "BSao3oE3zsHmciedhR95HTFyASwrMrwPkcA3xZH9iyzL",
-  "leaf_index": 1316261,
+  "leaf_index": "1316261",
   "owner": "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv",
   "delegate": "6G9UfJJEgQpNB7rDWoVRHcF93nAShcFu7EwedYkua3PH",
-  "canopy_depth": 0
+  "canopy_depth": "0"
 })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
@@ -1945,11 +1958,11 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
         "owners": [
           {
             "owner_address": "0x123",
-            "quantity": 1
+            "quantity": "1"
           },
           {
             "owner_address": "0x456",
-            "quantity": 2
+            "quantity": "2"
           }
         ]
       }
@@ -1994,7 +2007,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
         "owners": [
           {
             "owner_address": "0x123",
-            "quantity": 3
+            "quantity": "3"
           }
         ]
       }
@@ -2039,7 +2052,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
         "owners": [
           {
             "owner_address": "0x123",
-            "quantity": 3
+            "quantity": "3"
           }
         ]
       }
@@ -2070,11 +2083,11 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
         "name": "Azuki #2767",
         "owners": [
           {
-            "quantity": 1
+            "quantity": "1"
           },
           {
             "owner_address": "0x456",
-            "quantity": 2
+            "quantity": "2"
           }
         ]
       },
@@ -2090,7 +2103,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
         "owners": [
           {
             "owner_address": "0x123",
-            "quantity": 3
+            "quantity": "3"
           }
         ]
       }
@@ -2108,6 +2121,94 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   ASSERT_NE(it, owners->end());
   EXPECT_EQ(it->second.size(), 1u);
   EXPECT_EQ(it->second["0x456"], 2u);
+}
+
+TEST_F(SimpleHashClientUnitTest, FetchSolCompressedNftProofData) {
+  // HTTP timout should return nullopt.
+  std::string token_address = "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
+  SetHTTPRequestTimeoutInterceptor();
+  TestFetchSolCompressedNftProofData(token_address, std::nullopt);
+
+  // Valid JSON response returns the expected proof data.
+  std::string json = R"({
+    "root": "5bR96ZfMpkDCBQBFvNwdMRizNTp5ZcNEAYq6J3D7mXMR",
+    "proof": [
+      "ANs5srcJ9fSZpbGmJGXy8M6G3NeNABzK8SshSb9JCwAz",
+      "7Kd9DCCFMFrezFznsWAqwA6jtmRRVVHjon5oKVJFffDf",
+      "BvSxmwtVL5bx41gnKhpx2hTdYnXdJ1XfetwwHxQPC8Mn",
+      "GEtJJVAYjv5mknVVVSjvLmy7BJeQWSdKhbTWdfqLHhpK",
+      "VbqjLNCgxCE6Mm9WMTtBxNmthVHqs557AXRRTMhTr4t",
+      "3obQ6KPFsC9QfM6g3ZtYC2RbHPfUKn4iBnDecfZoBhbG",
+      "DTLQKdFQj8ywDktN1BqR6oe48XGyoSGzAzQgX9QWfnBk",
+      "6zZokt6UsXMNEcXPYn3T2LfSaZN6DmZoDwqc3rM16ohu",
+      "4aPfGxhmkgrh6Lz82dsi4mdcNC3vZyE1AXiYbJQta4Gw",
+      "2AG8n5BwPATab9wWJ2g9XuqXS4xBiQvLVHhn1zX715Ub",
+      "JAN9FwHcwqi79Um4MxzrBkTPYEtLHFkUFP8FbnPAFCzc",
+      "Ha6247eWxRgGyFCN2NfLbkKMEpLwU1zmkx1QwwRxQ5Ne",
+      "6Rt4B2UPizK2gdvmsd8KahazFtc8S5johvGZCUXmHGyV",
+      "25wz52GHDo7vX9QSYbUwMd1gi82MUm8sdmAj5jFX8MAH",
+      "5W1NH3cKSBdrKeXbd2t8QdwdTU4qTFpSrr1FZyVgHeS8",
+      "2XTZ9pTcLXFxGw1hBGrzXMGJrMnvo47sGyLUQwF88SUb",
+      "Sia7ffUkzN8xqRHLX4xRdFXzUbVv7LtzRzKDBz8hgDK",
+      "4XjrBbzyUWXxXECf173MukGdjHDWQMJ7rs2ojny445my",
+      "DqbTjtfiRPHZf2wwmMJ38acyJNTHeiYBsrySSjbMYNiE",
+      "2msvGdBzYX2sHifvvr8kJ6YYYvCK2gjjbRZH2tAQ93d5",
+      "2XvcBPNUGQSWmyjqYYk9WDFsKLF9oMrnAYxKBJGsPXtw",
+      "HSURhkbUwDFSy464A5vNPuPaqe1vWb51YeAf689oprx8",
+      "76hjrsKb9iKgHhiY2Np3NYPZaEwnzGcsr6mwyzj4Grj8",
+      "6FMzwZu6MxNiBkrE9e6w5fwh925YJEJoRNyQQ9JnrJs3"
+    ],
+    "merkle_tree": "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd",
+    "data_hash": "4yfgTevXs3x93pS8tfaqh92y22gAqcRS6Ptt8s6uR3u2",
+    "creator_hash": "BSao3oE3zsHmciedhR95HTFyASwrMrwPkcA3xZH9iyzL",
+    "leaf_index": 1316261,
+    "owner": "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv",
+    "delegate": "6G9UfJJEgQpNB7rDWoVRHcF93nAShcFu7EwedYkua3PH",
+    "canopy_depth": 0
+  })";
+  SetInterceptors(
+      {{GURL("https://simplehash.wallet.brave.com/api/v0/nfts/proof/"
+             "solana/2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR"),
+        json}});
+
+  // Create expected SolCompressedNftProofData
+  SolCompressedNftProofData expected_proof_data;
+  expected_proof_data.root = "5bR96ZfMpkDCBQBFvNwdMRizNTp5ZcNEAYq6J3D7mXMR";
+  expected_proof_data.proof = {"ANs5srcJ9fSZpbGmJGXy8M6G3NeNABzK8SshSb9JCwAz",
+                               "7Kd9DCCFMFrezFznsWAqwA6jtmRRVVHjon5oKVJFffDf",
+                               "BvSxmwtVL5bx41gnKhpx2hTdYnXdJ1XfetwwHxQPC8Mn",
+                               "GEtJJVAYjv5mknVVVSjvLmy7BJeQWSdKhbTWdfqLHhpK",
+                               "VbqjLNCgxCE6Mm9WMTtBxNmthVHqs557AXRRTMhTr4t",
+                               "3obQ6KPFsC9QfM6g3ZtYC2RbHPfUKn4iBnDecfZoBhbG",
+                               "DTLQKdFQj8ywDktN1BqR6oe48XGyoSGzAzQgX9QWfnBk",
+                               "6zZokt6UsXMNEcXPYn3T2LfSaZN6DmZoDwqc3rM16ohu",
+                               "4aPfGxhmkgrh6Lz82dsi4mdcNC3vZyE1AXiYbJQta4Gw",
+                               "2AG8n5BwPATab9wWJ2g9XuqXS4xBiQvLVHhn1zX715Ub",
+                               "JAN9FwHcwqi79Um4MxzrBkTPYEtLHFkUFP8FbnPAFCzc",
+                               "Ha6247eWxRgGyFCN2NfLbkKMEpLwU1zmkx1QwwRxQ5Ne",
+                               "6Rt4B2UPizK2gdvmsd8KahazFtc8S5johvGZCUXmHGyV",
+                               "25wz52GHDo7vX9QSYbUwMd1gi82MUm8sdmAj5jFX8MAH",
+                               "5W1NH3cKSBdrKeXbd2t8QdwdTU4qTFpSrr1FZyVgHeS8",
+                               "2XTZ9pTcLXFxGw1hBGrzXMGJrMnvo47sGyLUQwF88SUb",
+                               "Sia7ffUkzN8xqRHLX4xRdFXzUbVv7LtzRzKDBz8hgDK",
+                               "4XjrBbzyUWXxXECf173MukGdjHDWQMJ7rs2ojny445my",
+                               "DqbTjtfiRPHZf2wwmMJ38acyJNTHeiYBsrySSjbMYNiE",
+                               "2msvGdBzYX2sHifvvr8kJ6YYYvCK2gjjbRZH2tAQ93d5",
+                               "2XvcBPNUGQSWmyjqYYk9WDFsKLF9oMrnAYxKBJGsPXtw",
+                               "HSURhkbUwDFSy464A5vNPuPaqe1vWb51YeAf689oprx8",
+                               "76hjrsKb9iKgHhiY2Np3NYPZaEwnzGcsr6mwyzj4Grj8",
+                               "6FMzwZu6MxNiBkrE9e6w5fwh925YJEJoRNyQQ9JnrJs3"};
+  expected_proof_data.merkle_tree =
+      "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd";
+  expected_proof_data.data_hash =
+      "4yfgTevXs3x93pS8tfaqh92y22gAqcRS6Ptt8s6uR3u2";
+  expected_proof_data.creator_hash =
+      "BSao3oE3zsHmciedhR95HTFyASwrMrwPkcA3xZH9iyzL";
+  expected_proof_data.leaf_index = 1316261;
+  expected_proof_data.owner = "FBG2vwk2tGKHbEWHSxf7rJGDuZ2eHaaNQ8u6c7xGt9Yv";
+  expected_proof_data.delegate = "6G9UfJJEgQpNB7rDWoVRHcF93nAShcFu7EwedYkua3PH";
+  expected_proof_data.canopy_depth = 0;
+  TestFetchSolCompressedNftProofData(token_address, expected_proof_data);
 }
 
 }  // namespace brave_wallet

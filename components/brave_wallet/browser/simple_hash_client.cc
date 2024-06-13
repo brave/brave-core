@@ -15,15 +15,53 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
+
+bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
+                            const std::string& key,
+                            bool nullable,
+                            uint64_t* ret) {
+  if (!ret) {
+    return false;
+  }
+
+  const base::Value* value = dict_value.Find(key);
+  if (!value) {
+    return false;
+  }
+
+  if (nullable && value->is_none()) {
+    *ret = 0;
+    return true;
+  }
+
+  auto* string_value = value->GetIfString();
+  if (!string_value || string_value->empty()) {
+    return false;
+  }
+
+  return base::StringToUint64(*string_value, ret);
+}
+
+std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, ""));
+  if (converted_json.empty()) {
+    return std::nullopt;
+  }
+
+  return converted_json;
+}
 
 net::NetworkTrafficAnnotationTag
 GetSimpleHashClientNetworkTrafficAnnotationTag() {
@@ -132,6 +170,14 @@ SolCompressedNftProofData::SolCompressedNftProofData() = default;
 SolCompressedNftProofData::SolCompressedNftProofData(
     const SolCompressedNftProofData& data) = default;
 SolCompressedNftProofData::~SolCompressedNftProofData() = default;
+bool SolCompressedNftProofData::operator==(
+    const SolCompressedNftProofData& other) const {
+  return root == other.root && data_hash == other.data_hash &&
+         creator_hash == other.creator_hash && owner == other.owner &&
+         proof == other.proof && merkle_tree == other.merkle_tree &&
+         delegate == other.delegate && leaf_index == other.leaf_index &&
+         canopy_depth == other.canopy_depth;
+}
 
 SimpleHashClient::SimpleHashClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -271,7 +317,8 @@ void SimpleHashClient::FetchSolCompressedNftProofData(
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeaders(),
-                               {.auto_retry_on_network_change = true});
+                               {.auto_retry_on_network_change = true},
+                               base::BindOnce(&ConvertAllNumbersToString));
 }
 
 void SimpleHashClient::OnFetchSolCompressedNftProofData(
@@ -312,9 +359,12 @@ void SimpleHashClient::GetNftBalances(
       &SimpleHashClient::OnGetNftsForBalances, weak_ptr_factory_.GetWeakPtr(),
       coin, wallet_address, std::move(nft_identifiers), std::move(callback));
 
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeaders(),
-                               {.auto_retry_on_network_change = true});
+                               {.auto_retry_on_network_change = true},
+                               std::move(conversion_callback));
 }
 
 void SimpleHashClient::OnGetNftsForBalances(
@@ -861,28 +911,33 @@ SimpleHashClient::ParseSolCompressedNftProofData(
   const std::string* root_opt = dict->FindString("root");
   const std::string* data_hash_opt = dict->FindString("data_hash");
   const std::string* creator_hash_opt = dict->FindString("creator_hash");
-  std::optional<int> leaf_index_opt = dict->FindInt("leaf_index");
+  uint64_t leaf_index = 0;
+  if (!GetUint64FromDictValue(*dict, "leaf_index", false, &leaf_index)) {
+    return std::nullopt;
+  }
   const std::string* owner_opt = dict->FindString("owner");
   const std::string* merkle_tree_opt = dict->FindString("merkle_tree");
   const std::string* delegate_opt = dict->FindString("delegate");
-  std::optional<int> canopy_depth_opt = dict->FindInt("canopy_depth");
+  uint64_t canopy_depth = 0;
+  if (!GetUint64FromDictValue(*dict, "canopy_depth", false, &canopy_depth)) {
+    return std::nullopt;
+  }
 
-  if (!root_opt || !data_hash_opt || !creator_hash_opt || !leaf_index_opt ||
-      !owner_opt || !merkle_tree_opt ||
-      /* !delegate_opt || */ !canopy_depth_opt) {
+  if (!root_opt || !data_hash_opt || !creator_hash_opt || !owner_opt ||
+      !merkle_tree_opt || !delegate_opt) {
     return std::nullopt;
   }
 
   result.root = *root_opt;
   result.data_hash = *data_hash_opt;
   result.creator_hash = *creator_hash_opt;
-  result.leaf_index = *leaf_index_opt;
+  result.leaf_index = leaf_index;
   result.owner = *owner_opt;
   result.merkle_tree = *merkle_tree_opt;
   if (delegate_opt) {
     result.delegate = *delegate_opt;
   }
-  result.canopy_depth = static_cast<uint64_t>(*canopy_depth_opt);
+  result.canopy_depth = canopy_depth;
 
   const base::Value::List* proofs = dict->FindList("proof");
   if (!proofs) {
@@ -977,12 +1032,12 @@ SimpleHashClient::ParseBalances(const base::Value& json_value,
         continue;
       }
 
-      const std::optional<uint64_t> quantity = owner->FindInt("quantity");
-      if (!quantity) {
+      uint64_t quantity = 0;
+      if (!GetUint64FromDictValue(*owner, "quantity", false, &quantity)) {
         continue;
       }
 
-      owners_map[*owner_address] = *quantity;
+      owners_map[*owner_address] = quantity;
     }
 
     owners[std::move(nft_identifier)] = std::move(owners_map);

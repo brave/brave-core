@@ -2978,9 +2978,11 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
   EXPECT_TRUE(tokens[1]->is_nft);
   EXPECT_TRUE(tokens[1]->contract_address ==
               "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_FALSE(tokens[1]->is_compressed);
   EXPECT_TRUE(tokens[2]->is_nft);
   EXPECT_TRUE(tokens[2]->contract_address ==
               "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_FALSE(tokens[2]->is_compressed);
 
   // Now mock the response saying it's compressed (note compression field).
   responses[GURL(

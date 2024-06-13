@@ -737,14 +737,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void OnGetNftMetadatas(GetNftMetadatasCallback callback,
                          std::vector<mojom::NftMetadataPtr> metadatas);
 
-  void OnGetNftMetadata(GetNftMetadatasCallback callback,
-                        std::vector<std::string> metadata_urls_remaining,
-                        std::vector<std::string> metadatas_so_far,
-                        size_t index,
-                        const std::string& response,
-                        int error,
-                        const std::string& error_message);
-
   void OnGetNftBalances(GetNftBalancesCallback callback,
                         const std::vector<uint64_t>& balances);
   // Solana

@@ -38,6 +38,8 @@ struct SolCompressedNftProofData {
   SolCompressedNftProofData();
   SolCompressedNftProofData(const SolCompressedNftProofData& data);
   ~SolCompressedNftProofData();
+
+  bool operator==(const SolCompressedNftProofData& other) const;
 };
 
 class SimpleHashClient {
