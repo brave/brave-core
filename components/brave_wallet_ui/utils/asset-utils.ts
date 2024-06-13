@@ -183,8 +183,10 @@ export const getAssetIdKey = (
   >
 ) => {
   return asset.tokenId
-    ? `${asset.coin}-${asset.contractAddress}-${asset.tokenId}-${asset.chainId}`
-    : `${asset.coin}-${asset.contractAddress}-${asset.chainId}`
+    ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.tokenId}-${
+        asset.chainId
+      }`
+    : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
 }
 
 export const findTokenByContractAddress = <
