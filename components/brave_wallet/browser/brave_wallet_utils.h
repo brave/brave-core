@@ -62,34 +62,8 @@ base::Value::Dict TransactionReceiptToValue(
 std::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value::Dict& value);
 
-std::vector<mojom::NetworkInfoPtr> GetAllKnownChains(mojom::CoinType coin);
-std::vector<mojom::NetworkInfoPtr> GetAllCustomChains(PrefService* prefs,
-                                                      mojom::CoinType coin);
-std::vector<mojom::NetworkInfoPtr> GetAllChains(PrefService* prefs);
-mojom::NetworkInfoPtr GetKnownChain(const std::string& chain_id,
-                                    mojom::CoinType coin);
-mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
-                                     const std::string& chain_id,
-                                     mojom::CoinType coin);
-mojom::NetworkInfoPtr GetChain(PrefService* prefs,
-                               const std::string& chain_id,
-                               mojom::CoinType coin);
-bool KnownChainExists(const std::string& chain_id, mojom::CoinType coin);
-bool CustomChainExists(PrefService* prefs,
-                       const std::string& custom_chain_id,
-                       mojom::CoinType coin);
-std::vector<std::string> CustomChainsExist(
-    PrefService* prefs,
-    const std::vector<std::string>& custom_chain_ids,
-    mojom::CoinType coin);
-
 bool IsEndpointUsingBraveWalletProxy(const GURL& url);
 base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
-
-GURL GetNetworkURL(PrefService* prefs,
-                   const std::string& chain_id,
-                   mojom::CoinType coin);
-std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 
 void SetDefaultEthereumWallet(PrefService* prefs,
                               mojom::DefaultWallet default_wallet);
@@ -103,48 +77,9 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 
-GURL GetUnstoppableDomainsRpcUrl(const std::string& chain_id);
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
-GURL GetEnsRpcUrl();
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
-GURL GetSnsRpcUrl();
-
-std::optional<bool> IsEip1559Chain(PrefService* prefs,
-                                   const std::string& chain_id);
-void SetEip1559ForCustomChain(PrefService* prefs,
-                              const std::string& chain_id,
-                              std::optional<bool> is_eip1559);
-
-// Append chain value to kBraveWalletCustomNetworks dictionary pref.
-void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain);
-
-void RemoveCustomNetwork(PrefService* prefs,
-                         const std::string& chain_id,
-                         mojom::CoinType coin);
-
-std::vector<std::string> GetHiddenNetworks(PrefService* prefs,
-                                           mojom::CoinType coin);
-void AddHiddenNetwork(PrefService* prefs,
-                      mojom::CoinType coin,
-                      const std::string& chain_id);
-void RemoveHiddenNetwork(PrefService* prefs,
-                         mojom::CoinType coin,
-                         const std::string& chain_id);
-
-// Get/Set the current chain ID for coin from kBraveWalletSelectedNetworks pref
-// when origin is not presented. If origin is presented,
-// kBraveWalletSelectedNetworksPerOrigin will be used. In addition, if origin is
-// opaque, we will also fallback to kBraveWalletSelectedNetworks but it will be
-// read only, other non http/https scheme will fallback to r/w
-// kBraveWalletSelectedNetworks.
-std::string GetCurrentChainId(PrefService* prefs,
-                              mojom::CoinType coin,
-                              const std::optional<url::Origin>& origin);
-bool SetCurrentChainId(PrefService* prefs,
-                       mojom::CoinType coin,
-                       const std::optional<url::Origin>& origin,
-                       const std::string& chain_id);
 
 mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
                                        mojom::CoinType coin,
@@ -157,6 +92,8 @@ mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
 std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs);
 mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
                                        mojom::BlockchainTokenPtr token);
+void EnsureNativeTokenForNetwork(PrefService* prefs,
+                                 const mojom::NetworkInfo& network_info);
 bool RemoveUserAsset(PrefService* prefs,
                      const mojom::BlockchainTokenPtr& token);
 bool SetUserAssetVisible(PrefService* prefs,
@@ -173,18 +110,6 @@ bool SetAssetCompressed(PrefService* prefs,
 base::Value::List GetDefaultUserAssets();
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
-
-// Converts string representation of CoinType to enum.
-// DEPRECATED 01/2024. For migration only.
-std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
-    const std::string& key);
-
-// Resolves chain_id from network_id (including custom networks).
-// DEPRECATED 01/2024. For migration only.
-std::optional<std::string> GetChainIdByNetworkId_DEPRECATED(
-    PrefService* prefs,
-    const mojom::CoinType& coin,
-    const std::string& network_id);
 
 // Returns a string used for web3_clientVersion in the form of
 // BraveWallet/v[chromium-version]. Note that we expose only the Chromium

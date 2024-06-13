@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -57,18 +58,10 @@ class BitcoinBlockTrackerUnitTest : public testing::Test {
 
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     bitcoin_rpc_ = std::make_unique<bitcoin_rpc::BitcoinRpc>(
-        &prefs_, shared_url_loader_factory_);
+        network_manager_.get(), shared_url_loader_factory_);
     tracker_ = std::make_unique<BitcoinBlockTracker>(bitcoin_rpc_.get());
-
-    auto btc_mainnet =
-        GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
-    btc_mainnet->rpc_endpoints[0] = GURL("https://btc-mainnet.com");
-    AddCustomNetwork(&prefs_, *btc_mainnet);
-    auto btc_testnet =
-        GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC);
-    btc_testnet->rpc_endpoints[0] = GURL("https://btc-testnet.com");
-    AddCustomNetwork(&prefs_, *btc_testnet);
   }
 
   std::string GetResponseString() const {
@@ -81,6 +74,7 @@ class BitcoinBlockTrackerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
   std::unique_ptr<BitcoinBlockTracker> tracker_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

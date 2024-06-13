@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
@@ -55,6 +56,8 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);
 
   PrefService* GetPrefs();
+  brave_wallet::BraveWalletService* GetBraveWalletService();
+  brave_wallet::NetworkManager* GetNetworkManager();
 
   void OnAddChain(base::Value javascript_callback,
                   const std::string& chain_id,

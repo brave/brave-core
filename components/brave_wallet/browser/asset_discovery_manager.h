@@ -31,6 +31,7 @@ class BraveWalletService;
 class JsonRpcService;
 class SimpleHashClient;
 class KeyringService;
+class NetworkManager;
 
 class AssetDiscoveryManager : public KeyringServiceObserverBase {
  public:
@@ -85,6 +86,7 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::queue<std::unique_ptr<AssetDiscoveryTask>> queue_;
   raw_ptr<BraveWalletService> wallet_service_;
+  raw_ptr<NetworkManager> network_manager_;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<SimpleHashClient> simple_hash_client_;

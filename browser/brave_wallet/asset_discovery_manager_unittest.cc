@@ -116,6 +116,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
         GetLocalState());
+    network_manager_ = wallet_service_->network_manager();
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
     tx_service_ = wallet_service_->tx_service();
@@ -132,7 +133,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
   TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    return brave_wallet::GetNetworkURL(GetPrefs(), chain_id, coin);
+    return network_manager_->GetNetworkURL(chain_id, coin);
   }
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -144,6 +145,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
@@ -208,7 +210,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
 
   // Add a custom network (Gnosis) and verify it is included
   auto gnosis_network = GetTestNetworkInfo1(mojom::kGnosisChainId);
-  AddCustomNetwork(GetPrefs(), gnosis_network);
+  network_manager_->AddCustomNetwork(gnosis_network);
 
   chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
   EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 7UL);

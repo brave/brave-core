@@ -10,7 +10,6 @@
 #include <optional>
 #include <vector>
 
-#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
@@ -44,6 +43,10 @@
 #include "url/origin.h"
 
 namespace brave_wallet {
+
+// DEPRECATED 01/2024. For migration only.
+std::optional<mojom::CoinType> GetCoinTypeFromPrefKey_DEPRECATED(
+    const std::string& key);
 
 namespace {
 bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
@@ -100,7 +103,9 @@ BraveWalletService::BraveWalletService(
     PrefService* profile_prefs,
     PrefService* local_state)
     : delegate_(std::move(delegate)),
+      network_manager_(std::make_unique<NetworkManager>(profile_prefs)),
       json_rpc_service_(std::make_unique<JsonRpcService>(url_loader_factory,
+                                                         network_manager_.get(),
                                                          profile_prefs,
                                                          local_state)),
       keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
@@ -116,12 +121,14 @@ BraveWalletService::BraveWalletService(
 
   if (IsBitcoinEnabled()) {
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service(), profile_prefs, url_loader_factory);
+        keyring_service(), profile_prefs, network_manager(),
+        url_loader_factory);
   }
 
   if (IsZCashEnabled()) {
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        keyring_service(), profile_prefs, url_loader_factory);
+        keyring_service(), profile_prefs, network_manager(),
+        url_loader_factory);
   }
 
   tx_service_ = std::make_unique<TxService>(
@@ -282,6 +289,10 @@ void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
 }
 
 bool BraveWalletService::AddUserAssetInternal(mojom::BlockchainTokenPtr token) {
+  if (!network_manager()->GetChain(token->chain_id, token->coin)) {
+    return false;
+  }
+
   auto added_asset =
       ::brave_wallet::AddUserAsset(profile_prefs_, std::move(token));
   if (!added_asset) {
@@ -564,11 +575,11 @@ BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
 
   if (selected_account->account_id->coin == mojom::CoinType::BTC) {
     if (IsBitcoinMainnetKeyring(selected_account->account_id->keyring_id)) {
-      return GetChain(profile_prefs_, mojom::kBitcoinMainnet,
-                      mojom::CoinType::BTC);
+      return network_manager()->GetChain(mojom::kBitcoinMainnet,
+                                         mojom::CoinType::BTC);
     } else {
-      return GetChain(profile_prefs_, mojom::kBitcoinTestnet,
-                      mojom::CoinType::BTC);
+      return network_manager()->GetChain(mojom::kBitcoinTestnet,
+                                         mojom::CoinType::BTC);
     }
   }
 
@@ -732,7 +743,9 @@ void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
 bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
                                           mojom::CoinType coin,
                                           const std::string& chain_id) {
-  if (CustomChainExists(prefs, chain_id, coin)) {
+  NetworkManager network_manager(prefs);
+
+  if (network_manager.CustomChainExists(chain_id, coin)) {
     return false;
   }
 
@@ -756,7 +769,7 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
     }
   }
 
-  return GetCurrentChainId(prefs, coin, std::nullopt) == chain_id;
+  return network_manager.GetCurrentChainId(coin, std::nullopt) == chain_id;
 }
 
 void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
@@ -767,20 +780,17 @@ void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
 
   if (ShouldMigrateRemovedPreloadedNetwork(prefs, mojom::CoinType::ETH,
                                            mojom::kFantomMainnetChainId)) {
-    AddCustomNetwork(
-        prefs, {mojom::kFantomMainnetChainId,
-                "Fantom Opera",
-                {"https://ftmscan.com"},
-                {},
-                0,
-                {GURL("https://rpc.ftm.tools")},
-                "FTM",
-                "Fantom",
-                18,
-                mojom::CoinType::ETH,
-                GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                               mojom::kFantomMainnetChainId)});
-    SetEip1559ForCustomChain(prefs, mojom::kFantomMainnetChainId, true);
+    NetworkManager network_manager(prefs);
+    mojom::NetworkInfo network(
+        mojom::kFantomMainnetChainId, "Fantom Opera", {"https://ftmscan.com"},
+        {}, 0, {GURL("https://rpc.ftm.tools")}, "FTM", "Fantom", 18,
+        mojom::CoinType::ETH,
+        GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
+                                       mojom::kFantomMainnetChainId));
+    network_manager.AddCustomNetwork(network);
+    network_manager.SetEip1559ForCustomChain(mojom::kFantomMainnetChainId,
+                                             true);
+    EnsureNativeTokenForNetwork(prefs, network);
   }
 
   prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
@@ -802,8 +812,8 @@ void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
     }
 
     for (auto network_it : coin_it.second.GetDict()) {
-      auto chain_id = GetChainIdByNetworkId_DEPRECATED(prefs, coin.value(),
-                                                       network_it.first);
+      auto chain_id = NetworkManager::GetChainIdByNetworkId_DEPRECATED(
+          coin.value(), network_it.first);
 
       if (!chain_id) {
         continue;
@@ -836,9 +846,10 @@ void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
   }
   prefs->SetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated, true);
 
+  NetworkManager network_manager(prefs);
   if (prefs->HasPrefPath(kSupportEip1559OnLocalhostChainDeprecated)) {
-    SetEip1559ForCustomChain(
-        prefs, mojom::kLocalhostChainId,
+    network_manager.SetEip1559ForCustomChain(
+        mojom::kLocalhostChainId,
         prefs->GetBoolean(kSupportEip1559OnLocalhostChainDeprecated));
     prefs->ClearPref(kSupportEip1559OnLocalhostChainDeprecated);
   }
@@ -861,7 +872,7 @@ void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
         auto* chain_id = custom_network.GetDict().FindString("chainId");
         auto is_eip1559 = custom_network.GetDict().FindBool("is_eip1559");
         if (chain_id && is_eip1559) {
-          SetEip1559ForCustomChain(prefs, *chain_id, *is_eip1559);
+          network_manager.SetEip1559ForCustomChain(*chain_id, *is_eip1559);
         }
       }
 

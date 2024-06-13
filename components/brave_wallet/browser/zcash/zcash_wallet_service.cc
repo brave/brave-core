@@ -33,9 +33,10 @@ void ZCashWalletService::Bind(
 ZCashWalletService::ZCashWalletService(
     KeyringService* keyring_service,
     PrefService* prefs,
+    NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service) {
-  zcash_rpc_ = std::make_unique<ZCashRpc>(prefs, url_loader_factory);
+  zcash_rpc_ = std::make_unique<ZCashRpc>(network_manager, url_loader_factory);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }

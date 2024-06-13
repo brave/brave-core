@@ -1236,6 +1236,8 @@ const string kLineaChainId = "0xe708";
 const string kOptimismSepoliaChainId = "0xaa37dc";
 const string kZoraChainId = "0x76adf1";
 
+const string kBatTokenContractAddress = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
+
 // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
 enum CoinType {
   BTC = 0,

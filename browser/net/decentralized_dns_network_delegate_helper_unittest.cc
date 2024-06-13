@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -179,10 +180,10 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
   auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
   brave_request_info->browser_context = profile();
 
-  auto polygon_spec = brave_wallet::GetUnstoppableDomainsRpcUrl(
+  auto polygon_spec = brave_wallet::NetworkManager::GetUnstoppableDomainsRpcUrl(
                           brave_wallet::mojom::kPolygonMainnetChainId)
                           .spec();
-  auto eth_spec = brave_wallet::GetUnstoppableDomainsRpcUrl(
+  auto eth_spec = brave_wallet::NetworkManager::GetUnstoppableDomainsRpcUrl(
                       brave_wallet::mojom::kMainnetChainId)
                       .spec();
 

@@ -11,15 +11,14 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
+#include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -90,7 +89,8 @@ void NftMetadataFetcher::GetEthTokenMetadata(
     const std::string& chain_id,
     const std::string& interface_id,
     GetEthTokenMetadataCallback callback) {
-  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  auto network_url = json_rpc_service_->network_manager()->GetNetworkURL(
+      chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         "", "", mojom::ProviderError::kInvalidParams,
