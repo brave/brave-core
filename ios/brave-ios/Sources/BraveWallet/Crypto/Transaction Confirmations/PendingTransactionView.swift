@@ -331,6 +331,7 @@ struct PendingTransactionView: View {
                 VStack(alignment: .leading) {
                   Text(
                     confirmationStore.activeParsedTransaction.coin == .sol
+                      || confirmationStore.activeParsedTransaction.coin == .btc
                       ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee
                   )
                   .foregroundColor(Color(.bravePrimary))
@@ -384,6 +385,7 @@ struct PendingTransactionView: View {
                   VStack(alignment: .trailing) {
                     Text(
                       confirmationStore.activeParsedTransaction.coin == .sol
+                        || confirmationStore.activeParsedTransaction.coin == .btc
                         ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas
                     )
                     .font(.footnote)
