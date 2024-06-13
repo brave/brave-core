@@ -55,7 +55,7 @@ final class NewTabPageP3AHelper {
     if event == .tapped {
       expectedLandingURL = sponsoredImage.logo.destinationURL
       landingTimer?.invalidate()
-      landingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) {
+      landingTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false) {
         [weak self, weak tab] _ in
         guard let self = self, let tab = tab else { return }
         if let expectedURL = self.expectedLandingURL, expectedURL.isWebPage(),
