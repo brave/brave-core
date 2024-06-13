@@ -68,6 +68,9 @@ class WDPService : public KeyedService {
                        const base::Value& associated_data,
                        std::optional<std::string> response_body);
 
+  bool UpdatePageCountStartTime();
+  void MaybeSendAliveMessage();
+
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;
   PrefChangeRegistrar pref_change_registrar_;
@@ -88,6 +91,10 @@ class WDPService : public KeyedService {
   std::unique_ptr<ContentScraper> content_scraper_;
   std::unique_ptr<DoubleFetcher> double_fetcher_;
   std::unique_ptr<Reporter> reporter_;
+
+  base::Time current_page_count_start_time_;
+  std::string current_page_count_hour_key_;
+  base::RepeatingTimer alive_message_timer_;
 };
 
 }  // namespace web_discovery

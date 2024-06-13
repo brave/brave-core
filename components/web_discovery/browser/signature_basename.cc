@@ -120,8 +120,7 @@ std::optional<int> GetBasenameCount(PrefService* profile_prefs,
 
   auto* used_counts_list = count_dict->EnsureList(kUsedCountsKey);
   if (used_counts_list->size() >= action_config.limit) {
-    VLOG(1) << "used count = " << used_counts_list
-            << ", limit = " << action_config.limit;
+    VLOG(1) << "No basename counts left";
     return std::nullopt;
   }
 

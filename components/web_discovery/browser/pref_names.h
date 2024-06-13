@@ -21,6 +21,7 @@ inline constexpr char kScheduledReports[] =
     "brave.web_discovery.scheduled_reports";
 inline constexpr char kUsedBasenameCounts[] =
     "brave.web_discovery.used_basename_counts";
+inline constexpr char kPageCounts[] = "brave.web_discovery.page_counts";
 
 // Local state
 inline constexpr char kPatternsRetrievalTime[] =

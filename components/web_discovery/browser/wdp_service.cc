@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/payload_generator.h"
@@ -16,12 +17,19 @@
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 
 namespace web_discovery {
+
+namespace {
+// constexpr base::TimeDelta kAliveCheckInterval = base::Minutes(5);
+constexpr base::TimeDelta kAliveCheckInterval = base::Seconds(10);
+constexpr size_t kMinPageCountForAliveMessage = 2;
+}  // namespace
 
 WDPService::WDPService(
     PrefService* local_state,
@@ -55,6 +63,7 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kScheduledDoubleFetches);
   registry->RegisterListPref(kScheduledReports);
   registry->RegisterDictionaryPref(kUsedBasenameCounts);
+  registry->RegisterDictionaryPref(kPageCounts);
 }
 
 void WDPService::Start() {
@@ -75,6 +84,7 @@ void WDPService::Stop() {
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
   last_loaded_server_config_ = nullptr;
+  alive_message_timer_.Stop();
 }
 
 void WDPService::OnEnabledChange() {
@@ -101,6 +111,7 @@ void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
   reporter_ = std::make_unique<Reporter>(
       profile_prefs_.get(), shared_url_loader_factory_.get(),
       credential_manager_.get(), &regex_util_, &last_loaded_server_config_);
+  MaybeSendAliveMessage();
 }
 
 void WDPService::OnDoubleFetched(const GURL& url,
@@ -122,11 +133,19 @@ void WDPService::OnDoubleFetched(const GURL& url,
 void WDPService::OnFinishNavigation(
     const GURL& url,
     content::RenderFrameHost* render_frame_host) {
-  if (!content_scraper_) {
+  if (!content_scraper_ || !last_loaded_patterns_) {
     return;
   }
   const auto* matching_url_details =
       last_loaded_patterns_->GetMatchingURLPattern(url, false);
+  if (!matching_url_details || !matching_url_details->is_search_engine) {
+    if (!current_page_count_hour_key_.empty()) {
+      ScopedDictPrefUpdate page_count_update(profile_prefs_, kPageCounts);
+      auto existing_count =
+          page_count_update->FindInt(current_page_count_hour_key_).value_or(0);
+      page_count_update->Set(current_page_count_hour_key_, existing_count + 1);
+    }
+  }
   if (!matching_url_details) {
     return;
   }
@@ -170,10 +189,56 @@ void WDPService::OnContentScraped(bool is_strict,
       double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
     }
   }
-  auto payloads = GeneratePayloads(*last_loaded_server_config_, regex_util_,
-                                   original_url_details, std::move(result));
+  auto payloads =
+      GenerateQueryPayloads(*last_loaded_server_config_, regex_util_,
+                            original_url_details, std::move(result));
   for (auto& payload : payloads) {
     reporter_->ScheduleSend(std::move(payload));
+  }
+}
+
+bool WDPService::UpdatePageCountStartTime() {
+  auto now = base::Time::Now();
+  if (!current_page_count_start_time_.is_null() &&
+      (now - current_page_count_start_time_) < base::Hours(1)) {
+    return false;
+  }
+  base::Time::Exploded exploded;
+  now.UTCExplode(&exploded);
+  exploded.millisecond = 0;
+  exploded.second = 0;
+  exploded.minute = 0;
+  if (!base::Time::FromUTCExploded(exploded, &current_page_count_start_time_)) {
+    return false;
+  }
+  current_page_count_hour_key_ =
+      base::StringPrintf("%04d%02d%02d%02d", exploded.year, exploded.month,
+                         exploded.day_of_month, exploded.hour);
+  return true;
+}
+
+void WDPService::MaybeSendAliveMessage() {
+  if (!alive_message_timer_.IsRunning()) {
+    alive_message_timer_.Start(
+        FROM_HERE, kAliveCheckInterval,
+        base::BindRepeating(&WDPService::MaybeSendAliveMessage,
+                            base::Unretained(this)));
+  }
+  if (!UpdatePageCountStartTime()) {
+    return;
+  }
+  ScopedDictPrefUpdate update(profile_prefs_, kPageCounts);
+  for (auto it = update->begin(); it != update->end();) {
+    if (it->first == current_page_count_hour_key_) {
+      it++;
+      continue;
+    }
+    if (it->second.is_int() && static_cast<size_t>(it->second.GetInt()) >=
+                                   kMinPageCountForAliveMessage) {
+      reporter_->ScheduleSend(
+          GenerateAlivePayload(*last_loaded_server_config_, it->first));
+    }
+    it = update->erase(it);
   }
 }
 

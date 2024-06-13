@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PAYLOAD_GENERATOR_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/values.h"
@@ -19,11 +20,14 @@ namespace web_discovery {
 inline constexpr char kActionKey[] = "action";
 inline constexpr char kInnerPayloadKey[] = "payload";
 
-std::vector<base::Value::Dict> GeneratePayloads(
+std::vector<base::Value::Dict> GenerateQueryPayloads(
     const ServerConfig& server_config,
     RegexUtil& regex_util,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result);
+
+base::Value::Dict GenerateAlivePayload(const ServerConfig& server_config,
+                                       std::string date_hour);
 
 }  // namespace web_discovery
 

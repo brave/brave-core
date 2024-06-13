@@ -46,13 +46,13 @@ class Reporter {
  private:
   void PrepareRequest(const base::Value& request_data);
   void OnRequestSigned(std::string final_payload_json,
-                       uint8_t count_tag_hash,
+                       uint32_t count_tag_hash,
                        size_t basename_count,
                        std::optional<std::vector<const uint8_t>> signature);
-  void OnRequestCompressedAndEncrypted(uint8_t count_tag_hash,
+  void OnRequestCompressedAndEncrypted(uint32_t count_tag_hash,
                                        size_t basename_count,
                                        std::optional<AESEncryptResult> result);
-  void OnRequestComplete(uint8_t count_tag_hash,
+  void OnRequestComplete(uint32_t count_tag_hash,
                          size_t basename_count,
                          scoped_refptr<net::HttpResponseHeaders> headers);
   bool ValidateResponse(scoped_refptr<net::HttpResponseHeaders> headers);
