@@ -12,7 +12,7 @@ import("//tools/grit/repack.gni")
 transpile_web_ui("nft_display_ui") {
   entry_points = [ [
         "nft",
-        rebase_path("nft.tsx"),
+        rebase_path("nft_script.ts"),
       ] ]
   webpack_aliases = [ "browser" ]
   resource_name = "nft_display"

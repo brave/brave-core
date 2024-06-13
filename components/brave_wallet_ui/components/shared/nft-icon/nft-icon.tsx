@@ -9,20 +9,13 @@ import { skipToken } from '@reduxjs/toolkit/query'
 
 // utils
 import {
-  NftUiCommand,
-  sendMessageToNftUiFrame,
-  UpdateLoadingMessage,
-  UpdateNFtMetadataMessage
-} from '../../../nft/nft-ui-messages'
-import {
   isComponentInStorybook,
   stripERC20TokenImageURL
 } from '../../../utils/string-utils'
 
 // hooks
 import {
-  useGetIpfsGatewayTranslatedNftUrlQuery,
-  useGetIPFSUrlFromGatewayLikeUrlQuery
+  useGetIpfsGatewayTranslatedNftUrlQuery //
 } from '../../../common/slices/api.slice'
 
 // styles
@@ -37,64 +30,34 @@ export interface NftIconProps {
   icon?: string | null
   responsive?: boolean
   iconStyles?: CSSProperties
-  onLoad?: () => void
 }
 
 const isStorybook = isComponentInStorybook()
 
-const loadingCommand: UpdateLoadingMessage = {
-  command: NftUiCommand.UpdateLoading,
-  payload: false
-}
-
 export const NftIcon = (props: NftIconProps) => {
-  const { icon, responsive, iconStyles, onLoad } = props
+  const { icon, responsive, iconStyles } = props
   const tokenImageURL = icon ? stripERC20TokenImageURL(icon) : ''
 
   // refs
   const nftImageIframeRef = React.useRef<HTMLIFrameElement>(null)
 
-  // state
-  const [loaded, setLoaded] = React.useState<boolean>()
-
   // queries
   const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
     tokenImageURL || skipToken
   )
-  const { data: remoteCid } = useGetIPFSUrlFromGatewayLikeUrlQuery(
-    tokenImageURL || skipToken
-  )
 
-  // methods
-  const onIframeLoaded = React.useCallback(() => {
-    setLoaded(true)
-    if (onLoad) {
-      onLoad()
-    }
-  }, [onLoad])
+  // memos
+  const nftIframeUrl = React.useMemo(() => {
+    const urlParams = new URLSearchParams({
+      displayMode: 'icon',
+      icon: encodeURI(remoteImage || '')
+    })
+    return `chrome-untrusted://nft-display?${urlParams.toString()}`
+  }, [remoteImage])
 
-  React.useEffect(() => {
-    if (!loaded && isStorybook) {
-      setLoaded(true)
-      return
-    }
-
-    if (loaded && icon !== undefined && nftImageIframeRef?.current) {
-      const command: UpdateNFtMetadataMessage = {
-        command: NftUiCommand.UpdateNFTMetadata,
-        payload: {
-          displayMode: 'icon',
-          icon: remoteImage || undefined,
-          imageCID: remoteCid || undefined
-        }
-      }
-      sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, command)
-      sendMessageToNftUiFrame(
-        nftImageIframeRef.current.contentWindow,
-        loadingCommand
-      )
-    }
-  }, [loaded, remoteImage, nftImageIframeRef, remoteCid, icon])
+  // computed
+  /** iframe should re-render when url changes */
+  const iframeKey = `${responsive ? 'responsive' : 'fixed'}-${nftIframeUrl}`
 
   // render
   if (isStorybook) {
@@ -111,18 +74,18 @@ export const NftIcon = (props: NftIconProps) => {
 
   return responsive ? (
     <NftImageResponsiveIframe
+      key={iframeKey}
       style={iconStyles}
-      onLoad={onIframeLoaded}
       ref={nftImageIframeRef}
-      src='chrome-untrusted://nft-display'
+      src={nftIframeUrl}
       sandbox='allow-scripts allow-same-origin'
     />
   ) : (
     <NftImageIframe
+      key={iframeKey}
       style={iconStyles}
-      onLoad={onIframeLoaded}
       ref={nftImageIframeRef}
-      src='chrome-untrusted://nft-display'
+      src={nftIframeUrl}
       sandbox='allow-scripts allow-same-origin'
     />
   )
