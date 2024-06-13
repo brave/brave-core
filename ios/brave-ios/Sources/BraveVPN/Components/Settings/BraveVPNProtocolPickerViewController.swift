@@ -107,6 +107,5 @@ extension BraveVPNProtocolPickerViewController: UITableViewDelegate, UITableView
         }
       }
     }
-
   }
 }
