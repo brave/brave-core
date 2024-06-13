@@ -478,7 +478,10 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             return;
         }
         txService.approveTransaction(
-                mCoinType, mTxInfo.chainId, mTxInfo.id, (success, error, errorMessage) -> {
+                mCoinType,
+                mTxInfo.chainId,
+                mTxInfo.id,
+                (success, error, errorMessage) -> {
                     if (!success) {
                         int providerError = -1;
                         switch (error.which()) {
@@ -491,13 +494,22 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
                             case ProviderErrorUnion.Tag.FilecoinProviderError:
                                 providerError = error.getFilecoinProviderError();
                                 break;
+                            case ProviderErrorUnion.Tag.BitcoinProviderError:
+                                providerError = error.getBitcoinProviderError();
+                                break;
                             default:
                                 assert false : "unknown error " + errorMessage;
                         }
-                        assert success : "tx is not approved error: " + providerError + ", "
-                                         + errorMessage;
-                        Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                                "approveTransaction", providerError, errorMessage);
+                        assert success
+                                : "tx is not approved error: "
+                                        + providerError
+                                        + ", "
+                                        + errorMessage;
+                        Utils.warnWhenError(
+                                ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
+                                "approveTransaction",
+                                providerError,
+                                errorMessage);
                         return;
                     }
                     mApproved = true;
