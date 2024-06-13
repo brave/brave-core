@@ -9,24 +9,24 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.components.search_engines.TemplateUrl;
 
 import java.util.List;
 
 public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHolder> {
     private Context mContext;
-    private List<TemplateUrl> mSearchEngines;
+    private List<QuickSearchEngineModel> mSearchEngines;
     private QuickSearchCallback mQuickSearchCallback;
 
     public QuickSearchAdapter(
             Context context,
-            List<TemplateUrl> searchEngines,
+            List<QuickSearchEngineModel> searchEngines,
             QuickSearchCallback quickSearchCallback) {
         mContext = context;
         mSearchEngines = searchEngines;
@@ -34,21 +34,30 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QuickSearchViewHolder holder, int position) {
-        TemplateUrl templateUrl = mSearchEngines.get(position);
-        Log.e("quick_search", templateUrl.getShortName());
-        holder.mSearchEngineText.setText(templateUrl.getShortName());
-        holder.mView.setOnClickListener(
+    public void onBindViewHolder(
+            @NonNull QuickSearchViewHolder quickSearchViewHolder, int position) {
+        QuickSearchEngineModel quickSearchEngineModel = mSearchEngines.get(position);
+        Log.e("quick_search", quickSearchEngineModel.getTemplateUrl().getShortName());
+        quickSearchViewHolder.mSearchEngineText.setText(
+                quickSearchEngineModel.getTemplateUrl().getShortName());
+        quickSearchViewHolder.mView.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mQuickSearchCallback.onSearchEngineClick(templateUrl);
-                        holder.searchEngineSwitch.setChecked(
-                                !holder.searchEngineSwitch.isChecked());
+                        boolean isChecked = quickSearchViewHolder.mSearchEngineSwitch.isChecked();
+                        quickSearchViewHolder.mSearchEngineSwitch.setChecked(!isChecked);
+                    }
+                });
+        quickSearchViewHolder.mSearchEngineSwitch.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Log.e("quick_search", "isChecked : " + isChecked);
+                        onSearchEngineClick(quickSearchEngineModel);
                     }
                 });
 
-        holder.mView.setOnLongClickListener(
+        quickSearchViewHolder.mView.setOnLongClickListener(
                 new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -56,7 +65,12 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                         return true;
                     }
                 });
-        mQuickSearchCallback.loadSearchEngineLogo(holder.mSearchEngineLogo, templateUrl);
+        mQuickSearchCallback.loadSearchEngineLogo(
+                quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+    }
+
+    private void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
+        mQuickSearchCallback.onSearchEngineClick(quickSearchEngineModel);
     }
 
     @NonNull
@@ -71,5 +85,9 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
     @Override
     public int getItemCount() {
         return mSearchEngines.size();
+    }
+
+    public List<QuickSearchEngineModel> getSearchEngines() {
+        return mSearchEngines;
     }
 }
