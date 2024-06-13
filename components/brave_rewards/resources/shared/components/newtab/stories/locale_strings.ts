@@ -5,9 +5,11 @@
 
 export const localeStrings = {
   rewardsBalanceTitle: 'Balance',
-  rewardsBraveRewards: 'Brave Rewards',
+  rewardsBraveRewards: 'Rewards',
+  rewardsBrowserCannotReceiveAds: 'Oops! Your browser cannot receive Brave Private Ads.',
+  rewardsBrowserNeedsUpdateToSeeAds: 'Your browser needs to be updated to continue seeing ads.',
   rewardsConnectAccount: 'Connect account',
-  rewardsConnectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
+  rewardsConnectAccountText: '$1Ready to start earning?$2 Connect an account so we have a place to send your earnings.',
   rewardsContinue: 'Continue',
   rewardsEarningsTitle: 'Earnings so far',
   rewardsEarningInfoText: 'This reflects your estimated earnings range for Brave Ads this month.',

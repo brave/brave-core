@@ -151,8 +151,6 @@ declare namespace chrome.braveRewards {
 
   const openRewardsPanel: () => void
 
-  const showRewardsSetup: () => void
-
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }

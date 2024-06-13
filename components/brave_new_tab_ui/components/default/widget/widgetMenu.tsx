@@ -5,9 +5,10 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { StyledWidgetMenuContainer, StyledWidgetMenu, StyledWidgetButton, StyledWidgetIcon, StyledSpan, StyledWidgetLink, StyledEllipsis } from './styles'
 import { IconButton } from '../../default'
-import EllipsisIcon from '../../popupMenu/ellipsisIcon'
 import HideIcon from './assets/hide'
 import AddSiteIcon from './assets/add-site'
 import FrecencyIcon from './assets/frecency'
@@ -142,7 +143,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       <StyledWidgetMenuContainer ref={this.settingsMenuRef} paddingType={paddingType}>
         <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
           <IconButton isClickMenu={true} onClick={this.toggleMenu}>
-            <EllipsisIcon />
+            <Icon name='more-vertical' />
           </IconButton>
         </StyledEllipsis>
         {showMenu && <StyledWidgetMenu

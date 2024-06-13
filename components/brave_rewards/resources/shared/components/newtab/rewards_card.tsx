@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
@@ -14,15 +14,12 @@ import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { BatIcon } from '../icons/bat_icon'
 import { OptInIcon } from '../icons/optin_icon'
-import { SettingsIcon } from '../icons/settings_icon'
 import { InfoIcon } from './icons/info_icon'
-import { ArrowNextIcon } from '../icons/arrow_next_icon'
 import { CaretIcon } from '../icons/caret_icon'
 import { EarningsRange } from '../earnings_range'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
-import { TermsOfService } from '../terms_of_service'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
 import { TosUpdateNotice } from '../tos_update_notice'
@@ -30,23 +27,31 @@ import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
 
 import * as urls from '../../lib/rewards_urls'
-
 import * as style from './rewards_card.style'
-
 import * as mojom from '../../../shared/lib/mojom'
 
 const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
 })
 
-export function RewardsCardHeader () {
+export function RewardsCardHeaderContent () {
   const { getString } = React.useContext(LocaleContext)
   return (
-    <style.cardHeader>
-      <BatIcon />
-      <style.cardHeaderText>
+    <>
+      <style.cardHeaderIcon>
+        <BatIcon />
+      </style.cardHeaderIcon>
+      <div>
         {getString('rewardsBraveRewards')}
-      </style.cardHeaderText>
+      </div>
+    </>
+  )
+}
+
+function RewardsCardHeader () {
+  return (
+    <style.cardHeader>
+      <RewardsCardHeaderContent />
     </style.cardHeader>
   )
 }
@@ -121,9 +126,9 @@ export function RewardsCard (props: Props) {
       return (
         <style.balance>
           <style.needsBrowserUpdateView>
-            <style.needsBrowserUpdateContentHeader>
+            <div>
               {getString('rewardsBrowserCannotReceiveAds')}
-            </style.needsBrowserUpdateContentHeader>
+            </div>
             <style.needsBrowserUpdateContentBody>
               {getString('rewardsBrowserNeedsUpdateToSeeAds')}
             </style.needsBrowserUpdateContentBody>
@@ -160,13 +165,12 @@ export function RewardsCard (props: Props) {
                   <TokenAmount amount={props.rewardsBalance.value()} />
                 </style.balanceAmount>
                 <style.balanceExchange>
-                  <style.balanceExchangeAmount>
-                    ≈&nbsp;
-                    <ExchangeAmount
-                      amount={props.rewardsBalance.value()}
-                      rate={props.exchangeRate}
-                      currency={props.exchangeCurrency} />
-                  </style.balanceExchangeAmount>
+                  ≈&nbsp;
+                  <ExchangeAmount
+                    amount={props.rewardsBalance.value()}
+                    rate={props.exchangeRate}
+                    currency={props.exchangeCurrency}
+                  />
                 </style.balanceExchange>
               </>
         }
@@ -199,18 +203,10 @@ export function RewardsCard (props: Props) {
           {getString('rewardsOptInText')}
         </style.optInText>
         <style.optInAction>
-          <button onClick={props.onEnableRewards}>
-            {getString('rewardsStartUsingRewards')}
-          </button>
+          <Button onClick={props.onEnableRewards}>
+            {getString('rewardsLearnMore')}
+          </Button>
         </style.optInAction>
-        <style.optInLearnMore>
-          <NewTabLink href={urls.rewardsTourURL}>
-            {getString('rewardsHowDoesItWork')}
-          </NewTabLink>
-        </style.optInLearnMore>
-        <style.optInTerms>
-          <TermsOfService text={getString('rewardsOptInTerms')} />
-        </style.optInTerms>
       </style.root>
     )
   }
@@ -265,40 +261,20 @@ export function RewardsCard (props: Props) {
               </div>
             </style.earningsInfo>
           </style.earningsHeaderText>
-          <style.earningsHeaderBorder />
         </style.earningsHeader>
         <style.earningsDisplay>
           <style.earningsMonth>
             {monthFormatter.format(new Date())}
           </style.earningsMonth>
           <div>
-            {
-              props.userType === 'connected'
-                ? <EarningsRange
-                    minimum={props.minEarningsThisMonth}
-                    maximum={props.maxEarningsThisMonth}
-                    minimumFractionDigits={3}
-                  />
-                : <style.hiddenEarnings>
-                    --&nbsp;
-                    <NewTabLink href={urls.rewardsChangesURL}>
-                      {getString('rewardsLearnMore')}
-                    </NewTabLink>
-                  </style.hiddenEarnings>
-            }
+            <EarningsRange
+              minimum={props.minEarningsThisMonth}
+              maximum={props.maxEarningsThisMonth}
+              minimumFractionDigits={3}
+            />
           </div>
         </style.earningsDisplay>
       </>
-    )
-  }
-
-  function renderSettingsLink () {
-    return (
-      <style.settings>
-        <NewTabLink href={urls.settingsURL}>
-          <SettingsIcon />{getString('rewardsSettings')}
-        </NewTabLink>
-      </style.settings>
     )
   }
 
@@ -312,20 +288,15 @@ export function RewardsCard (props: Props) {
         <RewardsCardHeader />
         <style.selfCustodyInvite>
           <style.selfCustodyInviteHeader>
-            <style.selfCustodyInviteClose>
-              <button onClick={props.onSelfCustodyInviteDismissed}>
-                <Icon name='close' />
-              </button>
-            </style.selfCustodyInviteClose>
             {getString('rewardsSelfCustodyInviteHeader')}
           </style.selfCustodyInviteHeader>
           <style.selfCustodyInviteText>
             {getString('rewardsSelfCustodyInviteText')}
           </style.selfCustodyInviteText>
           <style.connectAction>
-            <button onClick={onConnectSelfCustody}>
-              {getString('rewardsConnectAccount')}<ArrowNextIcon />
-            </button>
+            <Button onClick={onConnectSelfCustody}>
+              {getString('rewardsConnectAccount')}
+            </Button>
           </style.connectAction>
           <style.selfCustodyInviteDismiss>
             <button onClick={props.onSelfCustodyInviteDismissed}>
@@ -350,20 +321,17 @@ export function RewardsCard (props: Props) {
             })
           }
           <style.connectAction>
-            <button onClick={onConnect}>
-              {getString('rewardsConnectAccount')}<ArrowNextIcon />
-            </button>
+            <Button onClick={onConnect}>
+              {getString('rewardsConnectAccount')}
+            </Button>
           </style.connectAction>
         </style.connect>
-        {
-          <style.publisherSupport>
-            <style.publisherCount>
-              {props.publishersVisited}
-            </style.publisherCount>
-            <div>{publisherCountText}</div>
-          </style.publisherSupport>
-        }
-        {renderSettingsLink()}
+        <style.publisherSupport>
+          <style.publisherCount>
+            {props.publishersVisited}
+          </style.publisherCount>
+          <div>{publisherCountText}</div>
+        </style.publisherSupport>
       </style.root>
     )
   }
@@ -393,7 +361,6 @@ export function RewardsCard (props: Props) {
       <RewardsCardHeader />
       {renderBalance()}
       {renderEarnings()}
-      {renderSettingsLink()}
     </style.root>
   )
 }
