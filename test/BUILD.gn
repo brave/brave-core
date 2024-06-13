@@ -275,6 +275,7 @@ test("brave_unit_tests") {
     "//chrome/app:command_ids",
     "//chrome/browser/favicon",
     "//chrome/browser/permissions",
+    "//chrome/browser/sync",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/assist_ranker",
