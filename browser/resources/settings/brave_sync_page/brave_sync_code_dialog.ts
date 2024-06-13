@@ -91,7 +91,7 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
     if (!this.syncCode) {
       return 0
     }
-    return this.syncCode.trim().split(' ').length
+    return this.syncCode.trim().split(/\s+/).length
   }
 
   isCodeType(askingType: string) {
