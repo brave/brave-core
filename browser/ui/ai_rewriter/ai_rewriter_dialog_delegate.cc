@@ -23,7 +23,7 @@
 #include "chrome/browser/tab_contents/web_contents_collection.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "components/web_modal/modal_dialog_host.h"
@@ -110,8 +110,8 @@ class AIRewriterDialogDelegate::DialogPositioner
     auto* browser = chrome::FindBrowserWithTab(target_contents);
     CHECK(browser);
 
-    host_widget_ = BrowserView::GetBrowserViewForBrowser(browser)
-                       ->GetWidget()
+    host_widget_ = views::Widget::GetWidgetForNativeWindow(
+                       browser->window()->GetNativeWindow())
                        ->GetWeakPtr();
     CHECK(host_widget_);
 
@@ -283,6 +283,8 @@ void AIRewriterDialogDelegate::ShowDialog() {
   CHECK(dialog_host);
   positioner_ = std::make_unique<DialogPositioner>(target_contents_.get(),
                                                    dialog_host, widget);
+
+  widget_for_testing_ = widget;
 }
 
 void AIRewriterDialogDelegate::CloseDialog() {
@@ -297,6 +299,10 @@ content::WebContents* AIRewriterDialogDelegate::GetDialogWebContents() {
 
 void AIRewriterDialogDelegate::ResetDialogObserver() {
   dialog_observer_.reset();
+}
+
+AIRewriterUI* AIRewriterDialogDelegate::GetRewriterUIForTesting() {
+  return GetRewriterUI();
 }
 
 AIRewriterUI* AIRewriterDialogDelegate::GetRewriterUI() {
