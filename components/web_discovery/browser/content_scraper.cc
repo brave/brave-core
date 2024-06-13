@@ -86,56 +86,6 @@ std::optional<std::string> RefineJsonExtract(const std::string& value,
   return encoded_value;
 }
 
-std::optional<std::string> ExecuteRefineFunctions(
-    const RefineFunctionList& function_list,
-    const std::string& value) {
-  std::optional<std::string> result = value;
-  for (const auto& function_args : function_list) {
-    if (function_args.empty()) {
-      continue;
-    }
-    const auto& func_name = function_args[0];
-    if (func_name == kRefineSplitFuncId) {
-      if (function_args.size() >= 3 && function_args[1].is_string() &&
-          function_args[2].is_int()) {
-        result = RefineSplit(*result, function_args[1].GetString(),
-                             function_args[2].GetInt());
-      }
-    } else if (func_name == kRefineMaskURLFuncId) {
-      result = MaskURL(GURL(value));
-    } else if (func_name == kRefineParseURLFuncId) {
-      if (function_args.size() >= 3 && function_args[1].is_string() &&
-          function_args[2].is_string()) {
-        result = RefineParseURL(*result, function_args[1].GetString(),
-                                function_args[2].GetString());
-      }
-    } else if (func_name == kRefineJsonExtractFuncId) {
-      if (function_args.size() >= 3 && function_args[1].is_string() &&
-          function_args[2].is_bool()) {
-        result = RefineJsonExtract(*result, function_args[1].GetString(),
-                                   function_args[2].GetBool());
-      }
-    }
-    if (!result) {
-      break;
-    }
-  }
-  return result;
-}
-
-void MaybeSetQueryInResult(const ScrapeRule& rule,
-                           const std::optional<std::string>& value,
-                           PageScrapeResult* result) {
-  if (rule.rule_type != ScrapeRuleType::kSearchQuery &&
-      rule.rule_type != ScrapeRuleType::kWidgetTitle) {
-    return;
-  }
-  if (!value) {
-    return;
-  }
-  result->query = value;
-}
-
 }  // namespace
 
 PageScrapeResult::PageScrapeResult(GURL url, std::string id)
@@ -144,11 +94,13 @@ PageScrapeResult::~PageScrapeResult() = default;
 
 ContentScraper::ContentScraper(
     std::unique_ptr<ServerConfig>* last_loaded_server_config,
-    std::unique_ptr<PatternsGroup>* patterns)
+    std::unique_ptr<PatternsGroup>* patterns,
+    RegexUtil* regex_util)
     : pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({})),
       last_loaded_server_config_(last_loaded_server_config),
-      patterns_(patterns) {}
+      patterns_(patterns),
+      regex_util_(regex_util) {}
 
 ContentScraper::~ContentScraper() = default;
 
@@ -324,21 +276,8 @@ void ContentScraper::OnScrapedElementAttributes(
     }
     base::Value::Dict attribute_values;
     for (const auto& [key, value_str] : attribute_result->attribute_values) {
-      const auto rule = rule_group->second.find(key);
-      if (rule == rule_group->second.end()) {
-        continue;
-      }
-      base::Value value;
-      if (value_str) {
-        auto final_value_str =
-            ExecuteRefineFunctions(rule->second->functions_applied, *value_str);
-        MaybeSetQueryInResult(*rule->second, final_value_str,
-                              scrape_result.get());
-        if (final_value_str) {
-          value = base::Value(*final_value_str);
-        }
-      }
-      attribute_values.Set(key, std::move(value));
+      ProcessAttributeValue(rule_group->second, *scrape_result, key, value_str,
+                            attribute_values);
     }
     scrape_result->fields[attribute_result->root_selector].push_back(
         std::move(attribute_values));
@@ -364,26 +303,79 @@ void ContentScraper::OnRustElementAttributes(
     }
     base::Value::Dict attribute_values;
     for (const auto& pair : attribute_result.attribute_pairs) {
-      const auto key_str = std::string(pair.key);
-      const auto rule = rule_group->second.find(key_str);
-      if (rule == rule_group->second.end()) {
-        continue;
-      }
-      base::Value value;
-      if (!pair.value.empty()) {
-        auto final_value_str = ExecuteRefineFunctions(
-            rule->second->functions_applied, std::string(pair.value));
-        MaybeSetQueryInResult(*rule->second, final_value_str,
-                              scrape_result.get());
-        if (final_value_str) {
-          value = base::Value(*final_value_str);
-        }
-      }
-      attribute_values.Set(key_str, std::move(value));
+      ProcessAttributeValue(
+          rule_group->second, *scrape_result, std::string(pair.key),
+          pair.value.empty() ? std::nullopt
+                             : std::make_optional<std::string>(pair.value),
+          attribute_values);
     }
     scrape_result->fields[root_selector].push_back(std::move(attribute_values));
   }
   std::move(callback).Run(std::move(scrape_result));
+}
+
+std::optional<std::string> ContentScraper::ExecuteRefineFunctions(
+    const RefineFunctionList& function_list,
+    std::string value) {
+  std::optional<std::string> result = value;
+  for (const auto& function_args : function_list) {
+    if (function_args.empty()) {
+      continue;
+    }
+    const auto& func_name = function_args[0];
+    if (func_name == kRefineSplitFuncId) {
+      if (function_args.size() >= 3 && function_args[1].is_string() &&
+          function_args[2].is_int()) {
+        result = RefineSplit(*result, function_args[1].GetString(),
+                             function_args[2].GetInt());
+      }
+    } else if (func_name == kRefineMaskURLFuncId) {
+      result = MaskURL(*regex_util_, GURL(value));
+    } else if (func_name == kRefineParseURLFuncId) {
+      if (function_args.size() >= 3 && function_args[1].is_string() &&
+          function_args[2].is_string()) {
+        result = RefineParseURL(*result, function_args[1].GetString(),
+                                function_args[2].GetString());
+      }
+    } else if (func_name == kRefineJsonExtractFuncId) {
+      if (function_args.size() >= 3 && function_args[1].is_string() &&
+          function_args[2].is_bool()) {
+        result = RefineJsonExtract(*result, function_args[1].GetString(),
+                                   function_args[2].GetBool());
+      }
+    }
+    if (!result) {
+      break;
+    }
+  }
+  return result;
+}
+
+void ContentScraper::ProcessAttributeValue(
+    const ScrapeRuleGroup& rule_group,
+    PageScrapeResult& scrape_result,
+    std::string key,
+    std::optional<std::string> value_str,
+    base::Value::Dict& attribute_values) {
+  const auto rule = rule_group.find(key);
+  if (rule == rule_group.end()) {
+    return;
+  }
+  base::Value value;
+  if (value_str) {
+    value_str =
+        ExecuteRefineFunctions(rule->second->functions_applied, *value_str);
+
+    if (value_str) {
+      if (rule->second->rule_type == ScrapeRuleType::kSearchQuery ||
+          rule->second->rule_type == ScrapeRuleType::kWidgetTitle) {
+        scrape_result.query = value_str;
+      }
+
+      value = base::Value(*value_str);
+    }
+  }
+  attribute_values.Set(key, std::move(value));
 }
 
 }  // namespace web_discovery

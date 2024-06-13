@@ -93,14 +93,14 @@ void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
 void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
   last_loaded_patterns_ = std::move(patterns);
   content_scraper_ = std::make_unique<ContentScraper>(
-      &last_loaded_server_config_, &last_loaded_patterns_);
+      &last_loaded_server_config_, &last_loaded_patterns_, &regex_util_);
   double_fetcher_ = std::make_unique<DoubleFetcher>(
       profile_prefs_.get(), shared_url_loader_factory_.get(),
       base::BindRepeating(&WDPService::OnDoubleFetched,
                           base::Unretained(this)));
   reporter_ = std::make_unique<Reporter>(
       profile_prefs_.get(), shared_url_loader_factory_.get(),
-      credential_manager_.get(), &last_loaded_server_config_);
+      credential_manager_.get(), &regex_util_, &last_loaded_server_config_);
 }
 
 void WDPService::OnDoubleFetched(const GURL& url,
@@ -131,7 +131,7 @@ void WDPService::OnFinishNavigation(
     return;
   }
   VLOG(1) << "URL matched pattern " << matching_url_details->id << ": " << url;
-  if (IsPrivateURLLikely(url, matching_url_details)) {
+  if (IsPrivateURLLikely(regex_util_, url, matching_url_details)) {
     return;
   }
   mojo::Remote<mojom::DocumentExtractor> remote;
@@ -162,7 +162,7 @@ void WDPService::OnContentScraped(bool is_strict,
       if (!result->query) {
         return;
       }
-      if (IsPrivateQueryLikely(*result->query)) {
+      if (IsPrivateQueryLikely(regex_util_, *result->query)) {
         return;
       }
       url = GeneratePrivateSearchURL(url, *result->query, *strict_url_details);
@@ -170,7 +170,7 @@ void WDPService::OnContentScraped(bool is_strict,
       double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
     }
   }
-  auto payloads = GeneratePayloads(*last_loaded_server_config_,
+  auto payloads = GeneratePayloads(*last_loaded_server_config_, regex_util_,
                                    original_url_details, std::move(result));
   for (auto& payload : payloads) {
     reporter_->ScheduleSend(std::move(payload));

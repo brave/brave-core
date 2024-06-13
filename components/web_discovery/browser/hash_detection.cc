@@ -1459,8 +1459,10 @@ constexpr auto kTokenMap = base::MakeFixedFlatMap<char, size_t>(
 
 constexpr double kClassifierThreshold = 0.015;
 
-bool IsHashLikely(std::string value, double threshold_multiplier) {
-  TransformToAlphanumeric(value);
+bool IsHashLikely(RegexUtil& regex_util,
+                  std::string value,
+                  double threshold_multiplier) {
+  regex_util.TransformToAlphanumeric(value);
 
   double log_prob_sum = 0.0;
   size_t add_count = 0;

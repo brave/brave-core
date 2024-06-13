@@ -22,6 +22,8 @@ static_library("browser") {
     "pref_names.h",
     "privacy_guard.cc",
     "privacy_guard.h",
+    "regex_util.cc",
+    "regex_util.h",
     "reporter.cc",
     "reporter.h",
     "request_queue.cc",

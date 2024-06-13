@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/document_extractor/rs/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "url/gurl.h"
@@ -46,7 +47,8 @@ class ContentScraper {
       base::OnceCallback<void(std::unique_ptr<PageScrapeResult>)>;
 
   ContentScraper(std::unique_ptr<ServerConfig>* last_loaded_server_config,
-                 std::unique_ptr<PatternsGroup>* patterns);
+                 std::unique_ptr<PatternsGroup>* patterns,
+                 RegexUtil* regex_util);
   ~ContentScraper();
 
   ContentScraper(const ContentScraper&) = delete;
@@ -81,10 +83,20 @@ class ContentScraper {
       PageScrapeResultCallback callback,
       rust::Vec<rust_document_extractor::AttributeResult> attribute_results);
 
+  std::optional<std::string> ExecuteRefineFunctions(
+      const RefineFunctionList& function_list,
+      std::string value);
+  void ProcessAttributeValue(const ScrapeRuleGroup& rule_group,
+                             PageScrapeResult& scrape_result,
+                             std::string key,
+                             std::optional<std::string> value_str,
+                             base::Value::Dict& attribute_values);
+
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 
   raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;
   raw_ptr<std::unique_ptr<PatternsGroup>> patterns_;
+  raw_ptr<RegexUtil> regex_util_;
 
   base::WeakPtrFactory<ContentScraper> weak_ptr_factory_{this};
 };

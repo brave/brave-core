@@ -120,11 +120,13 @@ std::optional<AESEncryptResult> CompressAndEncrypt(
 Reporter::Reporter(PrefService* profile_prefs,
                    network::SharedURLLoaderFactory* shared_url_loader_factory,
                    CredentialManager* credential_manager,
+                   RegexUtil* regex_util,
                    std::unique_ptr<ServerConfig>* last_loaded_server_config)
     : profile_prefs_(profile_prefs),
       shared_url_loader_factory_(shared_url_loader_factory),
       last_loaded_server_config_(last_loaded_server_config),
       credential_manager_(credential_manager),
+      regex_util_(regex_util),
       pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({})),
       request_queue_(profile_prefs,
@@ -135,7 +137,7 @@ Reporter::Reporter(PrefService* profile_prefs,
                      kMaxRetries,
                      base::BindRepeating(&Reporter::PrepareRequest,
                                          base::Unretained(this))) {
-  submit_url_ = GURL(GetCollectorHost() + kSubmitPath);
+  submit_url_ = GURL(GetAnonymousHPNHost() + kSubmitPath);
 }
 
 Reporter::~Reporter() = default;
@@ -159,8 +161,9 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
     request_queue_.NotifyRequestComplete(true);
     return;
   }
-  auto basename_result = GenerateBasename(
-      profile_prefs_, (*last_loaded_server_config_).get(), *payload_dict);
+  auto basename_result =
+      GenerateBasename(profile_prefs_, (*last_loaded_server_config_).get(),
+                       *regex_util_, *payload_dict);
   if (!basename_result) {
     // Drop request due to exceeded basename quota
     VLOG(1) << "Failed to generate basename";

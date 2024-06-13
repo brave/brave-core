@@ -8,7 +8,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -18,10 +17,14 @@ constexpr char kCollectorHostPrefix[] = "collector.wdp";
 constexpr char kQuorumHostPrefix[] = "quorum.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
 constexpr char kPatternsPath[] = "/patterns.gz";
-constexpr char kNotAlphanumericRegex[] = "[^A-Za-z0-9]";
 }  // namespace
 
-std::string GetCollectorHost() {
+std::string GetDirectHPNHost() {
+  // TODO(djandries): Replace with non-proxied endpoint once available
+  return GetAnonymousHPNHost();
+}
+
+std::string GetAnonymousHPNHost() {
   auto* cmd_line = base::CommandLine::ForCurrentProcess();
   if (cmd_line->HasSwitch(kCollectorHostSwitch)) {
     return cmd_line->GetSwitchValueASCII(kCollectorHostSwitch);
@@ -53,11 +56,6 @@ std::string FormatServerDate(const base::Time& date) {
   date.UTCExplode(&exploded);
   return base::StringPrintf("%04d%02d%02d", exploded.year, exploded.month,
                             exploded.day_of_month);
-}
-
-void TransformToAlphanumeric(std::string& value) {
-  re2::RE2 cleaning_regex(kNotAlphanumericRegex);
-  re2::RE2::GlobalReplace(&value, cleaning_regex, "");
 }
 
 std::string DecodeURLComponent(const std::string_view value) {

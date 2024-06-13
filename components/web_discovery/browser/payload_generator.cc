@@ -44,7 +44,8 @@ bool AggregatedDictHasContent(const base::Value::Dict& dict) {
   return false;
 }
 
-bool IsPrivateResult(const PayloadRule& rule,
+bool IsPrivateResult(RegexUtil& regex_util,
+                     const PayloadRule& rule,
                      const PatternsURLDetails* matching_url_details,
                      const base::Value::Dict& dict) {
   if (rule.key != kSearchResultKey) {
@@ -54,7 +55,7 @@ bool IsPrivateResult(const PayloadRule& rule,
   if (!url) {
     return false;
   }
-  return IsPrivateURLLikely(GURL(*url), matching_url_details);
+  return IsPrivateURLLikely(regex_util, GURL(*url), matching_url_details);
 }
 
 bool ShouldDropSearchResultPayload(const PayloadRule& rule,
@@ -74,6 +75,7 @@ base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
 }
 
 std::optional<base::Value> GenerateClusteredJoinedPayload(
+    RegexUtil& regex_util,
     const PayloadRule& rule,
     const PatternsURLDetails* matching_url_details,
     const std::vector<base::Value::Dict>& attribute_values) {
@@ -83,7 +85,7 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     if (value.empty()) {
       continue;
     }
-    if (IsPrivateResult(rule, matching_url_details, value)) {
+    if (IsPrivateResult(regex_util, rule, matching_url_details, value)) {
       VLOG(1) << "Omitting private search result";
       continue;
     }
@@ -101,6 +103,7 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
 }
 
 std::optional<base::Value::Dict> GenerateClusteredPayload(
+    RegexUtil& regex_util,
     const PayloadRuleGroup& rule_group,
     const PatternsURLDetails* matching_url_details,
     const PageScrapeResult* scrape_result) {
@@ -117,7 +120,7 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
     }
     if (rule.is_join) {
       auto joined_payload = GenerateClusteredJoinedPayload(
-          rule, matching_url_details, attribute_values_it->second);
+          regex_util, rule, matching_url_details, attribute_values_it->second);
       if (!joined_payload) {
         VLOG(1) << "Skipped joined clustered payload, action = "
                 << rule_group.action;
@@ -157,14 +160,15 @@ void GenerateSinglePayloads(const ServerConfig& server_config,
 
 std::vector<base::Value::Dict> GeneratePayloads(
     const ServerConfig& server_config,
+    RegexUtil& regex_util,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result) {
   std::vector<base::Value::Dict> payloads;
   for (const auto& rule_group : url_details->payload_rule_groups) {
     if (rule_group.rule_type == PayloadRuleType::kQuery &&
         rule_group.result_type == PayloadResultType::kClustered) {
-      auto payload = GenerateClusteredPayload(rule_group, url_details,
-                                              scrape_result.get());
+      auto payload = GenerateClusteredPayload(regex_util, rule_group,
+                                              url_details, scrape_result.get());
       if (payload) {
         payloads.push_back(std::move(*payload));
       }

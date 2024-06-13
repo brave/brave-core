@@ -8,9 +8,13 @@
 
 #include <string>
 
+#include "brave/components/web_discovery/browser/regex_util.h"
+
 namespace web_discovery {
 
-bool IsHashLikely(std::string value, double probability_multiplier = 1.0);
+bool IsHashLikely(RegexUtil& regex_util,
+                  std::string value,
+                  double probability_multiplier = 1.0);
 
 }  // namespace web_discovery
 

@@ -31,15 +31,14 @@ inline constexpr net::BackoffEntry::Policy kBackoffPolicy = {
     .entry_lifetime_ms = -1,
     .always_use_initial_delay = false};
 
-std::string GetCollectorHost();
+std::string GetDirectHPNHost();
+std::string GetAnonymousHPNHost();
 std::string GetQuorumHost();
 GURL GetPatternsEndpoint();
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url);
 
 std::string FormatServerDate(const base::Time& date);
-
-void TransformToAlphanumeric(std::string& value);
 
 std::string DecodeURLComponent(const std::string_view value);
 

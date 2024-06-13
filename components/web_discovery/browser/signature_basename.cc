@@ -18,13 +18,11 @@
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/sha2.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace web_discovery {
 
 namespace {
 
-constexpr char kPunctuationRegex[] = "[!\"'()*,-./:;?[\\]^_`{|}~%$=&+#]";
 constexpr char kUrlNormalizationFunc[] = "url";
 constexpr char kFlattenObjNormalizationFunc[] = "obj";
 constexpr size_t kMsInHour = 60 * 60 * 1000;
@@ -68,7 +66,7 @@ base::Value FlattenObject(const base::Value& obj) {
   return base::Value(std::move(result));
 }
 
-base::Value CleanURL(const base::Value& url) {
+base::Value CleanURL(RegexUtil& regex_util, const base::Value& url) {
   if (!url.is_string()) {
     return base::Value();
   }
@@ -78,8 +76,7 @@ base::Value CleanURL(const base::Value& url) {
   base::ReplaceSubstringsAfterOffset(&url_str, 0, "http://", "");
   base::ReplaceSubstringsAfterOffset(&url_str, 0, "www.", "");
 
-  re2::RE2 punc_regex(kPunctuationRegex);
-  re2::RE2::GlobalReplace(&url_str, punc_regex, "");
+  regex_util.RemovePunctuation(url_str);
   return base::Value(std::move(url_str));
 }
 
@@ -150,6 +147,7 @@ BasenameResult::~BasenameResult() = default;
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
     ServerConfig* server_config,
+    RegexUtil& regex_util,
     const base::Value::Dict& payload) {
   const std::string* action = payload.FindString(kActionKey);
   std::string json;
@@ -190,7 +188,7 @@ std::optional<BasenameResult> GenerateBasename(
     }
     if (parts.size() > 1) {
       if (parts[1] == kUrlNormalizationFunc) {
-        value = CleanURL(value);
+        value = CleanURL(regex_util, value);
       } else if (parts[1] == kFlattenObjNormalizationFunc) {
         value = FlattenObject(value);
       }
