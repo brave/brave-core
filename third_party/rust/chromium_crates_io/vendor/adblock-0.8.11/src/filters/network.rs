@@ -69,6 +69,8 @@ pub enum NetworkFilterError {
     CspWithContentType,
     #[error("match-case without full regex")]
     MatchCaseWithoutFullRegex,
+    #[error("no supported domains")]
+    NoSupportedDomains,
 }
 
 bitflags::bitflags! {
@@ -387,7 +389,12 @@ fn parse_filter_options(raw_options: &str) -> Result<Vec<NetworkFilterOption>, N
                     } else {
                         (true, domain.to_string())
                     }
-                }).collect();
+                })
+                    .filter(|(_, d)| !(d.starts_with('/') && d.ends_with('/')))
+                    .collect();
+                if domains.is_empty() {
+                    return Err(NetworkFilterError::NoSupportedDomains);
+                }
                 NetworkFilterOption::Domain(domains)
             }
             ("badfilter", true) => return Err(NetworkFilterError::NegatedBadFilter),
@@ -637,12 +644,22 @@ impl NetworkFilter {
 
         // If any negated "network" types were set, then implicitly enable all network types.
         // The negated types will be applied later.
-        if (cpt_mask_negative & NetworkFilterMask::FROM_NETWORK_TYPES) != NetworkFilterMask::NONE {
+        //
+        // This doesn't apply to removeparam filters.
+        if !mask.contains(NetworkFilterMask::IS_REMOVEPARAM)
+            && (cpt_mask_negative & NetworkFilterMask::FROM_NETWORK_TYPES) != NetworkFilterMask::NONE {
             mask |= NetworkFilterMask::FROM_NETWORK_TYPES;
         }
         // If no positive types were set, then the filter should apply to all network types.
         if (cpt_mask_positive & NetworkFilterMask::FROM_ALL_TYPES).is_empty() {
-            mask |= NetworkFilterMask::FROM_NETWORK_TYPES;
+            // Removeparam is again a special case.
+            if mask.contains(NetworkFilterMask::IS_REMOVEPARAM) {
+                mask |= NetworkFilterMask::FROM_DOCUMENT
+                    | NetworkFilterMask::FROM_SUBDOCUMENT
+                    | NetworkFilterMask::FROM_XMLHTTPREQUEST;
+            } else {
+                mask |= NetworkFilterMask::FROM_NETWORK_TYPES;
+            }
         }
 
         match parsed.pattern.left_anchor {
@@ -826,13 +843,6 @@ impl NetworkFilter {
             return Err(NetworkFilterError::RemoveparamWithException);
         }
 
-        // `removeparam` rules apply to all request types by default, including document.
-        if mask.contains(NetworkFilterMask::IS_REMOVEPARAM)
-            && (cpt_mask_positive & NetworkFilterMask::FROM_ALL_TYPES).is_empty()
-        {
-            mask |= NetworkFilterMask::FROM_ALL_TYPES;
-        }
-
         // uBlock Origin would block main document `https://example.com` requests with all of the
         // following filters:
         // - ||example.com
@@ -847,7 +857,8 @@ impl NetworkFilter {
                 (cpt_mask_negative & NetworkFilterMask::FROM_ALL_TYPES).is_empty() &&
                 mask.contains(NetworkFilterMask::IS_HOSTNAME_ANCHOR) &&
                 mask.contains(NetworkFilterMask::IS_RIGHT_ANCHOR) &&
-                !end_url_anchor {
+                !end_url_anchor &&
+                !mask.contains(NetworkFilterMask::IS_REMOVEPARAM) {
             mask |= NetworkFilterMask::FROM_ALL_TYPES;
         }
         // Finally, apply any explicitly negated request types
@@ -2286,6 +2297,10 @@ mod parse_tests {
             let filter = NetworkFilter::parse("||foo.com$from=bar.com", true, Default::default()).unwrap();
             assert_eq!(filter.opt_domains, Some(vec![utils::fast_hash("bar.com")]));
             assert_eq!(filter.opt_not_domains, None);
+        }
+        {
+            let filter = NetworkFilter::parse(r"||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\.strmrdr[a-z]+\..*/", true, Default::default());
+            assert_eq!(filter.err(), Some(NetworkFilterError::NoSupportedDomains));
         }
     }
 

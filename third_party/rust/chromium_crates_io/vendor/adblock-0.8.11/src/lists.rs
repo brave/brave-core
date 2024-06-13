@@ -617,6 +617,16 @@ mod tests {
             let result = parse_filter(input, true, Default::default());
             assert!(result.is_ok());
         }
+        {
+            let input = "[$app=org.example.app]example.com##.textad";
+            let result = parse_filter(input, true, Default::default());
+            assert!(result.is_err());
+        }
+        {
+            let input = r#"[$domain=/^i\[a-z\]*\.strmrdr\[a-z\]+\..*/]##+js(set-constant, adscfg.enabled, false)"#;
+            let result = parse_filter(input, true, Default::default());
+            assert!(result.is_err());
+        }
     }
 
     #[test]
