@@ -162,19 +162,6 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
-      <!-- Error pages -->
-      <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_HEADING" desc="Heading of the IPFS not available in incognito error page.">
-        IPFS page cannot be loaded.
-      </message>
-      <message name="IDS_ERRORPAGES_IPFS_INCOGNITO_SUMMARY" desc="Summary in the error page when IPFS failed in incognito mode.">
-        IPFS pages are not allowed in private windows.
-      </message>
-      <message name="IDS_ERRORPAGES_IPFS_DISABLED_HEADING" desc="Heading of the IPFS disabled error page.">
-        IPFS page cannot be loaded.
-      </message>
-      <message name="IDS_ERRORPAGES_IPFS_DISABLED_SUMMARY" desc="Summary in the error page when IPFS failed because it is disabled.">
-        IPFS is disabled. Select IPFS resolve method in settings to open this site.
-      </message>
       <!-- WebUI newtab resources -->
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>

@@ -39,27 +39,6 @@ def AddBravePolicies(template_file_contents):
                      '''must be disabled at startup.'''),
         },
         {
-            'name': 'IPFSEnabled',
-            'type': 'main',
-            'schema': {
-                'type': 'boolean'
-            },
-            'supported_on': ['chrome.*:87-'],
-            'future_on': ['android'],
-            'features': {
-                'dynamic_refresh': False,
-                'per_profile': True,
-                'can_be_recommended': False,
-                'can_be_mandatory': True
-            },
-            'example_value': True,
-            'id': 1,
-            'caption': '''Enable IPFS feature''',
-            'tags': [],
-            'desc': ('''This policy allows an admin to specify whether IPFS '''
-                     '''feature can be enabled.'''),
-        },
-        {
             'name': 'BraveRewardsDisabled',
             'type': 'main',
             'schema': {
