@@ -92,14 +92,11 @@ PageScrapeResult::PageScrapeResult(GURL url, std::string id)
     : url(url), id(id) {}
 PageScrapeResult::~PageScrapeResult() = default;
 
-ContentScraper::ContentScraper(
-    std::unique_ptr<ServerConfig>* last_loaded_server_config,
-    std::unique_ptr<PatternsGroup>* patterns,
-    RegexUtil* regex_util)
+ContentScraper::ContentScraper(const ServerConfigLoader* server_config_loader,
+                               RegexUtil* regex_util)
     : pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({})),
-      last_loaded_server_config_(last_loaded_server_config),
-      patterns_(patterns),
+      server_config_loader_(server_config_loader),
       regex_util_(regex_util) {}
 
 ContentScraper::~ContentScraper() = default;
@@ -159,7 +156,8 @@ void ContentScraper::ScrapePage(const GURL& url,
                                 mojom::DocumentExtractor* document_extractor,
                                 PageScrapeResultCallback callback) {
   const auto* url_details =
-      (*patterns_)->GetMatchingURLPattern(url, is_strict_scrape);
+      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(
+          url, is_strict_scrape);
   if (!url_details) {
     return;
   }
@@ -201,7 +199,8 @@ void ContentScraper::ParseAndScrapePage(
     std::string html,
     PageScrapeResultCallback callback) {
   const auto* url_details =
-      (*patterns_)->GetMatchingURLPattern(url, is_strict_scrape);
+      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(
+          url, is_strict_scrape);
   if (!url_details) {
     return;
   }
@@ -245,7 +244,7 @@ void ContentScraper::ProcessStandardRule(const std::string& report_key,
   if (rule.attribute == kUrlAttrId) {
     value = url.spec();
   } else if (rule.attribute == kCountryCodeAttrId) {
-    value = (*last_loaded_server_config_)->location;
+    value = server_config_loader_->GetLastServerConfig().location;
   }
   auto refined_value = ExecuteRefineFunctions(rule.functions_applied, value);
   if (!refined_value) {
@@ -264,7 +263,8 @@ void ContentScraper::OnScrapedElementAttributes(
     PageScrapeResultCallback callback,
     std::vector<mojom::AttributeResultPtr> attribute_results) {
   const auto* url_details =
-      (*patterns_)->GetMatchingURLPattern(scrape_result->url, is_strict_scrape);
+      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(
+          scrape_result->url, is_strict_scrape);
   if (!url_details) {
     return;
   }
@@ -291,7 +291,8 @@ void ContentScraper::OnRustElementAttributes(
     PageScrapeResultCallback callback,
     rust::Vec<rust_document_extractor::AttributeResult> attribute_results) {
   const auto* url_details =
-      (*patterns_)->GetMatchingURLPattern(scrape_result->url, is_strict_scrape);
+      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(
+          scrape_result->url, is_strict_scrape);
   if (!url_details) {
     return;
   }

@@ -34,7 +34,8 @@ struct SourceMapActionConfig {
   SourceMapActionConfig();
   ~SourceMapActionConfig();
 
-  SourceMapActionConfig(const SourceMapActionConfig&);
+  SourceMapActionConfig(const SourceMapActionConfig&) = delete;
+  SourceMapActionConfig& operator=(const SourceMapActionConfig&) = delete;
 
   std::vector<std::string> keys;
   size_t limit;
@@ -45,31 +46,33 @@ struct ServerConfig {
   ServerConfig();
   ~ServerConfig();
 
+  ServerConfig(const ServerConfig&) = delete;
+  ServerConfig& operator=(const ServerConfig&) = delete;
+
   KeyMap group_pub_keys;
   KeyMap pub_keys;
 
-  base::flat_map<std::string, SourceMapActionConfig> source_map_actions;
+  base::flat_map<std::string, std::unique_ptr<SourceMapActionConfig>>
+      source_map_actions;
 
   std::string location;
 };
 
 class ServerConfigLoader {
  public:
-  using ConfigCallback =
-      base::RepeatingCallback<void(std::unique_ptr<ServerConfig>)>;
-  using PatternsCallback =
-      base::RepeatingCallback<void(std::unique_ptr<PatternsGroup>)>;
-
   explicit ServerConfigLoader(
       PrefService* local_state,
       base::FilePath user_data_dir,
       network::SharedURLLoaderFactory* shared_url_loader_factory,
-      ConfigCallback config_callback,
-      PatternsCallback patterns_callback);
+      base::RepeatingClosure config_callback,
+      base::RepeatingClosure patterns_callback);
   ~ServerConfigLoader();
 
   ServerConfigLoader(const ServerConfigLoader&) = delete;
   ServerConfigLoader& operator=(const ServerConfigLoader&) = delete;
+
+  const ServerConfig& GetLastServerConfig() const;
+  const PatternsGroup& GetLastPatterns() const;
 
  private:
   void LoadConfigs();
@@ -99,8 +102,8 @@ class ServerConfigLoader {
   base::FilePath patterns_path_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
-  ConfigCallback config_callback_;
-  PatternsCallback patterns_callback_;
+  base::RepeatingClosure config_callback_;
+  base::RepeatingClosure patterns_callback_;
 
   std::unique_ptr<network::SimpleURLLoader> collector_config_url_loader_;
   std::unique_ptr<network::SimpleURLLoader> quorum_config_url_loader_;
@@ -111,6 +114,9 @@ class ServerConfigLoader {
   base::WallClockTimer config_update_timer_;
   base::WallClockTimer patterns_update_timer_;
   bool patterns_first_request_made_ = false;
+
+  std::unique_ptr<ServerConfig> last_loaded_server_config_;
+  std::unique_ptr<PatternsGroup> last_loaded_patterns_;
 
   base::WeakPtrFactory<ServerConfigLoader> weak_ptr_factory_{this};
 };

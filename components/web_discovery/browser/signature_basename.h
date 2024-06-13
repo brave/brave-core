@@ -35,7 +35,7 @@ struct BasenameResult {
 
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
-    ServerConfig* server_config,
+    const ServerConfig& server_config,
     RegexUtil& regex_util,
     const base::Value::Dict& payload);
 

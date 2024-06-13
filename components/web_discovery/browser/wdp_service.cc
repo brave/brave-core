@@ -67,14 +67,19 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }
 
 void WDPService::Start() {
-  credential_manager_ = std::make_unique<CredentialManager>(
-      profile_prefs_, shared_url_loader_factory_.get(),
-      &last_loaded_server_config_);
-  server_config_loader_ = std::make_unique<ServerConfigLoader>(
-      local_state_, user_data_dir_, shared_url_loader_factory_.get(),
-      base::BindRepeating(&WDPService::OnConfigChange, base::Unretained(this)),
-      base::BindRepeating(&WDPService::OnPatternsLoaded,
-                          base::Unretained(this)));
+  if (!server_config_loader_) {
+    server_config_loader_ = std::make_unique<ServerConfigLoader>(
+        local_state_, user_data_dir_, shared_url_loader_factory_.get(),
+        base::BindRepeating(&WDPService::OnConfigChange,
+                            base::Unretained(this)),
+        base::BindRepeating(&WDPService::OnPatternsLoaded,
+                            base::Unretained(this)));
+  }
+  if (!credential_manager_) {
+    credential_manager_ = std::make_unique<CredentialManager>(
+        profile_prefs_, shared_url_loader_factory_.get(),
+        server_config_loader_.get());
+  }
 }
 
 void WDPService::Stop() {
@@ -83,7 +88,6 @@ void WDPService::Stop() {
   content_scraper_ = nullptr;
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
-  last_loaded_server_config_ = nullptr;
   alive_message_timer_.Stop();
 }
 
@@ -95,22 +99,26 @@ void WDPService::OnEnabledChange() {
   }
 }
 
-void WDPService::OnConfigChange(std::unique_ptr<ServerConfig> config) {
-  last_loaded_server_config_ = std::move(config);
+void WDPService::OnConfigChange() {
   credential_manager_->JoinGroups();
 }
 
-void WDPService::OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns) {
-  last_loaded_patterns_ = std::move(patterns);
-  content_scraper_ = std::make_unique<ContentScraper>(
-      &last_loaded_server_config_, &last_loaded_patterns_, &regex_util_);
-  double_fetcher_ = std::make_unique<DoubleFetcher>(
-      profile_prefs_.get(), shared_url_loader_factory_.get(),
-      base::BindRepeating(&WDPService::OnDoubleFetched,
-                          base::Unretained(this)));
-  reporter_ = std::make_unique<Reporter>(
-      profile_prefs_.get(), shared_url_loader_factory_.get(),
-      credential_manager_.get(), &regex_util_, &last_loaded_server_config_);
+void WDPService::OnPatternsLoaded() {
+  if (!content_scraper_) {
+    content_scraper_ = std::make_unique<ContentScraper>(
+        server_config_loader_.get(), &regex_util_);
+  }
+  if (!double_fetcher_) {
+    double_fetcher_ = std::make_unique<DoubleFetcher>(
+        profile_prefs_.get(), shared_url_loader_factory_.get(),
+        base::BindRepeating(&WDPService::OnDoubleFetched,
+                            base::Unretained(this)));
+  }
+  if (!reporter_) {
+    reporter_ = std::make_unique<Reporter>(
+        profile_prefs_.get(), shared_url_loader_factory_.get(),
+        credential_manager_.get(), &regex_util_, server_config_loader_.get());
+  }
   MaybeSendAliveMessage();
 }
 
@@ -133,11 +141,12 @@ void WDPService::OnDoubleFetched(const GURL& url,
 void WDPService::OnFinishNavigation(
     const GURL& url,
     content::RenderFrameHost* render_frame_host) {
-  if (!content_scraper_ || !last_loaded_patterns_) {
+  if (!content_scraper_) {
     return;
   }
   const auto* matching_url_details =
-      last_loaded_patterns_->GetMatchingURLPattern(url, false);
+      server_config_loader_->GetLastPatterns().GetMatchingURLPattern(url,
+                                                                     false);
   if (!matching_url_details || !matching_url_details->is_search_engine) {
     if (!current_page_count_hour_key_.empty()) {
       ScopedDictPrefUpdate page_count_update(profile_prefs_, kPageCounts);
@@ -168,14 +177,15 @@ void WDPService::OnContentScraped(bool is_strict,
   if (!result) {
     return;
   }
+  const auto& patterns = server_config_loader_->GetLastPatterns();
   auto* original_url_details =
-      last_loaded_patterns_->GetMatchingURLPattern(result->url, is_strict);
+      patterns.GetMatchingURLPattern(result->url, is_strict);
   if (!original_url_details) {
     return;
   }
   if (!is_strict && original_url_details->is_search_engine) {
     auto* strict_url_details =
-        last_loaded_patterns_->GetMatchingURLPattern(result->url, true);
+        patterns.GetMatchingURLPattern(result->url, true);
     if (strict_url_details) {
       auto url = result->url;
       if (!result->query) {
@@ -189,9 +199,9 @@ void WDPService::OnContentScraped(bool is_strict,
       double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
     }
   }
-  auto payloads =
-      GenerateQueryPayloads(*last_loaded_server_config_, regex_util_,
-                            original_url_details, std::move(result));
+  auto payloads = GenerateQueryPayloads(
+      server_config_loader_->GetLastServerConfig(), regex_util_,
+      original_url_details, std::move(result));
   for (auto& payload : payloads) {
     reporter_->ScheduleSend(std::move(payload));
   }
@@ -235,8 +245,8 @@ void WDPService::MaybeSendAliveMessage() {
     }
     if (it->second.is_int() && static_cast<size_t>(it->second.GetInt()) >=
                                    kMinPageCountForAliveMessage) {
-      reporter_->ScheduleSend(
-          GenerateAlivePayload(*last_loaded_server_config_, it->first));
+      reporter_->ScheduleSend(GenerateAlivePayload(
+          server_config_loader_->GetLastServerConfig(), it->first));
     }
     it = update->erase(it);
   }

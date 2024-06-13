@@ -40,7 +40,7 @@ class CredentialManager {
       base::OnceCallback<void(std::optional<std::vector<const uint8_t>>)>;
   CredentialManager(PrefService* profile_prefs,
                     network::SharedURLLoaderFactory* shared_url_loader_factory,
-                    std::unique_ptr<ServerConfig>* last_loaded_server_config);
+                    const ServerConfigLoader* server_config_loader);
   ~CredentialManager();
 
   CredentialManager(const CredentialManager&) = delete;
@@ -85,7 +85,7 @@ class CredentialManager {
 
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;
+  raw_ptr<const ServerConfigLoader> server_config_loader_;
 
   GURL join_url_;
   base::flat_map<std::string, std::unique_ptr<network::SimpleURLLoader>>

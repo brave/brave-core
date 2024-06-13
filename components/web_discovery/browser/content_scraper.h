@@ -46,8 +46,7 @@ class ContentScraper {
   using PageScrapeResultCallback =
       base::OnceCallback<void(std::unique_ptr<PageScrapeResult>)>;
 
-  ContentScraper(std::unique_ptr<ServerConfig>* last_loaded_server_config,
-                 std::unique_ptr<PatternsGroup>* patterns,
+  ContentScraper(const ServerConfigLoader* server_config_loader,
                  RegexUtil* regex_util);
   ~ContentScraper();
 
@@ -94,8 +93,7 @@ class ContentScraper {
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 
-  raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;
-  raw_ptr<std::unique_ptr<PatternsGroup>> patterns_;
+  raw_ptr<const ServerConfigLoader> server_config_loader_;
   raw_ptr<RegexUtil> regex_util_;
 
   base::WeakPtrFactory<ContentScraper> weak_ptr_factory_{this};

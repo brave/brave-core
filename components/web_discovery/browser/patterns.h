@@ -93,7 +93,7 @@ struct PatternsGroup {
   PatternsGroup& operator=(const PatternsGroup&) = delete;
 
   const PatternsURLDetails* GetMatchingURLPattern(const GURL& url,
-                                                  bool is_strict_scrape);
+                                                  bool is_strict_scrape) const;
 
   std::vector<PatternsURLDetails> normal_patterns;
   std::vector<PatternsURLDetails> strict_patterns;
