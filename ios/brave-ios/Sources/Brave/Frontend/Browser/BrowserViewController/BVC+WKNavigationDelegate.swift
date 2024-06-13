@@ -17,6 +17,8 @@ import MarketplaceKit
 import Preferences
 import SafariServices
 import Shared
+import SwiftUI
+import Translation
 import UniformTypeIdentifiers
 import WebKit
 import os.log

@@ -25,6 +25,7 @@ import SpeechRecognition
 import Storage
 import StoreKit
 import SwiftUI
+import Translation
 import UIKit
 import WebKit
 import os.log
@@ -51,6 +52,22 @@ private let KVOs: [KVOConstants] = [
   .serverTrust,
   ._sampledPageTopColor,
 ]
+
+@available(iOS 18.0, *)
+struct TranslationContainer: View {
+  var configuration: TranslationSession.Configuration?
+  var scriptHandler: BraveTranslateScriptHandler
+
+  var body: some View {
+    Color.clear
+      .translationTask(
+        configuration,
+        action: { session in
+          scriptHandler.activateScript(using: session)
+        }
+      )
+  }
+}
 
 public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
@@ -150,6 +167,11 @@ public class BrowserViewController: UIViewController {
   private var appReviewCancelable: AnyCancellable?
   private var adFeatureLinkageCancelable: AnyCancellable?
   var onPendingRequestUpdatedCancellable: AnyCancellable?
+
+  // Translation
+  let translationHostingController: UIHostingController<AnyView> = .init(
+    rootView: AnyView(EmptyView())
+  )
 
   /// Voice Search
   var voiceSearchViewController: PopupViewController<SpeechToTextInputView>?
@@ -877,6 +899,10 @@ public class BrowserViewController: UIViewController {
 
     addChild(tabsBar)
     tabsBar.didMove(toParent: self)
+
+    addChild(translationHostingController)
+    view.addSubview(translationHostingController.view)
+    translationHostingController.didMove(toParent: self)
 
     view.addSubview(alertStackView)
     view.addSubview(bottomTouchArea)
@@ -2663,10 +2689,17 @@ extension BrowserViewController: TabDelegate {
       Web3NameServiceScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
       BraveLeoScriptHandler(tab: tab),
-      BraveTranslateScriptHandler(tab: tab),
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
+
+    #if compiler(>=6.0)
+    if #available(iOS 18.0, *) {
+      injectedScripts.append(
+        BraveTranslateScriptHandler(tab: tab)
+      )
+    }
+    #endif
 
     #if canImport(BraveTalk)
     injectedScripts.append(
