@@ -1473,6 +1473,9 @@
   <message name="IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL" desc="The text for settings option">
     Close window when closing last tab
   </message>
+  <message name="IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL" desc="The text for fullscreen reminder settings option">
+    Show full screen reminder to press Esc on exit
+  </message>
 
   <!-- Settings / Leo Assistant -->
   <message name="IDS_SETTINGS_LEO_ASSISTANT" desc="Title for an item in the 'Leo Assistant' section of Brave Settings">
