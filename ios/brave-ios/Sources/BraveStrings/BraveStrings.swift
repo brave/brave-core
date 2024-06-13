@@ -1097,6 +1097,20 @@ extension Strings {
 // MARK: - PageSecurityView.swift
 extension Strings {
   public enum PageSecurityView {
+    public static let pageUnknownStatusTitle = NSLocalizedString(
+      "pageSecurityView.pageUnknownStatusTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Site connection not verified.",
+      comment: ""
+    )
+    public static let pageUnknownStatusWarning = NSLocalizedString(
+      "pageSecurityView.pageUnknownStatusWarning",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Your connection to this site could not be fully verified. You may proceed, or try reloading the page to establish a secure connection.",
+      comment: ""
+    )
     public static let pageNotSecureTitle = NSLocalizedString(
       "pageSecurityView.pageNotSecureTitle",
       tableName: "BraveShared",
