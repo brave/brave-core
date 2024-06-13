@@ -3,12 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+#if compiler(>=6.0)
 import Foundation
 import NaturalLanguage
 import Shared
+import Translation
 import WebKit
 import os.log
 
+@available(iOS 18.0, *)
 enum BraveTranslateError: Error {
   case invalidURL
   case invalidLanguage
@@ -19,12 +22,12 @@ enum BraveTranslateError: Error {
   case otherError
 }
 
+@available(iOS 18.0, *)
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
   private weak var tab: Tab?
   private let recognizer = NLLanguageRecognizer()
   private static let namespace = "translate_\(uniqueID)"
-  private var fromLang: String = "en"
-  private var toLang: String = "en"
+  private var translationSession: TranslationSession?
 
   init(tab: Tab) {
     self.tab = tab
@@ -82,153 +85,67 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   @MainActor
-  func guessLanguage() async -> String? {
+  func guessLanguage() async -> Locale.Language? {
     if let rawPageSource = await executePageFunction(name: "getRawPageSource") {
       recognizer.reset()
       recognizer.processString(rawPageSource)
 
       if let dominantLanguage = recognizer.dominantLanguage, dominantLanguage != .undetermined {
-        return dominantLanguage.rawValue
+        return Locale.Language(identifier: dominantLanguage.rawValue)
       }
     }
 
     if let languageCode = await executePageFunction(name: "getPageLanguage") {
-      return languageCode
+      return Locale.Language(identifier: languageCode)
     }
 
-    return Locale.current.languageCode
+    return Locale.current.language
   }
 
-  func getLanguageInfo() async throws -> (String, String) {
-    var currentLanguageCode = ""
-
-    if #available(iOS 16, *) {
-      guard let currentLanguage = Locale.current.language.languageCode?.identifier else {
-        throw BraveTranslateError.invalidLanguage
-      }
-
-      currentLanguageCode = currentLanguage
-    } else {
-      guard let currentLanguage = Locale.current.languageCode else {
-        throw BraveTranslateError.invalidLanguage
-      }
-
-      currentLanguageCode = currentLanguage
-    }
-
-    let pageLanguage = await guessLanguage() ?? currentLanguageCode
-    return (currentLanguageCode, pageLanguage)
+  func getLanguageInfo() async throws -> (Locale.Language, Locale.Language) {
+    let pageLanguage = await guessLanguage() ?? Locale.current.language
+    return (Locale.current.language, pageLanguage)
   }
 
   func translatePage(
-    pageSource: String,
-    from fromLanguage: String?,
-    to toLanguage: String?
-  ) async throws -> Any {
-    guard var url = URL(string: "https://translate.bsg.brave.software/translate_a/t") as? NSURL
-    else {
-      throw BraveTranslateError.invalidURL
-    }
+    pageSource: String
+      //    from fromLanguage: String?,
+      //    to toLanguage: String?
+  ) async throws -> String {
+    guard let translationSession else { throw BraveTranslateError.otherError }
+    //    var currentLanguageCode = ""
 
-    var currentLanguageCode = ""
-
-    if let toLanguage = toLanguage {
-      currentLanguageCode = toLanguage
-    } else {
-      if #available(iOS 16, *) {
-        guard let currentLanguage = Locale.current.language.languageCode?.identifier else {
-          throw BraveTranslateError.invalidLanguage
-        }
-
-        currentLanguageCode = currentLanguage
-      } else {
-        guard let currentLanguage = Locale.current.languageCode else {
-          throw BraveTranslateError.invalidLanguage
-        }
-
-        currentLanguageCode = currentLanguage
-      }
-    }
-
-    var pageLanguage = currentLanguageCode
-    if let fromLanguage = fromLanguage {
-      pageLanguage = fromLanguage
-    } else {
-      pageLanguage = await guessLanguage() ?? currentLanguageCode
-    }
+    //    if let toLanguage = toLanguage {
+    //      currentLanguageCode = toLanguage
+    //    } else {
+    //      guard let currentLanguage = Locale.current.language.languageCode?.identifier else {
+    //        throw BraveTranslateError.invalidLanguage
+    //      }
+    //
+    //      currentLanguageCode = currentLanguage
+    //    }
+    //
+    //    var pageLanguage = currentLanguageCode
+    //    if let fromLanguage = fromLanguage {
+    //      pageLanguage = fromLanguage
+    //    } else {
+    //      pageLanguage = await guessLanguage() ?? currentLanguageCode
+    //    }
 
     // Cannot translate from source to current as they're the same
-    if pageLanguage.isEmpty || currentLanguageCode.isEmpty || pageLanguage == currentLanguageCode {
-      throw BraveTranslateError.sameLanguage
-    }
+    //    if pageLanguage.isEmpty || currentLanguageCode.isEmpty || pageLanguage == currentLanguageCode {
+    //      throw BraveTranslateError.sameLanguage
+    //    }
 
-    url = url.addingQueryParameter(key: "tl", value: currentLanguageCode) as NSURL
-    url = url.addingQueryParameter(key: "sl", value: pageLanguage) as NSURL
-
-    let authenticator = BasicAuthCredentialsManager()
-    let session = URLSession(
-      configuration: .ephemeral,
-      delegate: authenticator,
-      delegateQueue: .main
-    )
-    defer { session.finishTasksAndInvalidate() }
-
-    func executeRequest(
-      url: URL,
-      method: String,
-      headers: [String: String],
-      body: String
-    ) async throws -> (Data, HTTPURLResponse) {
-      /*let formEncode = { (fields: [(String, String)]) -> String in
-        let escape = { (str: String) -> String in
-          var charset = CharacterSet.alphanumerics
-          charset.insert(" ")
-          charset.remove("+")
-          charset.remove("/")
-          charset.remove("?")
-          charset.remove(";")
-
-          return str.replacingOccurrences(of: "\n", with: "\r\n")
-            .addingPercentEncoding(withAllowedCharacters: charset)!
-            .replacingOccurrences(of: " ", with: "+")
-        }
-
-        return fields.map { (key, value) in
-            return escape(key) + "=" + escape(value)
-        }.joined(separator: "&")
-      }*/
-
-      var request = URLRequest(url: url)
-      request.httpMethod = method
-      headers.forEach({ request.setValue($0.value, forHTTPHeaderField: $0.key) })
-      request.httpBody = "q=\(body)".data(using: .utf8)
-
-      let (data, response) = try await NetworkManager(session: session).dataRequest(with: request)
-      guard let response = response as? HTTPURLResponse,
-        response.statusCode == 304 || response.statusCode >= 200 || response.statusCode <= 299
-      else {
-        throw BraveTranslateError.invalidTranslationResponseCode
-      }
-
-      return (data, response)
-    }
-
-    let (data, _) = try await executeRequest(
-      url: url as URL,
-      method: "POST",
-      headers: ["Content-Type": "application/x-www-form-urlencoded"],
-      body: pageSource
-    )
-    return try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])
+    return try await translationSession.translate(pageSource).targetText
   }
 
-  func activateScript(from: String, to: String) {
+  func activateScript(using session: TranslationSession) {
     guard let webView = tab?.webView else {
       return
     }
 
-    self.fromLang = from
-    self.toLang = to
+    self.translationSession = session
 
     Task { @MainActor in
       await webView.evaluateSafeJavaScript(
@@ -265,21 +182,23 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           return
         }
 
-        let result = try await translatePage(pageSource: encodedText, from: fromLang, to: toLang)
-        if let result = result as? [String] {
-          let prefix = text.prefix(while: {
-            $0.unicodeScalars.allSatisfy(CharacterSet.whitespacesAndNewlines.contains)
-          })
-          let suffix = text.suffix(while: {
-            $0.unicodeScalars.allSatisfy(CharacterSet.whitespacesAndNewlines.contains)
-          })
-          replyHandler("\(prefix)\(result[0])\(suffix)", nil)
-        } else {
-          replyHandler(nil, nil)
-        }
+        let result = try await translatePage(pageSource: text)
+        replyHandler(result, nil)
+        //        if let result = result as? [String] {
+        //          let prefix = text.prefix(while: {
+        //            $0.unicodeScalars.allSatisfy(CharacterSet.whitespacesAndNewlines.contains)
+        //          })
+        //          let suffix = text.suffix(while: {
+        //            $0.unicodeScalars.allSatisfy(CharacterSet.whitespacesAndNewlines.contains)
+        //          })
+        //          replyHandler("\(prefix)\(result[0])\(suffix)", nil)
+        //        } else {
+        //          replyHandler(nil, nil)
+        //        }
       } catch {
         replyHandler(nil, nil)
       }
     }
   }
 }
+#endif
