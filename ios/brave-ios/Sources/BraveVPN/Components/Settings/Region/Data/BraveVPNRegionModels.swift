@@ -6,28 +6,35 @@
 import BraveShared
 import GuardianConnect
 
-struct CityRegion: Identifiable, Equatable {
+struct VPNCityRegion: Identifiable, Equatable {
+
+  static let optimalCityRegionName = "auto"
+
   let id = UUID()
   let displayName: String
   let regionName: String
   var isAutomatic = false
 }
 
-class CityRegionDetail: ObservableObject {
+class VPNCityRegionDetail: ObservableObject {
   var cityRegions = [
-    CityRegion(displayName: "Optimal", regionName: "auto", isAutomatic: true)
+    VPNCityRegion(
+      displayName: "Optimal",
+      regionName: VPNCityRegion.optimalCityRegionName,
+      isAutomatic: true
+    )
   ]
 
   var countryName: String
   var countryISOCode: String
 
-  @Published var selectedRegion: CityRegion? = nil
+  @Published var selectedRegion: VPNCityRegion? = nil
 
   init(
     isAutoSelectEnabled: Bool = true,
     countryName: String,
     countryISOCode: String,
-    cityRegions: [CityRegion]
+    cityRegions: [VPNCityRegion]
   ) {
     self.countryName = countryName
     self.countryISOCode = countryISOCode

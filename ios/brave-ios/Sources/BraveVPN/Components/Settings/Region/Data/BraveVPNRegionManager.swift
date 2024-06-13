@@ -6,13 +6,14 @@
 import BraveShared
 import Foundation
 import GuardianConnect
+import os.log
 
 public class BraveVPNRegionManager {
 
   public static let shared = BraveVPNRegionManager()
 
   private let vpnRegionListEndPoint =
-    "https://connect-api.guardianapp.com/api/v1.3/servers/all-server-regions/city-by-country"
+    "https://connect-api.guardianapp.com/api/v1.3/servers/all-server-regions/country"
 
   private var sessionManager: URLSession
 
@@ -39,19 +40,24 @@ public class BraveVPNRegionManager {
             regionList.append(regionItem)
           }
 
-          let sortedRegions = regionList.sorted { $0.displayName < $1.displayName }
-
-          print("Regions Sorted \(sortedRegions)")
-
-          return sortedRegions
+          return regionList.sorted { $0.displayName < $1.displayName }
         }
       }
     } catch {
-      print("API All Regions Error \(error)")
+      Logger.module.error("All VPN Region Fetch Error \(error.localizedDescription)")
       return []
     }
 
     return []
+  }
+
+  @MainActor
+  public func changeVPNRegionAsync(to region: GRDRegion?) async -> Bool {
+    return await withCheckedContinuation { continuation in
+      BraveVPN.changeVPNRegion(to: region) { success in
+        continuation.resume(returning: success)
+      }
+    }
   }
 
 }
