@@ -202,13 +202,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(
         \.tokens
       )
-      (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
-        userNetworkAssets: allUserNetworkAssets,
-        tokenBalances: tokenBalanceCache,
-        tokenPrices: tokenPricesCache,
-        nftMetadata: nftMetadataCache,
-        btcBalances: btcBalancesCache
-      )
       let allAccountsForCoin = await keyringService.allAccounts().accounts.filter {
         $0.coin == account.coin
       }
@@ -257,6 +250,25 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         }
       }
       tokenBalanceCache.merge(with: tokenBalances)
+      // update assets, NFTs, transactions after balance fetch
+      guard !Task.isCancelled else { return }
+      (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
+        userNetworkAssets: allUserNetworkAssets,
+        tokenBalances: tokenBalanceCache,
+        tokenPrices: tokenPricesCache,
+        nftMetadata: nftMetadataCache,
+        btcBalances: btcBalancesCache
+      )
+      self.transactionSections = buildTransactionSections(
+        transactions: transactions,
+        networksForCoin: [account.coin: networksForAccountCoin],
+        accountInfos: allAccountsForCoin,
+        userAssets: allUserAssets,
+        allTokens: allTokens,
+        tokenPrices: tokenPricesCache,
+        nftMetadata: nftMetadataCache,
+        solEstimatedTxFees: solEstimatedTxFeesCache
+      )
 
       // fetch price for every user asset
       let prices: [String: String] = await assetRatioService.fetchPrices(
@@ -279,8 +291,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.accountTotalFiat = currencyFormatter.formatAsFiat(totalFiat) ?? "$0.00"
       self.isLoadingAccountFiat = false
 
-      guard !Task.isCancelled else { return }
       // update assets, NFTs, transactions after balance & price fetch
+      guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,
         tokenBalances: tokenBalanceCache,
@@ -305,7 +317,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         ipfsApi: ipfsApi
       )
       nftMetadataCache.merge(with: allNFTMetadata)
-
+      // update assets, NFTs, transactions after balance & price & metadata fetch
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,

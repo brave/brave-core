@@ -448,7 +448,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
 extension SelectAccountTokenStore: WalletUserAssetDataObserver {
   func cachedBalanceRefreshed() {
-    setup()
+    Task { @MainActor in
+      let allNetworks = await rpcService.allNetworksForSupportedCoins()
+      let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+        networks: allNetworks,
+        visible: true
+      )
+      fetchAccountBalances(networkAssets: allNetworkAssets)
+    }
   }
 
   func userAssetUpdated() {
