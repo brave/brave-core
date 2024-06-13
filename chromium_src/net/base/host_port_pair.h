@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_BASE_HOST_PORT_PAIR_H_
 #define BRAVE_CHROMIUM_SRC_NET_BASE_HOST_PORT_PAIR_H_
 
+#include <compare>
 #include <string>
 #include <string_view>
 
@@ -35,13 +36,13 @@ class NET_EXPORT HostPortPair : public HostPortPair_ChromiumImpl {
   static HostPortPair FromString(std::string_view str);
   static std::optional<HostPortPair> FromValue(const base::Value& value);
 
-  const std::string& username() const;
-  const std::string& password() const;
+  const std::string& username() const { return username_; }
+  const std::string& password() const { return password_; }
 
   void set_username(const std::string& username);
   void set_password(const std::string& password);
 
-  bool operator<(const HostPortPair& other) const;
+  std::strong_ordering operator<=>(const HostPortPair& other) const;
   bool operator==(const HostPortPair& other) const;
   bool Equals(const HostPortPair& other) const;
 
