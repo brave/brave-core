@@ -43,6 +43,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "ui/base/ui_base_types.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rect_f.h"
@@ -109,11 +110,12 @@ class AIRewriterDialogDelegate::DialogPositioner
     auto* browser = chrome::FindBrowserWithTab(target_contents);
     CHECK(browser);
 
-    auto* host_widget =
-        BrowserView::GetBrowserViewForBrowser(browser)->GetWidget();
-    CHECK(host_widget);
+    host_widget_ = BrowserView::GetBrowserViewForBrowser(browser)
+                       ->GetWidget()
+                       ->GetWeakPtr();
+    CHECK(host_widget_);
 
-    host_widget_observation_.Observe(host_widget);
+    host_widget_observation_.Observe(host_widget_.get());
     dialog_widget_observation_.Observe(dialog_widget);
     host_observation_.Observe(host);
 
@@ -170,17 +172,26 @@ class AIRewriterDialogDelegate::DialogPositioner
   }
 
   void UpdatePosition(content::RenderFrameHost* rfh) {
-    if (!rfh || !last_bounds_ || !dialog_widget_) {
+    if (!rfh || !last_bounds_ || !dialog_widget_ || !host_widget_) {
       return;
     }
 
     auto transformed = TransformFrameRectToView(rfh, last_bounds_.value());
-    auto widget_bounds = dialog_widget_->GetWindowBoundsInScreen();
 
-    widget_bounds.set_x(transformed.CenterPoint().x() -
-                        widget_bounds.width() / 2);
-    widget_bounds.set_y(transformed.bottom() + top_);
-    dialog_widget_->SetBounds(widget_bounds);
+    auto dialog_bounds = dialog_widget_->GetWindowBoundsInScreen();
+    dialog_bounds.set_x(transformed.CenterPoint().x() -
+                        dialog_bounds.width() / 2);
+    dialog_bounds.set_y(transformed.bottom() + top_);
+
+    auto host_bounds = host_widget_->GetWindowBoundsInScreen();
+    host_bounds.set_origin(gfx::Point());
+
+    if (constrained_window::PlatformClipsChildrenToViewport() &&
+        !host_bounds.Contains(dialog_bounds)) {
+      dialog_bounds.AdjustToFit(host_bounds);
+    }
+
+    dialog_widget_->SetBounds(dialog_bounds);
   }
 
   // The offset for the top Chrome - this shouldn't change while the dialog is
@@ -193,6 +204,8 @@ class AIRewriterDialogDelegate::DialogPositioner
 
   base::WeakPtr<content::WebContents> target_contents_;
   base::WeakPtr<views::Widget> dialog_widget_;
+  base::WeakPtr<views::Widget> host_widget_;
+
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       host_widget_observation_{this};
   base::ScopedObservation<views::Widget, views::WidgetObserver>
