@@ -6,6 +6,7 @@
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -24,6 +25,10 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "components/constrained_window/constrained_window_views.h"
+#include "components/web_modal/modal_dialog_host.h"
+#include "components/web_modal/web_contents_modal_dialog_host.h"
+#include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/focused_node_details.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/navigation_entry.h"
@@ -92,33 +97,48 @@ class AIRewriterDialogDelegate::DialogContentsObserver
 };
 
 class AIRewriterDialogDelegate::DialogPositioner
-    : public views::WidgetObserver {
+    : public views::WidgetObserver,
+      public web_modal::ModalDialogHostObserver {
  public:
   DialogPositioner(content::WebContents* target_contents,
+                   web_modal::WebContentsModalDialogHost* host,
                    views::Widget* dialog_widget)
-      : target_contents_(target_contents->GetWeakPtr()),
+      : top_(host->GetDialogPosition({}).y()),
+        target_contents_(target_contents->GetWeakPtr()),
         dialog_widget_(dialog_widget->GetWeakPtr()) {
     auto* browser = chrome::FindBrowserWithTab(target_contents);
     CHECK(browser);
 
     auto* widget = BrowserView::GetBrowserViewForBrowser(browser)->GetWidget();
+    CHECK(widget);
 
-    observation_.Observe(widget);
+    widget_observation_.Observe(widget);
+    host_observation_.Observe(host);
 
-    UpdatePosition();
+    UpdatePosition(target_contents->GetFocusedFrame());
   }
 
   DialogPositioner(const DialogPositioner&) = delete;
   DialogPositioner& operator=(const DialogPositioner&) = delete;
   ~DialogPositioner() override = default;
 
+  void OnPositionRequiresUpdate() override {
+    UpdatePosition(target_contents_->GetFocusedFrame());
+    UpdateFocusedBounds();
+  }
+
+  void OnHostDestroying() override {
+    widget_observation_.Reset();
+    host_observation_.Reset();
+  }
+
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override {
-    UpdatePosition();
+    OnPositionRequiresUpdate();
   }
 
  private:
-  void UpdatePosition() {
+  void UpdateFocusedBounds() {
     if (!target_contents_) {
       return;
     }
@@ -132,29 +152,50 @@ class AIRewriterDialogDelegate::DialogPositioner
     auto* raw_agent = agent.get();
     raw_agent->GetFocusBounds(base::BindOnce(
         [](mojo::Remote<mojom::AIRewriterAgent> agent,
-           base::WeakPtr<views::Widget> widget,
+           base::WeakPtr<AIRewriterDialogDelegate::DialogPositioner> positioner,
            content::WeakDocumentPtr document_pointer,
            const gfx::RectF& focus_rect) {
-          auto* host = document_pointer.AsRenderFrameHostIfValid();
-          if (!widget || !host) {
+          if (!positioner) {
             return;
           }
-
-          auto transformed = TransformFrameRectToView(host, focus_rect);
-          auto widget_bounds = widget->GetWindowBoundsInScreen();
-
-          widget_bounds.set_x(transformed.CenterPoint().x() -
-                              widget_bounds.width() / 2);
-          widget_bounds.set_y(transformed.bottom());
-          widget->SetBounds(widget_bounds);
+          positioner->last_bounds_ = focus_rect;
+          positioner->UpdatePosition(
+              document_pointer.AsRenderFrameHostIfValid());
         },
-        std::move(agent), dialog_widget_, frame->GetWeakDocumentPtr()));
+        std::move(agent), weak_ptr_factory_.GetWeakPtr(),
+        frame->GetWeakDocumentPtr()));
   }
+  void UpdatePosition(content::RenderFrameHost* host) {
+    if (!host || !last_bounds_ || !dialog_widget_) {
+      return;
+    }
+
+    auto transformed = TransformFrameRectToView(host, last_bounds_.value());
+    auto widget_bounds = dialog_widget_->GetWindowBoundsInScreen();
+
+    widget_bounds.set_x(transformed.CenterPoint().x() -
+                        widget_bounds.width() / 2);
+    widget_bounds.set_y(transformed.bottom() + top_);
+    dialog_widget_->SetBounds(widget_bounds);
+  }
+
+  // The offset for the top Chrome - this shouldn't change while the dialog is
+  // open.
+  int top_ = 0;
+
+  // The last bounds we received from the |target_contents_| for the location of
+  // the focused element.
+  std::optional<gfx::RectF> last_bounds_;
 
   base::WeakPtr<content::WebContents> target_contents_;
   base::WeakPtr<views::Widget> dialog_widget_;
-  base::ScopedObservation<views::Widget, views::WidgetObserver> observation_{
-      this};
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      widget_observation_{this};
+  base::ScopedObservation<web_modal::ModalDialogHost,
+                          web_modal::ModalDialogHostObserver>
+      host_observation_{this};
+  base::WeakPtrFactory<AIRewriterDialogDelegate::DialogPositioner>
+      weak_ptr_factory_{this};
 };
 
 // static
@@ -215,8 +256,14 @@ void AIRewriterDialogDelegate::ShowDialog() {
 
   auto* widget = views::Widget::GetWidgetForNativeWindow(
       dialog_delegate->GetNativeDialog());
-  positioner_ =
-      std::make_unique<DialogPositioner>(target_contents_.get(), widget);
+
+  auto* manager = web_modal::WebContentsModalDialogManager::FromWebContents(
+      target_contents_.get());
+  CHECK(manager);
+  auto* dialog_host = manager->delegate()->GetWebContentsModalDialogHost();
+  CHECK(dialog_host);
+  positioner_ = std::make_unique<DialogPositioner>(target_contents_.get(),
+                                                   dialog_host, widget);
 }
 
 void AIRewriterDialogDelegate::CloseDialog() {
