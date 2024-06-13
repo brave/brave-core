@@ -1,8 +1,8 @@
 {
   "ABIRoot": {
     "kind": "Root",
-    "name": "TopLevel",
-    "printedName": "TopLevel",
+    "name": "GRDWireGuardKit",
+    "printedName": "GRDWireGuardKit",
     "children": [
       {
         "kind": "Import",
@@ -1016,6 +1016,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "Equatable",
             "printedName": "Equatable",
             "usr": "s:SQ",
@@ -1058,7 +1072,23 @@
         "declAttributes": [
           "AccessControl"
         ],
-        "hasMissingDesignatedInitializers": true
+        "hasMissingDesignatedInitializers": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
       },
       {
         "kind": "Import",
@@ -1465,6 +1495,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "Equatable",
             "printedName": "Equatable",
             "usr": "s:SQ",
@@ -1701,12 +1745,12 @@
               {
                 "kind": "TypeFunc",
                 "name": "Function",
-                "printedName": "(GRDWireGuardKit.WireGuardAdapterError.Type) -> (Swift.Error) -> GRDWireGuardKit.WireGuardAdapterError",
+                "printedName": "(GRDWireGuardKit.WireGuardAdapterError.Type) -> (any Swift.Error) -> GRDWireGuardKit.WireGuardAdapterError",
                 "children": [
                   {
                     "kind": "TypeFunc",
                     "name": "Function",
-                    "printedName": "(Swift.Error) -> GRDWireGuardKit.WireGuardAdapterError",
+                    "printedName": "(any Swift.Error) -> GRDWireGuardKit.WireGuardAdapterError",
                     "children": [
                       {
                         "kind": "TypeNominal",
@@ -1717,7 +1761,7 @@
                       {
                         "kind": "TypeNominal",
                         "name": "Error",
-                        "printedName": "Swift.Error",
+                        "printedName": "any Swift.Error",
                         "usr": "s:s5ErrorP"
                       }
                     ]
@@ -1808,6 +1852,20 @@
           "AccessControl"
         ],
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "Error",
@@ -2152,6 +2210,22 @@
         "moduleName": "GRDWireGuardKit",
         "declAttributes": [
           "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
         ]
       },
       {
@@ -2316,6 +2390,20 @@
         ],
         "enumRawTypeName": "Int32",
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "Equatable",
@@ -2751,6 +2839,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "Equatable",
             "printedName": "Equatable",
             "usr": "s:SQ",
@@ -2865,7 +2967,7 @@
               {
                 "kind": "TypeFunc",
                 "name": "Function",
-                "printedName": "(Swift.Error?) -> ()",
+                "printedName": "((any Swift.Error)?) -> ()",
                 "children": [
                   {
                     "kind": "TypeNominal",
@@ -2875,12 +2977,12 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "Swift.Error?",
+                    "printedName": "(any Swift.Error)?",
                     "children": [
                       {
                         "kind": "TypeNominal",
                         "name": "Error",
-                        "printedName": "Swift.Error",
+                        "printedName": "any Swift.Error",
                         "usr": "s:s5ErrorP"
                       }
                     ],
@@ -3029,7 +3131,7 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Decoder",
-                    "printedName": "Swift.Decoder",
+                    "printedName": "any Swift.Decoder",
                     "usr": "s:s7DecoderP"
                   }
                 ],
@@ -3050,6 +3152,20 @@
               "AccessControl"
             ],
             "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
               {
                 "kind": "Conformance",
                 "name": "Decodable",
@@ -3172,6 +3288,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "Equatable",
             "printedName": "Equatable",
             "usr": "s:SQ",
@@ -3261,7 +3391,7 @@
               {
                 "kind": "TypeNominal",
                 "name": "IPAddress",
-                "printedName": "Network.IPAddress",
+                "printedName": "any Network.IPAddress",
                 "usr": "s:7Network9IPAddressP"
               }
             ],
@@ -3284,7 +3414,7 @@
                   {
                     "kind": "TypeNominal",
                     "name": "IPAddress",
-                    "printedName": "Network.IPAddress",
+                    "printedName": "any Network.IPAddress",
                     "usr": "s:7Network9IPAddressP"
                   }
                 ],
@@ -3531,7 +3661,7 @@
               {
                 "kind": "TypeNominal",
                 "name": "IPAddress",
-                "printedName": "Network.IPAddress",
+                "printedName": "any Network.IPAddress",
                 "usr": "s:7Network9IPAddressP"
               }
             ],
@@ -3553,7 +3683,7 @@
               {
                 "kind": "TypeNominal",
                 "name": "IPAddress",
-                "printedName": "Network.IPAddress",
+                "printedName": "any Network.IPAddress",
                 "usr": "s:7Network9IPAddressP"
               }
             ],
@@ -3576,6 +3706,20 @@
           "AccessControl"
         ],
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "Equatable",
@@ -3632,7 +3776,7 @@
               {
                 "kind": "TypeNominal",
                 "name": "IPAddress",
-                "printedName": "Network.IPAddress",
+                "printedName": "any Network.IPAddress",
                 "usr": "s:7Network9IPAddressP"
               }
             ],
@@ -3655,7 +3799,7 @@
                   {
                     "kind": "TypeNominal",
                     "name": "IPAddress",
-                    "printedName": "Network.IPAddress",
+                    "printedName": "any Network.IPAddress",
                     "usr": "s:7Network9IPAddressP"
                   }
                 ],
@@ -3682,7 +3826,7 @@
               {
                 "kind": "TypeNominal",
                 "name": "IPAddress",
-                "printedName": "Network.IPAddress",
+                "printedName": "any Network.IPAddress",
                 "usr": "s:7Network9IPAddressP"
               }
             ],
@@ -3817,6 +3961,20 @@
           "AccessControl"
         ],
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "Equatable",
@@ -4019,6 +4177,20 @@
           "RawDocComment"
         ],
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "LocalizedError",
@@ -4772,6 +4944,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "Equatable",
             "printedName": "Equatable",
             "usr": "s:SQ",
@@ -4912,6 +5098,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "RawRepresentable",
             "printedName": "RawRepresentable",
             "children": [
@@ -5007,6 +5207,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "RawRepresentable",
             "printedName": "RawRepresentable",
             "children": [
@@ -5100,6 +5314,20 @@
           "GRDWireGuardKit.BaseKey"
         ],
         "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
           {
             "kind": "Conformance",
             "name": "RawRepresentable",
@@ -5432,6 +5660,20 @@
         "conformances": [
           {
             "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
             "name": "RawRepresentable",
             "printedName": "RawRepresentable",
             "children": [
@@ -5473,88 +5715,1383 @@
   },
   "ConstValues": [
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "IntegerLiteral",
+      "offset": 770,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 992,
+      "length": 74,
+      "value": "\"Unable to determine log destination path. Log will not be saved to file.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1233,
+      "length": 69,
+      "value": "\"Unable to open log file for writing. Log will not be saved to file.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1451,
+      "length": 28,
+      "value": "\"CFBundleShortVersionString\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1495,
+      "length": 17,
+      "value": "\"Unknown version\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1567,
+      "length": 17,
+      "value": "\"CFBundleVersion\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1625,
+      "length": 16,
+      "value": "\" (\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1639,
+      "length": 1,
+      "value": "\")\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1689,
+      "length": 28,
+      "value": "\"App version: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1716,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1874,
+      "length": 8,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1881,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Logging\/Logger.swift",
+      "kind": "StringLiteral",
+      "offset": 1952,
+      "length": 12,
+      "value": "\"%{public}s\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/Endpoint.swift",
+      "kind": "StringLiteral",
+      "offset": 1385,
+      "length": 3,
+      "value": "\"[\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/Endpoint.swift",
+      "kind": "StringLiteral",
+      "offset": 1587,
+      "length": 3,
+      "value": "\"]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/Endpoint.swift",
+      "kind": "StringLiteral",
+      "offset": 1784,
+      "length": 3,
+      "value": "\":\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/Endpoint.swift",
+      "kind": "StringLiteral",
+      "offset": 2076,
+      "length": 3,
+      "value": "\":\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 1737,
+      "length": 3,
+      "value": "\"#\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 2141,
+      "length": 3,
+      "value": "\"=\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2452,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "Array",
+      "offset": 2577,
+      "length": 32,
+      "value": "[\"address\", \"allowedips\", \"dns\"]"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 2805,
+      "length": 3,
+      "value": "\",\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "Array",
+      "offset": 3115,
+      "length": 53,
+      "value": "[\"privatekey\", \"listenport\", \"address\", \"dns\", \"mtu\"]"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "Array",
+      "offset": 3224,
+      "length": 78,
+      "value": "[\"publickey\", \"presharedkey\", \"allowedips\", \"endpoint\", \"persistentkeepalive\"]"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 3849,
+      "length": 13,
+      "value": "\"[interface]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 3884,
+      "length": 8,
+      "value": "\"[peer]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4039,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 4089,
+      "length": 13,
+      "value": "\"[interface]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 4124,
+      "length": 8,
+      "value": "\"[peer]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 4802,
+      "length": 13,
+      "value": "\"[interface]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 4947,
+      "length": 8,
+      "value": "\"[peer]\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 7506,
+      "length": 12,
+      "value": "\"privatekey\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 7872,
+      "length": 12,
+      "value": "\"listenport\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 8150,
+      "length": 9,
+      "value": "\"address\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 8643,
+      "length": 5,
+      "value": "\"dns\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 9200,
+      "length": 5,
+      "value": "\"mtu\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 9571,
+      "length": 11,
+      "value": "\"publickey\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 9910,
+      "length": 14,
+      "value": "\"presharedkey\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 10210,
+      "length": 12,
+      "value": "\"allowedips\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 10718,
+      "length": 10,
+      "value": "\"endpoint\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/TunnelConfiguration+WgQuickConfig.swift",
+      "kind": "StringLiteral",
+      "offset": 10990,
+      "length": 21,
+      "value": "\"persistentkeepalive\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 363,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 521,
+      "length": 45,
+      "value": "\"Unable to open config from keychain: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 565,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1008,
+      "length": 39,
+      "value": "\"Unable to determine bundle identifier\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1120,
+      "length": 20,
+      "value": "\".network-extension\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1184,
+      "length": 20,
+      "value": "\".network-extension\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1246,
+      "length": 27,
+      "value": "\"WireGuard Tunnel: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1272,
+      "length": 1,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1471,
+      "length": 4,
+      "value": "\": \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1554,
+      "length": 20,
+      "value": "\"wg-quick(8) config\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1792,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 3578,
+      "length": 42,
+      "value": "\"Unable to add config to keychain: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 3619,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 3978,
+      "length": 47,
+      "value": "\"Unable to delete config from keychain: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "StringLiteral",
+      "offset": 4024,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Keychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4446,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
       "kind": "StringLiteral",
       "offset": 1557,
       "length": 27,
       "value": "\"WireGuardAdapterWorkQueue\""
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8346,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "BooleanLiteral",
+      "offset": 8428,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "IntegerLiteral",
+      "offset": 11334,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 11633,
+      "length": 71,
+      "value": "\"setTunnelNetworkSettings timed out after 5 seconds; proceeding anyway\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "IntegerLiteral",
+      "offset": 13347,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 14674,
+      "length": 49,
+      "value": "\"DNS64: mapped \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 14711,
+      "length": 2,
+      "value": "\" to itself.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 14796,
+      "length": 66,
+      "value": "\"DNS64: mapped \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 14833,
+      "length": 2,
+      "value": "\" to \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 14861,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 14970,
+      "length": 103,
+      "value": "\"Failed to resolve endpoint \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 15024,
+      "length": 1,
+      "value": "\": \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 15064,
+      "length": 7,
+      "value": "\"(nil)\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 15072,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 15297,
+      "length": 99,
+      "value": "\"Network change detected with \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 15341,
+      "length": 5,
+      "value": "\" route and interface order \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 15395,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 16057,
+      "length": 40,
+      "value": "\"Connectivity offline, pausing backend.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 16371,
+      "length": 40,
+      "value": "\"Connectivity online, resuming backend.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 16910,
+      "length": 58,
+      "value": "\"Failed to restart backend: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "kind": "StringLiteral",
+      "offset": 16967,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
       "kind": "IntegerLiteral",
       "offset": 17253,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
       "kind": "IntegerLiteral",
       "offset": 17272,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
       "kind": "IntegerLiteral",
       "offset": 17253,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
       "kind": "IntegerLiteral",
       "offset": 17272,
       "length": 1,
       "value": "1"
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/TunnelConfiguration.swift",
+      "kind": "StringLiteral",
+      "offset": 678,
+      "length": 51,
+      "value": "\"Two or more peers cannot have the same public key\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 699,
+      "length": 28,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 708,
+      "length": 1,
+      "value": "\".network-extension\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
       "kind": "IntegerLiteral",
-      "offset": 17253,
+      "offset": 1158,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1200,
       "length": 1,
       "value": "0"
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/WireGuardAdapter.swift",
-      "kind": "IntegerLiteral",
-      "offset": 17272,
-      "length": 1,
-      "value": "1"
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 1290,
+      "length": 13,
+      "value": "\"Unspecified\""
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/Shared\/Model\/String+ArrayConversion.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 1349,
+      "length": 20,
+      "value": "\"Multiple endpoints\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 1748,
+      "length": 15,
+      "value": "\"WgQuickConfig\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 2587,
+      "length": 15,
+      "value": "\"WgQuickConfig\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2895,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 2937,
+      "length": 42,
+      "value": "\"Migrating tunnel configuration '\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 2977,
+      "length": 3,
+      "value": "\"'\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3092,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3731,
+      "length": 2,
+      "value": "12"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3938,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4103,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4198,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 4318,
+      "length": 92,
+      "value": "\"Migrating iOS 14-style keychain reference to iOS 15-style keychain reference for '\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "StringLiteral",
+      "offset": 4408,
+      "length": 3,
+      "value": "\"'\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4492,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/NETunnelProviderProtocol+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4569,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/String+ArrayConversion.swift",
       "kind": "StringLiteral",
       "offset": 179,
       "length": 3,
       "value": "\",\""
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/Shared\/Model\/String+ArrayConversion.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/String+ArrayConversion.swift",
       "kind": "StringLiteral",
       "offset": 609,
       "length": 3,
       "value": "\",\""
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/Model\/String+ArrayConversion.swift",
+      "kind": "Array",
+      "offset": 730,
+      "length": 2,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 352,
+      "length": 34,
+      "value": "\"GuardianConnect WireGuard Config\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 664,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 901,
+      "length": 57,
+      "value": "\"[ERROR] Failed to decode wg-quick config data to string\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1023,
+      "length": 66,
+      "value": "\"[ERROR] Failed to read wg-quick config from keychain: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1087,
+      "length": 1,
+      "value": "\".\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1322,
+      "length": 93,
+      "value": "\"[INFO] New wg-quick config is the same as the old wg-quick config. Skipping keychain write.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1428,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1460,
+      "length": 61,
+      "value": "\"[WARNING] wg-quick config to delete found in the keychain.\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 1601,
+      "length": 70,
+      "value": "\"[INFO] No wg-quick config in the keychain. Writing new keychain item\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 2044,
+      "length": 58,
+      "value": "\"[ERROR] Failed to write wg-quick to keychain: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 2100,
+      "length": 1,
+      "value": "\".\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2114,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "BooleanLiteral",
+      "offset": 2133,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 2351,
+      "length": 64,
+      "value": "\"[ERROR] Failed to delete wg-quick config from keychain: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/GRDKeychain.swift",
+      "kind": "StringLiteral",
+      "offset": 2414,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 643,
+      "length": 28,
+      "value": "\"CFBundleShortVersionString\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 715,
+      "length": 17,
+      "value": "\"CFBundleVersion\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 753,
+      "length": 97,
+      "value": "\"[WARNING] Attempting to start the WireGuard PTP: '\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 815,
+      "length": 12,
+      "value": "\"' version: '\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 837,
+      "length": 1,
+      "value": "\" (\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 847,
+      "length": 1,
+      "value": "\")'\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 898,
+      "length": 21,
+      "value": "\"activationAttemptId\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 940,
+      "length": 68,
+      "value": "\"[WARNING] Attempting to start the VPN with activation attempt id: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 1041,
+      "length": 36,
+      "value": "\"no id present. Starting via the OS\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 1079,
+      "length": 5,
+      "value": "\"app\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 1098,
+      "length": 50,
+      "value": "\"[WARNING] Trying to setup protocol configuration\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 2405,
+      "length": 44,
+      "value": "\"[ERROR] Saved wg-quick protocol is invalid\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 2567,
+      "length": 39,
+      "value": "\"[WARNING] Trying to start the adapter\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 2808,
+      "length": 9,
+      "value": "\"unknown\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 2828,
+      "length": 48,
+      "value": "\"[WARNING] Tunnel interface is \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 2875,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3001,
+      "length": 69,
+      "value": "\"[ERROR] Starting tunnel failed: could not determine file descriptor\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3290,
+      "length": 4,
+      "value": "\", \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3306,
+      "length": 97,
+      "value": "\"[ERROR] DNS resolution failed for the following hostnames: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3402,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3526,
+      "length": 102,
+      "value": "\"[ERROR] Starting tunnel failed with setTunnelNetworkSettings returning \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3627,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3764,
+      "length": 69,
+      "value": "\"[ERROR] Starting tunnel failed with wgTurnOn returning \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 3832,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 4286,
+      "length": 27,
+      "value": "\"[WARNING] Stopping tunnel\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 4379,
+      "length": 73,
+      "value": "\"[ERROR] Failed to stop WireGuard adapter: \""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 4451,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
       "kind": "StringLiteral",
       "offset": 4853,
       "length": 17,
       "value": "\"wg-quick-config\""
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
       "kind": "StringLiteral",
-      "offset": 4853,
-      "length": 17,
-      "value": "\"wg-quick-config\""
+      "offset": 5660,
+      "length": 57,
+      "value": "\"[INFO] Saving WireGuard config received via IPC message\""
     },
     {
-      "filePath": "\/Users\/cj\/Developer\/Guardian\/guardianapp-ios\/frameworks\/GRDWireGuardKit\/wireguard\/Sources\/WireGuardKit\/DNSResolver.swift",
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "BooleanLiteral",
+      "offset": 5865,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 5883,
+      "length": 41,
+      "value": "\"[ERROR] Failed to save WireGuard config\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "StringLiteral",
+      "offset": 6101,
+      "length": 67,
+      "value": "\"[ERROR] Failed to load WireGuard config again that we just saved!\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6266,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6283,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/GRDWireGuardKit\/PacketTunnelProvider.swift",
+      "kind": "IntegerLiteral",
+      "offset": 6289,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/Array+ConcurrentMap.swift",
+      "kind": "StringLiteral",
+      "offset": 878,
+      "length": 20,
+      "value": "\"ConcurrentMapQueue\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "StringLiteral",
+      "offset": 1281,
+      "length": 3,
+      "value": "\"\/\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1700,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1705,
+      "length": 3,
+      "value": "128"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2493,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2505,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2512,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2547,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2631,
+      "length": 2,
+      "value": "24"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2686,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2741,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2795,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2938,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2948,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2973,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3001,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3033,
+      "length": 4,
+      "value": "0xff"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3099,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3127,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3166,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3173,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3236,
+      "length": 2,
+      "value": "32"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3241,
+      "length": 1,
+      "value": "4"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3270,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3309,
+      "length": 2,
+      "value": "24"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3339,
+      "length": 1,
+      "value": "1"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3378,
+      "length": 2,
+      "value": "16"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3408,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3447,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3476,
+      "length": 1,
+      "value": "3"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/IPAddressRange.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3515,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/FileManager+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1600,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/Shared\/FileManager+Extension.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1631,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/DNSResolver.swift",
       "kind": "StringLiteral",
       "offset": 285,
       "length": 18,
       "value": "\"DNSResolverQueue\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/DNSResolver.swift",
+      "kind": "BooleanLiteral",
+      "offset": 593,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/DNSResolver.swift",
+      "kind": "StringLiteral",
+      "offset": 1997,
+      "length": 18,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/DNSResolver.swift",
+      "kind": "StringLiteral",
+      "offset": 2014,
+      "length": 26,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/DNSResolver.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2065,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/PrivateKey.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3140,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/kyle\/Downloads\/GuardianWireGuard\/wireguard\/Sources\/WireGuardKit\/PrivateKey.swift",
+      "kind": "IntegerLiteral",
+      "offset": 3649,
+      "length": 1,
+      "value": "0"
     }
   ]
 }
