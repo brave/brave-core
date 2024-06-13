@@ -7,6 +7,8 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
+import './load_time_data'
 import { getActions as getUtilActions, setActions } from './utils'
 
 // Components
