@@ -33,7 +33,7 @@ HostPortPair FromStringWithAuthentication(std::string_view str) {
       HostPortPair::FromString(std::string(auth_host[1]));
 
   std::vector<std::string_view> user_pass = base::SplitStringPiece(
-      str, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+      auth_host[0], ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
   host_port_pair.set_username(std::string(user_pass[0]));
   host_port_pair.set_password(std::string(user_pass[1]));
@@ -122,14 +122,6 @@ std::optional<HostPortPair> HostPortPair::FromValue(const base::Value& value) {
   return std::nullopt;
 }
 
-const std::string& HostPortPair::username() const {
-  return username_;
-}
-
-const std::string& HostPortPair::password() const {
-  return password_;
-}
-
 void HostPortPair::set_username(const std::string& in_username) {
   username_ = in_username;
 }
@@ -138,21 +130,25 @@ void HostPortPair::set_password(const std::string& in_password) {
   password_ = in_password;
 }
 
-bool HostPortPair::operator<(const HostPortPair& other) const {
-  if (HostPortPair_ChromiumImpl::operator<(other)) {
-    return true;
+std::strong_ordering HostPortPair::operator<=>(
+    const HostPortPair& other) const {
+  if (port() != other.port()) {
+    // note: port() is r-value, can't be used with std::tie
+    return port() <=> other.port();
   }
-  return std::tie(username_, password_) <
-         std::tie(other.username_, other.password_);
+
+  auto tie = [](const HostPortPair& v) {
+    return std::tie(v.host(), v.username(), v.password());
+  };
+  return tie(*this) <=> tie(other);
 }
 
 bool HostPortPair::operator==(const HostPortPair& other) const {
-  return Equals(other);
+  return (*this <=> other) == std::strong_ordering::equal;
 }
 
 bool HostPortPair::Equals(const HostPortPair& other) const {
-  return HostPortPair_ChromiumImpl::Equals(other) &&
-         username_ == other.username_ && password_ == other.password_;
+  return *this == other;
 }
 
 std::string HostPortPair::ToString() const {
