@@ -109,10 +109,12 @@ class AIRewriterDialogDelegate::DialogPositioner
     auto* browser = chrome::FindBrowserWithTab(target_contents);
     CHECK(browser);
 
-    auto* widget = BrowserView::GetBrowserViewForBrowser(browser)->GetWidget();
-    CHECK(widget);
+    auto* host_widget =
+        BrowserView::GetBrowserViewForBrowser(browser)->GetWidget();
+    CHECK(host_widget);
 
-    widget_observation_.Observe(widget);
+    host_widget_observation_.Observe(host_widget);
+    dialog_widget_observation_.Observe(dialog_widget);
     host_observation_.Observe(host);
 
     UpdatePosition(target_contents->GetFocusedFrame());
@@ -128,8 +130,9 @@ class AIRewriterDialogDelegate::DialogPositioner
   }
 
   void OnHostDestroying() override {
-    widget_observation_.Reset();
+    host_widget_observation_.Reset();
     host_observation_.Reset();
+    dialog_widget_observation_.Reset();
   }
 
   void OnWidgetBoundsChanged(views::Widget* widget,
@@ -165,12 +168,13 @@ class AIRewriterDialogDelegate::DialogPositioner
         std::move(agent), weak_ptr_factory_.GetWeakPtr(),
         frame->GetWeakDocumentPtr()));
   }
-  void UpdatePosition(content::RenderFrameHost* host) {
-    if (!host || !last_bounds_ || !dialog_widget_) {
+
+  void UpdatePosition(content::RenderFrameHost* rfh) {
+    if (!rfh || !last_bounds_ || !dialog_widget_) {
       return;
     }
 
-    auto transformed = TransformFrameRectToView(host, last_bounds_.value());
+    auto transformed = TransformFrameRectToView(rfh, last_bounds_.value());
     auto widget_bounds = dialog_widget_->GetWindowBoundsInScreen();
 
     widget_bounds.set_x(transformed.CenterPoint().x() -
@@ -190,7 +194,9 @@ class AIRewriterDialogDelegate::DialogPositioner
   base::WeakPtr<content::WebContents> target_contents_;
   base::WeakPtr<views::Widget> dialog_widget_;
   base::ScopedObservation<views::Widget, views::WidgetObserver>
-      widget_observation_{this};
+      host_widget_observation_{this};
+  base::ScopedObservation<views::Widget, views::WidgetObserver>
+      dialog_widget_observation_{this};
   base::ScopedObservation<web_modal::ModalDialogHost,
                           web_modal::ModalDialogHostObserver>
       host_observation_{this};
