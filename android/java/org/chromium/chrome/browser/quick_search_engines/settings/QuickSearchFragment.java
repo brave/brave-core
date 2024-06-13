@@ -117,10 +117,10 @@ public class QuickSearchFragment extends BravePreferenceFragment
                 mTemplateUrlService.isEeaChoiceCountry(),
                 mTemplateUrlService.shouldShowUpdatedSettings());
 
-        List<TemplateUrl> searchEngines = new ArrayList<>();
+        List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
         for (int i = 0; i < templateUrls.size(); i++) {
             TemplateUrl templateUrl = templateUrls.get(i);
-            searchEngines.add(templateUrl);
+            searchEngines.add(new QuickSearchEngineModel(templateUrl, true, i));
         }
         mAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this);
         mRecyclerView.setAdapter(mAdapter);
@@ -147,20 +147,25 @@ public class QuickSearchFragment extends BravePreferenceFragment
     // QuickSearchCallback
 
     @Override
-    public void onSearchEngineClick(TemplateUrl templateUrl) {
-        Log.e("quick_search : onSearchEngineClick", templateUrl.getShortName());
+    public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
+        Log.e(
+                "quick_search : onSearchEngineClick",
+                quickSearchEngineModel.getTemplateUrl().getShortName());
     }
 
     @Override
     public void onSearchEngineLongClick() {}
 
     @Override
-    public void loadSearchEngineLogo(ImageView logoView, TemplateUrl templateUrl) {
-        Log.e("quick_search : loadSearchEngineLogo", templateUrl.getShortName());
+    public void loadSearchEngineLogo(
+            ImageView logoView, QuickSearchEngineModel quickSearchEngineModel) {
+        Log.e(
+                "quick_search : loadSearchEngineLogo",
+                quickSearchEngineModel.getTemplateUrl().getShortName());
         GURL faviconUrl =
                 new GURL(
                         mTemplateUrlService.getSearchEngineUrlFromTemplateUrl(
-                                templateUrl.getKeyword()));
+                                quickSearchEngineModel.getTemplateUrl().getKeyword()));
         // Use a placeholder image while trying to fetch the logo.
         int uiElementSizeInPx =
                 getActivity()

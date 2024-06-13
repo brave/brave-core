@@ -81,6 +81,8 @@ public final class BravePreferenceKeys {
 
     public static final String SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
+    public static final String BRAVE_QUICK_SEARCH_ENGINES = "quick_search_engines";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
