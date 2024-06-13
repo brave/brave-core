@@ -132,10 +132,10 @@ std::optional<std::vector<const uint8_t>> PerformSign(
 CredentialManager::CredentialManager(
     PrefService* profile_prefs,
     network::SharedURLLoaderFactory* shared_url_loader_factory,
-    std::unique_ptr<ServerConfig>* last_loaded_server_config)
+    const ServerConfigLoader* server_config_loader)
     : profile_prefs_(profile_prefs),
       shared_url_loader_factory_(shared_url_loader_factory),
-      last_loaded_server_config_(last_loaded_server_config),
+      server_config_loader_(server_config_loader),
       join_url_(GetDirectHPNHost() + kJoinPath),
       backoff_entry_(&kBackoffPolicy),
       pool_sequenced_task_runner_(
@@ -186,14 +186,11 @@ void CredentialManager::OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info) {
 }
 
 void CredentialManager::JoinGroups() {
-  if (!*last_loaded_server_config_) {
-    return;
-  }
+  const auto& server_config = server_config_loader_->GetLastServerConfig();
   auto today_date = FormatServerDate(base::Time::Now().UTCMidnight());
   const auto& anon_creds_dict =
       profile_prefs_->GetDict(kAnonymousCredentialsDict);
-  for (const auto& [date, group_pub_key_b64] :
-       (*last_loaded_server_config_)->group_pub_keys) {
+  for (const auto& [date, group_pub_key_b64] : server_config.group_pub_keys) {
     if (date < today_date || join_url_loaders_.contains(date) ||
         anon_creds_dict.contains(date)) {
       continue;

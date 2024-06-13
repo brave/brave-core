@@ -93,28 +93,31 @@ KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
   return map;
 }
 
-base::flat_map<std::string, SourceMapActionConfig> ParseSourceMapActionConfigs(
-    const base::Value::Dict& configs_dict) {
-  base::flat_map<std::string, SourceMapActionConfig> map;
+base::flat_map<std::string, std::unique_ptr<SourceMapActionConfig>>
+ParseSourceMapActionConfigs(const base::Value::Dict& configs_dict) {
+  base::flat_map<std::string, std::unique_ptr<SourceMapActionConfig>> map;
   for (const auto [action, config_dict_val] : configs_dict) {
     auto* config_dict = config_dict_val.GetIfDict();
     if (!config_dict) {
       continue;
     }
     auto& action_config = map[action];
+    if (!action_config) {
+      action_config = std::make_unique<SourceMapActionConfig>();
+    }
     auto* keys_list = config_dict->FindList(kKeysFieldName);
     if (keys_list) {
       for (const auto& key_val : *keys_list) {
         if (key_val.is_string()) {
-          action_config.keys.push_back(key_val.GetString());
+          action_config->keys.push_back(key_val.GetString());
         }
       }
     }
     auto limit = config_dict->FindInt(kLimitFieldName);
     auto period = config_dict->FindInt(kPeriodFieldName);
 
-    action_config.limit = limit && limit > 0 ? *limit : 1;
-    action_config.period = period && period > 0 ? *period : 24;
+    action_config->limit = limit && limit > 0 ? *limit : 1;
+    action_config->period = period && period > 0 ? *period : 24;
   }
   return map;
 }
@@ -144,8 +147,6 @@ std::optional<std::string> ReadPatternsFile(base::FilePath patterns_path) {
 
 SourceMapActionConfig::SourceMapActionConfig() = default;
 SourceMapActionConfig::~SourceMapActionConfig() = default;
-SourceMapActionConfig::SourceMapActionConfig(const SourceMapActionConfig&) =
-    default;
 
 ServerConfig::ServerConfig() = default;
 ServerConfig::~ServerConfig() = default;
@@ -154,8 +155,8 @@ ServerConfigLoader::ServerConfigLoader(
     PrefService* local_state,
     base::FilePath user_data_dir,
     network::SharedURLLoaderFactory* shared_url_loader_factory,
-    ConfigCallback config_callback,
-    PatternsCallback patterns_callback)
+    base::RepeatingClosure config_callback,
+    base::RepeatingClosure patterns_callback)
     : local_state_(local_state),
       pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()})),
@@ -174,6 +175,16 @@ ServerConfigLoader::ServerConfigLoader(
 }
 
 ServerConfigLoader::~ServerConfigLoader() = default;
+
+const ServerConfig& ServerConfigLoader::GetLastServerConfig() const {
+  CHECK(last_loaded_server_config_);
+  return *last_loaded_server_config_;
+}
+
+const PatternsGroup& ServerConfigLoader::GetLastPatterns() const {
+  CHECK(last_loaded_patterns_);
+  return *last_loaded_patterns_;
+}
 
 void ServerConfigLoader::LoadConfigs() {
   if (collector_config_url_loader_ || quorum_config_url_loader_) {
@@ -287,7 +298,8 @@ bool ServerConfigLoader::ProcessConfigResponses(
   config->pub_keys = ParseKeys(*pub_keys);
   config->source_map_actions = ParseSourceMapActionConfigs(*source_map_actions);
 
-  config_callback_.Run(std::move(config));
+  last_loaded_server_config_ = std::move(config);
+  config_callback_.Run();
   return true;
 }
 
@@ -312,7 +324,8 @@ void ServerConfigLoader::OnPatternsFileLoaded(
     SchedulePatternsRequest();
     return;
   }
-  patterns_callback_.Run(std::move(parsed_patterns));
+  last_loaded_patterns_ = std::move(parsed_patterns);
+  patterns_callback_.Run();
 }
 
 void ServerConfigLoader::SchedulePatternsRequest() {
@@ -412,7 +425,8 @@ void ServerConfigLoader::OnPatternsWritten(
   }
   local_state_->SetTime(kPatternsRetrievalTime, base::Time::Now());
   HandlePatternsStatus(true);
-  patterns_callback_.Run(std::move(parsed_group));
+  last_loaded_patterns_ = std::move(parsed_group);
+  patterns_callback_.Run();
 }
 
 }  // namespace web_discovery

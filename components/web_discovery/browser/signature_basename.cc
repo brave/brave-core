@@ -145,7 +145,7 @@ BasenameResult::~BasenameResult() = default;
 
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
-    ServerConfig* server_config,
+    const ServerConfig& server_config,
     RegexUtil& regex_util,
     const base::Value::Dict& payload) {
   const std::string* action = payload.FindString(kActionKey);
@@ -155,8 +155,8 @@ std::optional<BasenameResult> GenerateBasename(
     VLOG(1) << "No action";
     return std::nullopt;
   }
-  const auto action_config = server_config->source_map_actions.find(*action);
-  if (action_config == server_config->source_map_actions.end()) {
+  const auto action_config = server_config.source_map_actions.find(*action);
+  if (action_config == server_config.source_map_actions.end()) {
     VLOG(1) << "No action config for " << action;
     return std::nullopt;
   }
@@ -167,11 +167,11 @@ std::optional<BasenameResult> GenerateBasename(
   }
   base::Value::List tag_list;
   tag_list.Append(*action);
-  tag_list.Append(static_cast<int>(action_config->second.period));
-  tag_list.Append(static_cast<int>(action_config->second.limit));
+  tag_list.Append(static_cast<int>(action_config->second->period));
+  tag_list.Append(static_cast<int>(action_config->second->limit));
 
   base::Value::List key_values;
-  for (const auto& key : action_config->second.keys) {
+  for (const auto& key : action_config->second->keys) {
     auto parts = base::SplitStringUsingSubstr(
         key, "->", base::WhitespaceHandling::TRIM_WHITESPACE,
         base::SPLIT_WANT_ALL);
@@ -195,7 +195,7 @@ std::optional<BasenameResult> GenerateBasename(
     key_values.Append(std::move(value));
   }
 
-  auto period_hours = GetPeriodHoursSinceEpoch(action_config->second.period);
+  auto period_hours = GetPeriodHoursSinceEpoch(action_config->second->period);
   tag_list.Append(std::move(key_values));
   tag_list.Append(period_hours);
 
@@ -206,7 +206,7 @@ std::optional<BasenameResult> GenerateBasename(
   }
   auto count_tag_hash = base::PersistentHash(interim_tag_json);
   auto basename_count = GetBasenameCount(profile_prefs, count_tag_hash,
-                                         action_config->second, period_hours);
+                                         *action_config->second, period_hours);
   if (!basename_count) {
     VLOG(1) << "No basename count available";
     return std::nullopt;

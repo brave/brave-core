@@ -274,7 +274,7 @@ PatternsGroup::~PatternsGroup() = default;
 
 const PatternsURLDetails* PatternsGroup::GetMatchingURLPattern(
     const GURL& url,
-    bool is_strict_scrape) {
+    bool is_strict_scrape) const {
   const auto& patterns = is_strict_scrape ? strict_patterns : normal_patterns;
   for (const auto& pattern : patterns) {
     if (re2::RE2::PartialMatch(url.spec(), *pattern.url_regex) &&

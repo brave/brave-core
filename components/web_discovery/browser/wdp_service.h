@@ -15,7 +15,6 @@
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/double_fetcher.h"
-#include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/reporter.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
@@ -60,8 +59,8 @@ class WDPService : public KeyedService {
 
   void OnEnabledChange();
 
-  void OnConfigChange(std::unique_ptr<ServerConfig> config);
-  void OnPatternsLoaded(std::unique_ptr<PatternsGroup> patterns);
+  void OnConfigChange();
+  void OnPatternsLoaded();
   void OnContentScraped(bool is_strict,
                         std::unique_ptr<PageScrapeResult> result);
   void OnDoubleFetched(const GURL& url,
@@ -82,9 +81,6 @@ class WDPService : public KeyedService {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   mojo::RemoteSet<mojom::DocumentExtractor> document_extractor_remotes_;
-
-  std::unique_ptr<ServerConfig> last_loaded_server_config_;
-  std::unique_ptr<PatternsGroup> last_loaded_patterns_;
 
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
   std::unique_ptr<CredentialManager> credential_manager_;

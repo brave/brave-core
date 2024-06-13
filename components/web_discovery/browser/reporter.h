@@ -35,7 +35,7 @@ class Reporter {
            network::SharedURLLoaderFactory* shared_url_loader_factory,
            CredentialManager* credential_manager,
            RegexUtil* regex_util,
-           std::unique_ptr<ServerConfig>* last_loaded_server_config);
+           const ServerConfigLoader* server_config_loader);
   ~Reporter();
 
   Reporter(const Reporter&) = delete;
@@ -61,10 +61,10 @@ class Reporter {
 
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;
 
   raw_ptr<CredentialManager> credential_manager_;
   raw_ptr<RegexUtil> regex_util_;
+  raw_ptr<const ServerConfigLoader> server_config_loader_;
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 

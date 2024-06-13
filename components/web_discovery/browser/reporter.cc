@@ -121,12 +121,12 @@ Reporter::Reporter(PrefService* profile_prefs,
                    network::SharedURLLoaderFactory* shared_url_loader_factory,
                    CredentialManager* credential_manager,
                    RegexUtil* regex_util,
-                   std::unique_ptr<ServerConfig>* last_loaded_server_config)
+                   const ServerConfigLoader* server_config_loader)
     : profile_prefs_(profile_prefs),
       shared_url_loader_factory_(shared_url_loader_factory),
-      last_loaded_server_config_(last_loaded_server_config),
       credential_manager_(credential_manager),
       regex_util_(regex_util),
+      server_config_loader_(server_config_loader),
       pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({})),
       request_queue_(profile_prefs,
@@ -161,9 +161,9 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
     request_queue_.NotifyRequestComplete(true);
     return;
   }
-  auto basename_result =
-      GenerateBasename(profile_prefs_, (*last_loaded_server_config_).get(),
-                       *regex_util_, *payload_dict);
+  auto basename_result = GenerateBasename(
+      profile_prefs_, server_config_loader_->GetLastServerConfig(),
+      *regex_util_, *payload_dict);
   if (!basename_result) {
     // Drop request due to exceeded basename quota
     VLOG(1) << "Failed to generate basename";
@@ -196,9 +196,10 @@ void Reporter::OnRequestSigned(
     request_queue_.NotifyRequestComplete(false);
     return;
   }
-  auto pub_key = (*last_loaded_server_config_)
-                     ->pub_keys.find(FormatServerDate(base::Time::Now()));
-  if (pub_key == (*last_loaded_server_config_)->pub_keys.end()) {
+  const auto& server_config = server_config_loader_->GetLastServerConfig();
+  auto pub_key =
+      server_config.pub_keys.find(FormatServerDate(base::Time::Now()));
+  if (pub_key == server_config.pub_keys.end()) {
     VLOG(1) << "No ECDH server public key available";
     request_queue_.NotifyRequestComplete(false);
     return;
