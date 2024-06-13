@@ -29,13 +29,15 @@ public struct BraveVPNRegionConfirmationView: View {
         .font(.headline)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
       HStack {
-        regionCountryFlag
-          .frame(width: 32, height: 32)
-          .padding(4)
-          .overlay(
-            RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-              .strokeBorder(Color(.lightGray), lineWidth: 1.0)
-          )
+        if let regionCountryFlag = regionCountryFlag {
+          regionCountryFlag
+            .frame(width: 32, height: 32)
+            .padding(4)
+            .overlay(
+              RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+                .strokeBorder(Color(.lightGray), lineWidth: 1.0)
+            )
+        }
         VStack(alignment: .leading) {
           if let regionCountry = regionCountry {
             Text(regionCountry)

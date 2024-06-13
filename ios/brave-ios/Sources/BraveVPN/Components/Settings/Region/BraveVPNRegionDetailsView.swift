@@ -18,7 +18,13 @@ struct BraveRegionDetailsView: View {
   private var isConfirmationPresented = false
 
   @ObservedObject
-  private var cityRegionDetail: CityRegionDetail
+  private var cityRegionDetail: VPNCityRegionDetail
+
+  @State
+  private var regionModificationTimer: Timer?
+
+  @State
+  private var cityRegions: [GRDRegion]
 
   public init(
     countryRegion: GRDRegion?,
@@ -26,16 +32,17 @@ struct BraveRegionDetailsView: View {
     isAutoSelectEnabled: Bool = true
   ) {
     self.isAutoSelectEnabled = isAutoSelectEnabled
+    self.cityRegions = cityRegions
 
-    var regions: [CityRegion] = []
+    var regions: [VPNCityRegion] = []
 
     for cityRegion in cityRegions {
       regions.append(
-        CityRegion(displayName: cityRegion.displayName, regionName: cityRegion.regionName)
+        VPNCityRegion(displayName: cityRegion.displayName, regionName: cityRegion.regionName)
       )
     }
 
-    cityRegionDetail = CityRegionDetail(
+    cityRegionDetail = VPNCityRegionDetail(
       countryName: countryRegion?.country ?? "",
       countryISOCode: countryRegion?.countryISOCode ?? "",
       cityRegions: regions
@@ -71,10 +78,23 @@ struct BraveRegionDetailsView: View {
         )
       }
     }
+    .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
+      let isVPNEnabled = BraveVPN.isConnected
+
+      if isVPNEnabled {
+        cancelTimer()
+        isConfirmationPresented = true
+
+        // Dismiss confirmation dialog automatically
+        Task.delayed(bySeconds: 2) { @MainActor in
+          isConfirmationPresented = false
+        }
+      }
+    }
   }
 
   @ViewBuilder
-  private func cityRegionItem(at index: Int, region: CityRegion) -> some View {
+  private func cityRegionItem(at index: Int, region: VPNCityRegion) -> some View {
     HStack {
       VStack(alignment: .leading) {
         Text(region.displayName.capitalizeFirstLetter)
@@ -102,28 +122,51 @@ struct BraveRegionDetailsView: View {
     }
     .contentShape(Rectangle())
     .onTapGesture {
-      selectDesignatedVPNServer(region)
+      selectDesignatedVPNCity(region)
     }
   }
 
-  private func selectDesignatedVPNServer(_ region: CityRegion) {
+  private func selectDesignatedVPNCity(_ region: VPNCityRegion) {
     guard !isLoading, cityRegionDetail.selectedRegion?.regionName != region.regionName else {
       return
     }
 
     isLoading = true
 
-    // TODO: Select Region
-    Task.delayed(bySeconds: 3) { @MainActor in
-      cityRegionDetail.selectedRegion = region
+    Task { @MainActor in
+      var regionToChange: GRDRegion?
+
+      // If the optimal server is chosen, we activate the country
+      // This is done in order to handle auto selection
+      // cities among the list in selected region/country
+      if region.regionName == VPNCityRegion.optimalCityRegionName {
+        regionToChange = nil
+      } else {
+        regionToChange = cityRegions.filter { $0.regionName == region.regionName }.first
+      }
+
+      let success = await BraveVPNRegionManager.shared.changeVPNRegionAsync(to: regionToChange)
 
       isLoading = false
-      isConfirmationPresented = true
 
-      Task.delayed(bySeconds: 2) { @MainActor in
-        isConfirmationPresented = false
+      if success {
+        cityRegionDetail.selectedRegion = region
+
+        cancelTimer()
+        regionModificationTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: false) {
+          _ in
+          // TODO: Show Alert if it fails
+        }
+      } else {
+        // TODO: Show Alert if it fails
       }
     }
+  }
+
+  private func cancelTimer() {
+    // Invalidate the modification timer if it is still running
+    regionModificationTimer?.invalidate()
+    regionModificationTimer = nil
   }
 }
 
