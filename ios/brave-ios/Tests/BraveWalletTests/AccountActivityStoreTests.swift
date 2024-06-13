@@ -349,7 +349,7 @@ class AccountActivityStoreTests: XCTestCase {
     XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
     accountActivityStore.$transactionSections
       .dropFirst()
-      .collect(4)
+      .collect(3)
       .sink { transactionSectionsCollected in
         defer { transactionSectionsExpectation.fulfill() }
         guard let transactionSections = transactionSectionsCollected.last else {
@@ -544,7 +544,7 @@ class AccountActivityStoreTests: XCTestCase {
     XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
     accountActivityStore.$transactionSections
       .dropFirst()
-      .collect(4)
+      .collect(3)
       .sink { transactionSectionsCollected in
         defer { transactionSectionsExpectation.fulfill() }
         guard let transactionSections = transactionSectionsCollected.last else {
@@ -721,7 +721,7 @@ class AccountActivityStoreTests: XCTestCase {
     XCTAssertTrue(accountActivityStore.transactionSections.isEmpty)
     accountActivityStore.$transactionSections
       .dropFirst()
-      .collect(4)
+      .collect(3)
       .sink { transactionSectionsCollected in
         defer { transactionSectionsExpectation.fulfill() }
         guard let transactionSections = transactionSectionsCollected.last else {

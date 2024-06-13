@@ -250,7 +250,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         }
       }
       tokenBalanceCache.merge(with: tokenBalances)
-      // update assets, NFTs, transactions after balance fetch
+      // update assets, NFTs, after balance fetch
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,
@@ -258,16 +258,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         tokenPrices: tokenPricesCache,
         nftMetadata: nftMetadataCache,
         btcBalances: btcBalancesCache
-      )
-      self.transactionSections = buildTransactionSections(
-        transactions: transactions,
-        networksForCoin: [account.coin: networksForAccountCoin],
-        accountInfos: allAccountsForCoin,
-        userAssets: allUserAssets,
-        allTokens: allTokens,
-        tokenPrices: tokenPricesCache,
-        nftMetadata: nftMetadataCache,
-        solEstimatedTxFees: solEstimatedTxFeesCache
       )
 
       // fetch price for every user asset
