@@ -19,6 +19,10 @@ const FiltersContainer = styled.div`
   gap: ${spacing['2Xl']};
 
   padding: 0 ${spacing['2Xl']} ${spacing['2Xl']} ${spacing['2Xl']};
+
+  & > leo-buttonmenu {
+    --leo-menu-max-height: 280px !important;
+  }
 `
 
 export default function BeginGeneration() {
