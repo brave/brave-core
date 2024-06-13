@@ -16,6 +16,7 @@
 #include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/double_fetcher.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/reporter.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -72,6 +73,8 @@ class WDPService : public KeyedService {
   PrefChangeRegistrar pref_change_registrar_;
 
   base::FilePath user_data_dir_;
+
+  RegexUtil regex_util_;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 

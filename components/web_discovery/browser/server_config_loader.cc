@@ -165,7 +165,7 @@ ServerConfigLoader::ServerConfigLoader(
       config_backoff_entry_(&kBackoffPolicy),
       patterns_backoff_entry_(&kBackoffPolicy) {
   collector_config_url_ =
-      GURL(GetCollectorHost() + kCollectorConfigPathWithFields);
+      GURL(GetAnonymousHPNHost() + kCollectorConfigPathWithFields);
   quorum_config_url_ = GURL(GetQuorumHost() + kQuorumConfigPath);
   patterns_url_ = GetPatternsEndpoint();
 

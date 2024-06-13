@@ -136,7 +136,7 @@ CredentialManager::CredentialManager(
     : profile_prefs_(profile_prefs),
       shared_url_loader_factory_(shared_url_loader_factory),
       last_loaded_server_config_(last_loaded_server_config),
-      join_url_(GetCollectorHost() + kJoinPath),
+      join_url_(GetDirectHPNHost() + kJoinPath),
       backoff_entry_(&kBackoffPolicy),
       pool_sequenced_task_runner_(
           base::ThreadPool::CreateSequencedTaskRunner({})),

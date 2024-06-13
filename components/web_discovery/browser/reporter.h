@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
 #include "brave/components/web_discovery/browser/ecdh_aes.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/request_queue.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "net/http/http_response_headers.h"
@@ -33,6 +34,7 @@ class Reporter {
   Reporter(PrefService* profile_prefs,
            network::SharedURLLoaderFactory* shared_url_loader_factory,
            CredentialManager* credential_manager,
+           RegexUtil* regex_util,
            std::unique_ptr<ServerConfig>* last_loaded_server_config);
   ~Reporter();
 
@@ -62,6 +64,7 @@ class Reporter {
   raw_ptr<std::unique_ptr<ServerConfig>> last_loaded_server_config_;
 
   raw_ptr<CredentialManager> credential_manager_;
+  raw_ptr<RegexUtil> regex_util_;
 
   scoped_refptr<base::SequencedTaskRunner> pool_sequenced_task_runner_;
 

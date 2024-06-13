@@ -12,6 +12,7 @@
 #include "base/values.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 
 namespace web_discovery {
 
@@ -20,6 +21,7 @@ inline constexpr char kInnerPayloadKey[] = "payload";
 
 std::vector<base::Value::Dict> GeneratePayloads(
     const ServerConfig& server_config,
+    RegexUtil& regex_util,
     const PatternsURLDetails* url_details,
     std::unique_ptr<PageScrapeResult> scrape_result);
 

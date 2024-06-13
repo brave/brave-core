@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 
 class PrefService;
@@ -35,6 +36,7 @@ struct BasenameResult {
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
     ServerConfig* server_config,
+    RegexUtil& regex_util,
     const base::Value::Dict& payload);
 
 void SaveBasenameCount(PrefService* profile_prefs,

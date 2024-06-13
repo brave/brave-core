@@ -9,22 +9,24 @@
 #include <string>
 
 #include "brave/components/web_discovery/browser/patterns.h"
+#include "brave/components/web_discovery/browser/regex_util.h"
 #include "url/gurl.h"
 
 namespace web_discovery {
 
-bool IsPrivateURLLikely(const GURL& url,
+bool IsPrivateURLLikely(RegexUtil& regex_util,
+                        const GURL& url,
                         const PatternsURLDetails* matching_url_details);
 
-bool IsPrivateQueryLikely(const std::string& query);
+bool IsPrivateQueryLikely(RegexUtil& regex_util, const std::string& query);
 
 GURL GeneratePrivateSearchURL(const GURL& original_url,
                               const std::string& query,
                               const PatternsURLDetails& matching_url_details);
 
-bool ShouldDropLongURL(const GURL& url);
+bool ShouldDropLongURL(RegexUtil& regex_util, const GURL& url);
 
-std::optional<std::string> MaskURL(const GURL& url);
+std::optional<std::string> MaskURL(RegexUtil& regex_util, const GURL& url);
 
 }  // namespace web_discovery
 
