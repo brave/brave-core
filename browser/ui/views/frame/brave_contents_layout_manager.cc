@@ -9,6 +9,21 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "ui/views/view.h"
 
+namespace {
+
+int ClampSplitViewSizeDelta(views::View* contents_view, int size_delta) {
+  constexpr int kMinWidth = 144;  // From 144p resolution.
+  const auto half_size =
+      (contents_view->width() -
+       BraveContentsLayoutManager::kSpacingBetweenContentsWebViews) /
+      2;
+
+  return std::clamp(size_delta, /*min*/ kMinWidth - half_size,
+                    /*max*/ half_size - kMinWidth);
+}
+
+}  // namespace
+
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
 void BraveContentsLayoutManager::SetSplitViewSeparator(
@@ -39,6 +54,8 @@ void BraveContentsLayoutManager::OnResize(int resize_amount,
   ongoing_split_view_size_delta_ = resize_amount;
   if (done_resizing) {
     split_view_size_delta_ += ongoing_split_view_size_delta_;
+    split_view_size_delta_ =
+        ClampSplitViewSizeDelta(host_view(), split_view_size_delta_);
     ongoing_split_view_size_delta_ = 0;
   }
 
@@ -73,8 +90,10 @@ void BraveContentsLayoutManager::LayoutImpl() {
       };
 
   gfx::Rect bounds = host_view()->GetLocalBounds();
+  const auto size_delta = ClampSplitViewSizeDelta(
+      host_view(), split_view_size_delta_ + ongoing_split_view_size_delta_);
   bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
-                   split_view_size_delta_ + ongoing_split_view_size_delta_);
+                   size_delta);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
