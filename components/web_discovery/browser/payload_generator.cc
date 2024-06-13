@@ -18,6 +18,10 @@ constexpr char kSearchResultKey[] = "r";
 constexpr char kSearchResultURLKey[] = "u";
 constexpr size_t kMinSearchResultSize = 4;
 
+constexpr char kAliveAction[] = "alive";
+constexpr char kStatusFieldName[] = "status";
+constexpr char kTimestampFieldName[] = "t";
+
 bool ValueHasContent(const base::Value& value) {
   const auto* value_str = value.GetIfString();
   if (value_str && !value_str->empty()) {
@@ -158,7 +162,7 @@ void GenerateSinglePayloads(const ServerConfig& server_config,
 
 }  // namespace
 
-std::vector<base::Value::Dict> GeneratePayloads(
+std::vector<base::Value::Dict> GenerateQueryPayloads(
     const ServerConfig& server_config,
     RegexUtil& regex_util,
     const PatternsURLDetails* url_details,
@@ -179,6 +183,18 @@ std::vector<base::Value::Dict> GeneratePayloads(
     }
   }
   return payloads;
+}
+
+base::Value::Dict GenerateAlivePayload(const ServerConfig& server_config,
+                                       std::string date_hour) {
+  base::Value::Dict payload;
+  payload.Set(kActionKey, kAliveAction);
+  base::Value::Dict inner_payload;
+  inner_payload.Set(kStatusFieldName, true);
+  inner_payload.Set(kTimestampFieldName, date_hour);
+  inner_payload.Set(kCountryCodeFieldName, server_config.location);
+  payload.Set(kInnerPayloadKey, std::move(inner_payload));
+  return payload;
 }
 
 }  // namespace web_discovery

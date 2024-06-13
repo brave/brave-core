@@ -189,7 +189,7 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
 
 void Reporter::OnRequestSigned(
     std::string final_payload_json,
-    uint8_t count_tag_hash,
+    uint32_t count_tag_hash,
     size_t basename_count,
     std::optional<std::vector<const uint8_t>> signature) {
   if (!signature) {
@@ -226,7 +226,7 @@ void Reporter::OnRequestSigned(
 }
 
 void Reporter::OnRequestCompressedAndEncrypted(
-    uint8_t count_tag_hash,
+    uint32_t count_tag_hash,
     size_t basename_count,
     std::optional<AESEncryptResult> result) {
   if (!result) {
@@ -255,7 +255,7 @@ void Reporter::OnRequestCompressedAndEncrypted(
 }
 
 void Reporter::OnRequestComplete(
-    uint8_t count_tag_hash,
+    uint32_t count_tag_hash,
     size_t basename_count,
     scoped_refptr<net::HttpResponseHeaders> headers) {
   auto result = ValidateResponse(headers);
