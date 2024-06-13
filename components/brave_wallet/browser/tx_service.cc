@@ -76,15 +76,13 @@ size_t CalculatePendingTxCount(
 
 }  // namespace
 
-TxService::TxService(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    JsonRpcService* json_rpc_service,
-    BitcoinWalletService* bitcoin_wallet_service,
-    ZCashWalletService* zcash_wallet_service,
-    KeyringService* keyring_service,
-    PrefService* prefs,
-    const base::FilePath& context_path,
-    scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
+TxService::TxService(JsonRpcService* json_rpc_service,
+                     BitcoinWalletService* bitcoin_wallet_service,
+                     ZCashWalletService* zcash_wallet_service,
+                     KeyringService* keyring_service,
+                     PrefService* prefs,
+                     const base::FilePath& context_path,
+                     scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
     : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
   store_factory_ = base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(
       context_path.AppendASCII(kWalletBaseDirectory));
@@ -96,10 +94,9 @@ TxService::TxService(
   tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
       new EthTxManager(this, json_rpc_service, keyring_service, prefs,
                        delegate_.get(), account_resolver_delegate_.get()));
-  tx_manager_map_[mojom::CoinType::SOL] =
-      std::unique_ptr<TxManager>(new SolanaTxManager(
-          this, url_loader_factory, json_rpc_service, keyring_service, prefs,
-          delegate_.get(), account_resolver_delegate_.get()));
+  tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
+      new SolanaTxManager(this, json_rpc_service, keyring_service, prefs,
+                          delegate_.get(), account_resolver_delegate_.get()));
   tx_manager_map_[mojom::CoinType::FIL] = std::unique_ptr<TxManager>(
       new FilTxManager(this, json_rpc_service, keyring_service, prefs,
                        delegate_.get(), account_resolver_delegate_.get()));

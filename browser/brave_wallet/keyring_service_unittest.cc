@@ -165,7 +165,7 @@ class KeyringServiceUnitTest : public testing::Test {
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
 
   TxService MakeTxService(KeyringService* service) {
-    return TxService(shared_url_loader_factory_, json_rpc_service(),
+    return TxService(json_rpc_service(),
                      nullptr,  // BitcoinWalletService
                      nullptr,  // ZCashWalletService
                      service, GetPrefs(), temp_dir_.GetPath(),

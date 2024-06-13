@@ -152,7 +152,6 @@ KeyedService* TxServiceFactory::BuildServiceInstanceFor(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
   return new TxService(
-      shared_url_loader_factory,
       JsonRpcServiceFactory::GetServiceForContext(context),
       BitcoinWalletServiceFactory::GetServiceForContext(context),
       ZCashWalletServiceFactory::GetServiceForContext(context),

@@ -178,7 +178,6 @@ void MergeGetTxFeeEstimationResponses(
 
 SolanaTxManager::SolanaTxManager(
     TxService* tx_service,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     JsonRpcService* json_rpc_service,
     KeyringService* keyring_service,
     PrefService* prefs,
@@ -194,7 +193,6 @@ SolanaTxManager::SolanaTxManager(
           prefs),
       json_rpc_service_(json_rpc_service),
       weak_ptr_factory_(this) {
-  simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   GetSolanaBlockTracker()->AddObserver(this);
 }
 
@@ -850,7 +848,7 @@ void SolanaTxManager::MakeBubbleGumProgramTransferTxData(
                      weak_ptr_factory_.GetWeakPtr(), from_wallet_address,
                      to_wallet_address, std::move(callback));
 
-  simple_hash_client_->FetchSolCompressedNftProofData(
+  json_rpc_service_->FetchSolCompressedNftProofData(
       token_address, std::move(internal_callback));
 }
 

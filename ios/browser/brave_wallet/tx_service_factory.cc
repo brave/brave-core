@@ -20,7 +20,6 @@
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
 
@@ -88,9 +87,8 @@ std::unique_ptr<KeyedService> TxServiceFactory::BuildServiceInstanceFor(
   auto* zcash_wallet_service =
       ZCashWalletServiceFactory::GetServiceForState(browser_state);
   std::unique_ptr<TxService> tx_service(new TxService(
-      browser_state->GetSharedURLLoaderFactory(), json_rpc_service,
-      bitcoin_wallet_service, zcash_wallet_service, keyring_service,
-      browser_state->GetPrefs(), browser_state->GetStatePath(),
+      json_rpc_service, bitcoin_wallet_service, zcash_wallet_service,
+      keyring_service, browser_state->GetPrefs(), browser_state->GetStatePath(),
       web::GetUIThreadTaskRunner({})));
   return tx_service;
 }

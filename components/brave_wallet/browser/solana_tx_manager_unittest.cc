@@ -120,8 +120,8 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                                         &prefs_, &local_state_);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        shared_url_loader_factory_, json_rpc_service_.get(), nullptr, nullptr,
-        keyring_service_.get(), &prefs_, temp_dir_.GetPath(),
+        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
+        &prefs_, temp_dir_.GetPath(),
         base::SequencedTaskRunner::GetCurrentDefault());
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     CreateWallet();

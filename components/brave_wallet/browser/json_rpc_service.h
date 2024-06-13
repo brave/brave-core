@@ -477,15 +477,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                            const std::string& token_mint_address,
                            GetSolTokenMetadataCallback callback) override;
 
-  void GetNftMetadatas(mojom::CoinType coin,
-                       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-                       GetNftMetadatasCallback callback) override;
-
-  void GetNftBalances(const std::string& wallet_address,
-                      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-                      mojom::CoinType coin,
-                      GetNftBalancesCallback callback) override;
-
   void IsSolanaBlockhashValid(const std::string& chain_id,
                               const std::string& blockhash,
                               const std::optional<std::string>& commitment,
@@ -581,6 +572,18 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetRecentSolanaPrioritizationFees(
       const std::string& chain_id,
       GetRecentSolanaPrioritizationFeesCallback callback);
+
+  // SimpleHash APIs
+  void GetNftMetadatas(mojom::CoinType coin,
+                       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+                       GetNftMetadatasCallback callback) override;
+  void GetNftBalances(const std::string& wallet_address,
+                      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+                      mojom::CoinType coin,
+                      GetNftBalancesCallback callback) override;
+  void FetchSolCompressedNftProofData(
+      const std::string& token_address,
+      SimpleHashClient::FetchSolCompressedNftProofDataCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin,

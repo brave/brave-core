@@ -77,10 +77,9 @@ class BraveWalletP3AUnitTest : public testing::Test {
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
-        shared_url_loader_factory_, json_rpc_service_.get(),
-        bitcoin_wallet_service_.get(), zcash_wallet_service_.get(),
-        keyring_service_.get(), &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
+        json_rpc_service_.get(), bitcoin_wallet_service_.get(),
+        zcash_wallet_service_.get(), keyring_service_.get(), &prefs_,
+        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_, nullptr /*delegate*/,
         keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),

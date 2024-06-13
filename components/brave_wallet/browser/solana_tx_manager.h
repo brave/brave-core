@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class PrefService;
 
@@ -33,14 +32,12 @@ struct SolanaAccountInfo;
 
 class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
  public:
-  SolanaTxManager(
-      TxService* tx_service,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      JsonRpcService* json_rpc_service,
-      KeyringService* keyring_service,
-      PrefService* prefs,
-      TxStorageDelegate* delegate,
-      AccountResolverDelegate* account_resolver_delegate);
+  SolanaTxManager(TxService* tx_service,
+                  JsonRpcService* json_rpc_service,
+                  KeyringService* keyring_service,
+                  PrefService* prefs,
+                  TxStorageDelegate* delegate,
+                  AccountResolverDelegate* account_resolver_delegate);
   ~SolanaTxManager() override;
 
   using ProcessSolanaHardwareSignatureCallback =
@@ -251,7 +248,6 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
 
   SolanaTxStateManager* GetSolanaTxStateManager();
   SolanaBlockTracker* GetSolanaBlockTracker();
-  std::unique_ptr<SimpleHashClient> simple_hash_client_;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::WeakPtrFactory<SolanaTxManager> weak_ptr_factory_;
 };

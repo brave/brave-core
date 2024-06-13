@@ -3636,4 +3636,11 @@ void JsonRpcService::OnGetRecentSolanaPrioritizationFees(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
+void JsonRpcService::FetchSolCompressedNftProofData(
+    const std::string& token_address,
+    SimpleHashClient::FetchSolCompressedNftProofDataCallback callback) {
+  simple_hash_client_->FetchSolCompressedNftProofData(token_address,
+                                                      std::move(callback));
+}
+
 }  // namespace brave_wallet

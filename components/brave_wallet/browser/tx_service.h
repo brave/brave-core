@@ -27,9 +27,6 @@ namespace base {
 class FilePath;
 class SequencedTaskRunner;
 }  // namespace base
-namespace network {
-class SharedURLLoaderFactory;
-}  // namespace network
 
 namespace value_store {
 class ValueStoreFactory;
@@ -57,8 +54,7 @@ class TxService : public KeyedService,
                   public mojom::SolanaTxManagerProxy,
                   public mojom::FilTxManagerProxy {
  public:
-  TxService(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-            JsonRpcService* json_rpc_service,
+  TxService(JsonRpcService* json_rpc_service,
             BitcoinWalletService* bitcoin_wallet_service,
             ZCashWalletService* zcash_wallet_service,
             KeyringService* keyring_service,
