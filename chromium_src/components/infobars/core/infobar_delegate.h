@@ -12,11 +12,11 @@
 // When there will be too many items, redo java_cpp_enum.py to generate it
 // automatically
 
-#define BRAVE_INFOBAR_DELEGATE_IDENTIFIERS                                     \
-  BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE = 500, SYNC_CANNOT_RUN_INFOBAR = 505,     \
-  WEB_DISCOVERY_INFOBAR_DELEGATE = 506,                                        \
-  BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,                                    \
-  BRAVE_REQUEST_OTR_INFOBAR_DELEGATE = 508,                                    \
+#define BRAVE_INFOBAR_DELEGATE_IDENTIFIERS                                 \
+  BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE = 500, SYNC_CANNOT_RUN_INFOBAR = 505, \
+  WEB_DISCOVERY_INFOBAR_DELEGATE = 506,                                    \
+  BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR = 507,                                \
+  BRAVE_REQUEST_OTR_INFOBAR_DELEGATE = 508,                                \
   DEV_CHANNEL_DEPRECATION_INFOBAR_DELEGATE = 509,
 
 // Deprecated:
