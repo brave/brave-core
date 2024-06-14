@@ -8,6 +8,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@android:color/transparent" />
-    <stroke android:width="1dip" android:color="@color/divider_interactive_2"/>
+    <stroke android:width="1dip" android:color="@color/divider_interactive"/>
     <corners android:radius="12dp" />
 </shape>

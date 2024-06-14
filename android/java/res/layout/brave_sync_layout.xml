@@ -300,10 +300,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabTextColor="@color/text_secondary"
-            app:tabSelectedTextColor="@color/text_interactive_2"
+            app:tabSelectedTextColor="@color/text_interactive"
             app:tabIndicator="@drawable/brave_sync_tab_indicator"
             app:tabIndicatorFullWidth="false"
-            app:tabIndicatorColor = "@color/text_interactive_2"
+            app:tabIndicatorColor = "@color/text_interactive"
             android:background="@drawable/brave_sync_tab_layout_bg"
             app:tabTextAppearance="@style/BraveSyncTabsTextAppearance"
             app:tabRippleColor="@android:color/transparent">

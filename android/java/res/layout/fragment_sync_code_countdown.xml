@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="@color/systemfeedback_info_text_2"
+            android:textColor="@color/systemfeedback_info_text"
             android:gravity="center_vertical"
             android:textSize="14sp"
             app:drawableTint="@android:color/white" />
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/brave_sync_code_expired_block_text"
-            android:textColor="@color/systemfeedback_error_text_2"
+            android:textColor="@color/systemfeedback_error_text"
             android:gravity="center_vertical"
             android:textSize="14sp"
             app:drawableTint="@android:color/white" />

@@ -70,7 +70,7 @@
                 android:background="@drawable/brave_sync_top_rounded"
                 android:padding="16dip"
                 android:fontFamily="@font/roboto_mono_regular"
-                android:textColor="@color/text_primary_2" />
+                android:textColor="@color/text_primary" />
         </FrameLayout>
 
         <androidx.fragment.app.FragmentContainerView
