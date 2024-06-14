@@ -409,12 +409,6 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Cartera de Brave";
 
-/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
-"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "Personalitza la passarel·la IPFS per a NFT";
-
-/* The navigation title of the screen for users to customize ipfs public gateway address. */
-"wallet.customizeIPFSPublicGatewayNavTitle" = "Personalitza la passarel·la IPFS";
-
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "Bloqueja l'URL de l'explorador";
 
@@ -913,24 +907,6 @@
 /* The title of a button that Deselects all visible options. */
 "wallet.internalErrorMessage" = "S'ha produït un error intern";
 
-/* A title will displayed in the IPFS error page when IPFS is disabled. */
-"wallet.ipfsErrorTitle" = "No es pot accedir a aquest lloc";
-
-/* The navigation title of the screen for users to customize NFT gateway. */
-"wallet.ipfsPublicGatewayAddressNFTTitle" = "Adreça de passarel·la pública IPFS per a NFT";
-
-/* The navigation title of the screen for users to customize IPFS public gateway. */
-"wallet.ipfsPublicGatewayAddressTitle" = "Adreça de passarel·la pública IPFS";
-
-/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
-"wallet.ipfsResolveMethodDescription" = "[Més informació](%@) sobre les consideracions de privacitat de la passarel·la IPFS.";
-
-/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
-"wallet.ipfsResourcesOptionsTitle" = "Resoldre els recursos IPFS";
-
-/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
-"wallet.ipfsSettingsHeader" = "IPFS";
-
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
 "wallet.learnMoreButton" = "Saber més";
 
@@ -1107,9 +1083,6 @@
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "Importa els NFT";
-
-/* Description of the NFT Gateway setting */
-"wallet.nftGatewayLongDescription" = "S'ha de proporcionar una passarel·la IPFS vàlida. Es comprovarà la possibilitat de carregar recursos IPFS de la passarel·la proporcionada.";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
 "wallet.nftHidden" = "Amagat";
@@ -1440,9 +1413,6 @@
 
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "Enviat";
-
-/* Title of the set IPFS gateway button */
-"wallet.setGatewayButtonTitle" = "Configura";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Configuració";
@@ -2110,18 +2080,6 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Resol els noms de domini del Servei de Nom de Solana (SNS)";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
-"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) és la xarxa pública per emmagatzemar i distribuir dades P2P. Aquest protocol té consideracions de privacitat diferents de les de HTTP(S). <a href=%1$@>%2$@</a>";
-
-/* A brief explaination of resolving IPFS scheme url using a public gateway. */
-"wallet.web3IPFSInterstitialIPFSPublicGateway" = "Protegeix la teva adreça IP i el contingut que estàs sol·licitant de potencials observadors externs, però no de l'operador de passarel·la pública. L'operador de la passarel·la és responsable d'assegurar-se que el contingut que se t'ofereix a través d'una passarel·la és el contingut que has sol·licitat. A més, el teu dispositiu no contribueix a la xarxa pública IPFS.";
-
-/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
-"wallet.web3IPFSInterstitialIPFSTitle" = "Ajusta les teves preferències IPFS";
-
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
-"wallet.web3IPFSInterstitialProceedButton" = "Utilitza una passarel·la pública";
-
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Els llocs poden sol·licitar accés a la teva cartera Ethereum";
 
@@ -2148,12 +2106,6 @@
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Afegeix automàticament els NFT que tens a la cartera mitjançant API de tercers. [Saber més](%@)";
-
-/* Description of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertDescription" = "S'ha proporcionat una URL invàlida. La passarel·la hauria de ser capaç de resoldre recursos IPFS.";
-
-/* Title of the wrong IPFS gateway alert */
-"wallet.wrongGatewayAlertTitle" = "No s'ha pogut establir la passarel·la";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z a A";
