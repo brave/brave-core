@@ -14,11 +14,6 @@ class AccountActivityStoreTests: XCTestCase {
 
   private var cancellables: Set<AnyCancellable> = .init()
 
-  let networks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet, .mockGoerli,
-    .mockSolana, .mockSolanaTestnet,
-    .mockFilecoinMainnet, .mockFilecoinTestnet,
-  ]
   let tokenRegistry: [BraveWallet.CoinType: [BraveWallet.BlockchainToken]] = [:]
   let mockAssetPrices: [BraveWallet.AssetPrice] = [
     .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
@@ -68,11 +63,8 @@ class AccountActivityStoreTests: XCTestCase {
       $0(.mock)
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._allNetworks = {
-      $0(self.networks)
-    }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { _, coin, chainId, completion in
       switch chainId {
       case BraveWallet.MainnetChainId:
@@ -107,29 +99,6 @@ class AccountActivityStoreTests: XCTestCase {
         .success,
         ""
       )
-    }
-    rpcService._erc721Metadata = { _, _, _, completion in
-      let metadata = """
-        {
-          "image": "mock.image.url",
-          "name": "mock nft name",
-          "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
-    rpcService._solTokenMetadata = { _, _, completion in
-      let metaData = """
-        {
-          "image": "sol.mock.image.url",
-          "name": "sol mock nft name",
-          "description": "sol mock nft description"
-        }
-        """
-      completion("", metaData, .success, "")
-    }
-    rpcService._hiddenNetworks = {
-      $1([])
     }
 
     let walletService = BraveWallet.TestBraveWalletService()
@@ -217,9 +186,9 @@ class AccountActivityStoreTests: XCTestCase {
     // default in mainnet
     let ethSendTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
-    let goerliSwapTxCopy =
+    let sepoliaSwapTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
-    goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
+    sepoliaSwapTxCopy.chainId = BraveWallet.SepoliaChainId
 
     let (
       keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
@@ -228,7 +197,7 @@ class AccountActivityStoreTests: XCTestCase {
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
-      transactions: [goerliSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
+      transactions: [sepoliaSwapTxCopy, ethSendTxCopy].enumerated().map { (index, tx) in
         // transactions sorted by created time, make sure they are in-order
         tx.createdTime = firstTransactionDate.addingTimeInterval(TimeInterval(index) * 1.days)
         return tx
@@ -250,8 +219,8 @@ class AccountActivityStoreTests: XCTestCase {
           sortOrder: 0
         ),
         NetworkAssets(
-          network: .mockGoerli,
-          tokens: [BraveWallet.NetworkInfo.mockGoerli.nativeToken.copy(asVisibleAsset: true)],
+          network: .mockSepolia,
+          tokens: [BraveWallet.NetworkInfo.mockSepolia.nativeToken.copy(asVisibleAsset: true)],
           sortOrder: 1
         ),
       ]
@@ -363,8 +332,8 @@ class AccountActivityStoreTests: XCTestCase {
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction, ethSendTxCopy)
         XCTAssertEqual(firstSectionTxs[safe: 0]?.transaction.chainId, ethSendTxCopy.chainId)
         let secondSectionTxs = transactionSections[safe: 1]?.transactions ?? []
-        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, goerliSwapTxCopy)
-        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, goerliSwapTxCopy.chainId)
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction, sepoliaSwapTxCopy)
+        XCTAssertEqual(secondSectionTxs[safe: 0]?.transaction.chainId, sepoliaSwapTxCopy.chainId)
       }.store(in: &cancellables)
 
     accountActivityStore.update()

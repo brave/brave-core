@@ -154,10 +154,8 @@ class BuyTokenStoreTests: XCTestCase {
       )
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._network = { $2(selectedNetwork) }
-    rpcService._allNetworks = { $0([selectedNetwork]) }
-    rpcService._addObserver = { _ in }
 
     let walletService = BraveWallet.TestBraveWalletService()
 
@@ -221,9 +219,6 @@ class BuyTokenStoreTests: XCTestCase {
     rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
     }
-    rpcService._allNetworks = {
-      $0([.mockMainnet, .mockSolana])
-    }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
       // verify network switched to SolanaMainnet
@@ -253,7 +248,7 @@ class BuyTokenStoreTests: XCTestCase {
       blockchainRegistry, keyringService,
       rpcService, walletService,
       assetRatioService, bitcoinWalletService
-    ) = setupServices(selectedNetwork: .mockGoerli)
+    ) = setupServices(selectedNetwork: .mockSepolia)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,

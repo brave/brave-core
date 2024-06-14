@@ -8,412 +8,151 @@ import Foundation
 
 #if DEBUG
 
-/// A test eth json controller which can be passed to a ``NetworkStore`` that implements some basic
-/// functionality for the use of SwiftUI Previews.
-///
-/// - note: Do not use this directly, use ``NetworkStore.previewStore``
-class MockJsonRpcService: BraveWalletJsonRpcService {
-  private var chainId: String = BraveWallet.MainnetChainId
-  private var networks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCelo,
+/// JsonRpcService implementation used for previews and unit tests.
+/// Implements default responses for commonly used functions to avoid unimplemented crashes.
+/// Override `_*` functions to implement unit test specific responses as needed.
+class MockJsonRpcService: BraveWallet.TestJsonRpcService {
+  static let allKnownNetworks: [BraveWallet.NetworkInfo] = [
+    .mockMainnet, .mockPolygon, .mockSepolia,
+    .mockSolana, .mockSolanaTestnet,
+    .mockFilecoinMainnet, .mockFilecoinTestnet,
+    .mockBitcoinMainnet, .mockBitcoinTestnet,
   ]
-  private var networkURL: URL?
-  private var observers: NSHashTable<BraveWalletJsonRpcServiceObserver> = .weakObjects()
 
-  func chainIdForOrigin(
-    coin: BraveWallet.CoinType,
-    origin: URLOrigin,
-    completion: @escaping (String) -> Void
-  ) {
-    completion(chainId)
-  }
+  var selectedNetworkForCoin: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [
+    .eth: .mockMainnet,
+    .sol: .mockSolana,
+    .fil: .mockFilecoinMainnet,
+    .btc: .mockBitcoinMainnet,
+  ]
 
-  func blockTrackerUrl(_ completion: @escaping (String) -> Void) {
-    completion(networks.first(where: { $0.chainId == self.chainId })?.blockExplorerUrls.first ?? "")
-  }
+  var allCustomNetworks: [BraveWallet.NetworkInfo] = []
+  var hiddenNetworks: [BraveWallet.NetworkInfo] = [
+    .mockSepolia,
+    .mockSolanaTestnet,
+    .mockFilecoinTestnet,
+    .mockBitcoinTestnet,
+  ]
 
-  func networkUrl(_ coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
-    completion(networkURL?.absoluteString ?? "")
-  }
-
-  func network(
-    coin: BraveWallet.CoinType,
-    origin: URLOrigin?,
-    completion: @escaping (BraveWallet.NetworkInfo) -> Void
-  ) {
-    completion(networks.first(where: { $0.chainId == self.chainId }) ?? .init())
-  }
-
-  func balance(
-    address: String,
-    coin: BraveWallet.CoinType,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
-    completion("0x13e25e19dc20ba7", .success, "")
-  }
-
-  func erc20TokenBalance(
-    contract: String,
-    address: String,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("10", .success, "")
-  }
-
-  func erc20TokenBalances(
-    contracts: [String],
-    address: String,
-    chainId: String,
-    completion: @escaping ([BraveWallet.ERC20BalanceResult], BraveWallet.ProviderError, String) ->
-      Void
-  ) {
-    completion([.init(contractAddress: "", balance: "10")], .success, "")
-  }
-
-  func request(
-    chainId: String,
-    jsonPayload: String,
-    autoRetryOnNetworkChange: Bool,
-    id: MojoBase.Value,
-    coin: BraveWallet.CoinType,
-    completion: @escaping (MojoBase.Value, MojoBase.Value, Bool, String, Bool) -> Void
-  ) {
-    completion(.init(), .init(), true, "", false)
-  }
-
-  func addObserver(_ observer: BraveWalletJsonRpcServiceObserver) {
-    observers.add(observer)
-  }
-
-  func pendingAddChainRequests(completion: @escaping ([BraveWallet.AddChainRequest]) -> Void) {
-    completion([])
-  }
-
-  func pendingChainRequests(_ completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
-    completion([])
-  }
-
-  func allNetworks(
-    completion: @escaping ([BraveWallet.NetworkInfo]) -> Void
-  ) {
-    completion(networks)
-  }
-
-  func setNetwork(
-    chainId: String,
-    coin: BraveWallet.CoinType,
-    origin: URLOrigin?,
-    completion: @escaping (Bool) -> Void
-  ) {
-    self.chainId = chainId
-    completion(true)
-  }
-
-  func erc20TokenAllowance(
-    contract: String,
-    ownerAddress: String,
-    spenderAddress: String,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .disconnected, "Error Message")
-  }
-
-  func enableEnsOffchainLookup() {
-  }
-
-  func ensGetEthAddr(
-    domain: String,
-    completion: @escaping (String, Bool, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", false, .internalError, "")
-  }
-
-  func unstoppableDomainsGetWalletAddr(
-    domain: String,
-    token: BraveWallet.BlockchainToken?,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .unknown, "Error Message")
-  }
-
-  func unstoppableDomainsResolveDns(
-    domain: String,
-    completion: @escaping (URL?, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion(nil, .internalError, "Error message")
-  }
-
-  func erc721OwnerOf(
-    contract: String,
-    tokenId: String,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .unknownChain, "Error Message")
-  }
-
-  func erc721TokenBalance(
-    contractAddress: String,
-    tokenId: String,
-    accountAddress: String,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .disconnected, "Error Message")
-  }
-
-  func pendingSwitchChainRequests(
-    completion: @escaping ([BraveWallet.SwitchChainRequest]) -> Void
-  ) {
-    completion([])
-  }
-
-  func removeChain(
-    chainId: String,
-    coin: BraveWallet.CoinType,
-    completion: @escaping (Bool) -> Void
-  ) {
-    if let historyIndex = networks.firstIndex(where: { $0.chainId == chainId }) {
-      networks.remove(at: historyIndex)
+  override init() {
+    super.init()
+    self._addObserver = { _ in }
+    self._allNetworks = { [weak self] completion in
+      guard let self else {
+        completion(Self.allKnownNetworks)
+        return
+      }
+      completion(Self.allKnownNetworks + self.allCustomNetworks)
+    }
+    self._hiddenNetworks = { [weak self] _, completion in
+      guard let self else {
+        completion([])
+        return
+      }
+      completion(self.hiddenNetworks.map(\.chainId))
+    }
+    self._addHiddenNetwork = { _, _, completion in
       completion(true)
-    } else {
-      completion(false)
     }
-  }
-
-  func addChain(
-    _ chain: BraveWallet.NetworkInfo,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    networks.append(chain)
-    completion("", .success, "")
-  }
-
-  func addHiddenNetwork(
-    coin: BraveWallet.CoinType,
-    chainId: String,
-    completion: @escaping (Bool) -> Void
-  ) {
-    completion(false)
-  }
-
-  func removeHiddenNetwork(
-    coin: BraveWallet.CoinType,
-    chainId: String,
-    completion: @escaping (Bool) -> Void
-  ) {
-    completion(false)
-  }
-
-  func addEthereumChain(
-    forOrigin chain: BraveWallet.NetworkInfo,
-    origin: URLOrigin,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .chainDisconnected, "Error Message")
-  }
-
-  func addEthereumChainRequestCompleted(chainId: String, approved: Bool) {
-  }
-
-  func notifySwitchChainRequestProcessed(requestId: String, approved: Bool) {
-  }
-
-  func setCustomNetworkForTesting(_ chainId: String, coin: BraveWallet.CoinType, providerUrl: URL) {
-  }
-
-  func solanaBalance(
-    pubkey: String,
-    chainId: String,
-    completion: @escaping (UInt64, BraveWallet.SolanaProviderError, String) -> Void
-  ) {
-    completion(0, .internalError, "Error Message")
-  }
-
-  func splTokenAccountBalance(
-    walletAddress: String,
-    tokenMintAddress: String,
-    chainId: String,
-    completion: @escaping (String, UInt8, String, BraveWallet.SolanaProviderError, String) -> Void
-  ) {
-    completion("", 0, "", .internalError, "Error Message")
-  }
-
-  func splTokenBalances(
-    pubkey: String,
-    chainId: String,
-    completion: @escaping ([BraveWallet.SPLTokenAmount], BraveWallet.SolanaProviderError, String) ->
-      Void
-  ) {
-    completion([], .internalError, "Error Message")
-  }
-
-  func erc1155TokenBalance(
-    contractAddress: String,
-    tokenId: String,
-    accountAddress: String,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .internalError, "")
-  }
-
-  func erc721Metadata(
-    _ contract: String,
-    tokenId: String,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .internalError, "")
-  }
-
-  func solTokenMetadata(
-    chainId: String,
-    tokenMintAddress: String,
-    completion: @escaping (String, String, BraveWallet.SolanaProviderError, String) -> Void
-  ) {
-    completion("", "", .internalError, "")
-  }
-
-  func erc721Metadata(
-    contract: String,
-    tokenId: String,
-    chainId: String,
-    completion: @escaping (String, String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", "", .internalError, "")
-  }
-
-  func erc1155Metadata(
-    contract: String,
-    tokenId: String,
-    chainId: String,
-    completion: @escaping (String, String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", "", .internalError, "")
-  }
-
-  func hiddenNetworks(coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void) {
-    completion([])
-  }
-
-  func customNetworks(coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void) {
-    completion([])
-  }
-
-  func knownNetworks(coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void) {
-    completion([])
-  }
-
-  func snsGetSolAddr(
-    domain: String,
-    completion: @escaping (String, BraveWallet.SolanaProviderError, String) -> Void
-  ) {
-    completion("", .internalError, "Error Message")
-  }
-
-  func snsResolveHost(
-    domain: String,
-    completion: @escaping (URL?, BraveWallet.SolanaProviderError, String) -> Void
-  ) {
-    completion(nil, .internalError, "Error Message")
-  }
-
-  func unstoppableDomainsResolveMethod(completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
-    completion(.ask)
-  }
-
-  func ensResolveMethod(completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
-    completion(.ask)
-  }
-
-  func ensOffchainLookupResolveMethod(completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
-    completion(.ask)
-  }
-
-  func snsResolveMethod(completion: @escaping (BraveWallet.ResolveMethod) -> Void) {
-    completion(.ask)
-  }
-
-  func setUnstoppableDomainsResolveMethod(_ method: BraveWallet.ResolveMethod) {
-  }
-
-  func setEnsResolveMethod(_ method: BraveWallet.ResolveMethod) {
-  }
-
-  func setEnsOffchainLookupResolveMethod(_ method: BraveWallet.ResolveMethod) {
-  }
-
-  func setSnsResolveMethod(_ method: BraveWallet.ResolveMethod) {
-  }
-
-  func code(
-    address: String,
-    coin: BraveWallet.CoinType,
-    chainId: String,
-    completion: @escaping (String, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion("", .internalError, "Error Message")
-  }
-
-  func ensGetContentHash(
-    domain: String,
-    completion: @escaping ([NSNumber], Bool, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion([], false, .internalError, "Error Message")
-  }
-
-  func defaultChainId(coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
-    switch coin {
-    case .eth:
-      completion(BraveWallet.MainnetChainId)
-    case .sol:
-      completion(BraveWallet.SolanaMainnet)
-    case .fil:
-      completion(BraveWallet.FilecoinMainnet)
-    case .btc:
-      fallthrough
-    default:
-      completion("")
+    self._removeHiddenNetwork = { _, _, completion in
+      completion(true)
     }
-  }
-
-  func networkUrl(
-    coin: BraveWallet.CoinType,
-    origin: URLOrigin?,
-    completion: @escaping (String) -> Void
-  ) {
-    completion("")
-  }
-
-  func isSolanaBlockhashValid(
-    chainId: String,
-    blockhash: String,
-    commitment: String?,
-    completion: @escaping (Bool, BraveWallet.SolanaProviderError, String) -> Void
-  ) {
-    completion(true, .success, "")
-  }
-
-  func ethTokenInfo(
-    contractAddress: String,
-    chainId: String,
-    completion: @escaping (BraveWallet.BlockchainToken?, BraveWallet.ProviderError, String) -> Void
-  ) {
-    completion(nil, .internalError, "Error Message")
-  }
-
-  func ankrGetAccountBalances(
-    accountAddress: String,
-    chainIds: [String],
-    completion: @escaping ([BraveWallet.AnkrAssetBalance], BraveWallet.ProviderError, String) ->
-      Void
-  ) {
-    completion([], .internalError, "Error Message")
+    self._knownNetworks = { coin, completion in
+      completion(Self.allKnownNetworks.filter({ $0.coin == coin }).map(\.chainId))
+    }
+    self._customNetworks = { [weak self] _, completion in
+      guard let self else {
+        completion([])
+        return
+      }
+      completion(self.allCustomNetworks.map(\.chainId))
+    }
+    self._addChain = { [weak self] network, completion in
+      guard let self else {
+        completion("", .internalError, "Internal error")
+        return
+      }
+      self.allCustomNetworks.append(network)
+      completion(network.chainId, .success, "")
+    }
+    self._network = { [weak self] coin, _, completion in
+      guard let self, let network = self.selectedNetworkForCoin[coin] else {
+        assertionFailure("Selected network for \(coin.localizedTitle) not available.")
+        return
+      }
+      completion(network)
+    }
+    self._chainIdForOrigin = { [weak self] coin, _, completion in
+      guard let self, let network = self.selectedNetworkForCoin[coin] else {
+        assertionFailure("Selected network for \(coin.localizedTitle) not available.")
+        return
+      }
+      completion(network.chainId)
+    }
+    self._setNetwork = { [weak self] chainId, coin, _, completion in
+      guard let self,
+        let network = (Self.allKnownNetworks + self.allCustomNetworks).first(where: {
+          $0.chainId == chainId
+        })
+      else {
+        assertionFailure(
+          "Set network for \(coin.localizedTitle) unavailable. Use addChain or add network to `allKnownNetworks`."
+        )
+        return
+      }
+      self.selectedNetworkForCoin[coin] = network
+      completion(true)
+    }
+    self._balance = { _, coin, chainId, completion in
+      completion("0", .success, "")
+    }
+    self._erc20TokenBalance = { _, _, _, completion in
+      completion("0", .success, "")
+    }
+    self._erc20TokenBalances = { contractAddresses, _, _, completion in
+      let erc20BalanceResults = contractAddresses.map { contractAddress in
+        BraveWallet.ERC20BalanceResult(contractAddress: contractAddress, balance: "0")
+      }
+      completion(erc20BalanceResults, .success, "")
+    }
+    self._erc20TokenAllowance = { _, _, _, _, completion in
+      completion("0", .success, "")
+    }
+    self._erc721TokenBalance = { _, _, _, _, completion in
+      completion("0", .success, "")
+    }
+    self._solanaBalance = { accountAddress, chainId, completion in
+      completion(0, .success, "")
+    }
+    self._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
+      completion("0", 0, "", .success, "")
+    }
+    self._splTokenBalances = { _, _, completion in
+      completion([], .success, "")
+    }
+    self._erc721Metadata = { _, _, _, completion in
+      let metadata = """
+        {
+          "image": "mock.image.url",
+          "name": "mock nft name",
+          "description": "mock nft description"
+        }
+        """
+      completion("", metadata, .success, "")
+    }
+    self._solTokenMetadata = { _, _, completion in
+      let metaData = """
+        {
+          "image": "sol.mock.image.url",
+          "name": "sol mock nft name",
+          "description": "sol mock nft description"
+        }
+        """
+      completion("", metaData, .success, "")
+    }
+    self._ethTokenInfo = { _, _, completion in
+      completion(nil, .resourceNotFound, "Token not found.")
+    }
   }
 }
 
@@ -422,19 +161,6 @@ extension BraveWallet.NetworkInfo {
     chainId: BraveWallet.MainnetChainId,
     chainName: "Mainnet",
     blockExplorerUrls: ["https://etherscan.io"],
-    iconUrls: [],
-    activeRpcEndpointIndex: 0,
-    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
-    symbol: "ETH",
-    symbolName: "Ethereum",
-    decimals: 18,
-    coin: .eth,
-    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
-  )
-  static let mockGoerli: BraveWallet.NetworkInfo = .init(
-    chainId: BraveWallet.GoerliChainId,
-    chainName: "Goerli",
-    blockExplorerUrls: ["https://goerli.etherscan.io"],
     iconUrls: [],
     activeRpcEndpointIndex: 0,
     rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
@@ -466,19 +192,6 @@ extension BraveWallet.NetworkInfo {
     rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
     symbol: "MATIC",
     symbolName: "MATIC",
-    decimals: 18,
-    coin: .eth,
-    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
-  )
-  static let mockCelo: BraveWallet.NetworkInfo = .init(
-    chainId: BraveWallet.CeloMainnetChainId,
-    chainName: "Celo Mainnet",
-    blockExplorerUrls: [""],
-    iconUrls: [],
-    activeRpcEndpointIndex: 0,
-    rpcEndpoints: [URL(string: "https://rpc.mockchain.com")!],
-    symbol: "CELO",
-    symbolName: "CELO",
     decimals: 18,
     coin: .eth,
     supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))

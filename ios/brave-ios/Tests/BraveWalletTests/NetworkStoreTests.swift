@@ -18,15 +18,6 @@ import XCTest
     BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
     BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService
   ) {
-    let currentNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let currentChainId = currentNetwork.chainId
-    let allNetworks: [BraveWallet.NetworkInfo] = [
-      .mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon, .mockCustomNetwork,
-      .mockSolana, .mockSolanaTestnet,
-      .mockFilecoinMainnet, .mockFilecoinTestnet,
-      .mockBitcoinMainnet,
-    ]
-
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._isLocked = { $0(false) }
@@ -41,20 +32,8 @@ import XCTest
       )
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._chainIdForOrigin = { $2(currentChainId) }
-    rpcService._network = { $2(currentNetwork) }
-    rpcService._allNetworks = {
-      $0(allNetworks)
-    }
-    rpcService._setNetwork = { chainId, coin, origin, completion in
-      completion(true)
-    }
-    rpcService._customNetworks = { $1([BraveWallet.NetworkInfo.mockCustomNetwork.chainId]) }
-    rpcService._hiddenNetworks = { $1([]) }
-    rpcService._addHiddenNetwork = { $2(true) }
-    rpcService._removeHiddenNetwork = { $2(true) }
+    let rpcService = MockJsonRpcService()
+    rpcService.allCustomNetworks.append(.mockCustomNetwork)
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -80,10 +59,10 @@ import XCTest
     )
     await store.setup()
 
-    XCTAssertNotEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockGoerli.chainId)
-    let error = await store.setSelectedChain(.mockGoerli, isForOrigin: false)
+    XCTAssertNotEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockSepolia.chainId)
+    let error = await store.setSelectedChain(.mockSepolia, isForOrigin: false)
     XCTAssertNil(error, "Expected success, accounts exist for ethereum")
-    XCTAssertEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockGoerli.chainId)
+    XCTAssertEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockSepolia.chainId)
   }
 
   func testSetSelectedNetworkSameNetwork() async {
@@ -123,10 +102,10 @@ import XCTest
     )
     await store.setup()
 
-    XCTAssertNotEqual(store.selectedChainIdForOrigin, BraveWallet.NetworkInfo.mockGoerli.chainId)
-    let error = await store.setSelectedChain(.mockGoerli, isForOrigin: true)
+    XCTAssertNotEqual(store.selectedChainIdForOrigin, BraveWallet.NetworkInfo.mockSepolia.chainId)
+    let error = await store.setSelectedChain(.mockSepolia, isForOrigin: true)
     XCTAssertNil(error, "Expected success")
-    XCTAssertEqual(store.selectedChainIdForOrigin, BraveWallet.NetworkInfo.mockGoerli.chainId)
+    XCTAssertEqual(store.selectedChainIdForOrigin, BraveWallet.NetworkInfo.mockSepolia.chainId)
   }
 
   func testSetSelectedNetworkNoAccounts() async {
@@ -177,7 +156,6 @@ import XCTest
       if coin == .eth {
         completion(
           [
-            BraveWallet.NetworkInfo.mockGoerli.chainId,
             BraveWallet.NetworkInfo.mockSepolia.chainId,
             BraveWallet.NetworkInfo.mockPolygon.chainId,
           ]
@@ -215,7 +193,6 @@ import XCTest
       .mockSolana,
       .mockSolanaTestnet,
       .mockMainnet,
-      .mockGoerli,
       .mockSepolia,
       .mockPolygon,
       .mockCustomNetwork,
@@ -229,7 +206,6 @@ import XCTest
     ]
 
     let expectedHiddenChains: [BraveWallet.NetworkInfo] = [
-      .mockGoerli,
       .mockSepolia,
       .mockPolygon,
     ]

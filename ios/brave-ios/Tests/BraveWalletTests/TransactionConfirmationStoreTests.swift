@@ -15,18 +15,6 @@ class TransactionConfirmationStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
 
   private func setupStore(
-    selectedNetworkForCoinType: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [
-      .eth: BraveWallet.NetworkInfo.mockMainnet,
-      .sol: BraveWallet.NetworkInfo.mockSolana,
-      .fil: BraveWallet.NetworkInfo.mockFilecoinMainnet,
-      .btc: BraveWallet.NetworkInfo.mockBitcoinMainnet,
-    ],
-    allNetworks: [BraveWallet.NetworkInfo] = [
-      .mockMainnet, .mockGoerli,
-      .mockSolana, .mockSolanaTestnet,
-      .mockFilecoinMainnet, .mockFilecoinTestnet,
-      .mockBitcoinMainnet, .mockBitcoinTestnet,
-    ],
     accountInfos: [BraveWallet.AccountInfo] = [
       .mockEthAccount, .mockSolAccount, .mockFilAccount, .mockBtcAccount,
     ],
@@ -71,17 +59,8 @@ class TransactionConfirmationStoreTests: XCTestCase {
         [mockEthAssetPrice, mockSolAssetPrice, mockFilAssetPrice, mockBtcAssetPrice]
       )
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._chainIdForOrigin = { coin, origin, completion in
-      completion(selectedNetworkForCoinType[coin]?.chainId ?? BraveWallet.MainnetChainId)
-    }
-    rpcService._network = { coin, origin, completion in
-      completion(selectedNetworkForCoinType[coin] ?? .mockMainnet)
-    }
-    rpcService._allNetworks = {
-      $0(allNetworks)
-    }
-    rpcService._hiddenNetworks = { $1([]) }
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { _, coin, _, completion in
       if coin == .eth {
         completion(mockBalanceWei, .success, "")
@@ -91,12 +70,6 @@ class TransactionConfirmationStoreTests: XCTestCase {
     }
     rpcService._erc20TokenAllowance = { _, _, _, _, completion in
       completion("16345785d8a0000", .success, "")  // 0.1000
-    }
-    rpcService._solanaBalance = { accountAddress, chainId, completion in
-      completion(0, .success, "")
-    }
-    rpcService._splTokenAccountBalance = { _, tokenMintAddress, _, completion in
-      completion("", UInt8(0), "", .success, "")
     }
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
@@ -366,7 +339,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
     let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let sendCopy =
       BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
-    sendCopy.chainId = BraveWallet.GoerliChainId
+    sendCopy.chainId = BraveWallet.SepoliaChainId
     sendCopy.txStatus = .unapproved
     let swapCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
@@ -411,7 +384,7 @@ class TransactionConfirmationStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
 
-    await store.prepare()  // `sendCopy` on Goerli Testnet
+    await store.prepare()  // `sendCopy` on Sepolia Testnet
     store.nextTransaction()  // `swapCopy` on Ethereum Mainnet
     store.nextTransaction()  // `solanaSendCopy` on Solana Mainnet
     store.nextTransaction()  // `solanaSPLSendCopy` on Solana Testnet
