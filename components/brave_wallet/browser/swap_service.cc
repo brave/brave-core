@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
@@ -327,7 +328,7 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
   auto has_zero_ex_support = params->from_chain_id == params->to_chain_id &&
                              IsNetworkSupportedByZeroEx(params->from_chain_id);
@@ -502,7 +503,7 @@ void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
 
 void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
                                  GetTransactionCallback callback) {
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
   if (params->is_zero_ex_transaction_params()) {
     auto swap_fee = GetZeroSwapFee();

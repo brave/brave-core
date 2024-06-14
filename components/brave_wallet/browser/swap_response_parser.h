@@ -39,8 +39,6 @@ mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value);
 
 }  // namespace lifi
 
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json);
-
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SWAP_RESPONSE_PARSER_H_

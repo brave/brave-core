@@ -253,18 +253,6 @@ decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
   return EnsOffchainResolveMethod::kDisabled;
 }
 
-// Function to convert all numbers in JSON string to strings, recursively
-// under the top-level "result" key.
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, "/result"));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  return converted_json;
-}
-
 // Retrieves a custom network dict from the preferences based on the chain ID.
 // This function is templated to work with both base::Value::Dict as well as
 // const base::Value::Dict types, for read/write and read-only access
@@ -840,7 +828,8 @@ void JsonRpcService::GetFeeHistory(const std::string& chain_id,
       base::BindOnce(&JsonRpcService::OnGetFeeHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback =
+      base::BindOnce(&ConvertAllNumbersToString, "/result");
 
   RequestInternal(eth::eth_feeHistory("0x28",  // blockCount = 40
                                       kEthereumBlockTagLatest,
@@ -3417,7 +3406,8 @@ void JsonRpcService::AnkrGetAccountBalances(
       base::BindOnce(&JsonRpcService::OnAnkrGetAccountBalances,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback =
+      base::BindOnce(&ConvertAllNumbersToString, "/result");
 
   // Translate chain ids to Ankr blockchains. Unsupported chain ids will be
   // ignored.

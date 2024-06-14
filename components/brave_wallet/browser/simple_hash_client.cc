@@ -27,42 +27,6 @@
 
 namespace {
 
-bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
-                            const std::string& key,
-                            bool nullable,
-                            uint64_t* ret) {
-  if (!ret) {
-    return false;
-  }
-
-  const base::Value* value = dict_value.Find(key);
-  if (!value) {
-    return false;
-  }
-
-  if (nullable && value->is_none()) {
-    *ret = 0;
-    return true;
-  }
-
-  auto* string_value = value->GetIfString();
-  if (!string_value || string_value->empty()) {
-    return false;
-  }
-
-  return base::StringToUint64(*string_value, ret);
-}
-
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, ""));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  return converted_json;
-}
-
 net::NetworkTrafficAnnotationTag
 GetSimpleHashClientNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_wallet_service", R"(
@@ -318,7 +282,7 @@ void SimpleHashClient::FetchSolCompressedNftProofData(
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeaders(),
                                {.auto_retry_on_network_change = true},
-                               base::BindOnce(&ConvertAllNumbersToString));
+                               base::BindOnce(&ConvertAllNumbersToString, ""));
 }
 
 void SimpleHashClient::OnFetchSolCompressedNftProofData(
@@ -359,7 +323,7 @@ void SimpleHashClient::GetNftBalances(
       &SimpleHashClient::OnGetNftsForBalances, weak_ptr_factory_.GetWeakPtr(),
       coin, wallet_address, std::move(nft_identifiers), std::move(callback));
 
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
                                MakeBraveServicesKeyHeaders(),
@@ -915,11 +879,17 @@ SimpleHashClient::ParseSolCompressedNftProofData(
   if (!GetUint64FromDictValue(*dict, "leaf_index", false, &leaf_index)) {
     return std::nullopt;
   }
+  if (leaf_index > UINT32_MAX) {
+    return std::nullopt;
+  }
   const std::string* owner_opt = dict->FindString("owner");
   const std::string* merkle_tree_opt = dict->FindString("merkle_tree");
   const std::string* delegate_opt = dict->FindString("delegate");
   uint64_t canopy_depth = 0;
   if (!GetUint64FromDictValue(*dict, "canopy_depth", false, &canopy_depth)) {
+    return std::nullopt;
+  }
+  if (canopy_depth > UINT32_MAX) {
     return std::nullopt;
   }
 

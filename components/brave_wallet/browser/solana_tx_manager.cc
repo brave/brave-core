@@ -35,7 +35,6 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {

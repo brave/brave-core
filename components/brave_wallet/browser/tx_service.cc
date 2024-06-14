@@ -26,7 +26,6 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/value_store/value_store_factory_impl.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
