@@ -107,39 +107,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     return (Locale.current.language, pageLanguage)
   }
 
-  func translatePage(
-    pageSource: String
-      //    from fromLanguage: String?,
-      //    to toLanguage: String?
-  ) async throws -> String {
-    guard let translationSession else { throw BraveTranslateError.otherError }
-    //    var currentLanguageCode = ""
-
-    //    if let toLanguage = toLanguage {
-    //      currentLanguageCode = toLanguage
-    //    } else {
-    //      guard let currentLanguage = Locale.current.language.languageCode?.identifier else {
-    //        throw BraveTranslateError.invalidLanguage
-    //      }
-    //
-    //      currentLanguageCode = currentLanguage
-    //    }
-    //
-    //    var pageLanguage = currentLanguageCode
-    //    if let fromLanguage = fromLanguage {
-    //      pageLanguage = fromLanguage
-    //    } else {
-    //      pageLanguage = await guessLanguage() ?? currentLanguageCode
-    //    }
-
-    // Cannot translate from source to current as they're the same
-    //    if pageLanguage.isEmpty || currentLanguageCode.isEmpty || pageLanguage == currentLanguageCode {
-    //      throw BraveTranslateError.sameLanguage
-    //    }
-
-    return try await translationSession.translate(pageSource).targetText
-  }
-
   func activateScript(using session: TranslationSession) {
     guard let webView = tab?.webView else {
       return
@@ -161,15 +128,18 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     didReceiveScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    guard let message = message.body as? [String: String] else {
+    guard let translationSession else {
+      replyHandler(nil, nil)
+      return
+    }
+
+    guard let message = message.body as? [String: [String]] else {
       Logger.module.error("Invalid Brave Translate Message")
       replyHandler(nil, nil)
       return
     }
 
-    guard let text = message["text"],
-      let encodedText = message["encoded"]
-    else {
+    guard let texts = message["text"] else {
       Logger.module.error("Invalid Brave Translate Message")
       replyHandler(nil, nil)
       return
@@ -177,24 +147,15 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
     Task { @MainActor in
       do {
-        if text == ":" || text == "-" || text == ", " || text == "," {
-          replyHandler(nil, nil)
-          return
-        }
+//        if text == ":" || text == "-" || text == ", " || text == "," {
+//          replyHandler(nil, nil)
+//          return
+//        }
 
-        let result = try await translatePage(pageSource: text)
-        replyHandler(result, nil)
-        //        if let result = result as? [String] {
-        //          let prefix = text.prefix(while: {
-        //            $0.unicodeScalars.allSatisfy(CharacterSet.whitespacesAndNewlines.contains)
-        //          })
-        //          let suffix = text.suffix(while: {
-        //            $0.unicodeScalars.allSatisfy(CharacterSet.whitespacesAndNewlines.contains)
-        //          })
-        //          replyHandler("\(prefix)\(result[0])\(suffix)", nil)
-        //        } else {
-        //          replyHandler(nil, nil)
-        //        }
+        let startTime = Date.now
+        let responses = try await translationSession.translations(from: texts.map({ .init(sourceText: $0)} ))
+        replyHandler(responses.map(\.targetText), nil)
+        print("translated \(texts.count) strings in \(-startTime.timeIntervalSinceNow) seconds")
       } catch {
         replyHandler(nil, nil)
       }

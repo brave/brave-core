@@ -60,6 +60,9 @@ struct TranslationContainer: View {
 
   var body: some View {
     Color.clear
+      .onAppear {
+        print("translation container is visible")
+      }
       .translationTask(
         configuration,
         action: { session in
