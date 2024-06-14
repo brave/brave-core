@@ -7,6 +7,9 @@
 
 #include "net/http/transport_security_state.h"
 
+#define GetSSLUpgradeDecision(host, net_log)                                   \
+  GetSSLUpgradeDecision(request->isolation_info().network_anonymization_key(), \
+                        host, net_log)
 #define ShouldSSLErrorsBeFatal(host) \
   ShouldSSLErrorsBeFatal(            \
       request_->isolation_info().network_anonymization_key(), host)
@@ -21,6 +24,7 @@
 #undef AddHSTSHeader
 #undef ShouldUpgradeToSSL
 #undef ShouldSSLErrorsBeFatal
+#undef GetSSLUpgradeDecision
 
 namespace net {
 
