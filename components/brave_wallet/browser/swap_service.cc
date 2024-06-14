@@ -333,10 +333,15 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
   auto has_jupiter_support = params->from_chain_id == params->to_chain_id &&
                              IsNetworkSupportedByJupiter(params->from_chain_id);
   auto has_lifi_support = IsNetworkSupportedByLiFi(params->from_chain_id) &&
-                          IsNetworkSupportedByLiFi(params->to_chain_id);
+                          IsNetworkSupportedByLiFi(params->to_chain_id) &&
+                          // LiFi does not support ExactOut swaps.
+                          !params->from_amount.empty();
 
   // EVM swaps are served via 0x only if the provider is set to kZeroEx.
-  if (params->provider == mojom::SwapProvider::kZeroEx && has_zero_ex_support) {
+  if ((params->provider == mojom::SwapProvider::kZeroEx &&
+       has_zero_ex_support) ||
+      (params->provider == mojom::SwapProvider::kAuto && has_zero_ex_support &&
+       !has_lifi_support)) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
