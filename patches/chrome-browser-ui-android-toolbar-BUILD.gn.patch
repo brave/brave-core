@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 1e23b9e0aad54b7d221fc456e1e8c7ebf8274b4e..792bf51f50bd287730da5b9c7a1140bb3a95fb4d 100644
+index 75e27a6c3b185ee4dbbb6164bef9cc43bfa2251f..8f39b8965d8c459f2f3e6b027e8e1f12c31f7beb 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
-@@ -115,6 +115,7 @@ android_library("java") {
+@@ -114,6 +114,7 @@ android_library("java") {
      "java/src/org/chromium/chrome/browser/toolbar/top/ViewShiftingActionBarDelegate.java",
      "java/src/org/chromium/chrome/browser/toolbar/top/VisibleUrlText.java",
    ]

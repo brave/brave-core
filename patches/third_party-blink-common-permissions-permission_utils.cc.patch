@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/permissions/permission_utils.cc b/third_party/blink/common/permissions/permission_utils.cc
-index a380c9b2cbeaea1c74fad55d81bd6eee4b5836a4..2388aa75979e1517ff1c5e11793b96ad3b24d48f 100644
+index bc48e8cd354d6c4ebb1ac8a1ac0b7f6c42397779..41c4d7321f4e7983ee11a1da7637a6fdf82ee9bc 100644
 --- a/third_party/blink/common/permissions/permission_utils.cc
 +++ b/third_party/blink/common/permissions/permission_utils.cc
 @@ -28,6 +28,7 @@ mojom::PermissionStatus ToPermissionStatus(const std::string& status) {

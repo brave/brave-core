@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc b/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc
-index 0cbb3cec6570007e5bc4baaddba10457afa7d0a4..266caae3a53f6bdf612ccee8dc6ed6d710d37ef0 100644
+index 43288b7cb8d29a4ed9031af6e49fbff4e958b452..fe868dbf129ced1357b6ee00b690c48801919a36 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_view_controller.cc
 @@ -337,6 +337,7 @@ ExtensionsMenuViewController::~ExtensionsMenuViewController() {
