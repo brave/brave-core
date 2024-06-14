@@ -37,9 +37,11 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   expected_conversion.campaign_id = kCampaignId;
   expected_conversion.advertiser_id = kAdvertiserId;
   expected_conversion.segment = kSegment;
+  expected_conversion.url_pattern_id = "xyzzy-thud";
   expected_conversion.action_type = ConversionActionType::kViewThrough;
   EXPECT_EQ(expected_conversion,
-            BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt));
+            BuildConversion(ad_event, /*url_pattern_id=*/"xyzzy-thud",
+                            /*verifiable_conversion=*/std::nullopt));
 }
 
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
@@ -58,14 +60,15 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
   expected_conversion.campaign_id = kCampaignId;
   expected_conversion.advertiser_id = kAdvertiserId;
   expected_conversion.segment = kSegment;
+  expected_conversion.url_pattern_id = "xyzzy-thud";
   expected_conversion.action_type = ConversionActionType::kViewThrough;
   expected_conversion.verifiable = VerifiableConversionInfo{
       kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
-  EXPECT_EQ(
-      expected_conversion,
-      BuildConversion(ad_event, VerifiableConversionInfo{
-                                    kVerifiableConversionId,
-                                    kVerifiableConversionAdvertiserPublicKey}));
+  EXPECT_EQ(expected_conversion,
+            BuildConversion(ad_event, /*url_pattern_id=*/"xyzzy-thud",
+                            VerifiableConversionInfo{
+                                kVerifiableConversionId,
+                                kVerifiableConversionAdvertiserPublicKey}));
 }
 
 }  // namespace brave_ads

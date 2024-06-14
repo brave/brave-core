@@ -74,9 +74,11 @@ class Conversions final : public TabManagerObserver {
       const AdEventList& ad_events);
   void Convert(
       const AdEventInfo& ad_event,
+      const std::string& url_pattern_id,
       const std::optional<VerifiableConversionInfo>& verifiable_conversion);
   void ConvertCallback(
       const AdEventInfo& ad_event,
+      const std::string& url_pattern_id,
       const std::optional<VerifiableConversionInfo>& verifiable_conversion,
       bool success);
 

@@ -35,6 +35,7 @@ void BindRecords(mojom::DBCommandInfo* const command) {
 
   command->record_bindings = {
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // creative_set_id
+      mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern_id
       mojom::DBCommandInfo::RecordBindingType::STRING_TYPE,  // url_pattern
       mojom::DBCommandInfo::RecordBindingType::
           STRING_TYPE,  // verifiable_advertiser_public_key
@@ -65,6 +66,7 @@ size_t BindParameters(
     }
 
     BindString(command, index++, creative_set_conversion.id);
+    BindString(command, index++, creative_set_conversion.url_pattern_id);
     BindString(command, index++, creative_set_conversion.url_pattern);
     BindString(command, index++,
                creative_set_conversion.verifiable_advertiser_public_key_base64
@@ -87,16 +89,17 @@ CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* const record) {
   CreativeSetConversionInfo creative_set_conversion;
 
   creative_set_conversion.id = ColumnString(record, 0);
-  creative_set_conversion.url_pattern = ColumnString(record, 1);
+  creative_set_conversion.url_pattern_id = ColumnString(record, 1);
+  creative_set_conversion.url_pattern = ColumnString(record, 2);
   const std::string verifiable_advertiser_public_key_base64 =
-      ColumnString(record, 2);
+      ColumnString(record, 3);
   if (!verifiable_advertiser_public_key_base64.empty()) {
     creative_set_conversion.verifiable_advertiser_public_key_base64 =
         verifiable_advertiser_public_key_base64;
   }
-  creative_set_conversion.observation_window = base::Days(ColumnInt(record, 3));
+  creative_set_conversion.observation_window = base::Days(ColumnInt(record, 4));
   const base::Time expire_at =
-      ToTimeFromChromeTimestamp(ColumnInt64(record, 4));
+      ToTimeFromChromeTimestamp(ColumnInt64(record, 5));
   if (!expire_at.is_null()) {
     creative_set_conversion.expire_at = expire_at;
   }
@@ -308,6 +311,44 @@ void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
                    /*columns=*/{"expire_at"});
 }
 
+void MigrateToV39(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // Create a temporary table:
+  //   - with a new `url_pattern_id` column defaulted to `1` to maintain
+  //     backward compatibility with singular conversions.
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      R"(
+          CREATE TABLE creative_set_conversions_temp (
+            creative_set_id TEXT NOT NULL,
+            url_pattern_id TEXT NOT NULL DEFAULT '1',
+            url_pattern TEXT NOT NULL,
+            verifiable_advertiser_public_key TEXT,
+            observation_window INTEGER NOT NULL,
+            expire_at TIMESTAMP NOT NULL,
+            PRIMARY KEY (
+              creative_set_id,
+              url_pattern_id
+            ) ON CONFLICT REPLACE
+          );)";
+  transaction->commands.push_back(std::move(command));
+
+  // Copy legacy columns to the temporary table, drop the legacy table, and
+  // rename the temporary table.
+  const std::vector<std::string> columns = {"creative_set_id", "url_pattern",
+                                            "verifiable_advertiser_public_key",
+                                            "observation_window", "expire_at"};
+
+  CopyTableColumns(transaction, "creative_set_conversions",
+                   "creative_set_conversions_temp", columns,
+                   /*should_drop=*/true);
+
+  RenameTable(transaction, "creative_set_conversions_temp",
+              "creative_set_conversions");
+}
+
 }  // namespace
 
 void CreativeSetConversions::Save(
@@ -333,6 +374,7 @@ void CreativeSetConversions::GetUnexpired(
       R"(
           SELECT
             creative_set_id,
+            url_pattern_id,
             url_pattern,
             verifiable_advertiser_public_key,
             observation_window,
@@ -382,11 +424,16 @@ void CreativeSetConversions::Create(
   command->sql =
       R"(
           CREATE TABLE creative_set_conversions (
-            creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+            creative_set_id TEXT NOT NULL,
+            url_pattern_id TEXT NOT NULL DEFAULT '1',
             url_pattern TEXT NOT NULL,
             verifiable_advertiser_public_key TEXT,
             observation_window INTEGER NOT NULL,
-            expire_at TIMESTAMP NOT NULL
+            expire_at TIMESTAMP NOT NULL,
+            PRIMARY KEY (
+              creative_set_id,
+              url_pattern_id
+            ) ON CONFLICT REPLACE
           );)";
   transaction->commands.push_back(std::move(command));
 
@@ -428,6 +475,11 @@ void CreativeSetConversions::Migrate(mojom::DBTransactionInfo* transaction,
       MigrateToV35(transaction);
       break;
     }
+
+    case 39: {
+      MigrateToV39(transaction);
+      break;
+    }
   }
 }
 
@@ -460,13 +512,14 @@ std::string CreativeSetConversions::BuildInsertOrUpdateSql(
       R"(
           INSERT INTO $1 (
             creative_set_id,
+            url_pattern_id,
             url_pattern,
             verifiable_advertiser_public_key,
             observation_window,
             expire_at
           ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
-                           /*parameters_count=*/5, binded_parameters_count)},
+                           /*parameters_count=*/6, binded_parameters_count)},
       nullptr);
 }
 

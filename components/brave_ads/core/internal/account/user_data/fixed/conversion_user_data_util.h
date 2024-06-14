@@ -14,6 +14,9 @@ namespace brave_ads {
 
 struct ConversionInfo;
 
+base::Value::Dict BuildConversionUrlPatternIdUserData(
+    const ConversionInfo& conversion);
+
 base::Value::Dict BuildConversionActionTypeUserData(
     const ConversionInfo& conversion);
 

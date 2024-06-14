@@ -18,6 +18,14 @@
 
 namespace brave_ads {
 
+base::Value::Dict BuildConversionUrlPatternIdUserData(
+    const ConversionInfo& conversion) {
+  CHECK(!conversion.url_pattern_id.empty());
+
+  return base::Value::Dict().Set(kConversionUrlPatternIdKey,
+                                 conversion.url_pattern_id);
+}
+
 base::Value::Dict BuildConversionActionTypeUserData(
     const ConversionInfo& conversion) {
   CHECK_NE(ConversionActionType::kUndefined, conversion.action_type);

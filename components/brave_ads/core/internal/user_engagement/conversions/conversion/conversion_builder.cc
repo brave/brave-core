@@ -13,6 +13,7 @@ namespace brave_ads {
 
 ConversionInfo BuildConversion(
     const AdEventInfo& ad_event,
+    const std::string& url_pattern_id,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
   ConversionInfo conversion;
 
@@ -22,6 +23,7 @@ ConversionInfo BuildConversion(
   conversion.campaign_id = ad_event.campaign_id;
   conversion.advertiser_id = ad_event.advertiser_id;
   conversion.segment = ad_event.segment;
+  conversion.url_pattern_id = url_pattern_id;
   conversion.action_type = ToConversionActionType(ad_event.confirmation_type);
   conversion.verifiable = verifiable_conversion;
 

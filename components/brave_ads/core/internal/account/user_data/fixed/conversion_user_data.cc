@@ -18,6 +18,8 @@ base::Value::Dict BuildConversionUserData(const ConversionInfo& conversion) {
   base::Value::List list;
 
   // Conversion.
+  list.Append(BuildConversionUrlPatternIdUserData(conversion));
+
   list.Append(BuildConversionActionTypeUserData(conversion));
 
   // Verifiable conversion.

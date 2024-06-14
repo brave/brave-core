@@ -28,24 +28,28 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern_id=*/"xyzzy-thud",
                                        /*url_pattern=*/"https://foo.com/*",
                                        /*observation_window=*/base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern_id=*/"xyzzy-thud",
                                        /*url_pattern=*/"https://*.qux.com/fred",
                                        /*observation_window=*/base::Days(7));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
   const CreativeSetConversionInfo creative_set_conversion_3 =
       test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern_id=*/"xyzzy-thud",
                                        /*url_pattern=*/"https://bar.com/foo",
                                        /*observation_window=*/base::Days(30));
   creative_set_conversions.push_back(creative_set_conversion_3);
 
   const CreativeSetConversionInfo creative_set_conversion_4 =
       test::BuildCreativeSetConversion(kCreativeSetId,
+                                       /*url_pattern_id=*/"xyzzy-thud",
                                        /*url_pattern=*/"https://baz.com/",
                                        /*observation_window=*/base::Days(1));
   creative_set_conversions.push_back(creative_set_conversion_4);
@@ -105,6 +109,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(
           kCreativeSetId,
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
@@ -112,6 +117,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
           /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://www.qux.com/",
           /*observation_window=*/base::Days(7));  // Bucket #2
   creative_set_conversions.push_back(creative_set_conversion_2);
@@ -119,6 +125,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_3 =
       test::BuildCreativeSetConversion(
           kCreativeSetId,
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_3);
@@ -149,6 +156,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(
           kCreativeSetId,
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
@@ -156,6 +164,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
           /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_2);
@@ -187,6 +196,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(
           kCreativeSetId,
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
@@ -194,6 +204,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
           /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_2);
@@ -234,6 +245,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildVerifiableCreativeSetConversion(
           kCreativeSetId,
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(7),
           kVerifiableConversionAdvertiserPublicKey);
@@ -242,6 +254,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   const CreativeSetConversionInfo creative_set_conversion_2 =
       test::BuildCreativeSetConversion(
           /*creative_set_id=*/"4e83a23c-1194-40f8-8fdc-2f38d7ed75c8",
+          /*url_pattern_id=*/"xyzzy-thud",
           /*url_pattern=*/"https://www.qux.com/",
           /*observation_window=*/base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_2);

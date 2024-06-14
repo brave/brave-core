@@ -39,6 +39,8 @@ constexpr char kDataLandingPage[] = "data-landing-page";
 constexpr char kDataHeadlineText[] = "data-headline-text";
 constexpr char kDataDescription[] = "data-description";
 constexpr char kDataRewardsValue[] = "data-rewards-value";
+constexpr char kDataConversionUrlPatternIdValue[] =
+    "data-conversion-url-pattern-id-value";
 constexpr char kDataConversionUrlPatternValue[] =
     "data-conversion-url-pattern-value";
 constexpr char kDataConversionAdvertiserPublicKeyValue[] =
@@ -68,6 +70,7 @@ constexpr auto kAllConversionAttributes =
         {
             kDataConversionAdvertiserPublicKeyValue,
             kDataConversionObservationWindowValue,
+            kDataConversionUrlPatternIdValue,
             kDataConversionUrlPatternValue,
         });
 
@@ -220,6 +223,19 @@ bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
 
   const std::string& name = ad_property->name;
 
+  if (name == kDataConversionUrlPatternIdValue) {
+    std::string url_pattern_id;
+    const bool success = GetStringValue(ad_property, &url_pattern_id);
+    if (success && !url_pattern_id.empty()) {
+      conversion->url_pattern_id = url_pattern_id;
+    } else {
+      // Legacy conversion URL pattern ID.
+      conversion->url_pattern_id = "1";
+    }
+
+    return success;
+  }
+
   if (name == kDataConversionUrlPatternValue) {
     return GetNotEmptyStringValue(ad_property, &conversion->url_pattern);
   }
@@ -362,7 +378,9 @@ void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
             << kDataRewardsValue << "\": " << search_result_ad->value;
     if (search_result_ad->conversion) {
       VLOG(6) << "Conversion attributes:\n  \""
-              << kDataConversionUrlPatternValue
+              << kDataConversionUrlPatternIdValue
+              << "\": " << search_result_ad->conversion->url_pattern_id
+              << "\n  \"" << kDataConversionUrlPatternValue
               << "\": " << search_result_ad->conversion->url_pattern << "\n  \""
               << kDataConversionAdvertiserPublicKeyValue << "\": "
               << search_result_ad->conversion

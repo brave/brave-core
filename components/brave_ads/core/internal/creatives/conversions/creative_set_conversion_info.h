@@ -30,6 +30,7 @@ struct CreativeSetConversionInfo final {
   [[nodiscard]] bool IsValid() const;
 
   std::string id;
+  std::string url_pattern_id;
   std::string url_pattern;
   std::optional<std::string> verifiable_advertiser_public_key_base64;
   base::TimeDelta observation_window;

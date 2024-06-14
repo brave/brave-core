@@ -187,7 +187,7 @@ void Conversions::CheckForConversions(
             creative_set_conversion);
       }
 
-      Convert(ad_event, verifiable_conversion);
+      Convert(ad_event, creative_set_conversion.url_pattern_id, verifiable_conversion);
 
       did_convert = true;
 
@@ -219,16 +219,18 @@ void Conversions::CheckForConversions(
 
 void Conversions::Convert(
     const AdEventInfo& ad_event,
+    const std::string& url_pattern_id,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion) {
   RecordAdEvent(
       RebuildAdEvent(ad_event, ConfirmationType::kConversion,
                      /*created_at=*/base::Time::Now()),
       base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
-                     ad_event, verifiable_conversion));
+                     ad_event, url_pattern_id, verifiable_conversion));
 }
 
 void Conversions::ConvertCallback(
     const AdEventInfo& ad_event,
+    const std::string& url_pattern_id,
     const std::optional<VerifiableConversionInfo>& verifiable_conversion,
     const bool success) {
   if (!success) {
@@ -244,7 +246,7 @@ void Conversions::ConvertCallback(
   }
 
   const ConversionInfo conversion =
-      BuildConversion(ad_event, verifiable_conversion);
+      BuildConversion(ad_event, url_pattern_id, verifiable_conversion);
   NotifyDidConvertAd(conversion);
 }
 

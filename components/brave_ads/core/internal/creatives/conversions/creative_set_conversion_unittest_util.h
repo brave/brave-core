@@ -22,19 +22,23 @@ namespace test {
 
 CreativeSetConversionInfo BuildCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window);
 void BuildAndSaveCreativeSetConversion(const std::string& creative_set_id,
+                                       const std::string& url_pattern_id,
                                        const std::string& url_pattern,
                                        base::TimeDelta observation_window);
 
 CreativeSetConversionInfo BuildVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window,
     const std::optional<std::string>& verifiable_advertiser_public_key_base64);
 void BuildAndSaveVerifiableCreativeSetConversion(
     const std::string& creative_set_id,
+    const std::string& url_pattern_id,
     const std::string& url_pattern,
     base::TimeDelta observation_window,
     const std::optional<std::string>& verifiable_advertiser_public_key_base64);

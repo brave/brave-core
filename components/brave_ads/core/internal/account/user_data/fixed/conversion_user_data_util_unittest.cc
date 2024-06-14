@@ -27,6 +27,45 @@ namespace brave_ads {
 
 class BraveAdsConversionUserDataUtilTest : public UnitTestBase {};
 
+TEST_F(BraveAdsConversionUserDataUtilTest,
+       BuildConversionUrlPatternIdUserData) {
+  // Arrange
+  const AdInfo ad =
+      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+  const ConversionInfo conversion =
+      BuildConversion(ad_event, /*url_pattern_id=*/"xyzzy-thud",
+                      /*verifiable_conversion=*/std::nullopt);
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "urlPatternId": "xyzzy-thud"
+                    })"),
+            BuildConversionUrlPatternIdUserData(conversion));
+}
+
+TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
+  // Arrange
+  const AdInfo ad =
+      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdEventInfo ad_event = BuildAdEvent(
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+  const ConversionInfo conversion =
+      BuildConversion(ad_event, /*url_pattern_id=*/{},
+                      /*verifiable_conversion=*/std::nullopt);
+
+  // Act & Assert
+  EXPECT_EQ(base::test::ParseJsonDict(
+                R"(
+                    {
+                      "action": "view"
+                    })"),
+            BuildConversionActionTypeUserData(conversion));
+}
+
 TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   // Arrange
   const AdInfo ad =
@@ -34,7 +73,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
+      ad_event, /*url_pattern_id=*/{},
       VerifiableConversionInfo{kVerifiableConversionId,
                                kVerifiableConversionAdvertiserPublicKey});
 
@@ -59,28 +98,11 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion =
-      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
+      BuildConversion(ad_event, /*url_pattern_id=*/{},
+                      /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
   EXPECT_FALSE(MaybeBuildVerifiableConversionUserData(conversion));
-}
-
-TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
-  // Arrange
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
-  const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
-  const ConversionInfo conversion =
-      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
-
-  // Act & Assert
-  EXPECT_EQ(base::test::ParseJsonDict(
-                R"(
-                    {
-                      "action": "view"
-                    })"),
-            BuildConversionActionTypeUserData(conversion));
 }
 
 }  // namespace brave_ads

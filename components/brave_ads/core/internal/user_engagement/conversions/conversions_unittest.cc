@@ -87,6 +87,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -105,6 +106,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -115,6 +117,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -131,6 +134,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -149,6 +153,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -159,6 +164,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -175,6 +181,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -193,6 +200,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -203,6 +211,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -219,6 +228,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -237,6 +247,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -247,6 +258,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -263,6 +275,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -281,6 +294,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -291,6 +305,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -307,6 +322,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -325,6 +341,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -335,6 +352,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -351,6 +369,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -369,6 +388,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -379,6 +399,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -395,6 +416,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -413,6 +435,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -423,6 +446,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -440,6 +464,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedOutOfAllAds) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -450,6 +475,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedOutOfAllAds) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -463,6 +489,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedInToAds) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -473,6 +500,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedSearchResultAdIfOptedInToAds) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -491,6 +519,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -501,6 +530,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -514,6 +544,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfOptedInToAds) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -524,6 +555,7 @@ TEST_F(BraveAdsConversionsTest, ConvertClickedSearchResultAdIfOptedInToAds) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -537,6 +569,7 @@ TEST_F(BraveAdsConversionsTest,
   const AdInfo ad_1 = test::BuildAd(AdType::kInlineContentAd,
                                     /*should_use_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad_1.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
   RecordAdEventsAdvancingTheClockAfterEach(
@@ -546,11 +579,13 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion_1 =
       BuildConversion(BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   const AdInfo ad_2 = test::BuildAd(AdType::kSearchResultAd,
                                     /*should_use_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad_2.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kAnotherMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
   RecordAdEventsAdvancingTheClockAfterEach(
@@ -560,6 +595,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion_2 =
       BuildConversion(BuildAdEvent(ad_2, ConfirmationType::kClicked,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -577,6 +613,7 @@ TEST_F(BraveAdsConversionsTest, DoNotCapAdConversionsWithinTheSameCreativeSet) {
   const AdInfo ad = test::BuildAd(AdType::kInlineContentAd,
                                   /*should_use_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
   RecordAdEventsAdvancingTheClockAfterEach(
@@ -586,6 +623,7 @@ TEST_F(BraveAdsConversionsTest, DoNotCapAdConversionsWithinTheSameCreativeSet) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -603,6 +641,7 @@ TEST_F(BraveAdsConversionsTest, CapAdConversionsWithinTheSameCreativeSet) {
   const AdInfo ad = test::BuildAd(AdType::kInlineContentAd,
                                   /*should_use_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
   RecordAdEventsAdvancingTheClockAfterEach(
@@ -612,6 +651,7 @@ TEST_F(BraveAdsConversionsTest, CapAdConversionsWithinTheSameCreativeSet) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -627,6 +667,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -637,6 +678,7 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -650,6 +692,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -684,6 +727,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kNonMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -701,6 +745,7 @@ TEST_F(BraveAdsConversionsTest,
   const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/false);
   test::BuildAndSaveCreativeSetConversion(ad_1.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
   RecordAdEventsAdvancingTheClockAfterEach(
@@ -711,6 +756,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion_1 =
       BuildConversion(BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion_1));
@@ -732,6 +778,7 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kNonMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -750,6 +797,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -762,6 +810,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -776,6 +825,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
+                                          /*url_pattern_id=*/"xyzzy-thud",
                                           kMatchingUrlPattern,
                                           /*observation_window=*/base::Days(3));
 
@@ -799,7 +849,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud", kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kEmptyVerifiableConversionAdvertiserPublicKey);
 
@@ -810,6 +860,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -829,7 +880,7 @@ TEST_F(
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud",
       /*url_pattern=*/"https://www.baz.com/*",
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
@@ -841,6 +892,7 @@ TEST_F(
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -862,7 +914,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud", kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
 
@@ -873,6 +925,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -890,7 +943,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud", kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
 
@@ -901,6 +954,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now()),
+      /*url_pattern_id=*/"xyzzy-thud",
       VerifiableConversionInfo{/*id=*/"xyzzy",
                                kVerifiableConversionAdvertiserPublicKey});
 
@@ -920,7 +974,7 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud", kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
 
@@ -931,6 +985,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -948,7 +1003,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud", kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
 
@@ -959,6 +1014,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now()),
+      /*url_pattern_id=*/"xyzzy-thud",
       VerifiableConversionInfo{/*id=*/"waldo",
                                kVerifiableConversionAdvertiserPublicKey});
 
@@ -980,7 +1036,8 @@ TEST_F(
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kAnotherMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud",
+      kAnotherMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
 
@@ -991,6 +1048,7 @@ TEST_F(
   const ConversionInfo conversion =
       BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                                    /*created_at=*/Now()),
+                      /*url_pattern_id=*/"xyzzy-thud",
                       /*verifiable_conversion=*/std::nullopt);
 
   // Act & Assert
@@ -1009,7 +1067,8 @@ TEST_F(BraveAdsConversionsTest,
                                   /*should_use_random_uuids=*/false);
 
   test::BuildAndSaveVerifiableCreativeSetConversion(
-      ad.creative_set_id, kAnotherMatchingUrlPattern,
+      ad.creative_set_id, /*url_pattern_id=*/"xyzzy-thud",
+      kAnotherMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
       kVerifiableConversionAdvertiserPublicKey);
 
@@ -1020,6 +1079,7 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now()),
+      /*url_pattern_id=*/"xyzzy-thud",
       VerifiableConversionInfo{/*id=*/"fred",
                                kVerifiableConversionAdvertiserPublicKey});
 

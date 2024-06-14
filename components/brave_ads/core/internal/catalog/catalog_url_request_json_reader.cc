@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
@@ -167,10 +168,21 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative_set_node["conversions"].GetArray();
       creative_set.conversions.reserve(conversions_node.Size());
 
+      int url_pattern_id = 1;
       for (const auto& conversion_node : conversions_node) {
         CatalogConversionInfo conversion;
 
         conversion.creative_set_id = creative_set.id;
+
+        if (conversion_node.HasMember("urlPatternId")) {
+          conversion.url_pattern_id =
+              conversion_node["urlPatternId"].GetString();
+        } else {
+          // Fallback to maintain compatibility with versions of the catalog
+          // that do not support the optional `urlPatternId`.
+          conversion.url_pattern_id = base::NumberToString(url_pattern_id);
+          url_pattern_id++;
+        }
 
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
 

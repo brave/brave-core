@@ -112,6 +112,7 @@
           "conversions": [
             {
               "observationWindow": 30,
+              "urlPatternId": "xyzzy-thud",
               "urlPattern": "https://www.brave.com/1/*"
             }
           ],
