@@ -29,7 +29,9 @@ BraveSyncAlertsServiceFactory* BraveSyncAlertsServiceFactory::GetInstance() {
 BraveSyncAlertsServiceFactory::BraveSyncAlertsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveSyncAlertsService",
-          BrowserContextDependencyManager::GetInstance()) {}
+          BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(SyncServiceFactory::GetInstance());
+}
 
 BraveSyncAlertsServiceFactory::~BraveSyncAlertsServiceFactory() {}
 
