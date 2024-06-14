@@ -61,6 +61,7 @@ SolanaInstruction SetComputeUnitPrice(uint64_t price);
 
 namespace bubblegum_program {
 
+// https://github.com/metaplex-foundation/mpl-bubblegum/blob/5b3cdfc6b236773be70dc1f0b0cb84badf881248/clients/js-solita/src/generated/instructions/transfer.ts#L81
 std::optional<SolanaInstruction> Transfer(
     uint32_t canopy_depth,
     const std::string& tree_authority,
