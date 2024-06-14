@@ -412,6 +412,7 @@ export const useSwap = () => {
       const controller = new AbortController()
       setAbortController(controller)
       setIsFetchingQuote(true)
+      setQuoteErrorUnion(undefined)
 
       let quoteResponse
       try {
