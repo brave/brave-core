@@ -14,26 +14,33 @@
 namespace {
 
 std::u16string Sanitize(content::ContentBrowserClient* client,
-                        content::BrowserContext* browser_context,
+                        content::RenderFrameHost* render_frame_host,
                         std::u16string data) {
-  if (client && browser_context && data.size() > 6 && data.size() < 512) {
-    const GURL url(data);
-    if (url.is_valid() && !url.is_empty()) {
-      const GURL sanitized_url = client->SanitizeURL(browser_context, url);
-      return base::UTF8ToUTF16(sanitized_url.spec());
-    }
+  if (!client || !render_frame_host ||
+      !render_frame_host->GetBrowserContext() || data.size() < 6 ||
+      data.size() > 512u) {
+    return data;
+  }
+
+  // constexpr const char k
+
+  const GURL url(data);
+  if (url.is_valid() && !url.is_empty()) {
+    const GURL sanitized_url =
+        client->SanitizeURL(render_frame_host->GetBrowserContext(), url);
+    return base::UTF8ToUTF16(sanitized_url.spec());
   }
   return data;
 }
 
 }  // namespace
 
-#define BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE                        \
-  if (sanitize_on_next_write_text_) {                             \
-    data.text = Sanitize(GetContentClient()->browser(),           \
-                         render_frame_host().GetBrowserContext(), \
-                         std::move(data.text));                   \
-  }                                                               \
+#define BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE                                  \
+  if (sanitize_on_next_write_text_) {                                       \
+    data.text =                                                             \
+        Sanitize(GetContentClient()->browser(),                             \
+                 render_frame_host().GetMainFrame(), std::move(data.text)); \
+  }                                                                         \
   sanitize_on_next_write_text_ = false;
 
 #include "src/content/browser/renderer_host/clipboard_host_impl.cc"
