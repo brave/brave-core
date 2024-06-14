@@ -64,7 +64,7 @@ mojom::SwapQuoteParamsPtr GetCannedSwapQuoteParams(
           : "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
   params->from_chain_id = from_chain_id;
   params->from_token = from_token;
-  params->to_amount = "1000000000000000000000";
+  params->from_amount = "1000000000000000000000";
 
   params->to_account_id = MakeAccountId(
       to_coin, mojom::KeyringId::kDefault, mojom::AccountKind::kDerived,
@@ -802,7 +802,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/price?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "buyTokenPercentageFee=0.00875&"
@@ -822,7 +822,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/price?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "slippagePercentage=0.030000&"
@@ -846,7 +846,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/quote?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "buyTokenPercentageFee=0.00875&"
@@ -867,7 +867,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/quote?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "slippagePercentage=0.030000&"
@@ -914,7 +914,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/quote?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "buyTokenPercentageFee=0.00875&"
@@ -933,7 +933,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/quote?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "slippagePercentage=0.030000&"
@@ -956,7 +956,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/quote?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "buyTokenPercentageFee=0.00875&"
@@ -976,7 +976,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
               base::StringPrintf(
                   "https://%s/swap/v1/quote?"
                   "takerAddress=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
-                  "buyAmount=1000000000000000000000&"
+                  "sellAmount=1000000000000000000000&"
                   "buyToken=ETH&"
                   "sellToken=DAI&"
                   "slippagePercentage=0.030000&"
