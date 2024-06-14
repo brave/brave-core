@@ -97,7 +97,9 @@ extension ContentBlockerHelper: TabContentScript {
           guard let requestURL = NSURL(idnString: dto.resourceURL) as URL? else { return }
           guard let sourceURL = NSURL(idnString: dto.sourceURL) as URL? else { return }
           guard let domainURLString = domain.url else { return }
-          let genericTypes = ContentBlockerManager.shared.validGenericTypes(for: domain)
+          let genericTypes = AdBlockGroupsManager.shared.contentBlockerManager.validGenericTypes(
+            for: domain
+          )
 
           let blockedType = await blockedTypes(
             requestURL: requestURL,

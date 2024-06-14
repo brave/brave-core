@@ -13,10 +13,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// Based on the following rules: https://github.com/brave/adblock-resources/blob/master/filter_lists/default.json
   case adBlockRules
 
-  /// Cosmetic filter rules
-  /// - Warning: Do not use this. This is here solely so we can delete the files
-  case deprecatedGeneralCosmeticFilters
-
   /// The name of the header value that contains the service key
   private static let servicesKeyHeaderValue = "BraveServiceKey"
   /// The base s3 environment url that hosts the debouncing (and other) files.
@@ -34,8 +30,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
     switch self {
     case .adBlockRules:
       return "abp-data"
-    case .deprecatedGeneralCosmeticFilters:
-      return "cmf-data"
     }
   }
 
@@ -44,8 +38,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
     switch self {
     case .adBlockRules:
       return "latest.txt"
-    case .deprecatedGeneralCosmeticFilters:
-      return "ios-cosmetic-filters.dat"
     }
   }
 
@@ -54,8 +46,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
     switch self {
     case .adBlockRules:
       return Self.baseResourceURL.appendingPathComponent("/ios/latest.txt")
-    case .deprecatedGeneralCosmeticFilters:
-      return Self.baseResourceURL.appendingPathComponent("/ios/ios-cosmetic-filters.dat")
     }
   }
 

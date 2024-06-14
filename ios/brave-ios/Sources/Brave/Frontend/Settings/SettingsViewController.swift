@@ -1027,10 +1027,12 @@ class SettingsViewController: TableViewController {
           accessory: .disclosureIndicator
         ),
         Row(
-          text: "Adblock Debug",
+          text: "AdBlock Debugger",
           selection: { [unowned self] in
-            let vc = AdblockDebugMenuTableViewController(style: .grouped)
-            self.navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(
+              UIHostingController(rootView: AdBlockDebugView()),
+              animated: true
+            )
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self

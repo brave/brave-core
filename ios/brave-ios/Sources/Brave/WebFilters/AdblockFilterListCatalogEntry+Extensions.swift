@@ -7,8 +7,6 @@ import BraveCore
 import Foundation
 
 extension AdblockFilterListCatalogEntry {
-  /// This is the uuid of the default filter list. This is a special filter list which we use slim list content blockers for
-  public static let defaultFilterListComponentUUID = "default"
   /// The component ID of the "Fanboy's Mobile Notifications List"
   /// This is a special filter list that is enabled by default
   public static let mobileAnnoyancesComponentID = "bfpgedeaaibpoidldhjcknekahbikncb"
@@ -16,10 +14,14 @@ extension AdblockFilterListCatalogEntry {
   /// This is a special filter list that has more accessible UI to control it
   public static let cookieConsentNoticesComponentID = "cdbbhgbmjhfnhnmgeddbliobbofkgdhe"
 
-  public static let disabledFilterListComponentIDs = [
+  public static let disabledContentBlockersComponentIDs = [
     // The Anti-porn list has 500251 rules and is strictly all content blocking driven content
     // The limit for the rule store is 150000 rules. We have no way to handle this at the current moment
-    "lbnibkdpkdjnookgfeogjdanfenekmpe"
+    "lbnibkdpkdjnookgfeogjdanfenekmpe",
+    // For now we don't compile this into content blockers because we use the one coming from slim list
+    // We might change this in the future as it ends up with 95k items whereas the limit is 150k.
+    // So there is really no reason to use slim list except perhaps for performance which we need to test out.
+    "iodkpdagapdfkphljnddpjlldadblomo",
   ]
 
   /// Lets us know if this filter list is always aggressive.
