@@ -365,9 +365,25 @@ export const useSwap = () => {
     [quoteOptions, toToken]
   )
 
+  const getAssetBalance = useCallback(
+    (token: BraveWallet.BlockchainToken): Amount => {
+      if (!fromAccount) {
+        return Amount.zero()
+      }
+
+      return new Amount(
+        getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
+      )
+    },
+    [tokenBalancesRegistry, fromAccount]
+  )
+
+  const fromAssetBalance = fromToken && getAssetBalance(fromToken)
+  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
+
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: SwapParamsOverrides) => {
-      if (!fromAccount || !toAccountId || !fromNetwork) {
+      if (!fromAccount || !toAccountId || !fromNetwork || !fromAssetBalance) {
         return
       }
 
@@ -481,7 +497,7 @@ export const useSwap = () => {
           if (step) {
             await checkAllowance({
               account: fromAccount,
-              spendAmount: step.estimate.fromAmount,
+              spendAmount: fromAssetBalance.format(),
               spenderAddress: step.estimate.approvalAddress,
               token: params.fromToken
             })
@@ -525,7 +541,7 @@ export const useSwap = () => {
 
           await checkAllowance({
             account: fromAccount,
-            spendAmount: quoteResponse.response.zeroExQuote.sellAmount,
+            spendAmount: fromAssetBalance.format(),
             spenderAddress: quoteResponse.response.zeroExQuote.allowanceTarget,
             token: params.fromToken
           })
@@ -548,6 +564,7 @@ export const useSwap = () => {
       toAmount,
       fromToken,
       toToken,
+      fromAssetBalance,
       editingFromOrToAmount,
       reset,
       generateSwapQuote,
@@ -602,22 +619,6 @@ export const useSwap = () => {
     },
     [handleQuoteRefresh]
   )
-
-  const getAssetBalance = useCallback(
-    (token: BraveWallet.BlockchainToken): Amount => {
-      if (!fromAccount) {
-        return Amount.zero()
-      }
-
-      return new Amount(
-        getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
-      )
-    },
-    [tokenBalancesRegistry, fromAccount]
-  )
-
-  const fromAssetBalance = fromToken && getAssetBalance(fromToken)
-  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
 
   const onClickFlipSwapTokens = useCallback(async () => {
     if (!fromAccount || !toAccount || !fromToken || !toToken) {
@@ -938,11 +939,18 @@ export const useSwap = () => {
       quoteUnion?.lifiQuote,
       quoteUnion?.jupiterQuote?.routePlan.length,
       hasAllowance,
-      quoteErrorUnion
+      quoteErrorUnion,
+      backendError
     ])
 
   const onSubmit = useCallback(async () => {
-    if (!quoteUnion || !fromAccount || !fromNetwork || !fromToken) {
+    if (
+      !quoteUnion ||
+      !fromAccount ||
+      !fromNetwork ||
+      !fromToken ||
+      !fromAssetBalance
+    ) {
       return
     }
 
@@ -952,6 +960,7 @@ export const useSwap = () => {
       if (hasAllowance) {
         const error = await zeroEx.exchange()
         if (error) {
+          console.log('zeroEx.exchange error', error.zeroExError)
           setQuoteErrorUnion(error)
         } else {
           setFromAmount('')
@@ -964,7 +973,7 @@ export const useSwap = () => {
           network: fromNetwork,
           spenderAddress: quoteUnion.zeroExQuote.allowanceTarget,
           token: fromToken,
-          spendAmount: quoteUnion.zeroExQuote.sellAmount
+          spendAmount: fromAssetBalance.format()
         })
       }
     }
@@ -982,6 +991,7 @@ export const useSwap = () => {
         // confirmations)
         const error = await lifi.exchange(step)
         if (error) {
+          console.log('lifi.exchange error', error.lifiError)
           setQuoteErrorUnion(error)
         } else {
           setFromAmount('')
@@ -991,7 +1001,7 @@ export const useSwap = () => {
       } else {
         await approveSpendAllowance({
           spenderAddress: step.estimate.approvalAddress,
-          spendAmount: step.estimate.fromAmount,
+          spendAmount: fromAssetBalance.format(),
           account: fromAccount,
           network: fromNetwork,
           token: fromToken
@@ -1002,6 +1012,7 @@ export const useSwap = () => {
     if (quoteUnion.jupiterQuote) {
       const error = await jupiter.exchange(quoteUnion.jupiterQuote)
       if (error) {
+        console.log('jupiter.exchange error', error.jupiterError)
         setQuoteErrorUnion(error)
       } else {
         setFromAmount('')
@@ -1016,6 +1027,7 @@ export const useSwap = () => {
     fromAccount,
     fromNetwork,
     fromToken,
+    fromAssetBalance,
     hasAllowance,
     zeroEx,
     reset,
