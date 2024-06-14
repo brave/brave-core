@@ -11,7 +11,7 @@
     if (V8_UNLIKELY(page_graph_delegate)) {                     \
       Tagged<Object> maybe_script = result->shared()->script(); \
       if (IsScript(maybe_script)) {                             \
-        const int script_id = Script::cast(maybe_script)->id(); \
+        const int script_id = Cast<Script>(maybe_script)->id(); \
         page_graph_delegate->OnEvalScriptCompiled(              \
             reinterpret_cast<v8::Isolate*>(isolate), script_id, \
             v8::Utils::ToLocal(source));                        \
