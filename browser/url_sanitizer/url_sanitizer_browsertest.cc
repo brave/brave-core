@@ -85,7 +85,10 @@ IN_PROC_BROWSER_TEST_F(URLSanitizerTest, JSApi) {
       ui::ScopedClipboardWriter clear_clipboard(
           ui::ClipboardBuffer::kCopyPaste);
       clear_clipboard.Reset();
+      clear_clipboard.WriteText(u"empty");
     }
+
+    auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
     constexpr const char kClickButton[] =
         R"js(
@@ -96,16 +99,19 @@ IN_PROC_BROWSER_TEST_F(URLSanitizerTest, JSApi) {
     )js";
     const auto script =
         base::ReplaceStringPlaceholders(kClickButton, {name}, nullptr);
-    ASSERT_TRUE(content::ExecJs(
-        browser()->tab_strip_model()->GetActiveWebContents(), script));
+    web_contents->Focus();
+    ASSERT_TRUE(content::ExecJs(web_contents, script));
+
+    base::RunLoop().RunUntilIdle();
 
     std::string text_from_clipboard;
     ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
         ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
 
     EXPECT_TRUE(base::StartsWith(text_from_clipboard, "https://youtu.be/"))
-        << name;
-    EXPECT_EQ(std::string::npos, text_from_clipboard.find("si=")) << name;
+        << name << " " << text_from_clipboard;
+    EXPECT_EQ(std::string::npos, text_from_clipboard.find("si="))
+        << name << " " << text_from_clipboard;
   };
 
   check("test_1");
