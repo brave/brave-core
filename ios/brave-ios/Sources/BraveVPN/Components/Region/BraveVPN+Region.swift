@@ -10,7 +10,7 @@ extension BraveVPN {
 
   /// List of regions the VPN can connect to
   /// This list is not static and it will be fetcghed with every app launch
-  static var allCountryRegions: [GRDRegion] = []
+  static var allRegions: [GRDRegion] = []
 
   /// Record last used region
   /// It is used to hold details of the region when automatic selection is used
@@ -72,12 +72,14 @@ extension BraveVPN {
         return
       }
 
-      allCountryRegions = regions
+      allRegions = regions
     }
   }
 
   @MainActor
   static func changeVPNRegionForPrecision(to region: GRDRegion?) async -> Bool {
+    // TODO: Add precision for region country for country and city for city
+
     return await withCheckedContinuation { continuation in
       BraveVPN.changeVPNRegion(to: region) { success in
         continuation.resume(returning: success)

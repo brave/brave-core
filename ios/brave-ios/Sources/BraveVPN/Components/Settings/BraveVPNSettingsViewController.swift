@@ -371,7 +371,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private func selectServerTapped() {
-    if BraveVPN.allCountryRegions.isEmpty {
+    if BraveVPN.allRegions.isEmpty {
       let alert = UIAlertController(
         title: Strings.VPN.vpnConfigGenericErrorTitle,
         message: Strings.VPN.settingsFailedToFetchServerList,

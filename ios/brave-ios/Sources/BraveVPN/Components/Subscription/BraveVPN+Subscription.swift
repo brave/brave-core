@@ -3,13 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-//import Data
 import GuardianConnect
-//import NetworkExtension
-//import Preferences
 import Shared
-//import UIKit
-//import os.log
 
 extension BraveVPN {
   /// Type of the vpn subscription

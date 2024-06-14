@@ -53,7 +53,7 @@ public struct BraveVPNRegionPickerView: View {
 
           if !isAutomatic {
             Section {
-              ForEach(Array(BraveVPN.allCountryRegions.enumerated()), id: \.offset) {
+              ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
                 index,
                 region in
                 countryRegionItem(at: index, region: region)
@@ -109,8 +109,8 @@ public struct BraveVPNRegionPickerView: View {
         }
 
         isRegionDetailsPresented = true
-        if let designatedRegion = BraveVPN.allCountryRegions[safe: index],
-          let desiredRegion = BraveVPN.allCountryRegions[safe: index]
+        if let designatedRegion = BraveVPN.allRegions[safe: index],
+          let desiredRegion = BraveVPN.allRegions[safe: index]
         {
           selectedRegion = desiredRegion
           selectedRegionCities = designatedRegion.cities
@@ -197,7 +197,7 @@ public struct BraveVPNRegionPickerView: View {
   }
 
   private func selectDesignatedVPNRegion(at index: Int, isAutomatic: Bool = false) {
-    guard !isLoading, let desiredRegion = BraveVPN.allCountryRegions[safe: index],
+    guard !isLoading, let desiredRegion = BraveVPN.allRegions[safe: index],
       desiredRegion.regionName != BraveVPN.selectedRegion?.regionName,
       desiredRegion.countryISOCode != BraveVPN.selectedRegion?.countryISOCode
     else {
