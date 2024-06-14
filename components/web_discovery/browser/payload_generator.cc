@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/fixed_flat_set.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 
 namespace web_discovery {
@@ -21,6 +22,9 @@ constexpr size_t kMinSearchResultSize = 4;
 constexpr char kAliveAction[] = "alive";
 constexpr char kStatusFieldName[] = "status";
 constexpr char kTimestampFieldName[] = "t";
+
+constexpr auto kQueryActions = base::MakeFixedFlatSet<std::string_view>(
+    {"query", "anon-query", "widgetTitle"});
 
 bool ValueHasContent(const base::Value& value) {
   const auto* value_str = value.GetIfString();
@@ -80,6 +84,7 @@ base::Value::Dict CreatePayloadDict(const PayloadRuleGroup& rule_group,
 
 std::optional<base::Value> GenerateClusteredJoinedPayload(
     RegexUtil& regex_util,
+    bool is_query_action,
     const PayloadRule& rule,
     const PatternsURLDetails* matching_url_details,
     const std::vector<base::Value::Dict>& attribute_values) {
@@ -89,7 +94,8 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     if (value.empty()) {
       continue;
     }
-    if (IsPrivateResult(regex_util, rule, matching_url_details, value)) {
+    if (is_query_action &&
+        IsPrivateResult(regex_util, rule, matching_url_details, value)) {
       VLOG(1) << "Omitting private search result";
       continue;
     }
@@ -99,7 +105,8 @@ std::optional<base::Value> GenerateClusteredJoinedPayload(
     VLOG(1) << "Skipped joined clustered payload due to lack of content";
     return std::nullopt;
   }
-  if (ShouldDropSearchResultPayload(rule, joined_data.size())) {
+  if (is_query_action &&
+      ShouldDropSearchResultPayload(rule, joined_data.size())) {
     VLOG(1) << "Skipped search result payload due to too few results";
     return std::nullopt;
   }
@@ -124,7 +131,8 @@ std::optional<base::Value::Dict> GenerateClusteredPayload(
     }
     if (rule.is_join) {
       auto joined_payload = GenerateClusteredJoinedPayload(
-          regex_util, rule, matching_url_details, attribute_values_it->second);
+          regex_util, kQueryActions.contains(rule_group.action), rule,
+          matching_url_details, attribute_values_it->second);
       if (!joined_payload) {
         VLOG(1) << "Skipped joined clustered payload, action = "
                 << rule_group.action;
