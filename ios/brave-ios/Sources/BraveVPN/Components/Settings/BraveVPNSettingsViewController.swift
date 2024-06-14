@@ -11,6 +11,7 @@ import Shared
 import Static
 import UIKit
 import os.log
+import SwiftUI
 
 public class BraveVPNSettingsViewController: TableViewController {
 
@@ -370,7 +371,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private func selectServerTapped() {
-    if BraveVPN.regions.isEmpty {
+    if BraveVPN.allCountryRegions.isEmpty {
       let alert = UIAlertController(
         title: Strings.VPN.vpnConfigGenericErrorTitle,
         message: Strings.VPN.settingsFailedToFetchServerList,
@@ -384,7 +385,8 @@ public class BraveVPNSettingsViewController: TableViewController {
       return
     }
 
-    let vc = BraveVPNRegionPickerViewController()
+    let vc = UIHostingController(rootView: BraveVPNRegionPickerView())
+    vc.title = "Server Region"
     navigationController?.pushViewController(vc, animated: true)
   }
 

@@ -20,10 +20,8 @@ public class BraveVPN {
 
   public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
-  /// List of regions the VPN can connect to.
-  /// This list is not static and should be refetched every now and then.
-  static var regions: [GRDRegion] = []
-
+  /// List of regions the VPN can connect to
+  /// This list is not static and it will be fetcghed with every app launch
   static var allCountryRegions: [GRDRegion] = []
 
   /// Record last used region
@@ -578,58 +576,16 @@ public class BraveVPN {
   }
 
   public static func populateRegionDataIfNecessary() {
-    serverManager.regions { regions, _ in
-      self.regions = regions ?? []
-    }
-    
-    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCountry)
 
+    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
 
-    Task { @MainActor in
-      allCountryRegions = await BraveVPNRegionManager.shared.getAllRegionsWithDetails()
-    }
-    
-    // TODO: Remove Debugging information
-
-//    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
-
-    print("Precision \(helper.regionPrecision)")
-
-    let delayTime = DispatchTime.now() + .seconds(2)
-    DispatchQueue.main.asyncAfter(deadline: delayTime) {
-      helper.allRegions { regions, error in
-        print("All Regions Default with HELPER")
-
-        print("=======================")
-
-        print("\(regions)")
-
-        print("=======================")
-
-//        if let regions = regions {
-//          allCountryRegions = regions
-//        }
+    helper.allRegions { regions, error in
+      guard let regions = regions else {
+        return
       }
 
-      let serverManagerx = GRDServerManager(
-        regionPrecision: helper.regionPrecision,
-        serverFeatureEnvironment: helper.featureEnvironment,
-        betaCapableServers: false
-      )
-
-      serverManagerx.allRegions { regions, error in
-
-        print("All Regions Default with MANAGER")
-
-        print("=======================")
-
-        print("\(regions)")
-
-        print("=======================")
-
-      }
+      allCountryRegions = regions
     }
-
   }
 
   // MARK: - VPN Alerts and notifications
