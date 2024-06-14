@@ -162,6 +162,7 @@ export const useSwap = () => {
   const [quoteErrorUnion, setQuoteErrorUnion] = useState<
     BraveWallet.SwapErrorUnion | undefined
   >(undefined)
+  const [backendError, setBackendError] = useState<string | undefined>('')
   const [abortController, setAbortController] = useState<
     AbortController | undefined
   >(undefined)
@@ -341,6 +342,7 @@ export const useSwap = () => {
   const reset = useCallback(() => {
     setQuoteUnion(undefined)
     setQuoteErrorUnion(undefined)
+    setBackendError(undefined)
     setIsFetchingQuote(false)
     setSwapFees(undefined)
     setTimeUntilNextQuote(undefined)
@@ -429,6 +431,7 @@ export const useSwap = () => {
       setAbortController(controller)
       setIsFetchingQuote(true)
       setQuoteErrorUnion(undefined)
+      setBackendError(undefined)
 
       let quoteResponse
       try {
@@ -471,6 +474,11 @@ export const useSwap = () => {
 
       if (quoteResponse?.error) {
         setQuoteErrorUnion(quoteResponse.error)
+      }
+
+      if (quoteResponse?.errorString) {
+        console.log(`generateSwapQuote failed: ${quoteResponse.errorString}`)
+        setBackendError(quoteResponse.errorString)
       }
 
       if (quoteResponse?.response) {
@@ -878,6 +886,11 @@ export const useSwap = () => {
         fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)
       ) {
         return 'insufficientFundsForGas'
+      }
+
+      // No quote-based validations to perform when backend error is set.
+      if (backendError) {
+        return 'unknownError'
       }
 
       // EVM specific validations
