@@ -170,7 +170,7 @@ int FarbledPointerScreenCoordinate(const DOMWindow* view,
   if (!frame) {
     return true_screen_coordinate;
   }
-  double zoom_factor = frame->PageZoomFactor();
+  double zoom_factor = frame->LayoutZoomFactor();
   return FarbleInteger(context, key, zoom_factor * client_coordinate, 0, 8);
 }
 
