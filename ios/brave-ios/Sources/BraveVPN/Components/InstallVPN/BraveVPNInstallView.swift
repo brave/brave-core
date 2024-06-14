@@ -8,7 +8,7 @@ import BraveUI
 import Shared
 import UIKit
 
-extension InstallVPNViewController {
+extension BraveVPNInstallViewController {
   class View: UIView {
 
     private let mainStackView = UIStackView().then {

@@ -109,7 +109,7 @@ class BraveSkusWebHelper {
   }
 
   /// Takes credential passed from the Brave SKUs and extract a proper credential to pass to the GuardianConnect framework.
-  static func fetchVPNCredential(_ credential: String, domain: String) -> SkusVPNCredential? {
+  static func fetchVPNCredential(_ credential: String, domain: String) -> BraveVPNSkusCredential? {
     guard let unescapedCredential = credential.unescape(),
       let env = environment(domain: domain),
       let sampleUrl = URL(string: "https://brave.com")

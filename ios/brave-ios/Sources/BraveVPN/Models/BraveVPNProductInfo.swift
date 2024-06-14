@@ -9,7 +9,7 @@ import Shared
 import StoreKit
 import os.log
 
-public class VPNProductInfo: NSObject {
+public class BraveVPNProductInfo: NSObject {
   // Prices are fetched once per launch and kept in memory.
   // If the prices could not be fetched, we retry after user tries to go to buy-vpn screen.
   static var monthlySubProduct: SKProduct?
@@ -57,15 +57,15 @@ public class VPNProductInfo: NSObject {
   }
 }
 
-extension VPNProductInfo: SKProductsRequestDelegate {
+extension BraveVPNProductInfo: SKProductsRequestDelegate {
   public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse)
   {
     response.products.forEach {
       switch $0.productIdentifier {
       case ProductIdentifiers.monthlySub:
-        VPNProductInfo.monthlySubProduct = $0
+        BraveVPNProductInfo.monthlySubProduct = $0
       case ProductIdentifiers.yearlySub:
-        VPNProductInfo.yearlySubProduct = $0
+        BraveVPNProductInfo.yearlySubProduct = $0
       default:
         assertionFailure("Found product identifier that doesn't match")
       }

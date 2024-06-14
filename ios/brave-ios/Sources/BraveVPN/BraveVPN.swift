@@ -39,7 +39,7 @@ public class BraveVPN {
 
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
-  public static func initialize(customCredential: SkusVPNCredential?) {
+  public static func initialize(customCredential: BraveVPNSkusCredential?) {
     func clearConfiguration() {
       GRDVPNHelper.clearVpnConfiguration()
       clearCredentials()
@@ -106,7 +106,7 @@ public class BraveVPN {
     Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
   }
 
-  public static func setCustomVPNCredential(_ credential: SkusVPNCredential) {
+  public static func setCustomVPNCredential(_ credential: BraveVPNSkusCredential) {
     GRDSubscriptionManager.setIsPayingUser(true)
     populateRegionDataIfNecessary()
 
@@ -329,9 +329,9 @@ public class BraveVPN {
     let productId = credential.subscriptionType
 
     switch productId {
-    case VPNProductInfo.ProductIdentifiers.monthlySub:
+    case BraveVPNProductInfo.ProductIdentifiers.monthlySub:
       return .monthly
-    case VPNProductInfo.ProductIdentifiers.yearlySub:
+    case BraveVPNProductInfo.ProductIdentifiers.yearlySub:
       return .yearly
     default:
       return .other
@@ -347,11 +347,11 @@ public class BraveVPN {
     let productId = credential.subscriptionType
 
     switch productId {
-    case VPNProductInfo.ProductIdentifiers.monthlySub:
+    case BraveVPNProductInfo.ProductIdentifiers.monthlySub:
       return Strings.VPN.vpnSettingsMonthlySubName
-    case VPNProductInfo.ProductIdentifiers.yearlySub:
+    case BraveVPNProductInfo.ProductIdentifiers.yearlySub:
       return Strings.VPN.vpnSettingsYearlySubName
-    case VPNProductInfo.ProductIdentifiers.monthlySubSKU:
+    case BraveVPNProductInfo.ProductIdentifiers.monthlySubSKU:
       return Strings.VPN.vpnSettingsMonthlySubName
     default:
       assertionFailure("Can't get product id")
@@ -576,7 +576,6 @@ public class BraveVPN {
   }
 
   public static func populateRegionDataIfNecessary() {
-
     helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
 
     helper.allRegions { regions, error in
@@ -588,7 +587,17 @@ public class BraveVPN {
     }
   }
 
-  // MARK: - VPN Alerts and notifications
+  @MainActor
+  static func changeVPNRegionForPrecision(to region: GRDRegion?) async -> Bool {
+    return await withCheckedContinuation { continuation in
+      BraveVPN.changeVPNRegion(to: region) { success in
+        continuation.resume(returning: success)
+      }
+    }
+  }
+
+  // MARK: - VPN Alerts and Notifications
+
   private static func shouldProcessVPNAlerts() -> Bool {
     switch vpnState {
     case .purchased(let enabled):
@@ -720,8 +729,8 @@ public class BraveVPN {
   @MainActor public static func updateStorePromotionOrder() async {
     let storePromotionController = SKProductStorePromotionController.default()
     // Fetch Products
-    guard let yearlyProduct = VPNProductInfo.yearlySubProduct,
-      let monthlyProduct = VPNProductInfo.monthlySubProduct
+    guard let yearlyProduct = BraveVPNProductInfo.yearlySubProduct,
+      let monthlyProduct = BraveVPNProductInfo.monthlySubProduct
     else {
       Logger.module.debug("Found empty while fetching SKProducts for promotion order")
       return
@@ -740,8 +749,8 @@ public class BraveVPN {
     let storePromotionController = SKProductStorePromotionController.default()
 
     // Fetch Products
-    guard let yearlyProduct = VPNProductInfo.yearlySubProduct,
-      let monthlyProduct = VPNProductInfo.monthlySubProduct
+    guard let yearlyProduct = BraveVPNProductInfo.yearlySubProduct,
+      let monthlyProduct = BraveVPNProductInfo.monthlySubProduct
     else {
       Logger.module.debug("Found empty while fetching SKProducts for promotion order")
       return
