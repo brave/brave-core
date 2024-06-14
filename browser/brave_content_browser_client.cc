@@ -35,6 +35,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
@@ -80,6 +81,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
@@ -1350,4 +1352,13 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   metadata.full_version =
       base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
+}
+
+GURL BraveContentBrowserClient::SanitizeURL(
+    content::BrowserContext* browser_context,
+    const GURL& url) {
+  DCHECK(browser_context);
+  return brave::URLSanitizerServiceFactory::GetForBrowserContext(
+             browser_context)
+      ->SanitizeURL(url);
 }

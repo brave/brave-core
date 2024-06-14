@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <style>
+        textarea {
+            width: 600px;
+            height: 120px;
+        }
+    </style>
+
+    <script>
+        function copy_from_text_area(name) {
+            const ta = document.getElementById(name)
+            ta.focus()
+            ta.select()
+            document.execCommand('copy')
+        }
+
+        function copy_from_temp() {
+            const textArea = document.createElement("textarea")
+
+            textArea.style.position = 'fixed'
+            textArea.style.top = 0
+            textArea.style.left = 0
+            textArea.style.width = '2em'
+            textArea.style.height = '2em'
+            textArea.style.padding = 0
+            textArea.style.border = 'none'
+            textArea.style.outline = 'none'
+            textArea.style.boxShadow = 'none'
+            textArea.style.background = 'transparent'
+            textArea.value = 'https://youtu.be/?si=oLb865I64uJlLRJX'
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+
+            document.execCommand('copy')
+
+            document.body.removeChild(textArea)
+        }
+
+        function copy_from_div() {
+            const d = document.getElementById('text_div')
+
+            window.getSelection().selectAllChildren(d)
+            document.execCommand('copy')
+            window.getSelection().empty()
+        }
+
+        async function navigator_copy() {
+            await navigator.clipboard.writeText('https://youtu.be/B?si=oLb865I64uJlLRJX')
+        }
+    </script>
+
+</head>
+
+<body>
+    <div id="out"></div>
+    <div>
+        <div>Custom text: copy from text area</div>
+        <div>Put any text you want, then click 'Copy'. Data should be sanitized. </div>
+        <div> API: document.exec('copy') </div>
+        <div>
+            <textarea id="area_1">https://youtu.be/C?si=oLb865I64uJlLRJX</textarea>
+        </div>
+        <button id="test_1" onclick="copy_from_text_area('area_1')"> Copy </button>
+    </div>
+
+    <br>
+    <br
+    <div>
+        <div>Copy from text area</div>
+        <div>Data should be sanitized. </div>
+        <div>API: document.exec('copy') </div>
+        <div>
+            <textarea id="area_2" readonly="true">https://youtu.be/D?si=oLb865I64uJlLRJX</textarea>
+        </div>
+        <button id="test_2" onclick="copy_from_text_area('area_2')"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Navigator Clipboard API</div>
+        <div>https://youtu.be/E?si=oLb865I64uJlLRJX</div>
+        <div>API: navigator.clipboard.writeText </div>
+        <button id="test_3" onclick="navigator_copy()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy from the temporary textarea</div>
+        <div>https://youtu.be/F?si=oLb865I64uJlLRJX</div>
+        <div>API: document.exec('copy') </div>
+        <button id="test_4" onclick="copy_from_temp()"> Copy </button>
+    </div>
+
+    <br>
+    <br>
+    <div>
+        <div>Copy from div </div>
+        <div id="text_div" tabindex="-1">https://youtu.be/G?si=oLb865I64uJlLRJX</div>
+        <div>API: document.exec('copy') </div>
+        <button id="test_5" onclick="copy_from_div()"> Copy </button>
+    </div>
+
+</body>
+
+</html>

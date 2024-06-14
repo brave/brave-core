@@ -13,6 +13,7 @@
 // Allow the embedder to determine the user-agent according to user preferences.
 // Allow the embedder to control if access to privileged functions that could
 // be used by fingerprinting by a shared worker is allowed.
+// Allow the embedder to clean up the url before copying into the clipboard.
 #define SetBrowserStartupIsCompleteForTesting                                \
   Unused() {}                                                                \
   virtual void MaybeHideReferrer(                                            \
@@ -26,6 +27,7 @@
                                          BrowserContext* browser_context);   \
   virtual uint8_t WorkerGetBraveFarblingLevel(                               \
       const GURL& url, BrowserContext* browser_context);                     \
+  virtual GURL SanitizeURL(content::BrowserContext*, const GURL&);           \
   virtual void SetBrowserStartupIsCompleteForTesting
 
 #include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export
