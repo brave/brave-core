@@ -29,7 +29,6 @@ public class BraveVPNPickerViewController: UIViewController {
 
   var isLoading: Bool = false {
     didSet {
-
       navigationItem.hidesBackButton = isLoading
 
       // Prevent dismissing the modal by swipe when the VPN is being configured
