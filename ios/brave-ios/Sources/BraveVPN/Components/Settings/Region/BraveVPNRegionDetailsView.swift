@@ -34,11 +34,11 @@ struct BraveRegionDetailsView: View {
     self.isAutoSelectEnabled = isAutoSelectEnabled
     self.cityRegions = cityRegions
 
-    var regions: [VPNCityRegion] = []
+    var regions: [BraveVPNCityRegion] = []
 
     for cityRegion in cityRegions {
       regions.append(
-        VPNCityRegion(displayName: cityRegion.displayName, regionName: cityRegion.regionName)
+        BraveVPNCityRegion(displayName: cityRegion.displayName, regionName: cityRegion.regionName)
       )
     }
 
@@ -94,7 +94,7 @@ struct BraveRegionDetailsView: View {
   }
 
   @ViewBuilder
-  private func cityRegionItem(at index: Int, region: VPNCityRegion) -> some View {
+  private func cityRegionItem(at index: Int, region: BraveVPNCityRegion) -> some View {
     HStack {
       VStack(alignment: .leading) {
         Text(region.displayName.capitalizeFirstLetter)
@@ -126,7 +126,7 @@ struct BraveRegionDetailsView: View {
     }
   }
 
-  private func selectDesignatedVPNCity(_ region: VPNCityRegion) {
+  private func selectDesignatedVPNCity(_ region: BraveVPNCityRegion) {
     guard !isLoading, cityRegionDetail.selectedRegion?.regionName != region.regionName else {
       return
     }
@@ -139,13 +139,13 @@ struct BraveRegionDetailsView: View {
       // If the optimal server is chosen, we activate the country
       // This is done in order to handle auto selection
       // cities among the list in selected region/country
-      if region.regionName == VPNCityRegion.optimalCityRegionName {
+      if region.regionName == BraveVPNCityRegion.optimalCityRegionName {
         regionToChange = nil
       } else {
         regionToChange = cityRegions.filter { $0.regionName == region.regionName }.first
       }
 
-      let success = await BraveVPNRegionManager.shared.changeVPNRegionAsync(to: regionToChange)
+      let success = await BraveVPN.changeVPNRegionForPrecision(to: regionToChange)
 
       isLoading = false
 

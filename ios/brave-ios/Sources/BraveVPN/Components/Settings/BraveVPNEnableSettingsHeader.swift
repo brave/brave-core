@@ -7,7 +7,7 @@ import BraveUI
 import Shared
 import UIKit
 
-public class EnableVPNSettingHeader: UIView {
+public class BraveVPNEnableSettingsHeader: UIView {
 
   public var enableVPNTapped: (() -> Void)?
   public var dismissHeaderTapped: (() -> Void)?
