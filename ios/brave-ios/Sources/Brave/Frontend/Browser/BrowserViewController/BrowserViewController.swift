@@ -239,7 +239,7 @@ public class BrowserViewController: UIViewController {
   let notificationsPresenter = BraveNotificationsPresenter()
   var publisher: BraveCore.BraveRewards.PublisherInfo?
 
-  let vpnProductInfo = VPNProductInfo()
+  let vpnProductInfo = BraveVPNProductInfo()
 
   /// Window Protection instance which will be used for controller requires biometric authentication
   public var windowProtection: WindowProtection?

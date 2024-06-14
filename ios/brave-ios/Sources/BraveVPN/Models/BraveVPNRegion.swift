@@ -9,8 +9,47 @@ import GuardianConnect
 import Shared
 import SwiftUI
 
-extension GRDRegion {
+struct BraveVPNCityRegion: Identifiable, Equatable {
 
+  static let optimalCityRegionName = "auto"
+
+  let id = UUID()
+  let displayName: String
+  let regionName: String
+  var isAutomatic = false
+}
+
+class VPNCityRegionDetail: ObservableObject {
+  var cityRegions = [
+    BraveVPNCityRegion(
+      displayName: "Optimal",
+      regionName: BraveVPNCityRegion.optimalCityRegionName,
+      isAutomatic: true
+    )
+  ]
+
+  var countryName: String
+  var countryISOCode: String
+
+  @Published var selectedRegion: BraveVPNCityRegion? = nil
+
+  init(
+    isAutoSelectEnabled: Bool = true,
+    countryName: String,
+    countryISOCode: String,
+    cityRegions: [BraveVPNCityRegion]
+  ) {
+    self.countryName = countryName
+    self.countryISOCode = countryISOCode
+    self.cityRegions.append(contentsOf: cityRegions)
+
+    if isAutoSelectEnabled {
+      selectedRegion = self.cityRegions.first
+    }
+  }
+}
+
+extension GRDRegion {
   /// The title used in menu while chaging region
   public var settingTitle: String {
     var settingSelection = displayName

@@ -9,7 +9,7 @@ import Lottie
 import Shared
 import UIKit
 
-class InstallVPNViewController: VPNSetupLoadingController {
+class BraveVPNInstallViewController: VPNSetupLoadingController {
 
   private var installVPNView: View {
     return view as! View

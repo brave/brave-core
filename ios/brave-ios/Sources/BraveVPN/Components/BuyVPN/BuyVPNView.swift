@@ -468,7 +468,7 @@ class SubscriptionButton: UIControl {
       title = Strings.VPN.monthlySubTitle
       detail = Strings.VPN.monthlySubDetail
 
-      guard let product = VPNProductInfo.monthlySubProduct,
+      guard let product = BraveVPNProductInfo.monthlySubProduct,
         let formattedPrice = product.price
           .frontSymbolCurrencyFormatted(with: product.priceLocale)
       else {
@@ -480,10 +480,10 @@ class SubscriptionButton: UIControl {
       title = Strings.VPN.yearlySubTitle
       disclaimer = Strings.VPN.yearlySubDisclaimer
 
-      guard let monthlyProduct = VPNProductInfo.monthlySubProduct,
+      guard let monthlyProduct = BraveVPNProductInfo.monthlySubProduct,
         let discountFormattedPrice = monthlyProduct.price.multiplying(by: 12)
           .frontSymbolCurrencyFormatted(with: monthlyProduct.priceLocale),
-        let yearlyProduct = VPNProductInfo.yearlySubProduct,
+        let yearlyProduct = BraveVPNProductInfo.yearlySubProduct,
         let formattedYearlyPrice =
           yearlyProduct.price.frontSymbolCurrencyFormatted(with: yearlyProduct.priceLocale)
       else {
