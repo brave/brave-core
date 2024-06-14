@@ -174,9 +174,11 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
 
   if (!params.from_amount.empty()) {
     url = net::AppendQueryParameter(url, "amount", params.from_amount);
+    url = net::AppendQueryParameter(url, "swapMode", "ExactIn");
+  } else if (!params.to_amount.empty()) {
+    url = net::AppendQueryParameter(url, "amount", params.to_amount);
+    url = net::AppendQueryParameter(url, "swapMode", "ExactOut");
   }
-
-  url = net::AppendQueryParameter(url, "swapMode", "ExactIn");
 
   double slippage_percentage = 0.0;
   if (base::StringToDouble(params.slippage_percentage, &slippage_percentage)) {
