@@ -221,7 +221,7 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
-  if (is_tab_tiled) {
+  if (is_tab_tiled && path_type != TabStyle::PathType::kHitTest) {
     if (ShouldShowVerticalTabs()) {
       constexpr auto kPaddingForVerticalTab = 4;
       tab_top += scale * kPaddingForVerticalTab;
