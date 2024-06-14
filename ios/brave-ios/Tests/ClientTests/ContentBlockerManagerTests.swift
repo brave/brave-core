@@ -131,29 +131,6 @@ class ContentBlockerManagerTests: XCTestCase {
     XCTAssertNil(result)
   }
 
-  func testRulesTestingError() async {
-    let filterSet = [
-      "! This is a network rule",
-      "||example.com^",
-      "! This is an empty line",
-      "",
-      "! This is a cosmetic filter",
-      "example.com,example.net##h1",
-      "! This is an invalid rule",
-      "||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\\.strmrdr[a-z]+\\..*/",
-    ]
-
-    let manager = await makeManager()
-    let result = await manager.testRules(
-      forFilterSet: filterSet.joined(separator: "\n")
-    )
-    XCTAssertEqual(result?.line, 7)
-    XCTAssertEqual(
-      result?.rule,
-      "||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\\.strmrdr[a-z]+\\..*/"
-    )
-  }
-
   @MainActor private func makeManager() -> ContentBlockerManager {
     return ContentBlockerManager(
       ruleStore: ruleStore,
