@@ -332,6 +332,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/non_anonymous_url_host_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/static_url_host_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/common/url/url_util_internal_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/url/url_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/creatives/campaigns_database_table_unittest.cc",
     "//brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder_unittest.cc",
