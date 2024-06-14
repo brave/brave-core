@@ -29,6 +29,12 @@ std::optional<std::string> CreateWireguardConfig(
 
 WireguardKeyPair GenerateNewX25519Keypair();
 
+bool ValidateKey(const wchar_t* key,
+                 std::string* output,
+                 const std::string field_name);
+bool ValidateAddress(const wchar_t* address, std::string* output);
+bool ValidateEndpoint(const wchar_t* endpoint, std::string* output);
+
 }  // namespace wireguard
 
 }  // namespace brave_vpn

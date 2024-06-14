@@ -11,10 +11,16 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "crypto/openssl_util.h"
+#include "net/base/ip_address.h"
+#include "net/base/url_util.h"
 #include "third_party/boringssl/src/include/openssl/base64.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
+#include "third_party/re2/src/re2/re2.h"
+#include "url/url_util.h"
 
 namespace brave_vpn {
 
@@ -80,6 +86,102 @@ WireguardKeyPair GenerateNewX25519Keypair() {
   return std::make_tuple(
       EncodeBase64(std::vector<uint8_t>(pubkey, pubkey + 32)),
       EncodeBase64(std::vector<uint8_t>(privkey, privkey + 32)));
+}
+
+bool ValidateKey(const wchar_t* key,
+                 std::string* output,
+                 const std::string field_name) {
+  if (!base::WideToUTF8(key, wcslen(key), output)) {
+    VLOG(1) << "failed decoding " << field_name;
+    return false;
+  }
+
+  base::TrimWhitespaceASCII(*output, base::TRIM_ALL, output);
+
+  if ((*output).length() == 0) {
+    VLOG(1) << field_name << " does not have a value";
+    return false;
+  }
+
+  if (!re2::RE2::FullMatch(*output, R"(^[-A-Za-z0-9+\/=]+$)")) {
+    VLOG(1) << field_name << " contains invalid characters";
+    return false;
+  }
+
+  std::string decoded_config;
+  if (!base::Base64Decode(*output, &decoded_config) || decoded_config.empty()) {
+    VLOG(1) << field_name << " is not base64 encoded";
+    return false;
+  }
+
+  if (decoded_config.length() != 32) {
+    VLOG(1) << field_name << " is not the correct length";
+    return false;
+  }
+
+  return true;
+}
+
+bool ValidateAddress(const wchar_t* address, std::string* output) {
+  if (!base::WideToUTF8(address, wcslen(address), output)) {
+    VLOG(1) << "failed decoding address";
+    return false;
+  }
+
+  base::TrimWhitespaceASCII(*output, base::TRIM_ALL, output);
+
+  if (!re2::RE2::FullMatch(*output, R"(^[A-z0-9._\-:[\]]+$)")) {
+    VLOG(1) << "address contains invalid characters";
+    return false;
+  }
+
+  auto parsed = net::IPAddress::FromIPLiteral(*output);
+  if (!parsed.has_value()) {
+    VLOG(1) << "failed parsing address";
+    return false;
+  }
+
+  auto parsed_ip = parsed.value();
+  if (!parsed_ip.IsValid()) {
+    VLOG(1) << "address is not valid";
+    return false;
+  }
+
+  if (!parsed_ip.IsIPv4()) {
+    VLOG(1) << "address must be IPv4";
+    return false;
+  }
+
+  return true;
+}
+
+bool ValidateEndpoint(const wchar_t* endpoint, std::string* output) {
+  if (!base::WideToUTF8(endpoint, wcslen(endpoint), output)) {
+    VLOG(1) << "failed decoding endpoint";
+    return false;
+  }
+
+  base::TrimWhitespaceASCII(*output, base::TRIM_ALL, output);
+
+  if (!re2::RE2::FullMatch(*output, R"(^[A-z0-9._\-:]+$)")) {
+    VLOG(1) << "endpoint contains invalid characters";
+    return false;
+  }
+
+  std::string parsed_host;
+  int parsed_port = 0;
+  if (!net::ParseHostAndPort(*output, &parsed_host, &parsed_port)) {
+    VLOG(1) << "failed parsing endpoint";
+    return false;
+  }
+
+  if (!url::DomainIs(parsed_host, "guardianapp.com") &&
+      !url::DomainIs(parsed_host, "sudosecuritygroup.com")) {
+    VLOG(1) << "endpoint is not a valid hostname";
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace wireguard

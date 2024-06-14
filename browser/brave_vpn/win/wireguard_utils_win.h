@@ -20,7 +20,10 @@ namespace wireguard {
 bool IsBraveVPNWireguardTunnelServiceRunning();
 bool IsWireguardServiceInstalled();
 void WireguardGenerateKeypair(WireguardGenerateKeypairCallback callback);
-void EnableBraveVpnWireguardService(const std::string& config,
+void EnableBraveVpnWireguardService(const std::string& server_public_key,
+                                    const std::string& client_private_key,
+                                    const std::string& mapped_ip4_address,
+                                    const std::string& vpn_server_hostname,
                                     BooleanCallback callback);
 void DisableBraveVpnWireguardService(BooleanCallback callback);
 

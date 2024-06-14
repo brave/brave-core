@@ -26,12 +26,12 @@ namespace {
 constexpr wchar_t kBraveVpnWireguardServiceSubFolder[] =
     L"BraveVpnWireguardService";
 
-// 053057AB-CF06-4E6C-BBAD-F8DA6436D933
+// 6D319801-690B-441E-8C94-5C18D8E7E9D7
 constexpr IID kBraveWireguardServiceIID = {
-    0x053057ab,
-    0xcf06,
-    0x4e6c,
-    {0xbb, 0xad, 0xf8, 0xda, 0x64, 0x36, 0xd9, 0x33}};
+    0x6d319801,
+    0x690b,
+    0x441e,
+    {0x8c, 0x94, 0x5c, 0x18, 0xd8, 0xe7, 0xe9, 0xd7}};
 
 constexpr wchar_t kBraveNightlyWireguardTunnelServiceName[] =
     L"BraveVpnNightlyWireguardTunnelService";

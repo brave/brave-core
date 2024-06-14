@@ -6,13 +6,13 @@
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 
 #include <objbase.h>
+
 #include <stdint.h>
 #include <wrl/client.h>
 
 #include <optional>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -59,7 +59,11 @@ bool IsBraveVPNWireguardTunnelServiceRunning() {
          status.value() == SERVICE_START_PENDING;
 }
 
-bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
+bool EnableBraveVpnWireguardServiceImpl(
+    const std::string& server_public_key,
+    const std::string& client_private_key,
+    const std::string& mapped_ip4_address,
+    const std::string& vpn_server_hostname) {
   base::win::AssertComInitialized();
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
   if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
@@ -79,14 +83,21 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
   }
   DWORD error_code = 0;
   if (FAILED(service->EnableVpn(
-          base::UTF8ToWide(base::Base64Encode(config)).c_str(), &error_code))) {
+          ::SysAllocString(base::UTF8ToWide(server_public_key).c_str()),
+          ::SysAllocString(base::UTF8ToWide(client_private_key).c_str()),
+          ::SysAllocString(base::UTF8ToWide(mapped_ip4_address).c_str()),
+          ::SysAllocString(base::UTF8ToWide(vpn_server_hostname).c_str()),
+          &error_code))) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
   return error_code == 0;
 }
 
-void EnableBraveVpnWireguardService(const std::string& config,
+void EnableBraveVpnWireguardService(const std::string& server_public_key,
+                                    const std::string& client_private_key,
+                                    const std::string& mapped_ip4_address,
+                                    const std::string& vpn_server_hostname,
                                     wireguard::BooleanCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
@@ -95,7 +106,9 @@ void EnableBraveVpnWireguardService(const std::string& config,
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
       ->PostTaskAndReplyWithResult(
           FROM_HERE,
-          base::BindOnce(&EnableBraveVpnWireguardServiceImpl, config),
+          base::BindOnce(&EnableBraveVpnWireguardServiceImpl, server_public_key,
+                         client_private_key, mapped_ip4_address,
+                         vpn_server_hostname),
           std::move(callback));
 }
 
