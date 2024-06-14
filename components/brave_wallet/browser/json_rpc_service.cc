@@ -48,6 +48,7 @@
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
+#include "brave/net/base/url_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -435,29 +436,37 @@ void JsonRpcService::GetPendingAddChainRequests(
 
 void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
                               AddChainCallback callback) {
+  if (!base::ranges::all_of(chain->rpc_endpoints,
+                            &net::IsHTTPSOrLocalhostURL) ||
+      !base::ranges::all_of(chain->block_explorer_urls,
+                            &IsHTTPSOrLocalhostURL) ||
+      !base::ranges::all_of(chain->icon_urls, &IsHTTPSOrLocalhostURL)) {
+    std::move(callback).Run(
+        chain->chain_id, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL));
+    return;
+  }
+
   auto chain_id = chain->chain_id;
   GURL url = GetActiveEndpointUrl(*chain);
 
   if (!url.is_valid()) {
     std::move(callback).Run(
-        chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                  base::ASCIIToUTF16(url.spec())));
+        chain_id, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL));
     return;
   }
 
   if (CustomChainExists(prefs_, chain_id, chain->coin)) {
     std::move(callback).Run(
-        chain_id, mojom::ProviderError::kUserRejectedRequest,
+        chain_id, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
     return;
   }
 
-  // Custom networks for FIL, SOL and BTC are allowed to replace only known
-  // chain ids. So just update prefs without chain id validation.
-  if (chain->coin == mojom::CoinType::FIL ||
-      chain->coin == mojom::CoinType::SOL ||
-      chain->coin == mojom::CoinType::BTC) {
+  // Custom networks for non-EVM chain are allowed to replace only known chain
+  // ids. So just update prefs without chain id validation.
+  if (chain->coin != mojom::CoinType::ETH) {
     if (!KnownChainExists(chain_id, chain->coin)) {
       std::move(callback).Run(
           chain_id, mojom::ProviderError::kInternalError,
@@ -535,8 +544,7 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
   if (!url.is_valid()) {
     FirePendingRequestCompleted(
         chain_id,
-        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                  base::ASCIIToUTF16(url.spec())));
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL));
     add_chain_pending_requests_.erase(chain_id);
     return;
   }

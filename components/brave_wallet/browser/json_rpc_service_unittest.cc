@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -2166,8 +2167,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
               Contains(Eq(std::ref(expected_token))));
 
   bool failed_callback_is_called = false;
-  mojom::ProviderError expected_error =
-      mojom::ProviderError::kUserRejectedRequest;
+  mojom::ProviderError expected_error = mojom::ProviderError::kInvalidParams;
   json_rpc_service_->AddChain(
       chain.Clone(),
       base::BindLambdaForTesting([&failed_callback_is_called, &expected_error](
@@ -2352,6 +2352,43 @@ TEST_F(JsonRpcServiceUnitTest, AddChain) {
     json_rpc_service_->AddChain(chain.Clone(), callback.Get());
     // No need to RunUntilIdle, callback is resolved synchronously.
   }
+
+  // HTTP localhost URL is okay.
+  {
+    mojom::NetworkInfo chain = GetTestNetworkInfo1("0x3344");
+    ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), chain.chain_id,
+                                             mojom::CoinType::ETH)
+                     .is_valid());
+    SetEthChainIdInterceptor(GetActiveEndpointUrl(chain), chain.chain_id);
+
+    base::MockCallback<mojom::JsonRpcService::AddChainCallback> callback;
+    EXPECT_CALL(callback, Run("0x3344", mojom::ProviderError::kSuccess, ""));
+
+    chain.rpc_endpoints.push_back(GURL("http://localhost:8545"));
+    json_rpc_service_->AddChain(chain.Clone(), callback.Get());
+    task_environment_.RunUntilIdle();
+    EXPECT_THAT(
+        GetChain(prefs(), "0x3344", mojom::CoinType::ETH)->rpc_endpoints,
+        ElementsAreArray(
+            {GURL("https://url1.com"), GURL("http://localhost:8545")}));
+  }
+
+  // HTTP URL that's not localhost is not valid.
+  {
+    mojom::NetworkInfo chain = GetTestNetworkInfoWithHttpURL("0x5566");
+    ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), chain.chain_id,
+                                             mojom::CoinType::ETH)
+                     .is_valid());
+
+    base::MockCallback<mojom::JsonRpcService::AddChainCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run("0x5566", mojom::ProviderError::kInvalidParams,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL)));
+
+    json_rpc_service_->AddChain(chain.Clone(), callback.Get());
+    // No need to RunUntilIdle, callback is resolved synchronously.
+  }
 }
 
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
@@ -2379,8 +2416,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
 
   // Add a same chain.
   bool third_callback_is_called = false;
-  mojom::ProviderError third_expected =
-      mojom::ProviderError::kUserRejectedRequest;
+  mojom::ProviderError third_expected = mojom::ProviderError::kInvalidParams;
   json_rpc_service_->AddChain(
       chain.Clone(),
       base::BindLambdaForTesting([&third_callback_is_called, &third_expected](

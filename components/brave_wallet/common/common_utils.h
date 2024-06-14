@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "url/gurl.h"
 
 class PrefService;
 
@@ -88,6 +89,9 @@ std::string GetNetworkForBitcoinKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
 
 std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
+
+bool IsHTTPSOrLocalhostURL(const std::string& url);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_COMMON_UTILS_H_
