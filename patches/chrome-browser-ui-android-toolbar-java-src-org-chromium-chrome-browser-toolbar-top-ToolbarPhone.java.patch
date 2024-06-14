@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 274a8dec765d5de62a35007d3c2230b88616d400..73644176c68f38004278de958b2f4a628882a214 100644
+index e3b2f4d51879019b63b3f7b5864edd74fe8c292e..cbcf3c4e78501e61afd32f6f5d7f6d04b99339fe 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-@@ -450,6 +450,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -451,6 +451,7 @@ public class ToolbarPhone extends ToolbarLayout
          if (mOptionalButtonCoordinator != null) {
              mOptionalButtonCoordinator.setBackgroundColorFilter(color);
          }
@@ -10,7 +10,7 @@ index 274a8dec765d5de62a35007d3c2230b88616d400..73644176c68f38004278de958b2f4a62
      }
  
      private void updateModernLocationBarCorners() {
-@@ -611,6 +612,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -612,6 +613,7 @@ public class ToolbarPhone extends ToolbarLayout
                  mTrackerSupplier.get().notifyEvent(EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -18,7 +18,7 @@ index 274a8dec765d5de62a35007d3c2230b88616d400..73644176c68f38004278de958b2f4a62
      }
  
      @Override
-@@ -1107,6 +1109,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -1108,6 +1110,7 @@ public class ToolbarPhone extends ToolbarLayout
       * Tab Page.
       */
      private void updateLocationBarLayoutForExpansionAnimation() {
@@ -34,7 +34,7 @@ index 274a8dec765d5de62a35007d3c2230b88616d400..73644176c68f38004278de958b2f4a62
          // Draw the tab stack button and associated text if necessary.
          if (mTabSwitcherAnimationTabStackDrawable != null
                  && mToggleTabStackButton != null
-@@ -2338,6 +2342,7 @@ public class ToolbarPhone extends ToolbarLayout
+@@ -2347,6 +2351,7 @@ public class ToolbarPhone extends ToolbarLayout
          } else {
              populateUrlClearExpansionAnimatorSet(animators);
          }

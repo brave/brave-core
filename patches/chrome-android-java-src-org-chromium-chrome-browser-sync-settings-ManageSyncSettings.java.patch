@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 9c2a5b7c0a5589b557917406337a55cfba9d8107..5c07be513f0ee587d348c16cbba686608612dad8 100644
+index 1f6d053509c9f767d418025ddcbf6d1a9d65849a..14f7724ce393787c633bdf9712bfa6cc288c6ed2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -57,7 +57,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
