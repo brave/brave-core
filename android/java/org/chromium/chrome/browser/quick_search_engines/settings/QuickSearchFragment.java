@@ -31,7 +31,9 @@ import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuickSearchFragment extends BravePreferenceFragment
         implements TemplateUrlService.LoadListener, QuickSearchCallback {
@@ -116,12 +118,39 @@ public class QuickSearchFragment extends BravePreferenceFragment
                 defaultSearchEngineTemplateUrl,
                 mTemplateUrlService.isEeaChoiceCountry(),
                 mTemplateUrlService.shouldShowUpdatedSettings());
-
         List<QuickSearchEngineModel> searchEngines = new ArrayList<>();
-        for (int i = 0; i < templateUrls.size(); i++) {
-            TemplateUrl templateUrl = templateUrls.get(i);
-            searchEngines.add(new QuickSearchEngineModel(templateUrl, true, i));
+        if (QuickSearchEnginesUtil.getSearchEngines() != null) {
+            Map<String, QuickSearchEngineModel> searchEnginesMap =
+                    QuickSearchEnginesUtil.getSearchEngines();
+            for (int i = 0; i < templateUrls.size(); i++) {
+                TemplateUrl templateUrl = templateUrls.get(i);
+                if (searchEnginesMap.containsKey(templateUrl.getKeyword())) {
+                    QuickSearchEngineModel quickSearchEngineModel =
+                            searchEnginesMap.get(templateUrl.getKeyword());
+                    searchEngines.add(quickSearchEngineModel.getPosition(), quickSearchEngineModel);
+                }
+            }
+        } else {
+            Map<String, QuickSearchEngineModel> searchEnginesMap =
+                    new HashMap<String, QuickSearchEngineModel>();
+            for (int i = 0; i < templateUrls.size(); i++) {
+                TemplateUrl templateUrl = templateUrls.get(i);
+                QuickSearchEngineModel quickSearchEngineModel =
+                        new QuickSearchEngineModel(
+                                templateUrl.getShortName(),
+                                templateUrl.getKeyword(),
+                                templateUrl.getURL(),
+                                true,
+                                i);
+                searchEngines.add(quickSearchEngineModel);
+                searchEnginesMap.put(templateUrl.getKeyword(), quickSearchEngineModel);
+            }
+            QuickSearchEnginesUtil.saveSearchEngines(searchEnginesMap);
         }
+        setRecyclerViewData(searchEngines);
+    }
+
+    private void setRecyclerViewData(List<QuickSearchEngineModel> searchEngines) {
         mAdapter = new QuickSearchAdapter(getActivity(), searchEngines, this);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -148,9 +177,7 @@ public class QuickSearchFragment extends BravePreferenceFragment
 
     @Override
     public void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {
-        Log.e(
-                "quick_search : onSearchEngineClick",
-                quickSearchEngineModel.getTemplateUrl().getShortName());
+        Log.e("quick_search : onSearchEngineClick", quickSearchEngineModel.getShortName());
     }
 
     @Override
@@ -159,13 +186,10 @@ public class QuickSearchFragment extends BravePreferenceFragment
     @Override
     public void loadSearchEngineLogo(
             ImageView logoView, QuickSearchEngineModel quickSearchEngineModel) {
-        Log.e(
-                "quick_search : loadSearchEngineLogo",
-                quickSearchEngineModel.getTemplateUrl().getShortName());
         GURL faviconUrl =
                 new GURL(
                         mTemplateUrlService.getSearchEngineUrlFromTemplateUrl(
-                                quickSearchEngineModel.getTemplateUrl().getKeyword()));
+                                quickSearchEngineModel.getKeyword()));
         // Use a placeholder image while trying to fetch the logo.
         int uiElementSizeInPx =
                 getActivity()

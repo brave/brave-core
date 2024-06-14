@@ -315,6 +315,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/quick_search_engines/settings/QuickSearchAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/quick_search_engines/settings/QuickSearchCallback.java",
   "../../brave/android/java/org/chromium/chrome/browser/quick_search_engines/settings/QuickSearchEngineModel.java",
+  "../../brave/android/java/org/chromium/chrome/browser/quick_search_engines/settings/QuickSearchEnginesUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/quick_search_engines/settings/QuickSearchFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/quick_search_engines/settings/QuickSearchViewHolder.java",
   "../../brave/android/java/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialog.java",
