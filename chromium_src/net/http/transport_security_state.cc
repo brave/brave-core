@@ -130,6 +130,16 @@ GetHostBoundPartitionHashForHSTS(const std::string& host) {
 
 }  // namespace
 
+SSLUpgradeDecision TransportSecurityState::GetSSLUpgradeDecision(
+    const NetworkAnonymizationKey& network_anonymization_key,
+    const std::string& host,
+    const NetLogWithSource& net_log) {
+  auto auto_reset_partition_hash = enabled_sts_hosts_.SetScopedPartitionHash(
+      GetPartitionHashForHSTS(network_anonymization_key));
+  return TransportSecurityState_ChromiumImpl::GetSSLUpgradeDecision(host,
+                                                                    net_log);
+}
+
 bool TransportSecurityState::ShouldSSLErrorsBeFatal(
     const NetworkAnonymizationKey& network_anonymization_key,
     const std::string& host) {
