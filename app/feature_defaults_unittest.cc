@@ -174,6 +174,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kUseChromiumUpdater,
 #endif
 #if !BUILDFLAG(IS_ANDROID)
+      &features::kUseMoveNotCopyInMergeTreeUpdate,
       &features::kWebAppUniversalInstall,
 #endif
       &features::kWebIdentityDigitalCredentials,
