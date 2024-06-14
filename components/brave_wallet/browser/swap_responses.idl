@@ -45,16 +45,21 @@ namespace swap_responses {
     ZeroExFees fees;
   };
 
-  dictionary SwapErrorResponseItem0x {
+  dictionary ZeroExValidationError {
     DOMString field;
     DOMString code;
     DOMString reason;
   };
 
-  dictionary SwapErrorResponse0x {
+  dictionary ZeroExGenericError {
+    DOMString message;
+  };
+
+  dictionary ZeroExErrorResponse {
     DOMString code;
     DOMString reason;
-    SwapErrorResponseItem0x[]? validationErrors;
+    ZeroExValidationError[]? validationErrors;
+    ZeroExGenericError? values;
   };
 
   dictionary JupiterPlatformFee {

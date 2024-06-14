@@ -894,6 +894,10 @@ export const useSwap = () => {
           return 'insufficientLiquidity'
         }
 
+        if (quoteErrorUnion.zeroExError.isInsufficientAllowance) {
+          return 'insufficientAllowance'
+        }
+
         return 'unknownError'
       }
 
