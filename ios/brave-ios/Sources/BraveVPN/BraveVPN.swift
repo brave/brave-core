@@ -581,10 +581,55 @@ public class BraveVPN {
     serverManager.regions { regions, _ in
       self.regions = regions ?? []
     }
+    
+    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCountry)
+
 
     Task { @MainActor in
       allCountryRegions = await BraveVPNRegionManager.shared.getAllRegionsWithDetails()
     }
+    
+    // TODO: Remove Debugging information
+
+//    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
+
+    print("Precision \(helper.regionPrecision)")
+
+    let delayTime = DispatchTime.now() + .seconds(2)
+    DispatchQueue.main.asyncAfter(deadline: delayTime) {
+      helper.allRegions { regions, error in
+        print("All Regions Default with HELPER")
+
+        print("=======================")
+
+        print("\(regions)")
+
+        print("=======================")
+
+//        if let regions = regions {
+//          allCountryRegions = regions
+//        }
+      }
+
+      let serverManagerx = GRDServerManager(
+        regionPrecision: helper.regionPrecision,
+        serverFeatureEnvironment: helper.featureEnvironment,
+        betaCapableServers: false
+      )
+
+      serverManagerx.allRegions { regions, error in
+
+        print("All Regions Default with MANAGER")
+
+        print("=======================")
+
+        print("\(regions)")
+
+        print("=======================")
+
+      }
+    }
+
   }
 
   // MARK: - VPN Alerts and notifications
