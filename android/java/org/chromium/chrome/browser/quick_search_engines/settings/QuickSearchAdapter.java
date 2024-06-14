@@ -37,23 +37,26 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
     public void onBindViewHolder(
             @NonNull QuickSearchViewHolder quickSearchViewHolder, int position) {
         QuickSearchEngineModel quickSearchEngineModel = mSearchEngines.get(position);
-        Log.e("quick_search", quickSearchEngineModel.getTemplateUrl().getShortName());
-        quickSearchViewHolder.mSearchEngineText.setText(
-                quickSearchEngineModel.getTemplateUrl().getShortName());
-        quickSearchViewHolder.mView.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isChecked = quickSearchViewHolder.mSearchEngineSwitch.isChecked();
-                        quickSearchViewHolder.mSearchEngineSwitch.setChecked(!isChecked);
-                    }
-                });
+        quickSearchViewHolder.mSearchEngineText.setText(quickSearchEngineModel.getShortName());
+        quickSearchViewHolder.mSearchEngineSwitch.setChecked(quickSearchEngineModel.isEnabled());
         quickSearchViewHolder.mSearchEngineSwitch.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         Log.e("quick_search", "isChecked : " + isChecked);
                         onSearchEngineClick(quickSearchEngineModel);
+                    }
+                });
+
+        mQuickSearchCallback.loadSearchEngineLogo(
+                quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
+
+        quickSearchViewHolder.mView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isChecked = quickSearchViewHolder.mSearchEngineSwitch.isChecked();
+                        quickSearchViewHolder.mSearchEngineSwitch.setChecked(!isChecked);
                     }
                 });
 
@@ -65,8 +68,6 @@ public class QuickSearchAdapter extends RecyclerView.Adapter<QuickSearchViewHold
                         return true;
                     }
                 });
-        mQuickSearchCallback.loadSearchEngineLogo(
-                quickSearchViewHolder.mSearchEngineLogo, quickSearchEngineModel);
     }
 
     private void onSearchEngineClick(QuickSearchEngineModel quickSearchEngineModel) {

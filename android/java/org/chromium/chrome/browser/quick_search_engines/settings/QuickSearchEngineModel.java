@@ -5,21 +5,44 @@
 
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
-import org.chromium.components.search_engines.TemplateUrl;
 
 public class QuickSearchEngineModel {
-    private TemplateUrl mTemplateUrl;
+    // private TemplateUrl mTemplateUrl;
+    private String mShortName;
+    private String mKeyword;
+    private String mUrl;
     private boolean mIsEnabled;
     private int mPosition;
 
-    QuickSearchEngineModel(TemplateUrl templateUrl, boolean isEnabled, int position) {
-        this.mTemplateUrl = templateUrl;
+    // QuickSearchEngineModel(TemplateUrl templateUrl, boolean isEnabled, int position) {
+    //     this.mTemplateUrl = templateUrl;
+    //     this.mIsEnabled = isEnabled;
+    //     this.mPosition = position;
+    // }
+
+    // public TemplateUrl getTemplateUrl() {
+    //     return mTemplateUrl;
+    // }
+
+    QuickSearchEngineModel(
+            String shortName, String keyword, String url, boolean isEnabled, int position) {
+        this.mShortName = shortName;
+        this.mKeyword = keyword;
+        this.mUrl = url;
         this.mIsEnabled = isEnabled;
         this.mPosition = position;
     }
 
-    public TemplateUrl getTemplateUrl() {
-        return mTemplateUrl;
+    public String getShortName() {
+        return mShortName;
+    }
+
+    public String getKeyword() {
+        return mKeyword;
+    }
+
+    public String getUrl() {
+        return mUrl;
     }
 
     public boolean isEnabled() {
