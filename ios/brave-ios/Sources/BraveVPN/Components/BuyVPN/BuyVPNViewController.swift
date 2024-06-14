@@ -188,9 +188,9 @@ public class BuyVPNViewController: VPNSetupLoadingController {
 
     switch type {
     case .yearly:
-      subscriptionProduct = VPNProductInfo.yearlySubProduct
+      subscriptionProduct = BraveVPNProductInfo.yearlySubProduct
     case .monthly:
-      subscriptionProduct = VPNProductInfo.monthlySubProduct
+      subscriptionProduct = BraveVPNProductInfo.monthlySubProduct
     }
 
     guard let subscriptionProduct = subscriptionProduct else {
@@ -215,7 +215,7 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
     // Not using `push` since we don't want the user to go back.
     DispatchQueue.main.async {
       self.navigationController?.setViewControllers(
-        [InstallVPNViewController()],
+        [BraveVPNInstallViewController()],
         animated: true
       )
     }
