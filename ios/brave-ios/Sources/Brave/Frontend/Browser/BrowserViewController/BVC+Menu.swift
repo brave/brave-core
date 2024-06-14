@@ -111,7 +111,7 @@ extension BrowserViewController {
           )
           vc.title = "Server Region"
 
-          //          let vc = BraveVPNRegionPickerViewController()
+//          let vc = BraveVPNRegionPickerViewController()
           (self.presentedViewController as? MenuViewController)?
             .pushInnerMenu(vc)
         }
