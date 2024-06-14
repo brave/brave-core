@@ -244,6 +244,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _selectedWalletAccountChanged: { [weak self] account in
@@ -302,13 +303,20 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     rpcService.network(coin: token.coin, origin: nil) { [weak self] network in
-      self?.rpcService.balance(
+      if let assetBalance = self?.assetManager.getBalances(
         for: token,
-        in: account.address,
-        network: network,
-        decimalFormatStyle: .decimals(precision: Int(token.decimals))
-      ) { balance in
-        completion(balance)
+        account: account.id
+      )?.first(where: { $0.chainId == network.chainId }) {
+        completion(BDouble(assetBalance.balance))
+      } else {
+        self?.rpcService.balance(
+          for: token,
+          in: account.address,
+          network: network,
+          decimalFormatStyle: .decimals(precision: Int(token.decimals))
+        ) { balance in
+          completion(balance)
+        }
       }
     }
   }
@@ -685,22 +693,29 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
 
     // Check if balance available to pay for gas
-    let (ethBalanceString, _, _) = await rpcService.balance(
-      address: accountInfo.address,
-      coin: network.coin,
-      chainId: network.chainId
-    )
+    let ethBalance: BDouble
+    if let assetBalance = assetManager.getBalances(
+      for: network.nativeToken,
+      account: accountInfo.id
+    )?.first(where: { $0.chainId == network.chainId }) {
+      ethBalance = BDouble(assetBalance.balance) ?? 0
+    } else {
+      let (ethBalanceString, _, _) = await rpcService.balance(
+        address: accountInfo.address,
+        coin: network.coin,
+        chainId: network.chainId
+      )
+      let balanceFormatter = WalletAmountFormatter(decimalFormatStyle: .balance)
+      ethBalance =
+        BDouble(
+          balanceFormatter.decimalString(
+            for: ethBalanceString.removingHexPrefix,
+            radix: .hex,
+            decimals: 18
+          ) ?? ""
+        ) ?? 0
+    }
     let fee = gasLimit * gasPrice
-    let balanceFormatter = WalletAmountFormatter(decimalFormatStyle: .balance)
-    let ethBalance =
-      BDouble(
-        balanceFormatter.decimalString(
-          for: ethBalanceString.removingHexPrefix,
-          radix: .hex,
-          decimals: 18
-        )
-          ?? ""
-      ) ?? 0
     if fromToken.symbol == network.symbol {
       if ethBalance < fee + sellAmountValue {
         self.state = .error(Strings.Wallet.insufficientFundsForGas)
@@ -817,19 +832,27 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
     // Check if balance available to pay for gas
     if route.fromToken.coin == .eth {
-      let (ethBalanceString, _, _) = await rpcService.balance(
-        address: accountInfo.address,
-        coin: network.coin,
-        chainId: network.chainId
-      )
-      let ethBalance =
-        BDouble(
-          walletAmountFormatter.decimalString(
-            for: ethBalanceString.removingHexPrefix,
-            radix: .hex,
-            decimals: 18
-          ) ?? ""
-        ) ?? 0
+      let ethBalance: BDouble
+      if let assetBalance = assetManager.getBalances(
+        for: network.nativeToken,
+        account: accountInfo.id
+      )?.first(where: { $0.chainId == network.chainId }) {
+        ethBalance = BDouble(assetBalance.balance) ?? 0
+      } else {
+        let (ethBalanceString, _, _) = await rpcService.balance(
+          address: accountInfo.address,
+          coin: network.coin,
+          chainId: network.chainId
+        )
+        ethBalance =
+          BDouble(
+            walletAmountFormatter.decimalString(
+              for: ethBalanceString.removingHexPrefix,
+              radix: .hex,
+              decimals: 18
+            ) ?? ""
+          ) ?? 0
+      }
       let feeTotal: Double = step.estimate.gasCosts.reduce(Double(0)) { total, cost in
         total + (Double(cost.amount) ?? 0)
       }
@@ -1214,4 +1237,17 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     selectedFromToken = .previewToken
   }
   #endif
+}
+
+extension SwapTokenStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    if let token = selectedFromToken {
+      fetchTokenBalance(for: token) { [weak self] balance in
+        self?.selectedFromTokenBalance = balance
+      }
+    }
+  }
+
+  public func userAssetUpdated() {
+  }
 }

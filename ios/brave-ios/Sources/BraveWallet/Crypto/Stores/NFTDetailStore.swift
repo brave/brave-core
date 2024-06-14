@@ -118,6 +118,8 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
   }
 
   func setupObservers() {
+    guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onTransactionStatusChanged: { [weak self] txInfo in
@@ -142,9 +144,7 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
         networkInfo = network
       }
 
-      if owner == nil {
-        updateOwner()
-      }
+      updateOwner()
 
       if nftMetadata == nil {
         isLoading = true
@@ -182,15 +182,22 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
       let accounts = await keyringService.allAccounts().accounts
       let nftBalances: [String: Int] = await withTaskGroup(
         of: [String: Int].self,
-        body: { @MainActor [rpcService, nft] group in
+        body: { @MainActor [assetManager, rpcService, nft] group in
           for account in accounts where account.coin == nft.coin {
             group.addTask { @MainActor in
-              let balanceForToken = await rpcService.balance(
+              if let assetBalance = assetManager.getBalances(
                 for: nft,
-                in: account,
-                network: network
-              )
-              return [account.id: Int(balanceForToken ?? 0)]
+                account: account.id
+              )?.first {
+                return [account.id: (assetBalance.balance as NSString).integerValue]
+              } else {
+                let balanceForToken = await rpcService.balance(
+                  for: nft,
+                  in: account,
+                  network: network
+                )
+                return [account.id: Int(balanceForToken ?? 0)]
+              }
             }
           }
           return await group.reduce(
@@ -215,5 +222,14 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
         owner = nil
       }
     }
+  }
+}
+
+extension NFTDetailStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    update()
+  }
+
+  func userAssetUpdated() {
   }
 }

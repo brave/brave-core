@@ -115,6 +115,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     keyringServiceObserver = nil
     txServiceObserver = nil
     walletServiceObserver = nil
+    dataObservers.removeAllObjects()
   }
 
   public func setupObservers() {

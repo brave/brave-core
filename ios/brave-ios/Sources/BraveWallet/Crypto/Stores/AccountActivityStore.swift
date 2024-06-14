@@ -202,13 +202,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       let allTokens = await blockchainRegistry.allTokens(in: networksForAccountCoin).flatMap(
         \.tokens
       )
-      (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
-        userNetworkAssets: allUserNetworkAssets,
-        tokenBalances: tokenBalanceCache,
-        tokenPrices: tokenPricesCache,
-        nftMetadata: nftMetadataCache,
-        btcBalances: btcBalancesCache
-      )
       let allAccountsForCoin = await keyringService.allAccounts().accounts.filter {
         $0.coin == account.coin
       }
@@ -228,8 +221,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
 
       self.isLoadingAccountFiat = true
-      // TODO: cleanup with balance caching with issue
-      // https://github.com/brave/brave-browser/issues/36764
       var tokenBalances: [String: Double] = [:]
       if account.coin == .btc {
         let networkAsset = allUserNetworkAssets.first {
@@ -244,12 +235,30 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           tokenBalances = [btcToken.id: btcTotalBalance]
         }
       } else {
-        tokenBalances = await self.rpcService.fetchBalancesForTokens(
-          account: account,
-          networkAssets: allUserNetworkAssets
-        )
+        if let accountBalances = self.assetManager.getBalances(for: nil, account: account.id) {
+          tokenBalances = accountBalances.reduce(into: [String: Double]()) {
+            let tokenId =
+              $1.contractAddress + $1.chainId
+              + $1.symbol + $1.tokenId
+            $0[tokenId] = Double($1.balance) ?? 0
+          }
+        } else {
+          tokenBalances = await self.rpcService.fetchBalancesForTokens(
+            account: account,
+            networkAssets: allUserNetworkAssets
+          )
+        }
       }
       tokenBalanceCache.merge(with: tokenBalances)
+      // update assets, NFTs, after balance fetch
+      guard !Task.isCancelled else { return }
+      (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
+        userNetworkAssets: allUserNetworkAssets,
+        tokenBalances: tokenBalanceCache,
+        tokenPrices: tokenPricesCache,
+        nftMetadata: nftMetadataCache,
+        btcBalances: btcBalancesCache
+      )
 
       // fetch price for every user asset
       let prices: [String: String] = await assetRatioService.fetchPrices(
@@ -272,8 +281,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.accountTotalFiat = currencyFormatter.formatAsFiat(totalFiat) ?? "$0.00"
       self.isLoadingAccountFiat = false
 
-      guard !Task.isCancelled else { return }
       // update assets, NFTs, transactions after balance & price fetch
+      guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,
         tokenBalances: tokenBalanceCache,
@@ -298,7 +307,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         ipfsApi: ipfsApi
       )
       nftMetadataCache.merge(with: allNFTMetadata)
-
+      // update assets, NFTs, transactions after balance & price & metadata fetch
       guard !Task.isCancelled else { return }
       (self.userAssets, self.userNFTs) = buildAssetsAndNFTs(
         userNetworkAssets: allUserNetworkAssets,
@@ -508,6 +517,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
 extension AccountActivityStore: WalletUserAssetDataObserver {
   public func cachedBalanceRefreshed() {
+    update()
   }
 
   public func userAssetUpdated() {

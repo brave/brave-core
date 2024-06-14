@@ -210,6 +210,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onNewUnapprovedTx: { _ in
@@ -457,7 +458,16 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasBalancesForChain[account.id] = availableBTCBalance
       }
     } else {
-      if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
+      if let assetBalance = assetManager.getBalances(
+        for: token,
+        account: account.id
+      )?.first(where: { $0.chainId == network.chainId }) {
+        gasBalancesForChain[account.id] = Double(assetBalance.balance) ?? 0
+      } else if let gasTokenBalance = await rpcService.balance(
+        for: token,
+        in: account,
+        network: network
+      ) {
         gasBalancesForChain[account.id] = gasTokenBalance
       }
     }
@@ -992,4 +1002,17 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 struct TransactionProviderError {
   let code: Int
   let message: String
+}
+
+extension TransactionConfirmationStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    updateTransaction(
+      with: activeTransaction,
+      shouldFetchCurrentAllowance: false,
+      shouldFetchGasTokenBalance: true
+    )
+  }
+
+  public func userAssetUpdated() {
+  }
 }
