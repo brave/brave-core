@@ -13,7 +13,7 @@ public class BraveVPNRegionManager {
   public static let shared = BraveVPNRegionManager()
 
   private let vpnRegionListEndPoint =
-    "https://connect-api.guardianapp.com/api/v1.3/servers/all-server-regions/country"
+    "https://connect-api.guardianapp.com/api/v1.3/servers/all-server-regions/city-by-country"
 
   private var sessionManager: URLSession
 
