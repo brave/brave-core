@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 
-#include "base/files/file_path.h"
-#include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"

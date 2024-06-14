@@ -107,15 +107,20 @@ class AIRewriterDialogDelegate::DialogPositioner
       : top_(host->GetDialogPosition({}).y()),
         target_contents_(target_contents->GetWeakPtr()),
         dialog_widget_(dialog_widget->GetWeakPtr()) {
+    // TODO(fallaciousreasoning): In a follow up PR we should handle reparenting
+    // |target_contents_| into another browser. For now, we just assume it
+    // remains in the same widget (which it won't necessarily).
+
     auto* browser = chrome::FindBrowserWithTab(target_contents);
     CHECK(browser);
 
-    host_widget_ = views::Widget::GetWidgetForNativeWindow(
-                       browser->window()->GetNativeWindow())
-                       ->GetWeakPtr();
-    CHECK(host_widget_);
+    auto* host_widget = views::Widget::GetWidgetForNativeWindow(
+        browser->window()->GetNativeWindow());
+    CHECK(host_widget);
 
-    host_widget_observation_.Observe(host_widget_.get());
+    host_widget_ = host_widget->GetWeakPtr();
+
+    host_widget_observation_.Observe(host_widget);
     dialog_widget_observation_.Observe(dialog_widget);
     host_observation_.Observe(host);
 
@@ -127,6 +132,10 @@ class AIRewriterDialogDelegate::DialogPositioner
   ~DialogPositioner() override = default;
 
   void OnPositionRequiresUpdate() override {
+    if (!target_contents_) {
+      return;
+    }
+
     UpdatePosition(target_contents_->GetFocusedFrame());
     UpdateFocusedBounds();
   }
@@ -148,7 +157,9 @@ class AIRewriterDialogDelegate::DialogPositioner
       return;
     }
     auto* browser = chrome::FindBrowserWithTab(target_contents_.get());
-    CHECK(browser);
+    if (!browser) {
+      return;
+    }
 
     mojo::Remote<mojom::AIRewriterAgent> agent;
     auto* frame = target_contents_->GetFocusedFrame();

@@ -12,7 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "ui/views/widget/widget.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 
 namespace content {
@@ -20,6 +19,10 @@ class WebContents;
 class NavigationHandle;
 struct FocusedNodeDetails;
 }  // namespace content
+
+namespace views {
+class Widget;
+}
 
 namespace ai_rewriter {
 
