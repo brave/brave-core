@@ -13,18 +13,16 @@ import os.log
 
 /// A static class to handle all things related to the Brave VPN service.
 public class BraveVPN {
-  
+
   private static let serverManager = GRDServerManager()
   private static let tunnelManager = GRDTunnelManager()
 
   public static let housekeepingApi = GRDHousekeepingAPI()
   public static let helper = GRDVPNHelper.sharedInstance()
-  
+
   public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
-
-  // Non translatable
-  private static let connectionName = "Brave Firewall + VPN"
+  private static let connectionName = "Brave Firewall + VPN"  // Non translatable
 
   // MARK: - Initialization
 
@@ -85,31 +83,7 @@ public class BraveVPN {
     }
   }
 
-  /// Returns true if the app store receipt is in sandbox mode.
-  /// This can typically let us know whether a Testflight build is used or not.
-  /// Keep in mind this function may not work correctly for future iOS builds.
-  /// Apple prefers to validate the receipt by using a server.
-  public static var isSandbox: Bool {
-    Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
-  }
-
-  public static func setCustomVPNCredential(_ credential: BraveVPNSkusCredential) {
-    GRDSubscriptionManager.setIsPayingUser(true)
-    populateRegionDataIfNecessary()
-
-    let dict: NSMutableDictionary =
-      [
-        "brave-vpn-premium-monthly-pass": credential.guardianCredential,
-        "brave-payments-env": credential.environment,
-        "validation-method": "brave-premium",
-      ]
-    helper.customSubscriberCredentialAuthKeys = dict
-  }
-
   // MARK: - STATE
-
-  /// Lock to prevent user from spamming connect/disconnect button.
-  public static var reconnectPending = false
 
   /// A state in which the vpn can be.
   public enum State: Equatable {
@@ -126,6 +100,17 @@ public class BraveVPN {
       case .purchased: return nil
       }
     }
+  }
+
+  /// Lock to prevent user from spamming connect/disconnect button.
+  public static var reconnectPending = false
+
+  /// Returns true if the app store receipt is in sandbox mode.
+  /// This can typically let us know whether a Testflight build is used or not.
+  /// Keep in mind this function may not work correctly for future iOS builds.
+  /// Apple prefers to validate the receipt by using a server.
+  public static var isSandbox: Bool {
+    Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
   }
 
   /// Current state ot the VPN service.
@@ -302,6 +287,21 @@ public class BraveVPN {
         return
       }
     }
+  }
+
+  // MARK: - Credentials
+
+  public static func setCustomVPNCredential(_ credential: BraveVPNSkusCredential) {
+    GRDSubscriptionManager.setIsPayingUser(true)
+    populateRegionDataIfNecessary()
+
+    let dict: NSMutableDictionary =
+      [
+        "brave-vpn-premium-monthly-pass": credential.guardianCredential,
+        "brave-payments-env": credential.environment,
+        "validation-method": "brave-premium",
+      ]
+    helper.customSubscriberCredentialAuthKeys = dict
   }
 
   public static func clearCredentials() {
