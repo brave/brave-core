@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "brave_base/random.h"
 
@@ -18,6 +19,7 @@ std::optional<base::TimeDelta> g_rand_time_delta_for_testing;
 
 base::TimeDelta RandTimeDelta(const base::TimeDelta time_delta) {
   if (g_rand_time_delta_for_testing) {
+    CHECK_IS_TEST();
     return *g_rand_time_delta_for_testing;
   }
 
