@@ -86,6 +86,17 @@ inline constexpr const char* kAllowedUrlPatterns[] = {
     "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json",
 };
 
+inline constexpr const char* kRewardsRelatedDomains[] = {
+    "https://ledger.mercury.basicattentiontoken.org/",
+    "https://ledger-staging.mercury.basicattentiontoken.org/",
+    "https://balance.mercury.basicattentiontoken.org/",
+    "https://balance-staging.mercury.basicattentiontoken.org/",
+    "https://publishers.basicattentiontoken.org/",
+    "https://publishers-staging.basicattentiontoken.org/",
+    "https://publishers-distro.basicattentiontoken.org/",
+    "https://publishers-staging-distro.basicattentiontoken.org/"
+};
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_NETWORK_AUDIT_ALLOWED_LISTS_H_
