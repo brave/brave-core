@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_location_view.h"
 
 #include <memory>
 #include <utility>
@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/ui/views/brave_news/brave_news_bubble_controller.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -60,10 +61,6 @@ BraveNewsLocationView::BraveNewsLocationView(
 }
 
 BraveNewsLocationView::~BraveNewsLocationView() = default;
-
-views::BubbleDialogDelegate* BraveNewsLocationView::GetBubble() const {
-  return bubble_view_;
-}
 
 void BraveNewsLocationView::UpdateImpl() {
   auto* contents = GetWebContents();
@@ -148,22 +145,7 @@ void BraveNewsLocationView::OnThemeChanged() {
 
 void BraveNewsLocationView::OnExecuting(
     PageActionIconView::ExecuteSource execute_source) {
-  // If the bubble is already open, do nothing.
-  if (IsBubbleShowing()) {
-    return;
-  }
-
-  auto* contents = GetWebContents();
-  if (!contents) {
-    return;
-  }
-
-  bubble_view_ = new BraveNewsBubbleView(this, contents);
-  bubble_view_->SetCloseCallback(base::BindOnce(
-      &BraveNewsLocationView::OnBubbleClosed, base::Unretained(this)));
-  auto* bubble_widget =
-      views::BubbleDialogDelegateView::CreateBubble(bubble_view_);
-  bubble_widget->Show();
+  ShowBraveNewsBubble();
 }
 
 void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
@@ -178,8 +160,27 @@ void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
   SetIconColor(icon_color);
 }
 
-void BraveNewsLocationView::OnBubbleClosed() {
-  bubble_view_ = nullptr;
+brave_news::BraveNewsBubbleController* BraveNewsLocationView::GetController()
+    const {
+  auto* web_contents = GetWebContents();
+  return web_contents ? brave_news::BraveNewsBubbleController::
+                            CreateOrGetFromWebContents(web_contents)
+                      : nullptr;
+}
+
+views::BubbleDialogDelegate* BraveNewsLocationView::GetBubble() const {
+  auto* controller = GetController();
+  return controller ? controller->GetBubble() : nullptr;
+}
+
+void BraveNewsLocationView::ShowBraveNewsBubble() {
+  if (auto* controller = GetController()) {
+    controller->ShowBubble(AsWeakPtr());
+  }
+}
+
+base::WeakPtr<BraveNewsLocationView> BraveNewsLocationView::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 BEGIN_METADATA(BraveNewsLocationView)

@@ -17,7 +17,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_location_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"

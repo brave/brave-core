@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_location_view.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
