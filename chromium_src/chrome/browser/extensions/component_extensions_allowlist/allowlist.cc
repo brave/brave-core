@@ -25,6 +25,7 @@ namespace extensions {
   bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
     const char* const kAllowed[] = {
       brave_extension_id,
+      parental_control_id,
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
       ethereum_remote_client_extension_id,
 #endif
@@ -32,6 +33,7 @@ namespace extensions {
     };
 
     for (size_t i = 0; i < std::size(kAllowed); ++i) {
+      LOG(ERROR) << "extension_id " << extension_id << " kAllowed " <<  kAllowed[i];
       if (extension_id == kAllowed[i])
         return true;
     }
