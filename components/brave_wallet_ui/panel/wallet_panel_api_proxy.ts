@@ -7,7 +7,6 @@ import WalletApiProxy from '../common/wallet_api_proxy'
 import { BraveWallet } from '../constants/types'
 
 export class WalletPanelApiProxy extends WalletApiProxy {
-  callbackRouter = new BraveWallet.PageCallbackRouter()
   panelHandler = new BraveWallet.PanelHandlerRemote()
 
   constructor() {
@@ -15,7 +14,6 @@ export class WalletPanelApiProxy extends WalletApiProxy {
 
     const factory = BraveWallet.PanelHandlerFactory.getRemote()
     factory.createPanelHandler(
-      this.callbackRouter.$.bindNewPipeAndPassRemote(),
       this.panelHandler.$.bindNewPipeAndPassReceiver(),
       this.walletHandler.$.bindNewPipeAndPassReceiver(),
       this.jsonRpcService.$.bindNewPipeAndPassReceiver(),

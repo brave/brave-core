@@ -57,6 +57,7 @@
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -289,12 +290,12 @@ RewardsServiceImpl::RewardsServiceImpl(
 #if BUILDFLAG(ENABLE_GREASELION)
     greaselion::GreaselionService* greaselion_service,
 #endif
-    brave_wallet::JsonRpcService* wallet_rpc_service)
+    brave_wallet::BraveWalletService* brave_wallet_service)
     : profile_(profile),
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
-      wallet_rpc_service_(wallet_rpc_service),
+      brave_wallet_service_(brave_wallet_service),
       receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -316,8 +317,9 @@ RewardsServiceImpl::RewardsServiceImpl(
                               std::make_unique<BraveRewardsSource>(profile_));
   ready_ = std::make_unique<base::OneShotEvent>();
 
-  if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature))
+  if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature)) {
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
+  }
 
 #if BUILDFLAG(ENABLE_GREASELION)
   if (greaselion_service_) {
@@ -1113,7 +1115,12 @@ void RewardsServiceImpl::GetSPLTokenAccountBalance(
     const std::string& solana_address,
     const std::string& token_mint_address,
     GetSPLTokenAccountBalanceCallback callback) {
-  wallet_rpc_service_->GetSPLTokenAccountBalance(
+  if (!brave_wallet_service_) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  brave_wallet_service_->json_rpc_service()->GetSPLTokenAccountBalance(
       solana_address, token_mint_address, brave_wallet::mojom::kSolanaMainnet,
       base::BindOnce(&RewardsServiceImpl::OnGetSPLTokenAccountBalance,
                      AsWeakPtr(), std::move(callback)));
@@ -1534,11 +1541,9 @@ void RewardsServiceImpl::OnPanelPublisherInfo(mojom::Result result,
     return;
   }
 
-  for (auto& observer : observers_)
-    observer.OnPanelPublisherInfo(this,
-                                  result,
-                                  info.get(),
-                                  windowId);
+  for (auto& observer : observers_) {
+    observer.OnPanelPublisherInfo(this, result, info.get(), windowId);
+  }
 }
 
 void RewardsServiceImpl::GetAutoContributionAmount(

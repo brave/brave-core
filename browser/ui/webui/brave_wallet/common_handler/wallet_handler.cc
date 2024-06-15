@@ -5,11 +5,10 @@
 
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 
-#include <string>
 #include <utility>
-#include <vector>
 
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -21,21 +20,24 @@ WalletHandler::WalletHandler(
     mojo::PendingReceiver<mojom::WalletHandler> receiver,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
-      keyring_service_(KeyringServiceFactory::GetServiceForContext(profile)) {}
+      brave_wallet_service_(
+          BraveWalletServiceFactory::GetServiceForContext(profile)) {}
 
 WalletHandler::~WalletHandler() = default;
 
 // TODO(apaymyshev): this is the only method in WalletHandler. Should be merged
 // into BraveWalletService.
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
-  if (!keyring_service_) {
+  if (!brave_wallet_service_) {
     std::move(callback).Run(nullptr);
     return;
   }
 
+  auto* keyring_service = brave_wallet_service_->keyring_service();
+
   std::move(callback).Run(mojom::WalletInfo::New(
-      keyring_service_->IsWalletCreatedSync(), keyring_service_->IsLockedSync(),
-      keyring_service_->IsWalletBackedUpSync(), IsBitcoinEnabled(),
+      keyring_service->IsWalletCreatedSync(), keyring_service->IsLockedSync(),
+      keyring_service->IsWalletBackedUpSync(), IsBitcoinEnabled(),
       IsBitcoinImportEnabled(), IsZCashEnabled(), IsNftPinningEnabled(),
       IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled()));
 }

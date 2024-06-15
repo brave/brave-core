@@ -13,9 +13,10 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -592,6 +593,12 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
   }
 
+  brave_wallet::KeyringService* GetKeyringService() {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+               browser()->profile())
+        ->keyring_service();
+  }
+
  protected:
   net::EmbeddedTestServer https_server_;
   TestBraveContentBrowserClient test_content_browser_client_;
@@ -647,10 +654,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, ExtensionOverwrite) {
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
                        AttachEvenIfNoWalletCreated) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->Reset(false);
+  GetKeyringService()->Reset(false);
 
   brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),
@@ -665,10 +669,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, AttachIfWalletCreated) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultSolanaWallet(
       browser()->profile()->GetPrefs(),

@@ -20,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -62,7 +61,8 @@ class MockWalletDataFilesInstallerDelegateImpl
   raw_ptr<component_updater::ComponentUpdateService> cus_;
 };
 
-class MockBraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate {
+class MockBraveWalletServiceDelegateImpl
+    : public TestBraveWalletServiceDelegate {
  public:
   MockBraveWalletServiceDelegateImpl() = default;
   ~MockBraveWalletServiceDelegateImpl() override = default;
@@ -100,22 +100,11 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
     RegisterProfilePrefsForMigration(prefs_.registry());
     RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    keyring_service_ =
-        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
-        shared_url_loader_factory_, &prefs_);
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(),
-        nullptr,  // BitcoinWalletService
-        nullptr,  // ZCashWalletService
-        keyring_service_.get(), &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
-        std::make_unique<MockBraveWalletServiceDelegateImpl>(),
-        keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
-        nullptr, nullptr, &prefs_, &local_state_, false);
+        std::make_unique<MockBraveWalletServiceDelegateImpl>(), &prefs_,
+        &local_state_);
+    keyring_service_ = brave_wallet_service_->keyring_service();
 
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
     installer().SetDelegate(
@@ -233,13 +222,10 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
-  std::unique_ptr<TxService> tx_service_;
+  raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   base::ScopedTempDir install_dir_;
-  base::ScopedTempDir temp_dir_;
 };
 
 TEST_F(WalletDataFilesInstallerUnitTest,

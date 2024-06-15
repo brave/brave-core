@@ -16,13 +16,11 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "ui/base/resource/resource_bundle.h"
 
 BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyEthereum =
@@ -70,24 +68,6 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     browserState = browserState->GetOffTheRecordChromeBrowserState();
   }
 
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForState(browserState);
-  if (!json_rpc_service) {
-    return nil;
-  }
-
-  auto* tx_service =
-      brave_wallet::TxServiceFactory::GetServiceForState(browserState);
-  if (!tx_service) {
-    return nil;
-  }
-
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForState(browserState);
-  if (!keyring_service) {
-    return nil;
-  }
-
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
   if (!brave_wallet_service) {
@@ -96,7 +76,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
 
   auto provider = std::make_unique<brave_wallet::EthereumProviderImpl>(
       ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
-      json_rpc_service, tx_service, keyring_service, brave_wallet_service,
+      brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate),
       browserState->GetPrefs());
@@ -112,29 +92,12 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
     browserState = browserState->GetOffTheRecordChromeBrowserState();
   }
 
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForState(browserState);
-  if (!keyring_service) {
-    return nil;
-  }
-
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
   if (!brave_wallet_service) {
     return nil;
   }
 
-  auto* tx_service =
-      brave_wallet::TxServiceFactory::GetServiceForState(browserState);
-  if (!tx_service) {
-    return nil;
-  }
-
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForState(browserState);
-  if (!json_rpc_service) {
-    return nil;
-  }
   auto* host_content_settings_map =
       ios::HostContentSettingsMapFactory::GetForBrowserState(browserState);
   if (!host_content_settings_map) {
@@ -142,8 +105,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
 
   auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
-      *host_content_settings_map, keyring_service, brave_wallet_service,
-      tx_service, json_rpc_service,
+      *host_content_settings_map, brave_wallet_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
           delegate));
   return [[BraveWalletSolanaProviderOwnedImpl alloc]
@@ -214,8 +176,11 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   if (!service) {
     return nil;
   }
+
+  mojo::PendingRemote<brave_wallet::mojom::BraveWalletP3A> pending_remote;
+  service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletBraveWalletP3AMojoImpl alloc]
-      initWithBraveWalletP3A:service->GetBraveWalletP3A()->MakeRemote()];
+      initWithBraveWalletP3A:std::move(pending_remote)];
 }
 
 @end

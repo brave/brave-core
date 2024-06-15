@@ -6,12 +6,9 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_FACTORY_H_
 
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 
 namespace base {
 template <typename T>
@@ -21,17 +18,13 @@ class NoDestructor;
 namespace brave_wallet {
 
 class BraveWalletService;
+class JsonRpcService;
 
 class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static mojo::PendingRemote<mojom::BraveWalletService> GetForContext(
-      content::BrowserContext* context);
   static BraveWalletService* GetServiceForContext(
       content::BrowserContext* context);
   static BraveWalletServiceFactory* GetInstance();
-  static void BindForContext(
-      content::BrowserContext* context,
-      mojo::PendingReceiver<mojom::BraveWalletService> receiver);
 
  private:
   friend base::NoDestructor<BraveWalletServiceFactory>;

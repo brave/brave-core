@@ -17,9 +17,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -116,10 +113,6 @@ class SolanaProviderImplUnitTest : public testing::Test {
         web_contents_.get());
     brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(browser_context());
-    json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
 
     // Return true for checking blockhash.
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -130,13 +123,13 @@ class SolanaProviderImplUnitTest : public testing::Test {
               R"({"jsonrpc": "2.0", "id": 1, "result": { "value": true }})");
         }));
 
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser_context());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
-    tx_service_ =
-        brave_wallet::TxServiceFactory::GetServiceForContext(browser_context());
+    json_rpc_service_ = brave_wallet_service_->json_rpc_service();
+    json_rpc_service_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
+    keyring_service_ = brave_wallet_service_->keyring_service();
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
             PermissionManagerFactory::GetInstance()
@@ -146,8 +139,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
         HostContentSettingsMapFactory::GetForProfile(browser_context());
     ASSERT_TRUE(host_content_settings_map);
     provider_ = std::make_unique<SolanaProviderImpl>(
-        *host_content_settings_map, keyring_service_, brave_wallet_service_,
-        tx_service_, json_rpc_service_,
+        *host_content_settings_map, brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetPrimaryMainFrame()));
     observer_ = std::make_unique<MockEventsListener>();
@@ -483,7 +475,6 @@ class SolanaProviderImplUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
-  raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
  protected:

@@ -43,7 +43,6 @@ class WalletPanelUI : public TopChromeWebUIController,
  private:
   // brave_wallet::mojom::PanelHandlerFactory:
   void CreatePanelHandler(
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>

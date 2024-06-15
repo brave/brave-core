@@ -42,10 +42,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   using RequestPermissionsError = mojom::RequestPermissionsError;
 
   SolanaProviderImpl(HostContentSettingsMap& host_content_settings_map,
-                     KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
-                     TxService* tx_service,
-                     JsonRpcService* json_rpc_service,
                      std::unique_ptr<BraveWalletProviderDelegate> delegate);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
@@ -170,8 +167,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
   bool account_creation_shown_ = false;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
-  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::Receiver<mojom::KeyringServiceObserver> keyring_observer_receiver_{

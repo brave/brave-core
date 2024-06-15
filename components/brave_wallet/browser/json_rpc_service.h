@@ -26,7 +26,6 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -61,7 +60,7 @@ template <typename T>
 void MergeSolanaRPCResponses(SolanaRPCResponsesCallback<T> callback,
                              std::vector<SolanaRPCResponse<T>> responses);
 
-class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
+class JsonRpcService : public mojom::JsonRpcService {
  public:
   JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -75,7 +74,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   JsonRpcService();
   ~JsonRpcService() override;
 
-  mojo::PendingRemote<mojom::JsonRpcService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
 
   using APIRequestHelper = api_request_helper::APIRequestHelper;

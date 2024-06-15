@@ -62,8 +62,9 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #endif
 
@@ -322,13 +323,15 @@ bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
   if (!profile) {
     return false;
   }
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile);
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+  if (!brave_wallet_service) {
+    return true;
+  }
   // Support to unlock Wallet has been extended also through WebUI,
   // so we block only when Wallet hasn't been created yet, as onboarding
   // is offered only via native Andrioid UI.
-  return !keyring_service ||
-         (keyring_service && !keyring_service->IsWalletCreatedSync());
+  return !brave_wallet_service->keyring_service()->IsWalletCreatedSync();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
 }  // namespace

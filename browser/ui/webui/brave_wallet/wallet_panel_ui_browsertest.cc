@@ -14,10 +14,10 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -145,14 +145,16 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
-    JsonRpcServiceFactory::GetServiceForContext(profile)
+    BraveWalletServiceFactory::GetServiceForContext(profile)
+        ->json_rpc_service()
         ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
 
     AssetRatioServiceFactory::GetServiceForContext(profile)
         ->EnableDummyPricesForTesting();
 
-    KeyringServiceFactory::GetServiceForContext(profile)->CreateWallet(
-        "password_123", base::DoNothing());
+    BraveWalletServiceFactory::GetServiceForContext(profile)
+        ->keyring_service()
+        ->CreateWallet("password_123", base::DoNothing());
 
     SetEthChainIdInterceptor(
         {GURL(kSomeEndpoint),

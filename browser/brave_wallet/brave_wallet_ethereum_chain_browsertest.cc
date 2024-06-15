@@ -10,8 +10,9 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -238,8 +239,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
   }
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
-    return brave_wallet::JsonRpcServiceFactory::GetInstance()
-        ->GetServiceForContext(browser()->profile());
+    return brave_wallet::BraveWalletServiceFactory::GetInstance()
+        ->GetServiceForContext(browser()->profile())
+        ->json_rpc_service();
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains() {

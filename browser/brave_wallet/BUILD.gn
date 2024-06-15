@@ -12,8 +12,6 @@ source_set("brave_wallet") {
   sources = [
     "asset_ratio_service_factory.cc",
     "asset_ratio_service_factory.h",
-    "bitcoin_wallet_service_factory.cc",
-    "bitcoin_wallet_service_factory.h",
     "blockchain_images_source.cc",
     "blockchain_images_source.h",
     "brave_wallet_context_utils.cc",
@@ -22,20 +20,12 @@ source_set("brave_wallet") {
     "brave_wallet_ipfs_service_factory.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
-    "json_rpc_service_factory.cc",
-    "json_rpc_service_factory.h",
-    "keyring_service_factory.cc",
-    "keyring_service_factory.h",
     "meld_integration_service_factory.cc",
     "meld_integration_service_factory.h",
     "simulation_service_factory.cc",
     "simulation_service_factory.h",
     "swap_service_factory.cc",
     "swap_service_factory.h",
-    "tx_service_factory.cc",
-    "tx_service_factory.h",
-    "zcash_wallet_service_factory.cc",
-    "zcash_wallet_service_factory.h",
   ]
   if (enable_ipfs_local_node) {
     sources += [

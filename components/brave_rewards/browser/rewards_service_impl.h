@@ -31,6 +31,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
@@ -67,7 +68,7 @@ class SimpleURLLoader;
 class Profile;
 
 namespace brave_wallet {
-class JsonRpcService;
+class BraveWalletService;
 }
 
 namespace brave_rewards {
@@ -104,7 +105,7 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                      greaselion::GreaselionService* greaselion_service,
 #endif
-                     brave_wallet::JsonRpcService* wallet_rpc_service);
+                     brave_wallet::BraveWalletService* brave_wallet_service);
 
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
@@ -545,7 +546,7 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  raw_ptr<brave_wallet::JsonRpcService> wallet_rpc_service_ = nullptr;
+  raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;

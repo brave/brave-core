@@ -112,29 +112,26 @@ void RejectMismatchError(base::Value id,
 
 EthereumProviderImpl::EthereumProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
-    JsonRpcService* json_rpc_service,
-    TxService* tx_service,
-    KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
     PrefService* prefs)
     : host_content_settings_map_(host_content_settings_map),
       delegate_(std::move(delegate)),
-      json_rpc_service_(json_rpc_service),
-      tx_service_(tx_service),
-      keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
-      eth_block_tracker_(json_rpc_service),
-      eth_logs_tracker_(json_rpc_service),
+      json_rpc_service_(brave_wallet_service->json_rpc_service()),
+      tx_service_(brave_wallet_service->tx_service()),
+      keyring_service_(brave_wallet_service->keyring_service()),
+      eth_block_tracker_(json_rpc_service_),
+      eth_logs_tracker_(json_rpc_service_),
       prefs_(prefs) {
-  DCHECK(json_rpc_service);
+  DCHECK(json_rpc_service_);
   json_rpc_service_->AddObserver(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
-  DCHECK(tx_service);
+  DCHECK(tx_service_);
   tx_service_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
 
-  DCHECK(keyring_service);
+  DCHECK(keyring_service_);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
   host_content_settings_map_->AddObserver(this);

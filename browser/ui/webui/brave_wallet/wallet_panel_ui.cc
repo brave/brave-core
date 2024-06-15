@@ -12,16 +12,11 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/simulation_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -115,15 +110,14 @@ void WalletPanelUI::SetDeactivationCallback(
 }
 
 void WalletPanelUI::CreatePanelHandler(
-    mojo::PendingRemote<brave_wallet::mojom::Page> page,
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
         json_rpc_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
-        bitcoin_rpc_service_receiver,
+        bitcoin_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
-        zcash_rpc_service_receiver,
+        zcash_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SwapService>
         swap_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
@@ -153,7 +147,6 @@ void WalletPanelUI::CreatePanelHandler(
         brave_wallet_ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
         meld_integration_service) {
-  DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
 
@@ -163,12 +156,21 @@ void WalletPanelUI::CreatePanelHandler(
   wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
       std::move(wallet_receiver), profile);
 
-  brave_wallet::JsonRpcServiceFactory::BindForContext(
-      profile, std::move(json_rpc_service_receiver));
-  brave_wallet::BitcoinWalletServiceFactory::BindForContext(
-      profile, std::move(bitcoin_rpc_service_receiver));
-  brave_wallet::ZCashWalletServiceFactory::BindForContext(
-      profile, std::move(zcash_rpc_service_receiver));
+  if (auto* wallet_service =
+          brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+              profile)) {
+    wallet_service->Bind(std::move(brave_wallet_service_receiver));
+    wallet_service->Bind(std::move(json_rpc_service_receiver));
+    wallet_service->Bind(std::move(bitcoin_wallet_service_receiver));
+    wallet_service->Bind(std::move(zcash_wallet_service_receiver));
+    wallet_service->Bind(std::move(keyring_service_receiver));
+    wallet_service->Bind(std::move(tx_service_receiver));
+    wallet_service->Bind(std::move(eth_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(solana_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
+  }
+
   brave_wallet::SwapServiceFactory::BindForContext(
       profile, std::move(swap_service_receiver));
   brave_wallet::SimulationServiceFactory::BindForContext(
@@ -177,24 +179,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::MeldIntegrationServiceFactory::BindForContext(
       profile, std::move(meld_integration_service));
-  brave_wallet::KeyringServiceFactory::BindForContext(
-      profile, std::move(keyring_service_receiver));
-  brave_wallet::TxServiceFactory::BindForContext(
-      profile, std::move(tx_service_receiver));
-  brave_wallet::TxServiceFactory::BindEthTxManagerProxyForContext(
-      profile, std::move(eth_tx_manager_proxy_receiver));
-  brave_wallet::TxServiceFactory::BindSolanaTxManagerProxyForContext(
-      profile, std::move(solana_tx_manager_proxy_receiver));
-  brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
-      profile, std::move(filecoin_tx_manager_proxy_receiver));
   brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
       profile, std::move(brave_wallet_ipfs_service_receiver));
-
-  brave_wallet::BraveWalletService* wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
-  wallet_service->Bind(std::move(brave_wallet_service_receiver));
-  wallet_service->GetBraveWalletP3A()->Bind(
-      std::move(brave_wallet_p3a_receiver));
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   brave_wallet::BraveWalletPinServiceFactory::BindForContext(

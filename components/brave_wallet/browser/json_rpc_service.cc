@@ -344,12 +344,6 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
 
 JsonRpcService::~JsonRpcService() = default;
 
-mojo::PendingRemote<mojom::JsonRpcService> JsonRpcService::MakeRemote() {
-  mojo::PendingRemote<mojom::JsonRpcService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void JsonRpcService::Bind(
     mojo::PendingReceiver<mojom::JsonRpcService> receiver) {
   receivers_.Add(this, std::move(receiver));

@@ -20,15 +20,13 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
 
 namespace brave_wallet {
 
 class CreateTransparentTransactionTask;
 class GetTransparentUtxosContext;
 
-class ZCashWalletService : public KeyedService,
-                           public mojom::ZCashWalletService,
+class ZCashWalletService : public mojom::ZCashWalletService,
                            KeyringServiceObserverBase {
  public:
   using UtxoMap = std::map<std::string, std::vector<mojom::ZCashUtxoPtr>>;
@@ -56,7 +54,6 @@ class ZCashWalletService : public KeyedService,
 
   ~ZCashWalletService() override;
 
-  mojo::PendingRemote<mojom::ZCashWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::ZCashWalletService> receiver);
 
   void GetBalance(const std::string& chain_id,
@@ -101,6 +98,8 @@ class ZCashWalletService : public KeyedService,
                               const mojom::AccountIdPtr& account_id,
                               ZCashTransaction zcash_transaction,
                               SignAndPostTransactionCallback callback);
+
+  void SetZCashRpcForTesting(std::unique_ptr<ZCashRpc> zcash_rpc);
 
  private:
   friend class ZCashWalletServiceUnitTest;

@@ -14,7 +14,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -98,8 +97,7 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
+    keyring_service_ = brave_wallet_service_->keyring_service();
   }
 
   content::WebContents* web_contents() {

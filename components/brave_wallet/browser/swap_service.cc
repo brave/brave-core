@@ -229,13 +229,9 @@ std::string GetBaseSwapURL(const std::string& chain_id) {
 }  // namespace
 
 SwapService::SwapService(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    JsonRpcService* json_rpc_service)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      json_rpc_service_(json_rpc_service),
-      weak_ptr_factory_(this) {
-  DCHECK(json_rpc_service_);
-}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : api_request_helper_(GetNetworkTrafficAnnotationTag(),
+                          url_loader_factory) {}
 
 SwapService::~SwapService() = default;
 

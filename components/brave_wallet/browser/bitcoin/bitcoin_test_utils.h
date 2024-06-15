@@ -7,16 +7,20 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_TEST_UTILS_H_
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 
 namespace brave_wallet {
+
+class BitcoinWalletService;
 
 inline constexpr char kMockBtcTxid1[] =
     "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5";
@@ -44,6 +48,7 @@ inline constexpr char kBtcTestnetImportAccount1[] =
 class BitcoinTestRpcServer {
  public:
   BitcoinTestRpcServer();
+  explicit BitcoinTestRpcServer(BitcoinWalletService* bitcoin_wallet_service);
   ~BitcoinTestRpcServer();
 
   static bitcoin_rpc::AddressStats EmptyAddressStats(

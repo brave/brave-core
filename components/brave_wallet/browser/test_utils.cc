@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/test_utils.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -313,6 +314,24 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecAccounts() {
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllZecTestAccounts() {
   return AllAccounts(mojom::KeyringId::kZCashTestnet);
+}
+
+TestBraveWalletServiceDelegate::TestBraveWalletServiceDelegate() {
+  EXPECT_TRUE(temp_dir_.CreateUniqueTempDir());
+}
+
+base::FilePath TestBraveWalletServiceDelegate::GetWalletBaseDirectory() {
+  return temp_dir_.GetPath();
+}
+
+bool TestBraveWalletServiceDelegate::IsPrivateWindow() {
+  return false;
+}
+
+// static
+std::unique_ptr<BraveWalletServiceDelegate>
+TestBraveWalletServiceDelegate::Create() {
+  return std::make_unique<TestBraveWalletServiceDelegate>();
 }
 
 void WaitForTxStorageDelegateInitialized(TxStorageDelegate* delegate) {

@@ -42,7 +42,12 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
                           const url::Origin& origin) override;
   void ResetAllPermissions() override;
 
+  base::FilePath GetWalletBaseDirectory() override;
+  bool IsPrivateWindow() override;
+
  protected:
+  base::FilePath wallet_base_directory_;
+  bool is_private_window_ = false;
   raw_ptr<content::BrowserContext> context_ = nullptr;
 };
 

@@ -21,7 +21,7 @@ import androidx.preference.Preference;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardVisibilityDelegate;
@@ -125,7 +125,7 @@ public class BraveWalletAutoLockPreferences
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService = BraveWalletServiceFactory.getInstance().getKeyringService(this);
     }
 
     private void setPrefWalletAutoLockTime(String s) {
