@@ -50,6 +50,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveNewsFeedUpdate;
 @property(class, nonatomic, readonly) Feature* kBraveReduceLanguage;
 @property(class, nonatomic, readonly) Feature* kBraveSearchDefaultAPIFeature;
+@property(class, nonatomic, readonly) Feature* kBraveShredFeature;
 @property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;

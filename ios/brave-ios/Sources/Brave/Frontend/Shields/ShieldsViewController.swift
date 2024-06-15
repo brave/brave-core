@@ -30,6 +30,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   var shieldsSettingsChanged: ((ShieldsViewController, BraveShield) -> Void)?
   var showGlobalShieldsSettings: ((ShieldsViewController) -> Void)?
+  var showShredSettings: ((ShieldsViewController) -> Void)?
   var showSubmitReportView: ((ShieldsViewController) -> Void)?
 
   private var statsUpdateObservable: AnyObject?
@@ -266,6 +267,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
       action: #selector(tappedGlobalShieldsButton),
       for: .touchUpInside
     )
+    shieldsView.advancedShieldView.shredLink.addTarget(
+      self,
+      action: #selector(tappedShredLinkButton),
+      for: .touchUpInside
+    )
 
     shieldsView.advancedControlsBar.addTarget(
       self,
@@ -361,6 +367,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   @objc private func tappedGlobalShieldsButton() {
     showGlobalShieldsSettings?(self)
+  }
+
+  @objc private func tappedShredLinkButton() {
+    showShredSettings?(self)
   }
 
   @available(*, unavailable)

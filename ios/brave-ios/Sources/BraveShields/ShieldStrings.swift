@@ -257,6 +257,113 @@ extension Strings.Shields {
   )
 }
 
+// MARK: - Forget Me
+
+extension Strings.Shields {
+  /// A toggle option that deletes website content when the site is closed
+  public static let forgetMeLabel = NSLocalizedString(
+    "ForgetMeLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Forget Me When I Close This Site",
+    comment: "A toggle option that deletes website content when the site is closed"
+  )
+
+  /// A description of what the Enable GPC toggle does
+  public static let forgetMeDescription = NSLocalizedString(
+    "ForgetMeDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Clears cookies and other site data when you close a site",
+    comment: "A description of what the forget me toggle does"
+  )
+}
+
+// MARK: - Shred
+
+extension Strings.Shields {
+  /// A list row label for accessing the shred settings screen
+  public static let shredSitesData = NSLocalizedString(
+    "ShredSitesData",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred Site's Data",
+    comment: "A list row label for accessing the shred settings screen"
+  )
+
+  /// A button title that shreds site data immediately
+  public static let shredSitesDataNow = NSLocalizedString(
+    "ShredSitesDataNow",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred Site's Data Now",
+    comment: "A button title that shreds site data immediately"
+  )
+
+  /// A picker title for selecting a automatic shred setting option
+  public static let automaticallyShred = NSLocalizedString(
+    "AutomaticallyShred",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Automatically Shred",
+    comment: "A picker title for selecting a automatic shred setting option"
+  )
+
+  /// An option setting for never automatically shreding site data
+  public static let shredNever = NSLocalizedString(
+    "ShredNever",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Never",
+    comment: "An option setting for never automatically shreding site data"
+  )
+
+  /// An option setting for shredding when the site is closed
+  public static let shredWhenSiteClosed = NSLocalizedString(
+    "ShredWhenSiteClosed",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "When Site Closed",
+    comment: "An option setting for automatically shredding when the site is closed"
+  )
+
+  /// An option setting for shredding only when the app is closed
+  public static let shredOnAppExitOnly = NSLocalizedString(
+    "ShredOnAppExitOnly",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "App Exit Only",
+    comment: "An option setting for automatically shredding only when the app is closed"
+  )
+
+  /// A title for a confirmation window that appears when a user clicks on 'Shred Data'
+  public static let shredThisSitesDataConfirmationTitle = NSLocalizedString(
+    "ShredThisSitesDataConfirmationTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred This Site's Data?",
+    comment: "A title for a confirmation window that appears when a user clicks on 'Shred Data'"
+  )
+
+  /// An option setting for shredding only when the app is closed
+  public static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
+    "ShredThisSitesDataConfirmationMessage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Are you sure you want to delete this website's data? This action cannot be undone.",
+    comment: "A message for a confirmation window that appears when a user clicks on 'Shred Data'"
+  )
+
+  /// A list row label for accessing the shred settings screen
+  public static let shredDataButtonTitle = NSLocalizedString(
+    "ShredDataButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shred Data",
+    comment: "A button title when confirming to shred website data"
+  )
+}
+
 // MARK: - Blocked Page
 
 extension Strings.Shields {

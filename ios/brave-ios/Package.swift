@@ -501,6 +501,7 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Assets/Interstitial Pages/Styles/NetworkError.css"),
     .copy("Assets/Interstitial Pages/Styles/Web3Domain.css"),
     .copy("Assets/Interstitial Pages/Styles/IPFSPreference.css"),
+    .copy("Assets/Lottie/shred.json"),
     .copy("Assets/SearchPlugins"),
     .copy("Frontend/Reader/Reader.css"),
     .copy("Frontend/Reader/Reader.html"),

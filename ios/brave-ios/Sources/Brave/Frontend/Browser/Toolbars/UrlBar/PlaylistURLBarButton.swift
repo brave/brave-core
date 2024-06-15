@@ -134,7 +134,7 @@ class PlaylistURLBarButton: UIButton {
               children: [
                 self.menuSwappingAction(
                   title: Strings.PlayList.undoRemoveButtonTitle,
-                  image: UIImage(braveSystemNamed: "leo.arrow.back"),
+                  image: UIImage(braveSystemNamed: "leo.arrow.left"),
                   handler: {
                     // Re-add to playlist
                     self.menuActionHandler?(.undoRemove(originalFolderUUID: folderUUID))

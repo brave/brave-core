@@ -12,6 +12,7 @@ import BraveUI
 import BraveWallet
 import CertificateUtilities
 import Data
+import Lottie
 import Playlist
 import Preferences
 import Shared
@@ -492,6 +493,24 @@ extension BrowserViewController: TopToolbarDelegate {
       // BRAVE TODO: Port over proper tab reloading with Shields
     }
 
+    shields.showShredSettings = { [unowned self] vc in
+      guard let tab = tabManager.selectedTab else { return }
+      guard let url = tab.url else { return }
+
+      vc.dismiss(animated: true) {
+        let viewController = ShredSettingsHostingController(
+          url: url,
+          isPersistent: !tab.isPrivate,
+          presentingView: self.topToolbar.shieldsButton
+        ) { [weak self] in
+          self?.shredData(for: url, in: tab)
+          self?.dismiss(animated: true)
+        }
+
+        self.present(viewController, animated: true)
+      }
+    }
+
     shields.showGlobalShieldsSettings = { [unowned self] vc in
       vc.dismiss(animated: true) {
         weak var spinner: SpinnerView?
@@ -565,6 +584,12 @@ extension BrowserViewController: TopToolbarDelegate {
       contentSizeBehavior: .preferredContentSize
     )
     popover.present(from: topToolbar.shieldsButton, on: self)
+  }
+
+  func shredData(for url: URL, in tab: Tab) {
+    AnimationView.showShredAnimation(on: view) {
+      self.tabManager.shredData(for: url, in: tab)
+    }
   }
 
   func showSubmitReportView(for url: URL) {
@@ -1169,7 +1194,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
     let tab = tabManager.selectedTab
     guard let url = self.topToolbar.currentURL else { return nil }
 
-    var children: [UIAction] = [
+    let children: [UIAction] = [
       UIAction(
         title: Strings.copyLinkActionTitle,
         image: UIImage(systemName: "doc.on.doc"),

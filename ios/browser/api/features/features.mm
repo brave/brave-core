@@ -196,6 +196,11 @@
       initWithFeature:&brave_search::features::kBraveSearchDefaultAPIFeature];
 }
 
++ (Feature*)kBraveShredFeature {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveShredFeature];
+}
+
 + (Feature*)kBraveShowStrictFingerprintingMode {
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::

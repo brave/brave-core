@@ -85,6 +85,10 @@ BASE_FEATURE(kBraveExtensionNetworkBlocking,
 BASE_FEATURE(kBraveReduceLanguage,
              "BraveReduceLanguage",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, brave shred feature will be available
+BASE_FEATURE(kBraveShredFeature,
+             "BraveShredFeature",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              "BraveShowStrictFingerprintingMode",
