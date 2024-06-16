@@ -5,6 +5,7 @@
 
 #include "components/omnibox/browser/suggestion_group_util.h"
 
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "components/grit/brave_components_strings.h"
 
 #define BuildDefaultGroups BuildDefaultGroups_ChromiumImpl
@@ -15,10 +16,13 @@ namespace omnibox {
 const GroupConfigMap& BuildDefaultGroups() {
   if (g_default_groups.Get().empty()) {
     BuildDefaultGroups_ChromiumImpl();
+
+#if BUILDFLAG(ENABLE_COMMANDER)
     g_default_groups.Get()[GROUP_OTHER_NAVS] = CreateGroup(
         SECTION_OTHER_NAVS,
         GroupConfig::RenderType::GroupConfig_RenderType_DEFAULT_VERTICAL,
         IDS_IDC_COMMANDER);
+#endif
   }
 
   return g_default_groups.Get();
