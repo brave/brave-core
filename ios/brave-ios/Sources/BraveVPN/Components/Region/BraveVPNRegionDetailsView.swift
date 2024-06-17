@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import GuardianConnect
 import SwiftUI
 
@@ -16,6 +17,9 @@ struct BraveRegionDetailsView: View {
 
   @State
   private var isConfirmationPresented = false
+
+  @State
+  private var isShowingChangeRegionAlert = false
 
   @ObservedObject
   private var cityRegionDetail: VPNCityRegionDetail
@@ -72,11 +76,18 @@ struct BraveRegionDetailsView: View {
       if let region = cityRegionDetail.selectedRegion {
         BraveVPNRegionConfirmationContentView(
           isPresented: $isConfirmationPresented,
-          regionCountry: cityRegionDetail.countryName,
-          regionCity: region.displayName,
-          regionCountryISOCode: cityRegionDetail.countryISOCode
+          regionCountry: BraveVPN.serverLocationDetailed.country,
+          regionCity: BraveVPN.serverLocationDetailed.city,
+          regionCountryISOCode: BraveVPN.serverLocation.isoCode
         )
       }
+    }
+    .alert(isPresented: $isShowingChangeRegionAlert) {
+      Alert(
+        title: Text(Strings.VPN.regionPickerErrorTitle),
+        message: Text(Strings.VPN.regionPickerErrorMessage),
+        dismissButton: .default(Text(Strings.OKString))
+      )
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
       let isVPNEnabled = BraveVPN.isConnected
@@ -155,10 +166,10 @@ struct BraveRegionDetailsView: View {
         cancelTimer()
         regionModificationTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: false) {
           _ in
-          // TODO: Show Alert if it fails
+          isShowingChangeRegionAlert = true
         }
       } else {
-        // TODO: Show Alert if it fails
+        isShowingChangeRegionAlert = true
       }
     }
   }

@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStrings
 import GuardianConnect
 import SwiftUI
 
@@ -20,6 +21,9 @@ public struct BraveVPNRegionPickerView: View {
 
   @State
   private var isConfirmationPresented = false
+
+  @State
+  private var isShowingChangeRegionAlert = false
 
   @State
   private var selectedIndex = 0
@@ -82,8 +86,16 @@ public struct BraveVPNRegionPickerView: View {
     .background {
       BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
-        regionCountry: selectedRegion?.displayName,
-        regionCountryISOCode: selectedRegion?.countryISOCode
+        regionCountry:  BraveVPN.serverLocationDetailed.country,
+        regionCity: BraveVPN.serverLocationDetailed.city,
+        regionCountryISOCode: BraveVPN.serverLocation.isoCode
+      )
+    }
+    .alert(isPresented: $isShowingChangeRegionAlert) {
+      Alert(
+        title: Text(Strings.VPN.regionPickerErrorTitle),
+        message: Text(Strings.VPN.regionPickerErrorMessage),
+        dismissButton: .default(Text(Strings.OKString))
       )
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
@@ -190,10 +202,7 @@ public struct BraveVPNRegionPickerView: View {
     isAutomatic = enabled
 
     // Implementation detail: nil region means we use an automatic way to connect to the host.
-    changeCountryRegion(with: nil) {
-      // TODO: Show Alert if it fails
-
-    }
+    changeCountryRegion(with: nil)
   }
 
   private func selectDesignatedVPNRegion(at index: Int, isAutomatic: Bool = false) {
@@ -204,12 +213,10 @@ public struct BraveVPNRegionPickerView: View {
       return
     }
 
-    changeCountryRegion(with: desiredRegion) {
-      // TODO: Show Alert if it fails
-    }
+    changeCountryRegion(with: desiredRegion)
   }
 
-  private func changeCountryRegion(with region: GRDRegion?, failure: @escaping () -> Void) {
+  private func changeCountryRegion(with region: GRDRegion?) {
     isLoading = true
 
     Task { @MainActor in
@@ -227,10 +234,10 @@ public struct BraveVPNRegionPickerView: View {
         cancelTimer()
         regionModificationTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: false) {
           _ in
-          failure()
+          isShowingChangeRegionAlert = true
         }
       } else {
-        failure()
+        isShowingChangeRegionAlert = true
       }
     }
   }
