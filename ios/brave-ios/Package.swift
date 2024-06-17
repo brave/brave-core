@@ -413,7 +413,8 @@ var package = Package(
       name: "PlaylistUI",
       dependencies: [
         "Favicon", "Data", "DesignSystem", "Playlist", "SDWebImage", "SnapKit", "Strings",
-        "CodableHelpers", .product(name: "Algorithms", package: "swift-algorithms"),
+        "CodableHelpers", .product(name: "Algorithms", package: "swift-algorithms"), "BraveStrings",
+        .product(name: "OrderedCollections", package: "swift-collections"), "BraveUI",
       ],
       resources: [.copy("Resources/oembed_providers.json")]
     ),

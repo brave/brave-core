@@ -3,12 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import CoreMedia
 import Foundation
 import SwiftUI
 
-/// FIXME: Add doc
-/// FIXME: Support RTL layout direction
+/// A control which mimics a SwiftUI Slider but allows the user to change the current time of an
+/// associated piece of media using gestures.
+///
+/// `MediaScrubber` displays a provided `Label` View below it to display the current values it is
+/// displaying based on `currentTime` and `duration`. The default label is
+/// `DefaultMediaScrubberLabel` if none is provided in the initializer. `DefaultMediaScrubberLabel`
 struct MediaScrubber<Label: View>: View {
   @Binding var currentTime: TimeInterval
   var duration: TimeInterval
@@ -30,6 +35,7 @@ struct MediaScrubber<Label: View>: View {
   @GestureState private var isScrubbingState: Bool = false
   @ScaledMetric private var barHeight = 4
   @ScaledMetric private var thumbSize = 12
+  @Environment(\.layoutDirection) private var layoutDirection
 
   private var currentValueLabel: Text {
     return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
@@ -44,7 +50,6 @@ struct MediaScrubber<Label: View>: View {
   }
 
   private var barShape: some InsettableShape {
-    // FIXME: Design uses a regular Rectangle
     RoundedRectangle(cornerRadius: barHeight / 2, style: .continuous)
   }
 
@@ -67,7 +72,17 @@ struct MediaScrubber<Label: View>: View {
                   ),
                   alignment: .leading
                 )
-                .animation(.linear(duration: 0.1), value: currentTime)
+                .osAvailabilityModifiers { content in
+                  if #available(iOS 17.0, *) {
+                    content.transaction(value: currentTime) { tx in
+                      if tx.animation == nil && !tx.disablesAnimations {
+                        tx.animation = .linear(duration: 0.1)
+                      }
+                    }
+                  } else {
+                    content.animation(.linear(duration: 0.1), value: currentTime)
+                  }
+                }
             }
           }
         }
@@ -82,9 +97,12 @@ struct MediaScrubber<Label: View>: View {
                 .contentShape(.rect)
                 .scaleEffect(isScrubbing ? 1.5 : 1)
                 .animation(.spring(response: 0.2, dampingFraction: 0.7), value: isScrubbing)
-                // The gesture needs to be added prior to the `offset` modifier due to a SwiftUI bug
-                // but because the offset affects the coordinate space, we need to make sure we use
-                // the offsetted coordinate space when doing calculations
+                .offset(
+                  x: min(
+                    proxy.size.width,
+                    CGFloat(currentTime / duration) * proxy.size.width
+                  ) - (thumbSize / 2)
+                )
                 .gesture(
                   DragGesture(minimumDistance: 0, coordinateSpace: .named("MediaScrubber"))
                     .updating(
@@ -94,30 +112,38 @@ struct MediaScrubber<Label: View>: View {
                       }
                     )
                     .onChanged { state in
+                      var percent = state.location.x / proxy.size.width
+                      if layoutDirection == .rightToLeft {
+                        percent = 1 - percent
+                      }
                       let seconds = max(
                         0,
                         min(
                           duration,
-                          (state.location.x / proxy.size.width) * CGFloat(duration)
+                          percent * CGFloat(duration)
                         )
                       )
                       currentTime = seconds
                     }
                 )
-                .offset(
-                  x: min(
-                    proxy.size.width,
-                    (CGFloat(currentTime / duration) * proxy.size.width)
-                  ) - (thumbSize / 2)
-                )
-                .coordinateSpace(name: "MediaScrubber")
-                .animation(.linear(duration: 0.1), value: currentTime)
+                .osAvailabilityModifiers { content in
+                  if #available(iOS 17.0, *) {
+                    content.transaction(value: currentTime) { tx in
+                      if tx.animation == nil && !tx.disablesAnimations {
+                        tx.animation = .linear(duration: 0.1)
+                      }
+                    }
+                  } else {
+                    content.animation(.linear(duration: 0.1), value: currentTime)
+                  }
+                }
             }
           }
         }
         .disabled(duration.isZero)
       label
     }
+    .coordinateSpace(name: "MediaScrubber")
     .onChange(of: isScrubbingState) { newValue in
       isScrubbing = newValue
     }
@@ -217,19 +243,19 @@ private struct MediaScrubberPreview: View {
       .environment(\.colorScheme, .dark)
       .padding()
       .background(Color.black)
+      .environment(\.layoutDirection, .rightToLeft)
 
       Button {
-        // FIXME: Currently animation is linear(0.1) based on animations in the actual MediaScrubber, see if its possible to only use those animations while scrubbing
-        //        withAnimation(.spring()) {
-        currentTime = 500
-        //        }
+        withAnimation(.snappy) {
+          currentTime = 500
+        }
       } label: {
         Text(verbatim: "Go to 50%")
       }
     }
   }
 }
-// swift-format-ignore
+
 #Preview {
   MediaScrubberPreview()
 }
