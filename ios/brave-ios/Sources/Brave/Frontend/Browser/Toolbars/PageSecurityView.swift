@@ -20,14 +20,43 @@ struct PageSecurityView: View {
 
   @Environment(\.pixelLength) private var pixelLength
 
-  private var warningTitle: String {
+  @ViewBuilder private var warningIcon: some View {
+    switch secureState {
+    case .secure, .localhost:
+      EmptyView()
+    case .unknown:
+      Image(braveSystemName: "leo.info.filled")
+        .foregroundColor(Color(braveSystemName: .systemfeedbackWarningIcon))
+    case .invalidCert, .missingSSL, .mixedContent:
+      Image(braveSystemName: "leo.warning.triangle-filled")
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
+    }
+  }
+
+  @ViewBuilder private var warningTitle: some View {
+    switch secureState {
+    case .secure, .localhost:
+      EmptyView()
+    case .unknown:
+      Text(Strings.PageSecurityView.pageUnknownStatusTitle)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackWarningText))
+    case .invalidCert, .missingSSL:
+      Text(Strings.PageSecurityView.pageNotSecureTitle)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+    case .mixedContent:
+      Text(Strings.PageSecurityView.pageNotFullySecureTitle)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+    }
+  }
+
+  private var warningBody: String {
     switch secureState {
     case .secure, .localhost:
       return ""
-    case .unknown, .invalidCert, .missingSSL:
-      return Strings.PageSecurityView.pageNotSecureTitle
-    case .mixedContent:
-      return Strings.PageSecurityView.pageNotFullySecureTitle
+    case .unknown:
+      return Strings.PageSecurityView.pageUnknownStatusWarning
+    case .invalidCert, .missingSSL, .mixedContent:
+      return Strings.PageSecurityView.pageNotSecureDetailedWarning
     }
   }
 
@@ -38,12 +67,10 @@ struct PageSecurityView: View {
           .font(.headline)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
         HStack(alignment: .firstTextBaseline) {
-          Image(braveSystemName: "leo.warning.triangle-filled")
-            .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
+          warningIcon
           VStack(alignment: .leading, spacing: 4) {
-            Text(warningTitle)
-              .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
-            Text(Strings.PageSecurityView.pageNotSecureDetailedWarning)
+            warningTitle
+            Text(warningBody)
               .foregroundColor(Color(braveSystemName: .textTertiary))
               .font(.footnote)
           }
