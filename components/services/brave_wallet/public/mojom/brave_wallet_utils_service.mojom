@@ -11,5 +11,5 @@ import "sandbox/policy/mojom/sandbox.mojom";
 [ServiceSandbox=sandbox.mojom.Sandbox.kService]
 interface BraveWalletUtilsService {
   CreateZCashDecoderService(
-      pending_associated_receiver<ZCashDecoder> zcash_decoder_receiver);
+      pending_associated_receiver<brave_wallet.zcash.mojom.ZCashDecoder> zcash_decoder_receiver);
 };

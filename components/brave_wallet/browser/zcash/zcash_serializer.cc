@@ -173,6 +173,7 @@ bool ZCashSerializer::SignTransparentPart(KeyringService* keyring_service,
     if (!address_map.contains(input.utxo_address)) {
       return false;
     }
+
     auto& key_id = address_map.at(input.utxo_address);
 
     auto pubkey = keyring_service->GetZCashPubKey(account_id, key_id);
@@ -187,6 +188,7 @@ bool ZCashSerializer::SignTransparentPart(KeyringService* keyring_service,
         account_id, key_id,
         base::make_span<kZCashDigestSize>(signature_digest.begin(),
                                           signature_digest.end()));
+
     if (!signature) {
       return false;
     }

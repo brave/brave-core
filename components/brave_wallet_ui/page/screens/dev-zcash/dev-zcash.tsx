@@ -12,6 +12,8 @@ import { BraveWallet } from '../../../constants/types'
 import {
   LoadingSkeleton //
 } from '../../../components/shared/loading-skeleton/index'
+import { CoinType } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -215,25 +217,15 @@ const AccountSection = (props: AccountSectionProps) => {
 }
 
 export const DevZCash = () => {
-  const [accounts, setAccounts] = useState<BraveWallet.AccountInfo[]>([])
-
-  React.useEffect(() => {
-    const fetchZCashAccount = async () => {
-      const allAccounts = (await getAPIProxy().keyringService.getAllAccounts())
-        .allAccounts
-      setAccounts(
-        allAccounts.accounts.filter(
-          (acc) => acc.accountId.coin === BraveWallet.CoinType.ZEC
-        )
-      )
-    }
-
-    fetchZCashAccount()
-  }, [])
-
+  const { accounts } = useAccountsQuery()
+  const zecAccounts = React.useMemo(() => {
+    return accounts.filter(
+      (account) => account.accountId.coin === CoinType.ZEC
+    )
+  }, [accounts])
   return (
     <div>
-      {accounts.map((account) => (
+      {zecAccounts && zecAccounts.map((account) => (
         <div key={account.accountId.uniqueKey}>
           <AccountSection accountInfo={account} />
           <hr />

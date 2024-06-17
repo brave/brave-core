@@ -264,7 +264,7 @@ std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromValue(
 // static
 std::optional<ZCashTransaction::TxInput> ZCashTransaction::TxInput::FromRpcUtxo(
     const std::string& address,
-    const mojom::ZCashUtxo& utxo) {
+    const zcash::mojom::ZCashUtxo& utxo) {
   if (address != utxo.address) {
     return std::nullopt;
   }

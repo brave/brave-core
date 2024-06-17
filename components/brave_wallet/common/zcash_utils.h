@@ -20,6 +20,9 @@ inline constexpr size_t kOrchardRawBytesSize = 43;
 inline constexpr uint32_t kZip32Purpose = 32u;
 inline constexpr uint32_t kTestnetCoinType = 1u;
 inline constexpr uint32_t kDefaultZCashBlockHeightDelta = 20;
+inline constexpr uint32_t kDefaultTransparentOutputsCount = 2;
+inline constexpr uint32_t kGraceActionsCount = 2;
+inline constexpr uint64_t kMarginalFee = 5000;
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
 enum ZCashAddrType {
@@ -51,6 +54,15 @@ struct DecodedZCashAddress {
   bool testnet = false;
 };
 
+struct OrchardOutput {
+  uint64_t value = 0;
+  std::array<std::uint8_t, ::brave_wallet::kOrchardRawBytesSize> addr;
+};
+
+bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);
+// https://zips.z.cash/zip-0317
+uint64_t CalculateZCashTxFee(const uint32_t tx_input_count,
+                             const uint32_t orchard_actions_count);
 bool IsUnifiedAddress(const std::string& address);
 bool IsUnifiedTestnetAddress(const std::string& address);
 

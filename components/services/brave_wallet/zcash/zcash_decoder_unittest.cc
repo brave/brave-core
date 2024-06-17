@@ -45,22 +45,23 @@ class ZCashDecoderUnitTest : public testing::Test {
 TEST_F(ZCashDecoderUnitTest, ParseBlockID) {
   // Correct
   {
-    zcash::BlockID block_id;
+    ::zcash::BlockID block_id;
     block_id.set_height(64u);
     block_id.set_hash("abcd");
-    mojom::BlockIDPtr result;
+    zcash::mojom::BlockIDPtr result;
     base::MockCallback<ZCashDecoder::ParseBlockIDCallback> callback;
-    EXPECT_CALL(callback,
-                Run(EqualsMojo(mojom::BlockID::New(64u, ToBytes("abcd")))));
+    EXPECT_CALL(
+        callback,
+        Run(EqualsMojo(zcash::mojom::BlockID::New(64u, ToBytes("abcd")))));
     decoder()->ParseBlockID(GetPrefixedProtobuf(block_id.SerializeAsString()),
                             callback.Get());
   }
   // Incorrect
   {
-    mojom::BlockIDPtr result;
+    zcash::mojom::BlockIDPtr result;
     std::optional<std::string> error;
     base::MockCallback<ZCashDecoder::ParseBlockIDCallback> callback;
-    EXPECT_CALL(callback, Run(EqualsMojo(mojom::BlockIDPtr())));
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::BlockIDPtr())));
     decoder()->ParseBlockID("123", callback.Get());
   }
 }
@@ -68,17 +69,17 @@ TEST_F(ZCashDecoderUnitTest, ParseBlockID) {
 TEST_F(ZCashDecoderUnitTest, ParseGetAddressUtxos) {
   // Correct
   {
-    zcash::ZCashUtxo utxo1;
+    ::zcash::ZCashUtxo utxo1;
     utxo1.set_address("addr1");
     utxo1.set_txid("txid1");
     utxo1.set_valuezat(1u);
 
-    zcash::ZCashUtxo utxo2;
+    ::zcash::ZCashUtxo utxo2;
     utxo2.set_address("addr2");
     utxo2.set_txid("txid2");
     utxo2.set_valuezat(2u);
 
-    zcash::GetAddressUtxosResponse response;
+    ::zcash::GetAddressUtxosResponse response;
     *(response.add_addressutxos()) = utxo1;
     *(response.add_addressutxos()) = utxo2;
 
@@ -86,7 +87,7 @@ TEST_F(ZCashDecoderUnitTest, ParseGetAddressUtxos) {
     EXPECT_CALL(
         callback,
         Run(testing::Truly(
-            [&](const mojom::GetAddressUtxosResponsePtr& result) {
+            [&](const zcash::mojom::GetAddressUtxosResponsePtr& result) {
               EXPECT_TRUE(result);
               EXPECT_EQ(result->address_utxos[0]->address, "addr1");
               EXPECT_EQ(result->address_utxos[0]->tx_id, ToBytes("txid1"));
@@ -102,10 +103,11 @@ TEST_F(ZCashDecoderUnitTest, ParseGetAddressUtxos) {
   }
   // Incorrect
   {
-    mojom::GetAddressUtxosResponsePtr result;
+    zcash::mojom::GetAddressUtxosResponsePtr result;
     std::optional<std::string> error;
     base::MockCallback<ZCashDecoder::ParseGetAddressUtxosCallback> callback;
-    EXPECT_CALL(callback, Run(EqualsMojo(mojom::GetAddressUtxosResponsePtr())));
+    EXPECT_CALL(callback,
+                Run(EqualsMojo(zcash::mojom::GetAddressUtxosResponsePtr())));
     decoder()->ParseGetAddressUtxos("123", callback.Get());
   }
 }
@@ -113,21 +115,22 @@ TEST_F(ZCashDecoderUnitTest, ParseGetAddressUtxos) {
 TEST_F(ZCashDecoderUnitTest, ParseSendResponse) {
   // Correct
   {
-    zcash::SendResponse response;
+    ::zcash::SendResponse response;
     response.set_errorcode(1);
     response.set_errormessage("123");
-    mojom::SendResponsePtr result;
+    zcash::mojom::SendResponsePtr result;
     base::MockCallback<ZCashDecoder::ParseSendResponseCallback> callback;
-    EXPECT_CALL(callback, Run(EqualsMojo(mojom::SendResponse::New(1, "123"))));
+    EXPECT_CALL(callback,
+                Run(EqualsMojo(zcash::mojom::SendResponse::New(1, "123"))));
     decoder()->ParseSendResponse(
         GetPrefixedProtobuf(response.SerializeAsString()), callback.Get());
   }
   // Incorrect
   {
-    mojom::SendResponsePtr result;
+    zcash::mojom::SendResponsePtr result;
     std::optional<std::string> error;
     base::MockCallback<ZCashDecoder::ParseSendResponseCallback> callback;
-    EXPECT_CALL(callback, Run(EqualsMojo(mojom::SendResponsePtr())));
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::SendResponsePtr())));
     decoder()->ParseSendResponse("123", callback.Get());
   }
 }
@@ -135,25 +138,53 @@ TEST_F(ZCashDecoderUnitTest, ParseSendResponse) {
 TEST_F(ZCashDecoderUnitTest, ParseRawTransaction) {
   // Correct
   {
-    zcash::RawTransaction response;
+    ::zcash::RawTransaction response;
     response.set_height(2);
     response.set_data("data");
 
-    mojom::RawTransactionPtr result;
+    zcash::mojom::RawTransactionPtr result;
     base::MockCallback<ZCashDecoder::ParseRawTransactionCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(EqualsMojo(mojom::RawTransaction::New(ToBytes("data"), 2u))));
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::RawTransaction::New(
+                              ToBytes("data"), 2u))));
     decoder()->ParseRawTransaction(
         GetPrefixedProtobuf(response.SerializeAsString()), callback.Get());
   }
   // Incorrect
   {
-    mojom::RawTransactionPtr result;
+    zcash::mojom::RawTransactionPtr result;
     std::optional<std::string> error;
     base::MockCallback<ZCashDecoder::ParseRawTransactionCallback> callback;
-    EXPECT_CALL(callback, Run(EqualsMojo(mojom::RawTransactionPtr())));
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::RawTransactionPtr())));
     decoder()->ParseRawTransaction("123", callback.Get());
+  }
+}
+
+TEST_F(ZCashDecoderUnitTest, ParseTreeState) {
+  // Correct
+  {
+    ::zcash::TreeState response;
+    response.set_hash("hash");
+    response.set_network("network");
+    response.set_height(2);
+    response.set_time(1);
+    response.set_orchardtree("orchard_tree");
+    response.set_saplingtree("sapling_tree");
+
+    zcash::mojom::TreeStatePtr result;
+    base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
+    EXPECT_CALL(callback,
+                Run(EqualsMojo(zcash::mojom::TreeState::New(
+                    "network", 2, "hash", 1, "sapling_tree", "orchard_tree"))));
+    decoder()->ParseTreeState(GetPrefixedProtobuf(response.SerializeAsString()),
+                              callback.Get());
+  }
+  // Incorrect
+  {
+    zcash::mojom::TreeStatePtr result;
+    std::optional<std::string> error;
+    base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::TreeStatePtr())));
+    decoder()->ParseTreeState("123", callback.Get());
   }
 }
 

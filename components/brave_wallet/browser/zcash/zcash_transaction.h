@@ -51,8 +51,9 @@ class ZCashTransaction {
     base::Value::Dict ToValue() const;
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
-    static std::optional<TxInput> FromRpcUtxo(const std::string& address,
-                                              const mojom::ZCashUtxo& utxo);
+    static std::optional<TxInput> FromRpcUtxo(
+        const std::string& address,
+        const zcash::mojom::ZCashUtxo& utxo);
 
     std::string utxo_address;
     Outpoint utxo_outpoint;

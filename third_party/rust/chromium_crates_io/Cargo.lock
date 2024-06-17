@@ -2810,7 +2810,7 @@ dependencies = [
  "brave_wallet",
  "cxx",
  "orchard",
- "rand_core 0.6.4",
+ "rand 0.8.5",
  "zcash_primitives",
 ]
 

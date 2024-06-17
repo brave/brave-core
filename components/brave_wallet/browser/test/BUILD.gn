@@ -151,6 +151,12 @@ source_set("brave_wallet_unit_tests") {
     "//url",
   ]
 
+  if (enable_orchard) {
+    sources += [ "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc" ]
+    deps +=
+        [ "//brave/components/brave_wallet/browser/internal:orchard_bundle" ]
+  }
+
   if (!is_ios) {
     deps += [
       "//brave/components/brave_wallet/browser:permission_utils",

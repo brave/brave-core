@@ -11,15 +11,20 @@
 
 #include "base/barrier_callback.h"
 #include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/zcash/create_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/discover_next_unused_zcash_address_task.h"
+#include "brave/components/brave_wallet/browser/zcash/get_transparent_utxos_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service_tasks.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+#include "brave/components/brave_wallet/browser/zcash/create_shield_all_transaction_task.h"
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 namespace brave_wallet {
 
@@ -267,7 +272,7 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
     const mojom::AccountIdPtr& account_id,
     ZCashTransaction zcash_transaction,
     SignAndPostTransactionCallback callback,
-    base::expected<mojom::BlockIDPtr, std::string> result) {
+    base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
     std::move(callback).Run(
         "", std::move(zcash_transaction),
@@ -297,7 +302,7 @@ void ZCashWalletService::OnResolveLastBlockHeightForSendTransaction(
 void ZCashWalletService::OnSendTransactionResult(
     SignAndPostTransactionCallback callback,
     ZCashTransaction tx,
-    base::expected<mojom::SendResponsePtr, std::string> result) {
+    base::expected<zcash::mojom::SendResponsePtr, std::string> result) {
   if (result.has_value() && result.value() && (*result)->error_code == 0) {
     auto tx_id = ZCashSerializer::CalculateTxIdDigest(tx);
     auto tx_id_hex = ToHex(tx_id);
@@ -312,7 +317,8 @@ void ZCashWalletService::OnSendTransactionResult(
 void ZCashWalletService::OnGetUtxos(
     scoped_refptr<GetTransparentUtxosContext> context,
     const std::string& address,
-    base::expected<mojom::GetAddressUtxosResponsePtr, std::string> result) {
+    base::expected<zcash::mojom::GetAddressUtxosResponsePtr, std::string>
+        result) {
   DCHECK(context->addresses.contains(address));
   DCHECK(!context->utxos.contains(address));
 
@@ -432,6 +438,7 @@ void ZCashWalletService::CreateShieldAllTransaction(
     mojom::AccountIdPtr account_id,
     CreateTransactionCallback callback) {
   CHECK(IsZCashShieldedTransactionsEnabled());
+
   if (shield_funds_task_) {
     std::move(callback).Run(
         base::unexpected(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
@@ -439,8 +446,7 @@ void ZCashWalletService::CreateShieldAllTransaction(
   }
 
   shield_funds_task_ = std::make_unique<CreateShieldAllTransactionTask>(
-      this, chain_id, account_id, std::move(callback),
-      random_seed_for_testing_);
+      this, chain_id, account_id, std::move(callback));
   shield_funds_task_->ScheduleWorkOnTask();
 }
 
@@ -488,7 +494,7 @@ void ZCashWalletService::GetTransactionStatus(
 
 void ZCashWalletService::OnTransactionResolvedForStatus(
     GetTransactionStatusCallback callback,
-    base::expected<mojom::RawTransactionPtr, std::string> result) {
+    base::expected<zcash::mojom::RawTransactionPtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
     std::move(callback).Run(base::unexpected(result.error()));
     return;

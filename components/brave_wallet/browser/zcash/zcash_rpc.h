@@ -31,26 +31,26 @@ namespace brave_wallet {
 class ZCashRpc {
  public:
   using GetUtxoListCallback = base::OnceCallback<void(
-      base::expected<mojom::GetAddressUtxosResponsePtr, std::string>)>;
-  using GetLatestBlockCallback =
-      base::OnceCallback<void(base::expected<mojom::BlockIDPtr, std::string>)>;
+      base::expected<zcash::mojom::GetAddressUtxosResponsePtr, std::string>)>;
+  using GetLatestBlockCallback = base::OnceCallback<void(
+      base::expected<zcash::mojom::BlockIDPtr, std::string>)>;
   using GetTransactionCallback = base::OnceCallback<void(
-      base::expected<mojom::RawTransactionPtr, std::string>)>;
+      base::expected<zcash::mojom::RawTransactionPtr, std::string>)>;
   using SendTransactionCallback = base::OnceCallback<void(
-      base::expected<mojom::SendResponsePtr, std::string>)>;
+      base::expected<zcash::mojom::SendResponsePtr, std::string>)>;
   using GetTransactionsCallback = base::OnceCallback<void(
-      base::expected<mojom::SendResponsePtr, std::string>)>;
+      base::expected<zcash::mojom::SendResponsePtr, std::string>)>;
   using IsKnownAddressCallback =
       base::OnceCallback<void(base::expected<bool, std::string>)>;
   using GetTreeStateCallback = base::OnceCallback<void(
-      base::expected<mojom::TreeStatePtr, std::string>)>;
+      base::expected<zcash::mojom::TreeStatePtr, std::string>)>;
 
   ZCashRpc(PrefService* prefs,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   virtual ~ZCashRpc();
 
   virtual void GetTreeState(const std::string& chain_id,
-                            mojom::BlockIDPtr block_id,
+                            zcash::mojom::BlockIDPtr block_id,
                             GetTreeStateCallback callback);
   virtual void GetLatestTreeState(const std::string& chain_id,
                                   GetTreeStateCallback callback);
@@ -112,14 +112,14 @@ class ZCashRpc {
   void OnParseResult(base::OnceCallback<void(base::expected<T, std::string>)>,
                      T value);
 
-  mojo::AssociatedRemote<mojom::ZCashDecoder>& GetDecoder();
+  mojo::AssociatedRemote<zcash::mojom::ZCashDecoder>& GetDecoder();
 
   UrlLoadersList url_loaders_list_;
   StreamHandlersList stream_handlers_list_;
   raw_ptr<PrefService> prefs_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_ = nullptr;
 
-  mojo::AssociatedRemote<mojom::ZCashDecoder> zcash_decoder_;
+  mojo::AssociatedRemote<zcash::mojom::ZCashDecoder> zcash_decoder_;
 
   base::WeakPtrFactory<ZCashRpc> weak_ptr_factory_{this};
 };

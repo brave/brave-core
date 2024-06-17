@@ -28,7 +28,7 @@ BraveWalletUtilsService* BraveWalletUtilsService::GetInstance() {
 }
 
 void BraveWalletUtilsService::CreateZCashDecoder(
-    mojo::PendingAssociatedReceiver<mojom::ZCashDecoder> receiver) {
+    mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder> receiver) {
   MaybeLaunchService();
   brave_wallet_utils_service_->CreateZCashDecoderService(std::move(receiver));
 }

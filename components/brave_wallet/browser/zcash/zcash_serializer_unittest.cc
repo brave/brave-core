@@ -12,8 +12,11 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
-#include "brave/components/zcash/rs/lib.rs.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+#include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
+#endif
 
 namespace brave_wallet {
 
@@ -188,13 +191,14 @@ TEST(ZCashSerializerTest, TxId_TransparentOnly) {
       "0x360d056309669faf0d7937f41581418be5e46b04e2cea0a7b14261d7bff1d825");
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 TEST(ZCashSerializerTest, OrchardBundle) {
-  ZCashKeyring keyring(false);
-  keyring.ConstructRootHDKey(
-      {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
-       0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15,
-       0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f},
-      "m/44'/133'");
+  ZCashKeyring keyring(
+      std::vector<uint8_t>({0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                            0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+                            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                            0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}),
+      false);
 
   auto key_id = mojom::ZCashKeyId::New(0, 0, 0);
   auto address = keyring.GetTransparentAddress(*key_id)->address_string;
@@ -226,16 +230,17 @@ TEST(ZCashSerializerTest, OrchardBundle) {
     tx.orchard_part().outputs.push_back(std::move(output));
   }
 
-  ::rust::Vec<zcash::OrchardOutput> outputs;
+  std::vector<OrchardOutput> outputs;
   for (const auto& output : tx.orchard_part().outputs) {
-    outputs.push_back(::zcash::OrchardOutput{output.value, output.address});
+    outputs.push_back(OrchardOutput{output.value, output.address});
   }
 
-  auto orchard_bundle = create_testing_orchard_builder(
-      rust::Slice<const uint8_t>() /* Use empty orchard tree */,
-      std::move(outputs), 0);
+  OrchardBundleManager::OverrideRandomSeedForTesting(0);
+  auto orchard_bundle_manager = OrchardBundleManager::Create(
+      std::vector<const uint8_t>() /* Use empty orchard tree */,
+      std::move(outputs));
 
-  tx.orchard_part().digest = orchard_bundle->unwrap().orchard_digest();
+  tx.orchard_part().digest = orchard_bundle_manager->GetOrchardDigest();
 
   EXPECT_EQ(
       "0x5af5dcc1436a1746e8a702a1d7763e8c7b2857f0037c2bcf3b02bea8c36fe6d5",
@@ -264,14 +269,8 @@ TEST(ZCashSerializerTest, OrchardBundle) {
       "0x58fec6023369e7fe37e800ab83fda11e182dd7100a6a204d164a950bd3f72dca",
       ToHex(shielded_sighash));
 
-  auto orchard_raw_part =
-      const_cast<::zcash::OrchardBuilderValue&>(orchard_bundle->unwrap())
-          .complete(shielded_sighash)
-          ->unwrap()
-          .raw_tx();
-
-  tx.orchard_part().raw_tx =
-      std::vector<uint8_t>(orchard_raw_part.begin(), orchard_raw_part.end());
+  auto orchard_raw_part = tx.orchard_part().raw_tx =
+      orchard_bundle_manager->ApplySignature(shielded_sighash)->GetRawTxBytes();
 
   EXPECT_EQ(
       ToHex(tx.orchard_part().raw_tx.value()),
@@ -807,5 +806,6 @@ TEST(ZCashSerializerTest, OrchardBundle) {
       "ace55bd2bc12bca438a4d99807e91d5d1571742922b099a46ebdea8f161720",
       ToHex(ZCashSerializer::SerializeRawTransaction(tx)));
 }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

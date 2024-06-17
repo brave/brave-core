@@ -116,6 +116,28 @@ DecodedZCashAddress::DecodedZCashAddress(DecodedZCashAddress&& other) = default;
 DecodedZCashAddress& DecodedZCashAddress::operator=(
     DecodedZCashAddress&& other) = default;
 
+bool OutputZCashAddressSupported(const std::string& address, bool is_testnet) {
+  auto decoded_address = DecodeZCashAddress(address);
+  if (!decoded_address) {
+    return false;
+  }
+  if (decoded_address->testnet != is_testnet) {
+    return false;
+  }
+
+  return true;
+}
+
+// https://zips.z.cash/zip-0317
+uint64_t CalculateZCashTxFee(const uint32_t tx_input_count,
+                             const uint32_t orchard_actions_count) {
+  // Use simplified calcultion fee form since we don't support p2psh
+  // and shielded addresses
+  auto actions_count = std::max(tx_input_count + orchard_actions_count,
+                                kDefaultTransparentOutputsCount);
+  return kMarginalFee * std::max(kGraceActionsCount, actions_count);
+}
+
 bool IsUnifiedAddress(const std::string& address) {
   return address.starts_with(base::StrCat({kTestnetHRP, "1"})) ||
          address.starts_with(base::StrCat({kMainnetHRP, "1"}));

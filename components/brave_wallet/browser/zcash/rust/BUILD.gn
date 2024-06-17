@@ -20,7 +20,11 @@ group("rust") {
 source_set("orchard_headers") {
   visibility = [ ":*" ]
 
-  sources = [ "extended_spending_key.h" ]
+  sources = [
+    "authorized_orchard_bundle.h",
+    "extended_spending_key.h",
+    "unauthorized_orchard_bundle.h",
+  ]
 
   public_deps = [
     "//base",
@@ -32,8 +36,12 @@ source_set("orchard_impl") {
   visibility = [ ":rust" ]
 
   sources = [
+    "authorized_orchard_bundle_impl.cc",
+    "authorized_orchard_bundle_impl.h",
     "extended_spending_key_impl.cc",
     "extended_spending_key_impl.h",
+    "unauthorized_orchard_bundle_impl.cc",
+    "unauthorized_orchard_bundle_impl.h",
   ]
 
   deps = [
@@ -46,10 +54,7 @@ source_set("orchard_impl") {
 }
 
 rust_static_library("rust_lib") {
-  visibility = [
-    ":orchard_impl",
-    "//brave/components/brave_wallet/browser",
-  ]
+  visibility = [ ":orchard_impl" ]
 
   crate_name = "zcash"
   crate_root = "lib.rs"
@@ -61,6 +66,6 @@ rust_static_library("rust_lib") {
     "librustzcash:zcash_primitives",
     "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/third_party/rust/orchard/v0_8:lib",
-    "//third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
   ]
 }

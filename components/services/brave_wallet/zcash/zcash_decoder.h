@@ -16,7 +16,7 @@
 namespace brave_wallet {
 
 // Parses Zcash protobuf objects and translates them to mojo.
-class ZCashDecoder : public mojom::ZCashDecoder {
+class ZCashDecoder : public zcash::mojom::ZCashDecoder {
  public:
   ZCashDecoder();
   ~ZCashDecoder() override;

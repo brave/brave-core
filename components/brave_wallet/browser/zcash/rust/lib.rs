@@ -25,9 +25,9 @@ use zcash_primitives::transaction::components::amount::Amount;
 
 use ffi::OrchardOutput;
 
-use rand_core::OsRng;
-use rand_core::{RngCore, Error as OtherError, impls};
-use rand_core::CryptoRng;
+use rand::rngs::OsRng;
+use rand::{RngCore, Error as OtherError};
+use rand::CryptoRng;
 
 use brave_wallet::{
   impl_error
@@ -90,7 +90,22 @@ impl RngCore for MockRng {
     }
 
     fn fill_bytes(&mut self, dest: &mut [u8]) {
-        impls::fill_bytes_via_next(self, dest)
+        // https://github.com/rust-random/rand/blob/master/rand_core/src/impls.rs#L38
+        let mut left = dest;
+        while left.len() >= 8 {
+            let (l, r) = { left }.split_at_mut(8);
+            left = r;
+            let chunk: [u8; 8] = self.next_u64().to_le_bytes();
+            l.copy_from_slice(&chunk);
+        }
+        let n = left.len();
+        if n > 4 {
+            let chunk: [u8; 8] = self.next_u64().to_le_bytes();
+            left.copy_from_slice(&chunk[..n]);
+        } else if n > 0 {
+            let chunk: [u8; 4] = self.next_u32().to_le_bytes();
+            left.copy_from_slice(&chunk[..n]);
+        }
     }
 
     fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), OtherError> {
