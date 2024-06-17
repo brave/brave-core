@@ -46,11 +46,9 @@ public struct BraveVPNRegionPickerView: View {
       VStack {
         List {
           Section(
-            footer: Text(
-              "Auto-select the VPN server region closest to you based on your timezone. This option is recommended to maximize Internet speeds."
-            )
-            .font(.footnote)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+            footer: Text(Strings.VPN.serverRegionAutoSelectDescription)
+              .font(.footnote)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
           ) {
             automaticRegionToggle
           }
@@ -86,7 +84,7 @@ public struct BraveVPNRegionPickerView: View {
     .background {
       BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
-        regionCountry:  BraveVPN.serverLocationDetailed.country,
+        regionCountry: BraveVPN.serverLocationDetailed.country,
         regionCity: BraveVPN.serverLocationDetailed.city,
         regionCountryISOCode: BraveVPN.serverLocation.isoCode
       )
@@ -153,16 +151,20 @@ public struct BraveVPNRegionPickerView: View {
               isSelectedRegion
                 ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
             )
-          Text(serverCount > 1 ? "\(serverCount) servers" : "1 server")
-            .font(.footnote)
-            .foregroundStyle(
-              isSelectedRegion
-                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
-            )
+          Text(
+            serverCount > 1
+              ? String(format: Strings.VPN.multipleServerCountTitle, serverCount)
+              : String(format: Strings.VPN.serverCountTitle, serverCount)
+          )
+          .font(.footnote)
+          .foregroundStyle(
+            isSelectedRegion
+              ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textSecondary)
+          )
         }
         Spacer()
         if isSelectedRegion {
-          Text("Connected")
+          Text(Strings.VPN.connectedRegionDescription)
             .font(.body)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
         }
@@ -183,7 +185,7 @@ public struct BraveVPNRegionPickerView: View {
       )
     ) {
       VStack(alignment: .leading) {
-        Text("Automatic")
+        Text(Strings.VPN.automaticServerSelectionToggleTitle)
           .font(.body)
         if isAutomatic, let regionAutomaticName = BraveVPN.lastKnownRegion?.displayName {
           Text(regionAutomaticName)

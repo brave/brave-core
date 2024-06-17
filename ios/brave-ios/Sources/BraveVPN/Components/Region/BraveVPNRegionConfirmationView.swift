@@ -24,7 +24,7 @@ public struct BraveVPNRegionConfirmationView: View {
       Image("region-change-banner", bundle: .module)
         .resizable()
         .frame(width: 96, height: 96)
-      Text("VPN Region Changed")
+      Text(Strings.VPN.vpnRegionChangedTitle)
         .multilineTextAlignment(.center)
         .font(.headline)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
