@@ -17,8 +17,8 @@ BASE_DECLARE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore);
 BASE_DECLARE_FEATURE(kBraveCopyCleanLinkByDefault);
 BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 BASE_DECLARE_FEATURE(kBraveWebViewRoundedCorners);
-
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
+
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;
 
 }  // namespace features

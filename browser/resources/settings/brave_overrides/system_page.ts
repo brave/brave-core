@@ -105,6 +105,17 @@ RegisterPolymerTemplateModifications({
     )
     // </if>
 
+    templateContent.appendChild(
+      html`
+        <settings-toggle-button
+          class="cr-row"
+          pref="{{prefs.brave.show_fullscreen_reminder}}"
+          label="${loadTimeData.getString('braveShowFullscreenReminder')}"
+        >
+        </settings-toggle-button>
+      `
+    )
+
     // <if expr="enable_brave_vpn_wireguard">
     let showVpnPage = loadTimeData.getBoolean('isBraveVPNEnabled')
     // <if expr="is_macosx">

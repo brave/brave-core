@@ -123,6 +123,8 @@ inline constexpr char kSafetynetStatus[] = "safetynet.status";
 inline constexpr char kEnableWindowClosingConfirm[] =
     "brave.enable_window_closing_confirm";
 inline constexpr char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
+inline constexpr char kShowFullscreenReminder[] =
+    "brave.show_fullscreen_reminder";
 #endif
 
 inline constexpr char kDefaultBrowserLaunchingCount[] =

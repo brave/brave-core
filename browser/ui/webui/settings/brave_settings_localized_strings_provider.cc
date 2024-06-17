@@ -400,6 +400,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
       {"braveDisableClickableMuteIndicators",
        IDS_SETTINGS_DISABLE_CLICKABLE_MUTE_INDICATORS},
+      {"braveShowFullscreenReminder",
+       IDS_SETTINGS_SHOW_FULLSCREEN_REMINDER_OPTION_LABEL},
 
       // Leo Assistant Page
       {"leoAssistant", IDS_SETTINGS_LEO_ASSISTANT},
