@@ -1,4 +1,12 @@
-### How to update wpr
+# Brave performance tests
+
+## Job URLs
+
+* [Window](<https://ci.brave.com/job/brave-browser-test-perf-windows/>)
+* [MacOS](<https://ci.brave.com/job/brave-browser-test-perf-macos/>)
+* [Android](<https://ci.brave.com/job/brave-browser-test-perf-android/>)
+
+## How to update wpr
 
 * Get write access to `brave-telemetry` GCS bucket (ask @devops-team);
 * `cd src/`;
@@ -10,11 +18,6 @@
 * Review and commit new `.sha1` files (not `.wprgo`) plus new entries in
   `./brave/tools/perf/page_sets_data/*.json`.
 
-### Updating profiles
+## Updating profiles
 
-* Get write access to `brave-telemetry` GCS bucket (ask @devops-team);
-* Launch CI jobs with nessesary configurations and extra args = `--mode update_profile`;
-* Download the artifacts (the URL in the Console Output), extract and copy <profile_name>.zip to `./profiles/`;
-* Upload the new archives to google storage: `upload_to_google_storage.py --bucket=brave-telemetry <profiles>.zip`;
-* Stage and commit the updated `<profiles>.zip.sha1`, don't commit the origin `.zip`;
-* Make a PR to brave-core.
+[Instruction](./updating_test_profiles.md)
