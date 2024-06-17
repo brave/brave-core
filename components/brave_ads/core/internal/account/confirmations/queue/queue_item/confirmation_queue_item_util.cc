@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -50,6 +51,7 @@ bool ShouldProcessQueueItem(
 base::TimeDelta CalculateDelayBeforeProcessingConfirmationQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item) {
   if (g_scoped_delay_before_processing_confirmation_queue_item_for_testing) {
+    CHECK_IS_TEST();
     return *g_scoped_delay_before_processing_confirmation_queue_item_for_testing;
   }
 

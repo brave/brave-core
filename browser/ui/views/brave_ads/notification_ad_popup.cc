@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/views/brave_ads/bounds_util.h"
@@ -460,7 +461,9 @@ void NotificationAdPopup::CreateWidgetView(
   widget->InitWidget(this, widget_bounds, browser_native_window,
                      browser_native_view);
 
-  if (!g_disable_fade_in_animation_for_testing) {
+  if (g_disable_fade_in_animation_for_testing) {
+    CHECK_IS_TEST();
+  } else {
     widget->SetOpacity(0.0);
   }
   const gfx::Rect bounds = widget->GetWindowBoundsInScreen();
@@ -483,6 +486,7 @@ void NotificationAdPopup::CloseWidgetView() {
 
 void NotificationAdPopup::FadeIn() {
   if (g_disable_fade_in_animation_for_testing) {
+    CHECK_IS_TEST();
     return;
   }
 
