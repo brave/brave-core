@@ -199,9 +199,9 @@ extension Strings {
       "aichat.introMessageLlamaModelDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Llama 2 13b by Meta",
+      value: "Llama 3 8b by Meta",
       comment:
-        "The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator"
+        "The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator"
     )
     public static let introMessageMixtralModelDescription = NSLocalizedString(
       "aichat.introMessageMixtralModelDescription",
@@ -557,70 +557,70 @@ extension Strings {
       comment: "The description for the error whre leo data reset"
     )
     public static let resetLeoDataAlertButtonTitle = NSLocalizedString(
-      "wallet.resetLeoDataAlertButtonTitle",
+      "aichat.resetLeoDataAlertButtonTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Reset",
       comment: "The title of a button that will reset data for leo"
     )
     public static let defaultModelViewTitle = NSLocalizedString(
-      "wallet.defaultModelViewTitle",
+      "aichat.defaultModelViewTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Default Model",
       comment: "The title of the menu where user can change the default model"
     )
     public static let defaultModelChatSectionTitle = NSLocalizedString(
-      "wallet.defaultModelChatSectionTitle",
+      "aichat.defaultModelChatSectionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Chat",
       comment: "The title of the section where chat models are displayed as a list."
     )
     public static let unlimitedModelStatusTitle = NSLocalizedString(
-      "wallet.unlimitedModelStatusTitle",
+      "aichat.unlimitedModelStatusTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Unlimited",
       comment: "The title of the badge where a model which can be used unlimited"
     )
-    public static let limitedModelStatusTitle = NSLocalizedString(
-      "wallet.limitedModelStatusTitle",
+    public static let premiumModelStatusTitle = NSLocalizedString(
+      "aichat.premiumModelStatusTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Limited",
+      value: "Premium",
       comment: "The title of the badge where a model which can be used limited"
     )
     public static let defaultModelLanguageSectionTitle = NSLocalizedString(
-      "wallet.defaultModelLanguageSectionTitle",
+      "aichat.defaultModelLanguageSectionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "LANGUAGE MODELS",
       comment: "The title of the section where language models are displayed as a list."
     )
     public static let quickMenuNewChatActionTitle = NSLocalizedString(
-      "wallet.quickMenuNewChatActionTitle",
+      "aichat.quickMenuNewChatActionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "New Chat",
       comment: "The title of action for quick menu which starts a new chat"
     )
     public static let quickMenuGoPremiumActionTitle = NSLocalizedString(
-      "wallet.quickMenuGoPremiumActionTitle",
+      "aichat.quickMenuGoPremiumActionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Go Premium",
       comment: "The title of action for quick menu which presents payment screen for premium"
     )
     public static let quickMenuManageSubscriptionActionTitle = NSLocalizedString(
-      "wallet.quickMenuManageSubscriptionActionTitle",
+      "aichat.quickMenuManageSubscriptionActionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Manage Subscriptions",
       comment: "The title of action for quick menu which display subscription management view"
     )
     public static let quickMenuAdvancedSettingsActionTitle = NSLocalizedString(
-      "wallet.quickMenuAdvancedSettingsActionTitle",
+      "aichat.quickMenuAdvancedSettingsActionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Advanced Settings",
