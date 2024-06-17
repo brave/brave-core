@@ -11,7 +11,7 @@ declare_args() {
   # integration points. But, as of this writing, we do not yet use Omaha 4. The
   # arg below enables building our own Omaha 4 integration, which is still
   # experimental.
-  brave_enable_updater = false
+  brave_enable_updater = target_os == "mac"
 }
 
 if (brave_enable_updater) {
