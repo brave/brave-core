@@ -6,14 +6,12 @@
 #ifndef BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_SERVICE_H_
 #define BRAVE_COMPONENTS_URL_SANITIZER_BROWSER_URL_SANITIZER_SERVICE_H_
 
-#include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/components/url_sanitizer/common/mojom/url_sanitizer.mojom.h"
@@ -45,6 +43,7 @@ class URLSanitizerService : public KeyedService,
     MatchItem(extensions::URLPatternSet include,
               extensions::URLPatternSet exclude,
               base::flat_set<std::string> params);
+    MatchItem(MatchItem&&);
     ~MatchItem();
 
     extensions::URLPatternSet include;
@@ -63,14 +62,13 @@ class URLSanitizerService : public KeyedService,
  protected:
   friend class URLSanitizerServiceUnitTest;
 
-  void UpdateMatchers(
-      base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>>);
+  void UpdateMatchers(std::vector<URLSanitizerService::MatchItem> mappings);
 
   std::string StripQueryParameter(const std::string& query,
                                   const base::flat_set<std::string>& trackers);
 
  private:
-  base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> matchers_;
+  std::vector<URLSanitizerService::MatchItem> matchers_;
   base::OnceClosure initialization_callback_for_testing_;
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<url_sanitizer::mojom::UrlSanitizerService> receivers_;

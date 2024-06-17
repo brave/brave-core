@@ -21,19 +21,21 @@
 namespace brave {
 
 namespace {
-bool CreateURLPatternSetFromList(const base::Value::List* value,
-                                 extensions::URLPatternSet* result) {
+std::optional<extensions::URLPatternSet> CreateURLPatternSetFromList(
+    const base::Value::List* value) {
   if (!value) {
-    return false;
+    return std::nullopt;
   }
+  extensions::URLPatternSet result;
   std::string error;
-  bool valid = result->Populate(
+  bool valid = result.Populate(
       *value, URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, false,
       &error);
   if (!valid) {
     VLOG(1) << "Unable to create url pattern:" << error;
+    return std::nullopt;
   }
-  return valid;
+  return result;
 }
 
 std::optional<base::flat_set<std::string>> CreateParamsList(
@@ -49,7 +51,7 @@ std::optional<base::flat_set<std::string>> CreateParamsList(
   return result;
 }
 
-base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
+std::vector<URLSanitizerService::MatchItem> ParseFromJson(
     const std::string& json) {
   auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
   if (!parsed_json.has_value()) {
@@ -60,32 +62,28 @@ base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
   if (!list) {
     return {};
   }
-  base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> matchers;
+  std::vector<URLSanitizerService::MatchItem> matchers;
   for (const auto& it : *list) {
     const base::Value::Dict* items = it.GetIfDict();
-    if (!items)
-      continue;
-    auto* include_list = items->FindList("include");
-    if (!include_list)
-      continue;
-    extensions::URLPatternSet include_matcher;
-    if (!CreateURLPatternSetFromList(include_list, &include_matcher)) {
+    if (!items) {
       continue;
     }
-    auto* params_list = items->FindList("params");
-    std::optional<base::flat_set<std::string>> params =
-        CreateParamsList(params_list);
+    auto include_matcher =
+        CreateURLPatternSetFromList(items->FindList("include"));
+    if (!include_matcher) {
+      continue;
+    }
+    auto params = CreateParamsList(items->FindList("params"));
     if (!params) {
       continue;
     }
 
-    extensions::URLPatternSet exclude_matcher;
-    CreateURLPatternSetFromList(items->FindList("exclude"), &exclude_matcher);
-    auto item = std::make_unique<URLSanitizerService::MatchItem>(
-        std::move(include_matcher), std::move(exclude_matcher),
-        std::move(*params));
+    auto exclude_matcher =
+        CreateURLPatternSetFromList(items->FindList("exclude"))
+            .value_or(extensions::URLPatternSet());
 
-    matchers.insert(std::move(item));
+    matchers.emplace_back(std::move(*include_matcher),
+                          std::move(exclude_matcher), std::move(*params));
   }
 
   return matchers;
@@ -93,12 +91,17 @@ base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
 
 }  // namespace
 
+URLSanitizerService::MatchItem::MatchItem() = default;
+URLSanitizerService::MatchItem::MatchItem(MatchItem&&) = default;
+URLSanitizerService::MatchItem::MatchItem(extensions::URLPatternSet in,
+                                          extensions::URLPatternSet ex,
+                                          base::flat_set<std::string> prm)
+    : include(std::move(in)), exclude(std::move(ex)), params(std::move(prm)) {}
+URLSanitizerService::MatchItem::~MatchItem() = default;
+
 URLSanitizerService::URLSanitizerService() = default;
 
 URLSanitizerService::~URLSanitizerService() = default;
-
-URLSanitizerService::MatchItem::MatchItem() = default;
-URLSanitizerService::MatchItem::~MatchItem() = default;
 
 #if BUILDFLAG(IS_ANDROID)
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
@@ -115,11 +118,6 @@ void URLSanitizerService::SanitizeURL(const std::string& url,
   std::move(callback).Run(sanitized_url.spec());
 }
 
-URLSanitizerService::MatchItem::MatchItem(extensions::URLPatternSet in,
-                                          extensions::URLPatternSet ex,
-                                          base::flat_set<std::string> prm)
-    : include(std::move(in)), exclude(std::move(ex)), params(std::move(prm)) {}
-
 void URLSanitizerService::Initialize(const std::string& json) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()}, base::BindOnce(&ParseFromJson, json),
@@ -128,10 +126,11 @@ void URLSanitizerService::Initialize(const std::string& json) {
 }
 
 void URLSanitizerService::UpdateMatchers(
-    base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> mappings) {
+    std::vector<URLSanitizerService::MatchItem> mappings) {
   matchers_ = std::move(mappings);
-  if (initialization_callback_for_testing_)
+  if (initialization_callback_for_testing_) {
     std::move(initialization_callback_for_testing_).Run();
+  }
 }
 
 GURL URLSanitizerService::SanitizeURL(const GURL& initial_url) {
@@ -140,9 +139,10 @@ GURL URLSanitizerService::SanitizeURL(const GURL& initial_url) {
   }
   GURL url = initial_url;
   for (const auto& it : matchers_) {
-    if (!it->include.MatchesURL(url) || it->exclude.MatchesURL(url))
+    if (!it.include.MatchesURL(url) || it.exclude.MatchesURL(url)) {
       continue;
-    auto sanitized_query = StripQueryParameter(url.query(), it->params);
+    }
+    const auto sanitized_query = StripQueryParameter(url.query(), it.params);
     GURL::Replacements replacements;
     if (!sanitized_query.empty()) {
       replacements.SetQueryStr(sanitized_query);
