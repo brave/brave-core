@@ -156,13 +156,15 @@ public class BraveVPN {
   }
 
   /// Location of last used server for the vpn configuration.
-  public static var serverLocation: String? {
-    helper.mainCredential?.hostnameDisplayValue
+  public static var serverLocation: (hostName: String?, isoCode: String?) {
+    let mainCredential = helper.mainCredential
+
+    return (mainCredential?.hostnameDisplayValue, mainCredential?.region?.countryISOCode)
   }
 
   /// Detailed Location of last used server for the vpn configuration.
   public static var serverLocationDetailed: (city: String?, country: String?) {
-    guard let serverLocation = serverLocation else {
+    guard let serverLocation = serverLocation.hostName else {
       return (nil, nil)
     }
 
