@@ -56,7 +56,7 @@ struct BraveRegionDetailsView: View {
   var body: some View {
     ZStack {
       List {
-        Section(header: Text("AVAILABLE SERVERS")) {
+        Section(header: Text(Strings.VPN.availableServerTitle)) {
           ForEach(cityRegionDetail.cityRegions) { server in
             cityRegionItem(at: 0, region: server)
           }
@@ -71,16 +71,17 @@ struct BraveRegionDetailsView: View {
           .zIndex(1)
       }
     }
-    .navigationBarTitle("\(cityRegionDetail.countryName) Server", displayMode: .inline)
+    .navigationBarTitle(
+      String(format: Strings.VPN.serverNameTitle, cityRegionDetail.countryName),
+      displayMode: .inline
+    )
     .background {
-      if let region = cityRegionDetail.selectedRegion {
-        BraveVPNRegionConfirmationContentView(
-          isPresented: $isConfirmationPresented,
-          regionCountry: BraveVPN.serverLocationDetailed.country,
-          regionCity: BraveVPN.serverLocationDetailed.city,
-          regionCountryISOCode: BraveVPN.serverLocation.isoCode
-        )
-      }
+      BraveVPNRegionConfirmationContentView(
+        isPresented: $isConfirmationPresented,
+        regionCountry: BraveVPN.serverLocationDetailed.country,
+        regionCity: BraveVPN.serverLocationDetailed.city,
+        regionCountryISOCode: BraveVPN.serverLocation.isoCode
+      )
     }
     .alert(isPresented: $isShowingChangeRegionAlert) {
       Alert(
@@ -116,7 +117,7 @@ struct BraveRegionDetailsView: View {
           )
 
         if region.isAutomatic == true {
-          Text("Use the best server available")
+          Text(Strings.VPN.vpnCityRegionOptimalDescription)
             .foregroundStyle(
               cityRegionDetail.selectedRegion == region
                 ? Color(braveSystemName: .textInteractive)
