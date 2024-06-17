@@ -20,3 +20,15 @@ static_library("ipfs") {
     "//url",
   ]
 }
+
+source_set("brave_ipfs_unit_tests") {
+  testonly = true
+
+  sources = [ "ipfs_utils_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/ipfs",
+    "//chrome/test:test_support",
+  ]
+}

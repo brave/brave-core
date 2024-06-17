@@ -230,6 +230,7 @@ test("brave_unit_tests") {
     "//brave/components/embedder_support:unit_tests",
     "//brave/components/history/core/browser:unit_tests",
     "//brave/components/history/core/browser/sync:unit_tests",
+    "//brave/components/ipfs:brave_ipfs_unit_tests",
     "//brave/components/json:brave_json_unit_tests",
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
