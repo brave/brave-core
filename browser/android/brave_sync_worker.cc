@@ -115,6 +115,13 @@ void BraveSyncWorker::RequestSync(JNIEnv* env) {
     sync_service_observer_.AddObservation(service);
   }
 
+  // Upstream shows the notification when passphrase is required but not set,
+  // see SyncErrorNotifier.computeGoalNotificationState .
+  // Brave always set the passphrase eventually, so we don't need this
+  // notification. The same for scanning QR code and using the codewords.
+  service->GetUserSettings()
+      ->MarkPassphrasePromptMutedForCurrentProductVersion();
+
   // Mark Sync as requested by the user. It might already be requested, but
   // it's not if this is either the first time the user is setting up Sync, or
   // Sync was set up but then was reset via the dashboard. This also pokes the
