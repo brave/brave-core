@@ -13,7 +13,8 @@ struct AIChatIntroMessageView: View {
   private enum ModelKey: String {
     case chatBasic = "chat-basic"
     case chatExpanded = "chat-leo-expanded"
-    case chatClaudeInstant = "chat-claude-instant"
+    case chatClaudeHaiku = "chat-claude-haiku"
+    case chatClaudeSonnet = "chat-claude-sonnet"
   }
 
   private var modelDescription: String {
@@ -28,8 +29,11 @@ struct AIChatIntroMessageView: View {
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralModelDescription
 
-    case .chatClaudeInstant:
-      return Strings.AIChat.introMessageClaudeInstantModelDescription
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuModelDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetModelDescription
     }
   }
 
@@ -45,8 +49,11 @@ struct AIChatIntroMessageView: View {
     case .chatExpanded:
       return Strings.AIChat.introMessageMixtralMessageDescription
 
-    case .chatClaudeInstant:
-      return Strings.AIChat.introMessageClaudeInstantMessageDescription
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuMessageDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetMessageDescription
     }
   }
 
