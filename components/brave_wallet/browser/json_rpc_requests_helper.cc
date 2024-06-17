@@ -13,6 +13,7 @@
 #include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -49,8 +50,12 @@ void AddKeyIfNotEmpty(base::Value::Dict* dict,
 }
 
 base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
-    const std::string& json_payload) {
-  base::flat_map<std::string, std::string> request_headers;
+    const std::string& json_payload,
+    const GURL& network_url) {
+  auto request_headers = IsEndpointUsingBraveWalletProxy(network_url)
+                             ? MakeBraveServicesKeyHeaders()
+                             : base::flat_map<std::string, std::string>();
+
   std::string id, method, params;
   if (GetEthJsonRequestInfo(json_payload, nullptr, &method, &params)) {
     if (net::HttpUtil::IsValidHeaderValue(method)) {
@@ -67,20 +72,7 @@ base::flat_map<std::string, std::string> MakeCommonJsonRpcHeaders(
     }
   }
 
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers[kBraveServicesKeyHeader] = std::move(brave_key);
-
   return request_headers;
-}
-
-base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders() {
-  return {
-      {kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)},
-  };
 }
 
 std::string EncodeAnkrGetAccountBalancesParams(

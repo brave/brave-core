@@ -77,10 +77,10 @@ class BitcoinRpc {
                        RequestIntermediateCallback callback,
                        APIRequestHelper::ResponseConversionCallback
                            conversion_callback = base::NullCallback());
-  void OnRequestInternalDone(const std::string& endpoint_host,
+  void OnRequestInternalDone(const GURL& endpoint_host,
                              RequestIntermediateCallback callback,
                              APIRequestResult api_request_result);
-  void MaybeStartQueuedRequest(const std::string& endpoint_host);
+  void MaybeStartQueuedRequest(const GURL& endpoint_host);
 
   void OnGetChainHeight(GetChainHeightCallback callback,
                         APIRequestResult api_request_result);

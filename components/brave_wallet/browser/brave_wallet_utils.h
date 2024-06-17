@@ -86,14 +86,13 @@ std::vector<std::string> CustomChainsExist(
     const std::vector<std::string>& custom_chain_ids,
     mojom::CoinType coin);
 
+bool IsEndpointUsingBraveWalletProxy(const GURL& url);
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
+
 GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin);
-GURL GetInfuraURLForKnownChainId(const std::string& chain_id);
-std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
-GURL AddInfuraProjectId(const GURL& url);
-GURL MaybeAddInfuraProjectId(const GURL& url);
 
 void SetDefaultEthereumWallet(PrefService* prefs,
                               mojom::DefaultWallet default_wallet);

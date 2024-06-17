@@ -14,6 +14,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
@@ -120,18 +121,6 @@ std::optional<std::string> SimpleHashChainIdToChainId(
   return simple_hash_chain_id_lookup->at(simple_hash_chain_id);
 }
 
-base::flat_map<std::string, std::string> MakeBraveServicesKeyHeader() {
-  base::flat_map<std::string, std::string> request_headers;
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  std::string brave_key(BUILDFLAG(BRAVE_SERVICES_KEY));
-  if (env->HasVar("BRAVE_SERVICES_KEY")) {
-    env->GetVar("BRAVE_SERVICES_KEY", &brave_key);
-  }
-  request_headers["x-brave-key"] = std::move(brave_key);
-
-  return request_headers;
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -172,7 +161,7 @@ void SimpleHashClient::FetchNFTsFromSimpleHash(
                      std::move(callback));
 
   api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
-                               MakeBraveServicesKeyHeader(),
+                               MakeBraveServicesKeyHeaders(),
                                {.auto_retry_on_network_change = true});
 }
 

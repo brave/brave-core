@@ -162,15 +162,14 @@ const GURL MakePostTransactionUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-std::string EndpointHost(const GURL& request_url) {
+GURL EndpointHost(const GURL& request_url) {
   DCHECK(request_url.is_valid());
-  return request_url.host();
+  return request_url.GetWithEmptyPath();
 }
 
-bool ShouldThrottleEndpoint(const std::string& endpoint_host) {
+bool ShouldThrottleEndpoint(const GURL& endpoint_host) {
   // Don't throttle requests if host matches brave proxy.
-  return EndpointHost(GURL(brave_wallet::kBitcoinMainnetRpcEndpoint)) !=
-         endpoint_host;
+  return !brave_wallet::IsEndpointUsingBraveWalletProxy(endpoint_host);
 }
 
 std::optional<std::string> ConvertPlainStringToJsonArray(
@@ -457,7 +456,7 @@ void BitcoinRpc::RequestInternal(
 
   auto endpoint_host = EndpointHost(request_url);
 
-  auto& endpoint = endpoints_[endpoint_host];
+  auto& endpoint = endpoints_[endpoint_host.host()];
 
   auto& request = endpoint.requests_queue.emplace_back();
   request.request_url = request_url;
@@ -467,10 +466,10 @@ void BitcoinRpc::RequestInternal(
   MaybeStartQueuedRequest(endpoint_host);
 }
 
-void BitcoinRpc::OnRequestInternalDone(const std::string& endpoint_host,
+void BitcoinRpc::OnRequestInternalDone(const GURL& endpoint_host,
                                        RequestIntermediateCallback callback,
                                        APIRequestResult api_request_result) {
-  auto& endpoint = endpoints_[endpoint_host];
+  auto& endpoint = endpoints_[endpoint_host.host()];
   endpoint.active_requests--;
   DCHECK_GE(endpoint.active_requests, 0u);
   std::move(callback).Run(std::move(api_request_result));
@@ -480,8 +479,8 @@ void BitcoinRpc::OnRequestInternalDone(const std::string& endpoint_host,
                                 weak_ptr_factory_.GetWeakPtr(), endpoint_host));
 }
 
-void BitcoinRpc::MaybeStartQueuedRequest(const std::string& endpoint_host) {
-  auto& endpoint = endpoints_[endpoint_host];
+void BitcoinRpc::MaybeStartQueuedRequest(const GURL& endpoint_host) {
+  auto& endpoint = endpoints_[endpoint_host.host()];
 
   auto rpc_throttle = features::kBitcoinRpcThrottle.Get();
   if (ShouldThrottleEndpoint(endpoint_host) && rpc_throttle > 0 &&
@@ -501,7 +500,7 @@ void BitcoinRpc::MaybeStartQueuedRequest(const std::string& endpoint_host) {
       base::BindOnce(&BitcoinRpc::OnRequestInternalDone,
                      weak_ptr_factory_.GetWeakPtr(), endpoint_host,
                      std::move(request.callback)),
-      {}, {.auto_retry_on_network_change = true},
+      MakeBraveServicesKeyHeaders(), {.auto_retry_on_network_change = true},
       std::move(request.conversion_callback));
 }
 
