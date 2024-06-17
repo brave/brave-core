@@ -5,13 +5,10 @@
 
 #include "brave/browser/ui/views/brave_ads/notification_ad_header_view.h"
 
-#include <memory>
-
 #include "brave/browser/ui/views/brave_ads/insets_util.h"
 #include "brave/browser/ui/views/brave_ads/spacer_view.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/gfx/color_palette.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
@@ -28,7 +25,7 @@ namespace {
 constexpr auto kMargin = gfx::Insets::TLBR(0, 0, 0, 0);
 
 // Spacing between child views and host views
-constexpr auto kInteriorMargin = gfx::Insets::TLBR(0, 10, 0, 2);
+constexpr auto kInteriorMargin = gfx::Insets::TLBR(0, 10, 0, 0);
 
 constexpr int kHeaderViewHeight = 22;
 
@@ -44,12 +41,12 @@ constexpr SkColor kDarkModeTitleColor = SkColorSetRGB(0xe3, 0xe6, 0xec);
 constexpr gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
 constexpr gfx::VerticalAlignment kTitleVerticalAlignment = gfx::ALIGN_BOTTOM;
 
-constexpr auto kTitleBorderInsets = gfx::Insets::TLBR(11, 10, 3, 0);
+constexpr auto kTitleBorderInsets = gfx::Insets::TLBR(0, 10, 3, 0);
 
 }  // namespace
 
-NotificationAdHeaderView::NotificationAdHeaderView(const int width) {
-  CreateView(width);
+NotificationAdHeaderView::NotificationAdHeaderView() {
+  CreateView();
 }
 
 NotificationAdHeaderView::~NotificationAdHeaderView() = default;
@@ -90,30 +87,29 @@ void NotificationAdHeaderView::OnThemeChanged() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NotificationAdHeaderView::CreateView(const int width) {
+void NotificationAdHeaderView::CreateView() {
   views::FlexLayout* layout_manager =
       SetLayoutManager(std::make_unique<views::FlexLayout>());
   layout_manager->SetDefault(views::kMarginsKey, kMargin);
   layout_manager->SetInteriorMargin(kInteriorMargin);
   layout_manager->SetCollapseMargins(true);
 
-  const gfx::Size size(width, kHeaderViewHeight);
-  SetPreferredSize(size);
-
   CHECK(!title_label_);
-  title_label_ = CreateTitleLabel();
-  AddChildView(title_label_.get());
+  title_label_ = AddChildView(CreateTitleLabel());
 
   views::View* control_button_spacing_view =
       CreateFixedSizeSpacerView(kControlButtonsSpacing);
   AddChildView(control_button_spacing_view);
 
+  const gfx::Size size(GetPreferredSize().width(), kHeaderViewHeight);
+  SetPreferredSize(size);
+
   // Not focusable by default, only for accessibility
   SetFocusBehavior(FocusBehavior::ACCESSIBLE_ONLY);
 }
 
-views::Label* NotificationAdHeaderView::CreateTitleLabel() {
-  views::Label* label = new views::Label();
+std::unique_ptr<views::Label> NotificationAdHeaderView::CreateTitleLabel() {
+  auto label = std::make_unique<views::Label>();
 
   const gfx::FontList font_list({kTitleFontName}, kTitleFontStyle,
                                 kTitleFontSize, kTitleFontWeight);
