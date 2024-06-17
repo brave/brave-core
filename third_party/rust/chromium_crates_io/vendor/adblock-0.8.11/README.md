@@ -4,7 +4,7 @@
 [![npmjs.com](https://img.shields.io/npm/v/adblock-rs.svg)](https://www.npmjs.com/package/adblock-rs)
 [![docs.rs](https://docs.rs/adblock/badge.svg)](https://docs.rs/adblock)
 ![Build Status](https://github.com/brave/adblock-rust/actions/workflows/ci.yml/badge.svg)
-[![License](https://img.shields.io/badge/License-MPL--2.0-blue)](LICENSE.txt)
+[![License](https://img.shields.io/badge/License-MPL--2.0-blue)](LICENSE)
 
 ### _Putting you back in control of your browsing experience._
 

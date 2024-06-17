@@ -1616,7 +1616,7 @@ mod blocker_tests {
             "*$removeparam=fbclid",
             "/script.js$redirect-rule=noopjs",
             "^block^$important",
-            "$removeparam=testCase,~image",
+            "$removeparam=testCase,~xhr",
         ];
 
         let (network_filters, _) = parse_filters(&filters, true, Default::default());
@@ -1630,73 +1630,89 @@ mod blocker_tests {
 
         resources.add_resource(Resource::simple("noopjs", crate::resources::MimeType::ApplicationJavascript, "(() => {})()")).unwrap();
 
-        let result = blocker.check(&Request::new("https://example.com?q=1&test=2#blue", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q=1&test=2#blue", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q=1#blue".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?test=2&q=1#blue", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?test=2&q=1#blue", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q=1#blue".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?test=2#blue", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?test=2#blue", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com#blue".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?q=1#blue", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q=1#blue", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, None);
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?q=1&test=2", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q=1&test=2", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q=1".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?test=2&q=1", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?test=2&q=1", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q=1".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?test=2", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?test=2", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?q=1", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?test=2", "https://antonok.com", "image").unwrap(), &resources);
         assert_eq!(result.rewritten_url, None);
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?q=fbclid", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q=1", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, None);
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?fbclid=10938&q=1&test=2", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q=fbclid", "https://antonok.com", "xhr").unwrap(), &resources);
+        assert_eq!(result.rewritten_url, None);
+        assert!(!result.matched);
+
+        let result = blocker.check(&Request::new("https://example.com?fbclid=10938&q=1&test=2", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q=1".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://test.com?fbclid=10938&q=1&test=2", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://test.com?fbclid=10938&q=1&test=2", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://test.com?q=1&test=2".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?q1=1&q2=2&q3=3&test=2&q4=4&q5=5&fbclid=39", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q1=1&q2=2&q3=3&test=2&q4=4&q5=5&fbclid=39", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q1=1&q2=2&q3=3&q4=4&q5=5".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?q1=1&q1=2&test=2&test=3", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com?q1=1&q1=2&test=2&test=3", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?q1=1&q1=2".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com/script.js?test=2#blue", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com/script.js?test=2#blue", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com/script.js#blue".into()));
         assert_eq!(result.redirect, Some("data:application/javascript;base64,KCgpID0+IHt9KSgp".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com/block/script.js?test=2", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com/block/script.js?test=2", "https://antonok.com", "xhr").unwrap(), &resources);
         assert_eq!(result.rewritten_url, None);
         assert_eq!(result.redirect, Some("data:application/javascript;base64,KCgpID0+IHt9KSgp".into()));
         assert!(result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com/Path/?Test=ABC&testcase=AbC&testCase=aBc", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com/Path/?Test=ABC&testcase=AbC&testCase=aBc", "https://antonok.com", "xhr").unwrap(), &resources);
+        assert_eq!(result.rewritten_url, None);
+        assert!(!result.matched);
+
+        let result = blocker.check(&Request::new("https://example.com/Path/?Test=ABC&testcase=AbC&testCase=aBc", "https://antonok.com", "image").unwrap(), &resources);
+        assert_eq!(result.rewritten_url, None);
+        assert!(!result.matched);
+
+        let result = blocker.check(&Request::new("https://example.com/Path/?Test=ABC&testcase=AbC&testCase=aBc", "https://antonok.com", "subdocument").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com/Path/?Test=ABC&testcase=AbC".into()));
         assert!(!result.matched);
 
-        let result = blocker.check(&Request::new("https://example.com?Test=ABC?123&test=3#&test=4#b", "https://antonok.com", "script").unwrap(), &resources);
+        let result = blocker.check(&Request::new("https://example.com/Path/?Test=ABC&testcase=AbC&testCase=aBc", "https://antonok.com", "document").unwrap(), &resources);
+        assert_eq!(result.rewritten_url, Some("https://example.com/Path/?Test=ABC&testcase=AbC".into()));
+        assert!(!result.matched);
+
+        let result = blocker.check(&Request::new("https://example.com?Test=ABC?123&test=3#&test=4#b", "https://antonok.com", "document").unwrap(), &resources);
         assert_eq!(result.rewritten_url, Some("https://example.com?Test=ABC?123#&test=4#b".into()));
         assert!(!result.matched);
 
@@ -1774,7 +1790,7 @@ mod blocker_tests {
         let resources = ResourceStorage::default();
 
         for (original, expected) in testcases.into_iter() {
-            let result = blocker.check(&Request::new(original, "https://example.net", "script").unwrap(), &resources);
+            let result = blocker.check(&Request::new(original, "https://example.net", "xhr").unwrap(), &resources);
             let expected = if original == expected {
                 None
             } else {
@@ -1799,7 +1815,7 @@ fn test_removeparam_same_tokens() {
 
     let blocker = Blocker::new(network_filters, &blocker_options);
 
-    let result = blocker.check(&Request::new("https://example.com?example1_=1&example1-=2", "https://example.com", "script").unwrap(), &Default::default());
+    let result = blocker.check(&Request::new("https://example.com?example1_=1&example1-=2", "https://example.com", "xhr").unwrap(), &Default::default());
     assert_eq!(result.rewritten_url, Some("https://example.com".into()));
     assert!(!result.matched);
 }

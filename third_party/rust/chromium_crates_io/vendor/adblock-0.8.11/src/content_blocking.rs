@@ -1365,6 +1365,8 @@ mod filterset_tests {
             "||insaattrendy.com/Upload/bükerbanner*.jpg",
             // from domain
             "/siropu/am/core.min.js$script,important,from=~audi-sport.net|~hifiwigwam.com",
+            // leading zero-width space
+            r#"​##a[href^="https://www.g2fame.com/"] > img"#,
         ], Default::default());
 
         let (cb_rules, used_rules) = set.into_content_blocking()?;
