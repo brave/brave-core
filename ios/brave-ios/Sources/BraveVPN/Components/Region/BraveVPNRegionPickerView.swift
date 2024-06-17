@@ -213,7 +213,7 @@ public struct BraveVPNRegionPickerView: View {
     isLoading = true
 
     Task { @MainActor in
-      let success = await BraveVPN.changeVPNRegionForPrecision(to: region)
+      let success = await BraveVPN.changeVPNRegionForPrecision(to: region, with: .country)
 
       isLoading = false
 
