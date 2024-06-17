@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index de94c7bcf0bd0d5aea2ff79a3c0ccdb98035d06a..aae1abd5aab305516dd72a0f19b45bf81c69a381 100644
+index de94c7bcf0bd0d5aea2ff79a3c0ccdb98035d06a..0d363cbc5491e00a419ffef5dfbc662ff66cb6d6 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -188,6 +188,7 @@ if (!is_android && !is_mac) {
@@ -64,7 +64,7 @@ index de94c7bcf0bd0d5aea2ff79a3c0ccdb98035d06a..aae1abd5aab305516dd72a0f19b45bf8
          sources += [ "//third_party/updater/chrome_mac_universal_prod/${updater_product_full_name}.app" ]
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
-+      sources -= [ "$root_out_dir/${updater_product_full_name}.app" ]
++        import("//brave/updater/config.gni") if (!brave_enable_updater) { sources -= [ "$root_out_dir/${updater_product_full_name}.app" ] }
  
          public_deps += [
            "//chrome/updater/mac:browser_install_script",
