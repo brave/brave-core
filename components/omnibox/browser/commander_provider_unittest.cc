@@ -332,3 +332,36 @@ TEST_F(CommanderProviderTest, MatchesHaveCustomIcon) {
     EXPECT_EQ(&kLeoCaratRightIcon, &result.GetVectorIcon(false, nullptr));
   }
 }
+
+TEST_F(CommanderProviderTest, ExplicitMatchesDoNotHaveGroup) {
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u"FoBa"})), false);
+
+  delegate()->Notify(
+      {commander::CommandItemModel(u"Foo Bar",
+                                   {gfx::Range(0, 2), gfx::Range(4, 6)}, u""),
+       commander::CommandItemModel(u"Fizz Bazz",
+                                   {gfx::Range(0, 2), gfx::Range(4, 6)}, u"")},
+      u"What thing?");
+
+  EXPECT_LT(0u, provider()->matches().size());
+  for (const auto& match : provider()->matches()) {
+    EXPECT_EQ(std::nullopt, match.suggestion_group_id);
+  }
+}
+
+TEST_F(CommanderProviderTest, MatchesInAmbientModeHaveGroup) {
+  provider()->Start(CreateInput(u"FoBa"), false);
+
+  delegate()->Notify(
+      {commander::CommandItemModel(u"Foo Bar",
+                                   {gfx::Range(0, 2), gfx::Range(4, 6)}, u""),
+       commander::CommandItemModel(u"Fizz Bazz",
+                                   {gfx::Range(0, 2), gfx::Range(4, 6)}, u"")},
+      u"What thing?");
+
+  EXPECT_LT(0u, provider()->matches().size());
+  for (const auto& match : provider()->matches()) {
+    EXPECT_EQ(omnibox::GroupId::GROUP_OTHER_NAVS, match.suggestion_group_id);
+  }
+}
