@@ -201,7 +201,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       )
 
     let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
-    let locationCountry = BraveVPN.serverLocationDetailed.country ?? "-"
+    let locationCountry = BraveVPN.serverLocationDetailed.country ?? hostname
 
     let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
     let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(
@@ -217,7 +217,7 @@ public class BraveVPNSettingsViewController: TableViewController {
           selection: { [unowned self] in
             self.selectServerTapped()
           },
-          image: BraveVPN.activatedRegion?.countryISOCode.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe"),
+          image: BraveVPN.serverLocation.isoCode?.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
           cellClass: MultilineSubtitleCell.self,
           uuid: locationCellId
@@ -307,7 +307,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     dataSource.sections[hostIndexPath.section].rows[hostIndexPath.row]
       .detailText = hostname
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
-      .detailText = BraveVPN.serverLocation ?? "-"
+      .detailText = BraveVPN.serverLocation.hostName ?? "-"
   }
 
   private func sendContactSupportEmail() {
