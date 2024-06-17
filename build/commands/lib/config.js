@@ -460,7 +460,7 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.shouldSign()) {
-    if (process.platform === 'darwin') {
+    if (this.getTargetOS() === 'mac') {
       args.mac_signing_identifier = this.mac_signing_identifier
       args.mac_installer_signing_identifier = this.mac_installer_signing_identifier
       args.mac_signing_keychain = this.mac_signing_keychain
@@ -746,7 +746,7 @@ Config.prototype.shouldSign = function () {
     return this.braveAndroidKeystorePath !== undefined
   }
 
-  if (process.platform === 'darwin') {
+  if (this.getTargetOS() === 'mac') {
     return this.mac_signing_identifier !== undefined
   }
 

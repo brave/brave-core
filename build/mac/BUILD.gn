@@ -320,6 +320,10 @@ action("sign_app") {
     ":copies",
     ":universalize",
   ]
+
+  if (brave_enable_updater) {
+    deps += [ ":updater_parts_script" ]
+  }
 }
 
 copy("copies") {
@@ -330,6 +334,14 @@ copy("copies") {
   public_deps = [ "//chrome/installer/mac" ]
 
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
+}
+
+copy("updater_parts_script") {
+  visibility = [ ":sign_app" ]
+
+  sources = [ "//chrome/updater/mac/signing/parts.py" ]
+
+  outputs = [ "$packaging_dir/signing/updater_parts.py" ]
 }
 
 action("create_pkg") {
