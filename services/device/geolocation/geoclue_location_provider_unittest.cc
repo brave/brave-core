@@ -35,7 +35,8 @@ class ScopedSetLocationEnabled {
     get_inital_location_allowed.AppendArg("enabled");
 
     std::string initial_value;
-    CHECK(base::GetAppOutput(get_inital_location_allowed, &initial_value));
+    CHECK(base::GetAppOutputAndError(get_inital_location_allowed, &initial_value));
+    LOG(ERROR) << "Initial value: " << initial_value;
 
     std::string target_value = enabled ? "true" : "false";
     if (initial_value != target_value) {
@@ -60,8 +61,9 @@ class ScopedSetLocationEnabled {
     set_allow_location_for_test.AppendArg(value);
 
     std::string allow_location_result;
-    ASSERT_TRUE(base::GetAppOutput(set_allow_location_for_test,
+    ASSERT_TRUE(base::GetAppOutputAndError(set_allow_location_for_test,
                                    &allow_location_result));
+    LOG(ERROR) << "Output was: " << allow_location_result;
   }
   std::optional<std::string> initial_value_;
 };
