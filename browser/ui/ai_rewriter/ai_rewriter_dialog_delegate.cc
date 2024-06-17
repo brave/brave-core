@@ -131,6 +131,7 @@ class AIRewriterDialogDelegate::DialogPositioner
   DialogPositioner& operator=(const DialogPositioner&) = delete;
   ~DialogPositioner() override = default;
 
+  // web_modal::ModalDialogHostObserver:
   void OnPositionRequiresUpdate() override {
     if (!target_contents_) {
       return;
@@ -146,6 +147,7 @@ class AIRewriterDialogDelegate::DialogPositioner
     dialog_widget_observation_.Reset();
   }
 
+  // views::WidgetObserver
   void OnWidgetBoundsChanged(views::Widget* widget,
                              const gfx::Rect& new_bounds) override {
     OnPositionRequiresUpdate();
