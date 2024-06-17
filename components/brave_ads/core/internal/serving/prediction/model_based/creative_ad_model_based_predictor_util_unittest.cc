@@ -81,7 +81,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = false;
   expected_creative_ad_predictor_1.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_1.score = 3.0;
+  expected_creative_ad_predictor_1.score = 2.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_1);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -101,7 +101,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .parent_matches.value = false;
   expected_creative_ad_predictor_2.input_variable.last_seen_ad.value =
       base::Hours(3);
-  expected_creative_ad_predictor_2.score = 0.125;
+  expected_creative_ad_predictor_2.score = 0.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_2);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
@@ -119,7 +119,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
       .value = true;
   expected_creative_ad_predictor_3.input_variable.interest_segment
       .parent_matches.value = true;
-  expected_creative_ad_predictor_3.score = 3.0;
+  expected_creative_ad_predictor_3.score = 2.0;
   expected_creative_ad_predictors.push_back(expected_creative_ad_predictor_3);
 
   EXPECT_EQ(expected_creative_ad_predictors, creative_ad_predictors);

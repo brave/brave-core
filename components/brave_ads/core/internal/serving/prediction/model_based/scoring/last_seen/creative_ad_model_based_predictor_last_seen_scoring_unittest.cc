@@ -21,8 +21,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorLastSeenScoringTest,
   last_seen_input_variable.value = base::Hours(7);
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(0.29166666666666669,
-                   ComputeLastSeenScore(last_seen_input_variable));
+  EXPECT_DOUBLE_EQ(0.0, ComputeLastSeenScore(last_seen_input_variable));
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorLastSeenScoringTest,
@@ -32,7 +31,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorLastSeenScoringTest,
       last_seen_input_variable;
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenScore(last_seen_input_variable));
+  EXPECT_DOUBLE_EQ(0.0, ComputeLastSeenScore(last_seen_input_variable));
 }
 
 TEST(BraveAdsCreativeAdModelBasedPredictorLastSeenScoringTest,
@@ -43,7 +42,7 @@ TEST(BraveAdsCreativeAdModelBasedPredictorLastSeenScoringTest,
   last_seen_input_variable.value = base::Days(1) + base::Milliseconds(1);
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, ComputeLastSeenScore(last_seen_input_variable));
+  EXPECT_DOUBLE_EQ(0.0, ComputeLastSeenScore(last_seen_input_variable));
 }
 
 }  // namespace brave_ads
