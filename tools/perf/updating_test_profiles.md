@@ -22,7 +22,7 @@ The recommended update interval is once a month.
 
 ## Step 2: Upload to GCS
 
-* Download `artifacts.zip` (the URL in the Console Output)from all the builds and extract them.
+* Download `artifacts.zip` (the URL in the Console Output) from all the builds and extract them.
 * Each unpacked artifact contains a zip archive with a new profile (e.g. `brave-typical-win.zip`). Copy these to `./profiles/`.
 * Upload the new archives to GCS: `cd profiles; upload_to_google_storage.py --bucket=brave-telemetry *.zip`;
 
