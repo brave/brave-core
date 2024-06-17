@@ -19,15 +19,6 @@ struct AIChatDefaultModelView: View {
   @ObservedObject
   var aiModel: AIChatViewModel
 
-  var premiumStatus: String {
-    switch aiModel.premiumStatus {
-    case .active, .activeDisconnected:
-      return Strings.AIChat.unlimitedModelStatusTitle.uppercased()
-    default:
-      return Strings.AIChat.limitedModelStatusTitle.uppercased()
-    }
-  }
-
   var body: some View {
     List {
       Section {
@@ -59,8 +50,10 @@ struct AIChatDefaultModelView: View {
                     .foregroundStyle(Color(braveSystemName: .textInteractive))
                     .padding(.horizontal, 4.0)
                 } else {
-                  if model.access == .basicAndPremium {
-                    Text(premiumStatus)
+                  if model.access == .premium && aiModel.premiumStatus != .active
+                    && aiModel.premiumStatus != .activeDisconnected
+                  {
+                    Text(Strings.AIChat.premiumModelStatusTitle.uppercased())
                       .font(.caption2)
                       .foregroundStyle(Color(braveSystemName: .blue50))
                       .padding(.horizontal, 4.0)
@@ -69,14 +62,6 @@ struct AIChatDefaultModelView: View {
                         RoundedRectangle(cornerRadius: 4.0, style: .continuous)
                           .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                       )
-                  } else if model.access == .premium {
-                    Image(
-                      braveSystemName: aiModel.premiumStatus != .active
-                        && aiModel.premiumStatus != .activeDisconnected
-                        ? "leo.lock.plain" : "leo.lock.open"
-                    )
-                    .foregroundStyle(Color(braveSystemName: .iconDefault))
-                    .padding(.horizontal, 4.0)
                   }
                 }
               }
