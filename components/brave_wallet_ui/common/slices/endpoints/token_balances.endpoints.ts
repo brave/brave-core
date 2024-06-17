@@ -22,6 +22,7 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import Amount from '../../../utils/amount'
 import {
   GetBlockchainTokenIdArg,
+  getAssetIdKey,
   isNativeAsset
 } from '../../../utils/asset-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
@@ -157,6 +158,51 @@ export const tokenBalancesEndpoints = ({
         }
       },
       providesTags: (result, error, { token }) =>
+        cacher.cacheByBlockchainTokenArg('AccountTokenCurrentBalance')(
+          result,
+          error,
+          token
+        )
+    }),
+
+    getIsTokenOwnedByUser: query<boolean, GetBlockchainTokenIdArg>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        const { data: api, cache } = baseQuery(undefined)
+        const { jsonRpcService, bitcoinWalletService, zcashWalletService } = api
+        try {
+          const { accounts } = await cache.getAllAccounts()
+          const accountForCoinType = accounts.filter((account) => {
+            return account.accountId.coin === arg.coin
+          })
+          let isOwned = false
+          for (const { accountId } of accountForCoinType) {
+            const balance = await fetchAccountTokenCurrentBalance({
+              arg: {
+                accountId,
+                token: arg
+              },
+              bitcoinWalletService,
+              jsonRpcService,
+              zcashWalletService
+            })
+            if (new Amount(balance).gt(0)) {
+              isOwned = true
+              break
+            }
+          }
+
+          return {
+            data: isOwned
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to check if token (${getAssetIdKey(arg)}) is owned`,
+            error
+          )
+        }
+      },
+      providesTags: (result, error, token) =>
         cacher.cacheByBlockchainTokenArg('AccountTokenCurrentBalance')(
           result,
           error,

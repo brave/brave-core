@@ -4,9 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
 import { WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { layoutPanelWidth } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+
+// graphics
+import NftPlaceholderIcon from '../../../assets/svg-icons/nft-placeholder.svg'
 
 export const AdvancedButton = styled(WalletButton)`
   display: flex;
@@ -35,13 +40,9 @@ export const ButtonRow = styled(Row)`
   @media screen and (max-width: ${layoutPanelWidth}px) {
     padding: 24px 16px;
   }
-`
 
-export const AddButtonWrapper = styled.div`
-  display: flex;
-  width: 210px;
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    width: 170px;
+  & > * {
+    flex: 1;
   }
 `
 
@@ -67,7 +68,6 @@ export const SubDivider = styled.div`
   width: 100%;
   height: 2px;
   background-color: ${(p) => p.theme.color.divider01};
-  margin-bottom: 12px;
 `
 
 export const DividerText = styled.span`
@@ -84,15 +84,13 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  gap: 24px;
   width: 100%;
   height: 100%;
   margin-top: 10px;
   box-sizing: border-box;
   overflow: auto;
   padding: 0px 32px;
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 0px 16px;
-  }
 `
 
 export const FormRow = styled.div`
@@ -110,65 +108,43 @@ export const FormColumn = styled.div`
   align-items: flex-start;
   justify-content: center;
   width: 49%;
+  gap: 16px;
+  & > * {
+    width: 100%;
+  }
 `
 
 export const FullWidthFormColumn = styled(FormColumn)`
   width: 100%;
-  margin-top: 8px;
 `
 
 export const InputLabel = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  letter-spacing: 0.01em;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
-  margin-bottom: 6px;
+  color: ${leo.color.text.primary};
+  font: ${leo.font.small.semibold};
 `
 
-export const Input = styled.input`
-  outline: none;
-  width: ${(p) => (p.width ? p.width : '100%')};
-  background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
-  box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  padding: 10px;
-  margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
-    letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
-  }
-  :focus {
-    outline: none;
-  }
-  ::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+export const TokenNamePreviewText = styled.span`
+  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+  text-align: center;
+`
+
+export const TokenTickerPreviewText = styled.span`
+  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+  text-align: center;
 `
 
 export const ButtonRowSpacer = styled.div`
   display: flex;
   width: 100% auto;
   margin-top: 14px;
+`
+
+export const PreviewImageContainer = styled.div`
+  height: 96px;
+  width: unset;
+  position: relative;
+  background: center / contain no-repeat url(${NftPlaceholderIcon});
+  border-radius: 8px;
 `

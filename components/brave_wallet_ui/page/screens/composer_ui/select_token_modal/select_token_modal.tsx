@@ -600,15 +600,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     )
 
     const onSelectNetworkFilter = React.useCallback(
-      (chainId: string) => {
-        const network =
-          networks.find((n) => n.chainId === chainId) ?? AllNetworksOption
+      (network: BraveWallet.NetworkInfo) => {
         if (checkIsNetworkOptionDisabled(network)) {
           return
         }
         setSelectedNetworkFilter(network)
       },
-      [networks, checkIsNetworkOptionDisabled]
+      [checkIsNetworkOptionDisabled]
     )
 
     const onSelectAccountFilter = React.useCallback(

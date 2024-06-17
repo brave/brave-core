@@ -4,8 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
-const sizeNameToPixels = (size: 'big' | 'medium' | 'small' | 'tiny') => {
+export type AssetIconSizes = 'extra-big' | 'big' | 'medium' | 'small' | 'tiny'
+
+const sizeNameToPixels = (size: AssetIconSizes) => {
   switch (size) {
+    case 'extra-big':
+      return '96px'
     case 'big':
       return '40px'
     case 'medium':
@@ -22,7 +26,7 @@ const sizeNameToPixels = (size: 'big' | 'medium' | 'small' | 'tiny') => {
 export const IconWrapper = styled.div<{
   isPlaceholder: boolean
   panelBackground?: string
-  size: 'big' | 'medium' | 'small' | 'tiny'
+  size: AssetIconSizes
   marginLeft: number
   marginRight: number
 }>`
@@ -40,7 +44,7 @@ export const IconWrapper = styled.div<{
 `
 
 export const PlaceholderText = styled.span<{
-  size: 'big' | 'medium' | 'small' | 'tiny'
+  size: AssetIconSizes
 }>`
   font-family: Poppins;
   font-size: ${(p) =>

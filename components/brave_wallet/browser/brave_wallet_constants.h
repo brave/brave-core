@@ -48,7 +48,17 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletUnownedNftAlert", IDS_BRAVE_WALLET_UNOWNED_NFT_ALERT},
+    {"braveWalletWatchThisNft", IDS_BRAVE_WALLET_WATCH_THIS_NFT},
+    {"braveWalletFetchNftMetadataError",
+     IDS_BRAVE_WALLET_FETCH_NFT_METADATA_ERROR},
+    {"braveWalletHowToFindNftTokenId",
+     IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_TOKEN_ID},
+    {"braveWalletHowToFindNftContractAddress",
+     IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_CONTRACT_ADDRESS},
     {"braveWalletGroupByCollection", IDS_BRAVE_WALLET_GROUP_BY_COLLECTION},
+    {"braveWalletAddNftModalDescription",
+     IDS_BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION},
     {"braveWalletHideNotOwnedNfTs", IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS},
     {"braveWalletNoRoutesFound", IDS_BRAVE_WALLET_NO_ROUTES_FOUND},
     {"braveWalletPrivateKeyImportType",
@@ -1440,7 +1450,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveNftsTabHidden", IDS_BRAVE_WALLET_NFTS_TAB_HIDDEN},
     {"braveNftsTabCollected", IDS_BRAVE_WALLET_NFTS_TAB_COLLECTED},
     {"braveNftsTabRemove", IDS_BRAVE_WALLET_NFTS_TAB_REMOVE},
-    {"braveWalletImportNftModalTitle", IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE},
+    {"braveWalletAddNftModalTitle", IDS_BRAVE_WALLET_ADD_NFT_MODAL_TITLE},
     {"braveWalletEditNftModalTitle", IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE},
     {"braveWalletEnableNftAutoDiscoveryModalHeader",
      IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER},

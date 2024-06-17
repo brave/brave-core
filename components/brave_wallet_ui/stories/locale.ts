@@ -1273,11 +1273,30 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonTwo: 'Internal IPFS node problems',
   braveWalletNftPinningErrorTooltipReasonThree:
     'Not enough space on local node',
-  braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
   braveWalletNftMoveToSpam: 'Mark as junk',
   braveWalletNftUnspam: 'Mark as not junk',
   braveWalletNftJunk: 'Junk',
+
+  // Add NFT modal
+  braveWalletAddNftModalTitle: 'Add NFT',
+  braveWalletAddNftModalDescription:
+    "If you can't see an NFT automatically detected by Brave, " +
+    'or want to track one owned by others, you can import it manually.',
+  braveWalletHowToFindNftContractAddress:
+    'You can find a contract address on the website of an NFT collection ' +
+    'or next to the details of a specific NFT, ' +
+    'such as its token ID and other metadata.',
+  braveWalletHowToFindNftTokenId:
+    'A token ID is a unique identifier assigned to each NFT. ' +
+    "You can find an NFT's token ID by checking " +
+    'the contract address on a blockchain explorer.',
+  braveWalletFetchNftMetadataError: 'Unable to fetch NFT metadata',
+  braveWalletWatchThisNft: 'Watch this NFT',
+  braveWalletUnownedNftAlert:
+    'You do not own this NFT. ' +
+    'While you can still add it to your wallet, ' +
+    'you will not be able to make any transactions with it.',
 
   // Remove NFT modal
   braveWalletRemoveNftModalHeader: 'Remove from Brave Wallet?',

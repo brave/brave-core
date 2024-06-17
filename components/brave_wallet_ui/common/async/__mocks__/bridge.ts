@@ -19,6 +19,7 @@ import type WalletApiProxy from '../../wallet_api_proxy'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { deserializeTransaction } from '../../../utils/model-serialization-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
+import Amount from '../../../utils/amount'
 
 // mocks
 import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
@@ -888,11 +889,19 @@ export class MockedWalletApiProxy {
     },
     // NFT Metadata
     getERC721Metadata: async (contract, tokenId, chainId) => {
-      const mockedMetadata =
-        mockNFTMetadata.find(
-          (d) =>
-            d.tokenID === tokenId && d.contractInformation.address === contract
-        ) || mockNFTMetadata[0]
+      const mockedMetadata = mockNFTMetadata.find(
+        (d) =>
+          new Amount(d.tokenID).toHex() === new Amount(tokenId).toHex() &&
+          d.contractInformation.address === contract
+      )
+      if (!mockedMetadata) {
+        return {
+          error: 1,
+          errorMessage: 'metadata not found',
+          tokenUrl: '',
+          response: ''
+        }
+      }
       return {
         error: 0,
         errorMessage: '',
@@ -1006,7 +1015,7 @@ export class MockedWalletApiProxy {
         fee: {
           baseFee: BigInt(0),
           computeUnits: 0,
-          feePerComputeUnit: BigInt(0),
+          feePerComputeUnit: BigInt(0)
         }
       }
     }

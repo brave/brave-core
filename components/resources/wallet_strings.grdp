@@ -1022,7 +1022,7 @@
   <message name="IDS_BRAVE_WALLET_NFT_UNSPAM" desc="Unspam option label">Mark as not junk</message>
   <message name="IDS_BRAVE_WALLET_NFT_JUNK" desc="Junk label in NFT item">Junk</message>
   <message name="IDS_BRAVE_WALLET_NFT_MOVE_TO_SPAM" desc="Move to spam option label">Mark as junk</message>
-  <message name="IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Import NFT</message>
+  <message name="IDS_BRAVE_WALLET_ADD_NFT_MODAL_TITLE" desc="NFT Add NFT modal title">Add NFT</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_HEADER" desc="Remove NFT modal header">Remove from Brave Wallet?</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_DESCRIPTION" desc="Remove NFT modal description">NFT will be removed from Brave Wallet but will remain on the blockchain. If you remove it, then change your mind, you'll need to import it again manually.</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_NFT_MODAL_CANCEL" desc="Remove NFT modal cancel action">Cancel</message>
@@ -1093,4 +1093,10 @@
   <message name="IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS" desc="Toggle label to enable or disable the display of NFTs that are not owned by any wallet account">Hide not owned NFTs</message>
   <message name="IDS_BRAVE_WALLET_GROUP_BY_COLLECTION" desc="Toggle label for grouping NFTs by collection">Group by collection</message>
   <message name="IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL" desc="Error message for when the user enters an invalid URL for a custom chain">Invalid URL</message>
+  <message name="IDS_BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION" desc="Description of the of the add-nft modal purpose">If you can't see an NFT automatically detected by Brave, or want to track one owned by others, you can import it manually.</message>
+  <message name="IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_CONTRACT_ADDRESS" desc="Explaination on how to find the contract address for an NFT">You can find a contract address on the website of an NFT collection or next to the details of a specific NFT, such as its token ID and other metadata.</message>
+  <message name="IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_TOKEN_ID" desc="Explaination on how to find the token ID for an NFT">A token ID is a unique identifier assigned to each NFT. You can find an NFT's token ID by checking the contract address on a blockchain explorer.</message>
+  <message name="IDS_BRAVE_WALLET_FETCH_NFT_METADATA_ERROR" desc="Error message explaining that the NFT Metadata lookup failed">Unable to fetch NFT metadata</message>
+  <message name="IDS_BRAVE_WALLET_WATCH_THIS_NFT" desc="Button text for adding an NFT to the user's watch list">Watch this NFT</message>
+  <message name="IDS_BRAVE_WALLET_UNOWNED_NFT_ALERT" desc="Alert text explaining that the user does not own the NFT">You do not own this NFT. While you can still add it to your wallet, you will not be able to make any transactions with it.</message>
 </grit-part>

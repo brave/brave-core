@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -28,9 +29,10 @@ import {
 } from '../../../common/slices/entities/network.entity'
 
 // components
-import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
 import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
+import { NetworksDropdown } from '../dropdowns/networks_dropdown'
+import { InfoIconTooltip } from '../info_icon_tooltip/info_icon_tooltip'
 
 // styles
 import {
@@ -43,12 +45,11 @@ import {
   FormColumn,
   FormRow,
   FormWrapper,
-  Input,
+  FullWidthFormColumn,
   InputLabel,
-  SubDivider,
-  AddButtonWrapper
+  SubDivider
 } from './add-custom-token-form-styles'
-import { HorizontalSpace, LeoSquaredButton } from '../style'
+import { Column, LeoSquaredButton, Row } from '../style'
 
 interface Props {
   selectedAsset?: BraveWallet.BlockchainToken
@@ -173,17 +174,17 @@ export const AddCustomTokenForm = (props: Props) => {
 
   // Handle Form Input Changes
   const handleTokenNameChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: InputEventDetail) => {
       setHasError(false)
-      setCustomTokenName(event.target.value)
+      setCustomTokenName(event.value)
     },
     []
   )
 
   const handleTokenSymbolChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: InputEventDetail) => {
       setHasError(false)
-      setCustomTokenSymbol(event.target.value)
+      setCustomTokenSymbol(event.value)
     },
     []
   )
@@ -204,44 +205,41 @@ export const AddCustomTokenForm = (props: Props) => {
   }, [resetBaseInputFields, onChangeContractAddress])
 
   const handleTokenAddressChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: InputEventDetail) => {
       setHasError(false)
 
-      if (event.target.value === '') {
+      if (event.value === '') {
         resetInputFields()
         return
       }
 
       if (onChangeContractAddress) {
-        onChangeContractAddress(event.target.value)
+        onChangeContractAddress(event.value)
       }
     },
     [onChangeContractAddress, resetInputFields]
   )
 
   const handleTokenDecimalsChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: InputEventDetail) => {
       setHasError(false)
-      setCustomTokenDecimals(event.target.value)
+      setCustomTokenDecimals(event.value)
     },
     []
   )
 
   const handleCoingeckoIDChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: InputEventDetail) => {
       setHasError(false)
-      setCustomCoingeckoId(event.target.value)
+      setCustomCoingeckoId(event.value)
     },
     []
   )
 
-  const handleIconURLChanged = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setHasError(false)
-      setCustomIconURL(event.target.value)
-    },
-    []
-  )
+  const handleIconURLChanged = React.useCallback((event: InputEventDetail) => {
+    setHasError(false)
+    setCustomIconURL(event.value)
+  }, [])
 
   // methods
   const onClickAddCustomToken = React.useCallback(async () => {
@@ -281,10 +279,6 @@ export const AddCustomTokenForm = (props: Props) => {
       setShowNetworkDropDown(false)
     }
   }, [showNetworkDropDown])
-
-  const onShowNetworkDropDown = React.useCallback(() => {
-    setShowNetworkDropDown(true)
-  }, [])
 
   const onSelectCustomNetwork = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
@@ -346,114 +340,146 @@ export const AddCustomTokenForm = (props: Props) => {
   return (
     <>
       <FormWrapper onClick={onHideNetworkDropDown}>
-        <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
-        <SelectNetworkDropdown
-          selectedNetwork={customAssetsNetwork}
-          onClick={onShowNetworkDropDown}
-          showNetworkDropDown={showNetworkDropDown}
-          onSelectCustomNetwork={onSelectCustomNetwork}
-          networkListSubset={networkList}
-          disabled={!!selectedAsset}
-        />
+        <FullWidthFormColumn>
+          <NetworksDropdown
+            placeholder={getLocale('braveWalletSelectNetwork')}
+            networks={networkList}
+            onSelectNetwork={onSelectCustomNetwork}
+            selectedNetwork={customAssetsNetwork}
+            showAllNetworksOption={false}
+            label={
+              <InputLabel>{getLocale('braveWalletSelectNetwork')}</InputLabel>
+            }
+          />
+        </FullWidthFormColumn>
+
         <FormRow>
           <FormColumn>
-            <InputLabel>
-              {getLocale('braveWalletWatchListTokenName')}
-            </InputLabel>
+            <Input
+              value={tokenContractAddress}
+              onChange={handleTokenAddressChanged}
+              placeholder={'0x099689220846644F87D1137665CDED7BF3422747'}
+            >
+              <Row
+                gap='4px'
+                justifyContent='flex-start'
+              >
+                <InputLabel>
+                  {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
+                    ? getLocale('braveWalletTokenMintAddress')
+                    : getLocale('braveWalletNFTDetailContractAddress')}
+                </InputLabel>
+                <InfoIconTooltip
+                  placement='bottom'
+                  text={getLocale('braveWalletHowToFindNftContractAddress')}
+                />
+              </Row>
+            </Input>
+          </FormColumn>
+
+          <FormColumn>
             <Input
               value={name}
               onChange={handleTokenNameChanged}
               disabled={isTokenInfoLoading}
-            />
-          </FormColumn>
-          <FormColumn>
-            <InputLabel>
-              {customAssetsNetwork?.coin === BraveWallet.CoinType.SOL
-                ? getLocale('braveWalletTokenMintAddress')
-                : getLocale('braveWalletWatchListTokenAddress')}
-            </InputLabel>
-            <Input
-              value={tokenContractAddress}
-              onChange={handleTokenAddressChanged}
-              disabled={!!selectedAsset}
-            />
+            >
+              <InputLabel>
+                {getLocale('braveWalletWatchListTokenName')}
+              </InputLabel>
+            </Input>
           </FormColumn>
         </FormRow>
+
         <FormRow>
           <FormColumn>
-            <InputLabel>
-              {getLocale('braveWalletWatchListTokenSymbol')}
-            </InputLabel>
             <Input
               value={symbol}
               onChange={handleTokenSymbolChanged}
               disabled={isTokenInfoLoading}
-            />
+            >
+              <InputLabel>
+                {getLocale('braveWalletWatchListTokenSymbol')}
+              </InputLabel>
+            </Input>
           </FormColumn>
           <FormColumn>
-            <InputLabel>
-              {getLocale('braveWalletWatchListTokenDecimals')}
-            </InputLabel>
             <Input
               value={decimals}
               onChange={handleTokenDecimalsChanged}
               disabled={isDecimalDisabled}
               type='number'
-            />
+            >
+              <InputLabel>
+                {getLocale('braveWalletWatchListTokenDecimals')}
+              </InputLabel>
+            </Input>
           </FormColumn>
         </FormRow>
-        <DividerRow>
-          <AdvancedButton onClick={onToggleShowAdvancedFields}>
-            <DividerText>
-              {getLocale('braveWalletWatchListAdvanced')}
-            </DividerText>
-          </AdvancedButton>
-          <AdvancedButton onClick={onToggleShowAdvancedFields}>
-            <AdvancedIcon rotated={showAdvancedFields} />
-          </AdvancedButton>
-        </DividerRow>
-        <SubDivider />
-        {showAdvancedFields && (
-          <>
-            <InputLabel>{getLocale('braveWalletIconURL')}</InputLabel>
-            <Input
-              value={iconURL}
-              onChange={handleIconURLChanged}
-            />
-            <InputLabel>
-              {getLocale('braveWalletWatchListCoingeckoId')}
-            </InputLabel>
-            <Input
-              value={coingeckoId}
-              onChange={handleCoingeckoIDChanged}
-              disabled={isTokenInfoLoading}
-            />
-          </>
-        )}
+
+        <Column
+          fullWidth
+          gap={'12px'}
+        >
+          <DividerRow>
+            <AdvancedButton onClick={onToggleShowAdvancedFields}>
+              <DividerText>
+                {getLocale('braveWalletWatchListAdvanced')}
+              </DividerText>
+            </AdvancedButton>
+            <AdvancedButton onClick={onToggleShowAdvancedFields}>
+              <AdvancedIcon rotated={showAdvancedFields} />
+            </AdvancedButton>
+          </DividerRow>
+          <SubDivider />
+
+          {showAdvancedFields && (
+            <FullWidthFormColumn>
+              <Input
+                value={iconURL}
+                onChange={handleIconURLChanged}
+              >
+                <InputLabel>{getLocale('braveWalletIconURL')}</InputLabel>
+              </Input>
+
+              <Input
+                value={coingeckoId}
+                onChange={handleCoingeckoIDChanged}
+                disabled={isTokenInfoLoading}
+              >
+                <InputLabel>
+                  {getLocale('braveWalletWatchListCoingeckoId')}
+                </InputLabel>
+              </Input>
+            </FullWidthFormColumn>
+          )}
+        </Column>
+
         {hasError && (
           <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
         )}
+
         {tokenAlreadyExists && !selectedAsset && (
           <ErrorText>
             {getLocale('braveWalletCustomTokenExistsError')}
           </ErrorText>
         )}
       </FormWrapper>
-      <ButtonRow>
+
+      <ButtonRow gap='16px'>
         <LeoSquaredButton
           onClick={onClickCancel}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
         </LeoSquaredButton>
-        <HorizontalSpace space='16px' />
+
         <Tooltip
           text={<FormErrorsList errors={formErrors} />}
           isVisible={buttonDisabled}
           maxWidth={120}
           verticalPosition='above'
         >
-          <AddButtonWrapper>
+          <Row>
             <LeoSquaredButton
               onClick={onClickAddCustomToken}
               isDisabled={
@@ -464,7 +490,7 @@ export const AddCustomTokenForm = (props: Props) => {
                 ? getLocale('braveWalletButtonSaveChanges')
                 : getLocale('braveWalletWatchListAdd')}
             </LeoSquaredButton>
-          </AddButtonWrapper>
+          </Row>
         </Tooltip>
       </ButtonRow>
     </>
