@@ -34,6 +34,7 @@ android_library("java") {
     "//brave/build/android:android_brave_strings_grd",
     "//chrome/browser/commerce/merchant_viewer/android:java",
     "//chrome/browser/flags:java",
+    "//chrome/browser/history_clusters:java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/share:java",
