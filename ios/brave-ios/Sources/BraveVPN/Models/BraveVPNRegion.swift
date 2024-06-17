@@ -22,7 +22,7 @@ struct BraveVPNCityRegion: Identifiable, Equatable {
 class VPNCityRegionDetail: ObservableObject {
   var cityRegions = [
     BraveVPNCityRegion(
-      displayName: "Optimal",
+      displayName: Strings.VPN.vpnCityRegionOptimalTitle,
       regionName: BraveVPNCityRegion.optimalCityRegionName,
       isAutomatic: true
     )
