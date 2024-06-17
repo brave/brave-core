@@ -6,12 +6,13 @@
 #include "brave/services/device/geolocation/geoclue_location_provider.h"
 
 #include <memory>
+#include <optional>
+#include <string>
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/feature_list.h"
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/functional/bind.h"
+#include "base/process/launch.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -22,6 +23,50 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace device {
+
+namespace {
+
+class ScopedSetLocationEnabled {
+ public:
+  ScopedSetLocationEnabled(bool enabled) {
+    base::CommandLine get_inital_location_allowed(base::FilePath("gsettings"));
+    get_inital_location_allowed.AppendArg("get");
+    get_inital_location_allowed.AppendArg("org.gnome.system.location");
+    get_inital_location_allowed.AppendArg("enabled");
+
+    std::string initial_value;
+    CHECK(base::GetAppOutput(get_inital_location_allowed, &initial_value));
+
+    std::string target_value = enabled ? "true" : "false";
+    if (initial_value != target_value) {
+      initial_value_ = initial_value;
+      SetLocationEnabled(target_value);
+    }
+  }
+  ~ScopedSetLocationEnabled() {
+    if (!initial_value_) {
+      return;
+    }
+
+    SetLocationEnabled(initial_value_.value());
+  }
+
+ private:
+  static void SetLocationEnabled(const std::string& value) {
+    base::CommandLine set_allow_location_for_test(base::FilePath("gsettings"));
+    set_allow_location_for_test.AppendArg("set");
+    set_allow_location_for_test.AppendArg("org.gnome.system.location");
+    set_allow_location_for_test.AppendArg("enabled");
+    set_allow_location_for_test.AppendArg(value);
+
+    std::string allow_location_result;
+    ASSERT_TRUE(base::GetAppOutput(set_allow_location_for_test,
+                                   &allow_location_result));
+  }
+  std::optional<std::string> initial_value_;
+};
+
+}  // namespace
 
 class TestGeoClueLocationProvider : public GeoClueLocationProvider {
  public:
@@ -55,12 +100,6 @@ class GeoClueLocationProviderTest : public testing::Test {
           loop_->Quit();
           update_count_++;
         }));
-
-    base::FilePath config_path("/etc/geoclue/geoclue.conf");
-    std::string result;
-    base::ReadFileToString(config_path, &result);
-
-    LOG(ERROR) << "Config: " << result;
   }
 
   void WaitForUpdate() {
@@ -70,6 +109,8 @@ class GeoClueLocationProviderTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  ScopedSetLocationEnabled enabled_location_{true};
+
   std::unique_ptr<base::RunLoop> loop_;
   int update_count_ = 0;
 
