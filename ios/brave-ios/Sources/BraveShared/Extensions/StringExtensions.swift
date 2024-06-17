@@ -65,7 +65,7 @@ extension String {
     }
   }
 
-  public var regionFlag: Image? {
+  public var regionFlagImage: UIImage? {
     // Root Unicode flags index
     let rootIndex: UInt32 = 127397
     var unicodeScalarView = ""
@@ -82,6 +82,14 @@ extension String {
       return nil
     }
 
-    return Image(uiImage: unicodeScalarView.image())
+    return unicodeScalarView.image()
+  }
+
+  public var regionFlag: Image? {
+    guard let flagImage = regionFlagImage else {
+      return nil
+    }
+
+    return Image(uiImage: flagImage)
   }
 }

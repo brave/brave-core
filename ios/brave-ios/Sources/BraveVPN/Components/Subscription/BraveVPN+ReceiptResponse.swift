@@ -8,8 +8,6 @@ import Preferences
 
 extension BraveVPN {
 
-  // MARK: - ReceiptResponse
-
   public struct ReceiptResponse {
     public enum Status: Int {
       case active, expired, retryPeriod

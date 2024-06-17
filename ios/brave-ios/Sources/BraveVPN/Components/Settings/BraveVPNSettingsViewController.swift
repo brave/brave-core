@@ -21,7 +21,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   public init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
 
-    super.init(style: .grouped)
+    super.init(style: .insetGrouped)
   }
 
   @available(*, unavailable)
@@ -200,7 +200,8 @@ public class BraveVPNSettingsViewController: TableViewController {
         footer: .title(Strings.VPN.settingsLinkReceiptFooter)
       )
 
-    let location = BraveVPN.serverLocation ?? "-"
+    let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
+    let locationCountry = BraveVPN.serverLocationDetailed.country ?? "-"
 
     let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
     let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(
@@ -208,16 +209,17 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let serverSection = Section(
-      header: .title(Strings.VPN.settingsServerSection),
+      header: .title(Strings.support.capitalized),
       rows: [
-        Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
         Row(
-          text: Strings.VPN.settingsServerLocation,
-          detailText: location,
+          text: locationCountry,
+          detailText: locationCity,
           selection: { [unowned self] in
             self.selectServerTapped()
           },
+          image: BraveVPN.activatedRegion?.countryISOCode.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
+          cellClass: MultilineSubtitleCell.self,
           uuid: locationCellId
         ),
         Row(
@@ -242,6 +244,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let techSupportSection = Section(
+      header: .title(Strings.VPN.settingsServerSection),
       rows: [
         Row(
           text: Strings.VPN.settingsContactSupport,
@@ -249,11 +252,7 @@ public class BraveVPNSettingsViewController: TableViewController {
             self.sendContactSupportEmail()
           },
           accessory: .disclosureIndicator
-        )
-      ])
-
-    let termsSection = Section(
-      rows: [
+        ),
         Row(
           text: Strings.VPN.settingsFAQ,
           selection: { [unowned self] in
@@ -267,8 +266,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       vpnStatusSection,
       subscriptionSection,
       serverSection,
-      techSupportSection,
-      termsSection,
+      techSupportSection
     ]
   }
 

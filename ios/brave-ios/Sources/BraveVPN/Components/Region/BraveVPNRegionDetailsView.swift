@@ -145,7 +145,7 @@ struct BraveRegionDetailsView: View {
         regionToChange = cityRegions.filter { $0.regionName == region.regionName }.first
       }
 
-      let success = await BraveVPN.changeVPNRegionForPrecision(to: regionToChange)
+      let success = await BraveVPN.changeVPNRegionForPrecision(to: regionToChange, with: .city)
 
       isLoading = false
 

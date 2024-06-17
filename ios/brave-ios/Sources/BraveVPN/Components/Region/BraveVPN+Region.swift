@@ -8,6 +8,11 @@ import os.log
 
 extension BraveVPN {
 
+  /// Type of the vpn region
+  public enum RegionPrecision: Equatable {
+    case country, city
+  }
+
   /// List of regions the VPN can connect to
   /// This list is not static and it will be fetcghed with every app launch
   static var allRegions: [GRDRegion] = []
@@ -77,8 +82,17 @@ extension BraveVPN {
   }
 
   @MainActor
-  static func changeVPNRegionForPrecision(to region: GRDRegion?) async -> Bool {
-    // TODO: Add precision for region country for country and city for city
+  static func changeVPNRegionForPrecision(
+    to region: GRDRegion?,
+    with precision: RegionPrecision
+  ) async -> Bool {
+
+    switch precision {
+    case .city:
+      helper.setPreferredRegionPrecision(kGRDRegionPrecisionCity)
+    default:
+      helper.setPreferredRegionPrecision(kGRDRegionPrecisionCountry)
+    }
 
     return await withCheckedContinuation { continuation in
       BraveVPN.changeVPNRegion(to: region) { success in
