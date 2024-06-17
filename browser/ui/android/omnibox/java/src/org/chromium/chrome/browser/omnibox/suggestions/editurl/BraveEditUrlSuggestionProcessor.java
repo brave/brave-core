@@ -10,12 +10,14 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.history_clusters.HistoryClustersTabHelper;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.OmniboxSuggestionType;
+import org.chromium.ui.base.Clipboard;
 
 import java.util.Optional;
 
@@ -40,6 +42,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
         if (position == 0
                 && activeTab != null
                 && (suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
+                                && tabMatchesSuggestion(activeTab, suggestion)
                         || suggestion.getUrl().equals(activeTab.getUrl()))) {
             // Show edit url suggestion for typed URLs.
             // If url hasn't changed we still want to show the edit url suggestion.
@@ -47,5 +50,28 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
         }
 
         return super.doesProcessSuggestion(suggestion, position);
+    }
+
+    protected void onCopyLink(AutocompleteMatch suggestion) {
+        Tab activeTab = mTabSupplier.get();
+        if (suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
+                && activeTab != null
+                && tabMatchesSuggestion(activeTab, suggestion)) {
+            // For manually typed URLs, copy properly resolved URL from Tab instead of the
+            // suggestion URL.
+            HistoryClustersTabHelper.onCurrentTabUrlCopied(activeTab.getWebContents());
+            Clipboard.getInstance().copyUrlToClipboard(activeTab.getUrl());
+            return;
+        }
+        // Otherwise fallback to the default behavior.
+        HistoryClustersTabHelper.onCurrentTabUrlCopied(mTabSupplier.get().getWebContents());
+        Clipboard.getInstance().copyUrlToClipboard(suggestion.getUrl());
+    }
+
+    private boolean tabMatchesSuggestion(Tab tab, AutocompleteMatch suggestion) {
+        return tab.getUrl().isValid()
+                && suggestion.getUrl().isValid()
+                && tab.getUrl().domainIs(suggestion.getUrl().getHost())
+                && tab.getUrl().getPath().equals(suggestion.getUrl().getPath());
     }
 }

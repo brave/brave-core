@@ -817,6 +817,14 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                        "onCopyLink",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class,
+                        AutocompleteMatch.class));
     }
 
     @Test

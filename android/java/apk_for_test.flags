@@ -865,6 +865,7 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
     public <init>(...);
+    *** onCopyLink(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessor {
