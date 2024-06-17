@@ -17,7 +17,7 @@ The recommended update interval is once a month.
 ## Step 1: CI builds
 
 * To generate an updated profile, launch the job it with `EXTRA_ARGS` = `--mode update_profile`.
-* Chromium and Brave uses different profiles, so two builds for each platforms win/mac-arm64/android should be launched (6 builds in total). For details, check the configurations in  `configs/ci/`.
+* Chromium and Brave use different profiles, so two builds for each platforms win/mac-arm64/android should be launched (6 builds in total). For details, check the configurations in  `configs/ci/`.
 * For CI URLS check [README.md](./README.md)
 
 ## Step 2: Upload to GCS
