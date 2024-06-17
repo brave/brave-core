@@ -2167,6 +2167,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/media/PictureInPictureActivity",
                         "org/chromium/chrome/browser/media/BravePictureInPictureActivity"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesLayout",
+                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase"));
     }
 
     private boolean classExists(String className) {

@@ -72,7 +72,6 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
@@ -98,7 +97,7 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
-import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
+import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
@@ -109,7 +108,6 @@ import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.WindowAndroid;
 
 import java.util.ArrayList;
@@ -1190,10 +1188,28 @@ public class BraveNewTabPageLayout
                 isTablet,
                 tabStripHeightSupplier);
 
+        assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
+
+        if (mMvTilesContainerLayout != null && useFixedMVTLayout()) {
+            ViewGroup tilesLayout = mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
+
+            assert tilesLayout instanceof BraveMostVisitedTilesLayoutBase
+                    : "Something has changed in the upstream!";
+
+            if (tilesLayout instanceof BraveMostVisitedTilesLayoutBase) {
+                ((BraveMostVisitedTilesLayoutBase) tilesLayout).setUseFixedLayout(true);
+            }
+        }
+
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
         ((BraveActivity) mActivity).setNewTabPageManager(manager);
+    }
+
+    protected boolean useFixedMVTLayout() {
+        return !UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
     public void setTabProvider(Supplier<Tab> tabProvider) {
