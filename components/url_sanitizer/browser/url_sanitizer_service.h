@@ -32,12 +32,6 @@ class URLSanitizerService : public KeyedService,
   URLSanitizerService();
   ~URLSanitizerService() override;
 
-#if BUILDFLAG(IS_ANDROID)
-  mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService> MakeRemote();
-#endif  // # BUILDFLAG(IS_ANDROID)
-  void SanitizeURL(const std::string& url,
-                   SanitizeURLCallback callback) override;
-
   struct MatchItem {
     MatchItem();
     MatchItem(extensions::URLPatternSet include,
@@ -51,24 +45,54 @@ class URLSanitizerService : public KeyedService,
     base::flat_set<std::string> params;
   };
 
+  struct Permissions {
+    Permissions();
+    Permissions(Permissions&&);
+    ~Permissions();
+    Permissions& operator=(Permissions&&);
+
+    extensions::URLPatternSet js_api;
+  };
+
+  struct Config {
+    Config();
+    Config(Config&&);
+    ~Config();
+    Config& operator=(Config&&);
+
+    std::vector<URLSanitizerService::MatchItem> matchers;
+    Permissions permissions;
+  };
+
+#if BUILDFLAG(IS_ANDROID)
+  mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService> MakeRemote();
+#endif  // # BUILDFLAG(IS_ANDROID)
+  void SanitizeURL(const std::string& url,
+                   SanitizeURLCallback callback) override;
+
   GURL SanitizeURL(const GURL& url);
+
+  bool CheckJsPermission(const GURL& page_url);
 
   void SetInitializationCallbackForTesting(base::OnceClosure callback) {
     initialization_callback_for_testing_ = std::move(callback);
   }
-  void Initialize(const std::string& json);
-  void OnRulesReady(const std::string&) override;
 
  protected:
   friend class URLSanitizerServiceUnitTest;
 
-  void UpdateMatchers(std::vector<URLSanitizerService::MatchItem> mappings);
+  void UpdateConfig(Config config);
 
   std::string StripQueryParameter(const std::string& query,
                                   const base::flat_set<std::string>& trackers);
 
  private:
-  std::vector<URLSanitizerService::MatchItem> matchers_;
+  // URLSanitizerComponentInstaller::Observer:
+  void OnConfigReady(
+      const URLSanitizerComponentInstaller::RawConfig& config) override;
+
+  Config config_;
+
   base::OnceClosure initialization_callback_for_testing_;
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<url_sanitizer::mojom::UrlSanitizerService> receivers_;

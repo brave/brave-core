@@ -32,7 +32,7 @@ uint8_t ContentBrowserClient::WorkerGetBraveFarblingLevel(
   return 1 /* OFF */;
 }
 
-GURL ContentBrowserClient::SanitizeURL(content::BrowserContext*,
+GURL ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
                                        const GURL& url) {
   return url;
 }

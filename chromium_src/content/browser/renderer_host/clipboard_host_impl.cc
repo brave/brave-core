@@ -22,12 +22,9 @@ std::u16string Sanitize(content::ContentBrowserClient* client,
     return data;
   }
 
-  // constexpr const char k
-
   const GURL url(data);
   if (url.is_valid() && !url.is_empty()) {
-    const GURL sanitized_url =
-        client->SanitizeURL(render_frame_host->GetBrowserContext(), url);
+    const GURL sanitized_url = client->SanitizeURL(render_frame_host, url);
     return base::UTF8ToUTF16(sanitized_url.spec());
   }
   return data;

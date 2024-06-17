@@ -171,7 +171,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                            blink::web_pref::WebPreferences* prefs) override;
   blink::UserAgentMetadata GetUserAgentMetadata() override;
 
-  GURL SanitizeURL(content::BrowserContext* browser_context,
+  GURL SanitizeURL(content::RenderFrameHost* render_frame_host,
                    const GURL& url) override;
 
  private:

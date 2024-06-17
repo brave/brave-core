@@ -7,6 +7,8 @@
 
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
@@ -16,8 +18,10 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "services/network/public/cpp/network_switches.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
@@ -26,7 +30,7 @@ namespace {
 constexpr const char kYoutubeRules[] = R"json(
     [{
         "include": [
-            "*://youtu.be/*?*",
+            "*://youtu.be/*",
             "*://*.youtube.com/watch?*"
         ],
         "exclude": [ ],
@@ -43,15 +47,31 @@ constexpr const char kYoutubeRules[] = R"json(
     }]
   )json";
 
+constexpr const char kYoutubePermissions[] = R"json(
+    {
+      "js_api": [ "*://www.youtube.com/*" ]
+    }
+  )json";
+
 }  // namespace
 
-class URLSanitizerTest : public InProcessBrowserTest {
+class URLSanitizerTest : public InProcessBrowserTest,
+                         public testing::WithParamInterface<bool> {
  public:
+  URLSanitizerTest() {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeature(features::kBraveCopyCleanLinkFromJs);
+    } else {
+      feature_list_.InitAndDisableFeature(features::kBraveCopyCleanLinkFromJs);
+    }
+  }
+
   void SetUpOnMainThread() override {
     https_server_.ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
     https_server_.StartAcceptingConnections();
     host_resolver()->AddRule("*", "127.0.0.1");
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   }
 
   void SetUp() override {
@@ -59,28 +79,59 @@ class URLSanitizerTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUp();
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(
+        network::switches::kHostResolverRules,
+        "MAP * " + https_server_.host_port_pair().ToString());
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   brave::URLSanitizerService* GetSanitizer() {
     return brave::URLSanitizerServiceFactory::GetForBrowserContext(
         browser()->profile());
   }
 
-  void SetSanitizerRules(const std::string& json) {
+  void SetSanitizerRules(const std::string& matchers,
+                         const std::string& permissions) {
     base::RunLoop loop;
+
     GetSanitizer()->SetInitializationCallbackForTesting(loop.QuitClosure());
-    GetSanitizer()->Initialize(json);
+    brave::URLSanitizerComponentInstaller::RawConfig config;
+    config.matchers = matchers;
+    config.permissions = permissions;
+    auto* component_intaller =
+        static_cast<brave::URLSanitizerComponentInstaller::Observer*>(
+            GetSanitizer());
+    component_intaller->OnConfigReady(config);
+
     loop.Run();
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
-IN_PROC_BROWSER_TEST_F(URLSanitizerTest, JSApi) {
-  SetSanitizerRules(kYoutubeRules);
-  const GURL url = https_server_.GetURL("/url_sanitizer/js_api.html");
+INSTANTIATE_TEST_SUITE_P(, URLSanitizerTest, testing::Bool());
+
+IN_PROC_BROWSER_TEST_P(URLSanitizerTest, JSApi) {
+  SetSanitizerRules(kYoutubeRules, kYoutubePermissions);
+  const GURL url("https://www.YoUtUbE.com/url_sanitizer/js_api.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  auto check = [this](const std::string& name) {
+  auto check = [this](const std::string& name, bool should_sanitize) {
     {
       ui::ScopedClipboardWriter clear_clipboard(
           ui::ClipboardBuffer::kCopyPaste);
@@ -109,14 +160,30 @@ IN_PROC_BROWSER_TEST_F(URLSanitizerTest, JSApi) {
         ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
 
     EXPECT_TRUE(base::StartsWith(text_from_clipboard, "https://youtu.be/"))
-        << name << " " << text_from_clipboard;
-    EXPECT_EQ(std::string::npos, text_from_clipboard.find("si="))
-        << name << " " << text_from_clipboard;
+        << name << " " << should_sanitize << " " << text_from_clipboard;
+
+    if (should_sanitize) {
+      EXPECT_EQ(std::string::npos, text_from_clipboard.find("si="))
+          << name << " " << should_sanitize << " " << text_from_clipboard;
+    } else {
+      EXPECT_NE(std::string::npos, text_from_clipboard.find("si="))
+          << name << " " << should_sanitize << " " << text_from_clipboard;
+    }
   };
 
-  check("test_1");
-  check("test_2");
-  check("test_3");
-  check("test_4");
-  check("test_5");
+  check("test_1", GetParam());
+  check("test_2", GetParam());
+  check("test_3", GetParam());
+  check("test_4", GetParam());
+  check("test_5", GetParam());
+
+  const GURL no_permission_url(
+      "https://no_permission.com/url_sanitizer/js_api.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), no_permission_url));
+
+  check("test_1", false);
+  check("test_2", false);
+  check("test_3", false);
+  check("test_4", false);
+  check("test_5", false);
 }

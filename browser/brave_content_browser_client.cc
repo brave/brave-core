@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -1355,10 +1356,19 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
 }
 
 GURL BraveContentBrowserClient::SanitizeURL(
-    content::BrowserContext* browser_context,
+    content::RenderFrameHost* render_frame_host,
     const GURL& url) {
-  DCHECK(browser_context);
-  return brave::URLSanitizerServiceFactory::GetForBrowserContext(
-             browser_context)
-      ->SanitizeURL(url);
+  if (!base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkFromJs)) {
+    return url;
+  }
+  DCHECK(render_frame_host);
+  DCHECK(render_frame_host->GetBrowserContext());
+  auto* url_sanitizer_service =
+      brave::URLSanitizerServiceFactory::GetForBrowserContext(
+          render_frame_host->GetBrowserContext());
+  if (!url_sanitizer_service->CheckJsPermission(
+          render_frame_host->GetLastCommittedURL())) {
+    return url;
+  }
+  return url_sanitizer_service->SanitizeURL(url);
 }

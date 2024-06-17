@@ -24,6 +24,10 @@ BASE_FEATURE(kBraveCopyCleanLinkByDefault,
 #endif
 );
 
+BASE_FEATURE(kBraveCopyCleanLinkFromJs,
+             "brave-copy-clean-link-from-js",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Disable download warnings for dangerous files when Safe Browsing is
 // disabled.
 BASE_FEATURE(kBraveOverrideDownloadDangerLevel,

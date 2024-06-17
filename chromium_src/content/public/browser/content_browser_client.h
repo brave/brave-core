@@ -27,7 +27,7 @@
                                          BrowserContext* browser_context);   \
   virtual uint8_t WorkerGetBraveFarblingLevel(                               \
       const GURL& url, BrowserContext* browser_context);                     \
-  virtual GURL SanitizeURL(content::BrowserContext*, const GURL&);           \
+  virtual GURL SanitizeURL(content::RenderFrameHost*, const GURL&);          \
   virtual void SetBrowserStartupIsCompleteForTesting
 
 #include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export
