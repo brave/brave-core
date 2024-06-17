@@ -51,6 +51,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
   // Act
   const std::optional<std::vector<cbr::SignedToken>> signed_tokens =
       ParseSignedTokens(BuildUrlResponseBody());
+  ASSERT_TRUE(signed_tokens);
 
   // Assert
   const std::vector<cbr::SignedToken> expected_signed_tokens = {

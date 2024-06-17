@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_scoring.h"
 
-#include <vector>
-
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -29,37 +27,46 @@ TEST_F(BraveAdsPurchaseIntentModelSegmentScoringTest,
   const base::Time on_cusp_at =
       Now() - (kPurchaseIntentTimeWindow.Get() - base::Milliseconds(1));
 
-  const std::vector<PurchaseIntentSignalInfo> signals = {
+  const PurchaseIntentSignalList purchase_intent_signals = {
       {decayed_at, {"segment 3"}, 1},
       {on_cusp_at, {"segment 4"}, 4},
       {Now() - base::Minutes(2), {"segment 1", "segment 2"}, 3},
       {Now() - base::Minutes(1), {"segment 1"}, 2},
       {Now(), {"segment 5"}, 5}};
 
-  for (const auto& signal : signals) {
-    BuyPurchaseIntentSignal(signal);
+  for (const auto& purchase_intent_signal : purchase_intent_signals) {
+    BuyPurchaseIntentSignal(purchase_intent_signal);
   }
 
-  const PurchaseIntentSignalHistoryMap& signal_history =
+  const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  // Act & Assert
+  // Act
   const std::multimap</*score*/ int, /*segment*/ std::string>
-      expected_segment_scores = {{0, "segment 3"},
-                                 {3, "segment 2"},
-                                 {4, "segment 4"},
-                                 {5, "segment 1"},
-                                 {5, "segment 5"}};
-  EXPECT_EQ(expected_segment_scores,
-            ComputePurchaseIntentSignalHistorySegmentScores(signal_history));
+      purchase_intent_signal_history_segment_scores =
+          ComputePurchaseIntentSignalHistorySegmentScores(
+              purchase_intent_signal_history);
+
+  // Assert
+  const std::multimap</*score*/ int, /*segment*/ std::string>
+      expected_purchase_intent_signal_history_segment_scores = {
+          {0, "segment 3"},
+          {3, "segment 2"},
+          {4, "segment 4"},
+          {5, "segment 1"},
+          {5, "segment 5"}};
+  EXPECT_EQ(expected_purchase_intent_signal_history_segment_scores,
+            purchase_intent_signal_history_segment_scores);
 }
 
 TEST_F(BraveAdsPurchaseIntentModelSegmentScoringTest,
        ComputeEmptyPurchaseIntentSignalHistorySegmentScores) {
-  // Act & Assert
-  EXPECT_THAT(
-      ComputePurchaseIntentSignalHistorySegmentScores(/*signal_history=*/{}),
-      ::testing::IsEmpty());
+  // Act
+  const std::multimap</*score*/ int, /*segment*/ std::string> segment_scores =
+      ComputePurchaseIntentSignalHistorySegmentScores(/*signal_history=*/{});
+
+  // Assert
+  EXPECT_THAT(segment_scores, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

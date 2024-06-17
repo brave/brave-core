@@ -46,8 +46,8 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, AddConfirmationTokens) {
   AddConfirmationTokens({token_2});
 
   // Assert
-  const ConfirmationTokenList expected_tokens = {token_1, token_2};
-  EXPECT_EQ(expected_tokens, GetConfirmationTokens().GetAll());
+  const ConfirmationTokenList expected_confirmation_tokens = {token_1, token_2};
+  EXPECT_EQ(expected_confirmation_tokens, GetConfirmationTokens().GetAll());
 }
 
 TEST_F(BraveAdsConfirmationTokenUtilTest, RemoveConfirmationToken) {
@@ -66,8 +66,8 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, RemoveConfirmationToken) {
   RemoveConfirmationToken(token_2);
 
   // Assert
-  const ConfirmationTokenList expected_tokens = {token_1, token_3};
-  EXPECT_EQ(expected_tokens, GetConfirmationTokens().GetAll());
+  const ConfirmationTokenList expected_confirmation_tokens = {token_1, token_3};
+  EXPECT_EQ(expected_confirmation_tokens, GetConfirmationTokens().GetAll());
 }
 
 TEST_F(BraveAdsConfirmationTokenUtilTest, ConfirmationTokenCount) {

@@ -33,19 +33,19 @@ std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
 }
 
 std::vector<challenge_bypass_ristretto::BlindedToken> ToRawBlindedTokens(
-    const std::vector<BlindedToken>& tokens) {
-  std::vector<challenge_bypass_ristretto::BlindedToken> raw_tokens;
-  raw_tokens.reserve(tokens.size());
+    const std::vector<BlindedToken>& blinded_tokens) {
+  std::vector<challenge_bypass_ristretto::BlindedToken> raw_blinded_tokens;
+  raw_blinded_tokens.reserve(blinded_tokens.size());
 
-  for (const auto& token : tokens) {
-    if (!token.has_value()) {
+  for (const auto& blinded_token : blinded_tokens) {
+    if (!blinded_token.has_value()) {
       return {};
     }
 
-    raw_tokens.push_back(token.get());
+    raw_blinded_tokens.push_back(blinded_token.get());
   }
 
-  return raw_tokens;
+  return raw_blinded_tokens;
 }
 
 }  // namespace brave_ads::cbr

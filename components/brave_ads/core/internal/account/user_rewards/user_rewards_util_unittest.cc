@@ -83,8 +83,10 @@ TEST_F(BraveAdsUserRewardsUtilTest, DoNotUpdateIfIssuersHasNotChanged) {
               OnNotifyPrefDidChange(prefs::kIssuers))
       .Times(0);
 
+  const IssuersInfo issuers = test::BuildIssuers();
+
   // Act
-  UpdateIssuers(test::BuildIssuers());
+  UpdateIssuers(issuers);
 
   // Assert
   EXPECT_TRUE(HasIssuers());

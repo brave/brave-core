@@ -116,9 +116,11 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const IssuersInfo issuers = test::BuildIssuers(
-      7'200'000,
+      /*ping*/ 7'200'000,
+      /*confirmations_public_keys*/
       {{"qiy6l/i2WXc8AkDFt/QDxXoT0XKgL0xRSZ3Db+k2u3A=", 0.0},
        {"hKjGQd7WAXs0lcdf+SCHCTKsBLWtKaEubwlK4YA1NkA=", 0.0}},
+      /*payments_public_keys*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 

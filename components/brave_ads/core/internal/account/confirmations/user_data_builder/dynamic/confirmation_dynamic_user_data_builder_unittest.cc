@@ -28,23 +28,29 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
        BuildDynamicUserDataForRewardsUser) {
-  // Act & Assert
+  // Act
+  const base::Value::Dict dynamic_user_data = BuildDynamicUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
                       "systemTimestamp": "2020-11-18T12:00:00.000Z"
                     })"),
-            BuildDynamicUserData());
+            dynamic_user_data);
 }
 
 TEST_F(BraveAdsConfirmationDynamicUserDataBuilderTest,
-       BuildDynamicUserDataForNonRewardsUser) {
+       DoNotBuildDynamicUserDataForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  // Act & Assert
-  EXPECT_THAT(BuildDynamicUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict dynamic_user_data = BuildDynamicUserData();
+
+  // Assert
+  EXPECT_THAT(dynamic_user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

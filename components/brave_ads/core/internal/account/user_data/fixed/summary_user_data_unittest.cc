@@ -36,7 +36,10 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
       ConfirmationType::kViewedImpression, AdType::kInlineContentAd);
   payment_tokens.push_back(payment_token_4);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildSummaryUserData(payment_tokens);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -53,7 +56,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForRewardsUser) {
                       ]
                     }
                 )"),
-            BuildSummaryUserData(payment_tokens));
+            user_data);
 }
 
 TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
@@ -62,21 +65,25 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataForNonRewardsUser) {
 
   const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/3);
 
-  // Act & Assert
-  EXPECT_THAT(BuildSummaryUserData(payment_tokens), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildSummaryUserData(payment_tokens);
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserDataIfNoPaymentTokens) {
-  // Arrange
-  const PaymentTokenList payment_tokens;
+  // Act
+  const base::Value::Dict user_data =
+      BuildSummaryUserData(/*payment_tokens=*/{});
 
-  // Act & Assert
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "totals": []
                     })"),
-            BuildSummaryUserData(payment_tokens));
+            user_data);
 }
 
 }  // namespace brave_ads

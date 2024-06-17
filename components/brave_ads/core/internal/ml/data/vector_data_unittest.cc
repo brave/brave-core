@@ -304,7 +304,7 @@ TEST_F(BraveAdsVectorDataTest, ComputeSimilarity) {
   const VectorData vector_data_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
   const VectorData vector_data_2({-2.0, 1.0, 1.0, -1.0, 2.0, 2.0, 1.0});
   const float similarity = vector_data_1.ComputeSimilarity(vector_data_2);
-  EXPECT_EQ(0.875, similarity);
+  EXPECT_FLOAT_EQ(0.875, similarity);
 }
 
 }  // namespace brave_ads::ml

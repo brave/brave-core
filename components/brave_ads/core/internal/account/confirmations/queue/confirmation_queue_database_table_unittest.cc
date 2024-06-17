@@ -105,13 +105,12 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
       test::BuildConfirmationQueueItems(*confirmation, /*count=*/1);
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
-  const ConfirmationQueueItemList expected_confirmation_queue_items = {
-      confirmation_queue_items.front(), confirmation_queue_items.front()};
-
   // Act
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
   // Assert
+  const ConfirmationQueueItemList expected_confirmation_queue_items = {
+      confirmation_queue_items.front(), confirmation_queue_items.front()};
   base::MockCallback<GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback,
               Run(/*success=*/true, expected_confirmation_queue_items));

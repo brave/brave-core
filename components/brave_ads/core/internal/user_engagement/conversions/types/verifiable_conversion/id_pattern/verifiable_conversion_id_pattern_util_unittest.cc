@@ -28,7 +28,6 @@ TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
       {/*url_pattern=*/"https://foo.com/bar?qux_id=xyz*",
        ConversionResourceIdPatternInfo{
            /*url_pattern=*/"https://foo.com/bar?qux_id=xyz*",
-           /*search_in_type=*/
            ConversionResourceIdPatternSearchInType::kUrlRedirect,
            /*id_pattern=*/"qux_id=(.*)"}});
 
@@ -47,7 +46,7 @@ TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
       {/*url_pattern=*/"https://foo.com/*",
        ConversionResourceIdPatternInfo{
            /*url_pattern=*/"https://foo.com/*",
-           /*search_in_type=*/ConversionResourceIdPatternSearchInType::kHtml,
+           ConversionResourceIdPatternSearchInType::kHtml,
            /*id_pattern=*/R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
 
   // Act & Assert

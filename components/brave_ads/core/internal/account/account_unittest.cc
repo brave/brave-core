@@ -88,7 +88,6 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet).Times(0);
-
   account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 }
 
@@ -96,7 +95,6 @@ TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyPaymentId) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-
   account_->SetWallet(/*payment_id=*/{}, kWalletRecoverySeed);
 }
 
@@ -104,7 +102,6 @@ TEST_F(BraveAdsAccountTest, DoNotSetWalletWithInvalidRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-
   account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
 }
 
@@ -112,7 +109,6 @@ TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-
   account_->SetWallet(kWalletPaymentId, /*recovery_seed=*/"");
 }
 
@@ -220,7 +216,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kViewedImpression);
 }
@@ -250,7 +245,6 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-
   account_->DepositWithUserData(kCreativeInstanceId, kSegment,
                                 AdType::kNotificationAd,
                                 ConfirmationType::kViewedImpression,
@@ -267,7 +261,6 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
 }
@@ -282,7 +275,6 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-
   account_->DepositWithUserData(kCreativeInstanceId, kSegment,
                                 AdType::kNotificationAd,
                                 ConfirmationType::kClicked, /*user_data=*/{});
@@ -300,7 +292,6 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
-
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
                     AdType::kNotificationAd,
                     ConfirmationType::kViewedImpression);

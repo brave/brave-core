@@ -24,11 +24,11 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   constexpr double kTolerance = 1e-7;
 
   // Act
-  const base::Value::Dict root =
+  const base::Value::Dict dict =
       base::test::ParseJsonDictFromFile(TestDataPath().AppendASCII(kHashCheck));
 
   const base::Value::Dict* const test_case_name_dict =
-      root.FindDict(test_case_name);
+      dict.FindDict(test_case_name);
   ASSERT_TRUE(test_case_name_dict);
 
   const std::string* const input = test_case_name_dict->FindString("input");

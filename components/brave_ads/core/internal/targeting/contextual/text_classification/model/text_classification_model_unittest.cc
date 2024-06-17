@@ -35,8 +35,12 @@ TEST_F(BraveAdsTextClassificationModelTest,
   processor.Process(/*text=*/"The quick brown fox jumps over the lazy dog");
   task_environment_.RunUntilIdle();
 
-  // Act & Assert
-  EXPECT_THAT(GetTextClassificationSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList text_classification_segments =
+      GetTextClassificationSegments();
+
+  // Assert
+  EXPECT_THAT(text_classification_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
@@ -49,8 +53,12 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   processor.Process(/*text=*/"");
   task_environment_.RunUntilIdle();
 
-  // Act & Assert
-  EXPECT_THAT(GetTextClassificationSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList text_classification_segments =
+      GetTextClassificationSegments();
+
+  // Assert
+  EXPECT_THAT(text_classification_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationModelTest,
@@ -64,8 +72,12 @@ TEST_F(BraveAdsTextClassificationModelTest,
   processor.Process(/*text=*/"Some content about technology & computing");
   task_environment_.RunUntilIdle();
 
-  // Act & Assert
-  const SegmentList expected_segments = {
+  // Act
+  const SegmentList text_classification_segments =
+      GetTextClassificationSegments();
+
+  // Assert
+  const SegmentList expected_text_classification_segments = {
       "technology & computing-technology & computing",
       "technology & computing-unix",
       "science-geology",
@@ -122,7 +134,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
       "science-science",
       "arts & entertainment-animation",
       "personal finance-insurance"};
-  EXPECT_EQ(expected_segments, GetTextClassificationSegments());
+  EXPECT_EQ(expected_text_classification_segments,
+            text_classification_segments);
 }
 
 TEST_F(BraveAdsTextClassificationModelTest,
@@ -144,8 +157,12 @@ TEST_F(BraveAdsTextClassificationModelTest,
   // Run the task environment until idle to ensure all tasks are processed.
   task_environment_.RunUntilIdle();
 
-  // Act & Assert
-  const SegmentList expected_segments = {
+  // Act
+  const SegmentList text_classification_segments =
+      GetTextClassificationSegments();
+
+  // Assert
+  const SegmentList expected_text_classification_segments = {
       "technology & computing-technology & computing",
       "personal finance-banking",
       "food & drink-cooking",
@@ -243,7 +260,8 @@ TEST_F(BraveAdsTextClassificationModelTest,
       "hobbies & interests-dance",
       "travel-adventure travel",
       "food & drink-pasta"};
-  EXPECT_EQ(expected_segments, GetTextClassificationSegments());
+  EXPECT_EQ(expected_text_classification_segments,
+            text_classification_segments);
 }
 
 TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
@@ -252,8 +270,12 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
                                    kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
-  // Act & Assert
-  EXPECT_THAT(GetTextClassificationSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList text_classification_segments =
+      GetTextClassificationSegments();
+
+  // Assert
+  EXPECT_THAT(text_classification_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

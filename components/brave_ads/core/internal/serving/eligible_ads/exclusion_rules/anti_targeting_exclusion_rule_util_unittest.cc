@@ -66,13 +66,11 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedIfNoBrowsingHistory) {
   // Arrange
-  const BrowsingHistoryList browsing_history;
-
   const AntiTargetingSiteList anti_targeting_sites = {GURL("INVALID")};
 
   // Act & Assert
-  EXPECT_FALSE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*browsing_history*/ {},
+                                           anti_targeting_sites));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
@@ -80,23 +78,16 @@ TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
   // Arrange
   const BrowsingHistoryList browsing_history = test::BuildBrowsingHistory();
 
-  const AntiTargetingSiteList anti_targeting_sites;
-
   // Act & Assert
-  EXPECT_FALSE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(browsing_history,
+                                           /*anti_targeting_sites*/ {}));
 }
 
 TEST(BraveAdsAntiTargetingExclusionRuleUtilTest,
      HasNotVisitedIfNoBrowsingHistoryAndAntiTargetedSites) {
-  // Arrange
-  const BrowsingHistoryList browsing_history;
-
-  const AntiTargetingSiteList anti_targeting_sites;
-
   // Act & Assert
-  EXPECT_FALSE(
-      HasVisitedAntiTargetedSites(browsing_history, anti_targeting_sites));
+  EXPECT_FALSE(HasVisitedAntiTargetedSites(/*browsing_history*/ {},
+                                           /*anti_targeting_sites*/ {}));
 }
 
 }  // namespace brave_ads

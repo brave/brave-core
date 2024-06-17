@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
 
@@ -32,16 +31,21 @@ TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   // Arrange
   targeting_helper_->MockLatentInterest();
 
-  // Act & Assert
-  const SegmentList expected_latent_interest_segments =
-      test::TargetingHelper::LatentInterestExpectation().segments;
-  EXPECT_EQ(expected_latent_interest_segments, BuildLatentInterestSegments());
+  // Act
+  const SegmentList latent_interest_segments = BuildLatentInterestSegments();
+
+  // Assert
+  EXPECT_EQ(test::TargetingHelper::LatentInterestExpectation().segments,
+            latent_interest_segments);
 }
 
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        BuildLatentInterestSegmentsIfNoTargeting) {
-  // Act & Assert
-  EXPECT_THAT(BuildLatentInterestSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList latent_interest_segments = BuildLatentInterestSegments();
+
+  // Assert
+  EXPECT_THAT(latent_interest_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLatentInterestSegmentsTest,
@@ -49,8 +53,11 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
   // Arrange
   targeting_helper_->MockLatentInterest();
 
-  // Act & Assert
-  EXPECT_THAT(BuildLatentInterestSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList latent_interest_segments = BuildLatentInterestSegments();
+
+  // Assert
+  EXPECT_THAT(latent_interest_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

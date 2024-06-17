@@ -38,16 +38,18 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  ConfirmationInfo expected_confirmation;
-  expected_confirmation.transaction_id = kTransactionId;
-  expected_confirmation.creative_instance_id = kCreativeInstanceId;
-  expected_confirmation.type = ConfirmationType::kViewedImpression;
-  expected_confirmation.ad_type = AdType::kNotificationAd;
-  expected_confirmation.created_at = Now();
+  // Act
+  const std::optional<ConfirmationInfo> confirmation =
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+  ASSERT_TRUE(confirmation);
 
-  EXPECT_EQ(expected_confirmation,
-            BuildNonRewardConfirmation(transaction, /*user_data=*/{}));
+  // Assert
+  EXPECT_THAT(*confirmation,
+              ::testing::FieldsAre(kTransactionId, kCreativeInstanceId,
+                                   ConfirmationType::kViewedImpression,
+                                   AdType::kNotificationAd,
+                                   /*created_at*/ Now(),
+                                   /*reward*/ std::nullopt, UserDataInfo{}));
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
@@ -55,12 +57,14 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
   // Arrange
   test::DisableBraveRewards();
 
-  const TransactionInfo transaction;
+  // Act
+  const std::optional<ConfirmationInfo> confirmation =
+      BuildNonRewardConfirmation(/*transaction=*/{}, /*user_data=*/{});
+  ASSERT_TRUE(confirmation);
 
-  // Act & Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
-      "Check failed: transaction.IsValid*");
+  // Assert
+  EXPECT_DEATH_IF_SUPPORTED(*confirmation,
+                            "Check failed: transaction.IsValid*");
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,
@@ -70,10 +74,14 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  EXPECT_DEATH_IF_SUPPORTED(
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{}),
-      "Check failed: !UserHasJoinedBraveRewards*");
+  // Act
+  const std::optional<ConfirmationInfo> confirmation =
+      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+  ASSERT_TRUE(confirmation);
+
+  // Assert
+  EXPECT_DEATH_IF_SUPPORTED(*confirmation,
+                            "Check failed: !UserHasJoinedBraveRewards*");
 }
 
 }  // namespace brave_ads

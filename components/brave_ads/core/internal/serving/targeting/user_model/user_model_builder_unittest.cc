@@ -56,11 +56,8 @@ TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
 }
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModelIfNoTargeting) {
-  // Arrange
-  const UserModelInfo expected_user_model;
-
   // Act & Assert
-  EXPECT_EQ(expected_user_model, BuildUserModel());
+  EXPECT_EQ(UserModelInfo{}, BuildUserModel());
 }
 
 }  // namespace brave_ads

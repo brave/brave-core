@@ -21,13 +21,16 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
   // Arrange
   AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildSystemTimestampUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "systemTimestamp": "2020-11-18T12:00:00.000Z"
                     })"),
-            BuildSystemTimestampUserData());
+            user_data);
 }
 
 TEST_F(BraveAdsSystemTimestampUserDataTest,
@@ -35,8 +38,11 @@ TEST_F(BraveAdsSystemTimestampUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act & Assert
-  EXPECT_THAT(BuildSystemTimestampUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildSystemTimestampUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

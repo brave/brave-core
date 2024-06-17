@@ -116,7 +116,7 @@ TEST(BraveAdsUserActivityFeatureTest, UserActivityThreshold) {
 
 TEST(BraveAdsUserActivityFeatureTest, DefaultUserActivityThreshold) {
   // Act & Assert
-  EXPECT_EQ(0.0, kUserActivityThreshold.Get());
+  EXPECT_DOUBLE_EQ(0.0, kUserActivityThreshold.Get());
 }
 
 TEST(BraveAdsUserActivityFeatureTest,
@@ -126,7 +126,7 @@ TEST(BraveAdsUserActivityFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kUserActivityFeature);
 
   // Act & Assert
-  EXPECT_EQ(0.0, kUserActivityThreshold.Get());
+  EXPECT_DOUBLE_EQ(0.0, kUserActivityThreshold.Get());
 }
 
 }  // namespace brave_ads

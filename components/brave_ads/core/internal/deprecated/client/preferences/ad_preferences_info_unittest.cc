@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSampleAdPreferencesInfoJson[] = R"(
+constexpr char kJson[] = R"(
 {
   "filtered_advertisers": [
     {
@@ -95,7 +95,7 @@ TEST_F(BraveAdsAdPreferencesInfoTest, SerializeSampleAdPreferencesInfo) {
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParseSampleAdPreferencesInfoJson) {
   // Act & Assert
-  ParseJsonAndCompareWithSampleAdPreferencesInfo(kSampleAdPreferencesInfoJson);
+  ParseJsonAndCompareWithSampleAdPreferencesInfo(kJson);
 }
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParseEmptyJson) {
@@ -106,10 +106,11 @@ TEST_F(BraveAdsAdPreferencesInfoTest, ParseEmptyJson) {
   ASSERT_TRUE(ad_preferences.FromJson("{}"));
 
   // Assert
-  EXPECT_THAT(ad_preferences.filtered_advertisers, ::testing::IsEmpty());
-  EXPECT_THAT(ad_preferences.filtered_categories, ::testing::IsEmpty());
-  EXPECT_THAT(ad_preferences.saved_ads, ::testing::IsEmpty());
-  EXPECT_THAT(ad_preferences.flagged_ads, ::testing::IsEmpty());
+  EXPECT_THAT(ad_preferences, ::testing::FieldsAre(
+                                  /*filtered_advertisers*/ ::testing::IsEmpty(),
+                                  /*filtered_categories*/ ::testing::IsEmpty(),
+                                  /*saved_ads*/ ::testing::IsEmpty(),
+                                  /*flagged_ads*/ ::testing::IsEmpty()));
 }
 
 TEST_F(BraveAdsAdPreferencesInfoTest, ParsePreferencesWithNotValidMembers) {

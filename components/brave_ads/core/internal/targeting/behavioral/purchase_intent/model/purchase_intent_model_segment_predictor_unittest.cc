@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/model/purchase_intent_model_segment_predictor.h"
 
-#include <vector>
-
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -25,38 +23,53 @@ class BraveAdsPurchaseIntentModelSegmentPredictorTest : public UnitTestBase {};
 TEST_F(BraveAdsPurchaseIntentModelSegmentPredictorTest,
        PredictPurchaseIntentSegments) {
   // Arrange
-  const base::Time decayed_at = Now() - kPurchaseIntentTimeWindow.Get();
+  const base::TimeDelta purchase_intent_time_window =
+      kPurchaseIntentTimeWindow.Get();
 
-  const base::Time on_cusp_at =
-      Now() - (kPurchaseIntentTimeWindow.Get() - base::Milliseconds(1));
+  const PurchaseIntentSignalList purchase_intent_signals = {
+      {/*decayed_at*/ Now() - purchase_intent_time_window,
+       {"segment 3"},
+       /*weight*/ 1},
+      {/*on_cusp_at*/ Now() -
+           (purchase_intent_time_window - base::Milliseconds(1)),
+       {"segment 4"},
+       /*weight*/ 4},
+      {/*at*/ Now() - base::Minutes(2),
+       {"segment 1", "segment 2"},
+       /*weight*/ 3},
+      {/*at*/ Now() - base::Minutes(1), {"segment 1"}, /*weight*/ 2},
+      {/*at*/ Now(), {"segment 5"}, /*weight*/ 5}};
 
-  const std::vector<PurchaseIntentSignalInfo> signals = {
-      {decayed_at, {"segment 3"}, 1},
-      {on_cusp_at, {"segment 4"}, 4},
-      {Now() - base::Minutes(2), {"segment 1", "segment 2"}, 3},
-      {Now() - base::Minutes(1), {"segment 1"}, 2},
-      {Now(), {"segment 5"}, 5}};
-
-  for (const auto& signal : signals) {
-    BuyPurchaseIntentSignal(signal);
+  for (const auto& purchase_intent_signal : purchase_intent_signals) {
+    BuyPurchaseIntentSignal(purchase_intent_signal);
   }
 
-  const PurchaseIntentSignalHistoryMap& signal_history =
+  const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
       ClientStateManager::GetInstance().GetPurchaseIntentSignalHistory();
 
-  const std::multimap</*score*/ int, /*segment*/ std::string> segment_scores =
-      ComputePurchaseIntentSignalHistorySegmentScores(signal_history);
+  const std::multimap</*score*/ int, /*segment*/ std::string>
+      purchase_intent_signal_history_segment_scores =
+          ComputePurchaseIntentSignalHistorySegmentScores(
+              purchase_intent_signal_history);
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 5", "segment 1", "segment 4"};
-  EXPECT_EQ(expected_segments, PredictPurchaseIntentSegments(segment_scores));
+  // Act
+  const SegmentList purchase_intent_segments = PredictPurchaseIntentSegments(
+      purchase_intent_signal_history_segment_scores);
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {
+      "segment 5", "segment 1", "segment 4"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 TEST_F(BraveAdsPurchaseIntentModelSegmentPredictorTest,
        DoNotPredictPurchaseIntentSegmentsWhenNoScores) {
-  // Act & Assert
-  EXPECT_THAT(PredictPurchaseIntentSegments(/*segment_scores=*/{}),
-              ::testing::IsEmpty());
+  // Act
+  const SegmentList purchase_intent_segments =
+      PredictPurchaseIntentSegments(/*segment_scores=*/{});
+
+  // Assert
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

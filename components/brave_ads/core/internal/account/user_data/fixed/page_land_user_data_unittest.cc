@@ -18,30 +18,35 @@ class BraveAdsPageLandUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPageLandUserDataTest,
        BuildPageLandUserDataForHttpResponseStatusErrorPage) {
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildPageLandUserData(
+      TabInfo{/*id=*/1,
+              /*is_visible=*/true,
+              /*redirect_chain=*/{GURL("https://brave.com")},
+              /*is_error_page=*/true,
+              /*is_playing_media=*/false});
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "httpResponseStatus": "errorPage"
                     })"),
-            BuildPageLandUserData(
-                TabInfo{/*id=*/1,
-                        /*is_visible=*/true,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        /*is_error_page=*/true,
-                        /*is_playing_media=*/false}));
+            user_data);
 }
 
 TEST_F(BraveAdsPageLandUserDataTest,
        DoNotBuildPageLandUserDataForHttpResponseStatusNonErrorPage) {
-  // Act & Assert
-  EXPECT_THAT(BuildPageLandUserData(
-                  TabInfo{/*id=*/1,
-                          /*is_visible=*/true,
-                          /*redirect_chain=*/{GURL("https://brave.com")},
-                          /*is_error_page=*/false,
-                          /*is_playing_media=*/false}),
-              ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildPageLandUserData(
+      TabInfo{/*id=*/1,
+              /*is_visible=*/true,
+              /*redirect_chain=*/{GURL("https://brave.com")},
+              /*is_error_page=*/false,
+              /*is_playing_media=*/false});
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

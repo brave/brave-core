@@ -32,24 +32,19 @@ TEST_F(BraveAdsAdContentUtilTest, Build) {
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
-  // Act & Assert
-  AdContentInfo expected_ad_content;
-  expected_ad_content.type = ad.type;
-  expected_ad_content.placement_id = ad.placement_id;
-  expected_ad_content.creative_instance_id = ad.creative_instance_id;
-  expected_ad_content.creative_set_id = ad.creative_set_id;
-  expected_ad_content.campaign_id = ad.campaign_id;
-  expected_ad_content.advertiser_id = ad.advertiser_id;
-  expected_ad_content.segment = kSegment;
-  expected_ad_content.brand = kTitle;
-  expected_ad_content.brand_info = kDescription;
-  expected_ad_content.brand_display_url = ad.target_url.host();
-  expected_ad_content.brand_url = ad.target_url;
-  expected_ad_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-  expected_ad_content.confirmation_type = ConfirmationType::kViewedImpression;
-  EXPECT_EQ(expected_ad_content,
-            BuildAdContent(ad, ConfirmationType::kViewedImpression, kTitle,
-                           kDescription));
+  // Act
+  const AdContentInfo ad_content = BuildAdContent(
+      ad, ConfirmationType::kViewedImpression, kTitle, kDescription);
+
+  // Assert
+  EXPECT_THAT(
+      ad_content,
+      ::testing::FieldsAre(ad.type, ad.placement_id, ad.creative_instance_id,
+                           ad.creative_set_id, ad.campaign_id, ad.advertiser_id,
+                           kSegment, kTitle, kDescription, ad.target_url.host(),
+                           ad.target_url, mojom::UserReactionType::kNeutral,
+                           ConfirmationType::kViewedImpression,
+                           /*is_saved*/ false, /*is_flagged*/ false));
 }
 
 }  // namespace brave_ads

@@ -58,10 +58,14 @@ TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
 
   AdvanceClockTo(TimeFromString("25 December 2020"));
 
-  // Act & Assert
-  EXPECT_THAT(GetTransactionsForDateRange(transactions, /*from_time=*/Now(),
-                                          /*to_time=*/DistantFuture()),
-              ::testing::IsEmpty());
+  // Act
+  const TransactionList transactions_for_date_range =
+      GetTransactionsForDateRange(
+          transactions, /*from_time=*/TimeFromString("1 January 2021"),
+          /*to_time=*/TimeFromString("31 December 2021"));
+
+  // Assert
+  EXPECT_THAT(transactions_for_date_range, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads
