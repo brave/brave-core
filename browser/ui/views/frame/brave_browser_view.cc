@@ -441,6 +441,26 @@ void BraveBrowserView::UpdateSplitViewSizeDelta(
   }
 }
 
+void BraveBrowserView::UpdateSplitViewOrientation() {
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser_.get());
+  if (!split_view_browser_data) {
+    return;
+  }
+
+  auto* model = browser()->tab_strip_model();
+  auto active_tab_handle = model->GetActiveTab()->GetHandle();
+  auto active_tile = split_view_browser_data->GetTile(active_tab_handle);
+  if (!active_tile) {
+    return;
+  }
+
+  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+      contents_container()->GetLayoutManager());
+  contents_layout_manager->SetSplitViewOrientation(
+      split_view_browser_data->GetOrientation(active_tab_handle));
+}
+
 void BraveBrowserView::UpdateContentsWebViewVisual() {
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(browser_.get());
@@ -851,6 +871,23 @@ void BraveBrowserView::OnSwapTabsInTile(
   UpdateSecondaryContentsWebViewVisibility();
 }
 
+void BraveBrowserView::OnOrientationChanged(
+    const SplitViewBrowserData::Tile& tile) {
+  if (!IsActiveWebContentsTiled(tile)) {
+    return;
+  }
+
+  UpdateSplitViewOrientation();
+
+  contents_web_view_->SetFastResize(true);
+  secondary_contents_web_view_->SetFastResize(true);
+
+  contents_container()->DeprecatedLayoutImmediately();
+
+  contents_web_view_->SetFastResize(false);
+  secondary_contents_web_view_->SetFastResize(false);
+}
+
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
@@ -1139,6 +1176,8 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
   if (supports_split_view) {
     UpdateSplitViewSizeDelta(old_contents, new_contents);
+
+    UpdateSplitViewOrientation();
 
     // Setting nullptr doesn't detach the previous contents.
     UpdateContentsWebViewVisual();
