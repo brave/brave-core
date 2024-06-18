@@ -9,9 +9,9 @@ import Shared
 import SwiftUI
 
 public struct BraveVPNRegionConfirmationView: View {
-  var regionCountry: String?
-  var regionCity: String?
-  var regionCountryFlag: Image?
+  let regionCountry: String?
+  let regionCity: String?
+  let regionCountryFlag: Image?
 
   public init(regionCountry: String?, regionCity: String?, regionCountryISOCode: String?) {
     self.regionCountry = regionCountry
@@ -70,12 +70,13 @@ struct BraveVPNRegionConfirmationView_Previews: PreviewProvider {
 }
 
 public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentable {
+
   @Binding
   var isPresented: Bool
 
-  var regionCountry: String?
-  var regionCity: String?
-  var regionCountryISOCode: String?
+  let regionCountry: String?
+  let regionCity: String?
+  let regionCountryISOCode: String?
 
   public init(
     isPresented: Binding<Bool>,
