@@ -118,7 +118,8 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mSolanaTxManagerProxy = BraveWalletServiceFactory.getInstance().getSolanaTxManagerProxy(this);
+        mSolanaTxManagerProxy =
+                BraveWalletServiceFactory.getInstance().getSolanaTxManagerProxy(this);
     }
 
     protected void InitKeyringService() {

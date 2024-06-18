@@ -65,7 +65,8 @@ public class BraveWalletServiceFactory {
 
     public JsonRpcService getJsonRpcService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        long nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToJsonRpcService(profile);
+        long nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToJsonRpcService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         JsonRpcService jsonRpcService = JsonRpcService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) jsonRpcService).getProxyHandler();
@@ -76,7 +77,8 @@ public class BraveWalletServiceFactory {
 
     public KeyringService getKeyringService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // Always use regular profile
-        long nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToKeyringService(profile);
+        long nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToKeyringService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         KeyringService keyringService = KeyringService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) keyringService).getProxyHandler();
@@ -98,7 +100,8 @@ public class BraveWalletServiceFactory {
 
     public EthTxManagerProxy getEthTxManagerProxy(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        long nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToEthTxManagerProxy(profile);
+        long nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToEthTxManagerProxy(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         EthTxManagerProxy ethTxManagerProxy = EthTxManagerProxy.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) ethTxManagerProxy).getProxyHandler();
@@ -110,7 +113,8 @@ public class BraveWalletServiceFactory {
     public SolanaTxManagerProxy getSolanaTxManagerProxy(
             ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        long nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToSolanaTxManagerProxy(profile);
+        long nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToSolanaTxManagerProxy(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         SolanaTxManagerProxy solanaTxManagerProxy =
                 SolanaTxManagerProxy.MANAGER.attachProxy(handle, 0);

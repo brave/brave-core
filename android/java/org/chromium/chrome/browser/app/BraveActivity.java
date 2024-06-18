@@ -2197,7 +2197,8 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mSolanaTxManagerProxy = BraveWalletServiceFactory.getInstance().getSolanaTxManagerProxy(this);
+        mSolanaTxManagerProxy =
+                BraveWalletServiceFactory.getInstance().getSolanaTxManagerProxy(this);
     }
 
     private void initBlockchainRegistry() {
