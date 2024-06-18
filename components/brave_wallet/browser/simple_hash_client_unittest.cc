@@ -1544,7 +1544,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->name, "Azuki #2767");
   EXPECT_EQ(it->second->description, "Azuki is a cute little bean");
   EXPECT_EQ(it->second->image,
-            "https://cdn.simplehash.wallet.brave.com/assets/"
+            "https://simplehash.wallet-cdn.brave.com/assets/"
             "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b."
             "png");
   EXPECT_EQ(it->second->image_data, "");
@@ -1611,7 +1611,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
       "him move and attack quickly, and his tail like a big sword that can "
       "easily cut-off enemies into slices.");
   EXPECT_EQ(it->second->image,
-            "https://cdn.simplehash.wallet.brave.com/assets/"
+            "https://simplehash.wallet-cdn.brave.com/assets/"
             "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b."
             "png");
   EXPECT_EQ(it->second->image_data, "");
@@ -1688,7 +1688,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->name, "Azuki #2767");
   EXPECT_EQ(it->second->description, "Azuki is a cute little bean");
   EXPECT_EQ(it->second->image,
-            "https://cdn.simplehash.wallet.brave.com/assets/"
+            "https://simplehash.wallet-cdn.brave.com/assets/"
             "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b."
             "png");
   EXPECT_EQ(it->second->image_data, "");
@@ -1812,7 +1812,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   metadata1->name = "Common Water Warrior #19";
   metadata1->description = "A true gladiator";
   metadata1->image =
-      "https://cdn.simplehash.wallet.brave.com/assets/"
+      "https://simplehash.wallet-cdn.brave.com/assets/"
       "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
   metadata1->image_data = "";
   metadata1->external_url = "";
@@ -1823,7 +1823,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   mojom::NftMetadataPtr metadata2 = mojom::NftMetadata::New();
   metadata2->name = "Sneaker #432819057";
   metadata2->description = "A sneaker";
-  metadata2->image = "https://cdn.simplehash.wallet.brave.com/assets/3.png";
+  metadata2->image = "https://simplehash.wallet-cdn.brave.com/assets/3.png";
   metadata2->image_data = "";
   metadata2->external_url =
       "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json";

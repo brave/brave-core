@@ -68,7 +68,7 @@ constexpr char kPalm[] = "palm";
 constexpr char kPolygonZkEvm[] = "polygon-zkevm";
 constexpr char kZkSyncEra[] = "zksync-era";
 constexpr char kSimpleHashCdnBraveProxyHost[] =
-    "cdn.simplehash.wallet.brave.com";
+    "simplehash.wallet-cdn.brave.com";
 
 std::optional<std::string> ChainIdToSimpleHashChainId(
     const std::string& chain_id) {

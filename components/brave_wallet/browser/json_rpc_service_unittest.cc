@@ -8068,7 +8068,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   mojom::NftMetadataPtr eth_metadata1 = mojom::NftMetadata::New();
   eth_metadata1->name = "Azuki #2767";
   eth_metadata1->description = "Azuki is a cute little bean";
-  eth_metadata1->image = "https://cdn.simplehash.wallet.brave.com/assets/1.png";
+  eth_metadata1->image = "https://simplehash.wallet-cdn.brave.com/assets/1.png";
   eth_metadata1->external_url = "";
   eth_metadata1->background_color = "";
   mojom::NftAttributePtr eth_attribute1 = mojom::NftAttribute::New();
@@ -8085,7 +8085,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   mojom::NftMetadataPtr eth_metadata2 = mojom::NftMetadata::New();
   eth_metadata2->name = "NFT #1234";
   eth_metadata2->description = "Description of NFT #1234";
-  eth_metadata2->image = "https://cdn.simplehash.wallet.brave.com/assets/2.png";
+  eth_metadata2->image = "https://simplehash.wallet-cdn.brave.com/assets/2.png";
   eth_metadata2->external_url = "";
   eth_metadata2->background_color = "";
   mojom::NftAttributePtr eth_attribute3 = mojom::NftAttribute::New();
@@ -8241,7 +8241,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
       "him move and attack quickly, and his tail like a big sword that can "
       "easily cut-off enemies into slices.";
   sol_metadata1->image =
-      "https://cdn.simplehash.wallet.brave.com/assets/"
+      "https://simplehash.wallet-cdn.brave.com/assets/"
       "168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png";
   sol_metadata1->external_url = "";
   sol_metadata1->background_color = "";
@@ -8267,7 +8267,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   sol_metadata2->name = "Sneaker #432819057";
   sol_metadata2->description = "NFT Sneaker, use it in STEPN to move2earn";
   sol_metadata2->image =
-      "https://cdn.simplehash.wallet.brave.com/assets/"
+      "https://simplehash.wallet-cdn.brave.com/assets/"
       "8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png";
   sol_metadata2->external_url = "https://stepn.com";
   sol_metadata2->background_color = "";
