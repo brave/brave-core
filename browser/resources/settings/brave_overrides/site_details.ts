@@ -5,18 +5,12 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications,RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import {loadTimeData} from '../i18n_setup.js'
-import {BraveSiteDetailsElement} from '../brave_site_details/brave_site_details.js'
 
 import 'chrome://resources/brave/leo.bundle.js'
-
-RegisterPolymerComponentReplacement(
-  'site-details',
-  BraveSiteDetailsElement
-)
 
 RegisterPolymerTemplateModifications({
   'site-details': (templateContent) => {
@@ -147,30 +141,5 @@ RegisterPolymerTemplateModifications({
 
     // In Chromium, the VR and AR icons are the same but we want to have separate ones.
     templateContent.querySelector('site-details-permission[icon="settings:vr-headset"]')?.setAttribute('icon', 'smartphone-hand')
-
-    const usageSection = templateContent.querySelector('div#usage')
-    if (!usageSection) {
-      console.error(`[Brave Settings Overrides] Couldn't find usageSection item`)
-    } else {
-      usageSection.insertAdjacentHTML(
-        'afterend',
-        getTrustedHTML`
-
-          <cr-link-row id="cookiesLink" on-click="onCookiesDetailClicked_">
-          </cr-link-row>
-
-        `)
-      const cookiesDetail =
-        templateContent.querySelector('#cookiesLink')
-      if (!cookiesDetail) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find cookies link')
-      } else {
-        cookiesDetail.setAttribute('label',
-            loadTimeData.getString('siteCookiesLinkLabel'))
-        cookiesDetail.setAttribute('sub-label',
-            loadTimeData.getString('siteCookiesLinkDesc'))
-      }
-    }
   }
 })

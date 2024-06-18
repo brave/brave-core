@@ -559,18 +559,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE" desc="Label for sites in site settings enabling cookies cleanup when all windows with the site are clsoed.">
     Clear on site close
   </message>
-  <message name="IDS_SETTINGS_SITE_COOKIES_LINK_TITLE" desc="The title of a link to navigate to site cookies subpage.">
-    Cookies and Site Data
-  </message>
-  <message name="IDS_SETTINGS_SITE_COOKIES_LINK_DESC" desc="The description of a link to navigate to site cookies subpage.">
-    Show all cookies and locally stored data for this site
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_SUBPAGE" desc="A label for cookie subpage, stating which site we're showing data for.">
-    <ph name="SITE">$1<ex>www.example.com</ex></ph> locally stored data
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_REMOVE_ALL" desc="A label for remove all cookies button.">
-    Remove All
-  </message>
 
   <!-- Settings / Privacy and security / Cookies and other site data / See all site data and permissions -->
   <!-- These settings were reinstated after being deleted upstream -->
