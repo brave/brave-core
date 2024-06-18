@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "third_party/blink/public/common/features.h"
 
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
 #define ContentSettingsTypeToGroupName \
@@ -106,10 +105,6 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
   };
 
   auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);
-
-  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
-    std::erase(types, ContentSettingsType::SERIAL_GUARD);
-  }
 
   types.insert(std::end(types), std::begin(extra_types), std::end(extra_types));
   return types;

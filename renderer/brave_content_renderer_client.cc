@@ -102,9 +102,6 @@ void BraveContentRendererClient::
         "FileSystemAccessAPIExperimental", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
-  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
-    blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
-  }
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(

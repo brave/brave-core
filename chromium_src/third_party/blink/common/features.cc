@@ -61,10 +61,6 @@ BASE_FEATURE(kBraveWebBluetoothAPI,
              "BraveWebBluetoothAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveWebSerialAPI,
-             "BraveWebSerialAPI",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 BASE_FEATURE(kNavigatorConnectionAttribute,
              "NavigatorConnectionAttribute",
              base::FEATURE_DISABLED_BY_DEFAULT);

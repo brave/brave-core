@@ -15,7 +15,6 @@ source_set("browser_tests") {
     "font_browsertest.cc",
     "js_ethereum_provider_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
-    "serial_api_browsertest.cc",
     "subresource_web_bundles_browsertest.cc",
   ]
 
