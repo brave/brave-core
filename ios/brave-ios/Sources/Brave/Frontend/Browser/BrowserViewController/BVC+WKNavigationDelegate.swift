@@ -449,10 +449,17 @@ extension BrowserViewController: WKNavigationDelegate {
           return (.cancel, preferences)
         }
 
+        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+        let adsBlockingShieldUp = domain.isShieldExpected(
+          .adblockAndTp,
+          considerAllShieldsOption: true
+        )
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
-          isPrivateBrowsing: isPrivateBrowsing
+          isPrivateBrowsing: isPrivateBrowsing,
+          isAggressiveAdsBlocking: domain.blockAdsAndTrackingLevel.isAggressive
+            && adsBlockingShieldUp
         )
       }
 
