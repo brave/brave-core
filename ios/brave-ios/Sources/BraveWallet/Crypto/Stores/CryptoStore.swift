@@ -124,7 +124,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
   private let walletP3A: BraveWalletBraveWalletP3A
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private let userAssetManager: WalletUserAssetManager
   private var isUpdatingUserAssets: Bool = false
   private var autoDiscoveredAssets: [BraveWallet.BlockchainToken] = []
@@ -146,7 +146,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
     walletP3A: BraveWalletBraveWalletP3A,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     origin: URLOrigin? = nil
   ) {
     self.keyringService = keyringService

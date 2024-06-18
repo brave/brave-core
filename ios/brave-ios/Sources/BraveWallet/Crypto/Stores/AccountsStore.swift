@@ -43,7 +43,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private let userAssetManager: WalletUserAssetManagerType
 
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -58,7 +58,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
@@ -142,30 +142,32 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     for accounts: [BraveWallet.AccountInfo],
     networkAssets allNetworkAssets: [NetworkAssets]
   ) async {
-    // Update BTC account balance
-    if accounts.contains(where: { $0.coin == .btc }) {
-      await withTaskGroup(
-        of: [String: [String: Double]].self
-      ) { [bitcoinWalletService] group in
-        for account in accounts where account.coin == .btc {
-          group.addTask {
-            let btcBalance =
-              await bitcoinWalletService.fetchBTCBalance(
-                accountId: account.accountId,
-                type: .total
-              ) ?? 0
-            if let btcToken = allNetworkAssets.first(where: {
-              $0.network.supportedKeyrings.contains(
-                account.keyringId.rawValue as NSNumber
-              )
-            })?.tokens.first {
-              return [account.id: [btcToken.id: btcBalance]]
+    if let bitcoinWalletService {
+      // Update BTC account balance
+      if accounts.contains(where: { $0.coin == .btc }) {
+        await withTaskGroup(
+          of: [String: [String: Double]].self
+        ) { [bitcoinWalletService] group in
+          for account in accounts where account.coin == .btc {
+            group.addTask {
+              let btcBalance =
+                await bitcoinWalletService.fetchBTCBalance(
+                  accountId: account.accountId,
+                  type: .total
+                ) ?? 0
+              if let btcToken = allNetworkAssets.first(where: {
+                $0.network.supportedKeyrings.contains(
+                  account.keyringId.rawValue as NSNumber
+                )
+              })?.tokens.first {
+                return [account.id: [btcToken.id: btcBalance]]
+              }
+              return [:]
             }
-            return [:]
           }
-        }
-        for await accountBTCBalances in group {
-          tokenBalancesCache.merge(with: accountBTCBalances)
+          for await accountBTCBalances in group {
+            tokenBalancesCache.merge(with: accountBTCBalances)
+          }
         }
       }
     }

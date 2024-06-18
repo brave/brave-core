@@ -327,7 +327,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private let assetManager: WalletUserAssetManagerType
   private var rpcServiceObserver: JsonRpcServiceObserver?
   private var keyringServiceObserver: KeyringServiceObserver?
@@ -344,7 +344,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ipfsApi: IpfsAPI,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.keyringService = keyringService
@@ -485,7 +485,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       }
 
       guard !Task.isCancelled else { return }
-      if selectedAccounts.contains(where: { $0.coin == .btc }) {
+      if let bitcoinWalletService, selectedAccounts.contains(where: { $0.coin == .btc }) {
         /// We  need to know if user has pending balance to show/hide banner. Re-fetch on view load.
         self.accountsBTCBalances = await withTaskGroup(of: [String: [BTCBalanceType: Double]].self)
         {
@@ -538,7 +538,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                 for account in tokenNetworkAccounts.accounts {
                   var balanceForToken: Double?
                   let tokenNetwork = tokenNetworkAccounts.network
-                  if account.coin == .btc,
+                  if let bitcoinWalletService, account.coin == .btc,
                     tokenNetwork.supportedKeyrings.contains(
                       account.keyringId.rawValue as NSNumber
                     )

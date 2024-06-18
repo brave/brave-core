@@ -159,7 +159,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let keyringService: BraveWalletKeyringService
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var selectedChain: BraveWallet.NetworkInfo = .init()
@@ -179,7 +179,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     keyringService: BraveWalletKeyringService,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
   ) {
@@ -450,7 +450,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     network: BraveWallet.NetworkInfo
   ) async {
     var gasBalancesForChain = gasTokenBalanceCache[network.chainId, default: [:]]
-    if token.coin == .btc {
+    if let bitcoinWalletService, token.coin == .btc {
       if let availableBTCBalance = await bitcoinWalletService.fetchBTCBalance(
         accountId: account.accountId,
         type: .available

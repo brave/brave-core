@@ -44,7 +44,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private let assetManager: WalletUserAssetManagerType
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
@@ -77,7 +77,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     userAssetManager: WalletUserAssetManagerType
   ) {
     self.account = account
@@ -222,11 +222,11 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
       self.isLoadingAccountFiat = true
       var tokenBalances: [String: Double] = [:]
-      if account.coin == .btc {
+      if let bitcoinWalletService = self.bitcoinWalletService, account.coin == .btc {
         let networkAsset = allUserNetworkAssets.first {
           $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
         }
-        btcBalancesCache = await self.bitcoinWalletService.fetchBTCBalances(
+        btcBalancesCache = await bitcoinWalletService.fetchBTCBalances(
           accountId: account.accountId
         )
         if let btcToken = networkAsset?.tokens.first,

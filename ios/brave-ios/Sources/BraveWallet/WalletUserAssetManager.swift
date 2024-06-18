@@ -81,7 +81,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let txService: BraveWalletTxService
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
 
   private var keyringServiceObserver: KeyringServiceObserver?
   private var txServiceObserver: TxServiceObserver?
@@ -100,7 +100,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     txService: BraveWalletTxService,
-    bitcoinWalletService: BraveWalletBitcoinWalletService
+    bitcoinWalletService: BraveWalletBitcoinWalletService?
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -414,7 +414,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
           for account in accounts {
             guard !Task.isCancelled else { return }
             group.addTask { @MainActor in
-              if account.coin == .btc {
+              if let bitcoinWalletService, account.coin == .btc {
                 let networkAssets = allUserAssets.first {
                   $0.network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
                 }
@@ -508,7 +508,7 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
           for account in accounts {  // for each account
             group.addTask { @MainActor in
               var tokenBalance: Double?
-              if account.coin == .btc {
+              if let bitcoinWalletService, account.coin == .btc {
                 tokenBalance = await bitcoinWalletService.fetchBTCBalance(
                   accountId: account.accountId,
                   type: .total

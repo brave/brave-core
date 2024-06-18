@@ -172,7 +172,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var sendAddressUpdatedTimer: Timer?
   private var sendAmountUpdatedTimer: Timer?
@@ -196,7 +196,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     prefilledToken: BraveWallet.BlockchainToken?,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType
@@ -375,7 +375,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         return
       }
       let balance: BDouble?
-      if selectedSendToken.coin == .btc {
+      if let bitcoinWalletService, selectedSendToken.coin == .btc {
         let btcBalances = await bitcoinWalletService.fetchBTCBalances(
           accountId: selectedAccount.accountId
         )

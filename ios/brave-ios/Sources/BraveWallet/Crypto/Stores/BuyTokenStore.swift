@@ -61,7 +61,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
   private var selectedNetwork: BraveWallet.NetworkInfo = .init()
   private(set) var orderedSupportedBuyOptions: OrderedSet<BraveWallet.OnRampProvider> = []
   private var prefilledToken: BraveWallet.BlockchainToken?
@@ -92,7 +92,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
-    bitcoinWalletService: BraveWalletBitcoinWalletService,
+    bitcoinWalletService: BraveWalletBitcoinWalletService?,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.blockchainRegistry = blockchainRegistry
@@ -193,7 +193,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     }
 
     var accountAddress = account.address
-    if account.coin == .btc,
+    if let bitcoinWalletService, account.coin == .btc,
       let bitcoinAccountInfo =
         await bitcoinWalletService.bitcoinAccountInfo(accountId: account.accountId)
     {
