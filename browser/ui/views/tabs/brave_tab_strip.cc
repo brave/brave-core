@@ -28,6 +28,7 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -300,8 +301,7 @@ std::optional<SplitViewBrowserData::Tile> BraveTabStrip::GetTileForTab(
 void BraveTabStrip::UpdateTabContainer() {
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   const bool should_use_compound_tab_container =
-      using_vertical_tabs ||
-      base::FeatureList::IsEnabled(features::kSplitTabStrip);
+      using_vertical_tabs || base::FeatureList::IsEnabled(tabs::kSplitTabStrip);
   const bool is_using_compound_tab_container =
       views::IsViewClass<BraveCompoundTabContainer>(
           base::to_address(tab_container_));
