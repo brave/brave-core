@@ -8,7 +8,7 @@ import BraveStrings
 import GuardianConnect
 import SwiftUI
 
-public struct BraveVPNRegionPickerView: View {
+public struct BraveVPNRegionListView: View {
 
   @State
   private var isAutomatic: Bool
@@ -253,6 +253,6 @@ public struct BraveVPNRegionPickerView: View {
 
 struct ServerRegionView_Previews: PreviewProvider {
   static var previews: some View {
-    BraveVPNRegionPickerView()
+    BraveVPNRegionListView()
   }
 }
