@@ -16,9 +16,6 @@
 // Note: If this test fails because an accelerated command isn't present just
 // add the missing command to |commands::GetCommands| in command_utils.h.
 TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
-  base::flat_set<int> excluded_commands = {
-      IDC_CONTENT_CONTEXT_RUN_LAYOUT_EXTRACTION};
-
   base::test::ScopedFeatureList features;
   features.InitAndEnableFeature(commands::features::kBraveCommands);
 
@@ -26,10 +23,6 @@ TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
   const auto& commands = commands::GetCommands();
 
   for (const auto& accelerator : accelerators) {
-    if (excluded_commands.contains(accelerator.command_id)) {
-      continue;
-    }
-
     EXPECT_TRUE(base::Contains(commands, accelerator.command_id))
         << "Accelerated command '" << accelerator.command_id
         << "' was not present in the list of commands.";
