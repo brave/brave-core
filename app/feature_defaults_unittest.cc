@@ -133,6 +133,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionsManifestV3Only,
+      &features::kToolbarPinning,
 #endif
       &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
