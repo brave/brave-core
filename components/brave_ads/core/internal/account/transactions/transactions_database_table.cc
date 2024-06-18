@@ -58,6 +58,16 @@ size_t BindParameters(mojom::DBCommandInfo* command,
     if (!transaction.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_transaction_id",
+                            transaction.id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_creative_instance_id",
+                            transaction.creative_instance_id.empty());
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
+                                ToString(transaction.ad_type));
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
+                                ToString(transaction.confirmation_type));
+      SCOPED_CRASH_KEY_BOOL("Issue32066", "undefined_created_at",
+                            !transaction.created_at);
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid transaction");
       base::debug::DumpWithoutCrashing();
@@ -130,6 +140,16 @@ void GetCallback(GetTransactionsCallback callback,
     if (!transaction.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
       // potential defects using `DumpWithoutCrashing`.
+      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_transaction_id",
+                            transaction.id.empty());
+      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_creative_instance_id",
+                            transaction.creative_instance_id.empty());
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
+                                ToString(transaction.ad_type));
+      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
+                                ToString(transaction.confirmation_type));
+      SCOPED_CRASH_KEY_BOOL("Issue32066", "undefined_created_at",
+                            !transaction.created_at);
       SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
                                 "Invalid transaction");
       base::debug::DumpWithoutCrashing();
@@ -257,6 +277,21 @@ void MigrateToV35(mojom::DBTransactionInfo* transaction) {
 
   // Optimize database query for `GetForDateRange`.
   CreateTableIndex(transaction, "transactions", /*columns=*/{"created_at"});
+}
+
+void MigrateToV39(mojom::DBTransactionInfo* const transaction) {
+  CHECK(transaction);
+
+  // Delete legacy transactions with an undefined `created_at` timestamp.
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      R"(
+          DELETE FROM
+            transactions
+          WHERE
+            created_at == 0;)";
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -432,6 +467,11 @@ void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 35: {
       MigrateToV35(transaction);
+      break;
+    }
+
+    case 39: {
+      MigrateToV39(transaction);
       break;
     }
   }
