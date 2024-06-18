@@ -287,9 +287,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
         Brave Rewards may not work while notifications are disabled.
       </message>
-      <message name="IDS_TURN_ON"  desc="Text for Turn On">
-        Turn on
-      </message>
       <message name="IDS_BLOCK_SWITCH_TO_APP_NOTICES"  desc="Text for Block 'Switch to App' Notices">
         Block 'Switch to App' Notices
       </message>
@@ -1022,9 +1019,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
         Try Brave Search
       </message>
-      <!-- <message name="IDS_DISMISS_SEARCH_PROMO" desc="Omnibox brave search promo dismiss button text">
+      <message name="IDS_DISMISS_SEARCH_PROMO" desc="Omnibox brave search promo dismiss button text">
         Dismiss
-      </message> -->
+      </message>
       <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_FEB" desc="Name of a month">FEBRUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_MAR" desc="Name of a month">MARCH</message>
@@ -1480,9 +1477,9 @@ Are you sure you want to do this?
       <message name="IDS_NEVER" desc="Text for rate brave dialog button.">
         Never
       </message>
-      <!-- <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
+      <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
         Maybe Later
-      </message> -->
+      </message>
       <message name="IDS_EARN_TOKENS_FOR_VIEWING" desc="Text for brave rewards banner.">
         Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE">%1$s</ph>
       </message>
@@ -3991,19 +3988,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ALWAYS_ON_VPN" desc="Vpn setting title for always on">
       Always-on VPN
     </message>
-    <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill switch tutorial text">
       How to turn on:
     </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_1" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_1" desc="Vpn kill switch tutorial text">
       1. Open your device's settings from your app drawer or tapping the button below.
     </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_2" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_2" desc="Vpn kill switch tutorial text">
       2. Find Brave VPN and tap on the settings icon to the right.
     </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill switch tutorial text">
       3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.
     </message>
-    <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill swicth tutorial action text">
+    <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill switch tutorial action text">
       Open Android settings
     </message>
     <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in git diff
@@ -4015,12 +4012,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_UPDATE_FILTER_LIST_FAIL_TEXT" desc="Text to notify users for the failure of updating filterlist">
       Filter list could not be updated. Please try again
-    </message>
-    <message name="IDS_SEARCH_SUGGESTIONS_TITLE" desc="Search suggestion UI title">
-      Find it faster!
-    </message>
-    <message name="IDS_SEARCH_SUGGESTIONS_TEXT" desc="Search suggestion UI text">
-      Turn on search suggestions
     </message>
   </messages>
   </release>
