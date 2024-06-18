@@ -11,9 +11,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_wallet {
-
-namespace eth {
+namespace brave_wallet::eth {
 
 TEST(EthGasUtilsTest, ScaleBaseFeePerGas) {
   // OK: scale 0x64 (100)
@@ -86,6 +84,4 @@ TEST(EthGasUtilsTest, GetSuggested1559Fees) {
       &suggested_base_fee_per_gas));
 }
 
-}  // namespace eth
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth

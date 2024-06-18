@@ -12,8 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -120,5 +119,4 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
   std::move(callback).Run(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

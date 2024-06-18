@@ -7,8 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace brave_search {
-namespace features {
+namespace brave_search::features {
 
 BASE_FEATURE(kBraveSearchDefaultAPIFeature,
              "BraveSearchDefaultAPI",
@@ -20,5 +19,4 @@ const base::FeatureParam<int> kBraveSearchDefaultAPIDailyLimit{
 const base::FeatureParam<int> kBraveSearchDefaultAPITotalLimit{
     &kBraveSearchDefaultAPIFeature, kBraveSearchDefaultAPITotalLimitName, 10};
 
-}  // namespace features
-}  // namespace brave_search
+}  // namespace brave_search::features

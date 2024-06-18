@@ -7,8 +7,7 @@
 
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 PaymentServer::PaymentServer(RewardsEngine& engine)
     : post_order_(engine),
@@ -20,5 +19,4 @@ PaymentServer::PaymentServer(RewardsEngine& engine)
 
 PaymentServer::~PaymentServer() = default;
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint

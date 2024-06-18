@@ -15,8 +15,7 @@ const int kCurrentVersionNumber = 14;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
 StateMigration::StateMigration(RewardsEngine& engine)
     : engine_(engine),
@@ -160,5 +159,4 @@ void StateMigration::OnMigration(ResultCallback callback,
   Migrate(std::move(callback));
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

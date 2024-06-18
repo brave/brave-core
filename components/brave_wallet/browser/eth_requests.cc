@@ -10,9 +10,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
-namespace brave_wallet {
-
-namespace eth {
+namespace brave_wallet::eth {
 
 std::string web3_clientVersion() {
   return GetJsonRpcString("web3_clientVersion");
@@ -344,6 +342,4 @@ std::string eth_getLogs(base::Value::Dict filter_options) {
   return GetJSON(dictionary);
 }
 
-}  // namespace eth
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth

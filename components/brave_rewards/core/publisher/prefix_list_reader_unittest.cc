@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 class RewardsPrefixListReaderTest : public testing::Test {
  protected:
@@ -159,5 +158,4 @@ TEST_F(RewardsPrefixListReaderTest, BrotliCompression) {
   ASSERT_EQ(uncompressed, "aaaabbbbccccddddeeeeffffgggghhhh");
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

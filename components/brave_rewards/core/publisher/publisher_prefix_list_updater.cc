@@ -21,8 +21,7 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(RewardsEngine& engine)
     : engine_(engine), rewards_server_(engine) {}
@@ -142,5 +141,4 @@ base::TimeDelta PublisherPrefixListUpdater::GetRetryAfterFailureDelay() {
       base::Seconds(kMaxRetryAfterFailureDelay), retry_count_++);
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

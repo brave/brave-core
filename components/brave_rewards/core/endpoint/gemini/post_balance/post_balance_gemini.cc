@@ -16,9 +16,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace gemini {
+namespace brave_rewards::internal::endpoint::gemini {
 
 PostBalance::PostBalance(RewardsEngine& engine) : engine_(engine) {}
 
@@ -106,6 +104,4 @@ void PostBalance::OnRequest(PostBalanceCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace gemini
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::gemini

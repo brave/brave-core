@@ -8,8 +8,7 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/sync/base/user_selectable_type.h"
 
-namespace brave_sync {
-namespace p3a {
+namespace brave_sync::p3a {
 
 void RecordEnabledTypes(bool sync_everything_enabled,
                         const syncer::UserSelectableTypeSet& selected_types) {
@@ -55,5 +54,4 @@ void RecordSyncedObjectsCount(int total_entities) {
                                      {1000, 10000, 49000}, total_entities);
 }
 
-}  // namespace p3a
-}  // namespace brave_sync
+}  // namespace brave_sync::p3a

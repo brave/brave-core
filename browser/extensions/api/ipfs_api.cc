@@ -87,8 +87,7 @@ bool WriteFileOnFileThread(const base::FilePath& path,
 
 }  // namespace
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction IpfsRemoveIpfsPeerFunction::Run() {
   if (!::ipfs::IpfsServiceFactory::IsIpfsEnabled(browser_context()))
@@ -610,5 +609,4 @@ ExtensionFunction::ResponseAction IpfsSetGatewayFallbackEnabledFunction::Run() {
   return RespondNow(WithArguments(true));
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

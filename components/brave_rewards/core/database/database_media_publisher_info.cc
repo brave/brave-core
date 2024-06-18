@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -131,5 +130,4 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

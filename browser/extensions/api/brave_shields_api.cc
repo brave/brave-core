@@ -18,8 +18,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction
 BraveShieldsAddSiteCosmeticFilterFunction::Run() {
@@ -44,5 +43,4 @@ BraveShieldsOpenFilterManagementPageFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

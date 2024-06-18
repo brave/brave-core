@@ -16,8 +16,7 @@ const int kCompatibleVersionNumber = 1;
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 void BindNull(mojom::DBCommand* command, const int index) {
   if (!command) {
@@ -185,5 +184,4 @@ std::string GenerateStringInCase(const std::vector<std::string>& items) {
   return base::StringPrintf("'%s'", items_join.c_str());
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

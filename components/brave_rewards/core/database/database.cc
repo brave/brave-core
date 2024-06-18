@@ -12,8 +12,7 @@
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 Database::Database(RewardsEngine& engine)
     : engine_(engine),
@@ -486,5 +485,4 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
                                                       std::move(callback));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database
