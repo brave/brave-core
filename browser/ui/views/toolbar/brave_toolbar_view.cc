@@ -30,6 +30,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
+#include "chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -249,6 +250,16 @@ void BraveToolbarView::Init() {
 
   brave_initialized_ = true;
   UpdateHorizontalPadding();
+
+  // We want to hide pin action buttons(side panel's pin button) in toolbar.
+  // As toolbar is shared for different types of windows, this action button
+  // container could be null. So Upstream code has assumption that
+  // |pinned_toolbar_actions_container_| could be null.
+  // If it's changed, we should check again.
+  if (pinned_toolbar_actions_container_) {
+    RemoveChildView(pinned_toolbar_actions_container_.get());
+    pinned_toolbar_actions_container_ = nullptr;
+  }
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
