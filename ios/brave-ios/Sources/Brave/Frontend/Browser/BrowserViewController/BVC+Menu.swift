@@ -109,7 +109,7 @@ extension BrowserViewController {
           let vc = UIHostingController(
             rootView: BraveVPNRegionListView()
           )
-          vc.title = "Server Region"
+          vc.title = Strings.VPN.vpnRegionListServerScreenTitle
 
           (self.presentedViewController as? MenuViewController)?
             .pushInnerMenu(vc)

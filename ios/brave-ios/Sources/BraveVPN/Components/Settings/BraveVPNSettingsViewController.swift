@@ -384,7 +384,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     }
 
     let vc = UIHostingController(rootView: BraveVPNRegionListView())
-    vc.title = "Server Region"
+    vc.title = Strings.VPN.vpnRegionListServerScreenTitle
     navigationController?.pushViewController(vc, animated: true)
   }
 
