@@ -75,5 +75,11 @@ extension Preferences {
     /// Sync shared folders automatically preference
     public static let syncSharedFoldersAutomatically =
       Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: true)
+
+    /// Migration preference for playlist cached data
+    public static let playlistCacheDataMigration = Option<Bool>(
+      key: "migration.playlist-cache-data-url",
+      default: false
+    )
   }
 }

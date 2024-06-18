@@ -10,6 +10,7 @@ import os.log
 
 @objc(PlaylistItem)
 final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
+  @NSManaged public var cachePath: String?
   @NSManaged public var cachedData: Data?
   @NSManaged public var dateAdded: Date
   @NSManaged public var duration: TimeInterval
@@ -255,7 +256,10 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   }
 
   public static func getItems(pageSrc: String) -> [PlaylistItem] {
-    return PlaylistItem.all(where: NSPredicate(format: "pageSrc == %@", pageSrc)) ?? []
+    return PlaylistItem.all(
+      where: NSPredicate(format: "pageSrc == %@", pageSrc),
+      fetchBatchSize: 20
+    ) ?? []
   }
 
   public static func getItem(id: PlaylistItem.ID) -> PlaylistItem? {
@@ -292,16 +296,42 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   }
 
   public static func cachedItem(cacheURL: URL) -> PlaylistItem? {
-    return PlaylistItem.all()?.first(where: {
-      var isStale = false
+    return PlaylistItem.first(
+      where: NSPredicate(format: "cachePath == %@", cacheURL.absoluteString)
+    )
+  }
 
-      if let cacheData = $0.cachedData,
-        let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale)
-      {
-        return url.path == cacheURL.path
+  public static func cachedItems(cacheURLs: [URL], completion: @escaping ([PlaylistItem]) -> Void) {
+    DataController.perform { context in
+      let paths = cacheURLs.map({ $0.absoluteString })
+      let items =
+        PlaylistItem.all(where: NSPredicate(format: "cachePath IN %@", paths), context: context)
+        ?? []
+      completion(items)
+    }
+  }
+
+  public static func deleteCachedItems(cacheURLs: [URL]) {
+    DataController.perform(context: .new(inMemory: false), save: true) { context in
+      for url in cacheURLs {
+        do {
+          let count =
+            PlaylistItem.count(
+              predicate: NSPredicate(format: "cachePath == %@", url.absoluteString),
+              context: context
+            ) ?? 0
+
+          // Playlist doesn't contain such an offline item, so it's dangling somehow and should be deleted.
+          if count == 0 {
+            try FileManager.default.removeItem(at: url)
+          }
+        } catch {
+          Logger.module.error(
+            "Deleting Dangling Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
+          )
+        }
       }
-      return false
-    })
+    }
   }
 
   public static func updateLastPlayed(
@@ -360,7 +390,11 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       let uuids = items.compactMap({ $0.tagId })
       let existingItems =
-        PlaylistItem.all(where: NSPredicate(format: "uuid IN %@", uuids), context: context) ?? []
+        PlaylistItem.all(
+          where: NSPredicate(format: "uuid IN %@", uuids),
+          fetchBatchSize: 20,
+          context: context
+        ) ?? []
       let existingUUIDs = existingItems.compactMap({ $0.uuid })
       let newItems = items.filter({ !existingUUIDs.contains($0.tagId) })
       let folder = PlaylistFolder.getFolder(
@@ -410,17 +444,13 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
       }
     }
   }
-  public static func updateCache(uuid: String, pageSrc: String, cachedData: Data?) {
+  public static func updateCache(uuid: String, pageSrc: String, cacheURL: URL?) {
     DataController.perform(context: .new(inMemory: false), save: true) { context in
       if let item = PlaylistItem.first(
         where: NSPredicate(format: "uuid == %@ OR pageSrc == %@", uuid, pageSrc),
         context: context
       ) {
-        if let cachedData = cachedData, !cachedData.isEmpty {
-          item.cachedData = cachedData
-        } else {
-          item.cachedData = nil
-        }
+        item.cachePath = cacheURL?.absoluteString
       }
     }
   }
@@ -482,15 +512,31 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     }
   }
 
+  public static func migrateCachedData(completion: @escaping () -> Void) {
+    DataController.perform(context: .new(inMemory: false), save: false) { context in
+      PlaylistItem.all(fetchBatchSize: 20, context: context)?.forEach({ item in
+        var isStale = false
+        if let cacheData = item.cachedData,
+          let url = try? URL(resolvingBookmarkData: cacheData, bookmarkDataIsStale: &isStale)
+        {
+          item.cachePath = url.absoluteString
+          item.cachedData = nil
+        }
+      })
+
+      saveContext(context)
+      DispatchQueue.main.async {
+        completion()
+      }
+    }
+  }
+
   // MARK: - Internal
   private static func reorderItems(context: NSManagedObjectContext) {
     DataController.perform(context: .existing(context), save: true) { context in
-      let request = NSFetchRequest<PlaylistItem>()
-      request.entity = PlaylistItem.entity(context)
-      request.fetchBatchSize = 20
-
       let orderSort = NSSortDescriptor(key: "order", ascending: true)
-      let items = PlaylistItem.all(sortDescriptors: [orderSort], context: context) ?? []
+      let items =
+        PlaylistItem.all(sortDescriptors: [orderSort], fetchBatchSize: 20, context: context) ?? []
 
       for (order, item) in items.enumerated() {
         item.order = Int32(order)

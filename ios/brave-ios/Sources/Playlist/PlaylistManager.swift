@@ -70,11 +70,29 @@ public class PlaylistManager: NSObject {
     downloadManager.delegate = self
     frc.delegate = self
 
-    // Delete system cache always on startup.
-    deleteUserManagedAssets()
+    // Migrate playlist cached-data to cached-url and cleanup
+    Task.detached {
+      func migratePlaylistCachedData() async {
+        if Preferences.Playlist.playlistCacheDataMigration.value {
+          return
+        }
 
-    // Delete dangling cache always on startup.
-    deleteDanglingManagedAssets()
+        await withCheckedContinuation { continuation in
+          PlaylistItem.migrateCachedData {
+            Preferences.Playlist.playlistCacheDataMigration.value = true
+            continuation.resume()
+          }
+        }
+      }
+
+      await migratePlaylistCachedData()
+
+      // Delete system cache always on startup.
+      await self.deleteUserManagedAssets()
+
+      // Delete dangling cache always on startup.
+      await self.deleteDanglingManagedAssets()
+    }
   }
 
   public var currentFolder: PlaylistFolder? {
@@ -450,16 +468,14 @@ public class PlaylistManager: NSObject {
     cancelDownload(itemId: item.tagId)
 
     if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
-      let cachedData = cacheItem.cachedData,
-      !cachedData.isEmpty
+      let cachePath = cacheItem.cachePath,
+      !cachePath.isEmpty,
+      let cacheURL = URL(string: cachePath)
     {
-      var isStale = false
-
       do {
-        let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-        if FileManager.default.fileExists(atPath: url.path) {
-          try FileManager.default.removeItem(atPath: url.path)
-          PlaylistItem.updateCache(uuid: item.tagId, pageSrc: item.pageSrc, cachedData: nil)
+        if FileManager.default.fileExists(atPath: cacheURL.path) {
+          try FileManager.default.removeItem(atPath: cacheURL.path)
+          PlaylistItem.updateCache(uuid: item.tagId, pageSrc: item.pageSrc, cacheURL: nil)
           onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         }
         return true
@@ -505,16 +521,19 @@ public class PlaylistManager: NSObject {
       }
     }
 
-    // Delete system cache
-    deleteUserManagedAssets()
+    Task.detached {
+      // Delete system cache
+      await self.deleteUserManagedAssets()
 
-    // Delete dangling cache
-    deleteDanglingManagedAssets()
+      // Delete dangling cache
+      await self.deleteDanglingManagedAssets()
+    }
   }
 
-  private func deleteUserManagedAssets() {
+  private func deleteUserManagedAssets() async {
     // Cleanup System Cache Folder com.apple.UserManagedAssets*
-    if let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
+    if let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)
+      .first
     {
       do {
         let urls = try FileManager.default.contentsOfDirectory(
@@ -529,12 +548,19 @@ public class PlaylistManager: NSObject {
               includingPropertiesForKeys: nil,
               options: [.skipsHiddenFiles]
             )
-            assets.forEach({
-              if let item = PlaylistItem.cachedItem(cacheURL: $0), let itemId = item.uuid {
-                self.cancelDownload(itemId: itemId)
-                PlaylistItem.updateCache(uuid: itemId, pageSrc: item.pageSrc, cachedData: nil)
+
+            PlaylistItem.cachedItems(cacheURLs: assets) { items in
+              items.forEach {
+                if let itemId = $0.uuid {
+                  let pageSrc = $0.pageSrc
+
+                  Task { @MainActor in
+                    self.cancelDownload(itemId: itemId)
+                    PlaylistItem.updateCache(uuid: itemId, pageSrc: pageSrc, cacheURL: nil)
+                  }
+                }
               }
-            })
+            }
           } catch {
             Logger.module.error(
               "Failed to update Playlist item cached state: \(error.localizedDescription)"
@@ -557,30 +583,16 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  private func deleteDanglingManagedAssets() {
+  private func deleteDanglingManagedAssets() async {
     if let playlistFolderPath = PlaylistDownloadManager.playlistDirectory {
-      do {
-        let urls = try FileManager.default.contentsOfDirectory(
-          at: playlistFolderPath,
-          includingPropertiesForKeys: nil,
-          options: [.skipsHiddenFiles]
-        )
-        for url in urls {
-          do {
-            // Playlist doesn't contain such an offline item, so it's dangling somehow and should be deleted.
-            if PlaylistItem.cachedItem(cacheURL: url) == nil {
-              try FileManager.default.removeItem(at: url)
-            }
-          } catch {
-            Logger.module.error(
-              "Deleting Dangling Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
-            )
-          }
-        }
-      } catch {
-        Logger.module.error(
-          "Deleting Dangling Playlist Incomplete Items failed: \(error.localizedDescription)"
-        )
+      let urls = try? FileManager.default.contentsOfDirectory(
+        at: playlistFolderPath,
+        includingPropertiesForKeys: nil,
+        options: [.skipsHiddenFiles]
+      )
+
+      if let urls {
+        PlaylistItem.deleteCachedItems(cacheURLs: urls)
       }
     }
   }

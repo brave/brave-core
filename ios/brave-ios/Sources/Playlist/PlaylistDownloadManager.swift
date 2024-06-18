@@ -228,26 +228,12 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
 
   func localAsset(for itemId: String) -> AVURLAsset? {
     guard let item = PlaylistItem.getItem(uuid: itemId),
-      let cachedData = item.cachedData,
-      !cachedData.isEmpty
+      let cachePath = item.cachePath,
+      !cachePath.isEmpty,
+      let cacheURL = URL(string: cachePath)
     else { return nil }
 
-    var bookmarkDataIsStale = false
-    do {
-      let url = try URL(
-        resolvingBookmarkData: cachedData,
-        bookmarkDataIsStale: &bookmarkDataIsStale
-      )
-
-      if bookmarkDataIsStale {
-        return nil
-      }
-
-      return AVURLAsset(url: url, options: AVAsset.defaultOptions)
-    } catch {
-      Logger.module.error("\(error.localizedDescription)")
-      return nil
-    }
+    return AVURLAsset(url: cacheURL, options: AVAsset.defaultOptions)
   }
 
   fileprivate func onDownloadProgressUpdate(
@@ -508,7 +494,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
       }
 
       DispatchQueue.main.async {
-        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
           id: asset.id,
@@ -549,7 +535,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
           pendingCancellationTasks.removeAll(where: { $0 == task })
 
           DispatchQueue.main.async {
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
             self.delegate?.onDownloadStateChanged(
               streamDownloader: self,
               id: asset.id,
@@ -572,7 +558,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
 
       DispatchQueue.main.async {
         Logger.module.debug("\(PlaylistItem.getItem(uuid: asset.id).debugDescription)")
-        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
           id: asset.id,
@@ -593,22 +579,15 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
         }
 
         try FileManager.default.moveItem(at: assetUrl, to: path)
-        do {
-          let cachedData = try path.bookmarkData()
-
-          DispatchQueue.main.async {
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .downloaded,
-              displayName: nil,
-              error: nil
-            )
-          }
-        } catch {
-          Logger.module.error("Failed to create bookmarkData for download URL.")
-          cleanupAndFailDownload(path, error)
+        DispatchQueue.main.async {
+          PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: path)
+          self.delegate?.onDownloadStateChanged(
+            streamDownloader: self,
+            id: asset.id,
+            state: .downloaded,
+            displayName: nil,
+            error: nil
+          )
         }
       } catch {
         Logger.module.error(
@@ -725,7 +704,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
         if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
           do {
             try FileManager.default.removeItem(at: cacheLocation)
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
           } catch {
             Logger.module.error(
               "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
@@ -820,7 +799,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
       }
 
       DispatchQueue.main.async {
-        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
           id: asset.id,
@@ -885,22 +864,15 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
         }
 
         try FileManager.default.moveItem(at: location, to: path)
-        do {
-          let cachedData = try path.bookmarkData()
-
-          DispatchQueue.main.async {
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .downloaded,
-              displayName: nil,
-              error: nil
-            )
-          }
-        } catch {
-          Logger.module.error("Failed to create bookmarkData for download URL.")
-          cleanupAndFailDownload(location: path, error: error)
+        DispatchQueue.main.async {
+          PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: path)
+          self.delegate?.onDownloadStateChanged(
+            streamDownloader: self,
+            id: asset.id,
+            state: .downloaded,
+            displayName: nil,
+            error: nil
+          )
         }
       } catch {
         Logger.module.error(
@@ -1019,7 +991,7 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
         if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
           do {
             try FileManager.default.removeItem(at: cacheLocation)
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
           } catch {
             Logger.module.error(
               "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
@@ -1085,7 +1057,7 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
       }
 
       DispatchQueue.main.async {
-        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
           id: asset.id,
@@ -1125,22 +1097,15 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
 
     do {
       try data.write(to: path, options: .atomic)
-      do {
-        let cachedData = try path.bookmarkData()
-
-        DispatchQueue.main.async {
-          PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
-          self.delegate?.onDownloadStateChanged(
-            streamDownloader: self,
-            id: asset.id,
-            state: .downloaded,
-            displayName: nil,
-            error: nil
-          )
-        }
-      } catch {
-        Logger.module.error("Failed to create bookmarkData for download URL.")
-        cleanupAndFailDownload(location: path, error: error)
+      DispatchQueue.main.async {
+        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cacheURL: path)
+        self.delegate?.onDownloadStateChanged(
+          streamDownloader: self,
+          id: asset.id,
+          state: .downloaded,
+          displayName: nil,
+          error: nil
+        )
       }
     } catch {
       Logger.module.error(

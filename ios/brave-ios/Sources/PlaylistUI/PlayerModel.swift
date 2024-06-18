@@ -769,15 +769,11 @@ extension AVPlayer {
 
 extension PlaylistItem {
   var cachedDataURL: URL? {
-    guard let cachedData else { return nil }
-    do {
-      var isStale: Bool = false
-      let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-      if FileManager.default.fileExists(atPath: url.path) {
-        return url
-      }
-    } catch {
-      return nil
+    guard let cachePath = cachePath,
+      let cacheURL = URL(string: cachePath)
+    else { return nil }
+    if FileManager.default.fileExists(atPath: cacheURL.path) {
+      return cacheURL
     }
     return nil
   }
