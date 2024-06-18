@@ -159,7 +159,7 @@ public class BraveVPN {
   public static var serverLocation: (hostName: String?, isoCode: String?) {
     let mainCredential = helper.mainCredential
 
-    return (mainCredential?.hostnameDisplayValue, mainCredential?.region?.countryISOCode)
+    return (mainCredential?.hostnameDisplayValue, activatedRegion?.countryISOCode)
   }
 
   /// Detailed Location of last used server for the vpn configuration.

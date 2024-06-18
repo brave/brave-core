@@ -383,7 +383,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       return
     }
 
-    let vc = UIHostingController(rootView: BraveVPNRegionPickerView())
+    let vc = UIHostingController(rootView: BraveVPNRegionListView())
     vc.title = "Server Region"
     navigationController?.pushViewController(vc, animated: true)
   }
