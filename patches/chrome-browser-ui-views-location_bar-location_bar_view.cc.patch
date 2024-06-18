@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 9ecaad1fa8257dd331640dc30f89b9434a527915..100b40d5ea6adc5cf3e97086c5b0c6a94b9459cf 100644
+index 70650da0fe905933a853cdd5fae8e218363034a9..a7c833be790baad21aea3f6d22d758e1206b2194 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
 @@ -716,6 +716,7 @@ void LocationBarView::Layout(PassKey) {
