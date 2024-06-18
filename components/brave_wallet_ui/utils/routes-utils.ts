@@ -13,6 +13,7 @@ import {
   WalletImportMode
 } from '../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+import { SUPPORT_LINKS } from '../common/constants/support_links'
 
 /**
  * Checks the provided route against a list of routes that we are OK with the
@@ -289,4 +290,20 @@ export function openWalletSettings() {
 
 export function openNetworkSettings() {
   openTab('chrome://settings/wallet/networks')
+}
+
+export const openSupportTab = (key: keyof typeof SUPPORT_LINKS) => {
+  const url = SUPPORT_LINKS[key]
+  if (!url) {
+    console.error(`support link not found (${key})`)
+  }
+  chrome.tabs.create({ url }, () => {
+    if (chrome.runtime.lastError) {
+      console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+    }
+  })
+}
+
+export const openAssociatedTokenAccountSupportArticleTab = () => {
+  openSupportTab('WhatIsTheAssociatedTokenAccountProgram')
 }
