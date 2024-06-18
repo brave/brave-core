@@ -29,5 +29,6 @@ source_set("brave_ipfs_unit_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/components/ipfs",
+    "//net:net",
   ]
 }
