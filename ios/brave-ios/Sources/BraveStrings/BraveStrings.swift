@@ -7442,7 +7442,7 @@ extension Strings {
         value: "Subscribe Now",
         comment: "Action button title that subscribe action for VPN purchase"
       )
-    
+
     public static let vpnRegionListServerScreenTitle =
       NSLocalizedString(
         "vpn.vpnRegionListServerScreenTitle",
