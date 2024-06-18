@@ -1496,6 +1496,19 @@
 # shortly by https://github.com/brave/brave-browser/issues/39041
 -ExtensionSidePanelBrowserTest.TabSpecificPanelsOwnViewState
 
+# This test fails because we remove toolbar's panel pin button container.
+# When extension side panel is opened, usptream shows close button in toolbar
+# for closing it. However, it's not shown if panel pin button container is not
+# exited. See SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange().
+-ExtensionSidePanelBrowserTest.CloseSidePanelButtonVisibleWhenExtensionsSidePanelOpen
+
+# This test crashed because ToolbarView tries to access |pinned_toolbar_actions_container_|
+# in ToolbarView::GetAnchorView(). But we made that container null as we don't want panel
+# pin button container. In production, this crash doesn't happen because that code path
+# is only effective if features::IsToolbarPinningEnabled(). That feature is disabled by
+# default.
+-BrowserCommandControllerBrowserTestToolbarPinningOnly.ShowTranslateStatusFrenchPage
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
