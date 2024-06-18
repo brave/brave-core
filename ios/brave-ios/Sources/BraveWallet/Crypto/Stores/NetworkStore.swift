@@ -405,7 +405,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     _ network: BraveWallet.NetworkInfo
   ) async -> (accepted: Bool, errMsg: String) {
     isAddingNewNetwork = true
-    if allChains.filter({ $0.coin == .eth }).contains(where: {
+    if allChains.contains(where: {
       $0.id.lowercased() == network.id.lowercased()
     }) {
       let removeStatus = await rpcService.removeChain(chainId: network.chainId, coin: network.coin)
@@ -418,7 +418,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       let (_, addStatus, errMsg) = await rpcService.addChain(network)
       guard addStatus == .success else {
         // if adding is not succeeded, we have to add back the old network info
-        if let oldNetwork = allChains.filter({ $0.coin == .eth }).first(where: {
+        if let oldNetwork = allChains.first(where: {
           $0.id.lowercased() == network.id.lowercased()
         }) {
           let (_, addOldStatus, _) = await rpcService.addChain(oldNetwork)
