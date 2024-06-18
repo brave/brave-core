@@ -76,18 +76,6 @@ base::Value ToPageGraphValue(ScriptState* script_state,
 
 template <>
 base::Value ToPageGraphValue(ScriptState* script_state,
-                             const FlexibleArrayBufferView& array) {
-  if (array.IsNull()) {
-    return ToPageGraphValue(script_state, base::span<uint8_t>());
-  }
-  const base::span<const uint8_t> data_view(
-      static_cast<const uint8_t*>(array.BaseAddressMaybeOnStack()),
-      array.ByteLength());
-  return ToPageGraphValue(script_state, data_view);
-}
-
-template <>
-base::Value ToPageGraphValue(ScriptState* script_state,
                              blink::EventListener* const& event_listener) {
   return event_listener ? base::Value(event_listener->ScriptBody().Utf8())
                         : base::Value();
