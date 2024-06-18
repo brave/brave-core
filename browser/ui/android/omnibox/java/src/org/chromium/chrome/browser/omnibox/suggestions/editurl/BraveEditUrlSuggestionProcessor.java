@@ -10,14 +10,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.history_clusters.HistoryClustersTabHelper;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxImageSupplier;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.OmniboxSuggestionType;
-import org.chromium.ui.base.Clipboard;
 
 import java.util.Optional;
 
@@ -52,20 +50,40 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
         return super.doesProcessSuggestion(suggestion, position);
     }
 
-    protected void onCopyLink(AutocompleteMatch suggestion) {
+    public AutocompleteMatch maybeUpdateSuggestion(AutocompleteMatch suggestion) {
         Tab activeTab = mTabSupplier.get();
         if (suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
                 && activeTab != null
                 && tabMatchesSuggestion(activeTab, suggestion)) {
-            // For manually typed URLs, copy properly resolved URL from Tab instead of the
-            // suggestion URL.
-            HistoryClustersTabHelper.onCurrentTabUrlCopied(activeTab.getWebContents());
-            Clipboard.getInstance().copyUrlToClipboard(activeTab.getUrl());
-            return;
+            // For manually typed URLs update suggestion URL with properly resolved one from Tab.
+            return new AutocompleteMatch(
+                    OmniboxSuggestionType.URL_WHAT_YOU_TYPED,
+                    suggestion.getSubtypes(),
+                    suggestion.isSearchSuggestion(),
+                    suggestion.getRelevance(),
+                    suggestion.getTransition(),
+                    suggestion.getDisplayText(),
+                    suggestion.getDisplayTextClassifications(),
+                    suggestion.getDescription(),
+                    suggestion.getDescriptionClassifications(),
+                    suggestion.getAnswer(),
+                    null,
+                    suggestion.getFillIntoEdit(),
+                    activeTab.getUrl(),
+                    suggestion.getImageUrl(),
+                    suggestion.getImageDominantColor(),
+                    suggestion.isDeletable(),
+                    suggestion.getPostContentType(),
+                    suggestion.getPostData(),
+                    suggestion.getGroupId(),
+                    suggestion.getClipboardImageData(),
+                    suggestion.hasTabMatch(),
+                    suggestion.getActions(),
+                    suggestion.allowedToBeDefaultMatch(),
+                    suggestion.getInlineAutocompletion(),
+                    suggestion.getAdditionalText());
         }
-        // Otherwise fallback to the default behavior.
-        HistoryClustersTabHelper.onCurrentTabUrlCopied(mTabSupplier.get().getWebContents());
-        Clipboard.getInstance().copyUrlToClipboard(suggestion.getUrl());
+        return suggestion;
     }
 
     private boolean tabMatchesSuggestion(Tab tab, AutocompleteMatch suggestion) {

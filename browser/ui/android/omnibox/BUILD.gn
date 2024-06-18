@@ -24,6 +24,7 @@ android_library("java") {
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProperties.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerViewBinder.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase.java",
   ]
 
   deps = [
@@ -34,7 +35,6 @@ android_library("java") {
     "//brave/build/android:android_brave_strings_grd",
     "//chrome/browser/commerce/merchant_viewer/android:java",
     "//chrome/browser/flags:java",
-    "//chrome/browser/history_clusters:java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/share:java",

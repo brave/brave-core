@@ -18,8 +18,9 @@ public class BraveEditUrlSuggestionProcessorClassAdapter extends BraveClassVisit
 
         redirectConstructor(sEditUrlSuggestionProcessorName, sBraveEditUrlSuggestionProcessorName);
 
-        makePublicMethod(sEditUrlSuggestionProcessorName, "onCopyLink");
         addMethodAnnotation(
-                sBraveEditUrlSuggestionProcessorName, "onCopyLink", "Ljava/lang/Override;");
+                sBraveEditUrlSuggestionProcessorName,
+                "maybeUpdateSuggestion",
+                "Ljava/lang/Override;");
     }
 }
