@@ -450,9 +450,13 @@ struct NetworkDetailsView: View {
           } else {
             Button {
               if model.mode.isEditMode {
-                isPresentingEditConfirmation = true
+                if validateAllFields() {
+                  isPresentingEditConfirmation = true
+                }
               } else {
-                addCustomNetwork()
+                if validateAllFields() {
+                  addCustomNetwork()
+                }
               }
             } label: {
               Text(Strings.Wallet.saveButtonTitle)
@@ -526,6 +530,7 @@ struct NetworkDetailsView: View {
       }
       if isDisabled {
         Text(item.wrappedValue.input)
+          .foregroundColor(Color(.braveLabel))
           .contextMenu {
             Button {
               UIPasteboard.general.string = item.wrappedValue.input
@@ -564,13 +569,36 @@ struct NetworkDetailsView: View {
       }
     }
 
-    let activeRpcURL = model.rpcUrls.first(where: { $0.isSelected })
+    let rpcUrlsAllGood = model.rpcUrls.allSatisfy({
+      if $0.input.isEmpty && $0.error != Strings.Wallet.customNetworkEmptyErrMsg {
+        return true
+      } else {
+        return !$0.input.isEmpty && $0.error == nil
+      }
+    })
+    let iconUrlsAllGood = model.iconUrls.allSatisfy({
+      if $0.input.isEmpty && $0.error != Strings.Wallet.customNetworkEmptyErrMsg {
+        return true
+      } else {
+        return !$0.input.isEmpty && $0.error == nil
+      }
+    })
+    let blockUrlsAllGood = model.blockUrls.allSatisfy({
+      if $0.input.isEmpty && $0.error != Strings.Wallet.customNetworkEmptyErrMsg {
+        return true
+      } else {
+        return !$0.input.isEmpty && $0.error == nil
+      }
+    })
+
     if model.networkId.error != nil
       || model.networkName.error != nil
       || model.networkSymbolName.error != nil
       || model.networkSymbol.error != nil
       || model.networkDecimals.error != nil
-      || activeRpcURL?.error != nil
+      || !rpcUrlsAllGood
+      || !iconUrlsAllGood
+      || !blockUrlsAllGood
     {
       return false
     }
@@ -579,8 +607,6 @@ struct NetworkDetailsView: View {
   }
 
   private func addCustomNetwork() {
-    guard validateAllFields() else { return }
-
     var chainIdInHex = model.networkId.input
     if model.networkId.input.hasPrefix("0x") || model.networkId.input.hasPrefix("0X") {
       let hexDecimalString = model.networkId.input.removingHexPrefix
