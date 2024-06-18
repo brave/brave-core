@@ -22,7 +22,6 @@
 #include "third_party/blink/renderer/bindings/modules/v8/v8_related_application.h"  // IWYU pragma: keep
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener.h"
-#include "third_party/blink/renderer/core/typed_arrays/typed_flexible_array_buffer_view.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
@@ -183,17 +182,6 @@ base::Value ToPageGraphValue(ScriptState* script_state,
   return ToPageGraphValue(script_state, std::tie(values.first, values.second));
 }
 
-// Convert blink::TypedFlexibleArrayBufferView<T> types.
-template <typename T>
-base::Value ToPageGraphValue(ScriptState* script_state,
-                             const TypedFlexibleArrayBufferView<T>& array) {
-  if (array.IsNull()) {
-    return ToPageGraphValue(script_state, base::span<T>());
-  }
-  const base::span<const T> data_view(array.DataMaybeOnStack(), array.length());
-  return ToPageGraphValue(script_state, data_view);
-}
-
 // Convert std::optional<T> types.
 template <typename T>
 base::Value ToPageGraphValue(ScriptState* script_state,
@@ -232,11 +220,6 @@ template <>
 CORE_EXPORT base::Value ToPageGraphValue<ScriptPromiseUntyped>(
     ScriptState* script_state,
     const ScriptPromiseUntyped& script_promise);
-
-// Convert FlexibleArrayBufferView.
-template <>
-CORE_EXPORT base::Value ToPageGraphValue(ScriptState* script_state,
-                                         const FlexibleArrayBufferView& array);
 
 // Convert EventListener.
 template <>
