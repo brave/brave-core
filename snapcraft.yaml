@@ -1,5 +1,5 @@
 name: brave
-version: 1.69.30
+version: 1.69.31
 grade: stable
 architectures:
   - build-on: amd64
