@@ -525,7 +525,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
       for (auto& item : *block_explorer_list) {
         if (auto* explorer = item.GetIfDict()) {
           if (auto* url = explorer->FindString("url")) {
-            if (GURL(*url).is_valid()) {
+            if (IsHTTPSOrLocalhostURL(*url)) {
               network->block_explorer_urls.push_back(*url);
             }
           }
@@ -539,7 +539,7 @@ bool ParseChainList(const std::string& json, ChainList* result) {
     if (auto* rpc_list = chain_item->FindList("rpc")) {
       for (auto& item : *rpc_list) {
         if (auto* url = item.GetIfString()) {
-          if (GURL(*url).is_valid()) {
+          if (IsHTTPSOrLocalhostURL(*url)) {
             network->rpc_endpoints.emplace_back(*url);
           }
         }

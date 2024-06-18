@@ -15,11 +15,17 @@ namespace brave_wallet {
 
 bool AllCoinsTested();
 
+inline constexpr char kHttpURL[] = "http://bad.com/";
+inline constexpr char kHttpLocalhostURL[] = "http://localhost:8080/";
+
 mojom::NetworkInfo GetTestNetworkInfo1(
     const std::string& chain_id = "chain_id",
     mojom::CoinType coin = mojom::CoinType::ETH);
 mojom::NetworkInfo GetTestNetworkInfo2(
     const std::string& chain_id = "chain_id2",
+    mojom::CoinType coin = mojom::CoinType::ETH);
+mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(
+    const std::string& chain_id = "http_url",
     mojom::CoinType coin = mojom::CoinType::ETH);
 
 // Matcher to check equality of two mojo structs. Matcher needs copyable value

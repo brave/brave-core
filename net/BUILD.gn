@@ -22,6 +22,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/net/base:unit_tests",
     "//net",
     "//net:test_support",
     "//net/http:transport_security_state_unittest_data",
