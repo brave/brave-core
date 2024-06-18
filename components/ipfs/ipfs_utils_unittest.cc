@@ -12,7 +12,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/gurl.h"
 
 using IpfsUtilsUnitTest = testing::Test;
 
