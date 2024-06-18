@@ -118,6 +118,23 @@ class URLSanitizerTest : public InProcessBrowserTest,
     loop.Run();
   }
 
+  void NonBlockingDelay(const base::TimeDelta& delay) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
+    run_loop.Run();
+  }
+
+  std::string WaitClipboard() {
+    std::string text_from_clipboard = "empty";
+    while (text_from_clipboard == "empty") {
+      ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
+          ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
+      NonBlockingDelay(base::Microseconds(10));
+    }
+    return text_from_clipboard;
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -153,11 +170,7 @@ IN_PROC_BROWSER_TEST_P(URLSanitizerTest, JSApi) {
     web_contents->Focus();
     ASSERT_TRUE(content::ExecJs(web_contents, script));
 
-    base::RunLoop().RunUntilIdle();
-
-    std::string text_from_clipboard;
-    ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
-        ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
+    const std::string text_from_clipboard = WaitClipboard();
 
     EXPECT_TRUE(base::StartsWith(text_from_clipboard, "https://youtu.be/"))
         << name << " " << should_sanitize << " " << text_from_clipboard;
