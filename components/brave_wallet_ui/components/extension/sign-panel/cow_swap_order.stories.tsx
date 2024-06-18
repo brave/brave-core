@@ -14,26 +14,26 @@ import { SignCowSwapOrder } from './cow_swap_order'
 
 import { mockSignMessageRequest } from '../../../stories/mock-data/mock-eth-requests'
 
-export const _SignCowSwapOrder = () => {
-  return (
-    <WalletPanelStory>
-      <PanelWrapper isLonger>
-        <LongWrapper>
-          <SignCowSwapOrder
-            data={mockSignMessageRequest}
-            onCancel={() => {}}
-            onSignIn={() => {}}
-            onQueueNextSignMessage={() => {}}
-            queueLength={1}
-            queueNumber={0}
-            isDisabled={false}
-          />
-        </LongWrapper>
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _SignCowSwapOrder = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <PanelWrapper isLonger>
+          <LongWrapper>
+            <SignCowSwapOrder
+              data={mockSignMessageRequest}
+              onCancel={() => { }}
+              onSignIn={() => { }}
+              onQueueNextSignMessage={() => { }}
+              queueLength={1}
+              queueNumber={0}
+              isDisabled={false}
+            />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_SignCowSwapOrder.storyName = 'Sign Cow Swap Order'
-
-export default _SignCowSwapOrder
+export default { component: SignCowSwapOrder }

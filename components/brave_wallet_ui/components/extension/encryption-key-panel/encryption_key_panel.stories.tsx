@@ -12,14 +12,14 @@ import { ProvidePubKeyPanel } from '.'
 
 import { mockEncryptionKeyRequest } from '../../../stories/mock-data/mock-encryption-key-payload'
 
-export const _EncryptionKeyPanel = () => {
-  return (
-    <WalletPanelStory>
-      <ProvidePubKeyPanel payload={mockEncryptionKeyRequest} />
-    </WalletPanelStory>
-  )
+export const _ProvidePublicEncryptionKeyPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <ProvidePubKeyPanel payload={mockEncryptionKeyRequest} />
+      </WalletPanelStory>
+    )
+  }
 }
 
-_EncryptionKeyPanel.storyName = 'Provide Public Encryption Key Panel'
-
-export default _EncryptionKeyPanel
+export default { component: ProvidePubKeyPanel }

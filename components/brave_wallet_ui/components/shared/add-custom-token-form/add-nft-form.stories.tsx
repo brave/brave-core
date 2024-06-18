@@ -7,21 +7,19 @@ import * as React from 'react'
 import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { AddNftForm } from './add-nft-form'
 
-export const _AddNftForm = () => {
-  const [contractAddress, setContractAddress] = React.useState('')
-  return (
-    <WalletPageStory>
-      <AddNftForm
-        contractAddress={contractAddress}
-        onHideForm={() => undefined}
-        onChangeContractAddress={setContractAddress}
-      />
-    </WalletPageStory>
-  )
+export const _AddNftForm = {
+  render: () => {
+    const [contractAddress, setContractAddress] = React.useState('')
+    return (
+      <WalletPageStory>
+        <AddNftForm
+          contractAddress={contractAddress}
+          onHideForm={() => undefined}
+          onChangeContractAddress={setContractAddress}
+        />
+      </WalletPageStory>
+    )
+  }
 }
 
-_AddNftForm.story = {
-  name: 'Add NFT Form'
-}
-
-export default _AddNftForm
+export default { component: AddNftForm }

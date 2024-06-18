@@ -6,8 +6,9 @@
 import * as React from 'react'
 import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
 import TransactionsScreen from './transactions-screen'
+import { Meta } from '@storybook/react'
 
-export const _TransactionsScreen: React.FC = () => {
+export const TransactionsScreenStory = () => {
   return (
     <WalletPageStory>
       <TransactionsScreen />
@@ -15,4 +16,6 @@ export const _TransactionsScreen: React.FC = () => {
   )
 }
 
-export default _TransactionsScreen
+export default {
+  component: TransactionsScreenStory
+} as Meta<typeof TransactionsScreen>

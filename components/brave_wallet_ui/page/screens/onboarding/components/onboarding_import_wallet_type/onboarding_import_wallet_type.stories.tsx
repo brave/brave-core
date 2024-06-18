@@ -11,16 +11,15 @@ import {
 } from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingImportWalletType } from './import_wallet_type'
 
-export const _OnboardingImportWalletType = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingImportWalletType />
-    </WalletPageStory>
-  )
+export const _OnboardingImportWalletType = {
+  title: 'Select Import Wallet Type',
+  render: () => {
+    return (
+      <WalletPageStory>
+        <OnboardingImportWalletType />
+      </WalletPageStory>
+    )
+  }
 }
 
-_OnboardingImportWalletType.story = {
-  name: 'Select Import Wallet Type'
-}
-
-export default _OnboardingImportWalletType
+export default { component: OnboardingImportWalletType }

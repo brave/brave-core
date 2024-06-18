@@ -8,16 +8,16 @@ import AddSuggestedTokenPanel from '.'
 import { PanelWrapper } from '../../../panel/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
-export const _AddSuggestedTokenPanel = () => {
-  return (
-    <WalletPanelStory>
-      <PanelWrapper>
-        <AddSuggestedTokenPanel />
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _AddSuggestedTokenPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <PanelWrapper>
+          <AddSuggestedTokenPanel />
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_AddSuggestedTokenPanel.storyName = 'Add Suggested Token Panel'
-
-export default _AddSuggestedTokenPanel
+export default { component: AddSuggestedTokenPanel }

@@ -27,13 +27,12 @@ export default {
       )
     },
     withKnobs
-  ]
+  ],
+  component: Toolbar
 }
 
-export const _Main = () => {
-  return (
-    <S.PanelFrame>
-      <Toolbar />
-    </S.PanelFrame>
-  )
+export const Main = {
+  render: () => <S.PanelFrame>
+    <Toolbar />
+  </S.PanelFrame>
 }

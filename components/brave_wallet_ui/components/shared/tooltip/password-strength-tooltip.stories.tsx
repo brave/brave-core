@@ -8,41 +8,41 @@ import Button from '@brave/leo/react/button'
 
 import { PasswordStrengthTooltip } from './password-strength-tooltip'
 
-export const _PasswordStrengthTooltip = () => {
-  const [isVisible, setIsVisible] = React.useState(false)
+export const _PasswordStrengthTooltip = {
+  render: () => {
+    const [isVisible, setIsVisible] = React.useState(false)
 
-  return (
-    <>
-      <PasswordStrengthTooltip
-        isVisible={isVisible}
-        passwordStrength={{ isLongEnough: true }}
-      />
-      <Button
-        onClick={() => {
-          setIsVisible((prev) => !prev)
-        }}
-      >
-        Hover
-      </Button>
-    </>
-  )
+    return (
+      <>
+        <PasswordStrengthTooltip
+          isVisible={isVisible}
+          passwordStrength={{ isLongEnough: true }}
+        />
+        <Button
+          onClick={() => {
+            setIsVisible((prev) => !prev)
+          }}
+        >
+          Hover
+        </Button>
+      </>
+    )
+  }
 }
 
-_PasswordStrengthTooltip.storyName = 'Password strength Tooltip'
-
-export const _PasswordStrengthTooltipMini = () => {
-  return (
-    <div style={{ width: 30 }}>
-      <PasswordStrengthTooltip
-        isVisible={true}
-        passwordStrength={{ isLongEnough: true }}
-      >
-        Hover
-      </PasswordStrengthTooltip>
-    </div>
-  )
+export const _PasswordStrengthTooltipMini = {
+  render: () => {
+    return (
+      <div style={{ width: 30 }}>
+        <PasswordStrengthTooltip
+          isVisible={true}
+          passwordStrength={{ isLongEnough: true }}
+        >
+          Hover
+        </PasswordStrengthTooltip>
+      </div>
+    )
+  }
 }
 
-_PasswordStrengthTooltipMini.storyName = 'Password strength Tooltip Small'
-
-export default _PasswordStrengthTooltip
+export default { component: PasswordStrengthTooltip }

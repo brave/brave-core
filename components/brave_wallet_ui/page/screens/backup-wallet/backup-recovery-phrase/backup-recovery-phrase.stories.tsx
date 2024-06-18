@@ -8,16 +8,15 @@ import * as React from 'react'
 import WalletPageStory from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { BackupRecoveryPhrase } from './backup-recovery-phrase'
 
-export const _BackupRecoveryPhrase = () => {
-  return (
-    <WalletPageStory>
-      <BackupRecoveryPhrase />
-    </WalletPageStory>
-  )
+export const _BackupRecoveryPhrase = {
+  title: 'Backup Recovery Phrase',
+  render: () => {
+    return (
+      <WalletPageStory>
+        <BackupRecoveryPhrase />
+      </WalletPageStory>
+    )
+  }
 }
 
-_BackupRecoveryPhrase.story = {
-  name: 'Backup Recovery Phrase'
-}
-
-export default _BackupRecoveryPhrase
+export default { component: BackupRecoveryPhrase }

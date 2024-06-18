@@ -15,39 +15,47 @@ import {
 import { mockERC20Token } from '../../../../stories/mock-data/mock-asset-options'
 import { Column } from '../../../shared/style'
 
-export const _LongOrigin = () => {
-  return (
-    <Column>
-      <Origin originInfo={mockOriginInfo} />
-    </Column>
-  )
+export const _LongOrigin = {
+  render: () => {
+    return (
+      <Column>
+        <Origin originInfo={mockOriginInfo} />
+      </Column>
+    )
+  }
 }
 
-export const _Origin = () => {
-  return (
-    <Column>
-      <Origin originInfo={mockUniswapOriginInfo} />
-    </Column>
-  )
+export const _Origin = {
+  render: () => {
+    return (
+      <Column>
+        <Origin originInfo={mockUniswapOriginInfo} />
+      </Column>
+    )
+  }
 }
 
-export const BraveOrigin = () => {
-  return (
-    <Column>
-      <Origin originInfo={mockBraveWalletOrigin} />
-    </Column>
-  )
+export const BraveOrigin = {
+  render: () => {
+    return (
+      <Column>
+        <Origin originInfo={mockBraveWalletOrigin} />
+      </Column>
+    )
+  }
 }
 
-export const _TransactionOrigin = () => {
-  return (
-    <Column>
-      <TransactionOrigin
-        originInfo={mockUniswapOriginInfo}
-        contractAddress={mockERC20Token.contractAddress}
-      />
-    </Column>
-  )
+export const _TransactionOrigin = {
+  render: () => {
+    return (
+      <Column>
+        <TransactionOrigin
+          originInfo={mockUniswapOriginInfo}
+          contractAddress={mockERC20Token.contractAddress}
+        />
+      </Column>
+    )
+  }
 }
 
-export default _Origin
+export default { component: TransactionOrigin }

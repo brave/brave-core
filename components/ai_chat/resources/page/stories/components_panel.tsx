@@ -24,7 +24,7 @@ setPageHandlerAPIForTesting(mockAPIHandler as any)
 
 function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
   return {
-    completionEvent: { completion:  text },
+    completionEvent: { completion: text },
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined
   }
@@ -254,8 +254,8 @@ export default {
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
-        ? [SAMPLE_QUESTIONS[0]]
-        : []
+          ? [SAMPLE_QUESTIONS[0]]
+          : []
 
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
@@ -300,18 +300,22 @@ export default {
   ]
 }
 
-export const _Panel = (props: {}) => {
-  return (
-    <div className={styles.container}>
-      <Main />
-    </div>
-  )
+export const _Panel = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <Main />
+      </div>
+    )
+  }
 }
 
-export const _FeedbackForm = (props: {}) => {
-  return (
-    <div className={styles.container}>
-      <FeedbackForm />
-    </div>
-  )
+export const _FeedbackForm = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <FeedbackForm />
+      </div>
+    )
+  }
 }

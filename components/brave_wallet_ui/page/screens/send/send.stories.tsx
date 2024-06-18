@@ -16,26 +16,27 @@ import {
   mockNativeBalanceRegistry,
   mockTokenBalanceRegistry
 } from '../../../common/constants/mocks'
+import { Meta } from '@storybook/react'
 
-export const _SendScreen = () => {
-  return (
-    <WalletPageStory
-      walletStateOverride={{
-        isWalletCreated: true
-      }}
-      apiOverrides={{
-        selectedAccountId: mockAccount.accountId,
-        nativeBalanceRegistry: mockNativeBalanceRegistry,
-        tokenBalanceRegistry: mockTokenBalanceRegistry
-      }}
-    >
-      <SendScreen />
-    </WalletPageStory>
-  )
+export const SendScreenStory = {
+  render: () => {
+    return (
+      <WalletPageStory
+        walletStateOverride={{
+          isWalletCreated: true
+        }}
+        apiOverrides={{
+          selectedAccountId: mockAccount.accountId,
+          nativeBalanceRegistry: mockNativeBalanceRegistry,
+          tokenBalanceRegistry: mockTokenBalanceRegistry
+        }}
+      >
+        <SendScreen />
+      </WalletPageStory>
+    )
+  }
 }
 
-_SendScreen.story = {
-  name: 'Send Screen'
-}
-
-export default _SendScreen
+export default {
+  title: 'Send Screen',
+} as Meta<typeof SendScreen>

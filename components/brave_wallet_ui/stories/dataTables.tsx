@@ -4,15 +4,20 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { storiesOf } from '@storybook/react'
 import { withKnobs, object } from '@storybook/addon-knobs'
 
 // Components
 import { Table, Header, Row } from '../components/shared/datatable'
 
-storiesOf('Wallet/Desktop/Components', module)
-  .addDecorator(withKnobs)
-  .add('DataTable', () => {
+export default {
+  title: 'Wallet/Desktop/Components',
+  decorators: [
+    withKnobs
+  ]
+}
+
+export const DataTable = {
+  render: () => {
     const rowTheme = {}
 
     const rows: Row[] = [
@@ -80,6 +85,7 @@ storiesOf('Wallet/Desktop/Components', module)
           404: Publishers not found :)
         </Table>
         <br />
-      </div>
+      </div >
     )
-  })
+  }
+}

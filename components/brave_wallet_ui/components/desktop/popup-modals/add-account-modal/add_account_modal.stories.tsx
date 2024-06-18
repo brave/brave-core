@@ -14,44 +14,49 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AddAccountModal } from './add-account-modal'
 
-export const _CreateAccountModal = () => {
-  return (
-    <WalletPageStory>
-      <AddAccountModal />
-    </WalletPageStory>
-  )
+export const _CreateAccountModal = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <AddAccountModal />
+      </WalletPageStory>
+    )
+  },
+  title: 'Create Account Modal'
 }
 
-_CreateAccountModal.storyName = 'Create Account Modal'
-
-export const _AddHardwareAccountModal = () => {
-  return (
-    <WalletPageStory>
-      <Switch>
-        <Route path={WalletRoutes.AddHardwareAccountModal}>
-          <AddAccountModal />
-        </Route>
-        <Redirect to={WalletRoutes.AddHardwareAccountModalStart} />
-      </Switch>
-    </WalletPageStory>
-  )
+export const _AddHardwareAccountModal = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <Switch>
+          <Route path={WalletRoutes.AddHardwareAccountModal}>
+            <AddAccountModal />
+          </Route>
+          <Redirect to={WalletRoutes.AddHardwareAccountModalStart} />
+        </Switch>
+      </WalletPageStory>
+    )
+  },
+  title: 'Add Hardware Account Modal'
 }
 
-_AddHardwareAccountModal.storyName = 'Add Hardware Account Modal'
-
-export const _ImportAccountModal = () => {
-  return (
-    <WalletPageStory>
-      <Switch>
-        <Route path={WalletRoutes.ImportAccountModal}>
-          <AddAccountModal />
-        </Route>
-        <Redirect to={WalletRoutes.ImportAccountModalStart} />
-      </Switch>
-    </WalletPageStory>
-  )
+export const _ImportAccountModal = {
+  title: 'Import Account Modal',
+  render: () => {
+    return (
+      <WalletPageStory>
+        <Switch>
+          <Route path={WalletRoutes.ImportAccountModal}>
+            <AddAccountModal />
+          </Route>
+          <Redirect to={WalletRoutes.ImportAccountModalStart} />
+        </Switch>
+      </WalletPageStory>
+    )
+  }
 }
 
-_ImportAccountModal.storyName = 'Import Account Modal'
-
-export default _CreateAccountModal
+export default {
+  component: AddAccountModal
+}

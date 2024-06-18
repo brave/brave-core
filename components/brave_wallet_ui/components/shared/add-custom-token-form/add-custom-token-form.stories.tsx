@@ -9,21 +9,19 @@ import { AddCustomTokenForm } from './add-custom-token-form'
 
 const noop = () => undefined
 
-export const _AddCustomTokenForm = () => {
-  const [contractAddress, setContractAddress] = React.useState('')
-  return (
-    <WalletPageStory>
-      <AddCustomTokenForm
-        contractAddress={contractAddress}
-        onHideForm={noop}
-        onChangeContractAddress={setContractAddress}
-      />
-    </WalletPageStory>
-  )
+export const _AddCustomTokenForm = {
+  render: () => {
+    const [contractAddress, setContractAddress] = React.useState('')
+    return (
+      <WalletPageStory>
+        <AddCustomTokenForm
+          contractAddress={contractAddress}
+          onHideForm={noop}
+          onChangeContractAddress={setContractAddress}
+        />
+      </WalletPageStory>
+    )
+  }
 }
 
-_AddCustomTokenForm.story = {
-  name: 'Add Custom Token Form'
-}
-
-export default _AddCustomTokenForm
+export default { component: AddCustomTokenForm }

@@ -6,6 +6,18 @@
 import path from 'path'
 import { forkTsChecker } from './options'
 import { StorybookConfig } from '@storybook/react-webpack5'
+import type { Indexer } from '@storybook/types';
+import { loadCsf } from '@storybook/csf-tools';
+import { readFile } from 'fs/promises';
+
+const slashStoriesIndexer: Indexer = {
+  test: /stories\/.*\.tsx$/,
+  createIndex: async (fileName, opts) => {
+    const code = (await readFile(fileName, 'utf-8')).toString();
+    const result = loadCsf(code, { ...opts, fileName }).parse()
+    return result.indexInputs;
+  }
+}
 
 const config: StorybookConfig = {
   stories: process.env.STORYBOOK_STORYPATH
@@ -30,12 +42,10 @@ const config: StorybookConfig = {
       to: 'playlist/'
     }
   ],
-  features: {
-    storyStoreV7: false
-  },
   core: {
     disableTelemetry: true
   },
+  experimental_indexers: async (existing) => [...existing, slashStoriesIndexer]
 }
 
 export default config

@@ -108,10 +108,10 @@ export default {
         React.useState<string | undefined>('Chrome')
       const [scenes, setScenes] = React.useState<Scenes | undefined>(undefined)
 
-      const incrementCount = () => {}
+      const incrementCount = () => { }
 
       const store = {
-        setViewType: () => {},
+        setViewType: () => { },
         setCurrentSelectedBrowser,
         incrementCount,
         setScenes,
@@ -134,38 +134,56 @@ export default {
   ]
 }
 
-export const _SelectBrowser = () => {
-  return <SelectBrowser />
+export const _SelectBrowser = {
+  render: () => {
+    return <SelectBrowser />
+  }
 }
 
-export const _SelectProfile = () => {
-  return <SelectProfile />
+export const _SelectProfile = {
+  render: () => {
+    return <SelectProfile />
+  }
 }
 
-export const _SelectTheme = () => {
-  return <SelectTheme />
+export const _SelectTheme = {
+  render: () => {
+    return <SelectTheme />
+  }
 }
 
-export const _HelpImprove = () => {
-  return <HelpImprove />
+export const _HelpImprove = {
+  render: () => {
+    return <HelpImprove />
+  }
 }
 
-export const _ImportInProgress = () => {
-  return <ImportInProgress />
+export const _ImportInProgress = {
+  render: () => {
+    return <ImportInProgress />
+  }
 }
 
-export const _SetupComplete = () => {
-  return <SetupComplete />
+export const _SetupComplete = {
+  render: () => {
+    return <SetupComplete />
+  }
 }
 
-export const _Welcome = () => {
-  return <Welcome />
+export const _Welcome = {
+  render: () => {
+    return <Welcome />
+  }
 }
 
-export const _Background = () => {
-  return <Background static={true} />
+export const _Background = {
+  render: () => {
+    return <Background static={true} />
+  }
 }
 
-export const _HelpWDP = () => {
-  return <HelpWDP />
+export const _HelpWDP = {
+  render: () => {
+    return <HelpWDP />
+  }
 }

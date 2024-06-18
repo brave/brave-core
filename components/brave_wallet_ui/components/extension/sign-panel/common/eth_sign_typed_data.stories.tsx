@@ -13,14 +13,16 @@ import {
   mockSignMessageRequest //
 } from '../../../../stories/mock-data/mock-eth-requests'
 
-export function _EthSignTypedData() {
-  return (
-    <EthSignTypedData
-      data={mockSignMessageRequest.signData.ethSignTypedData}
-      width={'100%'}
-      height={'100%'}
-    />
-  )
+export const _EthSignTypedData = {
+  render: () => {
+    return (
+      <EthSignTypedData
+        data={mockSignMessageRequest.signData.ethSignTypedData}
+        width={'100%'}
+        height={'100%'}
+      />
+    )
+  }
 }
 
-export default _EthSignTypedData
+export default { component: EthSignTypedData }

@@ -10,18 +10,18 @@ import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapp
 
 import { ConfirmTransactionPanel } from './confirm-transaction-panel'
 
-export const _ConfirmTransactionPanel = () => {
-  return (
-    <WalletPanelStory>
-      <PanelWrapper isLonger>
-        <LongWrapper>
-          <ConfirmTransactionPanel />
-        </LongWrapper>
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _ConfirmTransactionPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <PanelWrapper isLonger>
+          <LongWrapper>
+            <ConfirmTransactionPanel />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_ConfirmTransactionPanel.storyName = 'Confirm Transaction Panel'
-
-export default _ConfirmTransactionPanel
+export default { component: ConfirmTransactionPanel }

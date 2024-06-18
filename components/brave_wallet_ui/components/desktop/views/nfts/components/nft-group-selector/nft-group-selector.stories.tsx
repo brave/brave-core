@@ -10,14 +10,14 @@ const options: NftDropdownOption[] = [
   { id: 'collected', label: 'Collected', labelSummary: '1' }
 ]
 
-export const _NftGroupSelector = () => {
-  return (
-    <NftDropdown
-      selectedOptionId={options[0].id}
-      options={options}
-      onSelect={(optionId) => console.log(optionId)}
-    />
-  )
+export const NftGroupSelector = {
+  render: () => <NftDropdown
+    selectedOptionId={options[0].id}
+    options={options}
+    onSelect={(optionId) => console.log(optionId)}
+  />
 }
 
-export default _NftGroupSelector.storyName = 'Nft Group Selector'
+export default {
+  title: 'Nft Dropdown'
+}

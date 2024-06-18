@@ -10,12 +10,14 @@ import {
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { LockScreen } from '.'
 
-export const _LockScreen: React.FC = () => {
-  return (
-    <WalletPageStory>
-      <LockScreen />
-    </WalletPageStory>
-  )
+export const _LockScreen = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <LockScreen />
+      </WalletPageStory>
+    )
+  }
 }
 
-export default _LockScreen
+export default { title: 'Lock Screen' }

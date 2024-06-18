@@ -48,41 +48,47 @@ export default {
 
 getPlaylistActions().playlistLoaded(mockData)
 
-export const Catalog = () => {
-  return <PlaylistsCatalog />
+export const Catalog = {
+  render: () => {
+    return <PlaylistsCatalog />
+  }
 }
 
-export const VideoPlayer = () => {
-  handlePlayerMessage({
-    actionType: types.PLAYLIST_ITEM_SELECTED,
-    currentList: mockData.at(0)!,
-    currentItem: mockData.at(0)!.items.at(0)!
-  })
-  return <Player />
+export const VideoPlayer = {
+  render: () => {
+    handlePlayerMessage({
+      actionType: types.PLAYLIST_ITEM_SELECTED,
+      currentList: mockData.at(0)!,
+      currentItem: mockData.at(0)!.items.at(0)!
+    })
+    return <Player />
+  }
 }
 
-export const SampleContextualMenu = () => {
-  return (
-    <div style={{ float: 'right' }}>
-      <ContextualMenuAnchorButton
-        items={[
-          {
-            name: 'test',
-            iconName: 'trash',
-            onClick: () => {
-              window.alert('test')
+export const SampleContextualMenu = {
+  render: () => {
+    return (
+      <div style={{ float: 'right' }}>
+        <ContextualMenuAnchorButton
+          items={[
+            {
+              name: 'test',
+              iconName: 'trash',
+              onClick: () => {
+                window.alert('test')
+              }
+            },
+            {
+              name: 'looooooooooooooooooooong text this is really long',
+              iconName: 'cloud-off',
+              onClick: () => {
+                window.alert('looooooong text')
+              }
             }
-          },
-          {
-            name: 'looooooooooooooooooooong text this is really long',
-            iconName: 'cloud-off',
-            onClick: () => {
-              window.alert('looooooong text')
-            }
-          }
-        ]}
-        visible={true}
-      />
-    </div>
-  )
+          ]}
+          visible={true}
+        />
+      </div>
+    )
+  }
 }

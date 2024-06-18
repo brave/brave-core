@@ -15,18 +15,18 @@ const mockBitcoinBalances = {
   totalBalance: '1000000'
 }
 
-export const _BalanceDetailsModal = () => {
-  return (
-    <WalletPageStory>
-      <BalanceDetailsModal
-        onClose={() => {}}
-        token={mockBtcToken}
-        balances={mockBitcoinBalances}
-      />
-    </WalletPageStory>
-  )
+export const _BalanceDetailsModal = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <BalanceDetailsModal
+          onClose={() => { }}
+          token={mockBtcToken}
+          balances={mockBitcoinBalances}
+        />
+      </WalletPageStory>
+    )
+  }
 }
 
-_BalanceDetailsModal.storyName = 'Balance Details Modal'
-
-export default _BalanceDetailsModal
+export default { title: 'Balance Details' }

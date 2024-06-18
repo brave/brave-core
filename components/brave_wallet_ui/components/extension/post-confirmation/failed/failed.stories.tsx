@@ -14,32 +14,30 @@ import { StyledExtensionWrapper } from '../../../../stories/style'
 import { PanelWrapper } from '../../../../panel/style'
 import { TransactionFailed } from './failed'
 
-export const _TransactionFailed = () => {
-  const onClose = () => alert('Close panel screen')
+export const _TransactionFailed = {
+  render: () => {
+    const onClose = () => alert('Close panel screen')
 
-  return (
-    <WalletPanelStory>
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <TransactionFailed
-            headerTitle='Swap 0.01 ETH to 32.2583 USDC'
-            isPrimaryCTADisabled={false}
-            errorDetailTitle={getLocale(
-              'braveWalletTransactionFailedModalSubtitle'
-            )}
-            errorDetailContent='[ethjs-query] while formatting outputs from RPC ‘{“value”: {“code”:-32603,”data”: {“code”-32603,”message”:”Internal error”}}}’'
-            customDescription={undefined}
-            onClose={onClose}
-            onClickPrimaryCTA={() => alert('Clicked primary CTA')}
-          />
-        </StyledExtensionWrapper>
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+    return (
+      <WalletPanelStory>
+        <PanelWrapper isLonger={false}>
+          <StyledExtensionWrapper>
+            <TransactionFailed
+              headerTitle='Swap 0.01 ETH to 32.2583 USDC'
+              isPrimaryCTADisabled={false}
+              errorDetailTitle={getLocale(
+                'braveWalletTransactionFailedModalSubtitle'
+              )}
+              errorDetailContent='[ethjs-query] while formatting outputs from RPC ‘{“value”: {“code”:-32603,”data”: {“code”-32603,”message”:”Internal error”}}}’'
+              customDescription={undefined}
+              onClose={onClose}
+              onClickPrimaryCTA={() => alert('Clicked primary CTA')}
+            />
+          </StyledExtensionWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_TransactionFailed.story = {
-  name: 'Transaction Failed'
-}
-
-export default _TransactionFailed
+export default { component: TransactionFailed }
