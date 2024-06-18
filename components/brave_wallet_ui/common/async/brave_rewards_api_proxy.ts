@@ -105,7 +105,6 @@ export class BraveRewardsProxy {
     chrome.braveRewards.onRewardsWalletCreated.addListener
 
   openRewardsPanel = chrome.braveRewards.openRewardsPanel
-  showRewardsSetup = chrome.braveRewards.showRewardsSetup
 
   onInitialized = (callback: () => any) =>
     chrome.braveRewards.initialized.addListener((error) => {

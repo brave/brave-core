@@ -245,12 +245,6 @@
         "parameters": []
       },
       {
-        "name": "showRewardsSetup",
-        "type": "function",
-        "description": "Opens the Rewards panel in the active window and shows setup.",
-        "parameters": []
-      },
-      {
         "name": "updateMediaDuration",
         "type": "function",
         "description": "Update the media duration for a given resource",
