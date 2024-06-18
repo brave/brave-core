@@ -17,7 +17,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/brave_news/brave_news_location_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -120,11 +120,11 @@ void BraveLocationBarView::Init() {
   }
 
   if (!browser_->profile()->IsOffTheRecord()) {
-    brave_news_location_view_ =
-        AddChildView(std::make_unique<BraveNewsLocationView>(
+    brave_news_action_icon_view_ =
+        AddChildView(std::make_unique<BraveNewsActionIconView>(
             browser_->profile(), this, this));
-    brave_news_location_view_->SetVisible(false);
-    views::InkDrop::Get(brave_news_location_view_)
+    brave_news_action_icon_view_->SetVisible(false);
+    views::InkDrop::Get(brave_news_action_icon_view_)
         ->SetVisibleOpacity(GetPageActionInkDropVisibleOpacity());
   }
 #if BUILDFLAG(ENABLE_TOR)
@@ -199,8 +199,8 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   }
 #endif
 
-  if (brave_news_location_view_) {
-    brave_news_location_view_->Update();
+  if (brave_news_action_icon_view_) {
+    brave_news_action_icon_view_->Update();
   }
 
   LocationBarView::Update(contents);
@@ -263,8 +263,8 @@ void BraveLocationBarView::OnChanged() {
   }
 #endif
 
-  if (brave_news_location_view_) {
-    brave_news_location_view_->Update();
+  if (brave_news_action_icon_view_) {
+    brave_news_action_icon_view_->Update();
   }
 
   // OnChanged calls Layout
@@ -273,8 +273,8 @@ void BraveLocationBarView::OnChanged() {
 
 std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
   std::vector<views::View*> views;
-  if (brave_news_location_view_) {
-    views.push_back(brave_news_location_view_);
+  if (brave_news_action_icon_view_) {
+    views.push_back(brave_news_action_icon_view_);
   }
 #if BUILDFLAG(ENABLE_TOR)
   if (onion_location_view_) {
@@ -314,9 +314,11 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
         brave_actions_min + GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
-  if (brave_news_location_view_ && brave_news_location_view_->GetVisible()) {
-    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
-                            brave_news_location_view_->GetMinimumSize().width();
+  if (brave_news_action_icon_view_ &&
+      brave_news_action_icon_view_->GetVisible()) {
+    const int extra_width =
+        GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
+        brave_news_action_icon_view_->GetMinimumSize().width();
     min_size.Enlarge(extra_width, 0);
   }
 #if BUILDFLAG(ENABLE_TOR)

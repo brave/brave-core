@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "base/memory/ptr_util.h"
+#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
-#include "brave/browser/ui/views/brave_news/brave_news_location_view.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 namespace brave_news {
@@ -25,7 +25,7 @@ BraveNewsBubbleController::CreateOrGetFromWebContents(
 BraveNewsBubbleController::~BraveNewsBubbleController() = default;
 
 void BraveNewsBubbleController::ShowBubble(
-    base::WeakPtr<BraveNewsLocationView> anchor_view) {
+    base::WeakPtr<BraveNewsActionIconView> anchor_view) {
   if (!anchor_view) {
     return;
   }
