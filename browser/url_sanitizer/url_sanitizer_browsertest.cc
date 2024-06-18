@@ -49,17 +49,16 @@ constexpr const char kYoutubeRules[] = R"json(
 
 constexpr const char kYoutubePermissions[] = R"json(
     {
-      "js_api": [ "*://www.youtube.com/*" ]
+      "js_api": [ "*://*.youtube.com/*" ]
     }
   )json";
 
 }  // namespace
 
-class URLSanitizerTest : public InProcessBrowserTest,
-                         public testing::WithParamInterface<bool> {
+class URLSanitizerTestBase : public InProcessBrowserTest {
  public:
-  URLSanitizerTest() {
-    if (GetParam()) {
+  explicit URLSanitizerTestBase(bool enable_feature) {
+    if (enable_feature) {
       feature_list_.InitAndEnableFeature(features::kBraveCopyCleanLinkFromJs);
     } else {
       feature_list_.InitAndDisableFeature(features::kBraveCopyCleanLinkFromJs);
@@ -125,6 +124,15 @@ class URLSanitizerTest : public InProcessBrowserTest,
     run_loop.Run();
   }
 
+  void WaitClipboardEmpty() {
+    std::string text_from_clipboard;
+    while (text_from_clipboard != "empty") {
+      ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
+          ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
+      NonBlockingDelay(base::Microseconds(10));
+    }
+  }
+
   std::string WaitClipboard() {
     std::string text_from_clipboard = "empty";
     while (text_from_clipboard == "empty") {
@@ -135,68 +143,89 @@ class URLSanitizerTest : public InProcessBrowserTest,
     return text_from_clipboard;
   }
 
+  void Check() {
+    SetSanitizerRules(kYoutubeRules, kYoutubePermissions);
+    const GURL url("https://www.YoUtUbE.com/url_sanitizer/js_api.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+    auto check = [this](const std::string& name, bool should_sanitize) {
+      {
+        ui::ScopedClipboardWriter clear_clipboard(
+            ui::ClipboardBuffer::kCopyPaste);
+        clear_clipboard.Reset();
+        clear_clipboard.WriteText(u"empty");
+      }
+      WaitClipboardEmpty();
+
+      auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+
+      constexpr const char kClickButton[] =
+          R"js(
+        (function() {
+          const button = document.getElementById('$1');
+          button.click();
+        })();
+    )js";
+      const auto script =
+          base::ReplaceStringPlaceholders(kClickButton, {name}, nullptr);
+      web_contents->Focus();
+      ASSERT_TRUE(content::ExecJs(web_contents, script));
+
+      const std::string text_from_clipboard = WaitClipboard();
+
+      EXPECT_TRUE(base::StartsWith(text_from_clipboard, "https://youtu.be/"))
+          << name << " " << should_sanitize << " " << text_from_clipboard;
+
+      if (should_sanitize) {
+        EXPECT_EQ(std::string::npos, text_from_clipboard.find("si="))
+            << name << " " << should_sanitize << " " << text_from_clipboard;
+      } else {
+        EXPECT_NE(std::string::npos, text_from_clipboard.find("si="))
+            << name << " " << should_sanitize << " " << text_from_clipboard;
+      }
+    };
+
+    const bool should_sanitize =
+        base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkFromJs);
+
+    check("test_1", should_sanitize);
+    check("test_2", should_sanitize);
+    check("test_3", should_sanitize);
+    check("test_4", should_sanitize);
+    check("test_5", should_sanitize);
+
+    const GURL no_permission_url(
+        "https://no_permission.com/url_sanitizer/js_api.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), no_permission_url));
+
+    check("test_1", false);
+    check("test_2", false);
+    check("test_3", false);
+    check("test_4", false);
+    check("test_5", false);
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
-INSTANTIATE_TEST_SUITE_P(, URLSanitizerTest, testing::Bool());
+class EnabledURLSanitizerTest : public URLSanitizerTestBase {
+ public:
+  EnabledURLSanitizerTest() : URLSanitizerTestBase(true) {}
+};
 
-IN_PROC_BROWSER_TEST_P(URLSanitizerTest, JSApi) {
-  SetSanitizerRules(kYoutubeRules, kYoutubePermissions);
-  const GURL url("https://www.YoUtUbE.com/url_sanitizer/js_api.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+// Different name to prevent running in parallel.
+class DisabledURLSanitizerTest : public URLSanitizerTestBase {
+ public:
+  DisabledURLSanitizerTest() : URLSanitizerTestBase(false) {}
+};
 
-  auto check = [this](const std::string& name, bool should_sanitize) {
-    {
-      ui::ScopedClipboardWriter clear_clipboard(
-          ui::ClipboardBuffer::kCopyPaste);
-      clear_clipboard.Reset();
-      clear_clipboard.WriteText(u"empty");
-    }
+IN_PROC_BROWSER_TEST_F(EnabledURLSanitizerTest, JSApi) {
+  Check();
+}
 
-    auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
-
-    constexpr const char kClickButton[] =
-        R"js(
-        (function() {
-          const button = document.getElementById('$1');
-          button.click();
-        })();
-    )js";
-    const auto script =
-        base::ReplaceStringPlaceholders(kClickButton, {name}, nullptr);
-    web_contents->Focus();
-    ASSERT_TRUE(content::ExecJs(web_contents, script));
-
-    const std::string text_from_clipboard = WaitClipboard();
-
-    EXPECT_TRUE(base::StartsWith(text_from_clipboard, "https://youtu.be/"))
-        << name << " " << should_sanitize << " " << text_from_clipboard;
-
-    if (should_sanitize) {
-      EXPECT_EQ(std::string::npos, text_from_clipboard.find("si="))
-          << name << " " << should_sanitize << " " << text_from_clipboard;
-    } else {
-      EXPECT_NE(std::string::npos, text_from_clipboard.find("si="))
-          << name << " " << should_sanitize << " " << text_from_clipboard;
-    }
-  };
-
-  check("test_1", GetParam());
-  check("test_2", GetParam());
-  check("test_3", GetParam());
-  check("test_4", GetParam());
-  check("test_5", GetParam());
-
-  const GURL no_permission_url(
-      "https://no_permission.com/url_sanitizer/js_api.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), no_permission_url));
-
-  check("test_1", false);
-  check("test_2", false);
-  check("test_3", false);
-  check("test_4", false);
-  check("test_5", false);
+IN_PROC_BROWSER_TEST_F(DisabledURLSanitizerTest, JSApi) {
+  Check();
 }
