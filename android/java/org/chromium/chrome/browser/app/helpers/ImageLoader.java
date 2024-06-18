@@ -159,11 +159,18 @@ public class ImageLoader {
                             ImageFetcherConfig.NETWORK_ONLY, profile.getProfileKey());
             if (isGif(url)) {
                 imageFetcher.fetchGif(
-                        Params.create(new GURL(url), UNUSED_CLIENT_NAME), gifImage -> {
+                        Params.create(new GURL(url), UNUSED_CLIENT_NAME),
+                        gifImage -> {
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(gifImage.getData());
-                            loadImage(imageFetcherFacade, requestManager, isCircular,
-                                    roundedCorners, imageView, customTarget, callback);
+                            loadImage(
+                                    imageFetcherFacade,
+                                    requestManager,
+                                    isCircular,
+                                    roundedCorners,
+                                    imageView,
+                                    customTarget,
+                                    callback);
                         });
             } else {
                 imageFetcher.fetchImage(
