@@ -406,11 +406,6 @@
 # model
 -TestAppMenuModelCR2023.ModelHasIcons
 
-# These tests fail because we set kIsolatedAppsDeveloperModeAllowed to false
--All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.ErrorsOnBundleError/InstalledBundle
--All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.SucceedsWhenThereIsNoError/InstalledBundle
--IsolatedWebAppInstallCommandHelperTrustAndSignaturesTest.DevProxySucceeds
-
 # This test fails because we override Chromium's "what's new" util functionality
 # see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
 -WhatsNewUtilTests.ShouldShowForStateUsesChromeVersionForRefresh

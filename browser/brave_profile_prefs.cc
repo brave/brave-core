@@ -478,11 +478,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, true);
 
-  // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
-  registry->SetDefaultPrefValue(
-      policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed,
-      base::Value(false));
-
   BraveFarblingService::RegisterProfilePrefs(registry);
 
   RegisterProfilePrefsForMigration(registry);
