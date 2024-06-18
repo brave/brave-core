@@ -336,7 +336,8 @@ bool CanOpenSplitViewForWebContents(
   }
 
   Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
-  return browser->is_type_normal() && brave::CanOpenNewSplitViewForTab(browser);
+  return browser && browser->is_type_normal() &&
+         brave::CanOpenNewSplitViewForTab(browser);
 }
 
 void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
