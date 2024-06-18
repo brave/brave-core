@@ -940,7 +940,11 @@ public class FeedDataSource: ObservableObject {
 
   private func fetchHistory(completion: @escaping ([HistoryNode]) -> Void) {
     if let historyAPI {
-      historyAPI.search(withQuery: "", maxCount: 200) { historyNodeList in
+      let options = HistorySearchOptions(
+        maxCount: 200,
+        duplicateHandling: .removePerDay
+      )
+      historyAPI.search(withQuery: "", options: options) { historyNodeList in
         completion(historyNodeList)
       }
     } else {
