@@ -7,7 +7,7 @@ import Foundation
 import Preferences
 
 extension Preferences {
-  public enum AIChat {
+  public struct AIChat {
     /// A boolean indicating whether the user has seen the AI-Chat intro screen at least once
     public static let hasSeenIntro = Option<Bool>(
       key: "aichat.intro.hasBeenSeen",
@@ -17,17 +17,6 @@ extension Preferences {
     /// The date the user's current AI-Chat subscription expires
     public static let subscriptionExpirationDate = Option<Date?>(
       key: "aichat.expiration-date",
-      default: nil
-    )
-
-    /// The Order-ID of the user's current AI-Chat subscription
-    public static let subscriptionOrderId = Option<String?>(
-      key: "aichat.order-id",
-      default: nil
-    )
-
-    public static let subscriptionProductId = Option<String?>(
-      key: "aichat.subscription-product-id",
       default: nil
     )
 
@@ -43,9 +32,4 @@ extension Preferences {
       default: true
     )
   }
-}
-
-public struct AIChatConstants {
-  static let braveLeoWikiURL = URL(string: "https://github.com/brave/brave-browser/wiki/Brave-Leo")!
-  static let braveLeoPrivacyPolicyURL = URL(string: "https://brave.com/privacy/browser/#brave-leo")!
 }
