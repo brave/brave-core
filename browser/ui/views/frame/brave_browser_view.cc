@@ -594,6 +594,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 void BraveBrowserView::ToggleSidebar() {
+  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble() {

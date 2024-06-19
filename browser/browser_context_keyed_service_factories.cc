@@ -66,7 +66,6 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/commands/common/features.h"
-#include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model_factory.h"
 #else
 #include "brave/browser/brave_shields/cookie_list_opt_in_service_factory.h"
 #include "brave/browser/brave_shields/filter_list_service_factory.h"
@@ -224,7 +223,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !BUILDFLAG(IS_ANDROID)
   BraveGlobalInfobarServiceFactory::GetInstance();
-  PinnedToolbarActionsModelFactory::GetInstance();
 #endif
 }
 

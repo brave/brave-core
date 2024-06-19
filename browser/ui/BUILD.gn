@@ -559,6 +559,8 @@ source_set("ui") {
       "views/toolbar/brave_app_menu.h",
       "views/toolbar/brave_browser_app_menu_button.cc",
       "views/toolbar/brave_browser_app_menu_button.h",
+      "views/toolbar/side_panel_button.cc",
+      "views/toolbar/side_panel_button.h",
       "views/view_shadow.cc",
       "views/view_shadow.h",
       "views/window_closing_confirm_dialog_view.cc",

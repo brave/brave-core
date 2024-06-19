@@ -29,6 +29,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
@@ -45,7 +47,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -95,10 +96,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return brave_browser()->sidebar_controller();
   }
 
-  SidePanelToolbarButton* GetSidePanelToolbarButton() const {
-    BrowserView* browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
-    return browser_view->toolbar_button_provider()->GetSidePanelButton();
+  SidePanelButton* GetSidePanelToolbarButton() const {
+    return static_cast<BraveToolbarView*>(
+               BrowserView::GetBrowserViewForBrowser(browser())->toolbar())
+        ->side_panel_button();
   }
 
   views::View* GetVerticalTabsContainer() const {
@@ -518,7 +519,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Open panel w/o entry id.
-  panel_ui->Show();
+  panel_ui->Toggle();
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
   // Check bookmark panel is not opened again as it's deleted item.
