@@ -320,6 +320,10 @@ test("brave_unit_tests") {
     "//brave/components/brave_stats/browser",
   ]
 
+  if (is_win) {
+    deps += [ "//brave/browser/ui/day_zero_browser_ui_expt:unit_tests" ]
+  }
+
   if (enable_tor) {
     deps += [
       "//brave/browser/tor/test:unit_tests",

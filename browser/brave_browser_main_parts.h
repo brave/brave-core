@@ -6,15 +6,21 @@
 #ifndef BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
 
+#include <memory>
+
 #include "chrome/browser/chrome_browser_main.h"
+
+#if BUILDFLAG(IS_WIN)
+class DayZeroBrowserUIExptManager;
+#endif
 
 class BraveBrowserMainParts : public ChromeBrowserMainParts {
  public:
-  using ChromeBrowserMainParts::ChromeBrowserMainParts;
+  BraveBrowserMainParts(bool is_integration_test, StartupData* startup_data);
 
   BraveBrowserMainParts(const BraveBrowserMainParts&) = delete;
   BraveBrowserMainParts& operator=(const BraveBrowserMainParts&) = delete;
-  ~BraveBrowserMainParts() override = default;
+  ~BraveBrowserMainParts() override;
 
   int PreMainMessageLoopRun() override;
   void PreBrowserStart() override;
@@ -25,6 +31,11 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
 
  private:
   friend class ChromeBrowserMainExtraPartsTor;
+
+#if BUILDFLAG(IS_WIN)
+  std::unique_ptr<DayZeroBrowserUIExptManager>
+      day_zero_browser_ui_expt_manager_;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_
