@@ -24,7 +24,7 @@ DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
     ProfileManager* profile_manager)
     : profile_manager_(*profile_manager) {
   // This class should be instantiated after getting valid first run time;
-  if (brave_stats::GetFirstRunTime(nullptr) != base::Time()) {
+  if (brave_stats::GetFirstRunTime(nullptr).is_null()) {
     CHECK_IS_TEST();
   }
 
