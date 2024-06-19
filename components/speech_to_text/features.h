@@ -8,13 +8,15 @@
 
 #include <string>
 
+#include "base/component_export.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 
 namespace stt {
 
-BASE_DECLARE_FEATURE(kSttFeature);
+COMPONENT_EXPORT(SPEECH_TO_TEXT) BASE_DECLARE_FEATURE(kSttFeature);
 
+COMPONENT_EXPORT(SPEECH_TO_TEXT)
 extern const base::FeatureParam<std::string> kSttUrl;
 
 }  // namespace stt

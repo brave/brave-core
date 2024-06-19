@@ -19,7 +19,10 @@ buildflag_header("buildflags") {
   flags = [ "SERVICE_KEY_STT=\"$service_key_stt\"" ]
 }
 
-static_library("speech_to_text") {
+component("speech_to_text") {
+  output_name = "speech_to_text"
+  defines = [ "IS_SPEECH_TO_TEXT_IMPL" ]
+
   sources = [
     "features.cc",
     "features.h",

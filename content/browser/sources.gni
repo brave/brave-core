@@ -6,5 +6,4 @@
 brave_content_browser_deps = [
   "//brave/components/brave_service_keys",
   "//brave/components/speech_to_text",
-  "//brave/components/speech_to_text:buildflags",
 ]
