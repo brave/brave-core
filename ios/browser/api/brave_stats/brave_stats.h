@@ -18,6 +18,8 @@ OBJC_EXPORT
 @interface BraveStats : NSObject
 /// Any additional wallet parameters to send with the DAU ping
 @property(readonly) NSDictionary<NSString*, NSString*>* walletParams;
+@property(readonly, getter=isNotificationAdsEnabled)
+    BOOL notificationAdsEnabled;
 /// Should be called when the stats ping has been sent
 - (void)notifyStatsPingSent;
 - (instancetype)init NS_UNAVAILABLE;

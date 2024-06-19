@@ -262,8 +262,14 @@ public class DAU {
   }
 
   func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
-    // For now we only have wallet params from brave-core
-    braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
+    var queryItems: [URLQueryItem] = []
+    queryItems.append(
+      contentsOf: braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
+    )
+    queryItems.append(
+      .init(name: "ads_enabled", value: braveStats.isNotificationAdsEnabled ? "true" : "false")
+    )
+    return queryItems
   }
 
   func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {
