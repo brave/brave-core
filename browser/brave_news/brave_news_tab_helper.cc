@@ -216,7 +216,7 @@ void BraveNewsTabHelper::RemoveObserver(PageFeedsObserver* observer) {
 bool BraveNewsTabHelper::ShouldFindFeeds() {
   auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
                     ->GetPrefs();
-  return brave_news::GetIsEnabled(prefs) &&
+  return brave_news::IsEnabled(prefs) &&
          prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton);
 }
 

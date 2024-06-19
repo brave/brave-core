@@ -10,11 +10,15 @@ static_library("common") {
   sources = [
     "features.cc",
     "features.h",
+    "pref_names.cc",
     "pref_names.h",
     "switches.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
 }
 
 mojom("mojom") {

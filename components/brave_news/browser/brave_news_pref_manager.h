@@ -22,8 +22,6 @@
 
 namespace brave_news {
 
-bool GetIsEnabled(PrefService* prefs);
-
 struct DirectFeed {
   std::string id;
   GURL url;

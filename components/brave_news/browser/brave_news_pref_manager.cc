@@ -30,11 +30,6 @@
 
 namespace brave_news {
 
-bool GetIsEnabled(PrefService* prefs) {
-  return prefs->GetBoolean(prefs::kNewTabPageShowToday) &&
-         prefs->GetBoolean(prefs::kBraveNewsOptedIn);
-}
-
 SubscriptionsDiff::SubscriptionsDiff() = default;
 SubscriptionsDiff::~SubscriptionsDiff() = default;
 SubscriptionsDiff& SubscriptionsDiff::operator=(SubscriptionsDiff&&) = default;
@@ -207,7 +202,7 @@ void BraveNewsPrefManager::RemoveObserver(PrefObserver* observer) {
 }
 
 bool BraveNewsPrefManager::IsEnabled() {
-  return GetIsEnabled(&*prefs_);
+  return brave_news::IsEnabled(&*prefs_);
 }
 
 brave_news::mojom::ConfigurationPtr BraveNewsPrefManager::GetConfig() {
