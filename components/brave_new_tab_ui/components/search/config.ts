@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+import { radius } from "@brave/leo/tokens/css/variables";
 import { SearchEngineInfo } from "../../api/background";
 
 // At some point we might want to store this in prefs, but
@@ -11,6 +12,7 @@ const ENABLED_SEARCH_ENGINES_KEY = 'search-engines'
 const LAST_SEARCH_ENGINE_KEY = 'last-search-engine'
 
 export const braveSearchHost = 'search.brave.com'
+export const searchBoxRadius = radius.xl;
 
 let cache: Record<string, boolean> | undefined
 
