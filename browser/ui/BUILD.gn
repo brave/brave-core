@@ -126,6 +126,7 @@ source_set("ui") {
     deps += [
       "//brave/components/ai_rewriter/common",
       "//brave/components/ai_rewriter/resources/page:generated_resources",
+      "//components/web_modal",
     ]
   }
 
