@@ -16,13 +16,13 @@ import SwiftUI
 /// `DefaultMediaScrubberLabel` if none is provided in the initializer. `DefaultMediaScrubberLabel`
 struct MediaScrubber<Label: View>: View {
   @Binding var currentTime: TimeInterval
-  var duration: TimeInterval
+  var duration: PlayerModel.ItemDuration
   @Binding var isScrubbing: Bool
   var label: Label
 
   init(
     currentTime: Binding<TimeInterval>,
-    duration: TimeInterval,
+    duration: PlayerModel.ItemDuration,
     isScrubbing: Binding<Bool>,
     @ViewBuilder label: () -> Label
   ) {
@@ -41,12 +41,22 @@ struct MediaScrubber<Label: View>: View {
     return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
-  private var remainingTimeLabel: Text {
-    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+  @ViewBuilder private var remainingTimeLabel: some View {
+    switch duration {
+    case .unknown:
+      EmptyView()
+    case .seconds(let duration):
+      Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+    case .indefinite:
+      Text("Live")
+    }
   }
 
   private var durationLabel: Text {
-    Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+    if case .seconds(let duration) = duration {
+      return Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+    }
+    return Text("")
   }
 
   private var barShape: some InsettableShape {
@@ -60,7 +70,7 @@ struct MediaScrubber<Label: View>: View {
         .foregroundStyle(.tint)
         .frame(height: barHeight)
         .overlay {
-          if duration > 0 {
+          if case .seconds(let duration) = duration {
             // Active value
             GeometryReader { proxy in
               barShape
@@ -88,7 +98,7 @@ struct MediaScrubber<Label: View>: View {
         }
         .padding(.vertical, (thumbSize - barHeight) / 2)
         .overlay {
-          if duration > 0 {
+          if case .seconds(let duration) = duration {
             // Thumb
             GeometryReader { proxy in
               Circle()
@@ -140,7 +150,7 @@ struct MediaScrubber<Label: View>: View {
             }
           }
         }
-        .disabled(duration.isZero)
+        .disabled(duration.seconds == nil)
       label
     }
     .coordinateSpace(name: "MediaScrubber")
@@ -148,7 +158,7 @@ struct MediaScrubber<Label: View>: View {
       isScrubbing = newValue
     }
     .accessibilityRepresentation {
-      if duration > 0 {
+      if case .seconds(let duration) = duration {
         Slider(
           value: $currentTime,
           in: 0.0...duration,
@@ -168,7 +178,7 @@ struct MediaScrubber<Label: View>: View {
 extension MediaScrubber where Label == DefaultMediaScrubberLabel {
   init(
     currentTime: Binding<TimeInterval>,
-    duration: TimeInterval,
+    duration: PlayerModel.ItemDuration,
     isScrubbing: Binding<Bool>
   ) {
     self._currentTime = currentTime
@@ -183,37 +193,38 @@ extension MediaScrubber where Label == DefaultMediaScrubberLabel {
 
 struct DefaultMediaScrubberLabel: View {
   var currentTime: TimeInterval
-  var duration: TimeInterval
+  var duration: PlayerModel.ItemDuration
 
   @State private var isShowingTotalTime: Bool = false
 
-  private var currentValueLabel: Text {
-    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
-  }
-
-  private var remainingTimeLabel: Text {
-    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
-  }
-
-  private var durationLabel: Text {
-    Text(.seconds(duration), format: .time(pattern: .minuteSecond))
-  }
-
   var body: some View {
     HStack {
-      currentValueLabel
+      Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
       Spacer()
-      Button {
-        isShowingTotalTime.toggle()
-      } label: {
-        Group {
-          if isShowingTotalTime {
-            durationLabel
-          } else {
-            remainingTimeLabel
+      switch duration {
+      case .unknown:
+        EmptyView()
+      case .seconds(let duration):
+        Button {
+          // Only allow swapping when there's a remaining time available
+          isShowingTotalTime.toggle()
+        } label: {
+          Group {
+            if isShowingTotalTime {
+              Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+            } else {
+              Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+            }
           }
+          .transition(.move(edge: .trailing).combined(with: .opacity))
         }
-        .transition(.move(edge: .trailing).combined(with: .opacity))
+      case .indefinite:
+        HStack(spacing: 4) {
+          Image(systemName: "circlebadge.fill")
+            .imageScale(.small)
+            .foregroundStyle(Color(braveSystemName: .red50))
+          Text("Live")
+        }
       }
     }
     .foregroundStyle(.primary)
@@ -230,13 +241,13 @@ private struct MediaScrubberPreview: View {
     VStack {
       MediaScrubber(
         currentTime: $currentTime,
-        duration: 1000,
+        duration: .seconds(1000),
         isScrubbing: $isScrubbing
       )
       .padding()
       MediaScrubber(
         currentTime: $currentTime,
-        duration: 1000,
+        duration: .seconds(1000),
         isScrubbing: $isScrubbing
       )
       .tint(.red)
@@ -244,6 +255,13 @@ private struct MediaScrubberPreview: View {
       .padding()
       .background(Color.black)
       .environment(\.layoutDirection, .rightToLeft)
+
+      MediaScrubber(
+        currentTime: $currentTime,
+        duration: .indefinite,
+        isScrubbing: $isScrubbing
+      )
+      .padding()
 
       Button {
         withAnimation(.snappy) {

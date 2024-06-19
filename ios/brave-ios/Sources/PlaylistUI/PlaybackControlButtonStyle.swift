@@ -35,6 +35,7 @@ struct PlaybackControlButtonStyle: ButtonStyle {
   @State private var isPressed: Bool = false
   @State private var pressDownTime: Date?
   @State private var delayedTouchUpTask: Task<Void, Error>?
+  @Environment(\.isEnabled) private var isEnabled
 
   private var length: CGFloat {
     switch size {
@@ -117,6 +118,8 @@ struct PlaybackControlButtonStyle: ButtonStyle {
         }
       )
       .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPressed)
+      .opacity(isEnabled ? 1 : 0.5)
+      .animation(.linear(duration: 0.1), value: isEnabled)
   }
 }
 

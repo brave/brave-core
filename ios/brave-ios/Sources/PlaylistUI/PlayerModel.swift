@@ -88,13 +88,55 @@ public final class PlayerModel: ObservableObject {
 
   var currentTime: TimeInterval {
     guard let item = player.currentItem else { return 0 }
-    return max(0, min(duration, item.currentTime().seconds))
+    switch duration {
+    case .seconds(let timeInterval):
+      return max(0, min(timeInterval, item.currentTime().seconds))
+    case .unknown, .indefinite:
+      let currentTime = item.currentTime()
+      if currentTime.isIndefinite || currentTime.seconds.isNaN {
+        return 0
+      }
+      return currentTime.seconds
+    }
   }
 
-  var duration: TimeInterval {
-    guard let item = player.currentItem else { return 0 }
-    let seconds = item.asset.duration.seconds
-    return seconds.isNaN ? 0.0 : seconds
+  enum ItemDuration {
+    case unknown
+    case seconds(TimeInterval)
+    case indefinite  // Live video
+
+    var seconds: TimeInterval? {
+      if case .seconds(let timeInterval) = self {
+        return timeInterval
+      }
+      return nil
+    }
+
+    var isIndefinite: Bool {
+      if case .indefinite = self {
+        return true
+      }
+      return false
+    }
+
+    init(_ seconds: TimeInterval) {
+      if !seconds.isFinite || seconds == .greatestFiniteMagnitude {
+        self = .indefinite
+      } else {
+        self = .seconds(seconds)
+      }
+    }
+  }
+
+  var duration: ItemDuration {
+    guard let duration = player.currentItem?.asset.duration else { return .unknown }
+    if !duration.isValid {
+      return .unknown
+    }
+    if duration.isIndefinite {
+      return .indefinite
+    }
+    return .seconds(duration.seconds)
   }
 
   var currentTimeStream: AsyncStream<TimeInterval> {
@@ -118,7 +160,7 @@ public final class PlayerModel: ObservableObject {
     if isPlaying {
       return
     }
-    if currentTime == duration {
+    if case .seconds(let duration) = duration, currentTime == duration {
       player.seek(to: .zero)
     }
     player.play()
@@ -379,6 +421,7 @@ public final class PlayerModel: ObservableObject {
     willSet {
       if let selectedItem {
         let currentTime = currentTime
+        let duration = duration.seconds ?? 0
         // Reset the current item's last played time if you changed videos in the last 10s
         PlaylistManager.shared.updateLastPlayed(
           item: .init(item: selectedItem),

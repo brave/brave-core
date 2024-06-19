@@ -288,21 +288,19 @@ struct VideoAmbianceBackground: View {
 
 struct CompactMediaScrubberLabel: View {
   var currentTime: TimeInterval
-  var duration: TimeInterval
+  var duration: PlayerModel.ItemDuration
 
   private var currentValueLabel: Text {
     return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
-  private var remainingTimeLabel: Text {
-    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
-  }
-
   var body: some View {
     HStack {
       currentValueLabel
-      Text(verbatim: "/")  // FIXME: Does this need some sort of localization?
-      remainingTimeLabel
+      if case .seconds(let duration) = duration {
+        Text(verbatim: "/")  // FIXME: Does this need some sort of localization?
+        Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+      }
     }
     .font(.caption2)
   }

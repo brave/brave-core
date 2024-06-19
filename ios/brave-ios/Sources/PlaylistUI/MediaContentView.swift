@@ -212,7 +212,6 @@ extension MediaContentView {
             RoutePickerView()
           }
         }
-        // FIXME: Handle live video better
         PlaybackScrubber(model: model)
         VStack(spacing: verticalStackSpacing) {
           HStack {
@@ -283,6 +282,7 @@ extension MediaContentView {
               Label("Playback Speed", braveSystemImage: model.playbackSpeed.braveSystemName)
                 .transition(.opacity.animation(.linear(duration: 0.1)))
             }
+            .disabled(model.duration.isIndefinite)
             Spacer()
             Menu {
               Section {
