@@ -16,12 +16,12 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/history/core/browser/history_types.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -39,7 +39,7 @@ FeedController::FeedController(
 FeedController::~FeedController() = default;
 
 void FeedController::DoesFeedVersionDiffer(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     const std::string& matching_hash,
     mojom::BraveNewsController::IsFeedUpdateAvailableCallback callback) {
   GetOrFetchFeed(
@@ -61,7 +61,7 @@ void FeedController::AddListener(
   listeners_.Add(std::move(listener));
 }
 
-void FeedController::GetOrFetchFeed(const BraveNewsSubscriptions& subscriptions,
+void FeedController::GetOrFetchFeed(const SubscriptionsSnapshot& subscriptions,
                                     GetFeedCallback callback) {
   GetOrFetchFeed(
       subscriptions,
@@ -80,7 +80,7 @@ void FeedController::GetOrFetchFeed(const BraveNewsSubscriptions& subscriptions,
 }
 
 void FeedController::EnsureFeedIsUpdating(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   VLOG(1) << "EnsureFeedIsUpdating " << is_update_in_progress_;
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_publishers_update_` OneShotEvent.
@@ -94,7 +94,7 @@ void FeedController::EnsureFeedIsUpdating(
       subscriptions,
       base::BindOnce(
           [](base::WeakPtr<FeedController> controller,
-             const BraveNewsSubscriptions& subscriptions,
+             const SubscriptionsSnapshot& subscriptions,
              Publishers publishers) {
             if (!controller) {
               return;
@@ -113,7 +113,7 @@ void FeedController::EnsureFeedIsUpdating(
                 subscriptions,
                 base::BindOnce(
                     [](base::WeakPtr<FeedController> controller,
-                       const BraveNewsSubscriptions& subscriptions,
+                       const SubscriptionsSnapshot& subscriptions,
                        Publishers publishers, FeedItems items, ETags etags) {
                       if (!controller) {
                         return;
@@ -132,7 +132,7 @@ void FeedController::EnsureFeedIsUpdating(
                       // Get history hosts via callback
                       auto on_history = base::BindOnce(
                           [](base::WeakPtr<FeedController> controller,
-                             const BraveNewsSubscriptions& subscriptions,
+                             const SubscriptionsSnapshot& subscriptions,
                              FeedItems items, Publishers publishers,
                              history::QueryResults results) {
                             if (!controller) {
@@ -175,7 +175,7 @@ void FeedController::EnsureFeedIsUpdating(
 }
 
 void FeedController::EnsureFeedIsCached(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   VLOG(1) << "EnsureFeedIsCached";
   GetOrFetchFeed(subscriptions, base::BindOnce([]() {
                    VLOG(1) << "EnsureFeedIsCached callback";
@@ -183,7 +183,7 @@ void FeedController::EnsureFeedIsCached(
 }
 
 void FeedController::UpdateIfRemoteChanged(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   // If already updating, nothing to do,
   // we don't want to collide with an update
   // which starts and completes before our HEAD
@@ -196,7 +196,7 @@ void FeedController::UpdateIfRemoteChanged(
       subscriptions, locale_feed_etags_,
       base::BindOnce(
           [](FeedController* controller,
-             const BraveNewsSubscriptions& subscriptions, bool has_update) {
+             const SubscriptionsSnapshot& subscriptions, bool has_update) {
             if (!has_update) {
               return;
             }
@@ -212,7 +212,7 @@ void FeedController::ClearCache() {
   ResetFeed();
 }
 
-void FeedController::GetOrFetchFeed(const BraveNewsSubscriptions& subscriptions,
+void FeedController::GetOrFetchFeed(const SubscriptionsSnapshot& subscriptions,
                                     base::OnceClosure callback) {
   VLOG(1) << "getorfetch feed(oc) start: "
           << on_current_update_complete_->is_signaled();

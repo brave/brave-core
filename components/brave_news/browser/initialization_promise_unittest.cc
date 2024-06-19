@@ -19,6 +19,7 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"

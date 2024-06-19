@@ -23,8 +23,12 @@
 #include "components/history/core/browser/history_types.h"
 
 namespace brave_news {
+
 using GetSuggestedPublisherIdsCallback =
     mojom::BraveNewsController::GetSuggestedPublisherIdsCallback;
+
+class SubscriptionsSnapshot;
+
 class SuggestionsController {
  public:
   struct PublisherSimilarity {
@@ -43,14 +47,14 @@ class SuggestionsController {
   SuggestionsController& operator=(const SuggestionsController&) = delete;
   ~SuggestionsController();
 
-  void GetSuggestedPublisherIds(const BraveNewsSubscriptions& subscriptions,
+  void GetSuggestedPublisherIds(const SubscriptionsSnapshot& subscriptions,
                                 GetSuggestedPublisherIdsCallback callback);
   void EnsureSimilarityMatrixIsUpdating(
-      const BraveNewsSubscriptions& subscriptions);
+      const SubscriptionsSnapshot& subscriptions);
 
  private:
   friend class BraveNewsSuggestionsControllerTest;
-  void GetOrFetchSimilarityMatrix(const BraveNewsSubscriptions& subscriptions,
+  void GetOrFetchSimilarityMatrix(const SubscriptionsSnapshot& subscriptions,
                                   base::OnceClosure callback);
   std::vector<std::string> GetSuggestedPublisherIdsWithHistory(
       const Publishers& publishers,

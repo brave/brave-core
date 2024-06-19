@@ -11,9 +11,9 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/common/features.h"
 
 namespace brave_news {
@@ -41,7 +41,7 @@ SignalCalculator::SignalCalculator(PublishersController& publishers_controller,
 
 SignalCalculator::~SignalCalculator() = default;
 
-void SignalCalculator::GetSignals(const BraveNewsSubscriptions& subscriptions,
+void SignalCalculator::GetSignals(const SubscriptionsSnapshot& subscriptions,
                                   const FeedItems& feed,
                                   SignalsCallback callback) {
   auto articles = GetArticles(feed);
@@ -57,7 +57,7 @@ void SignalCalculator::GetSignals(const BraveNewsSubscriptions& subscriptions,
 }
 
 void SignalCalculator::OnGotHistory(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     std::vector<mojom::FeedItemMetadataPtr> articles,
     SignalsCallback callback,
     history::QueryResults results) {

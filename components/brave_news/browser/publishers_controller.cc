@@ -20,7 +20,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
@@ -68,7 +68,7 @@ mojom::Publisher* FindMatchPreferringLocale(
 
 // Apart from fetching, we need to make sure the subscriptions are up to date.
 void ApplySubscriptions(Publishers& publishers,
-                        const BraveNewsSubscriptions& subscriptions) {
+                        const SubscriptionsSnapshot& subscriptions) {
   // Remove all direct feeds - they'll get re-added.
   for (auto it = publishers.begin(); it != publishers.end();) {
     if (it->second->type == mojom::PublisherType::DIRECT_SOURCE) {
@@ -144,7 +144,7 @@ const Publishers& PublishersController::GetLastPublishers() const {
 
 // To be consumed outside of the class - provides a clone
 void PublishersController::GetOrFetchPublishers(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     GetPublishersCallback callback,
     bool wait_for_current_update /* = false */) {
   GetOrFetchPublishers(
@@ -168,7 +168,7 @@ void PublishersController::GetOrFetchPublishers(
 // To be consumed internally - provides no data so that we don't need to clone,
 // as data can be accessed via class property
 void PublishersController::GetOrFetchPublishers(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     base::OnceClosure callback,
     bool wait_for_current_update) {
   // If in-memory data is already present, no need to wait,
@@ -189,7 +189,7 @@ void PublishersController::GetOrFetchPublishers(
 }
 
 void PublishersController::GetLocale(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     mojom::BraveNewsController::GetLocaleCallback callback) {
   GetOrFetchPublishers(
       subscriptions,
@@ -207,7 +207,7 @@ const std::string& PublishersController::GetLastLocale() const {
 }
 
 void PublishersController::EnsurePublishersIsUpdating(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_current_update_complete_` OneShotEvent.
   if (is_update_in_progress_) {
@@ -222,7 +222,7 @@ void PublishersController::EnsurePublishersIsUpdating(
 
   auto on_request = base::BindOnce(
       [](PublishersController* controller,
-         const BraveNewsSubscriptions& subscriptions,
+         const SubscriptionsSnapshot& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
         VLOG(1) << "Publishers response status code: "
                 << api_request_result.response_code()

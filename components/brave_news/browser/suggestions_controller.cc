@@ -20,11 +20,12 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 
@@ -141,13 +142,13 @@ SuggestionsController::SuggestionsController(
 SuggestionsController::~SuggestionsController() = default;
 
 void SuggestionsController::GetSuggestedPublisherIds(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     GetSuggestedPublisherIdsCallback callback) {
   GetOrFetchSimilarityMatrix(
       subscriptions,
       base::BindOnce(
           [](SuggestionsController* controller,
-             const BraveNewsSubscriptions& subscriptions,
+             const SubscriptionsSnapshot& subscriptions,
              GetSuggestedPublisherIdsCallback callback) {
             controller->publishers_controller_->GetOrFetchPublishers(
                 subscriptions,
@@ -275,7 +276,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
 }
 
 void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   if (is_update_in_progress_) {
     return;
   }
@@ -285,7 +286,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
       subscriptions,
       base::BindOnce(
           [](SuggestionsController* controller,
-             const BraveNewsSubscriptions& subscriptions,
+             const SubscriptionsSnapshot& subscriptions,
              const std::string& locale) {
             controller->publishers_controller_->GetOrFetchPublishers(
                 subscriptions,
@@ -324,7 +325,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
 }
 
 void SuggestionsController::GetOrFetchSimilarityMatrix(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     base::OnceClosure callback) {
   if (!similarities_.empty() && !is_update_in_progress_) {
     std::move(callback).Run();

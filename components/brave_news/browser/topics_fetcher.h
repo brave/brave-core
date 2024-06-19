@@ -10,8 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/flat_map.h"
-#include "base/functional/callback_forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/api/topics.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
