@@ -27,6 +27,7 @@
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
 #include "components/lens/lens_features.h"
+#include "components/manta/features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -63,7 +64,6 @@
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "components/device_signals/core/common/signals_features.h"
-#include "components/manta/features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
@@ -200,9 +200,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &kVerifyRequestInitiatorForMirrorHeaders,
 #endif
       &lens::features::kLensStandalone,
-#if !BUILDFLAG(IS_ANDROID)
       &manta::features::kMantaService,
-#endif
       &media::kLiveCaption,
       &metrics::structured::kEnabledStructuredMetricsService,
       &metrics::structured::kPhoneHubStructuredMetrics,
