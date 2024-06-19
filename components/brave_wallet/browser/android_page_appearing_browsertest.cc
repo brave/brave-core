@@ -390,7 +390,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
     const std::vector<std::string> ignore_patterns = {
         "TypeError: Cannot read properties of undefined (reading "
         "'onCompleteReset')",
-        "Error calling jsonRpcService.getERC20TokenBalances"};
+        "Error calling jsonRpcService.getERC20TokenBalances",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -403,7 +404,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSwapPageAppearing) {
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "Error calling jsonRpcService.getERC20TokenBalances",
         "Error querying balance:", "Error: An internal error has occurred",
-        "Unable to fetch getTokenBalancesForChainId"};
+        "Unable to fetch getTokenBalancesForChainId",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -413,7 +415,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestSendPageAppearing) {
   for (const std::string& scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/send"}));
     const std::vector<std::string> ignore_patterns = {
-        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -424,7 +427,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
   for (const std::string& scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/deposit-funds"}));
     const std::vector<std::string> ignore_patterns = {
-        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
@@ -434,7 +438,8 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
   for (const std::string& scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
     const std::vector<std::string> ignore_patterns = {
-        "TypeError: Cannot read properties of undefined (reading 'forEach')"};
+        "TypeError: Cannot read properties of undefined (reading 'forEach')",
+        "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
   }
 }
