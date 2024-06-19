@@ -56,6 +56,10 @@ class BraveNewsPrefManager {
   // Adds a new entry for a DirectFeed. Direct feeds have a separate entry point
   // for adding new entries because we need to record the |url| and |title| of
   // the feed in order to retrieve it.
+
+  // Adds a new entry for a DirectFeed. Direct feeds have a separate entry point
+  // for adding new entries because we need to record the |url| and |title| of
+  // the feed in order to retrieve it.
   std::string AddDirectPublisher(const GURL& url, const std::string& title);
 
   // Handles managing subscription to a channel in a locale.

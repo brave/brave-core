@@ -19,16 +19,15 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
-#include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
+#include "brave/components/brave_news/browser/background_history_query.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
@@ -39,7 +38,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -470,8 +468,6 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
                                                   PickArticles pick_hero,
                                                   PickArticles pick_article) {
   DVLOG(1) << __FUNCTION__;
-  DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
-
   auto feed = mojom::FeedV2::New();
 
   constexpr size_t kIterationsPerAd = 2;
@@ -506,7 +502,6 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
 // static
 mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   DVLOG(1) << __FUNCTION__;
-  DCHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
   auto feed = mojom::FeedV2::New();
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
@@ -602,7 +597,7 @@ FeedV2Builder::FeedV2Builder(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
     SuggestionsController& suggestions_controller,
-    history::HistoryService& history_service,
+    BackgroundHistoryQuerier& history_querier,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
@@ -611,7 +606,7 @@ FeedV2Builder::FeedV2Builder(
       topics_fetcher_(url_loader_factory),
       signal_calculator_(publishers_controller,
                          channels_controller,
-                         history_service) {}
+                         history_querier) {}
 
 FeedV2Builder::~FeedV2Builder() = default;
 
@@ -768,16 +763,14 @@ void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedV2Builder::RecheckFeedHash(
+std::string FeedV2Builder::GetFeedSourceHash(
     const SubscriptionsSnapshot& subscriptions) {
-  const auto& publishers = publishers_controller_->GetLastPublishers();
+  const auto& publishers = publishers_controller_->last_publishers();
   auto channels = channels_controller_->GetChannelsFromPublishers(
       publishers, subscriptions);
   std::tie(hash_, subscribed_count_) =
       GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
-  for (const auto& listener : listeners_) {
-    listener->OnUpdateAvailable(hash_);
-  }
+  return hash_;
 }
 
 void FeedV2Builder::UpdateData(const SubscriptionsSnapshot& subscriptions,
@@ -936,7 +929,7 @@ void FeedV2Builder::NotifyUpdateCompleted() {
 
   // Recalculate the hash_ - this will be used to mark the source of generated
   // feeds.
-  const auto& publishers = publishers_controller_->GetLastPublishers();
+  const auto& publishers = publishers_controller_->last_publishers();
   auto channels = channels_controller_->GetChannelsFromPublishers(
       publishers, current_update_->subscriptions);
   std::tie(hash_, subscribed_count_) =
@@ -965,7 +958,6 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
                                  mojom::FeedV2TypePtr type,
                                  FeedGenerator generator,
                                  BuildFeedCallback callback) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   UpdateData(
       subscriptions, std::move(settings),
       base::BindOnce(
@@ -978,7 +970,7 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
             }
 
             const auto& publishers =
-                builder->publishers_controller_->GetLastPublishers();
+                builder->publishers_controller_->last_publishers();
             const auto& locale =
                 builder->publishers_controller_->GetLastLocale();
             std::vector<std::string> channels;
@@ -995,44 +987,30 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
                 std::move(channels), builder->signals_,
                 builder->suggested_publisher_ids_, builder->topics_);
 
-            // We post this to another thread, because the generation process
-            // can be quite slow. It's safe because all data |generator|
-            // requires is copied into the lambda.
-            base::ThreadPool::PostTaskAndReplyWithResult(
-                FROM_HERE, base::BindOnce(std::move(generate), std::move(info)),
-                base::BindOnce(
-                    [](size_t raw_feed_items_size, size_t subscribed_count,
-                       bool has_publishers, std::string hash,
-                       mojom::FeedV2TypePtr type, BuildFeedCallback callback,
-                       mojom::FeedV2Ptr feed) {
-                      DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-                      feed->construct_time = base::Time::Now();
-                      feed->type = std::move(type);
-                      feed->source_hash = hash;
+            auto feed = std::move(generate).Run(std::move(info));
+            feed->construct_time = base::Time::Now();
+            feed->type = std::move(type);
+            feed->source_hash = builder->hash_;
 
-                      if (feed->items.empty()) {
-                        // If we have no subscribed items and we've loaded
-                        // the list of publishers (which we might not have,
-                        // if we're offline) then we're not subscribed to
-                        // any feeds.
-                        if (subscribed_count == 0 && has_publishers) {
-                          feed->error = mojom::FeedV2Error::NoFeeds;
-                          // If we don't have any raw feed items (and we're
-                          // subscribed to some feeds) then fetching must
-                          // have failed.
-                        } else if (raw_feed_items_size == 0) {
-                          feed->error = mojom::FeedV2Error::ConnectionError;
-                          // Otherwise, this feed must have no articles.
-                        } else {
-                          feed->error = mojom::FeedV2Error::NoArticles;
-                        }
-                      }
+            if (feed->items.empty()) {
+              // If we have no subscribed items and we've loaded
+              // the list of publishers (which we might not have,
+              // if we're offline) then we're not subscribed to
+              // any feeds.
+              if (builder->subscribed_count_ == 0 && !publishers.empty()) {
+                feed->error = mojom::FeedV2Error::NoFeeds;
+                // If we don't have any raw feed items (and we're
+                // subscribed to some feeds) then fetching must
+                // have failed.
+              } else if (builder->raw_feed_items_.size() == 0) {
+                feed->error = mojom::FeedV2Error::ConnectionError;
+                // Otherwise, this feed must have no articles.
+              } else {
+                feed->error = mojom::FeedV2Error::NoArticles;
+              }
+            }
 
-                      std::move(callback).Run(std::move(feed));
-                    },
-                    builder->raw_feed_items_.size(), builder->subscribed_count_,
-                    !publishers.empty(), builder->hash_, std::move(type),
-                    std::move(callback)));
+            std::move(callback).Run(std::move(feed));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(type), std::move(generator),
           std::move(callback)));

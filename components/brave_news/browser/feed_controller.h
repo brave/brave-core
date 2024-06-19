@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "brave/components/brave_news/browser/background_history_query.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -37,7 +38,7 @@ class FeedController {
  public:
   FeedController(
       PublishersController* publishers_controller,
-      history::HistoryService* history_service,
+      BackgroundHistoryQuerier& history_querier,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~FeedController();
   FeedController(const FeedController&) = delete;
@@ -70,7 +71,7 @@ class FeedController {
   void NotifyUpdateDone();
 
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
-  raw_ptr<history::HistoryService> history_service_ = nullptr;
+  raw_ref<BackgroundHistoryQuerier> history_querier_;
 
   FeedFetcher feed_fetcher_;
 

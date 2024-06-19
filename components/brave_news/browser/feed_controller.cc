@@ -16,6 +16,7 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "brave/components/brave_news/browser/background_history_query.h"
 #include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -29,10 +30,10 @@ namespace brave_news {
 
 FeedController::FeedController(
     PublishersController* publishers_controller,
-    history::HistoryService* history_service,
+    BackgroundHistoryQuerier& history_querier,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
-      history_service_(history_service),
+      history_querier_(history_querier),
       feed_fetcher_(*publishers_controller, url_loader_factory),
       on_current_update_complete_(new base::OneShotEvent()) {}
 
@@ -161,12 +162,7 @@ void FeedController::EnsureFeedIsUpdating(
                           controller->weak_ptr_factory_.GetWeakPtr(),
                           subscriptions, std::move(items),
                           std::move(publishers));
-                      history::QueryOptions options;
-                      options.max_count = 2000;
-                      options.SetRecentDayRange(14);
-                      controller->history_service_->QueryHistory(
-                          std::u16string(), options, std::move(on_history),
-                          &controller->task_tracker_);
+                      controller->history_querier_->Run(std::move(on_history));
                     },
                     controller->weak_ptr_factory_.GetWeakPtr(), subscriptions,
                     std::move(publishers)));

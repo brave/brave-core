@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,6 +17,7 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -30,11 +32,23 @@ class BraveNewsTabHelper
  public:
   struct FeedDetails {
     GURL feed_url;
-    std::string title;
+    std::string title = "";
+    bool subscribed = false;
+
+    // The combined publisher id, if any. Empty string if not a combined
+    // publisher.
+    std::string combined_publisher_id = "";
 
     // Indicates whether we've requested this feed, so we don't request it
     // multiple times.
     bool requested_feed = false;
+
+    FeedDetails();
+    FeedDetails(const FeedDetails&) = delete;
+    FeedDetails& operator=(const FeedDetails&) = delete;
+    FeedDetails(FeedDetails&&);
+    FeedDetails& operator=(FeedDetails&&);
+    ~FeedDetails();
   };
 
   class PageFeedsObserver : public base::CheckedObserver {
@@ -78,10 +92,13 @@ class BraveNewsTabHelper
   bool ShouldFindFeeds();
   void OnReceivedNewPublishers(brave_news::Publishers publishers);
   void AvailableFeedsChanged();
+  void UpdatePageFeed();
 
   raw_ptr<brave_news::BraveNewsController> controller_;
 
   std::vector<FeedDetails> rss_page_feeds_;
+  brave_news::mojom::PublisherPtr page_feed_ = nullptr;
+
   base::ObserverList<PageFeedsObserver> observers_;
 
   base::ScopedObservation<brave_news::BraveNewsPrefManager,

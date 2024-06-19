@@ -111,6 +111,7 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
 
 void ParseDirectPublisherList(const std::vector<DirectFeed>& direct_feeds,
                               std::vector<mojom::PublisherPtr>* publishers) {
+  DVLOG(1) << __FUNCTION__;
   for (const auto& feed : direct_feeds) {
     auto publisher = mojom::Publisher::New();
     publisher->feed_source = feed.url;

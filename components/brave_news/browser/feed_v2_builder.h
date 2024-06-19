@@ -14,6 +14,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_news/browser/background_history_query.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
@@ -41,7 +42,7 @@ class FeedV2Builder {
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
       SuggestionsController& suggestions_controller,
-      history::HistoryService& history_service,
+      BackgroundHistoryQuerier& history_querier,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
@@ -64,7 +65,7 @@ class FeedV2Builder {
   void GetSignals(const SubscriptionsSnapshot& subscriptions,
                   GetSignalsCallback callback);
 
-  void RecheckFeedHash(const SubscriptionsSnapshot& subscriptions);
+  std::string GetFeedSourceHash(const SubscriptionsSnapshot& subscriptions);
 
  private:
   // FeedGenerator's will be called on a different thread. The data in
