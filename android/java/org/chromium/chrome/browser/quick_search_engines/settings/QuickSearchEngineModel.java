@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
-
 public class QuickSearchEngineModel {
     // private TemplateUrl mTemplateUrl;
     private String mShortName;
