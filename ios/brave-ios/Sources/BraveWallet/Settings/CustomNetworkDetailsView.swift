@@ -666,7 +666,7 @@ struct NetworkDetailsView: View {
       )
     case .edit(let editNetwork):
       network = .init(
-        chainId: editNetwork.chainId,  // chain id is not editable in edit mode
+        chainId: editNetwork.coin == .eth ? chainIdInHex : editNetwork.chainId,
         chainName: model.networkName.input,
         blockExplorerUrls: blockExplorerUrls,
         iconUrls: iconUrls,
