@@ -22,14 +22,21 @@
 
 namespace brave_news {
 
+// Represents a DirectFeed that the user has subscribed to. These are store
+// differently to normal publishers, as we need to store the URL and title of
+// the feed, rather than just an Id.
 struct DirectFeed {
   std::string id;
   GURL url;
   std::string title;
 };
 
+// Represents a change in the set of subscriptions. This is used to generate
+// change notifications for the front end (probably Java or JavaScript).
 struct SubscriptionsDiff {
+  // The added or updated subscriptions.
   std::vector<std::string> changed;
+  // The removed subscriptions.
   std::vector<std::string> removed;
 
   SubscriptionsDiff();
@@ -40,6 +47,9 @@ struct SubscriptionsDiff {
   ~SubscriptionsDiff();
 };
 
+// A snapshot of the Brave News subscriptions at a point in time. Useful for
+// posting work to a background thread. All methods on this class refer to the
+// point in time the snapshot was made.
 class BraveNewsSubscriptions {
  public:
   BraveNewsSubscriptions();
@@ -54,21 +64,37 @@ class BraveNewsSubscriptions {
   BraveNewsSubscriptions& operator=(BraveNewsSubscriptions&&);
   ~BraveNewsSubscriptions();
 
+  // Get all the locales that the user has subscribed to channels in.
   std::vector<std::string> GetChannelLocales() const;
+  // Get all the locales that the user is subscribed to |channel| in.
   std::vector<std::string> GetChannelLocales(const std::string& channel) const;
+  // Determine whether the user is subscribed to |channel| in |locale|.
   bool GetChannelSubscribed(const std::string& locale,
                             const std::string& channel) const;
 
+  // Get the changes to the publisher subscriptions between two snapshots.
+  // Useful for notifying the front end of publisher changes.
   SubscriptionsDiff DiffPublishers(const BraveNewsSubscriptions& old) const;
+  // Get the changes to the channel subscriptions between two snapshots. Useful
+  // for notifying the front end of channel changes.
   SubscriptionsDiff DiffChannels(const BraveNewsSubscriptions& old) const;
 
+  // List of enabled publisher_ids
   const base::flat_set<std::string>& enabled_publishers() const {
     return enabled_publishers_;
   }
+
+  // List of disabled publisher_ids
   const base::flat_set<std::string>& disabled_publishers() const {
     return disabled_publishers_;
   }
+
+  // All subscribed DirectFeeds. Direct feeds are deleted when they're
+  // unsubscribed from.
   const std::vector<DirectFeed>& direct_feeds() const { return direct_feeds_; }
+
+  // A map of |locale ==> channels[]| representing the channels subscribed to in
+  // different locales.
   const base::flat_map<std::string, std::vector<std::string>> channels() const {
     return channels_;
   }
@@ -80,6 +106,9 @@ class BraveNewsSubscriptions {
   base::flat_map<std::string, std::vector<std::string>> channels_;
 };
 
+// Helper class providing a consistent interface for interacting with Brave News
+// storage and provides utilities for change notifications.
+// Currently this backs onto PrefService.
 class BraveNewsPrefManager {
  public:
   class PrefObserver : public base::CheckedObserver {
@@ -101,16 +130,25 @@ class BraveNewsPrefManager {
   brave_news::mojom::ConfigurationPtr GetConfig();
   void SetConfig(brave_news::mojom::ConfigurationPtr config);
 
+  // Get everything teh user is subscribed to.
   BraveNewsSubscriptions GetSubscriptions();
 
+  // Enables/disables/resets a publisher. When a direct feed is set to a
+  // non-enabled state it is deleted.
   void SetPublisherSubscribed(const std::string& publisher_id,
                               brave_news::mojom::UserEnabled enabled);
+
+  // Adds a new entry for a DirectFeed. Direct feeds have a separate entry point
+  // for adding new entries because we need to record the |url| and |title| of
+  // the feed in order to retrieve it.
   std::string AddDirectPublisher(const GURL& url, const std::string& title);
 
+  // Handles managing subscription to a channel in a locale.
   void SetChannelSubscribed(const std::string& locale,
                             const std::string& channel,
                             bool subscribed);
 
+  // Clears all Brave News related preferences.
   void ClearPrefs();
 
  private:
