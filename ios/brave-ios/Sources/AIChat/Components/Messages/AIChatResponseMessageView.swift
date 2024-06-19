@@ -94,7 +94,7 @@ struct AIChatResponseMessageView: View {
         HStack {
           Image(braveSystemName: "leo.search")
 
-          renderSearchQueries(queries: searchQueriesEvent.searchQueries)
+          generateSearchQueriesView(queries: searchQueriesEvent.searchQueries)
             .tint(Color(braveSystemName: .textPrimary))
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -146,7 +146,7 @@ struct AIChatResponseMessageView: View {
     }
   }
 
-  func renderSearchQueries(queries: [String]) -> Text {
+  func generateSearchQueriesView(queries: [String]) -> Text {
     let font = Font.callout
 
     var text = AttributedString(Strings.AIChat.leoImprovedAnswerBraveSearch)
