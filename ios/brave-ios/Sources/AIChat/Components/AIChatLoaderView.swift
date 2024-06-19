@@ -87,7 +87,6 @@ struct CircularProgressViewStyle: ProgressViewStyle {
 
     TimelineView(.animation(minimumInterval: 0.25, paused: false)) { context in
       CircularProgressView(
-        startDate: startDate,
         endDate: context.date,
         thickness: thickness
       )
@@ -95,12 +94,13 @@ struct CircularProgressViewStyle: ProgressViewStyle {
   }
 
   private struct CircularProgressView: View {
+    @State
+    private var startDate: Date = .now
+
     private var thickness: Double
-    private let startDate: Date
     private let endDate: Date
 
-    init(startDate: Date, endDate: Date, thickness: Double) {
-      self.startDate = startDate
+    init(endDate: Date, thickness: Double) {
       self.endDate = endDate
       self.thickness = thickness
     }
