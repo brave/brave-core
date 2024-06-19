@@ -29,6 +29,7 @@ var package = Package(
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
     .library(name: "BraveNews", targets: ["BraveNews"]),
     .library(name: "AIChat", targets: ["AIChat"]),
+    .library(name: "BraveStore", targets: ["BraveStore"]),
     .library(name: "Favicon", targets: ["Favicon"]),
     .library(name: "FaviconModels", targets: ["FaviconModels"]),
     .library(name: "SpeechRecognition", targets: ["SpeechRecognition"]),
@@ -201,6 +202,7 @@ var package = Package(
     .target(
       name: "BraveVPN",
       dependencies: [
+        "BraveStore",
         "BraveStrings",
         "SnapKit",
         "Then",
@@ -245,6 +247,7 @@ var package = Package(
       dependencies: [
         "BraveCore",
         "BraveShared",
+        "BraveStore",
         "BraveStrings",
         "BraveUI",
         "DesignSystem",
@@ -272,6 +275,19 @@ var package = Package(
         .copy("Components/Markdown/Code Highlight/Themes/atom-one-light.min.css"),
         .copy("Components/Markdown/Code Highlight/Scripts/highlight.min.js"),
       ]
+    ),
+    .target(
+      name: "BraveStore",
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "BraveUI",
+        "DesignSystem",
+        "Preferences",
+        .product(name: "Collections", package: "swift-collections"),
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+      ],
+      plugins: ["LoggerPlugin"]
     ),
     .target(name: "Preferences", dependencies: ["Shared"], plugins: ["LoggerPlugin"]),
     .target(
@@ -434,6 +450,7 @@ var braveTarget: PackageDescription.Target = .target(
     "BraveVPN",
     "BraveNews",
     "AIChat",
+    "BraveStore",
     "Onboarding",
     "Growth",
     "SpeechRecognition",

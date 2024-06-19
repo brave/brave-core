@@ -6,6 +6,7 @@ import AIChat
 import BraveCore
 import BraveNews
 import BraveShared
+import BraveStore
 import BraveUI
 import BraveVPN
 import BraveWallet

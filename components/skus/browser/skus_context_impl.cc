@@ -67,13 +67,7 @@ void RustBoundPostTask::RunWithResponse(SkusResult result,
                                         rust::cxxbridge1::Str response) {
   if (callback_) {
     // Call the bound callback with the response from Rust
-    std::string error_message;
-    if (result != skus::SkusResult::Ok) {
-      error_message = std::string{skus::result_to_string(result)};
-      std::move(callback_).Run(error_message);
-    } else {
-      std::move(callback_).Run(static_cast<std::string>(response));
-    }
+    std::move(callback_).Run(static_cast<std::string>(response));
   }
 }
 
