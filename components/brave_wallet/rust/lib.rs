@@ -237,8 +237,15 @@ fn generate_ed25519_extended_secret_key_from_bytes(
         }),
     ))
 }
+
 fn bytes_are_curve25519_point(bytes: &[u8]) -> bool {
-    curve25519_dalek::edwards::CompressedEdwardsY::from_slice(bytes).decompress().is_some()
+    match curve25519_dalek::edwards::CompressedEdwardsY::from_slice(bytes) {
+        // If the y coordinate decompresses, it represents a curve point.
+        Ok(point) => point.decompress().is_some(),
+        // Creating the CompressedEdwardsY failed, so bytes does not represent
+        // a curve point, probably the slice wasn't the expected size.
+        Err(_) => false,
+    }
 }
 
 fn decode_bech32(input: &str) -> Box<Bech32DecodeResult> {
