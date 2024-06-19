@@ -1014,7 +1014,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Independent search with better privacy
       </message>
       <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_DESC" desc="Omnibox brave search banner promo description">
-        Brave Search doesn't track you, your queries, or your clicks.
+        Brave Search doesn't profile you.
       </message>
       <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
         Try Brave Search

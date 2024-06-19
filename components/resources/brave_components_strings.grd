@@ -263,7 +263,7 @@
         It's time to ditch Google.
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC" desc="The text for brave search promotion from NTP">
-        Brave Search doesn't bias or censor results, and it doesn't track you, your queries, or your clicks.
+        Brave Search doesn't bias or censor results, and it doesn't profile you.
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
         Try Brave Search now
