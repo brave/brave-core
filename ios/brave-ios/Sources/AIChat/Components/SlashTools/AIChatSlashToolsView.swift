@@ -189,10 +189,13 @@ struct AIChatSlashToolsView: View {
       .background(Color(braveSystemName: .containerBackground))
       .overlay {
         GeometryReader { proxy in
-          DispatchQueue.main.async {
-            contentSize = proxy.size
-          }
-          return Color.clear
+          Color.clear
+            .onAppear {
+              contentSize = proxy.size
+            }
+            .onChange(of: proxy.size) { size in
+              contentSize = size
+            }
         }
       }
     }

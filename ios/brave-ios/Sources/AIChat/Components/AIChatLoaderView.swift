@@ -77,64 +77,58 @@ struct DotsProgressViewStyle: ProgressViewStyle {
 
 struct CircularProgressViewStyle: ProgressViewStyle {
   private let thickness: Double
-  private let foregroundColor: Color
-  private let backgroundColor: Color
 
-  init(thickness: Double, foregroundColor: Color, backgroundColor: Color) {
+  init(thickness: Double) {
     self.thickness = thickness
-    self.foregroundColor = foregroundColor
-    self.backgroundColor = backgroundColor
   }
 
   func makeBody(configuration: Configuration) -> some View {
+    let startDate = Date()
+
     TimelineView(.animation(minimumInterval: 0.25, paused: false)) { context in
       CircularProgressView(
-        date: context.date,
-        thickness: thickness,
-        foregroundColor: foregroundColor,
-        backgroundColor: backgroundColor
+        startDate: startDate,
+        endDate: context.date,
+        thickness: thickness
       )
     }
   }
 
   private struct CircularProgressView: View {
-    @State
-    private var progress = 0
     private var thickness: Double
-    private var backgroundColor: Color
-    private var foregroundColor: Color
-    private let date: Date
+    private let startDate: Date
+    private let endDate: Date
 
-    init(date: Date, thickness: Double, foregroundColor: Color, backgroundColor: Color) {
-      self.date = date
+    init(startDate: Date, endDate: Date, thickness: Double) {
+      self.startDate = startDate
+      self.endDate = endDate
       self.thickness = thickness
-      self.foregroundColor = foregroundColor
-      self.backgroundColor = backgroundColor
+    }
+
+    private var progress: Double {
+      return endDate.timeIntervalSince1970 - startDate.timeIntervalSince1970
     }
 
     var body: some View {
       ZStack {
         Circle()
           .stroke(
-            backgroundColor,
+            .background,
             lineWidth: thickness
           )
 
         Circle()
           .trim(from: 0.0, to: 0.25)
           .stroke(
-            foregroundColor,
+            .foreground,
             style: StrokeStyle(
               lineWidth: thickness,
               lineCap: .round
             )
           )
-          .rotationEffect(.degrees(90.0 * Double(progress)))
-          .animation(.linear, value: progress)
+          .rotationEffect(.degrees(90.0 * progress))
+          .animation(.linear, value: endDate)
 
-      }
-      .onChange(of: date) { (date: Date) in
-        progress = (progress + 1) % 360
       }
     }
   }

@@ -14,36 +14,25 @@ struct AIChatSlashToolsLabel: View {
   var body: some View {
     HStack(spacing: 2.0) {
       Text(group.category)
-        .font(.caption2.weight(.semibold))
-        .foregroundColor(Color(braveSystemName: .primary50))
 
       Image(braveSystemName: "leo.carat.right")
-        .font(.caption2.weight(.semibold))
-        .foregroundColor(Color(braveSystemName: .primary50))
 
       if let entry = entry {
         if entry.tag == .subheading {
           Text(entry.subheading ?? "")
-            .font(.caption2.weight(.semibold))
-            .foregroundColor(Color(braveSystemName: .primary50))
         } else if entry.tag == .details {
           Text(entry.details?.label ?? "")
-            .font(.caption2.weight(.semibold))
-            .foregroundColor(Color(braveSystemName: .primary50))
         }
 
         Label(Strings.close, braveSystemImage: "leo.close")
-          .font(.caption2.weight(.semibold))
-          .foregroundColor(Color(braveSystemName: .primary50))
           .labelStyle(.iconOnly)
           .padding(.leading, 2.0)
       }
     }
+    .font(.caption2.weight(.semibold))
+    .foregroundColor(Color(braveSystemName: .primary50))
     .padding(4.0)
-    .background {
-      ContainerRelativeShape()
-        .fill(Color(braveSystemName: .primary20))
-    }
+    .background(Color(braveSystemName: .primary20), in: .containerRelative)
     .containerShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
   }
 }

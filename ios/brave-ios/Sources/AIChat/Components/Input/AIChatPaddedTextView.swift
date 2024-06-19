@@ -61,7 +61,8 @@ struct AIChatPaddedTextView: UIViewRepresentable {
     let view = ResizableTextView(
       text: $text,
       onTextChanged: onTextChanged,
-      onDeleteCharacter: onBackspace
+      onDeleteCharacter: onBackspace,
+      onSubmit: onSubmit
     )
 
     view.accessibilityLabel = title
@@ -99,8 +100,8 @@ struct AIChatPaddedTextView: UIViewRepresentable {
     private var promptText: String
 
     private let onTextChanged: ((String) -> Void)?
-
     private let onDeleteCharacter: ((Bool) -> Void)?
+    private let onSubmit: (() -> Void)?
 
     var maxHeight: CGFloat? {
       didSet {
@@ -145,11 +146,13 @@ struct AIChatPaddedTextView: UIViewRepresentable {
     init(
       text: Binding<String>,
       onTextChanged: ((String) -> Void)?,
-      onDeleteCharacter: ((Bool) -> Void)?
+      onDeleteCharacter: ((Bool) -> Void)?,
+      onSubmit: (() -> Void)?
     ) {
       self._promptText = text
       self.onTextChanged = onTextChanged
       self.onDeleteCharacter = onDeleteCharacter
+      self.onSubmit = onSubmit
       super.init(frame: .zero, textContainer: nil)
 
       self.text = text.wrappedValue
@@ -182,16 +185,6 @@ struct AIChatPaddedTextView: UIViewRepresentable {
       let isEmpty = self.text.isEmpty
       super.deleteBackward()
       onDeleteCharacter?(isEmpty)
-    }
-
-    override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-      super.pressesEnded(presses, with: event)
-
-      for key in presses.compactMap({ $0.key }) {
-        if key.keyCode == .keyboardReturn {
-          print("HERE")
-        }
-      }
     }
 
     private func doLayout() {

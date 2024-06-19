@@ -73,11 +73,11 @@ struct AIChatResponseMessageView: View {
             ProgressView()
               .progressViewStyle(
                 CircularProgressViewStyle(
-                  thickness: 4.0,
-                  foregroundColor: Color(braveSystemName: .iconDefault),
-                  backgroundColor: Color(braveSystemName: .iconInteractive)
+                  thickness: 4.0
                 )
               )
+              .foregroundStyle(Color(braveSystemName: .iconDefault))
+              .backgroundStyle(Color(braveSystemName: .iconInteractive))
 
             Text(Strings.AIChat.leoImprovingAnswerBraveSearch)
               .font(.subheadline)
@@ -157,7 +157,7 @@ struct AIChatResponseMessageView: View {
     space.font = font
     space.foregroundColor = Color(braveSystemName: .textTertiary)
 
-    text = text + space
+    text += space
 
     for (index, query) in queries.enumerated() {
       let url = (AIChatConstants.braveSearchURL as NSURL).addingQueryParameter(
@@ -176,14 +176,14 @@ struct AIChatResponseMessageView: View {
       link.underlineColor = UIColor(braveSystemName: .textPrimary)
       link.underlineStyle = .single
 
-      text = text + quote + link + quote
+      text += quote + link + quote
 
       if index != queries.count - 1 {
         var comma = AttributedString(",")
         comma.font = font
         comma.foregroundColor = Color(braveSystemName: .textTertiary)
 
-        text = text + comma + space
+        text += comma + space
       }
     }
 
