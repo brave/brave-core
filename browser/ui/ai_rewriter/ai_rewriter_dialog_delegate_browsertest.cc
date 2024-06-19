@@ -87,8 +87,14 @@ IN_PROC_BROWSER_TEST_F(AIRewriterDialogDelegateBrowserTest, CanShowADialog) {
       contents(), "It was a dark and stormy night..."));
 }
 
+// For now, Dialog positioning doesn't work on MacOS.
+#if !BUILDFLAG(IS_MAC)
+#define MAYBE_DialogMovesWithParentWindow DialogMovesWithParentWindow
+#else
+#define MAYBE_DialogMovesWithParentWindow DISABLED_DialogMovesWithParentWindow
+#endif
 IN_PROC_BROWSER_TEST_F(AIRewriterDialogDelegateBrowserTest,
-                       DialogMovesWithParentWindow) {
+                       MAYBE_DialogMovesWithParentWindow) {
   OpenPageWithInput();
 
   auto* dialog = ai_rewriter::AIRewriterDialogDelegate::Show(
