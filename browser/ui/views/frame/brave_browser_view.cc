@@ -849,6 +849,7 @@ void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
     return;
   }
 
+  UpdateSplitViewOrientation();
   UpdateContentsWebViewVisual();
 }
 
