@@ -1252,6 +1252,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 searchActivityIntent.setAction(Intent.ACTION_VIEW);
                 context.startActivity(searchActivityIntent);
             }
+            // if (hasFocus) {
+            //     Log.e("quick_search", "showQuickActionSearchEnginesView");
+            //     BraveActivity.getBraveActivity().showQuickActionSearchEnginesView();
+            // } else {
+            //     Log.e("quick_search", "removeQuickActionSearchEnginesView");
+            //     BraveActivity.getBraveActivity().removeQuickActionSearchEnginesView();
+            // }
 
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onUrlFocusChange " + e);
