@@ -1827,6 +1827,7 @@ public class BraveRewardsPanel
             String title = mActivity.getString(R.string.something_went_wrong_text);
             String text = mActivity.getString(R.string.declare_geo_failed_response_text);
             String actionText = mActivity.getString(R.string.retry_text);
+            Log.e("wallet_error", "BraveRewardsPanel : errorMessage : "+errorMessage);
             if (errorMessage.equals(WALLET_GENERATION_DISABLED_ERROR)) {
                 title = mActivity.getString(R.string.wallet_generation_disabled_error_title);
                 text = String.format(
