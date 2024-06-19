@@ -197,7 +197,9 @@ struct SuggestedNetworkView: View {
               .padding(.vertical, 6)
             }
             Button {
-              isPresentingNetworkDetails = .init(from: chain, mode: .view)
+              isPresentingNetworkDetails = .init(
+                mode: .view(chain)
+              )
             } label: {
               Text(Strings.Wallet.viewDetails)
                 .foregroundColor(Color(.braveBlurpleTint))

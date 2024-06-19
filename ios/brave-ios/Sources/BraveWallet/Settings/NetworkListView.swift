@@ -42,7 +42,9 @@ struct NetworkListView: View {
 
   @ViewBuilder func networkRow(_ network: BraveWallet.NetworkInfo) -> some View {
     Button {
-      isPresentingNetworkDetails = .init(from: network)
+      isPresentingNetworkDetails = .init(
+        mode: .edit(network)
+      )
     } label: {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
@@ -99,7 +101,9 @@ struct NetworkListView: View {
           Menu {
             VStack {
               Button {
-                isPresentingNetworkDetails = .init(from: network)
+                isPresentingNetworkDetails = .init(
+                  mode: .edit(network)
+                )
               } label: {
                 Text(Strings.Wallet.editButtonTitle)
               }

@@ -2436,6 +2436,14 @@ extension Strings {
       comment:
         "The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen."
     )
+    public static let customNetworkNotSecureErrMsg = NSLocalizedString(
+      "wallet.customNetworkNotSecureErrMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Not secure.",
+      comment:
+        "The error message for the input field when users input an unsecure address for a custom network in Custom Network Details Screen."
+    )
     public static let customNetworkIconUrlsTitle = NSLocalizedString(
       "wallet.customNetworkIconUrlsTitle",
       tableName: "BraveWallet",
@@ -5565,6 +5573,14 @@ extension Strings {
       value: "Only %@ extended keys are supported.",
       comment:
         "The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\")"
+    )
+    public static let editExistingNetworkAlertMsg = NSLocalizedString(
+      "wallet.editExistingNetworkAlertMsg",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Do you want to update the existing network?",
+      comment:
+        "A pop up message that will prompt to user before user confirms to edit the existing network."
     )
   }
 }
