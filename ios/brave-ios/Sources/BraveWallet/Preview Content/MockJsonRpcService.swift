@@ -153,23 +153,12 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     self._ethTokenInfo = { _, _, completion in
       completion(nil, .resourceNotFound, "Token not found.")
     }
-  }
-
-  func nftMetadatas(
-    coin: BraveWallet.CoinType,
-    nftIdentifiers: [BraveWallet.NftIdentifier],
-    completion: @escaping ([BraveWallet.NftMetadata], String) -> Void
-  ) {
-    completion([], "Error Message")
-  }
-
-  func nftBalances(
-    walletAddress: String,
-    nftIdentifiers: [BraveWallet.NftIdentifier],
-    coin: BraveWallet.CoinType,
-    completion: @escaping ([NSNumber], String) -> Void
-  ) {
-    completion([], "Error Message")
+    self._nftMetadatas = { _, _, completion in
+      completion([], "Error Message")
+    }
+    self._nftBalances = { _, _, _, completion in
+      completion([], "Error Message")
+    }
   }
 }
 
