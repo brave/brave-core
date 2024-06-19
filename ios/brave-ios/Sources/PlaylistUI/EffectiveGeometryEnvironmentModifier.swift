@@ -30,7 +30,6 @@ import os
 /// - Note: This action will fail if used on iPad when multitasking is enabled so consider feature
 ///         blocking to only run when the interface idiom is `phone`.
 struct RequestGeometryUpdateAction {
-  // FIXME: May have to be weak
   fileprivate var windowScene: UIWindowScene?
 
   /// Calls `requestGeometryUpdate` on the associated `UIWindowScene`.
@@ -118,7 +117,6 @@ extension View {
 /// the underlying `UIWindowScene` associated with this UI and then uses that scene to inject
 /// various related values into the SwiftUI environment.
 private struct EffectiveGeometryEnvironmentModifier: ViewModifier {
-  // FIXME: May have to be a weak box
   @State private var windowScene: UIWindowScene?
   @State private var orientation: UIInterfaceOrientation = .unknown
 

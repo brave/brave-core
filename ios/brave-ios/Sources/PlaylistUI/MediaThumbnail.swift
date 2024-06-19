@@ -50,7 +50,6 @@ class MediaThumbnailLoader: ObservableObject {
   }
 }
 
-// FIXME: Support oEmbed thumbnails
 struct MediaThumbnail: View {
   @StateObject private var thumbnailLoader: MediaThumbnailLoader = .init()
   @State private var displayFavicon: Bool = false

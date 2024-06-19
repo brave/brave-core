@@ -60,7 +60,9 @@ public final class PlayerModel: ObservableObject {
       log.warning("PlayerModel deallocated without first stopping the underlying media.")
       stop()
     }
-    try? AVAudioSession.sharedInstance().setActive(false)
+    DispatchQueue.global().async {
+      try? AVAudioSession.sharedInstance().setActive(false)
+    }
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
     Task { @MainActor in
       UIApplication.shared.endReceivingRemoteControlEvents()

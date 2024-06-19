@@ -339,7 +339,12 @@ struct PlaylistSidebarListHeader: View {
 struct PlaylistSidebarContentUnavailableView: View {
   var body: some View {
     VStack(spacing: 24) {
-      // FIXME: Add social media icons here
+      HStack(spacing: 12) {
+        Image("social-youtube", bundle: .module)
+        Image("social-facebook", bundle: .module)
+        Image("social-vimeo", bundle: .module)
+        Image("social-instagram", bundle: .module)
+      }
       Text("Add media from your favorite sites and it’ll play here.")
         .multilineTextAlignment(.center)
         .foregroundStyle(Color(braveSystemName: .textTertiary))
@@ -350,9 +355,7 @@ struct PlaylistSidebarContentUnavailableView: View {
 }
 
 #if DEBUG
-// swift-format-ignore
 #Preview {
-  // FIXME: Set up CoreData mock for Previews
   PlaylistSidebarList(folders: [], folderID: "", selectedItemID: .constant(nil), isPlaying: false)
 }
 #endif

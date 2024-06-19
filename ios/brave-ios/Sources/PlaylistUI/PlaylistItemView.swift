@@ -61,7 +61,6 @@ struct PlaylistItemView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
           if isSelected {
             LeoPlayingSoundView(isAnimating: isPlaying)
-              // FIXME: Should this scale? Its just cosmetic
               .frame(width: 16, height: 16)
               .tint(Color(braveSystemName: .primary50))
           }
@@ -197,9 +196,8 @@ struct LeoPlayingSoundView: View {
 }
 
 #if DEBUG
-// swift-format-ignore
 #Preview {
-  LazyVStack(spacing: 0) {
+  LazyVStack(spacing: 12) {
     Button {
     } label: {
       PlaylistItemView(title: "The Worst Product I've Ever Reviewed... For Now", duration: .init(1504), isSelected: true, isPlaying: true)
@@ -213,6 +211,6 @@ struct LeoPlayingSoundView: View {
       PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .init(1641), isSelected: false, isPlaying: false, downloadState: .downloading(percentComplete: 0.33))
     }
   }
-  .buttonStyle(.spring(scale: 0.9))
+  .padding()
 }
 #endif
