@@ -42,7 +42,7 @@
                android:paddingStart="15dip"
                android:paddingEnd="15dip"
                android:text="@string/brave_sync_official"
-               style="@style/BraveSyncTitleText"
+               style="@style/BraveSyncTitleTextHeadingH4"
                android:gravity="center" />
 
             <TextView
@@ -53,7 +53,8 @@
                android:paddingEnd="15dip"
                android:text="@string/brave_sync_description_page_1"
                android:gravity="top"
-               style="@style/BraveSyncDescriptionText" />
+               style="@style/BraveSyncDescriptionTextDefaultRegular" />
+               <!-- style="@style/DefaultRegular" -->
 
            <android.widget.Button android:id="@+id/brave_sync_btn_scan_chain_code"
                android:layout_width="match_parent"
@@ -127,7 +128,7 @@
                android:paddingStart="15dip"
                android:paddingEnd="15dip"
                android:text="@string/brave_sync_qrcode_message_v2"
-               style="@style/BraveSyncDescriptionText" />
+               style="@style/BraveSyncDescriptionTextDefaultRegular" />
 
            <android.widget.Button android:id="@+id/brave_sync_btn_enter_code_words"
                android:layout_width="match_parent"
@@ -309,11 +310,13 @@
             app:tabRippleColor="@android:color/transparent">
 
             <com.google.android.material.tabs.TabItem
+                style="@style/DefaultSemibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_qr_code" />
 
             <com.google.android.material.tabs.TabItem
+                style="@style/DefaultSemibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_code_words" />

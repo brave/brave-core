@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_scan_sync_code"
-                style="@style/BraveSyncTitleText"
+                style="@style/BraveSyncTitleTextHeadingH4"
                 android:gravity="top" />
 
             <TextView
@@ -43,13 +43,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_add_mobile_device_text"
                 android:gravity="top"
-                style="@style/BraveSyncDescriptionText"
+                style="@style/BraveSyncDescriptionTextDefaultRegular"
                 android:layout_marginTop="20dp" />
 
             <TextView android:id="@+id/brave_sync_warning_text_add_mobile_device"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BraveSyncRedWarningText"
+                style="@style/BraveSyncRedWarningTextSmallSemibold"
                 android:text="@string/brave_sync_code_warning"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp" />

@@ -196,7 +196,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="BraveSyncRedWarningText">
+    <style name="BraveSyncRedWarningTextSmallSemibold" parent="SmallSemibold">
         <item name="android:lineSpacingExtra">2sp</item>
         <item name="android:translationY">-0.97sp</item>
         <item name="android:gravity">top</item>
@@ -205,7 +205,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="BraveSyncTitleText">
+    <style name="BraveSyncTitleTextHeadingH4" parent="HeadingH4">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textStyle">bold</item>
@@ -213,7 +213,7 @@
         <item name="android:translationY">-2.62sp</item>
     </style>
 
-    <style name="BraveSyncDescriptionText">
+    <style name="BraveSyncDescriptionTextDefaultRegular" parent="DefaultRegular">
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:translationY">-1.8sp</item>
         <item name="android:textSize">14sp</item>
@@ -382,7 +382,20 @@
         <item name="lineHeight">16sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">400</item>
-      </style>
+    </style>
+
+    <style name="SmallSemibold">
+        <!--
+            TODO(alexeybarabash, Deep, Agustin) Shold we ambed this font?
+            Otherwise, app can't be built:
+            error: resource font/roboto (aka com.brave.browser_default:font/roboto) not found.
+        -->
+        <!-- <item name="android:fontFamily">@font/roboto</item> -->
+        <item name="android:textSize">@dimen/small_semibold</item>
+        <item name="lineHeight">16sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
+    </style>
 
     <style name="LargeRegular">
         <!-- Default browser size for fonts -->
@@ -426,5 +439,15 @@
         <item name="lineHeight">24sp</item>
         <item name="fontStyle">normal</item>
         <item name="fontWeight">600</item>
-      </style>
+    </style>
+
+  <style name="MonospaceSmall">
+    <!-- <item name="android:fontFamily">@font/roboto_mono</item> -->
+    <item name="android:fontFamily">@font/roboto_mono_regular</item>
+    <item name="android:textSize">@dimen/monospace_small</item>
+    <item name="lineHeight">16sp</item>
+    <item name="fontStyle">normal</item>
+    <item name="fontWeight">400</item>
+  </style>
+
 </resources>

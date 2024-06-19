@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_sync_add_laptop_text_title"
-                style="@style/BraveSyncTitleText"
+                style="@style/BraveSyncTitleTextHeadingH4"
                 android:gravity="top" />
 
             <TextView
@@ -43,12 +43,12 @@
                 android:text="@string/brave_sync_add_laptop_text"
                 android:gravity="top"
                 android:layout_marginTop="20dp"
-                style="@style/BraveSyncDescriptionText"  />
+                style="@style/BraveSyncDescriptionTextDefaultRegular"  />
 
             <TextView android:id="@+id/brave_sync_warning_text_add_laptop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BraveSyncRedWarningText"
+                style="@style/BraveSyncRedWarningTextSmallSemibold"
                 android:text="@string/brave_sync_code_warning"
                 android:layout_marginTop="20dp" />
 
@@ -68,7 +68,8 @@
                 android:background="@drawable/brave_sync_top_rounded"
                 android:padding="16dip"
                 android:fontFamily="@font/roboto_mono_regular"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                style="@style/MonospaceSmall" />
         </FrameLayout>
 
         <androidx.fragment.app.FragmentContainerView
