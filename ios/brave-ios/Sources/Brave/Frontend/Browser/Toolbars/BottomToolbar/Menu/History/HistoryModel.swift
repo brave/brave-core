@@ -58,6 +58,7 @@ class HistoryModel: NSObject, ObservableObject {
 
   private var listener: HistoryServiceListener?
   private let maxFetchCount: UInt = 200
+  private var currentSearchQuery: String?
 
   @Published
   var isHistoryServiceLoaded = false
@@ -96,14 +97,29 @@ class HistoryModel: NSObject, ObservableObject {
       refreshHistory()
     }
 
-    listener = api?.add(self)
+    listener = api?.add(
+      HistoryStateObserver { [weak self] event in
+        guard let self = self else { return }
+        if case .modelLoaded = event {
+          isHistoryServiceLoaded = true
+        }
+
+        refreshHistory()
+      }
+    )
   }
 
   deinit {
     listener?.destroy()
   }
 
+  func refreshHistory() {
+    refreshHistory(query: currentSearchQuery)
+  }
+
   func refreshHistory(query: String? = nil) {
+    currentSearchQuery = query
+
     Task { @MainActor in
       for key in sectionDetails.keys {
         sectionDetails.updateValue([], forKey: key)
@@ -145,9 +161,6 @@ class HistoryModel: NSObject, ObservableObject {
     } catch {
       assertionFailure("STWebHistory could not be initialized: \(error)")
     }
-
-    // If history is being search, we  need to pass in the current query
-    refreshHistory(query: searchQuery)
   }
 
   func deleteAll() {
@@ -252,42 +265,33 @@ class HistoryModel: NSObject, ObservableObject {
   }
 }
 
-extension HistoryModel: HistoryServiceObserver {
-  func historyServiceLoaded() {
-    defer {
-      refreshHistory()
-    }
+private class HistoryStateObserver: NSObject, HistoryServiceObserver {
+  private let listener: (StateChange) -> Void
 
-    if api?.isBackendLoaded == true {
-      listener?.destroy()
-      listener = nil
-
-      if isHistoryServiceLoaded {
-        return
-      }
-
-      isHistoryServiceLoaded = true
-      return
-    }
-
-    listener?.destroy()
-    listener = nil
-    isHistoryServiceLoaded = true
+  enum StateChange {
+    case modelLoaded
+    case nodeVisited(HistoryNode)
+    case nodesModified([HistoryNode])
+    case nodesDeleted(_ nodes: [HistoryNode], _ isAllHistory: Bool)
   }
 
-  func historyServiceBeingDeleted() {
-    refreshHistory()
+  init(_ listener: @escaping (StateChange) -> Void) {
+    self.listener = listener
+  }
+
+  func historyServiceLoaded() {
+    self.listener(.modelLoaded)
   }
 
   func historyNodeVisited(_ historyNode: HistoryNode) {
-    refreshHistory()
+    self.listener(.nodeVisited(historyNode))
   }
 
   func historyNodesModified(_ historyNodeList: [HistoryNode]) {
-    refreshHistory()
+    self.listener(.nodesModified(historyNodeList))
   }
 
   func historyNodesDeleted(_ historyNodeList: [HistoryNode], isAllHistory: Bool) {
-    refreshHistory()
+    self.listener(.nodesDeleted(historyNodeList, isAllHistory))
   }
 }
