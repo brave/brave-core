@@ -75,6 +75,71 @@ struct DotsProgressViewStyle: ProgressViewStyle {
   }
 }
 
+struct CircularProgressViewStyle: ProgressViewStyle {
+  private let thickness: Double
+  private let foregroundColor: Color
+  private let backgroundColor: Color
+
+  init(thickness: Double, foregroundColor: Color, backgroundColor: Color) {
+    self.thickness = thickness
+    self.foregroundColor = foregroundColor
+    self.backgroundColor = backgroundColor
+  }
+
+  func makeBody(configuration: Configuration) -> some View {
+    TimelineView(.animation(minimumInterval: 0.25, paused: false)) { context in
+      CircularProgressView(
+        date: context.date,
+        thickness: thickness,
+        foregroundColor: foregroundColor,
+        backgroundColor: backgroundColor
+      )
+    }
+  }
+
+  private struct CircularProgressView: View {
+    @State
+    private var progress = 0
+    private var thickness: Double
+    private var backgroundColor: Color
+    private var foregroundColor: Color
+    private let date: Date
+
+    init(date: Date, thickness: Double, foregroundColor: Color, backgroundColor: Color) {
+      self.date = date
+      self.thickness = thickness
+      self.foregroundColor = foregroundColor
+      self.backgroundColor = backgroundColor
+    }
+
+    var body: some View {
+      ZStack {
+        Circle()
+          .stroke(
+            backgroundColor,
+            lineWidth: thickness
+          )
+
+        Circle()
+          .trim(from: 0.0, to: 0.25)
+          .stroke(
+            foregroundColor,
+            style: StrokeStyle(
+              lineWidth: thickness,
+              lineCap: .round
+            )
+          )
+          .rotationEffect(.degrees(90.0 * Double(progress)))
+          .animation(.linear, value: progress)
+
+      }
+      .onChange(of: date) { (date: Date) in
+        progress = (progress + 1) % 360
+      }
+    }
+  }
+}
+
 struct AIChatLoaderView: View {
   var body: some View {
     AIChatProductIcon(containerShape: Circle(), padding: 6.0)
