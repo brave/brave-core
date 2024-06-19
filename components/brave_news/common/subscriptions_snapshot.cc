@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
+#include <utility>
+
 #include "base/containers/contains.h"
 
 namespace brave_news {
@@ -31,8 +33,7 @@ SubscriptionsSnapshot::SubscriptionsSnapshot(const SubscriptionsSnapshot&) =
 SubscriptionsSnapshot& SubscriptionsSnapshot::operator=(
     const SubscriptionsSnapshot&) = default;
 
-SubscriptionsSnapshot::SubscriptionsSnapshot(SubscriptionsSnapshot&&) =
-    default;
+SubscriptionsSnapshot::SubscriptionsSnapshot(SubscriptionsSnapshot&&) = default;
 SubscriptionsSnapshot& SubscriptionsSnapshot::operator=(
     SubscriptionsSnapshot&&) = default;
 

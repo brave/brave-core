@@ -20,8 +20,8 @@
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "components/history/core/browser/history_service.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
+#include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 

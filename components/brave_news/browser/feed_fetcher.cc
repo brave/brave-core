@@ -22,7 +22,6 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_controller.h"

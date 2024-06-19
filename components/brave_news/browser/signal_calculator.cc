@@ -13,8 +13,8 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
 namespace brave_news {
 

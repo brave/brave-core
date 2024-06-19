@@ -29,7 +29,6 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
-#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
@@ -39,6 +38,7 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -445,10 +445,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
 
 }  // namespace
 
-FeedV2Builder::UpdateRequest::UpdateRequest(
-    SubscriptionsSnapshot subscriptions,
-    UpdateSettings settings,
-    UpdateCallback callback)
+FeedV2Builder::UpdateRequest::UpdateRequest(SubscriptionsSnapshot subscriptions,
+                                            UpdateSettings settings,
+                                            UpdateCallback callback)
     : settings(std::move(settings)), subscriptions(std::move(subscriptions)) {
   callbacks.push_back(std::move(callback));
 }
@@ -651,10 +650,9 @@ void FeedV2Builder::BuildFollowingFeed(
       std::move(callback));
 }
 
-void FeedV2Builder::BuildChannelFeed(
-    const SubscriptionsSnapshot& subscriptions,
-    const std::string& channel,
-    BuildFeedCallback callback) {
+void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
+                                     const std::string& channel,
+                                     BuildFeedCallback callback) {
   FeedItems raw_feed_items;
   base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
                           [](const auto& item) { return item->Clone(); });
