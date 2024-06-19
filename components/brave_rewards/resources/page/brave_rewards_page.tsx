@@ -20,7 +20,7 @@ import * as rewardsActions from './actions/rewards_actions'
 import { PlatformContext } from './lib/platform_context'
 import { createReducer } from './reducers'
 import { getCurrentBalanceReport } from './reducers/utils'
-
+import { App } from './components/app'
 import * as mojom from '../shared/lib/mojom'
 
 import * as Rewards from './lib/types'
@@ -51,7 +51,7 @@ function initialize () {
         <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
-              {/* <App /> */}
+              <App />
               <></>
             </WithThemeVariables>
           </PlatformContext.Provider>
