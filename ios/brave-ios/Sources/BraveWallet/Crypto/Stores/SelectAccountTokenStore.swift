@@ -90,7 +90,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var walletServiceObserver: WalletServiceObserver?
@@ -105,7 +105,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
-    bitcoinWalletService: BraveWalletBitcoinWalletService?,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
     query: String? = nil
@@ -178,7 +178,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         .init(isSelected: true, model: $0)
       }
       let btcAccountInfos = allAccounts.filter({ $0.coin == .btc })
-      if let bitcoinWalletService, !btcAccountInfos.isEmpty {
+      if !btcAccountInfos.isEmpty {
         self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
           accounts: btcAccountInfos
         )
@@ -290,7 +290,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
           }
         }
       }
-      if let bitcoinWalletService, allAccounts.contains(where: { $0.coin == .btc }) {
+      if allAccounts.contains(where: { $0.coin == .btc }) {
         self.accountsBTCBalances = await withTaskGroup(of: [String: [BTCBalanceType: Double]].self)
         {
           [bitcoinWalletService] group in

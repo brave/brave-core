@@ -81,7 +81,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
   private let swapService: BraveWalletSwapService
-  private let bitcoinWalletService: BraveWalletBitcoinWalletService?
+  private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let assetManager: WalletUserAssetManagerType
   /// A list of tokens that are supported with the current selected network for all supported
   /// on-ramp providers.
@@ -137,7 +137,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
     swapService: BraveWalletSwapService,
-    bitcoinWalletService: BraveWalletBitcoinWalletService?,
+    bitcoinWalletService: BraveWalletBitcoinWalletService,
     userAssetManager: WalletUserAssetManagerType,
     assetDetailType: AssetDetailType
   ) {
@@ -459,10 +459,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       for accountAssetViewModel in accountAssetViewModels {
         group.addTask { @MainActor in
           var tokenBalance: Double?
-          if let bitcoinWalletService = self.bitcoinWalletService,
-            accountAssetViewModel.account.coin == .btc
-          {
-            tokenBalance = await bitcoinWalletService.fetchBTCBalance(
+          if accountAssetViewModel.account.coin == .btc {
+            tokenBalance = await self.bitcoinWalletService.fetchBTCBalance(
               accountId: accountAssetViewModel.account.accountId,
               type: .total
             )
