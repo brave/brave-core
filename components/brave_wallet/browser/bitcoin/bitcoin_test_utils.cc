@@ -106,6 +106,7 @@ BitcoinTestRpcServer::BitcoinTestRpcServer() {
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
+
 BitcoinTestRpcServer::BitcoinTestRpcServer(
     BitcoinWalletService* bitcoin_wallet_service)
     : BitcoinTestRpcServer() {

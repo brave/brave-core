@@ -40,6 +40,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
 
   void SetUp() override {
     RegisterLocalStatePrefs(local_state_.registry());
+    RegisterLocalStatePrefsForMigration(local_state_.registry());
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),

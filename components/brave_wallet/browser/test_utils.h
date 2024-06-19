@@ -123,6 +123,7 @@ class AccountUtils {
  private:
   raw_ptr<KeyringService> keyring_service_;
 };
+
 class TestBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
  public:
   TestBraveWalletServiceDelegate();
