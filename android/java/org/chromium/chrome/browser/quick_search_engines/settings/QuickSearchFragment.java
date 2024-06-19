@@ -5,14 +5,12 @@
 
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -94,11 +92,6 @@ public class QuickSearchFragment extends BravePreferenceFragment
         super.onActivityCreated(savedInstanceState);
         mLargeIconBridge = new LargeIconBridge(getProfile());
         refreshData();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
     }
 
     private void refreshData() {
