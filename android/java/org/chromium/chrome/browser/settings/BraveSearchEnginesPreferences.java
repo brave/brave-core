@@ -13,8 +13,6 @@ import androidx.preference.Preference;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.Pref;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -67,18 +65,16 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     }
 
     private void updateSearchEnginePreference() {
-        Profile lastUsedRegularProfile = ProfileManager.getLastUsedRegularProfile();
         Preference searchEnginePreference = findPreference(PREF_STANDARD_SEARCH_ENGINE);
         searchEnginePreference.setEnabled(true);
         searchEnginePreference.setSummary(
-                BraveSearchEngineUtils.getDSEShortName(lastUsedRegularProfile, false));
+                BraveSearchEngineUtils.getDSEShortName(getProfile(), false));
 
         searchEnginePreference = findPreference(PREF_PRIVATE_SEARCH_ENGINE);
         searchEnginePreference.setEnabled(true);
         searchEnginePreference.setSummary(
                 BraveSearchEngineUtils.getDSEShortName(
-                        lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true),
-                        true));
+                        getProfile().getPrimaryOTRProfile(/* createIfNeeded= */ true), true));
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
         mSearchSuggestions.setOnPreferenceChangeListener(this);
@@ -93,8 +89,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         mAutocompleteTopSites.setOnPreferenceChangeListener(this);
 
         boolean autocompleteEnabled =
-                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
+                UserPrefs.get(getProfile()).getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
         mSearchSuggestions.setVisible(autocompleteEnabled);
         mAutocompleteTopSites.setVisible(autocompleteEnabled);
 
@@ -102,8 +97,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         mSearchSuggestions.setChecked(
                 UserPrefs.get(getProfile()).getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         mAutocompleteTopSites.setChecked(
-                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
+                UserPrefs.get(getProfile()).getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
     }
 
     @Override
@@ -115,10 +109,10 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             boolean autocompleteEnabled = (boolean) newValue;
             mSearchSuggestions.setVisible(autocompleteEnabled);
             mAutocompleteTopSites.setVisible(autocompleteEnabled);
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(BravePref.AUTOCOMPLETE_ENABLED, autocompleteEnabled);
         } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
         }
         return true;

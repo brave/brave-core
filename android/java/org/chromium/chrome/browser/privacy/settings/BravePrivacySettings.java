@@ -90,9 +90,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     // private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     public static final String PREF_APP_LINKS = "app_links";
     public static final String PREF_APP_LINKS_RESET = "app_links_reset";
-    // private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
-    //         "show_autocomplete_in_address_bar";
-    // private static final String PREF_AUTOCOMPLETE_TOP_SITES = "autocomplete_top_sites";
 
     private static final String PREF_SOCIAL_BLOCKING_GOOGLE = "social_blocking_google";
     private static final String PREF_SOCIAL_BLOCKING_FACEBOOK = "social_blocking_facebook";
@@ -157,9 +154,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_SEND_P3A,
         PREF_SEND_CRASH_REPORTS,
         PREF_BRAVE_STATS_USAGE_PING,
-        // PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR,
-        // PREF_SEARCH_SUGGESTIONS,
-        // PREF_AUTOCOMPLETE_TOP_SITES,
         PREF_USAGE_STATS,
         PREF_PRIVACY_SANDBOX
     };
@@ -172,13 +166,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile());
     private final PrivacyPreferencesManagerImpl mPrivacyPrefManager =
             PrivacyPreferencesManagerImpl.getInstance();
-    // private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
-    // private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mCanMakePayment;
     private BraveDialogPreference mAdsTrakersBlockPref;
     private BraveDialogPreference mBlockCrosssiteCookies;
-    // private ChromeSwitchPreference mShowAutocompleteInAddressBar;
-    // private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mDebouncePref;
     private ChromeSwitchPreference mHttpsFirstModePref;
@@ -331,18 +321,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mSendCrashReports.setOnPreferenceChangeListener(this);
         mBraveStatsUsagePing = (ChromeSwitchPreference) findPreference(PREF_BRAVE_STATS_USAGE_PING);
         mBraveStatsUsagePing.setOnPreferenceChangeListener(this);
-
-        // mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
-        // mSearchSuggestions.setOnPreferenceChangeListener(this);
-        // mSearchSuggestions.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
-
-        // mShowAutocompleteInAddressBar =
-        //         (ChromeSwitchPreference) findPreference(PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR);
-        // mShowAutocompleteInAddressBar.setOnPreferenceChangeListener(this);
-
-        // mAutocompleteTopSites =
-        //         (ChromeSwitchPreference) findPreference(PREF_AUTOCOMPLETE_TOP_SITES);
-        // mAutocompleteTopSites.setOnPreferenceChangeListener(this);
 
         mSocialBlockingCategory =
                 (PreferenceCategory) findPreference(PREF_BRAVE_SOCIAL_BLOCKING_SECTION);
@@ -560,21 +538,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     (boolean) newValue, ChangeMetricsReportingStateCalledFrom.UI_SETTINGS);
         } else if (PREF_BRAVE_STATS_USAGE_PING.equals(key)) {
             BraveLocalState.get().setBoolean(BravePref.STATS_REPORTING_ENABLED, (boolean) newValue);
-        }
-        // else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
-        //     mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
-        // }
-        // else if (PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR.equals(key)) {
-        //     boolean autocompleteEnabled = (boolean) newValue;
-        //     // mSearchSuggestions.setEnabled(autocompleteEnabled);
-        //     mAutocompleteTopSites.setEnabled(autocompleteEnabled);
-        //     UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-        //             .setBoolean(BravePref.AUTOCOMPLETE_ENABLED, autocompleteEnabled);
-        // } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
-        //     UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-        //             .setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
-        // }
-        else if (PREF_SOCIAL_BLOCKING_GOOGLE.equals(key)) {
+        } else if (PREF_SOCIAL_BLOCKING_GOOGLE.equals(key)) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_FACEBOOK.equals(key)) {
@@ -715,8 +679,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mForgetFirstPartyStoragePref.setChecked(
                 BraveShieldsContentSettings.getForgetFirstPartyStoragePref());
 
-        // mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
-
         mCanMakePayment.setTitle(
                 getActivity()
                         .getResources()
@@ -742,19 +704,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mWebrtcPolicy.setSummary(
                 webrtcPolicyToString(BravePrefServiceBridge.getInstance().getWebrtcPolicy()));
 
-        // mAutocompleteTopSites.setChecked(
-        //         UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-        //                 .getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
-
         mClearBrowsingDataOnExit.setChecked(
                 sharedPreferences.getBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false));
 
-        // boolean autocompleteEnabled =
-        //         UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-        //                 .getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
-        // mShowAutocompleteInAddressBar.setChecked(autocompleteEnabled);
-        // mSearchSuggestions.setEnabled(autocompleteEnabled);
-        // mAutocompleteTopSites.setEnabled(autocompleteEnabled);
         mFingerprntLanguagePref.setChecked(
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
@@ -837,19 +789,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             getPreferenceScreen().removePreference(preference);
         }
     }
-
-    // private ChromeManagedPreferenceDelegate createManagedPreferenceDelegate() {
-    //     return new ChromeManagedPreferenceDelegate(getProfile()) {
-    //         @Override
-    //         public boolean isPreferenceControlledByPolicy(Preference preference) {
-    //             String key = preference.getKey();
-    //             if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
-    //                 return mPrefServiceBridge.isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
-    //             }
-    //             return false;
-    //         }
-    //     };
-    // }
 
     private String webrtcPolicyToString(@BraveWebrtcPolicyPreference.WebrtcPolicy int policy) {
         switch (policy) {
