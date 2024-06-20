@@ -5,10 +5,6 @@
 
 #include "chrome/browser/ui/color/material_omnibox_color_mixer.h"
 
-#define AddMaterialOmniboxColorMixer AddMaterialOmniboxColorMixer_ChromiumImpl
-#include "src/chrome/browser/ui/color/material_omnibox_color_mixer.cc"
-#undef AddMaterialOmniboxColorMixer
-
 void AddMaterialOmniboxColorMixer(ui::ColorProvider* provider,
                                   const ui::ColorProviderKey& key) {
   // Upstream's material omnibox colors are currently not used.
