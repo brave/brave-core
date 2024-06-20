@@ -154,6 +154,12 @@ void FeedController::EnsureFeedIsUpdating(
                                            subscriptions)) {
                               VLOG(1) << "ParseFeed reported failure.";
                             }
+
+                             // Notify listeners of the updated feed
+                            for (auto& listener : controller->feed_listeners_) {
+                                  listener->OnFeedUpdated(controller->current_feed_.Clone());
+                            }
+                            
                             // Let any callbacks know that the data is ready
                             // or errored.
                             controller->NotifyUpdateDone();

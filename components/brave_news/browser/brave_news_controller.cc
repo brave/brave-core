@@ -852,6 +852,9 @@ void BraveNewsController::OnPublishersChanged() {
   auto diff = subscriptions.DiffPublishers(last_subscriptions_);
   last_subscriptions_ = std::move(subscriptions);
 
+   // Update the feed when publishers change
+    feed_controller_.EnsureFeedIsUpdating(last_subscriptions_);
+
   GetPublishers(
       base::BindOnce(
           &CreateChangeEvent<mojom::PublisherPtr, mojom::PublishersEvent>,
@@ -881,6 +884,7 @@ void BraveNewsController::OnChannelsChanged() {
     auto diff = subscriptions.DiffChannels(last_subscriptions_);
     last_subscriptions_ = std::move(subscriptions);
 
+    // Update the feed when channels change
     feed_controller_.EnsureFeedIsUpdating(last_subscriptions_);
     GetChannels(
         base::BindOnce(
