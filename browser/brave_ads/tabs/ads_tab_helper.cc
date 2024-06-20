@@ -339,9 +339,11 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyTabDidChange();
 
+  // Process same document navigations only when a document load is completed.
   // For navigations that lead to a document change, `ProcessNavigation` is
   // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
-  if (navigation_handle->IsSameDocument()) {
+  if (navigation_handle->IsSameDocument() &&
+      web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
     // Single-page application.
     ProcessNavigation();
   }
