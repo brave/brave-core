@@ -1,0 +1,33 @@
+Total size 97114K
+
+GROUP Adblock [8060K total]
+   104K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) [adcocjohghhfpidemphmcmlmhnfgikei]
+    44K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) [bfpgedeaaibpoidldhjcknekahbikncb]
+  1298K Brave Ad Block Updater (EasyList Cookie (plaintext)) [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+   139K Brave Ad Block Updater (Regional Catalog) [gkboaolpopklhgplhaaiboijnklogmbc]
+  5578K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) [iodkpdagapdfkphljnddpjlldadblomo]
+     8K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
+   885K Brave Ad Block Updater (Resources) [mfddibmblmbccpadfndgakiopmmhebop]
+
+GROUP Ads [22975K total]
+    72K Brave Ads Resources [iblokdlgekdjophgeonmanpnjihcjkjj]
+ 22903K Brave Ads Resources [ocilmpijebaopmdifcomolmpigakocmo]
+
+GROUP Ntp [13886K total]
+ 12803K Brave NTP background images [aoojcmojmmcbpfgoecoadbdpnagfchel]
+  1082K Brave NTP sponsored images [pciohbjgmbejokmghgjkobeionibheai]
+
+GROUP Other [2007K total]
+   752K crl-set-10158485835452820557.data [CertificateRevocation]
+    31K chromeCommerceHeuristics [CommerceHeuristics]
+   208K Crowd Deny [Crowd Deny]
+    18K fileTypePolicies [FileTypePolicies]
+   402K pkiMetadata [PKIMetadata]
+    66K real_time_url_checks_allowlist [RealTimeUrlChecksAllowlist]
+     4K sslErrorAssistant [SSLErrorAssistant]
+   300K safetyTips [SafetyTips]
+    65K Third-Party Cookie Deprecation Metadata [TpcdMetadata]
+   157K Brave Local Data Files Updater [afalakplffnnnlkncjhbmahjfjhmlkal]
+
+GROUP large_files [44160K total]
+ 44160K Default/publisher_info_db

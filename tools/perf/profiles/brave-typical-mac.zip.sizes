@@ -1,0 +1,42 @@
+Total size 143908K
+
+GROUP Adblock [8060K total]
+   104K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) [adcocjohghhfpidemphmcmlmhnfgikei]
+    44K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) [bfpgedeaaibpoidldhjcknekahbikncb]
+  1298K Brave Ad Block Updater (EasyList Cookie (plaintext)) [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+   139K Brave Ad Block Updater (Regional Catalog) [gkboaolpopklhgplhaaiboijnklogmbc]
+  5578K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) [iodkpdagapdfkphljnddpjlldadblomo]
+     8K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
+   885K Brave Ad Block Updater (Resources) [mfddibmblmbccpadfndgakiopmmhebop]
+
+GROUP Ads [22975K total]
+    72K Brave Ads Resources [iblokdlgekdjophgeonmanpnjihcjkjj]
+ 22903K Brave Ads Resources [ocilmpijebaopmdifcomolmpigakocmo]
+
+GROUP Ntp [13886K total]
+ 12803K Brave NTP background images [aoojcmojmmcbpfgoecoadbdpnagfchel]
+  1082K Brave NTP sponsored images [gccbbckogglekeggclmmekihdgdpdgoe]
+
+GROUP Other [5180K total]
+    94K chromeAutofillRegexConstants [AutofillRegex]
+    26K crl-set-9121408342874219771.data [CertificateRevocation]
+  3222K client_side_phishing [ClientSidePhishing]
+    18K Crowd Deny [Crowd Deny]
+     9K fileTypePolicies [FileTypePolicies]
+    43K Optimization Hints [OptimizationHints]
+   197K pkiMetadata [PKIMetadata]
+     4K sslErrorAssistant [SSLErrorAssistant]
+   131K safetyTips [SafetyTips]
+     5K Navtracking URL param filter lists [UrlParamClassifications]
+   157K Brave Local Data Files Updater [afalakplffnnnlkncjhbmahjfjhmlkal]
+  1270K hyphens-data [hyphen-data]
+
+GROUP Wallet [7261K total]
+  7261K Wallet Data Files Updater [BraveWallet]
+
+GROUP large_files [76216K total]
+  3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
+ 44096K Default/publisher_info_db
+  1636K Safe Browsing/ChromeExtMalware.store.32_13357750397781780
+  1054K Safe Browsing/UrlMalBin.store.4_13357750397776940
+ 26166K Safe Browsing/UrlSoceng.store.4_13357750397723129

@@ -1,0 +1,11 @@
+Total size 90611K
+
+GROUP large_files [84333K total]
+  4096K BrowserMetrics/BrowserMetrics-66743170-14946.pma
+  3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
+  1022K Default/Local Storage/leveldb/000003.ldb
+  1010K Default/Session Storage/000003.ldb
+ 44096K Default/publisher_info_db
+  1945K Safe Browsing/ChromeExtMalware.store.32_13357744536199942
+  1011K Safe Browsing/UrlMalBin.store.4_13357744536174233
+ 27889K Safe Browsing/UrlSoceng.store.4_13357744535888997

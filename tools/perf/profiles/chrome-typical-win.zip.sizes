@@ -1,0 +1,30 @@
+Total size 108241K
+
+GROUP Other [66742K total]
+    94K chromeAutofillRegexConstants [AutofillRegex]
+   199K chromeAutofillStatesData [AutofillStates]
+    52K crl-set-11413564951899144464.data [CertificateRevocation]
+  3397K client_side_phishing [ClientSidePhishing]
+    18K Crowd Deny [Crowd Deny]
+   314K sharinghub.binarypb [DesktopSharingHub]
+    18K fileTypePolicies [FileTypePolicies]
+     8K First Party Sets [FirstPartySetsPreloaded]
+  5298K windows-mf-cdm [MediaFoundationWidevineCdm]
+  7867K OnDeviceHeadSuggestENUS500000 [OnDeviceHeadSuggestModel]
+    43K Optimization Hints [OptimizationHints]
+     3K Origin Trials Updates [OriginTrials]
+   394K pkiMetadata [PKIMetadata]
+     4K sslErrorAssistant [SSLErrorAssistant]
+   255K safetyTips [SafetyTips]
+   213K Subresource Filtering Rules [Subresource Filter]
+ 25520K Software Reporter Tool [SwReporter]
+     3K win_third_party_module_list [ThirdPartyModuleList64]
+     7K trustToken [TrustTokenKeyCommitments]
+  1642K zxcvbnData [ZxcvbnData]
+  3456K hyphens-data [hyphen-data]
+ 17926K PNaCl Translator Multi-CRX [pnacl]
+
+GROUP large_files [31272K total]
+  1791K Safe Browsing/ChromeExtMalware.store.32_13357751453489368
+  1016K Safe Browsing/UrlMalBin.store.4_13357751453485118
+ 28463K Safe Browsing/UrlSoceng.store.4_13357751453438084
