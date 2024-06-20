@@ -76,7 +76,7 @@ bool IsPrivateDomainLikely(RegexUtil& regex_util, const std::string_view host) {
     return true;
   }
   auto hyphen_split =
-      base::SplitString(host, ".", base::WhitespaceHandling::KEEP_WHITESPACE,
+      base::SplitString(host, "-", base::WhitespaceHandling::KEEP_WHITESPACE,
                         base::SPLIT_WANT_ALL);
   if (hyphen_split.size() > kMaxHyphenSplitDomainSize) {
     return true;

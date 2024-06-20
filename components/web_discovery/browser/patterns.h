@@ -34,7 +34,6 @@ struct ScrapeRule {
   ScrapeRule(const ScrapeRule&) = delete;
   ScrapeRule& operator=(const ScrapeRule&) = delete;
 
-  std::string selector;
   std::optional<std::string> sub_selector;
   ScrapeRuleType rule_type;
   std::string attribute;

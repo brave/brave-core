@@ -60,22 +60,25 @@ struct ServerConfig {
 
 class ServerConfigLoader {
  public:
-  explicit ServerConfigLoader(
-      PrefService* local_state,
-      base::FilePath user_data_dir,
-      network::SharedURLLoaderFactory* shared_url_loader_factory,
-      base::RepeatingClosure config_callback,
-      base::RepeatingClosure patterns_callback);
+  ServerConfigLoader(PrefService* local_state,
+                     base::FilePath user_data_dir,
+                     network::SharedURLLoaderFactory* shared_url_loader_factory,
+                     base::RepeatingClosure config_callback,
+                     base::RepeatingClosure patterns_callback);
   ~ServerConfigLoader();
 
   ServerConfigLoader(const ServerConfigLoader&) = delete;
   ServerConfigLoader& operator=(const ServerConfigLoader&) = delete;
 
+  void LoadConfigs();
+
   const ServerConfig& GetLastServerConfig() const;
   const PatternsGroup& GetLastPatterns() const;
 
+  void SetLastServerConfigForTest(std::unique_ptr<ServerConfig> server_config);
+  void SetLastPatternsForTest(std::unique_ptr<PatternsGroup> patterns);
+
  private:
-  void LoadConfigs();
   void OnConfigResponses(
       std::vector<std::optional<std::string>> response_bodies);
   bool ProcessConfigResponses(
