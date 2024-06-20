@@ -99,11 +99,10 @@ void BraveBrowserMainParts::PreBrowserStart() {
 #endif
 
 #if BUILDFLAG(IS_WIN)
-  // As this uses first run sentinel time, PreBrowserStart() is good place to
-  // initialize.
+  // As DayZeroBrowserUIExptManager uses first run sentinel time,
+  // PreBrowserStart() is good place to initialize.
   day_zero_browser_ui_expt_manager_ =
-      std::make_unique<DayZeroBrowserUIExptManager>(
-          g_browser_process->profile_manager());
+      DayZeroBrowserUIExptManager::Create(g_browser_process->profile_manager());
 #endif
 
   ChromeBrowserMainParts::PreBrowserStart();
