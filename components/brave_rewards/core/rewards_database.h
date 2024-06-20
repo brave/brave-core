@@ -18,21 +18,24 @@
 
 namespace brave_rewards::internal {
 
-class RewardsDatabase {
+class RewardsDatabase : public mojom::RewardsDatabase {
  public:
   explicit RewardsDatabase(const base::FilePath& path);
 
   RewardsDatabase(const RewardsDatabase&) = delete;
   RewardsDatabase& operator=(const RewardsDatabase&) = delete;
 
-  ~RewardsDatabase();
+  ~RewardsDatabase() override;
 
-  mojom::DBCommandResponsePtr RunTransaction(
-      mojom::DBTransactionPtr transaction);
+  void RunTransaction(mojom::DBTransactionPtr transaction,
+                      RunTransactionCallback callback) override;
 
   sql::Database* GetInternalDatabaseForTesting() { return &db_; }
 
  private:
+  mojom::DBCommandResponsePtr RunTransactionInternal(
+      mojom::DBTransactionPtr transaction);
+
   mojom::DBCommandResponse::Status Initialize(
       int32_t version,
       int32_t compatible_version,

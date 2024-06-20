@@ -18,12 +18,12 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/core/common/remote_worker.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
@@ -42,34 +42,42 @@
 #error "This file requires ARC support."
 #endif
 
-namespace brave_rewards::internal {
+namespace {
 
-template <typename T>
-struct task_deleter {
- private:
-  scoped_refptr<base::TaskRunner> task_runner;
+using brave_rewards::internal::RemoteWorker;
 
+class RewardsDatabaseWorker
+    : public RemoteWorker<brave_rewards::mojom::RewardsDatabase> {
  public:
-  task_deleter()
-      : task_runner(base::SequencedTaskRunner::GetCurrentDefault()) {}
-  ~task_deleter() = default;
+  RewardsDatabaseWorker() : RemoteWorker(CreateTaskRunner()) {}
+  ~RewardsDatabaseWorker() = default;
 
-  void operator()(T* ptr) const {
-    if (base::SequencedTaskRunner::GetCurrentDefault() != task_runner) {
-      task_runner->PostTask(FROM_HERE,
-                            base::BindOnce([](T* ptr) { delete ptr; }, ptr));
-    } else {
-      delete ptr;
-    }
+ private:
+  static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
+    return base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
 };
 
-template <typename T, typename... Args>
-std::unique_ptr<T, task_deleter<T>> make_task_ptr(Args&&... args) {
-  return {new T(std::forward<Args>(args)...), task_deleter<T>()};
-}
+class RewardsEngineWorker
+    : public RemoteWorker<brave_rewards::mojom::RewardsEngine> {
+ public:
+  RewardsEngineWorker() : RemoteWorker(CreateTaskRunner()) {}
+  ~RewardsEngineWorker() = default;
 
-}  // namespace brave_rewards::internal
+ private:
+  static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
+    // The `WithBaseSyncPrimitives` flag is required due to the usage of [Sync]
+    // interface method calls by the Rewards engine.
+    return base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::WithBaseSyncPrimitives(),
+         base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  }
+};
+
+}  // namespace
 
 #define LLOG(verbose_level, format, ...)                  \
   [self log:(__FILE__)                                    \
@@ -94,18 +102,9 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 /// ---
 
 @interface BraveRewardsAPI () <RewardsClientBridge> {
-  // DO NOT ACCESS DIRECTLY, use `postEngineTask` or ensure you are accessing
-  // _engine from a task posted in `_engineTaskRunner`
-  std::unique_ptr<brave_rewards::internal::RewardsEngine,
-                  brave_rewards::internal::task_deleter<
-                      brave_rewards::internal::RewardsEngine>>
-      _engine;
-  std::unique_ptr<RewardsClientIOS,
-                  brave_rewards::internal::task_deleter<RewardsClientIOS>>
-      _rewardsClient;
-  base::SequenceBound<brave_rewards::internal::RewardsDatabase> rewardsDatabase;
-  scoped_refptr<base::SequencedTaskRunner> databaseQueue;
-  scoped_refptr<base::SequencedTaskRunner> _engineTaskRunner;
+  std::unique_ptr<RewardsClientIOS> _rewardsClient;
+  RewardsEngineWorker _rewardsEngine;
+  RewardsDatabaseWorker _rewardsDatabase;
 }
 
 @property(nonatomic, copy) NSString* storagePath;
@@ -133,16 +132,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {
-    _engineTaskRunner = base::ThreadPool::CreateSingleThreadTaskRunner(
-        {base::MayBlock(), base::WithBaseSyncPrimitives(),
-         base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-        base::SingleThreadTaskRunnerThreadMode::DEDICATED);
-
     self.storagePath = path;
-    self.commonOps =
-        [[BraveCommonOperations alloc] initWithStoragePath:path
-                                                taskRunner:_engineTaskRunner];
+    self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
     self.state = [[NSMutableDictionary alloc]
                      initWithContentsOfFile:self.randomStatePath]
                      ?: [[NSMutableDictionary alloc] init];
@@ -162,26 +153,14 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
       self.prefs[walletProviderRegionsKey] = @"{}";
     }
 
-    databaseQueue = base::ThreadPool::CreateSequencedTaskRunner(
-        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    _rewardsClient = std::make_unique<RewardsClientIOS>(self);
 
-    const auto* dbPath = [self rewardsDatabasePath].UTF8String;
+    _rewardsEngine.BindRemote<brave_rewards::internal::RewardsEngine>(
+        _rewardsClient->MakeRemote(),
+        [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()]);
 
-    rewardsDatabase =
-        base::SequenceBound<brave_rewards::internal::RewardsDatabase>(
-            databaseQueue, base::FilePath(dbPath));
-
-    _engineTaskRunner->PostTask(
-        FROM_HERE, base::BindOnce(^{
-          self->_rewardsClient =
-              brave_rewards::internal::make_task_ptr<RewardsClientIOS>(self);
-          auto options = [self
-              handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
-          self->_engine = brave_rewards::internal::make_task_ptr<
-              brave_rewards::internal::RewardsEngine>(
-              self->_rewardsClient->MakeRemote(), std::move(options));
-        }));
+    _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
+        base::FilePath([self rewardsDatabasePath].UTF8String));
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter
@@ -230,48 +209,36 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   return options;
 }
 
-- (void)postEngineTask:(void (^)(brave_rewards::internal::RewardsEngine*))task {
-  _engineTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
-                                CHECK(self->_engine != nullptr);
-                                task(self->_engine.get());
-                              }));
-}
-
 - (void)initializeRewardsService:(nullable void (^)())completion {
   if (self.initialized || self.initializing) {
     return;
   }
   self.initializing = YES;
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->Initialize(base::BindOnce(^(brave_rewards::mojom::Result result) {
-      self.initialized =
-          (result == brave_rewards::mojom::Result::OK ||
-           result == brave_rewards::mojom::Result::NO_LEGACY_STATE ||
-           result == brave_rewards::mojom::Result::NO_PUBLISHER_STATE);
-      self.initializing = NO;
-      if (self.initialized) {
-        [self getRewardsParameters:nil];
-        [self fetchBalance:nil];
-      } else {
-        LLOG(0, @"Rewards Initialization Failed with error: %d",
-             base::to_underlying(result));
-      }
-      self.initializationResult = static_cast<BraveRewardsResult>(result);
-      if (completion) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+  _rewardsEngine->Initialize(
+      base::BindOnce(^(brave_rewards::mojom::Result result) {
+        self.initialized =
+            (result == brave_rewards::mojom::Result::OK ||
+             result == brave_rewards::mojom::Result::NO_LEGACY_STATE ||
+             result == brave_rewards::mojom::Result::NO_PUBLISHER_STATE);
+        self.initializing = NO;
+        if (self.initialized) {
+          [self getRewardsParameters:nil];
+          [self fetchBalance:nil];
+        } else {
+          LLOG(0, @"Rewards Initialization Failed with error: %d",
+               base::to_underlying(result));
+        }
+        self.initializationResult = static_cast<BraveRewardsResult>(result);
+        if (completion) {
           completion();
-        });
-      }
-      dispatch_async(dispatch_get_main_queue(), ^{
+        }
         for (RewardsObserver* observer in [self.observers copy]) {
           if (observer.walletInitalized) {
             observer.walletInitalized(self.initializationResult);
           }
         }
-      });
-    }));
-  }];
+      }));
 }
 
 - (NSString*)rewardsDatabasePath {
@@ -284,9 +251,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   [NSFileManager.defaultManager
       removeItemAtPath:[dbPath stringByAppendingString:@"-journal"]
                  error:nil];
-  rewardsDatabase =
-      base::SequenceBound<brave_rewards::internal::RewardsDatabase>(
-          databaseQueue, base::FilePath(base::SysNSStringToUTF8(dbPath)));
+  _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
+      base::FilePath(base::SysNSStringToUTF8(dbPath)));
 }
 
 - (NSString*)randomStatePath {
@@ -319,7 +285,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 #pragma mark - Wallet
 
 - (void)createWallet:(void (^)(NSError* _Nullable))completion {
-  const auto __weak weakSelf = self;
   // Results that can come from CreateRewardsWallet():
   //   - OK: Good to go
   //   - ERROR: Already initialized
@@ -327,119 +292,92 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->CreateRewardsWallet(
-        "", base::BindOnce(^(
-                brave_rewards::mojom::CreateRewardsWalletResult create_result) {
-          const auto strongSelf = weakSelf;
-          if (!strongSelf) {
-            return;
+  _rewardsEngine->CreateRewardsWallet(
+      "", base::BindOnce(^(
+              brave_rewards::mojom::CreateRewardsWalletResult create_result) {
+        brave_rewards::mojom::Result result =
+            create_result ==
+                    brave_rewards::mojom::CreateRewardsWalletResult::kSuccess
+                ? brave_rewards::mojom::Result::OK
+                : brave_rewards::mojom::Result::FAILED;
+
+        NSError* error = nil;
+        if (result != brave_rewards::mojom::Result::OK) {
+          std::map<brave_rewards::mojom::Result, std::string> errorDescriptions{
+              {brave_rewards::mojom::Result::FAILED,
+               "The wallet was already initialized"},
+              {brave_rewards::mojom::Result::BAD_REGISTRATION_RESPONSE,
+               "Request credentials call failure or malformed data"},
+              {brave_rewards::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
+               "Missing master user token from registered persona"},
+          };
+          NSDictionary* userInfo = @{};
+          const auto description =
+              errorDescriptions[static_cast<brave_rewards::mojom::Result>(
+                  result)];
+          if (description.length() > 0) {
+            userInfo = @{
+              NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)
+            };
           }
+          error = [NSError errorWithDomain:BraveRewardsErrorDomain
+                                      code:static_cast<NSInteger>(result)
+                                  userInfo:userInfo];
+        }
 
-          brave_rewards::mojom::Result result =
-              create_result ==
-                      brave_rewards::mojom::CreateRewardsWalletResult::kSuccess
-                  ? brave_rewards::mojom::Result::OK
-                  : brave_rewards::mojom::Result::FAILED;
+        self.initializingWallet = NO;
 
-          NSError* error = nil;
-          if (result != brave_rewards::mojom::Result::OK) {
-            std::map<brave_rewards::mojom::Result, std::string>
-                errorDescriptions{
-                    {brave_rewards::mojom::Result::FAILED,
-                     "The wallet was already initialized"},
-                    {brave_rewards::mojom::Result::BAD_REGISTRATION_RESPONSE,
-                     "Request credentials call failure or malformed data"},
-                    {brave_rewards::mojom::Result::
-                         REGISTRATION_VERIFICATION_FAILED,
-                     "Missing master user token from registered persona"},
-                };
-            NSDictionary* userInfo = @{};
-            const auto description =
-                errorDescriptions[static_cast<brave_rewards::mojom::Result>(
-                    result)];
-            if (description.length() > 0) {
-              userInfo = @{
-                NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)
-              };
-            }
-            error = [NSError errorWithDomain:BraveRewardsErrorDomain
-                                        code:static_cast<NSInteger>(result)
-                                    userInfo:userInfo];
+        if (completion) {
+          completion(error);
+        }
+
+        for (RewardsObserver* observer in [self.observers copy]) {
+          if (observer.walletInitalized) {
+            observer.walletInitalized(static_cast<BraveRewardsResult>(result));
           }
-
-          strongSelf.initializingWallet = NO;
-
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(error);
-            }
-
-            for (RewardsObserver* observer in [strongSelf.observers copy]) {
-              if (observer.walletInitalized) {
-                observer.walletInitalized(
-                    static_cast<BraveRewardsResult>(result));
-              }
-            }
-          });
-        }));
-  }];
+        }
+      }));
 }
 
 - (void)currentWalletInfo:
     (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRewardsWallet(
-        base::BindOnce(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
-          const auto bridgedWallet = wallet.get() != nullptr
-                                         ? [[BraveRewardsRewardsWallet alloc]
-                                               initWithRewardsWallet:*wallet]
-                                         : nil;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(bridgedWallet);
-          });
-        }));
-  }];
+  _rewardsEngine->GetRewardsWallet(
+      base::BindOnce(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
+        const auto bridgedWallet = wallet.get() != nullptr
+                                       ? [[BraveRewardsRewardsWallet alloc]
+                                             initWithRewardsWallet:*wallet]
+                                       : nil;
+        completion(bridgedWallet);
+      }));
 }
 
 - (void)getRewardsParameters:
     (void (^)(BraveRewardsRewardsParameters* _Nullable))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRewardsParameters(
-        base::BindOnce(^(brave_rewards::mojom::RewardsParametersPtr info) {
-          if (info) {
-            self.rewardsParameters = [[BraveRewardsRewardsParameters alloc]
-                initWithRewardsParametersPtr:std::move(info)];
-          } else {
-            self.rewardsParameters = nil;
-          }
-          const auto __weak weakSelf = self;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(weakSelf.rewardsParameters);
-            }
-          });
-        }));
-  }];
+  _rewardsEngine->GetRewardsParameters(
+      base::BindOnce(^(brave_rewards::mojom::RewardsParametersPtr info) {
+        if (info) {
+          self.rewardsParameters = [[BraveRewardsRewardsParameters alloc]
+              initWithRewardsParametersPtr:std::move(info)];
+        } else {
+          self.rewardsParameters = nil;
+        }
+        if (completion) {
+          completion(self.rewardsParameters);
+        }
+      }));
 }
 
 - (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
-  const auto __weak weakSelf = self;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->FetchBalance(
-        base::BindOnce(^(brave_rewards::mojom::BalancePtr balance) {
-          const auto strongSelf = weakSelf;
-          if (balance) {
-            strongSelf.balance = [[BraveRewardsBalance alloc]
-                initWithBalancePtr:std::move(balance)];
-          }
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-              completion(strongSelf.balance);
-            }
-          });
-        }));
-  }];
+  _rewardsEngine->FetchBalance(
+      base::BindOnce(^(brave_rewards::mojom::BalancePtr balance) {
+        if (balance) {
+          self.balance = [[BraveRewardsBalance alloc]
+              initWithBalancePtr:std::move(balance)];
+        }
+        if (completion) {
+          completion(self.balance);
+        }
+      }));
 }
 
 - (void)legacyWallet:
@@ -469,11 +407,10 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                        completion:
                            (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
                                completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     auto cppFilter = filter ? filter.cppObjPtr
                             : brave_rewards::mojom::ActivityInfoFilter::New();
     if (filter.excluded == BraveRewardsExcludeFilterFilterExcluded) {
-      engine->GetExcludedList(base::BindOnce(
+      _rewardsEngine->GetExcludedList(base::BindOnce(
           ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
             const auto publishers = NSArrayFromVector(
                 &list, ^BraveRewardsPublisherInfo*(
@@ -481,12 +418,10 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                   return [[BraveRewardsPublisherInfo alloc]
                       initWithPublisherInfo:*info];
                 });
-            dispatch_async(dispatch_get_main_queue(), ^{
-              completion(publishers);
-            });
+            completion(publishers);
           }));
     } else {
-      engine->GetActivityInfoList(
+      _rewardsEngine->GetActivityInfoList(
           start, limit, std::move(cppFilter),
           base::BindOnce(
               ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
@@ -496,56 +431,51 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                       return [[BraveRewardsPublisherInfo alloc]
                           initWithPublisherInfo:*info];
                     });
-                dispatch_async(dispatch_get_main_queue(), ^{
-                  completion(publishers);
-                });
+                completion(publishers);
               }));
     }
-  }];
 }
 
 - (void)fetchPublisherActivityFromURL:(NSURL*)URL
                            faviconURL:(nullable NSURL*)faviconURL
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    if (!URL.absoluteString) {
-      return;
-    }
+  if (!URL.absoluteString) {
+    return;
+  }
 
-    GURL parsedUrl(base::SysNSStringToUTF8(URL.absoluteString));
+  GURL parsedUrl(base::SysNSStringToUTF8(URL.absoluteString));
 
-    if (!parsedUrl.is_valid()) {
-      return;
-    }
+  if (!parsedUrl.is_valid()) {
+    return;
+  }
 
-    url::Origin origin = url::Origin::Create(parsedUrl);
-    std::string baseDomain = GetDomainAndRegistry(
-        origin.host(),
-        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  url::Origin origin = url::Origin::Create(parsedUrl);
+  std::string baseDomain = GetDomainAndRegistry(
+      origin.host(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-    if (baseDomain == "") {
-      return;
-    }
+  if (baseDomain == "") {
+    return;
+  }
 
-    brave_rewards::mojom::VisitDataPtr visitData =
-        brave_rewards::mojom::VisitData::New();
-    visitData->domain = visitData->name = baseDomain;
-    visitData->path = parsedUrl.PathForRequest();
-    visitData->url = origin.Serialize();
+  brave_rewards::mojom::VisitDataPtr visitData =
+      brave_rewards::mojom::VisitData::New();
+  visitData->domain = visitData->name = baseDomain;
+  visitData->path = parsedUrl.PathForRequest();
+  visitData->url = origin.Serialize();
 
-    if (faviconURL.absoluteString) {
-      visitData->favicon_url =
-          base::SysNSStringToUTF8(faviconURL.absoluteString);
-    }
+  if (faviconURL.absoluteString) {
+    visitData->favicon_url = base::SysNSStringToUTF8(faviconURL.absoluteString);
+  }
 
-    std::string blob = std::string();
-    if (publisherBlob) {
-      blob = base::SysNSStringToUTF8(publisherBlob);
-    }
+  std::string blob = std::string();
+  if (publisherBlob) {
+    blob = base::SysNSStringToUTF8(publisherBlob);
+  }
 
-    engine->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
-  }];
+  _rewardsEngine->GetPublisherActivityFromUrl(tabId, std::move(visitData),
+                                              blob);
 }
 
 - (void)refreshPublisherWithId:(NSString*)publisherId
@@ -555,45 +485,32 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     completion(BraveRewardsPublisherStatusNotVerified);
     return;
   }
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->RefreshPublisher(
-        base::SysNSStringToUTF8(publisherId),
-        base::BindOnce(^(brave_rewards::mojom::PublisherStatus status) {
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(static_cast<BraveRewardsPublisherStatus>(status));
-          });
-        }));
-  }];
+  _rewardsEngine->RefreshPublisher(
+      base::SysNSStringToUTF8(publisherId),
+      base::BindOnce(^(brave_rewards::mojom::PublisherStatus status) {
+        completion(static_cast<BraveRewardsPublisherStatus>(status));
+      }));
 }
 
 #pragma mark - Tips
 
 - (void)listRecurringTips:
     (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRecurringTips(base::BindOnce(
-        ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
-          const auto publishers = NSArrayFromVector(
-              &list, ^BraveRewardsPublisherInfo*(
-                  const brave_rewards::mojom::PublisherInfoPtr& info) {
-                return [[BraveRewardsPublisherInfo alloc]
-                    initWithPublisherInfo:*info];
-              });
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(publishers);
-          });
-        }));
-  }];
+  _rewardsEngine->GetRecurringTips(base::BindOnce(
+      ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
+        const auto publishers = NSArrayFromVector(
+            &list, ^BraveRewardsPublisherInfo*(
+                const brave_rewards::mojom::PublisherInfoPtr& info) {
+              return [[BraveRewardsPublisherInfo alloc]
+                  initWithPublisherInfo:*info];
+            });
+        completion(publishers);
+      }));
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->RemoveRecurringTip(
-        base::SysNSStringToUTF8(publisherId),
-        base::BindOnce(^(brave_rewards::mojom::Result result){
-            // Not Used
-        }));
-  }];
+  _rewardsEngine->RemoveRecurringTip(base::SysNSStringToUTF8(publisherId),
+                                     base::DoNothing());
 }
 
 #pragma mark - Reconcile
@@ -611,55 +528,43 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)rewardsInternalInfo:
     (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetRewardsInternalsInfo(
-        base::BindOnce(^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
-          auto bridgedInfo = info.get() != nullptr
-                                 ? [[BraveRewardsRewardsInternalsInfo alloc]
-                                       initWithRewardsInternalsInfo:*info.get()]
-                                 : nil;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(bridgedInfo);
-          });
-        }));
-  }];
+  _rewardsEngine->GetRewardsInternalsInfo(
+      base::BindOnce(^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
+        auto bridgedInfo = info.get() != nullptr
+                               ? [[BraveRewardsRewardsInternalsInfo alloc]
+                                     initWithRewardsInternalsInfo:*info.get()]
+                               : nil;
+        completion(bridgedInfo);
+      }));
 }
 
 - (void)allContributions:
     (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetAllContributions(base::BindOnce(
-        ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
-          const auto convetedList = NSArrayFromVector(
-              &list, ^BraveRewardsContributionInfo*(
-                  const brave_rewards::mojom::ContributionInfoPtr& info) {
-                return [[BraveRewardsContributionInfo alloc]
-                    initWithContributionInfo:*info];
-              });
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(convetedList);
-          });
-        }));
-  }];
+  _rewardsEngine->GetAllContributions(base::BindOnce(
+      ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
+        const auto convetedList = NSArrayFromVector(
+            &list, ^BraveRewardsContributionInfo*(
+                const brave_rewards::mojom::ContributionInfoPtr& info) {
+              return [[BraveRewardsContributionInfo alloc]
+                  initWithContributionInfo:*info];
+            });
+        completion(convetedList);
+      }));
 }
 
 - (void)fetchAutoContributeProperties:
     (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->GetAutoContributeProperties(base::BindOnce(
-        ^(brave_rewards::mojom::AutoContributePropertiesPtr props) {
-          auto properties =
-              props.get() != nullptr
-                  ? [[BraveRewardsAutoContributeProperties alloc]
-                        initWithAutoContributePropertiesPtr:std::move(props)]
-                  : nil;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            completion(properties);
-          });
-        }));
-  }];
+  _rewardsEngine->GetAutoContributeProperties(base::BindOnce(
+      ^(brave_rewards::mojom::AutoContributePropertiesPtr props) {
+        auto properties =
+            props.get() != nullptr
+                ? [[BraveRewardsAutoContributeProperties alloc]
+                      initWithAutoContributePropertiesPtr:std::move(props)]
+                : nil;
+        completion(properties);
+      }));
 }
 
 #pragma mark - Reporting
@@ -671,16 +576,11 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
   const auto time = [[NSDate date] timeIntervalSince1970];
   if (_selectedTabId != selectedTabId) {
-    const auto oldTabId = _selectedTabId;
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-      engine->OnHide(oldTabId, time);
-    }];
+    _rewardsEngine->OnHide(_selectedTabId, time);
   }
   _selectedTabId = selectedTabId;
   if (_selectedTabId > 0) {
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-      engine->OnShow(selectedTabId, time);
-    }];
+    _rewardsEngine->OnShow(selectedTabId, time);
   }
 }
 
@@ -690,9 +590,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->OnForeground(self.selectedTabId, time);
-  }];
+  _rewardsEngine->OnForeground(self.selectedTabId, time);
 }
 
 - (void)applicationDidBackground {
@@ -701,9 +599,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->OnBackground(self.selectedTabId, time);
-  }];
+  _rewardsEngine->OnBackground(self.selectedTabId, time);
 }
 
 - (void)reportLoadedPageWithURL:(NSURL*)url tabId:(UInt32)tabId {
@@ -712,30 +608,28 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-    url::Origin origin = url::Origin::Create(parsedUrl);
-    const std::string baseDomain = GetDomainAndRegistry(
-        origin.host(),
-        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-    if (baseDomain == "") {
-      return;
-    }
+  GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
+  url::Origin origin = url::Origin::Create(parsedUrl);
+  const std::string baseDomain = GetDomainAndRegistry(
+      origin.host(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-    const std::string publisher_url =
-        origin.scheme() + "://" + baseDomain + "/";
+  if (baseDomain == "") {
+    return;
+  }
 
-    brave_rewards::mojom::VisitDataPtr data =
-        brave_rewards::mojom::VisitData::New();
-    data->name = baseDomain;
-    data->domain = origin.host();
-    data->path = parsedUrl.path();
-    data->tab_id = tabId;
-    data->url = publisher_url;
+  const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
 
-    engine->OnLoad(std::move(data), time);
-  }];
+  brave_rewards::mojom::VisitDataPtr data =
+      brave_rewards::mojom::VisitData::New();
+  data->name = baseDomain;
+  data->domain = origin.host();
+  data->path = parsedUrl.path();
+  data->tab_id = tabId;
+  data->url = publisher_url;
+
+  _rewardsEngine->OnLoad(std::move(data), time);
 }
 
 - (void)reportXHRLoad:(NSURL*)url
@@ -746,7 +640,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     return;
   }
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     base::flat_map<std::string, std::string> partsMap;
     const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
                                             resolvingAgainstBaseURL:NO];
@@ -768,9 +661,9 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
             ? base::SysNSStringToUTF8(firstPartyURL.absoluteString)
             : "";
 
-    engine->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
-                      partsMap, fpu, ref, std::move(visit));
-  }];
+    _rewardsEngine->OnXHRLoad(tabId,
+                              base::SysNSStringToUTF8(url.absoluteString),
+                              partsMap, fpu, ref, std::move(visit));
 }
 
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId {
@@ -779,35 +672,25 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->OnUnload(tabId, time);
-  }];
+  _rewardsEngine->OnUnload(tabId, time);
 }
 
 #pragma mark - Preferences
 
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetPublisherMinVisitTime(minimumVisitDuration);
-  }];
+  _rewardsEngine->SetPublisherMinVisitTime(minimumVisitDuration);
 }
 
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetPublisherMinVisits(minimumNumberOfVisits);
-  }];
+  _rewardsEngine->SetPublisherMinVisits(minimumNumberOfVisits);
 }
 
 - (void)setContributionAmount:(double)contributionAmount {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetAutoContributionAmount(contributionAmount);
-  }];
+  _rewardsEngine->SetAutoContributionAmount(contributionAmount);
 }
 
 - (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->SetAutoContributeEnabled(autoContributeEnabled);
-  }];
+  _rewardsEngine->SetAutoContributeEnabled(autoContributeEnabled);
 }
 
 - (void)setBooleanState:(const std::string&)name
@@ -1172,19 +1055,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 - (void)runDbTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
                 callback:(brave_rewards::mojom::RewardsEngineClient::
                               RunDBTransactionCallback)callback {
-  __weak BraveRewardsAPI* weakSelf = self;
-  DCHECK(rewardsDatabase);
-  rewardsDatabase
-      .AsyncCall(&brave_rewards::internal::RewardsDatabase::RunTransaction)
-      .WithArgs(std::move(transaction))
-      .Then(base::BindOnce(
-          ^(brave_rewards::internal::RunDBTransactionCallback completion,
-            brave_rewards::mojom::DBCommandResponsePtr response) {
-            if (weakSelf) {
-              std::move(completion).Run(std::move(response));
-            }
-          },
-          std::move(callback)));
+  _rewardsDatabase->RunTransaction(std::move(transaction), std::move(callback));
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {

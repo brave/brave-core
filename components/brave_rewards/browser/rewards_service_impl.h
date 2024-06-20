@@ -22,15 +22,16 @@
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/core/common/remote_worker.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
@@ -73,11 +74,6 @@ class JsonRpcService;
 namespace brave_rewards {
 
 class RewardsFlagBrowserTest;
-
-namespace internal {
-class RewardsDatabase;
-}  // namespace internal
-
 class RewardsNotificationServiceImpl;
 class RewardsBrowserTest;
 
@@ -517,9 +513,6 @@ class RewardsServiceImpl : public RewardsService,
                           const mojom::Result result,
                           mojom::BalanceReportInfoPtr report);
 
-  void OnRunDBTransaction(RunDBTransactionCallback callback,
-                          mojom::DBCommandResponsePtr response);
-
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
 
@@ -558,7 +551,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_list_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
-  base::SequenceBound<internal::RewardsDatabase> rewards_database_;
+  internal::RemoteWorker<mojom::RewardsDatabase> rewards_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
 

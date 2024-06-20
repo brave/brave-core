@@ -107,7 +107,12 @@ RewardsDatabase::RewardsDatabase(const base::FilePath& path) : db_path_(path) {
 
 RewardsDatabase::~RewardsDatabase() = default;
 
-mojom::DBCommandResponsePtr RewardsDatabase::RunTransaction(
+void RewardsDatabase::RunTransaction(mojom::DBTransactionPtr transaction,
+                                     RunTransactionCallback callback) {
+  std::move(callback).Run(RunTransactionInternal(std::move(transaction)));
+}
+
+mojom::DBCommandResponsePtr RewardsDatabase::RunTransactionInternal(
     mojom::DBTransactionPtr transaction) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
