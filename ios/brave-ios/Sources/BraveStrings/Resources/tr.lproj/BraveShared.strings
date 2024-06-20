@@ -515,7 +515,7 @@
 "CopyLinkActionTitle" = "Bağlantıyı Kopyala";
 
 /* Copy Tabs info to clipboard action sheet action. */
-"copyTabsDebugToClipboard" = "Sekmeler bilgilerini panoya kopyalayın.";
+"copyTabsDebugToClipboard" = "Sekmelerle ilgili bilgileri panoya kopyalayın.";
 
 /* Copy codewords title */
 "CopyToClipboard" = "Panoya kopyala";
@@ -1472,7 +1472,7 @@
 "pageSecurityView.pageNotSecureTitle" = "Bu siteye bağlantınız güvenli değil.";
 
 /* No comment provided by engineer. */
-"pageSecurityView.pageUnknownStatusTitle" = "Site bağlantısı doğrulanmadı.";
+"pageSecurityView.pageUnknownStatusTitle" = "Site bağlantısı doğrulanamadı.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageUnknownStatusWarning" = "Bu siteye olan bağlantınız tamamen doğrulanamadı. Devam edebilir veya güvenli bağlantı kurmak için sayfayı yeniden yüklemeyi deneyebilirsiniz.";

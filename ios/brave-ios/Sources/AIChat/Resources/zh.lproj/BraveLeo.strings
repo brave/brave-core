@@ -251,13 +251,13 @@
 "aichat.promptPlaceHolderDescription" = "在此處輸入提示";
 
 /* The title of action for quick menu which displaying advanced settings */
-"aichat.quickMenuAdvancedSettingsActionTitle" = "進階設定";
+"aichat.quickMenuAdvancedSettingsActionTitle" = "进阶设定";
 
 /* The title of action for quick menu which presents payment screen for premium */
-"aichat.quickMenuGoPremiumActionTitle" = "訂閱 Premium";
+"aichat.quickMenuGoPremiumActionTitle" = "订阅 Premium";
 
 /* The title of action for quick menu which display subscription management view */
-"aichat.quickMenuManageSubscriptionActionTitle" = "管理訂閱";
+"aichat.quickMenuManageSubscriptionActionTitle" = "管理订阅";
 
 /* The title of action for quick menu which starts a new chat */
 "aichat.quickMenuNewChatActionTitle" = "新会话";
