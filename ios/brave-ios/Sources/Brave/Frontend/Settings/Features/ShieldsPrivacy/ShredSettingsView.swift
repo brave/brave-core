@@ -61,6 +61,9 @@ struct ShredSettingsView: View {
         Text(settings.url.displayURL?.baseDomain ?? settings.url.absoluteString)
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .scrollContentBackground(.hidden)
+    .background(Color(.braveGroupedBackground))
+    .navigationTitle(Strings.Shields.shredSitesData)
   }
 
   private var confirmationAlert: Alert {
@@ -125,7 +128,6 @@ class ShredSettingsHostingController: UIHostingController<ShredSettingsView> {
   init(
     url: URL,
     isPersistent: Bool,
-    presentingView: UIView,
     shredSitesDataNow: @escaping () -> Void
   ) {
     super.init(
@@ -135,41 +137,25 @@ class ShredSettingsHostingController: UIHostingController<ShredSettingsView> {
         shredSitesDataNow: shredSitesDataNow
       )
     )
-
-    modalPresentationStyle = .popover
-
-    if let popover = popoverPresentationController {
-      popover.sourceView = presentingView
-      popover.sourceRect = presentingView.bounds
-
-      let sheet = popover.adaptiveSheetPresentationController
-      sheet.largestUndimmedDetentIdentifier = nil
-      sheet.prefersEdgeAttachedInCompactHeight = false
-      sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-      sheet.detents = [
-        .custom(resolver: { context in
-          return Self.makePreferredHeight(
-            for: context.containerTraitCollection
-          )
-        }),
-        .large(),
-      ]
-      sheet.prefersGrabberVisible = true
-    }
   }
 
-  override func viewIsAppearing(_ animated: Bool) {
-    super.viewIsAppearing(animated)
-    setPreferredContentChange()
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    navigationItem.title = Strings.Shields.shredSitesData
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setPreferredContentSize()
   }
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    setPreferredContentChange()
+    setPreferredContentSize()
     view.setNeedsLayout()
   }
 
   /// Will set the preferred size
-  @objc private func setPreferredContentChange() {
+  @objc private func setPreferredContentSize() {
     self.preferredContentSize = makePreferredSize(for: traitCollection)
   }
 
@@ -199,26 +185,6 @@ class ShredSettingsHostingController: UIHostingController<ShredSettingsView> {
       return view.frame.size
     @unknown default:
       return view.frame.size
-    }
-  }
-
-  /// Get a preferred height based on the `UITraitCollection`
-  private static func makePreferredHeight(for traitCollection: UITraitCollection) -> CGFloat {
-    switch traitCollection.preferredContentSizeCategory {
-    case .small, .extraSmall, .medium, .large:
-      return 150
-    case .extraLarge, .extraExtraLarge, .extraExtraExtraLarge:
-      return 175
-    case .accessibilityMedium:
-      return 250
-    case .accessibilityLarge:
-      return 300
-    case .accessibilityExtraLarge:
-      return 400
-    case .accessibilityExtraExtraLarge:
-      return 500
-    default:
-      return 600
     }
   }
 
