@@ -13,6 +13,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
   @NSManaged public var contractAddress: String
   @NSManaged public var name: String
   @NSManaged public var logo: String
+  @NSManaged public var isCompressed: Bool
   @NSManaged public var isERC20: Bool
   @NSManaged public var isERC721: Bool
   @NSManaged public var isERC1155: Bool
@@ -45,6 +46,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       contractAddress: self.contractAddress,
       name: self.name,
       logo: self.logo,
+      isCompressed: self.isCompressed,
       isErc20: self.isERC20,
       isErc721: self.isERC721,
       isErc1155: self.isERC1155,
@@ -82,12 +84,14 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
     self.contractAddress = asset.contractAddress
     self.name = asset.name
     self.logo = asset.logo
+    self.isCompressed = asset.isCompressed
     self.isERC20 = asset.isErc20
     self.isERC721 = asset.isErc721
     self.isERC1155 = asset.isErc1155
     self.splTokenProgram = NSNumber(value: asset.splTokenProgram.rawValue)
     self.isNFT = asset.isNft
     self.isSpam = asset.isSpam
+    self.isCompressed = asset.isCompressed
     self.symbol = asset.symbol
     self.decimals = asset.decimals
     self.visible = asset.visible

@@ -1989,6 +1989,24 @@ bool SetAssetSPLTokenProgram(PrefService* prefs,
   return false;
 }
 
+bool SetAssetCompressed(PrefService* prefs,
+                        const mojom::BlockchainTokenPtr& token) {
+  // Only Solana tokens can be compressed.
+  if (token->coin != mojom::CoinType::SOL) {
+    return false;
+  }
+
+  ScopedListPrefUpdate update(prefs, kBraveWalletUserAssetsList);
+  for (auto& token_value : *update) {
+    if (TokenMatchesDict(token, token_value.GetIfDict())) {
+      token_value.GetDict().Set("is_compressed", true);
+      return true;
+    }
+  }
+
+  return false;
+}
+
 std::vector<mojom::BlockchainTokenPtr> GetDefaultEthereumAssets() {
   std::vector<mojom::BlockchainTokenPtr> user_assets_list;
 

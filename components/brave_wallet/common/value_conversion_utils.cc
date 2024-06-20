@@ -354,6 +354,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(
   } else {
     token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   }
+  token_ptr->is_compressed = value.FindBool("is_compressed").value_or(false);
 
   return token_ptr;
 }
@@ -378,6 +379,7 @@ base::Value::Dict BlockchainTokenToValue(
   value.Set("coin", static_cast<int>(token->coin));
   value.Set("chain_id", token->chain_id);
   value.Set("spl_token_program", static_cast<int>(token->spl_token_program));
+  value.Set("is_compressed", token->is_compressed);
   return value;
 }
 

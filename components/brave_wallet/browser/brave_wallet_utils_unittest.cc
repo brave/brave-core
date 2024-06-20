@@ -1662,6 +1662,7 @@ TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
         "coin": 0,
         "coingecko_id": "btc",
         "decimals": 8,
+        "is_compressed": false,
         "is_erc1155": false,
         "is_erc20": false,
         "is_erc721": false,
@@ -1685,6 +1686,7 @@ TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
         "coin": 0,
         "coingecko_id": "",
         "decimals": 8,
+        "is_compressed": false,
         "is_erc1155": false,
         "is_erc20": false,
         "is_erc721": false,
@@ -1709,6 +1711,7 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
         "coin": 133,
         "coingecko_id": "zec",
         "decimals": 8,
+        "is_compressed": false,
         "is_erc1155": false,
         "is_erc20": false,
         "is_erc721": false,
@@ -1731,6 +1734,7 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
         "coin": 133,
         "coingecko_id": "zec",
         "decimals": 8,
+        "is_compressed": false,
         "is_erc1155": false,
         "is_erc20": false,
         "is_erc721": false,
@@ -1800,10 +1804,10 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
   // Test token ID cases.
   auto erc721_token = mojom::BlockchainToken::New(
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "name1", "logo",
-      false /* is_erc20 */, true /* is_erc721 */, false /* is_erc1155 */,
-      mojom::SPLTokenProgram::kUnsupported, true /* is_nft */,
-      false /* is_spam */, "SYMBOL", 8 /* decimals */, true /* visible */,
-      "0x11", "" /* coingecko_id */, mojom::kMainnetChainId,
+      false /* is_compressed */, false /* is_erc20 */, true /* is_erc721 */,
+      false /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
+      true /* is_nft */, false /* is_spam */, "SYMBOL", 8 /* decimals */,
+      true /* visible */, "0x11", "" /* coingecko_id */, mojom::kMainnetChainId,
       mojom::CoinType::ETH);
   ASSERT_TRUE(AddUserAsset(&prefs, erc721_token.Clone()));
   EXPECT_EQ(erc721_token,
@@ -1817,10 +1821,10 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
 
   auto erc1155_token = mojom::BlockchainToken::New(
       "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "name2", "logo",
-      false /* is_erc20 */, false /* is_erc721 */, true /* is_erc1155 */,
-      mojom::SPLTokenProgram::kUnsupported, true /* is_nft */,
-      false /* is_spam */, "SYMBOL2", 8 /* decimals */, true /* visible */,
-      "0x22", "" /* coingecko_id */, mojom::kMainnetChainId,
+      false /* is_compressed */, false /* is_erc20 */, false /* is_erc721 */,
+      true /* is_erc1155 */, mojom::SPLTokenProgram::kUnsupported,
+      true /* is_nft */, false /* is_spam */, "SYMBOL2", 8 /* decimals */,
+      true /* visible */, "0x22", "" /* coingecko_id */, mojom::kMainnetChainId,
       mojom::CoinType::ETH);
   ASSERT_TRUE(AddUserAsset(&prefs, erc1155_token.Clone()));
   EXPECT_EQ(erc1155_token,
@@ -1959,8 +1963,8 @@ TEST(BraveWalletUtilsUnitTest, SetAssetSPLTokenProgram) {
 
   auto asset = mojom::BlockchainToken::New(
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "TSLA", "tsla.png", false,
-      false, false, mojom::SPLTokenProgram::kUnknown, false, false, "TSLA", 8,
-      true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
+      false, false, false, mojom::SPLTokenProgram::kUnknown, false, false,
+      "TSLA", 8, true, "", "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
   ASSERT_TRUE(AddUserAsset(&prefs, asset->Clone()));
 
   ASSERT_TRUE(
@@ -1978,6 +1982,24 @@ TEST(BraveWalletUtilsUnitTest, SetAssetSPLTokenProgram) {
             GetUserAsset(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet,
                          "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "",
                          false, false));
+}
+
+TEST(BraveWalletUtilsUnitTest, SetAssetCompressed) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  // Can't set is_compressed for ETH asset.
+  auto assets = GetAllUserAssets(&prefs);
+  auto eth_asset = assets[0]->Clone();
+  EXPECT_FALSE(eth_asset->is_compressed);
+  EXPECT_FALSE(SetAssetCompressed(&prefs, eth_asset));
+  EXPECT_FALSE(GetAllUserAssets(&prefs)[0]->is_compressed);
+
+  // Can set is_compressed for SOL asset.
+  auto sol_asset = assets[13]->Clone();
+  EXPECT_FALSE(sol_asset->is_compressed);
+  EXPECT_TRUE(SetAssetCompressed(&prefs, sol_asset));
+  EXPECT_TRUE(GetAllUserAssets(&prefs)[13]->is_compressed);
 }
 
 }  // namespace brave_wallet

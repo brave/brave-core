@@ -114,6 +114,7 @@ struct AssetIconView_Previews: PreviewProvider {
         contractAddress: "0x55296f69f40ea6d20e478533c15a6b08b654e758",
         name: "XY Oracle",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,

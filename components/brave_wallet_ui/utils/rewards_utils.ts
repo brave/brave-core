@@ -173,6 +173,7 @@ export const getRewardsBATToken = (
     name: 'Basic Attention Token',
     symbol: 'BAT',
     logo: 'chrome://erc-token-images/bat.png',
+    isCompressed: false,
     isErc20: true,
     isErc721: false,
     isErc1155: false,

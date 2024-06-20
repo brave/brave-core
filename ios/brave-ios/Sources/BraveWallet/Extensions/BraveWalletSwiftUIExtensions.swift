@@ -65,6 +65,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
       contractAddress: "",
       name: symbolName,
       logo: nativeTokenLogoName ?? "",
+      isCompressed: false,
       isErc20: false,
       isErc721: false,
       isErc1155: false,

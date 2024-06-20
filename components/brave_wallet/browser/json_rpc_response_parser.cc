@@ -167,6 +167,43 @@ std::optional<std::string> ConvertInt64ToString(const std::string& path,
   return converted_json;
 }
 
+bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
+                            const std::string& key,
+                            bool nullable,
+                            uint64_t* ret) {
+  if (!ret) {
+    return false;
+  }
+
+  const base::Value* value = dict_value.Find(key);
+  if (!value) {
+    return false;
+  }
+
+  if (nullable && value->is_none()) {
+    *ret = 0;
+    return true;
+  }
+
+  auto* string_value = value->GetIfString();
+  if (!string_value || string_value->empty()) {
+    return false;
+  }
+
+  return base::StringToUint64(*string_value, ret);
+}
+
+std::optional<std::string> ConvertAllNumbersToString(const std::string& path,
+                                                     const std::string& json) {
+  auto converted_json =
+      std::string(json::convert_all_numbers_to_string(json, path));
+  if (converted_json.empty()) {
+    return std::nullopt;
+  }
+
+  return converted_json;
+}
+
 namespace ankr {
 
 namespace {

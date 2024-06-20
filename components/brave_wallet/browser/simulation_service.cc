@@ -10,6 +10,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
@@ -44,19 +45,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
-}
-
-// Function to convert all numbers in JSON string to strings.
-//
-// For sample JSON response, refer to ParseJupiterQuote.
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, ""));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  return converted_json;
 }
 
 }  // namespace
@@ -306,7 +294,7 @@ void SimulationService::OnGetLatestSolanaBlockhash(
       &SimulationService::OnScanSolanaTransaction,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback), params->second);
 
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,
@@ -378,7 +366,7 @@ void SimulationService::ScanEVMTransaction(
       &SimulationService::OnScanEVMTransaction, weak_ptr_factory_.GetWeakPtr(),
       std::move(callback), params->second);
 
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod,

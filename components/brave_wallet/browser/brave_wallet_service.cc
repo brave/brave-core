@@ -182,6 +182,9 @@ BraveWalletService::BraveWalletService(
       kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+  // Added 05/2024 to label compressed nfts as such.
+  BraveWalletService::MaybeMigrateCompressedNfts();
 }
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
@@ -303,6 +306,18 @@ void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
                        weak_ptr_factory_.GetWeakPtr(), std::move(token),
                        std::move(callback)));
     return;
+  } else if (token->is_nft && token->coin == mojom::CoinType::SOL) {
+    auto nft_id = mojom::NftIdentifier::New();
+    nft_id->chain_id = token->chain_id;
+    nft_id->contract_address = token->contract_address;
+    nft_id->token_id = token->token_id;
+    std::vector<mojom::NftIdentifierPtr> nft_ids;
+    nft_ids.push_back(std::move(nft_id));
+    simple_hash_client_->GetNfts(
+        mojom::CoinType::SOL, std::move(nft_ids),
+        base::BindOnce(&BraveWalletService::OnGetNfts,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
   }
 
   std::move(callback).Run(AddUserAssetInternal(std::move(token)));
@@ -332,6 +347,17 @@ void BraveWalletService::OnGetEthNftStandard(
   }
 
   std::move(callback).Run(AddUserAssetInternal(std::move(token)));
+}
+
+void BraveWalletService::OnGetNfts(
+    AddUserAssetCallback callback,
+    std::vector<mojom::BlockchainTokenPtr> nfts) {
+  if (nfts.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  DCHECK_EQ(nfts.size(), 1U);
+  std::move(callback).Run(AddUserAssetInternal(std::move(nfts[0])));
 }
 
 void BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
@@ -842,6 +868,44 @@ void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
       custom_network.GetDict().Remove("is_eip1559");
     }
   }
+}
+
+void BraveWalletService::MaybeMigrateCompressedNfts() {
+  if (profile_prefs_->GetBoolean(kBraveWalletIsCompressedNftMigrated)) {
+    return;
+  }
+
+  // Get all solana NFTs.
+  std::vector<mojom::NftIdentifierPtr> nft_ids;
+  for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
+    if (item->coin == mojom::CoinType::SOL && item->is_nft) {
+      auto nft_id = mojom::NftIdentifier::New();
+      nft_id->chain_id = item->chain_id;
+      nft_id->contract_address = item->contract_address;
+      nft_id->token_id = item->token_id;
+      nft_ids.push_back(std::move(nft_id));
+    }
+  }
+
+  simple_hash_client_->GetNfts(
+      mojom::CoinType::SOL, std::move(nft_ids),
+      base::BindOnce(&BraveWalletService::OnGetNftsForCompressedMigration,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletService::OnGetNftsForCompressedMigration(
+    std::vector<mojom::BlockchainTokenPtr> nfts) {
+  for (auto& nft : nfts) {
+    if (!nft->is_compressed) {
+      continue;
+    }
+
+    if (!::brave_wallet::SetAssetCompressed(profile_prefs_, nft)) {
+      continue;
+    }
+  }
+
+  profile_prefs_->SetBoolean(kBraveWalletIsCompressedNftMigrated, true);
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(

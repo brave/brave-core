@@ -45,6 +45,8 @@ inline constexpr char kSimpleHashUrl[] = "https://api.simplehash.com";
 inline constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
+inline constexpr size_t kSimpleHashMaxBatchSize = 50;
+
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletGroupByCollection", IDS_BRAVE_WALLET_GROUP_BY_COLLECTION},
     {"braveWalletHideNotOwnedNfTs", IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS},

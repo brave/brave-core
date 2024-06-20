@@ -254,6 +254,7 @@ SolanaTransaction::GetSignedTransactionBytes(
   if (!message_signers_pair) {
     return std::nullopt;
   }
+
   auto& message_bytes = message_signers_pair->first;
   auto& signers = message_signers_pair->second;
 
@@ -442,7 +443,8 @@ void SolanaTransaction::set_tx_type(mojom::TransactionType tx_type) {
               mojom::TransactionType::
                   SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
          (tx_type >= mojom::TransactionType::SolanaDappSignAndSendTransaction &&
-          tx_type <= mojom::TransactionType::SolanaSwap));
+          tx_type <= mojom::TransactionType::SolanaSwap) ||
+         tx_type == mojom::TransactionType::SolanaCompressedNftTransfer);
   tx_type_ = tx_type;
 }
 

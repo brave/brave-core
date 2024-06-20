@@ -218,6 +218,13 @@ class TxService : public mojom::TxService,
       const std::string& chain_id,
       const std::string& tx_meta_id,
       GetSolanaTxFeeEstimationCallback callback) override;
+  void MakeBubbleGumProgramTransferTxData(
+      const std::string& chain_id,
+      const std::string& token_address,
+      const std::string& from_wallet_address,
+      const std::string& to_wallet_address,
+      MakeBubbleGumProgramTransferTxDataCallback callback) override;
+
   void ProcessSolanaHardwareSignature(
       const std::string& chain_id,
       const std::string& tx_meta_id,

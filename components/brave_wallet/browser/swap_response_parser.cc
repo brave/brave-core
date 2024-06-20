@@ -354,19 +354,6 @@ mojom::JupiterErrorPtr ParseErrorResponse(const base::Value& json_value) {
 }
 }  // namespace jupiter
 
-// Function to convert all numbers in JSON string to strings.
-//
-// For sample JSON response, refer to jupiter::ParseQuoteResponse.
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, ""));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  return converted_json;
-}
-
 namespace lifi {
 
 namespace {
