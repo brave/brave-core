@@ -1,0 +1,12 @@
+diff --git a/base/feature_list.cc b/base/feature_list.cc
+index 895b710fdf14466b91924d385968a27ff59d97d3..1c08ef48c2a9d492929401e6f36acbb9c17ab0cf 100644
+--- a/base/feature_list.cc
++++ b/base/feature_list.cc
+@@ -815,6 +815,7 @@ FeatureList::GetOverrideEntryByFeatureName(std::string_view name) const {
+     const OverrideEntry& entry = it->second;
+     return &entry;
+   }
++  BRAVE_FEATURE_LIST_GET_OVERRIDE_ENTRY_BY_FEATURE_NAME
+   return nullptr;
+ }
+ 

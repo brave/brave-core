@@ -42,8 +42,9 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
     {kTestDisabledButOverridenFeature, FEATURE_ENABLED_BY_DEFAULT},
 
-    // Override, but keep the same state as `default_state`. We should properly
-    // return false from IsFeatureOverridden in this case.
+    // Override, but keep the same state as `default_state`. The override should
+    // still be tracked to ensure there's no other overrides of the same feature
+    // with another value.
     {kTestEnabledButOverridenFeatureWithSameState, FEATURE_ENABLED_BY_DEFAULT},
 }});
 
@@ -84,28 +85,21 @@ TEST(FeatureOverrideTest, OverridesTest) {
 }
 
 #if DCHECK_IS_ON() && !BUILDFLAG(DCHECK_IS_CONFIGURABLE)
-TEST(FeatureOverrideTest, FeatureDuplicateDChecks) {
-  // Check any feature to make sure overridden features are finalized (moved
-  // from an unsorted vector to a sorted flat_map).
+TEST(FeatureOverrideTest, FeatureDuplicateDifferentStateDChecks) {
+  // Check any feature to make sure overridden features are finalized.
   ASSERT_FALSE(base::FeatureList::IsEnabled(kTestEnabledButOverridenFeature));
-
-  // This will add a feature to an unsorted vector of overrides.
-  internal::FeatureDefaultStateOverrider init_overrides{{
-      {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
-  }};
 
   // This should trigger DCHECK.
   EXPECT_DEATH_IF_SUPPORTED(
-      internal::FeatureDefaultStateOverrider({
-          {kTestEnabledButOverridenFeature, FEATURE_DISABLED_BY_DEFAULT},
-      }),
-      testing::HasSubstr("Feature TestEnabledButOverridenFeature has already "
-                         "been overridden"));
+      (internal::FeatureDefaultStateOverrider({
+          {kTestEnabledButOverridenFeature, FEATURE_ENABLED_BY_DEFAULT},
+      })),
+      testing::HasSubstr("Feature TestEnabledButOverridenFeature has been "
+                         "overridden with different states"));
 }
 
 TEST(FeatureOverrideTest, FeatureDuplicateInSameMacroDChecks) {
-  // Check any feature to make sure overridden features are finalized (moved
-  // from an unsorted vector to a sorted flat_map).
+  // Check any feature to make sure overridden features are finalized.
   ASSERT_FALSE(base::FeatureList::IsEnabled(kTestEnabledButOverridenFeature));
 
   // This should trigger DCHECK.

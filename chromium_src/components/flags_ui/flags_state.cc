@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/feature_override.h"
 #include "base/strings/strcat.h"
 
 #include "src/components/flags_ui/flags_state.cc"
@@ -39,7 +40,7 @@ void AppendCurrentFeatureStateIfDefault(
                                              : kGenericExperimentChoiceDisabled;
 
   const bool is_feature_enabled_by_default =
-      base::FeatureList::GetCompileTimeFeatureState(feature) ==
+      base::GetCompileTimeFeatureState(feature) ==
       base::FeatureState::FEATURE_ENABLED_BY_DEFAULT;
   const std::string_view current_state_flag =
       is_feature_enabled_now != is_feature_enabled_by_default ? "*" : "";

@@ -42,6 +42,10 @@ class BASE_EXPORT FeatureDefaultStateOverrider {
 };
 
 }  // namespace internal
+
+// Returns default_state or OVERRIDE_FEATURE_DEFAULT_STATES(...) value if set.
+BASE_EXPORT FeatureState GetCompileTimeFeatureState(const Feature& feature);
+
 }  // namespace base
 
 // Feature override uses global constructors, we disable `global-constructors`
