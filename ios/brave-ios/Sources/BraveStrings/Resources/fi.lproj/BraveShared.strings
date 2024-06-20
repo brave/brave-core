@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopioi linkki";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Kopioi sovelluksen tiedot leikepöydälle.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Kopioi leikepöydälle";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Sivustolle muodostamasi yhteys ei ole turvallinen.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Sivuston yhteyttä ei ole vahvistettu.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Yhteyttäsi tähän sivustoon ei voitu vahvistaa täysin. Voit jatkaa tai muodostaa suojatun yhteyden lataamalla sivun uudelleen.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Näytä varmenne";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Poista synkronointitili";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Kun poistat tilisi, salatut tietosi poistetaan Brave-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Paikallisesti tallennettuja tietoja ei kuitenkaan poisteta näiltä laitteilta.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Tämä poisto on pysyvä, eikä tietoja voi palauttaa. Jos päätät, että aloitat synkronoinnin käytön uudelleen, sinun täytyy luoda uusi tili ja lisätä jokainen laite uudelleen yksitellen.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Jokin meni vikaan haettaessa laitteita synkronointiketjussa.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Poista synkronointitili";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Vaikuttaa siltä, että tämä koodi luotiin vanhaa Brave-versiota käyttävällä laitteella. Päivitä Brave uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Laitteet ja asetukset";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Yhteyden luotettavuusongelma";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Valitse ongelmaa kuvaava luokka.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Ei Internet-yhteyttä yhdistämisen jälkeen";
