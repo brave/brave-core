@@ -427,8 +427,7 @@ export class BaseQueryCache {
       ])
 
       if (result.errorMessage) {
-        console.log({ coin: tokenArg.coin, lookupArg, result })
-        throw new Error('errorMessage: ' + result.errorMessage)
+        throw new Error(result.errorMessage)
       }
 
       if (!result?.metadatas?.length) {
@@ -442,7 +441,7 @@ export class BaseQueryCache {
       ]
 
       const nftMetadata: NFTMetadataReturnType = {
-        metadataUrl: metadata.externalUrl,
+        metadataUrl: '',
         chainName: tokenNetwork?.chainName || '',
         tokenType:
           tokenArg.coin === BraveWallet.CoinType.ETH

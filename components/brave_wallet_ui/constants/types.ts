@@ -610,6 +610,7 @@ export interface NFTAttribute {
 }
 
 export interface NFTMetadataReturnType {
+  /** metadataUrl is currently not provided by core */
   metadataUrl?: string
   chainName: string
   tokenType: string
