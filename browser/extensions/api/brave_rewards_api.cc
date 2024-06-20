@@ -163,16 +163,6 @@ ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsShowRewardsSetupFunction::~BraveRewardsShowRewardsSetupFunction() =
-    default;
-
-ExtensionFunction::ResponseAction BraveRewardsShowRewardsSetupFunction::Run() {
-  if (auto* coordinator = GetPanelCoordinator(this)) {
-    coordinator->ShowRewardsSetup();
-  }
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsUpdateMediaDurationFunction::
     ~BraveRewardsUpdateMediaDurationFunction() = default;
 

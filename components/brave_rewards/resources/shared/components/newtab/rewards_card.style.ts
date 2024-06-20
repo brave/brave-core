@@ -5,75 +5,59 @@
 
 import styled from 'styled-components'
 
-import * as leo from '@brave/leo/tokens/css/variables'
+import { color, font } from '@brave/leo/tokens/css/variables'
 
 import { buttonReset } from '../../lib/css_mixins'
 import selfCustodyImage from '../../assets/self_custody_invitation.svg'
 
-export const root = styled.div.attrs({
-  'data-theme': 'dark'
-})`
-  background: rgba(24, 25, 30, 0.6);
-  backdrop-filter: blur(27.5px);
-  border-radius: 6px;
-  color: ${leo.color.text.primary};
-  font-family: Poppins;
-  padding: 8px 20px 14px;
+export const root = styled.div.attrs({ 'data-theme': 'dark' })`
+  font: ${font.default.regular};
+  color: ${color.white};
 
   button {
-    font-family: Poppins;
+    font: ${font.components.buttonDefault};
   }
+
+  --self-info-gradient-background:
+      linear-gradient(96.98deg, #4641EE 0%, #6261FF 100%);
 `
 
 export const cardHeader = styled.div`
-  margin-top: 6px;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
-  color: ${leo.color.white};
-  font-family: Poppins;
+  margin-bottom: 24px;
+  font: ${font.heading.h4};
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-left: 1px;
+`
+
+export const cardHeaderIcon = styled.div`
+  height: 24px;
 
   .icon {
-    flex: 0 0 auto;
-    height: 27px;
+    height: 24px;
     width: auto;
   }
 `
 
-export const cardHeaderText = styled.div`
-  margin-top: 2px;
-`
-
 export const optInIcon = styled.div`
-  margin-top: 14px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
+  display: flex;
+  justify-content: center;
+
   .icon {
-    margin-left: auto;
-    margin-right: auto;
     height: 126px;
     width: 130px;
   }
 `
 
 export const optInHeaderText = styled.div`
-  color: ${leo.color.white};
   text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
+  font: ${font.heading.h4};
 `
 
 export const optInText = styled.div`
-  margin-top: 10px;
+  margin-top: 8px;
   text-align: center;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${font.small.regular};
 `
 
 export const optInAction = styled.div`
@@ -81,62 +65,18 @@ export const optInAction = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
-
-  button {
-    ${buttonReset}
-    color: ${leo.color.white};
-    background: ${leo.color.button.background};
-    border-radius: 48px;
-    padding: 12px 24px;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-  }
-`
-
-export const optInLearnMore = styled.div.attrs({
-  'data-theme': 'dark'
-})`
-  margin-top: 12px;
-  margin-bottom: 20px;
-  text-align: center;
-
-  a {
-    color: ${leo.color.text.interactive};
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    letter-spacing: 0.03em;
-    text-decoration: none;
-  }
-`
-
-export const optInTerms = styled.div.attrs({
-  'data-theme': 'dark'
-})`
-  color: ${leo.color.text.tertiary};
-  text-align: center;
-  font-size: 11px;
-  line-height: 16px;
-
-  a {
-    color: ${leo.color.text.interactive};
-    text-decoration: none;
-  }
 `
 
 export const selectCountry = styled.div`
-  margin: 16px -12px 0;
+  margin: 0 -12px;
 `
 
 export const disconnected = styled.div`
-  margin-top: 20px;
+  margin: 0 -12px;
   padding: 16px;
   font-size: 14px;
   line-height: 20px;
-  background: linear-gradient(137.04deg, #346FE1 33.4%, #5844C3 82.8%);
+  background: var(--self-info-gradient-background);
   border-radius: 8px;
   cursor: pointer;
 
@@ -157,19 +97,13 @@ export const disconnectedArrow = styled.div`
 `
 
 export const balance = styled.div`
-  margin-top: 16px;
-  font-size: 12px;
-  line-height: 18px;
-
   &.flat {
     margin-bottom: -10px;
   }
 `
 
-export const balanceTitle = styled.div.attrs({
-  'data-theme': 'dark'
-})`
-  color: ${leo.color.text.disabled};
+export const balanceTitle = styled.div`
+  font: ${font.components.buttonSmall};
 `
 
 export const balanceSpinner = styled.div`
@@ -187,37 +121,35 @@ export const loading = styled.span`
 `
 
 export const balanceAmount = styled.div`
+  margin: 4px 0;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   gap: 4px;
+  font-family: Poppins;
 
   .amount {
     font-size: 36px;
-    line-height: 54px;
+    font-weight: 400;
+    line-height: 36px;
   }
 
   .currency {
-    font-size: 16px;
-    line-height: 21px;
-    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0.02em;
+    align-self: flex-end;
   }
 `
 
-export const balanceExchange = styled.div.attrs({
-  'data-theme': 'dark'
-})`
+export const balanceExchange = styled.div`
   margin-top: 4px;
-  color: ${leo.color.text.disabled};
-  display: flex;
-  gap: 6px;
+  font: ${font.small.semibold};
 `
 
-export const balanceExchangeAmount = styled.div`
-  flex: 0 0 auto;
-`
-
-export const pendingRewards = styled.div`
-  color: var(--brave-palette-neutral900);
+export const pendingRewards = styled.div.attrs({ 'data-theme': 'light' })`
+  margin-top: 16px;
+  color: ${color.text.secondary};
   font-size: 13px;
   line-height: 19px;
 
@@ -234,7 +166,7 @@ export const pendingRewards = styled.div`
   }
 
   a {
-    color: var(--brave-palette-blurple500);
+    color: ${color.icon.interactive};
     font-weight: 600;
     text-decoration: none;
   }
@@ -251,25 +183,16 @@ export const pendingRewards = styled.div`
 `
 
 export const needsBrowserUpdateView = styled.div`
-  display: block;
-  align-items: center;
-  justify-content: start;
-  background: #FDF1F2;
-  padding: 5px;
-  border-radius: 6px;
-`
-
-export const needsBrowserUpdateContentHeader = styled.div`
-  margin: 5px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--brave-palette-neutral800);
+  margin: 0 -12px;
+  padding: 16px;
+  background: var(--self-info-gradient-background);
+  border-radius: 8px;
+  font: ${font.small.semibold};
 `
 
 export const needsBrowserUpdateContentBody = styled.div`
-  margin: 5px;
-  font-size: 13px;
-  color: var(--brave-palette-neutral800);
+  margin-top: 8px;
+  font-weight: 400;
 `
 
 export const earningsHeader = styled.div`
@@ -280,9 +203,7 @@ export const earningsHeader = styled.div`
 `
 
 export const earningsHeaderText = styled.div`
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${font.small.semibold};
 `
 
 export const earningsInfo = styled.span`
@@ -299,7 +220,7 @@ export const earningsInfo = styled.span`
   .tooltip {
     position: absolute;
     bottom: 100%;
-    left: -119px;
+    left: -98px;
     width: 207px;
     padding-bottom: 8px;
     visibility: hidden;
@@ -311,15 +232,13 @@ export const earningsInfo = styled.span`
   }
 `
 
-export const earningsTooltip = styled.div.attrs({
-  'data-theme': 'light'
-})`
+export const earningsTooltip = styled.div.attrs({ 'data-theme': 'light' })`
   position: relative;
   padding: 16px;
-  background: ${leo.color.white};
+  background: ${color.white};
   box-shadow: 0px 0px 24px rgba(99, 105, 110, 0.36);
   border-radius: 8px;
-  color: ${leo.color.text.primary};
+  color: ${color.text.primary};
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
@@ -328,7 +247,7 @@ export const earningsTooltip = styled.div.attrs({
     content: '';
     position: absolute;
     bottom: -3px;
-    left: 123px;
+    left: 102px;
     background: inherit;
     height: 15px;
     width: 15px;
@@ -336,13 +255,11 @@ export const earningsTooltip = styled.div.attrs({
   }
 `
 
-export const manageAds = styled.div.attrs({
-  'data-theme': 'light'
-})`
+export const manageAds = styled.div.attrs({ 'data-theme': 'light' })`
   margin-top: 14px;
 
   a {
-    color: ${leo.color.text.interactive};
+    color: ${color.text.interactive};
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
@@ -352,198 +269,85 @@ export const manageAds = styled.div.attrs({
   .icon {
     height: 9px;
     width: auto;
-    color: ${leo.color.icon.interactive};
+    color: ${color.icon.interactive};
   }
-`
-
-export const earningsHeaderBorder = styled.div.attrs({
-  'data-theme': 'dark'
-})`
-  flex: 1 1 auto;
-  border-top: 1px solid ${leo.color.text.disabled};
-  height: 0px;
 `
 
 export const earningsDisplay = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
+  gap: 8px;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 24px;
-  color: #F8F9FA;
+
+  .currency {
+    font: ${font.small.semibold};
+  }
 `
 
 export const earningsMonth = styled.div`
-  padding: 2px 4px;
-  font-size: 11px;
-  line-height: 16px;
-  color: rgba(255, 255, 255, 0.65);
-  background: rgba(255, 255, 255, 0.15);
+  padding: 5px 6px;
+  font: ${font.components.label};
+  background: rgba(255, 255, 255, 0.10);
   border-radius: 4px;
-`
-
-export const hiddenEarnings = styled.div.attrs({
-  'data-theme': 'dark'
-})`
-  display: flex;
-  align-items: center;
-
-  padding-left: 3px;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 30px;
-  color: ${leo.color.text.disabled};
-
-  a {
-    font-weight: 600;
-    font-size: 11px;
-    line-height: 18px;
-    color: ${leo.color.text.primary};
-    text-decoration: none;
-  }
-`
-
-export const primaryAction = styled.div`
-  text-align: center;
-
-  button {
-    ${buttonReset}
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 24px;
-    cursor: pointer;
-    background: var(--brave-palette-blurple400);
-    border-radius: 15px;
-    padding: 4px 18px;
-
-    &:hover {
-      background: var(--brave-palette-blurple500);
-    }
-
-    &:active {
-      background:
-        linear-gradient(rgba(15, 28, 45, .05), rgba(15, 28, 45, .1)),
-        var(--brave-palette-blurple500);
-    }
-  }
+  text-transform: uppercase;
 `
 
 export const connect = styled.div`
-  margin: 16px -12px 0;
+  margin: 0 -12px;
   padding: 16px;
-  background: linear-gradient(137.04deg, #346FE1 33.4%, #5844C3 82.8%);
+  background: var(--self-info-gradient-background);
   border-radius: 8px;
-  font-size: 12px;
-  line-height: 18px;
-  color: #fff;
+  font: ${font.small.semibold};
+  font-weight: 400;
 
   strong {
+    display: block;
     font-weight: 600;
   }
 `
 
 export const connectAction = styled.div`
   margin-top: 8px;
-
-  button {
-    ${buttonReset}
-    background: rgba(255, 255, 255, 0.24);
-    border-radius: 48px;
-    padding: 6px 13px;
-    width: 100%;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    cursor: pointer;
-
-    &:active {
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .icon {
-      vertical-align: middle;
-      height: 17px;
-      width: auto;
-      margin-left: 8px;
-      margin-top: -2px;
-    }
-  }
+  display: flex;
+  justify-content: stretch;
 `
 
 export const publisherSupport = styled.div`
-  margin-top: 18px;
+  margin-top: 16px;
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 12px;
-  line-height: 18px;
-  color: #F0F2FF;
+  font: ${font.small.regular};
 `
 
 export const publisherCount = styled.div`
-  font-size: 32px;
-  line-height: 32px;
+  font: ${font.heading.h1};
 `
 
-export const settings = styled.div`
-  margin-top: 16px;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-
-  a {
-    color: inherit;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .icon {
-    width: 17px;
-    height: auto;
-    vertical-align: middle;
-    margin-right: 8px;
-    margin-bottom: 3px;
-  }
-`
-
-export const selfCustodyInvite = styled.div.attrs({
-  'data-theme': 'light'
-})`
-  margin: 12px -12px -6px;
+export const selfCustodyInvite = styled.div.attrs({ 'data-theme': 'light' })`
+  margin: 0 -12px;
   border-radius: 12px;
   background: no-repeat center 16px/auto 67px url(${selfCustodyImage}),
-              linear-gradient(137deg, #346FE1 33.4%, #5844C3 82.8%);
+              var(--self-info-gradient-background);
   padding: 91px 16px 16px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
 
-  color: ${leo.color.container.background};
+  color: ${color.container.background};
   text-align: center;
 `
 
-export const selfCustodyInviteClose = styled.div`
-  --leo-icon-size: 18px;
-  position: absolute;
-  top: 12px;
-  right: 12px;
-
-  button {
-    ${buttonReset}
-    cursor: pointer;
-  }
-`
-
 export const selfCustodyInviteHeader = styled.div`
-  font: ${leo.font.default.semibold};
+  font: ${font.default.semibold};
 `
 
 export const selfCustodyInviteText = styled.div`
-  font: ${leo.font.small.regular};
+  font: ${font.small.regular};
   padding: 0 16px;
   margin-bottom: -4px;
 `
@@ -554,19 +358,17 @@ export const selfCustodyInviteDismiss = styled.div`
     cursor: pointer;
     padding: 10px 0;
     opacity: 0.85;
-    font: ${leo.font.components.buttonSmall};
+    font: ${font.components.buttonSmall};
   }
 `
 
-export const tosUpdateNotice = styled.div.attrs({
-  'data-theme': 'light'
-})`
-  margin: 8px -10px 0;
+export const tosUpdateNotice = styled.div.attrs({ 'data-theme': 'light' })`
+  margin: 0 -12px;
 
   --tos-update-notice-border-radius: 8px;
   --tos-update-notice-padding: 16px;
   --tos-update-heading-padding-bottom: 0;
-  --tos-update-notice-heading-font: ${leo.font.heading.h4};
-  --tos-update-notice-text-font: ${leo.font.small.link};
+  --tos-update-notice-heading-font: ${font.heading.h4};
+  --tos-update-notice-text-font: ${font.small.link};
 `;
 

@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 
-export const batIcon = styled.div`
+export const rewardsMenuIcon = styled.div`
   --leo-icon-size: 20px;
   margin-left: 2px;
 `
