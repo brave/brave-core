@@ -31,6 +31,8 @@ public struct SpringButtonStyle: ButtonStyle {
       }
       .scaleEffect(isPressed ? scale : 1.0)
       .opacity(isPressed ? 0.95 : 1.0)
+      .contentShape(.hoverEffect, .rect(cornerRadius: 8, style: .continuous))
+      .hoverEffect()
       .onChange(
         of: configuration.isPressed,
         perform: { value in

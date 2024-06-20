@@ -558,6 +558,7 @@ private struct PlaylistButtonStyle: ButtonStyle {
       )
       .clipShape(clipShape)
       .contentShape(clipShape)
+      .hoverEffect()
   }
 }
 

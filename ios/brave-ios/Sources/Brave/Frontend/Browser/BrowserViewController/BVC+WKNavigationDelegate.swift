@@ -226,7 +226,8 @@ extension BrowserViewController: WKNavigationDelegate {
       return (shouldOpen ? .allow : .cancel, preferences)
     }
 
-    if #available(iOS 17.4, *) {
+    if #available(iOS 17.4, *), !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      // Accessing `MarketplaceKitURIScheme` on Vision OS results in a crash
       if requestURL.scheme == MarketplaceKitURIScheme {
         if let queryItems = URLComponents(url: requestURL, resolvingAgainstBaseURL: false)?
           .queryItems,

@@ -376,6 +376,7 @@ private struct ShieldsPanelDisclosureStyle: DisclosureGroupStyle {
       .buttonStyle(.plain)
       .frame(maxWidth: .infinity, alignment: .center)
       .background(Color(.secondaryBraveBackground))
+      .hoverEffect()
 
       if configuration.isExpanded {
         configuration.content

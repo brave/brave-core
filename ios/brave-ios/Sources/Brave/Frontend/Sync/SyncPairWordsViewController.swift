@@ -117,7 +117,10 @@ class SyncPairWordsViewController: SyncViewController {
     loadingView.addSubview(loadingSpinner)
 
     view.addSubview(loadingView)
-    view.addSubview(useCameraButton)
+
+    if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      view.addSubview(useCameraButton)
+    }
 
     scrollView.snp.makeConstraints {
       $0.edges.equalTo(view)
@@ -156,11 +159,13 @@ class SyncPairWordsViewController: SyncViewController {
       $0.center.equalTo(loadingView)
     }
 
-    useCameraButton.snp.makeConstraints {
-      $0.top.equalTo(containerView.snp.bottom).offset(16)
-      $0.left.equalTo(view)
-      $0.right.equalTo(view)
-      $0.centerX.equalTo(view)
+    if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      useCameraButton.snp.makeConstraints {
+        $0.top.equalTo(containerView.snp.bottom).offset(16)
+        $0.left.equalTo(view)
+        $0.right.equalTo(view)
+        $0.centerX.equalTo(view)
+      }
     }
   }
 

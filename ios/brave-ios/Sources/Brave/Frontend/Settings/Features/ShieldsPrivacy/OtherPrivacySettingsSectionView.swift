@@ -82,14 +82,17 @@ struct OtherPrivacySettingsSectionView: View {
         ),
         option: Preferences.Shields.googleSafeBrowsing
       )
-      OptionToggleView(
-        title: Strings.screenTimeSetting,
-        subtitle: String.localizedStringWithFormat(
-          Strings.screenTimeSettingDescription,
-          URL.brave.screenTimeHelp.absoluteString
-        ),
-        option: Preferences.Privacy.screenTimeEnabled
-      )
+      if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+        // Vision OS does not support ScreenTime for web pages
+        OptionToggleView(
+          title: Strings.screenTimeSetting,
+          subtitle: String.localizedStringWithFormat(
+            Strings.screenTimeSettingDescription,
+            URL.brave.screenTimeHelp.absoluteString
+          ),
+          option: Preferences.Privacy.screenTimeEnabled
+        )
+      }
       ToggleView(
         title: Strings.P3A.settingTitle,
         subtitle: Strings.P3A.settingSubtitle,

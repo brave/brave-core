@@ -105,7 +105,9 @@ struct MediaScrubber<Label: View>: View {
               Circle()
                 .foregroundStyle(.tint)
                 .frame(width: thumbSize, height: thumbSize)
-                .contentShape(.rect)
+                .contentShape(.circle.inset(by: -8))
+                .contentShape(.hoverEffect, .circle.inset(by: -8))
+                .hoverEffect(.lift)
                 .scaleEffect(isScrubbing ? 1.5 : 1)
                 .animation(.spring(response: 0.2, dampingFraction: 0.7), value: isScrubbing)
                 .offset(

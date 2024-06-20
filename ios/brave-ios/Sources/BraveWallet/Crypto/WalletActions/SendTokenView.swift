@@ -227,15 +227,20 @@ struct SendTokenView: View {
                   .font(.body)
               }
               .buttonStyle(PlainButtonStyle())
-              Button {
-                isShowingScanner = true
-              } label: {
-                Label(Strings.Wallet.scanQRCodeAccessibilityLabel, braveSystemImage: "leo.qr.code")
+              if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+                Button {
+                  isShowingScanner = true
+                } label: {
+                  Label(
+                    Strings.Wallet.scanQRCodeAccessibilityLabel,
+                    braveSystemImage: "leo.qr.code"
+                  )
                   .labelStyle(.iconOnly)
                   .foregroundColor(Color(.primaryButtonTint))
                   .font(.body)
+                }
+                .buttonStyle(PlainButtonStyle())
               }
-              .buttonStyle(PlainButtonStyle())
             }
             Group {
               if sendTokenStore.isResolvingAddress {

@@ -31,6 +31,7 @@ private struct ZoomView: View {
           .frame(width: buttonWidth)
       }
       .disabled(value == minValue)
+      .hoverEffect()
 
       Divider()
 
@@ -52,6 +53,7 @@ private struct ZoomView: View {
           .frame(width: buttonWidth)
       }
       .disabled(value == maxValue)
+      .hoverEffect()
     }
     .padding(.vertical, 8.0)
     .fixedSize(horizontal: false, vertical: true)
@@ -130,6 +132,7 @@ struct PageZoomView: View {
       }
       .padding(.horizontal)
       .padding(.vertical, 6.0)
+      .hoverEffect()
     }
     .background(Color(UIColor.braveBackground))
     .ignoresSafeArea()
