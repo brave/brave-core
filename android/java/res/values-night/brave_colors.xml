@@ -91,6 +91,15 @@
     <color name="brave_sync_border_color">@color/modern_grey_800</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
 
+    <color name="container_background">#0d1214</color>
+    <color name="divider_interactive">#545ff8</color>
+    <color name="systemfeedback_error_icon">#ffb1b0</color>
+    <color name="systemfeedback_error_background">#460a10</color>
+    <color name="systemfeedback_info_text">#a0cdff</color>
+    <color name="systemfeedback_info_icon">#a0cdff</color>
+    <color name="systemfeedback_info_background">#072542</color>
+    <color name="text_interactive">#7c91ff</color>
+
     <color name="brave_set_default_dialog_text_color">@android:color/white</color>
 
     <color name="qr_button_color">@color/modern_grey_800</color>
@@ -258,4 +267,6 @@
     <color name="text_secondary">#BECAD0</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
+    <color name="button_background">#3f39e8</color>
+    <color name="systemfeedback_error_text">#ffb1b0</color>
 </resources>
