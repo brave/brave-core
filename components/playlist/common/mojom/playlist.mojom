@@ -144,6 +144,9 @@ interface PlaylistService {
   CancelQuery(string query_id);
 
   AddObserver(pending_remote<PlaylistServiceObserver> observer);
+
+  OnAudioFocusGained();
+  OnAudioFocusLost();
 };
 
 // WebUI will delegate some UIs to native UI via this interface. While
