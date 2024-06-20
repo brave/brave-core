@@ -17,6 +17,7 @@
 -AutomationApiTest.*
 -AutomationApiTestWithLanguageDetection.DetectedLanguage
 -ManifestUpdateManagerBrowserTest.UninstallDialogCancelStillShowsAppUpdateDialog
+-ExtensionUninstallDialogViewBrowserTest.WebAppWindowAshCrash
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
 
