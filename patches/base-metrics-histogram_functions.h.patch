@@ -1,0 +1,20 @@
+diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
+index 18f460cc992ddac3669f514beee5a66878970653..b5d3637fec97acf90c2ca89138a53f3291068b95 100644
+--- a/base/metrics/histogram_functions.h
++++ b/base/metrics/histogram_functions.h
+@@ -75,6 +75,7 @@ void UmaHistogramEnumeration(const std::string& name, T sample) {
+   static_assert(static_cast<uintmax_t>(T::kMaxValue) <=
+                     static_cast<uintmax_t>(INT_MAX) - 1,
+                 "Enumeration's kMaxValue is out of range of INT_MAX!");
++  if (false)
+   DCHECK_LE(static_cast<uintmax_t>(sample),
+             static_cast<uintmax_t>(T::kMaxValue));
+   return UmaHistogramExactLinear(name, static_cast<int>(sample),
+@@ -89,6 +90,7 @@ void UmaHistogramEnumeration(const char* name, T sample) {
+   static_assert(static_cast<uintmax_t>(T::kMaxValue) <=
+                     static_cast<uintmax_t>(INT_MAX) - 1,
+                 "Enumeration's kMaxValue is out of range of INT_MAX!");
++  if (false)
+   DCHECK_LE(static_cast<uintmax_t>(sample),
+             static_cast<uintmax_t>(T::kMaxValue));
+   return UmaHistogramExactLinear(name, static_cast<int>(sample),
