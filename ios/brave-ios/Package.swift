@@ -54,7 +54,7 @@ var package = Package(
     .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
     .package(url: "https://github.com/cezheng/Fuzi", from: "3.1.3"),
     .package(url: "https://github.com/SwiftyJSON/SwiftyJSON", from: "5.0.0"),
-    .package(url: "https://github.com/airbnb/lottie-ios", from: "3.1.9"),
+    .package(url: "https://github.com/airbnb/lottie-spm", from: "4.4.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImage", exact: "5.10.3"),
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
@@ -131,7 +131,7 @@ var package = Package(
         "Static",
         "Preferences",
         "Shared",
-        .product(name: "Lottie", package: "lottie-ios"),
+        .product(name: "Lottie", package: "lottie-spm"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -209,7 +209,7 @@ var package = Package(
         "Data",
         "GuardianConnect",
         "BraveUI",
-        .product(name: "Lottie", package: "lottie-ios"),
+        .product(name: "Lottie", package: "lottie-spm"),
       ],
       resources: [.copy("vpncheckmark.json")],
       plugins: ["LoggerPlugin"]
@@ -235,7 +235,7 @@ var package = Package(
         "Then",
         .product(name: "Collections", package: "swift-collections"),
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
-        .product(name: "Lottie", package: "lottie-ios"),
+        .product(name: "Lottie", package: "lottie-spm"),
       ],
       resources: [
         .copy("Lottie Assets/brave-today-welcome-graphic.json")
@@ -258,7 +258,7 @@ var package = Package(
         "SpeechRecognition",
         .product(name: "Collections", package: "swift-collections"),
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
-        .product(name: "Lottie", package: "lottie-ios"),
+        .product(name: "Lottie", package: "lottie-spm"),
       ],
       resources: [
         .copy("Components/Markdown/Code Highlight/Themes/atom-one-dark.min.css"),
@@ -299,7 +299,7 @@ var package = Package(
         "BraveUI",
         "DesignSystem",
         "Growth",
-        .product(name: "Lottie", package: "lottie-ios"),
+        .product(name: "Lottie", package: "lottie-spm"),
         "Preferences",
         "Shared",
         "SnapKit",
@@ -461,7 +461,7 @@ var braveTarget: PackageDescription.Target = .target(
     "CertificateUtilities",
     "Playlist",
     "UserAgent",
-    .product(name: "Lottie", package: "lottie-ios"),
+    .product(name: "Lottie", package: "lottie-spm"),
     .product(name: "Collections", package: "swift-collections"),
     "PlaylistUI",
   ],

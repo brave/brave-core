@@ -7,9 +7,9 @@ import Foundation
 import Lottie
 import UIKit
 
-extension AnimationView {
+extension LottieAnimationView {
   static func showShredAnimation(on view: UIView, callback: @escaping () -> Void) {
-    let animationView = AnimationView(name: "shred", bundle: .module)
+    let animationView = LottieAnimationView(name: "shred", bundle: .module)
     animationView.contentMode = .scaleAspectFill
     animationView.loopMode = .playOnce
     animationView.animationSpeed = 1

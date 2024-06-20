@@ -19,12 +19,13 @@ struct FocusAdTrackerSliderContentView: View {
     SwipeDifferenceView(progress: $progress) {
       ZStack {
         Image("focus-website-ads", bundle: .module)
-
-        LottieAnimationView(
-          name: colorScheme == .dark ? "moving-ads-dark" : "moving-ads-light",
-          bundle: .module
+        LottieView(
+          animation: .named(
+            colorScheme == .dark ? "moving-ads-dark" : "moving-ads-light",
+            bundle: .module
+          )
         )
-        .loopMode(.loop)
+        .playing(loopMode: .loop)
         .resizable()
         .opacity(opacity)
       }
@@ -61,11 +62,13 @@ struct FocusVideoAdSliderContentView: View {
   @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
-    LottieAnimationView(
-      name: colorScheme == .dark ? "novideo-ads-dark" : "novideo-ads-light",
-      bundle: .module
+    LottieView(
+      animation: .named(
+        colorScheme == .dark ? "novideo-ads-dark" : "novideo-ads-light",
+        bundle: .module
+      )
     )
-    .loopMode(.loop)
+    .playing(loopMode: .loop)
     .resizable()
     .aspectRatio(contentMode: .fill)
   }
