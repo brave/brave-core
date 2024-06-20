@@ -36,12 +36,6 @@ PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
     : WebContentsUserData(*contents), service_(service) {
   CHECK(service_);
 
-  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager;
-  content::GetMediaSessionService().BindAudioFocusManager(
-      audio_focus_manager.BindNewPipeAndPassReceiver());
-  audio_focus_manager->AddObserver(
-      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
-
   Observe(contents);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
   service_->AddObservation(this);
@@ -161,38 +155,15 @@ void PlaylistTabHelper::DidFinishNavigation(
   UpdateSavedItemFromCurrentContents();
 }
 
-void PlaylistTabHelper::OnFocusGained(
-    media_session::mojom::AudioFocusRequestStatePtr state) {
-  CHECK(state);
-  if (!state->request_id) {
-    return;
-  }
-
-  auto& web_contents = GetWebContents();
-  if (&web_contents !=
-      content::MediaSession::GetWebContentsFromRequestId(*state->request_id)) {
-    return;
-  }
-
+void PlaylistTabHelper::OnFocusGained() {
   if (!media_session_observer_receiver_.is_bound()) {
-    content::MediaSession::Get(&web_contents)
+    content::MediaSession::Get(&GetWebContents())
         ->AddObserver(
             media_session_observer_receiver_.BindNewPipeAndPassRemote());
   }
 }
 
-void PlaylistTabHelper::OnFocusLost(
-    media_session::mojom::AudioFocusRequestStatePtr state) {
-  CHECK(state);
-  if (!state->request_id) {
-    return;
-  }
-
-  if (&GetWebContents() !=
-      content::MediaSession::GetWebContentsFromRequestId(*state->request_id)) {
-    return;
-  }
-
+void PlaylistTabHelper::OnFocusLost() {
   media_session_observer_receiver_.reset();
 
   found_item_ = mojom::PlaylistItem::New();
