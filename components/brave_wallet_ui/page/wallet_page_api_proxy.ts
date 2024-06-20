@@ -9,14 +9,12 @@ import { BraveWallet } from '../constants/types'
 let walletPageApiProxyInstance: WalletPageApiProxy
 
 export class WalletPageApiProxy extends WalletApiProxy {
-  callbackRouter = new BraveWallet.PageCallbackRouter()
   pageHandler = new BraveWallet.PageHandlerRemote()
   constructor() {
     super()
 
     const factory = BraveWallet?.PageHandlerFactory?.getRemote?.()
     factory?.createPageHandler?.(
-      this.callbackRouter.$.bindNewPipeAndPassRemote(),
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
       this.walletHandler.$.bindNewPipeAndPassReceiver(),
       this.jsonRpcService.$.bindNewPipeAndPassReceiver(),

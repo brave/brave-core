@@ -9,10 +9,10 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -134,8 +134,14 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
   brave_wallet::JsonRpcService* GetJsonRpcService() {
-    return brave_wallet::JsonRpcServiceFactory::GetInstance()
-        ->GetServiceForContext(browser()->profile());
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+               browser()->profile())
+        ->json_rpc_service();
+  }
+  brave_wallet::KeyringService* GetKeyringService() {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+               browser()->profile())
+        ->keyring_service();
   }
 
  protected:
@@ -241,10 +247,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfNoWalletCreated) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->Reset(false);
+  GetKeyringService()->Reset(false);
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -270,10 +273,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -299,10 +299,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, AttachIfWalletCreated) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfDefaultWalletNone) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -329,10 +326,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   brave_wallet::SetDefaultEthereumWallet(
       browser()->profile()->GetPrefs(),
@@ -349,10 +343,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, EIP6369) {
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        EIP6369_MetaMaskAttached) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   scoped_refptr<const extensions::Extension> extension(
       extensions::ExtensionBuilder("MetaMask")
@@ -383,10 +374,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest,
                        DoNotAttachIfMetaMaskInstalled) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          browser()->profile());
-  keyring_service->CreateWallet("password", base::DoNothing());
+  GetKeyringService()->CreateWallet("password", base::DoNothing());
 
   scoped_refptr<const extensions::Extension> extension(
       extensions::ExtensionBuilder("MetaMask")

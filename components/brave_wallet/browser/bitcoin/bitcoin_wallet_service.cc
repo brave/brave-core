@@ -923,13 +923,6 @@ BitcoinWalletService::BitcoinWalletService(
 
 BitcoinWalletService::~BitcoinWalletService() = default;
 
-mojo::PendingRemote<mojom::BitcoinWalletService>
-BitcoinWalletService::MakeRemote() {
-  mojo::PendingRemote<mojom::BitcoinWalletService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void BitcoinWalletService::Bind(
     mojo::PendingReceiver<mojom::BitcoinWalletService> receiver) {
   receivers_.Add(this, std::move(receiver));

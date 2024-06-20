@@ -5,17 +5,17 @@
 
 #include "brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h"
 
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/ios/browser/brave_wallet/bitcoin_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
-#include "brave/ios/browser/brave_wallet/tx_service_factory.h"
-#include "brave/ios/browser/brave_wallet/zcash_wallet_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
@@ -37,75 +37,86 @@
 
 @implementation BraveWalletBitcoinWalletServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service = brave_wallet::BitcoinWalletServiceFactory::GetForBrowserState(
-      browserState);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::BitcoinWalletService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletBitcoinWalletServiceMojoImpl alloc]
-      initWithBitcoinWalletService:std::move(service)];
+      initWithBitcoinWalletService:std::move(pending_remote)];
 }
+
 @end
 
 @implementation BraveWalletJsonRpcServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      brave_wallet::JsonRpcServiceFactory::GetForBrowserState(browserState);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::JsonRpcService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletJsonRpcServiceMojoImpl alloc]
-      initWithJsonRpcService:std::move(service)];
+      initWithJsonRpcService:std::move(pending_remote)];
 }
 @end
 
 @implementation BraveWalletTxServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      brave_wallet::TxServiceFactory::GetForBrowserState(browserState);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::TxService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletTxServiceMojoImpl alloc]
-      initWithTxService:std::move(service)];
+      initWithTxService:std::move(pending_remote)];
 }
 @end
 
 @implementation BraveWalletEthTxManagerProxyFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto proxy =
-      brave_wallet::TxServiceFactory::GetEthTxManagerProxyForBrowserState(
-          browserState);
-  if (!proxy) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::EthTxManagerProxy> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletEthTxManagerProxyMojoImpl alloc]
-      initWithEthTxManagerProxy:std::move(proxy)];
+      initWithEthTxManagerProxy:std::move(pending_remote)];
 }
 @end
 
 @implementation BraveWalletSolanaTxManagerProxyFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto proxy =
-      brave_wallet::TxServiceFactory::GetSolanaTxManagerProxyForBrowserState(
-          browserState);
-  if (!proxy) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::SolanaTxManagerProxy> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletSolanaTxManagerProxyMojoImpl alloc]
-      initWithSolanaTxManagerProxy:std::move(proxy)];
+      initWithSolanaTxManagerProxy:std::move(pending_remote)];
 }
 @end
 
 @implementation BraveWalletKeyringServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      brave_wallet::KeyringServiceFactory::GetForBrowserState(browserState);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::KeyringService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletKeyringServiceMojoImpl alloc]
-      initWithKeyringService:std::move(service)];
+      initWithKeyringService:std::move(pending_remote)];
 }
 @end
 
@@ -124,13 +135,15 @@
 
 @implementation BraveWalletServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      brave_wallet::BraveWalletServiceFactory::GetForBrowserState(browserState);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::BraveWalletService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletBraveWalletServiceMojoImpl alloc]
-      initWithBraveWalletService:std::move(service)];
+      initWithBraveWalletService:std::move(pending_remote)];
 }
 @end
 
@@ -161,12 +174,14 @@
 
 @implementation BraveWalletZCashWalletServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
-  auto service =
-      brave_wallet::ZCashWalletServiceFactory::GetForBrowserState(browserState);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::ZCashWalletService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletZCashWalletServiceMojoImpl alloc]
-      initWithZCashWalletService:std::move(service)];
+      initWithZCashWalletService:std::move(pending_remote)];
 }
 @end

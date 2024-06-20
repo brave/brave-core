@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/command_line.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
@@ -61,33 +60,21 @@ class BraveWalletP3AUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
-        shared_url_loader_factory_, &prefs_);
-
-    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
-                                                        &prefs_, &local_state_);
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
-    bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service_.get(), &prefs_,
-        bitcoin_test_rpc_server_->GetURLLoaderFactory());
-    auto zcash_rpc =
-        std::make_unique<ZCashRpc>(&prefs_, shared_url_loader_factory_);
-    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        keyring_service_.get(), std::move(zcash_rpc));
 
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), bitcoin_wallet_service_.get(),
-        zcash_wallet_service_.get(), keyring_service_.get(), &prefs_,
-        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_, nullptr /*delegate*/,
-        keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
-        bitcoin_wallet_service_.get(), zcash_wallet_service_.get(), &prefs_,
-        &local_state_, false);
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
-    json_rpc_service_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
+        &prefs_, &local_state_);
+    brave_wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
+    keyring_service_ = brave_wallet_service_->keyring_service();
+    brave_wallet_service_->GetBitcoinWalletService()
+        ->SetUrlLoaderFactoryForTesting(
+            bitcoin_test_rpc_server_->GetURLLoaderFactory());
+    brave_wallet_service_->GetZcashWalletService()->SetZCashRpcForTesting(
+        std::make_unique<ZCashRpc>(&prefs_, shared_url_loader_factory_));
+    tx_service_ = brave_wallet_service_->tx_service();
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     wallet_p3a_ = brave_wallet_service_->GetBraveWalletP3A();
   }
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
@@ -359,16 +346,12 @@ class BraveWalletP3AUnitTest : public testing::Test {
   base::test::ScopedFeatureList feature_zec_feature_{
       features::kBraveWalletZCashFeature};
   content::BrowserTaskEnvironment task_environment_;
-  base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
-  std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<TxService> tx_service_;
-  std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
-  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
+  raw_ptr<KeyringService> keyring_service_;
+  raw_ptr<TxService> tx_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<BraveWalletP3A> wallet_p3a_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

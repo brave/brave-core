@@ -12,7 +12,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -246,16 +245,18 @@ void BraveDefaultExtensionsHandler::GetRestartNeeded(
 void BraveDefaultExtensionsHandler::ResetWallet(const base::Value::List& args) {
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
-  if (brave_wallet_service)
+  if (brave_wallet_service) {
     brave_wallet_service->Reset();
+  }
 }
 
 void BraveDefaultExtensionsHandler::ResetTransactionInfo(
     const base::Value::List& args) {
-  auto* tx_service =
-      brave_wallet::TxServiceFactory::GetServiceForContext(profile_);
-  if (tx_service)
-    tx_service->Reset();
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
+  if (brave_wallet_service) {
+    brave_wallet_service->tx_service()->Reset();
+  }
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
@@ -355,8 +356,9 @@ void BraveDefaultExtensionsHandler::IsWidevineEnabled(
 
 void BraveDefaultExtensionsHandler::OnWalletTypeChanged() {
   if (brave_wallet::GetDefaultEthereumWallet(profile_->GetPrefs()) ==
-      brave_wallet::mojom::DefaultWallet::CryptoWallets)
+      brave_wallet::mojom::DefaultWallet::CryptoWallets) {
     return;
+  }
   extensions::ExtensionService* service =
       extensions::ExtensionSystem::Get(profile_)->extension_service();
   service->DisableExtension(
@@ -481,8 +483,9 @@ void BraveDefaultExtensionsHandler::LaunchIPFSService(
   if (!service) {
     return;
   }
-  if (!service->IsDaemonLaunched())
+  if (!service->IsDaemonLaunched()) {
     service->LaunchDaemon(base::NullCallback());
+  }
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
@@ -509,8 +512,9 @@ void BraveDefaultExtensionsHandler::FileSelected(
     void* params) {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service)
+  if (!service) {
     return;
+  }
   if (dialog_type_ == ui::SelectFileDialog::SELECT_OPEN_FILE) {
     service->GetIpnsKeysManager()->ImportKey(
         file.path(), dialog_key_,
@@ -529,8 +533,9 @@ void BraveDefaultExtensionsHandler::FileSelected(
 
 void BraveDefaultExtensionsHandler::OnKeyExported(const std::string& key,
                                                   bool success) {
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
   FireWebUIListener("brave-ipfs-key-exported", base::Value(key),
                     base::Value(success));
 }
@@ -538,8 +543,9 @@ void BraveDefaultExtensionsHandler::OnKeyExported(const std::string& key,
 void BraveDefaultExtensionsHandler::OnKeyImported(const std::string& key,
                                                   const std::string& value,
                                                   bool success) {
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
   FireWebUIListener("brave-ipfs-key-imported", base::Value(key),
                     base::Value(value), base::Value(success));
 }
@@ -582,26 +588,30 @@ void BraveDefaultExtensionsHandler::CheckIpfsNodeStatus(
 void BraveDefaultExtensionsHandler::NotifyNodeStatus() {
   ipfs::IpfsService* service =
       ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
   bool launched = service && service->IsDaemonLaunched();
   FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
 }
 
 void BraveDefaultExtensionsHandler::OnIpfsLaunched(bool result, int64_t pid) {
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
   NotifyNodeStatus();
 }
 
 void BraveDefaultExtensionsHandler::OnIpfsShutdown() {
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
   NotifyNodeStatus();
 }
 void BraveDefaultExtensionsHandler::OnIpnsKeysLoaded(bool success) {
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
   FireWebUIListener("brave-ipfs-keys-loaded", base::Value(success));
 }
 #endif

@@ -15,7 +15,6 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -49,14 +48,13 @@ class ZCashKeyring;
 struct KeyringSeed;
 
 // This class is not thread-safe and should have single owner
-class KeyringService : public KeyedService, public mojom::KeyringService {
+class KeyringService : public mojom::KeyringService {
  public:
   KeyringService(JsonRpcService* json_rpc_service,
                  PrefService* profile_prefs,
                  PrefService* local_state);
   ~KeyringService() override;
 
-  mojo::PendingRemote<mojom::KeyringService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
   // mojom::KeyringService

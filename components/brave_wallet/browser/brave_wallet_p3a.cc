@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -98,12 +99,6 @@ void BraveWalletP3A::AddObservers() {
   update_timer_.Start(FROM_HERE, base::Hours(kRefreshP3AFrequencyHours), this,
                       &BraveWalletP3A::OnUpdateTimerFired);
   OnUpdateTimerFired();  // Also call on startup
-}
-
-mojo::PendingRemote<mojom::BraveWalletP3A> BraveWalletP3A::MakeRemote() {
-  mojo::PendingRemote<mojom::BraveWalletP3A> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
 }
 
 void BraveWalletP3A::Bind(

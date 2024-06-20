@@ -80,11 +80,11 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                      ZCashWalletService* zcash_wallet_service,
                      KeyringService* keyring_service,
                      PrefService* prefs,
-                     const base::FilePath& context_path,
+                     const base::FilePath& wallet_base_directory,
                      scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
     : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
   store_factory_ = base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(
-      context_path.AppendASCII(kWalletBaseDirectory));
+      wallet_base_directory);
   delegate_ = std::make_unique<TxStorageDelegateImpl>(prefs, store_factory_,
                                                       ui_task_runner);
   account_resolver_delegate_ =
@@ -149,50 +149,24 @@ ZCashTxManager* TxService::GetZCashTxManager() {
   return static_cast<ZCashTxManager*>(GetTxManager(mojom::CoinType::ZEC));
 }
 
-mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
-  mojo::PendingRemote<mojom::TxService> remote;
-  tx_service_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
+template <>
 void TxService::Bind(mojo::PendingReceiver<mojom::TxService> receiver) {
   tx_service_receivers_.Add(this, std::move(receiver));
 }
 
-mojo::PendingRemote<mojom::EthTxManagerProxy>
-TxService::MakeEthTxManagerProxyRemote() {
-  mojo::PendingRemote<mojom::EthTxManagerProxy> remote;
-  eth_tx_manager_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-void TxService::BindEthTxManagerProxy(
-    mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
+template <>
+void TxService::Bind(mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
   eth_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
-mojo::PendingRemote<mojom::SolanaTxManagerProxy>
-TxService::MakeSolanaTxManagerProxyRemote() {
-  mojo::PendingRemote<mojom::SolanaTxManagerProxy> remote;
-  solana_tx_manager_receivers_.Add(this,
-                                   remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-mojo::PendingRemote<mojom::FilTxManagerProxy>
-TxService::MakeFilTxManagerProxyRemote() {
-  mojo::PendingRemote<mojom::FilTxManagerProxy> remote;
-  fil_tx_manager_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
-void TxService::BindSolanaTxManagerProxy(
+template <>
+void TxService::Bind(
     mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver) {
   solana_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
-void TxService::BindFilTxManagerProxy(
-    mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
+template <>
+void TxService::Bind(mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
   fil_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 

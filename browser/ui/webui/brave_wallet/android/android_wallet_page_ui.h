@@ -33,15 +33,14 @@ class AndroidWalletPageUI : public ui::MojoWebUIController,
  private:
   // brave_wallet::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
           json_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
-          bitcoin_rpc_service_receiver,
+          bitcoin_wallet_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
-          zcash_service_receiver,
+          zcash_wallet_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,

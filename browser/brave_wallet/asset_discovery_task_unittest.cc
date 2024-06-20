@@ -14,9 +14,6 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -172,18 +169,13 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     profile_ = builder.Build();
     local_state_ = std::make_unique<ScopedTestingLocalState>(
         TestingBrowserProcess::GetGlobal());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(profile_.get());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(profile_.get());
-    json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
-    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
-        BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
-        GetLocalState(), false);
+        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
+        GetLocalState());
+    json_rpc_service_ = wallet_service_->json_rpc_service();
+    keyring_service_ = wallet_service_->keyring_service();
+    tx_service_ = wallet_service_->tx_service();
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(

@@ -13,9 +13,9 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -40,18 +40,14 @@ class WalletNotificationServiceUnitTest : public testing::Test {
 
   void SetUp() override {
     RegisterLocalStatePrefs(local_state_.registry());
+    RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, prefs());
-    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
-                                                        prefs(), local_state());
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), nullptr, nullptr, keyring_service_.get(),
-        prefs(), temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
+    brave_wallet_service_ = std::make_unique<BraveWalletService>(
+        shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
+        prefs(), local_state());
+
     notification_service_ = std::make_unique<WalletNotificationService>(
-        tx_service_.get(), profile());
+        brave_wallet_service_.get(), profile());
     tester_ = std::make_unique<NotificationDisplayServiceTester>(profile());
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
   }
@@ -60,7 +56,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   PrefService* local_state() { return &local_state_; }
 
   AccountUtils GetAccountUtils() {
-    return AccountUtils(keyring_service_.get());
+    return AccountUtils(brave_wallet_service_->keyring_service());
   }
 
   mojom::AccountIdPtr EthAccount(size_t index) {
@@ -95,9 +91,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<WalletNotificationService> notification_service_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
-  std::unique_ptr<KeyringService> keyring_service_;
-  std::unique_ptr<TxService> tx_service_;
+  std::unique_ptr<BraveWalletService> brave_wallet_service_;
 };
 
 TEST_F(WalletNotificationServiceUnitTest, ShouldShowNotifications) {

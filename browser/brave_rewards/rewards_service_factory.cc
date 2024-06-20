@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+
 #include <memory>
 #include <utility>
 
-#include "brave/browser/brave_rewards/rewards_service_factory.h"
-
 #include "base/no_destructor.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
@@ -29,9 +29,9 @@
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/browser/event_router_factory.h"
-#include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
 #include "brave/browser/brave_rewards/extension_rewards_notification_service_observer.h"
+#include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
+#include "extensions/browser/event_router_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -44,8 +44,7 @@ namespace brave_rewards {
 RewardsService* testing_service_ = nullptr;
 
 // static
-RewardsService* RewardsServiceFactory::GetForProfile(
-    Profile* profile) {
+RewardsService* RewardsServiceFactory::GetForProfile(Profile* profile) {
   if (testing_service_) {
     return testing_service_;
   }
@@ -74,7 +73,7 @@ RewardsServiceFactory::RewardsServiceFactory()
 #if BUILDFLAG(ENABLE_GREASELION)
   DependsOn(greaselion::GreaselionServiceFactory::GetInstance());
 #endif
-  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
+  DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
@@ -89,17 +88,17 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
       std::make_unique<ExtensionRewardsNotificationServiceObserver>(
           Profile::FromBrowserContext(context));
 #endif
-  auto* wallet_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(context);
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionService* greaselion_service =
       greaselion::GreaselionServiceFactory::GetForBrowserContext(context);
   std::unique_ptr<RewardsServiceImpl> rewards_service(
       new RewardsServiceImpl(Profile::FromBrowserContext(context),
-                             greaselion_service, wallet_rpc_service));
+                             greaselion_service, brave_wallet_service));
 #else
   std::unique_ptr<RewardsServiceImpl> rewards_service(new RewardsServiceImpl(
-      Profile::FromBrowserContext(context), wallet_rpc_service));
+      Profile::FromBrowserContext(context), brave_wallet_service));
 #endif
   rewards_service->Init(std::move(extension_observer),
                         std::move(notification_observer));

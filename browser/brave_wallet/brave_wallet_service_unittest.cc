@@ -20,10 +20,6 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -326,23 +322,17 @@ class BraveWalletServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     histogram_tester_ = std::make_unique<base::HistogramTester>();
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(profile_.get());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(profile_.get());
-    json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
-    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
-    bitcoin_wallet_service_ =
-        BitcoinWalletServiceFactory::GetServiceForContext(profile_.get());
-    bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
-        bitcoin_test_rpc_server_->GetURLLoaderFactory());
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
-        BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, bitcoin_wallet_service_.get(), nullptr,
-        GetPrefs(), local_state_->Get(), false /* is_private_window_ */);
+        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
+        local_state_->Get());
+    json_rpc_service_ = service_->json_rpc_service();
+    keyring_service_ = service_->keyring_service();
+    bitcoin_wallet_service_ = service_->GetBitcoinWalletService();
+    bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
+        bitcoin_test_rpc_server_->GetURLLoaderFactory());
+    tx_service_ = service_->tx_service();
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 

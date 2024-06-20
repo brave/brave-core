@@ -9,7 +9,6 @@
 #include <optional>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -63,7 +62,6 @@ class WalletButtonNotificationSource
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<brave_wallet::TxService> tx_service_ = nullptr;
-  raw_ptr<brave_wallet::KeyringService> keyring_service_ = nullptr;
 
   mojo::Receiver<brave_wallet::mojom::TxServiceObserver> tx_observer_{this};
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>

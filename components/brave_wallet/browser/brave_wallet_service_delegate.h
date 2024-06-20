@@ -77,6 +77,10 @@ class BraveWalletServiceDelegate {
 
   virtual void ClearWalletUIStoragePartition();
 
+  virtual base::FilePath GetWalletBaseDirectory() = 0;
+
+  virtual bool IsPrivateWindow() = 0;
+
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);
 };

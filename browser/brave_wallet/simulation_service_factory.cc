@@ -9,7 +9,8 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -61,7 +62,7 @@ SimulationServiceFactory::SimulationServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SimulationService",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(JsonRpcServiceFactory::GetInstance());
+  DependsOn(BraveWalletServiceFactory::GetInstance());
 }
 
 SimulationServiceFactory::~SimulationServiceFactory() = default;
@@ -74,7 +75,8 @@ KeyedService* SimulationServiceFactory::BuildServiceInstanceFor(
 
   return new SimulationService(
       shared_url_loader_factory,
-      JsonRpcServiceFactory::GetServiceForContext(context));
+      BraveWalletServiceFactory::GetServiceForContext(context)
+          ->json_rpc_service());
 }
 
 content::BrowserContext* SimulationServiceFactory::GetBrowserContextToUse(

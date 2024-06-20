@@ -15,7 +15,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -48,8 +47,7 @@ class BitcoinTxManager;
 class FilTxManager;
 class ZCashTxManager;
 
-class TxService : public KeyedService,
-                  public mojom::TxService,
+class TxService : public mojom::TxService,
                   public mojom::EthTxManagerProxy,
                   public mojom::SolanaTxManagerProxy,
                   public mojom::FilTxManagerProxy {
@@ -59,25 +57,14 @@ class TxService : public KeyedService,
             ZCashWalletService* zcash_wallet_service,
             KeyringService* keyring_service,
             PrefService* prefs,
-            const base::FilePath& context_path,
+            const base::FilePath& wallet_base_directory,
             scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
 
-  mojo::PendingRemote<mojom::TxService> MakeRemote();
-  void Bind(mojo::PendingReceiver<mojom::TxService> receiver);
-  mojo::PendingRemote<mojom::EthTxManagerProxy> MakeEthTxManagerProxyRemote();
-  void BindEthTxManagerProxy(
-      mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver);
-  mojo::PendingRemote<mojom::SolanaTxManagerProxy>
-  MakeSolanaTxManagerProxyRemote();
-  void BindSolanaTxManagerProxy(
-      mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver);
-
-  mojo::PendingRemote<mojom::FilTxManagerProxy> MakeFilTxManagerProxyRemote();
-  void BindFilTxManagerProxy(
-      mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver);
+  template <class T>
+  void Bind(mojo::PendingReceiver<T> receiver);
 
   // mojom::TxService
   void AddUnapprovedTransaction(

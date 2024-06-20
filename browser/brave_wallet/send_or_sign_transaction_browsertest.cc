@@ -13,10 +13,9 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -185,12 +184,12 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     https_server_for_files()->ServeFilesFromDirectory(test_data_dir);
     ASSERT_TRUE(https_server_for_files()->Start());
 
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
-    tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
+    auto* wallet_service =
+        BraveWalletServiceFactory::GetServiceForContext(browser()->profile());
+    json_rpc_service_ = wallet_service->json_rpc_service();
     json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
+    keyring_service_ = wallet_service->keyring_service();
+    tx_service_ = wallet_service->tx_service();
 
     tx_service_->AddObserver(observer()->GetReceiver());
 

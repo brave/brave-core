@@ -7,7 +7,6 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
-#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
@@ -33,19 +32,15 @@ SwapServiceFactory* SwapServiceFactory::GetInstance() {
 SwapServiceFactory::SwapServiceFactory()
     : BrowserStateKeyedServiceFactory(
           "SwapService",
-          BrowserStateDependencyManager::GetInstance()) {
-  DependsOn(JsonRpcServiceFactory::GetInstance());
-}
+          BrowserStateDependencyManager::GetInstance()) {}
 
 SwapServiceFactory::~SwapServiceFactory() = default;
 
 std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   auto* browser_state = ChromeBrowserState::FromBrowserState(context);
-  auto* json_rpc_service =
-      JsonRpcServiceFactory::GetServiceForState(browser_state);
-  std::unique_ptr<SwapService> swap_service(new SwapService(
-      browser_state->GetSharedURLLoaderFactory(), json_rpc_service));
+  std::unique_ptr<SwapService> swap_service(
+      new SwapService(browser_state->GetSharedURLLoaderFactory()));
   return swap_service;
 }
 
