@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/frame/browser_root_view.h"
+
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "ui/views/view.h"
 
 #define ConvertPointToTarget(THIS, TARGET_GETTER, POINT)                  \
   if (views::View* target_v = TARGET_GETTER;                              \
