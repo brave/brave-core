@@ -4,15 +4,15 @@
 
 import DesignSystem
 import Shared
+import SwiftUI
 import UIKit
 
 /// A big UISwitch that has a fancy animated gradient when its turned on
 ///
 /// Treat it the same way you'd use a UISwitch (addTarget for .valueChanged)
 class ShieldsSwitch: UIControl {
-
   /// The static size of this switch
-  private static let size = CGSize(width: 100, height: 60)
+  static let size = CGSize(width: 100, height: 60)
 
   /// Whether or not the switch is currently toggled on or off
   var isOn: Bool {
@@ -55,13 +55,6 @@ class ShieldsSwitch: UIControl {
     }
   }
 
-  /// The color of the background when the switch is off
-  var offBackgroundColor = UIColor(white: 0.9, alpha: 1.0) {
-    didSet {
-      backgroundView.backgroundColor = offBackgroundColor
-    }
-  }
-
   private let gradientView = GradientView().then {
     $0.isUserInteractionEnabled = false
     $0.gradientLayer.type = .radial
@@ -76,7 +69,7 @@ class ShieldsSwitch: UIControl {
   }
 
   private let backgroundView = UIView().then {
-    $0.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
+    $0.backgroundColor = UIColor.secondaryBraveBackground
     $0.isUserInteractionEnabled = false
   }
 
@@ -243,5 +236,61 @@ class ShieldsSwitch: UIControl {
       sendActions(for: .valueChanged)
     }
     super.endTracking(touch, with: event)
+  }
+}
+
+struct ShieldsSwitchView: UIViewRepresentable {
+  class WrappedShieldsSwitch: ShieldsSwitch {
+    protocol ShieldsSwitchDelegate: AnyObject {
+      func shieldsSwitchDidChange(isEnabled: Bool)
+    }
+
+    private weak var delegate: ShieldsSwitchDelegate?
+
+    init(delegate: ShieldsSwitchDelegate) {
+      self.delegate = delegate
+      super.init(frame: .zero)
+
+      addTarget(
+        self,
+        action: #selector(shieldsOverrideSwitchValueChanged),
+        for: .valueChanged
+      )
+    }
+
+    @objc func shieldsOverrideSwitchValueChanged(shieldsSwitch: ShieldsSwitch) {
+      delegate?.shieldsSwitchDidChange(isEnabled: self.isOn)
+    }
+  }
+
+  class Coordinator: NSObject, WrappedShieldsSwitch.ShieldsSwitchDelegate {
+    @Binding var isEnabled: Bool
+
+    init(isEnabled: Binding<Bool>) {
+      _isEnabled = isEnabled
+    }
+
+    func shieldsSwitchDidChange(isEnabled value: Bool) {
+      isEnabled = value
+    }
+  }
+
+  @Binding private var isEnabled: Bool
+
+  init(isEnabled: Binding<Bool>) {
+    _isEnabled = isEnabled
+  }
+
+  func makeUIView(context: Context) -> WrappedShieldsSwitch {
+    let shieldsSwitch = WrappedShieldsSwitch(delegate: context.coordinator)
+    shieldsSwitch.isOn = isEnabled
+    return shieldsSwitch
+  }
+
+  func makeCoordinator() -> Coordinator {
+    return Coordinator(isEnabled: $isEnabled)
+  }
+
+  func updateUIView(_ shieldsSwitch: WrappedShieldsSwitch, context: Context) {
   }
 }

@@ -60,6 +60,7 @@ struct ShredSettingsView: View {
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
     .navigationTitle(Strings.Shields.shredSitesData)
+    .toolbar(.visible)
   }
 
   private var confirmationAlert: Alert {
