@@ -4,15 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { CHANGE } from '@storybook/addon-knobs'
-import { addons } from '@storybook/addons'
+import { addons } from '@storybook/manager-api'
 
 import { images, solidColorsForBackground, gradientColorsForBackground } from '../../../data/backgrounds'
 
 const addonsChannel = addons.getChannel()
 
 const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
-                                      solidColors: NewTab.ColorBackground[],
-                                      gradientColors: NewTab.ColorBackground[]) {
+  solidColors: NewTab.ColorBackground[],
+  gradientColors: NewTab.ColorBackground[]) {
   let staticImages = { defaultImage: undefined }
   for (const image of images) {
     // author is optional field.
