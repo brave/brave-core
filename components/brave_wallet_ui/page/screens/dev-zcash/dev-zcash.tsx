@@ -63,7 +63,7 @@ const GetBalanceSection = (props: GetBalanceSectionProps) => {
 
   React.useEffect(() => {
     fetchBalance()
-  }, [])
+  })
 
   const fetchBalance = async () => {
     setLoading(true)
@@ -136,7 +136,7 @@ const GetZCashAccountInfoSection: React.FC<
 
   React.useEffect(() => {
     fetchZCashAccountInfo()
-  }, [])
+  })
 
   const fetchZCashAccountInfo = async () => {
     setLoading(true)
