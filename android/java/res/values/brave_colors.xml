@@ -398,4 +398,27 @@
     <color name="primitive_primary_80">#2a118e</color>
 
     <color name="divider_interactive">#545ff8</color>
+
+
+    <!-- Playlist colors -->
+    <color name="playlist_background">#FFFFFF</color>
+    <color name="red_playlist">#FB542B</color>
+    <color name="playlist_text_color">#000000</color>
+    <color name="icon_tint">#000000</color>
+    <color name="bottom_sheet_dim_color">#50000000</color>
+    <color name="hint_color">#50FFFFFF</color>
+    <color name="text_input_layout_activated">#FB542B</color>
+    <color name="media_stats_color">#84889C</color>
+    <color name="edit_toolbar">#353DAB</color>
+    <color name="swipe_delete">#BD1531</color>
+    <color name="upload_option_bg">#339AF0</color>
+    <color name="selected_media">#05F0F2FF</color>
+    <color name="playlist_progress_bar_tint">#F0F2FF</color>
+    <color name="playlist_progress_bar_tint_bg">#20F0F2FF</color>
+    <color name="playlist_behavior">#C2C4CF</color>
+    <color name="playlist_transparent_bg">#80000000</color>
+    <color name="day_night_icon_color">#495057</color>
+    <color name="player_seekbar_text_color">#C2C4CF</color>
+    <color name="player_control_bg">#4D000000</color>
+    <!-- End Playlist colors -->
 </resources>

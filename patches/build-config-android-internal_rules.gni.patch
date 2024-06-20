@@ -1,8 +1,16 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 82f30f3c8e89c24dfacbfb73eb683d7c700420b3..1bd5485efdc3d2a5b58eec5d22e903fdbad43e5a 100644
+index 82f30f3c8e89c24dfacbfb73eb683d7c700420b3..299b3a455d8dc3ed7e270709f64988c3d6b85d50 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -4149,6 +4149,7 @@ if (enable_java_templates) {
+@@ -3918,6 +3918,7 @@ if (enable_java_templates) {
+           "android/java/src/org/chromium/chrome/browser/tabmodel/AsyncTabParamsManagerImpl.kt",
+           "java/androidx/core/os/BuildCompat.kt",
+           "webengine_shell_apk/src/org/chromium/webengine/shell/*.kt",
++          "../../brave/android/java/org/chromium/chrome/browser/playlist/kotlin/*.kt",
+         ]
+         _found_kt = filter_exclude(_kt_files, _kt_allowlist)
+         assert(
+@@ -4149,6 +4150,7 @@ if (enable_java_templates) {
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }

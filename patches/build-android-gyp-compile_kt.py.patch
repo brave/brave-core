@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/compile_kt.py b/build/android/gyp/compile_kt.py
+index 4c7eb6ff84328d2731fb55a7da4e48775c19c0c7..fc45d6e8f8bc059caa4903dffddf667870b1e2ed 100755
+--- a/build/android/gyp/compile_kt.py
++++ b/build/android/gyp/compile_kt.py
+@@ -159,6 +159,7 @@ def main(argv):
+       '-no-stdlib',
+       # Avoid depending on the bundled Kotlin reflect libs.
+       '-no-reflect',
++      '-J-Xmx4g',
+   ]
+ 
+   if args.generated_dir:

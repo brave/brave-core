@@ -41,14 +41,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
 
-import com.brave.playlist.enums.PlaylistOptionsEnum;
-import com.brave.playlist.listener.PlaylistOnboardingActionClickListener;
-import com.brave.playlist.listener.PlaylistOptionsListener;
-import com.brave.playlist.model.PlaylistOptionsModel;
-import com.brave.playlist.model.SnackBarActionModel;
-import com.brave.playlist.util.ConstantUtils;
-import com.brave.playlist.util.PlaylistViewUtils;
-
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
@@ -82,6 +74,13 @@ import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
+import org.chromium.chrome.browser.playlist.kotlin.enums.PlaylistOptionsEnum;
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOnboardingActionClickListener;
+import org.chromium.chrome.browser.playlist.kotlin.listener.PlaylistOptionsListener;
+import org.chromium.chrome.browser.playlist.kotlin.model.PlaylistOptionsModel;
+import org.chromium.chrome.browser.playlist.kotlin.model.SnackBarActionModel;
+import org.chromium.chrome.browser.playlist.kotlin.util.ConstantUtils;
+import org.chromium.chrome.browser.playlist.kotlin.util.PlaylistViewUtils;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
@@ -647,7 +646,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                         == PlaylistOptionsEnum.OPEN_PLAYLIST) {
                                     BraveActivity.getBraveActivity()
                                             .openPlaylistActivity(
-                                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                                                    getContext(),
+                                                    ConstantUtils.DEFAULT_PLAYLIST,
+                                                    false);
                                 } else if (playlistOptionsModel.getOptionType()
                                         == PlaylistOptionsEnum.PLAYLIST_SETTINGS) {
                                     BraveActivity.getBraveActivity().openBravePlaylistSettings();
@@ -695,19 +696,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             playlistItems.add(playlistItem);
                         }
                     }
-                    if (playlistItems.size() > 0) {
-                        mPlaylistService.addMediaFiles(
-                                playlistItems.toArray(new PlaylistItem[0]),
-                                ConstantUtils.DEFAULT_PLAYLIST,
-                                true,
-                                addedItems -> {
-                                    if (addedItems.length > 0) {
-                                        showAddedToPlaylistSnackBar();
-                                    }
-                                });
-                    } else {
-                        showAlreadyAddedToPlaylistSnackBar();
-                    }
+                    // if (playlistItems.size() > 0) {
+                    mPlaylistService.addMediaFiles(
+                            playlistItems.toArray(new PlaylistItem[0]),
+                            ConstantUtils.DEFAULT_PLAYLIST,
+                            true,
+                            addedItems -> {
+                                if (addedItems.length > 0) {
+                                    showAddedToPlaylistSnackBar();
+                                }
+                            });
+                    // } else {
+                    //     showAlreadyAddedToPlaylistSnackBar();
+                    // }
                 });
     }
 
@@ -736,7 +737,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 try {
                                     BraveActivity.getBraveActivity()
                                             .openPlaylistActivity(
-                                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                                                    getContext(),
+                                                    ConstantUtils.DEFAULT_PLAYLIST,
+                                                    false);
                                 } catch (BraveActivity.BraveActivityNotFoundException e) {
                                     Log.e(TAG, "showAddedToPlaylistSnackBar onClick ", e);
                                 }
@@ -1649,10 +1652,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;
         }
-        mShouldShowPlaylistMenu = true;
-        if (ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
-            showPlaylistButton(items);
+        if (items.length > 0 && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
+            mShouldShowPlaylistMenu = true;
+            if (ChromeSharedPreferences.getInstance()
+                    .readBoolean(BravePreferenceKeys.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
+                showPlaylistButton(items);
+            }
         }
     }
 }
