@@ -74,6 +74,7 @@ void WDPService::Start() {
                             base::Unretained(this)),
         base::BindRepeating(&WDPService::OnPatternsLoaded,
                             base::Unretained(this)));
+    server_config_loader_->LoadConfigs();
   }
   if (!credential_manager_) {
     credential_manager_ = std::make_unique<CredentialManager>(

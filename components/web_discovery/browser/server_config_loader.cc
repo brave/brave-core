@@ -171,7 +171,6 @@ ServerConfigLoader::ServerConfigLoader(
   patterns_url_ = GetPatternsEndpoint();
 
   patterns_path_ = user_data_dir.Append(kPatternsFilename);
-  LoadConfigs();
 }
 
 ServerConfigLoader::~ServerConfigLoader() = default;
@@ -184,6 +183,16 @@ const ServerConfig& ServerConfigLoader::GetLastServerConfig() const {
 const PatternsGroup& ServerConfigLoader::GetLastPatterns() const {
   CHECK(last_loaded_patterns_);
   return *last_loaded_patterns_;
+}
+
+void ServerConfigLoader::SetLastServerConfigForTest(
+    std::unique_ptr<ServerConfig> server_config) {
+  last_loaded_server_config_ = std::move(server_config);
+}
+
+void ServerConfigLoader::SetLastPatternsForTest(
+    std::unique_ptr<PatternsGroup> patterns) {
+  last_loaded_patterns_ = std::move(patterns);
 }
 
 void ServerConfigLoader::LoadConfigs() {

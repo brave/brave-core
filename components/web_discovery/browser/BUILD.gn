@@ -60,3 +60,38 @@ static_library("browser") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "double_fetcher_unittest.cc",
+    "hash_detection_unittest.cc",
+    "patterns_unittest.cc",
+    "privacy_guard_unittest.cc",
+    "signature_basename_unittest.cc",
+  ]
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//components/prefs:test_support",
+    "//crypto",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "content_scraper_browsertest.cc" ]
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/web_discovery/common:mojom",
+    "//chrome/test:test_support_ui",
+    "//testing/gtest",
+  ]
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

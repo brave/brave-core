@@ -46,12 +46,10 @@ constexpr net::NetworkTrafficAnnotationTag kSubmitNetworkTrafficAnnotation =
     })");
 
 constexpr base::TimeDelta kRequestMaxAge = base::Hours(36);
-// constexpr base::TimeDelta kMinRequestInterval =
-//     base::Minutes(1) - base::Seconds(5);
-// constexpr base::TimeDelta kMaxRequestInterval =
-//     base::Minutes(1) + base::Seconds(5);
-constexpr base::TimeDelta kMinRequestInterval = base::Seconds(5);
-constexpr base::TimeDelta kMaxRequestInterval = base::Seconds(6);
+constexpr base::TimeDelta kMinRequestInterval =
+    base::Minutes(1) - base::Seconds(5);
+constexpr base::TimeDelta kMaxRequestInterval =
+    base::Minutes(1) + base::Seconds(5);
 constexpr size_t kMaxRetries = 10;
 
 constexpr char kTypeField[] = "type";

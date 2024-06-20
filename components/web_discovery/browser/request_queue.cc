@@ -69,7 +69,7 @@ std::optional<base::Value> RequestQueue::NotifyRequestComplete(bool success) {
   if (!success) {
     use_backoff_delta = true;
     auto retries = request_dict.FindInt(kRetriesKey);
-    if (retries && retries >= max_retries_) {
+    if (retries && static_cast<size_t>(*retries + 1) >= max_retries_) {
       should_remove = true;
     } else {
       request_dict.Set(kRetriesKey, retries.value_or(0) + 1);
