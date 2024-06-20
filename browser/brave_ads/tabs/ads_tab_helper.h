@@ -43,6 +43,10 @@ class AdsTabHelper : public content::WebContentsObserver,
   AdsTabHelper(const AdsTabHelper&) = delete;
   AdsTabHelper& operator=(const AdsTabHelper&) = delete;
 
+  AdsService* ads_service() { return ads_service_; }
+
+  void SetAdsServiceForTesting(AdsService* ads_service);
+
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 

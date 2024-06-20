@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>Single Page Application</title>
+  <script>
+    function displayContent(state) {
+      const pageHeader = document.querySelector("#pageHeader");
+      pageHeader.textContent = state.header;
+    }
+
+    document.addEventListener("click", async (event) => {
+      const creature = event.target.getAttribute("data-creature");
+      if (creature) {
+        event.preventDefault();
+        try {
+          displayContent(creature);
+          // Add a new entry to the history.
+          // This simulates loading a new page.
+          const newState = { header: creature };
+          history.pushState(json, "", newState);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
+
+    // Handle forward/back buttons
+    window.addEventListener("popstate", (event) => {
+      // If a state has been provided, we have a "simulated" page
+      // and we update the current page.
+      if (event.state) {
+        // Simulate the loading of the previous page
+        displayContent(event.state);
+      }
+    });
+
+    // Create state on page load and replace the current history with it
+    const initialState = { header: "Home" };
+    history.replaceState(initialState, "", document.location.href);
+  </script>
+</head>
+<body>
+  <h1 id="pageHeader">Header</h1>
+
+  <li><a href="/brave_ads/history_api_spa.html">Home</a></li>
+  <li><a href="eagle" data-creature="eagle">Eagle</a></li>
+  <li><a href="vulture" data-creature="vulture">Vulture</a></li>
+</body>
+</html>
