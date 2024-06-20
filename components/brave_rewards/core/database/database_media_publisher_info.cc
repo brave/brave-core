@@ -122,10 +122,9 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   info->url = GetStringColumn(record, 2);
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
-  info->status = static_cast<mojom::PublisherStatus>(GetIntColumn(record, 5));
+  info->status = PublisherStatusFromInt(GetIntColumn(record, 5));
   info->status_updated_at = GetInt64Column(record, 6);
-  info->excluded =
-      static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
+  info->excluded = PublisherExcludeFromInt(GetIntColumn(record, 7));
 
   std::move(callback).Run(mojom::Result::OK, std::move(info));
 }

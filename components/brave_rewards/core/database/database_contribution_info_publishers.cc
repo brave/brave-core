@@ -180,7 +180,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     publisher->url = GetStringColumn(record_pointer, 4);
     publisher->favicon_url = GetStringColumn(record_pointer, 5);
     publisher->status =
-        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 6));
+        PublisherStatusFromInt(GetInt64Column(record_pointer, 6));
     publisher->status_updated_at = GetInt64Column(record_pointer, 7);
     publisher->provider = GetStringColumn(record_pointer, 8);
 

@@ -161,9 +161,8 @@ void DatabaseSKUTransaction::OnGetRecord(GetSKUTransactionCallback callback,
   info->order_id = GetStringColumn(record, 1);
   info->external_transaction_id = GetStringColumn(record, 2);
   info->amount = GetDoubleColumn(record, 3);
-  info->type = static_cast<mojom::SKUTransactionType>(GetIntColumn(record, 4));
-  info->status =
-      static_cast<mojom::SKUTransactionStatus>(GetIntColumn(record, 5));
+  info->type = SKUTransactionTypeFromInt(GetIntColumn(record, 4));
+  info->status = SKUTransactionStatusFromInt(GetIntColumn(record, 5));
 
   std::move(callback).Run(std::move(info));
 }

@@ -129,7 +129,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
   auto info = mojom::ServerPublisherInfo::New();
   info->publisher_key = publisher_key;
-  info->status = static_cast<mojom::PublisherStatus>(GetIntColumn(record, 0));
+  info->status = PublisherStatusFromInt(GetIntColumn(record, 0));
   info->address = GetStringColumn(record, 1);
   info->updated_at = GetInt64Column(record, 2);
   info->banner = std::move(banner);
