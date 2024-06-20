@@ -70,7 +70,9 @@ RewardsBrowserTestContextHelper::OpenSiteBanner() {
 
   // Click button to initiate sending a tip.
   test_util::WaitForElementThenClick(popup_contents.get(),
-                                     "[data-test-id=tip-button]");
+                                     "[data-test-id=tip-button]:enabled");
+
+  LOG(INFO) << "Waiting for tip panel to open";
 
   // Wait for the site banner to load and retrieve the notification source
   base::WeakPtr<content::WebContents> banner =
