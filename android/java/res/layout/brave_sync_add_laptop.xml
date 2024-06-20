@@ -65,7 +65,6 @@
                 android:textSize="12sp"
                 android:background="@drawable/brave_sync_top_rounded"
                 android:padding="16dip"
-                android:fontFamily="@font/roboto_mono_regular"
                 android:textColor="@color/text_primary"
                 style="@style/MonospaceSmall" />
         </FrameLayout>

@@ -228,7 +228,7 @@
                 android:paddingHorizontal="15dip"
                 android:paddingTop="15dip"
                 android:importantForAutofill="no"
-                android:fontFamily="@font/roboto_mono_regular" />
+                android:typeface="monospace" />
 
             <LinearLayout android:orientation="horizontal"
                 android:layout_height="wrap_content"
