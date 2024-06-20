@@ -132,10 +132,23 @@
   return (AiChatSuggestionGenerationStatus)status;
 }
 
+- (NSArray<AiChatActionGroup*>*)slashActions {
+  NSMutableArray* result = [[NSMutableArray alloc] init];
+  for (auto&& group : ai_chat::GetActionMenuList()) {
+    [result addObject:[[AiChatActionGroup alloc]
+                          initWithActionGroupPtr:std::move(group)]];
+  }
+  return result;
+}
+
 - (NSArray<NSString*>*)suggestedQuestions {
   auto status = ai_chat::mojom::SuggestionGenerationStatus::None;
   std::vector<std::string> result = driver_->GetSuggestedQuestions(status);
   return brave::vector_to_ns(result);
+}
+
+- (NSInteger)contentUsedPercentage {
+  return driver_->GetContentUsedPercentage();
 }
 
 - (bool)hasPendingConversationEntry {
@@ -176,6 +189,40 @@
         }
       },
       completion));
+}
+
+- (void)submitSelectedText:(NSString*)selectedText
+                actionType:(AiChatActionType)actionType {
+  [self submitSelectedText:selectedText
+                actionType:actionType
+              onSuggestion:nil
+               onCompleted:nil];
+}
+
+- (void)submitSelectedText:(NSString*)selectedText
+                actionType:(AiChatActionType)actionType
+              onSuggestion:(void (^)(AiChatConversationEntryEvent*))onSuggestion
+               onCompleted:(void (^)(NSString* result,
+                                     AiChatAPIError error))onCompleted {
+  driver_->SubmitSelectedText(
+      base::SysNSStringToUTF8(selectedText),
+      static_cast<ai_chat::mojom::ActionType>(actionType),
+      onSuggestion ? base::BindRepeating(^(
+                         ai_chat::mojom::ConversationEntryEventPtr event) {
+        onSuggestion([[AiChatConversationEntryEvent alloc]
+            initWithConversationEntryEventPtr:std::move(event)]);
+      })
+                   : base::NullCallback(),
+      onCompleted
+          ? base::BindOnce(^(ai_chat::EngineConsumer::GenerationResult result) {
+              if (auto result_string = result; result_string.has_value()) {
+                onCompleted(base::SysUTF8ToNSString(result_string.value()),
+                            AiChatAPIErrorNone);
+              } else {
+                onCompleted(nil, static_cast<AiChatAPIError>(result.error()));
+              }
+            })
+          : base::NullCallback());
 }
 
 - (void)rateMessage:(bool)isLiked

@@ -26,6 +26,10 @@ public class AIChatViewModel: NSObject, ObservableObject {
   @Published var requestInProgress: Bool = false
   @Published var apiError: AiChat.APIError = .none
 
+  public var slashActions: [AiChat.ActionGroup] {
+    return api.slashActions
+  }
+
   public var isContentAssociationPossible: Bool {
     return webView?.url?.isWebPage(includeDataURIs: true) == true
   }
@@ -151,6 +155,26 @@ public class AIChatViewModel: NSObject, ObservableObject {
   func submitQuery(_ text: String) {
     apiError = .none
     api.submitHumanConversationEntry(text)
+  }
+
+  func submitSelectedText(_ text: String, action: AiChat.ActionType) {
+    apiError = .none
+    api.submitSelectedText(text, actionType: action)
+  }
+
+  func submitSelectedText(
+    _ text: String,
+    action: AiChat.ActionType,
+    onSuggestion: @escaping (AiChat.ConversationEntryEvent?) -> Void,
+    onCompleted: @escaping (String?, AiChat.APIError) -> Void
+  ) {
+    apiError = .none
+    api.submitSelectedText(
+      text,
+      actionType: action,
+      onSuggestion: onSuggestion,
+      onCompleted: onCompleted
+    )
   }
 
   func retryLastRequest() {
