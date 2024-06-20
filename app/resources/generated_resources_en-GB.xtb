@@ -11080,12 +11080,12 @@ Permissions that you've already given to websites and apps may apply to this acc
 <translation id="5828545842856466741">Add person</translation>
 <translation id="2254158488150713536">To continue, click OK, then click Add Person to create a new profile for your email address.</translation>
 <translation id="1725743343613175327">To continue, click OK, then click Add Person to create a new profile for your <ph name="DOMAIN"/> email address.</translation>
-<translation id="3707212204259470604">Manage other people</translation>
+<translation id="3707212204259470604">Manage other profiles</translation>
 <translation id="7253003527666031200">Find more accessibility tools in the web store</translation>
 <translation id="154633726381112301">You can limit sign-in to certain users. This removes the "Add profile" option on the sign-in screen. You can also remove current users.</translation>
 <translation id="8273477935094091719">Your <ph name="DEVICE_TYPE"/> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Make it harder for profiles with access to your Internet traffic to see which sites you visit. <ph name="PRODUCT_NAME"/> uses a secure connection to look up a site's IP address in the DNS (Domain Name System).</translation>
-<translation id="5832813618714645810">People</translation>
+<translation id="5832813618714645810">Profiles</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Your Private window won't open after you relaunch}
       other {Your {COUNT} Private windows won't reopen after you relaunch}}</translation>
