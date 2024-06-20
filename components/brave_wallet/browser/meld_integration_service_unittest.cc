@@ -576,7 +576,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
             "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
+            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
+            "2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
   TestGetPaymentMethods(
       R"([
@@ -744,7 +745,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
             "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
+            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
+            "2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
 
   TestGetFiatCurrencies(
@@ -872,7 +874,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
             "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
+            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
+            "2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
 
   TestGetCryptoCurrencies(
@@ -1026,7 +1029,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
             "accountFilter=false&includeServiceProviderDetails=false&statuses="
             "LIVE%2CRECENTLY_"
             "ADDED&countries=US%2CCA&fiatCurrencies=USD%2CEUR&cryptoCurrencies="
-            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%2CBLOCKCHAINDOTCOM&"
+            "BTC%2CETH&cryptoChains=BTC%2CDOGE&serviceProviders=BANXA%"
+            "2CBLOCKCHAINDOTCOM&"
             "paymentMethodTypes=MOBILE_WALLET%2CBANK_TRANSFER");
   TestGetCountries(
       R"([
@@ -1101,7 +1105,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
           }));
 
   TestGetCountries(
-      "some wrong data", "US,CA", "USD,EUR",  "BTC,DOGE", "BTC,ETH",
+      "some wrong data", "US,CA", "USD,EUR", "BTC,DOGE", "BTC,ETH",
       "BANXA,BLOCKCHAINDOTCOM", "MOBILE_WALLET,BANK_TRANSFER", "",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
