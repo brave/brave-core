@@ -143,6 +143,8 @@ void BraveTabMenuModel::BuildItemsForSplitView(
       InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
       InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
                                IDS_IDC_SWAP_SPLIT_VIEW);
+      InsertItemWithStringIdAt(++index, CommandToggleSplitViewOrientation,
+                               IDS_IDC_TOGGLE_SPLIT_VIEW_ORIENTATION);
       return;
     }
 
@@ -163,5 +165,7 @@ void BraveTabMenuModel::BuildItemsForSplitView(
   if (brave::IsTabsTiled(browser, {tab_strip_model->active_index()})) {
     InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
                              IDS_IDC_SWAP_SPLIT_VIEW);
+    InsertItemWithStringIdAt(++index, CommandToggleSplitViewOrientation,
+                             IDS_IDC_TOGGLE_SPLIT_VIEW_ORIENTATION);
   }
 }
