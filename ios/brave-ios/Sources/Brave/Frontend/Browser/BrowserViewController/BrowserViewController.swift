@@ -410,7 +410,8 @@ public class BrowserViewController: UIViewController {
       }
     }
 
-    if Preferences.Privacy.screenTimeEnabled.value {
+    if Preferences.Privacy.screenTimeEnabled.value, !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      // Accessing `STWebpageController` on Vision OS results in a crash
       screenTimeViewController = STWebpageController()
     }
   }
@@ -1781,17 +1782,24 @@ public class BrowserViewController: UIViewController {
       userInfo: [:]
     )
 
-    let scanQRCodeItem = UIMutableApplicationShortcutItem(
-      type: "\(Bundle.main.bundleIdentifier ?? "").ScanQRCode",
-      localizedTitle: Strings.scanQRCodeViewTitle,
-      localizedSubtitle: nil,
-      icon: UIApplicationShortcutIcon(templateImageName: "recent-search-qrcode"),
-      userInfo: [:]
-    )
+    var scanQRCodeItem: UIMutableApplicationShortcutItem?
+    if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      scanQRCodeItem = UIMutableApplicationShortcutItem(
+        type: "\(Bundle.main.bundleIdentifier ?? "").ScanQRCode",
+        localizedTitle: Strings.scanQRCodeViewTitle,
+        localizedSubtitle: nil,
+        icon: UIApplicationShortcutIcon(templateImageName: "recent-search-qrcode"),
+        userInfo: [:]
+      )
+    }
 
     UIApplication.shared.shortcutItems =
       Preferences.Privacy.privateBrowsingOnly.value
-      ? [privateTabItem, scanQRCodeItem] : [newTabItem, privateTabItem, scanQRCodeItem]
+      ? [privateTabItem] : [newTabItem, privateTabItem]
+
+    if let scanQRCodeItem {
+      UIApplication.shared.shortcutItems?.append(scanQRCodeItem)
+    }
   }
 
   /// The method that executes the url and make changes in UI to reset the toolbars
@@ -3376,7 +3384,8 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
-      if Preferences.Privacy.screenTimeEnabled.value {
+      if Preferences.Privacy.screenTimeEnabled.value, !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+        // Accessing `STWebpageController` on Vision OS results in a crash
         screenTimeViewController = STWebpageController()
         if let tab = tabManager.selectedTab {
           recordScreenTimeUsage(for: tab)

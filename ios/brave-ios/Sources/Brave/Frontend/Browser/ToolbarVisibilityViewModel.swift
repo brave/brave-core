@@ -147,6 +147,11 @@ import UIKit
   }
 
   func send(action: Action) {
+    if ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      // Trying to expand a collapsed URL bar on vision OS is difficult, until further changes
+      // can be made to the UI itself, we will disable collapsing it on VisionOS
+      return
+    }
     if !isEnabled { return }
     switch action {
     case .dragged(let snapshot, let panData):

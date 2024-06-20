@@ -292,6 +292,13 @@ class SyncWelcomeViewController: SyncViewController {
 
   @objc
   private func existingUserAction() {
+    if ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      // VisionOS can't access the main camera, so we skip showing QR code scan screen entirely
+      let wordsVC = SyncPairWordsViewController(syncAPI: syncAPI)
+      wordsVC.delegate = self
+      navigationController?.pushViewController(wordsVC, animated: true)
+      return
+    }
     let pairCamera = SyncPairCameraViewController(syncAPI: syncAPI)
     pairCamera.delegate = self
     navigationController?.pushViewController(pairCamera, animated: true)

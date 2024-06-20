@@ -277,10 +277,12 @@ private struct AccountCardView: View {
             Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
           }
         }
-        Button {
-          action(.depositToAccount)
-        } label: {
-          Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
+        if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+          Button {
+            action(.depositToAccount)
+          } label: {
+            Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
+          }
         }
       } label: {
         RoundedRectangle(cornerRadius: 8)
