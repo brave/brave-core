@@ -1,7 +1,41 @@
-Total size 90611K
+Total size 156160K
 
-GROUP large_files [84333K total]
-  4096K BrowserMetrics/BrowserMetrics-66743170-14946.pma
+GROUP Adblock [8060K total]
+   104K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.162 [adcocjohghhfpidemphmcmlmhnfgikei]
+    44K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.6752 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1298K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.7279 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+   139K Brave Ad Block Updater (Regional Catalog) 1.0.57 [gkboaolpopklhgplhaaiboijnklogmbc]
+  5578K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.6305 [iodkpdagapdfkphljnddpjlldadblomo]
+     8K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.24 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
+   885K Brave Ad Block Updater (Resources) 1.0.90 [mfddibmblmbccpadfndgakiopmmhebop]
+
+GROUP Ads [22975K total]
+    72K Brave Ads Resources 1.0.101 [iblokdlgekdjophgeonmanpnjihcjkjj]
+ 22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
+
+GROUP Ntp [13886K total]
+ 12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
+  1082K Brave NTP sponsored images 1.0.1627 [gccbbckogglekeggclmmekihdgdpdgoe]
+
+GROUP Other [13506K total]
+    94K chromeAutofillRegexConstants 2021.08.17.1300 [AutofillRegex]
+    26K crl-set-9121408342874219771.data 8252 [CertificateRevocation]
+  3222K client_side_phishing 27.8 [ClientSidePhishing]
+    18K Crowd Deny 2022.12.16.779 [Crowd Deny]
+     9K fileTypePolicies 62 [FileTypePolicies]
+  7867K OnDeviceHeadSuggestENUS500000 20230815.558564245.14 [OnDeviceHeadSuggestModel]
+    43K Optimization Hints 327 [OptimizationHints]
+   197K pkiMetadata 710 [PKIMetadata]
+     4K sslErrorAssistant 7 [SSLErrorAssistant]
+   131K safetyTips 2994 [SafetyTips]
+     5K Navtracking URL param filter lists 2022.6.27.4 [UrlParamClassifications]
+   157K Brave Local Data Files Updater 1.0.774 [afalakplffnnnlkncjhbmahjfjhmlkal]
+  1728K hyphens-data 119.0.6014.0 [hyphen-data]
+
+GROUP Wallet [7261K total]
+  7261K Wallet Data Files Updater 1.0.68 [BraveWallet]
+
+GROUP large_files [80237K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   1022K Default/Local Storage/leveldb/000003.ldb
   1010K Default/Session Storage/000003.ldb
