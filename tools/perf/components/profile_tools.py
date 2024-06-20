@@ -6,6 +6,7 @@
 import json
 import logging
 import os
+import re
 import shutil
 import json
 
@@ -156,19 +157,21 @@ class ProfileStats:
     return result
 
 
-def GetProfileStats(profile_dir: str) -> ProfileStats:
-  result = ProfileStats()
-
-  def get_component_group(name: str) -> str:
-    if 'Ad Block' in name:
-      return 'Adblock'
-    if 'Ads' in name:
-      return 'Ads'
-    if 'NTP' in name:
-      return 'Ntp'
-    if 'Wallet' in name:
-      return 'Wallet'
+def _GetComponentGroup(name: str, path: str, skip_chromium_components) -> Optional[str]:
+  if 'Ad Block' in name or 'Adblock' in name:
+    return 'Adblock'
+  if 'Ads' in name:
+    return 'Ads'
+  if 'NTP' in name:
+    return 'Ntp'
+  if 'Wallet' in name:
+    return 'Wallet'
+  if 'Brave' in name or re.match(r'[a-z]{32}', path) is not None:
     return 'Other'
+  return None if skip_chromium_components else 'chromium'
+
+def GetProfileStats(profile_dir: str, skip_chromium_components = False) -> ProfileStats:
+  result = ProfileStats()
 
   with scoped_cwd(profile_dir):
     result.total_size = _GetDirectorySize(profile_dir)
@@ -177,7 +180,9 @@ def GetProfileStats(profile_dir: str) -> ProfileStats:
       info = _GetComponentInfo(f)
       if info is not None:
         name, version = info
-        group = get_component_group(name)
+        group = _GetComponentGroup(name, f, skip_chromium_components)
+        if group is None:
+          continue
         size = _GetDirectorySize(f)
         item = StatItem(path=f, size=size, name=name, version=version)
         result.groups.setdefault(group, GroupStat()).items.append(item)
