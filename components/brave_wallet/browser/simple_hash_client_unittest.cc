@@ -1251,6 +1251,16 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
            "?nft_ids=solana.BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG"));
   nft_ids.clear();
 
+  // Single Ethereum NFT with non hex token ID yields empty URL
+  nft_id = mojom::NftIdentifier::New();
+  nft_id->chain_id = mojom::kMainnetChainId;
+  nft_id->contract_address = "0x0";
+  nft_id->token_id = "78";
+  nft_ids.push_back(std::move(nft_id));
+  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  EXPECT_EQ(url, GURL());
+  nft_ids.clear();
+
   // Single Ethereum NFT.
   nft_id = mojom::NftIdentifier::New();
   nft_id->chain_id = mojom::kMainnetChainId;
@@ -1259,7 +1269,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
   nft_ids.push_back(std::move(nft_id));
   url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
   EXPECT_EQ(url, GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
-                      "?nft_ids=ethereum.0x0.0x1"));
+                      "?nft_ids=ethereum.0x0.1"));
   nft_ids.clear();
 
   // 75 NFTs takes two calls, 50 and 25.
@@ -1273,24 +1283,31 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
   url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
   EXPECT_EQ(
       url,
-      GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
-           "?nft_ids=ethereum.0x0.0x0%2Cethereum.0x1.0x1%2Cethereum.0x2.0x2%"
-           "2Cethereum.0x3.0x3%2Cethereum.0x4.0x4%2Cethereum.0x5.0x5%"
-           "2Cethereum.0x6.0x6%2Cethereum.0x7.0x7%2Cethereum.0x8.0x8%"
-           "2Cethereum.0x9.0x9%2Cethereum.0x10.0x10%2Cethereum.0x11.0x11%"
-           "2Cethereum.0x12.0x12%2Cethereum.0x13.0x13%2Cethereum.0x14.0x14%"
-           "2Cethereum.0x15.0x15%2Cethereum.0x16.0x16%2Cethereum.0x17.0x17%"
-           "2Cethereum.0x18.0x18%2Cethereum.0x19.0x19%2Cethereum.0x20.0x20%"
-           "2Cethereum.0x21.0x21%2Cethereum.0x22.0x22%2Cethereum.0x23.0x23%"
-           "2Cethereum.0x24.0x24%2Cethereum.0x25.0x25%2Cethereum.0x26.0x26%"
-           "2Cethereum.0x27.0x27%2Cethereum.0x28.0x28%2Cethereum.0x29.0x29%"
-           "2Cethereum.0x30.0x30%2Cethereum.0x31.0x31%2Cethereum.0x32.0x32%"
-           "2Cethereum.0x33.0x33%2Cethereum.0x34.0x34%2Cethereum.0x35.0x35%"
-           "2Cethereum.0x36.0x36%2Cethereum.0x37.0x37%2Cethereum.0x38.0x38%"
-           "2Cethereum.0x39.0x39%2Cethereum.0x40.0x40%2Cethereum.0x41.0x41%"
-           "2Cethereum.0x42.0x42%2Cethereum.0x43.0x43%2Cethereum.0x44.0x44%"
-           "2Cethereum.0x45.0x45%2Cethereum.0x46.0x46%2Cethereum.0x47.0x47%"
-           "2Cethereum.0x48.0x48%2Cethereum.0x49.0x49"));
+      GURL(
+          "https://simplehash.wallet.brave.com/api/v0/nfts/assets"
+          "?nft_ids=ethereum.0x0.0%2Cethereum.0x1.1%2Cethereum.0x2.2%"
+          "2Cethereum.0x3.3%2Cethereum.0x4.4%2Cethereum.0x5.5%2Cethereum.0x6.6%"
+          "2Cethereum.0x7.7%2Cethereum.0x8.8%2Cethereum.0x9.9%2Cethereum.0x10."
+          "16%"
+          "2Cethereum.0x11.17%2Cethereum.0x12.18%2Cethereum.0x13.19%2Cethereum."
+          "0x14.20%"
+          "2Cethereum.0x15.21%2Cethereum.0x16.22%2Cethereum.0x17.23%2Cethereum."
+          "0x18.24%"
+          "2Cethereum.0x19.25%2Cethereum.0x20.32%2Cethereum.0x21.33%2Cethereum."
+          "0x22.34%"
+          "2Cethereum.0x23.35%2Cethereum.0x24.36%2Cethereum.0x25.37%2Cethereum."
+          "0x26.38%"
+          "2Cethereum.0x27.39%2Cethereum.0x28.40%2Cethereum.0x29.41%2Cethereum."
+          "0x30.48%"
+          "2Cethereum.0x31.49%2Cethereum.0x32.50%2Cethereum.0x33.51%2Cethereum."
+          "0x34.52%"
+          "2Cethereum.0x35.53%2Cethereum.0x36.54%2Cethereum.0x37.55%2Cethereum."
+          "0x38.56%"
+          "2Cethereum.0x39.57%2Cethereum.0x40.64%2Cethereum.0x41.65%2Cethereum."
+          "0x42.66%"
+          "2Cethereum.0x43.67%2Cethereum.0x44.68%2Cethereum.0x45.69%2Cethereum."
+          "0x46.70%"
+          "2Cethereum.0x47.71%2Cethereum.0x48.72%2Cethereum.0x49.73"));
   nft_ids.clear();
 
   // Any invalid chain ID yields empty URL
@@ -1300,12 +1317,12 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
   nft_id->token_id = "0x1";
   nft_ids.push_back(std::move(nft_id));
   url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
-  EXPECT_EQ(url, GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
-                      "?nft_ids=ethereum.0x0.0x1"));
+  EXPECT_EQ(url, GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
+                      "assets?nft_ids=ethereum.0x0.1"));
   nft_id = mojom::NftIdentifier::New();
   nft_id->chain_id = "invalid_chain_id";
   nft_id->contract_address = "0x0";
-  nft_id->token_id = "0x1";
+  nft_id->token_id = "1";
   nft_ids.push_back(std::move(nft_id));
   url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
   EXPECT_EQ(url, GURL());
@@ -1537,7 +1554,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   // lowercase
   azuki_identifier->contract_address =
       "0xED5AF388653567Af2F388E6224dC7C4b3241C544";
-  azuki_identifier->token_id = "2767";
+  azuki_identifier->token_id = "0xacf";  // "2767"
 
   auto it = result->find(azuki_identifier);
   ASSERT_NE(it, result->end());
@@ -1984,7 +2001,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   azuki_identifier->chain_id = mojom::kMainnetChainId;
   azuki_identifier->contract_address =
       "0xED5AF388653567Af2F388E6224dC7C4b3241C544";  // Checksum address
-  azuki_identifier->token_id = "2767";
+  azuki_identifier->token_id = "0xacf";              // "2767"
 
   auto it = owners->find(azuki_identifier);
   ASSERT_NE(it, owners->end());
