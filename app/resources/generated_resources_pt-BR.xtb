@@ -11093,7 +11093,7 @@ As permissões que você já concedeu a sites e apps podem ser aplicadas a essa 
 <translation id="154633726381112301">Você pode limitar o login a determinados usuários. Isso remove a opção “Adicionar perfil” na tela de login. Você também pode remover usuários atuais.</translation>
 <translation id="8273477935094091719">Seu <ph name="DEVICE_TYPE"/> usa um sensor integrado para detectar perfis em frente ao seu dispositivo. Todos os dados são processados no seu dispositivo imediatamente e excluídos depois disso. Os dados do sensor nunca são enviados para o Brave. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Torne mais difícil para os perfis com acesso ao tráfego da Internet ver quais sites você visita. <ph name="PRODUCT_NAME"/> usa uma conexão segura para procurar o endereço IP de um site no DNS (Domain Name System).</translation>
-<translation id="5832813618714645810">Pessoas</translation>
+<translation id="5832813618714645810">Perfis</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Sua janela privada não será reaberta depois que você iniciar novamente}
       other {Suas {COUNT} janelas privadas não serão reabertas depois que você iniciar novamente}}</translation>

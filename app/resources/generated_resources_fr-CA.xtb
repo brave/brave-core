@@ -11075,7 +11075,7 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
 <translation id="154633726381112301">Vous pouvez limiter la connexion à certains utilisateurs. Cela supprime l'option « Ajouter un profil » sur l'écran de connexion. Vous pouvez également supprimer les utilisateurs actuels.</translation>
 <translation id="8273477935094091719">Votre <ph name="DEVICE_TYPE"/> utilise un capteur intégré pour détecter les profils devant votre appareil. Toutes les données sont traitées immédiatement sur votre appareil, puis supprimées. Les données du capteur ne sont jamais envoyées à Brave. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Faites en sorte qu'il soit plus difficile pour les profils ayant accès à votre trafic Internet de voir les sites que vous consultez. <ph name="PRODUCT_NAME"/> utilise une connexion sécurisée pour rechercher l'adresse IP d'un site dans le DNS (système de noms de domaine).</translation>
-<translation id="5832813618714645810">Personnes</translation>
+<translation id="5832813618714645810">Profils</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Votre fenêtre privée ne s'ouvrira pas après le relancement}
       other {Vos {COUNT} fenêtres privées ne se rouvriront pas après le relancement}}</translation>
