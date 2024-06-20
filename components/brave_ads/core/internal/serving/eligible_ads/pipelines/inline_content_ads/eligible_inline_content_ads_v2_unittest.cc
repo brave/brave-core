@@ -41,9 +41,8 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 =
+  const CreativeInlineContentAdInfo creative_ad_1 =
       test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.segment = "untargeted";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =

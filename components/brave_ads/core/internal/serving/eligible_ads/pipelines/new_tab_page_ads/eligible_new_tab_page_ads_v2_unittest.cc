@@ -40,9 +40,8 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   // Arrange
   CreativeNewTabPageAdList creative_ads;
 
-  CreativeNewTabPageAdInfo creative_ad_1 =
+  const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.segment = "untargeted";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
