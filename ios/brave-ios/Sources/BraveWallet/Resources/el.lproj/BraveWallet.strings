@@ -238,6 +238,27 @@
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "Bitcoin";
 
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Διαθέσιμοι πόροι για χρήση.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Διαθέσιμο";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Υπάρχει μια εκκρεμής αλλαγή στο υπόλοιπο του πορτοφολιού σας.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Ορισμένα υπόλοιπα ενδέχεται να μην είναι διαθέσιμα";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Σε εκκρεμότητα";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Οι διαθέσιμοι πόροι σας συν τυχόν συναλλαγές που δεν έχουν επιβεβαιωθεί ακόμη.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Σύνολο";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Αγορά";
 
@@ -1263,6 +1284,9 @@
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Εισαγάγετε ξανά τον κωδικό πρόσβασης";
+
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Εισαγωγή από παλαιότερα Πορτοφόλια κρυπτονομισμάτων Brave;";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Επαναφορά πορτοφολιού";

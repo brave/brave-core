@@ -61,6 +61,15 @@
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Denne samtalen er for lang, og kan ikke fortsette. Det kan finnes andre modeller Leo kan bruke til å holde kvaliteten oppe under lengre samtaler.";
 
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Chat";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "SPRÅKMODELLER";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Standardmodell";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Send inn en tilbakemelding her";
 
@@ -118,8 +127,8 @@
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageLlamaMessageDescription" = "Hei! Jeg heter Leo, og er Braves AI-assistent. Jeg driftes av Llama 13B – en modell fra Meta som er utviklet for å være effektiv og anvendelig for mange ulike typer bruk.";
 
-/* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Llama 2 13b fra Meta";
+/* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 3 8b fra Meta";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Hei! Jeg heter Leo, og er Braves AI-assistent. Jeg driftes av Mixtral 8x7B – en modell fra Mistral som er utviklet for å håndtere avanserte oppgaver.";
@@ -229,6 +238,9 @@
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Ett år";
 
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
 /* Title shown next to Leo in navigation bar when user has premium subcription */
 "aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
@@ -238,11 +250,26 @@
 /* The text for placeholder on textfield for entering questions for AI */
 "aichat.promptPlaceHolderDescription" = "Skriv inn noe her";
 
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Avanserte innstillinger";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Bruk premium";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Administrer abonnementer";
+
+/* The title of action for quick menu which starts a new chat */
+"aichat.quickMenuNewChatActionTitle" = "Ny chat";
+
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Feil ved rating av svar";
 
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Tilbakestill og tøm alle Leo-data";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Tilbakestill";
 
 /* The description for the error whre leo data reset */
 "aichat.resetLeoDataErrorDescription" = "Er du sikker på at du vil tilbakestille og tømme alle Leo-data?";
@@ -286,39 +313,12 @@
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chat privat med Brave Leo";
 
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Ubgrenset";
+
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Bruk tale";
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Årsabonnement";
-
-/* The title of the section where chat models are displayed as a list. */
-"wallet.defaultModelChatSectionTitle" = "Chat";
-
-/* The title of the section where language models are displayed as a list. */
-"wallet.defaultModelLanguageSectionTitle" = "SPRÅKMODELLER";
-
-/* The title of the menu where user can change the default model */
-"wallet.defaultModelViewTitle" = "Standardmodell";
-
-/* The title of the badge where a model which can be used limited */
-"wallet.limitedModelStatusTitle" = "Begrenset";
-
-/* The title of action for quick menu which displaying advanced settings */
-"wallet.quickMenuAdvancedSettingsActionTitle" = "Avanserte innstillinger";
-
-/* The title of action for quick menu which presents payment screen for premium */
-"wallet.quickMenuGoPremiumActionTitle" = "Prøv Premium";
-
-/* The title of action for quick menu which display subscription management view */
-"wallet.quickMenuManageSubscriptionActionTitle" = "Administrer abonnementer";
-
-/* The title of action for quick menu which starts a new chat */
-"wallet.quickMenuNewChatActionTitle" = "Ny chat";
-
-/* The title of a button that will reset data for leo */
-"wallet.resetLeoDataAlertButtonTitle" = "Tilbakestill";
-
-/* The title of the badge where a model which can be used unlimited */
-"wallet.unlimitedModelStatusTitle" = "Ubgrenset";
 

@@ -238,6 +238,27 @@
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "Bitcoin";
 
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Fonduri disponibile pe care le puteți folosi";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Disponibil";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "O modificare în așteptare în soldul portofelului dvs.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Anumite solduri ar putea fi indisponibile";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "În așteptare";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Fondurile disponibile alături de tranzacțiile neconfirmate încă.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Total";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Cumpără";
 
@@ -1263,6 +1284,9 @@
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Reintrodu parola";
+
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Importați din vechile portofele de criptomonede Brave?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Restabilește portofelul";

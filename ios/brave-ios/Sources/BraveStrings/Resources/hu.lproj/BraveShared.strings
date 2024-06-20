@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Hivatkozás másolása";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Lapok adatainak másolása a vágólapra.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Másolás vágólapra";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Az Ön kapcsolata ezzel az oldallal nem biztonságos.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "A webhelykapcsolat nem ellenőrzött.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Nem sikerült teljes mértékben ellenőrizni a kapcsolatát ezzel az oldallal. Továbbléphet, vagy megpróbálhatja újratölteni az oldalt a biztonságos kapcsolat érdekében.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Tanúsítvány megtekintése";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Szinkronizálási fiók törlése";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Ha törli a fiókját, azzal eltávolítja a Brave szerverein található titkosított adatait, és letiltja a Szinkronizálást az összes csatlakoztatott eszközén.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Az ezeken az eszközökön helyileg tárolt adatokat azonban ezúton nem törli.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Ez a törlés végleges, és nincs mód az adatok helyreállítására. Ha úgy dönt, hogy újra elkezdi használni a Szinkronizálást, létre kell hoznia egy új fiókot, és egyenként újra hozzá kell adnia az egyes eszközöket.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Hiba történt a szinkronizálási láncban szereplő eszközök lekérése közben.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Szinkronizálási fiók törlése";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Úgy tűnik, ezt a kódot a Brave régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Brave-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Eszközök és beállítások";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Kapcsolat-folytonossági probléma";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Válassza ki a problémát leíró kategóriát.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "A kapcsolódás után nincs internet";
