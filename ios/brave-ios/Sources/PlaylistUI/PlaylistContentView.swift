@@ -142,8 +142,8 @@ struct PlaylistContentView: View {
         .transition(.opacity.animation(.default))
       }
     }
-    .onAppear {
-      playerModel.prepareItemQueue()
+    .task {
+      await playerModel.prepareItemQueue()
       if selectedItem != nil {
         selectedDetent = .anchor(.mediaControls)
       } else {

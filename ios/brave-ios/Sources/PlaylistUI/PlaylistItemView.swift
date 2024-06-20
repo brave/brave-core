@@ -189,15 +189,32 @@ struct LeoPlayingSoundView: View {
   LazyVStack(spacing: 12) {
     Button {
     } label: {
-      PlaylistItemView(title: "The Worst Product I've Ever Reviewed... For Now", duration: .seconds(1504), isSelected: true, isPlaying: true)
+      PlaylistItemView(
+        title: "The Worst Product I've Ever Reviewed... For Now",
+        duration: .seconds(1504),
+        isSelected: true,
+        isPlaying: true
+      )
     }
     Button {
     } label: {
-      PlaylistItemView(title: "1 Hour of Epic Final Fantasy Remixes", duration: .seconds(3081), isSelected: true, isPlaying: false, downloadState: .completed)
+      PlaylistItemView(
+        title: "1 Hour of Epic Final Fantasy Remixes",
+        duration: .seconds(3081),
+        isSelected: true,
+        isPlaying: false,
+        downloadState: .completed
+      )
     }
     Button {
     } label: {
-      PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .seconds(1641), isSelected: false, isPlaying: false, downloadState: .downloading(percentComplete: 0.33))
+      PlaylistItemView(
+        title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones",
+        duration: .seconds(1641),
+        isSelected: false,
+        isPlaying: false,
+        downloadState: .downloading(percentComplete: 0.33)
+      )
     }
   }
   .padding()

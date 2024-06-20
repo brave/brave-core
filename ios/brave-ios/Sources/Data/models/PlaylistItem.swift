@@ -160,6 +160,42 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     }
   }
 
+  public static func addItems(
+    _ items: [PlaylistInfo],
+    folderUUID: String? = nil,
+    cachedData: Data?,
+    completion: (() -> Void)? = nil
+  ) {
+    DataController.perform(context: .new(inMemory: false), save: false) { context in
+      let folder = PlaylistFolder.getFolder(
+        uuid: folderUUID ?? PlaylistFolder.savedFolderUUID,
+        context: context
+      )
+      for item in items {
+        let playlistItem = PlaylistItem(
+          context: context,
+          name: item.name,
+          pageTitle: item.pageTitle,
+          pageSrc: item.pageSrc,
+          cachedData: cachedData ?? Data(),
+          duration: item.duration,
+          mimeType: item.mimeType,
+          mediaSrc: item.src
+        )
+        playlistItem.order = item.order
+        playlistItem.uuid = item.tagId
+        playlistItem.playlistFolder = folder
+      }
+
+      PlaylistItem.reorderItems(context: context)
+      PlaylistItem.saveContext(context)
+
+      DispatchQueue.main.async {
+        completion?()
+      }
+    }
+  }
+
   public static func addInMemoryItems(
     _ items: [PlaylistInfo],
     folderUUID: String,

@@ -36,7 +36,7 @@ public class CarPlayController {
     try? foldersFRC.performFetch()
 
     Task { @MainActor in
-      player.prepareItemQueue()
+      await player.prepareItemQueue()
 
       let folderList = folderListTemplate
       self.currentFolderListTemplate = folderList
