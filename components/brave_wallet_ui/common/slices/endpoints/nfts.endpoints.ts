@@ -82,14 +82,7 @@ export const nftsEndpoints = ({
           const nftMetadata = await cache.getNftMetadata(arg)
 
           return {
-            data: {
-              ...nftMetadata,
-              imageURL: nftMetadata.imageURL?.startsWith('data:image/')
-                ? nftMetadata.imageURL
-                : (await cache.getIpfsGatewayTranslatedNftUrl(
-                    nftMetadata.imageURL || ''
-                  )) || undefined
-            }
+            data: nftMetadata
           }
         } catch (error) {
           return handleEndpointError(

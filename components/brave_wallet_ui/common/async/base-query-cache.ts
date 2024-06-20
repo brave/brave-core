@@ -20,8 +20,7 @@ import {
   SupportedOffRampNetworks,
   BraveRewardsInfo,
   WalletStatus,
-  NFTMetadataReturnType,
-  CommonNftMetadata
+  NFTMetadataReturnType
 } from '../../constants/types'
 
 // entities
@@ -417,58 +416,44 @@ export class BaseQueryCache {
     if (!this._nftMetadataRegistry[tokenId]) {
       const { jsonRpcService } = getAPIProxy()
 
-      const result =
-        tokenArg.coin === BraveWallet.CoinType.ETH
-          ? tokenArg.isErc721
-            ? await jsonRpcService.getERC721Metadata(
-                tokenArg.contractAddress,
-                tokenArg.tokenId,
-                tokenArg.chainId
-              )
-            : await jsonRpcService.getERC1155Metadata(
-                tokenArg.contractAddress,
-                tokenArg.tokenId,
-                tokenArg.chainId
-              )
-          : await jsonRpcService.getSolTokenMetadata(
-              tokenArg.chainId,
-              tokenArg.contractAddress
-            )
-
-      if (result.error || result.errorMessage) {
-        throw new Error(result.errorMessage)
+      const lookupArg = {
+        chainId: tokenArg.chainId,
+        contractAddress: tokenArg.contractAddress,
+        tokenId: tokenArg.tokenId
       }
 
-      if (!result?.response) {
+      const result = await jsonRpcService.getNftMetadatas(tokenArg.coin, [
+        lookupArg
+      ])
+
+      if (result.errorMessage) {
+        console.log({ coin: tokenArg.coin, lookupArg, result })
+        throw new Error('errorMessage: ' + result.errorMessage)
+      }
+
+      if (!result?.metadatas?.length) {
         throw new Error(`Failed to get NFT metadata for token: ${tokenId}`)
       }
 
-      const metadata: CommonNftMetadata = JSON.parse(result.response)
-
-      const attributes = Array.isArray(metadata?.attributes)
-        ? metadata?.attributes.map(
-            (attr: { trait_type: string; value: string }) => ({
-              traitType: attr.trait_type,
-              value: attr.value
-            })
-          )
-        : []
+      const metadata: BraveWallet.NftMetadata = result.metadatas[0]
 
       const tokenNetwork = (await cache.getNetworksRegistry()).entities[
         networkEntityAdapter.selectId(tokenArg)
       ]
 
       const nftMetadata: NFTMetadataReturnType = {
-        metadataUrl: result?.tokenUrl || '',
+        metadataUrl: metadata.externalUrl,
         chainName: tokenNetwork?.chainName || '',
         tokenType:
           tokenArg.coin === BraveWallet.CoinType.ETH
-            ? 'ERC721'
+            ? tokenArg.isErc721
+              ? 'ERC721'
+              : 'ERC1155'
             : tokenArg.coin === BraveWallet.CoinType.SOL
             ? 'SPL'
             : '',
         tokenID: tokenArg.tokenId,
-        imageURL: metadata?.image || metadata?.image_url || undefined,
+        imageURL: metadata.animationUrl || metadata.image || undefined,
         imageMimeType: 'image/*',
         floorFiatPrice: '',
         floorCryptoPrice: '',
@@ -481,7 +466,7 @@ export class BaseQueryCache {
           logo: '',
           twitter: ''
         },
-        attributes
+        attributes: metadata.attributes
       }
 
       this._nftMetadataRegistry[tokenId] = nftMetadata
