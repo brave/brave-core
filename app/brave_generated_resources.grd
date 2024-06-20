@@ -1424,7 +1424,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <!-- Split View -->
       <if expr="toolkit_views">
         <if expr="use_titlecase">
-          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Spliti' menu item">
+          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Split' menu item">
             Vertical Split
           </message>
           <message name="IDS_SPLIT_VIEW_SPLIT_HORIZONTAL" desc="The label of the 'Horizontal Split' menu item">
@@ -1432,7 +1432,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
         </if>
         <if expr="not use_titlecase">
-          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Spliti' menu item">
+          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Split' menu item">
             Vertical split
           </message>
           <message name="IDS_SPLIT_VIEW_SPLIT_HORIZONTAL" desc="The label of the 'Horizontal Split' menu item">
