@@ -1,0 +1,48 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "続ける";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "タップしたすべてのリンクをBraveのプライバシー保護で開く";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Braveを既定のブラウザに設定する";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "データ使用量を抑えた高速ブラウジング。";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "広告表示やトラッキングも削減。";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "興味のない広告はすべてブロック。";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "動画広告なしの画期的なブラウザです。";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "プライバシーを保護したプロダクト分析 (P3A) についてはこちらをご覧ください";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "気に入っていただけた機能について、ぜひご意見をお聞かせください。";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "お客様のご意見をもとに、Braveの品質向上に努めてまいります。";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "これは、Braveの設定の「Brave Shields & プライバシー」でいつでも変更できます。";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "完全非公開、匿名で製品のインサイトを共有します。";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "システム設定に移動";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "URLを入力してストレスフリーなブラウジングを体験";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Braveと他社ブラウザの比較を見る";
+

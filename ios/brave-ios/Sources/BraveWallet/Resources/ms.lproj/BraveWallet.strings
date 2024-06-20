@@ -238,6 +238,27 @@
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "Bitcoin";
 
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Dana tersedia untuk anda gunakan.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Tersedia";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Wang baki belum selesai dalam baki dompet anda.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Sesetengah baki mungkin tidak tersedia";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Belum Selesai";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Dana anda yang tersedia serta mana-mana transaksi yang belum disahkan.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Jumlah";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Beli";
 
@@ -1263,6 +1284,9 @@
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Masukkan semula kata laluan";
+
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Import daripada dompet kripto Brave legasi?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Pulihkan Dompet";

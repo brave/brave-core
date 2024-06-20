@@ -1,0 +1,48 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Folytatás";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Minden megnyitott hivatkozás a Brave adatvédelmi beállításaival fog megnyílni";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "A Brave beállítása alapértelmezett böngészőként";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "Gyorsabb böngészés és kevesebb adatfelhasználás.";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "Kevesebb hirdetés és nyomkövető.";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Tényleg megszabadultunk tőlük.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Nincs több hirdetési videó.";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "Tudjon meg többet az adatvédelmet megőrző termékelemzésünkről (P3A)";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Tudassa velünk, mely funkciókat élvezi leginkább.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Segítsen a Brave továbbfejlesztésében.";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Ezt bármikor módosíthatja a Brave beállításokban, a „Brave pajzsok és adatvédelem” alatt.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Teljesen privát és névtelen termékelemzések megosztása.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Böngészés elkezdése";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Ugrás a rendszerbeállításokra";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "Adjon meg egy URL-t, és élvezze a kevesebb hirdetést és nyomkövetőt";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Tapasztalja meg a Brave élményt";
+
