@@ -37,8 +37,17 @@ class DayZeroBrowserUIExptTest : public testing::Test,
   void SetUp() override {
     ASSERT_TRUE(testing_profile_manager_.SetUp());
     observation_.Observe(g_browser_process->profile_manager());
-    manager_ = std::make_unique<DayZeroBrowserUIExptManager>(
-        g_browser_process->profile_manager());
+    if (IsDayZeroEnabled()) {
+      // Get mock first run time and uset it for current time also.
+      base::Time first_run_time;
+      if (base::Time::FromString("2500-01-01", &first_run_time)) {
+        task_environment_.AdvanceClock(first_run_time - base::Time::Now());
+      }
+
+      // base::WrapUnique for using private ctor.
+      manager_ = base::WrapUnique(new DayZeroBrowserUIExptManager(
+          g_browser_process->profile_manager(), first_run_time));
+    }
   }
 
   void CheckBrowserHasDayZeroUI(Profile* profile) {

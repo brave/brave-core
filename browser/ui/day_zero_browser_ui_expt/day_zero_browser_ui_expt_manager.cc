@@ -20,22 +20,43 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
-DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
-    ProfileManager* profile_manager)
-    : profile_manager_(*profile_manager) {
+namespace {
+constexpr int kDayZeroFeatureDurationInDays = 1;
+}  // namespace
+
+// static
+std::unique_ptr<DayZeroBrowserUIExptManager>
+DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
+  if (!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    return nullptr;
+  }
+
   // This class should be instantiated after getting valid first run time;
   if (brave_stats::GetFirstRunTime(nullptr).is_null()) {
-    CHECK_IS_TEST();
+    // This should not be happened in production but not 100% in the wild(ex,
+    // corrupted user data). Just early return for safe. If upstream changes the
+    // timing of fetching first run time, browser test will catch this.
+    LOG(ERROR) << __func__ << " This should be happened only on test.";
+    return nullptr;
   }
 
-  // If one day passed since first run or day zero expt feature is off,
-  // we don't need to touch original default pref values.
-  // Just early return and this class is no-op.
-  if (IsPassedOneDaySinceFirstRun() ||
-      !base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
-    return;
+  // If one day passed since first run, we don't need to touch original default
+  // pref values. Just early return and this class is no-op.
+  if (base::Time::Now() - brave_stats::GetFirstRunTime(nullptr) >=
+      base::Days(kDayZeroFeatureDurationInDays)) {
+    VLOG(2) << __func__ << " Already passed day zero feature duration.";
+    return nullptr;
   }
 
+  // base::WrapUnique for using private ctor.
+  return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager));
+}
+
+DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
+    ProfileManager* profile_manager,
+    std::optional<base::Time> mock_first_run_time)
+    : profile_manager_(*profile_manager),
+      first_run_time_for_testing_(mock_first_run_time) {
   for (auto* profile : profile_manager_->GetLoadedProfiles()) {
     if (!profile->IsRegularProfile()) {
       continue;
@@ -65,6 +86,8 @@ void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
 }
 
 void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
+  VLOG(2) << __func__ << " Update prefs for day zero expt.";
+
   auto* prefs = profile->GetPrefs();
   prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(false));
   prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(false));
@@ -79,6 +102,8 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
 }
 
 void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
+  VLOG(2) << __func__ << " Update prefs for day zero expt.";
+
   auto* prefs = profile->GetPrefs();
   prefs->SetDefaultPrefValue(kNewTabPageShowRewards, base::Value(true));
   prefs->SetDefaultPrefValue(kNewTabPageShowBraveTalk, base::Value(true));
@@ -107,26 +132,36 @@ void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
   }
 }
 
-bool DayZeroBrowserUIExptManager::IsPassedOneDaySinceFirstRun() const {
-  return brave_stats::GetFirstRunTime(nullptr) - base::Time::Now() >=
-         base::Days(1);
-}
-
 void DayZeroBrowserUIExptManager::StartResetTimer() {
-  auto remained_time_to_one_day_since_first_run =
-      brave_stats::GetFirstRunTime(nullptr) - base::Time::Now();
+  auto remained_time_to_expt_duration_since_first_run =
+      GetFirstRunTime() - base::Time::Now();
 
   // Convenient switch only for testing purpose.
   constexpr char kUseShortExpirationForDayZeroExpt[] =
       "use-short-expiration-for-day-zero-expt";
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           kUseShortExpirationForDayZeroExpt)) {
-    remained_time_to_one_day_since_first_run += base::Minutes(2);
+    remained_time_to_expt_duration_since_first_run += base::Minutes(2);
   } else {
-    remained_time_to_one_day_since_first_run += base::Days(1);
+    remained_time_to_expt_duration_since_first_run +=
+        base::Days(kDayZeroFeatureDurationInDays);
+  }
+
+  // If remained time is negative, reset to original here.
+  if (remained_time_to_expt_duration_since_first_run < base::TimeDelta()) {
+    ResetBrowserUIStateForAllProfiles();
+    return;
   }
 
   reset_timer_.Start(
-      FROM_HERE, remained_time_to_one_day_since_first_run, this,
+      FROM_HERE, remained_time_to_expt_duration_since_first_run, this,
       &DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles);
+}
+
+base::Time DayZeroBrowserUIExptManager::GetFirstRunTime() const {
+  if (first_run_time_for_testing_) {
+    return *first_run_time_for_testing_;
+  }
+
+  return brave_stats::GetFirstRunTime(nullptr);
 }
