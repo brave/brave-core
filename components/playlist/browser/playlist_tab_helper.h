@@ -32,7 +32,6 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
-      public media_session::mojom::AudioFocusObserver,
       public media_session::mojom::MediaSessionObserver,
       public mojom::PlaylistServiceObserver {
  public:
@@ -69,12 +68,8 @@ class PlaylistTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  // media_session::mojom::AudioFocusObserver:
-  void OnFocusGained(
-      media_session::mojom::AudioFocusRequestStatePtr state) override;
-  void OnFocusLost(
-      media_session::mojom::AudioFocusRequestStatePtr state) override;
-  void OnRequestIdReleased(const base::UnguessableToken& request_id) override {}
+  void OnFocusGained();
+  void OnFocusLost();
 
   // media_session::mojom::MediaSessionObserver:
   void MediaSessionInfoChanged(
@@ -140,8 +135,6 @@ class PlaylistTabHelper
 
   BooleanPrefMember playlist_enabled_pref_;
 
-  mojo::Receiver<media_session::mojom::AudioFocusObserver>
-      audio_focus_observer_receiver_{this};
   mojo::Receiver<media_session::mojom::MediaSessionObserver>
       media_session_observer_receiver_{this};
 

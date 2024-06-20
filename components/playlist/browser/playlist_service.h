@@ -31,6 +31,9 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "services/media_session/public/mojom/audio_focus.mojom.h"
+
 class GURL;
 
 namespace base {
@@ -83,7 +86,8 @@ class PlaylistService : public KeyedService,
                         public PlaylistMediaFileDownloadManager::Delegate,
                         public PlaylistThumbnailDownloader::Delegate,
                         public mojom::PlaylistService,
-                        public PlaylistTabHelperObserver {
+                        public PlaylistTabHelperObserver,
+                        public media_session::mojom::AudioFocusObserver {
  public:
   class Delegate {
    public:
@@ -394,6 +398,19 @@ class PlaylistService : public KeyedService,
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;
 #endif  // BUILDFLAG(IS_ANDROID)
+
+  mojo::Receiver<media_session::mojom::AudioFocusObserver>
+      audio_focus_observer_receiver_{this};
+
+  // media_session::mojom::AudioFocusObserver:
+  void OnFocusGained(
+      media_session::mojom::AudioFocusRequestStatePtr state) override;
+  void OnFocusLost(
+      media_session::mojom::AudioFocusRequestStatePtr state) override;
+  void OnRequestIdReleased(const base::UnguessableToken& request_id) override {}
+
+  void OnAudioFocusGained() override {}
+  void OnAudioFocusLost() override {}
 
   base::WeakPtrFactory<PlaylistService> weak_factory_{this};
 };

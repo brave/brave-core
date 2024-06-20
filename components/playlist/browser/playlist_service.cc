@@ -32,6 +32,9 @@
 #include "net/base/filename_util.h"
 #include "url/gurl.h"
 
+#include "content/public/browser/media_session_service.h"
+#include "content/public/browser/media_session.h"
+
 namespace playlist {
 namespace {
 
@@ -82,6 +85,12 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
   MigratePlaylistValues();
 
   CleanUpOrphanedPlaylistItemDirs();
+
+  mojo::Remote<media_session::mojom::AudioFocusManager> audio_focus_manager;
+  content::GetMediaSessionService().BindAudioFocusManager(
+      audio_focus_manager.BindNewPipeAndPassReceiver());
+  audio_focus_manager->AddObserver(
+      audio_focus_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PlaylistService::~PlaylistService() = default;
@@ -1276,6 +1285,46 @@ void PlaylistService::OnDataComplete(
   if (result.Is2XXResponseCode()) {
     streaming_observer_->OnDataCompleted();
   }
+}
+
+void PlaylistService::OnFocusGained(
+    media_session::mojom::AudioFocusRequestStatePtr state) {
+  CHECK(state);
+  if (!state->request_id) {
+    return;
+  }
+
+  auto* web_contents = content::MediaSession::GetWebContentsFromRequestId(*state->request_id);
+  if (!web_contents) {
+    return;
+  }
+
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+  
+  tab_helper->OnFocusGained();
+}
+
+void PlaylistService::OnFocusLost(
+    media_session::mojom::AudioFocusRequestStatePtr state) {
+  CHECK(state);
+  if (!state->request_id) {
+    return;
+  }
+
+  auto* web_contents = content::MediaSession::GetWebContentsFromRequestId(*state->request_id);
+  if (!web_contents) {
+    return;
+  }
+  
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+
+  tab_helper->OnFocusLost();
 }
 
 }  // namespace playlist
