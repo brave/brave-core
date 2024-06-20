@@ -17,21 +17,21 @@ namespace brave_ads {
 namespace {
 
 HistoryItemList GetUnsortedHistory() {
-  HistoryItemList history;
+  HistoryItemList history_items;
 
   HistoryItemInfo history_item;
   history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
-  history.push_back(history_item);
+  history_items.push_back(history_item);
   history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
-  history.push_back(history_item);
+  history_items.push_back(history_item);
   history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(111111111);
-  history.push_back(history_item);
+  history_items.push_back(history_item);
   history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
-  history.push_back(history_item);
+  history_items.push_back(history_item);
   history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
-  history.push_back(history_item);
+  history_items.push_back(history_item);
 
-  return history;
+  return history_items;
 }
 
 }  // namespace
@@ -46,25 +46,31 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrder) {
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
 
-  HistoryItemList history = GetUnsortedHistory();
+  HistoryItemList history_items = GetUnsortedHistory();
 
   // Act
-  sort->Apply(history);
+  sort->Apply(history_items);
 
   // Assert
-  HistoryItemList expected_history;
-  HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(111111111);
-  expected_history.push_back(history_item);
-  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
+  HistoryItemList expected_history_items;
+  HistoryItemInfo expected_history_item;
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(555555555);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(444444444);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(333333333);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(222222222);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(111111111);
+  expected_history_items.push_back(expected_history_item);
+  EXPECT_THAT(expected_history_items,
+              ::testing::ElementsAreArray(history_items));
 }
 
 TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
@@ -72,51 +78,57 @@ TEST(BraveAdsHistorySortTest, DescendingSortOrderForEmptyHistory) {
   const auto sort =
       HistorySortFactory::Build(HistorySortType::kDescendingOrder);
 
-  HistoryItemList history;
+  HistoryItemList history_items;
 
   // Act
-  sort->Apply(history);
+  sort->Apply(history_items);
 
   // Assert
-  EXPECT_THAT(history, ::testing::IsEmpty());
+  EXPECT_THAT(history_items, ::testing::IsEmpty());
 }
 
 TEST(BraveAdsHistorySortTest, AscendingSortOrder) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
-  HistoryItemList history = GetUnsortedHistory();
+  HistoryItemList history_items = GetUnsortedHistory();
 
   // Act
-  sort->Apply(history);
+  sort->Apply(history_items);
 
   // Assert
-  HistoryItemList expected_history;
-  HistoryItemInfo history_item;
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(111111111);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(222222222);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(333333333);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(444444444);
-  expected_history.push_back(history_item);
-  history_item.created_at = base::Time::FromSecondsSinceUnixEpoch(555555555);
-  expected_history.push_back(history_item);
-  EXPECT_THAT(expected_history, ::testing::ElementsAreArray(history));
+  HistoryItemList expected_history_items;
+  HistoryItemInfo expected_history_item;
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(111111111);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(222222222);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(333333333);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(444444444);
+  expected_history_items.push_back(expected_history_item);
+  expected_history_item.created_at =
+      base::Time::FromSecondsSinceUnixEpoch(555555555);
+  expected_history_items.push_back(expected_history_item);
+  EXPECT_THAT(expected_history_items,
+              ::testing::ElementsAreArray(history_items));
 }
 
 TEST(BraveAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   // Arrange
   const auto sort = HistorySortFactory::Build(HistorySortType::kAscendingOrder);
 
-  HistoryItemList history;
+  HistoryItemList history_items;
 
   // Act
-  sort->Apply(history);
+  sort->Apply(history_items);
 
   // Assert
-  EXPECT_THAT(history, ::testing::IsEmpty());
+  EXPECT_THAT(history_items, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

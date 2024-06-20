@@ -24,14 +24,14 @@ TEST(BraveAdsVerifiableConversionEnvelopeUtilTest,
 
   // Act
   const std::optional<VerifiableConversionEnvelopeInfo>
-      verifiable_conversion_envelope =
+      sealed_verifiable_conversion_envelope =
           SealVerifiableConversionEnvelope(verifiable_conversion);
-  ASSERT_TRUE(verifiable_conversion_envelope);
+  ASSERT_TRUE(sealed_verifiable_conversion_envelope);
 
   // Assert
   EXPECT_EQ(verifiable_conversion.id,
             test::OpenVerifiableConversionEnvelope(
-                *verifiable_conversion_envelope,
+                *sealed_verifiable_conversion_envelope,
                 kVerifiableConversionAdvertiserSecretKey));
 }
 

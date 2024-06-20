@@ -14,22 +14,31 @@
 
 namespace brave_ads::cbr {
 
-TEST(BraveAdsSignedTokenUtilTest, TokensToRawTokens) {
+TEST(BraveAdsSignedTokenUtilTest, SignedTokensToRawSignedTokens) {
   // Arrange
-  const std::vector<SignedToken> tokens = test::GetSignedTokens();
+  const std::vector<SignedToken> signed_tokens = test::GetSignedTokens();
 
-  // Act & Assert
-  std::vector<challenge_bypass_ristretto::SignedToken> expected_raw_tokens;
-  expected_raw_tokens.reserve(tokens.size());
-  for (const auto& token : tokens) {
-    expected_raw_tokens.push_back(token.get());
+  // Act
+  const std::vector<challenge_bypass_ristretto::SignedToken> raw_signed_tokens =
+      ToRawSignedTokens(signed_tokens);
+
+  // Assert
+  std::vector<challenge_bypass_ristretto::SignedToken>
+      expected_raw_signed_tokens;
+  expected_raw_signed_tokens.reserve(signed_tokens.size());
+  for (const auto& signed_token : signed_tokens) {
+    expected_raw_signed_tokens.push_back(signed_token.get());
   }
-  EXPECT_EQ(expected_raw_tokens, ToRawSignedTokens(tokens));
+  EXPECT_EQ(expected_raw_signed_tokens, raw_signed_tokens);
 }
 
-TEST(BraveAdsSignedTokenUtilTest, EmptyTokensToRawTokens) {
-  // Act & Assert
-  EXPECT_THAT(ToRawSignedTokens(/*tokens=*/{}), ::testing::IsEmpty());
+TEST(BraveAdsSignedTokenUtilTest, EmptySignedTokensToRawSignedTokens) {
+  // Act
+  const std::vector<challenge_bypass_ristretto::SignedToken> raw_signed_tokens =
+      ToRawSignedTokens({});
+
+  // Assert
+  EXPECT_THAT(raw_signed_tokens, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr

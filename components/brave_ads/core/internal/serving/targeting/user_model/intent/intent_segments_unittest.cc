@@ -10,6 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
@@ -40,10 +41,12 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegments) {
 
   targeting_helper_->MockIntent();
 
-  // Act & Assert
-  const SegmentList expected_intent_segments =
-      test::TargetingHelper::IntentExpectation().segments;
-  EXPECT_EQ(expected_intent_segments, BuildIntentSegments());
+  // Act
+  const SegmentList intent_segments = BuildIntentSegments();
+
+  // Assert
+  EXPECT_EQ(test::TargetingHelper::IntentExpectation().segments,
+            intent_segments);
 }
 
 TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegmentsIfNoTargeting) {
@@ -51,8 +54,11 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegmentsIfNoTargeting) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPurchaseIntentFeature);
 
-  // Act & Assert
-  EXPECT_THAT(BuildIntentSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList intent_segments = BuildIntentSegments();
+
+  // Assert
+  EXPECT_THAT(intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsIntentSegmentsTest,
@@ -63,8 +69,11 @@ TEST_F(BraveAdsIntentSegmentsTest,
 
   targeting_helper_->MockIntent();
 
-  // Act & Assert
-  EXPECT_THAT(BuildIntentSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList intent_segments = BuildIntentSegments();
+
+  // Assert
+  EXPECT_THAT(intent_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

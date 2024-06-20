@@ -37,15 +37,20 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   // Arrange
   targeting_helper_->MockInterest();
 
-  // Act & Assert
-  const SegmentList expected_interest_segments =
-      test::TargetingHelper::InterestExpectation().segments;
-  EXPECT_EQ(expected_interest_segments, BuildInterestSegments());
+  // Act
+  const SegmentList interest_segments = BuildInterestSegments();
+
+  // Assert
+  EXPECT_EQ(test::TargetingHelper::InterestExpectation().segments,
+            interest_segments);
 }
 
 TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegmentsIfNoTargeting) {
-  // Act & Assert
-  EXPECT_THAT(BuildInterestSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList interest_segments = BuildInterestSegments();
+
+  // Assert
+  EXPECT_THAT(interest_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsInterestSegmentsTest,
@@ -56,8 +61,11 @@ TEST_F(BraveAdsInterestSegmentsTest,
 
   targeting_helper_->MockInterest();
 
-  // Act & Assert
-  EXPECT_THAT(BuildInterestSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList interest_segments = BuildInterestSegments();
+
+  // Assert
+  EXPECT_THAT(interest_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

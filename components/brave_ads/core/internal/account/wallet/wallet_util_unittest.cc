@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,12 +15,14 @@
 namespace brave_ads {
 
 TEST(BraveAdsWalletUtilTest, ToWallet) {
-  // Act & Assert
-  WalletInfo expected_wallet;
-  expected_wallet.payment_id = kWalletPaymentId;
-  expected_wallet.public_key = kWalletPublicKey;
-  expected_wallet.secret_key = kWalletSecretKey;
-  EXPECT_EQ(expected_wallet, ToWallet(kWalletPaymentId, kWalletRecoverySeed));
+  // Act
+  const std::optional<WalletInfo> wallet =
+      ToWallet(kWalletPaymentId, kWalletRecoverySeed);
+  ASSERT_TRUE(wallet);
+
+  // Assert
+  EXPECT_THAT(*wallet, ::testing::FieldsAre(kWalletPaymentId, kWalletPublicKey,
+                                            kWalletSecretKey));
 }
 
 TEST(BraveAdsWalletUtilTest, ToInvalidWallet) {

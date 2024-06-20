@@ -33,11 +33,10 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserActive) {
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Act
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_TRUE(WasUserActive());
 }
 
@@ -47,11 +46,11 @@ TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactive) {
 }
 
 TEST_F(BraveAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
-  // Act
+  // Arrange
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(WasUserActive());
 }
 
@@ -60,13 +59,13 @@ TEST_F(BraveAdsUserActivityScoringUtilTest,
   // Arrange
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kOpenedNewTab);
+
   UserActivityManager::GetInstance().RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Act
   AdvanceClockBy(kUserActivityTimeWindow.Get() + base::Milliseconds(1));
 
-  // Assert
+  // Act & Assert
   EXPECT_FALSE(WasUserActive());
 }
 

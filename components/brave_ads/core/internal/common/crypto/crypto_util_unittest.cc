@@ -84,10 +84,18 @@ TEST(BraveAdsCryptoUtilTest, Sign) {
 
   // Assert
   EXPECT_TRUE(signature);
+}
+
+TEST(BraveAdsCryptoUtilTest, Verify) {
+  // Act
+  const std::optional<std::string> signature = Sign(kMessage, kSecretKey);
+  ASSERT_TRUE(signature);
+
+  // Assert
   EXPECT_TRUE(Verify(kMessage, kPublicKey, *signature));
 }
 
-TEST(BraveAdsCryptoUtilTest, Encrypt) {
+TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {
   // Arrange
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();

@@ -32,7 +32,10 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -48,7 +51,7 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForRewardsUser) {
                       ]
                     }
                 )"),
-            BuildStudiesUserData());
+            user_data);
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
@@ -69,18 +72,24 @@ TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataForNonRewardsUser) {
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
-  // Act & Assert
-  EXPECT_THAT(BuildStudiesUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsStudiesUserDataTest, BuildStudiesUserDataIfNoFieldTrials) {
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildStudiesUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "studies": []
                     })"),
-            BuildStudiesUserData());
+            user_data);
 }
 
 }  // namespace brave_ads

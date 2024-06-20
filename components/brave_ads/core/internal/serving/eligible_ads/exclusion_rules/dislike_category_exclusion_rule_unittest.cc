@@ -37,7 +37,6 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldExclude) {
   CategoryContentInfo category_content;
   category_content.category = creative_ad.segment;
   category_content.user_reaction_type = mojom::UserReactionType::kNeutral;
-
   ClientStateManager::GetInstance().ToggleDislikeCategory(category_content);
 
   // Act & Assert

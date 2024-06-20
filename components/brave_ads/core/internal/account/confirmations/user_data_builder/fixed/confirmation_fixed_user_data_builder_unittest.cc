@@ -35,7 +35,10 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -54,7 +57,7 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
                       "topSegment": [],
                       "versionNumber": "1.2.3.4"
                     })"),
-            BuildFixedUserData(transaction));
+            fixed_user_data);
 }
 
 TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
@@ -65,8 +68,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  EXPECT_THAT(BuildFixedUserData(transaction), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
+
+  // Assert
+  EXPECT_THAT(fixed_user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -61,9 +61,12 @@ TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsReceivedForDateRange) {
   transaction_6.ad_type = AdType::kInlineContentAd;
   transactions.push_back(transaction_6);
 
-  // Act & Assert
-  EXPECT_EQ(
-      4U, GetAdsReceivedForDateRange(transactions, from_time, DistantFuture()));
+  // Act
+  const size_t ads_received =
+      GetAdsReceivedForDateRange(transactions, from_time, DistantFuture());
+
+  // Assert
+  EXPECT_EQ(4U, ads_received);
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsSummaryForDateRange) {
@@ -84,15 +87,21 @@ TEST_F(BraveAdsAdsReceivedUtilTest, DoNotGetAdsSummaryForDateRange) {
 
   AdvanceClockTo(TimeFromString("1 January 2021"));
 
-  // Act & Assert
-  EXPECT_EQ(0U, GetAdsReceivedForDateRange(transactions, /*from_time=*/Now(),
-                                           /*to_time=*/DistantFuture()));
+  // Act
+  const size_t ads_received = GetAdsReceivedForDateRange(
+      transactions, /*from_time=*/Now(), DistantFuture());
+
+  // Assert
+  EXPECT_EQ(0U, ads_received);
 }
 
 TEST_F(BraveAdsAdsReceivedUtilTest, GetAdsSummaryForNoTransactions) {
-  // Act & Assert
-  EXPECT_EQ(0U, GetAdsReceivedForDateRange(/*transactions=*/{}, DistantPast(),
-                                           DistantFuture()));
+  // Act
+  const size_t ads_received = GetAdsReceivedForDateRange(
+      /*transactions=*/{}, DistantPast(), DistantFuture());
+
+  // Assert
+  EXPECT_EQ(0U, ads_received);
 }
 
 }  // namespace brave_ads

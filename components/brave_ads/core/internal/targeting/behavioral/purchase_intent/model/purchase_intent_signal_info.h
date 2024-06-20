@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_MODEL_PURCHASE_INTENT_SIGNAL_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_BEHAVIORAL_PURCHASE_INTENT_MODEL_PURCHASE_INTENT_SIGNAL_INFO_H_
 
+#include <vector>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
@@ -28,6 +30,8 @@ struct PurchaseIntentSignalInfo final {
   SegmentList segments;
   int weight = 0;
 };
+
+using PurchaseIntentSignalList = std::vector<PurchaseIntentSignalInfo>;
 
 }  // namespace brave_ads
 

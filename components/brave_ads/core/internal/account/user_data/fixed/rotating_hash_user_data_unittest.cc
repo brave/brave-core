@@ -35,13 +35,16 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "rotatingHash": "j9D7eKSoPLYNfxkG2Mx+SbgKJ9hcKg1QwDB8B5qxlpk="
                     })"),
-            BuildRotatingHashUserData(transaction));
+            user_data);
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
@@ -55,8 +58,11 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
@@ -66,8 +72,11 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  EXPECT_THAT(BuildRotatingHashUserData(transaction), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -41,9 +41,12 @@ TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
-  // Act & Assert
-  EXPECT_EQ(2U, GetNumberOfUserActivityEvents(
-                    events, UserActivityEventType::kClickedLink));
+  // Act
+  const size_t number_of_user_activity_events = GetNumberOfUserActivityEvents(
+      events, UserActivityEventType::kClickedLink);
+
+  // Assert
+  EXPECT_EQ(2U, number_of_user_activity_events);
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -56,9 +59,12 @@ TEST_F(BraveAdsUserActivityUtilTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
-  // Act & Assert
-  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
-                    events, UserActivityEventType::kClosedTab));
+  // Act
+  const size_t number_of_user_activity_events =
+      GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
+
+  // Assert
+  EXPECT_EQ(0U, number_of_user_activity_events);
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -68,9 +74,12 @@ TEST_F(BraveAdsUserActivityUtilTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
-  // Act & Assert
-  EXPECT_EQ(0U, GetNumberOfUserActivityEvents(
-                    events, UserActivityEventType::kClosedTab));
+  // Act
+  const size_t number_of_user_activity_events =
+      GetNumberOfUserActivityEvents(events, UserActivityEventType::kClosedTab);
+
+  // Assert
+  EXPECT_EQ(0U, number_of_user_activity_events);
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
@@ -107,10 +116,13 @@ TEST_F(BraveAdsUserActivityUtilTest, GetTimeSinceLastUserActivityEvent) {
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
-  // Act & Assert
-  EXPECT_EQ(base::Minutes(6),
-            GetTimeSinceLastUserActivityEvent(
-                events, UserActivityEventType::kTabStartedPlayingMedia));
+  // Act
+  const base::TimeDelta time_since_last_user_activity_event =
+      GetTimeSinceLastUserActivityEvent(
+          events, UserActivityEventType::kTabStartedPlayingMedia);
+
+  // Assert
+  EXPECT_EQ(base::Minutes(6), time_since_last_user_activity_event);
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -123,10 +135,13 @@ TEST_F(BraveAdsUserActivityUtilTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
-  // Act & Assert
-  EXPECT_TRUE(GetTimeSinceLastUserActivityEvent(
-                  events, UserActivityEventType::kTabStartedPlayingMedia)
-                  .is_zero());
+  // Act
+  const base::TimeDelta time_since_last_user_activity_event =
+      GetTimeSinceLastUserActivityEvent(
+          events, UserActivityEventType::kTabStartedPlayingMedia);
+
+  // Assert
+  EXPECT_TRUE(time_since_last_user_activity_event.is_zero());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
@@ -136,52 +151,66 @@ TEST_F(BraveAdsUserActivityUtilTest,
       UserActivityManager::GetInstance().GetHistoryForTimeWindow(
           base::Minutes(30));
 
-  // Act & Assert
-  EXPECT_TRUE(GetTimeSinceLastUserActivityEvent(
-                  events, UserActivityEventType::kTabStartedPlayingMedia)
-                  .is_zero());
+  // Act
+  const base::TimeDelta time_since_last_user_activity_event =
+      GetTimeSinceLastUserActivityEvent(
+          events, UserActivityEventType::kTabStartedPlayingMedia);
+
+  // Assert
+  EXPECT_TRUE(time_since_last_user_activity_event.is_zero());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggers) {
-  // Act & Assert
-  UserActivityTriggerList expected_triggers;
-  UserActivityTriggerInfo trigger;
-  trigger.event_sequence = "05";
-  trigger.score = 0.3;
-  expected_triggers.push_back(trigger);
-  trigger.event_sequence = "0C1305";
-  trigger.score = 1.0;
-  expected_triggers.push_back(trigger);
-  trigger.event_sequence = "0C13";
-  trigger.score = 0.5;
-  expected_triggers.push_back(trigger);
-  EXPECT_EQ(
-      expected_triggers,
-      ToUserActivityTriggers(/*param_value=*/"05=.3;0C1305=1.0;0C13=0.5"));
+  // Act
+  const UserActivityTriggerList user_activity_triggers = ToUserActivityTriggers(
+      /*param_value=*/"05=.3;0C1305=1.0;0C13=0.5");
+
+  // Assert
+  UserActivityTriggerList expected_user_activity_triggers;
+  UserActivityTriggerInfo expected_user_activity_trigger;
+  expected_user_activity_trigger.event_sequence = "05";
+  expected_user_activity_trigger.score = 0.3;
+  expected_user_activity_triggers.push_back(expected_user_activity_trigger);
+  expected_user_activity_trigger.event_sequence = "0C1305";
+  expected_user_activity_trigger.score = 1.0;
+  expected_user_activity_triggers.push_back(expected_user_activity_trigger);
+  expected_user_activity_trigger.event_sequence = "0C13";
+  expected_user_activity_trigger.score = 0.5;
+  expected_user_activity_triggers.push_back(expected_user_activity_trigger);
+  EXPECT_EQ(expected_user_activity_triggers, user_activity_triggers);
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForInvalidTrigger) {
-  // Act & Assert
-  EXPECT_THAT(ToUserActivityTriggers(/*param_value=*/"INVALID"),
-              ::testing::IsEmpty());
+  // Act
+  const UserActivityTriggerList user_activity_triggers = ToUserActivityTriggers(
+      /*param_value=*/"INVALID");
+
+  // Assert
+  EXPECT_THAT(user_activity_triggers, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsUserActivityUtilTest,
        ToUserActivityTriggersForMalformedTrigger) {
-  // Act & Assert
-  UserActivityTriggerList expected_triggers;
-  UserActivityTriggerInfo trigger;
-  trigger.event_sequence = "05";
-  trigger.score = 0.3;
-  expected_triggers.push_back(trigger);
-  EXPECT_EQ(
-      expected_triggers,
-      ToUserActivityTriggers(/*param_value=*/"05=.3;0C1305=;=0.5;C1305=1.0"));
+  // Act
+  const UserActivityTriggerList user_activity_triggers = ToUserActivityTriggers(
+      /*param_value=*/"05=.3;0C1305=;=0.5;C1305=1.0");
+
+  // Assert
+  UserActivityTriggerList expected_user_activity_triggers;
+  UserActivityTriggerInfo expected_user_activity_trigger;
+  expected_user_activity_trigger.event_sequence = "05";
+  expected_user_activity_trigger.score = 0.3;
+  expected_user_activity_triggers.push_back(expected_user_activity_trigger);
+  EXPECT_EQ(expected_user_activity_triggers, user_activity_triggers);
 }
 
 TEST_F(BraveAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
-  // Act & Assert
-  EXPECT_THAT(ToUserActivityTriggers(/*param_value=*/{}), ::testing::IsEmpty());
+  // Act
+  const UserActivityTriggerList user_activity_triggers = ToUserActivityTriggers(
+      /*param_value=*/"");
+
+  // Assert
+  EXPECT_THAT(user_activity_triggers, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

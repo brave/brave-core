@@ -19,13 +19,16 @@ class BraveAdsLocaleUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsLocaleUserDataTest,
        BuildLocaleUserDataForReleaseBuildChannelAndRewardsUser) {
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildLocaleUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "countryCode": "US"
                     })"),
-            BuildLocaleUserData());
+            user_data);
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
@@ -33,8 +36,11 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act & Assert
-  EXPECT_THAT(BuildLocaleUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildLocaleUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
@@ -42,8 +48,11 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   MockBuildChannel(BuildChannelType::kNightly);
 
-  // Act & Assert
-  EXPECT_THAT(BuildLocaleUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildLocaleUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
@@ -51,8 +60,11 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_MC"};
 
-  // Act & Assert
-  EXPECT_THAT(BuildLocaleUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildLocaleUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsLocaleUserDataTest,
@@ -60,13 +72,16 @@ TEST_F(BraveAdsLocaleUserDataTest,
   // Arrange
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_CX"};
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildLocaleUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "countryCode": "??"
                     })"),
-            BuildLocaleUserData());
+            user_data);
 }
 
 }  // namespace brave_ads

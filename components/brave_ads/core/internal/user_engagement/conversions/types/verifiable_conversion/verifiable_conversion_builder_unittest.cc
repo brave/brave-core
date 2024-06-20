@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -29,7 +30,6 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
       {/*url_pattern=*/"https://foo.com/bar",
        ConversionResourceIdPatternInfo{
            /*url_pattern=*/"https://foo.com/bar",
-           /*search_in_type=*/
            ConversionResourceIdPatternSearchInType::kHtml,
            /*id_pattern=*/R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
 
@@ -37,13 +37,17 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
 
-  // Act & Assert
-  const VerifiableConversionInfo expected_verifiable_conversion{
-      "waldo", kVerifiableConversionAdvertiserPublicKey};
-  EXPECT_EQ(expected_verifiable_conversion,
-            MaybeBuildVerifiableConversion(
-                /*redirect_chain=*/{GURL("https://foo.com/bar")}, kHtml,
-                resource_id_patterns, creative_set_conversion));
+  // Act
+  const std::optional<VerifiableConversionInfo> verifiable_conversion =
+      MaybeBuildVerifiableConversion(
+          /*redirect_chain=*/{GURL("https://foo.com/bar")}, kHtml,
+          resource_id_patterns, creative_set_conversion);
+  ASSERT_TRUE(verifiable_conversion);
+
+  // Assert
+  EXPECT_THAT(*verifiable_conversion,
+              testing::FieldsAre(/*id*/ "waldo",
+                                 kVerifiableConversionAdvertiserPublicKey));
 }
 
 TEST_F(BraveAdsVerifiableConversionBuilderTest,
@@ -54,7 +58,6 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest,
       {/*url_pattern=*/"https://foo.com/bar?qux_id=*",
        ConversionResourceIdPatternInfo{
            /*url_pattern=*/"https://foo.com/bar?qux_id=*",
-           /*search_in_type=*/
            ConversionResourceIdPatternSearchInType::kUrlRedirect,
            /*id_pattern=*/"qux_id=(.*)"}});
 

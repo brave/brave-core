@@ -15,7 +15,7 @@ namespace brave_ads::cbr {
 class SignedToken;
 
 std::vector<challenge_bypass_ristretto::SignedToken> ToRawSignedTokens(
-    const std::vector<SignedToken>& tokens);
+    const std::vector<SignedToken>& signed_tokens);
 
 }  // namespace brave_ads::cbr
 

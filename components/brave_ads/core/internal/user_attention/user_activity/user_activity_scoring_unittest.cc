@@ -104,7 +104,7 @@ TEST_F(BraveAdsUserActivityScoringTest,
           base::Hours(1));
 
   // Act & Assert
-  EXPECT_EQ(0.0, GetUserActivityScore(triggers, events));
+  EXPECT_DOUBLE_EQ(0.0, GetUserActivityScore(triggers, events));
 }
 
 TEST_F(BraveAdsUserActivityScoringTest,
@@ -197,7 +197,7 @@ TEST_F(BraveAdsUserActivityScoringTest,
           base::Hours(1));
 
   // Act & Assert
-  EXPECT_EQ(0.0, GetUserActivityScore(triggers, events));
+  EXPECT_DOUBLE_EQ(0.0, GetUserActivityScore(triggers, events));
 }
 
 }  // namespace brave_ads

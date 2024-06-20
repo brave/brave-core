@@ -39,12 +39,13 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorInputVariableTest,
       /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
+  // Act
   const CreativeAdModelBasedPredictorInputVariableInfo input_variable =
       ComputeCreativeAdModelBasedPredictorInputVariable(
           creative_ad, user_model, ad_events,
           test::BuildCreativeAdModelBasedPredictorWeights());
 
-  // Act & Assert
+  // Assert
   CreativeAdModelBasedPredictorInputVariableInfo expected_input_variable;
   expected_input_variable.intent_segment.child_matches.value = true;
   expected_input_variable.intent_segment.parent_matches.value = true;

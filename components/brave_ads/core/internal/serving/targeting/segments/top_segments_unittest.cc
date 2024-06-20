@@ -25,11 +25,23 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopChildSegments) {
   const SegmentList segments = {"parent_1-child", "parent_2-child",
                                 "parent_3-child"};
 
-  // Act & Assert
+  // Act
+  const SegmentList top_segments = GetTopSegments(segments, kSegmentsMaxCount,
+                                                  /*parent_only=*/false);
+
+  // Assert
   const SegmentList expected_top_segments = {"parent_1-child",
                                              "parent_2-child"};
-  EXPECT_EQ(expected_top_segments, GetTopSegments(segments, kSegmentsMaxCount,
-                                                  /*parent_only=*/false));
+  EXPECT_EQ(expected_top_segments, top_segments);
+}
+
+TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopChildSegments) {
+  // Act
+  const SegmentList top_segments = GetTopSegments(
+      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
+
+  // Assert
+  EXPECT_THAT(top_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
@@ -37,17 +49,22 @@ TEST_F(BraveAdsTopSegmentsTest, GetTopParentSegments) {
   const SegmentList segments = {"parent_1-child", "parent_2-child",
                                 "parent_3-child"};
 
-  // Act & Assert
+  // Act
+  const SegmentList top_segments = GetTopSegments(segments, kSegmentsMaxCount,
+                                                  /*parent_only=*/true);
+
+  // Assert
   const SegmentList expected_top_segments = {"parent_1", "parent_2"};
-  EXPECT_EQ(expected_top_segments, GetTopSegments(segments, kSegmentsMaxCount,
-                                                  /*parent_only=*/true));
+  EXPECT_EQ(expected_top_segments, top_segments);
 }
 
-TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopSegments) {
-  // Act & Assert
-  EXPECT_THAT(GetTopSegments(
-                  /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false),
-              ::testing::IsEmpty());
+TEST_F(BraveAdsTopSegmentsTest, GetEmptyTopParentSegments) {
+  // Act
+  const SegmentList top_segments = GetTopSegments(
+      /*segments=*/{}, kSegmentsMaxCount, /*parent_only=*/false);
+
+  // Assert
+  EXPECT_THAT(top_segments, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

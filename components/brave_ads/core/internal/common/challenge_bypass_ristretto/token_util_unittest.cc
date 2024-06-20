@@ -18,18 +18,26 @@ TEST(BraveAdsTokenUtilTest, TokensToRawTokens) {
   // Arrange
   const std::vector<Token> tokens = test::GetTokens();
 
-  // Act & Assert
+  // Act
+  const std::vector<challenge_bypass_ristretto::Token> raw_tokens =
+      ToRawTokens(tokens);
+
+  // Assert
   std::vector<challenge_bypass_ristretto::Token> expected_raw_tokens;
   expected_raw_tokens.reserve(tokens.size());
   for (const auto& token : tokens) {
     expected_raw_tokens.push_back(token.get());
   }
-  EXPECT_EQ(expected_raw_tokens, ToRawTokens(tokens));
+  EXPECT_EQ(expected_raw_tokens, raw_tokens);
 }
 
 TEST(BraveAdsTokenUtilTest, EmptyTokensToRawTokens) {
-  // Act & Assert
-  EXPECT_THAT(ToRawTokens(/*tokens=*/{}), ::testing::IsEmpty());
+  // Act
+  const std::vector<challenge_bypass_ristretto::Token> raw_tokens =
+      ToRawTokens({});
+
+  // Assert
+  EXPECT_THAT(raw_tokens, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::cbr
