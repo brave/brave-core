@@ -550,17 +550,21 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+        let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
-        ] {
-          if let gasValue = BDouble(gasFee.fee),
-            BDouble(gasBalance) > gasValue
-          {
-            isBalanceSufficient = true
+        ]
+        if let gasBalance,
+          let gasValue = BDouble(gasFee.fee),
+          let fromToken = details.fromToken,
+          let fromValue = BDouble(details.fromAmount)
+        {
+          if network.isNativeAsset(fromToken) {
+            isBalanceSufficient = BDouble(gasBalance) > gasValue + fromValue
           } else {
-            isBalanceSufficient = false
+            isBalanceSufficient = BDouble(gasBalance) > gasValue
           }
-        } else if shouldFetchGasTokenBalance {
+        } else if shouldFetchGasTokenBalance || gasBalance == nil {
+          isBalanceSufficient = false
           if let account = accounts.first(where: {
             $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
@@ -570,6 +574,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
               network: network
             )
           }
+        } else {
+          isBalanceSufficient = true
         }
       }
       if let fromToken = details.fromToken {
