@@ -587,7 +587,7 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func shredData(for url: URL, in tab: Tab) {
-    AnimationView.showShredAnimation(on: view) {
+    LottieAnimationView.showShredAnimation(on: view) {
       self.tabManager.shredData(for: url, in: tab)
     }
   }

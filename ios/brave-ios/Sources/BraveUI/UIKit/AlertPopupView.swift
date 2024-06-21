@@ -120,7 +120,7 @@ public class AlertPopupView: UIKitPopupView {
     }
 
     // Lottie animation stops playing when view is not visible, the animation needs to be resumed.
-    if let animationView = dialogImage as? AnimationView, !animationView.isAnimationPlaying {
+    if let animationView = dialogImage as? LottieAnimationView, !animationView.isAnimationPlaying {
       animationView.play()
     }
   }
