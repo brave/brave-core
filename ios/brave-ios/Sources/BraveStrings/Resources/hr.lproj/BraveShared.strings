@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopiraj poveznicu";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Kopirajte informacije o karticama u međuspremnik.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Kopiraj u međuspremnik";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Vaša veza s ovim mrežnim mjestom nije sigurna.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Veza s mrežnim mjestom nije provjerena.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Nije bilo moguće potpuno provjeriti vašu vezu s ovim mrežnim mjestom. Možete nastaviti ili pokušati ponovno učitati stranicu kako biste uspostavili sigurnu vezu.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Prikaži certifikat";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Brisanje računa za sinkronizaciju";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Brisanjem vašeg računa uklanjanju se vaši šifrirani podaci s poslužitelja Brave i onemogućuje se sinkronizacija na svim vašim povezanim uređajima.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Međutim, neće se izbrisati podaci koji su lokalno pohranjeni na tim uređajima.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Takvo je brisanje trajno i ne postoji način za oporavljanje podataka. Ako odlučite ponovno početi upotrebljavati značajku Sinkronizacija, morate stvoriti novi račun i ponovno dodati svaki uređaj jedan po jedan.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Nešto nije u redu pri dohvaćanju uređaja u lancu sinkronizacije.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Izbriši račun za sinkronizaciju";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Izgleda da je ovaj kȏd nastao na uređaju s instaliranom starijom inačicom preglednika Brave. Ažurirajte na najnoviju inačicu preglednika Brave na svom drugom uređaju, a zatim stvorite novi kȏd za sinkronizaciju.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Uređaji i postavke";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem s pouzdanošću veze";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Odaberite kategoriju kojom se opisuje problem.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Nema Interneta nakon povezivanja";
