@@ -11,11 +11,11 @@
 // UmaHistogramEnumeration performs a DCHECK_LE to confirm that all
 // PageActionIconType values are less than T::kMaxValue and it casts the sample
 // to an unsigned int, so we fail the DCHECK. This override only performs the
-// DCHECK if the sample is positive.
+// DCHECK if the sample is non-negative.
 #define BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION_STRING_ARG \
-  if (static_cast<intmax_t>(sample) > 0)
+  if (static_cast<intmax_t>(sample) >= 0)
 #define BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION_CHAR_POINTER_ARG \
-  if (static_cast<intmax_t>(sample) > 0)
+  if (static_cast<intmax_t>(sample) >= 0)
 
 #include "src/base/metrics/histogram_functions.h"  // IWYU pragma: export
 
