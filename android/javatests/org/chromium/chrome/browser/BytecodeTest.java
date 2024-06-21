@@ -54,8 +54,6 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
-import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
-import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
@@ -138,6 +136,8 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListL
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.externalauth.ExternalAuthUtils;
