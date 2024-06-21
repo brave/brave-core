@@ -510,17 +510,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor private func fetchSolEstimatedTxFees(
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
-    for transaction in transactions where transaction.coin == .sol {
-      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.solanaTxFeeEstimation(
-        chainId: transaction.chainId,
-        txMetaId: transaction.id
-      )
-      let priorityFee =
-        UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
-        * BraveWallet.MicroLamportsPerLamport
-      let totalFee = solEstimatedTxFee.baseFee + priorityFee
-      self.solEstimatedTxFeeCache[transaction.id] = totalFee
-    }
+    let solTxs = transactions.filter { $0.coin == .sol }
+    let txFees = await solTxManagerProxy.solanaTxFeeEstimations(for: solTxs)
+    solEstimatedTxFeeCache.merge(with: txFees)
     updateTransaction(
       with: activeTransaction,
       shouldFetchCurrentAllowance: false,
