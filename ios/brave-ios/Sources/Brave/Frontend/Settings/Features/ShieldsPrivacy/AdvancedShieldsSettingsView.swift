@@ -41,7 +41,6 @@ struct AdvancedShieldsSettingsView: View {
           )
         }
         .buttonStyle(.plain)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .sheet(isPresented: $showManageWebsiteData) {
           ManageWebsiteDataView()
         }
@@ -53,12 +52,13 @@ struct AdvancedShieldsSettingsView: View {
             title: Strings.PrivacyHub.privacyReportsTitle,
             subtitle: nil
           )
-        }.listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
+        }
+      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       OtherPrivacySettingsSectionView(settings: settings)
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
     .navigationTitle(Strings.braveShieldsAndPrivacy)
     .environment(

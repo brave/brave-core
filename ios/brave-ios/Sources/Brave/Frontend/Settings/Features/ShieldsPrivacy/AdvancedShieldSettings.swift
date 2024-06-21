@@ -74,7 +74,7 @@ import os
       ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
     }
   }
-  @Published var shredLevel: SiteShredLevel? {
+  @Published var shredLevel: SiteShredLevel {
     didSet {
       ShieldPreferences.shredLevel = shredLevel
     }

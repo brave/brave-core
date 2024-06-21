@@ -24,14 +24,10 @@ struct ShredSettingsView: View {
     List {
       Section {
         Picker(selection: $settings.shredLevel) {
-          Text(Strings.Shields.shredNever)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .tag(nil as SiteShredLevel?)
-
           ForEach(SiteShredLevel.allCases) { level in
             Text(level.localizedTitle)
               .foregroundColor(Color(.secondaryBraveLabel))
-              .tag(level as SiteShredLevel?)
+              .tag(level)
           }
         } label: {
           LabelView(
@@ -94,6 +90,8 @@ extension SiteShredLevel: Identifiable {
 
   var localizedTitle: String {
     switch self {
+    case .never:
+      return Strings.Shields.shredNever
     case .whenSiteClosed:
       return Strings.Shields.shredWhenSiteClosed
     case .appExit:
@@ -106,7 +104,7 @@ extension SiteShredLevel: Identifiable {
   let domain: Domain
   let url: URL
 
-  @Published var shredLevel: SiteShredLevel? {
+  @Published var shredLevel: SiteShredLevel {
     didSet {
       domain.shredLevel = self.shredLevel
     }

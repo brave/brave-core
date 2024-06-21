@@ -26,7 +26,7 @@ struct ClearDataSectionView: View {
       clearPrivateDataButton
     } header: {
       Text(Strings.clearPrivateData)
-    }
+    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
   private var clearPrivateDataButton: some View {
@@ -56,7 +56,6 @@ struct ClearDataSectionView: View {
       }
     )
     .disabled(settings.clearableSettings.allSatisfy({ !$0.isEnabled }))
-    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
   private func clearPrivateData() {

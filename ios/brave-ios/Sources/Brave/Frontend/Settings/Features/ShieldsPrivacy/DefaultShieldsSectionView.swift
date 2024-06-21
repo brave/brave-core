@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import BraveUI
 import Data
@@ -36,7 +37,6 @@ struct DefaultShieldsViewView: View {
           subtitle: Strings.Shields.trackersAndAdsBlockingDescription
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Picker(selection: $settings.httpsUpgradeLevel) {
         ForEach(HTTPSUpgradeLevel.allCases) { level in
@@ -50,7 +50,6 @@ struct DefaultShieldsViewView: View {
           subtitle: nil
         )
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       ToggleView(
         title: Strings.autoRedirectAMPPages,
@@ -124,21 +123,19 @@ struct DefaultShieldsViewView: View {
         toggle: $settings.cookieConsentBlocking
       )
 
-      Picker(selection: $settings.shredLevel) {
-        Text(Strings.Shields.shredNever)
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .tag(nil as SiteShredLevel?)
-
-        ForEach(SiteShredLevel.allCases) { level in
-          Text(level.localizedTitle)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .tag(level as SiteShredLevel?)
+      if FeatureList.kBraveShredFeature.enabled {
+        Picker(selection: $settings.shredLevel) {
+          ForEach(SiteShredLevel.allCases) { level in
+            Text(level.localizedTitle)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .tag(level)
+          }
+        } label: {
+          LabelView(
+            title: Strings.Shields.automaticallyShred,
+            subtitle: nil
+          )
         }
-      } label: {
-        LabelView(
-          title: Strings.Shields.automaticallyShred,
-          subtitle: nil
-        )
       }
 
       NavigationLink {
@@ -148,12 +145,12 @@ struct DefaultShieldsViewView: View {
           title: Strings.Shields.contentFiltering,
           subtitle: Strings.Shields.contentFilteringDescription
         )
-      }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
     } header: {
       Text(Strings.shieldsDefaults)
     } footer: {
       Text(Strings.shieldsDefaultsFooter)
-    }
+    }.listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
   private func toggleCookieSetting(with status: Bool) {
