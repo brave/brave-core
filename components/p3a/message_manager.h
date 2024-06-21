@@ -102,6 +102,7 @@ class MessageManager : public MetricLogStore::Delegate {
       std::string histogram_name,
       MetricLogType log_type,
       uint8_t epoch,
+      bool is_success,
       std::unique_ptr<std::string> serialized_message);
 
   void OnRandomnessServerInfoReady(MetricLogType log_type,
