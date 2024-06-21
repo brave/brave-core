@@ -946,6 +946,45 @@ export class MockedWalletApiProxy {
         } as CommonNftMetadata)
       }
     },
+    getNftMetadatas: async (coin, nftIdentifiers) => {
+      const metadatas: BraveWallet.NftMetadata[] = nftIdentifiers.map((id) => {
+        const mockedMetadata = mockNFTMetadata.find((d) => {
+          return (
+            d.contractInformation.address === id.contractAddress &&
+            new Amount(d.tokenID).toHex() === new Amount(id.tokenId).toHex()
+          )
+        })
+
+        if (!mockedMetadata) {
+          throw new Error(
+            `metadata not found for ${id.contractAddress}-${id.tokenId}`
+          )
+        }
+
+        return {
+          name: mockedMetadata.contractInformation.name,
+          description: mockedMetadata.contractInformation.description,
+          image: mockedMetadata.imageURL || '',
+          externalUrl: '',
+          attributes: [
+            {
+              traitType: 'mocked trait name',
+              value: '100%'
+            }
+          ],
+          imageData: '',
+          backgroundColor: 'green',
+          animationUrl: mockedMetadata.animationURL || '',
+          youtubeUrl: 'youtube.com',
+          collection: mockedMetadata.collection?.name || ''
+        }
+      })
+
+      return {
+        errorMessage: metadatas.length ? '' : 'metadata not found',
+        metadatas
+      }
+    },
     // name service lookups
     setEnsOffchainLookupResolveMethod(method) {
       this.requireOffchainConsent = method
