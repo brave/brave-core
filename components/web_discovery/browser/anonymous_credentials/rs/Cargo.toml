@@ -5,7 +5,7 @@ edition = "2021"
 license = "MPL-2.0"
 
 [dependencies]
-anonymous-credentials = "0.1.2"
+anonymous-credentials = "0.1"
 cxx = "1"
 
 [lib]

@@ -1,6 +1,6 @@
 [package]
 name = "anonymous-credentials"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 authors = ["Darnell Andries <dandries@brave.com>"]
 description = "Implementation of Direct Anonymous Attestation for the Web Discovery Project"
