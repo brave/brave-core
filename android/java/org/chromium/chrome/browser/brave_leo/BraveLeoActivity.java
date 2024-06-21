@@ -23,7 +23,6 @@ import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.ui.util.ColorUtils;
 
 /** Brave's Activity for AI Chat */
@@ -31,6 +30,11 @@ public class BraveLeoActivity extends CustomTabActivity {
     @Override
     public boolean supportsAppMenu() {
         return false;
+    }
+
+    @Override
+    public int getControlContainerHeightResource() {
+        return R.dimen.custom_tabs_control_container_leo_height;
     }
 
     @Override
@@ -61,51 +65,5 @@ public class BraveLeoActivity extends CustomTabActivity {
         IntentUtils.addTrustedIntentExtras(intent);
 
         context.startActivity(intent);
-    }
-
-    @Override
-    protected RootUiCoordinator createRootUiCoordinator() {
-        mBaseCustomTabRootUiCoordinator =
-                new BraveLeoCustomTabRootUiCoordinator(
-                        this,
-                        getShareDelegateSupplier(),
-                        getActivityTabProvider(),
-                        mTabModelProfileSupplier,
-                        mBookmarkModelSupplier,
-                        mTabBookmarkerSupplier,
-                        getTabModelSelectorSupplier(),
-                        this::getLastUserInteractionTime,
-                        getBrowserControlsManager(),
-                        getWindowAndroid(),
-                        getLifecycleDispatcher(),
-                        getLayoutManagerSupplier(),
-                        /* menuOrKeyboardActionController= */ this,
-                        this::getActivityThemeColor,
-                        getModalDialogManagerSupplier(),
-                        /* appMenuBlocker= */ this,
-                        this::supportsAppMenu,
-                        this::supportsFindInPage,
-                        getTabCreatorManagerSupplier(),
-                        getFullscreenManager(),
-                        getCompositorViewHolderSupplier(),
-                        getTabContentManagerSupplier(),
-                        this::getSnackbarManager,
-                        mEdgeToEdgeControllerSupplier,
-                        getActivityType(),
-                        this::isInOverviewMode,
-                        this::isWarmOnResume,
-                        /* appMenuDelegate= */ this,
-                        /* statusBarColorProvider= */ this,
-                        getIntentRequestTracker(),
-                        () -> mToolbarCoordinator,
-                        () -> mNavigationController,
-                        () -> mIntentDataProvider,
-                        () -> mDelegateFactory.getEphemeralTabCoordinator(),
-                        mBackPressManager,
-                        () -> mTabController,
-                        () -> mMinimizationManagerHolder.getMinimizationManager(),
-                        () -> mFeatureOverridesManager,
-                        getBaseChromeLayout());
-        return mBaseCustomTabRootUiCoordinator;
     }
 }
