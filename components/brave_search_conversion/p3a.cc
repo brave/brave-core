@@ -15,8 +15,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
-namespace brave_search_conversion {
-namespace p3a {
+namespace brave_search_conversion::p3a {
 
 namespace {
 
@@ -289,5 +288,4 @@ void RecordDefaultEngineChurn(PrefService* prefs) {
   prefs->ClearPref(prefs::kP3AQueryCountBeforeChurn);
 }
 
-}  // namespace p3a
-}  // namespace brave_search_conversion
+}  // namespace brave_search_conversion::p3a

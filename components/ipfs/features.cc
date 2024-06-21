@@ -8,8 +8,7 @@
 #include "base/feature_list.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 
-namespace ipfs {
-namespace features {
+namespace ipfs::features {
 
 BASE_FEATURE(kIpfsFeature,
              "Ipfs",
@@ -20,5 +19,4 @@ BASE_FEATURE(kIpfsFeature,
 #endif
 );
 
-}  // namespace features
-}  // namespace ipfs
+}  // namespace ipfs::features

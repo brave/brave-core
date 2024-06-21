@@ -146,8 +146,7 @@ bool DecompressMessage(std::string_view payload, std::string* output) {
 
 }  // namespace
 
-namespace endpoint {
-namespace private_cdn {
+namespace endpoint::private_cdn {
 
 GetPublisher::GetPublisher(RewardsEngine& engine) : engine_(engine) {}
 
@@ -253,6 +252,6 @@ void GetPublisher::OnRequest(const std::string& publisher_key,
   std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
 
-}  // namespace private_cdn
-}  // namespace endpoint
+}  // namespace endpoint::private_cdn
+
 }  // namespace brave_rewards::internal

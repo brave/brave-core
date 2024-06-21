@@ -15,9 +15,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 GetMe::GetMe(RewardsEngine& engine) : engine_(engine) {}
 
@@ -103,6 +101,4 @@ void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
   std::move(callback).Run(result, user);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold

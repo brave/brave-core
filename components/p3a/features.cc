@@ -6,8 +6,7 @@
 #include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_log_type.h"
 
-namespace p3a {
-namespace features {
+namespace p3a::features {
 
 BASE_FEATURE(kConstellation,
              "BraveP3AConstellation",
@@ -38,5 +37,4 @@ bool IsJSONDeprecated(MetricLogType log_type) {
   return base::FeatureList::IsEnabled(features::kOtherJSONDeprecation);
 }
 
-}  // namespace features
-}  // namespace p3a
+}  // namespace p3a::features

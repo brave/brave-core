@@ -7,12 +7,10 @@
 
 #include "base/feature_list.h"
 
-namespace brave_welcome {
-namespace features {
+namespace brave_welcome::features {
 
 BASE_FEATURE(kShowRewardsCard,
              "ShowRewardsCard",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace brave_welcome
+}  // namespace brave_welcome::features

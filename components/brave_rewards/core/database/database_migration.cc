@@ -61,8 +61,7 @@
 // you should keep old table with name unblinded_tokens_29
 // Reference: https://github.com/brave/brave-browser/issues/10784
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 uint32_t DatabaseMigration::test_target_version_ = 0;
 
@@ -209,5 +208,4 @@ void DatabaseMigration::RunDBTransactionCallback(
   std::move(callback).Run(mojom::Result::FAILED);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

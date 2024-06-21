@@ -16,9 +16,7 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
-namespace brave_wallet {
-
-namespace fil {
+namespace brave_wallet::fil {
 
 std::string getBalance(const std::string& address) {
   return GetJsonRpcString("Filecoin.WalletBalance", address);
@@ -122,6 +120,4 @@ std::optional<std::string> getSendTransaction(const std::string& signed_tx) {
   return FilTransaction::ConvertSignedTxStringFieldsToInt64("/params/0", json);
 }
 
-}  // namespace fil
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::fil

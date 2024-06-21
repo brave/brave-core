@@ -8,8 +8,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 class RewardsContributionUtilTest : public testing::Test {};
 
@@ -61,5 +60,4 @@ TEST(RewardsContributionUtilTest, HaveEnoughFundsToContribute) {
   ASSERT_TRUE(HaveEnoughFundsToContribute(&amount, false, balance));
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

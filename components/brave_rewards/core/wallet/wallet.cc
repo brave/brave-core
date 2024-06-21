@@ -21,8 +21,7 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 #include "wally_bip39.h"  // NOLINT
 
-namespace brave_rewards::internal {
-namespace wallet {
+namespace brave_rewards::internal::wallet {
 
 Wallet::Wallet(RewardsEngine& engine)
     : engine_(engine), create_(engine), balance_(engine) {}
@@ -119,5 +118,4 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   return true;
 }
 
-}  // namespace wallet
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::wallet

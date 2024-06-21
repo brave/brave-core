@@ -17,9 +17,7 @@ const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-
-namespace database {
+namespace brave_rewards::internal::database {
 
 DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine), banner_(engine) {}
@@ -205,5 +203,4 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

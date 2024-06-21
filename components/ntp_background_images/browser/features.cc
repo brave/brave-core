@@ -9,8 +9,7 @@
 #include "build/build_config.h"
 #include "ui/base/ui_base_features.h"
 
-namespace ntp_background_images {
-namespace features {
+namespace ntp_background_images::features {
 
 BASE_FEATURE(kBraveNTPBrandedWallpaperDemo,
              "BraveNTPBrandedWallpaperDemoName",
@@ -30,5 +29,4 @@ BASE_FEATURE(kBraveNTPBrandedWallpaper,
              "BraveNTPBrandedWallpaper",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace ntp_background_images
+}  // namespace ntp_background_images::features

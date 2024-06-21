@@ -17,8 +17,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -292,5 +291,4 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

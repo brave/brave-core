@@ -16,8 +16,7 @@ const char kTableName[] = "server_publisher_links";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
     RewardsEngine& engine)
@@ -122,5 +121,4 @@ void DatabaseServerPublisherLinks::OnGetRecord(
   std::move(callback).Run(links);
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

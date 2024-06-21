@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 
-namespace brave_rewards::internal {
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 SKUOrder::SKUOrder(RewardsEngine& engine)
     : engine_(engine), payment_server_(engine) {}
@@ -59,5 +58,4 @@ void SKUOrder::OnCreateSave(const std::string& order_id,
   std::move(callback).Run(mojom::Result::OK, order_id);
 }
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku

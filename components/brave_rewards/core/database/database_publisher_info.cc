@@ -21,8 +21,7 @@ const char kTableName[] = "publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 DatabasePublisherInfo::DatabasePublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine) {}
@@ -330,5 +329,4 @@ void DatabasePublisherInfo::OnGetExcludedList(
   std::move(callback).Run(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

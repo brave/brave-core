@@ -6,13 +6,11 @@
 
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 PrivateCDNServer::PrivateCDNServer(RewardsEngine& engine)
     : get_publisher_(engine) {}
 
 PrivateCDNServer::~PrivateCDNServer() = default;
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint

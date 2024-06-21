@@ -8,8 +8,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
-namespace brave_federated {
-namespace features {
+namespace brave_federated::features {
 
 namespace {
 
@@ -87,5 +86,4 @@ bool MockCollectionRequests() {
       kDefaultMockCollectionRequests);
 }
 
-}  // namespace features
-}  // namespace brave_federated
+}  // namespace brave_federated::features
