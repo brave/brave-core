@@ -51,5 +51,9 @@ bool IsJSONDeprecated(MetricLogType log_type) {
   return base::FeatureList::IsEnabled(features::kOtherJSONDeprecation);
 }
 
+bool IsNebulaEnabled() {
+  return base::FeatureList::IsEnabled(features::kNebula);
+}
+
 }  // namespace features
 }  // namespace p3a

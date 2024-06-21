@@ -198,7 +198,7 @@ bool ConstellationHelper::ConstructFinalMessage(
   auto msg_res = constellation::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
       resp_proofs.empty() ? *null_public_key_ : *rnd_server_info->public_key,
-      {}, kP3AConstellationCurrentThreshold);
+      {}, threshold);
   if (!msg_res.error.empty()) {
     LOG(ERROR) << "ConstellationHelper: message construction failed: "
                << msg_res.error.c_str();
