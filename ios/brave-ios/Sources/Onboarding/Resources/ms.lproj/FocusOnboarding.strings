@@ -1,0 +1,48 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Teruskan";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Buka setiap pautan yang anda ketik dengan perlindungan privasi Brave";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Tetapkan Brave sebagai Pelayar Piawai anda";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "Semak imbas lebih pantas dan gunakan data yang lebih sedikit.";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "lklan & penjejak yang lebih sedikit.";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Kami telah menyingkirkan iklan ini.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Tiada lagi iklan video.";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "Ketahui lebih lanjut tentang Analitis Produk Pengekalan Privasi (P3A)";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Beritahu kami tentang ciri yang paling anda nikmati.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Jadikan Brave Lebih Baik.";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Tukar ini pada bila-bila masa dalam Tetapan Brave di bawah 'Perisai dan Privasi Brave'.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Kongsikan Cerapan yang Bersifat Peribadi & Tanpa Nama Sepenuhnya.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Mulakan Penyemakan Imbas";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Pergi ke Tetapan Sistem";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "Masukkan URL untuk menikmati iklan & penjejak yang Lebih Sedikit";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Lihat perbezaan Brave";
+

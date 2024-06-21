@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Copia l'enllaç";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Copieu la informació de les pestanyes al porta-retalls.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Copia al porta-retalls";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "La teva connexió en aquest lloc no és segura.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "No s'ha verificat la connexió al lloc.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "No s'ha pogut verificar completament la vostra connexió a aquest lloc. Podeu continuar, o proveu de tornar a carregar la pàgina per establir una connexió segura.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Consulta el certificat";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Suprimeix el compte de sincronització";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Si suprimeixes el teu compte, se suprimiran les teves dades xifrades dels servidors Brave i es desactivarà la sincronització en tots els dispositius connectats.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "No obstant això, no s'eliminaran les dades que s'emmagatzemen localment en aquests dispositius.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar de nou la sincronització, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "S'ha produït un error en recuperar dispositius en cadena de sincronització.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Suprimeix el compte de sincronització";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Sembla que s'ha creat aquest codi en un aparell amb una versió més antiga de Brave. Actualitzeu l'altre aparell amb la versió més recent de Brave i, a continuació, creeu un codi de sincronització nou.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispositius i configuració";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problema de fiabilitat de la connexió";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Trieu la categoria que descriu el problema.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "No hi ha internet quan està connectat";
