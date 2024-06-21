@@ -49,7 +49,7 @@ impl CredentialManager {
         Self::new_with_seed(&entropy)
     }
 
-    fn new_with_seed(entropy: &[u8]) -> Self {
+    pub fn new_with_seed(entropy: &[u8]) -> Self {
         let mut rng = RAND::new();
 
         rng.seed(entropy.len(), entropy);
