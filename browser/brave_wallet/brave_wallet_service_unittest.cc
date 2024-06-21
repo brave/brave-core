@@ -3053,7 +3053,7 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
 
   // Reset kBraveWalletIsCompressedNftMigrated pref, and run the migration.
   service_->MaybeMigrateCompressedNfts();
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Check that the NFT is now compressed, and the other is not.
   GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
