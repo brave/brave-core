@@ -1,0 +1,39 @@
+diff --git a/third_party/blink/renderer/core/dom/scripted_idle_task_controller.h b/third_party/blink/renderer/core/dom/scripted_idle_task_controller.h
+index fe2e38db5e096a71f86f2399d48cb5e2a5408d39..de9a0c014f93afaee22612f0579f5eea3c745157 100644
+--- a/third_party/blink/renderer/core/dom/scripted_idle_task_controller.h
++++ b/third_party/blink/renderer/core/dom/scripted_idle_task_controller.h
+@@ -16,9 +16,6 @@
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ 
+ namespace blink {
+-namespace internal {
+-class IdleRequestCallbackWrapper;
+-}
+ 
+ class ExecutionContext;
+ class IdleRequestOptions;
+@@ -72,17 +69,19 @@ class CORE_EXPORT ScriptedIdleTaskController
+   void ContextDestroyed() override;
+   void ContextLifecycleStateChanged(mojom::FrameLifecycleState) override;
+ 
++ private:
++  void IdleTaskFired(CallbackId id, base::TimeTicks deadline);
++  void IdleTaskFiredWithHandle(CallbackId id,
++                               base::DelayedTaskHandle handle,
++                               base::TimeTicks deadline);
++  void TimeoutFired(CallbackId id);
+   void CallbackFired(CallbackId,
+                      base::TimeTicks deadline,
+                      IdleDeadline::CallbackType);
+ 
+- private:
+-  friend class internal::IdleRequestCallbackWrapper;
+-
+   void ContextPaused();
+   void ContextUnpaused();
+-  void ScheduleCallback(scoped_refptr<internal::IdleRequestCallbackWrapper>,
+-                        uint32_t timeout_millis);
++  void ScheduleCallback(CallbackId id, uint32_t timeout_millis);
+ 
+   int NextCallbackId();
+ 
