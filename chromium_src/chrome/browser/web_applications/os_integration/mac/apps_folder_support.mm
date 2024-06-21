@@ -1,7 +1,7 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ /* Copyright (c) 2019 The Brave Authors. All rights reserved.
+  * This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 namespace base {
 class FilePath;
@@ -11,7 +11,11 @@ namespace {
 base::FilePath GetLocalizableBraveAppShortcutsSubdirName();
 }
 
-#include "src/chrome/browser/web_applications/os_integration/web_app_shortcut_mac.mm"
+#define BRAVE_GET_CHROME_APPS_FOLDER_IMPL \
+  return path.Append(GetLocalizableBraveAppShortcutsSubdirName());
+
+#include "src/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm"
+#undef BRAVE_GET_CHROME_APPS_FOLDER_IMPL
 
 namespace {
 base::FilePath GetLocalizableBraveAppShortcutsSubdirName() {
