@@ -880,13 +880,7 @@ void BraveBrowserView::OnOrientationChanged(
 
   UpdateSplitViewOrientation();
 
-  contents_web_view_->SetFastResize(true);
-  secondary_contents_web_view_->SetFastResize(true);
-
   contents_container()->DeprecatedLayoutImmediately();
-
-  contents_web_view_->SetFastResize(false);
-  secondary_contents_web_view_->SetFastResize(false);
 }
 
 void BraveBrowserView::CreateWalletBubble() {
