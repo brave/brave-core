@@ -236,7 +236,28 @@
 "wallet.braveSwapFree" = "免费";
 
 /* A description of an Bitcoin account, displayed in Accounts tab. */
-"wallet.btcAccountDescription" = "比特幣";
+"wallet.btcAccountDescription" = "比特币";
+
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "您可以使用的资金。";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "可用";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "您的钱包余额即将发生变动。";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "部分余额可能不可用。";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "待处理";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "您可用的资金以及尚未确认的交易。";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "总计";
 
 /* As in buying cryptocurrency */
 "wallet.buy" = "购买";
@@ -275,7 +296,7 @@
 "wallet.coinMarketRank" = "排名";
 
 /* One of the coin types for users to create an account to store BTC assets */
-"wallet.coinTypeBitcoin" = "比特幣";
+"wallet.coinTypeBitcoin" = "比特币";
 
 /* A description for Bitcoin coin type. */
 "wallet.coinTypeBitcoinDescription" = "存储 BTC 资产";
@@ -1264,6 +1285,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "重新输入密码";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "从旧版 Brave 加密钱包导入？";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "还原钱包";
 
@@ -1295,7 +1319,7 @@
 "wallet.restoreWalletTitle" = "汇入一个现有的钱包";
 
 /* The title for the button to retry a failed transaction. */
-"wallet.retryTransactionButtonTitle" = "重試交易";
+"wallet.retryTransactionButtonTitle" = "重试交易";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "通过您的银行账户进行即时购买。费用较低。";

@@ -238,6 +238,27 @@
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "Bitcoin";
 
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Kullanmanız için bulunan fonlar.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Müsait";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Cüzdan bakiyenizde bekleyen bir değişiklik.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Bazı bakiyeler kullanılamayabilir";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "Beklemede";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Kullanılabilir fonlarınız artı henüz doğrulanmamış işlemler.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Toplam";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Satın Al";
 
@@ -581,7 +602,7 @@
 "wallet.depositDescription" = "Varlıkları yatırın";
 
 /* The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names. */
-"wallet.depositEthDisclosure" = "Bu, Ethereum Ağını ve %@ gibi 2. seviye ağlarını destekleyen Ethereum cüzdanıdır";
+"wallet.depositEthDisclosure" = "Bu, Ethereum Ağını ve %@ gibi 2. seviye ağları destekleyen Ethereum cüzdanıdır";
 
 /* The title of a button that Deselects all visible options. */
 "wallet.deselectAllButtonTitle" = "Tüm Seçimleri Kaldır";
@@ -1264,6 +1285,9 @@
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Şifreyi yeniden gir";
 
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Eski sürüm Brave kripto cüzdanlarından içe aktarım yapmak istiyor musunuz?";
+
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Cüzdanı Geri Yükleyin";
 
@@ -1751,7 +1775,7 @@
 "wallet.sortAssetsTitle" = "Varlıkları Sırala";
 
 /* The title for the button to speed up a submitted transaction. */
-"wallet.speedUpTransactionButtonTitle" = "Speed Up";
+"wallet.speedUpTransactionButtonTitle" = "Hızlandır";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Kredi kartı, banka kartı veya banka hesabıyla ödeyin.";

@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "複製連結";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "將分頁資訊複製到剪貼簿。";
+
 /* Copy codewords title */
 "CopyToClipboard" = "複製到剪貼簿";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "您與此網站之間的連線不安全。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "網站連線未驗證。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "您前往此網站的連線無法完全驗證。您可以繼續進行，或者嘗試重新載入頁面以建立安全的連線。";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "查看認證";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "刪除 Sync 帳戶";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "刪除帳戶會從 Brave 伺服器移除加密資料，且所有連結的裝置都會停用 Sync。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "不過，儲存在這些本機裝置的資料不會刪除。";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "一旦刪除即永久刪除，資料將無法復原。如果您決定再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "擷取同步鏈中的裝置時發生錯誤。";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "刪除 Sync 帳戶";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "此代碼似乎是使用執行舊版 Brave 的裝置所建立的。請在您的其他裝置上將 Brave 更新至最新版本，然後建立新的同步代碼。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "裝置與設定";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "連線穩定性問題";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "請選擇說明該問題的類別。";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "沒有可用的網際網路連線";
