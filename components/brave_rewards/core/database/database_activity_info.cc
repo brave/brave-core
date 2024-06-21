@@ -284,11 +284,9 @@ void DatabaseActivityInfo::OnGetRecordsList(
     info->score = GetDoubleColumn(record_pointer, 2);
     info->percent = GetInt64Column(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
-    info->status =
-        static_cast<mojom::PublisherStatus>(GetIntColumn(record_pointer, 5));
+    info->status = PublisherStatusFromInt(GetIntColumn(record_pointer, 5));
     info->status_updated_at = GetInt64Column(record_pointer, 6);
-    info->excluded =
-        static_cast<mojom::PublisherExclude>(GetIntColumn(record_pointer, 7));
+    info->excluded = PublisherExcludeFromInt(GetIntColumn(record_pointer, 7));
     info->name = GetStringColumn(record_pointer, 8);
     info->url = GetStringColumn(record_pointer, 9);
     info->provider = GetStringColumn(record_pointer, 10);

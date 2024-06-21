@@ -148,7 +148,7 @@ void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
   info->total_amount = GetDoubleColumn(record, 1);
   info->merchant_id = GetStringColumn(record, 2);
   info->location = GetStringColumn(record, 3);
-  info->status = static_cast<mojom::SKUOrderStatus>(GetIntColumn(record, 4));
+  info->status = SKUOrderStatusFromInt(GetIntColumn(record, 4));
   info->contribution_id = GetStringColumn(record, 5);
   info->created_at = GetInt64Column(record, 6);
 

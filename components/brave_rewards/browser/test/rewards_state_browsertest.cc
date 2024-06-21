@@ -202,6 +202,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
       4, 2020,
       base::BindLambdaForTesting(
           [&](const mojom::Result result, mojom::BalanceReportInfoPtr report) {
+            ASSERT_TRUE(report);
             EXPECT_EQ(report->grants, 4.1);
             EXPECT_EQ(report->earning_from_ads, 4.2);
             EXPECT_EQ(report->auto_contribute, 4.3);
@@ -213,6 +214,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
       5, 2020,
       base::BindLambdaForTesting(
           [&](const mojom::Result result, mojom::BalanceReportInfoPtr report) {
+            ASSERT_TRUE(report);
             EXPECT_EQ(report->grants, 5.1);
             EXPECT_EQ(report->earning_from_ads, 5.2);
             EXPECT_EQ(report->auto_contribute, 5.3);
