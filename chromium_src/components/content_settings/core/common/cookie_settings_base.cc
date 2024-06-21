@@ -318,7 +318,8 @@ CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
   }
 
 // Force GetCookieSetting to use a first-party context when calling into
-// GetCookieSettingInternal, rather than assuming a third-party context. See
+// GetCookieSettingInternal, rather than assuming a third-party context. This is
+// needed by our ephemeral storage implementation. See
 // https://chromium.googlesource.com/chromium/src/+/1eca8080b750b1b3e3067cfb7209163b9026de8a
 #define SiteForCookies() SiteForCookies::FromUrl(first_party_url)
 
