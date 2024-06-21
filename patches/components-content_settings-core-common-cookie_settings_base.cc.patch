@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index 88d12bf5e10ad48b713d99ba9dcafea8d06b02de..4fff7b1b3663a9d78655e59c03e987e7a4f2e67f 100644
+index 88d12bf5e10ad48b713d99ba9dcafea8d06b02de..3eb9789ba01d627c57c874f74bc440b31351bef8 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
 @@ -538,6 +538,7 @@ CookieSettingsBase::DecideAccess(
@@ -22,7 +22,7 @@ index 88d12bf5e10ad48b713d99ba9dcafea8d06b02de..4fff7b1b3663a9d78655e59c03e987e7
      CHECK(is_third_party_request, base::NotFatalUntil::M128);
      CHECK(global_setting_or_embedder_blocks_third_party_cookies,
            base::NotFatalUntil::M128);
-+    if (false)
++    BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
      CHECK(!is_explicit_setting, base::NotFatalUntil::M128);
  
      FireStorageAccessHistogram(StorageAccessResult::ACCESS_BLOCKED);
