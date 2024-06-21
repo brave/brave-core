@@ -13,6 +13,8 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/ssl/security_state_tab_helper.h"
+#include "components/url_formatter/url_formatter.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
@@ -109,7 +111,20 @@ void SplitViewLocationBar::OnPaintBorder(gfx::Canvas* canvas) {
   canvas->DrawPath(path, flags);
 }
 
+gfx::Size SplitViewLocationBar::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
+  auto size = views::WidgetDelegateView::CalculatePreferredSize(available_size);
+  if (auto* view = view_observation_.GetSource(); view && view->width()) {
+    size.set_width(std::min(view->width(), size.width()));
+  }
+  return size;
+}
+
 void SplitViewLocationBar::PrimaryPageChanged(content::Page& page) {
+  UpdateURLAndIcon();
+}
+
+void SplitViewLocationBar::DidChangeVisibleSecurityState() {
   UpdateURLAndIcon();
 }
 
@@ -156,28 +171,40 @@ void SplitViewLocationBar::UpdateBounds() {
 
 void SplitViewLocationBar::UpdateURLAndIcon() {
   if (auto* contents = web_contents()) {
-    GURL url = contents->GetLastCommittedURL();
-    url_->SetText(base::UTF8ToUTF16(url.host()));
-    UpdateIcon(url);
+    auto url = contents->GetVisibleURL();
+    auto origin = url::Origin::Create(url);
+    auto formatted_origin = url_formatter::FormatUrl(
+        origin.opaque() ? url : origin.GetURL(),
+        url_formatter::kFormatUrlOmitDefaults |
+            url_formatter::kFormatUrlOmitHTTPS,
+        base::UnescapeRule::SPACES, nullptr, nullptr, nullptr);
+    url_->SetText(formatted_origin);
+    UpdateIcon();
   } else {
     url_->SetText({});
-    UpdateIcon({});
+    UpdateIcon();
   }
 
   UpdateBounds();
 }
 
-void SplitViewLocationBar::UpdateIcon(const GURL& url) {
-  if (url.is_empty()) {
-    return;
-  }
-
+void SplitViewLocationBar::UpdateIcon() {
   // At the moment, we show only warning icon.
-  safety_icon_->SetVisible(!IsSafeURL(url));
+  safety_icon_->SetVisible(!IsContentsSafe());
 }
 
-bool SplitViewLocationBar::IsSafeURL(const GURL& url) {
-  return url.SchemeIs(url::kHttpsScheme) || url.SchemeIs(url::kAboutScheme) ||
+bool SplitViewLocationBar::IsContentsSafe() const {
+  if (!web_contents()) {
+    return true;
+  }
+
+  if (SecurityStateTabHelper::FromWebContents(web_contents())
+          ->GetSecurityLevel() == security_state::SecurityLevel::SECURE) {
+    return true;
+  }
+
+  auto url = web_contents()->GetVisibleURL();
+  return url.is_empty() || url.SchemeIs(url::kAboutScheme) ||
          url.SchemeIs("chrome");
 }
 

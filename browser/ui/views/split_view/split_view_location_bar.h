@@ -38,9 +38,12 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   // views::WidgetDelegateView:
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnPaintBorder(gfx::Canvas* canvas) override;
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
+  void DidChangeVisibleSecurityState() override;
   void WebContentsDestroyed() override;
 
   // views::ViewObserver:
@@ -55,8 +58,8 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   void UpdateVisibility();
   void UpdateBounds();
   void UpdateURLAndIcon();
-  void UpdateIcon(const GURL& url);
-  bool IsSafeURL(const GURL& url);
+  void UpdateIcon();
+  bool IsContentsSafe() const;
 
   SkPath GetBorderPath(bool close);
 
