@@ -33,7 +33,7 @@ class URLBarHelperTests: XCTestCase {
 
   private func testQuery(list: [String], isSuspicious: Bool) {
     for item in list {
-      XCTAssert(URLBarHelper.isSuspiciousQuery(query: item) == isSuspicious)
+      XCTAssert(URLBarHelper.shared.isSuspiciousQuery(item) == isSuspicious)
     }
   }
 
