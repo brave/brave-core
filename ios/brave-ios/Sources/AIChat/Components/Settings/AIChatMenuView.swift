@@ -220,6 +220,26 @@ struct AIChatMenuView: View {
     }
   }
 
+  private func modelPurpose(for model: AiChat.Model) -> String {
+    guard let modelKey = AIChatModelKey(rawValue: model.key) else {
+      return model.displayMaker
+    }
+
+    switch modelKey {
+    case .chatBasic:
+      return Strings.AIChat.introMessageLlamaModelPurposeDescription
+
+    case .chatExpanded:
+      return Strings.AIChat.introMessageMixtralModelPurposeDescription
+
+    case .chatClaudeHaiku:
+      return Strings.AIChat.introMessageClaudeHaikuModelPurposeDescription
+
+    case .chatClaudeSonnet:
+      return Strings.AIChat.introMessageClaudeSonnetModelPurposeDescription
+    }
+  }
+
   func menuActionItems(for menuOption: AIChatMenuOptionTypes) -> some View {
     Button {
       if menuOption == .goPremium, !BraveStoreSDK.shared.isLeoProductsLoaded {
