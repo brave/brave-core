@@ -683,6 +683,14 @@
 # reenabled. See https://github.com/brave/brave-browser/issues/39075
 -SavedTabGroupKeyedServiceUnitTestV2.*
 
+# These tests are disabled because we explicitly patch the
+# ThemeColorPickerHandler "extended_list" code path to always be active and we
+# override the handling of the seed color to restore it to pre-ChromeRefresh2023
+# behavior
+-ThemeColorPickerHandlerTest.GetChromeColors
+-ThemeColorPickerHandlerTest.GetChromeColorsExtended
+-ThemeColorPickerHandlerTest.SetSeedColor
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
