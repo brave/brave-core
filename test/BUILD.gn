@@ -319,7 +319,7 @@ test("brave_unit_tests") {
   ]
 
   if (is_win) {
-    deps += [ "//brave/browser/ui/day_zero_browser_ui_expt:unit_tests" ]
+    deps += [ "//brave/browser/day_zero_browser_ui_expt:unit_tests" ]
   }
 
   if (enable_tor) {
@@ -993,7 +993,7 @@ test("brave_browser_tests") {
 
   if (is_win) {
     public_configs = [ "//build/config/win:delayloads" ]
-    deps += [ "//brave/browser/ui/day_zero_browser_ui_expt:browser_tests" ]
+    deps += [ "//brave/browser/day_zero_browser_ui_expt:browser_tests" ]
   }
 
   if (use_aura) {

@@ -419,6 +419,8 @@ if (is_win) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_shell_integration_win.cc",
     "//brave/browser/brave_shell_integration_win.h",
+    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
+    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
     "//brave/browser/default_protocol_handler_utils_win.cc",
     "//brave/browser/default_protocol_handler_utils_win.h",
   ]

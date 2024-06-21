@@ -5,8 +5,8 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/ui/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
-#include "brave/components/brave_news/common/locales_helper.h"
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+#include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
