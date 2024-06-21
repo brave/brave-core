@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 6e102c0cb693acaca1ef395c416e9cb80c24d9c0..2ec546fc877fef32d98a963ba6a9708b72d3ec89 100644
+index 3a319aaf367ce3026c8df2029b9c6a3b1c699ec3..b74b2457f932c7d1fcb14c552a1f5eb3f44a26a5 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -4061,6 +4061,7 @@ const FeatureEntry::FeatureVariation kAutofillUpstreamUpdatedUiOptions[] = {
@@ -10,7 +10,7 @@ index 6e102c0cb693acaca1ef395c416e9cb80c24d9c0..2ec546fc877fef32d98a963ba6a9708b
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
-@@ -11802,6 +11803,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
+@@ -11808,6 +11809,7 @@ void GetStorage(Profile* profile, GetStorageCallback callback) {
  
  bool ShouldSkipConditionalFeatureEntry(const flags_ui::FlagsStorage* storage,
                                         const FeatureEntry& entry) {
