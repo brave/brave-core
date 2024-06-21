@@ -10,9 +10,9 @@ enum URLBarHelper {
   /// - Parameter query: Search query copied
   /// - Returns: the result if it is suspicious
   static func isSuspiciousQuery(query: String) -> Bool {
-    
+
     // TODO: Carry Over Implementation
-    
+
     return true
   }
 }
