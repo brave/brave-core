@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_rewards/core/publisher/media/youtube.h"
+
 #include <utility>
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/constants.h"
-#include "brave/components/brave_rewards/core/publisher/media/youtube.h"
-#include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

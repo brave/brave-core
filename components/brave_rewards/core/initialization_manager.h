@@ -36,7 +36,7 @@ class InitializationManager : public RewardsEngineHelper,
 
  private:
   void OnDatabaseInitialized(InitializeCallback callback, mojom::Result result);
-  void OnStateInitialized(InitializeCallback callback, mojom::Result result);
+  void OnPrefsMigrated(InitializeCallback callback);
   void InitializeHelpers();
   void OnContributionsFinished(ShutdownCallback callback, mojom::Result result);
   void OnDatabaseClosed(ShutdownCallback callback, mojom::Result result);

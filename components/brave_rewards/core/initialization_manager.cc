@@ -9,9 +9,9 @@
 
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/migrations/pref_migration_manager.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
 
@@ -64,20 +64,13 @@ void InitializationManager::OnDatabaseInitialized(InitializeCallback callback,
     return;
   }
 
-  engine().state()->Initialize(
-      base::BindOnce(&InitializationManager::OnStateInitialized,
+  Get<PrefMigrationManager>().MigratePrefs(
+      base::BindOnce(&InitializationManager::OnPrefsMigrated,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void InitializationManager::OnStateInitialized(InitializeCallback callback,
-                                               mojom::Result result) {
+void InitializationManager::OnPrefsMigrated(InitializeCallback callback) {
   DCHECK(state_ == State::kInitializing);
-
-  if (result != mojom::Result::OK) {
-    LogError(FROM_HERE) << "Failed to initialize state";
-    std::move(callback).Run(false);
-    return;
-  }
 
   InitializeHelpers();
 
