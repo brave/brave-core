@@ -1979,7 +1979,7 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.10.4"
+version = "1.10.5"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1989,7 +1989,7 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.6"
+version = "0.4.7"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1998,7 +1998,7 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.3"
+version = "0.8.4"
 
 [[package]]
 name = "ripemd"

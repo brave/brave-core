@@ -160,15 +160,15 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/rand-0.8.5"
 package = "rand"
 
 [patch.crates-io.regex_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.10.4"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.10.5"
 package = "regex"
 
 [patch.crates-io.regex_automata_v0_4]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-0.4.6"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-0.4.7"
 package = "regex-automata"
 
 [patch.crates-io.regex_syntax_v0_8]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-syntax-0.8.3"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-syntax-0.8.4"
 package = "regex-syntax"
 
 [patch.crates-io.rustc_version_v0_4]
