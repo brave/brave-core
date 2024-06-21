@@ -97,8 +97,8 @@ class WebDiscoveryCTATest : public testing::Test {
 
   base::SimpleTestClock test_clock_;
   content::BrowserTaskEnvironment task_environment_;
-  content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   TestingPrefServiceSimple test_local_state_;
+  content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<TemplateURLServiceTestUtil> test_util_;
   std::unique_ptr<content::WebContents> web_contents_;
 };
