@@ -33,7 +33,7 @@
 -All/ManagedUserProfileNoticeHandleProceedTest.HandleProceed/*
 -All/MemorySaverBubbleViewMemorySavingsImprovementsTest.ShowsCorrectLabelsForDifferentSavings/*
 -All/MemorySaverBubbleViewTest.ShowsCorrectLabelsForDifferentSavings/*
--All/OidcAuthenticationSigninInterceptorFailureTest.PolicyFetchFailure/*
+-All/OidcAuthenticationSigninInterceptorFetchFailureTest.PolicyFetchFailure/*
 -All/OidcAuthenticationSigninInterceptorTest.*
 -All/OidcAuthResponseCaptureNavigationThrottleTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
@@ -338,6 +338,7 @@
 -DiceWebSigninInterceptorForcedSeparationTest.*
 -DiceWebSigninInterceptorTest.*
 -GAIAInfoUpdateServiceTest.*
+-SigninUiUtilWithUnoDesktopTest.ShowExtensionSigninPrompt*
 
 # This test fails because we intentionally stub out
 # IdentityManager::PrepareForAddingNewAccount

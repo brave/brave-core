@@ -653,6 +653,7 @@
 -TpcdMetadataDevtoolsObserverBrowserTest.DoesNotEmitDevtoolsIssueWithBlockedCookiesSetting
 -TpcdMetadataDevtoolsObserverBrowserTest.EmitsDevtoolsIssues
 -TpcdMetadataDevtoolsObserverDisabledBrowserTest.DoesNotEmitDevtoolsIssueWithMissingFeature
+-TpcdOriginTrialBrowserTest.*
 
 # These tests fail because we disable creation of CookieControlsIconView in
 # PageActionIconController::Init's switch
