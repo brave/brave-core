@@ -90,14 +90,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void NavigateToURLAndWaitForRedirects(const GURL& original_url) {
-    ui_test_utils::UrlLoadObserver load_complete(original_url);
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
-    EXPECT_EQ(contents()->GetPrimaryMainFrame()->GetLastCommittedURL(),
-              original_url);
-    load_complete.Wait();
-  }
-
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
