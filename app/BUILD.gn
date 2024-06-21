@@ -149,6 +149,7 @@ source_set("unit_tests") {
     "//components/shared_highlighting/core/common",
     "//components/signin/public/base:signin_buildflags",
     "//components/subresource_filter/core/common",
+    "//components/sync/base:features",
     "//gpu/config",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
