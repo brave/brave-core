@@ -1,3 +1,8 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -12,8 +17,6 @@
 #include "content/public/test/browser_test_utils.h"
 #include "third_party/blink/public/mojom/context_menu/context_menu.mojom.h"
 
-using namespace content;
-
 class BraveContextMenuBrowserTest : public InProcessBrowserTest {
  protected:
   BraveContextMenuBrowserTest() {
@@ -21,7 +24,7 @@ class BraveContextMenuBrowserTest : public InProcessBrowserTest {
   }
 
   std::unique_ptr<TestRenderViewContextMenu> CreateContextMenuInWebContents(
-      WebContents* web_contents,
+      content::WebContents* web_contents,
       const GURL& unfiltered_url,
       const GURL& url,
       const std::u16string& link_text,
@@ -70,8 +73,6 @@ class BraveContextMenuBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContextMenuBrowserTest, OpenLinkInSplitView) {
-  SplitViewBrowserData::CreateForBrowser(browser());
-
   std::unique_ptr<TestRenderViewContextMenu> menu(
       CreateContextMenuMediaTypeNone(GURL("https://brave.com/"),
                                      GURL("https://brave.com/")));
@@ -86,8 +87,11 @@ IN_PROC_BROWSER_TEST_F(BraveContextMenuBrowserTest, OpenLinkInSplitView) {
       browser()->tab_strip_model()->active_index());
 
   EXPECT_TRUE(brave::IsTabsTiled(browser(), indices));
+  EXPECT_EQ(2, browser()->tab_strip_model()->count());
+  EXPECT_TRUE(brave::IsTabsTiled(browser(), {0}));
+  EXPECT_TRUE(brave::IsTabsTiled(browser(), {1}));
 
-  // Check if "Open link in split view" is now disabled.
+  // Check if "Open link in split view" is now got disabled.
   EXPECT_FALSE(
       menu->IsCommandIdEnabled(IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW));
 }
