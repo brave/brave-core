@@ -157,7 +157,8 @@ class ProfileStats:
     return result
 
 
-def _GetComponentGroup(name: str, path: str, skip_chromium_components) -> Optional[str]:
+def _GetComponentGroup(name: str, path: str,
+                       skip_chromium_components) -> Optional[str]:
   if 'Ad Block' in name or 'Adblock' in name:
     return 'Adblock'
   if 'Ads' in name:
@@ -170,7 +171,9 @@ def _GetComponentGroup(name: str, path: str, skip_chromium_components) -> Option
     return 'Other'
   return None if skip_chromium_components else 'chromium'
 
-def GetProfileStats(profile_dir: str, skip_chromium_components = False) -> ProfileStats:
+
+def GetProfileStats(profile_dir: str,
+                    skip_chromium_components=False) -> ProfileStats:
   result = ProfileStats()
 
   with scoped_cwd(profile_dir):

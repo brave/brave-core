@@ -24,8 +24,7 @@ parser.add_argument('work_directory', type=str, default=None, nargs='?')
 parser.add_argument('--json',
                     action='store_true',
                     help='output json instead of text')
-parser.add_argument('-s', '--skip-chromium-components',
-                    action='store_true')
+parser.add_argument('-s', '--skip-chromium-components', action='store_true')
 args = parser.parse_args()
 
 if not args.work_directory:
@@ -33,7 +32,8 @@ if not args.work_directory:
 
 profile_dir = profile_tools.GetProfilePath(args.profile, args.work_directory,
                                            BraveVersion(args.version))
-stats = profile_tools.GetProfileStats(profile_dir, args.skip_chromium_components)
+stats = profile_tools.GetProfileStats(profile_dir,
+                                      args.skip_chromium_components)
 
 if args.json:
   print(json.dumps(stats.toJSON(), indent=2))
