@@ -1,0 +1,69 @@
+diff --git a/third_party/blink/renderer/core/dom/scripted_idle_task_controller.cc b/third_party/blink/renderer/core/dom/scripted_idle_task_controller.cc
+index 2364cc22b0563939fbf16ad10ef651c0b4f731f6..d9cca21fad56c64d46c0f40f9f69adf6356480f0 100644
+--- a/third_party/blink/renderer/core/dom/scripted_idle_task_controller.cc
++++ b/third_party/blink/renderer/core/dom/scripted_idle_task_controller.cc
+@@ -6,6 +6,7 @@
+ 
+ #include "base/location.h"
+ #include "base/metrics/histogram_macros.h"
++#include "base/timer/timer.h"
+ #include "third_party/blink/public/mojom/frame/lifecycle.mojom-shared.h"
+ #include "third_party/blink/public/platform/platform.h"
+ #include "third_party/blink/renderer/bindings/core/v8/v8_idle_request_options.h"
+@@ -21,6 +22,8 @@ namespace blink {
+ 
+ namespace internal {
+ 
++static int s_wrapper_count = 0;
++
+ class IdleRequestCallbackWrapper
+     : public RefCounted<IdleRequestCallbackWrapper> {
+  public:
+@@ -29,7 +32,9 @@ class IdleRequestCallbackWrapper
+       ScriptedIdleTaskController* controller) {
+     return base::AdoptRef(new IdleRequestCallbackWrapper(id, controller));
+   }
+-  virtual ~IdleRequestCallbackWrapper() = default;
++  virtual ~IdleRequestCallbackWrapper() {
++    --s_wrapper_count;
++  }
+ 
+   static void IdleTaskFired(
+       scoped_refptr<IdleRequestCallbackWrapper> callback_wrapper,
+@@ -67,7 +72,17 @@ class IdleRequestCallbackWrapper
+  private:
+   IdleRequestCallbackWrapper(ScriptedIdleTaskController::CallbackId id,
+                              ScriptedIdleTaskController* controller)
+-      : id_(id), controller_(controller) {}
++      : id_(id), controller_(controller) {
++         ++s_wrapper_count;
++         [[maybe_unused]] static base::RepeatingTimer* timer  = [](){
++          static base::NoDestructor<base::RepeatingTimer> t;
++          t->Start(FROM_HERE, base::Milliseconds(5000),
++                    base::BindRepeating([](){
++                      LOG(ERROR) << "##s_wrapper_count = " << s_wrapper_count;
++                    }));
++          return t.get();
++         }();
++      }
+ 
+   ScriptedIdleTaskController::CallbackId id_;
+   WeakPersistent<ScriptedIdleTaskController> controller_;
+@@ -119,7 +134,7 @@ ScriptedIdleTaskController::RegisterCallback(
+   ScheduleCallback(std::move(callback_wrapper), timeout_millis);
+   DEVTOOLS_TIMELINE_TRACE_EVENT_INSTANT(
+       "RequestIdleCallback", inspector_idle_callback_request_event::Data,
+-      GetExecutionContext(), id, timeout_millis);
++      GetExecutionContext(), internal::s_wrapper_count, timeout_millis);
+   return id;
+ }
+ 
+@@ -144,7 +159,7 @@ void ScriptedIdleTaskController::ScheduleCallback(
+ void ScriptedIdleTaskController::CancelCallback(CallbackId id) {
+   DEVTOOLS_TIMELINE_TRACE_EVENT_INSTANT(
+       "CancelIdleCallback", inspector_idle_callback_cancel_event::Data,
+-      GetExecutionContext(), id);
++      GetExecutionContext(), internal::s_wrapper_count);
+   if (!IsValidCallbackId(id))
+     return;
+ 

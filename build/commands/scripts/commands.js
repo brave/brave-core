@@ -344,7 +344,7 @@ program
   .option('--use_remoteexec [arg]', 'whether to use RBE for building', JSON.parse)
   .option('--offline', 'use offline mode for RBE')
   .arguments('[build_config]')
-  .action(test.bind(null, parsedArgs.unknown))
+  .action(() => {})
 
 program
   .command('presubmit')
