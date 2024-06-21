@@ -122,7 +122,7 @@ export const _SignInWithEthereumPanel = {
 }
 
 export default {
-  component: SignInWithEthereum,
+  title: "Sign Transaction Panel",
   parameters: {
     layout: 'centered'
   }

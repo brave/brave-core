@@ -166,5 +166,5 @@ export const _Erc721TokenApprovalForAll = {
 }
 
 export default {
-  component: ErcTokenApproval
+  title: 'Evm State Changes'
 }

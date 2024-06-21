@@ -20,4 +20,4 @@ export const _LockScreen = {
   }
 }
 
-export default { title: 'Lock Screen' }
+export default { title: 'Lock Screen', component: LockScreen }

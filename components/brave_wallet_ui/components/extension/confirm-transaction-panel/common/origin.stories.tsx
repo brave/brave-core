@@ -58,4 +58,4 @@ export const _TransactionOrigin = {
   }
 }
 
-export default { component: TransactionOrigin }
+export default { title: "Confirm Transaction Panel" }

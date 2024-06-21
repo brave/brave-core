@@ -85,7 +85,7 @@ export const DataTable = {
           404: Publishers not found :)
         </Table>
         <br />
-      </div >
+      </div>
     )
   }
 }

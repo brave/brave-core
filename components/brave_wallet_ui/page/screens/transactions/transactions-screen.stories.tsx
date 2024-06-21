@@ -8,14 +8,16 @@ import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper
 import TransactionsScreen from './transactions-screen'
 import { Meta } from '@storybook/react'
 
-export const TransactionsScreenStory = () => {
-  return (
-    <WalletPageStory>
-      <TransactionsScreen />
-    </WalletPageStory>
-  )
+export const TransactionsScreenStory = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <TransactionsScreen />
+      </WalletPageStory>
+    )
+  }
 }
 
 export default {
-  component: TransactionsScreenStory
+  component: TransactionsScreen
 } as Meta<typeof TransactionsScreen>

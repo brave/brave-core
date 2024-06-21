@@ -46,4 +46,5 @@ export const HardwareAccountsList = {
 
 export default {
   title: 'Hardware Wallet Accounts List',
+  component: HardwareWalletAccountsList
 } as Meta<typeof HardwareWalletAccountsList>

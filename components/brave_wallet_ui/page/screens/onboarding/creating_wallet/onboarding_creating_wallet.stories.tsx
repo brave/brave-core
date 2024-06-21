@@ -11,7 +11,7 @@ import {
 import { OnboardingCreatingWallet } from './onboarding_creating_wallet'
 import { Meta } from '@storybook/react'
 
-export const Default = {}
+export const CreatingWallet = {}
 export default {
   title: 'Creating Wallet',
   render: () => <WalletPageStory>

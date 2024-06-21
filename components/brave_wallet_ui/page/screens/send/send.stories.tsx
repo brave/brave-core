@@ -39,4 +39,5 @@ export const SendScreenStory = {
 
 export default {
   title: 'Send Screen',
+  component: SendScreen
 } as Meta<typeof SendScreen>
