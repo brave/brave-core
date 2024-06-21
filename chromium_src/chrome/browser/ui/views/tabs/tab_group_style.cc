@@ -24,6 +24,8 @@ bool TabGroupStyle::TabGroupUnderlineShouldBeHidden() const {
   return false;
 }
 
+// Upstream currently hides the tab group underline in certain scenarios,
+// whereas we always show the underline.
 bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
     const views::View* leading_view,
     const views::View* trailing_view) const {

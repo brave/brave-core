@@ -9,6 +9,10 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/layout_constants.h"
 
+// Upstream is no longer centering the tab favicon vertically within the tab
+// view (likely due to the fact that their tab contents rect happens to be the
+// same height as the favicon). Ensure that the favicon is centered vertically
+// within the tab.
 #define BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION \
   favicon_bounds.set_y(contents_rect.y() +                  \
                        Center(contents_rect.height(), gfx::kFaviconSize));
