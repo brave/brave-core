@@ -450,7 +450,7 @@ const util = {
         [androidToolbarResSource]: [androidToolbarResDest],
         [androidComponentsWidgetResSource]: [androidComponentsWidgetResDest],
         [androidComponentsStylesResSource]: [androidComponentsStylesResDest],
-        [androidSafeBrowsingResSource]: [androidSafeBrowsingspawnSyncResDest],
+        [androidSafeBrowsingResSource]: [androidSafeBrowsingResDest],
         [androidDownloadInternalResSource]: [androidDownloadInternalResDest],
         [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest],
         [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
@@ -749,8 +749,7 @@ const util = {
     let ninjaOpts = [
       '-C', options.outputDir || config.outputDir, targets.join(' '),
       '-k', num_compile_failure,
-      ...config.extraNinjaOpts,
-      '-j8'
+      ...config.extraNinjaOpts
     ]
 
     // Setting `AUTONINJA_BUILD_ID` allows tracing remote execution which helps

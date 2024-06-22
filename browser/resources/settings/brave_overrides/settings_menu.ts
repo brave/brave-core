@@ -243,7 +243,7 @@ RegisterPolymerTemplateModifications({
       'content-big',
       'content',
     )
-    appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+    // appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
 
     // Add Shields item
     const shieldsEl = createMenuElement(

@@ -181,20 +181,6 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
       "frame-src 'self' " +
           brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl("/") +
           ";");
-  
-    // Add override to allow workers
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::WorkerSrc,
-      "worker-src blob: chrome://rewards/2a7d8bfaf2d43f53bd71.mjs 'self';");
-
-    // Add override to allow child sources
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ChildSrc,
-      "child-src blob: chrome://rewards/2a7d8bfaf2d43f53bd71.mjs 'self';");
-
-   // Debug: Check if CSP is set correctly
-  LOG(INFO) << "CSP for worker-src and child-src set in RewardsPanelUI.";
-
 
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(

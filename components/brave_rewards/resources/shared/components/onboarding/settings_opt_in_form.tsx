@@ -18,11 +18,9 @@ import { useState, useRef, useEffect } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-// pdfjs.GlobalWorkerOptions.workerSrc = '../../../page/pdfjs-dist-worker.js'
-
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
+  './pdfjs-dist-worker.js',
+  import.meta.url
 ).toString();
 
 interface Props {
@@ -178,7 +176,9 @@ export function SettingsOptInForm (props: Props) {
           loading={<div>Loading PDF...</div>}
           renderMode="canvas"
         >
+        
           <Page
+          
             pageNumber={pageNumber}
             canvasRef={pdfCanvasRef}
             renderTextLayer={false}
