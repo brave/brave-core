@@ -37,29 +37,51 @@ HRESULT BraveWireguardManager::EnableVpn(BSTR public_key,
   }
 
   std::string public_key_str;
-  if (!brave_vpn::wireguard::ValidateKey(public_key, &public_key_str,
-                                         "public_key")) {
+  if (!base::WideToUTF8(public_key, wcslen(public_key), &public_key_str)) {
+    VLOG(1) << "failed WideToUTF8 for public_key";
+    return E_FAIL;
+  }
+  auto validated_public_key =
+      brave_vpn::wireguard::ValidateKey(public_key_str, "public_key");
+  if (!validated_public_key.has_value()) {
     return E_FAIL;
   }
 
   std::string private_key_str;
-  if (!brave_vpn::wireguard::ValidateKey(private_key, &private_key_str,
-                                         "private_key")) {
+  if (!base::WideToUTF8(private_key, wcslen(private_key), &private_key_str)) {
+    VLOG(1) << "failed WideToUTF8 for private_key";
+    return E_FAIL;
+  }
+  auto validated_private_key =
+      brave_vpn::wireguard::ValidateKey(private_key_str, "private_key");
+  if (!validated_private_key.has_value()) {
     return E_FAIL;
   }
 
   std::string address_str;
-  if (!brave_vpn::wireguard::ValidateAddress(address, &address_str)) {
+  if (!base::WideToUTF8(address, wcslen(address), &address_str)) {
+    VLOG(1) << "failed WideToUTF8 for address";
+    return E_FAIL;
+  }
+  auto validated_address = brave_vpn::wireguard::ValidateAddress(address_str);
+  if (!validated_address.has_value()) {
     return E_FAIL;
   }
 
   std::string endpoint_str;
-  if (!brave_vpn::wireguard::ValidateEndpoint(endpoint, &endpoint_str)) {
+  if (!base::WideToUTF8(endpoint, wcslen(endpoint), &endpoint_str)) {
+    VLOG(1) << "failed WideToUTF8 for endpoint";
+    return E_FAIL;
+  }
+  auto validated_endpoint =
+      brave_vpn::wireguard::ValidateEndpoint(endpoint_str);
+  if (!validated_endpoint.has_value()) {
     return E_FAIL;
   }
 
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
-      private_key_str, public_key_str, endpoint_str, address_str);
+      validated_private_key.value(), validated_public_key.value(),
+      validated_endpoint.value(), validated_address.value());
   if (!config.has_value()) {
     VLOG(1) << __func__ << " : failed to get correct credentials";
     return E_FAIL;

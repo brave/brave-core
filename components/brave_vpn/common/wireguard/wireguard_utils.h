@@ -29,11 +29,10 @@ std::optional<std::string> CreateWireguardConfig(
 
 WireguardKeyPair GenerateNewX25519Keypair();
 
-bool ValidateKey(const wchar_t* key,
-                 std::string* output,
-                 const std::string field_name);
-bool ValidateAddress(const wchar_t* address, std::string* output);
-bool ValidateEndpoint(const wchar_t* endpoint, std::string* output);
+std::optional<std::string> ValidateKey(const std::string& key,
+                                       const std::string& field_name);
+std::optional<std::string> ValidateAddress(const std::string& address);
+std::optional<std::string> ValidateEndpoint(const std::string& endpoint);
 
 }  // namespace wireguard
 
