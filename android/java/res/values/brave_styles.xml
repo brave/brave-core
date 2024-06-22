@@ -91,7 +91,7 @@
 
     <style name="BraveWalletInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <!-- Border color. -->
-        <item name="boxStrokeColor">@color/wallet_onboarding_input_field_stroke_color</item>
+        <item name="boxStrokeColor">@color/brave_wallet_onboarding_card_view_background</item>
         <!-- Hint text color that translates to the top of the view. -->
         <item name="hintTextColor">@color/text_primary</item>
         <!-- Blinking cursor color. -->
