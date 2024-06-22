@@ -1,0 +1,63 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+    {
+      "namespace": "pkcs11",
+      "description": "Use the <code>chrome.pkcs11</code> API to sign data using crypto token",
+      "compiler_options": {
+        "implemented_in": "brave/browser/extensions/api/pkcs11_api.h"
+      },
+      "functions": [
+        {
+          "name": "installModule",
+          "type": "function",
+          "description": "Set PKCS11 module path",
+          "parameters": [
+            {
+              "name": "path",
+              "type": "string",
+              "description": "system path of PKCS11 library"
+            }
+          ]
+        },
+        {
+          "name": "setPin",
+          "type": "function",
+          "description": "Set pin to login into crypto token",
+          "parameters": [
+            {
+              "name": "pin",
+              "type": "string",
+              "description": "Pin to login into crypto token"
+            }
+          ]
+        },
+        {
+          "name": "getSignature",
+          "type": "function",
+          "description": "Get signature for signed document",
+          "parameters": [
+            {
+                "name": "filepath",
+                "type": "string",
+                "description": "File Path of pdf to be signed"
+            },
+            {
+              "name": "callback",
+              "type": "function",
+              "description": "Function called when signature for document is fetched",
+              "parameters": [
+                {
+                  "name": "signature",
+                  "type": "string",
+                  "description": "signed signature"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]

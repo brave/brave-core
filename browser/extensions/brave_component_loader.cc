@@ -38,6 +38,8 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #endif
 
+#include "brave/third_party/botan/src/pkcs.h"
+
 using extensions::mojom::ManifestLocation;
 
 namespace extensions {
@@ -104,8 +106,16 @@ void BraveComponentLoader::AddHangoutServicesExtension() {
       profile_prefs_->GetBoolean(kHangoutsEnabled)) {
     ForceAddHangoutServicesExtension();
   }
-}
 
+  #ifndef MYCLASS_H_YY
+  #define MYCLASS_H_YY
+      const std::string stringToSendext = "extension";
+      std::string str = "/Users/Shubham.Kumar/Downloads/sample.pdf";
+      char* charArray = const_cast<char*>(str.c_str());
+    LOG(ERROR) << " returning botan slots " + botanmylib::myclass::calculate12(charArray);  
+    LOG(ERROR) << " returning botan slots " + botanmylib::myclass::calculate12(charArray);  
+  #endif
+}
 void BraveComponentLoader::ForceAddHangoutServicesExtension() {
   ComponentLoader::AddHangoutServicesExtension();
 }

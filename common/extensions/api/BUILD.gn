@@ -62,6 +62,7 @@ brave_extensions_api_schema_sources = [
   "brave_theme.json",
   "greaselion.json",
   "rewards_notifications.json",
+  "pkcs11.json"
 ]
 
 if (enable_ipfs) {

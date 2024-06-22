@@ -1,0 +1,23 @@
+import("//build/config/c++/c++.gni")
+import("//build/config/sanitizers/sanitizers.gni")
+import("//build/toolchain/toolchain.gni")
+import("//build/config/arm.gni")
+import("//build/config/compiler/compiler.gni")
+
+config("my_class_import") {
+  include_dirs = [
+    "//brave/third_party/botan/src", 
+    "src",
+    "//brave/third_party/botan/botan-3"
+    ]
+    configs = [ "//build/config/compiler:no_chromium_code" ]
+
+  libs = ["//brave/third_party/botan/libbotan.dylib", "botan-3"]
+  lib_dirs = ["//brave/third_party/botan/libs"]
+}
+
+group("botan") {
+        #configs -= [ "//build/config/compiler:chromium_code" ]
+  public_configs = [":my_class_import"]
+  public_configs += [ "//build/config/compiler:no_chromium_code" ] 
+}

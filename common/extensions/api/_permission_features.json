@@ -46,5 +46,9 @@
     "allowlist": [
       "21070F3D60711361C1210B870439BE49B5D995F4" // Ethereum Remote Client extension
     ]
+  },
+  "pkcs11": {
+    "channel": "stable",
+    "extension_types": ["extension", "legacy_packaged_app"]
   }
 }
