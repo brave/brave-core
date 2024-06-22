@@ -5,10 +5,7 @@
 
 #include "chrome/browser/ui/views/web_apps/web_app_views_utils.h"
 
-#include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "content/public/common/url_constants.h"
+#include "brave/common/brave_common_utils.h"
 
 #define CreateOriginLabelFromStartUrl CreateOriginLabelFromStartUrl_ChromiumImpl
 #include "src/chrome/browser/ui/views/web_apps/web_app_views_utils.cc"
@@ -20,19 +17,8 @@ std::unique_ptr<views::Label> CreateOriginLabelFromStartUrl(
     bool is_primary_text) {
   std::unique_ptr<views::Label> origin_label =
       CreateOriginLabelFromStartUrl_ChromiumImpl(start_url, is_primary_text);
-
   std::u16string label_text = origin_label->GetText();
-
-  const std::u16string kChromeUISchemeU16 =
-      base::ASCIIToUTF16(base::StrCat({content::kChromeUIScheme, "://"}));
-
-  if (base::StartsWith(label_text, kChromeUISchemeU16,
-                       base::CompareCase::INSENSITIVE_ASCII)) {
-    base::ReplaceFirstSubstringAfterOffset(
-        &label_text, 0ul, kChromeUISchemeU16,
-        base::ASCIIToUTF16(base::StrCat({content::kBraveUIScheme, "://"})));
-  }
-
+  brave_utils::ReplaceChromeToBraveScheme(&label_text);
   origin_label->SetText(label_text);
 
   return origin_label;

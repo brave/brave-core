@@ -9,6 +9,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/common/brave_common_utils.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -38,10 +39,8 @@ BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() = default;
 void BraveLocationBarModelDelegate::FormattedStringFromURL(
     const GURL& url,
     std::u16string* new_formatted_url) {
-  if (url.SchemeIs("chrome")) {
-    base::ReplaceFirstSubstringAfterOffset(new_formatted_url, 0, u"chrome://",
-                                           u"brave://");
-  }
+  // Replace chrome:// with brave://
+  brave_utils::ReplaceChromeToBraveScheme(new_formatted_url);
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   if (url.SchemeIs(kChromeExtensionScheme) &&
