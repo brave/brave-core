@@ -12,11 +12,13 @@ const std::array<ColorInfo, std::size(kCustomizeChromeColorIds)>
     kBraveGeneratedColorsInfo = kCustomizeChromeColors;
 }
 
-// Override kGeneratedColorsInfo to use a chrome_colors namespaced version of
-// kCustomizeChromeColors (see above), allowing us to return to the bi-color
-// theme picker in brave://settings and the profile dialog. We call
-// getChromeColors with extended_list=true from TypeScript in order to take
-// advantage of this code path.
+// In order to revert to the bi-color theme picker, we want
+// ThemeColorPickerHandler::GetChromeColors to work how it used to work before
+// ChromeRefresh2023: it should iterate over kCustomizeChromeColors and call
+// GetChromeColor for each color. To achieve that, we patch
+// ThemeColorPickerHandler::GetChromeColors to always set extended_list to true
+// and we replace kGeneratedColorsInfo with a namespaced version of
+// kCustomizeChromeColors.
 #define kGeneratedColorsInfo kBraveGeneratedColorsInfo
 
 // Override the effect of SetSeedColor to correct the theme coloring for tabs
