@@ -43,7 +43,18 @@ source_set("channel_info") {
   }
 }
 
+source_set("common_utils") {
+  sources = [
+    "brave_common_utils.cc",
+    "brave_common_utils.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
 group("common") {
+  deps = [ ":common_utils" ]
+
   public_deps = [ "//chrome/common" ]
 }
 

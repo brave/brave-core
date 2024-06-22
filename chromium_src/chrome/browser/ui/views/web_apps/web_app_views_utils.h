@@ -11,7 +11,7 @@
                                              bool is_primary_text); \
   std::unique_ptr<views::Label> CreateOriginLabelFromStartUrl
 
-#include "src/chrome/browser/ui/views/web_apps/web_app_views_utils.h"
+#include "src/chrome/browser/ui/views/web_apps/web_app_views_utils.h"  // IWYU pragma: export
 
 #undef CreateOriginLabelFromStartUrl
 
