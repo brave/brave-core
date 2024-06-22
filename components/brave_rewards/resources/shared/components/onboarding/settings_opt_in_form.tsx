@@ -4,14 +4,14 @@
 //@ts-nocheck
 import * as React from 'react'
 
-import { LocaleContext, formatMessage } from '../../lib/locale_context'
-import { NewTabLink } from '../new_tab_link'
-import { TermsOfService } from '../terms_of_service'
-import { BatIcon } from '../icons/bat_icon'
-import { OptInIcon } from './icons/optin_icon'
-import { MainButton } from './main_button'
+// import { LocaleContext, formatMessage } from '../../lib/locale_context'
+// import { NewTabLink } from '../new_tab_link'
+// import { TermsOfService } from '../terms_of_service'
+// import { BatIcon } from '../icons/bat_icon'
+// import { OptInIcon } from './icons/optin_icon'
+// import { MainButton } from './main_button'
 
-import * as style from './settings_opt_in_form.style'
+// import * as style from './settings_opt_in_form.style'
 
 import * as urls from '../../lib/rewards_urls'
 import { useState, useRef, useEffect } from 'react';
@@ -29,7 +29,7 @@ interface Props {
 
 export function SettingsOptInForm (props: Props) {
 
-  const { getString } = React.useContext(LocaleContext)
+  // const { getString } = React.useContext(LocaleContext)
   const [pdfFile, setPdfFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -41,13 +41,22 @@ export function SettingsOptInForm (props: Props) {
   const [endX, setEndX] = useState(0);
   const [endY, setEndY] = useState(0);
 
-  const pdfCanvasRef = useRef(null);
   const overlayCanvasRef = useRef(null);
+  const pdfCanvasRef = useRef(null);
   const fixedText = "Signed by user";
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
     setPageNumber(1);
+  };
+
+  const onPageLoadSuccess = () => {
+    const pageCanvas = pdfCanvasRef.current;
+    const overlayCanvas = overlayCanvasRef.current;
+    if (pageCanvas && overlayCanvas) {
+      overlayCanvas.width = pageCanvas.width;
+      overlayCanvas.height = pageCanvas.height;
+    }
   };
 
   const handleFileInput = (event) => {
@@ -146,21 +155,24 @@ export function SettingsOptInForm (props: Props) {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const canvas = pdfCanvasRef.current;
-      const overlayCanvas = overlayCanvasRef.current;
-      if (canvas && overlayCanvas) {
-        overlayCanvas.width = canvas.width;
-        overlayCanvas.height = canvas.height;
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [pdfFile]);
+  const handlePreviousPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
+    }
+  };
+  
+  const handleNextPage = () => {
+    if (pageNumber < numPages) {
+      setPageNumber(pageNumber + 1);
+    }
+  };
+  
+  const handlePageInputChange = (event) => {
+    const newPageNumber = parseInt(event.target.value, 10);
+    if (newPageNumber >= 1 && newPageNumber <= numPages) {
+      setPageNumber(newPageNumber);
+    }
+  };
 
   return (
     <>
@@ -168,21 +180,30 @@ export function SettingsOptInForm (props: Props) {
       <div id="controls">
         <input type="file" id="pdfInput" accept="application/pdf" onChange={handleFileInput} />
         <button id="signButton" onClick={handleSignButtonClick} disabled={isSigned}>Sign</button>
+        <button onClick={handlePreviousPage} disabled={pageNumber === 1}>Previous Page</button>
+        <button onClick={handleNextPage} disabled={pageNumber === numPages}>Next Page</button>
+        <input
+          type="number"
+          value={pageNumber}
+          onChange={handlePageInputChange}
+          min={1}
+          max={numPages}
+          style={{ width: '60px' }}
+        />
       </div>
       <div id="canvasContainer" style={{ position: 'relative' }}>
         <Document
           file={pdfFile}
           onLoadSuccess={onDocumentLoadSuccess}
           loading={<div>Loading PDF...</div>}
-          renderMode="canvas"
         >
-        
           <Page
-          
             pageNumber={pageNumber}
-            canvasRef={pdfCanvasRef}
             renderTextLayer={false}
             width={600}
+            renderMode="canvas"
+            onLoadSuccess={onPageLoadSuccess}
+            canvasRef={pdfCanvasRef}
             loading={<div>Loading page...</div>}
           />
         </Document>
@@ -193,7 +214,7 @@ export function SettingsOptInForm (props: Props) {
             position: 'absolute',
             top: 0,
             left: 0,
-            pointerEvents: isSelectionEnabled ? 'auto' : 'none', // Enable pointer events only when selection is enabled
+            pointerEvents: isSelectionEnabled ? 'auto' : 'none',
           }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
