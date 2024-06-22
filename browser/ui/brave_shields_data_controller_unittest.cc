@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
@@ -26,14 +26,14 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using brave_shields::BraveShieldsDataController;
+using brave_shields::BraveShieldsTabHelper;
 using brave_shields::ControlType;
 using brave_shields::mojom::AdBlockMode;
 
 namespace {
 constexpr char kTestProfileName[] = "TestProfile";
 
-class MockObserver : public BraveShieldsDataController::Observer {
+class MockObserver : public BraveShieldsTabHelper::Observer {
  public:
   MOCK_METHOD(void, OnResourcesChanged, (), (override));
   MOCK_METHOD(void, OnShieldsEnabledChanged, (), (override));
@@ -60,7 +60,7 @@ class BraveShieldsDataControllerTest : public testing::Test {
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
     favicon::ContentFaviconDriver::CreateForWebContents(
         test_web_contents_.get(), nullptr);
-    BraveShieldsDataController::CreateForWebContents(test_web_contents_.get());
+    BraveShieldsTabHelper::CreateForWebContents(test_web_contents_.get());
   }
 
   void TearDown() override {
@@ -76,8 +76,8 @@ class BraveShieldsDataControllerTest : public testing::Test {
     content::WebContentsTester::For(web_contents())->SetLastCommittedURL(url);
   }
 
-  BraveShieldsDataController* GetShieldsDataController() {
-    return BraveShieldsDataController::FromWebContents(web_contents());
+  BraveShieldsTabHelper* GetShieldsDataController() {
+    return BraveShieldsTabHelper::FromWebContents(web_contents());
   }
 
   ContentSetting GetContentSettingFor(ContentSettingsType type,
@@ -341,9 +341,8 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
       content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(web_contents_2.get(),
                                                       nullptr);
-  BraveShieldsDataController::CreateForWebContents(web_contents_2.get());
-  auto* ctrl_2 =
-      BraveShieldsDataController::FromWebContents(web_contents_2.get());
+  BraveShieldsTabHelper::CreateForWebContents(web_contents_2.get());
+  auto* ctrl_2 = BraveShieldsTabHelper::FromWebContents(web_contents_2.get());
   ctrl_2->AddObserver(&observer_2);
   content::WebContentsTester::For(web_contents_2.get())
       ->SetLastCommittedURL(GURL("http://brave.com"));
@@ -357,9 +356,8 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
       content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(web_contents_3.get(),
                                                       nullptr);
-  BraveShieldsDataController::CreateForWebContents(web_contents_3.get());
-  auto* ctrl_3 =
-      BraveShieldsDataController::FromWebContents(web_contents_3.get());
+  BraveShieldsTabHelper::CreateForWebContents(web_contents_3.get());
+  auto* ctrl_3 = BraveShieldsTabHelper::FromWebContents(web_contents_3.get());
   ctrl_3->AddObserver(&observer_3);
   content::WebContentsTester::For(web_contents_3.get())
       ->SetLastCommittedURL(GURL("http://github.com"));

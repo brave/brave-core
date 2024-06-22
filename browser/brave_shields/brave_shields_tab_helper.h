@@ -1,10 +1,10 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_BRAVE_SHIELDS_DATA_CONTROLLER_H_
-#define BRAVE_BROWSER_UI_BRAVE_SHIELDS_DATA_CONTROLLER_H_
+#ifndef BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_TAB_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_TAB_HELPER_H_
 
 #include <set>
 #include <string>
@@ -30,16 +30,15 @@ using content::NavigationEntry;
 namespace brave_shields {
 
 // Per-tab class to manage Shields panel data
-class BraveShieldsDataController
+class BraveShieldsTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<BraveShieldsDataController>,
+      public content::WebContentsUserData<BraveShieldsTabHelper>,
       public content_settings::Observer,
       public favicon::FaviconDriverObserver {
  public:
-  BraveShieldsDataController(const BraveShieldsDataController&) = delete;
-  BraveShieldsDataController& operator=(const BraveShieldsDataController&) =
-      delete;
-  ~BraveShieldsDataController() override;
+  BraveShieldsTabHelper(const BraveShieldsTabHelper&) = delete;
+  BraveShieldsTabHelper& operator=(const BraveShieldsTabHelper&) = delete;
+  ~BraveShieldsTabHelper() override;
 
   class Observer : public base::CheckedObserver {
    public:
@@ -86,9 +85,9 @@ class BraveShieldsDataController
   bool HasObserver(Observer* observer);
 
  private:
-  friend class content::WebContentsUserData<BraveShieldsDataController>;
+  friend class content::WebContentsUserData<BraveShieldsTabHelper>;
 
-  explicit BraveShieldsDataController(content::WebContents* web_contents);
+  explicit BraveShieldsTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
   void DidFinishNavigation(
@@ -124,4 +123,4 @@ class BraveShieldsDataController
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_BROWSER_UI_BRAVE_SHIELDS_DATA_CONTROLLER_H_
+#endif  // BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_SHIELDS_TAB_HELPER_H_

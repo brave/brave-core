@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -23,7 +23,7 @@ class TopChromeWebUIController;
 
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
-      public brave_shields::BraveShieldsDataController::Observer,
+      public brave_shields::BraveShieldsTabHelper::Observer,
       public TabStripModelObserver {
  public:
   ShieldsPanelDataHandler(
@@ -56,7 +56,7 @@ class ShieldsPanelDataHandler
  private:
   void UpdateSiteBlockInfo();
 
-  // BraveShieldsDataController::Observer
+  // BraveShieldsTabHelper::Observer
   void OnResourcesChanged() override;
   void OnFaviconUpdated() override;
 
@@ -69,7 +69,7 @@ class ShieldsPanelDataHandler
   mojo::Receiver<brave_shields::mojom::DataHandler> data_handler_receiver_;
   mojo::Remote<brave_shields::mojom::UIHandler> ui_handler_remote_;
   raw_ptr<TopChromeWebUIController> const webui_controller_ = nullptr;
-  raw_ptr<brave_shields::BraveShieldsDataController>
+  raw_ptr<brave_shields::BraveShieldsTabHelper>
       active_shields_data_controller_ = nullptr;
 
   brave_shields::mojom::SiteBlockInfo site_block_info_;

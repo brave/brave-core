@@ -10,7 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -23,7 +23,7 @@ class IconWithBadgeImageSource;
 
 class BraveShieldsActionView
     : public views::LabelButton,
-      public brave_shields::BraveShieldsDataController::Observer,
+      public brave_shields::BraveShieldsTabHelper::Observer,
       public TabStripModelObserver {
   METADATA_HEADER(BraveShieldsActionView, views::LabelButton)
  public:
@@ -54,9 +54,11 @@ class BraveShieldsActionView
   void UpdateIconState();
   gfx::ImageSkia GetIconImage(bool is_enabled);
   std::unique_ptr<IconWithBadgeImageSource> GetImageSource();
-  // brave_shields::BraveShieldsDataController
+
+  // brave_shields::BraveShieldsTabHelper
   void OnResourcesChanged() override;
   void OnShieldsEnabledChanged() override;
+
   // TabStripModelObserver
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,

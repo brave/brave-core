@@ -11,9 +11,9 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -118,8 +118,7 @@ void OnboardingTabHelper::DidStopLoading() {
 
 void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
   auto* shields_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(
-          web_contents());
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
   DCHECK(shields_data_controller);
 
   if (shields_data_controller->GetBraveShieldsEnabled() &&
@@ -170,8 +169,7 @@ void OnboardingTabHelper::ShowBraveHelpBubbleView() {
 
 std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   auto* shields_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(
-          web_contents());
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
 
   if (!shields_data_controller) {
     return std::string();
