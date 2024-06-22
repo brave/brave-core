@@ -207,6 +207,9 @@ import os
       let compilableFiles = compilableFiles(for: enabledSources)
 
       guard self.checkNeedsCompile(for: compilableFiles) else {
+        ContentBlockerManager.log.debug(
+          "Doesn't need compile for `\(self.engineType.debugDescription)`"
+        )
         return
       }
 

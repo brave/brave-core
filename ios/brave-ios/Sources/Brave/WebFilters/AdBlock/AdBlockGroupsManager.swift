@@ -86,7 +86,7 @@ import os
     await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach {
       genericType in
       let blocklistType = ContentBlockerManager.BlocklistType.generic(genericType)
-      var missingModes = await self.contentBlockerManager.missingModes(
+      let missingModes = await self.contentBlockerManager.missingModes(
         for: blocklistType,
         version: genericType.version
       )
@@ -302,7 +302,18 @@ import os
   func compileEngineIfFilesAreReady(for engineType: GroupedAdBlockEngine.EngineType) {
     let manager = self.getManager(for: engineType)
     let enabledSources = sourceProvider.enabledSources(for: engineType)
-    guard manager.checkHasAllInfo(for: enabledSources) else { return }
+    let availableSources = manager.compilableFiles(for: enabledSources)
+      .map({ $0.filterListInfo.source })
+    guard enabledSources.allSatisfy({ availableSources.contains($0) }) else {
+      ContentBlockerManager.log.debug(
+        """
+        Files are not yet ready for `\(engineType.debugDescription)`:
+        Expecting: \(enabledSources.debugDescription)
+        Available: \(availableSources.debugDescription)
+        """
+      )
+      return
+    }
 
     Task {
       await manager.compileImmediatelyIfNeeded(
@@ -608,7 +619,6 @@ extension AdBlockEngineManager.FileInfo {
   var enabledSources: [GroupedAdBlockEngine.Source] {
     var enabledSources = FilterListStorage.shared.enabledSources
     enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
-    enabledSources.append(contentsOf: [.filterListText])
     return enabledSources
   }
 
@@ -621,7 +631,6 @@ extension AdBlockEngineManager.FileInfo {
     case .aggressive:
       var sources = FilterListStorage.shared.sources(for: engineType)
       sources.append(contentsOf: CustomFilterListStorage.shared.allSources)
-      sources.append(contentsOf: [.filterListText])
       return sources
     case .standard:
       return FilterListStorage.shared.sources(for: engineType)
