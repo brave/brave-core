@@ -19,6 +19,7 @@ const std::array<ColorInfo, std::size(kCustomizeChromeColorIds)>
 // ThemeColorPickerHandler::GetChromeColors to always set extended_list to true
 // and we replace kGeneratedColorsInfo with a namespaced version of
 // kCustomizeChromeColors.
+#define BRAVE_THEME_COLOR_PICKER_HANDLER_GET_CHROME_COLORS extended_list = true;
 #define kGeneratedColorsInfo kBraveGeneratedColorsInfo
 
 // Override the effect of SetSeedColor to correct the theme coloring for tabs
@@ -30,3 +31,4 @@ const std::array<ColorInfo, std::size(kCustomizeChromeColorIds)>
 
 #undef SetUserColorAndBrowserColorVariant
 #undef kGeneratedColorsInfo
+#undef BRAVE_THEME_COLOR_PICKER_HANDLER_GET_CHROME_COLORS
