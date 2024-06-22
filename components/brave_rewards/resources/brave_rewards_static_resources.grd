@@ -23,7 +23,7 @@
 
       <!-- WebUI Ping Rewards Internals resources -->
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
-      
+
       <if expr="not is_android">
         <include name="IDR_BRAVE_REWARDS_PANEL_HTML" file="rewards_panel/index.html" type="BINDATA" />
         <include name="IDR_TIP_PANEL_HTML" file="tip_panel/tip_panel.html" type="BINDATA" />
