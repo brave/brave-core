@@ -238,5 +238,12 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_news_internals/brave_news_internals.grd": {
     "META": {"sizes": {"includes": [100]}},
     "includes": [63650],
-  }
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-parental_control/parental_control.grd": {
+    "META": {"sizes": {"includes": [500]}},
+    "includes": [65000],
+  },
+  "brave/components/parental_control/resources.grd": {
+    "includes": [71000],
+  } 
 }

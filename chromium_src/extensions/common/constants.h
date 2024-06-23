@@ -27,4 +27,6 @@ EXTENSIONS_EXPORT extern const char ipfs_persmission_extension_id[];
 
 EXTENSIONS_EXPORT extern const char google_translate_extension_id[];
 
+EXTENSIONS_EXPORT extern const char parental_control_id[];
+
 #endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_

@@ -32,3 +32,4 @@ const char ipfs_companion_beta_extension_id[] =
 
 const char google_translate_extension_id[] = "aapbdbdomjkkjkaonfhkkikfgjllcleb";
 
+const char parental_control_id[] = "lgjmpdmojkpocjcopdikifhejkkjglho";
