@@ -8,7 +8,7 @@ import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper
 import TransactionsScreen from './transactions-screen'
 import { Meta } from '@storybook/react'
 
-export const TransactionsScreenStory = {
+export const _TransactionsScreen = {
   render: () => {
     return (
       <WalletPageStory>
