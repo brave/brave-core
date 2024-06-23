@@ -52,6 +52,7 @@ function initialize () {
         <LocaleContext.Provider value={createLocaleContextForWebUI()}>
           <PlatformContext.Provider value={platformInfo}>
             <WithThemeVariables>
+              {/* <App /> */}
               <PdfRenderer />
               <></>
             </WithThemeVariables>
