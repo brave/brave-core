@@ -33,7 +33,6 @@ namespace extensions {
     };
 
     for (size_t i = 0; i < std::size(kAllowed); ++i) {
-      LOG(ERROR) << "extension_id " << extension_id << " kAllowed " <<  kAllowed[i];
       if (extension_id == kAllowed[i])
         return true;
     }
