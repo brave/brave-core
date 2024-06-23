@@ -15,90 +15,85 @@
 #include <botan/pubkey.h>
 #include <botan/rsa.h>
 #include <botan/secmem.h>
-#include <botan/base64.h>
 
-void printStr(const Botan::PKCS11::secure_string& str) {
-   
-    for (uint8_t value : str) {
-        std::cout << value;
-    }
-    std::cout << std::endl;
-}
-
-void botanmylib::myclass::init() {
-    //
-    std::cout<<"init called but nothing to be done";
-}
-
-std::string botanmylib::myclass::calculate12(char* documentPath) 
+std::vector<uint8_t> hexStringToBytes(char* charArray)
 {
-   Botan::PKCS11::Module module("/Users/Shubham.Kumar/projects/chromium/src/brave/third_party/botan/libs/libcastle_v2.1.0.0.dylib");
-   // open write session to first slot with connected token
+    std::string hex(charArray);
 
-   std::vector<Botan::PKCS11::SlotId> slots = Botan::PKCS11::Slot::get_available_slots(module, true);
-   std::cout<<"running try catch now\n";
-    slots = Botan::PKCS11::Slot::get_available_slots(module, false);
+    std::vector<uint8_t> bytes;
+
+    for (size_t i = 0; i < hex.length(); i += 2) {
+        uint8_t byte = std::stoi(hex.substr(i, 2), nullptr, 16);
+        bytes.push_back(byte);
+    }
+
+    return bytes;
+}
+
+std::string vectorToHex(const std::vector<uint8_t>& buffer) {
+    std::ostringstream oss;
+    for (const auto& byte : buffer) {
+        oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(byte);
+    }
+    return oss.str();
+}
+
+std::string botan_high_level::pkcs11::sign_data(char* module_path, char* pin, char* md_hash) {
     try {
-        std::cout<<"number of slots " << slots.size()<<std::endl;
-        if(slots.empty()) {
-            return "No slots found\n";
-        }
-        Botan::PKCS11::Slot slot(module, slots.at(0));
-        std::cout<<" ----- "<<"slot desc "<<slot.get_slot_info().slotDescription;
-        
-        Botan::PKCS11::Session session(slot, false);
+        Botan::PKCS11::Module module(module_path);
 
-        Botan::PKCS11::secure_string pin = {'1', '2', '3', '4', '5', '6', '7', '8'};
-        session.login(Botan::PKCS11::UserType::User, pin);
+        std::vector<Botan::PKCS11::SlotId> slots;
+        try {
+            slots = Botan::PKCS11::Slot::get_available_slots(module, true);
+            std::cout << "Number of slots: " << slots.size() << std::endl;
 
-        std::cout<<" ----- "<<"successfully logged in"<<std::endl;
-
-        Botan::PKCS11::AttributeContainer search_template;
-        search_template.add_class(Botan::PKCS11::ObjectClass::PrivateKey);
-        auto found_objs = Botan::PKCS11::Object::search<Botan::PKCS11::Object>(session, search_template.attributes());
-        
-        std::cout <<" ----- "<< "Found " << found_objs.size() << " objects" << std::endl;
-
-        if(found_objs.empty()) return "None objs found\n";
-
-        for(auto& obj : found_objs) {
-            std::cout << "Objects: ";
-            printStr(obj.get_attribute_value(Botan::PKCS11::AttributeType::Label));
+            if (slots.empty()) {
+                return "ERROR_SLOT_NOT_FOUND";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error getting available slots: " << e.what() << std::endl;
+            return "ERROR_SLOT_NOT_FOUND";
         }
 
-        Botan::PKCS11::ObjectHandle priv_key_handle = found_objs.at(0).handle();
+        try {
+            Botan::PKCS11::Slot slot(module, slots.at(0));
+            Botan::PKCS11::Session session(slot, false);
 
-        // Load the private key from the HSM
-        Botan::PKCS11::PKCS11_RSA_PrivateKey priv_key(session, priv_key_handle);
-        // Read the document to sign
-        std::ifstream file(documentPath, std::ios::binary);
-        Botan::PKCS11::secure_string document_data((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+            try {
+                Botan::PKCS11::secure_string secure_pin(pin, pin + std::strlen(pin));
+                session.login(Botan::PKCS11::UserType::User, secure_pin);
+                std::cout << "Successfully logged in" << std::endl;
+            } catch (const std::exception& e) {
+                std::cerr << "Error logging in: " << e.what() << std::endl;
+                return "ERROR_LOGIN_FAILED";
+            }
 
-        std::string mechanism = "EMSA3(SHA-256)";
+            Botan::PKCS11::AttributeContainer search_template;
+            search_template.add_class(Botan::PKCS11::ObjectClass::PrivateKey);
+            auto found_objs = Botan::PKCS11::Object::search<Botan::PKCS11::Object>(session, search_template.attributes());
 
-        // Sign the document
-        Botan::AutoSeeded_RNG rng;
-        Botan::PK_Signer signer(priv_key, rng, mechanism, Botan::Signature_Format::Standard);   
-        auto signature = signer.sign_message(document_data, rng);
+            std::cout << "Found " << found_objs.size() << " objects" << std::endl;
 
-        std::cout <<" ----- "<< "Document signed" << std::endl;
+            if (found_objs.empty()) return "ERROR_NO_OBJS_FOUND";
 
-        Botan::PK_Verifier verifier(priv_key, mechanism, Botan::Signature_Format::Standard);
-        bool verification_result = verifier.verify_message(document_data, signature);
+            // Load the private key from the HSM
+            Botan::PKCS11::ObjectHandle priv_key_handle = found_objs.at(0).handle();
+            Botan::PKCS11::PKCS11_RSA_PrivateKey priv_key(session, priv_key_handle);
 
-        std::string base64_signature = "";
+            std::string mechanism = "EMSA3(Raw)";
 
-        if (verification_result) {
-            base64_signature = Botan::base64_encode(signature.data(), signature.size());
+            // Sign the hash
+            Botan::AutoSeeded_RNG rng;
+            Botan::PK_Signer signer(priv_key, rng, mechanism, Botan::Signature_Format::Standard);
+            auto signature = signer.sign_message(hexStringToBytes(md_hash), rng);
+            std::cout << "Document signed" << std::endl;
             session.logoff();
-            std::cout<<base64_signature<<std::endl;
-            return  base64_signature; 
-        } else {
-            session.logoff();
-            return "Verification Failed";
+            return vectorToHex(signature);
+        } catch (const std::exception& e) {
+            return "ERROR_SIGNING_FAILURE";
         }
-    } catch(const std::exception& e) {
-        std::cout<<" ----- "<<"PKCS error :::: "<<e.what()<<std::endl;
-        return "Signature verification failed!! some exception is thrown";    
+    } catch (const std::exception& e) {
+        std::cerr << "Error initializing module: " << e.what() << std::endl;
+        return "ERROR_MODULE_NOT_FOUND";
     }
 }

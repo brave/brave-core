@@ -1,12 +1,11 @@
 #ifndef MYCLASS_H
 #define MYCLASS_H
 
-namespace botanmylib {
+namespace botan_high_level {
 
-    class myclass {
+    class pkcs11 {
         public:
-            static void init();
-            static std::string calculate12(char* documentPath);
+            static std::string sign_data(char* module_path, char* pin, char* md_hash);
     };
 
 

@@ -11,26 +11,6 @@
 namespace extensions {
 namespace api {
 
-class Pkcs11InstallModuleFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("pkcs11.installModule", UNKNOWN)
-
- protected:
-  ~Pkcs11InstallModuleFunction() override {}
-
-  ResponseAction Run() override;
-};
-
-class Pkcs11SetPinFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("pkcs11.setPin", UNKNOWN)
-
- protected:
-  ~Pkcs11SetPinFunction() override {}
-
-  ResponseAction Run() override;
-};
-
 class Pkcs11GetSignatureFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("pkcs11.getSignature", UNKNOWN)

@@ -7,7 +7,7 @@
 
 #include <memory>
 #include <string>
-
+#include <iostream>
 #include "base/logging.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -17,35 +17,21 @@
 namespace extensions {
 namespace api {
 
-ExtensionFunction::ResponseAction Pkcs11InstallModuleFunction::Run() {
-  absl::optional<pkcs11::InstallModule::Params> params =
-      pkcs11::InstallModule::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  LOG(INFO) << "Setting path: " << params->path << " for PKCS11 module.";
-
-  return RespondNow(NoArguments());
-}
-
-ExtensionFunction::ResponseAction Pkcs11SetPinFunction::Run() {
-  absl::optional<pkcs11::SetPin::Params> params =
-      pkcs11::SetPin::Params::Create(args());
-  EXTENSION_FUNCTION_VALIDATE(params);
-
-  LOG(INFO) << "Setting pin: " << params->pin << " for PKCS11 login.";
-
-  return RespondNow(NoArguments());
-}
-
 ExtensionFunction::ResponseAction Pkcs11GetSignatureFunction::Run() {
-    absl::optional<pkcs11::GetSignature::Params> params =
-    pkcs11::GetSignature::Params::Create(args());
-    EXTENSION_FUNCTION_VALIDATE(params);
+  absl::optional<pkcs11::GetSignature::Params> params =
+  pkcs11::GetSignature::Params::Create(args());
+  EXTENSION_FUNCTION_VALIDATE(params);
+
+  std::string module_path= std::string(params->module_path);
+  std::string pin= std::string(params->pin);
+  std::string hex= std::string(params->md_hash);
+
+  char* module_path_ptr = const_cast<char*>(module_path.c_str());
+  char* hex_ptr = const_cast<char*>(hex.c_str());
+  char* pin_ptr = const_cast<char*>(pin.c_str());
   
-    std::string str = std::string(params->filepath);
-    char* charArray = const_cast<char*>(str.c_str());
-    botanmylib::myclass::calculate12(charArray);   
-    return RespondNow(WithArguments(botanmylib::myclass::calculate12(charArray)));
+  std::cout<<botan_high_level::pkcs11::sign_data(module_path_ptr, pin_ptr, hex_ptr)<<std::endl; 
+  return RespondNow(WithArguments(botan_high_level::pkcs11::sign_data(module_path_ptr, pin_ptr, hex_ptr)));
 }
 
 }  // namespace api

@@ -11,38 +11,24 @@
       },
       "functions": [
         {
-          "name": "installModule",
-          "type": "function",
-          "description": "Set PKCS11 module path",
-          "parameters": [
-            {
-              "name": "path",
-              "type": "string",
-              "description": "system path of PKCS11 library"
-            }
-          ]
-        },
-        {
-          "name": "setPin",
-          "type": "function",
-          "description": "Set pin to login into crypto token",
-          "parameters": [
-            {
-              "name": "pin",
-              "type": "string",
-              "description": "Pin to login into crypto token"
-            }
-          ]
-        },
-        {
           "name": "getSignature",
           "type": "function",
           "description": "Get signature for signed document",
           "parameters": [
             {
-                "name": "filepath",
-                "type": "string",
-                "description": "File Path of pdf to be signed"
+              "name": "modulePath",
+              "type": "string",
+              "description": "Path of HSM library"
+            },
+            {
+              "name": "pin",
+              "type": "string",
+              "description": "Pin to Hsm module"
+            },
+            {
+              "name": "mdHash",
+              "type": "string",
+              "description": "mdHash to be signed"
             },
             {
               "name": "callback",

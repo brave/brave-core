@@ -3,6 +3,29 @@ import("//build/config/sanitizers/sanitizers.gni")
 import("//build/toolchain/toolchain.gni")
 import("//build/config/arm.gni")
 import("//build/config/compiler/compiler.gni")
+import("//build/config/linux/pkg_config.gni")
+
+# Generate build files with CMake and compile the library
+action("build_botan") {
+  script = "//brave/third_party/botan/setup.py"
+  outputs = ["$root_build_dir/libbotan.dylib"]
+  args = [
+    rebase_path("//brave/third_party/botan", root_build_dir),  # Source directory
+    rebase_path("//brave/third_party/botan", root_build_dir),       # Build directory
+  ]
+
+  configs = [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+    "//build/config/compiler:rtti",
+    "//buildtools/third_party/libc++:config",
+  ]
+}
+
+copy("copy_policy") {
+  sources = [ "//brave/third_party/botan/libbotan.dylib" ]
+  outputs = [ "$root_out_dir/botan" ]
+}
 
 config("my_class_import") {
   include_dirs = [
@@ -12,12 +35,13 @@ config("my_class_import") {
     ]
     configs = [ "//build/config/compiler:no_chromium_code" ]
 
-  libs = ["//brave/third_party/botan/libbotan.dylib", "botan-3"]
+  libs = ["$root_build_dir/libbotan.dylib", "botan-3"]
   lib_dirs = ["//brave/third_party/botan/libs"]
 }
 
 group("botan") {
-        #configs -= [ "//build/config/compiler:chromium_code" ]
+  deps = [ ":build_botan"]
+  deps += [":copy_policy"]
   public_configs = [":my_class_import"]
-  public_configs += [ "//build/config/compiler:no_chromium_code" ] 
 }
+
