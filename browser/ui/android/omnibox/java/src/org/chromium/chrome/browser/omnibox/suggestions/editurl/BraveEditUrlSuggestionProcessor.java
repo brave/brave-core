@@ -50,7 +50,16 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
         return super.doesProcessSuggestion(suggestion, position);
     }
 
-    public AutocompleteMatch maybeUpdateSuggestion(AutocompleteMatch suggestion) {
+    /*
+     * Compared to upstream, we have different behaviour on clicking url bar https://github.com/brave/brave-browser/issues/10524
+     * Instead of clearing it, we keep url showing.
+     * This, however, changes showed suggestions on clicking url bar when we manually type url.
+     * In this case the first suggestion shown has type `URL_WHAT_YOU_TYPED`,
+     * suggestion's url hasn't been resolved and only contains typed text.
+     * Here, for the above case, we create a new copy of the suggestion with properly resolved url from the active tab
+     * to feed it to the upstream's `EditUrlSuggestionProcessor.onCopyLink` method.
+     */
+    public AutocompleteMatch maybeUpdateSuggestionForCopyLink(AutocompleteMatch suggestion) {
         Tab activeTab = mTabSupplier.get();
         if (suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
                 && activeTab != null

@@ -23,16 +23,21 @@ public abstract class BraveEditUrlSuggestionProcessorBase extends BaseSuggestion
         super(context, suggestionHost, imageSupplier);
     }
 
+    /*
+     * Calls to the upstream's `EditUrlSuggestionProcessor.onCopyLink` will be redirected here via bytecode.
+     * Here we call the upstream's `EditUrlSuggestionProcessor.onCopyLink` with possibly changed suggestion.
+     * See comment to `BraveEditUrlSuggestionProcessor.maybeUpdateSuggestionForCopyLink` for more details on why it may be changed.
+     */
     public void onCopyLink(AutocompleteMatch suggestion) {
         BraveReflectionUtil.InvokeMethod(
                 EditUrlSuggestionProcessor.class,
                 this,
                 "onCopyLink",
                 AutocompleteMatch.class,
-                maybeUpdateSuggestion(suggestion));
+                maybeUpdateSuggestionForCopyLink(suggestion));
     }
 
-    public AutocompleteMatch maybeUpdateSuggestion(AutocompleteMatch suggestion) {
+    public AutocompleteMatch maybeUpdateSuggestionForCopyLink(AutocompleteMatch suggestion) {
         assert false : "This method should be overridden by BraveEditUrlSuggestionProcessor";
         return suggestion;
     }

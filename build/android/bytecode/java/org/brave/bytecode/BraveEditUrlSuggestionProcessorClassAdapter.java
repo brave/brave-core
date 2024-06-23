@@ -20,7 +20,7 @@ public class BraveEditUrlSuggestionProcessorClassAdapter extends BraveClassVisit
 
         addMethodAnnotation(
                 sBraveEditUrlSuggestionProcessorName,
-                "maybeUpdateSuggestion",
+                "maybeUpdateSuggestionForCopyLink",
                 "Ljava/lang/Override;");
     }
 }
