@@ -17,8 +17,7 @@ import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
-// import { SettingsOptInForm } from '../../shared/components/onboarding'
-import { PdfRenderer } from '../../shared/components/onboarding/pdf_renderer'
+import { SettingsOptInForm } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
 import { UnsupportedRegionNotice } from './unsupported_region_notice'
@@ -209,8 +208,7 @@ export function Settings () {
 
     return (
       <style.onboarding>
-        {/* <SettingsOptInForm onEnable={isAndroid ? undefined : onEnable} /> */}
-        <PdfRenderer onEnable={isAndroid ? undefined : onEnable} />
+        <SettingsOptInForm onEnable={isAndroid ? undefined : onEnable} />
       </style.onboarding>
     )
   }
