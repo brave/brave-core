@@ -335,7 +335,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     shieldsRewardsStack.addArrangedSubview(rewardsButton)
 
     [
-      leadingItemsStackView, locationContainer, shieldsRewardsStack, trailingItemsStackView,
+      leadingItemsStackView, locationContainer, trailingItemsStackView,
       cancelButton,
     ].forEach {
       mainStackView.addArrangedSubview($0)

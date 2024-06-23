@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "数据无效";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "请在“设置”-> “隐私” ->“相机”中允许  Brave 访问您设备的相机。";
+"ScanQRCodePermissionErrorMessage" = "请在“设置”-> “隐私” ->“相机”中允许  Ping 访问您设备的相机。";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "扫描二维码";
@@ -119,7 +119,7 @@
 "UnableToAddPassErrorTitle" = "无法添加通行证";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
-"UnableToOpenURLError" = "Brave 无法打开页面，其地址无效。";
+"UnableToOpenURLError" = "Ping 无法打开页面，其地址无效。";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "无法打开页面";

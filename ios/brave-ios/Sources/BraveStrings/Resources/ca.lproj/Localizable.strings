@@ -43,8 +43,8 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "Mostra la pestanya anterior";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Obre Escuts de Brave";
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Ping Shields */
+"showShieldsTitle" = "Obre Escuts de Ping";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Mostra totes les pestanyes";

@@ -10,7 +10,7 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです。";
 
-/* The title for the button which links purchase to Brave Account */
+/* The title for the button which links purchase to Ping Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Braveアカウントに購入情報をリンク";
 
 /* The title for the label showing the date which subscription expires */
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "回答に「いいね」がつきました";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Brave AIのフィードバックを送信";
+"aichat.feedbackViewMainTitle" = "Ping AIのフィードバックを送信";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "プレミアムプラン";
@@ -118,7 +118,7 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "このページについて質問するには、トグルをクリックしてください。あなたが入力したメッセージとともに、ページのコンテンツがBrave Leoに送信されます。";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "このページを要約";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "了解しました";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leoは、インターネット利用を向上させるプライベートAIスマートアシスタントです。Leoは限定的なアクセスで無料です。Brave Leoプレミアムはより多くのモデル、より高い限度を提供し、加入者に新機能の早期アクセスを提供します。全ユーザーの現在のデフォルトモデルはMixtral 8x7Bです。詳細は **[Brave Wiki](%1$@)** をご覧ください。\n\nデフォルトでは、Leoに質問すると、閲覧中のウェブページの内容やページ上でハイライトしたテキストをBrave Leoに送信し、回答を提供するために使用することがあります。回答の正確さは保証されず、不正確な情報、誤解を招く情報、または偽の情報が含まれることがあります。LeoはBrave Searchからのデータを使用して回答の品質を向上させます。機密性の高い情報や個人情報を送信しないでください。また、健康、財務、個人の安全、またはそれに類する内容に関する回答には注意してください。Leoのオプションはいつでも設定で調整できます。設定 &gt; Leoにアクセスしてください。\n\nLeoは、あなたを特定できるIPアドレスなどの識別子を収集しません。AIモデルのトレーニングにデータは使用されませんし、AIモデルによる個人データの保持もありません（Anthropicがデータを30日間保持し、その後削除する場合を除く）。詳細は **[プライバシーポリシー](%2$@)** をご覧ください。";
+"aichat.termsConditionsDescription" = "Ping Leoは、インターネット利用を向上させるプライベートAIスマートアシスタントです。Leoは限定的なアクセスで無料です。Brave Leoプレミアムはより多くのモデル、より高い限度を提供し、加入者に新機能の早期アクセスを提供します。全ユーザーの現在のデフォルトモデルはMixtral 8x7Bです。詳細は **[Brave Wiki](%1$@)** をご覧ください。\n\nデフォルトでは、Leoに質問すると、閲覧中のウェブページの内容やページ上でハイライトしたテキストをBrave Leoに送信し、回答を提供するために使用することがあります。回答の正確さは保証されず、不正確な情報、誤解を招く情報、または偽の情報が含まれることがあります。LeoはBrave Searchからのデータを使用して回答の品質を向上させます。機密性の高い情報や個人情報を送信しないでください。また、健康、財務、個人の安全、またはそれに類する内容に関する回答には注意してください。Leoのオプションはいつでも設定で調整できます。設定 &gt; Leoにアクセスしてください。\n\nLeoは、あなたを特定できるIPアドレスなどの識別子を収集しません。AIモデルのトレーニングにデータは使用されませんし、AIモデルによる個人データの保持もありません（Anthropicがデータを30日間保持し、その後削除する場合を除く）。詳細は **[プライバシーポリシー](%2$@)** をご覧ください。";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Brave Leoとプライベートチャット";
+"aichat.termsConditionsTitle" = "Ping Leoとプライベートチャット";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "音声入力";

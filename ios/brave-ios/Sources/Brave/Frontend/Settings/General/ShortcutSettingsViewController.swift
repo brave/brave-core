@@ -110,37 +110,37 @@ class ShortcutSettingsViewController: TableViewController {
       )
     )
 
-    dataSource.sections.append(
-      Section(
-        rows: [
-          Row(
-            text: Strings.Shortcuts.shortcutSettingsEnableVPNTitle,
-            selection: { [unowned self] in
-              manageShortcutActivity(for: .enableBraveVPN)
-            },
-            accessory: .disclosureIndicator,
-            cellClass: MultilineValue1Cell.self
-          )
-        ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsEnableVPNDescription)
-      )
-    )
+    // dataSource.sections.append(
+    //   Section(
+    //     rows: [
+    //       Row(
+    //         text: Strings.Shortcuts.shortcutSettingsEnableVPNTitle,
+    //         selection: { [unowned self] in
+    //           manageShortcutActivity(for: .enableBraveVPN)
+    //         },
+    //         accessory: .disclosureIndicator,
+    //         cellClass: MultilineValue1Cell.self
+    //       )
+    //     ],
+    //     footer: .title(Strings.Shortcuts.shortcutSettingsEnableVPNDescription)
+    //   )
+    // )
 
-    dataSource.sections.append(
-      Section(
-        rows: [
-          Row(
-            text: Strings.Shortcuts.shortcutSettingsOpenBraveNewsTitle,
-            selection: { [unowned self] in
-              manageShortcutActivity(for: .openBraveNews)
-            },
-            accessory: .disclosureIndicator,
-            cellClass: MultilineValue1Cell.self
-          )
-        ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenBraveNewsDescription)
-      )
-    )
+    // dataSource.sections.append(
+    //   Section(
+    //     rows: [
+    //       Row(
+    //         text: Strings.Shortcuts.shortcutSettingsOpenBraveNewsTitle,
+    //         selection: { [unowned self] in
+    //           manageShortcutActivity(for: .openBraveNews)
+    //         },
+    //         accessory: .disclosureIndicator,
+    //         cellClass: MultilineValue1Cell.self
+    //       )
+    //     ],
+    //     footer: .title(Strings.Shortcuts.shortcutSettingsOpenBraveNewsDescription)
+    //   )
+    // )
 
     dataSource.sections.append(
       Section(

@@ -47,7 +47,7 @@ class SyncDeviceTypeButton: UIControl {
     layer.shadowOpacity = 0.1
     layer.shadowOffset = CGSize(width: 0, height: 1)
 
-    imageView.image = UIImage(named: image, in: .module, compatibleWith: nil)
+    // imageView.image = UIImage(named: image, in: .module, compatibleWith: nil)
     imageView.contentMode = .center
     imageView.tintColor = .braveLabel
     addSubview(imageView)

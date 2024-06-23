@@ -142,8 +142,8 @@ extension WidgetShortcut {
       return Strings.Widgets.walletShortcutTitle
     case .scanQRCode:
       return Strings.Widgets.QRCode
-    case .braveNews:
-      return Strings.Widgets.braveNews
+    // case .braveNews:
+    //   return Strings.Widgets.braveNews
     @unknown default:
       assertionFailure()
       return ""
@@ -173,8 +173,8 @@ extension WidgetShortcut {
       return Image(braveSystemName: "leo.product.brave-wallet")
     case .scanQRCode:
       return Image(braveSystemName: "leo.qr.code")
-    case .braveNews:
-      return Image(braveSystemName: "leo.product.brave-news")
+    // case .braveNews:
+    //   return Image(braveSystemName: "leo.product.brave-news")
     @unknown default:
       assertionFailure()
       return Image(systemName: "xmark.octagon")

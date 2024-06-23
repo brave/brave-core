@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "Informace";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "O Štítech Brave";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "O Štítech Ping";
 
-/* The body of the screen explaining Brave Shields */
+/* The body of the screen explaining Ping Shields */
 "AboutBraveShieldsBody" = "Webové stránky často obsahují soubory cookie a skripty, které se snaží identifikovat vás a vaše zařízení. Chtějí zjistit, kdo jste, a sledovat vás po celém webu –⁠⁠⁠⁠⁠⁠ chtějí sledovat, co děláte na každé webové stránce.\n\nBrave blokuje tyto věci, takže můžete prohlížet webové stránky, aniž byste byli sledováni.";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "To vám umožní uložit obrázek do vašeho fotoaparátu.";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave by chtěl získat přístup k vašim fotografiím";
+"AccessPhotoDeniedAlertTitle" = "Ping by chtěl získat přístup k vašim fotografiím";
 
 /* Button to add a bookmark */
 "AddBookmark" = "Přidat záložku";
@@ -52,8 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "Zapnuto";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "Tímto se ověří váš přístup k Brave";
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "Tímto se ověří váš přístup k Ping";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Zrušit ";
@@ -158,43 +158,43 @@
 "BookmarkUrlPlaceholderText" = "Adresa";
 
 /* Button to show the brave panel */
-"BravePanel" = "Panel Brave";
+"BravePanel" = "Panel Ping";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+"BraveRewardsAdNotificationTitle" = "Ping Rewards";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Otevřít";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Odměny";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Brave Rewards";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Ping Rewards";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave Search nesleduje vás, vaše dotazy ani kliknutí.";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Ping Search nesleduje vás, vaše dotazy ani kliknutí.";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "Možná později";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "Podpora nezávislého vyhledávání s lepší ochranou soukromí";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "Vyzkoušejte vyhledávání Brave";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "Vyzkoušejte vyhledávání Ping";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "Možná později";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "Dismiss";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "Pokročilé nastavení";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Štíty Brave a soukromí";
+"BraveShieldsAndPrivacy" = "Štíty Ping a soukromí";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Štíty a soukromí";
@@ -215,7 +215,7 @@
 "BraveShieldsSiteBroken" = "Pokud se tato stránka jeví jako nefunkční, zkuste štíty deaktivovat";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Štíty Brave";
+"BraveShieldsStatusTitle" = "Štíty Ping";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Dolů";
@@ -224,7 +224,7 @@
 "BraveShieldsStatusValueUp" = "Nahoru ";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "Dvojitým klepnutím přepnete štíty Brave";
+"BraveShieldsToggleHint" = "Dvojitým klepnutím přepnete štíty Ping";
 
 /* Sync page title */
 "BraveSync" = "Synchronizace";
@@ -233,16 +233,16 @@
 "BraveSyncInternalsTitle" = "Synchronizace vnitřních vlastností";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "Pro zahájení je potřeba mít Brave instalovaný na všech zařízeních, které máte v úmyslu synchronizovat. Pro jejich propojení spusťte synchronizační řetězec, který využijete k zabezpečenému vzájemnému propojení všech vašich zařízení.";
+"BraveSyncWelcome" = "Pro zahájení je potřeba mít Ping instalovaný na všech zařízeních, které máte v úmyslu synchronizovat. Pro jejich propojení spusťte synchronizační řetězec, který využijete k zabezpečenému vzájemnému propojení všech vašich zařízení.";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
+"bravetalk.braveTalkTitle" = "Ping Talk";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "Zámek prohlížeče";
 
 /* Description for setting to enable the browser lock privacy feature */
-"BrowserLockDescription" = "Odemkněte Brave pomocí Touch ID, Face ID nebo systémového přístupového hesla.";
+"BrowserLockDescription" = "Odemkněte Ping pomocí Touch ID, Face ID nebo systémového přístupového hesla.";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "Historie procházení";
@@ -257,13 +257,13 @@
 "callout.bottomBarCalloutDescription" = "Přesunout lištu s adresou, karty, záložky a další nástroje na spodní část prohlížeče.";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "Přizpůsobit lištu karet Brave";
+"callout.bottomBarCalloutTitle" = "Přizpůsobit lištu karet Ping";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Nastavit Brave jako výchozí prohlížeč?";
+"callout.defaultBrowserCalloutButtonDescription" = "Nastavit Ping jako výchozí prohlížeč?";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Pokud je Brave nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Brave.";
+"callout.defaultBrowserCalloutDescription" = "Pokud je Ping nastaven jako váš výchozí prohlížeč, každý odkaz, na který kliknete, se otevře s ochranou soukromí Ping.";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "Nastavit výchozí";
@@ -278,19 +278,19 @@
 "callout.defaultBrowserTitle" = "Soukromí. Zjednodušeně.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "To nám pomáhá zjistit, jaké funkce Brave se používají nejčastěji. Změňte kdykoli v Nastavení Brave v části Štíty Brave a další nastavení ochrany osobních údajů.";
+"callout.p3aCalloutDescription" = "To nám pomáhá zjistit, jaké funkce Ping se používají nejčastěji. Změňte kdykoli v Nastavení Ping v části Štíty Ping a další nastavení ochrany osobních údajů.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "Další informace o naší analýze produktů pro zachování soukromí (P3A).";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Pomozte vylepšit Brave.";
+"callout.p3aCalloutTitle" = "Pomozte vylepšit Ping.";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "Sdílejte zcela soukromé a anonymní informace o produktu.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Získejte ochranu soukromí Brave na svém počítači nebo tabletu a synchronizujte záložky a rozšíření mezi zařízeními.";
+"callout.privacyEverywhereCalloutDescription" = "Získejte ochranu soukromí Ping na svém počítači nebo tabletu a synchronizujte záložky a rozšíření mezi zařízeními.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "Synchronizovat nyní";
@@ -370,7 +370,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "Organizační jednotka";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "Organizace";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -556,19 +556,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "Vyhledávač se stejným názvem již existuje.";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "Nezabezpečená šablona vlastního vyhledávání pro";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "Nezabezpečená šablona vlastního návrhu pro";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "Přidat vyhledávač";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "Šablona vyhledávání:";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "Šablona návrhu:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -611,19 +611,19 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Otevřít nastavení";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "Otvírejte všechny odkazy pomocí Brave a chraňte tak svoje soukromí";
+"defaultBrowserCallout.introPrimaryText" = "Otvírejte všechny odkazy pomocí Ping a chraňte tak svoje soukromí";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Štíty Brave blokují trackery a reklamy, ukládají data a šetří vám čas na každé vámi navštívené stránce";
+"defaultBrowserCallout.introSecondaryText" = "Štíty Ping blokují trackery a reklamy, ukládají data a šetří vám čas na každé vámi navštívené stránce";
 
 /* Tertiary text on default browser popup screen */
-"defaultBrowserCallout.introTertiaryText" = "Otevřete Nastavení, klepněte na Výchozí aplikace prohlížeče a vyberte Brave.";
+"defaultBrowserCallout.introTertiaryText" = "Otevřete Nastavení, klepněte na Výchozí aplikace prohlížeče a vyberte Ping.";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "Nastavte si Brave jako výchozí prohlížeč";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "Nastavte si Ping jako výchozí prohlížeč";
 
-/* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "Získejte ochranu Brave na každém odkazu";
+/* Notification title to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationTitle" = "Získejte ochranu Ping na každém odkazu";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Zavřít výchozí popisek prohlížeče";
@@ -631,8 +631,8 @@
 /* A section title that contains default (predefined) filter lists a user can enable/diable. */
 "DefaultFilterLists" = "Výchozí seznamy filtrů";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Výchozí nastavení Brave";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Výchozí nastavení Ping";
 
 /* No comment provided by engineer. */
 "Delete" = "Smazat";
@@ -737,7 +737,7 @@
 "ErrorPageReloadButtonTitle" = "Načíst znovu";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obvykle používá šifrování k ochraně vašich informací. Když se Brave tentokrát pokusil připojit k %2$@, web poslal zpět neobvyklé a nesprávné přihlašovací údaje. K tomu může dojít, když se útočník snaží předstírat, že je %3$@, nebo když přihlašovací obrazovka pro Wi-Fi přerušila připojení. Vaše informace jsou stále zabezpečené, protože Brave ukončil připojení před výměnou jakýchkoli dat. <br />Právě teď nemůžete navštívit %4$@, protože webová stránka používá připnutí certifikátů. Síťové chyby a útoky jsou obvykle dočasné, takže tato stránka bude pravděpodobně fungovat později.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obvykle používá šifrování k ochraně vašich informací. Když se Ping tentokrát pokusil připojit k %2$@, web poslal zpět neobvyklé a nesprávné přihlašovací údaje. K tomu může dojít, když se útočník snaží předstírat, že je %3$@, nebo když přihlašovací obrazovka pro Wi-Fi přerušila připojení. Vaše informace jsou stále zabezpečené, protože Ping ukončil připojení před výměnou jakýchkoli dat. <br />Právě teď nemůžete navštívit %4$@, protože webová stránka používá připnutí certifikátů. Síťové chyby a útoky jsou obvykle dočasné, takže tato stránka bude pravděpodobně fungovat později.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Tento server nemohl prokázat, že je %@. Jeho bezpečnostní certifikát není důvěryhodným operačním systémem vašeho zařízení. Může to být způsobeno nesprávnou konfigurací nebo útočníkem, který se pokouší podchytit vaše připojení.";
@@ -784,10 +784,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "Povolit odkaz na přepínání aplikací?";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "Povolit";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "Nepovolit";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -890,10 +890,10 @@
 "HideLinkPreviewsActionTitle" = "Skrýt náhledy odkazů";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "Skrýt ikonu odměn Brave";
+"HideRewardsIcon" = "Skrýt ikonu odměn Ping";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Pokud nejsou odměny Brave povoleny, tak skryje ikonu odměny Brave";
+"HideRewardsIconSubtitle" = "Pokud nejsou odměny Ping povoleny, tak skryje ikonu odměny Ping";
 
 /* Title for history menu item */
 "HistortMenuItem" = "History";
@@ -949,7 +949,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "Zjistit více ";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -1037,7 +1037,7 @@
 "MyFirstAdBody" = "Klikněte sem, abyste se dozvěděli více.";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "Toto je vaše první reklama Brave";
+"MyFirstAdTitle" = "Toto je vaše první reklama Ping";
 
 /* Bookmark title / Device name */
 "Name" = "Název";
@@ -1099,14 +1099,14 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "Automaticky přesměruje odkazy NPR na jejich textovou verzi (na text.npr.org).";
 
-/* Bookmark title for Brave Support */
-"ntp.braveSupportFavoriteTitle" = "Podpora Brave";
+/* Bookmark title for Ping Support */
+"ntp.braveSupportFavoriteTitle" = "Podpora Ping";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Převzít Tokeny";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "Procházením s Brave jste získali %@.";
+"ntp.earningsReport" = "Procházením s Ping jste získali %@.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Výborně!";
@@ -1115,10 +1115,10 @@
 "ntp.hideSponsoredImages" = "Skrýt sponzorované obrázky";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "„Sponzorované“ jsou dodatečná značková pozadí, ze kterých můžete něco získat, pokud povolíte odměny Brave.";
+"ntp.imageTypeSelectionDescription" = "„Sponzorované“ jsou dodatečná značková pozadí, ze kterých můžete něco získat, pokud povolíte odměny Ping.";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "Další informace o odměnách Brave";
+"ntp.learnMoreAboutRewards" = "Další informace o odměnách Ping";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "Zjistit více o sponzorovaných obrázcích";
@@ -1157,10 +1157,10 @@
 "OBAdsOptInMessageJapan" = "Získejte body a při prohlížení stránek odměňujte tvůrce za skvělý obsah.";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Reklamy Brave jsou tady!";
+"OBAdsOptInTitle" = "Reklamy Ping jsou tady!";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave zobrazí vaši první reklamu v";
+"OBAdsTitle" = "Ping zobrazí vaši první reklamu v";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "Nyní jste připraveni.";
@@ -1180,14 +1180,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Začít prohlížet";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "Přidat se";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "Povolte Brave zkontrolovat v mé schránce odpovídající referenční kód";
+"OBPrivacyConsentClipboardPermission" = "Povolte Ping zkontrolovat v mé schránce odpovídající referenční kód";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "Pravděpodobně jste si stáhli Brave na podporu svého referera. Aby Brave mohl detekovat vašeho referera, provede jednorázovou kontrolu ve vaší schránce, zda neobsahuje odpovídající referenční kód. Tato kontrola je omezena pouze na kód a nedojde k předání žádných dalších osobních údajů. Pokud se odhlásíte, váš referer neobdrží odměny od Brave.";
+"OBPrivacyConsentDetail" = "Pravděpodobně jste si stáhli Ping na podporu svého referera. Aby Ping mohl detekovat vašeho referera, provede jednorázovou kontrolu ve vaší schránce, zda neobsahuje odpovídající referenční kód. Tato kontrola je omezena pouze na kód a nedojde k předání žádných dalších osobních údajů. Pokud se odhlásíte, váš referer neobdrží odměny od Ping.";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "Nepovolit tuto kontrolu";
@@ -1208,10 +1208,10 @@
 "OBRewardsAgreementDetailsAnd" = "a";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Ping Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "Přihlášení k soukromým reklamám Brave podporuje vydavatele a tvůrce obsahu při každé zobrazené reklamě.";
+"OBRewardsDetail" = "Přihlášení k soukromým reklamám Ping podporuje vydavatele a tvůrce obsahu při každé zobrazené reklamě.";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "Získejte tokeny a při prohlížení stránek odměňujte tvůrce za skvělý obsah.";
@@ -1220,7 +1220,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Zásady ochrany osobních údajů";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
+"OBRewardsTitle" = "Ping Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Uložit";
@@ -1229,28 +1229,28 @@
 "OBSearchEngineDetail" = "Vyberte výchozí vyhledávač";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Vítejte v prohlížeči Brave";
+"OBSearchEngineTitle" = "Vítejte v prohlížeči Ping";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "Blokujte trackery narušující soukromí, abyste mohli prohlížet stránky, aniž byste byli sledováni po webu";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Štíty Brave";
+"OBShieldsTitle" = "Štíty Ping";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "Ukázat";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "Spustit";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ a dalších %2$ lld reklam a trackerů bylo zablokováno";
 
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Podívejte se na nekalosti, které prohlížeč Brave s pomocí štítů zablokoval na všech navštívených stránkách.";
+/* The footnote indicating what Ping shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "Podívejte se na nekalosti, které prohlížeč Ping s pomocí štítů zablokoval na všech navštívených stránkách.";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Klepnutím zobrazíte štíty Brave";
+"onboarding.blockedAdsOnboardingInstructionsText" = "Klepnutím zobrazíte štíty Ping";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reklam a trackerů bylo zablokováno";
@@ -1259,10 +1259,10 @@
 "onboarding.linkReceiptButton" = "Propojit předplatné VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Vaše předplatné Brave VPN může chránit až 5 zařízení na Androidu, iOS a stolním počítači. Stačí propojit vaše předplatné App Store s vaším účtem Brave.";
+"onboarding.linkReceiptDescription" = "Vaše předplatné Ping VPN může chránit až 5 zařízení na Androidu, iOS a stolním počítači. Stačí propojit vaše předplatné App Store s vaším účtem Ping.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptTitle" = "Rozšiřte ochranu Brave Firewall + VPN";
+"onboarding.linkReceiptTitle" = "Rozšiřte ochranu Ping Firewall + VPN";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "Vyhledejte „Výchozí aplikaci prohlížeče“";
@@ -1280,7 +1280,7 @@
 "onboarding.omniboxOnboardingPopOverTitle" = "Napište název nebo adresu URL webové stránky.";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Vítá vás Brave";
+"onboarding.welcomeScreenTitle" = "Vítá vás Ping";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Continue";
@@ -1294,8 +1294,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Otevřít vše (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "Otevřít nastavení odměn Brave";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Otevřít nastavení odměn Ping";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "Při otevírání složky Stažené soubory v aplikaci Soubory došlo k neznámé chybě.";
@@ -1352,13 +1352,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "Začněte nastavením synchronizačního řetězce a přepněte „Otevřít karty“ v Nastavení synchronizace.";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Spravujte, co Brave synchronizuje v Nastavení.";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "Spravujte, co Ping synchronizuje v Nastavení.";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "Neexistují žádné aktivní relace, které by se zobrazovaly z vašich ostatních zařízení.";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "Tento prostor zobrazuje karty Brave otevřené v jiných zařízeních";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "Tento prostor zobrazuje karty Ping otevřené v jiných zařízeních";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "Prozatím skrýt";
@@ -1411,38 +1411,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "Otevřít webovou stránku";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo je chytrý asistent využívající technologie umělé inteligence a je zabudovaný přímo v prohlížeči.";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "Dnešní hlavní příběhy v soukromém zpravodajském kanálu";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "Zprávy";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "Mějte seznam skladeb libovolného videa/streamu offline";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Seznam stop";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "Soukromé videohovory přímo ve vašem prohlížeči";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Mluvit";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "Chraňte své celé zařízení online";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "Bezpečná krypto peněženka. Není nutné žádné rozšíření";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Funkce Brave";
+"optionsMenu.menuSectionTitle" = "Funkce Ping";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "Další nastavení ochrany osobních údajů";
@@ -1454,7 +1454,7 @@
 "p3a.continue" = "Continue";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Tyto soukromé odpovědi pomáhají Brave odhadnout celkové využití určitých funkcí a vylepšit je pro vás.";
+"p3a.settingSubtitle" = "Tyto soukromé odpovědi pomáhají Ping odhadnout celkové využití určitých funkcí a vylepšit je pro vás.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Povolit analýzu produktů se zachováním soukromí (P3A)";
@@ -1508,7 +1508,7 @@
 "PersistentPrivateBrowsing" = "Trvalé soukromé prohlížení stránek";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "Umožňuje Brave obnovit karty soukromého prohlížení, i když aplikaci zavřete nebo znovu otevřete";
+"PersistentPrivateBrowsingAlertMessage" = "Umožňuje Ping obnovit karty soukromého prohlížení, i když aplikaci zavřete nebo znovu otevřete";
 
 /* Persistent private browsing alert title to existing users */
 "PersistentPrivateBrowsingAlertTitle" = "Obnovit soukromé karty";
@@ -1523,7 +1523,7 @@
 "playList.addToPlayListAlertDescription" = "Chcete přidat toto video do svého seznamu skladeb?";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "Přidat do seznamu skladeb Brave";
+"playList.addToPlayListAlertTitle" = "Přidat do seznamu skladeb Ping";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "Možnosti přehrávání";
@@ -1544,7 +1544,7 @@
 "playlist.carplaySettingsSectionTitle" = "Nastavení ";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Seznam stop Brave";
+"playlist.carplayTitle" = "Seznam stop Ping";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "Změnit seznam skladeb";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "Došlo k problému při načítání zdroje!";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "Při povolení se na ikoně hlavní nabídky zobrazí symbol, který označuje, že média na stránce mohou být přidána do seznamu skladeb Brave.";
+"playlist.menuBadgeOptionFooterText" = "Při povolení se na ikoně hlavní nabídky zobrazí symbol, který označuje, že média na stránce mohou být přidána do seznamu skladeb Ping.";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Zobrazit symbol oznámení nabídky";
@@ -1580,7 +1580,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "Přesunout...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "Položky můžete přidávat do svého seznamu skladeb Brave v prohlížeči";
+"playList.noItemLabelDetailLabel" = "Položky můžete přidávat do svého seznamu skladeb Ping v prohlížeči";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "Nejsou k dispozici žádné položky";
@@ -1670,7 +1670,7 @@
 "playList.playListSettingTitle" = "Seznam stop";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "Tato složka již existuje ve vašem seznamu skladeb Brave";
+"playList.playlistSharedFolderAlreadyExistsBody" = "Tato složka již existuje ve vašem seznamu skladeb Ping";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "Omlouváme se";
@@ -1745,7 +1745,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "Aktuální položku můžete otevřít na nové kartě nebo ji sdílet prostřednictvím nabídky sdílení systému";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Nabídka seznamu skladeb Brave";
+"playlist.sharePlaylistActionTitle" = "Nabídka seznamu skladeb Ping";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "Otevřít v soukromé kartě";
@@ -1760,16 +1760,16 @@
 "playList.sorryAlertTitle" = "Omlouváme se";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Přidáno do seznamu skladeb Brave";
+"playList.toastAddedToPlaylistTitle" = "Přidáno do seznamu skladeb Ping";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Otevřít";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Přidat do seznamu skladeb Brave";
+"playList.toastAddToPlaylistTitle" = "Přidat do seznamu skladeb Ping";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "Zobrazit v seznamu skladeb Brave";
+"playList.toastExitingItemPlaylistTitle" = "Zobrazit v seznamu skladeb Ping";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "Zpět ";
@@ -1813,7 +1813,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "Přesunout";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ a 1 další položka";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1822,7 +1822,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 položka";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ a %2$lld další/dalších položky/položek";
 
 /* The title of the button to create a new folder */
@@ -1853,7 +1853,7 @@
 "playlistFolders.untitledFolderTitle" = "Seznam skladeb bez názvu";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "Tlačítko Přidat do seznamu skladeb Brave";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "Tlačítko Přidat do seznamu skladeb Ping";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "Uložit";
@@ -1906,7 +1906,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "Od počátku věků";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "Trackery a reklamy";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1930,10 +1930,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Web";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "Všechny výstrahy";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "Blokováno";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1957,8 +1957,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "Minulý týden";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** byl zablokován štíty Brave na **%2$lld** stránkách";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** byl zablokován štíty Ping na **%2$lld** stránkách";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "Nejčastější tracker a reklama";
@@ -1976,7 +1976,7 @@
 "privacyHub.notificationCalloutButtonText" = "Zapnout oznámení";
 
 /* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "Rekapitulace toho, jak vás tento týden Brave chránil online.";
+"privacyHub.notificationMessage" = "Rekapitulace toho, jak vás tento týden Ping chránil online.";
 
 /* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "Týdenní zpráva o soukromí";
@@ -1999,22 +1999,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Stránka s největším počtem trackerů";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "Centrum soukromí zobrazuje počet toho, co štíty zablokovaly. Nastavení nebude mít na stránce nové karty vliv na počítadlo štítů. Data štítů se v soukromých oknech nezapočítávají.";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "Zobrazit data štítů";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "Nastavení platí pouze v případě, že jste si zakoupili předplatné VPN.";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "Zobrazit výstrahy VPN";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "Obnoví počet všeho, co štíty zablokovaly.";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "Vymazat data štítů";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2042,15 +2042,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Tracker nebo reklama";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Upozornění na Firewall + VPN od Brave";
+"privacyHub.vpnAlertsHeader" = "Upozornění na Firewall + VPN od Ping";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "Firewall + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "Celkový počet";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "Zásady ochrany osobních údajů";
 
 /* Private button title */
@@ -2066,10 +2066,10 @@
 "PrivateBrowsingOnlyWarning" = "Režim pouze anonymního prohlížení zavře všechny vaše aktuální karty a odhlásí vás ze všech stránek.";
 
 /* Private tab details */
-"PrivateTabBody" = "Soukromé karty se v Brave neukládají, ale nejste s nimi online anonymní. Stránky, které navštívíte v soukromé kartě, se nezobrazí ve vaší historii a jejich soubory cookie vždy zmizí, když je zavřete — žádná jejich stopa v Brave nezůstane. Stažené soubory se však uloží.\nVáš mobilní operátor (nebo vlastník sítě Wi-Fi nebo VPN, ke které jste připojeni) vidí, které stránky navštěvujete, a tyto stránky zjistí vaši veřejnou IP adresu, a to i na soukromých kartách.";
+"PrivateTabBody" = "Soukromé karty se v Ping neukládají, ale nejste s nimi online anonymní. Stránky, které navštívíte v soukromé kartě, se nezobrazí ve vaší historii a jejich soubory cookie vždy zmizí, když je zavřete — žádná jejich stopa v Ping nezůstane. Stažené soubory se však uloží.\nVáš mobilní operátor (nebo vlastník sítě Wi-Fi nebo VPN, ke které jste připojeni) vidí, které stránky navštěvujete, a tyto stránky zjistí vaši veřejnou IP adresu, a to i na soukromých kartách.";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Používání soukromých karet mění pouze to, co Brave dělá na vašem zařízení, nemění chování kohokoli jiného.\n\nStránky vždy zjistí vaši IP adresu, když je navštívíte. Z toho často mohou zhruba odhadnout, kde jste — typicky vaše město. Někdy může být tento odhad polohy mnohem konkrétnější. Stránky také ví všechno, co jim konkrétně řeknete, jako vyhledávané pojmy. Pokud se přihlásíte na stránku, budou vědět, že jste vlastníky tohoto účtu. Když soukromé karty zavřete, budete stále odhlášeni, protože Brave zahodí cookie, které vás udržuje přihlášené. \n\nKdokoli vás připojí k internetu (váš poskytovatel internetových služeb), vidí veškerou vaši aktivitu na síti. Často je to váš mobilní operátor. Pokud jste připojeni k síti Wi-Fi, je to vlastník této sítě, a pokud používáte VPN, pak je to kdokoli, kdo tu VPN provozuje. Váš poskytovatel internetových služeb vidí, které stránky navštěvujete, když je navštěvujete. Pokud tyto stránky používají HTTPS, nemůže provést o moc víc než kvalifikovaný odhad toho, co na těchto stránkách děláte. Ale pokud stránka používá pouze HTTP, váš poskytovatel internetových služeb vidí vše: vaše vyhledávané pojmy, jaké stránky čtete a na jaké odkazy klikáte.\n\nPokud zaměstnavatel spravuje vaše zařízení, může také sledovat, co s ním děláte. Používání soukromých karet mu pravděpodobně nezabrání v tom, aby viděl, jaké stránky jste navštívili. Někdo jiný s přístupem k vašemu zařízení mohl také instalovat software, který monitoruje vaši aktivitu, a ani soukromé karty vás před tím neochrání.";
+"PrivateTabDetails" = "Používání soukromých karet mění pouze to, co Ping dělá na vašem zařízení, nemění chování kohokoli jiného.\n\nStránky vždy zjistí vaši IP adresu, když je navštívíte. Z toho často mohou zhruba odhadnout, kde jste — typicky vaše město. Někdy může být tento odhad polohy mnohem konkrétnější. Stránky také ví všechno, co jim konkrétně řeknete, jako vyhledávané pojmy. Pokud se přihlásíte na stránku, budou vědět, že jste vlastníky tohoto účtu. Když soukromé karty zavřete, budete stále odhlášeni, protože Ping zahodí cookie, které vás udržuje přihlášené. \n\nKdokoli vás připojí k internetu (váš poskytovatel internetových služeb), vidí veškerou vaši aktivitu na síti. Často je to váš mobilní operátor. Pokud jste připojeni k síti Wi-Fi, je to vlastník této sítě, a pokud používáte VPN, pak je to kdokoli, kdo tu VPN provozuje. Váš poskytovatel internetových služeb vidí, které stránky navštěvujete, když je navštěvujete. Pokud tyto stránky používají HTTPS, nemůže provést o moc víc než kvalifikovaný odhad toho, co na těchto stránkách děláte. Ale pokud stránka používá pouze HTTP, váš poskytovatel internetových služeb vidí vše: vaše vyhledávané pojmy, jaké stránky čtete a na jaké odkazy klikáte.\n\nPokud zaměstnavatel spravuje vaše zařízení, může také sledovat, co s ním děláte. Používání soukromých karet mu pravděpodobně nezabrání v tom, aby viděl, jaké stránky jste navštívili. Někdo jiný s přístupem k vašemu zařízení mohl také instalovat software, který monitoruje vaši aktivitu, a ani soukromé karty vás před tím neochrání.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Více informací o soukromých kartách.";
@@ -2084,7 +2084,7 @@
 "QuickSearchEngines" = "Rychlé vyhledávače";
 
 /* Open the App Store to rate Brave. */
-"RateBrave" = "Ohodnotit Brave";
+"RateBrave" = "Ohodnotit Ping";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Zvětšit velikost textu";
@@ -2113,13 +2113,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "Změní typ písma.";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "Načítám obsah...";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Načíst původní stránku";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "Stránka nemohla být zobrazena v zobrazení čtečky.";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2237,10 +2237,10 @@
 "ReportBrokenContactMeSuggestions" = "Email, Twitter atd.";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:";
+"ReportBrokenSiteBody1" = "Dejte vývojářům Ping vědět, že tyto stránky se zabezpečením Shields nefungují správně:";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "Poznámka: Zpráva odeslaná na servery Brave bude zahrnovat adresu stránky, číslo verze prohlížeče Brave, nastavení štítů, stav VPN a nastavení jazyka.";
+"ReportBrokenSiteBody2" = "Poznámka: Zpráva odeslaná na servery Ping bude zahrnovat adresu stránky, číslo verze prohlížeče Brave, nastavení štítů, stav VPN a nastavení jazyka.";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Submit";
@@ -2273,33 +2273,33 @@
 "RestoreTabNegativeButtonTitle" = "Ne";
 
 /* Restore Tabs Prompt Description */
-"RestoreTabOnCrashAlertMessage" = "Brave bohužel přestal fungovat nebo se nezavřel správně.\nPřejete si obnovit vaše karty?";
+"RestoreTabOnCrashAlertMessage" = "Ping bohužel přestal fungovat nebo se nezavřel správně.\nPřejete si obnovit vaše karty?";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave se nečekaně zavřel.";
+"RestoreTabOnCrashAlertTitle" = "Ping se nečekaně zavřel.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "S odměnami Brave si můžete zobrazit reklamy chránící soukromí ze sítě Reklamy Brave. Žádné trackery. Žádné zpomalení. A vaše data zůstávají naprosto v bezpečí.";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "S odměnami Ping si můžete zobrazit reklamy chránící soukromí ze sítě Reklamy Brave. Žádné trackery. Žádné zpomalení. A vaše data zůstávají naprosto v bezpečí.";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "Zapnout Rewards";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknutím kdekoli na obrazovce můžete pokračovat v Brave Talk.";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknutím kdekoli na obrazovce můžete pokračovat v Ping Talk.";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "Nyní můžete zahájit bezplatný hovor";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Chcete-li zahájit bezplatný hovor, zapněte funkci Brave Rewards.";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "Chcete-li zahájit bezplatný hovor, zapněte funkci Ping Rewards.";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "Zapnutím podpoříte autory obsahu";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "Používání odměn Brave vám pomáhá při prohlížení stránek podporovat tvůrce obsahu.";
+"rewards.disabledStatusBody" = "Používání odměn Ping vám pomáhá při prohlížení stránek podporovat tvůrce obsahu.";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "Pomáháte podporovat autory obsahu";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2309,10 +2309,10 @@
 "rewards.optInDisclaimer" = "Kliknutím souhlasíte s %1$@ a %2$@. Můžete je kdykoliv zakázat v Nastavení.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "Podporujte automaticky tvůrce obsahu a vydavatele povolením soukromých reklam Brave. Soukromé reklamy Brave jsou reklamy respektující soukromí, které se vracejí tvůrcům obsahu.";
+"rewards.settingsToggleMessage" = "Podporujte automaticky tvůrce obsahu a vydavatele povolením soukromých reklam Brave. Soukromé reklamy Ping jsou reklamy respektující soukromí, které se vracejí tvůrcům obsahu.";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "Povolit Brave Rewards";
+"rewards.settingsToggleTitle" = "Povolit Ping Rewards";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "Pomáháte podporovat tvůrce obsahu, jako je tento.";
@@ -2342,7 +2342,7 @@
 "RewardsInternalsContributionAmount" = "Částka příspěvku";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Tokeny Brave";
+"RewardsInternalsContributionProcessorBraveTokens" = "Tokeny Ping";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "Žádné";
@@ -2600,7 +2600,7 @@
 "SearchSuggestionsSectionHeader" = "Návrhy vyhledávání";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "Hledat vyhledávací službou Brave";
+"SearchWithBrave" = "Hledat vyhledávací službou Ping";
 
 /* Settings security section title */
 "Security" = "Zabezpečení";
@@ -2609,18 +2609,18 @@
 "sendButtonTitle" = "Odeslat";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "Odeslat zprávu o selhání, aby Brave mohl problém vyřešit?";
+"SendCrashReportAlertMessage" = "Odeslat zprávu o selhání, aby Ping mohl problém vyřešit?";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Jejda! Brave přestal fungovat";
+"SendCrashReportAlertTitle" = "Jejda! Ping přestal fungovat";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Odeslat zprávu";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Brave lze nyní nastavit jako váš výchozí prohlížeč v iOS. Klepnutím sem otevřete nastavení.";
+"setDefaultBrowserCalloutTitle" = "Ping lze nyní nastavit jako váš výchozí prohlížeč v iOS. Klepnutím sem otevřete nastavení.";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Nastavit jako výchozí prohlížeč";
 
 /* No comment provided by engineer. */
@@ -2642,7 +2642,7 @@
 "settings.autocloseTabsSetting" = "Zavřít karty";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "Povolit Brave automaticky zavírat karty, které nebyly v poslední době zobrazeny.";
+"settings.autocloseTabsSettingFooter" = "Povolit Ping automaticky zavírat karty, které nebyly v poslední době zobrazeny.";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "Přehrávání nejvyšší kvality";
@@ -2656,8 +2656,8 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "Média";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
-"settings.openYouTubeInBrave" = "Otevírat odkazy na YouTube v prohlížeči Brave";
+/* A toggle label which lets the user always open YouTube urls in Ping */
+"settings.openYouTubeInBrave" = "Otevírat odkazy na YouTube v prohlížeči Ping";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "Povolit čas na obrazovce";
@@ -2669,10 +2669,10 @@
 "settings.qualitySettings" = "Nastavení kvality";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Tento soukromý ping umožňuje Brave odhadnout počet aktivních uživatelů.";
+"settings.sendUsagePingDescription" = "Tento soukromý ping umožňuje Ping odhadnout počet aktivních uživatelů.";
 
 /* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "Automatické odesílání denního pingu do služby Brave";
+"settings.sendUsagePingTitle" = "Automatické odesílání denního pingu do služby Ping";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Nelze načíst stránku.";
@@ -2732,7 +2732,7 @@
 "shieldEducation.shareTheNewsTitle" = "Sdílejte, co je nového";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Štíty Brave právě ochránily vaše online soukromí.";
+"shieldEducation.trackerAdWarningSubTitle" = "Štíty Ping právě ochránily vaše online soukromí.";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Gratulujeme. Jste poměrně unikátní.";
@@ -2747,7 +2747,7 @@
 "shieldEducation.videoAdBlockTitle" = "Při sledování videí na tomto webu jsou reklamy blokovány.";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Výchozí globální štíty Brave";
+"ShieldsDefaults" = "Výchozí globální štíty Ping";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "Toto jsou výchozí nastavení štítů pro nové stránky. Jejich změna neovlivní vaše stávající nastavení pro jednotlivé stránky.";
@@ -2771,7 +2771,7 @@
 "ShortcutItemTitleQRCode" = "Scan QR Code";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "Otevřít Novinky Brave a podívat se na dnešní hlavní příběhy";
+"shortcuts.activityTypeBraveNewsDescription" = "Otevřít Novinky Ping a podívat se na dnešní hlavní příběhy";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "Otevřít prohlížeč na nové kartě a odstranit všechna data historie soukromého prohlížeče";
@@ -2780,7 +2780,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "Vymazat historii prohlížeče";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "Vymazat historii prohlížení stránek Brave";
+"shortcuts.activityTypeClearHistoryTitle" = "Vymazat historii prohlížení stránek Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "Otevřít prohlížeč na nové kartě a povolit VPN";
@@ -2789,7 +2789,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "Povolit VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "Otevřít prohlížeč Brave a povolit VPN";
+"shortcuts.activityTypeEnableVPNTitle" = "Otevřít prohlížeč Ping a povolit VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Otevřít novou soukromou kartu";
@@ -2810,13 +2810,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "Otevřít záložky";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "Otevřít záložky prohlížeče Brave";
+"shortcuts.activityTypeOpenBookmarksTitle" = "Otevřít záložky prohlížeče Ping";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "Otevřít Novinky Brave";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "Otevřít Novinky Ping";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Otevřít Novinky Brave";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "Otevřít Novinky Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "Otevřít obrazovku historie prohlížeče";
@@ -2825,7 +2825,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "Otevřít historii prohlížeče";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "Otevřít historii prohlížeče Brave";
+"shortcuts.activityTypeOpenHistoryListTitle" = "Otevřít historii prohlížeče Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "Začít přehrávat vaše videa v seznamu skladeb";
@@ -2837,7 +2837,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "Otevřít seznam stop";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "Otevřít karty Brave otevřené v jiných zařízeních";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "Otevřít karty Ping otevřené v jiných zařízeních";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Otevřít karty z jiných zařízení";
@@ -2846,7 +2846,7 @@
 "shortcuts.activityTypeOpenSyncedTabsTitle" = "Otevřít karty z jiných zařízení";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "Začít pomocí Brave bezpečně prohledávat webové stránky";
+"shortcuts.activityTypeTabDescription" = "Začít pomocí Ping bezpečně prohledávat webové stránky";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Otevřít webové stránky záložek";
@@ -2857,7 +2857,7 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Otevřít webovou stránku";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
+/* Description for opening Ping Settings for altering Siri shortcut. */
 "shortcuts.shortcutOpenApplicationSettingsDescription" = "Tato možnost otevře nastavení Brave. Chcete-li změnit různé možnosti Siri, vyberte prosím položku nabídky „Siri a vyhledávání“ a přizpůsobte své volby.";
 
 /* Button title that open application settings */
@@ -2870,7 +2870,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Vymazat historii prohlížeče";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Pomocí klávesových zkratek povolte VPN Brave prostřednictvím Siri – hlasového asistenta";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Pomocí klávesových zkratek povolte VPN Ping prostřednictvím Siri – hlasového asistenta";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Povolit VPN";
@@ -2881,11 +2881,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Otevřít záložky";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Pomocí klávesových zkratek otevřete novou kartu a zobrazte kanál Novinky Brave prostřednictvím Siri – hlasového asistenta";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Pomocí klávesových zkratek otevřete novou kartu a zobrazte kanál Novinky Ping prostřednictvím Siri – hlasového asistenta";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Otevřít Novinky Brave";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Otevřít Novinky Ping";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Pomocí klávesových zkratek otevřete obrazovku historie prohlížeče prostřednictvím Siri – hlasového asistenta";
@@ -2951,19 +2951,19 @@
 "ShowTabsBar" = "Panel karet";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!";
+"SiteReportedBody" = "Díky, že jste vývojářům Ping dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "Děkuji";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "Štíty ";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Každý den ukládám data procházením webu přes prohlížeč Brave.";
+"socialSharing.domainSpecificDataSavedTitle" = "Každý den ukládám data procházením webu přes prohlížeč Ping.";
 
-/* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "Každý den ukládám data procházením webu přes prohlížeč Brave.";
+/* Text used for social sharing together with Ping Shield values */
+"socialSharing.shareDescriptionTitle" = "Každý den ukládám data procházením webu přes prohlížeč Ping.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Standardní karta";
@@ -3113,7 +3113,7 @@
 "SyncRemoveDeviceDefaultName" = "Zařízení";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "Aktuálně synchronizovaná data zůstanou zachována, ale všechna data v mezipaměti synchronizace Brave budou smazána. Chcete-li znovu synchronizovat data zařízení, budete muset spustit nový synchronizační řetězec.";
+"SyncRemoveLastDeviceMessage" = "Aktuálně synchronizovaná data zůstanou zachována, ale všechna data v mezipaměti synchronizace Ping budou smazána. Chcete-li znovu synchronizovat data zařízení, budete muset spustit nový synchronizační řetězec.";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "Odstranit synchronizační řetězec";
@@ -3152,7 +3152,7 @@
 "SyncToDevice" = "Synchronizace se zařízením";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "Pomocí stávajícího synchronizovaného zařízení otevřete Nastavení Brave a přejděte na Nastavení -> Synchronizovat. Zvolte „Přidat zařízení“ a naskenujte kód zobrazený na obrazovce.";
+"SyncToDeviceDescription" = "Pomocí stávajícího synchronizovaného zařízení otevřete Nastavení Ping a přejděte na Nastavení -> Synchronizovat. Zvolte „Přidat zařízení“ a naskenujte kód zobrazený na obrazovce.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Toto zařízení nelze synchronizovat";
@@ -3277,14 +3277,14 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "Smluvní podmínky";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Terms of Use";
 
 /* Text for button to share referral's QR code. */
 "themeQRCodeShareButton" = "Sdílet...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "Sdílejte Brave se svými přáteli!";
+"themeQRCodeShareTitle" = "Sdílejte Ping se svými přáteli!";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "Automaticky";
@@ -3326,13 +3326,13 @@
 "today.addSourceNoFeedsFoundMessage" = "Omlouváme se, ale tato adresa kanálu nemá žádný obsah.";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "Přidat zdroj do Novinek Brave";
+"today.addSourceShareTitle" = "Přidat zdroj do Novinek Ping";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "Dostupné kanály RSS";
 
 /* The name of the feature */
-"today.braveToday" = "Zprávy Brave";
+"today.braveToday" = "Zprávy Ping";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "Zprávy";
@@ -3355,13 +3355,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "Dohody";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Novinky Brave přestanou zobrazovat obsah od %@";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Novinky Ping přestanou zobrazovat obsah od %@";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "Zakázáno";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "Skrýt obsah od %@";
 
 /* No comment provided by engineer. */
@@ -3370,11 +3370,11 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "Žádné články k zobrazení";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "Povolit obsah od %@";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Novinky Brave se potýkají s některými problémy. Zkuste to znovu.";
+"today.errorGeneralBody" = "Novinky Ping se potýkají s některými problémy. Zkuste to znovu.";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "No tě pic…";
@@ -3400,20 +3400,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Nezabezpečené zdroje – přidávejte na vlastní nebezpečí";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "Sledujte v rámci jednoho kanálu své oblíbené zdroje. Stačí otevřít kartu v Brave, posunout dolů a... tadá!\nNovinky Brave jsou podporovány soukromými a anonymizovanými reklamami.";
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "Sledujte v rámci jednoho kanálu své oblíbené zdroje. Stačí otevřít kartu v Brave, posunout dolů a... tadá!\nNovinky Ping jsou podporovány soukromými a anonymizovanými reklamami.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "Zapněte si zprávy Brave a nenechte si ujít žádný příběh";
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
+"today.introCardTitle" = "Zapněte si zprávy Ping a nenechte si ujít žádný příběh";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "Zobrazit zprávy Brave";
+"today.isEnabledToggleLabel" = "Zobrazit zprávy Ping";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "Více informací o vašich datech";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "Další nabídky Brave";
+"today.moreBraveOffers" = "Další nabídky Ping";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "Bez internetu";
@@ -3436,16 +3436,16 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "Propagované";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "Skrýt";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "Ohodnotit Brave";
+"today.rateBraveCardRateActionTitle" = "Ohodnotit Ping";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "Řekněte nám, co si myslíte!";
 
-/* Title shown on the Rate Brave Card */
+/* Title shown on the Rate Ping Card */
 "today.rateBraveCardTitle" = "Líbí se vám Brave?";
 
 /* No comment provided by engineer. */
@@ -3473,7 +3473,7 @@
 "today.suggestedTitle" = "Navrhované";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "Zapnout zprávy Brave";
+"today.turnOnBraveToday" = "Zapnout zprávy Ping";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "Nesledovat";
@@ -3523,20 +3523,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Omlouváme se, ale něco se pokazilo";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "Verze %1$@ (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "Zobrazit na %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "Povolte prosím přístup k mikrofonu v nastavení systému iOS, aby Brave mohl používat anonymní hlasové vyhledávání.";
+"voice.search.microphone.description.required" = "Povolte prosím přístup k mikrofonu v nastavení systému iOS, aby Ping mohl používat anonymní hlasové vyhledávání.";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "Vyžaduje se přístup k mikrofonu";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave neukládá ani nesdílí vaše hlasové vyhledávání.";
+"voice.search.screen.disclaimer" = "Ping neukládá ani nesdílí vaše hlasové vyhledávání.";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "zapnout";
@@ -3548,39 +3548,39 @@
 "vpn.autoRenewActionButtonTitle" = "Povolit automatické obnovení";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Automaticky ihned obnovte vaše předplatné VPN Brave a získejte 20% slevu na 3 měsíce!";
+"vpn.autoRenewDiscountPopOverTitle" = "Automaticky ihned obnovte vaše předplatné VPN Ping a získejte 20% slevu na 3 měsíce!";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Automaticky obnovte předplatné VPN Brave a získejte 1 měsíc zdarma!";
+"vpn.autoRenewFreeMonthPopOverTitle" = "Automaticky obnovte předplatné VPN Ping a získejte 1 měsíc zdarma!";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "To znamená, že ztratíte extra ochranu Brave pro každou aplikaci v telefonu.";
+"vpn.autoRenewSoonExpirePopOverDescription" = "To znamená, že ztratíte extra ochranu Ping pro každou aplikaci v telefonu.";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Ale ne! Vaše předplatné VPN Brave brzy vyprší.";
+"vpn.autoRenewSoonExpireTitle" = "Ale ne! Vaše předplatné VPN Ping brzy vyprší.";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "Koupit";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+"vpn.buyVPNTitle" = "Ping Firewall + VPN";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "Na 1 předplatné ochrana až 5 zařízení";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "Zvolte zeměpisnou polohu/zemi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave nikdy nezaznamenává vaši aktivitu";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping nikdy nezaznamenává vaši aktivitu";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "Chraňte každou aplikaci a vaše zaříz.";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "Bezpečnější na domácí i veřejné Wi-Fi";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "Blesková rychlost až 100 Mb/s";
 
 /* App Version field for customer support contact form. */
@@ -3590,7 +3590,7 @@
 "vpn.contactFormCarrier" = "Mobilní operátor";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
+"vpn.contactFormDoNotEditText" = "Ping vás nesleduje a ani neví, jak používáte naši aplikaci, takže nevíme, jak jste nastavili VPN. Sdílejte prosím informace o problému, se kterým se potýkáte, a my se budeme snažit jej vyřešit, jakmile to bude možné.";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "Nelze odeslat e-mail. Zkontrolujte prosím vaši konfiguraci e-mailu.";
@@ -3644,9 +3644,9 @@
 "vpn.contactFormTimezone" = "Časové pásmo iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + problém VPN";
+"vpn.contactFormTitle" = "Ping Firewall + problém VPN";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "Aktivovat";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
@@ -3674,7 +3674,7 @@
 "vpn.installProfileButtonText" = "Nainstalovat profil VPN";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave nyní nainstaluje profil VPN.";
+"vpn.installProfileTitle" = "Ping nyní nainstaluje profil VPN.";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "Síť VPN je nyní povolena";
@@ -3682,7 +3682,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "Instalace sítě VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "Vyzkoušejte ZDARMA";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -3694,22 +3694,22 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Platnost vypršela";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "Blokuje nežádoucí síťová připojení";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "Blokování reklam a trackerů ve všech vašich aplikacích ";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "Podporuje rychlost až 100 Mb/s";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "Rychle a neomezeně až do 100 Mb/s";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "Nepřetržitá podpora";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "Zabezpečuje všechna připojení";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "Obnovit ";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Chcete-li obnovit vaši relaci VPN, přihlaste se prosím ke svému účtu Brave.";
+"vpn.sessionExpiredDescription" = "Chcete-li obnovit vaši relaci VPN, přihlaste se prosím ke svému účtu Ping.";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "Dismiss";
@@ -3791,10 +3791,10 @@
 "vpn.settingsFAQ" = "Podpora sítě VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Propojit nákup s účtem Brave";
+"vpn.settingsLinkReceipt" = "Propojit nákup s účtem Ping";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "Propojte váš nákup v App Store se svým účtem Brave a používejte tak VPN Brave na jiných zařízeních.";
+"vpn.settingsLinkReceiptFooter" = "Propojte váš nákup v App Store se svým účtem Ping a používejte tak VPN Ping na jiných zařízeních.";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "Správa předplatného";
@@ -3839,22 +3839,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "Přihlásit se nyní k odběru";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Přesně tak. Vaše předplatné VPN Brave je nyní vhodné až pro 5 zařízení. Můžete se tedy přihlásit k odběru na iOS a používat jej zdarma na vašich zařízeních Mac, Windows a Android.";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Přesně tak. Vaše předplatné VPN Ping je nyní vhodné až pro 5 zařízení. Můžete se tedy přihlásit k odběru na iOS a používat jej zdarma na vašich zařízeních Mac, Windows a Android.";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Používejte nyní VPN Brave na všech svých zařízeních za stejnou cenu!";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Používejte nyní VPN Ping na všech svých zařízeních za stejnou cenu!";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Vyzkoušejte VPN Brave ještě jednou a získejte 20% slevu na 3 měsíce!";
+"vpn.subscribeVPNDiscountPopOverTitle" = "Vyzkoušejte VPN Ping ještě jednou a získejte 20% slevu na 3 měsíce!";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Jste připraveni zabezpečit každou aplikaci ve vašem telefonu? Vraťte se k VPN Brave a získejte 20% slevu na další 3 měsíce.";
+"vpn.subscribeVPNPopOverSubDescription" = "Jste připraveni zabezpečit každou aplikaci ve vašem telefonu? Vraťte se k VPN Ping a získejte 20% slevu na další 3 měsíce.";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Brave vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Brave. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Brave.";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Ping vždy blokovala trackery v každé aplikaci, a to i mimo prohlížeč Brave. Nyní můžete vidět, kdo se vás pokusil sledovat, a to pomocí Centra soukromí Ping.";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Věděli jste, že VPN Brave vás chrání i mimo prohlížeč Brave?";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Věděli jste, že VPN Ping vás chrání i mimo prohlížeč Brave?";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "Aktualizovat";
@@ -3863,13 +3863,13 @@
 "vpn.updateBillingExpiredPopOverDescription" = "Nemějte strach. Během vaší aktualizace platebních údajů ponecháme VPN aktivní několik dní.";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Aktualizovat své platební údaje, abyste zůstali chráněni pomocí VPN Brave.";
+"vpn.updateBillingExpiredPopOverTitle" = "Aktualizovat své platební údaje, abyste zůstali chráněni pomocí VPN Ping.";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "Chcete i nadále chránit každou aplikaci ve vašem telefonu? Stačí aktualizovat své platební údaje.";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Na vašem účtu je problém s fakturací, což znamená, že vaše předplatné VPN Brave brzy vyprší.";
+"vpn.updateBillingSoonExpirePopOverTitle" = "Na vašem účtu je problém s fakturací, což znamená, že vaše předplatné VPN Ping brzy vyprší.";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "Aktualizovat platbu";
@@ -3878,10 +3878,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovat způsob platby";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "Dokonce i na pozadí vás Brave bude i nadále chránit.";
+"vpn.vpnBackgroundNotificationBody" = "Dokonce i na pozadí vás Ping bude i nadále chránit.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN jsou ZAPNUTY";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN jsou ZAPNUTY";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "Při inicializaci VPN došlo k problému. Zkuste to prosím znovu nebo zkuste resetovat konfiguraci na stránce nastavení VPN.";
@@ -3890,7 +3890,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Chyba";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN od Brave vyžadují pro správnou funkčnost, aby byl v zařízení nainstalován profil VPN.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN od Ping vyžadují pro správnou funkčnost, aby byl v zařízení nainstalován profil VPN.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Povolení zamítnuto";
@@ -3905,7 +3905,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Chyba";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Předplatné bude účtováno prostřednictvím vašeho účtu iTunes.\n\nJakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\n\nPoužíváním Brave souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.";
+"vpn.vpnIAPBoilerPlate" = "Předplatné bude účtováno prostřednictvím vašeho účtu iTunes.\n\nJakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\n\nPoužíváním Ping souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Uplatnit kód";
@@ -3917,7 +3917,7 @@
 "vpn.vpnRegionSelectorButtonTitle" = "Oblast VPN";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Brave a opravíte všechny chyby. Tento proces může trvat minutu.";
+"vpn.vpnResetAlertBody" = "Tímto resetujete konfiguraci Firewall + VPN od Ping a opravíte všechny chyby. Tento proces může trvat minutu.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Obnovit konfiguraci";

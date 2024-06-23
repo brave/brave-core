@@ -10,8 +10,8 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo to inteligentny asystent oparty na sztucznej inteligencji, wbudowany bezpośrednio w przeglądarkę.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Połącz zakup ze swoim kontem Brave";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Połącz zakup ze swoim kontem Ping";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Wygasa";
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Odpowiedź podobała się";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Prześlij opinię dotyczącą sztucznej inteligencji Brave";
+"aichat.feedbackViewMainTitle" = "Prześlij opinię dotyczącą sztucznej inteligencji Ping";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Przejdź do Premium";
@@ -92,22 +92,22 @@
 "aichat.infoAboutPageContext" = "Formułuj odpowiedzi na podstawie zawartości strony";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Cześć, jestem Leo. Jestem używany przez Ping za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu.";
 
 /* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeInstantModelDescription" = "Model Claude Instant opracowany przez Anthropic";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Cześć, jestem Leo. Jestem asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu %@. Zapytaj mnie o cokolwiek, a ja postaram się jak najlepiej odpowiedzieć.";
+"aichat.introMessageGenericMessageDescription" = "Cześć, jestem Leo. Jestem asystentem Ping opartym na sztucznej inteligencji. Korzystam z modelu %@. Zapytaj mnie o cokolwiek, a ja postaram się jak najlepiej odpowiedzieć.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Llama 13B opracowanego przez Meta, który jest wydajny i może być stosowany w wielu przypadkach użycia.";
+"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Ping opartym na sztucznej inteligencji. Korzystam z modelu Llama 13B opracowanego przez Meta, który jest wydajny i może być stosowany w wielu przypadkach użycia.";
 
 /* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Model Llama 2 13b opracowany przez Meta";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Mixtral 8x7B opracowanego przez Mistral AI do obsługi zadań zaawansowanych.";
+"aichat.introMessageMixtralMessageDescription" = "Cześć, jestem Leo. Jestem w pełni hostowanym asystentem Ping opartym na sztucznej inteligencji. Korzystam z modelu Mixtral 8x7B opracowanego przez Mistral AI do obsługi zadań zaawansowanych.";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Model Mixtral opracowany przez Mistral AI";
@@ -118,7 +118,7 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Włącz, aby zadać pytanie dotyczące tej strony. Jej treść zostanie wysłana do Leo wraz z Twoimi wiadomościami.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Zarządzaj subskrypcjami";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Zezwól Brave na dostęp do mikrofonu w ustawieniach systemu iOS, żeby korzystać z anonimowego wpisu głosowego.";
+"aichat.microphonePermissionAlertDescription" = "Zezwól Ping na dostęp do mikrofonu w ustawieniach systemu iOS, żeby korzystać z anonimowego wpisu głosowego.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Wymagany dostęp do mikrofonu";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Ponów próbę";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave nie przechowuje ani nie udostępnia Twoich wyszukiwań głosowych.";
+"aichat.speechRecognizerDisclaimer" = "Ping nie przechowuje ani nie udostępnia Twoich wyszukiwań głosowych.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Zasugeruj pytania…";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Streść tę stronę";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Rozumiem";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo to oparty na sztucznej inteligencji inteligentny asystent, który ułatwia korzystanie z Internetu. Leo jest darmowy, ale ma ograniczony dostęp. Brave Leo Premium oferuje więcej modeli, wyższe limity i umożliwia subskrybentom wcześniejszy dostęp do nowych funkcji. Domyślny model dla wszystkich użytkowników to obecnie Mixtral 8x7B. Aby uzyskać więcej informacji, zobacz **[Brave wiki](%1$@)** \n\nDomyślnie, gdy zadajesz Leo pytanie, może on odpowiedzieć w oparciu o zawartość strony internetowej, którą przeglądasz, lub dowolny zaznaczony przez Ciebie tekst na stronie. Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Leo korzysta z danych z wyszukiwarki Brave w celu poprawy jakości odpowiedzi. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w Ustawieniach. Przejdź do Ustawień Leo.\n\neo nie zbiera identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez modele sztucznej inteligencji ani używane przez nie do nauki (poza modelem Anthropic, który przechowuje dane przez 30 dni przed usunięciem ich). Aby uzyskać więcej informacji, zobacz **[Politykę prywatności](%2$@)**";
+"aichat.termsConditionsDescription" = "Ping Leo to oparty na sztucznej inteligencji inteligentny asystent, który ułatwia korzystanie z Internetu. Leo jest darmowy, ale ma ograniczony dostęp. Ping Leo Premium oferuje więcej modeli, wyższe limity i umożliwia subskrybentom wcześniejszy dostęp do nowych funkcji. Domyślny model dla wszystkich użytkowników to obecnie Mixtral 8x7B. Aby uzyskać więcej informacji, zobacz **[Brave wiki](%1$@)** \n\nDomyślnie, gdy zadajesz Leo pytanie, może on odpowiedzieć w oparciu o zawartość strony internetowej, którą przeglądasz, lub dowolny zaznaczony przez Ciebie tekst na stronie. Dokładność odpowiedzi nie jest gwarantowana i mogą one zawierać nieprecyzyjne, wprowadzające w błąd lub fałszywe informacje. Leo korzysta z danych z wyszukiwarki Ping w celu poprawy jakości odpowiedzi. Nie przesyłaj poufnych ani prywatnych informacji i zachowaj ostrożność w przypadku odpowiedzi związanych ze zdrowiem, finansami, bezpieczeństwem osobistym itp. W każdej chwili możesz dostosować opcje Leo w Ustawieniach. Przejdź do Ustawień Leo.\n\neo nie zbiera identyfikatorów, takich jak adres IP, które można powiązać z użytkownikiem. Żadne dane osobowe nie są przechowywane przez modele sztucznej inteligencji ani używane przez nie do nauki (poza modelem Anthropic, który przechowuje dane przez 30 dni przed usunięciem ich). Aby uzyskać więcej informacji, zobacz **[Politykę prywatności](%2$@)**";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Rozpocznij prywatną rozmowę z Brave Leo";
+"aichat.termsConditionsTitle" = "Rozpocznij prywatną rozmowę z Ping Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Wprowadzanie głosowe";

@@ -47,10 +47,10 @@
 "e13lS3-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
 
 /* (No Comment) */
-"e13lS3-FGO5qW" = "Lige for at bekræfte, du ville have \"Brave Playlist\"?";
+"e13lS3-FGO5qW" = "Lige for at bekræfte, du ville have \"Ping Playlist\"?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Lige for at bekræfte, du ville have \"Brave Wallet\"?";
+"e13lS3-jXiFQY" = "Lige for at bekræfte, du ville have \"Ping Wallet\"?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Lige for at bekræfte, du ville have \"Downloads\"?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Lige for at bekræfte, du ville have \"Ny privat fane\"?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Lige for at bekræfte, du ville have \"Brave News\"?";
+"e13lS3-XCyA8c" = "Lige for at bekræfte, du ville have \"Ping News\"?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Lige for at bekræfte, du ville have \"Søg\"?";
@@ -98,10 +98,10 @@
 "L1fziM-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
 
 /* (No Comment) */
-"L1fziM-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Brave Playlist\".";
+"L1fziM-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Ping Playlist\".";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Brave wallet\".";
+"L1fziM-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Ping wallet\".";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Der er ${count} indstillinger, der matcher \"Downloads\".";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Der er ${count} indstillinger, der matcher \"Ny privat fane\".";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Brave News\".";
+"L1fziM-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Ping News\".";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Der er ${count} indstillinger, der matcher \"Søg\".";
@@ -137,10 +137,10 @@
 "r2EI05-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
 
 /* (No Comment) */
-"r2EI05-FGO5qW" = "Lige for at bekræfte, du ville have \"Brave Playlist\"?";
+"r2EI05-FGO5qW" = "Lige for at bekræfte, du ville have \"Ping Playlist\"?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Lige for at bekræfte, du ville have \"Brave Wallet\"?";
+"r2EI05-jXiFQY" = "Lige for at bekræfte, du ville have \"Ping Wallet\"?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Lige for at bekræfte, du ville have \"Downloads\"?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Lige for at bekræfte, du ville have \"Ny privat fane\"?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Lige for at bekræfte, du ville have \"Brave News\"?";
+"r2EI05-XCyA8c" = "Lige for at bekræfte, du ville have \"Ping News\"?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Lige for at bekræfte, du ville have \"Søg\"?";
@@ -176,10 +176,10 @@
 "tNCrcE-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
 
 /* (No Comment) */
-"tNCrcE-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Brave Playlist\".";
+"tNCrcE-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Ping Playlist\".";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Brave wallet\".";
+"tNCrcE-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Ping wallet\".";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Der er ${count} indstillinger, der matcher \"Downloads\".";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Der er ${count} indstillinger, der matcher \"Ny privat fane\".";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Brave News\".";
+"tNCrcE-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Ping News\".";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Der er ${count} indstillinger, der matcher \"Søg\".";
@@ -209,10 +209,10 @@
 "TxuMja-crhbMy" = "Der er ${count} indstillinger, der matcher \"Bogmærker\".";
 
 /* (No Comment) */
-"TxuMja-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Brave Playlist\".";
+"TxuMja-FGO5qW" = "Der er ${count} indstillinger, der matcher \"Ping Playlist\".";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Brave wallet\".";
+"TxuMja-jXiFQY" = "Der er ${count} indstillinger, der matcher \"Ping wallet\".";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Der er ${count} indstillinger, der matcher \"Downloads\".";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Der er ${count} indstillinger, der matcher \"Ny privat fane\".";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Brave News\".";
+"TxuMja-XCyA8c" = "Der er ${count} indstillinger, der matcher \"Ping News\".";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Der er ${count} indstillinger, der matcher \"Søg\".";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Annoncer blokeret";
 
 /* (No Comment) */
-"XCyA8c" = "Brave News";
+"XCyA8c" = "Ping News";
 
 /* (No Comment) */
 "XkwBGY" = "Låseskærmens genvejskonfiguration";
@@ -263,10 +263,10 @@
 "YQiQuz-crhbMy" = "Lige for at bekræfte, du ville have \"Bogmærker\"?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Lige for at bekræfte, du ville have \"Brave Playlist\"?";
+"YQiQuz-FGO5qW" = "Lige for at bekræfte, du ville have \"Ping Playlist\"?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Lige for at bekræfte, du ville have \"Brave Wallet\"?";
+"YQiQuz-jXiFQY" = "Lige for at bekræfte, du ville have \"Ping Wallet\"?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Lige for at bekræfte, du ville have \"Downloads\"?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Lige for at bekræfte, du ville have \"Ny privat fane\"?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Lige for at bekræfte, du ville have \"Brave News\"?";
+"YQiQuz-XCyA8c" = "Lige for at bekræfte, du ville have \"Ping News\"?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Lige for at bekræfte, du ville have \"Søg\"?";

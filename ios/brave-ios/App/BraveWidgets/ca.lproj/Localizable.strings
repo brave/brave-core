@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Adreces d'interès";
 
 /* The name of the feature */
-"widgets.braveNews" = "Notícies de Brave";
+"widgets.braveNews" = "Notícies de Ping";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Descàrregues";
@@ -19,17 +19,17 @@
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Prova-ho més tard";
 
-/* Displayed on a news widget that links into the app to read more Brave News content */
+/* Displayed on a news widget that links into the app to read more Ping News content */
 "widgets.newsClusteringReadMoreButtonTitle" = "Més informació";
 
-/* Description for Brave News widgets that display the top news */
+/* Description for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetDescription" = "Rep les últimes notícies";
 
-/* Title for Brave News widgets that display the top news */
+/* Title for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Notícies principals";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Obre Brave per veure els teus preferits aquí";
+"widgets.noFavoritesFound" = "Obre Ping per veure els teus preferits aquí";
 
 /* QR Code section title */
 "widgets.QRCode" = "Codi QR";
@@ -37,13 +37,13 @@
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Cerca";
 
-/* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Un resum de com Brave t'estalvia temps i et protegeix en línia.";
+/* Description for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Un resum de com Ping t'estalvia temps i et protegeix en línia.";
 
-/* Title for Brave Shields widget on 'add widget' screen. */
+/* Title for Ping Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Estadístiques de privacitat";
 
-/* Title of Brave Shields widget shown above stat numbers. */
+/* Title of Ping Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Estadístiques de privacitat";
 
 /* Button to the browser and enter URL or make a search query there. */
@@ -59,17 +59,17 @@
 "widgets.shortcutsPrivateTabButton" = "Pestanya d'incògnit";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Accés ràpid per cercar al web o obrir pàgines web a Brave.";
+"widgets.shortcutsWidgetDescription" = "Accés ràpid per cercar al web o obrir pàgines web a Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Dreceres";
 
-/* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Un resum de com Brave t'ha protegit en línia.";
+/* Description for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Un resum de com Ping t'ha protegit en línia.";
 
-/* Title for Brave Shields single stat widget on 'add widget' screen. */
+/* Title for Ping Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Estadística de privacitat";
 
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Cartera de Brave";
+/* Description for the Ping Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Cartera de Ping";
 

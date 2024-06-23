@@ -20,7 +20,7 @@
 "NSPhotoLibraryAddUsageDescription" = "Tämän avulla voit tallentaa valokuvia.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Tätä lupaa käytetään Apple Advanced Speech Recognition -toiminnon käyttöön ottamiseen. Jos se ei ole sallittua, tunnistusta käytetään laitteessa ja haut ovat täysin yksityisiä. Brave ei tallenna tai jaa äänihakujasi.";
+"NSSpeechRecognitionUsageDescription" = "Tätä lupaa käytetään Apple Advanced Speech Recognition -toiminnon käyttöön ottamiseen. Jos se ei ole sallittua, tunnistusta käytetään laitteessa ja haut ovat täysin yksityisiä. Ping ei tallenna tai jaa äänihakujasi.";
 
 /* (No Comment) */
 "OPML File" = "OPML-tiedosto";

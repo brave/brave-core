@@ -91,6 +91,7 @@ class SearchSuggestionDataSource {
   }
 
   var braveSearchPromotionAvailable: Bool {
+    return false
     guard Preferences.Review.launchCount.value > 1,
       searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard)
         .shortName != OpenSearchEngine.EngineNames.brave,

@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Неправильні дані";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Надайте Brave доступ до камери пристрою в меню «Налаштування» -> «Конфіденційність» -> «Камера».";
+"ScanQRCodePermissionErrorMessage" = "Надайте Ping доступ до камери пристрою в меню «Налаштування» -> «Конфіденційність» -> «Камера».";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Сканування QR-коду";

@@ -10,8 +10,8 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo — это ИИ-помощник, встроенный в браузер.";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "Привязать покупку к аккаунту Brave";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Привязать покупку к аккаунту Ping";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Срок действия истекает";
@@ -35,7 +35,7 @@
 "aichat.chatIntroJustTalkTitle" = "Просто нужен чат?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Умный ассистент, работающий на основе ИИ и встроенный в Brave.";
+"aichat.chatIntroSubTitle" = "Умный ассистент, работающий на основе ИИ и встроенный в Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Привет, я Лео!";
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Вам понравился ответ";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Оставьте отзыв о Brave VPN";
+"aichat.feedbackViewMainTitle" = "Оставьте отзыв о Ping VPN";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Премиум-подписка";
@@ -98,7 +98,7 @@
 "aichat.introMessageClaudeInstantModelDescription" = "Claude Instant от Anthropic";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Привет, я Leo, ИИ-помощник от Brave на базе %@. Спросите меня о чем угодно, и я постараюсь ответить как можно точнее.";
+"aichat.introMessageGenericMessageDescription" = "Привет, я Leo, ИИ-помощник от Ping на базе %@. Спросите меня о чем угодно, и я постараюсь ответить как можно точнее.";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageLlamaMessageDescription" = "Здравствуйте! Я Leo — облачный ИИ-помощник Brave. Чтобы выполнять различные задачи, я использую языковую модель LLaMA-13B от Meta.";
@@ -107,7 +107,7 @@
 "aichat.introMessageLlamaModelDescription" = "Llama 2 13b от Meta";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "Привет, я Leo. Я являюсь полностью интегрированным ИИ-помощником от Brave и работаю при поддержке модели Mixtral 8x7B, созданной Mistral AI для решения сложных задач.";
+"aichat.introMessageMixtralMessageDescription" = "Привет, я Leo. Я являюсь полностью интегрированным ИИ-помощником от Ping и работаю при поддержке модели Mixtral 8x7B, созданной Mistral AI для решения сложных задач.";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral от Mistral AI";
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Включите, чтобы спросить об этой странице. Ее содержимое будет отправлено ассистенту Лео от Brave вместе с вашими сообщениями.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Включите, чтобы спросить об этой странице. Ее содержимое будет отправлено ассистенту Лео от Ping вместе с вашими сообщениями.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Информация о контексте страницы";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Повторить попытку";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave не хранит и не передает данные о голосовом поиске.";
+"aichat.speechRecognizerDisclaimer" = "Ping не хранит и не передает данные о голосовом поиске.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Предположить вопросы…";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Получить краткий пересказ страницы";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Все понятно";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo – это персональный ИИ-помощник, который расширяет возможности использования Интернета. Leo с ограниченным доступом можно использовать бесплатно. Brave Leo Premium предлагает больше моделей, более высокие лимиты и обеспечивает подписчикам ранний доступ к новым функциям. В настоящее время Mixtral 8x7B является моделью по умолчанию для всех пользователей. Подробнее см. **[Brave wiki](%1$@)**\n\nПо умолчанию, когда вы задаете Leo вопрос, он может отправлять Brave Leo и использовать содержание просматриваемой веб-страницы или любой текст, выделенный на странице, для предоставления ответа. Ответы могут включать недостоверную, неправильную или ложную информацию, и их точность не гарантируется. Для повышения качества ответов Leo использует данные Brave Search. Не отправляйте конфиденциальную информацию или персональные данные и соблюдайте осторожность в отношении ответов, касающихся здоровья, финансов, личной безопасности и т. п. Вы можете корректировать параметры Leo в настройках в любое время. Перейти в настройки Leo.\n\nLeo не производит сбор идентификационных данных, таких как ваш IP-адрес, которые могут быть связаны с вами. Никакие данные не используются для обучения ИИ-моделей, и никакие персональные данные не сохраняются в ИИ-моделях (за исключением Anthropic, где данные хранятся в течение 30 дней, а затем удаляются). Подробнее см. **[политику конфиденциальности](%2$@)**";
+"aichat.termsConditionsDescription" = "Ping Leo – это персональный ИИ-помощник, который расширяет возможности использования Интернета. Leo с ограниченным доступом можно использовать бесплатно. Ping Leo Premium предлагает больше моделей, более высокие лимиты и обеспечивает подписчикам ранний доступ к новым функциям. В настоящее время Mixtral 8x7B является моделью по умолчанию для всех пользователей. Подробнее см. **[Brave wiki](%1$@)**\n\nПо умолчанию, когда вы задаете Leo вопрос, он может отправлять Ping Leo и использовать содержание просматриваемой веб-страницы или любой текст, выделенный на странице, для предоставления ответа. Ответы могут включать недостоверную, неправильную или ложную информацию, и их точность не гарантируется. Для повышения качества ответов Leo использует данные Ping Search. Не отправляйте конфиденциальную информацию или персональные данные и соблюдайте осторожность в отношении ответов, касающихся здоровья, финансов, личной безопасности и т. п. Вы можете корректировать параметры Leo в настройках в любое время. Перейти в настройки Leo.\n\nLeo не производит сбор идентификационных данных, таких как ваш IP-адрес, которые могут быть связаны с вами. Никакие данные не используются для обучения ИИ-моделей, и никакие персональные данные не сохраняются в ИИ-моделях (за исключением Anthropic, где данные хранятся в течение 30 дней, а затем удаляются). Подробнее см. **[политику конфиденциальности](%2$@)**";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Общайтесь с Brave Leo в приватном чате";
+"aichat.termsConditionsTitle" = "Общайтесь с Ping Leo в приватном чате";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Голосовой ввод";

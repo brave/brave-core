@@ -14,13 +14,13 @@
 "NSLocationWhenInUseUsageDescription" = "A meglátogatott webhelyek kérhetik a tartózkodási helyét.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Ez lehetővé teszi a mikrofon használatát a Brave használatakor.";
+"NSMicrophoneUsageDescription" = "Ez lehetővé teszi a mikrofon használatát a Ping használatakor.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Ezzel elmentheti a fényképeket.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Ez az engedély az Apple Advanced Speech Recognition (fejlett beszédfelismerés) engedélyezésére szolgál. Ha nincs engedélyezve, a rendszer az eszközön zajló felismerést alkalmazza, és a keresés teljesen privát lesz. A Brave nem tárolja és nem osztja meg hangalapú kereséseit.";
+"NSSpeechRecognitionUsageDescription" = "Ez az engedély az Apple Advanced Speech Recognition (fejlett beszédfelismerés) engedélyezésére szolgál. Ha nincs engedélyezve, a rendszer az eszközön zajló felismerést alkalmazza, és a keresés teljesen privát lesz. A Ping nem tárolja és nem osztja meg hangalapú kereséseit.";
 
 /* (No Comment) */
 "OPML File" = "OPML-fájl";

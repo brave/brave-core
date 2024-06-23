@@ -6,7 +6,7 @@
 
 #include "Base.xcconfig"
 
-MOZ_BUNDLE_DISPLAY_NAME = BraveBeta
+MOZ_BUNDLE_DISPLAY_NAME = Ping Beta
 
 BRAVE_URL_SCHEME = brave-beta
 

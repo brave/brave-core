@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "关于";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "关于 Brave Shields";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "关于 Ping Shields";
 
-/* The body of the screen explaining Brave Shields */
+/* The body of the screen explaining Ping Shields */
 "AboutBraveShieldsBody" = "网站通常包含试图识别您和您的设备的 cookie 和脚本。它们想弄清楚您是谁，并在网上跟踪您，即跟踪您在每个站点上所执行的操作。\n\nBrave 会屏蔽这些操作，这样您就可以随意浏览，而不会被跟踪。";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "这允许您将图像保存到您的手机相册中";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave 想访问您的相册";
+"AccessPhotoDeniedAlertTitle" = "Ping 想访问您的相册";
 
 /* Button to add a bookmark */
 "AddBookmark" = "添加书签";
@@ -52,8 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "开";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "这将证明您获有对 Brave 的访问权";
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "这将证明您获有对 Ping 的访问权";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "取消";
@@ -158,43 +158,43 @@
 "BookmarkUrlPlaceholderText" = "地址";
 
 /* Button to show the brave panel */
-"BravePanel" = "Brave 面板";
+"BravePanel" = "Ping 面板";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Brave 奖励";
+"BraveRewardsAdNotificationTitle" = "Ping 奖励";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "打开";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Rewards";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Brave 奖励";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Ping 奖励";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave 搜索不会跟踪您、您查询和点击的内容。";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Ping 搜索不会跟踪您、您查询和点击的内容。";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "稍後再說";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "支持独立的搜索，具有更好的隐私性";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "尝试使用 Brave 搜索";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "尝试使用 Ping 搜索";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "稍後再說";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "进阶控件";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields 与隐私";
+"BraveShieldsAndPrivacy" = "Ping Shields 与隐私";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "盾与隐私";
@@ -215,7 +215,7 @@
 "BraveShieldsSiteBroken" = "如果此站点显示为已损坏，请尝试关闭 Shields。";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
+"BraveShieldsStatusTitle" = "Ping Shields";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "关闭";
@@ -224,7 +224,7 @@
 "BraveShieldsStatusValueUp" = "开启";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "轻击两次即可切换 Brave Shields";
+"BraveShieldsToggleHint" = "轻击两次即可切换 Ping Shields";
 
 /* Sync page title */
 "BraveSync" = "同步";
@@ -236,7 +236,7 @@
 "BraveSyncWelcome" = "首先，您需要在所有计划同步的设备上安装 Brave。要将它们链接在一起，请启动同步链，您将使用该同步链将所有设备安全地链接在一起。";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave 通话";
+"bravetalk.braveTalkTitle" = "Ping 通话";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "浏览器锁定";
@@ -257,13 +257,13 @@
 "callout.bottomBarCalloutDescription" = "将地址栏、标签、书签和其他工具移动到浏览器底部。";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "自定义 Brave 标签栏";
+"callout.bottomBarCalloutTitle" = "自定义 Ping 标签栏";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "将 Brave 设置为默认浏览器？";
+"callout.defaultBrowserCalloutButtonDescription" = "将 Ping 设置为默认浏览器？";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "有 Brave 作为默认设置，您点击的每个链接都会在 Brave 的隐私保护下打开。";
+"callout.defaultBrowserCalloutDescription" = "有 Ping 作为默认设置，您点击的每个链接都会在 Ping 的隐私保护下打开。";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "设置默认";
@@ -278,19 +278,19 @@
 "callout.defaultBrowserTitle" = "隐私。让事情变得简单明了。";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "这有助于我们了解 Brave 最常用的功能。在 Brave 设置下的 Brave 防护盾和隐私中随时更改设置。";
+"callout.p3aCalloutDescription" = "这有助于我们了解 Ping 最常用的功能。在 Ping 设置下的 Ping 防护盾和隐私中随时更改设置。";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "了解更多关于我们的隐私保护产品分析（P3A）。";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "協助提升 Brave 品質。";
+"callout.p3aCalloutTitle" = "協助提升 Ping 品質。";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "分享完全私密和匿名的产品见解。";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "在您的计算机或平板电脑上体验 Brave 隐私保护，在设备间同步书签和扩展部件。";
+"callout.privacyEverywhereCalloutDescription" = "在您的计算机或平板电脑上体验 Ping 隐私保护，在设备间同步书签和扩展部件。";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "立即同步";
@@ -370,7 +370,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "公司业务部门";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "公司";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -556,19 +556,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "已经存在同名的搜索引擎。";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "不安全的自定义搜索模板";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "不安全的自定义建议模板";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "添加搜索引擎";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "搜索模板：";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "建议模板：";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -611,19 +611,19 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "打开设置";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "用 Brave 打开所有链接以保护您的隐私";
+"defaultBrowserCallout.introPrimaryText" = "用 Ping 打开所有链接以保护您的隐私";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shields 可屏蔽跟踪器和广告、保存数据，并节省您访问每个网站的时间";
+"defaultBrowserCallout.introSecondaryText" = "Ping Shields 可屏蔽跟踪器和广告、保存数据，并节省您访问每个网站的时间";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "打开设置、点击默认浏览器应用，然后选择 Brave。";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "将 Brave 设为默认浏览器";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "将 Ping 设为默认浏览器";
 
-/* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "每次点击链接都能获得 Brave 的保护";
+/* Notification title to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationTitle" = "每次点击链接都能获得 Ping 的保护";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "关闭默认浏览器标注";
@@ -631,8 +631,8 @@
 /* A section title that contains default (predefined) filter lists a user can enable/diable. */
 "DefaultFilterLists" = "默认筛选器列表";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave 默认";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Ping 默认";
 
 /* No comment provided by engineer. */
 "Delete" = "删除";
@@ -737,7 +737,7 @@
 "ErrorPageReloadButtonTitle" = "重新加载";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 通常使用加密来保护您的信息。当 Brave 这次试图连接到 %2$@ 时，网站发回了不寻常和错误的凭据。当攻击者试图假装是 %3$@ 时，或者 Wi-Fi 登录屏幕中断了连接时，可能会发生这种情况。您的信息仍然是安全的，因为 Brave 在交换任何数据之前停止了连接。<br />您目前无法访问 %4$@，因为该网站使用证书码。网络错误和攻击通常是暂时的，所以这个页面将来可能还能正常工作。";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 通常使用加密来保护您的信息。当 Ping 这次试图连接到 %2$@ 时，网站发回了不寻常和错误的凭据。当攻击者试图假装是 %3$@ 时，或者 Wi-Fi 登录屏幕中断了连接时，可能会发生这种情况。您的信息仍然是安全的，因为 Ping 在交换任何数据之前停止了连接。<br />您目前无法访问 %4$@，因为该网站使用证书码。网络错误和攻击通常是暂时的，所以这个页面将来可能还能正常工作。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "此服务器无法证明它是 %@；其安全证书不受设备的操作系统信任。原因可能是配置错误，或攻击者正尝试拦截您的连接。";
@@ -784,10 +784,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "允许连接以切换应用吗？";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "允许";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "不允许";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -890,7 +890,7 @@
 "HideLinkPreviewsActionTitle" = "隐藏链接预览";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "隐藏 Brave Rewards 图标";
+"HideRewardsIcon" = "隐藏 Ping Rewards 图标";
 
 /* Hide the rewards icon explination. */
 "HideRewardsIconSubtitle" = "未启用“Brave Rewards”时隐藏“Brave Rewards”图标";
@@ -949,7 +949,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "了解更多";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -1037,7 +1037,7 @@
 "MyFirstAdBody" = "点击此处了解更多信息。";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "这是您的第一个 Brave 广告";
+"MyFirstAdTitle" = "这是您的第一个 Ping 广告";
 
 /* Bookmark title / Device name */
 "Name" = "名称";
@@ -1099,14 +1099,14 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "自动将 NPR 链接重定向到其基于文本的版本（位于 text.npr.org）。";
 
-/* Bookmark title for Brave Support */
-"ntp.braveSupportFavoriteTitle" = "Brave 支持";
+/* Bookmark title for Ping Support */
+"ntp.braveSupportFavoriteTitle" = "Ping 支持";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "领取代币";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "您通过用 Brave 进行浏览赚取了 %@。";
+"ntp.earningsReport" = "您通过用 Ping 进行浏览赚取了 %@。";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "太棒了！";
@@ -1115,10 +1115,10 @@
 "ntp.hideSponsoredImages" = "隐藏赞助图片";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "“赞助”是您可以通过启用 Brave Rewards 获得的额外品牌背景。";
+"ntp.imageTypeSelectionDescription" = "“赞助”是您可以通过启用 Ping Rewards 获得的额外品牌背景。";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "了解更多有关 Brave Rewards 的内容";
+"ntp.learnMoreAboutRewards" = "了解更多有关 Ping Rewards 的内容";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "了解更多有关赞助图片的内容";
@@ -1157,10 +1157,10 @@
 "OBAdsOptInMessageJapan" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads 来了！";
+"OBAdsOptInTitle" = "Ping Ads 来了！";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave 会在以下时间内显示您的第一个广告：";
+"OBAdsTitle" = "Ping 会在以下时间内显示您的第一个广告：";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "现在您可以开始了。";
@@ -1180,14 +1180,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "开始浏览";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "加入";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "允许 Brave 检查我的剪贴板中是否有匹配的推荐代码";
+"OBPrivacyConsentClipboardPermission" = "允许 Ping 检查我的剪贴板中是否有匹配的推荐代码";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "您可能已经下载了 Brave 以支持您的推荐人。为了检测您的引荐来源，Brave 会对剪贴板进行一次一次性的检查以查找匹配的推荐代码。此检查仅限于代码，不会传输其他个人数据。如果您选择退出，推荐人将不会获得 Brave 的奖励。";
+"OBPrivacyConsentDetail" = "您可能已经下载了 Ping 以支持您的推荐人。为了检测您的引荐来源，Brave 会对剪贴板进行一次一次性的检查以查找匹配的推荐代码。此检查仅限于代码，不会传输其他个人数据。如果您选择退出，推荐人将不会获得 Ping 的奖励。";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "不允许此检查";
@@ -1208,10 +1208,10 @@
 "OBRewardsAgreementDetailsAnd" = "和";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave 奖励";
+"OBRewardsAgreementTitle" = "Ping 奖励";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "选择加入 Brave 私密广告后，每查看一条广告，即可支持发布者和内容创作者。";
+"OBRewardsDetail" = "选择加入 Ping 私密广告后，每查看一条广告，即可支持发布者和内容创作者。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "一边浏览，一边赚取代币并奖励创作者，以获得精彩内容。";
@@ -1220,7 +1220,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "隐私政策";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave 奖励";
+"OBRewardsTitle" = "Ping 奖励";
 
 /* Save button to save current selection */
 "OBSaveButton" = "保存";
@@ -1229,28 +1229,28 @@
 "OBSearchEngineDetail" = "选择默认搜索引擎";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "欢迎使用 Brave 浏览器";
+"OBSearchEngineTitle" = "欢迎使用 Ping 浏览器";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "拦截侵犯隐私的跟踪程序，让您能够浏览网络内容，无需担心被跟踪";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
+"OBShieldsTitle" = "Ping Shields";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "给我看看";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "开始";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ 和 %2$lld 个其他广告和跟踪器被屏蔽";
 
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "使用 Shields 在每个页面上查看 Brave 阻止的所有不良内容。";
+/* The footnote indicating what Ping shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "使用 Shields 在每个页面上查看 Ping 阻止的所有不良内容。";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "点击查看 Brave Shields";
+"onboarding.blockedAdsOnboardingInstructionsText" = "点击查看 Ping Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "广告和跟踪器被阻止";
@@ -1259,10 +1259,10 @@
 "onboarding.linkReceiptButton" = "连接您的 VPN 订阅";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Brave VPN 订阅最多可保护 5 台设备，Android、iOS 和桌上型电脑都能涵盖在内。只要将 App Store 订阅与 Brave 帐户连结即可。";
+"onboarding.linkReceiptDescription" = "Ping VPN 订阅最多可保护 5 台设备，Android、iOS 和桌上型电脑都能涵盖在内。只要将 App Store 订阅与 Ping 帐户连结即可。";
 
 /* Popup title to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptTitle" = "扩展您的 Brave 防火墙+ VPN 保护";
+"onboarding.linkReceiptTitle" = "扩展您的 Ping 防火墙+ VPN 保护";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "寻找“默认浏览器应用”";
@@ -1274,13 +1274,13 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "屏蔽跟踪程序和广告后，可将网站数据用量减少，加载速度更快。";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "看到 Brave 的不同：\n没有广告。没有跟踪器。页面加载速度更快。";
+"onboarding.omniboxOnboardingPopOverDescription" = "看到 Ping 的不同：\n没有广告。没有跟踪器。页面加载速度更快。";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "输入网站名称或 URL";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "欢迎使用 Brave";
+"onboarding.welcomeScreenTitle" = "欢迎使用 Ping";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "继续";
@@ -1294,8 +1294,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "打开所有（%i）";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "打开 Brave Rewards 设置";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "打开 Ping Rewards 设置";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "在“文件”应用中打开“下载”文件夹时出现未知错误。";
@@ -1352,13 +1352,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "首先，设置一个同步链并在同步设置中切换“打开选项卡”。";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "在设置中管理 Brave 同步的内容。";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "在设置中管理 Ping 同步的内容。";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "您的其他设备上没有可显示的现有会话。";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "此空间显示在其他设备中打开的 Brave 选项卡";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "此空间显示在其他设备中打开的 Ping 选项卡";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "暫時隱藏";
@@ -1411,38 +1411,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "打开网站";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo 是采用 AI 技术的智慧助理，内置于浏览器中。";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "私密新闻订阅源中的今日头条新闻";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "新闻";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "保留任何视频/流媒体的离线播放列表";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "播放列表";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "直接在浏览器中完成私密视频通话";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Talk";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "在线保护您的完整设备";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "安全加密货币钱包，无需扩展程序";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Brave 功能";
+"optionsMenu.menuSectionTitle" = "Ping 功能";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "其他隐私设置";
@@ -1454,7 +1454,7 @@
 "p3a.continue" = "继续";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。";
+"p3a.settingSubtitle" = "這些私密回覆可協助 Ping 估計特定功能的整體使用量，並改善您的使用體驗。";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允许保护隐私的产品分析 (P3A)";
@@ -1523,7 +1523,7 @@
 "playList.addToPlayListAlertDescription" = "是否要将此视频添加至播放列表？";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "添加至 Brave Playlist";
+"playList.addToPlayListAlertTitle" = "添加至 Ping Playlist";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "播放选项";
@@ -1544,7 +1544,7 @@
 "playlist.carplaySettingsSectionTitle" = "设置";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Brave 播放列表";
+"playlist.carplayTitle" = "Ping 播放列表";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "变更播放列表";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "加载资源时出现问题。";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "启用后，主菜单图标上会显示一个徽章，表示可以将页面上的媒体添加到 Brave 播放列单中。";
+"playlist.menuBadgeOptionFooterText" = "启用后，主菜单图标上会显示一个徽章，表示可以将页面上的媒体添加到 Ping 播放列单中。";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "显示菜单通知徽章";
@@ -1580,7 +1580,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "移动...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "您可以在浏览器中将项目添加到 Brave 播放列表";
+"playList.noItemLabelDetailLabel" = "您可以在浏览器中将项目添加到 Ping 播放列表";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "无可用项目";
@@ -1670,7 +1670,7 @@
 "playList.playListSettingTitle" = "播放列表";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "此文件夹已在您的 Brave 播放列表中";
+"playList.playlistSharedFolderAlreadyExistsBody" = "此文件夹已在您的 Ping 播放列表中";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "抱歉";
@@ -1745,7 +1745,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "您可以在新选项卡中打开当前项目，或通过系统共享菜单进行共享";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Brave 播放列表菜单";
+"playlist.sharePlaylistActionTitle" = "Ping 播放列表菜单";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "在私人标签中打开";
@@ -1760,22 +1760,22 @@
 "playList.sorryAlertTitle" = "抱歉";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "已添加至 Brave 播放列表";
+"playList.toastAddedToPlaylistTitle" = "已添加至 Ping 播放列表";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "打开";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "添加至 Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "添加至 Ping Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "在 Brave Playlist 中查看";
+"playList.toastExitingItemPlaylistTitle" = "在 Ping Playlist 中查看";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "取消";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "在 Brave 浏览器的地址栏旁边添加一个播放列表按钮（它看起来就象是 4 行带有一个 + 符号）。此按钮可让您能够快速访问、打开播放列表，或者添加或删除媒体。";
+"playlist.urlBarButtonOptionFooter" = "在 Ping 浏览器的地址栏旁边添加一个播放列表按钮（它看起来就象是 4 行带有一个 + 符号）。此按钮可让您能够快速访问、打开播放列表，或者添加或删除媒体。";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "启用快速访问按钮";
@@ -1813,7 +1813,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移动";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ 和另外 1 个项目";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1822,7 +1822,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 个项目";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ 和另外 %2$lld 个项目";
 
 /* The title of the button to create a new folder */
@@ -1853,7 +1853,7 @@
 "playlistFolders.untitledFolderTitle" = "未命名播放列表";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "添加到 Brave 播放列表按钮";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "添加到 Ping 播放列表按钮";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "保存";
@@ -1906,7 +1906,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "所有时间";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "跟踪器和广告";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1930,10 +1930,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "网站";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "所有警报";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "封鎖操作方";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1957,8 +1957,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "上周";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** 在 **%2$lld** 网站上被 Brave Shields 阻止";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** 在 **%2$lld** 网站上被 Ping Shields 阻止";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "最常见的跟踪器和广告";
@@ -1976,7 +1976,7 @@
 "privacyHub.notificationCalloutButtonText" = "开启通知";
 
 /* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "回顾本周 Brave 是如何在线保护您的。";
+"privacyHub.notificationMessage" = "回顾本周 Ping 是如何在线保护您的。";
 
 /* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "每周隐私报告";
@@ -1999,22 +1999,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "追踪器数量最多的网站";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "隐私中心显示 Shields 阻止的内容的计数。设置不会影响新标签页上的 Shields 计数器。Shields 数据不计入私人窗口。";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "显示 Shields 数据";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "设置仅适用于您已购买 VPN 订阅的情况。";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "显示 VPN 警报";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "重置 Shields 已阻止的所有内容的计数。";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "清除 Shields 数据";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2042,15 +2042,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "跟踪器或广告";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Brave 防火墙 + VPN 警报";
+"privacyHub.vpnAlertsHeader" = "Ping 防火墙 + VPN 警报";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = " 防火墙 + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "总数";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "隐私政策";
 
 /* Private button title */
@@ -2066,10 +2066,10 @@
 "PrivateBrowsingOnlyWarning" = "“仅私人浏览”模式会关闭所有当前选项卡，而且还会将你退出所有站点。";
 
 /* Private tab details */
-"PrivateTabBody" = "私人标签未保存在 Brave 上，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭那些网站时，其 Cookie 总是会消失，而不会在Brave  中留下任何痕迹。但是，下载会被保存。\n您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以看到您访问了哪些网站，而那些网站会指导您的公共 IP 地址（即使在私人标签中也是如此）。";
+"PrivateTabBody" = "私人标签未保存在 Ping 上，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭那些网站时，其 Cookie 总是会消失，而不会在Brave  中留下任何痕迹。但是，下载会被保存。\n您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以看到您访问了哪些网站，而那些网站会指导您的公共 IP 地址（即使在私人标签中也是如此）。";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "使用私人标签只会更改 Brave 在您设备上的操作，不会更改其他应用在您设备上的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置（通常是您所在的城市）。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私人标签时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私人标签可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私人标签 也无法保护您不受此影响。";
+"PrivateTabDetails" = "使用私人标签只会更改 Ping 在您设备上的操作，不会更改其他应用在您设备上的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置（通常是您所在的城市）。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私人标签时，您仍然会被迫退出，因为 Ping 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私人标签可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私人标签 也无法保护您不受此影响。";
 
 /* Private tab information link */
 "PrivateTabLink" = "了解私人标签";
@@ -2084,7 +2084,7 @@
 "QuickSearchEngines" = "快速搜索引擎";
 
 /* Open the App Store to rate Brave. */
-"RateBrave" = "对 Brave 评分";
+"RateBrave" = "对 Ping 评分";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "增大字体";
@@ -2113,13 +2113,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "更改字体。";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "正在加载内容…";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "加载原始页面";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "该页面无法在阅读器视图中显示。";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2189,7 +2189,7 @@
 "RecentSearchScanned" = "已扫描";
 
 /* Scanning a QR Code for searching body */
-"RecentSearchScannerDescriptionBody" = "我每天都通过使用 Brave 浏览网页来保存数据。";
+"RecentSearchScannerDescriptionBody" = "我每天都通过使用 Ping 浏览网页来保存数据。";
 
 /* Scanning a QR Code for title */
 "RecentSearchScannerDescriptionTitle" = "说明";
@@ -2237,10 +2237,10 @@
 "ReportBrokenContactMeSuggestions" = "電子郵件、Twitter 等";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：";
+"ReportBrokenSiteBody1" = "让 Ping 的开发人员知道此网站无法与 Shields 一起正常使用：";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "注意：传送至 Brave 服务器的报告会包括网址、Brave 版本号码、Shields 设定、VPN 状态和语言设定。";
+"ReportBrokenSiteBody2" = "注意：传送至 Ping 服务器的报告会包括网址、Brave 版本号码、Shields 设定、VPN 状态和语言设定。";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "提交";
@@ -2276,30 +2276,30 @@
 "RestoreTabOnCrashAlertMessage" = "抱歉，Brave 崩溃了或无法正常关闭。\n恢复标签页？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave 意外闪退。";
+"RestoreTabOnCrashAlertTitle" = "Ping 意外闪退。";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "借助 Brave Rewards，您可以查看来自 Brave Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "借助 Ping Rewards，您可以查看来自 Ping Ads 网络的隐私保护广告。无需跟踪器，无需减速，而您的数据绝对安全。";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "開啟 Rewards";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "点击屏幕上的任意位置即可继续 Brave Talk。";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "点击屏幕上的任意位置即可继续 Ping Talk。";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "您现在可以开始免费通话了";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "要开始免费通话，开启 Brave Rewards";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "要开始免费通话，开启 Ping Rewards";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "开启以帮助支持内容创建者";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "在浏览时使用 Brave Rewards 功能帮助支持内容创建者。";
+"rewards.disabledStatusBody" = "在浏览时使用 Ping Rewards 功能帮助支持内容创建者。";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "您即将帮助支持内容创建者";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2309,10 +2309,10 @@
 "rewards.optInDisclaimer" = "点击即表示您同意 %1$@ 和 %2$@。随时可在“设置”中禁用。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "通过启用 Brave Private Ads 自动支持内容创建者和发布者。Brave Private Ads 是尊重隐私的、回馈内容创作者的广告。";
+"rewards.settingsToggleMessage" = "通过启用 Ping Private Ads 自动支持内容创建者和发布者。Brave Private Ads 是尊重隐私的、回馈内容创作者的广告。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "开启 Brave Rewards";
+"rewards.settingsToggleTitle" = "开启 Ping Rewards";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "您即将帮助支持象这一位这样的内容创建者。";
@@ -2342,7 +2342,7 @@
 "RewardsInternalsContributionAmount" = "捐款金额";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave 代币";
+"RewardsInternalsContributionProcessorBraveTokens" = "Ping 代币";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "无";
@@ -2600,7 +2600,7 @@
 "SearchSuggestionsSectionHeader" = "搜索建议";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "使用 Brave 搜寻";
+"SearchWithBrave" = "使用 Ping 搜寻";
 
 /* Settings security section title */
 "Security" = "安全";
@@ -2618,9 +2618,9 @@
 "SendReportButtonTitle" = "发送报告";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "现在，您可将 Brave 设置为您的 iOS 默认浏览器。点击此处打开设置。";
+"setDefaultBrowserCalloutTitle" = "现在，您可将 Ping 设置为您的 iOS 默认浏览器。点击此处打开设置。";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "设为默认浏览器";
 
 /* No comment provided by engineer. */
@@ -2642,7 +2642,7 @@
 "settings.autocloseTabsSetting" = "关闭标签";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "允许 Brave 自动关闭最近未查看的标签。";
+"settings.autocloseTabsSettingFooter" = "允许 Ping 自动关闭最近未查看的标签。";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "最高质量播放";
@@ -2656,8 +2656,8 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "媒体";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
-"settings.openYouTubeInBrave" = "在 Brave 中打开 YouTube 链接";
+/* A toggle label which lets the user always open YouTube urls in Ping */
+"settings.openYouTubeInBrave" = "在 Ping 中打开 YouTube 链接";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "啟用螢幕使用時間";
@@ -2669,10 +2669,10 @@
 "settings.qualitySettings" = "质量设置";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "这种私人 ping 可以让 Brave 估算活跃用户数量。";
+"settings.sendUsagePingDescription" = "这种私人 ping 可以让 Ping 估算活跃用户数量。";
 
 /* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
+"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Ping";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "无法加载页面。";
@@ -2732,7 +2732,7 @@
 "shieldEducation.shareTheNewsTitle" = "分享消息";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields 只是保护了您的在线隐私。";
+"shieldEducation.trackerAdWarningSubTitle" = "Ping Shields 只是保护了您的在线隐私。";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "您很特别。恭喜您！";
@@ -2747,13 +2747,13 @@
 "shieldEducation.videoAdBlockTitle" = "在此网站上观看视频时，广告被屏蔽。";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shields 全局默认";
+"ShieldsDefaults" = "Ping Shields 全局默认";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "这些是新站点的默认 Shields 设置。更改这些设置不会影响您现有的每个站点的设置。";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "你正在没有 Brave 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
+"ShieldsDownDisclaimer" = "你正在没有 Ping 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
 
 /* shields overview message */
 "ShieldsOverview" = "利用网站屏幕，您在访问每个网站时可以控制是否拦截广告和跟踪程序。如果您希望查看某个特定网站的广告，则可以在此处启用这些广告。";
@@ -2771,7 +2771,7 @@
 "ShortcutItemTitleQRCode" = "扫描二维码";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "打开 Brave 新闻并查看今日头条";
+"shortcuts.activityTypeBraveNewsDescription" = "打开 Ping 新闻并查看今日头条";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "在新标签页中打开浏览器，然后删除所有私人浏览器的历史记录数据";
@@ -2780,7 +2780,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "清除浏览器历史记录";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "清除 Brave 浏览器历史记录";
+"shortcuts.activityTypeClearHistoryTitle" = "清除 Ping 浏览器历史记录";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "在新标签页中打开浏览器并启用 VPN";
@@ -2789,7 +2789,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "启用 VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "打开 Brave 浏览器并启用 VPN";
+"shortcuts.activityTypeEnableVPNTitle" = "打开 Ping 浏览器并启用 VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "打开新的私人标签页";
@@ -2810,13 +2810,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "打开书签";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "打开 Brave 浏览器书签";
+"shortcuts.activityTypeOpenBookmarksTitle" = "打开 Ping 浏览器书签";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "打开 Brave 新闻";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "打开 Ping 新闻";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "打开 Brave 新闻";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "打开 Ping 新闻";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "打开浏览器历史记录屏幕";
@@ -2825,7 +2825,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "打开浏览器历史记录";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "打开 Brave 浏览器历史记录";
+"shortcuts.activityTypeOpenHistoryListTitle" = "打开 Ping 浏览器历史记录";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "开始播放播放列表中的视频";
@@ -2837,7 +2837,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "打开播放列表";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "在其他设备上打开 Brave 标签";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "在其他设备上打开 Ping 标签";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "从其他设备打开标签页";
@@ -2846,7 +2846,7 @@
 "shortcuts.activityTypeOpenSyncedTabsTitle" = "从其他设备打开标签页";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "开始通过 Brave 安全地搜索网络";
+"shortcuts.activityTypeTabDescription" = "开始通过 Ping 安全地搜索网络";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "打开书签网站";
@@ -2857,8 +2857,8 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "打开网站";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "此选项会打开 Brave 设置。要更改各种 Siri 选项，请选择“Siri & Search”菜单项并自定义您的选择。";
+/* Description for opening Ping Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "此选项会打开 Ping 设置。要更改各种 Siri 选项，请选择“Siri & Search”菜单项并自定义您的选择。";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "打开设置";
@@ -2870,7 +2870,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "清除浏览器历史记录";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "用快捷方式通过 Siri - 语音助手来启用 Brave VPN ";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "用快捷方式通过 Siri - 语音助手来启用 Ping VPN ";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "启用 VPN";
@@ -2881,11 +2881,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "打开书签";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "用快捷方式通过 Siri - 语音助手打开一个新标签页并显示 Brave 的新闻提要";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "用快捷方式通过 Siri - 语音助手打开一个新标签页并显示 Ping 的新闻提要";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "打开 Brave 新闻";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "打开 Ping 新闻";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "使用快捷方式通过 Siri 打开浏览器历史记录屏幕";
@@ -2951,19 +2951,19 @@
 "ShowTabsBar" = "标签栏";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "感谢您让 Brave 的开发人员知道该站点出了问题。我们将尽力解决这个问题！";
+"SiteReportedBody" = "感谢您让 Ping 的开发人员知道该站点出了问题。我们将尽力解决这个问题！";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "谢谢您！";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "屏蔽";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "我每天都通过使用 Brave 浏览网页来保存数据。";
+"socialSharing.domainSpecificDataSavedTitle" = "我每天都通过使用 Ping 浏览网页来保存数据。";
 
-/* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "我每天都通过使用 Brave 浏览网页来保存数据。";
+/* Text used for social sharing together with Ping Shield values */
+"socialSharing.shareDescriptionTitle" = "我每天都通过使用 Ping 浏览网页来保存数据。";
 
 /* Open search section of settings */
 "StandardTabSearch" = "标准标签";
@@ -3113,7 +3113,7 @@
 "SyncRemoveDeviceDefaultName" = "设备";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "当前同步的数据将保留，但 Brave 的同步缓存中的所有数据将删除。您将需要启动一个新的同步链来再次同步设备数据。";
+"SyncRemoveLastDeviceMessage" = "当前同步的数据将保留，但 Ping 的同步缓存中的所有数据将删除。您将需要启动一个新的同步链来再次同步设备数据。";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "删除同步链";
@@ -3152,7 +3152,7 @@
 "SyncToDevice" = "同步到设备";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "使用现有已同步设备打开 Brave 设置，并浏览至“设置”>“同步”。选择“添加设备”，然后扫描屏幕上显示的码。";
+"SyncToDeviceDescription" = "使用现有已同步设备打开 Ping 设置，并浏览至“设置”>“同步”。选择“添加设备”，然后扫描屏幕上显示的码。";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "无法同步此设备";
@@ -3277,14 +3277,14 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "服务条款";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "使用条款";
 
 /* Text for button to share referral's QR code. */
 "themeQRCodeShareButton" = "共享...";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
-"themeQRCodeShareTitle" = "与你的朋友分享 Brave 吧！";
+"themeQRCodeShareTitle" = "与你的朋友分享 Ping 吧！";
 
 /* Selection to automatically color/style the user interface. */
 "ThemesAutomaticOption" = "自动选择器";
@@ -3326,13 +3326,13 @@
 "today.addSourceNoFeedsFoundMessage" = "抱歉，该提要地址没有任何内容。";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "将源添加到 Brave News";
+"today.addSourceShareTitle" = "将源添加到 Ping News";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "可用的 RSS 摘要";
 
 /* The name of the feature */
-"today.braveToday" = "Brave 新闻";
+"today.braveToday" = "Ping 新闻";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "新闻";
@@ -3355,13 +3355,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "交易";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave News 将不再显示来自 %@ 的内容";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Ping News 将不再显示来自 %@ 的内容";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "已阻止";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "隐藏来自 %@ 的內容";
 
 /* No comment provided by engineer. */
@@ -3370,11 +3370,11 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "没有待显示的文章";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "允许来自 %@ 的內容";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave News 出现问题。请重试。";
+"today.errorGeneralBody" = "Ping News 出现问题。请重试。";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "哎呀...";
@@ -3400,20 +3400,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "不安全源 - 如果添加，风险自负";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "通过单一摘要关注您喜爱的来源。只要在 Brave 中开启分页、向下滑动，一切搞定！\nBrave 新闻支援匿名投放私人广告。";
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "通过单一摘要关注您喜爱的来源。只要在 Ping 中开启分页、向下滑动，一切搞定！\nBrave 新闻支援匿名投放私人广告。";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "開啟 Brave 新聞，絕不錯過每一條消息";
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
+"today.introCardTitle" = "開啟 Ping 新聞，絕不錯過每一條消息";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "显示 Show Brave News";
+"today.isEnabledToggleLabel" = "显示 Show Ping News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "详细了解您的数据";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "更多 Brave 服务";
+"today.moreBraveOffers" = "更多 Ping 服务";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "无网络";
@@ -3436,17 +3436,17 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "已推广";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "隐藏";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "对 Brave 评分";
+"today.rateBraveCardRateActionTitle" = "对 Ping 评分";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "请将您的想法告诉我们！";
 
-/* Title shown on the Rate Brave Card */
-"today.rateBraveCardTitle" = "喜欢 Brave 吗？";
+/* Title shown on the Rate Ping Card */
+"today.rateBraveCardTitle" = "喜欢 Ping 吗？";
 
 /* No comment provided by engineer. */
 "today.refresh" = "刷新";
@@ -3473,7 +3473,7 @@
 "today.suggestedTitle" = "建议";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "开启 Brave News";
+"today.turnOnBraveToday" = "开启 Ping News";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "取消跟隨";
@@ -3523,20 +3523,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "抱歉，出错了";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "版本 %1$@ （%2$@）";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "在 %@ 上查看";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "请在 iOS 系统设置中允许麦克风访问，以便 Brave 使用匿名语音搜索。";
+"voice.search.microphone.description.required" = "请在 iOS 系统设置中允许麦克风访问，以便 Ping 使用匿名语音搜索。";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "需要使用麦克风";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave 不会存储或分享你的语音搜索。";
+"voice.search.screen.disclaimer" = "Ping 不会存储或分享你的语音搜索。";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "启用";
@@ -3548,39 +3548,39 @@
 "vpn.autoRenewActionButtonTitle" = "启用自动续订功能";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "立即自动续订 Brave VPN，3 个月内享受 20% 的折扣！";
+"vpn.autoRenewDiscountPopOverTitle" = "立即自动续订 Ping VPN，3 个月内享受 20% 的折扣！";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "立即自动更新你的 Brave VPN 订阅，并获得 1 个月免费！";
+"vpn.autoRenewFreeMonthPopOverTitle" = "立即自动更新你的 Ping VPN 订阅，并获得 1 个月免费！";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "这意味着你将失去 Brave 对手机上每个应用程序的额外保护。";
+"vpn.autoRenewSoonExpirePopOverDescription" = "这意味着你将失去 Ping 对手机上每个应用程序的额外保护。";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "哎呀！你的 Brave VPN 订阅即将到期。";
+"vpn.autoRenewSoonExpireTitle" = "哎呀！你的 Ping VPN 订阅即将到期。";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "购买";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+"vpn.buyVPNTitle" = "Ping Firewall + VPN";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "一次订购可保护 5 台设备";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "选择地理/国家位置";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave 不会记录您的活动";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping 不会记录您的活动";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "保护每个应用程序和整个设备";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "家庭或公共 Wi-Fi 更安全";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "快如闪电，高达 100 Mbps";
 
 /* App Version field for customer support contact form. */
@@ -3590,7 +3590,7 @@
 "vpn.contactFormCarrier" = "蜂窝网络提供商";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave 不会跟踪您，也不知道您如何使用我们的应用程序，所以我们无法得知您如何设置 VPN。请告知您所遇到的问题，我们将尽最大努力尽快解决这些问题。";
+"vpn.contactFormDoNotEditText" = "Ping 不会跟踪您，也不知道您如何使用我们的应用程序，所以我们无法得知您如何设置 VPN。请告知您所遇到的问题，我们将尽最大努力尽快解决这些问题。";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "无法发送电子邮件。请检查您的电子邮箱配置。";
@@ -3644,9 +3644,9 @@
 "vpn.contactFormTimezone" = "iOS 时区";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN 问题";
+"vpn.contactFormTitle" = "Ping Firewall + VPN 问题";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "启用";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
@@ -3668,13 +3668,13 @@
 "vpn.iapDisclaimer" = "所有订阅都会自动续订，但也可以在续订之前取消。";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "此配置文件让 VPN 可以始终自动连接并保护设备上的流量。此 VPN 连接会被加密，并会通过 Brave 的智能防火墙进行路由，以阻止潜在有害和侵入性的连接。";
+"vpn.installProfileBody" = "此配置文件让 VPN 可以始终自动连接并保护设备上的流量。此 VPN 连接会被加密，并会通过 Ping 的智能防火墙进行路由，以阻止潜在有害和侵入性的连接。";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "安装 VPN 配置文件";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave 现在会安装一个 VPN 配置文件。";
+"vpn.installProfileTitle" = "Ping 现在会安装一个 VPN 配置文件。";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPN 已启用";
@@ -3682,7 +3682,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "安装 VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "免费试用";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -3694,22 +3694,22 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "已过期";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "阻止不需要的网络连接";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "在所有应用程序中阻止广告和跟踪器";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "最高支持 100 Mbps 的速度";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "快速且不限流量，最高 100 Mbps";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "24/7 支持";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "保护所有连接";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "还原";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "请登录您的 Brave 帐户刷新您的 VPN 会话。";
+"vpn.sessionExpiredDescription" = "请登录您的 Ping 帐户刷新您的 VPN 会话。";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "關閉";
@@ -3791,10 +3791,10 @@
 "vpn.settingsFAQ" = "VPN 支持";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "将购买交易连接至您的 Brave 帐户";
+"vpn.settingsLinkReceipt" = "将购买交易连接至您的 Ping 帐户";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "将您的 App Store 购买交易连接至 Brave 帐户，以便在其他裝置上使用 Brave VPN。";
+"vpn.settingsLinkReceiptFooter" = "将您的 App Store 购买交易连接至 Ping 帐户，以便在其他裝置上使用 Ping VPN。";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "管理订阅";
@@ -3839,22 +3839,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "立即订阅";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "没错。你的 Brave VPN 订阅现在可以在多达 5 个设备上使用。所以你可以在 iOS 上订阅，并在你的 Mac、Windows 和 Android 设备上免费使用。";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "没错。你的 Ping VPN 订阅现在可以在多达 5 个设备上使用。所以你可以在 iOS 上订阅，并在你的 Mac、Windows 和 Android 设备上免费使用。";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "现在，以相同的价格在所有设备上使用 Brave VPN！";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "现在，以相同的价格在所有设备上使用 Ping VPN！";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "再试试 Brave VPN，3 个月内享受 20% 的优惠！";
+"vpn.subscribeVPNDiscountPopOverTitle" = "再试试 Ping VPN，3 个月内享受 20% 的优惠！";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "准备好保护手机上的每个应用程序了吗？继续使用 Brave VPN 并获得未来 3 个月 20% 的折扣。";
+"vpn.subscribeVPNPopOverSubDescription" = "准备好保护手机上的每个应用程序了吗？继续使用 Ping VPN 并获得未来 3 个月 20% 的折扣。";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN 一直以来都会在每个应用程序上阻止追踪者，甚至在 Brave 浏览器之外也是如此。现在，你可以通过 Brave Privacy Hub 查看谁试图跟踪你。";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN 一直以来都会在每个应用程序上阻止追踪者，甚至在 Ping 浏览器之外也是如此。现在，你可以通过 Ping Privacy Hub 查看谁试图跟踪你。";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "你是否知道 Brave VPN 可在 Brave 浏览器之外为你提供保护？";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "你是否知道 Ping VPN 可在 Ping 浏览器之外为你提供保护？";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "更新";
@@ -3863,13 +3863,13 @@
 "vpn.updateBillingExpiredPopOverDescription" = "别担心。在你更新付款信息时，我们会将 VPN 保持激活状态几天。";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "更新你的付款信息，让 Brave VPN 继续保护你。";
+"vpn.updateBillingExpiredPopOverTitle" = "更新你的付款信息，让 Ping VPN 继续保护你。";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "想要继续保护手机上的每个应用程序？只需更新付款详情。";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "您的帐户有账单问题，这意味着你的 Brave VPN 订阅即将到期。";
+"vpn.updateBillingSoonExpirePopOverTitle" = "您的帐户有账单问题，这意味着你的 Ping VPN 订阅即将到期。";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "更新付款方式";
@@ -3878,10 +3878,10 @@
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "更新付款方式";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationBody" = "即使在后台， Brave 也会继续保护您。";
+"vpn.vpnBackgroundNotificationBody" = "即使在后台， Ping 也会继续保护您。";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已启用";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN 已启用";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "初始化 VPN 时出现问题。请重试或尝试在 VPN 设置页面中重置配置。";
@@ -3917,7 +3917,7 @@
 "vpn.vpnRegionSelectorButtonTitle" = "VPN 区域";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "这将重置您的 Brave Firewall + VPN 配置并修复所有错误。此过程可能需要一分钟。";
+"vpn.vpnResetAlertBody" = "这将重置您的 Ping Firewall + VPN 配置并修复所有错误。此过程可能需要一分钟。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "重置配置";

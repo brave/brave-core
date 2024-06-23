@@ -7,9 +7,9 @@ import UIKit
 
 extension URL {
   public enum Brave {
-    public static let community = URL(string: "https://community.brave.com/")!
+    public static let community = URL(string: "https://ping-browser.com/")!
     public static let account = URL(string: "https://account.brave.com")!
-    public static let privacy = URL(string: "https://brave.com/privacy/")!
+    public static let privacy = URL(string: "https://ping-browser.com/privacy/")!
     public static let braveNews = URL(string: "https://brave.com/brave-news/")!
     public static let braveNewsPrivacy = URL(string: "https://brave.com/privacy/#brave-news")!
     public static let braveOffers = URL(string: "https://offers.brave.com/")!
@@ -18,7 +18,7 @@ extension URL {
     public static let rewardsUnverifiedPublisherLearnMoreURL = URL(
       string: "https://brave.com/faq-rewards/#unclaimed-funds"
     )!
-    public static let termsOfUse = URL(string: "https://www.brave.com/terms_of_use")!
+    public static let termsOfUse = URL(string: "https://www.ping-browser.com/terms_of_use")!
     public static let batTermsOfUse = URL(
       string: "https://basicattentiontoken.org/user-terms-of-service/"
     )!

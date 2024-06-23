@@ -50,7 +50,7 @@
 "e13lS3-FGO5qW" = "Var det \"Brave-spellista\" du sökte efter?";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "Var det \"Brave Wallet\" du sökte efter?";
+"e13lS3-jXiFQY" = "Var det \"Ping Wallet\" du sökte efter?";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
@@ -65,7 +65,7 @@
 "e13lS3-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
+"e13lS3-XCyA8c" = "Var det \"Ping News\" du sökte efter?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Var det \"Sök\" du sökte efter?";
@@ -101,7 +101,7 @@
 "L1fziM-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
 
 /* (No Comment) */
-"L1fziM-jXiFQY" = "Det finns ${count} alternativ som matchar \"Brave Wallet\".";
+"L1fziM-jXiFQY" = "Det finns ${count} alternativ som matchar \"Ping Wallet\".";
 
 /* (No Comment) */
 "L1fziM-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
@@ -116,7 +116,7 @@
 "L1fziM-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
-"L1fziM-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+"L1fziM-XCyA8c" = "Det finns ${count} alternativ som matchar \"Ping News\".";
 
 /* (No Comment) */
 "L1fziM-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
@@ -140,7 +140,7 @@
 "r2EI05-FGO5qW" = "Var det \"Brave-spellista\" du sökte efter?";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "Var det \"Brave Wallet\" du sökte efter?";
+"r2EI05-jXiFQY" = "Var det \"Ping Wallet\" du sökte efter?";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
@@ -155,7 +155,7 @@
 "r2EI05-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
+"r2EI05-XCyA8c" = "Var det \"Ping News\" du sökte efter?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Var det ”Sök” du sökte efter?";
@@ -179,7 +179,7 @@
 "tNCrcE-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
 
 /* (No Comment) */
-"tNCrcE-jXiFQY" = "Det finns ${count} alternativ som matchar \"Brave Wallet\".";
+"tNCrcE-jXiFQY" = "Det finns ${count} alternativ som matchar \"Ping Wallet\".";
 
 /* (No Comment) */
 "tNCrcE-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
@@ -194,7 +194,7 @@
 "tNCrcE-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
-"tNCrcE-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+"tNCrcE-XCyA8c" = "Det finns ${count} alternativ som matchar \"Ping News\".";
 
 /* (No Comment) */
 "tNCrcE-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
@@ -212,7 +212,7 @@
 "TxuMja-FGO5qW" = "Det finns ${count} alternativ som matchar \"Brave-spellista\".";
 
 /* (No Comment) */
-"TxuMja-jXiFQY" = "Det finns ${count} alternativ som matchar \"Brave Wallet\".";
+"TxuMja-jXiFQY" = "Det finns ${count} alternativ som matchar \"Ping Wallet\".";
 
 /* (No Comment) */
 "TxuMja-nthxSL" = "Det finns ${count} alternativ som matchar ”Nedladdningar”.";
@@ -227,7 +227,7 @@
 "TxuMja-vs094F" = "Det finns ${count} alternativ som matchar ”Ny privat flik”.";
 
 /* (No Comment) */
-"TxuMja-XCyA8c" = "Det finns ${count} alternativ som matchar \"Brave News\".";
+"TxuMja-XCyA8c" = "Det finns ${count} alternativ som matchar \"Ping News\".";
 
 /* (No Comment) */
 "TxuMja-Y7TWy8" = "Det finns ${count} alternativ som matchar \"Sök\".";
@@ -248,7 +248,7 @@
 "xcI3h9" = "Blockerade annonser";
 
 /* (No Comment) */
-"XCyA8c" = "Brave News";
+"XCyA8c" = "Ping News";
 
 /* (No Comment) */
 "XkwBGY" = "Genvägskonfigurering för låsskärm";
@@ -266,7 +266,7 @@
 "YQiQuz-FGO5qW" = "Ville du ha \"Brave-spellista\"?";
 
 /* (No Comment) */
-"YQiQuz-jXiFQY" = "Var det \"Brave Wallet\" du sökte efter?";
+"YQiQuz-jXiFQY" = "Var det \"Ping Wallet\" du sökte efter?";
 
 /* (No Comment) */
 "YQiQuz-nthxSL" = "Var det ”Nedladdningar” du sökte efter?";
@@ -281,7 +281,7 @@
 "YQiQuz-vs094F" = "Var det ”Ny privat flik” du sökte efter?";
 
 /* (No Comment) */
-"YQiQuz-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
+"YQiQuz-XCyA8c" = "Var det \"Ping News\" du sökte efter?";
 
 /* (No Comment) */
 "YQiQuz-Y7TWy8" = "Ville du ha \"Sök\"?";

@@ -1,17 +1,17 @@
 /* About settings section title */
 "About" = "關於";
 
-/* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "關於 Brave Shields";
+/* The title of the screen explaining Ping Shields */
+"AboutBraveShields" = "關於 Ping Shields";
 
-/* The body of the screen explaining Brave Shields */
+/* The body of the screen explaining Ping Shields */
 "AboutBraveShieldsBody" = "網站通常會透過 Cookie 和指令碼嘗試識別您和您使用的裝置，藉此掌握您的身分及瞭解您使用網路的情形，進而追蹤您在每個網站上的行為。\n\nBrave 會封鎖這些項目，讓您能在不受追蹤的情況下自在瀏覽。";
 
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertMessage" = "這可讓您將影像儲存至您的相機膠卷。";
 
 /* See http://mzl.la/1G7uHo7 */
-"AccessPhotoDeniedAlertTitle" = "Brave 希望能存取您的相片";
+"AccessPhotoDeniedAlertTitle" = "Ping 希望能存取您的相片";
 
 /* Button to add a bookmark */
 "AddBookmark" = "新增書籤";
@@ -52,8 +52,8 @@
 /* Setting preference to always show the browser tabs bar. */
 "AlwaysShow" = "開啟";
 
-/* Touch ID or PIN entry prompt subtitle when accessing Brave with the Browser Lock feature enabled */
-"AuthenticationLoginsTouchReason" = "這會驗證您對 Brave 的存取權限";
+/* Touch ID or PIN entry prompt subtitle when accessing Ping with the Browser Lock feature enabled */
+"AuthenticationLoginsTouchReason" = "這會驗證您對 Ping 的存取權限";
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "取消";
@@ -158,43 +158,43 @@
 "BookmarkUrlPlaceholderText" = "地址";
 
 /* Button to show the brave panel */
-"BravePanel" = "Brave 面板";
+"BravePanel" = "Ping 面板";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+"BraveRewardsAdNotificationTitle" = "Ping Rewards";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "開啟";
 
-/* Brave Rewards title in settings */
+/* Ping Rewards title in settings */
 "BraveRewardsSettingsTitle" = "獎勵";
 
-/* Brave Rewards title */
-"BraveRewardsTitle" = "Brave Rewards";
+/* Ping Rewards title */
+"BraveRewardsTitle" = "Ping Rewards";
 
-/* Brave Search Banner Promotion description content in Search Suggestions */
-"braveSearchPromotion.bannerDescription" = "Brave 搜尋不會追蹤您、您的查詢內容或點擊項目。";
+/* Ping Search Banner Promotion description content in Search Suggestions */
+"braveSearchPromotion.bannerDescription" = "Ping 搜尋不會追蹤您、您的查詢內容或點擊項目。";
 
-/* Brave Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
+/* Ping Search Banner Promotion title for maybe later button to activate promotion later in Search Suggestions */
 "braveSearchPromotion.bannerMaybeLaterButtonTitle" = "稍後再說";
 
-/* Brave Search Banner Promotion title in Search Suggestions */
+/* Ping Search Banner Promotion title in Search Suggestions */
 "braveSearchPromotion.bannerTitle" = "支援獨立搜尋並提供更棒的隱私保護";
 
-/* Brave Search Banner Promotion title for try button in Search Suggestions */
-"braveSearchPromotion.bannerTryButtonTitle" = "試用 Brave 搜尋";
+/* Ping Search Banner Promotion title for try button in Search Suggestions */
+"braveSearchPromotion.bannerTryButtonTitle" = "試用 Ping 搜尋";
 
 /* Button title for Bottom Bar Callout View for action later */
 "braveSearchPromotion.bottomBarCalloutDismissButtonTitle" = "稍後再說";
 
-/* Brave Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
+/* Ping Search Banner Promotion title for dismiss button to remove promotion in Search Suggestions */
 "braveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle" = "關閉";
 
 /* No comment provided by engineer. */
 "BraveShieldsAdvancedControls" = "進階控制項";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields 和隱私";
+"BraveShieldsAndPrivacy" = "Ping Shields 和隱私";
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacyTitle" = "Shields 與隱私權";
@@ -215,7 +215,7 @@
 "BraveShieldsSiteBroken" = "如果這個網站貌似無法正常運作，請嘗試關閉 Shields";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
+"BraveShieldsStatusTitle" = "Ping Shields";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "關閉";
@@ -224,7 +224,7 @@
 "BraveShieldsStatusValueUp" = "開啟";
 
 /* The accessibility hint spoken when focused on the main shields toggle */
-"BraveShieldsToggleHint" = "點兩下即可切換 Brave Shields";
+"BraveShieldsToggleHint" = "點兩下即可切換 Ping Shields";
 
 /* Sync page title */
 "BraveSync" = "同步";
@@ -233,16 +233,16 @@
 "BraveSyncInternalsTitle" = "同步 Internals";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
+"BraveSyncWelcome" = "首先，您需要將 Ping 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
 
 /* The name of the feature */
-"bravetalk.braveTalkTitle" = "Brave Talk";
+"bravetalk.braveTalkTitle" = "Ping Talk";
 
 /* Title for setting to enable the browser lock privacy feature */
 "BrowserLock" = "瀏覽器鎖定";
 
 /* Description for setting to enable the browser lock privacy feature */
-"BrowserLockDescription" = "以 Touch ID、Face ID 或系統密碼解鎖 Brave";
+"BrowserLockDescription" = "以 Touch ID、Face ID 或系統密碼解鎖 Ping";
 
 /* Settings item for clearing browsing history */
 "BrowsingHistory" = "瀏覽記錄";
@@ -257,13 +257,13 @@
 "callout.bottomBarCalloutDescription" = "將地址欄、標籤、書籤和其他工具移動到瀏覽器底部。";
 
 /* Title for Bottom Bar Callout View */
-"callout.bottomBarCalloutTitle" = "自訂 Brave 標籤欄";
+"callout.bottomBarCalloutTitle" = "自訂 Ping 標籤欄";
 
 /* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "將 Brave 設為預設瀏覽器？";
+"callout.defaultBrowserCalloutButtonDescription" = "將 Ping 設為預設瀏覽器？";
 
 /* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "將 Brave 設為預設瀏覽器的話，您所輕觸的每個連結都會在 Brave 的隱私保護下開啟。";
+"callout.defaultBrowserCalloutDescription" = "將 Ping 設為預設瀏覽器的話，您所輕觸的每個連結都會在 Ping 的隱私保護下開啟。";
 
 /* Title for main button in Default Browser Full Screen Callout */
 "callout.defaultBrowserCalloutPrimaryButtonTitle" = "設為預設瀏覽器";
@@ -278,19 +278,19 @@
 "callout.defaultBrowserTitle" = "隱私不再遙不可及。";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "這有助於我們瞭解哪些 Brave 功能的使用率最高。您隨時可以在 Brave 設定中的「Brave Shields 和其他隱私設定」下變更。";
+"callout.p3aCalloutDescription" = "這有助於我們瞭解哪些 Ping 功能的使用率最高。您隨時可以在 Ping 設定中的「Brave Shields 和其他隱私設定」下變更。";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "深入瞭解保護隱私的產品分析 (P3A)。";
 
 /* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "協助提升 Brave 品質。";
+"callout.p3aCalloutTitle" = "協助提升 Ping 品質。";
 
 /* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
 "callout.p3aCalloutToggleTitle" = "分享完全不公開的匿名產品深入分析。";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "在您的電腦或平板電腦上享有 Brave 隱私保護，並且讓各裝置上的書籤和擴充功能保持同步。";
+"callout.privacyEverywhereCalloutDescription" = "在您的電腦或平板電腦上享有 Ping 隱私保護，並且讓各裝置上的書籤和擴充功能保持同步。";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "立即同步";
@@ -370,7 +370,7 @@
 /* Title of the section for Department of the Company. Example: Human Resources. */
 "certificateViewer.organizationalUnitTitle" = "公司部門";
 
-/* Title of the section for Name of the Company. Example: Brave Inc. */
+/* Title of the section for Name of the Company. Example: Ping Inc. */
 "certificateViewer.organizationTitle" = "公司";
 
 /* Title indicating 'Parameters' or Input passed to a function/algorithm. */
@@ -556,19 +556,19 @@
 /* The warning description shown to user when custom search engine already exists. */
 "customSearchEngine.engineAlertExistsAlertDescription" = "已存在名稱相同的搜尋引擎。";
 
-/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Brave Search, Brave Search is a search engineand on a new seperate line */
+/* A description explaining that search template url is insecure, it is used for instance - Insecure Custom Search Template for Ping Search, Ping Search is a search engineand on a new seperate line */
 "customSearchEngine.insecureSearchTemplateURLErrorDescription" = "不安全的自訂搜尋範本";
 
-/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Brave Search, Brave Search is name of search engine on a new seperate line */
+/* A description explaining that suggestion template url is insecure, it is used for instance - Insecure Custom Suggestion Template for Ping Search, Ping Search is name of search engine on a new seperate line */
 "customSearchEngine.insecureSuggestionTemplateURLErrorDescription" = "不安全的自訂建議範本";
 
 /* Navigation Bar title */
 "customSearchEngine.navigationTitle" = "新增搜尋引擎";
 
-/* Search Template title - for instance it will be used Search Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Search Template title - for instance it will be used Search Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.searchTemplateTitle" = "搜尋範本：";
 
-/* Suggestion Template title - for instance it will be used Suggestion Template: Brave Search - Brave Search is the name of Search Engine on  seperate line */
+/* Suggestion Template title - for instance it will be used Suggestion Template: Ping Search - Ping Search is the name of Search Engine on  seperate line */
 "customSearchEngine.suggestionTemplateTitle" = "建議範本：";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
@@ -611,7 +611,7 @@
 "defaultBrowserCallout.introOpenSettingsButtonText" = "開啟設定";
 
 /* Primary text on default browser popup screen */
-"defaultBrowserCallout.introPrimaryText" = "使用 Brave 開啟所有連結以保護隱私";
+"defaultBrowserCallout.introPrimaryText" = "使用 Ping 開啟所有連結以保護隱私";
 
 /* Secondary text on default browser popup. */
 "defaultBrowserCallout.introSecondaryText" = "dBrave Shields 會在您造訪網站時，封鎖網站上的追蹤程式和廣告，為您節省數據用量和寶貴時間";
@@ -619,11 +619,11 @@
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "開啟「設定」，點選「預設瀏覽器應用程序」，然後選取「Brave」。";
 
-/* Notification body to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationBody" = "將 Brave 設為預設瀏覽器";
+/* Notification body to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationBody" = "將 Ping 設為預設瀏覽器";
 
-/* Notification title to promote setting Brave app as default browser */
-"defaultBrowserCallout.notificationTitle" = "每次點選連結都能獲得 Brave 保護";
+/* Notification title to promote setting Ping app as default browser */
+"defaultBrowserCallout.notificationTitle" = "每次點選連結都能獲得 Ping 保護";
 
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "關閉預設瀏覽器標註";
@@ -631,8 +631,8 @@
 /* A section title that contains default (predefined) filter lists a user can enable/diable. */
 "DefaultFilterLists" = "預設篩選清單";
 
-/* Name for default Brave theme. */
-"defaultThemeName" = "Brave 預設";
+/* Name for default Ping theme. */
+"defaultThemeName" = "Ping 預設";
 
 /* No comment provided by engineer. */
 "Delete" = "刪除";
@@ -737,7 +737,7 @@
 "ErrorPageReloadButtonTitle" = "重新載入";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 一般使用加密保護您的資訊。Brave 這次嘗試連線至 %2$@ 時，網站傳回異常的錯誤憑證。攻擊者正在嘗試假冒 %3$@，或 Wi-Fi 登入畫面中斷連線時，就可能發生這種情況。您的資訊仍安全無虞，因 Brave 在交換資料前已停止連線。<br />由於網站使用憑證綁定，您無法立即造訪 %4$@。網路錯誤和攻擊通常為暫時性，因此這個頁面可能稍後就恢復正常。";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 一般使用加密保護您的資訊。Brave 這次嘗試連線至 %2$@ 時，網站傳回異常的錯誤憑證。攻擊者正在嘗試假冒 %3$@，或 Wi-Fi 登入畫面中斷連線時，就可能發生這種情況。您的資訊仍安全無虞，因 Ping 在交換資料前已停止連線。<br />由於網站使用憑證綁定，您無法立即造訪 %4$@。網路錯誤和攻擊通常為暫時性，因此這個頁面可能稍後就恢復正常。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "此伺服器無法證明它是 %@；您裝置的作業系統不信任其安全憑證。原因可能是設定錯誤，或攻擊者嘗試攔截您的連線。";
@@ -784,10 +784,10 @@
 /* Allow link to switch apps? */
 "ExternalAppURLAlertTitle" = "要允許連結切換應用程序嗎？";
 
-/* Allow Brave to open the external app URL */
+/* Allow Ping to open the external app URL */
 "ExternalAppURLAllow" = "允許";
 
-/* Don't allow Brave to open the external app URL */
+/* Don't allow Ping to open the external app URL */
 "ExternalAppURLDontAllow" = "不允許";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
@@ -890,10 +890,10 @@
 "HideLinkPreviewsActionTitle" = "隱藏連結預覽";
 
 /* Hides the rewards icon */
-"HideRewardsIcon" = "隱藏 Brave Rewards 圖示";
+"HideRewardsIcon" = "隱藏 Ping Rewards 圖示";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "未啟用 Brave Rewards 時隱藏 Brave Rewards 圖示";
+"HideRewardsIconSubtitle" = "未啟用 Ping Rewards 時隱藏 Ping Rewards 圖示";
 
 /* Title for history menu item */
 "HistortMenuItem" = "歷史記錄";
@@ -949,7 +949,7 @@
 /* No comment provided by engineer. */
 "learnMore" = "了解更多";
 
-/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+/* Title for Ping Leo menu item. Ping Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
@@ -1037,7 +1037,7 @@
 "MyFirstAdBody" = "點選此處以瞭解詳細資訊。";
 
 /* No comment provided by engineer. */
-"MyFirstAdTitle" = "這是您的第一則 Brave 廣告";
+"MyFirstAdTitle" = "這是您的第一則 Ping 廣告";
 
 /* Bookmark title / Device name */
 "Name" = "名稱";
@@ -1099,14 +1099,14 @@
 /* Setting title for option to automatically redirect a url to another url */
 "nprRedirectFooter" = "自動將 NPR 連結重新導向其文字版本 (位址：text.npr.org)。";
 
-/* Bookmark title for Brave Support */
-"ntp.braveSupportFavoriteTitle" = "Brave 支援";
+/* Bookmark title for Ping Support */
+"ntp.braveSupportFavoriteTitle" = "Ping 支援";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "領取代幣";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "您使用 Brave 瀏覽期間，一共賺取了 %@。";
+"ntp.earningsReport" = "您使用 Ping 瀏覽期間，一共賺取了 %@。";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "做得很好！";
@@ -1115,10 +1115,10 @@
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
 
 /* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "「贊助」是您可透過啟用 Brave Rewards 獲得的額外品牌背景。";
+"ntp.imageTypeSelectionDescription" = "「贊助」是您可透過啟用 Ping Rewards 獲得的額外品牌背景。";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
+"ntp.learnMoreAboutRewards" = "深入了解 Ping Rewards";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutSI" = "深入了解贊助圖片";
@@ -1157,10 +1157,10 @@
 "OBAdsOptInMessageJapan" = "一邊瀏覽，一邊賺取點數，獎勵優質的內容創作者。";
 
 /* Title when opting into brave Ads when region becomes available */
-"OBAdsOptInTitle" = "Brave Ads 在這裡！";
+"OBAdsOptInTitle" = "Ping Ads 在這裡！";
 
 /* Title for ads onboarding screen */
-"OBAdsTitle" = "Brave 會在時限內展示您的第一個廣告";
+"OBAdsTitle" = "Ping 會在時限內展示您的第一個廣告";
 
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "你現在可以開始了。";
@@ -1180,14 +1180,14 @@
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "開始瀏覽";
 
-/* Button to join Brave Rewards. */
+/* Button to join Ping Rewards. */
 "OBJoinButton" = "加入";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentClipboardPermission" = "允許 Brave 查看我的剪貼簿，尋找相符的推薦代碼";
+"OBPrivacyConsentClipboardPermission" = "允許 Ping 查看我的剪貼簿，尋找相符的推薦代碼";
 
 /* No comment provided by engineer. */
-"OBPrivacyConsentDetail" = "您可能為了支持推薦者而下載 Brave。為偵測您的推薦者，Brave 會查看您的剪貼簿一次，尋找相符的推薦代碼。Brave 只會檢查代碼，不會傳輸其他任何個人資料。如果您不允許查看，您的推薦者將無法獲得 Brave 獎勵。";
+"OBPrivacyConsentDetail" = "您可能為了支持推薦者而下載 Brave。為偵測您的推薦者，Brave 會查看您的剪貼簿一次，尋找相符的推薦代碼。Brave 只會檢查代碼，不會傳輸其他任何個人資料。如果您不允許查看，您的推薦者將無法獲得 Ping 獎勵。";
 
 /* No comment provided by engineer. */
 "OBPrivacyConsentNoButton" = "不允許查看";
@@ -1208,10 +1208,10 @@
 "OBRewardsAgreementDetailsAnd" = "和";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewards";
+"OBRewardsAgreementTitle" = "Ping Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetail" = "啟用 Brave Private Ads 後，瀏覽的所有廣告都是對發佈者和內容創作者的支持。";
+"OBRewardsDetail" = "啟用 Ping Private Ads 後，瀏覽的所有廣告都是對發佈者和內容創作者的支持。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
@@ -1220,7 +1220,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "隱私政策";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Brave Rewards";
+"OBRewardsTitle" = "Ping Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "儲存";
@@ -1229,28 +1229,28 @@
 "OBSearchEngineDetail" = "選擇您預設的搜尋引擎";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "歡迎使用 Brave 瀏覽器";
+"OBSearchEngineTitle" = "歡迎使用 Ping 瀏覽器";
 
 /* Detail text for shields onboarding screen */
 "OBShieldsDetail" = "封鎖侵犯隱私的追蹤器，如此一來您就能在不被追蹤的情況下瀏覽網站。";
 
 /* Title for shields onboarding screen */
-"OBShieldsTitle" = "Brave Shields";
+"OBShieldsTitle" = "Ping Shields";
 
-/* Button to show the Brave Rewards Ads. */
+/* Button to show the Ping Rewards Ads. */
 "OBShowMeButton" = "讓我看看";
 
-/* Button to show Brave Rewards. */
+/* Button to show Ping Rewards. */
 "OBTurnOnButton" = "開始";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "已封鎖 %1$@ 和其他 %2$lld 個廣告和追蹤器";
 
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "在每個頁面上都能使用 Shields 查看 Brave 封鎖的所有不速之客。";
+/* The footnote indicating what Ping shields is blocking */
+"onboarding.blockedAdsOnboardingFootnoteText" = "在每個頁面上都能使用 Shields 查看 Ping 封鎖的所有不速之客。";
 
 /* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "輕觸即可查看 Brave Shields";
+"onboarding.blockedAdsOnboardingInstructionsText" = "輕觸即可查看 Ping Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個廣告和追蹤器遭到封鎖";
@@ -1259,10 +1259,10 @@
 "onboarding.linkReceiptButton" = "連結您的 VPN 訂閱項目";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Brave VPN 訂閱最多可保護 5 部裝置，Android、iOS 和桌上型電腦都能涵蓋在內。只要將 App Store 訂閱與 Brave 帳戶連結即可。";
+"onboarding.linkReceiptDescription" = "Ping VPN 訂閱最多可保護 5 部裝置，Android、iOS 和桌上型電腦都能涵蓋在內。只要將 App Store 訂閱與 Ping 帳戶連結即可。";
 
 /* Popup title to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptTitle" = "擴充您的 Brave 防火牆 + VPN 防護";
+"onboarding.linkReceiptTitle" = "擴充您的 Ping 防火牆 + VPN 防護";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "尋找「預設瀏覽器應用程式」";
@@ -1274,13 +1274,13 @@
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "封鎖追蹤器和廣告可讓網站的數據用量減少，載入速度加快。";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
-"onboarding.omniboxOnboardingPopOverDescription" = "體驗 Brave 的與眾不同：\n沒有廣告，沒有追蹤器，頁面載入速度大幅提升。";
+"onboarding.omniboxOnboardingPopOverDescription" = "體驗 Ping 的與眾不同：\n沒有廣告，沒有追蹤器，頁面載入速度大幅提升。";
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "輸入網站名稱或 URL";
 
 /* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "歡迎使用 Brave";
+"onboarding.welcomeScreenTitle" = "歡迎使用 Ping";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "繼續";
@@ -1294,8 +1294,8 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "開啟全部 (%i)";
 
-/* Button title for opening the Brave Rewards panel to settings */
-"OpenBraveRewardsSettings" = "開啟 Brave 獎勵設定";
+/* Button title for opening the Ping Rewards panel to settings */
+"OpenBraveRewardsSettings" = "開啟 Ping 獎勵設定";
 
 /* Error description when there is an error while navigating to Files App */
 "OpenDownloadsFolderErrorDescription" = "在「檔案」應用程式中開啟「下載」資料夾時發生不明錯誤。";
@@ -1352,13 +1352,13 @@
 "opentabs.noSyncChainPlaceHolderViewDescription" = "如要開始，設定同步鏈結並在「同步設定」中切換「開啟的分頁」。";
 
 /* The additional description of the view describing tab syncing should be enabled. */
-"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "在「設定」中管理 Brave 要同步的項目。 ";
+"opentabs.noSyncSessionPlaceHolderViewAdditionalDescription" = "在「設定」中管理 Ping 要同步的項目。 ";
 
 /* The description of the view describing no other sessions are active in sync. */
 "opentabs.noSyncSessionPlaceHolderViewDescription" = "您的其他裝置上沒有可顯示的進行中工作階段。";
 
 /* The title of the view showing no synced sessions */
-"opentabs.noSyncSessionPlaceHolderViewTitle" = "此空間顯示在其他裝置中開啟的 Brave 分頁。";
+"opentabs.noSyncSessionPlaceHolderViewTitle" = "此空間顯示在其他裝置中開啟的 Ping 分頁。";
 
 /* The title for the action to hide open session with all tabs */
 "opentabs.openSessionHideAllActionTitle" = "暫時隱藏";
@@ -1411,38 +1411,38 @@
 /* Button title to that opens a website. */
 "OpenWebsite" = "開啟網站";
 
-/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+/* The subtitle description of menu item Ping Leo. Ping Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo 是採用 AI 技術的智慧助理，內建於瀏覽器中。";
 
-/* The subtitle description of menu item Brave News */
+/* The subtitle description of menu item Ping News */
 "optionsMenu.braveNewsItemDescription" = "以私密新聞摘要提供今日熱門報導";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.braveNewsItemTitle" = "News";
 
-/* The subtitle description of menu item Brave Playlist */
+/* The subtitle description of menu item Ping Playlist */
 "optionsMenu.bravePlaylistItemDescription" = "保留任何影片/直播的離線播放清單";
 
-/* Brave News Item Menu title */
+/* Ping News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "播放清單";
 
-/* The subtitle description of menu item Brave Talk */
+/* The subtitle description of menu item Ping Talk */
 "optionsMenu.braveTalkItemDescription" = "直接在瀏覽器中展開私密視訊通話";
 
-/* Brave Talk Item Menu title */
+/* Ping Talk Item Menu title */
 "optionsMenu.braveTalkItemTitle" = "Talk";
 
-/* The subtitle description of menu item Brave VPN */
+/* The subtitle description of menu item Ping VPN */
 "optionsMenu.braveVPNItemDescription" = "線上保護整體裝置安全";
 
-/* Brave VPN Item Menu title */
+/* Ping VPN Item Menu title */
 "optionsMenu.braveVPNItemTitle" = "VPN";
 
-/* The subtitle description of menu item Brave Wallet */
+/* The subtitle description of menu item Ping Wallet */
 "optionsMenu.braveWalletItemDescription" = "安全加密錢包，不需擴充功能";
 
 /* Privacy Features Section title */
-"optionsMenu.menuSectionTitle" = "Brave 功能";
+"optionsMenu.menuSectionTitle" = "Ping 功能";
 
 /* Section name for other privacy settings */
 "OtherPrivacySettingsSection" = "其他隱私設定";
@@ -1454,7 +1454,7 @@
 "p3a.continue" = "繼續";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "這些私密回覆可協助 Brave 估計特定功能的整體使用量，並改善您的使用體驗。";
+"p3a.settingSubtitle" = "這些私密回覆可協助 Ping 估計特定功能的整體使用量，並改善您的使用體驗。";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "允許保護隱私的產品分析 (P3A)";
@@ -1508,7 +1508,7 @@
 "PersistentPrivateBrowsing" = "持續無痕式瀏覽";
 
 /* Persistent private browsing alert message to existing users */
-"PersistentPrivateBrowsingAlertMessage" = "允許 Brave 即使在關閉/重新開啟應用程式的情況下，仍可還原無痕式瀏覽分頁";
+"PersistentPrivateBrowsingAlertMessage" = "允許 Ping 即使在關閉/重新開啟應用程式的情況下，仍可還原無痕式瀏覽分頁";
 
 /* Persistent private browsing alert title to existing users */
 "PersistentPrivateBrowsingAlertTitle" = "還原無痕式分頁";
@@ -1523,7 +1523,7 @@
 "playList.addToPlayListAlertDescription" = "你想新增此影片至播放清單嗎？";
 
 /* Alert Title for adding videos to playlist */
-"playList.addToPlayListAlertTitle" = "新增至 Brave Playlist";
+"playList.addToPlayListAlertTitle" = "新增至 Ping Playlist";
 
 /* The title of the screen in CarPlay that contains all the audio/playback options */
 "playlist.carplayOptionsScreenTitle" = "播放選項";
@@ -1544,7 +1544,7 @@
 "playlist.carplaySettingsSectionTitle" = "設定";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Brave 播放清單";
+"playlist.carplayTitle" = "Ping 播放清單";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "變更播放清單";
@@ -1571,7 +1571,7 @@
 "playList.loadResourcesErrorAlertDescription" = "加載資源時出現問題！";
 
 /* Description footer for playlist menu badge option */
-"playlist.menuBadgeOptionFooterText" = "啟用後，主選單圖示上將顯示一個標章，表示頁面上的媒體可以新增至 Brave 播放清單。";
+"playlist.menuBadgeOptionFooterText" = "啟用後，主選單圖示上將顯示一個標章，表示頁面上的媒體可以新增至 Ping 播放清單。";
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "顯示選單通知標章";
@@ -1580,7 +1580,7 @@
 "playlist.movePlaylistShareActionMenuTitle" = "移動...";
 
 /* Detail Text when there are no items in the playlist */
-"playList.noItemLabelDetailLabel" = "您可以在瀏覽器中將項目新增至 Brave 播放清單";
+"playList.noItemLabelDetailLabel" = "您可以在瀏覽器中將項目新增至 Ping 播放清單";
 
 /* Text when there are no items in the playlist */
 "playList.noItemLabelTitle" = "沒有可用項目";
@@ -1670,7 +1670,7 @@
 "playList.playListSettingTitle" = "播放清單";
 
 /* Body for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsBody" = "此資料夾已存在您的 Brave 播放清單中";
+"playList.playlistSharedFolderAlreadyExistsBody" = "此資料夾已存在您的 Ping 播放清單中";
 
 /* Title for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsTitle" = "抱歉";
@@ -1745,7 +1745,7 @@
 "playlist.sharePlaylistActionDetailsTitle" = "您可以在新分頁中開啟目前的項目，或透過系統分享選單來分享";
 
 /* Title of the ActionSheet/Alert when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistActionTitle" = "Brave 播放清單選單";
+"playlist.sharePlaylistActionTitle" = "Ping 播放清單選單";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
 "playlist.sharePlaylistOpenInNewPrivateTabTitle" = "在私人標籤中開啟";
@@ -1760,22 +1760,22 @@
 "playList.sorryAlertTitle" = "抱歉";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "新增至 Brave 播放清單";
+"playList.toastAddedToPlaylistTitle" = "新增至 Ping 播放清單";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "開啟";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "新增至 Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "新增至 Ping Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
-"playList.toastExitingItemPlaylistTitle" = "檢視 Brave Playlist";
+"playList.toastExitingItemPlaylistTitle" = "檢視 Ping Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
 "playList.undoRemoveButtonTitle" = "復原";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "在 Brave 瀏覽器的網址列旁邊新增一個播放清單按鈕 (看起來像 4 行附 + 符號)。此按鈕可讓您快速存取，以開啟播放清單，或者新增或移除媒體。";
+"playlist.urlBarButtonOptionFooter" = "在 Ping 瀏覽器的網址列旁邊新增一個播放清單按鈕 (看起來像 4 行附 + 符號)。此按鈕可讓您快速存取，以開啟播放清單，或者新增或移除媒體。";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "啟用快速存取按鈕";
@@ -1813,7 +1813,7 @@
 /* The title of the screen where the user will move an item from one folder to another folder. */
 "playlistFolders.moveFolderScreenTitle" = "移動";
 
-/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+/* %@ Should NOT be localized. It is a placeholder. Example: Ping Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ 和另外 1 個項目";
 
 /* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
@@ -1822,7 +1822,7 @@
 /* Sometimes an item can have no name. So this is a generic title to use */
 "playlistFolders.moveItemWithNoNameTitle" = "1 個項目";
 
-/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Ping Folder and 3 more items. Music and 2 more items. */
 "playlistFolders.moveMultipleItemDescription" = "%1$@ 和另外 %2$lld 個項目";
 
 /* The title of the button to create a new folder */
@@ -1853,7 +1853,7 @@
 "playlistFolders.untitledFolderTitle" = "未命名的播放清單";
 
 /* Accessibility Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonAccessibilityTitle" = "新增至 Brave 播放清單按鈕";
+"playlistFolderSharing.addButtonAccessibilityTitle" = "新增至 Ping 播放清單按鈕";
 
 /* Title for the button that adds the playlist to the database. */
 "playlistFolderSharing.addButtonTitle" = "儲存";
@@ -1906,7 +1906,7 @@
 /* Header text, under it we show items blocked by our ad blocker. 'All  time' sentence context is like 'All time items blocked by our ad blocker. */
 "privacyHub.allTimeListsHeader" = "有史以來";
 
-/* Title of a section to show total count of trackers blocked by Brave */
+/* Title of a section to show total count of trackers blocked by Ping */
 "privacyHub.allTimeListsTrackersView" = "追蹤器和廣告數量";
 
 /* Title of a section to show websites containing highest amount of trackers */
@@ -1930,10 +1930,10 @@
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "網站";
 
-/* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
+/* Text for a button to display a list of all alerts caught by the Ping VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "所有通知";
 
-/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Brave Shields', 'Blocked by BraveVPN */
+/* Text which explain by what type of ad blocker a given resource was blocked. Context is like: 'Blocked by Ping Shields', 'Blocked by BraveVPN */
 "privacyHub.blockedBy" = "封鎖操作方";
 
 /* It says that a ad or tracker was blocked. Think of it in context of 'A tracker X was blocked' */
@@ -1957,8 +1957,8 @@
 /* Header text, under it we display blocked items from last week */
 "privacyHub.lastWeekHeader" = "上週";
 
-/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Brave Shields on 42 sites' */
-"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** 在 **%2$lld** 個網站上遭 Brave 防護封鎖";
+/* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which tracker was blocked on how many websites, example usage: 'Google Analytics was blocked by Ping Shields on 42 sites' */
+"privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** 在 **%2$lld** 個網站上遭 Ping 防護封鎖";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
 "privacyHub.mostFrequentTrackerAndAdTitle" = "最常見的追蹤器和廣告";
@@ -1976,7 +1976,7 @@
 "privacyHub.notificationCalloutButtonText" = "開啟通知";
 
 /* Message of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
-"privacyHub.notificationMessage" = "回顧本週 Brave 如何在線上保護您。";
+"privacyHub.notificationMessage" = "回顧本週 Ping 如何在線上保護您。";
 
 /* Title of a notification we show to the user, on tapping it, the Privacy Hub screen will open. */
 "privacyHub.notificationTitle" = "每週隱私報告";
@@ -1999,22 +1999,22 @@
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "追蹤器最多的網站";
 
-/* This text explains a setting that lets Brave monitor blocked network requests */
+/* This text explains a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsFooter" = "隱私中心會顯示防護封鎖的數量。設定不會影響新分頁上的防護計數器。防護資料不會計入隱私視窗。";
 
-/* Title of a setting that lets Brave monitor blocked network requests */
+/* Title of a setting that lets Ping monitor blocked network requests */
 "privacyHub.settingsEnableShieldsTitle" = "顯示防護資料";
 
-/* This text explains a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* This text explains a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsFooter" = "設定僅適用於您已購買 VPN 訂閱的情況。";
 
-/* Title of a setting that lets Brave monitor blocked network requests captured by Brave VPN */
+/* Title of a setting that lets Ping monitor blocked network requests captured by Ping VPN */
 "privacyHub.settingsEnableVPNAlertsTitle" = "顯示 VPN 通知";
 
 /* This text explains what the button to clear datain the Privacy Hub is for. */
 "privacyHub.settingsSlearDataFooter" = "重設防護已封鎖的所有項目數量。";
 
-/* Button that lets user clear all blocked requests and vpn alerts data that Brave captured for them. */
+/* Button that lets user clear all blocked requests and vpn alerts data that Ping captured for them. */
 "privacyHub.settingsSlearDataTitle" = "清除防護資料";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
@@ -2042,15 +2042,15 @@
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "追蹤器或廣告";
 
 /* Section title, this section displays vpn alerts: items which the vpn managed to block on users behalf. */
-"privacyHub.vpnAlertsHeader" = "Brave 防火牆 + VPN 通知";
+"privacyHub.vpnAlertsHeader" = "Ping 防火牆 + VPN 通知";
 
-/* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
+/* This label says about Ping VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
 "privacyHub.vpnLabel" = "防火牆 + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "總計";
 
-/* Show Brave Browser Privacy Policy page from the Privacy section in the settings. */
+/* Show Ping Browser Privacy Policy page from the Privacy section in the settings. */
 "PrivacyPolicy" = "隱私政策";
 
 /* Private button title */
@@ -2066,10 +2066,10 @@
 "PrivateBrowsingOnlyWarning" = "「僅限私人瀏覽」模式將關閉所有當前分頁，將您登出所有網站。";
 
 /* Private tab details */
-"PrivateTabBody" = "Brave 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Brave 不會留下任何瀏覽記錄。不過，下載項目仍會儲存。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 Wi-Fi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
+"PrivateTabBody" = "Ping 不會儲存隱私分頁，但這並不代表您在網路上為匿名狀態。您使用隱私分頁造訪的網站不會顯示在您的瀏覽記錄中，且一旦您關閉分頁，網站的 Cookie 也將一律刪除，也就是說，Brave 不會留下任何瀏覽記錄。不過，下載項目仍會儲存。即便使用隱私分頁，您的行動網路業者 (或是您所連線的 Wi-Fi 網路或 VPN 擁有者) 仍能看見您造訪哪些網站，而這些網站亦將取得您的公開 IP 位址。";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "使用隱私分頁只會變更 Brave 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位址。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會知道您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些將您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n將您連線至網際網路的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。這通常會是您的行動網路業者。如果您連線至 Wi-Fi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN，則是營運該 VPN 的一方。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及點選的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也無法保護您。";
+"PrivateTabDetails" = "使用隱私分頁只會變更 Ping 可在您裝置上執行的作業，無法改變他人行為。\n\n當您造訪網站時，網站能得知您的 IP 位址。根據這項資訊，網站可以大略猜出您的所在位置，通常能知道您所在的城市，有時猜測的位置會更精確。網站也會知道您明確提供的所有內容，像是搜尋內容。當您登入網站時，網站也會知道您是該帳戶的所有人。若關閉隱私分頁，Brave 會捨棄那些將您保持登入的 Cookie，因此系統依然會將您隨即登出。\n\n將您連線至網際網路的公司 (您的 ISP 業者) 可以查看您在網路上的所有活動。這通常會是您的行動網路業者。如果您連線至 Wi-Fi 網路，該網路的所有者可以看到您的活動；如果您是使用 VPN，則是營運該 VPN 的一方。您的 ISP 業者可以在您造訪網站時，瞭解您瀏覽了哪些網站。如果這些網站使用 HTTPS，ISP 業者只能大略猜測您在網站上的活動；但如果網站僅使用 HTTP，則 ISP 業者可以看到所有活動，包括搜尋內容、讀取的頁面以及點選的連結。\n\n如果您的裝置是由雇主所管理，他們可能會追蹤您的裝置使用情形。即使您使用隱私分頁，雇主仍可知道您曾瀏覽過哪些網站。能存取您裝置的其他人士，可能也會安裝軟體以監控您的活動。這類情形下，即使使用隱私分頁，也無法保護您。";
 
 /* Private tab information link */
 "PrivateTabLink" = "深入了解隱私分頁。";
@@ -2084,7 +2084,7 @@
 "QuickSearchEngines" = "快速搜尋引擎";
 
 /* Open the App Store to rate Brave. */
-"RateBrave" = "為 Brave 評分";
+"RateBrave" = "為 Ping 評分";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "調大字體";
@@ -2113,13 +2113,13 @@
 /* Accessibility hint for the font type buttons in reader mode display settings */
 "ReaderModeFontTypeButtonAccessibilityHint" = "變更字型。";
 
-/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page is loading. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadingContentDisplayText" = "正在載入內容…";
 
-/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "載入原始頁面";
 
-/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
+/* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Ping reader mode from another app. */
 "ReaderModePageCantShowDisplayText" = "頁面無法以閱讀檢視顯示。";
 
 /* Title of a bar that show up when you enter reader mode. */
@@ -2237,10 +2237,10 @@
 "ReportBrokenContactMeSuggestions" = "電子郵件、Twitter 等";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
-"ReportBrokenSiteBody1" = "讓 Brave 的開發人員知悉此網站無法在 Shields 中正常運作：";
+"ReportBrokenSiteBody1" = "讓 Ping 的開發人員知悉此網站無法在 Shields 中正常運作：";
 
 /* This is the info text that is presented when a user is submitting a web-compatibility report. */
-"ReportBrokenSiteBody2" = "注意：傳送至 Brave 伺服器的報告會包括網址、Brave 版本號碼、Shields 設定、VPN 狀態和語言設定。";
+"ReportBrokenSiteBody2" = "注意：傳送至 Ping 伺服器的報告會包括網址、Brave 版本號碼、Shields 設定、VPN 狀態和語言設定。";
 
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "提交";
@@ -2276,30 +2276,30 @@
 "RestoreTabOnCrashAlertMessage" = "很抱歉，Brave 當機或未正確關閉。\n要還原分頁嗎？";
 
 /* Restore Tabs Prompt Title */
-"RestoreTabOnCrashAlertTitle" = "Brave 意外關閉。";
+"RestoreTabOnCrashAlertTitle" = "Ping 意外關閉。";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "有了 Brave Rewards，您可以查看來自 Brave Ads 網路的隱私保護廣告。無須追蹤器，無須減速，且您的資料也能絕對安全。";
+/* Body for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInBody" = "有了 Ping Rewards，您可以查看來自 Ping Ads 網路的隱私保護廣告。無須追蹤器，無須減速，且您的資料也能絕對安全。";
 
-/* Title for Brave Talk rewards opt-in screen button */
+/* Title for Ping Talk rewards opt-in screen button */
 "rewards.braveTalkRewardsOptInButtonTitle" = "開啟 Rewards";
 
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "按下畫面上的任何位置以繼續 Brave 聊天。";
+/* Body for successful Ping Talk rewards opt-in */
+"rewards.braveTalkRewardsOptInSuccessBody" = "按下畫面上的任何位置以繼續 Ping 聊天。";
 
-/* Title for successful Brave Talk rewards opt-in */
+/* Title for successful Ping Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessTitle" = "您現在可以開始免費通話了";
 
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "如要開始免費通話，請開啟 Brave Rewards";
+/* Title for Ping Talk rewards opt-in screen */
+"rewards.braveTalkRewardsOptInTitle" = "如要開始免費通話，請開啟 Ping Rewards";
 
-/* Displayed when Brave Rewards is disabled */
+/* Displayed when Ping Rewards is disabled */
 "rewards.disabledBody" = "開啟以立即支持內容創作者";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "使用 Brave Rewards 就能在瀏覽期間支持內容創作者。";
+"rewards.disabledStatusBody" = "使用 Ping Rewards 就能在瀏覽期間支持內容創作者。";
 
-/* Displayed when Brave Rewards is enabled */
+/* Displayed when Ping Rewards is enabled */
 "rewards.enabledBody" = "您正在支持內容創作者";
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
@@ -2309,10 +2309,10 @@
 "rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleMessage" = "啟用 Brave Private Ads，即可自動支持內容創作者和發佈者。Brave Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
+"rewards.settingsToggleMessage" = "啟用 Ping Private Ads，即可自動支持內容創作者和發佈者。Brave Private Ads 是回饋內容創作者並兼顧隱私的廣告。";
 
 /* No comment provided by engineer. */
-"rewards.settingsToggleTitle" = "啟用 Brave Rewards";
+"rewards.settingsToggleTitle" = "啟用 Ping Rewards";
 
 /* Displayed under verified publishers */
 "rewards.supportingPublisher" = "您正在支持這樣的內容創作者。";
@@ -2342,7 +2342,7 @@
 "RewardsInternalsContributionAmount" = "贊助金額";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorBraveTokens" = "Brave 代幣";
+"RewardsInternalsContributionProcessorBraveTokens" = "Ping 代幣";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorNone" = "無";
@@ -2600,7 +2600,7 @@
 "SearchSuggestionsSectionHeader" = "搜尋建議";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
-"SearchWithBrave" = "使用 Brave 搜尋";
+"SearchWithBrave" = "使用 Ping 搜尋";
 
 /* Settings security section title */
 "Security" = "安全";
@@ -2609,7 +2609,7 @@
 "sendButtonTitle" = "傳送";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
-"SendCrashReportAlertMessage" = "傳送當機報告協助 Brave 修正問題？";
+"SendCrashReportAlertMessage" = "傳送當機報告協助 Ping 修正問題？";
 
 /* Title for prompt displayed to user after the app crashes */
 "SendCrashReportAlertTitle" = "糟糕，Brave 當機了！";
@@ -2618,9 +2618,9 @@
 "SendReportButtonTitle" = "傳送報告";
 
 /* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "現在能夠在 iOS 將 Brave 設定為預設瀏覽器。請點選此處以開啟設定。";
+"setDefaultBrowserCalloutTitle" = "現在能夠在 iOS 將 Ping 設定為預設瀏覽器。請點選此處以開啟設定。";
 
-/* Settings item to set the Brave as a default browser on the iOS device. */
+/* Settings item to set the Ping as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "設定為預設瀏覽器";
 
 /* No comment provided by engineer. */
@@ -2642,7 +2642,7 @@
 "settings.autocloseTabsSetting" = "關閉分頁";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "允許 Brave 自動關閉最近未檢視的分頁。";
+"settings.autocloseTabsSettingFooter" = "允許 Ping 自動關閉最近未檢視的分頁。";
 
 /* Label for the navigation link to quality settings view */
 "settings.highestQualityPlayback" = "最高品質播放";
@@ -2656,8 +2656,8 @@
 /* Setting title for 'Media' sections. Media section offerts various options to manipulate media playback */
 "settings.media.rootSetting" = "媒體";
 
-/* A toggle label which lets the user always open YouTube urls in Brave */
-"settings.openYouTubeInBrave" = "在 Brave 中開啟 YouTube 連結";
+/* A toggle label which lets the user always open YouTube urls in Ping */
+"settings.openYouTubeInBrave" = "在 Ping 中開啟 YouTube 連結";
 
 /* No comment provided by engineer. */
 "settings.privacy.screenTimeSetting" = "啟用螢幕使用時間";
@@ -2669,10 +2669,10 @@
 "settings.qualitySettings" = "品質設定";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "這種私人的 ping 讓 Brave 可以估計活躍使用者。";
+"settings.sendUsagePingDescription" = "這種私人的 ping 讓 Ping 可以估計活躍使用者。";
 
 /* Title to explain the daily usage ping toggle */
-"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
+"settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Ping";
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
@@ -2732,7 +2732,7 @@
 "shieldEducation.shareTheNewsTitle" = "分享消息";
 
 /* Subtitle for Shield Education Tracker Ad Warning */
-"shieldEducation.trackerAdWarningSubTitle" = "Brave Shields 剛剛保護了您線上活動的隱私。";
+"shieldEducation.trackerAdWarningSubTitle" = "Ping Shields 剛剛保護了您線上活動的隱私。";
 
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "恭喜，您已具有特別的地位。";
@@ -2747,13 +2747,13 @@
 "shieldEducation.videoAdBlockTitle" = "當您在此網站上觀看影片時，為您封鎖廣告。";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"ShieldsDefaults" = "Brave Shields 全域預設";
+"ShieldsDefaults" = "Ping Shields 全域預設";
 
 /* Section footer for global shields defaults */
 "ShieldsDefaultsFooter" = "這些是 Shields 對新網站的預設設定。變更這些設定不會影響現有的個別網站設定。";
 
 /* No comment provided by engineer. */
-"ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
+"ShieldsDownDisclaimer" = "您目前是在沒有 Ping 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
 
 /* shields overview message */
 "ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";
@@ -2771,7 +2771,7 @@
 "ShortcutItemTitleQRCode" = "掃描 QR 碼";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeBraveNewsDescription" = "開啟 Brave News 並查閱今天的熱門新聞";
+"shortcuts.activityTypeBraveNewsDescription" = "開啟 Ping News 並查閱今天的熱門新聞";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryDescription" = "在新標籤中開啟瀏覽器並刪除所有私人瀏覽器歷史資料";
@@ -2780,7 +2780,7 @@
 "shortcuts.activityTypeClearHistorySuggestedPhrase" = "清除瀏覽器記錄";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistoryTitle" = "清除 Brave 瀏覽記錄";
+"shortcuts.activityTypeClearHistoryTitle" = "清除 Ping 瀏覽記錄";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNDescription" = "在新標籤中開啟瀏覽器並啟用 VPN";
@@ -2789,7 +2789,7 @@
 "shortcuts.activityTypeEnableVPNSuggestedPhrase" = "啟用 VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNTitle" = "開啟 Brave 瀏覽器並啟用 VPN";
+"shortcuts.activityTypeEnableVPNTitle" = "開啟 Ping 瀏覽器並啟用 VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "開啟新私人標籤";
@@ -2810,13 +2810,13 @@
 "shortcuts.activityTypeOpenBookmarksSuggestedPhrase" = "開啟書籤";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBookmarksTitle" = "開啟 Brave 瀏覽器書籤";
+"shortcuts.activityTypeOpenBookmarksTitle" = "開啟 Ping 瀏覽器書籤";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveNewsTitle" = "開啟 Brave News";
+"shortcuts.activityTypeOpenBraveNewsTitle" = "開啟 Ping News";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "開啟 Brave News";
+"shortcuts.activityTypeOpenBraveTodaySuggestedPhrase" = "開啟 Ping News";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenHistoryListDescription" = "開啟瀏覽器歷史記錄畫面";
@@ -2825,7 +2825,7 @@
 "shortcuts.activityTypeOpenHistoryListSuggestedPhrase" = "開啟瀏覽器歷史記錄";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenHistoryListTitle" = "開啟 Brave 瀏覽器歷史記錄";
+"shortcuts.activityTypeOpenHistoryListTitle" = "開啟 Ping 瀏覽器歷史記錄";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenPlaylistDescription" = "開始播放您在播放清單中的影片";
@@ -2837,7 +2837,7 @@
 "shortcuts.activityTypeOpenPlaylistTitle" = "開啟播放清單";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsDescription" = "開啟在其他裝置中開啟的 Brave 分頁";
+"shortcuts.activityTypeOpenSyncedTabsDescription" = "開啟在其他裝置中開啟的 Ping 分頁";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "開啟其他裝置上的分頁";
@@ -2846,7 +2846,7 @@
 "shortcuts.activityTypeOpenSyncedTabsTitle" = "開啟其他裝置上的分頁";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeTabDescription" = "開始使用 Brave 安全地搜尋 Web";
+"shortcuts.activityTypeTabDescription" = "開始使用 Ping 安全地搜尋 Web";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "開啟書籤網站";
@@ -2857,8 +2857,8 @@
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "開啟網站";
 
-/* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "此選項將開啟 Brave 設定。若要變更各個 Siri 選項，請選取「Siri 與搜尋」功能表項目，然後自訂您的選擇。";
+/* Description for opening Ping Settings for altering Siri shortcut. */
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "此選項將開啟 Ping 設定。若要變更各個 Siri 選項，請選取「Siri 與搜尋」功能表項目，然後自訂您的選擇。";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "開啟設定";
@@ -2870,7 +2870,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "清除瀏覽器記錄";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "使用快速鍵透過 Siri - Voice Assistant 啟用 Brave VPN";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "使用快速鍵透過 Siri - Voice Assistant 啟用 Ping VPN";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNTitle" = "啟用 VPN";
@@ -2881,11 +2881,11 @@
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "開啟書籤";
 
-/* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及顯示 Brave News 摘要";
+/* Description of Open Ping News Siri Shortcut in Settings Screen */
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及顯示 Ping News 摘要";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "開啟 Brave News";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "開啟 Ping News";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "透過 Siri 語音助理，使用捷徑開啟瀏覽器歷史記錄畫面";
@@ -2951,19 +2951,19 @@
 "ShowTabsBar" = "分頁列";
 
 /* No comment provided by engineer. */
-"SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
+"SiteReportedBody" = "感謝您讓 Ping 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
 
 /* No comment provided by engineer. */
 "SiteReportedTitle" = "謝謝";
 
-/* Brave panel topmost title */
+/* Ping panel topmost title */
 "SiteShieldSettings" = "防護";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
+"socialSharing.domainSpecificDataSavedTitle" = "我每天使用 Ping 瀏覽網頁來節省數據用量。";
 
-/* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
+/* Text used for social sharing together with Ping Shield values */
+"socialSharing.shareDescriptionTitle" = "我每天使用 Ping 瀏覽網頁來節省數據用量。";
 
 /* Open search section of settings */
 "StandardTabSearch" = "標準分頁";
@@ -3113,7 +3113,7 @@
 "SyncRemoveDeviceDefaultName" = "裝置";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "目前同步的資料將被保留，但 Brave 同步快取中的所有資料將被刪除。您將需要啟動新的同步鏈以再次同步裝置資料。";
+"SyncRemoveLastDeviceMessage" = "目前同步的資料將被保留，但 Ping 同步快取中的所有資料將被刪除。您將需要啟動新的同步鏈以再次同步裝置資料。";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "刪除同步鏈接";
@@ -3152,7 +3152,7 @@
 "SyncToDevice" = "同步至裝置";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "使用現有同步的裝置開啟 Brave 設定並導向至設定 -> 同步。 選擇「新增裝置」並掃描螢幕上顯示的代碼。";
+"SyncToDeviceDescription" = "使用現有同步的裝置開啟 Ping 設定並導向至設定 -> 同步。 選擇「新增裝置」並掃描螢幕上顯示的代碼。";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "無法同步此裝置";
@@ -3277,7 +3277,7 @@
 /* No comment provided by engineer. */
 "TermsOfService" = "服務條款";
 
-/* Show Brave Browser TOS page from the Privacy section in the settings. */
+/* Show Ping Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "使用條款";
 
 /* Text for button to share referral's QR code. */
@@ -3326,13 +3326,13 @@
 "today.addSourceNoFeedsFoundMessage" = "很抱歉，該摘要網址沒有任何內容。";
 
 /* The action title displayed in the iOS share menu */
-"today.addSourceShareTitle" = "新增來源至 Brave News";
+"today.addSourceShareTitle" = "新增來源至 Ping News";
 
 /* A header title shown above a button that will allow the user to fetch RSS feeds for a website they have typed in */
 "today.availableRSSFeedsHeaderTitle" = "可用的 RSS 摘要";
 
 /* The name of the feature */
-"today.braveToday" = "Brave News";
+"today.braveToday" = "Ping News";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "News";
@@ -3355,13 +3355,13 @@
 /* No comment provided by engineer. */
 "today.deals" = "優惠";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
-"today.disabledAlertBody" = "Brave News 將停止顯示來自 %@ 的內容";
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
+"today.disabledAlertBody" = "Ping News 將停止顯示來自 %@ 的內容";
 
 /* No comment provided by engineer. */
 "today.disabledAlertTitle" = "已停用";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.disablePublisherContent" = "隱藏來自 %@ 的內容";
 
 /* No comment provided by engineer. */
@@ -3370,11 +3370,11 @@
 /* No comment provided by engineer. */
 "today.emptyFeedTitle" = "沒有可顯示的文章";
 
-/* '%@' will turn into the name of a publisher (verbatim), for example: Brave Blog */
+/* '%@' will turn into the name of a publisher (verbatim), for example: Ping Blog */
 "today.enablePublisherContent" = "允許來自 %@ 的內容";
 
 /* No comment provided by engineer. */
-"today.errorGeneralBody" = "Brave News 遇到了一些問題，請再試一次。";
+"today.errorGeneralBody" = "Ping News 遇到了一些問題，請再試一次。";
 
 /* No comment provided by engineer. */
 "today.errorGeneralTitle" = "糟糕…";
@@ -3400,20 +3400,20 @@
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "來源不安全 - 新增後需自行承擔風險";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
-"today.introCardBody" = "透過單一摘要關注您喜愛的來源。只要在 Brave 中開啟分頁、向下捲動，一切搞定！\nBrave 新聞支援匿名投放私人廣告。";
+/* Shown above a button that turns on the \"Ping News\" product in the app. by sources & feeds they mean websites & blogs. */
+"today.introCardBody" = "透過單一摘要關注您喜愛的來源。只要在 Ping 中開啟分頁、向下捲動，一切搞定！\nBrave 新聞支援匿名投放私人廣告。";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
-"today.introCardTitle" = "開啟 Brave 新聞，絕不錯過每一條消息";
+/* Shown above a button that turns on the \"Ping News\" product in the app. */
+"today.introCardTitle" = "開啟 Ping 新聞，絕不錯過每一條消息";
 
 /* No comment provided by engineer. */
-"today.isEnabledToggleLabel" = "顯示 Brave News";
+"today.isEnabledToggleLabel" = "顯示 Ping News";
 
 /* No comment provided by engineer. */
 "today.learnMoreTitle" = "深入了解您的資料";
 
 /* 'Brave Offers' is a product name */
-"today.moreBraveOffers" = "更多 Brave Offer";
+"today.moreBraveOffers" = "更多 Ping Offer";
 
 /* No comment provided by engineer. */
 "today.noInternet" = "沒有網際網路連線";
@@ -3436,17 +3436,17 @@
 /* A button title that is placed on promoted cards */
 "today.promoted" = "推廣內容";
 
-/* Title for long press action that will hide Brave Rate Card */
+/* Title for long press action that will hide Ping Rate Card */
 "today.rateBraveCardHideActionTitle" = "隱藏";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
-"today.rateBraveCardRateActionTitle" = "為 Brave 評分";
+"today.rateBraveCardRateActionTitle" = "為 Ping 評分";
 
-/* Subtitle shown on the Rate Brave Card */
+/* Subtitle shown on the Rate Ping Card */
 "today.rateBraveCardSubtitle" = "請將您的想法告訴我們！";
 
-/* Title shown on the Rate Brave Card */
-"today.rateBraveCardTitle" = "喜歡 Brave 嗎？";
+/* Title shown on the Rate Ping Card */
+"today.rateBraveCardTitle" = "喜歡 Ping 嗎？";
 
 /* No comment provided by engineer. */
 "today.refresh" = "重新整理";
@@ -3473,7 +3473,7 @@
 "today.suggestedTitle" = "建議";
 
 /* No comment provided by engineer. */
-"today.turnOnBraveToday" = "開啟 Brave News";
+"today.turnOnBraveToday" = "開啟 Ping News";
 
 /* A toggle title shown next to a source or channel that the user can unfollow. When tapped switches to 'Follow' */
 "today.unfollowToggleTitle" = "取消跟隨";
@@ -3523,20 +3523,20 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "抱歉，發生錯誤";
 
-/* Version number of Brave shown in settings */
+/* Version number of Ping shown in settings */
 "VersionTemplate" = "%1$@ 版 (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
 "ViewOn" = "瀏覽於 %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "請在 iOS 系統設定中允許「麥克風存取權限」，以讓 Brave 使用匿名語音搜尋。";
+"voice.search.microphone.description.required" = "請在 iOS 系統設定中允許「麥克風存取權限」，以讓 Ping 使用匿名語音搜尋。";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "需要麥克風存取權限";
 
 /* Disclaimer for screen to search using voice. */
-"voice.search.screen.disclaimer" = "Brave 不會儲存或分享您的語音搜尋。";
+"voice.search.screen.disclaimer" = "Ping 不會儲存或分享您的語音搜尋。";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "啟用";
@@ -3548,39 +3548,39 @@
 "vpn.autoRenewActionButtonTitle" = "啟用自動續訂";
 
 /* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "立即自動續訂您的 Brave VPN，享受接下來 3 個月的 20% 折扣！";
+"vpn.autoRenewDiscountPopOverTitle" = "立即自動續訂您的 Ping VPN，享受接下來 3 個月的 20% 折扣！";
 
 /* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "立即自動續訂您的 Brave VPN 並獲得 1 個月免費！";
+"vpn.autoRenewFreeMonthPopOverTitle" = "立即自動續訂您的 Ping VPN 並獲得 1 個月免費！";
 
 /* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "這意味著您將失去 Brave 在您的手機上每個應用程式的額外保護。";
+"vpn.autoRenewSoonExpirePopOverDescription" = "這意味著您將失去 Ping 在您的手機上每個應用程式的額外保護。";
 
 /* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "糟了！ 您的 Brave VPN 訂閱即將到期。";
+"vpn.autoRenewSoonExpireTitle" = "糟了！ 您的 Ping VPN 訂閱即將到期。";
 
-/* Button text to buy Brave VPN */
+/* Button text to buy Ping VPN */
 "vpn.buyButton" = "購買";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+"vpn.buyVPNTitle" = "Ping Firewall + VPN";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxDevicesProtect" = "1 筆訂閱即可保護 5 個裝置";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxGeoLocation" = "選擇您的地理/國家/地區位置";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxNoIPLog" = "Brave 絕不會記錄您的活動";
+/* Text for a checkbox to present the user benefits for using Ping VPN */
+"vpn.checkboxNoIPLog" = "Ping 絕不會記錄您的活動";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxProtectYourDevices" = "保護所有應用程式和整個裝置";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSaferWifi" = "家用和公共 Wi-Fi 更安全";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.checkboxSpeedFast" = "速度飛快，高達 100 Mbps";
 
 /* App Version field for customer support contact form. */
@@ -3590,7 +3590,7 @@
 "vpn.contactFormCarrier" = "行動通訊業者";
 
 /* Text to tell user to not modify support info below email's body. */
-"vpn.contactFormDoNotEditText" = "Brave 不會追蹤您，也不會知道您使用應用程式的情形，因此不會得知您的 VPN 設定方式。請與我們分享所發生問題的相關資訊，我們會在最短時間內盡力解決問題。";
+"vpn.contactFormDoNotEditText" = "Ping 不會追蹤您，也不會知道您使用應用程式的情形，因此不會得知您的 VPN 設定方式。請與我們分享所發生問題的相關資訊，我們會在最短時間內盡力解決問題。";
 
 /* Button name to send contact form. */
 "vpn.contactFormEmailNotConfiguredBody" = "無法傳送電子郵件。請檢查電子郵件設定。";
@@ -3644,9 +3644,9 @@
 "vpn.contactFormTimezone" = "iOS 時區";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN 問題";
+"vpn.contactFormTitle" = "Ping Firewall + VPN 問題";
 
-/* Button text to enable Brave VPN */
+/* Button text to enable Ping VPN */
 "vpn.enableButton" = "啟用";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
@@ -3668,13 +3668,13 @@
 "vpn.iapDisclaimer" = "所有訂閱都會自動續約，但可在續約前取消。";
 
 /* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "此設定檔可允許 VPN 自動連線，並隨時保障您裝置上的流量安全。此 VPN 連線會經過加密，並採用 Brave 智慧型防火牆的路由規則，有效封鎖潛在的有害與侵入式連線。";
+"vpn.installProfileBody" = "此設定檔可允許 VPN 自動連線，並隨時保障您裝置上的流量安全。此 VPN 連線會經過加密，並採用 Ping 智慧型防火牆的路由規則，有效封鎖潛在的有害與侵入式連線。";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "安裝 VPN 設定檔";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave 現在要開始安裝 VPN 設定檔。";
+"vpn.installProfileTitle" = "Ping 現在要開始安裝 VPN 設定檔。";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPN 現已啟用";
@@ -3682,7 +3682,7 @@
 /* Title for screen to install the VPN. */
 "vpn.installTitle" = "安裝 VPN";
 
-/* Button text to try free Brave VPN */
+/* Button text to try free Ping VPN */
 "vpn.learnMore" = "免費試用";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
@@ -3694,22 +3694,22 @@
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "過期";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAds" = "封鎖不需要的網路連線";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxBlockAdsAlternate" = "攔截所有應用程式中的廣告和追蹤器";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFast" = "最高可支援 100 Mbps 的速度";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckboxFastAlternate" = "快速且不限流量，最高 100 Mbps";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmark247Support" = "全天候支援";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
+/* Text for a checkbox to present the user benefits for using Ping VPN */
 "vpn.popupCheckmarkSecureConnections" = "確保所有連線安全無虞";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
@@ -3767,7 +3767,7 @@
 "vpn.restorePurchases" = "還原";
 
 /* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "請登入 Brave 帳戶，重新整理您的 VPN 工作階段。";
+"vpn.sessionExpiredDescription" = "請登入 Ping 帳戶，重新整理您的 VPN 工作階段。";
 
 /* Dismiss button to close the alert showing that the vpn session has expired */
 "vpn.sessionExpiredDismissButton" = "關閉";
@@ -3791,10 +3791,10 @@
 "vpn.settingsFAQ" = "VPN 支援";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "將購買交易連結至您的 Brave 帳戶";
+"vpn.settingsLinkReceipt" = "將購買交易連結至您的 Ping 帳戶";
 
 /* Footer text to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Brave 帳戶，以便在其他裝置上使用 Brave VPN。";
+"vpn.settingsLinkReceiptFooter" = "將您的 App Store 購買交易連結至 Ping 帳戶，以便在其他裝置上使用 Ping VPN。";
 
 /* Button to manage your VPN subscription */
 "vpn.settingsManageSubscription" = "管理訂閱";
@@ -3839,22 +3839,22 @@
 "vpn.subscribeVPNActionButtonTitle" = "立即訂閱";
 
 /* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "沒錯。您的 Brave VPN 訂閱現在最多可在 5 台裝置上使用。因此您可以在 iOS 上訂閱並在 Mac、Windows 和 Android 裝置上免費使用。";
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "沒錯。您的 Ping VPN 訂閱現在最多可在 5 台裝置上使用。因此您可以在 iOS 上訂閱並在 Mac、Windows 和 Android 裝置上免費使用。";
 
 /* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "現在，以相同的價格在您的所有裝置上使用 Brave VPN！";
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "現在，以相同的價格在您的所有裝置上使用 Ping VPN！";
 
 /* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "再次使用 Brave VPN，即可享受 3 個月的 20% 折扣！";
+"vpn.subscribeVPNDiscountPopOverTitle" = "再次使用 Ping VPN，即可享受 3 個月的 20% 折扣！";
 
 /* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "準備為您手機上的每個應用程式提供防護了嗎？ 重回 Brave VPN 並獲得接下來 3 個月的 20% 折扣。";
+"vpn.subscribeVPNPopOverSubDescription" = "準備為您手機上的每個應用程式提供防護了嗎？ 重回 Ping VPN 並獲得接下來 3 個月的 20% 折扣。";
 
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN 總是阻擋每個應用程式的追蹤器，甚至在 Brave 瀏覽器之外也是如此。您現在可以透過 Brave Privacy Hub 查看誰試圖跟蹤您。";
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Ping VPN 總是阻擋每個應用程式的追蹤器，甚至在 Ping 瀏覽器之外也是如此。您現在可以透過 Ping Privacy Hub 查看誰試圖跟蹤您。";
 
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "您知道 Brave VPN 在 Brave 瀏覽器外也可以保護您嗎？";
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Ping */
+"vpn.subscribeVPNProtectionPopOverTitle" = "您知道 Ping VPN 在 Ping 瀏覽器外也可以保護您嗎？";
 
 /* Cell title indicates update payment method */
 "vpn.updateActionCellTitle" = "更新";
@@ -3863,13 +3863,13 @@
 "vpn.updateBillingExpiredPopOverDescription" = "別擔心。我們會在您更新付款資訊時的幾天，讓 VPN 保持啟用。";
 
 /* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "更新您的付款資訊以維持 Brave VPN 的保護。";
+"vpn.updateBillingExpiredPopOverTitle" = "更新您的付款資訊以維持 Ping VPN 的保護。";
 
 /* Pop up description for billing issue of subcription VPN about to expire */
 "vpn.updateBillingSoonExpirePopOverDescription" = "想要繼續保護您手機上的每個應用程式嗎？ 只需更新您的付款詳細資料即可。";
 
 /* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "您的帳戶有付款問題，這表示您的 Brave VPN 訂閱即將到期。";
+"vpn.updateBillingSoonExpirePopOverTitle" = "您的帳戶有付款問題，這表示您的 Ping VPN 訂閱即將到期。";
 
 /* Action button title that updates method payment */
 "vpn.updatePaymentActionButtonTitle" = "更新付款資訊";
@@ -3881,7 +3881,7 @@
 "vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已開啟";
+"vpn.vpnBackgroundNotificationTitle" = "Ping Firewall + VPN 已開啟";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "初始化 VPN 時發生問題。請再試一次，或嘗試在 VPN 設定頁面中重設組態。";
@@ -3890,7 +3890,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "錯誤";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Ping Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
@@ -3905,7 +3905,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "錯誤";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款及隱私權政策。";
+"vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Ping 即表示您同意使用條款及隱私權政策。";
 
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "兌換代碼";
@@ -3917,7 +3917,7 @@
 "vpn.vpnRegionSelectorButtonTitle" = "VPN 區域";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
+"vpn.vpnResetAlertBody" = "此程序會重設您的 Ping Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "重設組態";
