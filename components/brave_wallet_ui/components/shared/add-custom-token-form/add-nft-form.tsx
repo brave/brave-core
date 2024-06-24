@@ -7,6 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
@@ -34,7 +35,6 @@ import {
 
 // components
 import { NetworksDropdown } from '../dropdowns/networks_dropdown'
-import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
 import { NftIcon } from '../nft-icon/nft-icon'
 import { InfoIconTooltip } from '../info_icon_tooltip/info_icon_tooltip'
@@ -47,6 +47,7 @@ import {
   FormWrapper,
   FullWidthFormColumn,
   InputLabel,
+  InputLoadingIndicator,
   PreviewImageContainer,
   TokenNamePreviewText,
   TokenTickerPreviewText
@@ -87,9 +88,15 @@ export const AddNftForm = (props: Props) => {
   const [hasError, setHasError] = React.useState<boolean>(false)
 
   // Form States
+  const [customTokenName, setCustomTokenName] = React.useState<
+    string | undefined
+  >(selectedAsset?.name || '')
   const [customTokenID, setCustomTokenID] = React.useState<string | undefined>(
     selectedAsset?.tokenId
   )
+  const [customTokenSymbol, setCustomTokenSymbol] = React.useState<
+    string | undefined
+  >(selectedAsset?.symbol || '')
   const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<
     BraveWallet.NetworkInfo | undefined
   >(selectedAssetNetwork)
@@ -122,10 +129,6 @@ export const AddNftForm = (props: Props) => {
 
   const networkList = useGetCustomAssetSupportedNetworks()
 
-  const name = matchedTokenInfo?.name || selectedAsset?.name || ''
-  const symbol = matchedTokenInfo?.symbol || selectedAsset?.symbol || ''
-  const logo = matchedTokenInfo?.logo || selectedAsset?.logo || ''
-
   const tokenInfo: BraveWallet.BlockchainToken | undefined =
     React.useMemo(() => {
       if (!customAssetsNetwork || !tokenContractAddress) {
@@ -136,13 +139,16 @@ export const AddNftForm = (props: Props) => {
         chainId: customAssetsNetwork.chainId,
         coin: customAssetsNetwork.coin,
         contractAddress: tokenContractAddress,
-        name,
-        symbol,
+        name: customTokenName || '',
+        symbol: customTokenSymbol || '',
         decimals: 0,
         coingeckoId: '',
-        logo,
+        logo: matchedTokenInfo?.logo || selectedAsset?.logo || '',
         isCompressed: false, // isCompressed will be set by the backend
-        tokenId: customTokenID ? new Amount(customTokenID).toHex() : '',
+        tokenId:
+          customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && customTokenID
+            ? new Amount(customTokenID).toHex()
+            : '',
         isErc20: false,
         isErc721:
           !!customTokenID &&
@@ -156,12 +162,14 @@ export const AddNftForm = (props: Props) => {
     }, [
       customAssetsNetwork,
       tokenContractAddress,
-      name,
-      symbol,
-      logo,
+      customTokenName,
+      matchedTokenInfo,
+      selectedAsset,
+      customTokenSymbol,
       customTokenID
     ])
 
+  // TODO: need symbol in response in order to simplify adding SOL NFTs
   const {
     data: nftMetadata,
     isFetching: isFetchingNftMetadata,
@@ -185,8 +193,7 @@ export const AddNftForm = (props: Props) => {
   const tokenContractAddressError =
     tokenContractAddress === '' ||
     (customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL &&
-      !tokenContractAddress.toLowerCase().startsWith('0x')) ||
-    (customAssetsNetwork?.coin === BraveWallet.CoinType.ETH && !customTokenID)
+      !tokenContractAddress.toLowerCase().startsWith('0x'))
 
   const buttonDisabled =
     isTokenInfoLoading ||
@@ -240,22 +247,33 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress('')
   }, [resetBaseInputFields, onChangeContractAddress])
 
+  const handleTokenNameChanged = React.useCallback(
+    (detail: InputEventDetail) => {
+      setHasError(false)
+      setCustomTokenName(detail.value)
+    },
+    []
+  )
+
   const handleTokenIDChanged = React.useCallback((detail: InputEventDetail) => {
     setHasError(false)
     setCustomTokenID(detail.value)
   }, [])
 
+  const handleTokenSymbolChanged = React.useCallback(
+    (detail: InputEventDetail) => {
+      setHasError(false)
+      setCustomTokenSymbol(detail.value)
+    },
+    []
+  )
+
   const handleTokenAddressChanged = React.useCallback(
     (event: InputEventDetail) => {
       setHasError(false)
-      if (event.value === '') {
-        resetInputFields()
-        return
-      }
-
       onChangeContractAddress(event.value)
     },
-    [onChangeContractAddress, resetInputFields]
+    [onChangeContractAddress]
   )
 
   const addOrUpdateToken = React.useCallback(async () => {
@@ -308,6 +326,20 @@ export const AddNftForm = (props: Props) => {
     onHideForm()
   }, [resetInputFields, onHideForm])
 
+  // effects
+  React.useEffect(() => {
+    // sync form fields with found token info
+    setCustomTokenName(
+      nftMetadata?.contractInformation.name ||
+        matchedTokenInfo?.name ||
+        selectedAsset?.name ||
+        ''
+    )
+    setCustomTokenSymbol(
+      matchedTokenInfo?.symbol || selectedAsset?.symbol || ''
+    )
+  }, [nftMetadata, matchedTokenInfo, selectedAsset])
+
   // render
   return (
     <>
@@ -348,37 +380,70 @@ export const AddNftForm = (props: Props) => {
           </Input>
         </FullWidthFormColumn>
 
-        <FullWidthFormColumn>
-          {customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL && (
-            <Input
-              value={customTokenID ? new Amount(customTokenID).format() : ''}
-              onInput={handleTokenIDChanged}
-              type='number'
-              placeholder={'1234'}
-            >
-              <Row
-                gap='4px'
-                justifyContent='flex-start'
+        {customAssetsNetwork &&
+          customAssetsNetwork?.coin !== BraveWallet.CoinType.SOL && (
+            <FullWidthFormColumn>
+              <Input
+                value={customTokenID ? new Amount(customTokenID).format() : ''}
+                onInput={handleTokenIDChanged}
+                type='number'
+                placeholder={'1234'}
               >
-                <InputLabel>
-                  {getLocale('braveWalletNFTDetailTokenID')}
-                </InputLabel>
-                <InfoIconTooltip
-                  placement='bottom'
-                  text={getLocale('braveWalletHowToFindNftTokenId')}
-                />
-              </Row>
-            </Input>
+                <Row
+                  gap='4px'
+                  justifyContent='flex-start'
+                >
+                  <InputLabel>
+                    {getLocale('braveWalletNFTDetailTokenID')}
+                  </InputLabel>
+                  <InfoIconTooltip
+                    placement='bottom'
+                    text={getLocale('braveWalletHowToFindNftTokenId')}
+                  />
+                </Row>
+              </Input>
+            </FullWidthFormColumn>
           )}
-        </FullWidthFormColumn>
-        <>
-          {tokenInfo?.coin === BraveWallet.CoinType.ETH &&
-            !tokenInfo?.tokenId && (
-              <ErrorText>
-                {getLocale('braveWalletWatchListTokenIdError')}
-              </ErrorText>
+
+        <FullWidthFormColumn>
+          <Input
+            value={customTokenName}
+            onInput={handleTokenNameChanged}
+            type='text'
+            placeholder={getLocale('braveWalletWatchListTokenName')}
+          >
+            <InputLabel>
+              {getLocale('braveWalletWatchListTokenName')}
+            </InputLabel>
+
+            {(isFetchingNftMetadata || isTokenInfoLoading) && (
+              <InputLoadingIndicator slot='left-icon' />
             )}
-        </>
+          </Input>
+        </FullWidthFormColumn>
+
+        <FullWidthFormColumn>
+          <Input
+            value={customTokenSymbol}
+            onInput={handleTokenSymbolChanged}
+            type='text'
+            placeholder={getLocale('braveWalletWatchListTokenSymbol')}
+          >
+            <InputLabel>
+              {getLocale('braveWalletWatchListTokenSymbol')}
+            </InputLabel>
+            {(isFetchingNftMetadata || isTokenInfoLoading) && (
+              <InputLoadingIndicator slot='left-icon' />
+            )}
+          </Input>
+        </FullWidthFormColumn>
+
+        {tokenInfo?.coin === BraveWallet.CoinType.ETH &&
+          !tokenInfo?.tokenId && (
+            <ErrorText>
+              {getLocale('braveWalletWatchListTokenIdError')}
+            </ErrorText>
+          )}
 
         {hasError ? (
           <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
@@ -472,11 +537,13 @@ export const AddNftForm = (props: Props) => {
           {getLocale('braveWalletButtonCancel')}
         </LeoSquaredButton>
 
-        <Tooltip
-          text={<FormErrorsList errors={formErrors} />}
-          isVisible={buttonDisabled}
-          verticalPosition='above'
-        >
+        <Tooltip placement='top'>
+          {buttonDisabled && (
+            <div slot='content'>
+              <FormErrorsList errors={formErrors} />
+            </div>
+          )}
+
           <Row>
             <LeoSquaredButton
               onClick={addOrUpdateToken}

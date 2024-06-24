@@ -5,6 +5,7 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 import { WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
@@ -147,4 +148,10 @@ export const PreviewImageContainer = styled.div`
   position: relative;
   background: center / contain no-repeat url(${NftPlaceholderIcon});
   border-radius: 8px;
+`
+
+export const InputLoadingIndicator = styled(ProgressRing)`
+  display: inline;
+  --leo-progressring-size: ${leo.icon.m};
+  --leo-progressring-color: ${leo.color.icon.default};
 `
