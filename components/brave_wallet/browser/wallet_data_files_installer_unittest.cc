@@ -9,14 +9,18 @@
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/scoped_path_override.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -26,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -117,7 +122,10 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
                                           net::HTTP_REQUEST_TIMEOUT);
         }));
 
-    ASSERT_TRUE(install_dir_.CreateUniqueTempDir());
+    base::PathService::Get(component_updater::DIR_COMPONENT_USER,
+                           &install_dir_);
+    install_dir_ = install_dir_.AppendASCII(kWalletBaseDirectory);
+    base::CreateDirectory(install_dir_);
   }
 
   void TearDown() override {
@@ -174,7 +182,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   PrefService* local_state() { return &local_state_; }
-  base::FilePath install_dir() { return install_dir_.GetPath(); }
+  base::FilePath install_dir() { return install_dir_; }
   component_updater::MockComponentUpdateService* updater() {
     return cus_.get();
   }
@@ -215,6 +223,8 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
  private:
+  base::ScopedPathOverride scoped_path_override_{
+      component_updater::DIR_COMPONENT_USER};
   base::test::TaskEnvironment task_environment_;
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -225,7 +235,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
-  base::ScopedTempDir install_dir_;
+  base::FilePath install_dir_;
 };
 
 TEST_F(WalletDataFilesInstallerUnitTest,
