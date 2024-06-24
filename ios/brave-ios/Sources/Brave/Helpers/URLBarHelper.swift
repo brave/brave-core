@@ -45,7 +45,26 @@ class URLBarHelper {
     }
 
     if query.count > 12 {
-      let cquery = query.components(separatedBy: CharacterSet(charactersIn: "^A-Za-z0-9")).joined()
+      let literalsPattern = "[^A-Za-z0-9]"
+
+      guard
+        let literalsRegex = try? NSRegularExpression(
+          pattern: literalsPattern,
+          options: .caseInsensitive
+        )
+      else {
+        return true
+      }
+
+      let range = NSRange(location: 0, length: query.utf16.count)
+
+      let cquery = literalsRegex.stringByReplacingMatches(
+        in: query,
+        options: [],
+        range: range,
+        withTemplate: ""
+      )
+
       if cquery.count > 12 {
         let pp = isHashProb(cquery)
         // we are a bit more strict here because the query
