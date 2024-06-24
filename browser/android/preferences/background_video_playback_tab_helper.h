@@ -24,6 +24,13 @@ class BackgroundVideoPlaybackTabHelper
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  void MediaStartedPlaying(const MediaPlayerInfo& video_type,
+                           const content::MediaPlayerId& id) override;
+  void MediaStoppedPlaying(
+      const MediaPlayerInfo& video_type,
+      const content::MediaPlayerId& id,
+      WebContentsObserver::MediaStoppedReason reason) override;
+
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 

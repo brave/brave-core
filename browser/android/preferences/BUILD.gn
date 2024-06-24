@@ -7,8 +7,6 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
 source_set("preferences") {
-  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
-  check_includes = false
   sources = [
     "background_video_playback_tab_helper.cc",
     "background_video_playback_tab_helper.h",
