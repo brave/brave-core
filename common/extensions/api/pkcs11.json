@@ -1,0 +1,49 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+    {
+      "namespace": "pkcs11",
+      "description": "Use the <code>chrome.pkcs11</code> API to sign data using crypto token",
+      "compiler_options": {
+        "implemented_in": "brave/browser/extensions/api/pkcs11_api.h"
+      },
+      "functions": [
+        {
+          "name": "getSignature",
+          "type": "function",
+          "description": "Get signature for signed document",
+          "parameters": [
+            {
+              "name": "modulePath",
+              "type": "string",
+              "description": "Path of HSM library"
+            },
+            {
+              "name": "pin",
+              "type": "string",
+              "description": "Pin to Hsm module"
+            },
+            {
+              "name": "mdHash",
+              "type": "string",
+              "description": "mdHash to be signed"
+            },
+            {
+              "name": "callback",
+              "type": "function",
+              "description": "Function called when signature for document is fetched",
+              "parameters": [
+                {
+                  "name": "signature",
+                  "type": "string",
+                  "description": "signed signature"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
