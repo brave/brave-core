@@ -1,17 +1,31 @@
-
 import os
-import shutil
 import subprocess
 import sys
+import platform
 
 def run_cmake(build_dir, source_dir):
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-    subprocess.check_call([
+    
+    cmake_command = [
         "cmake",
-        source_dir + "/CMakeLists.txt"
-    ])
-    subprocess.call("make")
+        "-S", source_dir, 
+        "-B", build_dir
+    ]
+
+    # Adjust commands based on the platform
+    if platform.system() == "Windows":
+        cmake_command.extend([
+            "-G", "MinGW Makefiles"
+        ])
+
+    subprocess.check_call(cmake_command, shell=(platform.system() == "Windows"))
+
+    # Run make or equivalent based on the platform
+    if platform.system() == "Windows":
+        subprocess.check_call(["cmake", "--build", build_dir], shell=True)
+    else:
+        subprocess.check_call(["make", "-C", build_dir])
 
 def main():
     if len(sys.argv) != 3:
