@@ -1,0 +1,30 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("generate_parental_control") {
+  entry_points = [
+    [
+      "parental_control",
+      rebase_path("content/ui/popup.js")
+    ],
+    [
+      "parental_control_background",
+      rebase_path("service_worker/background.js"),
+    ],
+  ]
+
+  # For explanation of "chromeapp", see:
+  # https://github.com/brave/brave-browser/issues/5587
+  webpack_aliases = [ "chromeapp" ]
+  resource_name = "parental_control"
+
+  # Must match the relative path from the static GRD to the manifest.json
+  # plus any other relative path we want these files to live in the extension
+  resource_path_prefix = "parental_control/extension/out"
+
+  public_asset_path = "/extension/out/"
+}
