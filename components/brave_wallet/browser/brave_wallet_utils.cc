@@ -205,7 +205,7 @@ const mojom::NetworkInfo* GetAvalancheMainnet() {
        {"https://snowtrace.io"},
        {},
        0,
-       {GURL("https://api.avax.network/ext/bc/C/rpc")},
+       {GetURLForKnownChainId(chain_id).value()},
        "AVAX",
        "Avalanche",
        18,
