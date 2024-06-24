@@ -94,6 +94,10 @@ template("brave_extra_paks") {
 
       deps += [ "//brave/components/brave_webtorrent:resources" ]
     }
+    
+    sources += [ "$root_gen_dir/brave/components/parental_control/parental_control_resources.pak" ]
+
+    deps += [ "//brave/components/parental_control:resources" ]
 
     if (enable_extensions) {
       sources += [ "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak" ]

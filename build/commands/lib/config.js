@@ -329,7 +329,6 @@ Config.prototype.buildArgs = function () {
   const chrome_version_parts = this.chromeVersion.split('.')
 
   let args = {
-    enable_brave_vpn: false,
     sardine_client_id: this.sardineClientId,
     sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
