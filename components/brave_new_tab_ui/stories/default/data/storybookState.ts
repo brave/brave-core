@@ -4,7 +4,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { CHANGE, boolean, number, select } from '@storybook/addon-knobs'
-import { addons } from '@storybook/addons'
+import { addons } from '@storybook/manager-api'
 import { useEffect } from 'react'
 import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'

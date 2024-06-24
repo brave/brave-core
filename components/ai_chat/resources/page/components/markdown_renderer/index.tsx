@@ -7,7 +7,7 @@ import * as React from 'react'
 import Markdown from 'react-markdown'
 import type { Root, Element as HastElement } from 'hast'
 
-const visit = require('unist-util-visit/index')
+const visit = require('unist-util-visit')
 
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'

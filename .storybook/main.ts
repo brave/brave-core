@@ -33,7 +33,7 @@ const config: StorybookConfig = {
       }
     }
   },
-  addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
+  addons: [ '@storybook/addon-knobs', '@storybook/addon-essentials' ],
   framework: '@storybook/react-webpack5',
   staticDirs: [
     { from: '../node_modules/@brave/leo/icons', to: 'icons/' },
