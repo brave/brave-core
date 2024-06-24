@@ -71,7 +71,8 @@ function DataContextProvider(props: DataContextProviderProps) {
   const [allModels, setAllModels] = React.useState<mojom.Model[]>([])
   const [conversationHistory, setConversationHistory] = React.useState<mojom.ConversationTurn[]>([])
   const [suggestedQuestions, setSuggestedQuestions] = React.useState<string[]>([])
-  const [isGenerating, setIsGenerating] = React.useState(false)
+  const [isGenerating, setIsGenerating] =
+    React.useState(props.store?.isGenerating || false)
   const [suggestionStatus, setSuggestionStatus] = React.useState<mojom.SuggestionGenerationStatus>(mojom.SuggestionGenerationStatus.None)
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo>({
     title: undefined,

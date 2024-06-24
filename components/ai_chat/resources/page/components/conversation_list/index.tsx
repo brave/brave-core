@@ -19,6 +19,9 @@ import LongPageInfo from '../alerts/long_page_info'
 import AssistantResponse from '../assistant_response'
 import styles from './style.module.scss'
 import CopyButton from '../copy_button'
+import EditButton from '../edit_button'
+import EditInput from '../edit_input'
+import EditIndicator from '../edit_indicator'
 
 const SUGGESTION_STATUS_SHOW_BUTTON: mojom.SuggestionGenerationStatus[] = [
   mojom.SuggestionGenerationStatus.CanGenerate,
@@ -53,6 +56,12 @@ function ConversationList(props: ConversationListProps) {
 
   const lastEntryElementRef = React.useRef<HTMLDivElement>(null)
   const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
+  const [editInputId, setEditInputId] = React.useState<number | null>()
+
+  const handleEditSubmit = (index: number, text: string) => {
+    getPageHandlerInstance().pageHandler.modifyConversation(index, text)
+    setEditInputId(null)
+  }
 
   const showAssistantMenu = (id: number) => {
     setActiveMenuId(id)
@@ -103,6 +112,11 @@ function ConversationList(props: ConversationListProps) {
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
           const showLongPageContentInfo =
             id === 1 && isAIAssistant && context.shouldShowLongPageWarning
+          const showEditInput = editInputId === id
+          const showEditIndicator = !showEditInput && !!turn.edits?.length
+          const latestEdit = turn.edits?.at(-1);
+          const latestTurnText = latestEdit?.text ?? turn.text
+          const lastEditedTime = latestEdit?.createdTime ?? turn.createdTime
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: context.isMobile,
@@ -121,9 +135,13 @@ function ConversationList(props: ConversationListProps) {
           })
 
           const handleCopyText = () => {
-            const event = turn.events?.find((event) => event.completionEvent)
-            if (!event?.completionEvent) return
-            navigator.clipboard.writeText(event.completionEvent.completion)
+            if (isAIAssistant) {
+              const event = turn.events?.find((event) => event.completionEvent)
+              if (!event?.completionEvent) return
+              navigator.clipboard.writeText(event.completionEvent.completion)
+            } else {
+              navigator.clipboard.writeText(latestTurnText)
+            }
           }
 
           return (
@@ -149,20 +167,24 @@ function ConversationList(props: ConversationListProps) {
                     </div>
                     <span>{isHuman ? 'You' : 'Leo'}</span>
                   </div>
-                  {isAIAssistant && (
-                    <div className={styles.turnActions}>
-                      <CopyButton onClick={handleCopyText} />
-                      {context.currentModel?.options.leoModelOptions && (
-                        <ContextMenuAssistant
-                          ref={portalRefs}
-                          turnId={id}
-                          isOpen={activeMenuId === id}
-                          onClick={() => showAssistantMenu(id)}
-                          onClose={hideAssistantMenu}
-                        />
-                      )}
-                    </div>
-                  )}
+                    {!turn.selectedText && (
+                      <div className={styles.turnActions}>
+                        <CopyButton onClick={handleCopyText} />
+                        {!isAIAssistant && (
+                          <EditButton onClick={() => setEditInputId(id)} />
+                        )}
+                        {isAIAssistant &&
+                          context.currentModel?.options.leoModelOptions && (
+                          <ContextMenuAssistant
+                            ref={portalRefs}
+                            turnId={id}
+                            isOpen={activeMenuId === id}
+                            onClick={() => showAssistantMenu(id)}
+                            onClose={hideAssistantMenu}
+                          />
+                        )}
+                      </div>
+                    )}
                 </div>
                 <div className={styles.message}>
                   {isAIAssistant && (
@@ -171,7 +193,19 @@ function ConversationList(props: ConversationListProps) {
                       isEntryInProgress={isEntryInProgress}
                     />
                   )}
-                  {!isAIAssistant && !turn.selectedText && turn.text}
+                  {!isAIAssistant && !turn.selectedText && !showEditInput &&
+                    latestTurnText}
+                  {showEditIndicator && (
+                    <EditIndicator time={lastEditedTime} />
+                  )}
+                  {showEditInput && (
+                    <EditInput
+                      text={latestTurnText}
+                      onSubmit={(text) => handleEditSubmit(id, text)}
+                      onCancel={() => setEditInputId(null)}
+                      isSubmitDisabled={shouldDisableUserInput}
+                    />
+                  )}
                   {turn.selectedText && (
                     <ActionTypeLabel actionType={turn.actionType} />
                   )}

@@ -22,6 +22,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -329,11 +330,11 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-      "I have spoken.", std::nullopt));
+      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt));
   expected_history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
   EXPECT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
     EXPECT_TRUE(CompareConversationTurn(history[i], expected_history[i]));
@@ -372,20 +373,20 @@ TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-      "I have spoken.", std::nullopt));
+      "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt));
   expected_history2.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
   expected_history2.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
-      "I have spoken again.", std::nullopt));
+      "I have spoken again.", std::nullopt, base::Time::Now(), std::nullopt));
   expected_history2.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "This is the way.",
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
   EXPECT_EQ(history2.size(), expected_history2.size());
   for (size_t i = 0; i < history2.size(); i++) {
     EXPECT_TRUE(CompareConversationTurn(history2[i], expected_history2[i]));
@@ -703,6 +704,82 @@ TEST_F(ConversationDriverUnitTest,
     EXPECT_EQ(events->at(1)->get_completion_event()->completion,
               "This is successful.");
   }
+}
+
+TEST_F(ConversationDriverUnitTest, ModifyConversation) {
+  conversation_driver_->SetShouldSendPageContents(false);
+  EmulateUserOptedIn();
+
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        // Set header for enabling SSE.
+        auto head = network::mojom::URLResponseHead::New();
+        head->mime_type = "text/event-stream";
+        url_loader_factory_.ClearResponses();
+        url_loader_factory_.AddResponse(
+            request.url, std::move(head),
+            R"(data: {"completion": "new answer", "stop": null})",
+            network::URLLoaderCompletionStatus());
+      }));
+
+  // Setup history for testing.
+  auto created_time1 = base::Time::Now();
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      mojom::ConversationTurnVisibility::VISIBLE, "prompt1", std::nullopt,
+      std::nullopt, created_time1, std::nullopt));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "answer1", std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt));
+  conversation_driver_->SetChatHistoryForTesting(std::move(history));
+
+  // Modify an entry for the first time.
+  conversation_driver_->ModifyConversation(0, "prompt2");
+  const auto& conversation_history =
+      conversation_driver_->GetConversationHistory();
+  ASSERT_EQ(conversation_history.size(), 1u);
+  EXPECT_EQ(conversation_history[0]->text, "prompt1");
+  EXPECT_EQ(conversation_history[0]->created_time, created_time1);
+
+  ASSERT_TRUE(conversation_history[0]->edits);
+  ASSERT_EQ(conversation_history[0]->edits->size(), 1u);
+  EXPECT_EQ(conversation_history[0]->edits->at(0)->text, "prompt2");
+  EXPECT_NE(conversation_history[0]->edits->at(0)->created_time, created_time1);
+  EXPECT_FALSE(conversation_history[0]->edits->at(0)->edits);
+
+  WaitForOnEngineCompletionComplete();
+  ASSERT_EQ(conversation_history.size(), 2u);
+  EXPECT_EQ(conversation_history[1]->text, "new answer");
+
+  auto created_time2 = conversation_history[0]->edits->at(0)->created_time;
+
+  // Modify the same entry again.
+  conversation_driver_->ModifyConversation(0, "prompt3");
+  ASSERT_EQ(conversation_history.size(), 1u);
+  EXPECT_EQ(conversation_history[0]->text, "prompt1");
+  EXPECT_EQ(conversation_history[0]->created_time, created_time1);
+
+  ASSERT_TRUE(conversation_history[0]->edits);
+  ASSERT_EQ(conversation_history[0]->edits->size(), 2u);
+  EXPECT_EQ(conversation_history[0]->edits->at(0)->text, "prompt2");
+  EXPECT_EQ(conversation_history[0]->edits->at(0)->created_time, created_time2);
+  EXPECT_FALSE(conversation_history[0]->edits->at(0)->edits);
+
+  EXPECT_EQ(conversation_history[0]->edits->at(1)->text, "prompt3");
+  EXPECT_NE(conversation_history[0]->edits->at(1)->created_time, created_time1);
+  EXPECT_NE(conversation_history[0]->edits->at(1)->created_time, created_time2);
+  EXPECT_FALSE(conversation_history[0]->edits->at(1)->edits);
+
+  WaitForOnEngineCompletionComplete();
+  ASSERT_EQ(conversation_history.size(), 2u);
+  EXPECT_EQ(conversation_history[1]->text, "new answer");
+
+  // Modify server response is not supported yet.
+  conversation_driver_->ModifyConversation(1, "answer2");
+  ASSERT_EQ(conversation_history.size(), 2u);
+  EXPECT_EQ(conversation_history[1]->text, "new answer");
 }
 
 }  // namespace ai_chat

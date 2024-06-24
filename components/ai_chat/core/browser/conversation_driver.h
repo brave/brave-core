@@ -145,6 +145,8 @@ class ConversationDriver : public ModelService::Observer {
       GeneratedTextCallback received_callback,
       EngineConsumer::GenerationCompletedCallback completed_callback);
 
+  void ModifyConversation(uint32_t turn_index, const std::string& new_text);
+
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
                    mojom::PageHandler::RateMessageCallback callback);
@@ -168,6 +170,11 @@ class ConversationDriver : public ModelService::Observer {
     engine_ = std::move(engine_for_testing);
   }
   EngineConsumer* GetEngineForTesting() { return engine_.get(); }
+
+  void SetChatHistoryForTesting(
+      std::vector<mojom::ConversationTurnPtr> history) {
+    chat_history_ = std::move(history);
+  }
 
  protected:
   virtual GURL GetPageURL() const = 0;
