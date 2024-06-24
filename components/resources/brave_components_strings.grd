@@ -259,7 +259,7 @@
         Enable search suggestions?
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_EXPLANATION" desc="Explanation for the Enable search suggestions prompt">
-        When you start a search in what you type will be sent to your search engine for better suggestions.
+        When you search, what you type will be sent to your search engine for better suggestions.
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_ENABLE" desc="Button for enabling search suggestions">
         Enable
