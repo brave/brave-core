@@ -42,11 +42,8 @@ TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
 }
 
 TEST_F(BraveAdsPublicKeyUtilTest, NoPublicKeys) {
-  // Arrange
-  const IssuerInfo issuer;
-
   // Act & Assert
-  EXPECT_FALSE(PublicKeyExists(issuer, cbr::PublicKey(kPublicKey)));
+  EXPECT_FALSE(PublicKeyExists(/*issuer*/ {}, cbr::PublicKey(kPublicKey)));
 }
 
 }  // namespace brave_ads

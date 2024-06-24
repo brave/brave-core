@@ -69,7 +69,6 @@ constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
 class ToggleButton : public ToolbarButton {
   METADATA_HEADER(ToggleButton, ToolbarButton)
  public:
-
   ToggleButton(PressedCallback callback,
                VerticalTabStripRegionView* region_view)
       : ToolbarButton(std::move(callback)), region_view_(*region_view) {
@@ -119,7 +118,6 @@ END_METADATA
 class VerticalTabSearchButton : public BraveTabSearchButton {
   METADATA_HEADER(VerticalTabSearchButton, BraveTabSearchButton)
  public:
-
   VerticalTabSearchButton(VerticalTabStripRegionView* region_view,
                           TabStripController* tab_strip_controller,
                           Edge flat_edge)
@@ -200,7 +198,6 @@ END_METADATA
 class VerticalTabNewTabButton : public BraveNewTabButton {
   METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
  public:
-
   static constexpr int kHeight = 50;
 
   VerticalTabNewTabButton(TabStrip* tab_strip,
@@ -383,7 +380,6 @@ END_METADATA
 class ResettableResizeArea : public views::ResizeArea {
   METADATA_HEADER(ResettableResizeArea, views::ResizeArea)
  public:
-
   explicit ResettableResizeArea(VerticalTabStripRegionView* region_view)
       : ResizeArea(region_view), region_view_(region_view) {}
   ~ResettableResizeArea() override = default;
@@ -409,7 +405,6 @@ END_METADATA
 class VerticalTabStripScrollContentsView : public views::View {
   METADATA_HEADER(VerticalTabStripScrollContentsView, views::View)
  public:
-
   VerticalTabStripScrollContentsView(VerticalTabStripRegionView* container,
                                      TabStrip* tab_strip)
       : container_(container), tab_strip_(tab_strip) {
@@ -451,7 +446,6 @@ END_METADATA
 class VerticalTabStripRegionView::HeaderView : public views::View {
   METADATA_HEADER(HeaderView, views::View)
  public:
-
   HeaderView(views::Button::PressedCallback toggle_callback,
              VerticalTabStripRegionView* region_view)
       : region_view_(region_view), tab_strip_(region_view->tab_strip()) {
@@ -1330,7 +1324,6 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
     return new_tab_accelerator.GetShortcutText();
   }
 
-  NOTREACHED() << "Couldn't find the accelerator for new tab.";
   return {};
 }
 #endif

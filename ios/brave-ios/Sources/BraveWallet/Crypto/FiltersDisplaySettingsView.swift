@@ -493,7 +493,7 @@ struct FiltersDisplaySettingsView_Previews: PreviewProvider {
           .init(isSelected: true, model: .mockSolana),
           .init(isSelected: true, model: .mockPolygon),
           .init(isSelected: false, model: .mockSolanaTestnet),
-          .init(isSelected: false, model: .mockGoerli),
+          .init(isSelected: false, model: .mockSepolia),
         ]
       ),
       isNFTFilters: false,

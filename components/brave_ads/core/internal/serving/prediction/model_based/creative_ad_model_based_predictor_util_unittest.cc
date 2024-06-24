@@ -57,11 +57,12 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
                          /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
+  // Act
   const CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>
       creative_ad_predictors = ComputeCreativeAdModelBasedPredictors(
           creative_ads, user_model, ad_events);
 
-  // Act & Assert
+  // Assert
   CreativeAdModelBasedPredictorList<CreativeNotificationAdInfo>
       expected_creative_ad_predictors;
 

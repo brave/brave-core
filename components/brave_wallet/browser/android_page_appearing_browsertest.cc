@@ -15,8 +15,6 @@
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -228,12 +226,10 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             GetProfile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(GetProfile());
-    json_rpc_service_ =
-        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(GetProfile());
+    json_rpc_service_ = wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
+    keyring_service_ = wallet_service_->keyring_service();
     asset_ratio_service_ =
         brave_wallet::AssetRatioServiceFactory::GetServiceForContext(
             GetProfile());

@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/swap_service.h"
+
 #include <map>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
@@ -16,7 +19,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
-#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -303,10 +305,7 @@ class SwapServiceUnitTest : public testing::Test {
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    json_rpc_service_ =
-        std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
-    swap_service_ = std::make_unique<SwapService>(shared_url_loader_factory_,
-                                                  json_rpc_service_.get());
+    swap_service_ = std::make_unique<SwapService>(shared_url_loader_factory_);
   }
 
   ~SwapServiceUnitTest() override = default;
@@ -388,7 +387,6 @@ class SwapServiceUnitTest : public testing::Test {
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
-  std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SwapService> swap_service_;
   base::test::TaskEnvironment task_environment_;
 

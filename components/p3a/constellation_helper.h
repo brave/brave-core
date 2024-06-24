@@ -25,6 +25,24 @@ class SharedURLLoaderFactory;
 
 namespace p3a {
 
+// Heuristic aggregation threshold used for STAR/Constellation
+inline constexpr size_t kConstellationDefaultThreshold = 50;
+
+// Aggregation threshold used for Nebula
+//
+// This is derived from the differential privacy paramaters
+// ε = 1.0 (the privacy budget) and δ = 1.0e-8 (should be
+// less than the reciprocal of the number of clients) along
+// with a parameter α = 1/6 which adjusts the tradeoff between
+// this threshold and the sampling probability.
+//
+// This aggregation threshold is computed as
+//
+//     kNebulaThreshold = ceil(log(1.0/delta) / Ca)
+//     where Ca = log(1.0/alpha) - 1.0 / (1.0 + alpha)
+//
+inline constexpr size_t kNebulaThreshold = 20;
+
 struct P3AConfig;
 
 // Class that contains high-level methods for preparing/generating
@@ -35,6 +53,7 @@ class ConstellationHelper {
       std::string histogram_name,
       MetricLogType log_type,
       uint8_t epoch,
+      bool is_success,
       std::unique_ptr<std::string> serialized_message)>;
 
   ConstellationHelper(
@@ -54,13 +73,15 @@ class ConstellationHelper {
 
   bool StartMessagePreparation(std::string histogram_name,
                                MetricLogType log_type,
-                               std::string serialized_log);
+                               std::string serialized_log,
+                               bool is_nebula);
 
  private:
   void HandleRandomnessData(
       std::string histogram_name,
       MetricLogType log_type,
       uint8_t epoch,
+      bool is_nebula,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
       std::unique_ptr<rust::Vec<constellation::VecU8>> resp_points,
@@ -68,6 +89,7 @@ class ConstellationHelper {
 
   bool ConstructFinalMessage(
       MetricLogType log_type,
+      size_t threshold,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>&
           randomness_request_state,
       const rust::Vec<constellation::VecU8>& resp_points,

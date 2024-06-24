@@ -30,9 +30,7 @@ void ReCalcAndSetPreferredColorScheme() {
 
 }  // namespace ui
 
-namespace dark_mode {
-
-namespace internal {
+namespace dark_mode::internal {
 
 void SetSystemDarkModeForNonDefaultMode(bool dark_mode) {
   // Call SetUseDarkColors() first then call ReCalcPreferredColorScheme()
@@ -47,6 +45,4 @@ void SetSystemDarkModeForNonDefaultMode(bool dark_mode) {
   ui::NativeTheme::GetInstanceForWeb()->NotifyOnNativeThemeUpdated();
 }
 
-}  // namespace internal
-
-}  // namespace dark_mode
+}  // namespace dark_mode::internal

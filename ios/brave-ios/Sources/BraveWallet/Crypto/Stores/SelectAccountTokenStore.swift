@@ -129,6 +129,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.walletServiceObserver = WalletServiceObserver(
       walletService: walletService,
       _onDefaultBaseCurrencyChanged: { [weak self] currency in
@@ -248,13 +249,26 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         of: TokenBalanceCache.self,
         body: { group in
           for account in allAccounts where account.coin != .btc {
-            group.addTask {  // get balance for all tokens this account supports
-              let balancesForTokens: [String: Double] = await self.rpcService
-                .fetchBalancesForTokens(
-                  account: account,
-                  networkAssets: networkAssets
-                )
-              return [account.id: balancesForTokens]
+            if let allTokenBalance = assetManager.getBalances(for: nil, account: account.id) {
+              var result: [String: Double] = [:]
+              for balancePerToken in allTokenBalance {
+                let tokenId =
+                  balancePerToken.contractAddress + balancePerToken.chainId
+                  + balancePerToken.symbol + balancePerToken.tokenId
+                result.merge(with: [
+                  tokenId: Double(balancePerToken.balance) ?? 0
+                ])
+              }
+              balancesForAccountsCache.merge(with: [account.id: result])
+            } else {
+              group.addTask {  // get balance for all tokens this account supports
+                let balancesForTokens: [String: Double] = await self.rpcService
+                  .fetchBalancesForTokens(
+                    account: account,
+                    networkAssets: networkAssets
+                  )
+                return [account.id: balancesForTokens]
+              }
             }
           }
           return await group.reduce(
@@ -429,5 +443,21 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     }
 
     return accountSections
+  }
+}
+
+extension SelectAccountTokenStore: WalletUserAssetDataObserver {
+  func cachedBalanceRefreshed() {
+    Task { @MainActor in
+      let allNetworks = await rpcService.allNetworksForSupportedCoins()
+      let allNetworkAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+        networks: allNetworks,
+        visible: true
+      )
+      fetchAccountBalances(networkAssets: allNetworkAssets)
+    }
+  }
+
+  func userAssetUpdated() {
   }
 }

@@ -185,15 +185,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
 
       if transaction.coin == .sol, solEstimatedTxFeesCache[transaction.id] == nil {
-        let (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.solanaTxFeeEstimation(
-          chainId: network.chainId,
-          txMetaId: transaction.id
-        )
-        let priorityFee =
-          UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
-          * BraveWallet.MicroLamportsPerLamport
-        let totalFee = solEstimatedTxFee.baseFee + priorityFee
-        self.solEstimatedTxFeesCache[transaction.id] = totalFee
+        let txFees = await solanaTxManagerProxy.solanaTxFeeEstimations(for: [transaction])
+        solEstimatedTxFeesCache.merge(with: txFees)
       }
       guard
         let parsedTransaction = transaction.parsedTransaction(

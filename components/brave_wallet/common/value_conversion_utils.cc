@@ -16,18 +16,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
-#include "net/base/url_util.h"
+#include "brave/net/base/url_util.h"
 
 namespace {
-
-// Allow only HTTPS or localhost HTTP URLs in params of AddEthereumChain dApp
-// requests.
-bool IsValidURL(const std::string& url_string) {
-  GURL url(url_string);
-  return url.is_valid() &&
-         (url.SchemeIs(url::kHttpsScheme) ||
-          (net::IsLocalhost(url) && url.SchemeIs(url::kHttpScheme)));
-}
 
 // Common parts of base::Value parsing shared between Eip3085 payload spec and
 // brave settings pserstence.
@@ -174,7 +165,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
     for (const auto& entry : *explorerUrlsListValue) {
-      if (!entry.is_string() || !IsValidURL(entry.GetString())) {
+      if (!entry.is_string() || !IsHTTPSOrLocalhostURL(entry.GetString())) {
         continue;
       }
       chain.block_explorer_urls.push_back(entry.GetString());
@@ -184,7 +175,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   const auto* iconUrlsValue = params_dict->FindList("iconUrls");
   if (iconUrlsValue) {
     for (const auto& entry : *iconUrlsValue) {
-      if (!entry.is_string() || !IsValidURL(entry.GetString())) {
+      if (!entry.is_string() || !IsHTTPSOrLocalhostURL(entry.GetString())) {
         continue;
       }
       chain.icon_urls.push_back(entry.GetString());
@@ -194,7 +185,7 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   const auto* rpcUrlsValue = params_dict->FindList("rpcUrls");
   if (rpcUrlsValue) {
     for (const auto& entry : *rpcUrlsValue) {
-      if (!entry.is_string() || !IsValidURL(entry.GetString())) {
+      if (!entry.is_string() || !IsHTTPSOrLocalhostURL(entry.GetString())) {
         continue;
       }
       chain.rpc_endpoints.emplace_back(entry.GetString());
@@ -363,6 +354,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(
   } else {
     token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   }
+  token_ptr->is_compressed = value.FindBool("is_compressed").value_or(false);
 
   return token_ptr;
 }
@@ -387,6 +379,7 @@ base::Value::Dict BlockchainTokenToValue(
   value.Set("coin", static_cast<int>(token->coin));
   value.Set("chain_id", token->chain_id);
   value.Set("spl_token_program", static_cast<int>(token->spl_token_program));
+  value.Set("is_compressed", token->is_compressed);
   return value;
 }
 
@@ -433,7 +426,7 @@ int GetFirstValidChainURLIndex(const std::vector<GURL>& chain_urls) {
   }
   size_t index = 0;
   for (const GURL& url : chain_urls) {
-    if (url.is_valid() && url.SchemeIsHTTPOrHTTPS() &&
+    if (net::IsHTTPSOrLocalhostURL(url) &&
         !base::Contains(url.spec(), "$%7BINFURA_API_KEY%7D") &&
         !base::Contains(url.spec(), "$%7BALCHEMY_API_KEY%7D") &&
         !base::Contains(url.spec(), "$%7BAPI_KEY%7D") &&

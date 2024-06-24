@@ -11,8 +11,7 @@
 // This file contains patched mojom usage to ensure that all new definitions,
 // values and members are properly added using the patching mechanism.
 
-namespace brave_ast_patcher {
-namespace mojom {
+namespace brave_ast_patcher::mojom {
 
 // Create interface implementations to ensure new methods exist and are
 // overridable.
@@ -145,5 +144,4 @@ TEST(BraveAstPatcherTest, InterfaceInstantiations) {
   NewGlobalInterfaceImpl new_global_interface_impl;
 }
 
-}  // namespace mojom
-}  // namespace brave_ast_patcher
+}  // namespace brave_ast_patcher::mojom

@@ -511,8 +511,6 @@ provideStrings({
   braveWalletAccountsDeposit: 'Deposit',
   braveWalletAccountsRemove: 'Remove',
   braveWalletAccountSettings: 'Account settings',
-  braveWalletAccountNameTooLongError:
-    'Account name must be $1 characters or less',
 
   // Empty Token List State
   braveWalletNoAvailableAssets: 'No available assets',

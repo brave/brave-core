@@ -784,6 +784,7 @@ public class BrowserViewController: UIViewController {
   @objc func appWillTerminateNotification() {
     tabManager.saveAllTabs()
     tabManager.removePrivateWindows()
+    tabManager.forgetDataOnAppClose()
   }
 
   @objc private func tappedCollapsedURLBar() {
@@ -1177,6 +1178,9 @@ public class BrowserViewController: UIViewController {
       }
     }
     self.tabManager.selectTab(tabToSelect)
+
+    // Clear forget me data in case we are restoring from a crash
+    tabManager.forgetDataOnAppClose()
 
     if !setupTasksCompleted {
       for task in postSetupTasks {
@@ -3302,7 +3306,7 @@ extension BrowserViewController: PreferencesObserver {
       Preferences.Shields.blockImages.key,
       Preferences.Shields.fingerprintingProtection.key,
       Preferences.Shields.useRegionAdBlock.key:
-      tabManager.allTabs.forEach { $0.webView?.reload() }
+      tabManager.reloadSelectedTab()
     case Preferences.General.defaultPageZoomLevel.key:
       tabManager.allTabs.forEach({
         guard let url = $0.webView?.url else { return }
@@ -3336,22 +3340,13 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Rewards.hideRewardsIcon.key,
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
-    case Preferences.Playlist.webMediaSourceCompatibility.key:
-      tabManager.allTabs.forEach {
-        $0.setScript(
-          script: .playlistMediaSource,
-          enabled: Preferences.Playlist.webMediaSourceCompatibility.value
-        )
-        $0.webView?.reload()
-      }
-    case Preferences.General.mediaAutoBackgrounding.key:
-      tabManager.allTabs.forEach {
-        $0.setScript(
-          script: .mediaBackgroundPlay,
-          enabled: Preferences.General.mediaAutoBackgrounding.value
-        )
-        $0.webView?.reload()
-      }
+    case Preferences.Playlist.webMediaSourceCompatibility.key,
+      Preferences.General.mediaAutoBackgrounding.key:
+      tabManager.selectedTab?.setScripts(scripts: [
+        .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
+        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
+      ])
+      tabManager.reloadSelectedTab()
     case Preferences.General.youtubeHighQuality.key:
       tabManager.allTabs.forEach {
         YoutubeQualityScriptHandler.setEnabled(

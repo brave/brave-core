@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check_is_test.h"
 #include "base/rand_util.h"
 
 namespace {
@@ -17,6 +18,7 @@ namespace brave_ads {
 
 double GeneratePacingRandomNumber() {
   if (g_pacing_random_number_for_testing) {
+    CHECK_IS_TEST();
     return *g_pacing_random_number_for_testing;
   }
 

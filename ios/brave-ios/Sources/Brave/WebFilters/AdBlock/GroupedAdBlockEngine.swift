@@ -13,13 +13,13 @@ import os.log
 /// and ensures information is always returned on the correct thread on the engine.
 public actor GroupedAdBlockEngine {
   public enum Source: Codable, Hashable, CustomDebugStringConvertible {
-    case filterList(componentId: String, uuid: String)
+    case filterList(componentId: String)
     case filterListURL(uuid: String)
     case filterListText
 
     public var debugDescription: String {
       switch self {
-      case .filterList(let componentId, _): return componentId
+      case .filterList(let componentId): return componentId
       case .filterListURL(let uuid): return uuid
       case .filterListText: return "filter-list-text"
       }
@@ -37,10 +37,14 @@ public actor GroupedAdBlockEngine {
     }
   }
 
+  /// The type of engine (`standard` or `aggressive`) which determines wether or not 1st party content will be blocked.
+  ///
+  /// Aggressive engines will block 1st party content whereas the standard engine will not
   public enum EngineType: Hashable, CaseIterable, CustomDebugStringConvertible {
     case standard
     case aggressive
 
+    /// Tells us if this engine is always aggressive or if we need to switch between standard and aggressive
     var isAlwaysAggressive: Bool {
       switch self {
       case .standard: return false

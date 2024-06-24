@@ -23,9 +23,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -358,27 +355,6 @@ void MaybeBindWalletP3A(
 void MaybeBindEthereumProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::EthereumProvider> receiver) {
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-
-  if (!json_rpc_service) {
-    return;
-  }
-
-  auto* tx_service = brave_wallet::TxServiceFactory::GetServiceForContext(
-      frame_host->GetBrowserContext());
-  if (!tx_service) {
-    return;
-  }
-
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!keyring_service) {
-    return;
-  }
-
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
@@ -392,7 +368,7 @@ void MaybeBindEthereumProvider(
       std::make_unique<brave_wallet::EthereumProviderImpl>(
           HostContentSettingsMapFactory::GetForProfile(
               Profile::FromBrowserContext(frame_host->GetBrowserContext())),
-          json_rpc_service, tx_service, keyring_service, brave_wallet_service,
+          brave_wallet_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host),
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext())),
@@ -402,13 +378,6 @@ void MaybeBindEthereumProvider(
 void MaybeBindSolanaProvider(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::SolanaProvider> receiver) {
-  auto* keyring_service =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!keyring_service) {
-    return;
-  }
-
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
@@ -416,18 +385,14 @@ void MaybeBindSolanaProvider(
     return;
   }
 
-  auto* tx_service = brave_wallet::TxServiceFactory::GetServiceForContext(
-      frame_host->GetBrowserContext());
-  if (!tx_service) {
-    return;
-  }
+  auto* json_rpc_service = brave_wallet_service->json_rpc_service();
+  CHECK(json_rpc_service);
 
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-          frame_host->GetBrowserContext());
-  if (!json_rpc_service) {
-    return;
-  }
+  auto* keyring_service = brave_wallet_service->keyring_service();
+  CHECK(keyring_service);
+
+  auto* tx_service = brave_wallet_service->tx_service();
+  CHECK(tx_service);
 
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(
@@ -440,8 +405,7 @@ void MaybeBindSolanaProvider(
       content::WebContents::FromRenderFrameHost(frame_host);
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_wallet::SolanaProviderImpl>(
-          *host_content_settings_map, keyring_service, brave_wallet_service,
-          tx_service, json_rpc_service,
+          *host_content_settings_map, brave_wallet_service,
           std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
               web_contents, frame_host)),
       std::move(receiver));

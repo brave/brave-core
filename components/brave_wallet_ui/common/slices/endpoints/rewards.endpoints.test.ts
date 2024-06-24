@@ -39,8 +39,9 @@ describe('api slice Brave Rewards endpoints', () => {
         renderHookOptionsWithMockStore(store)
       )
 
-      await waitFor(() => !result.current.isLoading)
-      await waitFor(() => result.current.data)
+      await waitFor(() =>
+        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+      )
       const { data: rewardsInfo, isLoading, error } = result.current
       const { provider } = rewardsInfo || {}
 
@@ -57,8 +58,11 @@ describe('api slice Brave Rewards endpoints', () => {
         renderHookOptionsWithMockStore(store)
       )
 
-      await waitFor(() => !result.current.isLoading)
-      await waitFor(() => result.current.data)
+      // loading
+      await waitFor(() =>
+        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+      )
+
       const { data: rewardsInfo, isLoading, error } = result.current
       const { balance } = rewardsInfo || {}
 
@@ -75,8 +79,11 @@ describe('api slice Brave Rewards endpoints', () => {
         renderHookOptionsWithMockStore(store)
       )
 
-      await waitFor(() => !result.current.isLoading)
-      await waitFor(() => result.current.data)
+      // loading
+      await waitFor(() =>
+        expect(result.current.data && !result.current.isLoading).toBeTruthy()
+      )
+
       const { data: rewardsInfo, isLoading, error } = result.current
       const { isRewardsEnabled } = rewardsInfo || {}
 

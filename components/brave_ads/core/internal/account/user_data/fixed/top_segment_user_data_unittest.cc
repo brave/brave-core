@@ -41,7 +41,10 @@ TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -51,7 +54,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
                         }
                       ]
                     })"),
-            BuildTopSegmentUserData(transaction));
+            user_data);
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,
@@ -65,8 +68,11 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  EXPECT_THAT(BuildTopSegmentUserData(transaction), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,
@@ -78,8 +84,11 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd, ConfirmationType::kClicked,
       /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  EXPECT_THAT(BuildTopSegmentUserData(transaction), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopSegmentUserDataTest,
@@ -89,13 +98,16 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "topSegment": []
                     })"),
-            BuildTopSegmentUserData(transaction));
+            user_data);
 }
 
 }  // namespace brave_ads

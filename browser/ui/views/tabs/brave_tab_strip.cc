@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
@@ -353,6 +354,9 @@ void BraveTabStrip::UpdateTabContainer() {
     auto* model = GetBrowser()->tab_strip_model();
     for (int i = 0; i < model->count(); i++) {
       auto* tab = original_container->GetTabAtModelIndex(i);
+      // At this point, we don't have group views in the container. So before
+      // restoring groups, clears group for tabs.
+      tab->set_group(std::nullopt);
       tab_container_->AddTab(
           tab->parent()->RemoveChildViewT(tab), i,
           tab->data().pinned ? TabPinned::kPinned : TabPinned::kUnpinned);

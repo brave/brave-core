@@ -314,7 +314,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
   /// Cancellable for the last running `update()` Task.
   private var updateTask: Task<(), Never>?
   private typealias TokenBalanceCache = [String: [String: Double]]
-  /// Cache of token balances for each account. [token.id: [account.cacheBalanceKey: balance]]
+  /// Cache of token balances for each account. [token.id: [account.id: balance]]
   private var tokenBalancesCache: TokenBalanceCache = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
@@ -469,10 +469,14 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
             token: token,
             network: networkAssets.network,
             accounts: selectedAccounts.filter {
-              if token.coin == .fil {
+              switch token.coin {
+              case .fil, .btc, .zec:
                 return $0.keyringId
-                  == BraveWallet.KeyringId.keyringId(for: token.coin, on: token.chainId)
-              } else {
+                  == BraveWallet.KeyringId.keyringId(
+                    for: token.coin,
+                    on: token.chainId
+                  )
+              default:
                 return $0.coin == token.coin
               }
             }

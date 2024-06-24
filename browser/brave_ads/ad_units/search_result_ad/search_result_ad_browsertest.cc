@@ -18,8 +18,8 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -29,7 +29,6 @@
 #include "net/http/http_status_code.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/request_handler_util.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -40,8 +39,6 @@ namespace brave_ads {
 namespace {
 
 using testing::_;
-using testing::Mock;
-using testing::Return;
 
 constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
@@ -73,7 +70,7 @@ class ScopedTestingAdsServiceSetter {
 
 }  // namespace
 
-class SearchResultAdTest : public InProcessBrowserTest {
+class SearchResultAdTest : public CertVerifierBrowserTest {
  public:
   SearchResultAdTest() {
     scoped_feature_list_.InitAndEnableFeature(
@@ -81,45 +78,28 @@ class SearchResultAdTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    CertVerifierBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    https_server_ = std::make_unique<net::EmbeddedTestServer>(
-        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
-    https_server_->RegisterRequestHandler(base::BindRepeating(
+    https_server_.RegisterRequestHandler(base::BindRepeating(
         &SearchResultAdTest::HandleRequest, base::Unretained(this)));
 
     const base::FilePath test_data_dir =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-    https_server_->ServeFilesFromDirectory(test_data_dir);
-    ASSERT_TRUE(https_server_->Start());
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
-    mock_cert_verifier_.SetUpCommandLine(command_line);
-  }
-
-  void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
-    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
-  }
-
-  void TearDownInProcessBrowserTestFixture() override {
-    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    ASSERT_TRUE(https_server_.Start());
   }
 
   GURL GetURL(std::string_view domain, const std::string& path) const {
     base::StringPairs replacements;
     replacements.emplace_back(std::make_pair(
         "REPLACE_WITH_HTTP_PORT",
-        base::NumberToString(https_server_->host_port_pair().port())));
+        base::NumberToString(https_server_.host_port_pair().port())));
 
-    std::string replaced_path =
+    const std::string replaced_path =
         net::test_server::GetFilePathWithReplacements(path, replacements);
-    return https_server_->GetURL(domain, replaced_path);
+    return https_server_.GetURL(domain, replaced_path);
   }
 
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -131,7 +111,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
       return nullptr;
     }
 
-    const GURL target_url = https_server_->GetURL(kTargetDomain, kTargetPath);
+    const GURL target_url = https_server_.GetURL(kTargetDomain, kTargetPath);
     auto http_response =
         std::make_unique<net::test_server::BasicHttpResponse>();
     http_response->AddCustomHeader("Access-Control-Allow-Origin", "*");
@@ -140,25 +120,24 @@ class SearchResultAdTest : public InProcessBrowserTest {
     return http_response;
   }
 
-  net::EmbeddedTestServer* https_server() { return https_server_.get(); }
+  PrefService* GetPrefs() { return browser()->profile()->GetPrefs(); }
 
-  AdsServiceMock* ads_service() { return &ads_service_mock_; }
+  AdsServiceMock& ads_service() { return ads_service_mock_; }
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
-  content::ContentMockCertVerifier mock_cert_verifier_;
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  net::EmbeddedTestServer https_server_{
+      net::test_server::EmbeddedTestServer::TYPE_HTTPS};
   AdsServiceMock ads_service_mock_;
 };
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, UserHasNotJoinedBraveRewards) {
-  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
-                                               false);
+  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
-  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent).Times(0);
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent).Times(0);
 
-  GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
+  const GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -166,14 +145,13 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, UserHasNotJoinedBraveRewards) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
-  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
-  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
-                                               true);
+  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent).Times(0);
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent).Times(0);
 
-  GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
+  const GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -181,14 +159,14 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
-  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
-  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
-                                               true);
+  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent).Times(0);
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent).Times(0);
 
-  GURL url = GetURL(kAllowedDomain, "/brave_ads/search_result_ad_broken.html");
+  const GURL url =
+      GetURL(kAllowedDomain, "/brave_ads/search_result_ad_broken.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -196,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
 }
 
 IN_PROC_BROWSER_TEST_F(SearchResultAdTest, IncognitoBrowser) {
-  GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
+  const GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   Browser* incognito_browser = OpenURLOffTheRecord(browser()->profile(), url);
   EXPECT_FALSE(GetSearchResultAdTabHelper(incognito_browser));
 
@@ -267,7 +245,7 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(*ads_service(),
+    EXPECT_CALL(ads_service(),
                 TriggerSearchResultAdEvent(
                     _, mojom::SearchResultAdEventType::kViewedImpression, _))
         .Times(2)
@@ -303,16 +281,15 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
 
 IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
                        SearchResultAdOpenedInSameTab) {
-  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
-  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
-                                               true);
+  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   content::WebContents* web_contents =
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent)
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
       .WillOnce(
           [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
                             const mojom::SearchResultAdEventType event_type,
@@ -328,16 +305,15 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
-  ScopedTestingAdsServiceSetter scoped_setter(ads_service());
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
-  browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
-                                               true);
+  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   content::WebContents* web_contents =
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   base::RunLoop run_loop;
-  EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent)
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
       .WillOnce(
           [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
                             const mojom::SearchResultAdEventType event_type,

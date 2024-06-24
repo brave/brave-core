@@ -9,7 +9,6 @@ import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './n
 import { Clock } from './clock'
 import { RewardsWidget } from './rewards'
 import { BraveTalkWidget } from './braveTalk'
-import EditCards from './editCards'
 import EditTopSite from './editTopSite'
 import SearchPromotion from './searchPromotion'
 import createWidget from './widget'
@@ -34,7 +33,6 @@ export {
   Clock,
   RewardsWidget,
   BraveTalkWidget,
-  EditCards,
   createWidget,
   EditTopSite,
   SearchPromotion

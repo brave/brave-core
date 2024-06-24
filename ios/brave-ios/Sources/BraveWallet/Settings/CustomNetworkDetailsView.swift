@@ -50,16 +50,30 @@ struct NetworkTextField: View {
 class NetworkModel: ObservableObject, Identifiable {
   enum Mode {
     case add
-    case edit
-    case view
+    case edit(_ network: BraveWallet.NetworkInfo)
+    case view(_ network: BraveWallet.NetworkInfo)
 
-    var isEditMode: Bool { self == .edit }
-    var isViewMode: Bool { self == .view }
+    var isEditMode: Bool {
+      switch self {
+      case .add, .view(_):
+        return false
+      case .edit(_):
+        return true
+      }
+    }
+    var isViewMode: Bool {
+      switch self {
+      case .add, .edit(_):
+        return false
+      case .view(_):
+        return true
+      }
+    }
   }
 
-  var mode: Mode = .add
+  let mode: Mode
   var id: String {
-    "\(mode.isEditMode)"
+    "\(mode.isEditMode)\(mode.isViewMode)"
   }
 
   @Published var networkId = NetworkInputItem(input: "") {
@@ -130,10 +144,14 @@ class NetworkModel: ObservableObject, Identifiable {
           if item.input.isEmpty && item.error == nil {  // no validation on new entry
             hasNewEntry = true
           } else {
-            if URIFixup.getURL(item.input) == nil {
-              rpcUrls[index].error = Strings.Wallet.customNetworkInvalidAddressErrMsg
+            if let url = URIFixup.getURL(item.input) {
+              if url.isSecureWebPage() {
+                rpcUrls[index].error = nil
+              } else {
+                rpcUrls[index].error = Strings.Wallet.customNetworkNotSecureErrMsg
+              }
             } else {
-              rpcUrls[index].error = nil
+              rpcUrls[index].error = Strings.Wallet.customNetworkInvalidAddressErrMsg
             }
           }
         }
@@ -154,10 +172,14 @@ class NetworkModel: ObservableObject, Identifiable {
           if item.input.isEmpty && item.error == nil {  // no validation on new entry
             hasNewEntry = true
           } else {
-            if URIFixup.getURL(item.input) == nil {
-              iconUrls[index].error = Strings.Wallet.customNetworkInvalidAddressErrMsg
+            if let url = URIFixup.getURL(item.input) {
+              if url.isSecureWebPage() {
+                iconUrls[index].error = nil
+              } else {
+                iconUrls[index].error = Strings.Wallet.customNetworkNotSecureErrMsg
+              }
             } else {
-              iconUrls[index].error = nil
+              iconUrls[index].error = Strings.Wallet.customNetworkInvalidAddressErrMsg
             }
           }
         }
@@ -178,10 +200,14 @@ class NetworkModel: ObservableObject, Identifiable {
           if item.input.isEmpty && item.error == nil {  // no validation on new entry
             hasNewEntry = true
           } else {
-            if URIFixup.getURL(item.input) == nil {
-              blockUrls[index].error = Strings.Wallet.customNetworkInvalidAddressErrMsg
+            if let url = URIFixup.getURL(item.input) {
+              if url.isSecureWebPage() {
+                blockUrls[index].error = nil
+              } else {
+                blockUrls[index].error = Strings.Wallet.customNetworkNotSecureErrMsg
+              }
             } else {
-              blockUrls[index].error = nil
+              blockUrls[index].error = Strings.Wallet.customNetworkInvalidAddressErrMsg
             }
           }
         }
@@ -193,50 +219,59 @@ class NetworkModel: ObservableObject, Identifiable {
     }
   }
 
-  /// Creates model for adding a new custom network
-  init() {
-    self.mode = .add
-  }
-
   /// Creates model and populates the details based on a custom network and mode
-  init(from network: BraveWallet.NetworkInfo, mode: Mode = .edit) {
+  init(mode: Mode = .add) {
     self.mode = mode
 
-    let chainIdInDecimal: String
-    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) {
-      // BraveWallet.NetworkInfo.chainId should always in hex
-      chainIdInDecimal = "\(intValue)"
-    } else {
-      chainIdInDecimal = network.chainId
+    var network: BraveWallet.NetworkInfo?
+    switch mode {
+    case .add:
+      break
+    case .edit(let editNetwork):
+      network = editNetwork
+    case .view(let viewNetwork):
+      network = viewNetwork
     }
-    self.networkId.input = chainIdInDecimal
-    self.networkName.input = network.chainName
-    self.networkSymbolName.input = network.symbolName
-    self.networkSymbol.input = network.symbol
-    self.networkDecimals.input = String(network.decimals)
-    if !network.rpcEndpoints.isEmpty {
-      var result: [NetworkInputItem] = []
-      for (index, endpoint) in network.rpcEndpoints.enumerated() {
-        result.append(
-          NetworkInputItem(
-            input: endpoint.absoluteString,
-            isSelected: index == network.activeRpcEndpointIndex
-          )
-        )
+
+    if let network {
+      let chainIdInDecimal: String
+      if network.coin == .eth,
+        let intValue = Int(network.chainId.removingHexPrefix, radix: 16)
+      {
+        // Eth and EVM BraveWallet.NetworkInfo.chainId should always in hex
+        chainIdInDecimal = "\(intValue)"
+      } else {
+        chainIdInDecimal = network.chainId
       }
-      self.rpcUrls = result
-    } else if mode.isViewMode {
-      self.rpcUrls = []
-    }
-    if !network.iconUrls.isEmpty {
-      self.iconUrls = network.iconUrls.compactMap({ NetworkInputItem(input: $0) })
-    } else if mode.isViewMode {
-      self.iconUrls = []
-    }
-    if !network.blockExplorerUrls.isEmpty {
-      self.blockUrls = network.blockExplorerUrls.compactMap({ NetworkInputItem(input: $0) })
-    } else if mode.isViewMode {
-      self.blockUrls = []
+      self.networkId.input = chainIdInDecimal
+      self.networkName.input = network.chainName
+      self.networkSymbolName.input = network.symbolName
+      self.networkSymbol.input = network.symbol
+      self.networkDecimals.input = String(network.decimals)
+      if !network.rpcEndpoints.isEmpty {
+        var result: [NetworkInputItem] = []
+        for (index, endpoint) in network.rpcEndpoints.enumerated() {
+          result.append(
+            NetworkInputItem(
+              input: endpoint.absoluteString,
+              isSelected: index == network.activeRpcEndpointIndex
+            )
+          )
+        }
+        self.rpcUrls = result
+      } else if mode.isViewMode {
+        self.rpcUrls = []
+      }
+      if !network.iconUrls.isEmpty {
+        self.iconUrls = network.iconUrls.compactMap({ NetworkInputItem(input: $0) })
+      } else if mode.isViewMode {
+        self.iconUrls = []
+      }
+      if !network.blockExplorerUrls.isEmpty {
+        self.blockUrls = network.blockExplorerUrls.compactMap({ NetworkInputItem(input: $0) })
+      } else if mode.isViewMode {
+        self.blockUrls = []
+      }
     }
   }
 }
@@ -275,6 +310,7 @@ struct NetworkDetailsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   @State private var customNetworkError: CustomNetworkError?
+  @State private var isPresentingEditConfirmation: Bool = false
 
   init(
     networkStore: NetworkStore,
@@ -292,6 +328,17 @@ struct NetworkDetailsView: View {
     }
   }
 
+  private var isChainIdInputDisabled: Bool {
+    switch model.mode {
+    case .add:
+      return false
+    case .edit(let editNetwork):
+      return editNetwork.coin != .eth
+    case .view(_):
+      return true
+    }
+  }
+
   var body: some View {
     Form {
       Section(
@@ -299,7 +346,8 @@ struct NetworkDetailsView: View {
       ) {
         networkTextField(
           placeholder: Strings.Wallet.customNetworkChainIdPlaceholder,
-          item: $model.networkId
+          item: $model.networkId,
+          isDisabled: isChainIdInputDisabled
         )
         .keyboardType(.numberPad)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -309,7 +357,8 @@ struct NetworkDetailsView: View {
       ) {
         networkTextField(
           placeholder: Strings.Wallet.customNetworkChainNamePlaceholder,
-          item: $model.networkName
+          item: $model.networkName,
+          isDisabled: model.mode.isViewMode
         )
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -318,7 +367,8 @@ struct NetworkDetailsView: View {
       ) {
         networkTextField(
           placeholder: Strings.Wallet.customNetworkSymbolNamePlaceholder,
-          item: $model.networkSymbolName
+          item: $model.networkSymbolName,
+          isDisabled: model.mode.isViewMode
         )
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -327,7 +377,8 @@ struct NetworkDetailsView: View {
       ) {
         networkTextField(
           placeholder: Strings.Wallet.customNetworkSymbolPlaceholder,
-          item: $model.networkSymbol
+          item: $model.networkSymbol,
+          isDisabled: model.mode.isViewMode
         )
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -336,7 +387,8 @@ struct NetworkDetailsView: View {
       ) {
         networkTextField(
           placeholder: Strings.Wallet.customNetworkCurrencyDecimalPlaceholder,
-          item: $model.networkDecimals
+          item: $model.networkDecimals,
+          isDisabled: model.mode.isViewMode
         )
         .keyboardType(.numberPad)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -349,7 +401,8 @@ struct NetworkDetailsView: View {
             networkTextField(
               placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
               item: $url,
-              showRadioButton: true
+              showRadioButton: true,
+              isDisabled: model.mode.isViewMode
             )
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -362,7 +415,8 @@ struct NetworkDetailsView: View {
           ForEach($model.iconUrls) { $url in
             networkTextField(
               placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
-              item: $url
+              item: $url,
+              isDisabled: model.mode.isViewMode
             )
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -377,7 +431,8 @@ struct NetworkDetailsView: View {
           ForEach($model.blockUrls) { $url in
             networkTextField(
               placeholder: Strings.Wallet.customNetworkUrlsPlaceholder,
-              item: $url
+              item: $url,
+              isDisabled: model.mode.isViewMode
             )
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -394,7 +449,15 @@ struct NetworkDetailsView: View {
             ProgressView()
           } else {
             Button {
-              addCustomNetwork()
+              if model.mode.isEditMode {
+                if validateAllFields() {
+                  isPresentingEditConfirmation = true
+                }
+              } else {
+                if validateAllFields() {
+                  addCustomNetwork()
+                }
+              }
             } label: {
               Text(Strings.Wallet.saveButtonTitle)
                 .foregroundColor(Color(.braveBlurpleTint))
@@ -424,12 +487,31 @@ struct NetworkDetailsView: View {
           }
         )
     )
+    .background(
+      Color.clear
+        .alert(
+          isPresented: $isPresentingEditConfirmation,
+          content: {
+            Alert(
+              title: Text(Strings.Wallet.editExistingNetworkAlertMsg),
+              primaryButton: .default(
+                Text(Strings.OKString),
+                action: {
+                  addCustomNetwork()
+                }
+              ),
+              secondaryButton: .cancel()
+            )
+          }
+        )
+    )
   }
 
   @ViewBuilder private func networkTextField(
     placeholder: String,
     item: Binding<NetworkInputItem>,
-    showRadioButton: Bool = false
+    showRadioButton: Bool = false,
+    isDisabled: Bool
   ) -> some View {
     HStack {
       if showRadioButton {
@@ -446,8 +528,9 @@ struct NetworkDetailsView: View {
           }
         )
       }
-      if model.mode.isViewMode {
+      if isDisabled {
         Text(item.wrappedValue.input)
+          .foregroundColor(Color(.braveLabel))
           .contextMenu {
             Button {
               UIPasteboard.general.string = item.wrappedValue.input
@@ -486,12 +569,36 @@ struct NetworkDetailsView: View {
       }
     }
 
+    let rpcUrlsAllGood = model.rpcUrls.allSatisfy({
+      if $0.input.isEmpty && $0.error != Strings.Wallet.customNetworkEmptyErrMsg {
+        return true
+      } else {
+        return !$0.input.isEmpty && $0.error == nil
+      }
+    })
+    let iconUrlsAllGood = model.iconUrls.allSatisfy({
+      if $0.input.isEmpty && $0.error != Strings.Wallet.customNetworkEmptyErrMsg {
+        return true
+      } else {
+        return !$0.input.isEmpty && $0.error == nil
+      }
+    })
+    let blockUrlsAllGood = model.blockUrls.allSatisfy({
+      if $0.input.isEmpty && $0.error != Strings.Wallet.customNetworkEmptyErrMsg {
+        return true
+      } else {
+        return !$0.input.isEmpty && $0.error == nil
+      }
+    })
+
     if model.networkId.error != nil
       || model.networkName.error != nil
       || model.networkSymbolName.error != nil
       || model.networkSymbol.error != nil
       || model.networkDecimals.error != nil
-      || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty
+      || !rpcUrlsAllGood
+      || !iconUrlsAllGood
+      || !blockUrlsAllGood
     {
       return false
     }
@@ -500,8 +607,6 @@ struct NetworkDetailsView: View {
   }
 
   private func addCustomNetwork() {
-    guard validateAllFields() else { return }
-
     var chainIdInHex = model.networkId.input
     if model.networkId.input.hasPrefix("0x") || model.networkId.input.hasPrefix("0X") {
       let hexDecimalString = model.networkId.input.removingHexPrefix
@@ -543,20 +648,41 @@ struct NetworkDetailsView: View {
       }
     })
     let activeRpcEndpointIndex = model.rpcUrls.firstIndex(where: { $0.isSelected }) ?? 0
-    let network: BraveWallet.NetworkInfo = .init(
-      chainId: chainIdInHex,
-      chainName: model.networkName.input,
-      blockExplorerUrls: blockExplorerUrls,
-      iconUrls: iconUrls,
-      activeRpcEndpointIndex: Int32(activeRpcEndpointIndex),
-      rpcEndpoints: rpcEndpoints,
-      symbol: model.networkSymbol.input,
-      symbolName: model.networkSymbol.input,
-      decimals: Int32(model.networkDecimals.input) ?? 18,
-      coin: .eth,
-      supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
-    )
+    var network: BraveWallet.NetworkInfo?
+    switch model.mode {
+    case .add:
+      network = .init(
+        chainId: chainIdInHex,
+        chainName: model.networkName.input,
+        blockExplorerUrls: blockExplorerUrls,
+        iconUrls: iconUrls,
+        activeRpcEndpointIndex: Int32(activeRpcEndpointIndex),
+        rpcEndpoints: rpcEndpoints,
+        symbol: model.networkSymbol.input,
+        symbolName: model.networkSymbol.input,
+        decimals: Int32(model.networkDecimals.input) ?? 18,
+        coin: .eth,
+        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
+      )
+    case .edit(let editNetwork):
+      network = .init(
+        chainId: editNetwork.coin == .eth ? chainIdInHex : editNetwork.chainId,
+        chainName: model.networkName.input,
+        blockExplorerUrls: blockExplorerUrls,
+        iconUrls: iconUrls,
+        activeRpcEndpointIndex: Int32(activeRpcEndpointIndex),
+        rpcEndpoints: rpcEndpoints,
+        symbol: model.networkSymbol.input,
+        symbolName: model.networkSymbol.input,
+        decimals: Int32(model.networkDecimals.input) ?? editNetwork.decimals,
+        coin: editNetwork.coin,
+        supportedKeyrings: editNetwork.supportedKeyrings
+      )
+    case .view(_):
+      break
+    }
     Task { @MainActor in
+      guard let network else { return }
       let (accepted, errMsg) = await networkStore.addCustomNetwork(network)
       guard accepted else {
         customNetworkError = .failed(errorMessage: errMsg)

@@ -16,7 +16,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -26,6 +26,8 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "chrome/test/base/scoped_testing_local_state.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/web_contents.h"
@@ -61,7 +63,8 @@ void UpdateCustomNetworks(PrefService* prefs,
 class TestBraveWalletHandler : public BraveWalletHandler {
  public:
   TestBraveWalletHandler()
-      : shared_url_loader_factory_(
+      : local_state_(TestingBrowserProcess::GetGlobal()),
+        shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     TestingProfile::Builder builder;
@@ -72,11 +75,10 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 
     test_web_ui_.set_web_contents(web_contents_.get());
     set_web_ui(&test_web_ui_);
-    auto* json_rpc_service =
-        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-            profile_.get());
-
-    json_rpc_service->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
+    brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        profile_.get())
+        ->json_rpc_service()
+        ->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
   }
 
   ~TestBraveWalletHandler() override {
@@ -131,11 +133,9 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
 
- protected:
-  std::unique_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
-
  private:
-  content::BrowserTaskEnvironment browser_task_environment;
+  ScopedTestingLocalState local_state_;
+  content::BrowserTaskEnvironment browser_task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<content::WebContents> web_contents_;
   network::TestURLLoaderFactory url_loader_factory_;

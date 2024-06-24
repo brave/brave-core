@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -15,70 +16,73 @@ namespace brave_ads {
 
 TEST(BraveAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
-  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
-                                           "item 4", "item 5", "item 6"};
+  const std::vector<std::string> element = {"item 1", "item 2", "item 3",
+                                            "item 4", "item 5", "item 6"};
 
   // Act
-  const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 6);
+  const std::vector<std::vector<std::string>> elements =
+      SplitVector(element, 6);
 
   // Assert
-  const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
-  EXPECT_EQ(expected_vectors, vectors);
+  EXPECT_THAT(elements, ::testing::SizeIs(1));
 }
 
 TEST(BraveAdsContainerUtilTest,
      SplitVectorIntoSingleChunkWhenChunkSizeIsLargerThanVectorSize) {
   // Arrange
-  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
-                                           "item 4", "item 5", "item 6"};
+  const std::vector<std::string> element = {"item 1", "item 2", "item 3",
+                                            "item 4", "item 5", "item 6"};
 
   // Act
-  const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 7);
+  const std::vector<std::vector<std::string>> elements =
+      SplitVector(element, 7);
 
   // Assert
-  const std::vector<std::vector<std::string>> expected_vectors = {vector};
-  EXPECT_EQ(expected_vectors, vectors);
+  const std::vector<std::vector<std::string>> expected_elements = {element};
+  EXPECT_EQ(expected_elements, elements);
 }
 
 TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleEvenChunks) {
   // Arrange
-  const std::vector<std::string> vector = {
+  const std::vector<std::string> element = {
       "item 1", "item 2", "item 3", "item 4", "item 5", "item 6",
   };
 
   // Act
-  const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 3);
+  const std::vector<std::vector<std::string>> elements =
+      SplitVector(element, 3);
 
   // Assert
-  const std::vector<std::vector<std::string>> expected_vectors = {
+  const std::vector<std::vector<std::string>> expected_elements = {
       {"item 1", "item 2", "item 3"}, {"item 4", "item 5", "item 6"}};
-  EXPECT_EQ(expected_vectors, vectors);
+  EXPECT_EQ(expected_elements, elements);
 }
 
 TEST(BraveAdsContainerUtilTest, SplitVectorIntoMultipleUnevenChunks) {
   // Arrange
-  const std::vector<std::string> vector = {"item 1", "item 2", "item 3",
-                                           "item 4", "item 5"};
+  const std::vector<std::string> element = {"item 1", "item 2", "item 3",
+                                            "item 4", "item 5"};
 
   // Act
-  const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 3);
+  const std::vector<std::vector<std::string>> elements =
+      SplitVector(element, 3);
 
   // Assert
-  const std::vector<std::vector<std::string>> expected_vectors = {
+  const std::vector<std::vector<std::string>> expected_elements = {
       {"item 1", "item 2", "item 3"}, {"item 4", "item 5"}};
-  EXPECT_EQ(expected_vectors, vectors);
+  EXPECT_EQ(expected_elements, elements);
 }
 
 TEST(BraveAdsContainerUtilTest, SplitEmptyVector) {
   // Arrange
-  const std::vector<std::string> vector;
+  const std::vector<std::string> element;
 
   // Act
-  const std::vector<std::vector<std::string>> vectors = SplitVector(vector, 5);
+  const std::vector<std::vector<std::string>> elements =
+      SplitVector(element, 5);
 
   // Assert
-  const std::vector<std::vector<std::string>>& expected_vectors = {vectors};
-  EXPECT_EQ(expected_vectors, vectors);
+  EXPECT_THAT(elements, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

@@ -38,33 +38,47 @@ constexpr char kEmptyJson[] = "[]";
 class BraveAdsConfirmationTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, ToValue) {
-  // Act & Assert
-  EXPECT_EQ(
-      base::test::ParseJsonList(kJson),
-      ConfirmationTokensToValue(test::BuildConfirmationTokens(/*count=*/2)));
+  // Arrange
+  const ConfirmationTokenList confirmation_tokens =
+      test::BuildConfirmationTokens(/*count=*/2);
+
+  // Act
+  const base::Value::List list = ConfirmationTokensToValue(confirmation_tokens);
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonList(kJson), list);
 }
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, ToEmptyValue) {
-  // Act & Assert
-  EXPECT_THAT(ConfirmationTokensToValue(/*confirmation_tokens=*/{}),
-              ::testing::IsEmpty());
+  // Act
+  const base::Value::List list = ConfirmationTokensToValue({});
+
+  // Assert
+  EXPECT_THAT(list, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, FromValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
-  // Act & Assert
-  EXPECT_EQ(test::BuildConfirmationTokens(/*count=*/2),
-            ConfirmationTokensFromValue(list));
+  // Act
+  const ConfirmationTokenList confirmation_tokens =
+      ConfirmationTokensFromValue(list);
+
+  // Assert
+  EXPECT_EQ(test::BuildConfirmationTokens(/*count=*/2), confirmation_tokens);
 }
 
 TEST_F(BraveAdsConfirmationTokenValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kEmptyJson);
 
-  // Act & Assert
-  EXPECT_THAT(ConfirmationTokensFromValue(list), ::testing::IsEmpty());
+  // Act
+  const ConfirmationTokenList confirmation_tokens =
+      ConfirmationTokensFromValue(list);
+
+  // Assert
+  EXPECT_THAT(confirmation_tokens, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

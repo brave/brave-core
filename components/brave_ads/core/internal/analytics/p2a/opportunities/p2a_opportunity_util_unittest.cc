@@ -12,27 +12,34 @@
 namespace brave_ads {
 
 TEST(BraveAdsP2AOpportunityUtilTest, BuildP2AAdOpportunityEvents) {
-  // Act & Assert
-  const std::vector<std::string> expected_ad_opportunity_events = {
-      "Brave.P2A.ad_notification.opportunities_per_segment.technologycomputing",
-      "Brave.P2A.ad_notification.opportunities_per_segment.personalfinance",
+  // Act
+  const std::vector<std::string> p2a_ad_opportunity_events =
+      BuildP2AAdOpportunityEvents(
+          AdType::kNotificationAd,
+          /*segments=*/{"technology & computing", "personal finance-crypto",
+                        "travel"});
+
+  // Assert
+  const std::vector<std::string> expected_p2a_ad_opportunity_events = {
+      "Brave.P2A.ad_notification.opportunities_per_segment."
+      "technologycomputing",
+      "Brave.P2A.ad_notification.opportunities_per_segment."
+      "personalfinance",
       "Brave.P2A.ad_notification.opportunities_per_segment.travel",
       "Brave.P2A.ad_notification.opportunities"};
-  EXPECT_EQ(
-      expected_ad_opportunity_events,
-      BuildP2AAdOpportunityEvents(
-          AdType::kNotificationAd, /*segments=*/{
-              "technology & computing", "personal finance-crypto", "travel"}));
+  EXPECT_EQ(expected_p2a_ad_opportunity_events, p2a_ad_opportunity_events);
 }
 
 TEST(BraveAdsP2AOpportunityUtilTest,
      BuildP2AAdOpportunityEventsForEmptySegments) {
-  // Act & Assert
-  const std::vector<std::string> expected_ad_opportunity_events = {
+  // Act
+  const std::vector<std::string> p2a_ad_opportunity_events =
+      BuildP2AAdOpportunityEvents(AdType::kNotificationAd, /*segments=*/{});
+
+  // Assert
+  const std::vector<std::string> expected_p2a_ad_opportunity_events = {
       "Brave.P2A.ad_notification.opportunities"};
-  EXPECT_EQ(
-      expected_ad_opportunity_events,
-      BuildP2AAdOpportunityEvents(AdType::kNotificationAd, /*segments=*/{}));
+  EXPECT_EQ(expected_p2a_ad_opportunity_events, p2a_ad_opportunity_events);
 }
 
 }  // namespace brave_ads

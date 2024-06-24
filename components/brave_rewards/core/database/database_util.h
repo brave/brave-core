@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "sql/database.h"
 
@@ -50,6 +52,28 @@ bool GetBoolColumn(mojom::DBRecord* record, const int index);
 std::string GetStringColumn(mojom::DBRecord* record, const int index);
 
 std::string GenerateStringInCase(const std::vector<std::string>& items);
+
+mojom::PublisherStatus PublisherStatusFromInt(int value);
+
+mojom::PublisherExclude PublisherExcludeFromInt(int value);
+
+mojom::RewardsType RewardsTypeFromInt(int value);
+
+mojom::ContributionStep ContributionStepFromInt(int value);
+
+mojom::ContributionProcessor ContributionProcessorFromInt(int value);
+
+mojom::CredsBatchType CredsBatchTypeFromInt(int value);
+
+mojom::CredsBatchStatus CredsBatchStatusFromInt(int value);
+
+mojom::SKUOrderStatus SKUOrderStatusFromInt(int value);
+
+mojom::SKUOrderItemType SKUOrderItemTypeFromInt(int value);
+
+mojom::SKUTransactionStatus SKUTransactionStatusFromInt(int value);
+
+mojom::SKUTransactionType SKUTransactionTypeFromInt(int value);
 
 }  // namespace database
 }  // namespace brave_rewards::internal

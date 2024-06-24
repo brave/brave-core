@@ -11,6 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -95,6 +96,17 @@
           FEATURE_VALUE_TYPE(brave_wallet::features::                         \
                                  kBraveWalletTransactionSimulationsFeature),  \
       })
+
+#define BRAVE_SHIELDS_FEATURE_ENTRIES                                    \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      "brave-shred",                                                     \
+      "Enable Brave 'Shred' Feature",                                    \
+      "Enable the Brave ‘Shred’ feature which will allow a user to " \
+      "easily delete all site data on demand or automatically when "     \
+      "closing a site or terminating the application.",                  \
+      flags_ui::kOsIos,                                                  \
+      FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),   \
+  })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \
@@ -213,6 +225,7 @@
               brave_ads::                                                      \
                   kShouldAlwaysTriggerBraveSearchResultAdEventsFeature),       \
       })                                                                       \
+  BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \

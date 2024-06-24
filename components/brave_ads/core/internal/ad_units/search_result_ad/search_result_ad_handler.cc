@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
@@ -136,6 +137,7 @@ void SearchResultAd::FireAdViewedEventCallback(
   CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewedImpression);
 
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {
+    CHECK_IS_TEST();
     g_deferred_search_result_ad_for_testing = this;
     return std::move(callback).Run(success);
   }

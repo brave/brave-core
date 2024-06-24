@@ -30,9 +30,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -222,22 +219,21 @@ class EthereumProviderImplUnitTest : public testing::Test {
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
         web_contents_.get());
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(browser_context());
-    json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
-    SetNetwork(mojom::kMainnetChainId, std::nullopt);
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_ =
         AssetRatioServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    tx_service_ = TxServiceFactory::GetServiceForContext(browser_context());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser_context());
+    json_rpc_service_ = brave_wallet_service_->json_rpc_service();
+    json_rpc_service_->SetAPIRequestHelperForTesting(
+        shared_url_loader_factory_);
+    SetNetwork(mojom::kMainnetChainId, std::nullopt);
+    keyring_service_ = brave_wallet_service_->keyring_service();
+    tx_service_ = brave_wallet_service_->tx_service();
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+    SetNetwork(mojom::kMainnetChainId, std::nullopt);
 
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::BravePermissionManager*>(
@@ -246,8 +242,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                 .release())));
 
     provider_ = std::make_unique<EthereumProviderImpl>(
-        host_content_settings_map(), json_rpc_service(), tx_service(),
-        keyring_service(), brave_wallet_service_,
+        host_content_settings_map(), brave_wallet_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetPrimaryMainFrame()),
         prefs());
@@ -983,9 +978,8 @@ TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, EmptyDelegate) {
-  EthereumProviderImpl provider_impl(
-      host_content_settings_map(), json_rpc_service(), tx_service(),
-      keyring_service(), brave_wallet_service_, nullptr, prefs());
+  EthereumProviderImpl provider_impl(host_content_settings_map(),
+                                     brave_wallet_service_, nullptr, prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
         "chainId": "0x111",
@@ -2665,9 +2659,9 @@ TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {
   brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
 
   mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New(
-      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", true, false,
-      false, mojom::SPLTokenProgram::kUnsupported, false, false, "BAT", 18,
-      true, "", "", "0x1", mojom::CoinType::ETH);
+      "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", false, true,
+      false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "BAT",
+      18, true, "", "", "0x1", mojom::CoinType::ETH);
   bool approved = false;
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;

@@ -50,8 +50,11 @@ const fetchTokensAndSetupStore = async () => {
   )
 
   // load
-  await waitFor(() => !hook.result.current.isLoading)
-  await waitFor(() => hook.result.current.visibleTokens.length)
+  await waitFor(() =>
+    expect(
+      !hook.result.current.isLoading && hook.result.current.visibleTokens.length
+    ).toBeTruthy()
+  )
 
   const { visibleTokens, error, isLoading } = hook.result.current
   expect(isLoading).toBe(false)

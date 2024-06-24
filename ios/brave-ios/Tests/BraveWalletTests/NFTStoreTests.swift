@@ -84,11 +84,7 @@ class NFTStoreTests: XCTestCase {
       )
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._allNetworks = {
-      $0([self.ethNetwork, self.solNetwork, .mockFilecoinTestnet])
-    }
+    let rpcService = MockJsonRpcService()
     rpcService._erc721Metadata = { contractAddress, tokenId, chainId, completion in
       guard contractAddress == BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress else {
         completion("", "", .internalError, "Error")
@@ -99,16 +95,6 @@ class NFTStoreTests: XCTestCase {
           "image": "mock.image.url",
           "name": "mock nft name",
           "description": "mock nft description"
-        }
-        """
-      completion("", metadata, .success, "")
-    }
-    rpcService._solTokenMetadata = { _, _, completion in
-      let metadata = """
-        {
-          "image": "sol.mock.image.url",
-          "name": "sol mock nft name",
-          "description": "sol mock nft description"
         }
         """
       completion("", metadata, .success, "")
@@ -135,9 +121,6 @@ class NFTStoreTests: XCTestCase {
         return
       }
       completion("1", 0, "1", .success, "")
-    }
-    rpcService._hiddenNetworks = {
-      $1([BraveWallet.FilecoinTestnet])
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
@@ -926,7 +909,6 @@ class NFTStoreTests: XCTestCase {
   func testUpdateGroupByNetworksVisibleNFTs() async {
     let mockEthUserAssets: [BraveWallet.BlockchainToken] = [
       .previewToken.copy(asVisibleAsset: true),
-      .mockUSDCToken.copy(asVisibleAsset: false),
       .mockERC721NFTToken,
       unownedEthNFT,
       invisibleEthNFT,
@@ -971,22 +953,27 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedUserNFTGroups.count, 2)
+        // Solana mainnet, Ethereum mainnet, Polygon, Filecoin mainnet, Bitcoin mainnet
+        XCTAssertEqual(lastUpdatedUserNFTGroups.count, 5)
         guard
-          let groupOneVisibleNFTs = lastUpdatedUserNFTGroups.first?.assets.filter(\.token.visible),
-          let groupTwoVisibleNFTs = lastUpdatedUserNFTGroups.last?.assets.filter(\.token.visible)
+          let solNetworkGroupVisibleNFTs = lastUpdatedUserNFTGroups[safe: 0]?.assets.filter(
+            \.token.visible
+          ),
+          let ethNetworkGroupVisibleNFTs = lastUpdatedUserNFTGroups[safe: 1]?.assets.filter(
+            \.token.visible
+          )
         else {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(groupOneVisibleNFTs.count, 1)
+        XCTAssertEqual(solNetworkGroupVisibleNFTs.count, 1)
         XCTAssertEqual(
-          groupOneVisibleNFTs[safe: 0]?.token.symbol,
+          solNetworkGroupVisibleNFTs[safe: 0]?.token.symbol,
           mockSolUserAssets[safe: 2]?.symbol
         )
-        XCTAssertEqual(groupTwoVisibleNFTs.count, 1)
+        XCTAssertEqual(ethNetworkGroupVisibleNFTs.count, 1)
         XCTAssertEqual(
-          groupTwoVisibleNFTs[safe: 0]?.token.symbol,
+          ethNetworkGroupVisibleNFTs[safe: 0]?.token.symbol,
           mockEthUserAssets[safe: 2]?.symbol
         )
       }.store(in: &cancellables)
@@ -1034,9 +1021,6 @@ class NFTStoreTests: XCTestCase {
         """
       completion("", metadata, .success, "")
     }
-    rpcService._hiddenNetworks = {
-      $1([BraveWallet.FilecoinTestnet])
-    }
 
     // setup store
     let store = NFTStore(
@@ -1067,40 +1051,43 @@ class NFTStoreTests: XCTestCase {
           XCTFail("Unexpected test result")
           return
         }
-        XCTAssertEqual(lastUpdatedNFTGroups.count, 2)
+        XCTAssertEqual(lastUpdatedNFTGroups.count, 5)
         guard
-          let groupOne = lastUpdatedNFTGroups.first,
-          let groupTwo = lastUpdatedNFTGroups.last
+          let solNetworkGroup = lastUpdatedNFTGroups[safe: 0],
+          let ethNetworkGroup = lastUpdatedNFTGroups[safe: 1]
         else {
           XCTFail("Unexpected test result")
           return
         }
-        let groupOneHiddenNFTs = groupOne.assets.filter {
+        let solGroupHiddenNFTs = solNetworkGroup.assets.filter {
           !$0.token.visible && !$0.token.isSpam
         }
-        let groupTwoHiddenNFTs = groupTwo.assets.filter {
+        let ethNetworkGroupHiddenNFTs = ethNetworkGroup.assets.filter {
           !$0.token.visible && !$0.token.isSpam
         }
-        XCTAssertEqual(groupOneHiddenNFTs.count, 1)
+        XCTAssertEqual(solGroupHiddenNFTs.count, 1)
         XCTAssertEqual(
-          groupOneHiddenNFTs[safe: 0]?.token.symbol,
+          solGroupHiddenNFTs[safe: 0]?.token.symbol,
           mockSolUserAssets[safe: 2]?.symbol
         )
         XCTAssertEqual(
-          groupOneHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
+          solGroupHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
           self.mockSolMetadata.imageURLString
         )
-        XCTAssertEqual(groupOneHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockSolMetadata.name)
-        XCTAssertEqual(groupTwoHiddenNFTs.count, 1)
+        XCTAssertEqual(solGroupHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockSolMetadata.name)
+        XCTAssertEqual(ethNetworkGroupHiddenNFTs.count, 1)
         XCTAssertEqual(
-          groupTwoHiddenNFTs[safe: 0]?.token.symbol,
+          ethNetworkGroupHiddenNFTs[safe: 0]?.token.symbol,
           mockEthUserAssets[safe: 2]?.symbol
         )
         XCTAssertEqual(
-          groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
+          ethNetworkGroupHiddenNFTs[safe: 0]?.nftMetadata?.imageURLString,
           self.mockERC721Metadata.imageURLString
         )
-        XCTAssertEqual(groupTwoHiddenNFTs[safe: 0]?.nftMetadata?.name, self.mockERC721Metadata.name)
+        XCTAssertEqual(
+          ethNetworkGroupHiddenNFTs[safe: 0]?.nftMetadata?.name,
+          self.mockERC721Metadata.name
+        )
       }.store(in: &cancellables)
     isLocked = false
     store.saveFilters(

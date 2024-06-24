@@ -9,13 +9,14 @@
 #include <type_traits>
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "build/build_config.h"
-
 namespace {
 
 // Solana uses bincode::serialize when encoding instruction data, which encodes
@@ -215,6 +216,85 @@ SolanaInstruction SetComputeUnitPrice(uint64_t price) {
 }
 
 }  // namespace compute_budget_program
+
+namespace bubblegum_program {
+
+std::optional<SolanaInstruction> Transfer(
+    uint32_t canopy_depth,
+    const std::string& tree_authority,
+    const std::string& new_leaf_owner,
+    const SolCompressedNftProofData& proof) {
+  const std::string log_wrapper = "noopb9bkMVfRPU8AsbpTUg8AQkHtKwMYZiFUjNRtMmV";
+
+  // Init instruction data with the instruction discriminator.
+  std::vector<uint8_t> instruction_data = {163, 52, 200, 231, 140, 3, 69, 186};
+
+  std::vector<uint8_t> root_bytes;
+  if (!Base58Decode(proof.root, &root_bytes, kSolanaHashSize)) {
+    return std::nullopt;
+  }
+  instruction_data.insert(instruction_data.end(), root_bytes.begin(),
+                          root_bytes.end());
+
+  std::vector<uint8_t> data_hash_bytes;
+  if (!Base58Decode(proof.data_hash, &data_hash_bytes, kSolanaHashSize)) {
+    return std::nullopt;
+  }
+  instruction_data.insert(instruction_data.end(), data_hash_bytes.begin(),
+                          data_hash_bytes.end());
+
+  std::vector<uint8_t> creator_hash_bytes;
+  if (!Base58Decode(proof.creator_hash, &creator_hash_bytes, kSolanaHashSize)) {
+    return std::nullopt;
+  }
+  instruction_data.insert(instruction_data.end(), creator_hash_bytes.begin(),
+                          creator_hash_bytes.end());
+
+  std::vector<uint8_t> tempVec;
+
+  // Nonce
+  tempVec.clear();
+  // Use leaf.index for nonce like the example
+  // https://solana.com/developers/guides/javascript/compressed-nfts#build-the-transfer-instruction
+  UintToLEBytes(static_cast<uint64_t>(proof.leaf_index), &tempVec);
+  instruction_data.insert(instruction_data.end(), tempVec.begin(),
+                          tempVec.end());
+
+  // Index
+  tempVec.clear();
+  UintToLEBytes(proof.leaf_index, &tempVec);
+  instruction_data.insert(instruction_data.end(), tempVec.begin(),
+                          tempVec.end());
+
+  // Create account metas.
+  std::vector<SolanaAccountMeta> account_metas({
+      SolanaAccountMeta(tree_authority, std::nullopt, false, false),
+      SolanaAccountMeta(proof.owner, std::nullopt, false, false),
+      SolanaAccountMeta(proof.owner, std::nullopt, false, false),
+      SolanaAccountMeta(new_leaf_owner, std::nullopt, false, false),
+      SolanaAccountMeta(proof.merkle_tree, std::nullopt, false, true),
+      SolanaAccountMeta(log_wrapper, std::nullopt, false, false),
+      SolanaAccountMeta(mojom::kSolanaAccountCompressionProgramId, std::nullopt,
+                        false, false),
+      SolanaAccountMeta(mojom::kSolanaSystemProgramId, std::nullopt, false,
+                        false),
+  });
+
+  // Add on the slice of our proof
+  if (proof.proof.size() < canopy_depth) {
+    return std::nullopt;
+  }
+  size_t end = proof.proof.size() - proof.canopy_depth;
+  for (size_t i = 0; i < end; ++i) {
+    account_metas.push_back(
+        SolanaAccountMeta(proof.proof[i], std::nullopt, false, false));
+  }
+
+  return SolanaInstruction(mojom::kSolanaBubbleGumProgramId,
+                           std::move(account_metas), instruction_data);
+}
+
+}  // namespace bubblegum_program
 
 }  // namespace solana
 

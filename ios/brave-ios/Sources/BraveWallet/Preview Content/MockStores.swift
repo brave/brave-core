@@ -284,7 +284,7 @@ extension DepositTokenStore {
   static var previewStore: DepositTokenStore {
     .init(
       keyringService: BraveWallet.TestKeyringService(),
-      rpcService: BraveWallet.TestJsonRpcService(),
+      rpcService: MockJsonRpcService(),
       walletService: BraveWallet.TestBraveWalletService(),
       blockchainRegistry: BraveWallet.TestBlockchainRegistry.previewBlockchainRegistry,
       prefilledToken: nil,

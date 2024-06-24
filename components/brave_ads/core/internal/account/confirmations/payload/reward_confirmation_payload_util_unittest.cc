@@ -36,7 +36,13 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
                                     /*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
-  // Act & Assert
+  const RewardInfo reward = test::BuildReward(*confirmation);
+
+  // Act
+  const base::Value::Dict reward_confirmation_payload =
+      BuildRewardConfirmationPayload(reward);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
@@ -45,7 +51,7 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
                       ],
                       "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk="
                     })"),
-            BuildRewardConfirmationPayload(test::BuildReward(*confirmation)));
+            reward_confirmation_payload);
 }
 
 }  // namespace brave_ads

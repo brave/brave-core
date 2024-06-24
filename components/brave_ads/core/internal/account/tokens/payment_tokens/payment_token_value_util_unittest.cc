@@ -42,31 +42,42 @@ constexpr char kEmptyJson[] = "[]";
 class BraveAdsPaymentTokenValueUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToValue) {
-  // Act & Assert
-  EXPECT_EQ(base::test::ParseJsonList(kJson),
-            PaymentTokensToValue(test::BuildPaymentTokens(/*count=*/2)));
+  // Act
+  const base::Value::List list =
+      PaymentTokensToValue(test::BuildPaymentTokens(/*count=*/2));
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonList(kJson), list);
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, ToEmptyValue) {
-  // Act & Assert
-  EXPECT_EQ(base::test::ParseJsonList(kEmptyJson), PaymentTokensToValue({}));
+  // Act
+  const base::Value::List list = PaymentTokensToValue({});
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonList(kEmptyJson), list);
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, FromValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
-  // Act & Assert
-  EXPECT_EQ(test::BuildPaymentTokens(/*count=*/2),
-            PaymentTokensFromValue(list));
+  // Act
+  const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);
+
+  // Assert
+  EXPECT_EQ(test::BuildPaymentTokens(/*count=*/2), payment_tokens);
 }
 
 TEST_F(BraveAdsPaymentTokenValueUtilTest, FromEmptyValue) {
   // Arrange
   const base::Value::List list = base::test::ParseJsonList(kEmptyJson);
 
-  // Act & Assert
-  EXPECT_THAT(PaymentTokensFromValue(list), ::testing::IsEmpty());
+  // Act
+  const PaymentTokenList payment_tokens = PaymentTokensFromValue(list);
+
+  // Assert
+  EXPECT_THAT(payment_tokens, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

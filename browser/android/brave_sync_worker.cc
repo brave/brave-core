@@ -13,7 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
-
 #include "brave/build/android/jni_headers/BraveSyncWorker_jni.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -22,17 +21,15 @@
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/sync_service_factory.h"
-
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_user_settings.h"
 #include "components/unified_consent/unified_consent_metrics.h"
-
 #include "content/public/browser/browser_thread.h"
+#include "ui/base/l10n/time_format.h"
 
 // TODO(alexeybarabash): consider use of java SyncServiceImpl methods:
 //    addSyncStateChangedListener
@@ -434,6 +431,66 @@ JNI_BraveSyncWorker_GetPureWordsFromTimeLimited(
 
   return base::android::ConvertUTF8ToJavaString(env,
                                                 pure_words_with_status.value());
+}
+
+static int64_t JNI_BraveSyncWorker_GetNotAfterFromFromTimeLimitedWords(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& time_limited_words) {
+  std::string str_time_limited_words =
+      base::android::ConvertJavaStringToUTF8(time_limited_words);
+  DCHECK(!str_time_limited_words.empty());
+
+  auto not_after =
+      brave_sync::TimeLimitedWords::GetNotAfter(str_time_limited_words);
+
+  return not_after.InMillisecondsSinceUnixEpoch() / 1000;
+}
+
+static base::android::ScopedJavaLocalRef<jstring>
+JNI_BraveSyncWorker_GetFormattedTimeDelta(JNIEnv* env, jlong seconds) {
+  auto delta = base::Seconds(seconds);
+
+  using ui::TimeFormat;
+  std::u16string duration_string;
+  if (delta.InDays() > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Days(delta.InDays()));
+    duration_string += u" ";
+  }
+
+  int remaining_hours =
+      delta.InHours() - delta.InDays() * base::Time::kHoursPerDay;
+  if (remaining_hours > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Hours(remaining_hours));
+    duration_string += u" ";
+  }
+
+  int remaining_minutes =
+      delta.InMinutes() - delta.InHours() * base::Time::kMinutesPerHour;
+  if (remaining_minutes > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Minutes(remaining_minutes));
+    duration_string += u" ";
+  }
+
+  int remaining_seconds =
+      delta.InSeconds() - delta.InMinutes() * base::Time::kSecondsPerMinute;
+  if (remaining_seconds > 0) {
+    duration_string += TimeFormat::Detailed(TimeFormat::FORMAT_DURATION,
+                                            TimeFormat::LENGTH_LONG, 0,
+                                            base::Seconds(remaining_seconds));
+    duration_string += u" ";
+  }
+
+  if (!duration_string.empty()) {
+    duration_string.resize(duration_string.length() - 1);
+  }
+
+  return base::android::ConvertUTF16ToJavaString(env, duration_string);
 }
 
 static base::android::ScopedJavaLocalRef<jstring>

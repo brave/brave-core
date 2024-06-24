@@ -33,9 +33,9 @@ class ContentBlockerManagerTests: XCTestCase {
       }
     }
 
-    let filterListType = ContentBlockerManager.BlocklistType.filterList(
-      componentId: filterListUUID,
-      isAlwaysAggressive: false
+    let filterListType = ContentBlockerManager.BlocklistType.engineSource(
+      .filterList(componentId: filterListUUID),
+      engineType: .standard
     )
     try await manager.compile(
       encodedContentRuleList: encodedContentRuleList,
@@ -43,8 +43,9 @@ class ContentBlockerManagerTests: XCTestCase {
       version: "0",
       modes: filterListType.allowedModes
     )
-    let customListType = ContentBlockerManager.BlocklistType.filterListURL(
-      uuid: filterListCustomUUID
+    let customListType = ContentBlockerManager.BlocklistType.engineSource(
+      .filterListURL(uuid: filterListCustomUUID),
+      engineType: .standard
     )
     try await manager.compile(
       encodedContentRuleList: encodedContentRuleList,
@@ -85,10 +86,8 @@ class ContentBlockerManagerTests: XCTestCase {
 
     // Check removing the filter lists
     do {
-      try await manager.removeRuleLists(
-        for: .filterList(componentId: filterListUUID, isAlwaysAggressive: false)
-      )
-      try await manager.removeRuleLists(for: .filterListURL(uuid: filterListCustomUUID))
+      try await manager.removeRuleLists(for: filterListType)
+      try await manager.removeRuleLists(for: customListType)
     } catch {
       XCTFail(error.localizedDescription)
     }
@@ -108,7 +107,10 @@ class ContentBlockerManagerTests: XCTestCase {
 
     await manager.compileRuleList(
       at: filterListURL,
-      for: .filterListURL(uuid: "iodkpdagapdfkphljnddpjlldadblomo"),
+      for: .engineSource(
+        .filterListURL(uuid: "iodkpdagapdfkphljnddpjlldadblomo"),
+        engineType: .standard
+      ),
       version: "0",
       modes: ContentBlockerManager.BlockingMode.allCases
     )
@@ -129,29 +131,6 @@ class ContentBlockerManagerTests: XCTestCase {
       forFilterSet: filterSet.joined(separator: "\n")
     )
     XCTAssertNil(result)
-  }
-
-  func testRulesTestingError() async {
-    let filterSet = [
-      "! This is a network rule",
-      "||example.com^",
-      "! This is an empty line",
-      "",
-      "! This is a cosmetic filter",
-      "example.com,example.net##h1",
-      "! This is an invalid rule",
-      "||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\\.strmrdr[a-z]+\\..*/",
-    ]
-
-    let manager = await makeManager()
-    let result = await manager.testRules(
-      forFilterSet: filterSet.joined(separator: "\n")
-    )
-    XCTAssertEqual(result?.line, 7)
-    XCTAssertEqual(
-      result?.rule,
-      "||video.twimg.com/ext_tw_video/*/*.m3u8$domain=/^i[a-z]*\\.strmrdr[a-z]+\\..*/"
-    )
   }
 
   @MainActor private func makeManager() -> ContentBlockerManager {

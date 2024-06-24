@@ -21,11 +21,10 @@ std::optional<SearchEngineInfo> FindSearchEngineResultsPage(const GURL& url) {
     return std::nullopt;
   }
 
-  const std::string url_with_empty_query_spec =
-      GetUrlWithEmptyQuery(url).spec();
+  const std::string url_excluding_query_spec = GetUrlExcludingQuery(url).spec();
 
   for (const auto& search_engine : GetSearchEngines()) {
-    if (RE2::FullMatch(url_with_empty_query_spec,
+    if (RE2::FullMatch(url_excluding_query_spec,
                        search_engine.result_page_url_pattern)) {
       return search_engine;
     }

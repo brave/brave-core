@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.h"
 
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -88,6 +89,7 @@ void SearchResultAdTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
 
 AdsService* SearchResultAdTabHelper::GetAdsService() {
   if (g_ads_service_for_testing) {
+    CHECK_IS_TEST();
     return g_ads_service_for_testing;
   }
 

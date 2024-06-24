@@ -1,0 +1,25 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("utils") {
+  sources = [
+    "url_util.cc",
+    "url_util.h",
+  ]
+
+  public_deps = [ "//url" ]
+
+  deps = [ "//net" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "url_util_unittest.cc" ]
+
+  deps = [
+    ":utils",
+    "//testing/gtest",
+  ]
+}

@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 
+#include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -77,6 +78,11 @@ AdsTabHelper::~AdsTabHelper() {
 #if !BUILDFLAG(IS_ANDROID)
   BrowserList::RemoveObserver(this);
 #endif
+}
+
+void AdsTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
+  CHECK_IS_TEST();
+  ads_service_ = ads_service;
 }
 
 bool AdsTabHelper::UserHasJoinedBraveRewards() const {
@@ -339,9 +345,11 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyTabDidChange();
 
+  // Process same document navigations only when a document load is completed.
   // For navigations that lead to a document change, `ProcessNavigation` is
   // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
-  if (navigation_handle->IsSameDocument()) {
+  if (navigation_handle->IsSameDocument() &&
+      web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
     // Single-page application.
     ProcessNavigation();
   }

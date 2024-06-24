@@ -43,8 +43,8 @@ TEST_F(BraveAdsPaymentTokenUtilTest, AddPaymentTokens) {
   AddPaymentTokens({token_2});
 
   // Assert
-  const PaymentTokenList expected_tokens = {token_1, token_2};
-  EXPECT_EQ(expected_tokens, GetAllPaymentTokens());
+  const PaymentTokenList expected_payment_tokens = {token_1, token_2};
+  EXPECT_EQ(expected_payment_tokens, GetAllPaymentTokens());
 }
 
 TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
@@ -62,8 +62,8 @@ TEST_F(BraveAdsPaymentTokenUtilTest, RemovePaymentToken) {
   RemovePaymentToken(token_2);
 
   // Assert
-  const PaymentTokenList expected_tokens = {token_1, token_3};
-  EXPECT_EQ(expected_tokens, GetAllPaymentTokens());
+  const PaymentTokenList expected_payment_tokens = {token_1, token_3};
+  EXPECT_EQ(expected_payment_tokens, GetAllPaymentTokens());
 }
 
 TEST_F(BraveAdsPaymentTokenUtilTest, PaymentTokenCount) {

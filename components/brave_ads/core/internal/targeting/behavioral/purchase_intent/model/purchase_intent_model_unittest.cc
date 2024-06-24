@@ -34,8 +34,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
-  // Act & Assert
-  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
@@ -51,8 +54,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
 
   processor.Process(GURL("https://www.basicattentiontoken.org/test?bar=foo"));
 
-  // Act & Assert
-  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
@@ -61,8 +67,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
                                    kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
-  // Act & Assert
-  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
@@ -75,8 +84,11 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://duckduckgo.com/?q=segment+keyword+1"));
 
-  // Act & Assert
-  EXPECT_THAT(GetPurchaseIntentSegments(), ::testing::IsEmpty());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  EXPECT_THAT(purchase_intent_segments, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
@@ -90,9 +102,13 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   processor.Process(GURL("https://basicattentiontoken.org/test?bar=foo"));
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 3", "segment 2"};
-  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {"segment 3",
+                                                         "segment 2"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
@@ -109,9 +125,12 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   processor.Process(url);
   processor.Process(url);
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 1"};
-  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {"segment 1"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 TEST_F(BraveAdsPurchaseIntentModelTest,
@@ -125,9 +144,12 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   processor.Process(
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2"));
 
-  // Act & Assert
-  const SegmentList expected_segments = {"segment 1"};
-  EXPECT_EQ(expected_segments, GetPurchaseIntentSegments());
+  // Act
+  const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
+
+  // Assert
+  const SegmentList expected_purchase_intent_segments = {"segment 1"};
+  EXPECT_EQ(expected_purchase_intent_segments, purchase_intent_segments);
 }
 
 }  // namespace brave_ads

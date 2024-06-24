@@ -17,8 +17,7 @@
 using brave_rewards::RewardsNotificationService;
 using brave_rewards::RewardsServiceFactory;
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 RewardsNotificationsAddNotificationFunction::
     ~RewardsNotificationsAddNotificationFunction() = default;
@@ -102,5 +101,4 @@ RewardsNotificationsGetAllNotificationsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

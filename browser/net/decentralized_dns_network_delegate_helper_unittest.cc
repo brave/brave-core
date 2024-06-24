@@ -10,8 +10,9 @@
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
@@ -52,8 +53,9 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &test_url_loader_factory_);
     json_rpc_service_ =
-        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-            browser_context());
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            browser_context())
+            ->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
   }

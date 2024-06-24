@@ -10,7 +10,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -69,6 +68,7 @@ inline constexpr char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
 
 class BraveWalletService;
 class KeyringService;
+class TxService;
 
 enum class JSProviderAnswer {
   kNoWallet = 0,
@@ -98,7 +98,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   BraveWalletP3A(const BraveWalletP3A&) = delete;
   BraveWalletP3A& operator=(BraveWalletP3A&) = delete;
 
-  mojo::PendingRemote<mojom::BraveWalletP3A> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BraveWalletP3A> receiver);
 
   void AddObservers();

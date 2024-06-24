@@ -26,6 +26,7 @@ class BuyTokenStoreTests: XCTestCase {
         contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
         name: "Basic Attention Token",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,
@@ -44,6 +45,7 @@ class BuyTokenStoreTests: XCTestCase {
         contractAddress: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
         name: "BNB",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,
@@ -62,6 +64,7 @@ class BuyTokenStoreTests: XCTestCase {
         contractAddress: "0xdac17f958d2ee523a2206206994597c13d831ec7",
         name: "Tether USD",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,
@@ -80,6 +83,7 @@ class BuyTokenStoreTests: XCTestCase {
         contractAddress: "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85",
         name: "Ethereum Name Service",
         logo: "",
+        isCompressed: false,
         isErc20: false,
         isErc721: true,
         isErc1155: false,
@@ -98,6 +102,7 @@ class BuyTokenStoreTests: XCTestCase {
         contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
         name: "DAI Stablecoin",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,
@@ -116,6 +121,7 @@ class BuyTokenStoreTests: XCTestCase {
         contractAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
         name: "MATIC",
         logo: "",
+        isCompressed: false,
         isErc20: true,
         isErc721: false,
         isErc1155: false,
@@ -154,10 +160,8 @@ class BuyTokenStoreTests: XCTestCase {
       )
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._network = { $2(selectedNetwork) }
-    rpcService._allNetworks = { $0([selectedNetwork]) }
-    rpcService._addObserver = { _ in }
 
     let walletService = BraveWallet.TestBraveWalletService()
 
@@ -221,9 +225,6 @@ class BuyTokenStoreTests: XCTestCase {
     rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
     }
-    rpcService._allNetworks = {
-      $0([.mockMainnet, .mockSolana])
-    }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
       // verify network switched to SolanaMainnet
@@ -253,7 +254,7 @@ class BuyTokenStoreTests: XCTestCase {
       blockchainRegistry, keyringService,
       rpcService, walletService,
       assetRatioService, bitcoinWalletService
-    ) = setupServices(selectedNetwork: .mockGoerli)
+    ) = setupServices(selectedNetwork: .mockSepolia)
     let store = BuyTokenStore(
       blockchainRegistry: blockchainRegistry,
       keyringService: keyringService,

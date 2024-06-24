@@ -14,6 +14,9 @@ import org.jni_zero.NativeMethods;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 @JNINamespace("chrome::android")
 public class BraveSyncWorker {
     private static final String TAG = "SYNC";
@@ -103,6 +106,17 @@ public class BraveSyncWorker {
         return BraveSyncWorkerJni.get().getPureWordsFromTimeLimited(timeLimitedWords);
     }
 
+    public LocalDateTime getNotAfterFromFromTimeLimitedWords(String timeLimitedWords) {
+        long unixTime =
+                BraveSyncWorkerJni.get().getNotAfterFromFromTimeLimitedWords(timeLimitedWords);
+        LocalDateTime notAfter = LocalDateTime.ofEpochSecond(unixTime, 0, ZoneOffset.UTC);
+        return notAfter;
+    }
+
+    public String getFormattedTimeDelta(long seconds) {
+        return BraveSyncWorkerJni.get().getFormattedTimeDelta(seconds);
+    }
+
     public void requestSync() {
         BraveSyncWorkerJni.get().requestSync(mNativeBraveSyncWorker);
     }
@@ -154,13 +168,24 @@ public class BraveSyncWorker {
         void requestSync(long nativeBraveSyncWorker);
 
         String getSeedHexFromWords(String passphrase);
+
         String getWordsFromSeedHex(String seedHex);
+
         String getQrDataJson(String seedHex);
+
         int getQrCodeValidationResult(String jsonQr);
+
         String getSeedHexFromQrJson(String jsonQr);
+
         int getWordsValidationResult(String timeLimitedWords);
+
         String getPureWordsFromTimeLimited(String timeLimitedWords);
+
         String getTimeLimitedWordsFromPure(String pureWords);
+
+        long getNotAfterFromFromTimeLimitedWords(String pureWords);
+
+        String getFormattedTimeDelta(long seconds);
 
         void saveCodeWords(long nativeBraveSyncWorker, String passphrase);
 

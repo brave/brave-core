@@ -112,7 +112,7 @@ class NewTabPageViewController: UIViewController {
 
   private let layout = NewTabPageFlowLayout()
   private let collectionView: NewTabCollectionView
-  private weak var tab: Tab?
+  private weak var browserTab: Tab?
   private let rewards: BraveRewards
 
   private var background: NewTabPageBackground
@@ -155,7 +155,7 @@ class NewTabPageViewController: UIViewController {
     privateBrowsingManager: PrivateBrowsingManager,
     p3aHelper: NewTabPageP3AHelper
   ) {
-    self.tab = tab
+    self.browserTab = tab
     self.rewards = rewards
     self.feedDataSource = feedDataSource
     self.privateBrowsingManager = privateBrowsingManager
@@ -642,7 +642,9 @@ class NewTabPageViewController: UIViewController {
     _ event: BraveAds.NewTabPageAdEventType,
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
-    if let tab = tab, case .sponsoredImage(let sponsoredBackground) = background.currentBackground {
+    if let tab = browserTab,
+      case .sponsoredImage(let sponsoredBackground) = background.currentBackground
+    {
       let eventType: NewTabPageP3AHelper.EventType? = {
         switch event {
         case .clicked: return .tapped

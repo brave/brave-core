@@ -115,10 +115,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
@@ -2168,7 +2165,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService = BraveWalletServiceFactory.getInstance().getKeyringService(this);
     }
 
     private void initJsonRpcService() {
@@ -2176,7 +2173,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = BraveWalletServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     private void initTxService() {
@@ -2184,7 +2181,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mTxService = TxServiceFactory.getInstance().getTxService(this);
+        mTxService = BraveWalletServiceFactory.getInstance().getTxService(this);
     }
 
     private void initEthTxManagerProxy() {
@@ -2192,7 +2189,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mEthTxManagerProxy = TxServiceFactory.getInstance().getEthTxManagerProxy(this);
+        mEthTxManagerProxy = BraveWalletServiceFactory.getInstance().getEthTxManagerProxy(this);
     }
 
     private void initSolanaTxManagerProxy() {
@@ -2200,7 +2197,8 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mSolanaTxManagerProxy = TxServiceFactory.getInstance().getSolanaTxManagerProxy(this);
+        mSolanaTxManagerProxy =
+                BraveWalletServiceFactory.getInstance().getSolanaTxManagerProxy(this);
     }
 
     private void initBlockchainRegistry() {

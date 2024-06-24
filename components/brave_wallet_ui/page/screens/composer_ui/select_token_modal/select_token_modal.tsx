@@ -629,7 +629,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       !isLoadingBalances && tokensBySearchValue.length === 0
 
     const tokenList = React.useMemo(() => {
-      if (isLoadingBalances) {
+      if (isLoadingBalances || isLoadingSpotPrices) {
         return (
           <TokenListItemSkeleton
             isNFT={selectedSendOption === SendPageTabHashes.nft}

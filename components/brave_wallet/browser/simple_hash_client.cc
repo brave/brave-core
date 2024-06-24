@@ -15,10 +15,13 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -64,6 +67,8 @@ constexpr char kGodwoken[] = "godwoken";
 constexpr char kPalm[] = "palm";
 constexpr char kPolygonZkEvm[] = "polygon-zkevm";
 constexpr char kZkSyncEra[] = "zksync-era";
+constexpr char kSimpleHashCdnBraveProxyHost[] =
+    "simplehash.wallet-cdn.brave.com";
 
 std::optional<std::string> ChainIdToSimpleHashChainId(
     const std::string& chain_id) {
@@ -124,6 +129,19 @@ std::optional<std::string> SimpleHashChainIdToChainId(
 }  // namespace
 
 namespace brave_wallet {
+
+SolCompressedNftProofData::SolCompressedNftProofData() = default;
+SolCompressedNftProofData::SolCompressedNftProofData(
+    const SolCompressedNftProofData& data) = default;
+SolCompressedNftProofData::~SolCompressedNftProofData() = default;
+bool SolCompressedNftProofData::operator==(
+    const SolCompressedNftProofData& other) const {
+  return root == other.root && data_hash == other.data_hash &&
+         creator_hash == other.creator_hash && owner == other.owner &&
+         proof == other.proof && merkle_tree == other.merkle_tree &&
+         delegate == other.delegate && leaf_index == other.leaf_index &&
+         canopy_depth == other.canopy_depth;
+}
 
 SimpleHashClient::SimpleHashClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -242,6 +260,255 @@ void SimpleHashClient::OnFetchAllNFTsFromSimpleHash(
   }
 
   // Otherwise, return the nfts_so_far
+  std::move(callback).Run(std::move(nfts_so_far));
+}
+
+// Calls
+// https://simplehash.wallet.brave.com/api/v0/nfts/proof/solana/{token_address}
+void SimpleHashClient::FetchSolCompressedNftProofData(
+    const std::string& token_address,
+    FetchSolCompressedNftProofDataCallback callback) {
+  GURL url = GURL(base::StrCat(
+      {kSimpleHashBraveProxyUrl, "/api/v0/nfts/proof/solana/", token_address}));
+  if (!url.is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto internal_callback =
+      base::BindOnce(&SimpleHashClient::OnFetchSolCompressedNftProofData,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               MakeBraveServicesKeyHeaders(),
+                               {.auto_retry_on_network_change = true},
+                               base::BindOnce(&ConvertAllNumbersToString, ""));
+}
+
+void SimpleHashClient::OnFetchSolCompressedNftProofData(
+    FetchSolCompressedNftProofDataCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Invalid JSON becomes an empty string after sanitization
+  if (api_request_result.value_body().is_none()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::move(callback).Run(
+      ParseSolCompressedNftProofData(api_request_result.TakeBody()));
+}
+
+void SimpleHashClient::GetNftBalances(
+    const std::string& wallet_address,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    mojom::CoinType coin,
+    GetNftBalancesCallback callback) {
+  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  GURL url = SimpleHashClient::GetNftsUrl(coin, nft_identifiers);
+  if (!url.is_valid()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &SimpleHashClient::OnGetNftsForBalances, weak_ptr_factory_.GetWeakPtr(),
+      coin, wallet_address, std::move(nft_identifiers), std::move(callback));
+
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
+
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               MakeBraveServicesKeyHeaders(),
+                               {.auto_retry_on_network_change = true},
+                               std::move(conversion_callback));
+}
+
+void SimpleHashClient::OnGetNftsForBalances(
+    mojom::CoinType coin,
+    const std::string& wallet_address,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    GetNftBalancesCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode() ||
+      api_request_result.value_body().is_none()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  std::optional<base::flat_map<mojom::NftIdentifierPtr,
+                               base::flat_map<std::string, uint64_t>>>
+      owners = ParseBalances(api_request_result.TakeBody(), coin);
+
+  if (!owners) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // For each NFT identifier, create the NftIdentifier from the corresponding
+  // chain_id, contract_address, and token_id (if applicable), and look up the
+  // map of owners. Check if the wallet_address is in the owners map and add
+  // the balance to the balances vector (keeping the original order).
+  std::vector<uint64_t> balances;
+  for (const auto& nft_identifier : nft_identifiers) {
+    auto it = owners->find(nft_identifier);
+    if (it == owners->end()) {
+      balances.push_back(0);
+      continue;
+    }
+
+    auto owner_it = it->second.find(wallet_address);
+    if (owner_it == it->second.end()) {
+      balances.push_back(0);
+      continue;
+    }
+
+    balances.push_back(owner_it->second);
+  }
+
+  std::move(callback).Run(std::move(balances));
+}
+
+void SimpleHashClient::GetNftMetadatas(
+    mojom::CoinType coin,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    GetNftMetadatasCallback callback) {
+  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  GURL url = SimpleHashClient::GetNftsUrl(coin, nft_identifiers);
+  if (!url.is_valid()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  auto internal_callback = base::BindOnce(
+      &SimpleHashClient::OnGetNftsForMetadatas, weak_ptr_factory_.GetWeakPtr(),
+      coin, std::move(nft_identifiers), std::move(callback));
+
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               MakeBraveServicesKeyHeaders(),
+                               {.auto_retry_on_network_change = true});
+}
+
+void SimpleHashClient::OnGetNftsForMetadatas(
+    mojom::CoinType coin,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    GetNftMetadatasCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode() ||
+      api_request_result.value_body().is_none()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // A map of NftIdentifierPtr to their metadata
+  std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
+      metadatas = ParseMetadatas(api_request_result.TakeBody(), coin);
+  if (!metadatas) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // For each NFT identifier, look up the metadata in the map and add it to the
+  // nft_metadatas vector (keeping the original order).
+  std::vector<mojom::NftMetadataPtr> nft_metadatas;
+  for (const auto& nft_identifier : nft_identifiers) {
+    auto it = metadatas->find(nft_identifier);
+    if (it != metadatas->end()) {
+      nft_metadatas.push_back(std::move(it->second));
+    }
+  }
+
+  std::move(callback).Run(std::move(nft_metadatas));
+}
+
+void SimpleHashClient::GetNfts(
+    mojom::CoinType coin,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    GetNftsCallback callback) {
+  GURL url = SimpleHashClient::GetNftsUrl(coin, nft_identifiers);
+  if (!url.is_valid()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // Create a copy of nft_identifiers without the first kSimpleHashMaxBatchSize
+  // elements.
+  std::vector<mojom::NftIdentifierPtr> nft_identifiers_remaining;
+  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
+    for (size_t i = kSimpleHashMaxBatchSize; i < nft_identifiers.size(); i++) {
+      nft_identifiers_remaining.push_back(std::move(nft_identifiers[i]));
+    }
+  }
+
+  auto internal_callback = base::BindOnce(
+      &SimpleHashClient::OnGetNfts, weak_ptr_factory_.GetWeakPtr(), coin,
+      std::vector<mojom::BlockchainTokenPtr>(),
+      std::move(nft_identifiers_remaining), std::move(callback));
+
+  api_request_helper_->Request("GET", url, "", "", std::move(internal_callback),
+                               MakeBraveServicesKeyHeaders(),
+                               {.auto_retry_on_network_change = true});
+}
+
+void SimpleHashClient::OnGetNfts(
+    mojom::CoinType coin,
+    std::vector<mojom::BlockchainTokenPtr> nfts_so_far,
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+    GetNftsCallback callback,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode() ||
+      api_request_result.value_body().is_none()) {
+    std::move(callback).Run(std::move(nfts_so_far));
+    return;
+  }
+
+  std::optional<std::pair<std::optional<std::string>,
+                          std::vector<mojom::BlockchainTokenPtr>>>
+      result =
+          ParseNFTsFromSimpleHash(api_request_result.TakeBody(), coin,
+                                  false /* skip_spam */, false /* only_spam */);
+
+  // Add the NFT results
+  if (result) {
+    for (auto& token : result.value().second) {
+      nfts_so_far.push_back(std::move(token));
+    }
+  }
+
+  // If there are still contract addresses remaining, fetch the url again
+  // and make another api request
+  if (nft_identifiers.size() > 0) {
+    GURL url = SimpleHashClient::GetNftsUrl(coin, nft_identifiers);
+    std::vector<mojom::NftIdentifierPtr> nft_identifiers_remaining;
+    if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
+      for (size_t i = kSimpleHashMaxBatchSize; i < nft_identifiers.size();
+           i++) {
+        nft_identifiers_remaining.push_back(std::move(nft_identifiers[i]));
+      }
+    }
+
+    auto internal_callback = base::BindOnce(
+        &SimpleHashClient::OnGetNfts, weak_ptr_factory_.GetWeakPtr(), coin,
+        std::move(nfts_so_far), std::move(nft_identifiers_remaining),
+        std::move(callback));
+    api_request_helper_->Request(
+        "GET", url, "", "", std::move(internal_callback),
+        MakeBraveServicesKeyHeaders(), {.auto_retry_on_network_change = true});
+    return;
+  }
+
+  // Otherwise, we're done and we return the nfts.
   std::move(callback).Run(std::move(nfts_so_far));
 }
 
@@ -428,7 +695,6 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
   //     },
   //     ...
   // }
-
   // Only ETH and SOL NFTs are supported.
   if (!(coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL)) {
     return std::nullopt;
@@ -582,6 +848,11 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
       token->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
     }
 
+    // is_compressed
+    token->is_compressed =
+        nft->FindBoolByDottedPath("extra_metadata.compression.compressed")
+            .value_or(false);
+
     // coin
     token->coin = coin;
 
@@ -589,6 +860,303 @@ SimpleHashClient::ParseNFTsFromSimpleHash(const base::Value& json_value,
   }
 
   return std::make_pair(next_cursor, std::move(nft_tokens));
+}
+
+std::optional<SolCompressedNftProofData>
+SimpleHashClient::ParseSolCompressedNftProofData(
+    const base::Value& json_value) {
+  const base::Value::Dict* dict = json_value.GetIfDict();
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  SolCompressedNftProofData result;
+
+  const std::string* root_opt = dict->FindString("root");
+  const std::string* data_hash_opt = dict->FindString("data_hash");
+  const std::string* creator_hash_opt = dict->FindString("creator_hash");
+  uint64_t leaf_index = 0;
+  if (!GetUint64FromDictValue(*dict, "leaf_index", false, &leaf_index)) {
+    return std::nullopt;
+  }
+  if (leaf_index > UINT32_MAX) {
+    return std::nullopt;
+  }
+  const std::string* owner_opt = dict->FindString("owner");
+  const std::string* merkle_tree_opt = dict->FindString("merkle_tree");
+  const std::string* delegate_opt = dict->FindString("delegate");
+  uint64_t canopy_depth = 0;
+  if (!GetUint64FromDictValue(*dict, "canopy_depth", false, &canopy_depth)) {
+    return std::nullopt;
+  }
+  if (canopy_depth > UINT32_MAX) {
+    return std::nullopt;
+  }
+
+  if (!root_opt || !data_hash_opt || !creator_hash_opt || !owner_opt ||
+      !merkle_tree_opt || !delegate_opt) {
+    return std::nullopt;
+  }
+
+  result.root = *root_opt;
+  result.data_hash = *data_hash_opt;
+  result.creator_hash = *creator_hash_opt;
+  result.leaf_index = leaf_index;
+  result.owner = *owner_opt;
+  result.merkle_tree = *merkle_tree_opt;
+  if (delegate_opt) {
+    result.delegate = *delegate_opt;
+  }
+  result.canopy_depth = canopy_depth;
+
+  const base::Value::List* proofs = dict->FindList("proof");
+  if (!proofs) {
+    return std::nullopt;
+  }
+
+  for (const auto& proof_value : *proofs) {
+    const std::string* proof_str = proof_value.GetIfString();
+    if (proof_str) {
+      result.proof.push_back(*proof_str);
+    }
+  }
+
+  return result;
+}
+
+std::optional<base::flat_map<mojom::NftIdentifierPtr,
+                             base::flat_map<std::string, uint64_t>>>
+SimpleHashClient::ParseBalances(const base::Value& json_value,
+                                mojom::CoinType coin) {
+  const base::Value::Dict* dict = json_value.GetIfDict();
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  const base::Value::List* nfts = dict->FindList("nfts");
+  if (!nfts) {
+    return std::nullopt;
+  }
+
+  base::flat_map<mojom::NftIdentifierPtr, base::flat_map<std::string, uint64_t>>
+      owners;
+  for (const auto& nft_value : *nfts) {
+    const base::Value::Dict* nft = nft_value.GetIfDict();
+    if (!nft) {
+      continue;
+    }
+
+    const std::string* chain_id = nft->FindString("chain");
+    if (!chain_id) {
+      continue;
+    }
+
+    const std::string* contract_address = nft->FindString("contract_address");
+    if (!contract_address) {
+      continue;
+    }
+
+    std::optional<std::string> chain_id_str =
+        SimpleHashChainIdToChainId(*chain_id);
+    if (!chain_id_str) {
+      continue;
+    }
+
+    mojom::NftIdentifierPtr nft_identifier = mojom::NftIdentifier::New();
+    nft_identifier->chain_id = *chain_id_str;
+
+    // Perform checksum conversion only if coin type is ETH
+    if (coin == mojom::CoinType::ETH) {
+      auto checksum_address =
+          brave_wallet::EthAddress::ToEip1191ChecksumAddress(*contract_address,
+                                                             *chain_id_str);
+      if (!checksum_address) {
+        continue;
+      }
+      nft_identifier->contract_address =
+          *checksum_address;  // Set the checksum address
+    } else {
+      nft_identifier->contract_address = *contract_address;
+    }
+
+    const std::string* token_id = nft->FindString("token_id");
+    if (token_id) {
+      // Convert the decimal string SimpleHash gives us to a hex string
+      uint256_t token_id_uint256;
+      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+        continue;
+      }
+      nft_identifier->token_id = Uint256ValueToHex(token_id_uint256);
+    }
+
+    const base::Value::List* owners_list = nft->FindList("owners");
+    if (!owners_list) {
+      continue;
+    }
+
+    base::flat_map<std::string, uint64_t> owners_map;
+    for (const auto& owner_value : *owners_list) {
+      const base::Value::Dict* owner = owner_value.GetIfDict();
+      if (!owner) {
+        continue;
+      }
+
+      const std::string* owner_address = owner->FindString("owner_address");
+      if (!owner_address) {
+        continue;
+      }
+
+      uint64_t quantity = 0;
+      if (!GetUint64FromDictValue(*owner, "quantity", false, &quantity)) {
+        continue;
+      }
+
+      owners_map[*owner_address] = quantity;
+    }
+
+    owners[std::move(nft_identifier)] = std::move(owners_map);
+  }
+
+  return owners;
+}
+
+std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
+SimpleHashClient::ParseMetadatas(const base::Value& json_value,
+                                 mojom::CoinType coin) {
+  const base::Value::Dict* dict = json_value.GetIfDict();
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  const base::Value::List* nfts = dict->FindList("nfts");
+  if (!nfts) {
+    return std::nullopt;
+  }
+
+  base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr> nft_metadatas;
+  for (const auto& nft_value : *nfts) {
+    const base::Value::Dict* nft = nft_value.GetIfDict();
+    if (!nft) {
+      continue;
+    }
+
+    const std::string* chain_id = nft->FindString("chain");
+    if (!chain_id) {
+      continue;
+    }
+
+    const std::string* contract_address = nft->FindString("contract_address");
+    if (!contract_address) {
+      continue;
+    }
+
+    std::optional<std::string> chain_id_str =
+        SimpleHashChainIdToChainId(*chain_id);
+    if (!chain_id_str) {
+      continue;
+    }
+
+    mojom::NftIdentifierPtr nft_identifier = mojom::NftIdentifier::New();
+    nft_identifier->chain_id = *chain_id_str;
+
+    if (coin == mojom::CoinType::ETH) {
+      auto checksum_address =
+          brave_wallet::EthAddress::ToEip1191ChecksumAddress(*contract_address,
+                                                             *chain_id_str);
+      if (!checksum_address) {
+        continue;
+      }
+      nft_identifier->contract_address = *checksum_address;
+    } else {
+      nft_identifier->contract_address = *contract_address;
+    }
+
+    const std::string* token_id = nft->FindString("token_id");
+    if (token_id) {
+      // Convert the decimal string SimpleHash gives us to a hex string
+      uint256_t token_id_uint256;
+      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+        continue;
+      }
+      nft_identifier->token_id = Uint256ValueToHex(token_id_uint256);
+    }
+
+    mojom::NftMetadataPtr nft_metadata = mojom::NftMetadata::New();
+
+    // name
+    const std::string* name = nft->FindString("name");
+    if (name) {
+      nft_metadata->name = *name;
+    }
+
+    // description
+    const std::string* description = nft->FindString("description");
+    if (description) {
+      nft_metadata->description = *description;
+    }
+
+    // image
+    const std::string* image = nft->FindString("image_url");
+    if (image) {
+      GURL original_url(*image);
+      GURL::Replacements replacements;
+      replacements.SetHostStr(kSimpleHashCdnBraveProxyHost);
+      GURL proxy_url = original_url.ReplaceComponents(replacements);
+      nft_metadata->image = proxy_url.spec();
+    }
+
+    // external_url
+    const std::string* external_url = nft->FindString("external_url");
+    if (external_url) {
+      nft_metadata->external_url = *external_url;
+    }
+
+    // background_color
+    const std::string* background_color = nft->FindString("background_color");
+    if (background_color) {
+      nft_metadata->background_color = *background_color;
+    }
+
+    // attributes
+    const base::Value::Dict* extra_metadata = nft->FindDict("extra_metadata");
+    if (extra_metadata) {
+      const base::Value::List* attributes =
+          extra_metadata->FindList("attributes");
+      if (attributes) {
+        for (const auto& attribute_value : *attributes) {
+          const base::Value::Dict* attribute = attribute_value.GetIfDict();
+          if (!attribute) {
+            continue;
+          }
+
+          mojom::NftAttributePtr nft_attribute = mojom::NftAttribute::New();
+
+          const std::string* trait_type = attribute->FindString("trait_type");
+          if (trait_type) {
+            nft_attribute->trait_type = *trait_type;
+          }
+
+          const std::string* value = attribute->FindString("value");
+          if (value) {
+            nft_attribute->value = *value;
+          }
+
+          nft_metadata->attributes.push_back(std::move(nft_attribute));
+        }
+      }
+    }
+    // collection
+    // Use find by dotted path to get collection.name, which may be null
+    const std::string* collection_name =
+        nft->FindStringByDottedPath("collection.name");
+    if (collection_name) {
+      nft_metadata->collection = *collection_name;
+    }
+
+    nft_metadatas[std::move(nft_identifier)] = std::move(nft_metadata);
+  }
+
+  return nft_metadatas;
 }
 
 // static
@@ -630,6 +1198,48 @@ GURL SimpleHashClient::GetSimpleHashNftsByWalletUrl(
     url = net::AppendQueryParameter(url, "cursor", *cursor);
   }
 
+  return url;
+}
+
+GURL SimpleHashClient::GetNftsUrl(
+    mojom::CoinType coin,
+    const std::vector<mojom::NftIdentifierPtr>& nft_identifiers) {
+  if (nft_identifiers.empty()) {
+    return GURL();
+  }
+
+  std::string query_params;
+  size_t max_items =
+      std::min({nft_identifiers.size(), size_t(kSimpleHashMaxBatchSize)});
+  for (size_t i = 0; i < max_items; i++) {
+    std::optional<std::string> simple_hash_chain_id =
+        ChainIdToSimpleHashChainId(nft_identifiers[i]->chain_id);
+    if (!simple_hash_chain_id) {
+      return GURL();
+    }
+
+    if (coin == mojom::CoinType::SOL) {
+      query_params +=
+          *simple_hash_chain_id + "." + nft_identifiers[i]->contract_address;
+    } else {
+      uint256_t token_id_uint256;
+      if (!HexValueToUint256(nft_identifiers[i]->token_id, &token_id_uint256)) {
+        return GURL();
+      }
+      std::string token_id_base10 = Uint256ValueToBase10(token_id_uint256);
+      query_params += *simple_hash_chain_id + "." +
+                      nft_identifiers[i]->contract_address + "." +
+                      token_id_base10;
+    }
+    if (i <
+        max_items - 1) {  // Check to ensure we do not append a comma at the end
+      query_params += ",";
+    }
+  }
+
+  GURL url =
+      GURL(base::StrCat({kSimpleHashBraveProxyUrl, "/api/v0/nfts/assets"}));
+  url = net::AppendQueryParameter(url, "nft_ids", query_params);
   return url;
 }
 

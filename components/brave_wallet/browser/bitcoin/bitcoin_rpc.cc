@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "components/grit/brave_components_strings.h"
@@ -177,16 +178,6 @@ std::optional<std::string> ConvertPlainStringToJsonArray(
   return base::StrCat({"[\"", json, "\"]"});
 }
 
-std::optional<std::string> ConvertAllNumbersToString(const std::string& json) {
-  auto converted_json =
-      std::string(json::convert_all_numbers_to_string(json, ""));
-  if (converted_json.empty()) {
-    return std::nullopt;
-  }
-
-  return converted_json;
-}
-
 template <class TCallback>
 void ReplyWithInvalidJsonError(TCallback callback) {
   std::move(callback).Run(
@@ -341,7 +332,7 @@ void BitcoinRpc::GetAddressStats(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&BitcoinRpc::OnGetAddressStats,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
   RequestInternal(request_url, std::move(internal_callback),
                   std::move(conversion_callback));
 }
@@ -372,7 +363,7 @@ void BitcoinRpc::GetUtxoList(const std::string& chain_id,
   auto internal_callback =
       base::BindOnce(&BitcoinRpc::OnGetUtxoList, weak_ptr_factory_.GetWeakPtr(),
                      std::move(callback), address);
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString);
+  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
   RequestInternal(request_url, std::move(internal_callback),
                   std::move(conversion_callback));
 }

@@ -343,6 +343,7 @@ export const useSwap = () => {
     setQuoteErrorUnion(undefined)
     setIsFetchingQuote(false)
     setSwapFees(undefined)
+    setTimeUntilNextQuote(undefined)
     if (abortController) {
       abortController.abort()
     }
@@ -411,6 +412,7 @@ export const useSwap = () => {
       const controller = new AbortController()
       setAbortController(controller)
       setIsFetchingQuote(true)
+      setQuoteErrorUnion(undefined)
 
       let quoteResponse
       try {

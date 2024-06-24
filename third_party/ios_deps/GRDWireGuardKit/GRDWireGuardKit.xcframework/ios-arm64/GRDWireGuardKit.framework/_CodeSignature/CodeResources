@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/GRDWireGuardKit-Swift.h</key>
 		<data>
-		3jq1ONnoiUQ3ftksb5Tvu6u6lhg=
+		P1hWx+vRIrGW1BhQkExZ6SIyqio=
 		</data>
 		<key>Headers/GRDWireGuardKit.h</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/WireGuardKitC.h</key>
 		<data>
-		deud+hAFS+2fzIgM3nfPMp6LHDI=
+		6pGswNgOyBguk15QkLwQ6SJZ4tY=
 		</data>
 		<key>Headers/key.h</key>
 		<data>
@@ -34,35 +34,35 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		8dR3NATyf6PuukSj5bxHJHUyra8=
+		Hcekw47NFtji10IG7BiKf79MBLA=
 		</data>
 		<key>Modules/GRDWireGuardKit.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		T0bPejAe9tsPgwg7Nek3bmDCLCE=
+		n1WVSMe7X635xiyGcxOSFOTddu4=
 		</data>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		pNV3wQigE08XsLt843GqLEnz5jw=
+		ZtDfVJvnalHjYwhfiKIwCPFCokA=
 		</data>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		kds2PJRdT42KIoTTrWlJ3jPg4b4=
+		sPXV92WpIUwTHGEOzO1X37Sk2lI=
 		</data>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		oCPOlt0nH0ESoaT91Asah2vBcEg=
+		3EiHtmr9D07pDQ/Fe/ZdbvwMgXo=
 		</data>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		kds2PJRdT42KIoTTrWlJ3jPg4b4=
+		sPXV92WpIUwTHGEOzO1X37Sk2lI=
 		</data>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		eyg78qurncsAHQWG5XwE8omm2MM=
+		iYXGaV0i/7pPUHBQhrHaw/1WlWg=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		cZ5rirXBejhsC17bxRNLKEuj0ks=
+		8PrcwvhBX0/om1O3+cJgSYhqFDg=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -71,7 +71,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pkSdWxUXL0kCwbmSOYics9W8cHQidOLuO06DJan5FCM=
+			gljCWHIu/oCWiquQ1aWtESU2D2x3wfHmQVuvOSHy/rc=
 			</data>
 		</dict>
 		<key>Headers/GRDWireGuardKit.h</key>
@@ -85,7 +85,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			HscYBW2AJfQNi/96JVkqCRBDtKpu6uKYp+1sXpK+yCM=
+			NMmXm1LHTiL38aZVh2BHACZqWqDIyUaOmpbHQpTs0UE=
 			</data>
 		</dict>
 		<key>Headers/key.h</key>
@@ -120,49 +120,49 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			kRQvaIlNGqdo36snEhsvuYVn+mxBtcgR+op16w73k40=
+			ThEr0Cf9DuA04yzholX7r6QHYqzAsnhnRpa2sC3tlaQ=
 			</data>
 		</dict>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			0AawMnwDl5Alf89b+w1CAB76AU0uq2iRu3VbKVwRsNQ=
+			6+JdRvVKONqWZplnO8CG5MuRe2WjfCOVkQg4oza7r+w=
 			</data>
 		</dict>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			o0H+peG63Du+tpsA51nfnJLHZZ+aNmrNfwiDTFpKjdg=
+			gU5YAmbLJKIMHMnGpTNJnXXx7VlKkCTlEM7WlQS+pS0=
 			</data>
 		</dict>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			uhT4+Kgm89ffqN1gBqTCDlMEzGkl2aeJynnCrOpgD34=
+			QQVLHqcQsPWQGpHWaZ/JkDMYZ+rfhfKPN+brmgWbjZw=
 			</data>
 		</dict>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			o0H+peG63Du+tpsA51nfnJLHZZ+aNmrNfwiDTFpKjdg=
+			gU5YAmbLJKIMHMnGpTNJnXXx7VlKkCTlEM7WlQS+pS0=
 			</data>
 		</dict>
 		<key>Modules/GRDWireGuardKit.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			7TfDuyGBXl79D1bOnOMVdaLi6sg/N3hjz0RFK84OEEA=
+			3LHeBBUO8zuHVb0zNGn40h9fAu5RAog+1uB5FcDMrdM=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			YShzkQjRNnj0oNA57aS+TbVnS4BsRiYhq9E4KL2UlXo=
+			QUUI+mvRTw19ABYlpWkpKBqdKhNZzhVYayDQ1D8l1PQ=
 			</data>
 		</dict>
 	</dict>

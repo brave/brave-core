@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
 #include <map>
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -16,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -95,42 +97,47 @@ struct PendingGetEncryptPublicKeyRequest {
 BraveWalletService::BraveWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
-    KeyringService* keyring_service,
-    JsonRpcService* json_rpc_service,
-    TxService* tx_service,
-    BitcoinWalletService* bitcoin_wallet_service,
-    ZCashWalletService* zcash_wallet_service,
     PrefService* profile_prefs,
-    PrefService* local_state,
-    bool is_private_window)
-    : is_private_window_(is_private_window),
-      delegate_(std::move(delegate)),
-      keyring_service_(keyring_service),
-      json_rpc_service_(json_rpc_service),
-      tx_service_(tx_service),
-      bitcoin_wallet_service_(bitcoin_wallet_service),
-      zcash_wallet_service_(zcash_wallet_service),
+    PrefService* local_state)
+    : delegate_(std::move(delegate)),
+      json_rpc_service_(std::make_unique<JsonRpcService>(url_loader_factory,
+                                                         profile_prefs,
+                                                         local_state)),
+      keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
+                                                        profile_prefs,
+                                                        local_state)),
       profile_prefs_(profile_prefs),
-      brave_wallet_p3a_(this,
-                        keyring_service,
-                        tx_service,
-                        profile_prefs,
-                        local_state),
       eth_allowance_manager_(
-          std::make_unique<EthAllowanceManager>(json_rpc_service,
-                                                keyring_service,
+          std::make_unique<EthAllowanceManager>(json_rpc_service_.get(),
+                                                keyring_service_.get(),
                                                 profile_prefs)),
       weak_ptr_factory_(this) {
+  CHECK(delegate_);
+
+  if (IsBitcoinEnabled()) {
+    bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
+        keyring_service(), profile_prefs, url_loader_factory);
+  }
+
+  if (IsZCashEnabled()) {
+    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
+        keyring_service(), profile_prefs, url_loader_factory);
+  }
+
+  tx_service_ = std::make_unique<TxService>(
+      json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
+      keyring_service(), profile_prefs, delegate_->GetWalletBaseDirectory(),
+      base::SequencedTaskRunner::GetCurrentDefault());
+
+  brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(
+      this, keyring_service(), tx_service(), profile_prefs, local_state),
+
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
-      url_loader_factory, this, json_rpc_service, keyring_service,
+      url_loader_factory, this, json_rpc_service(), keyring_service(),
       simple_hash_client_.get(), profile_prefs);
 
-  if (!delegate_) {
-    CHECK_IS_TEST();
-  } else {
-    delegate_->AddObserver(this);
-  }
+  delegate_->AddObserver(this);
 
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
@@ -175,27 +182,82 @@ BraveWalletService::BraveWalletService(
       kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+  // Added 05/2024 to label compressed nfts as such.
+  BraveWalletService::MaybeMigrateCompressedNfts();
 }
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
 
 BraveWalletService::~BraveWalletService() = default;
 
-mojo::PendingRemote<mojom::BraveWalletService>
-BraveWalletService::MakeRemote() {
-  mojo::PendingRemote<mojom::BraveWalletService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 // For unit tests
 void BraveWalletService::RemovePrefListenersForTests() {
   pref_change_registrar_.RemoveAll();
 }
 
+template <>
 void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BraveWalletService> receiver) {
   receivers_.Add(this, std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::JsonRpcService> receiver) {
+  json_rpc_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::BitcoinWalletService> receiver) {
+  if (GetBitcoinWalletService()) {
+    GetBitcoinWalletService()->Bind(std::move(receiver));
+  }
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::ZCashWalletService> receiver) {
+  if (GetZcashWalletService()) {
+    GetZcashWalletService()->Bind(std::move(receiver));
+  }
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::KeyringService> receiver) {
+  keyring_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::TxService> receiver) {
+  tx_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
+  tx_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::SolanaTxManagerProxy> receiver) {
+  tx_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::FilTxManagerProxy> receiver) {
+  tx_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::BraveWalletP3A> receiver) {
+  GetBraveWalletP3A()->Bind(std::move(receiver));
 }
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
@@ -244,6 +306,18 @@ void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
                        weak_ptr_factory_.GetWeakPtr(), std::move(token),
                        std::move(callback)));
     return;
+  } else if (token->is_nft && token->coin == mojom::CoinType::SOL) {
+    auto nft_id = mojom::NftIdentifier::New();
+    nft_id->chain_id = token->chain_id;
+    nft_id->contract_address = token->contract_address;
+    nft_id->token_id = token->token_id;
+    std::vector<mojom::NftIdentifierPtr> nft_ids;
+    nft_ids.push_back(std::move(nft_id));
+    simple_hash_client_->GetNfts(
+        mojom::CoinType::SOL, std::move(nft_ids),
+        base::BindOnce(&BraveWalletService::OnGetNfts,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
   }
 
   std::move(callback).Run(AddUserAssetInternal(std::move(token)));
@@ -273,6 +347,17 @@ void BraveWalletService::OnGetEthNftStandard(
   }
 
   std::move(callback).Run(AddUserAssetInternal(std::move(token)));
+}
+
+void BraveWalletService::OnGetNfts(
+    AddUserAssetCallback callback,
+    std::vector<mojom::BlockchainTokenPtr> nfts) {
+  if (nfts.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  DCHECK_EQ(nfts.size(), 1U);
+  std::move(callback).Run(AddUserAssetInternal(std::move(nfts[0])));
 }
 
 void BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
@@ -785,13 +870,59 @@ void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
   }
 }
 
+void BraveWalletService::MaybeMigrateCompressedNfts() {
+  if (profile_prefs_->GetBoolean(kBraveWalletIsCompressedNftMigrated)) {
+    return;
+  }
+
+  // Get all solana NFTs.
+  std::vector<mojom::NftIdentifierPtr> nft_ids;
+  for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
+    if (item->coin == mojom::CoinType::SOL && item->is_nft) {
+      auto nft_id = mojom::NftIdentifier::New();
+      nft_id->chain_id = item->chain_id;
+      nft_id->contract_address = item->contract_address;
+      nft_id->token_id = item->token_id;
+      nft_ids.push_back(std::move(nft_id));
+    }
+  }
+
+  simple_hash_client_->GetNfts(
+      mojom::CoinType::SOL, std::move(nft_ids),
+      base::BindOnce(&BraveWalletService::OnGetNftsForCompressedMigration,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveWalletService::OnGetNftsForCompressedMigration(
+    std::vector<mojom::BlockchainTokenPtr> nfts) {
+  for (auto& nft : nfts) {
+    if (!nft->is_compressed) {
+      continue;
+    }
+
+    if (!::brave_wallet::SetAssetCompressed(profile_prefs_, nft)) {
+      continue;
+    }
+  }
+
+  profile_prefs_->SetBoolean(kBraveWalletIsCompressedNftMigrated, true);
+}
+
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
     const std::string& pref_name) {
-  brave_wallet_p3a_.ReportUsage(true);
+  brave_wallet_p3a_->ReportUsage(true);
 }
 
 BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
-  return &brave_wallet_p3a_;
+  return brave_wallet_p3a_.get();
+}
+
+BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {
+  return bitcoin_wallet_service_.get();
+}
+
+ZCashWalletService* BraveWalletService::GetZcashWalletService() {
+  return zcash_wallet_service_.get();
 }
 
 void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
@@ -1614,7 +1745,7 @@ void BraveWalletService::GetAnkrSupportedChainIds(
 }
 
 void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
-  std::move(callback).Run(is_private_window_);
+  std::move(callback).Run(delegate_->IsPrivateWindow());
 }
 
 void BraveWalletService::GetTransactionSimulationOptInStatus(

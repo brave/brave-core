@@ -21,8 +21,12 @@ TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest,
   const ScopedRandTimeDeltaSetterForTesting scoped_rand_time_delta(
       base::Seconds(7));
 
-  // Act & Assert
-  EXPECT_EQ(base::Seconds(7), RetryProcessingConfirmationAfter());
+  // Act
+  const base::TimeDelta retry_processing_confirmation_after =
+      RetryProcessingConfirmationAfter();
+
+  // Assert
+  EXPECT_EQ(base::Seconds(7), retry_processing_confirmation_after);
 }
 
 }  // namespace brave_ads

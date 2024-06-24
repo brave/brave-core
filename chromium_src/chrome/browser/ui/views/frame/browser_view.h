@@ -11,6 +11,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 #define BrowserViewLayoutDelegateImpl \
@@ -33,6 +34,12 @@
   GetTabSearchBubbleHost_Unused(); \
   virtual TabSearchBubbleHost* GetTabSearchBubbleHost
 
+#define UpdateExclusiveAccessBubble                           \
+  UpdateExclusiveAccessBubble_ChromiumImpl(                   \
+      const ExclusiveAccessBubbleParams& params,              \
+      ExclusiveAccessBubbleHideCallback first_hide_callback); \
+  void UpdateExclusiveAccessBubble
+
 #if BUILDFLAG(IS_WIN)
 #define GetSupportsTitle virtual GetSupportsTitle
 
@@ -52,6 +59,7 @@
 #undef GetSupportsTitle
 #endif
 
+#undef UpdateExclusiveAccessBubble
 #undef GetTabSearchBubbleHost
 #undef GetTabStripVisible
 #undef UpdateDevToolsForContents

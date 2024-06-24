@@ -607,16 +607,6 @@ GetTokenInstructionAccountParams() {
   return *params;
 }
 
-std::optional<uint8_t> DecodeUint8(base::span<const uint8_t> input,
-                                   size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
-    return std::nullopt;
-  }
-
-  offset += sizeof(uint8_t);
-  return input[offset - sizeof(uint8_t)];
-}
-
 std::optional<std::string> DecodeUint8String(base::span<const uint8_t> input,
                                              size_t& offset) {
   auto ret = DecodeUint8(input, offset);
@@ -634,26 +624,6 @@ std::optional<std::string> DecodeAuthorityTypeString(
     return base::NumberToString(*ret);
   }
   return std::nullopt;
-}
-
-std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
-                                     size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
-    return std::nullopt;
-  }
-
-  // Read bytes in little endian order.
-  base::span<const uint8_t> s =
-      base::make_span(input.begin() + offset, sizeof(uint32_t));
-  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
-
-  offset += sizeof(uint32_t);
-
-#if defined(ARCH_CPU_LITTLE_ENDIAN)
-  return uint32_le;
-#else
-  return base::ByteSwap(uint32_le);
-#endif
 }
 
 std::optional<std::string> DecodeUint32String(base::span<const uint8_t> input,
@@ -692,17 +662,6 @@ std::optional<std::string> DecodeUint64String(base::span<const uint8_t> input,
     return std::nullopt;
   }
   return base::NumberToString(*ret);
-}
-
-std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
-                                           size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
-    return std::nullopt;
-  }
-
-  offset += kSolanaPubkeySize;
-  return Base58Encode(std::vector<uint8_t>(
-      input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
 }
 
 std::optional<std::string> DecodeOptionalPublicKey(
@@ -879,6 +838,44 @@ std::optional<SolanaInstructionDecodedData> Decode(
   }
 
   return decoded_data;
+}
+
+std::optional<uint8_t> DecodeUint8(base::span<const uint8_t> input,
+                                   size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < sizeof(uint8_t)) {
+    return std::nullopt;
+  }
+
+  auto result = input[offset];
+  offset += sizeof(uint8_t);
+  return result;
+}
+
+std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
+                                     size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < sizeof(uint32_t)) {
+    return std::nullopt;
+  }
+
+  // Read bytes in little endian order.
+  base::span<const uint8_t> s =
+      base::make_span(input.begin() + offset, sizeof(uint32_t));
+  uint32_t uint32_le = *reinterpret_cast<const uint32_t*>(s.data());
+
+  offset += sizeof(uint32_t);
+
+  return uint32_le;
+}
+
+std::optional<std::string> DecodePublicKey(base::span<const uint8_t> input,
+                                           size_t& offset) {
+  if (offset >= input.size() || input.size() - offset < kSolanaPubkeySize) {
+    return std::nullopt;
+  }
+
+  offset += kSolanaPubkeySize;
+  return Base58Encode(std::vector<uint8_t>(
+      input.begin() + offset - kSolanaPubkeySize, input.begin() + offset));
 }
 
 std::vector<InsParamPair> GetAccountParamsForTesting(

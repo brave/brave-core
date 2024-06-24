@@ -18,9 +18,13 @@ class BraveAdsPriorityTest : public UnitTestBase {};
 
 TEST_F(BraveAdsPriorityTest,
        SortCreativeAdsIntoBucketsByPriorityForNoCreativeAds) {
-  // Act & Assert
-  EXPECT_THAT(SortCreativeAdsIntoBucketsByPriority(CreativeAdList{}),
-              ::testing::IsEmpty());
+  // Act
+  const PrioritizedCreativeAdBuckets<CreativeAdList>
+      prioritized_creative_ad_buckets =
+          SortCreativeAdsIntoBucketsByPriority(CreativeAdList{});
+
+  // Assert
+  EXPECT_THAT(prioritized_creative_ad_buckets, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsPriorityTest,
@@ -53,14 +57,19 @@ TEST_F(BraveAdsPriorityTest,
   creative_ad_5.priority = 0;
   creative_ads.push_back(creative_ad_5);
 
-  // Act & Assert
+  // Act
   const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
-      expected_buckets = {{1, {creative_ad_1, creative_ad_3}},
-                          {2, {creative_ad_2}},
-                          {3, {creative_ad_4}}};
-  EXPECT_THAT(expected_buckets,
-              ::testing::ElementsAreArray(
-                  SortCreativeAdsIntoBucketsByPriority(creative_ads)));
+      prioritized_creative_ad_buckets =
+          SortCreativeAdsIntoBucketsByPriority(creative_ads);
+
+  // Assert
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
+      expected_prioritized_creative_ad_buckets = {
+          {/*priority*/ 1, {creative_ad_1, creative_ad_3}},
+          {/*priority*/ 2, {creative_ad_2}},
+          {/*priority*/ 3, {creative_ad_4}}};
+  EXPECT_THAT(expected_prioritized_creative_ad_buckets,
+              ::testing::ElementsAreArray(prioritized_creative_ad_buckets));
 }
 
 TEST_F(BraveAdsPriorityTest,
@@ -73,11 +82,17 @@ TEST_F(BraveAdsPriorityTest,
   creative_ad_1.priority = 3;
   creative_ads.push_back(creative_ad_1);
 
-  // Act & Assert
+  // Act
   const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
-      expected_buckets = {{3, {creative_ad_1}}};
-  EXPECT_THAT(expected_buckets,
-              SortCreativeAdsIntoBucketsByPriority(creative_ads));
+      prioritized_creative_ad_buckets =
+          SortCreativeAdsIntoBucketsByPriority(creative_ads);
+
+  // Assert
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
+      expected_prioritized_creative_ad_buckets = {
+          {/*priority*/ 3, {creative_ad_1}}};
+  EXPECT_THAT(expected_prioritized_creative_ad_buckets,
+              prioritized_creative_ad_buckets);
 }
 
 TEST_F(BraveAdsPriorityTest,
@@ -90,9 +105,13 @@ TEST_F(BraveAdsPriorityTest,
   creative_ad_1.priority = 0;
   creative_ads.push_back(creative_ad_1);
 
-  // Act & Assert
-  EXPECT_THAT(SortCreativeAdsIntoBucketsByPriority(creative_ads),
-              ::testing::IsEmpty());
+  // Act
+  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
+      prioritized_creative_ad_buckets =
+          SortCreativeAdsIntoBucketsByPriority(creative_ads);
+
+  // Assert
+  EXPECT_THAT(prioritized_creative_ad_buckets, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

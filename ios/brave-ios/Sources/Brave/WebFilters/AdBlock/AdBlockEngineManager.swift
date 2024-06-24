@@ -149,7 +149,8 @@ import os
   /// Especially needed during launch when we have a bunch of downloads coming at the same time.
   func compileDelayedIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) {
     // Cancel the previous task
     delayTask?.cancel()
@@ -159,7 +160,8 @@ import os
       try await Task.sleep(seconds: 60)
       await compileAvailableIfNeeded(
         for: enabledSources,
-        resourcesInfo: resourcesInfo
+        resourcesInfo: resourcesInfo,
+        contentBlockerManager: contentBlockerManager
       )
     }
   }
@@ -167,13 +169,15 @@ import os
   /// This will compile available data right away if it is needed and cancel any delayedTasks
   func compileImmediatelyIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) async {
     delayTask?.cancel()
 
     await self.compileAvailableIfNeeded(
       for: enabledSources,
-      resourcesInfo: resourcesInfo
+      resourcesInfo: resourcesInfo,
+      contentBlockerManager: contentBlockerManager
     )
   }
 
@@ -196,14 +200,20 @@ import os
   /// This will compile available data right away if it is needed
   private func compileAvailableIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) async {
     do {
       let compilableFiles = compilableFiles(for: enabledSources)
-      guard self.checkNeedsCompile(for: compilableFiles) else { return }
+
+      guard self.checkNeedsCompile(for: compilableFiles) else {
+        return
+      }
+
       try await compileAvailable(
         for: compilableFiles,
-        resourcesInfo: resourcesInfo
+        resourcesInfo: resourcesInfo,
+        contentBlockerManager: contentBlockerManager
       )
     } catch {
       ContentBlockerManager.log.error(
@@ -215,7 +225,8 @@ import os
   /// Compile an engine from all available data
   private func compileAvailable(
     for files: [AdBlockEngineManager.FileInfo],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
+    contentBlockerManager: ContentBlockerManager
   ) async throws {
     let engineType = self.engineType
     let group = try combineRules(for: files)
@@ -370,33 +381,42 @@ import os
 }
 
 extension GroupedAdBlockEngine.Source {
-  func blocklistType(isAlwaysAggressive: Bool) -> ContentBlockerManager.BlocklistType? {
+  /// For some sources we don't support content blockers because of various reasons
+  private var allowContentBlockers: Bool {
     switch self {
-    case .filterList(let componentId, let uuid):
-      guard uuid != AdblockFilterListCatalogEntry.defaultFilterListComponentUUID else {
-        // For now we don't compile this into content blockers because we use the one coming from slim list
-        // We might change this in the future as it ends up with 95k items whereas the limit is 150k.
-        // So there is really no reason to use slim list except perhaps for performance which we need to test out.
-        return nil
-      }
-
-      return .filterList(componentId: componentId, isAlwaysAggressive: isAlwaysAggressive)
-    case .filterListURL(let uuid):
-      return .filterListURL(uuid: uuid)
-    case .filterListText:
-      return .filterListText
+    case .filterList(let componentId):
+      return !AdblockFilterListCatalogEntry.disabledContentBlockersComponentIDs.contains(
+        componentId
+      )
+    case .filterListURL, .filterListText:
+      return true
     }
+  }
+
+  /// Return the blocklist type for this source if it is supported
+  func blocklistType(
+    engineType: GroupedAdBlockEngine.EngineType
+  ) -> ContentBlockerManager.BlocklistType? {
+    // Check if we have some other restriction for this filter list
+    guard allowContentBlockers else { return nil }
+    return .engineSource(self, engineType: engineType)
   }
 }
 
 extension AdblockFilterListCatalogEntry {
   var engineSource: GroupedAdBlockEngine.Source {
-    return .filterList(componentId: componentId, uuid: uuid)
+    return .filterList(componentId: componentId)
   }
 }
 
 extension CustomFilterListSetting {
   @MainActor var engineSource: GroupedAdBlockEngine.Source {
     return .filterListURL(uuid: uuid)
+  }
+}
+
+extension Array where Element == GroupedAdBlockEngine.FilterListInfo {
+  var groupedVersion: String {
+    return map { $0.version }.joined(separator: ",")
   }
 }

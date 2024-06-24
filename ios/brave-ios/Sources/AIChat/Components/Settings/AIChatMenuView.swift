@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import SwiftUI
 
 private struct AIChatMenuHeaderView: View {
@@ -147,11 +148,11 @@ struct AIChatMenuView: View {
               subtitle: modelPurpose(for: model),
               isSelected: model.key == currentModel.key
             ) {
-              if model.access == .basicAndPremium {
+              if model.access == .premium && premiumStatus != .active
+                && premiumStatus != .activeDisconnected
+              {
                 Text(
-                  premiumStatus == .active || premiumStatus == .activeDisconnected
-                    ? Strings.AIChat.unlimitedModelStatusTitle.uppercased()
-                    : Strings.AIChat.limitedModelStatusTitle.uppercased()
+                  Strings.AIChat.premiumModelStatusTitle.uppercased()
                 )
                 .font(.caption2)
                 .foregroundStyle(Color(braveSystemName: .blue50))
@@ -161,13 +162,6 @@ struct AIChatMenuView: View {
                   RoundedRectangle(cornerRadius: 4.0, style: .continuous)
                     .strokeBorder(Color(braveSystemName: .blue50), lineWidth: 1.0)
                 )
-              } else {
-                Image(
-                  braveSystemName: premiumStatus != .active && premiumStatus != .activeDisconnected
-                    ? "leo.lock.plain" : "leo.lock.open"
-                )
-                .foregroundStyle(Color(braveSystemName: .iconDefault))
-                .opacity(model.access == .premium ? 1.0 : 0.0)
               }
             }
           }

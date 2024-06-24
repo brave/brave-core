@@ -137,7 +137,9 @@ import WebKit
       throw CustomRulesError.tooManyLines(max: Self.maxNumberOfCustomRulesLines)
     }
 
-    if let failure = await ContentBlockerManager.shared.testRules(forFilterSet: customRules) {
+    if let failure = await AdBlockGroupsManager.shared.contentBlockerManager.testRules(
+      forFilterSet: customRules
+    ) {
       throw CustomRulesError.failedRule(
         rule: failure.rule,
         line: failure.line,

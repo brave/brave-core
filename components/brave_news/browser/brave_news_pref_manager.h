@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -22,66 +21,12 @@
 
 namespace brave_news {
 
-bool GetIsEnabled(PrefService* prefs);
+class SubscriptionsSnapshot;
+struct DirectFeed;
 
-struct DirectFeed {
-  std::string id;
-  GURL url;
-  std::string title;
-};
-
-struct SubscriptionsDiff {
-  std::vector<std::string> changed;
-  std::vector<std::string> removed;
-
-  SubscriptionsDiff();
-  SubscriptionsDiff(const SubscriptionsDiff&) = delete;
-  SubscriptionsDiff& operator=(const SubscriptionsDiff&) = delete;
-  SubscriptionsDiff(SubscriptionsDiff&&);
-  SubscriptionsDiff& operator=(SubscriptionsDiff&&);
-  ~SubscriptionsDiff();
-};
-
-class BraveNewsSubscriptions {
- public:
-  BraveNewsSubscriptions();
-  BraveNewsSubscriptions(
-      base::flat_set<std::string> enabled_publishers,
-      base::flat_set<std::string> disabled_publishers,
-      std::vector<DirectFeed> direct_feeds,
-      base::flat_map<std::string, std::vector<std::string>> channels);
-  BraveNewsSubscriptions(const BraveNewsSubscriptions&);
-  BraveNewsSubscriptions& operator=(const BraveNewsSubscriptions&);
-  BraveNewsSubscriptions(BraveNewsSubscriptions&&);
-  BraveNewsSubscriptions& operator=(BraveNewsSubscriptions&&);
-  ~BraveNewsSubscriptions();
-
-  std::vector<std::string> GetChannelLocales() const;
-  std::vector<std::string> GetChannelLocales(const std::string& channel) const;
-  bool GetChannelSubscribed(const std::string& locale,
-                            const std::string& channel) const;
-
-  SubscriptionsDiff DiffPublishers(const BraveNewsSubscriptions& old) const;
-  SubscriptionsDiff DiffChannels(const BraveNewsSubscriptions& old) const;
-
-  const base::flat_set<std::string>& enabled_publishers() const {
-    return enabled_publishers_;
-  }
-  const base::flat_set<std::string>& disabled_publishers() const {
-    return disabled_publishers_;
-  }
-  const std::vector<DirectFeed>& direct_feeds() const { return direct_feeds_; }
-  const base::flat_map<std::string, std::vector<std::string>> channels() const {
-    return channels_;
-  }
-
- private:
-  base::flat_set<std::string> enabled_publishers_;
-  base::flat_set<std::string> disabled_publishers_;
-  std::vector<DirectFeed> direct_feeds_;
-  base::flat_map<std::string, std::vector<std::string>> channels_;
-};
-
+// Helper class providing a consistent interface for interacting with Brave News
+// storage and provides utilities for change notifications.
+// Currently this backs onto PrefService.
 class BraveNewsPrefManager {
  public:
   class PrefObserver : public base::CheckedObserver {
@@ -103,16 +48,25 @@ class BraveNewsPrefManager {
   brave_news::mojom::ConfigurationPtr GetConfig();
   void SetConfig(brave_news::mojom::ConfigurationPtr config);
 
-  BraveNewsSubscriptions GetSubscriptions();
+  // Get everything teh user is subscribed to.
+  SubscriptionsSnapshot GetSubscriptions();
 
+  // Enables/disables/resets a publisher. When a direct feed is set to a
+  // non-enabled state it is deleted.
   void SetPublisherSubscribed(const std::string& publisher_id,
                               brave_news::mojom::UserEnabled enabled);
+
+  // Adds a new entry for a DirectFeed. Direct feeds have a separate entry point
+  // for adding new entries because we need to record the |url| and |title| of
+  // the feed in order to retrieve it.
   std::string AddDirectPublisher(const GURL& url, const std::string& title);
 
+  // Handles managing subscription to a channel in a locale.
   void SetChannelSubscribed(const std::string& locale,
                             const std::string& channel,
                             bool subscribed);
 
+  // Clears all Brave News related preferences.
   void ClearPrefs();
 
  private:

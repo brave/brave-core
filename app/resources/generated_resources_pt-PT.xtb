@@ -11074,7 +11074,7 @@ As autorizações que já concedeu aos Websites e apps podem aplicar-se a esta c
 <translation id="154633726381112301">Pode limitar o início de sessão a determinados utilizadores (isto remove a opção "Adicionar perfil" do ecrã de início de sessão). Também pode remover utilizadores atuais.</translation>
 <translation id="8273477935094091719">O seu <ph name="DEVICE_TYPE"/> tem um sensor incorporado para detetar perfis à sua frente. Todos os dados são tratados de imediato no dispositivo e, depois, eliminados. Os dados do sensor nunca são enviados para o Brave. <ph name="LINK_BEGIN"/>Saber mais<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Torne mais difícil para os perfis com acesso ao seu tráfego de internet verem os sites que visita. O <ph name="PRODUCT_NAME"/> usa uma ligação segura para pesquisar o endereço de IP de um site no DNS (Sistema de nomes de domínio).</translation>
-<translation id="5832813618714645810">Pessoas</translation>
+<translation id="5832813618714645810">Perfis</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {A sua janela privada não abrirá após reiniciar}
       other {As suas {COUNT} janelas privadas não abrirão após reiniciar}}</translation>

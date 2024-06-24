@@ -20,10 +20,6 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/bitcoin_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -326,23 +322,17 @@ class BraveWalletServiceUnitTest : public testing::Test {
     builder.SetPrefService(std::move(prefs));
     profile_ = builder.Build();
     histogram_tester_ = std::make_unique<base::HistogramTester>();
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(profile_.get());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(profile_.get());
-    json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
-    tx_service_ = TxServiceFactory::GetServiceForContext(profile_.get());
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
-    bitcoin_wallet_service_ =
-        BitcoinWalletServiceFactory::GetServiceForContext(profile_.get());
-    bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
-        bitcoin_test_rpc_server_->GetURLLoaderFactory());
     service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_,
-        BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, tx_service_, bitcoin_wallet_service_.get(), nullptr,
-        GetPrefs(), local_state_->Get(), false /* is_private_window_ */);
+        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
+        local_state_->Get());
+    json_rpc_service_ = service_->json_rpc_service();
+    keyring_service_ = service_->keyring_service();
+    bitcoin_wallet_service_ = service_->GetBitcoinWalletService();
+    bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
+        bitcoin_test_rpc_server_->GetURLLoaderFactory());
+    tx_service_ = service_->tx_service();
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
 
@@ -402,6 +392,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     eth_token_->contract_address = "";
     eth_token_->name = "Ethereum";
     eth_token_->symbol = "ETH";
+    eth_token_->is_compressed = false;
     eth_token_->is_erc20 = false;
     eth_token_->is_erc721 = false;
     eth_token_->is_erc1155 = false;
@@ -416,6 +407,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bat_token_->contract_address = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
     bat_token_->name = "Basic Attention Token";
     bat_token_->symbol = "BAT";
+    eth_token_->is_compressed = false;
     bat_token_->is_erc20 = true;
     bat_token_->is_erc721 = false;
     bat_token_->is_erc1155 = false;
@@ -427,11 +419,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
     bat_token_->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
 
     sol_token_ = mojom::BlockchainToken::New(
-        "", "Solana", "sol.png", false, false, false,
+        "", "Solana", "sol.png", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, "SOL", 9, true, "",
         "", mojom::kSolanaMainnet, mojom::CoinType::SOL);
     fil_token_ = mojom::BlockchainToken::New(
-        "", "Filecoin", "fil.png", false, false, false,
+        "", "Filecoin", "fil.png", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, "FIL", 18, true, "",
         "", mojom::kFilecoinMainnet, mojom::CoinType::FIL);
   }
@@ -1005,7 +997,7 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
 
   for (const auto& chain : GetAllKnownChains(mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
-        "", chain->symbol_name, "", false, false, false,
+        "", chain->symbol_name, "", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, chain->symbol,
         chain->decimals, true, "", "", chain->chain_id, mojom::CoinType::ETH);
     std::vector<mojom::BlockchainTokenPtr> tokens;
@@ -1116,8 +1108,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // is_erc721 is set to true based on supportsInterface call results.
   mojom::BlockchainTokenPtr erc721_token = mojom::BlockchainToken::New(
       "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", "BAYC", "bayc.png", false,
-      false, false, mojom::SPLTokenProgram::kUnsupported, true, false, "BAYC",
-      0, true, "0x1", "", mojom::kMainnetChainId, mojom::CoinType::ETH);
+      false, false, false, mojom::SPLTokenProgram::kUnsupported, true, false,
+      "BAYC", 0, true, "0x1", "", mojom::kMainnetChainId, mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_supported_response;
   responses[kERC1155InterfaceId] = interface_not_supported_response;
   SetGetEthNftStandardInterceptor(network, responses);
@@ -1136,8 +1128,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // is_erc1155 is set to true based on supportsInterface call.
   mojom::BlockchainTokenPtr erc1155 = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
-      false, false, false, mojom::SPLTokenProgram::kUnsupported, true, false,
-      "ADIDAS", 0, true, "0x1", "", mojom::kMainnetChainId,
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
+      false, "ADIDAS", 0, true, "0x1", "", mojom::kMainnetChainId,
       mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_supported_response;
@@ -1158,8 +1150,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // token id is added.
   mojom::BlockchainTokenPtr erc1155_2 = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
-      false, false, false, mojom::SPLTokenProgram::kUnsupported, true, false,
-      "ADIDAS", 0, true, "0x2", "", mojom::kMainnetChainId,
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
+      false, "ADIDAS", 0, true, "0x2", "", mojom::kMainnetChainId,
       mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_supported_response;
@@ -1179,8 +1171,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // If invalid response is returned, AddUserAsset returns false.
   mojom::BlockchainTokenPtr erc1155_3 = mojom::BlockchainToken::New(
       "0x3333333333333333333333333333333333333333", "333333", "333333.png",
-      false, false, false, mojom::SPLTokenProgram::kUnsupported, true, false,
-      "333333", 0, true, "0x1", "", mojom::kMainnetChainId,
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
+      false, "333333", 0, true, "0x1", "", mojom::kMainnetChainId,
       mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = "invalid";
   responses[kERC1155InterfaceId] = interface_not_supported_response;
@@ -1190,8 +1182,8 @@ TEST_F(BraveWalletServiceUnitTest, AddUserAssetNfts) {
   // If neither erc721 nor erc1155 is supported, AddUserAsset returns false.
   mojom::BlockchainTokenPtr erc1155_4 = mojom::BlockchainToken::New(
       "0x4444444444444444444444444444444444444444", "444444", "444444.png",
-      false, false, false, mojom::SPLTokenProgram::kUnsupported, true, false,
-      "444444", 0, true, "0x1", "", mojom::kMainnetChainId,
+      false, false, false, false, mojom::SPLTokenProgram::kUnsupported, true,
+      false, "444444", 0, true, "0x1", "", mojom::kMainnetChainId,
       mojom::CoinType::ETH);
   responses[kERC721InterfaceId] = interface_not_supported_response;
   responses[kERC1155InterfaceId] = interface_not_supported_response;
@@ -1541,7 +1533,7 @@ TEST_F(BraveWalletServiceUnitTest,
   AddCustomNetwork(GetPrefs(), chain);
 
   auto native_asset = mojom::BlockchainToken::New(
-      "", "symbol_name", "https://url1.com", false, false, false,
+      "", "symbol_name", "https://url1.com", false, false, false, false,
       mojom::SPLTokenProgram::kUnsupported, false, false, "symbol", 11, true,
       "", "", "0x5566", mojom::CoinType::ETH);
 
@@ -2231,7 +2223,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",
-            "usdc.png", true, false, false,
+            "usdc.png", false, true, false, false,
             mojom::SPLTokenProgram::kUnsupported, false, false, "USDC", 6, true,
             "", "", chain_id, mojom::CoinType::ETH);
     ASSERT_EQ(usdc_from_blockchain_registry,
@@ -2240,20 +2232,20 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
                   "0x6B175474E89094C44Da98b954EedeAC495271d0F"));
     mojom::BlockchainTokenPtr usdc_from_user_assets =
         mojom::BlockchainToken::New(
-            "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", true,
-            false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
-            "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
+            "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin", "", false,
+            true, false, false, mojom::SPLTokenProgram::kUnsupported, false,
+            false, "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
     ASSERT_TRUE(service_->AddUserAssetInternal(usdc_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
-        "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", true, false,
-        false, mojom::SPLTokenProgram::kUnsupported, false, false, "USDC", 6,
-        true, "", "", chain_id, mojom::CoinType::ETH);
+        "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", false, true,
+        false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+        "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH);
 
     mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
-        "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-        false, mojom::SPLTokenProgram::kUnsupported, false, false, "COLOR", 18,
-        true, "", "", chain_id, mojom::CoinType::ETH);
+        "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", false, true,
+        false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+        "COLOR", 18, true, "", "", chain_id, mojom::CoinType::ETH);
 
     // Case 1: Suggested token does not exist (no entry with the same contract
     // address) in BlockchainRegistry nor user assets.
@@ -2296,14 +2288,16 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     mojom::BlockchainTokenPtr usdt_from_user_assets =
         mojom::BlockchainToken::New(
             "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
-            true, false, false, mojom::SPLTokenProgram::kUnsupported, false,
-            false, "USDT", 6, true, "", "", chain_id, mojom::CoinType::ETH);
+            false, true, false, false, mojom::SPLTokenProgram::kUnsupported,
+            false, false, "USDT", 6, true, "", "", chain_id,
+            mojom::CoinType::ETH);
     ASSERT_TRUE(service_->AddUserAssetInternal(usdt_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
-        "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", true, false,
-        false, mojom::SPLTokenProgram::kUnsupported, false, false, "USDT", 18,
-        true, "", "", chain_id, mojom::CoinType::ETH);
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", false, true,
+        false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+        "USDT", 18, true, "", "", chain_id, mojom::CoinType::ETH);
+
     // Case 5: Suggested token exists in user asset list and is visible, does
     // not exist in BlockchainRegistry. Token should be in user asset list and
     // is visible, and the data should be the same as the one in user asset
@@ -2329,17 +2323,17 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // pending request and AddSuggestTokenRequestCallback should be run with
     // kUserRejectedRequest error.
     mojom::BlockchainTokenPtr busd = mojom::BlockchainToken::New(
-        "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", true,
-        false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+        "0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "", false,
+        true, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
         "BUSD", 18, true, "", "", chain_id, mojom::CoinType::ETH);
     AddSuggestToken(busd.Clone(), busd.Clone(), false,
                     true /* run_switch_network */);
 
     // Test reject request.
     mojom::BlockchainTokenPtr brb_from_request = mojom::BlockchainToken::New(
-        "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", true, false,
-        false, mojom::SPLTokenProgram::kUnsupported, false, false, "BRB", 6,
-        true, "", "", chain_id, mojom::CoinType::ETH);
+        "0x6B175474E89094C44Da98b954EedeAC495271d0A", "BRB", "", false, true,
+        false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "BRB",
+        6, true, "", "", chain_id, mojom::CoinType::ETH);
     ASSERT_FALSE(service_->RemoveUserAsset(brb_from_request.Clone()));
     AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
     token = get_user_asset(chain_id, brb_from_request->contract_address);
@@ -2372,9 +2366,9 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       base::BindLambdaForTesting([](bool, mojom::ByteArrayStringUnionPtr,
                                     const std::optional<std::string>&) {}));
   mojom::BlockchainTokenPtr custom_token = mojom::BlockchainToken::New(
-      "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", true, false,
-      false, mojom::SPLTokenProgram::kUnsupported, false, false, "COLOR", 18,
-      true, "", "", "0x1", mojom::CoinType::ETH);
+      "0x6b175474e89094C44Da98b954eEdeAC495271d1e", "COLOR", "", false, true,
+      false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "COLOR",
+      18, true, "", "", "0x1", mojom::CoinType::ETH);
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -2643,6 +2637,7 @@ TEST_F(BraveWalletServiceUnitTest, GetSimpleHashSpamNFTs) {
   nft1->chain_id = mojom::kPolygonMainnetChainId;
   nft1->contract_address = "0x1111111111111111111111111111111111111111";
   nft1->token_id = "0x1";
+  nft1->is_compressed = false;
   nft1->is_erc721 = true;
   nft1->is_erc1155 = false;
   nft1->is_erc20 = false;
@@ -2838,6 +2833,238 @@ TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
         EXPECT_THAT(chains,
                     testing::UnorderedElementsAreArray(expected_chains));
       }));
+}
+
+TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
+  GetPrefs()->SetBoolean(kBraveWalletIsCompressedNftMigrated, false);
+
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 1u);
+  EXPECT_FALSE(tokens[0]->is_nft);
+
+  // Add a compressed Solana NFT that's not marked as compressed before
+  // migration.
+  auto nft = mojom::BlockchainToken::New();
+  nft->contract_address = "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
+  nft->name = "Solana NFT";
+  nft->logo = "solana.png";
+  nft->is_compressed = false;
+  nft->is_erc20 = false;
+  nft->is_erc721 = false;
+  nft->is_erc1155 = false;
+  nft->is_nft = true;
+  nft->is_spam = false;
+  nft->symbol = "SOLNFT";
+  nft->decimals = 0;
+  nft->visible = true;
+  nft->chain_id = mojom::kSolanaMainnet;
+  nft->coin = mojom::CoinType::SOL;
+
+  // Add it, but mock simple hash response saying it's not compressed
+  std::map<GURL, std::string> responses;
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
+      R"({
+    "nfts": [
+      {
+        "nft_id": "solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "chain": "solana",
+        "contract_address": "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Common Water Warrior #19",
+          "symbol": "DRAGON",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
+          "name": null,
+          "description": null,
+          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
+          "spam_score": 73
+        },
+        "last_sale": null,
+        "first_created": {},
+        "rarity": {
+          "rank": null,
+          "score": null,
+          "unique_attributes": null
+        },
+        "royalty": [],
+        "extra_metadata": {
+          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
+        }
+      }
+    ]
+  })";
+  SetInterceptors(responses);
+  ASSERT_TRUE(AddUserAsset(nft.Clone()));
+
+  // Add non compressed solana NFT
+  auto nft2 = mojom::BlockchainToken::New();
+  nft2->contract_address = "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW";
+  nft2->name = "Solana NFT 2";
+  nft2->logo = "solana2.png";
+  nft2->is_compressed = false;
+  nft2->is_erc20 = false;
+  nft2->is_erc721 = false;
+  nft2->is_erc1155 = false;
+  nft2->is_nft = true;
+  nft2->is_spam = false;
+  nft2->symbol = "SOLNFT2";
+  nft2->decimals = 0;
+  nft2->visible = true;
+  nft2->chain_id = mojom::kSolanaMainnet;
+  nft2->coin = mojom::CoinType::SOL;
+
+  // Add it, but mock simple hash response saying it's not compressed
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
+      R"({
+    "nfts": [
+      {
+        "nft_id": "solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "chain": "solana",
+        "contract_address": "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Common Water Warrior #19",
+          "symbol": "DRAGON",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
+          "name": null,
+          "description": null,
+          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
+          "spam_score": 73
+        }
+      }
+    ]
+  })";
+  SetInterceptors(responses);
+  ASSERT_TRUE(AddUserAsset(nft2.Clone()));
+
+  // Check that it's added
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_TRUE(tokens[1]->is_nft);
+  EXPECT_TRUE(tokens[1]->contract_address ==
+              "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_FALSE(tokens[1]->is_compressed);
+  EXPECT_TRUE(tokens[2]->is_nft);
+  EXPECT_TRUE(tokens[2]->contract_address ==
+              "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_FALSE(tokens[2]->is_compressed);
+
+  // Now mock the response saying it's compressed (note compression field).
+  responses[GURL(
+      "https://simplehash.wallet.brave.com/api/v0/nfts/"
+      "assets?nft_ids=solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW%"
+      "2Csolana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW")] =
+      R"({
+    "nfts": [
+      {
+        "nft_id": "solana.AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "chain": "solana",
+        "contract_address": "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Common Water Warrior #19",
+          "symbol": "DRAGON",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
+          "name": null,
+          "description": null,
+          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
+          "spam_score": 73
+        },
+        "last_sale": null,
+        "first_created": {},
+        "rarity": {
+          "rank": null,
+          "score": null,
+          "unique_attributes": null
+        },
+        "royalty": [],
+        "extra_metadata": {
+          "compression": {
+            "compressed": true,
+            "merkle_tree": "7eFJyb6UF4hQS7nSQaiy8Xpdq6V7Q1ZRjD3Lze11DZTd",
+            "leaf_index": 1316261
+          },
+          "token_program": "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY"
+        }
+      },
+      {
+        "nft_id": "solana.BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "chain": "solana",
+        "contract_address": "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW",
+        "token_id": null,
+        "name": "Common Water Warrior #19",
+        "description": "A true gladiator standing with his two back legs, big wings that make him move and attack quickly, and his tail like a big sword that can easily cut-off enemies into slices.",
+        "image_url": "https://cdn.simplehash.com/assets/168e33bbf5276f717d8d190810ab93b4992ac8681054c1811f8248fe7636b54b.png",
+        "contract": {
+          "type": "NonFungibleEdition",
+          "name": "Common Water Warrior #19",
+          "symbol": "DRAGON",
+          "deployed_by": null,
+          "deployed_via_contract": null,
+          "owned_by": null,
+          "has_multiple_collections": false
+        },
+        "collection": {
+          "collection_id": "2732df34e18c360ccc0cc0809177c70b",
+          "name": null,
+          "description": null,
+          "image_url": "https://lh3.googleusercontent.com/WXQW8GJiTDlucKnaip3NJC_4iFvLCfbQ_Ep9y4D7x-ElE5jOMlKJwcyqD7v27M7yPNiHlIxq9clPqylLlQVoeNfFvmXqboUPhDsS",
+          "spam_score": 73
+        }
+      }
+    ]
+  })";
+  SetInterceptors(responses);
+
+  // Reset kBraveWalletIsCompressedNftMigrated pref, and run the migration.
+  service_->MaybeMigrateCompressedNfts();
+  task_environment_.RunUntilIdle();
+
+  // Check that the NFT is now compressed, and the other is not.
+  GetUserAssets(mojom::kSolanaMainnet, mojom::CoinType::SOL, &tokens);
+  EXPECT_EQ(tokens.size(), 3u);
+  EXPECT_TRUE(tokens[1]->contract_address ==
+              "AM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_TRUE(tokens[1]->is_compressed);
+  EXPECT_TRUE(tokens[2]->contract_address ==
+              "BM1EG2tuxB8TS6HMwEPNztegr9qio5EyuJA1KgDWcpeW");
+  EXPECT_FALSE(tokens[2]->is_compressed);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletIsCompressedNftMigrated));
 }
 
 }  // namespace brave_wallet

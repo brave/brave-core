@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_PREF_NAMES_H_
 
+class PrefService;
+
 namespace brave_news {
 namespace prefs {
 
@@ -49,6 +51,8 @@ inline constexpr char kBraveNewsDirectFeedsKeyTitle[] = "title";
 inline constexpr char kBraveNewsDirectFeedsKeySource[] = "source";
 
 }  // namespace prefs
+
+bool IsEnabled(PrefService* prefs);
 
 }  // namespace brave_news
 

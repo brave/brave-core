@@ -38,9 +38,10 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
   task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_THAT(ClientStateManager::GetInstance()
-                  .GetTextClassificationProbabilitiesHistory(),
-              ::testing::IsEmpty());
+  const TextClassificationProbabilityList& text_classification_probabilities =
+      ClientStateManager::GetInstance()
+          .GetTextClassificationProbabilitiesHistory();
+  EXPECT_THAT(text_classification_probabilities, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
@@ -56,9 +57,10 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   task_environment_.RunUntilIdle();
 
   // Assert
-  EXPECT_THAT(ClientStateManager::GetInstance()
-                  .GetTextClassificationProbabilitiesHistory(),
-              ::testing::IsEmpty());
+  const TextClassificationProbabilityList& text_classification_probabilities =
+      ClientStateManager::GetInstance()
+          .GetTextClassificationProbabilitiesHistory();
+  EXPECT_THAT(text_classification_probabilities, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
@@ -68,9 +70,10 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act & Assert
-  EXPECT_THAT(ClientStateManager::GetInstance()
-                  .GetTextClassificationProbabilitiesHistory(),
-              ::testing::IsEmpty());
+  const TextClassificationProbabilityList& text_classification_probabilities =
+      ClientStateManager::GetInstance()
+          .GetTextClassificationProbabilitiesHistory();
+  EXPECT_THAT(text_classification_probabilities, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {

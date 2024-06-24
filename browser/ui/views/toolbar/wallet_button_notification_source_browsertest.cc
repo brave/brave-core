@@ -10,9 +10,8 @@
 
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -35,18 +34,14 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    keyring_service_ =
-        brave_wallet::KeyringServiceFactory::GetServiceForContext(
+    auto* wallet_service =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    tx_service_ = brave_wallet::TxServiceFactory::GetServiceForContext(
-        browser()->profile());
-    json_rpc_service_ =
-        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-            browser()->profile());
+    json_rpc_service_ = wallet_service->json_rpc_service();
+    json_rpc_service_->SetGasPriceForTesting("0x123");
+    keyring_service_ = wallet_service->keyring_service();
+    tx_service_ = wallet_service->tx_service();
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
-    brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-        browser()->profile())
-        ->SetGasPriceForTesting("0x123");
 
     StartRPCServer(
         base::BindRepeating(&WalletButtonNotificationSourceTest::HandleRequest,

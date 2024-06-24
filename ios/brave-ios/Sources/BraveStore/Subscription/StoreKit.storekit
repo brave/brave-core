@@ -1,0 +1,229 @@
+{
+  "identifier" : "9019C18F",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "AD92D716",
+      "localizations" : [
+
+      ],
+      "name" : "Brave Leo",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "14.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "C02D967D",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Private Brave AI Assistant",
+              "displayName" : "Monthly Leo AI",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "braveleo.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Brave Leo Monthly",
+          "subscriptionGroupID" : "AD92D716",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "150.00",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "377962C3",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Private Brave AI Assistant",
+              "displayName" : "Annual Leo AI",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "braveleo.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Brave Leo Yearly",
+          "subscriptionGroupID" : "AD92D716",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    },
+    {
+      "id" : "E6F28F94",
+      "localizations" : [
+
+      ],
+      "name" : "Brave VPN",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+            {
+              "eligibility" : [
+                "expired",
+                "existing",
+                "new"
+              ],
+              "internalID" : "5CF353FA",
+              "isStackable" : true,
+              "numberOfPeriods" : 1,
+              "paymentMode" : "free",
+              "referenceName" : "TEST - Test Offer Free for the first 3 days",
+              "subscriptionPeriod" : "P3D"
+            },
+            {
+              "displayPrice" : "7.99",
+              "eligibility" : [
+                "expired",
+                "existing",
+                "new"
+              ],
+              "internalID" : "3D43C72B",
+              "isStackable" : true,
+              "numberOfPeriods" : 3,
+              "paymentMode" : "payAsYouGo",
+              "referenceName" : "ECONOMICS - 25% off the first 3 month",
+              "subscriptionPeriod" : "P1M"
+            }
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "ED060961",
+          "introductoryOffer" : {
+            "internalID" : "BDCAD3DB",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Protect yourself online and stay private.",
+              "displayName" : "Monthly Firewall + VPN",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "より安全で、プライバシーが守られたインターネット接続",
+              "displayName" : "ファイアウォール + VPN (月間)",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "bravevpn.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Brave VPN Monthly",
+          "subscriptionGroupID" : "E6F28F94",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "99.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "25E0F882",
+          "introductoryOffer" : {
+            "internalID" : "0DAE02B9",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Protect yourself online and stay private",
+              "displayName" : "Annual Firewall + VPN",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "より安全で、プライバシーが守られたインターネット接続",
+              "displayName" : "ファイアウォール + VPN (年間)",
+              "locale" : "ja"
+            }
+          ],
+          "productID" : "bravevpn.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Brave VPN Yearly",
+          "subscriptionGroupID" : "E6F28F94",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

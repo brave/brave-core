@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/brave_stats/brave_stats.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -45,6 +46,10 @@ NSString* const kWebcompatReportEndpoint =
         wallet_last_unlocked, last_reported_wallet_unlock);
   }
   return @{@"wallet2" : base::SysUTF8ToNSString(std::to_string(usage_bitset))};
+}
+
+- (BOOL)isNotificationAdsEnabled {
+  return _profilePrefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
 }
 
 - (void)notifyStatsPingSent {

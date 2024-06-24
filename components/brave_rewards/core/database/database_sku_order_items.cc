@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -123,8 +122,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     info->price = GetDoubleColumn(record_pointer, 4);
     info->name = GetStringColumn(record_pointer, 5);
     info->description = GetStringColumn(record_pointer, 6);
-    info->type =
-        static_cast<mojom::SKUOrderItemType>(GetIntColumn(record_pointer, 7));
+    info->type = SKUOrderItemTypeFromInt(GetIntColumn(record_pointer, 7));
     info->expires_at = GetInt64Column(record_pointer, 8);
 
     list.push_back(std::move(info));
@@ -133,5 +131,4 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
   std::move(callback).Run(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

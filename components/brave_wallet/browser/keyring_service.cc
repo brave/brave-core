@@ -571,12 +571,6 @@ KeyringService::~KeyringService() {
   auto_lock_timer_.reset();
 }
 
-mojo::PendingRemote<mojom::KeyringService> KeyringService::MakeRemote() {
-  mojo::PendingRemote<mojom::KeyringService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void KeyringService::Bind(
     mojo::PendingReceiver<mojom::KeyringService> receiver) {
   receivers_.Add(this, std::move(receiver));

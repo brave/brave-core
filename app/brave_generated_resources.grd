@@ -845,11 +845,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_ADD_ITEM_BUTTON_TOOLTIP" desc="Text of sidebar add item button tooltip">
           Add to Sidebar
         </message>
-        <message name="IDS_SIDEBAR_BOOKMARKS_PANEL_HEADER_TITLE" desc="Text of bookmarks panel header">
-          bookmarks
-        </message>
         <message name="IDS_SIDEBAR_READING_LIST_PANEL_HEADER_TITLE" desc="Text of readling list panel header">
-          reading list
+          Reading List
         </message>
         <message name="IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP" desc="Text of side panel's close button">
           Close
@@ -1423,6 +1420,26 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Brave Player
         </message>
       </if> <!-- enable_brave_player -->
+
+      <!-- Split View -->
+      <if expr="toolkit_views">
+        <if expr="use_titlecase">
+          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Spliti' menu item">
+            Vertical Split
+          </message>
+          <message name="IDS_SPLIT_VIEW_SPLIT_HORIZONTAL" desc="The label of the 'Horizontal Split' menu item">
+            Horizontal Split
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Spliti' menu item">
+            Vertical split
+          </message>
+          <message name="IDS_SPLIT_VIEW_SPLIT_HORIZONTAL" desc="The label of the 'Horizontal Split' menu item">
+            Horizontal split
+          </message>
+        </if>
+      </if>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

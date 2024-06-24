@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -29,17 +30,16 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now());
 
-  // Act & Assert
-  ConversionInfo expected_conversion;
-  expected_conversion.ad_type = AdType::kNotificationAd;
-  expected_conversion.creative_instance_id = kCreativeInstanceId;
-  expected_conversion.creative_set_id = kCreativeSetId;
-  expected_conversion.campaign_id = kCampaignId;
-  expected_conversion.advertiser_id = kAdvertiserId;
-  expected_conversion.segment = kSegment;
-  expected_conversion.action_type = ConversionActionType::kViewThrough;
-  EXPECT_EQ(expected_conversion,
-            BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt));
+  // Act
+  const ConversionInfo conversion =
+      BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
+
+  // Assert
+  EXPECT_THAT(conversion,
+              ::testing::FieldsAre(AdType::kNotificationAd, kCreativeInstanceId,
+                                   kCreativeSetId, kCampaignId, kAdvertiserId,
+                                   kSegment, ConversionActionType::kViewThrough,
+                                   /*verifable*/ std::nullopt));
 }
 
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
@@ -50,22 +50,20 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now());
 
-  // Act & Assert
-  ConversionInfo expected_conversion;
-  expected_conversion.ad_type = AdType::kNotificationAd;
-  expected_conversion.creative_instance_id = kCreativeInstanceId;
-  expected_conversion.creative_set_id = kCreativeSetId;
-  expected_conversion.campaign_id = kCampaignId;
-  expected_conversion.advertiser_id = kAdvertiserId;
-  expected_conversion.segment = kSegment;
-  expected_conversion.action_type = ConversionActionType::kViewThrough;
-  expected_conversion.verifiable = VerifiableConversionInfo{
-      kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
-  EXPECT_EQ(
-      expected_conversion,
-      BuildConversion(ad_event, VerifiableConversionInfo{
-                                    kVerifiableConversionId,
-                                    kVerifiableConversionAdvertiserPublicKey}));
+  // Act
+  const ConversionInfo conversion = BuildConversion(
+      ad_event,
+      VerifiableConversionInfo{kVerifiableConversionId,
+                               kVerifiableConversionAdvertiserPublicKey});
+
+  // Assert
+  EXPECT_THAT(conversion, ::testing::FieldsAre(
+                              AdType::kNotificationAd, kCreativeInstanceId,
+                              kCreativeSetId, kCampaignId, kAdvertiserId,
+                              kSegment, ConversionActionType::kViewThrough,
+                              VerifiableConversionInfo{
+                                  kVerifiableConversionId,
+                                  kVerifiableConversionAdvertiserPublicKey}));
 }
 
 }  // namespace brave_ads

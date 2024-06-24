@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
+#include <cmath>
 #include <memory>
 #include <optional>
 #include <set>
@@ -20,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/browser/solana_message_header.h"
@@ -28,7 +30,10 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -828,6 +833,198 @@ void SolanaTxManager::MakeTxDataFromBase64EncodedTransaction(
   DCHECK(tx_data);
   std::move(callback).Run(std::move(tx_data),
                           mojom::SolanaProviderError::kSuccess, "");
+}
+
+void SolanaTxManager::MakeBubbleGumProgramTransferTxData(
+    const std::string& chain_id,
+    const std::string& token_address,
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    MakeBubbleGumProgramTransferTxDataCallback callback) {
+  // Get asset and proof data from SimpleHash
+  auto internal_callback =
+      base::BindOnce(&SolanaTxManager::OnFetchCompressedNftProof,
+                     weak_ptr_factory_.GetWeakPtr(), from_wallet_address,
+                     to_wallet_address, std::move(callback));
+
+  json_rpc_service_->FetchSolCompressedNftProofData(
+      token_address, std::move(internal_callback));
+}
+
+void SolanaTxManager::OnFetchCompressedNftProof(
+    const std::string& from_wallet_address,
+    const std::string& to_wallet_address,
+    MakeBubbleGumProgramTransferTxDataCallback callback,
+    std::optional<SolCompressedNftProofData> proof) {
+  if (!proof) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  if (from_wallet_address != proof->owner &&
+      from_wallet_address != proof->delegate) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  // Get the Merkle tree account
+  auto internal_callback =
+      base::BindOnce(&SolanaTxManager::OnGetMerkleTreeAccountInfo,
+                     weak_ptr_factory_.GetWeakPtr(), to_wallet_address, *proof,
+                     std::move(callback));
+
+  json_rpc_service_->GetSolanaAccountInfo(
+      mojom::kSolanaMainnet, proof->merkle_tree, std::move(internal_callback));
+}
+
+void SolanaTxManager::OnGetMerkleTreeAccountInfo(
+    const std::string& to_wallet_address,
+    const SolCompressedNftProofData& proof,
+    MakeBubbleGumProgramTransferTxDataCallback callback,
+    std::optional<SolanaAccountInfo> account_info,
+    mojom::SolanaProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
+    std::move(callback).Run(nullptr, error, error_message);
+    return;
+  }
+
+  auto account_data_bytes = base::Base64Decode(account_info->data);
+  if (!account_data_bytes) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto result = DecodeMerkleTreeAuthorityAndDepth(*account_data_bytes);
+  if (!result) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::optional<SolanaInstruction> instruction =
+      solana::bubblegum_program::Transfer(
+          result->first, result->second.ToBase58(), to_wallet_address, proof);
+
+  if (!instruction) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::vector<SolanaInstruction> vec;
+  vec.emplace_back(std::move(instruction.value()));
+
+  // recent_blockhash will be updated when we are going to send out the tx.
+  auto msg = SolanaMessage::CreateLegacyMessage("" /* recent_blockhash*/, 0,
+                                                proof.owner, std::move(vec));
+  if (!msg) {
+    std::move(callback).Run(
+        nullptr, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  SolanaTransaction transaction(std::move(*msg));
+  transaction.set_to_wallet_address(to_wallet_address);
+  transaction.set_tx_type(mojom::TransactionType::SolanaCompressedNftTransfer);
+  auto tx_data = transaction.ToSolanaTxData();
+  DCHECK(tx_data);
+  std::move(callback).Run(std::move(tx_data),
+                          mojom::SolanaProviderError::kSuccess, "");
+}
+
+// Adapted from
+// https://github.com/solana-labs/solana-program-library/blob/master/account-compression/sdk/src/accounts/ConcurrentMerkleTreeAccount.ts#L140
+std::optional<std::pair<uint32_t, SolanaAddress>>
+SolanaTxManager::DecodeMerkleTreeAuthorityAndDepth(
+    const std::vector<uint8_t>& data) {
+  size_t offset = 0;
+
+  // Decode the first byte, representing the compression account type .
+  // The possible values are 0=Unitialized and 1=ConcurrentMerkleTree.
+  // The value must be 1.
+  auto compression_account_type =
+      solana_ins_data_decoder::DecodeUint8(data, offset);
+  if (!compression_account_type) {
+    return std::nullopt;
+  }
+  if (*compression_account_type != 1) {
+    return std::nullopt;
+  }
+
+  // Decode the version. 0=v1. The value must be 0.
+  auto version = solana_ins_data_decoder::DecodeUint8(data, offset);
+  if (!version) {
+    return std::nullopt;
+  }
+  if (*version != 0) {
+    return std::nullopt;
+  }
+
+  // Decode maxBufferSize
+  auto max_buffer_size = solana_ins_data_decoder::DecodeUint32(data, offset);
+  if (!max_buffer_size) {
+    return std::nullopt;
+  }
+
+  // Decode maxDepth
+  auto max_depth = solana_ins_data_decoder::DecodeUint32(data, offset);
+  if (!max_depth) {
+    return std::nullopt;
+  }
+
+  // Decode the next 32 bytes for authority
+  auto authority = solana_ins_data_decoder::DecodePublicKey(data, offset);
+  if (!authority) {
+    return std::nullopt;
+  }
+
+  auto authority_address = SolanaAddress::FromBase58(*authority);
+  if (!authority_address) {
+    return std::nullopt;
+  }
+  offset += /* Skip uint64 creationSlot */ 8 + /* Skip 6 x uint8 padding */ 6;
+  offset += /* Skip uint64 sequence number */ 8 +
+            /* Skip uint64 activeIndex */ 8 +
+            /* Skip uint64 bufferSize */ 8;
+
+  for (size_t i = 0; i < max_buffer_size; i++) {
+    offset += /* Skip root public key */ 32 +
+              /* Skip path nodes*/ 32 * *max_depth + /* Skip uint32 index */ 4 +
+              /* Skip uint32 padding */ +4;
+  }
+
+  offset += /* Skip proof */ 32 * *max_depth + /* Skip leaf public key */ 32 +
+            /* Skip uint32 index */ 4 + /* Skip uint32 padding */ +4;
+
+  if (offset > data.size()) {
+    return std::nullopt;
+  }
+  auto canopy_byte_length = data.size() - offset;
+
+  uint32_t canopy_depth;
+  // If there are no bytes remaining for the canopy, set the depth to 0.
+  if (canopy_byte_length == 0) {
+    canopy_depth = 0;
+  } else {
+    // Calculate the canopy depth using the logarithm base 2.
+    // The expression std::log2(canopy_byte_length / 32.0 + 2) - 1 is used to
+    // determine the depth. canopy_byte_length / 32.0 calculates the number of
+    // 32-byte chunks. Adding 2 and taking the logarithm base 2 adjusts the
+    // scale, and subtracting 1 normalizes the depth.
+    canopy_depth = std::log2(canopy_byte_length / 32.0 + 2) - 1;
+  }
+
+  return std::make_pair(canopy_depth, *authority_address);
 }
 
 void SolanaTxManager::OnGetAccountInfo(

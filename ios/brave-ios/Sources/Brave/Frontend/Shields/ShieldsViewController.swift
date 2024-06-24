@@ -17,9 +17,9 @@ import UIKit
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
 
-  let tab: Tab
+  let browserTab: Tab
   private lazy var url: URL? = {
-    guard let _url = tab.url else { return nil }
+    guard let _url = browserTab.url else { return nil }
 
     if let tabURL = _url.strippedInternalURL {
       return tabURL
@@ -30,13 +30,14 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   var shieldsSettingsChanged: ((ShieldsViewController, BraveShield) -> Void)?
   var showGlobalShieldsSettings: ((ShieldsViewController) -> Void)?
+  var showShredSettings: ((ShieldsViewController) -> Void)?
   var showSubmitReportView: ((ShieldsViewController) -> Void)?
 
   private var statsUpdateObservable: AnyObject?
 
   /// Create with an initial URL and block stats (or nil if you are not on any web page)
   init(tab: Tab) {
-    self.tab = tab
+    self.browserTab = tab
 
     super.init(nibName: nil, bundle: nil)
 
@@ -64,7 +65,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   private func updateToggleStatus() {
     var domain: Domain?
     if let url = url {
-      let isPrivateBrowsing = tab.isPrivate
+      let isPrivateBrowsing = browserTab.isPrivate
       domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
     }
 
@@ -93,9 +94,9 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   private func updateShieldBlockStats() {
     shieldsView.simpleShieldView.blockCountView.countLabel.text = String(
-      tab.contentBlocker.stats.adCount + tab.contentBlocker.stats.trackerCount
-        + tab.contentBlocker.stats.httpsCount + tab.contentBlocker.stats.scriptCount
-        + tab.contentBlocker.stats.fingerprintingCount
+      browserTab.contentBlocker.stats.adCount + browserTab.contentBlocker.stats.trackerCount
+        + browserTab.contentBlocker.stats.httpsCount + browserTab.contentBlocker.stats.scriptCount
+        + browserTab.contentBlocker.stats.fingerprintingCount
     )
   }
 
@@ -111,7 +112,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
       forUrl: url,
       shield: shield,
       isOn: isOn,
-      isPrivateBrowsing: tab.isPrivate
+      isPrivateBrowsing: browserTab.isPrivate
     )
   }
 
@@ -243,7 +244,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     if let url = url {
       shieldsView.simpleShieldView.faviconImageView.loadFavicon(
         for: url,
-        isPrivateBrowsing: tab.isPrivate
+        isPrivateBrowsing: browserTab.isPrivate
       )
     } else {
       shieldsView.simpleShieldView.faviconImageView.isHidden = true
@@ -264,6 +265,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     shieldsView.advancedShieldView.globalControlsButton.addTarget(
       self,
       action: #selector(tappedGlobalShieldsButton),
+      for: .touchUpInside
+    )
+    shieldsView.advancedShieldView.shredLink.addTarget(
+      self,
+      action: #selector(tappedShredLinkButton),
       for: .touchUpInside
     )
 
@@ -348,7 +354,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   @objc private func tappedShareShieldsButton() {
     let globalShieldsActivityController =
       ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
-        isPrivateBrowsing: tab.isPrivate
+        isPrivateBrowsing: browserTab.isPrivate
       )
     globalShieldsActivityController.popoverPresentationController?.sourceView = view
 
@@ -361,6 +367,10 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   @objc private func tappedGlobalShieldsButton() {
     showGlobalShieldsSettings?(self)
+  }
+
+  @objc private func tappedShredLinkButton() {
+    showShredSettings?(self)
   }
 
   @available(*, unavailable)

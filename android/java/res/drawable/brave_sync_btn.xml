@@ -7,12 +7,6 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-
-    <solid android:color="@color/brave_theme_color" />
-
-    <corners android:bottomRightRadius="30dp"
-        android:bottomLeftRadius="30dp"
-        android:topRightRadius="30dp"
-        android:topLeftRadius="30dp" />
-
+    <solid android:color="@color/brave_sync_main_button_color" />
+    <corners android:radius="12dp" />
 </shape>

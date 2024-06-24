@@ -18,7 +18,7 @@ class Token;
 std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens);
 
 std::vector<challenge_bypass_ristretto::BlindedToken> ToRawBlindedTokens(
-    const std::vector<BlindedToken>& tokens);
+    const std::vector<BlindedToken>& blinded_tokens);
 
 }  // namespace brave_ads::cbr
 

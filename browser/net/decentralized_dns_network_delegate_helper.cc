@@ -9,7 +9,8 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/decentralized_dns/core/constants.h"
@@ -31,12 +32,15 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     return net::OK;
   }
 
-  auto* json_rpc_service =
-      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           ctx->browser_context);
-  if (!json_rpc_service) {
+  if (!brave_wallet_service) {
     return net::OK;
   }
+
+  auto* json_rpc_service = brave_wallet_service->json_rpc_service();
+  CHECK(json_rpc_service);
 
   if (IsUnstoppableDomainsTLD(ctx->request_url.host_piece()) &&
       IsUnstoppableDomainsResolveMethodEnabled(

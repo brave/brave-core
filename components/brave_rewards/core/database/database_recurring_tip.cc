@@ -17,8 +17,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -249,8 +248,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
     info->favicon_url = GetStringColumn(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
     info->reconcile_stamp = GetInt64Column(record_pointer, 5);
-    info->status =
-        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 6));
+    info->status = PublisherStatusFromInt(GetInt64Column(record_pointer, 6));
     info->status_updated_at = GetInt64Column(record_pointer, 7);
     info->provider = GetStringColumn(record_pointer, 8);
 
@@ -292,5 +290,4 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

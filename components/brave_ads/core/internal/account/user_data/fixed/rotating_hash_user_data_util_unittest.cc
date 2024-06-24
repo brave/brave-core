@@ -58,7 +58,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
-  EXPECT_TRUE(rotating_hash_before);
+  ASSERT_TRUE(rotating_hash_before);
 
   AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
@@ -79,7 +79,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
-  EXPECT_TRUE(rotating_hash_before);
+  ASSERT_TRUE(rotating_hash_before);
 
   AdvanceClockBy(base::Hours(1));
 
@@ -98,7 +98,7 @@ TEST_F(BraveAdsRotatingHashUserDataUtilTest,
 
   const std::optional<std::string> rotating_hash_before =
       BuildRotatingHash(transaction);
-  EXPECT_TRUE(rotating_hash_before);
+  ASSERT_TRUE(rotating_hash_before);
 
   AdvanceClockBy(base::Days(1));
 

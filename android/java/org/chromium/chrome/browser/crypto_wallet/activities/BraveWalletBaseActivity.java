@@ -21,9 +21,6 @@ import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
 import org.chromium.chrome.browser.crypto_wallet.observers.TxServiceObserverImpl;
@@ -103,7 +100,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mTxService = TxServiceFactory.getInstance().getTxService(this);
+        mTxService = BraveWalletServiceFactory.getInstance().getTxService(this);
         mTxServiceObserver = new TxServiceObserverImpl(this);
         mTxService.addObserver(mTxServiceObserver);
     }
@@ -113,7 +110,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mEthTxManagerProxy = TxServiceFactory.getInstance().getEthTxManagerProxy(this);
+        mEthTxManagerProxy = BraveWalletServiceFactory.getInstance().getEthTxManagerProxy(this);
     }
 
     protected void InitSolanaTxManagerProxy() {
@@ -121,7 +118,8 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mSolanaTxManagerProxy = TxServiceFactory.getInstance().getSolanaTxManagerProxy(this);
+        mSolanaTxManagerProxy =
+                BraveWalletServiceFactory.getInstance().getSolanaTxManagerProxy(this);
     }
 
     protected void InitKeyringService() {
@@ -129,7 +127,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService = BraveWalletServiceFactory.getInstance().getKeyringService(this);
         mKeyringServiceObserver = new KeyringServiceObserverImpl(this);
         mKeyringService.addObserver(mKeyringServiceObserver);
     }
@@ -147,7 +145,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+        mJsonRpcService = BraveWalletServiceFactory.getInstance().getJsonRpcService(this);
     }
 
     protected void InitAssetRatioService() {

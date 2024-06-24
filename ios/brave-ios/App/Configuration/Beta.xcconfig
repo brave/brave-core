@@ -22,3 +22,6 @@ SWIFT_ACTIVE_COMPILATION_CONDITIONS = BRAVE_CHANNEL_BETA $(brave_swift_active_co
 // Manual Code-Signing
 CODE_SIGN_IDENTITY = Apple Distribution: Brave Software, Inc.
 CODE_SIGN_STYLE = Manual
+
+VPN_PRODUCT_ID_PREFIX = beta.bravevpn
+LEO_PRODUCT_ID_PREFIX = beta.braveleo

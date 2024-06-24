@@ -40,18 +40,16 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, HashingTest) {
 
   // Act
   const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
-
   ASSERT_EQ(hashed_data->GetType(), DataType::kVector);
 
   const VectorData* const hashed_vector_data =
       static_cast<VectorData*>(hashed_data.get());
-
-  // Assert
-  // 10000 is the default size
   ASSERT_EQ(kDefaultBucketCount, hashed_vector_data->GetDimensionCount());
 
-  // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_THAT(hashed_vector_data->GetData(), ::testing::SizeIs(10));
+  // Assert
+  EXPECT_THAT(hashed_vector_data->GetData(),
+              ::testing::SizeIs(10));  // Hashes for [t, i, n, y, ti, in, ny,
+                                       // tin, iny, tiny] -- 10 in total
 }
 
 TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
@@ -66,14 +64,13 @@ TEST_F(BraveAdsHashedNGramsTransformationTest, CustomHashingTest) {
 
   // Act
   const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
-
   ASSERT_EQ(DataType::kVector, hashed_data->GetType());
 
   const VectorData* const hashed_vector_data =
       static_cast<VectorData*>(hashed_data.get());
+  ASSERT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
 
   // Assert
-  EXPECT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
   EXPECT_THAT(hashed_vector_data->GetData(),
               ::testing::SizeIs(kHashBucketCount));
 }

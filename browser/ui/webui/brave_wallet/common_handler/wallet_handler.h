@@ -15,7 +15,7 @@ class Profile;
 
 namespace brave_wallet {
 
-class KeyringService;
+class BraveWalletService;
 
 class WalletHandler : public mojom::WalletHandler {
  public:
@@ -32,7 +32,7 @@ class WalletHandler : public mojom::WalletHandler {
  private:
   mojo::Receiver<mojom::WalletHandler> receiver_;
 
-  const raw_ptr<KeyringService> keyring_service_ = nullptr;
+  const raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
 };
 
 }  // namespace brave_wallet

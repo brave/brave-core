@@ -10,13 +10,13 @@ import SwiftUI
 
 extension PlaylistSheetDetent.DetentAnchorID {
   static let mediaPlayer: Self = .init(id: "player")
+  static let mediaControls: Self = .init(id: "controls")
 }
 
 /// The view shown when the user is playing video or audio
 struct MediaContentView: View {
   @ObservedObject var model: PlayerModel
   var selectedItem: PlaylistItem
-  @Binding var selectedDetent: PlaylistSheetDetent
 
   @Environment(\.interfaceOrientation) private var interfaceOrientation
   @Environment(\.isFullScreen) private var isFullScreen
@@ -37,18 +37,32 @@ struct MediaContentView: View {
               .transition(.opacity.animation(.default))
           }
         }
-        .gesture(
-          isFullScreen
-            ? nil
-            : TapGesture().onEnded {
-              withAnimation(.snappy) {
-                selectedDetent = .small
-              }
+        .overlay {
+          if !isFullScreen {
+            GeometryReader { proxy in
+              Color.clear
+                .contentShape(.rect)
+                .onTapGesture(count: 2) { point in
+                  if point.x < proxy.size.width / 2 {
+                    Task {
+                      await model.seekBackwards()
+                    }
+                  } else {
+                    Task {
+                      await model.seekForwards()
+                    }
+                  }
+                }
+                .onTapGesture {
+                  model.isPlaying.toggle()
+                }
             }
-        )
+          }
+        }
       if !isFullScreen {
         PlaybackControlsView(model: model, selectedItemTitle: selectedItem.name)
           .padding(24)
+          .playlistSheetDetentAnchor(id: .mediaControls)
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isFullScreen ? .center : .top)
@@ -179,9 +193,14 @@ extension MediaContentView {
     var selectedItemTitle: String
 
     @Environment(\.toggleFullScreen) private var toggleFullScreen
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    private var verticalStackSpacing: CGFloat {
+      dynamicTypeSize >= .xxxLarge ? 14 : 28
+    }
 
     var body: some View {
-      VStack(spacing: 28) {
+      VStack(spacing: verticalStackSpacing) {
         HStack(alignment: .firstTextBaseline) {
           Text(selectedItemTitle)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
@@ -195,7 +214,7 @@ extension MediaContentView {
         }
         // FIXME: Handle live video better
         PlaybackScrubber(model: model)
-        VStack(spacing: 28) {
+        VStack(spacing: verticalStackSpacing) {
           HStack {
             Toggle(isOn: $model.isShuffleEnabled) {
               if model.isShuffleEnabled {
@@ -271,7 +290,7 @@ extension MediaContentView {
                 ForEach(timeOptions, id: \.self) { option in
                   Button {
                     withAnimation(.snappy) {
-                      model.sleepTimerFireDate = .now.addingTimeInterval(option)
+                      model.sleepTimerCondition = .date(.now.addingTimeInterval(option))
                     }
                   } label: {
                     Text(
@@ -284,29 +303,40 @@ extension MediaContentView {
                     )
                   }
                 }
+                Button {
+                  withAnimation(.snappy) {
+                    model.sleepTimerCondition = .itemPlaybackCompletion
+                  }
+                } label: {
+                  // FIXME: Needs better copy
+                  Text("End of Item")
+                }
               } header: {
-                Text("Stop Playback In…")
+                Text("Stop Playback After…")
               }
-              if model.sleepTimerFireDate != nil {
+              if model.sleepTimerCondition != nil {
                 Divider()
                 Button("Cancel Timer") {
                   withAnimation(.snappy) {
-                    model.sleepTimerFireDate = nil
+                    model.sleepTimerCondition = nil
                   }
                 }
               }
             } label: {
               HStack {
+                // FIXME: iOS 16 - Menu doesn't apply button styles
                 Label("Sleep Timer", braveSystemImage: "leo.sleep.timer")
-                if let sleepTimerFireDate = model.sleepTimerFireDate {
+                  .labelStyle(.iconOnly)
+                if case .date(let sleepTimerFireDate) = model.sleepTimerCondition {
                   Text(timerInterval: .now...sleepTimerFireDate, countsDown: true)
                     .font(.callout.weight(.semibold))
                     .transition(.opacity)
                 }
               }
             }
+            .menuOrder(.fixed)
             .tint(
-              model.sleepTimerFireDate != nil
+              model.sleepTimerCondition != nil
                 ? Color(braveSystemName: .textInteractive) : Color(braveSystemName: .textSecondary)
             )
             Spacer()
@@ -345,8 +375,7 @@ extension MediaContentView {
       duration: 100,
       mimeType: "",
       mediaSrc: ""
-    ),
-    selectedDetent: .constant(.small)
+    )
   )
   .environment(\.managedObjectContext, DataController.swiftUIContext)
   .preparePlaylistEnvironment()

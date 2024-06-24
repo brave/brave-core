@@ -249,7 +249,7 @@ TEST_F(
   NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
                                    kInvalidLanguageComponentId);
 
-  // Act & Assert
+  // Assert
   EXPECT_TRUE(resource_->IsLoaded());
 }
 
@@ -265,7 +265,7 @@ TEST_F(
   NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
                                    kLanguageComponentId);
 
-  // Act & Assert
+  // Assert
   EXPECT_TRUE(resource_->IsLoaded());
 }
 
@@ -282,7 +282,7 @@ TEST_F(
   NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersionUpdate,
                                    kLanguageComponentId);
 
-  // Act & Assert
+  // Assert
   EXPECT_TRUE(resource_->IsLoaded());
   EXPECT_EQ(kLanguageComponentManifestVersionUpdate,
             resource_->GetManifestVersion());
@@ -298,7 +298,7 @@ TEST_F(BraveAdsTextClassificationResourceTest,
   // Act
   NotifyDidUnregisterResourceComponent(kLanguageComponentId);
 
-  // Act & Assert
+  // Assert
   EXPECT_FALSE(resource_->IsLoaded());
 }
 
@@ -313,7 +313,7 @@ TEST_F(
   // Act
   NotifyDidUnregisterResourceComponent(kInvalidLanguageComponentId);
 
-  // Act & Assert
+  // Assert
   EXPECT_TRUE(resource_->IsLoaded());
 }
 

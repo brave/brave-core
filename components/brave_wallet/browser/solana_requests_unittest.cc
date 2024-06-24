@@ -19,9 +19,7 @@ constexpr char kBlockhash[] = "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW";
 
 }
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 TEST(SolanaRequestsUnitTest, getBalance) {
   ASSERT_EQ(
@@ -201,6 +199,4 @@ TEST(SolanaRequestsUnitTest, getRecentPrioritizationFees) {
               })"));
 }
 
-}  // namespace solana
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::solana

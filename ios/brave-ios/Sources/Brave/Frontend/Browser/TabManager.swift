@@ -97,6 +97,7 @@ class TabManager: NSObject {
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
   public let privateBrowsingManager: PrivateBrowsingManager
+  private var forgetTasks: [TabType: [String: Task<Void, Error>]] = [:]
 
   let windowId: UUID
 
@@ -743,12 +744,148 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor func removeTab(_ tab: Tab) {
-    assert(Thread.isMainThread)
+  /// Forget all data for websites that have forget me enabled
+  /// Will forget all data instantly with no delay
+  @MainActor func forgetDataOnAppClose() {
+    for tab in tabs(withType: .regular) {
+      guard let url = tab.url, !InternalURL.isValid(url: url) else {
+        continue
+      }
 
+      let siteDomain = Domain.getOrCreate(
+        forUrl: url,
+        persistent: !tab.isPrivate
+      )
+
+      if siteDomain.shredLevel?.shredOnAppExit == true {
+        Task {
+          await forgetData(for: url, in: tab)
+        }
+      }
+    }
+  }
+
+  /// Forget all data for websites if the website has "Forget Me" enabled
+  ///
+  /// A delay allows us to cancel this forget in case the user goes back to this website.
+  ///
+  /// - Parameters:
+  ///   - url: The url of the website to forget
+  ///   - tab: The tab in which the website is or was open in
+  ///   - delayInSeconds: Only attempt to forget the content after a short delay (default: 30s)
+  ///   - checkOtherTabs: Check if other tabs are open for the given domain
+  @MainActor func forgetDataIfNeeded(
+    for url: URL,
+    in tab: Tab
+  ) {
+    guard FeatureList.kBraveShredFeature.enabled else { return }
+    guard let etldP1 = url.baseDomain else { return }
+    forgetTasks[tab.type]?[etldP1]?.cancel()
+    let siteDomain = Domain.getOrCreate(
+      forUrl: url,
+      persistent: !tab.isPrivate
+    )
+
+    switch siteDomain.shredLevel {
+    case .appExit, .none:
+      return
+    case .whenSiteClosed:
+      let tabs = tabs(withType: tab.type).filter { existingTab in
+        existingTab != tab
+      }
+      // Ensure that no othe tabs are open for this domain
+      guard !tabs.contains(where: { $0.url?.baseDomain == etldP1 }) else {
+        return
+      }
+      forgetDataDelayed(for: url, in: tab, delay: 30)
+    }
+  }
+
+  @MainActor func shredData(for url: URL, in tab: Tab) {
+    guard let etldP1 = url.baseDomain else { return }
+
+    // Select the next or previous tab that is not being destroyed
+    if let index = allTabs.firstIndex(where: { $0 == tab }) {
+      var nextTab: Tab?
+      // First seach down or up for a tab that is not being destroyed
+      var increasingIndex = index + 1
+      while nextTab == nil, increasingIndex < allTabs.count {
+        if allTabs[increasingIndex].url?.baseDomain != etldP1 {
+          nextTab = allTabs[increasingIndex]
+        }
+        increasingIndex += 1
+      }
+
+      var decreasingIndex = index - 1
+      while nextTab == nil, decreasingIndex > 0 {
+        if allTabs[decreasingIndex].url?.baseDomain != etldP1 {
+          nextTab = allTabs[decreasingIndex]
+        }
+        decreasingIndex -= 1
+      }
+
+      // Select the found tab
+      if let nextTab = nextTab {
+        selectTab(nextTab, previous: tab)
+      }
+    }
+
+    // Remove all unwanted tabs
+    for tab in allTabs {
+      guard tab.url?.baseDomain == etldP1 else { continue }
+      removeTab(tab)
+    }
+
+    Task {
+      // Forget all the data
+      await forgetData(for: url, in: tab)
+    }
+  }
+
+  /// Start a task to delete all data for this url
+  /// The task may be delayed in case we want to cancel it
+  @MainActor private func forgetDataDelayed(
+    for url: URL,
+    in tab: Tab,
+    delay: TimeInterval
+  ) {
+    guard let etldP1 = url.baseDomain else { return }
+    forgetTasks[tab.type] = forgetTasks[tab.type] ?? [:]
+    forgetTasks[tab.type]?[etldP1] = Task {
+      try await Task.sleep(seconds: delay)
+      await self.forgetData(for: url, in: tab)
+    }
+  }
+
+  @MainActor private func forgetData(for url: URL, in tab: Tab) async {
+    guard let etldP1 = url.baseDomain else { return }
+    // Start a task to delete all data for this etldP1
+    // The task may be delayed in case we want to cancel it
+    let dataStore = tab.webView?.configuration.websiteDataStore
+    await dataStore?.deleteDataRecords(
+      forDomain: etldP1
+    )
+
+    ContentBlockerManager.log.debug("Cleared website data for `\(etldP1)`")
+    forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+  }
+
+  /// Cancel a forget data request in case we navigate back to the tab within a certain period
+  @MainActor func cancelForgetData(for url: URL, in tab: Tab) {
+    guard let etldP1 = url.baseDomain else { return }
+    forgetTasks[tab.type]?[etldP1]?.cancel()
+    forgetTasks[tab.type]?.removeValue(forKey: etldP1)
+  }
+
+  @MainActor func removeTab(_ tab: Tab) {
     guard let removalIndex = allTabs.firstIndex(where: { $0 === tab }) else {
       Logger.module.debug("Could not find index of tab to remove")
       return
+    }
+
+    if let url = tab.url {
+      // Check if this data needs to be forgotten
+      forgetDataIfNeeded(for: url, in: tab)
     }
 
     if tab.isPrivate {
@@ -1443,5 +1580,21 @@ extension TabManager: NSFetchedResultsControllerDelegate {
         }
       }
     }
+  }
+}
+
+extension WKWebsiteDataStore {
+  @MainActor fileprivate func deleteDataRecords(forDomain domain: String) async {
+    let records = await dataRecords(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()
+    )
+    let websiteRecords = records.filter { record in
+      record.displayName == domain
+    }
+
+    await removeData(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+      for: websiteRecords
+    )
   }
 }

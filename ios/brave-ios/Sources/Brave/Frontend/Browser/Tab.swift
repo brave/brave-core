@@ -260,7 +260,7 @@ class Tab: NSObject {
   /// This object holds on to information regarding the current web page
   ///
   /// The page data is cleared when the user leaves the page (i.e. when the main frame url changes)
-  var currentPageData: PageData?
+  @MainActor var currentPageData: PageData?
 
   /// The url set after a successful navigation. This will also set the `url` property.
   ///

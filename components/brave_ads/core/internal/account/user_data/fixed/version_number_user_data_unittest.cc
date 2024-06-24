@@ -17,13 +17,16 @@ class BraveAdsVersionNumberUserDataTest : public UnitTestBase {};
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
        BuildVersionNumberUserDataForRewardsUser) {
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data = BuildVersionNumberUserData();
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "versionNumber": "1.2.3.4"
                     })"),
-            BuildVersionNumberUserData());
+            user_data);
 }
 
 TEST_F(BraveAdsVersionNumberUserDataTest,
@@ -31,8 +34,11 @@ TEST_F(BraveAdsVersionNumberUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  // Act & Assert
-  EXPECT_THAT(BuildVersionNumberUserData(), ::testing::IsEmpty());
+  // Act
+  const base::Value::Dict user_data = BuildVersionNumberUserData();
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

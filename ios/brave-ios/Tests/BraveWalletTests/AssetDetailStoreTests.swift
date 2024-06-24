@@ -47,16 +47,7 @@ class AssetDetailStoreTests: XCTestCase {
         radix: .hex,
         decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
       ) ?? ""
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = {
-      $0([.mockMainnet])
-    }
-    rpcService._network = {
-      $2(.mockMainnet)
-    }
-    rpcService._hiddenNetworks = {
-      $1([])
-    }
+    let rpcService = MockJsonRpcService()
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
     }
@@ -275,16 +266,7 @@ class AssetDetailStoreTests: XCTestCase {
     }
     keyringService._addObserver = { _ in }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._allNetworks = {
-      $0([.mockBitcoinMainnet])
-    }
-    rpcService._network = {
-      $2(.mockBitcoinMainnet)
-    }
-    rpcService._hiddenNetworks = {
-      $1([])
-    }
+    let rpcService = MockJsonRpcService()
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = {
@@ -495,16 +477,7 @@ class AssetDetailStoreTests: XCTestCase {
         radix: .hex,
         decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
       ) ?? ""
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._network = {
-      $2(.mockMainnet)
-    }
-    rpcService._allNetworks = {
-      $0([.mockMainnet])
-    }
-    rpcService._hiddenNetworks = {
-      $1([])
-    }
+    let rpcService = MockJsonRpcService()
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
     }

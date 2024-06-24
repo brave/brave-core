@@ -72,9 +72,6 @@ public class PlaylistManager: NSObject {
 
     // Delete system cache always on startup.
     deleteUserManagedAssets()
-
-    // Delete dangling cache always on startup.
-    deleteDanglingManagedAssets()
   }
 
   public var currentFolder: PlaylistFolder? {
@@ -507,9 +504,6 @@ public class PlaylistManager: NSObject {
 
     // Delete system cache
     deleteUserManagedAssets()
-
-    // Delete dangling cache
-    deleteDanglingManagedAssets()
   }
 
   private func deleteUserManagedAssets() {
@@ -552,34 +546,6 @@ public class PlaylistManager: NSObject {
       } catch {
         Logger.module.error(
           "Deleting Playlist Incomplete Items failed: \(error.localizedDescription)"
-        )
-      }
-    }
-  }
-
-  private func deleteDanglingManagedAssets() {
-    if let playlistFolderPath = PlaylistDownloadManager.playlistDirectory {
-      do {
-        let urls = try FileManager.default.contentsOfDirectory(
-          at: playlistFolderPath,
-          includingPropertiesForKeys: nil,
-          options: [.skipsHiddenFiles]
-        )
-        for url in urls {
-          do {
-            // Playlist doesn't contain such an offline item, so it's dangling somehow and should be deleted.
-            if PlaylistItem.cachedItem(cacheURL: url) == nil {
-              try FileManager.default.removeItem(at: url)
-            }
-          } catch {
-            Logger.module.error(
-              "Deleting Dangling Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
-            )
-          }
-        }
-      } catch {
-        Logger.module.error(
-          "Deleting Dangling Playlist Incomplete Items failed: \(error.localizedDescription)"
         )
       }
     }

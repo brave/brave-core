@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveShields
 import BraveUI
@@ -13,6 +14,7 @@ class AdvancedShieldsView: UIStackView {
   let adsTrackersControl = ToggleView(title: Strings.Shields.trackersAndAdsBlocking)
   let blockScriptsControl = ToggleView(title: Strings.blockScripts)
   let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtection)
+  let shredLink = ShredButtonView()
   let globalControlsTitleView = HeaderTitleView().then {
     $0.titleLabel.text = Strings.Shields.globalControls.uppercased()
   }
@@ -28,9 +30,12 @@ class AdvancedShieldsView: UIStackView {
       adsTrackersControl,
       blockScriptsControl,
       fingerprintingControl,
+      shredLink,
       globalControlsTitleView,
       globalControlsButton,
     ]
+
+    shredLink.isHidden = !FeatureList.kBraveShredFeature.enabled
     let separators = (0..<rows.count).map { _ in SeparatorView() }
     let n = zip(rows, separators)
     for (sep, row) in n {
@@ -73,7 +78,6 @@ extension AdvancedShieldsView {
 
   /// A container displaying a toggle for the user
   class ToggleView: UIView {
-
     let titleLabel: UILabel = {
       let l = UILabel()
       l.font = .systemFont(ofSize: 15.0)
@@ -159,6 +163,77 @@ extension AdvancedShieldsView {
     required init(coder: NSCoder) {
       fatalError()
     }
+  }
+}
+
+final class ShredButtonView: UIControl {
+  private let highlightedBackgroundView = UIView().then {
+    $0.isUserInteractionEnabled = false
+    $0.alpha = 0.0
+    $0.backgroundColor = UIColor.bravePrimary.withAlphaComponent(0.1)
+  }
+  private let textLabel = UILabel().then {
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    $0.font = .systemFont(ofSize: 15.0)
+    $0.textColor = .braveLabel
+    $0.text = Strings.Shields.shredSitesData
+  }
+  private let chevron = UIImageView(
+    image: UIImage(named: "chevron", in: .module, compatibleWith: nil)!.template
+  ).then {
+    $0.setContentHuggingPriority(.required, for: .horizontal)
+    $0.tintColor = .secondaryBraveLabel
+  }
+
+  override var isHighlighted: Bool {
+    didSet {
+      UIView.animate(
+        withDuration: 0.15,
+        delay: 0,
+        options: [.beginFromCurrentState],
+        animations: {
+          self.highlightedBackgroundView.alpha = self.isHighlighted ? 1.0 : 0.0
+        },
+        completion: nil
+      )
+    }
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+
+    isAccessibilityElement = true
+    accessibilityTraits.insert(.button)
+    accessibilityLabel = textLabel.text
+
+    let stackView = UIStackView().then {
+      $0.spacing = 10
+      $0.alignment = .center
+      $0.isUserInteractionEnabled = false
+    }
+
+    addSubview(highlightedBackgroundView)
+    addSubview(stackView)
+    stackView.addStackViewItems(
+      .view(textLabel),
+      .view(chevron)
+    )
+
+    highlightedBackgroundView.snp.makeConstraints {
+      $0.edges.equalTo(self)
+    }
+    stackView.snp.makeConstraints {
+      $0.leading.trailing.equalTo(self).inset(16)
+      $0.top.greaterThanOrEqualTo(self)
+      $0.bottom.lessThanOrEqualTo(self)
+      $0.centerY.equalTo(self)
+      $0.height.greaterThanOrEqualTo(44)
+    }
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
   }
 }
 

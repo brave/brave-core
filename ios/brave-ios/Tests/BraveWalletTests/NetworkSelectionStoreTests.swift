@@ -14,12 +14,6 @@ import XCTest
 
   private var cancellables: Set<AnyCancellable> = .init()
 
-  private let allNetworks: [BraveWallet.NetworkInfo] = [
-    .mockMainnet, .mockGoerli, .mockSepolia, .mockPolygon,
-    .mockSolana, .mockSolanaTestnet,
-    .mockFilecoinTestnet,
-  ]
-
   private func setupServices() -> (
     BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
     BraveWallet.TestBraveWalletService, BraveWallet.TestSwapService
@@ -41,13 +35,9 @@ import XCTest
       )
     }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
+    let rpcService = MockJsonRpcService()
     rpcService._chainIdForOrigin = { $2(currentChainId) }
     rpcService._network = { $2(currentNetwork) }
-    rpcService._allNetworks = { [weak self] completion in
-      completion(self?.allNetworks ?? [])
-    }
     rpcService._setNetwork = { chainId, coin, origin, completion in
       completion(true)
     }
@@ -81,10 +71,10 @@ import XCTest
     await networkStore.setup()
 
     let store = NetworkSelectionStore(networkStore: networkStore)
-    let success = await store.selectNetwork(.mockGoerli)
+    let success = await store.selectNetwork(.mockSepolia)
     XCTAssertTrue(
       success,
-      "Expected success for selecting Goerli because we have ethereum accounts."
+      "Expected success for selecting Sepolia because we have ethereum accounts."
     )
   }
 
@@ -111,10 +101,10 @@ import XCTest
       mode: .select(isForOrigin: true),
       networkStore: networkStore
     )
-    let success = await store.selectNetwork(.mockGoerli)
+    let success = await store.selectNetwork(.mockSepolia)
     XCTAssertTrue(
       success,
-      "Expected success for selecting Goerli because we have ethereum accounts."
+      "Expected success for selecting Sepolia because we have ethereum accounts."
     )
   }
 
@@ -155,9 +145,9 @@ import XCTest
     await networkStore.setup()
 
     let store = NetworkSelectionStore(mode: .formSelection, networkStore: networkStore)
-    let success = await store.selectNetwork(.mockGoerli)
-    XCTAssertTrue(success, "Expected success for selecting Goerli")
-    XCTAssertEqual(store.networkSelectionInForm, .mockGoerli)
+    let success = await store.selectNetwork(.mockSepolia)
+    XCTAssertTrue(success, "Expected success for selecting Sepolia")
+    XCTAssertEqual(store.networkSelectionInForm, .mockSepolia)
   }
 
   func testAlertResponseCreateAccount() async {

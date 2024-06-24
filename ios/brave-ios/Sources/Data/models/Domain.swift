@@ -44,6 +44,22 @@ public final class Domain: NSManagedObject, CRUD {
   // swift-format-ignore
   @NSManaged public var wallet_solanaPermittedAcccounts: String?
 
+  /// A string version of the shield shred level
+  // swift-format-ignore
+  @NSManaged private var shield_shredLevel: String?
+
+  /// The shred level for this current domain
+  @MainActor public var shredLevel: SiteShredLevel? {
+    get {
+      guard let shredLevel = self.shield_shredLevel else { return nil }
+      return SiteShredLevel(rawValue: shredLevel)
+    }
+
+    set {
+      shield_shredLevel = newValue?.rawValue
+    }
+  }
+
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
   }

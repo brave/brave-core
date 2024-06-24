@@ -62,12 +62,14 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
   transaction_6.ad_type = AdType::kInlineContentAd;
   transactions.push_back(transaction_6);
 
-  // Act & Assert
+  // Act
+  const base::flat_map<std::string, int32_t> ads_summary =
+      GetAdsSummaryForDateRange(transactions, from_time, DistantFuture());
+
+  // Assert
   const base::flat_map<std::string, int32_t> expected_ads_summary = {
       {"ad_notification", 2}, {"new_tab_page_ad", 1}, {"inline_content_ad", 1}};
-  EXPECT_EQ(
-      expected_ads_summary,
-      GetAdsSummaryForDateRange(transactions, from_time, DistantFuture()));
+  EXPECT_EQ(expected_ads_summary, ads_summary);
 }
 
 TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
@@ -88,18 +90,24 @@ TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
 
   AdvanceClockTo(TimeFromString("1 January 2021"));
 
-  // Act & Assert
-  EXPECT_THAT(GetAdsSummaryForDateRange(transactions, /*from_time=*/Now(),
-                                        /*to_time=*/DistantFuture()),
-              ::testing::IsEmpty());
+  // Act
+  const base::flat_map<std::string, int32_t> ads_summary =
+      GetAdsSummaryForDateRange(transactions, /*from_time=*/Now(),
+                                /*to_time=*/DistantFuture());
+
+  // Assert
+  EXPECT_THAT(ads_summary, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForNoTransactions) {
-  // Act & Assert
-  EXPECT_THAT(GetAdsSummaryForDateRange(/*transactions=*/{},
-                                        /*from_time=*/DistantPast(),
-                                        /*to_time=*/DistantFuture()),
-              ::testing::IsEmpty());
+  // Act
+  const base::flat_map<std::string, int32_t> ads_summary =
+      GetAdsSummaryForDateRange(/*transactions=*/{},
+                                /*from_time=*/DistantPast(),
+                                /*to_time=*/DistantFuture());
+
+  // Assert
+  EXPECT_THAT(ads_summary, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

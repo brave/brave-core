@@ -471,4 +471,115 @@ TEST(JsonRpcResponseParserUnitTest, AnkrParseGetAccountBalanceResponse) {
   EXPECT_EQ(response->at(1)->price_usd, "1");
 }
 
+TEST(JsonRpcResponseParserUnitTest, GetUint64FromDictValue) {
+  uint64_t ret;
+
+  // Case 1: Successful conversion
+  ret = 0;
+  EXPECT_TRUE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": "18446744073709551615"})"), "key",
+      false, &ret));
+  EXPECT_EQ(ret, UINT64_MAX);
+
+  // Case 2: ret is nullptr
+  EXPECT_FALSE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": "18446744073709551615"})"), "key",
+      false, nullptr));
+
+  // Case 3: Key not found
+  ret = 0;
+  EXPECT_FALSE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"other_key": "18446744073709551615"})"),
+      "key", false, &ret));
+
+  // Case 4: Nullable and value is none
+  ret = 0;
+  EXPECT_TRUE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": null})"), "key", true, &ret));
+  EXPECT_EQ(ret, 0U);
+
+  // Case 5: Nullable but value is not none
+  ret = 0;
+  EXPECT_TRUE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": "0"})"), "key", true, &ret));
+  EXPECT_EQ(ret, 0U);
+
+  // Case 6: Non-string value
+  ret = 0;
+  EXPECT_FALSE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": 12345})"), "key", false, &ret));
+
+  // Case 7: Empty string value
+  ret = 0;
+  EXPECT_FALSE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": ""})"), "key", false, &ret));
+
+  // Case 8: Invalid string value
+  ret = 0;
+  EXPECT_FALSE(GetUint64FromDictValue(
+      base::test::ParseJsonDict(R"({"key": "invalid"})"), "key", false, &ret));
+}
+
+TEST(JsonRpcResponseParserUnitTest, ConvertAllNumbersToString) {
+  // OK: convert u64, f64, and i64 values to string
+  std::string json(
+      R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14}]})");
+  EXPECT_EQ(
+      ConvertAllNumbersToString("", json).value_or(""),
+      R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})");
+
+  // OK: convert deeply nested value to string
+  json = R"({"some":[{"deeply":{"nested":[{"path":123}]}}]})";
+  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""),
+            R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})");
+
+  // OK: values other than u64/f64/i64 are unchanged
+  json = R"({"a":[{"key":18446744073709551615},{"key":null},{"key":true}]})";
+  EXPECT_EQ(
+      ConvertAllNumbersToString("", json).value_or(""),
+      R"({"a":[{"key":"18446744073709551615"},{"key":null},{"key":true}]})");
+
+  // OK: empty object array, nothing to convert
+  json = R"({"a":[]})";
+  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""), json);
+
+  // OK: empty array json, nothing to convert
+  json = R"([])";
+  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""), json);
+
+  // OK: floating point values in scientific notation are unchanged
+  json = R"({"a": 1.196568750220778e-7})";
+  EXPECT_EQ(ConvertAllNumbersToString("", json).value_or(""),
+            R"({"a":"1.196568750220778e-7"})");
+
+  // OK: convert under specified JSON path only
+  json = R"({"a":1,"outer":{"inner": 2}})";
+  EXPECT_EQ(ConvertAllNumbersToString("/outer", json).value_or(""),
+            R"({"a":1,"outer":{"inner":"2"}})");
+  EXPECT_EQ(ConvertAllNumbersToString("/a", json).value_or(""),
+            R"({"a":"1","outer":{"inner":2}})");
+
+  // KO: invalid path has no effect on the JSON
+  json = R"({"a":1,"outer":{"inner":2}})";
+  EXPECT_EQ(ConvertAllNumbersToString("/invalid", json).value_or(""), json);
+  EXPECT_EQ(ConvertAllNumbersToString("/", json).value_or(""), json);
+
+  // KO: invalid cases
+  std::vector<std::string> invalid_cases = {
+      // invalid json
+      R"({"a": hello})",
+      // UINT64_MAX + 1
+      R"("{a":[{"key":18446744073709551616}]})",
+      // INT64_MIN
+      R"("{a":[{"key":)" + base::NumberToString(INT64_MIN) + "}]}",
+      // DBL_MIN
+      R"("{a":[{"key":)" + base::NumberToString(DBL_MIN) + "}]}",
+      // DBL_MAX
+      R"("{a":[{"key":)" + base::NumberToString(DBL_MAX + 1) + "}]}"};
+  for (const auto& invalid_case : invalid_cases) {
+    EXPECT_EQ("", ConvertAllNumbersToString("", invalid_case).value_or(""))
+        << invalid_case;
+  }
+}
+
 }  // namespace brave_wallet

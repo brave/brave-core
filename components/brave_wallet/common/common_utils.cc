@@ -12,8 +12,10 @@
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/net/base/url_util.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/url_util.h"
 
 namespace brave_wallet {
 
@@ -345,6 +347,10 @@ std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id) {
     return mojom::kZCashTestnet;
   }
   NOTREACHED_NORETURN();
+}
+
+bool IsHTTPSOrLocalhostURL(const std::string& url_string) {
+  return net::IsHTTPSOrLocalhostURL(GURL(url_string));
 }
 
 }  // namespace brave_wallet

@@ -10,7 +10,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 // TODO(cypt4) : Refactor brave/browser into separate component (#27486)
 #include "brave/browser/ipfs/ipfs_local_pin_service_factory.h"  // nogncheck
 #include "brave/browser/ipfs/ipfs_service_factory.h"            // nogncheck
@@ -76,7 +76,7 @@ BraveWalletPinServiceFactory::BraveWalletPinServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveWalletPinService",
           BrowserContextDependencyManager::GetInstance()) {
-  DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
+  DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
   DependsOn(ipfs::IpfsLocalPinServiceFactory::GetInstance());
   DependsOn(ipfs::IpfsServiceFactory::GetInstance());
 }
@@ -87,7 +87,8 @@ KeyedService* BraveWalletPinServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new BraveWalletPinService(
       user_prefs::UserPrefs::Get(context),
-      JsonRpcServiceFactory::GetServiceForContext(context),
+      BraveWalletServiceFactory::GetServiceForContext(context)
+          ->json_rpc_service(),
       ipfs::IpfsLocalPinServiceFactory::GetServiceForContext(context),
       ipfs::IpfsServiceFactory::GetForContext(context),
       std::make_unique<ContentTypeChecker>(

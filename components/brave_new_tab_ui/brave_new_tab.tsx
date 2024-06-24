@@ -16,7 +16,6 @@ import { init } from './actions/new_tab_actions'
 
 // Components
 import App from './containers/app'
-import { RewardsContextAdapter } from './components/default/rewards'
 
 // Utils
 import store from './store'
@@ -36,9 +35,7 @@ function initialize () {
           dark={DarkTheme}
           light={Theme}
         >
-          <RewardsContextAdapter>
-            <App />
-          </RewardsContextAdapter>
+          <App />
         </BraveCoreThemeProvider>
       </Provider>,
       document.getElementById('root'),

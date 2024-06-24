@@ -25,17 +25,18 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest, BuildCreativeSetConversion) {
       test::BuildSearchResultAdWithConversion(
           /*should_use_random_uuids=*/false);
 
-  // Act & Assert
-  CreativeSetConversionInfo expected_creative_set_conversion;
-  expected_creative_set_conversion.id = kCreativeSetId;
-  expected_creative_set_conversion.url_pattern = "https://brave.com/*";
-  expected_creative_set_conversion.verifiable_advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
-  expected_creative_set_conversion.observation_window = base::Days(3);
-  expected_creative_set_conversion.expire_at =
-      Now() + expected_creative_set_conversion.observation_window;
-  EXPECT_EQ(expected_creative_set_conversion,
-            BuildCreativeSetConversion(search_result_ad));
+  // Act
+  const std::optional<CreativeSetConversionInfo> creative_set_conversion =
+      BuildCreativeSetConversion(search_result_ad);
+  ASSERT_TRUE(creative_set_conversion);
+
+  // Assert
+  EXPECT_THAT(*creative_set_conversion,
+              ::testing::FieldsAre(kCreativeSetId,
+                                   /*url_pattern*/ "https://brave.com/*",
+                                   kVerifiableConversionAdvertiserPublicKey,
+                                   /*observation_window*/ base::Days(3),
+                                   /*expire_at*/ Now() + base::Days(3)));
 }
 
 TEST_F(BraveAdsCreativeSetConversionBuilderTest,

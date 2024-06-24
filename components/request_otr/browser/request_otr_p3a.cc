@@ -9,8 +9,7 @@
 #include "brave/components/time_period_storage/monthly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
 
-namespace request_otr {
-namespace p3a {
+namespace request_otr::p3a {
 
 namespace {
 
@@ -74,5 +73,4 @@ void UpdateMetrics(PrefService* prefs) {
   RecordInterstitialEnd(prefs, {});
 }
 
-}  // namespace p3a
-}  // namespace request_otr
+}  // namespace request_otr::p3a

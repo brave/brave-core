@@ -21,8 +21,7 @@ const char kTableName[] = "publisher_info";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 DatabasePublisherInfo::DatabasePublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine) {}
@@ -149,10 +148,9 @@ void DatabasePublisherInfo::OnGetRecord(GetPublisherInfoCallback callback,
   info->url = GetStringColumn(record, 2);
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
-  info->status = static_cast<mojom::PublisherStatus>(GetInt64Column(record, 5));
+  info->status = PublisherStatusFromInt(GetInt64Column(record, 5));
   info->status_updated_at = GetInt64Column(record, 6);
-  info->excluded =
-      static_cast<mojom::PublisherExclude>(GetIntColumn(record, 7));
+  info->excluded = PublisherExcludeFromInt(GetIntColumn(record, 7));
 
   std::move(callback).Run(mojom::Result::OK, std::move(info));
 }
@@ -229,9 +227,8 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   info->url = GetStringColumn(record, 2);
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
-  info->status = static_cast<mojom::PublisherStatus>(GetInt64Column(record, 5));
-  info->excluded =
-      static_cast<mojom::PublisherExclude>(GetIntColumn(record, 6));
+  info->status = PublisherStatusFromInt(GetInt64Column(record, 5));
+  info->excluded = PublisherExcludeFromInt(GetIntColumn(record, 6));
   info->percent = GetIntColumn(record, 7);
 
   std::move(callback).Run(mojom::Result::OK, std::move(info));
@@ -317,8 +314,7 @@ void DatabasePublisherInfo::OnGetExcludedList(
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
-    info->status =
-        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 1));
+    info->status = PublisherStatusFromInt(GetInt64Column(record_pointer, 1));
     info->name = GetStringColumn(record_pointer, 2);
     info->favicon_url = GetStringColumn(record_pointer, 3);
     info->url = GetStringColumn(record_pointer, 4);
@@ -330,5 +326,4 @@ void DatabasePublisherInfo::OnGetExcludedList(
   std::move(callback).Run(std::move(list));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

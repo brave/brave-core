@@ -13,8 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -130,7 +129,7 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 
   auto info = mojom::ContributionQueue::New();
   info->id = GetStringColumn(record, 0);
-  info->type = static_cast<mojom::RewardsType>(GetIntColumn(record, 1));
+  info->type = RewardsTypeFromInt(GetIntColumn(record, 1));
   info->amount = GetDoubleColumn(record, 2);
   info->partial = static_cast<bool>(GetIntColumn(record, 3));
 
@@ -182,5 +181,4 @@ void DatabaseContributionQueue::MarkRecordAsComplete(const std::string& id,
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

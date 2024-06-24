@@ -76,6 +76,14 @@ std::optional<std::string> ConvertMultiUint64InObjectArrayToString(
     const std::vector<std::string>& keys,
     const std::string& json);
 
+bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
+                            const std::string& key,
+                            bool nullable,
+                            uint64_t* ret);
+
+std::optional<std::string> ConvertAllNumbersToString(const std::string& path,
+                                                     const std::string& json);
+
 namespace ankr {
 std::optional<std::vector<mojom::AnkrAssetBalancePtr>>
 ParseGetAccountBalanceResponse(const base::Value& json_value);

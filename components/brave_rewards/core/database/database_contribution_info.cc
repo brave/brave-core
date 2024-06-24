@@ -14,8 +14,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -127,11 +126,10 @@ void DatabaseContributionInfo::OnGetRecord(
   auto info = mojom::ContributionInfo::New();
   info->contribution_id = GetStringColumn(record, 0);
   info->amount = GetDoubleColumn(record, 1);
-  info->type = static_cast<mojom::RewardsType>(GetInt64Column(record, 2));
-  info->step = static_cast<mojom::ContributionStep>(GetIntColumn(record, 3));
+  info->type = RewardsTypeFromInt(GetInt64Column(record, 2));
+  info->step = ContributionStepFromInt(GetIntColumn(record, 3));
   info->retry_count = GetIntColumn(record, 4);
-  info->processor =
-      static_cast<mojom::ContributionProcessor>(GetIntColumn(record, 5));
+  info->processor = ContributionProcessorFromInt(GetIntColumn(record, 5));
   info->created_at = GetInt64Column(record, 6);
 
   publishers_.GetRecordByContributionList(
@@ -262,8 +260,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
     info->favicon_url = GetStringColumn(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
     info->reconcile_stamp = GetInt64Column(record_pointer, 5);
-    info->status =
-        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 6));
+    info->status = PublisherStatusFromInt(GetInt64Column(record_pointer, 6));
     info->status_updated_at = GetInt64Column(record_pointer, 7);
     info->provider = GetStringColumn(record_pointer, 8);
 
@@ -348,13 +345,11 @@ void DatabaseContributionInfo::OnGetList(ContributionInfoListCallback callback,
 
     info->contribution_id = GetStringColumn(record_pointer, 0);
     info->amount = GetDoubleColumn(record_pointer, 1);
-    info->type =
-        static_cast<mojom::RewardsType>(GetInt64Column(record_pointer, 2));
-    info->step =
-        static_cast<mojom::ContributionStep>(GetIntColumn(record_pointer, 3));
+    info->type = RewardsTypeFromInt(GetInt64Column(record_pointer, 2));
+    info->step = ContributionStepFromInt(GetIntColumn(record_pointer, 3));
     info->retry_count = GetIntColumn(record_pointer, 4);
-    info->processor = static_cast<mojom::ContributionProcessor>(
-        GetIntColumn(record_pointer, 5));
+    info->processor =
+        ContributionProcessorFromInt(GetIntColumn(record_pointer, 5));
     info->created_at = GetInt64Column(record_pointer, 6);
 
     contribution_ids.push_back(info->contribution_id);
@@ -474,5 +469,4 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

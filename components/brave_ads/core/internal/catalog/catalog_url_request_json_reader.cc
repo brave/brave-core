@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
+#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
+#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
@@ -173,6 +175,11 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
         conversion.creative_set_id = creative_set.id;
 
         conversion.url_pattern = conversion_node["urlPattern"].GetString();
+        if (!ShouldSupportUrl(GURL(conversion.url_pattern))) {
+          BLOG(1, "Creative set conversion URL pattern for creative set id "
+                      << conversion.creative_set_id << " is unsupported");
+          continue;
+        }
 
         if (conversion_node.HasMember("conversionPublicKey")) {
           conversion.verifiable_advertiser_public_key_base64 =
@@ -224,11 +231,25 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
               .body = payload["body"].GetString(),
               .title = payload["title"].GetString(),
               .target_url = GURL(payload["targetUrl"].GetString())};
-          if (!DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Failed to parse target URL for creative instance id "
-                        << creative_instance_id);
+          if (!ShouldSupportUrl(creative.payload.target_url)) {
+            BLOG(1, "Target URL for creative instance id "
+                        << creative_instance_id << " is unsupported");
             continue;
           }
+
+          creative_set.conversions.erase(
+              base::ranges::remove_if(
+                  creative_set.conversions,
+                  [&creative_set,
+                   &creative](const CatalogConversionInfo& conversion) {
+                    const GURL conversion_url_pattern =
+                        GURL(conversion.url_pattern);
+                    return conversion.creative_set_id == creative_set.id &&
+                           (!ShouldSupportUrl(conversion_url_pattern) ||
+                            !SameDomainOrHost(creative.payload.target_url,
+                                              conversion_url_pattern));
+                  }),
+              creative_set.conversions.cend());
 
           creative_set.creative_notification_ads.push_back(creative);
         } else if (code == "inline_content_all_v1") {
@@ -247,19 +268,33 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           creative.payload.title = payload["title"].GetString();
           creative.payload.description = payload["description"].GetString();
           creative.payload.image_url = GURL(payload["imageUrl"].GetString());
-          if (!DoesSupportUrl(creative.payload.image_url)) {
-            BLOG(1, "Failed to parse image URL for creative instance id "
-                        << creative_instance_id);
+          if (!ShouldSupportUrl(creative.payload.image_url)) {
+            BLOG(1, "Image URL for creative instance id "
+                        << creative_instance_id << " is unsupported");
             continue;
           }
           creative.payload.dimensions = payload["dimensions"].GetString();
           creative.payload.cta_text = payload["ctaText"].GetString();
           creative.payload.target_url = GURL(payload["targetUrl"].GetString());
-          if (!DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Failed to parse target URL for creative instance id "
-                        << creative_instance_id);
+          if (!ShouldSupportUrl(creative.payload.target_url)) {
+            BLOG(1, "Target URL for creative instance id "
+                        << creative_instance_id << " is unsupported");
             continue;
           }
+
+          creative_set.conversions.erase(
+              base::ranges::remove_if(
+                  creative_set.conversions,
+                  [&creative_set,
+                   &creative](const CatalogConversionInfo& conversion) {
+                    const GURL conversion_url_pattern =
+                        GURL(conversion.url_pattern);
+                    return conversion.creative_set_id == creative_set.id &&
+                           (!ShouldSupportUrl(conversion_url_pattern) ||
+                            !SameDomainOrHost(creative.payload.target_url,
+                                              conversion_url_pattern));
+                  }),
+              creative_set.conversions.cend());
 
           creative_set.creative_inline_content_ads.push_back(creative);
         } else if (code == "new_tab_page_all_v1") {
@@ -278,23 +313,49 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
           const auto& logo = payload["logo"].GetObject();
           creative.payload.company_name = logo["companyName"].GetString();
           creative.payload.image_url = GURL(logo["imageUrl"].GetString());
+          if (!ShouldSupportUrl(creative.payload.image_url)) {
+            BLOG(1, "Image URL for creative instance id "
+                        << creative_instance_id << " is unsupported");
+            continue;
+          }
           creative.payload.alt = logo["alt"].GetString();
           creative.payload.target_url =
               GURL(logo["destinationUrl"].GetString());
-          if (!DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Failed to parse target URL for creative instance id "
-                        << creative_instance_id);
+          if (!ShouldSupportUrl(creative.payload.target_url)) {
+            BLOG(1, "Target URL for creative instance id "
+                        << creative_instance_id << " is unsupported");
             continue;
           }
 
+          creative_set.conversions.erase(
+              base::ranges::remove_if(
+                  creative_set.conversions,
+                  [&creative_set,
+                   &creative](const CatalogConversionInfo& conversion) {
+                    const GURL conversion_url_pattern =
+                        GURL(conversion.url_pattern);
+                    return conversion.creative_set_id == creative_set.id &&
+                           (!ShouldSupportUrl(conversion_url_pattern) ||
+                            !SameDomainOrHost(creative.payload.target_url,
+                                              conversion_url_pattern));
+                  }),
+              creative_set.conversions.cend());
+
           for (const auto& wallerpaper_node :
                payload["wallpapers"].GetArray()) {
-            creative.payload.wallpapers.push_back(
-                CatalogNewTabPageAdWallpaperInfo{
-                    .image_url = GURL(wallerpaper_node["imageUrl"].GetString()),
-                    .focal_point = CatalogNewTabPageAdWallpaperFocalPointInfo{
-                        .x = wallerpaper_node["focalPoint"]["x"].GetInt(),
-                        .y = wallerpaper_node["focalPoint"]["y"].GetInt()}});
+            CatalogNewTabPageAdWallpaperInfo wallpaper;
+            wallpaper.image_url =
+                GURL(wallerpaper_node["imageUrl"].GetString());
+            if (!ShouldSupportUrl(wallpaper.image_url)) {
+              BLOG(1, "Image URL for creative instance id "
+                          << creative_instance_id << " is unsupported");
+              continue;
+            }
+            wallpaper.focal_point = CatalogNewTabPageAdWallpaperFocalPointInfo{
+                .x = wallerpaper_node["focalPoint"]["x"].GetInt(),
+                .y = wallerpaper_node["focalPoint"]["y"].GetInt()};
+
+            creative.payload.wallpapers.push_back(wallpaper);
           }
 
           if (creative.payload.wallpapers.empty()) {
@@ -321,11 +382,25 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
               .title = payload["title"].GetString(),
               .description = payload["description"].GetString(),
               .target_url = GURL(payload["feed"].GetString())};
-          if (!DoesSupportUrl(creative.payload.target_url)) {
-            BLOG(1, "Failed to parse target URL for creative instance id "
-                        << creative_instance_id);
+          if (!ShouldSupportUrl(creative.payload.target_url)) {
+            BLOG(1, "Target URL for creative instance id "
+                        << creative_instance_id << " is unsupported");
             continue;
           }
+
+          creative_set.conversions.erase(
+              base::ranges::remove_if(
+                  creative_set.conversions,
+                  [&creative_set,
+                   &creative](const CatalogConversionInfo& conversion) {
+                    const GURL conversion_url_pattern =
+                        GURL(conversion.url_pattern);
+                    return conversion.creative_set_id == creative_set.id &&
+                           (!ShouldSupportUrl(conversion_url_pattern) ||
+                            !SameDomainOrHost(creative.payload.target_url,
+                                              conversion_url_pattern));
+                  }),
+              creative_set.conversions.cend());
 
           creative_set.creative_promoted_content_ads.push_back(creative);
         } else {

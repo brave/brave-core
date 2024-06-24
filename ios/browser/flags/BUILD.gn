@@ -12,6 +12,7 @@ source_set("flags") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_wallet/common",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/common",

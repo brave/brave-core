@@ -38,14 +38,9 @@ class KeyringStoreTests: XCTestCase {
     keyringService._isWalletBackedUp = { $0(true) }
     keyringService._isWalletCreated = { $0(true) }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
+    let rpcService = MockJsonRpcService()
     rpcService._chainIdForOrigin = { $2(currentChainId) }
     rpcService._network = { $2(currentNetwork) }
-
-    rpcService._setNetwork = { _, _, _, completion in
-      completion(true)
-    }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }

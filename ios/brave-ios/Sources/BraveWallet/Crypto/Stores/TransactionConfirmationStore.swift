@@ -210,6 +210,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
       _onNewUnapprovedTx: { _ in
@@ -457,7 +458,16 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasBalancesForChain[account.id] = availableBTCBalance
       }
     } else {
-      if let gasTokenBalance = await rpcService.balance(for: token, in: account, network: network) {
+      if let assetBalance = assetManager.getBalances(
+        for: token,
+        account: account.id
+      )?.first(where: { $0.chainId == network.chainId }) {
+        gasBalancesForChain[account.id] = Double(assetBalance.balance) ?? 0
+      } else if let gasTokenBalance = await rpcService.balance(
+        for: token,
+        in: account,
+        network: network
+      ) {
         gasBalancesForChain[account.id] = gasTokenBalance
       }
     }
@@ -500,17 +510,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor private func fetchSolEstimatedTxFees(
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
-    for transaction in transactions where transaction.coin == .sol {
-      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.solanaTxFeeEstimation(
-        chainId: transaction.chainId,
-        txMetaId: transaction.id
-      )
-      let priorityFee =
-        UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
-        * BraveWallet.MicroLamportsPerLamport
-      let totalFee = solEstimatedTxFee.baseFee + priorityFee
-      self.solEstimatedTxFeeCache[transaction.id] = totalFee
-    }
+    let solTxs = transactions.filter { $0.coin == .sol }
+    let txFees = await solTxManagerProxy.solanaTxFeeEstimations(for: solTxs)
+    solEstimatedTxFeeCache.merge(with: txFees)
     updateTransaction(
       with: activeTransaction,
       shouldFetchCurrentAllowance: false,
@@ -992,4 +994,17 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 struct TransactionProviderError {
   let code: Int
   let message: String
+}
+
+extension TransactionConfirmationStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    updateTransaction(
+      with: activeTransaction,
+      shouldFetchCurrentAllowance: false,
+      shouldFetchGasTokenBalance: true
+    )
+  }
+
+  public func userAssetUpdated() {
+  }
 }

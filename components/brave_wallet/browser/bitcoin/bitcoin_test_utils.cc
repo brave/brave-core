@@ -13,6 +13,7 @@
 #include "base/strings/string_split.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -105,6 +106,13 @@ BitcoinTestRpcServer::BitcoinTestRpcServer() {
   url_loader_factory_.SetInterceptor(base::BindRepeating(
       &BitcoinTestRpcServer::RequestInterceptor, base::Unretained(this)));
 }
+
+BitcoinTestRpcServer::BitcoinTestRpcServer(
+    BitcoinWalletService* bitcoin_wallet_service)
+    : BitcoinTestRpcServer() {
+  bitcoin_wallet_service->SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
+}
+
 BitcoinTestRpcServer::~BitcoinTestRpcServer() = default;
 
 scoped_refptr<network::SharedURLLoaderFactory>

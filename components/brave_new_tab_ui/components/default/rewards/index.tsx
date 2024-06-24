@@ -6,12 +6,11 @@
 import * as React from 'react'
 
 import createWidget from '../widget/index'
-import { StyledTitleTab } from '../widgetTitleTab'
+import { StyledCard, StyledTitleTab } from '../widgetCard'
 
 import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/locale_context'
 import { createLocaleContextForWebUI } from '../../../../brave_rewards/resources/shared/lib/webui_locale_context'
 import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/shared/lib/provider_payout_status'
-import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
 import { userTypeFromString } from '../../../../brave_rewards/resources/shared/lib/user_type'
 import {
   optional
@@ -26,20 +25,10 @@ import {
 
 import {
   RewardsCard,
-  RewardsCardHeader
+  RewardsCardHeaderContent
 } from '../../../../brave_rewards/resources/shared/components/newtab'
 
 const locale = createLocaleContextForWebUI()
-
-export function RewardsContextAdapter (props: { children: React.ReactNode }) {
-  return (
-    <LocaleContext.Provider value={locale}>
-      <WithThemeVariables>
-        {props.children}
-      </WithThemeVariables>
-    </LocaleContext.Provider>
-  )
-}
 
 export interface RewardsProps {
   rewardsEnabled: boolean
@@ -67,11 +56,10 @@ export interface RewardsProps {
 export const RewardsWidget = createWidget((props: RewardsProps) => {
   if (!props.showContent) {
     return (
-      <StyledTitleTab
-        onClick={props.onShowContent}
-        stackPosition={props.stackPosition}
-      >
-        <RewardsCardHeader />
+      <StyledTitleTab onClick={props.onShowContent}>
+        <LocaleContext.Provider value={locale}>
+          <RewardsCardHeaderContent />
+        </LocaleContext.Provider>
       </StyledTitleTab>
     )
   }
@@ -110,33 +98,37 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
 
   const openRewardsPanel = () => {
     chrome.braveRewards.recordNTPPanelTrigger()
-    chrome.braveRewards.showRewardsSetup()
+    chrome.braveRewards.openRewardsPanel()
   }
 
   return (
-    <RewardsCard
-      rewardsEnabled={props.rewardsEnabled}
-      userType={userTypeFromString(props.userType)}
-      declaredCountry={props.declaredCountry}
-      needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
-      rewardsBalance={optional(props.balance)}
-      exchangeCurrency='USD'
-      exchangeRate={props.parameters.rate}
-      providerPayoutStatus={providerPayoutStatus()}
-      externalWallet={externalWallet}
-      nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
-      minEarningsThisMonth={adsInfo ? adsInfo.minEarningsThisMonth : 0}
-      maxEarningsThisMonth={adsInfo ? adsInfo.maxEarningsThisMonth : 0}
-      minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
-      maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
-      contributionsThisMonth={props.totalContribution}
-      showSelfCustodyInvite={showSelfCustodyInvite()}
-      isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
-      publishersVisited={props.publishersVisitedCount || 0}
-      onEnableRewards={openRewardsPanel}
-      onSelectCountry={openRewardsPanel}
-      onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
-      onTermsOfServiceUpdateAccepted={props.onTermsOfServiceUpdateAccepted}
-    />
+    <LocaleContext.Provider value={locale}>
+      <StyledCard>
+        <RewardsCard
+          rewardsEnabled={props.rewardsEnabled}
+          userType={userTypeFromString(props.userType)}
+          declaredCountry={props.declaredCountry}
+          needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
+          rewardsBalance={optional(props.balance)}
+          exchangeCurrency='USD'
+          exchangeRate={props.parameters.rate}
+          providerPayoutStatus={providerPayoutStatus()}
+          externalWallet={externalWallet}
+          nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
+          minEarningsThisMonth={adsInfo ? adsInfo.minEarningsThisMonth : 0}
+          maxEarningsThisMonth={adsInfo ? adsInfo.maxEarningsThisMonth : 0}
+          minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
+          maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
+          contributionsThisMonth={props.totalContribution}
+          showSelfCustodyInvite={showSelfCustodyInvite()}
+          isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
+          publishersVisited={props.publishersVisitedCount || 0}
+          onEnableRewards={openRewardsPanel}
+          onSelectCountry={openRewardsPanel}
+          onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
+          onTermsOfServiceUpdateAccepted={props.onTermsOfServiceUpdateAccepted}
+        />
+      </StyledCard>
+    </LocaleContext.Provider>
   )
 })

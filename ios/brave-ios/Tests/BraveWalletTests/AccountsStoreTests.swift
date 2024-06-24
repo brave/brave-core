@@ -163,24 +163,8 @@ import XCTest
         )
       )
     }
-    let rpcService = BraveWallet.TestJsonRpcService()
-    rpcService._addObserver = { _ in }
-    rpcService._allNetworks = {
-      $0(
-        [
-          .mockMainnet,
-          .mockSolana,
-          .mockFilecoinMainnet,
-          .mockFilecoinTestnet,
-          .mockBitcoinMainnet,
-          .mockBitcoinTestnet,
-        ]
-      )
-    }
-    rpcService._hiddenNetworks = {
-      $1([])
-    }
-
+    let rpcService = MockJsonRpcService()
+    rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { accountAddress, coin, chainId, completion in
       if coin == .eth,
         chainId == BraveWallet.MainnetChainId,
@@ -216,9 +200,6 @@ import XCTest
       } else if accountAddress == self.ethAccount2.address {
         completion(usdcAccount2BalanceWei, .success, "")
       }
-    }
-    rpcService._erc721TokenBalance = { _, _, _, _, completion in
-      completion("", .internalError, "")
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       if accountAddress == self.solAccount1.address {

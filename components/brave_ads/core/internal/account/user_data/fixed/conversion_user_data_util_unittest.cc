@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -39,16 +38,18 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
                                kVerifiableConversionAdvertiserPublicKey});
 
   // Act
-  const std::optional<base::Value::Dict> user_data =
+  const std::optional<base::Value::Dict> verifiable_conversion_user_data =
       MaybeBuildVerifiableConversionUserData(conversion);
-  ASSERT_TRUE(user_data);
+  ASSERT_TRUE(verifiable_conversion_user_data);
 
   // Assert
   std::string json;
-  ASSERT_TRUE(base::JSONWriter::Write(*user_data, &json));
-  const std::string pattern =
-      R"({"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}})";
-  EXPECT_TRUE(RE2::FullMatch(json, pattern));
+  ASSERT_TRUE(base::JSONWriter::Write(*verifiable_conversion_user_data, &json));
+
+  EXPECT_THAT(
+      json,
+      ::testing::MatchesRegex(
+          R"({"envelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":".{64}","epk":".{44}","nonce":".{32}"}})"));
 }
 
 TEST_F(BraveAdsConversionUserDataUtilTest,
@@ -74,13 +75,17 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   const ConversionInfo conversion =
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 
-  // Act & Assert
+  // Act
+  const base::Value::Dict user_data =
+      BuildConversionActionTypeUserData(conversion);
+
+  // Assert
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"(
                     {
                       "action": "view"
                     })"),
-            BuildConversionActionTypeUserData(conversion));
+            user_data);
 }
 
 }  // namespace brave_ads

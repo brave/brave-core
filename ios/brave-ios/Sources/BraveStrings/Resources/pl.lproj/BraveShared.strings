@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Skopiuj łącze";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Skopiuj informację o zakładkach do schowka.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Skopiuj do schowka";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Twoje połączenie z tą witryną nie jest bezpieczne.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Połączenie z witryną nie zostało zweryfikowane.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Nie można w pełni zweryfikować połączenia z tą witryną. Możesz kontynuować lub spróbować ponownie załadować stronę, aby nawiązać bezpieczne połączenie.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Wyświetl certyfikat";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Usuń konto Sync";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Brave i wyłączy synchronizację na wszystkich połączonych urządzeniach.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "To usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie zacząć używać aplikacji Sync, będzie trzeba utworzyć nowe konto i ponownie dodać każde urządzenie po kolei.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Coś poszło nie tak podczas wykrywania urządzeń w łańcuchu synchronizacji.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Usuń konto Sync";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Wygląda na to, że ten kod został utworzony na urządzeniu ze starszą wersją aplikacji Brave. Zaktualizuj Brave do najnowszej wersji na innym urządzeniu, a następnie utwórz nowy kod synchronizacji.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Urządzenia i ustawienia";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem z połączeniem";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Wybierz kategorię, która opisuje problem.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Brak dostępu do Internetu po połączeniu";

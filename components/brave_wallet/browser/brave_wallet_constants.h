@@ -45,6 +45,8 @@ inline constexpr char kSimpleHashUrl[] = "https://api.simplehash.com";
 inline constexpr char kSimpleHashBraveProxyUrl[] =
     "https://simplehash.wallet.brave.com";
 
+inline constexpr size_t kSimpleHashMaxBatchSize = 50;
+
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletGroupByCollection", IDS_BRAVE_WALLET_GROUP_BY_COLLECTION},
     {"braveWalletHideNotOwnedNfTs", IDS_BRAVE_WALLET_HIDE_NOT_OWNED_NF_TS},
@@ -53,8 +55,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_PRIVATE_KEY_IMPORT_TYPE},
     {"braveWalletEnterPasswordIfApplicable",
      IDS_BRAVE_WALLET_ENTER_PASSWORD_IF_APPLICABLE},
-    {"braveWalletAccountNameTooLongError",
-     IDS_BRAVE_WALLET_ACCOUNT_NAME_TOO_LONG_ERROR},
     {"braveWalletFoundIssues", IDS_BRAVE_WALLET_FOUND_ISSUES},
     {"braveWalletContract", IDS_BRAVE_WALLET_CONTRACT},
     {"braveWalletFoundRisks", IDS_BRAVE_WALLET_FOUND_RISKS},

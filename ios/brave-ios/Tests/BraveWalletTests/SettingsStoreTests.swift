@@ -37,7 +37,7 @@ class SettingsStoreTests: XCTestCase {
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }  // default is USD
     walletService._nftDiscoveryEnabled = { _ in }
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.ask) }
     rpcService._setEnsResolveMethod = { _ in }
     rpcService._ensOffchainLookupResolveMethod = { $0(.ask) }

@@ -52,13 +52,16 @@ TEST_F(BraveAdsAdContentValueUtilTest, FromValue) {
   // Arrange
   const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
 
-  // Act & Assert
+  // Act
+  const AdContentInfo ad_content = AdContentFromValue(dict);
+
+  // Assert
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad, kPlacementId);
-  const AdContentInfo expected_ad_content = BuildAdContent(
-      ad, ConfirmationType::kViewedImpression, kTitle, kDescription);
-  EXPECT_EQ(expected_ad_content, AdContentFromValue(dict));
+  EXPECT_EQ(BuildAdContent(ad, ConfirmationType::kViewedImpression, kTitle,
+                           kDescription),
+            ad_content);
 }
 
 TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {
@@ -69,8 +72,11 @@ TEST_F(BraveAdsAdContentValueUtilTest, ToValue) {
   const AdContentInfo ad_content = BuildAdContent(
       ad, ConfirmationType::kViewedImpression, kTitle, kDescription);
 
-  // Act & Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kJson), AdContentToValue(ad_content));
+  // Act
+  const base::Value::Dict dict = AdContentToValue(ad_content);
+
+  // Assert
+  EXPECT_EQ(base::test::ParseJsonDict(kJson), dict);
 }
 
 }  // namespace brave_ads

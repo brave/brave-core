@@ -57,6 +57,7 @@ class Uploader {
   void UploadLog(const std::string& compressed_log_data,
                  const std::string& upload_type,
                  bool is_constellation,
+                 bool is_nebula,
                  MetricLogType log_type);
 
   void OnUploadComplete(bool is_constellation,

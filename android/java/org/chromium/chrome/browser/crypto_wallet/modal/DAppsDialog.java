@@ -26,7 +26,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -147,7 +147,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
         if (mKeyringService != null) {
             return;
         }
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+        mKeyringService = BraveWalletServiceFactory.getInstance().getKeyringService(this);
     }
 
     private static int getDialogThemeGravity(@DAppsDialogStyle int mStyle) {

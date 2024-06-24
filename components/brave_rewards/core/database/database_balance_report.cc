@@ -176,7 +176,7 @@ void DatabaseBalanceReport::GetRecord(
   if (month == mojom::ActivityMonth::ANY || year == 0) {
     engine_->Log(FROM_HERE)
         << "Record size is not correct " << month << "/" << year;
-    return std::move(callback).Run(mojom::Result::FAILED, {});
+    return std::move(callback).Run(mojom::Result::FAILED, nullptr);
   }
 
   auto transaction = mojom::DBTransaction::New();
@@ -227,13 +227,13 @@ void DatabaseBalanceReport::OnGetRecord(
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     engine_->LogError(FROM_HERE) << "Response is wrong";
-    return std::move(callback).Run(mojom::Result::FAILED, {});
+    return std::move(callback).Run(mojom::Result::FAILED, nullptr);
   }
 
   if (response->result->get_records().size() != 1) {
     engine_->Log(FROM_HERE) << "Record size is not correct: "
                             << response->result->get_records().size();
-    return std::move(callback).Run(mojom::Result::FAILED, {});
+    return std::move(callback).Run(mojom::Result::FAILED, nullptr);
   }
 
   auto* record = response->result->get_records()[0].get();

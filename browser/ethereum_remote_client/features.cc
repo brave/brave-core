@@ -7,12 +7,10 @@
 
 #include "base/feature_list.h"
 
-namespace ethereum_remote_client {
-namespace features {
+namespace ethereum_remote_client::features {
 
 BASE_FEATURE(kCryptoWalletsForNewInstallsFeature,
              "CryptoWalletsForNewInstallsFeature",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace ethereum_remote_client
+}  // namespace ethereum_remote_client::features

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
+#include "base/check_is_test.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_android.h"
@@ -53,6 +54,7 @@ PlatformType PlatformHelper::GetType() const {
 // static
 const PlatformHelper& PlatformHelper::GetInstance() {
   if (g_platform_helper_for_testing) {
+    CHECK_IS_TEST();
     return *g_platform_helper_for_testing;
   }
 

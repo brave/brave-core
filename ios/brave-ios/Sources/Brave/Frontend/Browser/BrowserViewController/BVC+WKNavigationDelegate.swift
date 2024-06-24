@@ -329,6 +329,22 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.currentPageData = PageData(mainFrameURL: mainDocumentURL)
       }
 
+      // Handle the "forget me" feature on navigation
+      if let tab = tab, navigationAction.targetFrame?.isMainFrame == true {
+        // Cancel any forget data requests
+        tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
+
+        // Forget any websites that have "forget me" enabled
+        // if we navigated away from the previous domain
+        if let currentURL = tab.url,
+          !InternalURL.isValid(url: currentURL),
+          let currentETLDP1 = currentURL.baseDomain,
+          mainDocumentURL.baseDomain != currentETLDP1
+        {
+          tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
+        }
+      }
+
       let domainForMainFrame = Domain.getOrCreate(
         forUrl: mainDocumentURL,
         persistent: !isPrivateBrowsing
@@ -433,10 +449,17 @@ extension BrowserViewController: WKNavigationDelegate {
           return (.cancel, preferences)
         }
 
+        let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+        let adsBlockingShieldUp = domain.isShieldExpected(
+          .adblockAndTp,
+          considerAllShieldsOption: true
+        )
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
-          isPrivateBrowsing: isPrivateBrowsing
+          isPrivateBrowsing: isPrivateBrowsing,
+          isAggressiveAdsBlocking: domain.blockAdsAndTrackingLevel.isAggressive
+            && adsBlockingShieldUp
         )
       }
 
@@ -527,7 +550,7 @@ extension BrowserViewController: WKNavigationDelegate {
         )
 
         // Load rule lists
-        let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domainForShields)
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
         tab?.contentBlocker.set(ruleLists: ruleLists)
       }
 

@@ -13,8 +13,7 @@
 #include "brave/components/sidebar/common/features.h"
 #include "components/prefs/pref_service.h"
 
-namespace sidebar {
-namespace p3a {
+namespace sidebar::p3a {
 
 SidebarP3A::SidebarP3A(PrefService* profile_prefs)
     : profile_prefs_(profile_prefs) {
@@ -75,5 +74,4 @@ void SidebarP3A::RecordEnabledSetting(bool setting_changed) {
                                 setting_change_answer, 3);
 }
 
-}  // namespace p3a
-}  // namespace sidebar
+}  // namespace sidebar::p3a

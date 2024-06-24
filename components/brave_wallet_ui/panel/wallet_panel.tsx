@@ -18,7 +18,9 @@ import store, { walletPanelApiProxy } from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
 import { ApiProxyContext } from '../common/context/api-proxy.context'
-import { removeDeprecatedLocalStorageKeys } from '../common/constants/local-storage-keys'
+import {
+  runLocalStorageMigrations //
+} from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
 
 function App() {
@@ -29,7 +31,7 @@ function App() {
   }, [])
 
   React.useEffect(() => {
-    removeDeprecatedLocalStorageKeys()
+    runLocalStorageMigrations()
   }, [])
 
   return (

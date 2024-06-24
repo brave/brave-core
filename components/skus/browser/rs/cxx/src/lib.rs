@@ -445,7 +445,7 @@ async fn refresh_order_task(
         .map_err(|e| e.into())
     {
         Ok(order) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, &order),
-        Err(e) => callback.pin_mut().Run(e),
+        Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }
 

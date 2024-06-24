@@ -828,7 +828,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         contractAddress: '',
         isErc721: false,
         isNft: false,
-        tokenId: ''
+        tokenId: '',
+        isCompressed: false
       }
 
   const nonNativeTokens = (arg.tokens ?? []).filter(

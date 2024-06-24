@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
@@ -72,10 +73,13 @@ void PushNotification(content::BrowserContext* context,
 namespace brave_wallet {
 
 WalletNotificationService::WalletNotificationService(
-    TxService* tx_service,
+    BraveWalletService* brave_wallet_service,
     content::BrowserContext* context)
     : context_(context) {
-  tx_service->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
+  if (brave_wallet_service) {
+    brave_wallet_service->tx_service()->AddObserver(
+        tx_observer_receiver_.BindNewPipeAndPassRemote());
+  }
 }
 
 WalletNotificationService::~WalletNotificationService() = default;

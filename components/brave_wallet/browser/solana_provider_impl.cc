@@ -43,23 +43,20 @@ constexpr char kOptions[] = "options";
 
 SolanaProviderImpl::SolanaProviderImpl(
     HostContentSettingsMap& host_content_settings_map,
-    KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
-    TxService* tx_service,
-    JsonRpcService* json_rpc_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate)
     : host_content_settings_map_(host_content_settings_map),
-      keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
-      tx_service_(tx_service),
-      json_rpc_service_(json_rpc_service),
+      keyring_service_(brave_wallet_service->keyring_service()),
+      tx_service_(brave_wallet_service->tx_service()),
+      json_rpc_service_(brave_wallet_service->json_rpc_service()),
       delegate_(std::move(delegate)),
       weak_factory_(this) {
   DCHECK(keyring_service_);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 
-  DCHECK(tx_service);
+  DCHECK(tx_service_);
   tx_service_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
   host_content_settings_map_observation_.Observe(&*host_content_settings_map_);
 }

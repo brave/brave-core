@@ -132,18 +132,18 @@ TEST(BlockchainListParseUnitTest, ParseTokenList) {
   auto wrapped_sol = mojom::BlockchainToken::New(
       "So11111111111111111111111111111111111111112", "Wrapped SOL",
       "So11111111111111111111111111111111111111112.png", false, false, false,
-      mojom::SPLTokenProgram::kToken, false, false, "SOL", 9, true, "",
+      false, mojom::SPLTokenProgram::kToken, false, false, "SOL", 9, true, "",
       "solana", "0x65", mojom::CoinType::SOL);
   auto usdc = mojom::BlockchainToken::New(
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "USD Coin",
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png", false, false, false,
-      mojom::SPLTokenProgram::kToken, false, false, "USDC", 6, true, "",
+      false, mojom::SPLTokenProgram::kToken, false, false, "USDC", 6, true, "",
       "usd-coin", "0x65", mojom::CoinType::SOL);
   auto tsla = mojom::BlockchainToken::New(
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "Tesla Inc.",
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png", false, false, false,
-      mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true, "", "",
-      "0x65", mojom::CoinType::SOL);
+      false, mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true,
+      "", "", "0x65", mojom::CoinType::SOL);
   std::vector<mojom::BlockchainTokenPtr> solana_token_list;
   solana_token_list.push_back(std::move(tsla));
   solana_token_list.push_back(std::move(usdc));
@@ -186,6 +186,8 @@ TEST(BlockchainListParseUnitTest, ParseChainList) {
       "rpc": [
         "https://mainnet.infura.io/v3/${INFURA_API_KEY}",
         "wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}",
+        "http://api.com/eth",
+        "http://127.0.0.1:5566/eth",
         "https://api.mycryptoapi.com/eth",
         "https://cloudflare-eth.com"
       ],
@@ -201,6 +203,16 @@ TEST(BlockchainListParseUnitTest, ParseChainList) {
         {
           "name": "etherscan",
           "url": "https://etherscan.io",
+          "standard": "EIP3091"
+        },
+        {
+          "name": "invalid http",
+          "url": "http://test.com",
+          "standard": "EIP3091"
+        },
+        {
+          "name": "localhost",
+          "url": "http://localhost:8080",
           "standard": "EIP3091"
         }
       ]
@@ -245,12 +257,13 @@ TEST(BlockchainListParseUnitTest, ParseChainList) {
   EXPECT_THAT(
       chain1->rpc_endpoints,
       ElementsAreArray({GURL("https://mainnet.infura.io/v3/${INFURA_API_KEY}"),
-                        GURL("wss://mainnet.infura.io/ws/v3/${INFURA_API_KEY}"),
+                        GURL("http://127.0.0.1:5566/eth"),
                         GURL("https://api.mycryptoapi.com/eth"),
                         GURL("https://cloudflare-eth.com")}));
-  EXPECT_EQ(2, chain1->active_rpc_endpoint_index);
-  EXPECT_THAT(chain1->block_explorer_urls,
-              ElementsAreArray({"https://etherscan.io"}));
+  EXPECT_EQ(1, chain1->active_rpc_endpoint_index);
+  EXPECT_THAT(
+      chain1->block_explorer_urls,
+      ElementsAreArray({"https://etherscan.io", "http://localhost:8080"}));
   EXPECT_EQ("Ether", chain1->symbol_name);
   EXPECT_EQ("ETH", chain1->symbol);
   EXPECT_EQ(18, chain1->decimals);

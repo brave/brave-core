@@ -13,27 +13,31 @@
 namespace brave_ads {
 
 TEST(BraveAdsPurchaseIntentKeyphraseParserTest, ParseKeyphrase) {
-  // Act & Assert
-  const KeywordList expected_keywords = {"audi rs6", "automobile"};
+  // Act
+  const KeywordList keywords = ParseKeyphrase(R"("Audi RS6" Automobile)");
 
-  EXPECT_THAT(
-      expected_keywords,
-      ::testing::ElementsAreArray(ParseKeyphrase(R"("Audi RS6" Automobile)")));
+  // Assert
+  const KeywordList expected_keywords = {"audi rs6", "automobile"};
+  EXPECT_EQ(expected_keywords, keywords);
 }
 
 TEST(BraveAdsPurchaseIntentKeyphraseParserTest,
      ParsePurchaseIntentKeyphraseStrippingWhitespace) {
-  // Act & Assert
-  const KeywordList expected_keywords = {"mercedes amg e63s", "automobile"};
+  // Act
+  const KeywordList keywords =
+      ParseKeyphrase(R"("  Mercedes AMG E63S "  Automobile  )");
 
-  EXPECT_THAT(expected_keywords,
-              ::testing::ElementsAreArray(
-                  ParseKeyphrase(R"("  Mercedes AMG E63S "  Automobile  )")));
+  // Assert
+  const KeywordList expected_keywords = {"mercedes amg e63s", "automobile"};
+  EXPECT_EQ(expected_keywords, keywords);
 }
 
 TEST(BraveAdsPurchaseIntentKeyphraseParserTest, ParseEmptyKeyphrase) {
-  // Act & Asysert
-  EXPECT_THAT(ParseKeyphrase(""), ::testing::IsEmpty());
+  // Act
+  const KeywordList keywords = ParseKeyphrase("");
+
+  // Assert
+  EXPECT_THAT(keywords, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

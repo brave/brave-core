@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import DesignSystem
 import SpeechRecognition
 import SwiftUI
@@ -17,19 +18,53 @@ struct AIChatPromptInputView: View {
   @State
   private var isNoMicrophonePermissionPresented = false
 
-  @State
-  private var prompt: String = ""
+  @Binding
+  private var prompt: String
+
+  @Binding
+  var isShowingSlashTools: Bool
+
+  @Binding
+  var slashToolsOption:
+    (
+      group: AiChat.ActionGroup,
+      entry: AiChat.ActionEntry
+    )?
 
   var onSubmit: (String) -> Void
 
-  init(speechRecognizer: SpeechRecognizer, onSubmit: @escaping (String) -> Void) {
+  init(
+    prompt: Binding<String>,
+    speechRecognizer: SpeechRecognizer,
+    isShowingSlashTools: Binding<Bool>,
+    slashToolsOption: Binding<
+      (
+        group: AiChat.ActionGroup,
+        entry: AiChat.ActionEntry
+      )?
+    >,
+    onSubmit: @escaping (String) -> Void
+  ) {
+    self._prompt = prompt
     self.speechRecognizer = speechRecognizer
+    self._isShowingSlashTools = isShowingSlashTools
+    self._slashToolsOption = slashToolsOption
     self.onSubmit = onSubmit
   }
 
   var body: some View {
-    HStack(spacing: 0.0) {
-      AIChatPaddedTextField(
+    VStack(alignment: .leading, spacing: 0.0) {
+      if let slashToolsOption = slashToolsOption {
+        Button {
+          self.slashToolsOption = nil
+        } label: {
+          AIChatSlashToolsLabel(group: slashToolsOption.group, entry: slashToolsOption.entry)
+            .padding([.leading, .trailing, .top])
+            .frame(alignment: .leading)
+        }
+      }
+
+      AIChatPaddedTextView(
         Strings.AIChat.promptPlaceHolderDescription,
         text: $prompt,
         textColor: UIColor(braveSystemName: .textPrimary),
@@ -37,42 +72,79 @@ struct AIChatPromptInputView: View {
         promptColor: UIColor(braveSystemName: .textTertiary),
         font: .preferredFont(forTextStyle: .subheadline),
         submitLabel: .send,
+        onBackspace: { wasEmpty in
+          if wasEmpty {
+            isShowingSlashTools = false
+            slashToolsOption = nil
+          }
+        },
+        onTextChanged: { text in
+          if text.hasPrefix("/") {
+            isShowingSlashTools = true
+          } else {
+            isShowingSlashTools = false
+          }
+        },
         onSubmit: {
           if !prompt.isEmpty {
             onSubmit(prompt)
             prompt = ""
           }
         },
-        insets: .init(width: 16.0, height: 16.0)
+        insets: UIEdgeInsets(top: 16.0, left: 15.0, bottom: 0.0, right: 16.0)
       )
+      .padding(.top, slashToolsOption == nil ? 8.0 : 0.0)
 
-      if prompt.isEmpty {
-        Button {
-          Task { @MainActor in
-            await activateSpeechRecognition()
+      HStack(spacing: 0.0) {
+        Button(
+          action: {
+            isShowingSlashTools.toggle()
+          },
+          label: {
+            Label {
+              Text(Strings.AIChat.leoSlashToolsButtonAccessibilityTitle)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+            } icon: {
+              Image(braveSystemName: "leo.slash")
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .padding(.horizontal, 1.0)
+                .padding(.vertical, 4.0)
+                .padding([.leading, .trailing, .bottom])
+            }
+            .labelStyle(.iconOnly)
           }
-        } label: {
-          Label {
-            Text(Strings.AIChat.voiceInputButtonTitle)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
-          } icon: {
-            Image(braveSystemName: "leo.microphone")
+        )
+
+        Spacer()
+
+        if prompt.isEmpty {
+          Button {
+            Task { @MainActor in
+              await activateSpeechRecognition()
+            }
+          } label: {
+            Label {
+              Text(Strings.AIChat.voiceInputButtonTitle)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+            } icon: {
+              Image(braveSystemName: "leo.microphone")
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
+                .padding([.leading, .trailing, .bottom])
+            }
+            .labelStyle(.iconOnly)
+          }
+          .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
+          .disabled(!speechRecognizer.isVoiceSearchAvailable)
+          .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
+        } else {
+          Button {
+            onSubmit(prompt)
+            prompt = ""
+          } label: {
+            Image(braveSystemName: "leo.send")
               .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .padding()
+              .padding([.leading, .trailing, .bottom])
           }
-          .labelStyle(.iconOnly)
-        }
-        .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
-        .disabled(!speechRecognizer.isVoiceSearchAvailable)
-        .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
-      } else {
-        Button {
-          onSubmit(prompt)
-          prompt = ""
-        } label: {
-          Image(braveSystemName: "leo.send")
-            .foregroundStyle(Color(braveSystemName: .iconDefault))
-            .padding()
         }
       }
     }
@@ -110,7 +182,16 @@ struct AIChatPromptInputView: View {
 #if DEBUG
 struct AIChatPromptInputView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
+    let entry = AiChat.ActionEntry(details: .init(label: "Professional", type: .academicize))
+
+    let group = AiChat.ActionGroup(category: "Change Tone", entries: [entry])
+
+    AIChatPromptInputView(
+      prompt: .constant(""),
+      speechRecognizer: SpeechRecognizer(),
+      isShowingSlashTools: .constant(false),
+      slashToolsOption: .constant((group, entry))
+    ) {
       print("Prompt Submitted: \($0)")
     }
     .previewLayout(.sizeThatFits)

@@ -42,8 +42,11 @@ describe('useAccountQuery', () => {
     expect(hook.result.current.account).not.toBeDefined()
 
     // loading
-    await waitFor(() => !hook.result.current.isLoading)
-    await waitFor(() => hook.result.current.account)
+    await waitFor(() =>
+      expect(
+        !hook.result.current.isLoading && hook.result.current.account
+      ).toBeTruthy()
+    )
 
     // loaded
     expect(hook.result.current.isLoading).toBe(false)

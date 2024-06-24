@@ -5,10 +5,12 @@
 
 import BraveCore
 import BraveShared
+import BraveShields
 import BraveUI
 import Combine
 import Data
 import LocalAuthentication
+import Lottie
 import Preferences
 import Shared
 import SnapKit
@@ -136,7 +138,7 @@ class TabTrayController: AuthenticationController {
   }
 
   let newTabButton = UIButton(type: .system).then {
-    $0.setImage(UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
     $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
     $0.accessibilityIdentifier = "TabTrayController.addTabButton"
     $0.contentEdgeInsets = .init(
@@ -173,6 +175,19 @@ class TabTrayController: AuthenticationController {
       $0.alpha = 0
     }
   }
+
+  lazy var shredButton: UIButton = {
+    var button = UIButton(frame: .zero)
+    button.setImage(UIImage(braveSystemNamed: "leo.shred.data"), for: .normal)
+    button.tintColor = .bravePrimary
+    button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+    button.titleLabel?.adjustsFontForContentSizeCategory = true
+    button.contentHorizontalAlignment = .right
+    button.titleLabel?.adjustsFontSizeToFitWidth = true
+    button.accessibilityLabel = Strings.Shields.shredSitesData
+    button.accessibilityIdentifier = "TabTrayController.shredButton"
+    return button
+  }()
 
   private var searchBarView: TabTraySearchBar?
   let tabTraySearchController = UISearchController(searchResultsController: nil)
@@ -346,6 +361,7 @@ class TabTrayController: AuthenticationController {
     reloadOpenTabsSession()
     updateColors()
 
+    shredButton.addTarget(self, action: #selector(shredButtonPressed), for: .touchUpInside)
     becomeFirstResponder()
   }
 
@@ -386,6 +402,15 @@ class TabTrayController: AuthenticationController {
     contentStackView.addArrangedSubview(tabContentView)
 
     containerView.addSubview(contentStackView)
+
+    if FeatureList.kBraveShredFeature.enabled {
+      containerView.addSubview(shredButton)
+
+      shredButton.snp.makeConstraints { make in
+        make.trailing.equalTo(containerView.readableContentGuide)
+        make.centerY.equalTo(tabTypeSelector)
+      }
+    }
 
     contentStackView.snp.makeConstraints {
       $0.edges.equalTo(containerView.safeAreaLayoutGuide)
@@ -468,6 +493,10 @@ class TabTrayController: AuthenticationController {
       $0.compactAppearance = navBarAppearance
       $0.scrollEdgeAppearance = navBarAppearance
     }
+
+    shredButton.tintColor = browserColors.textPrimary
+    shredButton.isHidden = tabManager.selectedTab == nil && tabTrayMode == .local
+    shredButton.isEnabled = tabManager.selectedTab != nil || tabTrayMode == .local
 
     // Need to force a relayout for the nav controller for the appearance to take affect
     navigationController?.view.setNeedsLayout()
@@ -672,6 +701,21 @@ class TabTrayController: AuthenticationController {
     }
 
     delegate?.didCreateTab()
+  }
+
+  @objc func shredButtonPressed() {
+    let alert = UIAlertController.shredDataAlert { _ in
+      guard let tab = self.tabManager.selectedTab else { return }
+      guard let url = tab.url else { return }
+      LottieAnimationView.showShredAnimation(
+        on: self.navigationController?.view ?? self.view
+      ) { [weak self] in
+        self?.tabManager.shredData(for: url, in: tab)
+        self?.refreshDataSource()
+        self?.tabTrayView.collectionView.reloadData()
+      }
+    }
+    present(alert, animated: true)
   }
 
   @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {

@@ -344,8 +344,7 @@ interface WalletAutoPinService {
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PanelHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
-  CreatePanelHandler(pending_remote<Page> page,
-                     pending_receiver<PanelHandler> panel_handler,
+  CreatePanelHandler(pending_receiver<PanelHandler> panel_handler,
                      pending_receiver<WalletHandler> wallet_handler,
                      pending_receiver<JsonRpcService> json_rpc_service,
                      pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
@@ -373,8 +372,7 @@ interface PanelHandlerFactory {
 
 interface PageHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
-  CreatePageHandler(pending_remote<Page> page,
-                    pending_receiver<PageHandler> page_handler,
+  CreatePageHandler(pending_receiver<PageHandler> page_handler,
                     pending_receiver<WalletHandler> wallet_handler,
                     pending_receiver<JsonRpcService> json_rpc_service,
                     pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
@@ -945,6 +943,7 @@ struct BlockchainToken {
   string contract_address;
   string name;
   string logo;
+  bool is_compressed = false; // Solana NFTs only
   bool is_erc20;
   bool is_erc721;
   bool is_erc1155;
@@ -966,10 +965,6 @@ struct AllowanceInfo {
   string approver_address;
   string spender_address;
   string amount;
-};
-
-// WebUI-side handler for requests from the browser.
-interface Page {
 };
 
 interface KeyringServiceObserver {
@@ -1293,6 +1288,10 @@ const string kSolanaToken2022ProgramId =
 const string kSolanaAssociatedTokenProgramId = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 const string kSolanaSysvarRentProgramId = "SysvarRent111111111111111111111111111111111";
 const string kSolanaMetadataProgramId = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s";
+const string kSolanaBubbleGumProgramId =
+  "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY";
+const string kSolanaAccountCompressionProgramId =
+  "cmtDvXumGCrqC1Age74AVPhSRVXJMd8PJS91L8KbNCK";
 const string kSolanaConfigProgramId =
   "Config1111111111111111111111111111111111111";
 const string kSolanaStakeProgramId =
@@ -1444,6 +1443,34 @@ struct AnkrAssetBalance {
   string price_usd;
 };
 
+struct NftAttribute {
+  string trait_type;
+  string value;
+};
+
+struct NftMetadata {
+  // "Official" metadata fields as per OpenSea
+  // https://docs.opensea.io/docs/metadata-standards#metadata-structure.
+  string name;
+  string description;
+  string image;
+  string image_data;
+  string external_url;
+  array<NftAttribute> attributes;
+  string background_color;
+  string animation_url;
+  string youtube_url;
+
+  // Other metadata fields
+  string collection;
+};
+
+struct NftIdentifier {
+  string chain_id;
+  string contract_address;
+  string token_id;
+};
+
 // Deals with the ETH JSON RPC API, as well as things like the user's current
 // network.
 interface JsonRpcService {
@@ -1593,6 +1620,20 @@ interface JsonRpcService {
                             string token_mint_address, string chain_id) =>
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
+
+  // Returns the metadata json associated with the NFT. Uses the SimpleHash API, not
+  // the JSON RPC API. Callers should only supply NFT identifiers owned by a single
+  // account at a time.
+  GetNftMetadatas(CoinType coin,
+                   array<NftIdentifier> nft_identifiers) => (array<NftMetadata> metadatas,
+                                                             string error_message);
+
+  // Returns the balances of the list of NFTs for the owner using the SimpleHash API.
+  GetNftBalances(string wallet_address,
+                 array<NftIdentifier> nft_identifiers,
+                 CoinType coin) => (array<uint64> balances,
+                                    string error_message);
+
   // Returns the metadata json associated with the NFT account address
   GetSolTokenMetadata(string chain_id, string token_mint_address)
     => (string token_url, string response, SolanaProviderError error,
@@ -1725,6 +1766,7 @@ enum TransactionType {
   SolanaDappSignTransaction = 12,
   SolanaSwap = 13,
   ETHFilForwarderTransfer = 14, // Used to send from FEVM to FVM
+  SolanaCompressedNftTransfer = 15,
 };
 
 struct FilTxData {
@@ -1969,6 +2011,13 @@ interface SolanaTxManagerProxy {
       string encoded_transaction,
       TransactionType tx_type,
       SolanaSendTransactionOptions? send_options)
+      => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
+
+  MakeBubbleGumProgramTransferTxData(
+      string chain_id,
+      string token_address,
+      string from_wallet_address,
+      string to_wallet_address)
       => (SolanaTxData? tx_data, SolanaProviderError error, string error_message);
 };
 

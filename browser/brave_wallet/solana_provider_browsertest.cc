@@ -15,9 +15,6 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -332,8 +329,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
  public:
   SolanaProviderTest()
       : https_server_for_files_(net::EmbeddedTestServer::TYPE_HTTPS),
-        https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {
-  }
+        https_server_for_rpc_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   ~SolanaProviderTest() override = default;
 
@@ -354,13 +350,11 @@ class SolanaProviderTest : public InProcessBrowserTest {
     brave_wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
-    keyring_service_ =
-        KeyringServiceFactory::GetServiceForContext(browser()->profile());
-    json_rpc_service_ =
-        JsonRpcServiceFactory::GetServiceForContext(browser()->profile());
+    json_rpc_service_ = brave_wallet_service_->json_rpc_service();
+    keyring_service_ = brave_wallet_service_->keyring_service();
     AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
         ->EnableDummyPricesForTesting();
-    tx_service_ = TxServiceFactory::GetServiceForContext(browser()->profile());
+    tx_service_ = brave_wallet_service_->tx_service();
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     StartRPCServer(base::BindRepeating(&SolanaProviderTest::HandleRequest,

@@ -30,7 +30,7 @@ import XCTest
   func testLookupWithENSDomainAsk() async {
     let domain = "braveexample.eth"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.ask) }
     rpcService._ensGetContentHash = { _, completion in
       completion([], false, .success, "")
@@ -60,7 +60,7 @@ import XCTest
     let domain = "braveexample.eth"
     let resolvedURL = URL(string: "ipfs://braveexampleeth")!
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.enabled) }
     rpcService._ensGetContentHash = { _, completion in
       let contentHash = (0..<10).map { NSNumber(value: $0) }
@@ -95,7 +95,7 @@ import XCTest
   func testLookupWithENSDomainDisabled() async {
     let domain = "braveexample.eth"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.disabled) }
     rpcService._ensGetContentHash = { _, completion in
       completion([], false, .success, "")
@@ -120,7 +120,7 @@ import XCTest
   func testLookupWithENSOffchainDomainAsk() async {
     let domain = "braveoffchainexample.eth"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.enabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.ask) }
     rpcService._ensGetContentHash = { _, completion in
@@ -152,7 +152,7 @@ import XCTest
     let domain = "braveoffchainexample.eth"
     let resolvedURL = URL(string: "ipfs://braveoffchainexampleeth")!
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.enabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.enabled) }
     rpcService._ensGetContentHash = { _, completion in
@@ -188,7 +188,7 @@ import XCTest
   func testLookupWithENSOffchainDomainDisabled() async {
     let domain = "braveoffchainexample.eth"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.enabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.disabled) }
     rpcService._ensGetContentHash = { _, completion in
@@ -214,7 +214,7 @@ import XCTest
   func testLookupWithSNSDomainAsk() async {
     let domain = "braveexample.sol"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._snsResolveMethod = { $0(.ask) }
     rpcService._snsResolveHost = { _, completion in
       completion(nil, .internalError, "")
@@ -244,7 +244,7 @@ import XCTest
     let domain = "braveexample.sol"
     let resolvedURL = URL(string: "https://brave.com")!
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._snsResolveMethod = { $0(.enabled) }
     rpcService._snsResolveHost = { _, completion in
       completion(resolvedURL, .success, "")
@@ -273,7 +273,7 @@ import XCTest
   func testLookupWithSNSDomainDisabled() async {
     let domain = "braveexample.sol"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._snsResolveMethod = { $0(.disabled) }
     rpcService._snsResolveHost = { _, completion in
       completion(nil, .internalError, "")
@@ -298,7 +298,7 @@ import XCTest
   func testLookupWithUnstoppableDomainsDomainAsk() async {
     let domain = "braveexample.crypto"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._unstoppableDomainsResolveMethod = { $0(.ask) }
     rpcService._unstoppableDomainsResolveDns = { _, completion in
       completion(nil, .internalError, "")
@@ -328,7 +328,7 @@ import XCTest
     let domain = "braveexample.crypto"
     let resolvedURL = URL(string: "https://brave.com")!
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._unstoppableDomainsResolveMethod = { $0(.enabled) }
     rpcService._unstoppableDomainsResolveDns = { _, completion in
       completion(resolvedURL, .success, "")
@@ -357,7 +357,7 @@ import XCTest
   func testLookupWithUnstoppableDomainsDomainDisabled() async {
     let domain = "braveexample.crypto"
 
-    let rpcService = BraveWallet.TestJsonRpcService()
+    let rpcService = MockJsonRpcService()
     rpcService._unstoppableDomainsResolveMethod = { $0(.disabled) }
     rpcService._unstoppableDomainsResolveDns = { _, completion in
       completion(nil, .internalError, "")

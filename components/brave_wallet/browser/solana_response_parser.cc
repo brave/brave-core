@@ -21,32 +21,6 @@ namespace brave_wallet {
 
 namespace {
 
-bool GetUint64FromDictValue(const base::Value::Dict& dict_value,
-                            const std::string& key,
-                            bool nullable,
-                            uint64_t* ret) {
-  if (!ret) {
-    return false;
-  }
-
-  const base::Value* value = dict_value.Find(key);
-  if (!value) {
-    return false;
-  }
-
-  if (nullable && value->is_none()) {
-    *ret = 0;
-    return true;
-  }
-
-  auto* string_value = value->GetIfString();
-  if (!string_value || string_value->empty()) {
-    return false;
-  }
-
-  return base::StringToUint64(*string_value, ret);
-}
-
 mojom::SPLTokenAmountPtr ParseAmountDict(const base::Value::Dict& value) {
   auto* amount = value.FindString("amount");
   if (!amount) {

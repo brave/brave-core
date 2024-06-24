@@ -16,8 +16,10 @@
 #include "base/memory/raw_ref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
 namespace brave_news {
 

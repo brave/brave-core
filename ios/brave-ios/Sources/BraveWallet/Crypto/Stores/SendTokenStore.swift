@@ -226,6 +226,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _selectedWalletAccountChanged: { [weak self] _ in
@@ -392,12 +393,19 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         }
         self.btcBalances[selectedAccount.id] = btcBalances
       } else {
-        balance = await self.rpcService.balance(
+        if let assetBalance = self.assetManager.getBalances(
           for: selectedSendToken,
-          in: selectedAccount.address,
-          network: network,
-          decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
-        )
+          account: selectedAccount.id
+        )?.first {
+          balance = BDouble(assetBalance.balance)
+        } else {
+          balance = await self.rpcService.balance(
+            for: selectedSendToken,
+            in: selectedAccount.address,
+            network: network,
+            decimalFormatStyle: .decimals(precision: Int(selectedSendToken.decimals))
+          )
+        }
       }
 
       if selectedSendToken.isErc721 || selectedSendToken.isNft,
@@ -915,5 +923,14 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     tokens: [BraveWallet.BlockchainToken]
   ) async -> [String: NFTMetadata] {
     return await rpcService.fetchNFTMetadata(tokens: tokens, ipfsApi: ipfsApi)
+  }
+}
+
+extension SendTokenStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+    update()
+  }
+
+  public func userAssetUpdated() {
   }
 }

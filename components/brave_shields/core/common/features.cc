@@ -7,8 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace brave_shields {
-namespace features {
+namespace brave_shields::features {
 
 BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
              "AdBlockDefaultResourceUpdateInterval",
@@ -85,6 +84,10 @@ BASE_FEATURE(kBraveExtensionNetworkBlocking,
 BASE_FEATURE(kBraveReduceLanguage,
              "BraveReduceLanguage",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, brave shred feature will be available
+BASE_FEATURE(kBraveShredFeature,
+             "BraveShredFeature",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, show Strict (aggressive) fingerprinting mode in Brave Shields.
 BASE_FEATURE(kBraveShowStrictFingerprintingMode,
              "BraveShowStrictFingerprintingMode",
@@ -142,5 +145,4 @@ constexpr base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec{
         &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
 
-}  // namespace features
-}  // namespace brave_shields
+}  // namespace brave_shields::features

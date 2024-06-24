@@ -7,8 +7,9 @@
 
 #include <utility>
 
-#include "brave/browser/brave_wallet/keyring_service_factory.h"
-#include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
 namespace brave {
@@ -30,11 +31,13 @@ void WalletButtonNotificationSource::EnsureTxServiceConnected() {
   if (tx_observer_.is_bound()) {
     return;
   }
-
-  tx_service_ = brave_wallet::TxServiceFactory::GetServiceForContext(profile_);
-  if (!tx_service_) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
+  if (!brave_wallet_service) {
     return;
   }
+
+  tx_service_ = brave_wallet_service->tx_service();
   tx_service_->AddObserver(tx_observer_.BindNewPipeAndPassRemote());
   CheckTxStatus();
 }
@@ -45,16 +48,18 @@ void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
     return;
   }
 
-  keyring_service_ =
-      brave_wallet::KeyringServiceFactory::GetServiceForContext(profile_);
-  if (!keyring_service_) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile_);
+  if (!brave_wallet_service) {
     return;
   }
 
-  keyring_service_->AddObserver(
+  auto* keyring_service = brave_wallet_service->keyring_service();
+
+  keyring_service->AddObserver(
       keyring_service_observer_.BindNewPipeAndPassRemote());
 
-  wallet_created_ = keyring_service_->IsWalletCreatedSync();
+  wallet_created_ = keyring_service->IsWalletCreatedSync();
   if (wallet_created_.value()) {
     prefs_->SetBoolean(kShouldShowWalletSuggestionBadge, false);
   }

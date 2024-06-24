@@ -13,11 +13,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
-
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-
 #include "ui/webui/mojo_web_ui_controller.h"
 
 class WalletPageUI : public ui::MojoWebUIController,
@@ -36,7 +34,6 @@ class WalletPageUI : public ui::MojoWebUIController,
  private:
   // brave_wallet::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<brave_wallet::mojom::Page> page,
       mojo::PendingReceiver<brave_wallet::mojom::PageHandler> page_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>

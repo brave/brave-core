@@ -10,21 +10,21 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
 namespace brave_wallet {
 class CreateTransactionTask;
 class DiscoverNextUnusedAddressTask;
+class KeyringService;
 
 struct DiscoveredBitcoinAccount {
   mojom::KeyringId keyring_id = mojom::KeyringId::kBitcoin84;
@@ -35,8 +35,7 @@ struct DiscoveredBitcoinAccount {
   bool operator==(const DiscoveredBitcoinAccount& other) const;
 };
 
-class BitcoinWalletService : public KeyedService,
-                             public mojom::BitcoinWalletService,
+class BitcoinWalletService : public mojom::BitcoinWalletService,
                              public KeyringServiceObserverBase {
  public:
   BitcoinWalletService(
@@ -45,7 +44,6 @@ class BitcoinWalletService : public KeyedService,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinWalletService() override;
 
-  mojo::PendingRemote<mojom::BitcoinWalletService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::BitcoinWalletService> receiver);
 
   void Reset();

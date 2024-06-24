@@ -64,11 +64,12 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
-  void OnShouldBlockDomain(std::pair<bool, std::string> should_block_domain);
-  void ShowInterstitial();
-  void Enable1PESAndResume();
-  void On1PESState(bool is_1pes_enabled);
-  void RestartNavigation(const GURL& url);
+  void OnShouldBlockDomain(DomainBlockingType domain_blocking_type,
+                           std::pair<bool, std::string> should_block_domain);
+  void ShowInterstitial(bool proceed_with_resume_cancel);
+  void Enable1PESAndResume(bool proceed_with_resume_cancel);
+  void On1PESState(bool proceed_with_resume_cancel, bool is_1pes_enabled);
+  void RestartNavigation(const GURL& url, bool proceed_with_resume_cancel);
 
   const raw_ptr<AdBlockService> ad_block_service_ = nullptr;
   const raw_ptr<AdBlockCustomFiltersProvider>
@@ -78,8 +79,6 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   const raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
   std::string locale_;
   bool is_deferred_ = false;
-
-  DomainBlockingType domain_blocking_type_ = DomainBlockingType::kNone;
 
   base::WeakPtrFactory<DomainBlockNavigationThrottle> weak_ptr_factory_{this};
 };
