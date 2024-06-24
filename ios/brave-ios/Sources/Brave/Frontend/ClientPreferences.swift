@@ -137,7 +137,7 @@ extension Preferences {
 
   final public class Search {
     /// Whether or not to show suggestions while the user types
-    static let showSuggestions = Option<Bool>(key: "search.show-suggestions", default: false)
+    public static let showSuggestions = Option<Bool>(key: "search.show-suggestions", default: false)
     /// If the user should see the show suggetsions opt-in
     static let shouldShowSuggestionsOptIn = Option<Bool>(
       key: "search.show-suggestions-opt-in",
