@@ -267,7 +267,6 @@
     <color name="text_secondary">#BECAD0</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
-    <color name="container_background">#0d1214</color>
     <color name="button_background">#3f39e8</color>
     <color name="systemfeedback_error_text">#ffb1b0</color>
 </resources>
