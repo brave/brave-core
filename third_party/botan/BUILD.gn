@@ -22,23 +22,16 @@ if (is_mac) {
 # Generate build files with CMake and compile the library
 action("build_botan") {
   script = "//brave/third_party/botan/setup.py"
-  outputs = [ "$root_build_dir/$botan_lib" ]
+  outputs = [ "$root_build_dir/botan/$botan_lib" ]
   args = [
     rebase_path("//brave/third_party/botan", root_build_dir),  # Source directory
     rebase_path("//brave/third_party/botan", root_build_dir),            # Build directory
-  ]
-
-  configs = [
-    "//build/config/compiler:no_chromium_code",
-    "//build/config/compiler:exceptions",
-    "//build/config/compiler:rtti",
-    "//buildtools/third_party/libc++:config",
   ]
 }
 
 copy("copy_policy") {
   sources = [ "//brave/third_party/botan/$botan_lib" ]
-  outputs = [ "$root_out_dir/botan" ]
+  outputs = [ "$root_out_dir/$botan_lib" ]
 }
 
 config("my_class_import") {
@@ -49,7 +42,7 @@ config("my_class_import") {
   ]
   configs = [ "//build/config/compiler:no_chromium_code" ]
 
-  libs = [ "//brave/third_party/botan/$botan_lib", "botan-3" ]
+  libs = [ "$root_out_dir/$botan_lib", "botan-3" ]
   lib_dirs = [ botan_lib_dir ]
 }
 
