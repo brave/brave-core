@@ -512,6 +512,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_QUICK_SEARCH_ENGINES" desc="Title for quick search engine option">
         Quick-Search Engines
       </message>
+      <message name="IDS_CURRENTLY_USED_SEARCH_ENGINES" desc="Description text for quick-search engines">
+        Currently used search engines
+      </message>
+      <message name="IDS_LONG_PRESS_TO_CHANGE_ORDER" desc="Text for changing the order of quick-search engines">
+        Long press to change the order
+      </message>
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>

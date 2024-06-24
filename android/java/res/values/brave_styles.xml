@@ -31,6 +31,11 @@
         <item name="android:colorForeground">@color/modern_grey_600</item>
     </style>
 
+    <style name="BraveMaterialSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">@color/thumb_color</item>
+        <item name="trackTint">@color/track_color</item>
+    </style>
+
     <style name="AppBottomSheetDialogTheme"
            parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
