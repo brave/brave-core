@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
