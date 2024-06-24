@@ -30,6 +30,11 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
 
   util.touchOverriddenFiles()
   util.updateBranding()
+  await util.buildNativeRedirectCC()
+
+  if (options.prepare_only) {
+    return
+  }
 
   if (config.xcode_gen_target) {
     util.generateXcodeWorkspace()
