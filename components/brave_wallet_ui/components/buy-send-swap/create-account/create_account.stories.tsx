@@ -9,20 +9,18 @@ import {
   WalletPanelStory //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { CreateAccountTab } from '.'
-
+import { Meta } from '@storybook/react'
 import { mockNetworks } from '../../../stories/mock-data/mock-networks'
 
-export const _CreateAccount = () => {
-  return (
-    <WalletPanelStory>
-      <CreateAccountTab
-        network={mockNetworks[0]}
-        onCancel={() => {}}
-      />
-    </WalletPanelStory>
-  )
-}
+export const CreateAccount = {}
 
-_CreateAccount.storyName = 'Create Account Tab'
-
-export default _CreateAccount
+export default {
+  title: 'Create Account Tab',
+  component: CreateAccountTab,
+  render: () => <WalletPanelStory>
+    <CreateAccountTab
+      network={mockNetworks[0]}
+      onCancel={() => { }}
+    />
+  </WalletPanelStory>
+} as Meta<typeof CreateAccountTab>

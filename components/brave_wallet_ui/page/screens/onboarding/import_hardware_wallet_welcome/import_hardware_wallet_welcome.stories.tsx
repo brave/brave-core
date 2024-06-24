@@ -11,8 +11,9 @@ import {
 import {
   OnboardingImportHardwareWalletWelcome //
 } from './import_hardware_wallet_welcome'
+import { Meta } from '@storybook/react'
 
-export const _OnboardingImportOrRestoreWallet = () => {
+export const OnboardingImportOrRestoreWallet = () => {
   return (
     <WalletPageStory>
       <OnboardingImportHardwareWalletWelcome />
@@ -20,8 +21,7 @@ export const _OnboardingImportOrRestoreWallet = () => {
   )
 }
 
-_OnboardingImportOrRestoreWallet.story = {
-  name: 'Import Hardware Wallet Welcome'
-}
-
-export default _OnboardingImportOrRestoreWallet
+export default {
+  title: 'Import Hardware Wallet Welcome',
+  component: OnboardingImportOrRestoreWallet
+} as Meta<typeof OnboardingImportOrRestoreWallet>

@@ -13,16 +13,15 @@ import {
   OnboardingConnectHardwareWallet //
 } from './onboarding_connect_hardware_wallet'
 
-export const _OnboardingConnectHardwareWallet = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingConnectHardwareWallet />
-    </WalletPageStory>
-  )
+export const _OnboardingConnectHardwareWallet = {
+  title: 'Connect Hardware Wallet',
+  render: () => {
+    return (
+      <WalletPageStory>
+        <OnboardingConnectHardwareWallet />
+      </WalletPageStory>
+    )
+  }
 }
 
-_OnboardingConnectHardwareWallet.story = {
-  name: 'Connect Hardware Wallet'
-}
-
-export default _OnboardingConnectHardwareWallet
+export default { component: OnboardingConnectHardwareWallet }

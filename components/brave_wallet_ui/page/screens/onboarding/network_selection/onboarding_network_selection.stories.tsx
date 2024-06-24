@@ -9,8 +9,9 @@ import {
   WalletPageStory //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingNetworkSelection } from './onboarding_network_selection'
+import { Meta } from '@storybook/react'
 
-export const _OnboardingNetworkSelection = () => {
+export const OnboardingNetworkSelectionStory = () => {
   return (
     <WalletPageStory>
       <OnboardingNetworkSelection />
@@ -18,4 +19,6 @@ export const _OnboardingNetworkSelection = () => {
   )
 }
 
-export default {}
+export default {
+  component: OnboardingNetworkSelectionStory
+} as Meta<typeof OnboardingNetworkSelectionStory>

@@ -91,29 +91,33 @@ export default {
   ]
 }
 
-export const _Main = () => {
-  return (
-    <S.PanelFrame>
-      <MainPanel />
-    </S.PanelFrame>
-  )
+export const _Main = {
+  render: () => {
+    return (
+      <S.PanelFrame>
+        <MainPanel />
+      </S.PanelFrame>
+    )
+  }
 }
 
-export const _ResourceList = () => {
-  const { siteBlockInfo } = React.useContext(DataContext)
+export const _ResourceList = {
+  render: () => {
+    const { siteBlockInfo } = React.useContext(DataContext)
 
-  if (!siteBlockInfo) {
-    return
+    if (!siteBlockInfo) {
+      return
+    }
+
+    return (
+      <S.PanelFrame>
+        <TreeList
+          blockedList={siteBlockInfo?.blockedJsList}
+          allowedList={siteBlockInfo?.allowedJsList}
+          totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
+          totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
+        />
+      </S.PanelFrame>
+    )
   }
-
-  return (
-    <S.PanelFrame>
-      <TreeList
-        blockedList={ siteBlockInfo?.blockedJsList }
-        allowedList={ siteBlockInfo?.allowedJsList }
-        totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
-        totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
-      />
-    </S.PanelFrame>
-  )
 }

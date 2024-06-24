@@ -26,6 +26,7 @@ import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { createMockStore } from '../../utils/test-utils'
 import { WalletApiDataOverrides } from '../../constants/testing_types'
 import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
+import '../locale'
 
 const mockedProxy = getAPIProxy()
 

@@ -10,14 +10,10 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { RemoveAccountModal } from './remove-account-modal'
 
-export const _RemoveAccountModal = () => {
-  return (
-    <WalletPageStory>
-      <RemoveAccountModal />
-    </WalletPageStory>
-  )
+export const _RemoveAccountModal = {}
+export default {
+  title: 'Remove Account Modal',
+  render: () => <WalletPageStory>
+    <RemoveAccountModal />
+  </WalletPageStory>
 }
-
-_RemoveAccountModal.storyName = 'Remove Account Modal'
-
-export default _RemoveAccountModal

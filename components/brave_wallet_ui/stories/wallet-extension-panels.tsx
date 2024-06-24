@@ -383,108 +383,96 @@ const mockApiData: WalletApiDataOverrides = {
   transactionInfos: transactionList.map(deserializeTransaction)
 }
 
-export const _ConfirmTransaction = () => {
-  return (
-    <Provider
-      store={createMockStore(
-        {
-          walletStateOverride: mockCustomStoreState,
-          uiStateOverride: mockCustomUiState
-        },
-        mockApiData
-      )}
-    >
-      <StyledExtensionWrapperLonger>
-        <ConfirmTransactionPanel />
-      </StyledExtensionWrapperLonger>
-    </Provider>
-  )
-}
-
-_ConfirmTransaction.story = {
-  name: 'Confirm Transaction'
-}
-
-export const _ConfirmErcApproveTransaction = () => {
-  return (
-    <StyledExtensionWrapperLonger>
+export const _ConfirmTransaction = {
+  render: () => {
+    return (
       <Provider
         store={createMockStore(
           {
-            uiStateOverride: {
-              selectedPendingTransactionId: mockedErc20ApprovalTransaction.id
-            }
+            walletStateOverride: mockCustomStoreState,
+            uiStateOverride: mockCustomUiState
           },
-          {
-            ...mockApiData,
-            transactionInfos: [
-              deserializeTransaction(mockedErc20ApprovalTransaction),
-              ...(mockApiData?.transactionInfos ?? [])
-            ]
-          }
+          mockApiData
         )}
       >
-        <ConfirmTransactionPanel />
+        <StyledExtensionWrapperLonger>
+          <ConfirmTransactionPanel />
+        </StyledExtensionWrapperLonger>
       </Provider>
-    </StyledExtensionWrapperLonger>
-  )
+    )
+  }
 }
 
-_ConfirmErcApproveTransaction.story = {
-  name: 'Confirm ERC20 Approval Transaction'
-}
-
-export const _ReadEncryptedMessage = () => {
-  return (
-    <StyledExtensionWrapperLonger>
-      <DecryptRequestPanel payload={mockDecryptRequest} />
-    </StyledExtensionWrapperLonger>
-  )
-}
-
-_ReadEncryptedMessage.story = {
-  name: 'Read Encrypted Message'
-}
-
-export const _ConnectWithSite = () => {
-  return (
-    <Provider store={store}>
+export const _ConfirmErcApproveTransaction = {
+  render: () => {
+    return (
       <StyledExtensionWrapperLonger>
-        <ConnectWithSite
-          originInfo={originInfo}
-          accountsToConnect={mockAccounts}
-        />
+        <Provider
+          store={createMockStore(
+            {
+              uiStateOverride: {
+                selectedPendingTransactionId: mockedErc20ApprovalTransaction.id
+              }
+            },
+            {
+              ...mockApiData,
+              transactionInfos: [
+                deserializeTransaction(mockedErc20ApprovalTransaction),
+                ...(mockApiData?.transactionInfos ?? [])
+              ]
+            }
+          )}
+        >
+          <ConfirmTransactionPanel />
+        </Provider>
       </StyledExtensionWrapperLonger>
-    </Provider>
-  )
+    )
+  }
 }
 
-_ConnectWithSite.story = {
-  name: 'Connect With Site'
+export const _ReadEncryptedMessage = {
+  render: () => {
+    return (
+      <StyledExtensionWrapperLonger>
+        <DecryptRequestPanel payload={mockDecryptRequest} />
+      </StyledExtensionWrapperLonger>
+    )
+  }
 }
 
-export const _SetupWallet = () => {
-  return (
-    <StyledWelcomPanel>
-      <WelcomePanel />
-    </StyledWelcomPanel>
-  )
+export const _ConnectWithSite = {
+  render: () => {
+    return (
+      <Provider store={store}>
+        <StyledExtensionWrapperLonger>
+          <ConnectWithSite
+            originInfo={originInfo}
+            accountsToConnect={mockAccounts}
+          />
+        </StyledExtensionWrapperLonger>
+      </Provider>
+    )
+  }
 }
 
-_SetupWallet.story = {
-  name: 'Setup New Wallet'
+export const _SetupWallet = {
+  render: () => {
+    return (
+      <StyledWelcomPanel>
+        <WelcomePanel />
+      </StyledWelcomPanel>
+    )
+  }
 }
 
-export const _AddSuggestedToken = () => {
-  return (
-    <StyledExtensionWrapper>
-      <WalletPanelStory>
-        <AddSuggestedTokenPanel />
-      </WalletPanelStory>
-    </StyledExtensionWrapper>
-  )
-}
-
-_AddSuggestedToken.story = {
-  name: 'Add Suggested Token'
+export const _AddSuggestedToken = {
+  render: () => {
+    return (
+      <StyledExtensionWrapper>
+        <WalletPanelStory>
+          <AddSuggestedTokenPanel />
+        </WalletPanelStory>
+      </StyledExtensionWrapper>
+    )
+  }
 }

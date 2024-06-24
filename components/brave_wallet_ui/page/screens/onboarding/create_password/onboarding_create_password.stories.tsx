@@ -10,16 +10,15 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import OnboardingCreatePassword from './onboarding_create_password'
 
-export const _OnboardingCreatePassword = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingCreatePassword onWalletCreated={() => {}} />
-    </WalletPageStory>
-  )
+export const _OnboardingCreatePassword = {
+  title: 'Create Password',
+  render: () => {
+    return (
+      <WalletPageStory>
+        <OnboardingCreatePassword onWalletCreated={() => { }} />
+      </WalletPageStory>
+    )
+  }
 }
 
-_OnboardingCreatePassword.story = {
-  name: 'Create Password'
-}
-
-export default _OnboardingCreatePassword
+export default { component: OnboardingCreatePassword }

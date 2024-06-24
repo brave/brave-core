@@ -51,32 +51,29 @@ const storyContextProps: WalletPanelStoryProps = {
   }
 }
 
-export const _PendingSolanaSignAllRequestsPanel = () => {
-  return (
-    <WalletPanelStory {...storyContextProps}>
-      <PendingSignatureRequestsPanel signMode='signAllTxs' />
-    </WalletPanelStory>
-  )
+export const _PendingSolanaSignAllSignatureRequestsPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory {...storyContextProps}>
+        <PendingSignatureRequestsPanel signMode='signAllTxs' />
+      </WalletPanelStory>
+    )
+  }
 }
 
-_PendingSolanaSignAllRequestsPanel.story = {
-  name: 'Pending Solana Sign-All Signature Requests Panel'
-}
-
-export const _PendingSolanaTxSignaturesPanel = () => {
-  return (
-    <WalletPanelStory {...storyContextProps}>
-      <PendingSignatureRequestsPanel signMode='signTx' />
-    </WalletPanelStory>
-  )
-}
-
-_PendingSolanaTxSignaturesPanel.story = {
-  name: 'Pending Solana Transaction Signatures Panel'
+export const _PendingSolanaTransactionSignaturesPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory {...storyContextProps}>
+        <PendingSignatureRequestsPanel signMode='signTx' />
+      </WalletPanelStory>
+    )
+  }
 }
 
 export default {
   parameters: {
     layout: 'centered'
-  }
+  },
+  component: PendingSignatureRequestsPanel
 }

@@ -15,18 +15,18 @@ import {
 // mocks
 import { mockSwitchChainRequest } from '../../../stories/mock-data/mock-eth-requests'
 
-export const _AllowAddChangeNetwork = () => {
-  return (
-    <WalletPanelStory>
-      <PanelWrapper>
-        <AllowAddChangeNetworkPanel
-          switchChainRequest={mockSwitchChainRequest}
-        />
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _AllowAddChangeNetwork = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <PanelWrapper>
+          <AllowAddChangeNetworkPanel
+            switchChainRequest={mockSwitchChainRequest}
+          />
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_AllowAddChangeNetwork.storyName = 'Allow Add or Change Network'
-
-export default _AllowAddChangeNetwork
+export default { component: AllowAddChangeNetworkPanel }

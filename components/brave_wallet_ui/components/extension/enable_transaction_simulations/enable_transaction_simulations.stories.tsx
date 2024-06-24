@@ -10,12 +10,14 @@ import {
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { EnableTransactionSimulations } from './enable_transaction_simulations'
 
-export const _EnableTransactionSimulations = () => {
-  return (
-    <WalletPanelStory walletApiDataOverrides={{}}>
-      <EnableTransactionSimulations />
-    </WalletPanelStory>
-  )
+export const _EnableTransactionSimulations = {
+  render: () => {
+    return (
+      <WalletPanelStory walletApiDataOverrides={{}}>
+        <EnableTransactionSimulations />
+      </WalletPanelStory>
+    )
+  }
 }
 
-export default _EnableTransactionSimulations
+export default { component: EnableTransactionSimulations }
