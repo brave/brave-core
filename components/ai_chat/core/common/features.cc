@@ -29,8 +29,16 @@ const base::FeatureParam<bool> kFreemiumAvailable(&kAIChat,
                                                   "is_freemium_available",
                                                   true);
 const base::FeatureParam<bool> kAIChatSSE{&kAIChat, "ai_chat_sse", true};
-const base::FeatureParam<bool> kConversationAPIEnabled{
-    &kAIChat, "conversation_api", true};
+
+const base::FeatureParam<bool> kConversationAPIEnabled{&kAIChat,
+                                                       "conversation_api",
+#if BUILDFLAG(IS_IOS)
+                                                       false
+#else
+                                                       true
+#endif
+};
+
 const base::FeatureParam<double> kAITemperature{&kAIChat, "temperature", 0.2};
 
 bool IsAIChatEnabled() {
