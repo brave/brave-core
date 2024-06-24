@@ -14,6 +14,8 @@ _IS_PG_ENABLED = brave_chromium_utils.get_gn_arg("enable_brave_page_graph")
 _IS_PG_WEBAPI_PROBES_ENABLED = brave_chromium_utils.get_gn_arg(
     "enable_brave_page_graph_webapi_probes")
 
+should_apply_pg_changes = False
+
 
 def _add_page_graph_to_config(config):
     config["observers"]["PageGraph"] = {
@@ -88,13 +90,17 @@ def _add_page_graph_events_to_pidl_source(source):
 
 @override_utils.override_function(globals(), condition=_IS_PG_ENABLED)
 def load_config(original_function, file_name):
+    assert file_name.endswith(("core_probes.json5", "test_probes.json5"))
+    global should_apply_pg_changes
+    should_apply_pg_changes = file_name.endswith("core_probes.json5")
     config = original_function(file_name)
-    assert file_name.endswith("core_probes.json5")
-    config = _add_page_graph_to_config(config)
+    if should_apply_pg_changes:
+        config = _add_page_graph_to_config(config)
     return config
 
 
 @override_utils.override_function(globals(), condition=_IS_PG_ENABLED)
 def load_model_from_idl(original_function, source):
-    source = _add_page_graph_events_to_pidl_source(source)
+    if should_apply_pg_changes:
+        source = _add_page_graph_events_to_pidl_source(source)
     return original_function(source)

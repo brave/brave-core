@@ -12,6 +12,8 @@
 # in upstream's .gni file to apply the changes from this scope.
 
 brave_updater_branding = {
+  grdfile_name = "brave_strings"
+
   # The following values come from our Omaha 3 implementation:
   legacy_service_name_prefix = "brave"
   UpdaterLegacyLibGUID = "6FF4F468-0B5A-4878-ACEB-86263DAAD877"
