@@ -277,8 +277,10 @@ void MdTextButton::SetLoading(bool loading) {
 void MdTextButton::UpdateTextColor() {
   MdTextButtonBase::UpdateTextColor();
 
-  // Use explicitely set color instead of our default colors.
-  if (explicitly_set_normal_color()) {
+  // Use explicitely set color instead of our default colors except for
+  // prominent style. As we have specific bg color for prominent, need to use
+  // our text color for this style.
+  if (style_ != ui::ButtonStyle::kProminent && explicitly_set_normal_color()) {
     return;
   }
 
