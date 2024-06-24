@@ -1,9 +1,9 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
+#include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 
 #include <memory>
 #include <utility>
@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
+#include "brave/browser/ui/views/brave_news/brave_news_bubble_controller.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_view.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -33,7 +34,7 @@ constexpr SkColor kSubscribedDarkColor = SkColorSetRGB(115, 122, 222);
 
 }  // namespace
 
-BraveNewsLocationView::BraveNewsLocationView(
+BraveNewsActionIconView::BraveNewsActionIconView(
     Profile* profile,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
@@ -46,26 +47,22 @@ BraveNewsLocationView::BraveNewsLocationView(
 
   should_show_.Init(brave_news::prefs::kShouldShowToolbarButton,
                     profile->GetPrefs(),
-                    base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
+                    base::BindRepeating(&BraveNewsActionIconView::UpdateImpl,
                                         base::Unretained(this)));
   opted_in_.Init(brave_news::prefs::kBraveNewsOptedIn, profile->GetPrefs(),
-                 base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
+                 base::BindRepeating(&BraveNewsActionIconView::UpdateImpl,
                                      base::Unretained(this)));
   news_enabled_.Init(brave_news::prefs::kNewTabPageShowToday,
                      profile->GetPrefs(),
-                     base::BindRepeating(&BraveNewsLocationView::UpdateImpl,
+                     base::BindRepeating(&BraveNewsActionIconView::UpdateImpl,
                                          base::Unretained(this)));
 
   Update();
 }
 
-BraveNewsLocationView::~BraveNewsLocationView() = default;
+BraveNewsActionIconView::~BraveNewsActionIconView() = default;
 
-views::BubbleDialogDelegate* BraveNewsLocationView::GetBubble() const {
-  return bubble_view_;
-}
-
-void BraveNewsLocationView::UpdateImpl() {
+void BraveNewsActionIconView::UpdateImpl() {
   auto* contents = GetWebContents();
   BraveNewsTabHelper* tab_helper =
       contents ? BraveNewsTabHelper::FromWebContents(contents) : nullptr;
@@ -114,30 +111,30 @@ void BraveNewsLocationView::UpdateImpl() {
   SetVisible(is_visible);
 }
 
-void BraveNewsLocationView::WebContentsDestroyed() {
+void BraveNewsActionIconView::WebContentsDestroyed() {
   page_feeds_observer_.Reset();
   Observe(nullptr);
 }
 
-const gfx::VectorIcon& BraveNewsLocationView::GetVectorIcon() const {
+const gfx::VectorIcon& BraveNewsActionIconView::GetVectorIcon() const {
   return kLeoRssIcon;
 }
 
-std::u16string BraveNewsLocationView::GetTextForTooltipAndAccessibleName()
+std::u16string BraveNewsActionIconView::GetTextForTooltipAndAccessibleName()
     const {
   return l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP);
 }
 
-bool BraveNewsLocationView::ShouldShowLabel() const {
+bool BraveNewsActionIconView::ShouldShowLabel() const {
   return false;
 }
 
-void BraveNewsLocationView::OnAvailableFeedsChanged(
+void BraveNewsActionIconView::OnAvailableFeedsChanged(
     const std::vector<GURL>& feeds) {
   Update();
 }
 
-void BraveNewsLocationView::OnThemeChanged() {
+void BraveNewsActionIconView::OnThemeChanged() {
   bool subscribed = false;
   if (auto* contents = GetWebContents()) {
     subscribed = BraveNewsTabHelper::FromWebContents(contents)->IsSubscribed();
@@ -146,27 +143,12 @@ void BraveNewsLocationView::OnThemeChanged() {
   PageActionIconView::OnThemeChanged();
 }
 
-void BraveNewsLocationView::OnExecuting(
+void BraveNewsActionIconView::OnExecuting(
     PageActionIconView::ExecuteSource execute_source) {
-  // If the bubble is already open, do nothing.
-  if (IsBubbleShowing()) {
-    return;
-  }
-
-  auto* contents = GetWebContents();
-  if (!contents) {
-    return;
-  }
-
-  bubble_view_ = new BraveNewsBubbleView(this, contents);
-  bubble_view_->SetCloseCallback(base::BindOnce(
-      &BraveNewsLocationView::OnBubbleClosed, base::Unretained(this)));
-  auto* bubble_widget =
-      views::BubbleDialogDelegateView::CreateBubble(bubble_view_);
-  bubble_widget->Show();
+  ShowBraveNewsBubble();
 }
 
-void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
+void BraveNewsActionIconView::UpdateIconColor(bool subscribed) {
   SkColor icon_color;
   if (subscribed) {
     auto is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
@@ -178,9 +160,28 @@ void BraveNewsLocationView::UpdateIconColor(bool subscribed) {
   SetIconColor(icon_color);
 }
 
-void BraveNewsLocationView::OnBubbleClosed() {
-  bubble_view_ = nullptr;
+brave_news::BraveNewsBubbleController* BraveNewsActionIconView::GetController()
+    const {
+  auto* web_contents = GetWebContents();
+  return web_contents ? brave_news::BraveNewsBubbleController::
+                            CreateOrGetFromWebContents(web_contents)
+                      : nullptr;
 }
 
-BEGIN_METADATA(BraveNewsLocationView)
+views::BubbleDialogDelegate* BraveNewsActionIconView::GetBubble() const {
+  auto* controller = GetController();
+  return controller ? controller->GetBubble() : nullptr;
+}
+
+void BraveNewsActionIconView::ShowBraveNewsBubble() {
+  if (auto* controller = GetController()) {
+    controller->ShowBubble(AsWeakPtr());
+  }
+}
+
+base::WeakPtr<BraveNewsActionIconView> BraveNewsActionIconView::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+BEGIN_METADATA(BraveNewsActionIconView)
 END_METADATA

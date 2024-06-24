@@ -1,10 +1,10 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_ACTION_ICON_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_ACTION_ICON_VIEW_H_
 
 #include <string>
 #include <vector>
@@ -18,22 +18,27 @@
 #include "ui/views/view.h"
 
 class Profile;
-class BraveNewsBubbleView;
+
+namespace brave_news {
+class BraveNewsBubbleController;
+}
 
 // LocationBar action for Brave News which shows a bubble allowing the user to
 // manage feed subscriptions for the current Tab
-class BraveNewsLocationView : public PageActionIconView,
-                              public BraveNewsTabHelper::PageFeedsObserver,
-                              public content::WebContentsObserver {
-  METADATA_HEADER(BraveNewsLocationView, PageActionIconView)
+class BraveNewsActionIconView : public PageActionIconView,
+                                public BraveNewsTabHelper::PageFeedsObserver,
+                                public content::WebContentsObserver {
+  METADATA_HEADER(BraveNewsActionIconView, PageActionIconView)
  public:
-  BraveNewsLocationView(
+  BraveNewsActionIconView(
       Profile* profile,
       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
       PageActionIconView::Delegate* page_action_icon_delegate);
-  BraveNewsLocationView(const BraveNewsLocationView&) = delete;
-  BraveNewsLocationView& operator=(const BraveNewsLocationView&) = delete;
-  ~BraveNewsLocationView() override;
+  BraveNewsActionIconView(const BraveNewsActionIconView&) = delete;
+  BraveNewsActionIconView& operator=(const BraveNewsActionIconView&) = delete;
+  ~BraveNewsActionIconView() override;
+
+  base::WeakPtr<BraveNewsActionIconView> AsWeakPtr();
 
   // PageActionIconView:
   views::BubbleDialogDelegate* GetBubble() const override;
@@ -51,13 +56,15 @@ class BraveNewsLocationView : public PageActionIconView,
   void WebContentsDestroyed() override;
 
  protected:
+  brave_news::BraveNewsBubbleController* GetController() const;
+
   // PageActionIconView:
   void OnExecuting(PageActionIconView::ExecuteSource execute_source) override;
   const gfx::VectorIcon& GetVectorIcon() const override;
 
  private:
   void UpdateIconColor(bool subscribed);
-  void OnBubbleClosed();
+  void ShowBraveNewsBubble();
 
   base::ScopedObservation<BraveNewsTabHelper,
                           BraveNewsTabHelper::PageFeedsObserver>
@@ -65,7 +72,8 @@ class BraveNewsLocationView : public PageActionIconView,
   BooleanPrefMember should_show_;
   BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
-  raw_ptr<BraveNewsBubbleView> bubble_view_ = nullptr;
+
+  base::WeakPtrFactory<BraveNewsActionIconView> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_LOCATION_BAR_BRAVE_NEWS_LOCATION_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_ACTION_ICON_VIEW_H_
