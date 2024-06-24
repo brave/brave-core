@@ -23,6 +23,20 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var uuid: String?
   @NSManaged public var playlistFolder: PlaylistFolder?
 
+  public var cachedDataURL: URL? {
+    guard let cachedData else { return nil }
+    do {
+      var isStale: Bool = false
+      let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
+      if FileManager.default.fileExists(atPath: url.path) {
+        return url
+      }
+    } catch {
+      return nil
+    }
+    return nil
+  }
+
   @available(*, unavailable)
   public init() {
     fatalError("No Such Initializer: init()")

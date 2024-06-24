@@ -29,14 +29,14 @@ import os
 ///
 /// - Note: This action will fail if used on iPad when multitasking is enabled so consider feature
 ///         blocking to only run when the interface idiom is `phone`.
-struct RequestGeometryUpdateAction {
+public struct RequestGeometryUpdateAction {
   fileprivate var windowScene: UIWindowScene?
 
   /// Calls `requestGeometryUpdate` on the associated `UIWindowScene`.
   ///
   /// Do not call this method, instead use the Swift language feature to call it directly from
   /// the instance. E.g. `requestGeometryUpdate(orientation: .portrait)`
-  func callAsFunction(orientation: UIInterfaceOrientation) {
+  public func callAsFunction(orientation: UIInterfaceOrientation) {
     let mask: UIInterfaceOrientationMask =
       switch orientation {
       case .portrait: .portrait
@@ -61,7 +61,6 @@ struct RequestGeometryUpdateAction {
   }
 }
 
-// FIXME: Move to BraveUI
 extension EnvironmentValues {
   private struct RequestGeometryUpdateActionKey: EnvironmentKey {
     static var defaultValue: RequestGeometryUpdateAction = .init()
@@ -71,7 +70,7 @@ extension EnvironmentValues {
   ///
   /// - Note: This environment value will not work unless a parent View uses
   ///         the `prepareEffectiveGeometryEnvironment` modifier.
-  var requestGeometryUpdate: RequestGeometryUpdateAction {
+  public var requestGeometryUpdate: RequestGeometryUpdateAction {
     self[RequestGeometryUpdateActionKey.self]
   }
 
@@ -94,7 +93,7 @@ extension EnvironmentValues {
   ///
   /// - Note: This environment value will be `UIInterfaceOrientation.unknown` and receive no changes
   ///         unless a parent View uses the `prepareEffectiveGeometryEnvironment` modifier.
-  var interfaceOrientation: UIInterfaceOrientation {
+  public var interfaceOrientation: UIInterfaceOrientation {
     self[InterfaceOrientationKey.self]
   }
 
@@ -108,7 +107,7 @@ extension EnvironmentValues {
 extension View {
   /// Allows the view access to the `requestGeometryUpdate` and `interfaceOrientation` environment
   /// values.
-  func prepareEffectiveGeometryEnvironment() -> some View {
+  public func prepareEffectiveGeometryEnvironment() -> some View {
     modifier(EffectiveGeometryEnvironmentModifier())
   }
 }

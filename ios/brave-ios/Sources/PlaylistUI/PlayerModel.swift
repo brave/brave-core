@@ -832,22 +832,7 @@ extension AVPlayer {
 
 // MARK: -
 
-// FIXME: Move to Data target
 extension PlaylistItem {
-  var cachedDataURL: URL? {
-    guard let cachedData else { return nil }
-    do {
-      var isStale: Bool = false
-      let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-      if FileManager.default.fileExists(atPath: url.path) {
-        return url
-      }
-    } catch {
-      return nil
-    }
-    return nil
-  }
-
   /// The URL you would attempt to load in an AVAsset or fetch metadata from. This URL may be
   /// the cached file url or the video url found on the webpage
   var assetURL: URL? {
