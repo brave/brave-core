@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <iterator>
+#include <map>
 #include <memory>
 #include <optional>
 #include <set>
