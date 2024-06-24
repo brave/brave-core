@@ -12,13 +12,14 @@
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 
 namespace brave_news {
 
 using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
 using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
+
+class SubscriptionsSnapshot;
 
 class PublishersController {
  public:
@@ -36,17 +37,17 @@ class PublishersController {
   const mojom::Publisher* GetPublisherForFeed(const GURL& feed_url) const;
   const Publishers& GetLastPublishers() const;
 
-  void GetOrFetchPublishers(const BraveNewsSubscriptions& subscriptions,
+  void GetOrFetchPublishers(const SubscriptionsSnapshot& subscriptions,
                             GetPublishersCallback callback,
                             bool wait_for_current_update = false);
-  void GetLocale(const BraveNewsSubscriptions& subscriptions,
+  void GetLocale(const SubscriptionsSnapshot& subscriptions,
                  mojom::BraveNewsController::GetLocaleCallback);
   const std::string& GetLastLocale() const;
-  void EnsurePublishersIsUpdating(const BraveNewsSubscriptions& subscriptions);
+  void EnsurePublishersIsUpdating(const SubscriptionsSnapshot& subscriptions);
   void ClearCache();
 
  private:
-  void GetOrFetchPublishers(const BraveNewsSubscriptions& subscriptions,
+  void GetOrFetchPublishers(const SubscriptionsSnapshot& subscriptions,
                             base::OnceClosure callback,
                             bool wait_for_current_update);
   void UpdateDefaultLocale();

@@ -24,7 +24,7 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
-               const BraveNewsSubscriptions& subscriptions);
+               const SubscriptionsSnapshot& subscriptions);
 
 // Exposed for testing
 bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
