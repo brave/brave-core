@@ -27,13 +27,13 @@ TransactionInfo BuildTransaction(const double value,
                                  const AdType ad_type,
                                  const ConfirmationType confirmation_type,
                                  const base::Time reconciled_at,
-                                 const bool should_use_random_uuids) {
+                                 const bool should_generate_random_uuids) {
   TransactionInfo transaction;
 
-  transaction.id = GetConstantId(should_use_random_uuids, kTransactionId);
+  transaction.id = RandomUuidOr(should_generate_random_uuids, kTransactionId);
   transaction.created_at = Now();
   transaction.creative_instance_id =
-      GetConstantId(should_use_random_uuids, kCreativeInstanceId);
+      RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
   transaction.segment = kSegment;
   transaction.value = value;
   transaction.ad_type = ad_type;
@@ -49,9 +49,9 @@ TransactionInfo BuildUnreconciledTransaction(
     const double value,
     const AdType ad_type,
     const ConfirmationType confirmation_type,
-    const bool should_use_random_uuids) {
+    const bool should_generate_random_uuids) {
   return BuildTransaction(value, ad_type, confirmation_type,
-                          /*reconciled_at=*/{}, should_use_random_uuids);
+                          /*reconciled_at=*/{}, should_generate_random_uuids);
 }
 
 }  // namespace brave_ads::test

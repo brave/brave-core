@@ -35,7 +35,7 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
     EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
   }
 
-  void TriggerPromotedContentAdEvent(
+  void TriggerPromotedContentAdEventAndVerifiyExpectations(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::PromotedContentAdEventType event_type,
@@ -49,7 +49,7 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Act & Assert
-  TriggerPromotedContentAdEvent(
+  TriggerPromotedContentAdEventAndVerifiyExpectations(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
@@ -57,21 +57,22 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  TriggerPromotedContentAdEvent(
+  TriggerPromotedContentAdEventAndVerifiyExpectations(
       kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
-  TriggerPromotedContentAdEvent(kPlacementId, kCreativeInstanceId,
-                                mojom::PromotedContentAdEventType::kClicked,
-                                /*should_fire_event=*/true);
+  TriggerPromotedContentAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId,
+      mojom::PromotedContentAdEventType::kClicked,
+      /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsPromotedContentAdIntegrationTest,
        DoNotTriggerEventForInvalidCreativeInstanceId) {
   // Act & Assert
-  TriggerPromotedContentAdEvent(
+  TriggerPromotedContentAdEventAndVerifiyExpectations(
       kPlacementId, kInvalidCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
@@ -83,7 +84,7 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest,
   test::OptOutOfBraveNewsAds();
 
   // Act & Assert
-  TriggerPromotedContentAdEvent(
+  TriggerPromotedContentAdEventAndVerifiyExpectations(
       kPlacementId, kInvalidCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/false);

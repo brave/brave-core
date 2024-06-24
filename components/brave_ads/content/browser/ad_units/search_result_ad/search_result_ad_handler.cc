@@ -70,7 +70,7 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     const GURL& navigation_url) {
   CHECK(ads_service_);
 
-  if (!search_result_ads_) {
+  if (!creative_search_result_ads_) {
     return;
   }
 
@@ -80,8 +80,8 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     return;
   }
 
-  const auto iter = search_result_ads_->find(*placement_id);
-  if (iter == search_result_ads_->cend()) {
+  const auto iter = creative_search_result_ads_->find(*placement_id);
+  if (iter == creative_search_result_ads_->cend()) {
     return;
   }
   const auto& [_, search_result_ad] = *iter;
@@ -105,13 +105,13 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
     return std::move(callback).Run(/*placement_ids*/ {});
   }
 
-  search_result_ads_ =
-      ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
+  creative_search_result_ads_ =
+      ConvertWebPageEntitiesToCreativeSearchResultAds(web_page->entities);
 
   std::vector<std::string> placement_ids;
-  if (search_result_ads_ && should_trigger_viewed_event_) {
+  if (creative_search_result_ads_ && should_trigger_viewed_event_) {
     base::ranges::transform(
-        *search_result_ads_, std::back_inserter(placement_ids),
+        *creative_search_result_ads_, std::back_inserter(placement_ids),
         [](const auto& search_result_ad) { return search_result_ad.first; });
   }
 
@@ -120,12 +120,12 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
 
 void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
     const std::string& placement_id) {
-  if (!search_result_ads_ || placement_id.empty()) {
+  if (!creative_search_result_ads_ || placement_id.empty()) {
     return;
   }
 
-  const auto iter = search_result_ads_->find(placement_id);
-  if (iter == search_result_ads_->cend()) {
+  const auto iter = creative_search_result_ads_->find(placement_id);
+  if (iter == creative_search_result_ads_->cend()) {
     return;
   }
   const auto& [_, search_result_ad] = *iter;

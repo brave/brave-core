@@ -87,7 +87,7 @@ class BatAdsImpl : public mojom::BatAds {
       TriggerPromotedContentAdEventCallback callback) override;
 
   void TriggerSearchResultAdEvent(
-      brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
+      brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       brave_ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 

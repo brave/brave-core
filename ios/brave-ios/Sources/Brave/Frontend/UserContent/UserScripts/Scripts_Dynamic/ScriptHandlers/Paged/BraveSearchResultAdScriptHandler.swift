@@ -110,7 +110,7 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
         )
       }
 
-      let searchResultAd: BraveAds.SearchResultAdInfo = .init(
+      let searchResultAd: BraveAds.CreativeSearchResultAdInfo = .init(
         type: .searchResultAd,
         placementId: ad.placementId,
         creativeInstanceId: ad.creativeInstanceId,

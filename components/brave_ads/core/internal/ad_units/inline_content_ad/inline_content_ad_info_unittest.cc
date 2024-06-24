@@ -19,7 +19,7 @@ class BraveAdsInlineContentAdInfoTest : public UnitTestBase {};
 TEST_F(BraveAdsInlineContentAdInfoTest, IsValid) {
   // Arrange
   const CreativeInlineContentAdInfo creative_ad =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
 
   // Act & Assert

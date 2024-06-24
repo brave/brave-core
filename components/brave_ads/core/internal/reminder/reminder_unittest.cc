@@ -29,7 +29,7 @@ namespace {
 
 void AddHistory(const size_t count) {
   const NotificationAdInfo ad = BuildNotificationAd(
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true));
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true));
 
   for (size_t i = 0; i < count; ++i) {
     HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);

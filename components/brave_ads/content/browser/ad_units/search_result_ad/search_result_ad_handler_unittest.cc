@@ -47,36 +47,32 @@ GURL GetSearchResultAdClickedUrl() {
 }
 
 void CompareSearchResultAdInfosWithNonEmptyConversion(
-    const mojom::SearchResultAdInfoPtr& search_result_ad_info1,
-    const mojom::SearchResultAdInfoPtr& search_result_ad_info2) {
-  EXPECT_EQ(search_result_ad_info1->placement_id,
-            search_result_ad_info2->placement_id);
-  EXPECT_EQ(search_result_ad_info1->advertiser_id,
-            search_result_ad_info2->advertiser_id);
-  EXPECT_EQ(search_result_ad_info1->campaign_id,
-            search_result_ad_info2->campaign_id);
-  EXPECT_EQ(search_result_ad_info1->creative_instance_id,
-            search_result_ad_info2->creative_instance_id);
-  EXPECT_EQ(search_result_ad_info1->creative_set_id,
-            search_result_ad_info2->creative_set_id);
-  EXPECT_EQ(search_result_ad_info1->description,
-            search_result_ad_info2->description);
-  EXPECT_EQ(search_result_ad_info1->headline_text,
-            search_result_ad_info2->headline_text);
-  EXPECT_EQ(search_result_ad_info1->target_url,
-            search_result_ad_info2->target_url);
-  EXPECT_EQ(search_result_ad_info1->type, search_result_ad_info2->type);
-  EXPECT_EQ(search_result_ad_info1->value, search_result_ad_info2->value);
-  ASSERT_TRUE(search_result_ad_info1->conversion);
-  ASSERT_TRUE(search_result_ad_info2->conversion);
-  EXPECT_EQ(search_result_ad_info1->conversion->observation_window,
-            search_result_ad_info2->conversion->observation_window);
-  EXPECT_EQ(search_result_ad_info1->conversion->url_pattern,
-            search_result_ad_info2->conversion->url_pattern);
-  EXPECT_EQ(search_result_ad_info1->conversion
-                ->verifiable_advertiser_public_key_base64,
-            search_result_ad_info2->conversion
-                ->verifiable_advertiser_public_key_base64);
+    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad_1,
+    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad_2) {
+  EXPECT_EQ(mojom_creative_ad_1->placement_id,
+            mojom_creative_ad_2->placement_id);
+  EXPECT_EQ(mojom_creative_ad_1->advertiser_id,
+            mojom_creative_ad_2->advertiser_id);
+  EXPECT_EQ(mojom_creative_ad_1->campaign_id, mojom_creative_ad_2->campaign_id);
+  EXPECT_EQ(mojom_creative_ad_1->creative_instance_id,
+            mojom_creative_ad_2->creative_instance_id);
+  EXPECT_EQ(mojom_creative_ad_1->creative_set_id,
+            mojom_creative_ad_2->creative_set_id);
+  EXPECT_EQ(mojom_creative_ad_1->description, mojom_creative_ad_2->description);
+  EXPECT_EQ(mojom_creative_ad_1->headline_text,
+            mojom_creative_ad_2->headline_text);
+  EXPECT_EQ(mojom_creative_ad_1->target_url, mojom_creative_ad_2->target_url);
+  EXPECT_EQ(mojom_creative_ad_1->type, mojom_creative_ad_2->type);
+  EXPECT_EQ(mojom_creative_ad_1->value, mojom_creative_ad_2->value);
+  ASSERT_TRUE(mojom_creative_ad_1->conversion);
+  ASSERT_TRUE(mojom_creative_ad_2->conversion);
+  EXPECT_EQ(mojom_creative_ad_1->conversion->observation_window,
+            mojom_creative_ad_2->conversion->observation_window);
+  EXPECT_EQ(mojom_creative_ad_1->conversion->url_pattern,
+            mojom_creative_ad_2->conversion->url_pattern);
+  EXPECT_EQ(
+      mojom_creative_ad_1->conversion->verifiable_advertiser_public_key_base64,
+      mojom_creative_ad_2->conversion->verifiable_advertiser_public_key_base64);
 }
 
 }  // namespace
@@ -232,10 +228,10 @@ TEST_F(SearchResultAdHandlerTest, EmptyConversions) {
               TriggerSearchResultAdEvent(
                   testing::_, mojom::SearchResultAdEventType::kViewedImpression,
                   testing::_))
-      .WillOnce([](mojom::SearchResultAdInfoPtr ad_mojom,
+      .WillOnce([](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                    mojom::SearchResultAdEventType /*event_type*/,
                    TriggerAdEventCallback /*callback*/) {
-        EXPECT_FALSE(ad_mojom->conversion);
+        EXPECT_FALSE(mojom_creative_ad->conversion);
       });
   EXPECT_CALL(
       ads_service_mock_,
@@ -275,14 +271,15 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
               TriggerSearchResultAdEvent(
                   testing::_, mojom::SearchResultAdEventType::kViewedImpression,
                   testing::_))
-      .WillOnce([&web_page](mojom::SearchResultAdInfoPtr ad_mojom,
-                            mojom::SearchResultAdEventType /*event_type*/,
-                            TriggerAdEventCallback /*callback*/) {
+      .WillOnce([&web_page](
+                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                    mojom::SearchResultAdEventType /*event_type*/,
+                    TriggerAdEventCallback /*callback*/) {
         const auto search_result_ads =
-            ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
+            ConvertWebPageEntitiesToCreativeSearchResultAds(web_page->entities);
         ASSERT_TRUE(search_result_ads.contains(kTestWebPagePlacementId));
         CompareSearchResultAdInfosWithNonEmptyConversion(
-            search_result_ads.at(kTestWebPagePlacementId), ad_mojom);
+            search_result_ads.at(kTestWebPagePlacementId), mojom_creative_ad);
       });
 
   EXPECT_CALL(
@@ -290,15 +287,18 @@ TEST_F(SearchResultAdHandlerTest, BraveAdsViewedClicked) {
       TriggerSearchResultAdEvent(
           testing::_, mojom::SearchResultAdEventType::kClicked, testing::_))
       .Times(2)
-      .WillRepeatedly([&web_page](mojom::SearchResultAdInfoPtr ad_mojom,
-                                  mojom::SearchResultAdEventType /*event_type*/,
-                                  TriggerAdEventCallback /*callback*/) {
-        const auto search_result_ads =
-            ConvertWebPageEntitiesToSearchResultAds(web_page->entities);
-        ASSERT_TRUE(search_result_ads.contains(kTestWebPagePlacementId));
-        CompareSearchResultAdInfosWithNonEmptyConversion(
-            search_result_ads.at(kTestWebPagePlacementId), ad_mojom);
-      });
+      .WillRepeatedly(
+          [&web_page](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                      mojom::SearchResultAdEventType /*event_type*/,
+                      TriggerAdEventCallback /*callback*/) {
+            const auto search_result_ads =
+                ConvertWebPageEntitiesToCreativeSearchResultAds(
+                    web_page->entities);
+            ASSERT_TRUE(search_result_ads.contains(kTestWebPagePlacementId));
+            CompareSearchResultAdInfosWithNonEmptyConversion(
+                search_result_ads.at(kTestWebPagePlacementId),
+                mojom_creative_ad);
+          });
 
   auto search_result_ad_handler =
       SearchResultAdHandler::MaybeCreateSearchResultAdHandler(

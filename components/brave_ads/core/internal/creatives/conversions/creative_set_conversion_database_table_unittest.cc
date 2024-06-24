@@ -26,7 +26,8 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, EmptySave) {
   database::SaveCreativeSetConversions({});
 
   // Assert
-  base::MockCallback<database::table::GetConversionsCallback> callback;
+  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
+      callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*creative_set_conversions=*/::testing::IsEmpty()));
   database_table_.GetUnexpired(callback.Get());
@@ -55,7 +56,8 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Assert
-  base::MockCallback<database::table::GetConversionsCallback> callback;
+  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
+      callback;
   EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions));
   database_table_.GetUnexpired(callback.Get());
 }
@@ -78,7 +80,8 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Assert
-  base::MockCallback<database::table::GetConversionsCallback> callback;
+  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
+      callback;
   EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions));
   database_table_.GetUnexpired(callback.Get());
 }
@@ -110,7 +113,8 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::PurgeExpiredCreativeSetConversions();
 
   // Assert
-  base::MockCallback<database::table::GetConversionsCallback> callback;
+  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
+      callback;
   EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
                                                   creative_set_conversion_1}));
   database_table_.GetUnexpired(callback.Get());
@@ -145,7 +149,8 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   database::SaveCreativeSetConversions(creative_set_conversions_2);
 
   // Assert
-  base::MockCallback<database::table::GetConversionsCallback> callback;
+  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
+      callback;
   EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
                                                   creative_set_conversion_2}));
   database_table_.GetUnexpired(callback.Get());

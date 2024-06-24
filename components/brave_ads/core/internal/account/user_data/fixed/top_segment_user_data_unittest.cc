@@ -39,7 +39,8 @@ TEST_F(BraveAdsTopSegmentUserDataTest, BuildTopSegmentUserDataForRewardsUser) {
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
@@ -66,7 +67,8 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
@@ -82,7 +84,7 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd, ConfirmationType::kClicked,
-      /*should_use_random_uuids=*/false);
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);
@@ -96,7 +98,8 @@ TEST_F(BraveAdsTopSegmentUserDataTest,
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildTopSegmentUserData(transaction);

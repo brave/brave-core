@@ -14,12 +14,12 @@
 namespace brave_ads::test {
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
-    const bool should_use_random_uuids) {
+    const bool should_generate_random_uuids) {
   CHECK(!UserHasJoinedBraveRewards());
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, should_use_random_uuids);
+      ConfirmationType::kViewedImpression, should_generate_random_uuids);
   return BuildNonRewardConfirmation(transaction, /*user_data=*/{});
 }
 

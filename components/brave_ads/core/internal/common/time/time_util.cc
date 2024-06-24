@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
+#include "base/check_is_test.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
@@ -254,6 +255,8 @@ std::string TimeToPrivacyPreservingIso8601(const base::Time time) {
 }
 
 void SetFromLocalExplodedFailedForTesting(const bool set_failed) {
+  CHECK_IS_TEST();
+
   g_from_local_exploded_failed_for_testing = set_failed;
 }
 

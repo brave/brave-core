@@ -30,7 +30,8 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
 
   // Act
   const base::Value::Dict user_data =
@@ -52,7 +53,8 @@ TEST_F(BraveAdsCreatedAtTimestampUserDataTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
 
   // Act
   const base::Value::Dict user_data =

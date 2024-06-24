@@ -15,8 +15,9 @@
 
 namespace brave_ads {
 
-base::flat_map</*placement_id*/ std::string, mojom::SearchResultAdInfoPtr>
-ConvertWebPageEntitiesToSearchResultAds(
+base::flat_map</*placement_id*/ std::string,
+               mojom::CreativeSearchResultAdInfoPtr>
+ConvertWebPageEntitiesToCreativeSearchResultAds(
     const std::vector<::schema_org::mojom::EntityPtr>& web_page_entities);
 
 }  // namespace brave_ads

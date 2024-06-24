@@ -14,8 +14,9 @@ namespace brave_ads {
 
 struct CreativeSetConversionInfo;
 
-std::optional<CreativeSetConversionInfo> BuildCreativeSetConversion(
-    const mojom::SearchResultAdInfoPtr& ad_mojom);
+std::optional<CreativeSetConversionInfo>
+FromMojomMaybeBuildCreativeSetConversion(
+    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad);
 
 }  // namespace brave_ads
 

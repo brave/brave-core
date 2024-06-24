@@ -18,7 +18,7 @@ class BraveAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   GetSignedTokensUrlRequestBuilder url_request_builder(
-      test::GetWallet(), /*nonce=*/"716c3381-66e6-46e4-962f-15d01455b5b9");
+      test::Wallet(), /*nonce=*/"716c3381-66e6-46e4-962f-15d01455b5b9");
 
   // Act
   const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();

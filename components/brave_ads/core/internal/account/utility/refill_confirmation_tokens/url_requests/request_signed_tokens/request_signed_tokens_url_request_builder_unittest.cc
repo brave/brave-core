@@ -24,7 +24,7 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   const std::vector<cbr::BlindedToken> blinded_tokens =
       cbr::BlindTokens(tokens);
 
-  RequestSignedTokensUrlRequestBuilder url_request_builder(test::GetWallet(),
+  RequestSignedTokensUrlRequestBuilder url_request_builder(test::Wallet(),
                                                            blinded_tokens);
 
   // Act

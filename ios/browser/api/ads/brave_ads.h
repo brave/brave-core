@@ -125,7 +125,8 @@ OBJC_EXPORT
                                 (BraveAdsPromotedContentAdEventType)eventType
                            completion:(void (^)(BOOL success))completion;
 
-- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
+- (void)triggerSearchResultAdEvent:
+            (BraveAdsCreativeSearchResultAdInfo*)searchResultAd
                          eventType:(BraveAdsSearchResultAdEventType)eventType
                         completion:(void (^)(BOOL success))completion;
 

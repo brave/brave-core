@@ -190,15 +190,15 @@ void AdsImpl::TriggerInlineContentAdEvent(
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
   if (!is_initialized_) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  ad_handler_.TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
-                                         std::move(callback));
+  ad_handler_.TriggerSearchResultAdEvent(std::move(mojom_creative_ad),
+                                         event_type, std::move(callback));
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
