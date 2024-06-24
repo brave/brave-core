@@ -81,17 +81,34 @@ bool EnableBraveVpnWireguardServiceImpl(
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
-  DWORD error_code = 0;
-  if (FAILED(service->EnableVpn(
-          ::SysAllocString(base::UTF8ToWide(server_public_key).c_str()),
-          ::SysAllocString(base::UTF8ToWide(client_private_key).c_str()),
-          ::SysAllocString(base::UTF8ToWide(mapped_ip4_address).c_str()),
-          ::SysAllocString(base::UTF8ToWide(vpn_server_hostname).c_str()),
-          &error_code))) {
-    VLOG(1) << "Unable to call EnableVpn interface";
+
+  base::win::ScopedBstr server_public_key_data;
+  ::memcpy(server_public_key_data.AllocateBytes(server_public_key.length()),
+           server_public_key.data(), server_public_key.length());
+  base::win::ScopedBstr client_private_key_data;
+  ::memcpy(client_private_key_data.AllocateBytes(client_private_key.length()),
+           client_private_key.data(), client_private_key.length());
+  base::win::ScopedBstr mapped_ip4_address_data;
+  ::memcpy(mapped_ip4_address_data.AllocateBytes(mapped_ip4_address.length()),
+           mapped_ip4_address.data(), mapped_ip4_address.length());
+  base::win::ScopedBstr vpn_server_hostname_data;
+  ::memcpy(vpn_server_hostname_data.AllocateBytes(vpn_server_hostname.length()),
+           vpn_server_hostname.data(), vpn_server_hostname.length());
+
+  DWORD last_error;
+  HRESULT res = service->EnableVpn(server_public_key_data.Get(),
+                                   client_private_key_data.Get(),
+                                   mapped_ip4_address_data.Get(),
+                                   vpn_server_hostname_data.Get(), &last_error);
+
+  if (!SUCCEEDED(res)) {
+    VLOG(1) << "Failure calling EnableVpn. Result: "
+            << logging::SystemErrorCodeToString(res)
+            << " GetLastError: " << last_error;
     return false;
   }
-  return error_code == 0;
+
+  return true;
 }
 
 void EnableBraveVpnWireguardService(const std::string& server_public_key,
@@ -131,12 +148,17 @@ bool DisableBraveVpnWireguardServiceImpl() {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
-  DWORD error_code = 0;
-  if (FAILED(service->DisableVpn(&error_code))) {
-    VLOG(1) << "Unable to call EnableVpn interface";
+
+  DWORD last_error = 0;
+  HRESULT res = service->DisableVpn(&last_error);
+  if (!SUCCEEDED(res)) {
+    VLOG(1) << "Failure calling DisableVpn. Result: "
+            << logging::SystemErrorCodeToString(res)
+            << " GetLastError: " << last_error;
     return false;
   }
-  return error_code == 0;
+
+  return true;
 }
 
 void DisableBraveVpnWireguardService(wireguard::BooleanCallback callback) {
@@ -169,26 +191,24 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
     return std::nullopt;
   }
 
-  DWORD error_code = 0;
-  base::win::ScopedBstr public_key_raw;
-  base::win::ScopedBstr private_key_raw;
-  if (FAILED(service->GenerateKeypair(
-          public_key_raw.Receive(), private_key_raw.Receive(), &error_code)) ||
-      error_code) {
-    VLOG(1) << "Unable to generate keypair";
+  DWORD last_error;
+  HRESULT res;
+  base::win::ScopedBstr public_key_data;
+  base::win::ScopedBstr private_key_data;
+  res = service->GenerateKeypair(public_key_data.Receive(),
+                                 private_key_data.Receive(), &last_error);
+
+  if (!SUCCEEDED(res)) {
+    VLOG(1) << "Failure calling GenerateKeyPair. Result: "
+            << logging::SystemErrorCodeToString(res)
+            << " GetLastError: " << last_error;
     return std::nullopt;
   }
 
-  std::wstring public_key_wide;
-  public_key_wide.assign(
-      reinterpret_cast<std::wstring::value_type*>(public_key_raw.Get()),
-      public_key_raw.Length());
-  std::wstring private_key_wide;
-  private_key_wide.assign(
-      reinterpret_cast<std::wstring::value_type*>(private_key_raw.Get()),
-      private_key_raw.Length());
-  std::string public_key = base::WideToUTF8(public_key_wide);
-  std::string private_key = base::WideToUTF8(private_key_wide);
+  std::string public_key = reinterpret_cast<std::string::value_type*>(
+      public_key_data.Get(), public_key_data.ByteLength());
+  std::string private_key = reinterpret_cast<std::string::value_type*>(
+      private_key_data.Get(), private_key_data.ByteLength());
   return std::make_tuple(public_key, private_key);
 }
 
