@@ -5,9 +5,8 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 <LinearLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto" 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -38,6 +37,7 @@
                android:id="@+id/search_engine_switch"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               app:showText="false"
                android:clickable="false"/>
 
      </LinearLayout>
