@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 
 #include <string>
+#include<iostream>
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
