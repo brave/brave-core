@@ -29,10 +29,6 @@ namespace {
 constexpr char kWp[] = "https://[*.]wp.com/*";
 constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
 
-// The thread local brave metadata pointer.
-ABSL_CONST_INIT thread_local CookieSettingWithBraveMetadata*
-    current_cookie_settings_with_brave_metadata = nullptr;
-
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
                               const CookieSettingsBase* const cookie_settings) {
@@ -68,31 +64,16 @@ bool IsFirstPartyAccessAllowed(const GURL& first_party_url,
   return cookie_settings->IsAllowed(setting);
 }
 
-bool IsSessionOnlyExplicit(
-    const CookieSettingWithBraveMetadata& setting_with_brave_metadata) {
-  return setting_with_brave_metadata.setting == CONTENT_SETTING_SESSION_ONLY &&
-         setting_with_brave_metadata.IsExplicitSetting();
+bool IsSessionOnlyExplicit(const CookieSettingsBase::CookieSettingWithMetadata&
+                               setting_with_metadata) {
+  return setting_with_metadata.cookie_setting() ==
+             CONTENT_SETTING_SESSION_ONLY &&
+         setting_with_metadata.is_explicit_setting();
 }
 
 }  // namespace
 
 CookieSettingsBase::~CookieSettingsBase() = default;
-
-CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata() = default;
-CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata(
-    const CookieSettingWithBraveMetadata&) = default;
-CookieSettingWithBraveMetadata::CookieSettingWithBraveMetadata(
-    CookieSettingWithBraveMetadata&&) = default;
-CookieSettingWithBraveMetadata& CookieSettingWithBraveMetadata::operator=(
-    const CookieSettingWithBraveMetadata&) = default;
-CookieSettingWithBraveMetadata& CookieSettingWithBraveMetadata::operator=(
-    CookieSettingWithBraveMetadata&&) = default;
-CookieSettingWithBraveMetadata::~CookieSettingWithBraveMetadata() = default;
-
-bool CookieSettingWithBraveMetadata::IsExplicitSetting() const {
-  return !primary_pattern_matches_all_hosts ||
-         !secondary_pattern_matches_all_hosts;
-}
 
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
@@ -110,11 +91,12 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
 
   // Enable ephemeral storage for a first party URL if SESSION_ONLY cookie
   // setting is set and the feature is enabled.
-  std::optional<CookieSettingWithBraveMetadata> first_party_setting;
+  std::optional<CookieSettingWithMetadata> first_party_setting;
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
-    first_party_setting = GetCookieSettingWithBraveMetadata(
-        first_party_url, first_party_url, overrides);
+    first_party_setting = GetCookieSettingInternal(
+        first_party_url, net::SiteForCookies::FromUrl(first_party_url),
+        first_party_url, overrides, nullptr);
     if (IsSessionOnlyExplicit(*first_party_setting)) {
       return true;
     }
@@ -128,9 +110,10 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   bool allow_3p =
       IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
                                 overrides, /*cookie_settings*/ nullptr);
-  bool allow_1p = first_party_setting ? IsAllowed(first_party_setting->setting)
-                                      : IsFirstPartyAccessAllowed(
-                                            first_party_url, this, overrides);
+  bool allow_1p =
+      first_party_setting
+          ? IsAllowed(first_party_setting->cookie_setting())
+          : IsFirstPartyAccessAllowed(first_party_url, this, overrides);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
@@ -196,21 +179,22 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   MainFrameMode main_frame_mode = MainFrameMode::kDefault;
   if (is_1p_ephemeral_feature_enabled) {
     // Get CookieSetting for the main frame and get matched patterns if any.
-    CookieSettingWithBraveMetadata setting_with_brave_metadata =
-        GetCookieSettingWithBraveMetadata(first_party_url, first_party_url,
-                                          overrides);
+    SettingInfo setting_info;
+    CookieSettingWithMetadata setting_with_metadata =
+        GetCookieSettingInternal(first_party_url, site_for_cookies,
+                                 first_party_url, overrides, &setting_info);
 
     // Ephemeral mode for the main frame can be enabled only via explicit rule.
-    if (IsSessionOnlyExplicit(setting_with_brave_metadata)) {
+    if (IsSessionOnlyExplicit(setting_with_metadata)) {
       main_frame_mode = MainFrameMode::kEphemeral;
     } else {
       // Disabled shields mode allows everything in nested frames. To properly
       // handle this state we need to know if Shields are down in the main
       // frame. The shields check is done by analyzing the primary and secondary
       // patterns and expecting them to be in a specific state.
-      if (setting_with_brave_metadata.setting == CONTENT_SETTING_ALLOW &&
-          setting_with_brave_metadata.primary_pattern_matches_all_hosts &&
-          !setting_with_brave_metadata.secondary_pattern_matches_all_hosts) {
+      if (setting_with_metadata.cookie_setting() == CONTENT_SETTING_ALLOW &&
+          setting_info.primary_pattern.MatchesAllHosts() &&
+          !setting_info.secondary_pattern.MatchesAllHosts()) {
         main_frame_mode = MainFrameMode::kShieldsDown;
       }
     }
@@ -260,33 +244,6 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
          is_explicit_setting && !is_first_party_allowed_scheme;
 }
 
-CookieSettingWithBraveMetadata
-CookieSettingsBase::GetCookieSettingWithBraveMetadata(
-    const GURL& url,
-    const GURL& first_party_url,
-    net::CookieSettingOverrides overrides) const {
-  CookieSettingWithBraveMetadata setting_brave_metadata;
-  const base::AutoReset<CookieSettingWithBraveMetadata*> resetter(
-      &current_cookie_settings_with_brave_metadata, &setting_brave_metadata);
-  // GetCookieSetting fills metadata structure implicitly (implemented in
-  // GetCookieSettingInternal), the setting value is set explicitly here.
-  setting_brave_metadata.setting =
-      GetCookieSetting(url, net::SiteForCookies::FromUrl(url), first_party_url,
-                       overrides, nullptr);
-  return setting_brave_metadata;
-}
-
-CookieSettingWithBraveMetadata*
-CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
-  // Workaround false-positive MSAN use-of-uninitialized-value on
-  // thread_local storage for loaded libraries:
-  // https://github.com/google/sanitizers/issues/1265
-  MSAN_UNPOISON(&current_cookie_settings_with_brave_metadata,
-                sizeof(CookieSettingWithBraveMetadata*));
-
-  return current_cookie_settings_with_brave_metadata;
-}
-
 }  // namespace content_settings
 
 // Determines whether a 3p cookies block should be applied if a requesting URL
@@ -307,16 +264,6 @@ CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
     return AllowPartitionedCookies{};                                         \
   }
 
-#define BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL         \
-  /* Store patterns information to determine if Shields are disabled. */ \
-  if (auto* setting_with_brave_metadata =                                \
-          GetCurrentCookieSettingWithBraveMetadata()) {                  \
-    setting_with_brave_metadata->primary_pattern_matches_all_hosts =     \
-        setting_info.primary_pattern.MatchesAllHosts();                  \
-    setting_with_brave_metadata->secondary_pattern_matches_all_hosts =   \
-        setting_info.secondary_pattern.MatchesAllHosts();                \
-  }
-
 // Force GetCookieSetting to use a first-party context when calling into
 // GetCookieSettingInternal, rather than assuming a third-party context. This is
 // needed by our ephemeral storage implementation. See
@@ -335,6 +282,5 @@ CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
 #include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed
 #undef SiteForCookies
-#undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL
 #undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
 #undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
