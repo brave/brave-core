@@ -112,6 +112,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
   }
 
+  var locationLastReplacement: String {
+    locationTextField?.lastReplacement ?? ""
+  }
+
   // MARK: Views
 
   private var locationTextField: AutocompleteTextField?

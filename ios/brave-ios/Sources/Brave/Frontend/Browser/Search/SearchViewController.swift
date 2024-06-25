@@ -287,9 +287,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     layoutSuggestionsOptInPrompt()
   }
 
-  func setSearchQuery(query: String) {
+  func setSearchQuery(query: String, showSearchSuggestions: Bool = true) {
     dataSource.searchQuery = query
-    dataSource.querySuggestClient()
+    // Do not query suggestions if the text entred is suspicious
+    if showSearchSuggestions {
+      dataSource.querySuggestClient()
+    }
   }
 
   private func reloadSearchEngines() {

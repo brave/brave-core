@@ -218,7 +218,16 @@ extension BrowserViewController: TopToolbarDelegate {
       hideSearchController()
     } else {
       showSearchController()
-      searchController?.setSearchQuery(query: text)
+
+      Task {
+        await searchController?.setSearchQuery(
+          query: text,
+          showSearchSuggestions: URLBarHelper.shared.shouldShowSearchSuggestions(
+            using: topToolbar.locationLastReplacement
+          )
+        )
+      }
+
       searchLoader?.query = text.lowercased()
     }
   }
