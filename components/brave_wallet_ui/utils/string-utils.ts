@@ -199,3 +199,33 @@ export const reduceInt = (integerString: string) => {
   const reduced = firstHalf.concat('...', secondHalf)
   return reduced
 }
+
+/**
+ * Gets the currency symbol for a given currency code.
+ *
+ * This function uses the `Intl.NumberFormat` object to format the number 0
+ * as a currency string using the provided currency code, then strips out the
+ *  digits to leave just the currency symbol. Note that this approach relies
+ *  on the browser's support for the `Intl.NumberFormat` object and
+ *  may not work for all currencies.
+ *
+ * @param {string} currencyCode - The currency code (e.g., 'USD', 'EUR', 'JPY').
+ * @returns {string | null} - The currency symbol, or null if an error occurs.
+ */
+export const getCurrencySymbol = (currencyCode: string) => {
+  try {
+    const formattedCurrencyString = (0).toLocaleString('en', {
+      style: 'currency',
+      currency: currencyCode,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    })
+
+    const currencySymbol = formattedCurrencyString.replace(/\d/g, '').trim()
+
+    return currencySymbol
+  } catch (e) {
+    console.error('Error getting currency symbol:', e)
+    return null
+  }
+}
