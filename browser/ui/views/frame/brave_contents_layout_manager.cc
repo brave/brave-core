@@ -86,6 +86,15 @@ void BraveContentsLayoutManager::LayoutImpl() {
     return;
   }
 
+  const bool is_host_empty =
+      orientation_ == SplitViewBrowserData::Orientation::kVertical
+          ? !host_view()->width()
+          : !host_view()->height();
+  if (is_host_empty) {
+    // When minimizing window, this can happen
+    return;
+  }
+
   auto layout_web_contents_and_devtools =
       [](gfx::Rect bounds, views::View* contents_view,
          views::View* devtools_view,
