@@ -260,22 +260,28 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         TextView responseModalText =
                 mPopupView.findViewById(R.id.rewards_onboarding_error_description);
         TextView responseRewardsBtn = mPopupView.findViewById(R.id.response_action_btn);
+        TextView responseModalTitle = mPopupView.findViewById(R.id.rewards_onboarding_error_title);
         TextView responseErrorText = mPopupView.findViewById(R.id.response_error_text);
 
         String actionText = mPopupView.getContext().getString(R.string.retry_text);
         if (errorMessage.equals(BraveRewardsPanel.WALLET_GENERATION_DISABLED_ERROR)) {
-            String title = mPopupView.getContext().getString(
-                    R.string.wallet_generation_disabled_error_title);
-            String text = String.format(mPopupView.getContext().getString(
-                                                R.string.wallet_generation_disabled_error_text),
-                    mPopupView.getContext().getResources().getString(R.string.learn_more));
+            String title =
+                    mPopupView
+                            .getContext()
+                            .getString(R.string.wallet_generation_disabled_error_title);
+            String text =
+                    String.format(
+                            mPopupView
+                                    .getContext()
+                                    .getString(R.string.wallet_generation_disabled_error_text),
+                            mPopupView.getContext().getResources().getString(R.string.learn_more));
             SpannableString spannableWithLearnMore =
                     learnMoreSpannableString(mPopupView.getContext(), text);
             responseModalText.setMovementMethod(LinkMovementMethod.getInstance());
             responseModalText.setText(spannableWithLearnMore);
+            responseModalTitle.setText(title);
             actionText = mPopupView.getContext().getString(R.string.close_text);
         }
-
         responseRewardsBtn.setText(actionText);
         responseErrorText.setText(errorMessage);
     }
