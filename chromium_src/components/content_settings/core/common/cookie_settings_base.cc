@@ -107,9 +107,8 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  bool allow_3p =
-      IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                overrides, /*cookie_settings*/ nullptr);
+  bool allow_3p = IsFullCookieAccessAllowed(url, site_for_cookies,
+                                            top_frame_origin, overrides);
   bool allow_1p =
       first_party_setting
           ? IsAllowed(first_party_setting->cookie_setting())
@@ -129,8 +128,8 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     return true;
   }
 
-  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides, /*cookie_settings*/ nullptr);
+  return IsFullCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
+                                   overrides);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
@@ -139,17 +138,7 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides,
     CookieSettingWithMetadata* cookie_settings) const {
-  return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides, cookie_settings);
-}
-
-bool CookieSettingsBase::IsCookieAccessAllowedImpl(
-    const GURL& url,
-    const net::SiteForCookies& site_for_cookies,
-    const std::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides,
-    CookieSettingWithMetadata* cookie_settings) const {
-  bool allow = IsChromiumFullCookieAccessAllowed(
+  bool allow = IsFullCookieAccessAllowed_ChromiumImpl(
       url, site_for_cookies, top_frame_origin, overrides, cookie_settings);
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
@@ -278,7 +267,8 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
 #define BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING \
   if (false)
 
-#define IsFullCookieAccessAllowed IsChromiumFullCookieAccessAllowed
+#define IsFullCookieAccessAllowed IsFullCookieAccessAllowed_ChromiumImpl
+
 #include "src/components/content_settings/core/common/cookie_settings_base.cc"
 #undef IsFullCookieAccessAllowed
 #undef SiteForCookies
