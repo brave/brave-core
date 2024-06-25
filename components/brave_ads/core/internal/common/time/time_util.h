@@ -34,14 +34,6 @@ base::Time GetLocalTimeAtEndOfThisMonth();
 
 std::string TimeToPrivacyPreservingIso8601(base::Time time);
 
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time GetLocalMidnight(base::Time time);
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-void SetFromLocalExplodedFailedForTesting(bool set_failed);
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_

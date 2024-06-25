@@ -11,100 +11,12 @@
 
 namespace brave_ads {
 
-namespace {
-
-bool g_from_local_exploded_failed_for_testing = false;
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CorrectLocalMidnightForDaylightSaving(const base::Time midnight,
-                                                 int expected_day_of_month) {
-  // Check for errors due to daylight saving time change.
-  base::Time::Exploded midnight_exploded;
-  midnight.LocalExplode(&midnight_exploded);
-
-  base::Time corrected_midnight = midnight;
-  if (midnight_exploded.hour != 0) {
-    if (midnight_exploded.day_of_month == expected_day_of_month) {
-      corrected_midnight -= base::Hours(1);
-    } else {
-      corrected_midnight += base::Hours(1);
-    }
-  }
-  return corrected_midnight;
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateBeginningOfMonth(const base::Time time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-
-  const base::Time midnight = GetLocalMidnight(time);
-  const base::Time shifted_midnight =
-      midnight - base::Days(exploded.day_of_month - 1);
-  return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
-                                               /*expected_day_of_month=*/1);
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateBeginningOfNextMonth(const base::Time time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-
-  const base::Time midnight = GetLocalMidnight(time);
-  const base::Time shifted_midnight =
-      midnight + base::Days(DaysPerMonth(exploded.year, exploded.month) -
-                            exploded.day_of_month + 1);
-  return CorrectLocalMidnightForDaylightSaving(shifted_midnight,
-                                               /*expected_day_of_month=*/1);
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateEndOfPreviousMonth(const base::Time time) {
-  base::Time adjusted_time = CalculateBeginningOfMonth(time);
-  adjusted_time -= base::Milliseconds(1);
-  return adjusted_time;
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateBeginningOfPreviousMonth(const base::Time time) {
-  const base::Time end_previous_month = CalculateEndOfPreviousMonth(time);
-  return CalculateBeginningOfMonth(end_previous_month);
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time CalculateEndOfMonth(const base::Time time) {
-  base::Time adjusted_time = CalculateBeginningOfNextMonth(time);
-  adjusted_time -= base::Milliseconds(1);
-  return adjusted_time;
-}
-
-}  // namespace
-
 int64_t ToChromeTimestampFromTime(const base::Time time) {
   return time.ToDeltaSinceWindowsEpoch().InMicroseconds();
 }
 
 base::Time ToTimeFromChromeTimestamp(const int64_t timestamp) {
   return base::Time::FromDeltaSinceWindowsEpoch(base::Microseconds(timestamp));
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
-// function when base::Time::FromLocalExploded for linux sandbox will be fixed.
-base::Time GetLocalMidnight(const base::Time time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-
-  const base::Time midnight =
-      time - base::Hours(exploded.hour) - base::Minutes(exploded.minute) -
-      base::Seconds(exploded.second) - base::Milliseconds(exploded.millisecond);
-
-  return CorrectLocalMidnightForDaylightSaving(midnight, exploded.day_of_month);
 }
 
 int GetLocalTimeInMinutes(const base::Time time) {
@@ -138,9 +50,7 @@ base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed_for_testing) {
-    return CalculateBeginningOfPreviousMonth(time);
-  }
+  DCHECK(success);
 
   return adjusted_time;
 }
@@ -167,9 +77,7 @@ base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed_for_testing) {
-    return CalculateEndOfPreviousMonth(time);
-  }
+  DCHECK(success);
 
   return adjusted_time;
 }
@@ -190,9 +98,7 @@ base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed_for_testing) {
-    return CalculateBeginningOfMonth(time);
-  }
+  DCHECK(success);
 
   return adjusted_time;
 }
@@ -213,9 +119,7 @@ base::Time AdjustLocalTimeToEndOfMonth(const base::Time time) {
 
   base::Time adjusted_time;
   const bool success = base::Time::FromLocalExploded(exploded, &adjusted_time);
-  if (!success || g_from_local_exploded_failed_for_testing) {
-    return CalculateEndOfMonth(time);
-  }
+  DCHECK(success);
 
   return adjusted_time;
 }
@@ -251,10 +155,6 @@ std::string TimeToPrivacyPreservingIso8601(const base::Time time) {
   return base::StringPrintf("%04d-%02d-%02dT%02d:00:00.000Z", exploded.year,
                             exploded.month, exploded.day_of_month,
                             exploded.hour);
-}
-
-void SetFromLocalExplodedFailedForTesting(const bool set_failed) {
-  g_from_local_exploded_failed_for_testing = set_failed;
 }
 
 }  // namespace brave_ads
