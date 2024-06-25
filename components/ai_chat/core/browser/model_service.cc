@@ -157,6 +157,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
   return *kModels;
 }
 
+// TODO(nullhook): Handle encryption/decryption failures
 std::string EncryptAPIKey(const std::string& api_key) {
   if (api_key.empty()) {
     return std::string();
