@@ -9,6 +9,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/color/color_mixer.h"
@@ -113,8 +114,10 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
                          leo::Theme::kLight)},
           {kColorBraveSplitViewMenuButtonBorder,
            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)},
-          {kColorBraveSplitViewInactiveWebViewBorder,
-           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)},
+          {kColorBraveSplitViewActiveWebViewBorder,
+           leo::GetColor(leo::Color::kColorIconInteractive,
+                         leo::Theme::kLight)},
+          {kColorBraveSplitViewInactiveWebViewBorder, kLightFrame},
           {kColorBraveSplitViewMenuItemIcon,
            leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)},
       });
@@ -158,8 +161,9 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
                          leo::Theme::kDark)},
           {kColorBraveSplitViewMenuButtonBorder,
            leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)},
-          {kColorBraveSplitViewInactiveWebViewBorder,
-           leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)},
+          {kColorBraveSplitViewActiveWebViewBorder,
+           leo::GetColor(leo::Color::kColorIconInteractive, leo::Theme::kDark)},
+          {kColorBraveSplitViewInactiveWebViewBorder, kDarkFrame},
           {kColorBraveSplitViewMenuItemIcon,
            leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)},
       });
