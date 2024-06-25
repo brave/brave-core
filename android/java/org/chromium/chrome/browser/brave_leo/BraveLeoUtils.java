@@ -66,9 +66,7 @@ public class BraveLeoUtils {
         }
     }
 
-    public static String getDefaultModelName(ModelWithSubtitle[] models) {
-        String defaultModelKey = BraveLeoPrefUtils.getDefaultModel();
-
+    public static String getDefaultModelName(ModelWithSubtitle[] models, String defaultModelKey) {
         for (ModelWithSubtitle model : models) {
             if (model.model.key.equals(defaultModelKey)) {
                 return model.model.displayName;
