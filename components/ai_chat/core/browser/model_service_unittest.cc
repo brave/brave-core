@@ -35,9 +35,7 @@ class ModelServiceTest : public ::testing::Test {
 };
 
 TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
-  // We use the pref literal here because ModelService::SetDefaultModelKey
-  // will not update the pref if the key is not in the list of models.
-  pref_service_.SetString("brave.ai_chat.default_model_key", "chat-default");
+  service_->SetDefaultModelKey("chat-default");
   ModelService::MigrateProfilePrefs(&pref_service_);
 
   EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
@@ -74,8 +72,7 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey) {
   service_->SetDefaultModelKey("chat-basic");
   EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
   service_->SetDefaultModelKey("bad-key");
-  // Default key should not change if the key is not in the list of models.
-  EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(service_->GetDefaultModelKey(), "bad-key");
 }
 
 }  // namespace ai_chat
