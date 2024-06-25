@@ -5,6 +5,7 @@ include_rules = [
 
   "+brave/app",
   "+brave/common",
+  "+brave/services/device/geolocation",
   "+brave/services/network/public",
   "+chrome/app",
   "+chrome/browser",

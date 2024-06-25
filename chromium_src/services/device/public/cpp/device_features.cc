@@ -16,4 +16,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #endif  // BUILDFLAG(IS_WIN)
 }});
 
+BASE_FEATURE(kLinuxGeoClueLocationBackend,
+             "LinuxGeoClueLocationBackend",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
