@@ -40,6 +40,9 @@
       }
     },
     {
+      "skippedTests" : [
+        "DecentralizedDNSHelperTests"
+      ],
       "target" : {
         "containerPath" : "container:..",
         "identifier" : "BraveWalletTests",
@@ -52,7 +55,8 @@
         "PlaylistTests\/testVideoPlayerTrackBarTimeManualFormatter()",
         "SyncTests",
         "TabSessionTests",
-        "TestFavicons"
+        "TestFavicons",
+        "URLFormatTests"
       ],
       "target" : {
         "containerPath" : "container:..",

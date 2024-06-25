@@ -260,7 +260,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return handleIPFSSchemeURL(url)
     }
 
-    if let url = URL(string: text), url.scheme == "brave" {
+    if let url = URL(string: text), url.scheme == "brave" || url.scheme == "chrome" {
       topToolbar.leaveOverlayMode()
       return handleChromiumWebUIURL(url)
     }
@@ -268,33 +268,35 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let fixupURL = URIFixup.getURL(text) else {
       return false
     }
-    // Do not allow users to enter URLs with the following schemes.
-    // Instead, submit them to the search engine like Chrome-iOS does.
-    if !["file"].contains(fixupURL.scheme) {
-      // check text is decentralized DNS supported domain
-      if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
-        topToolbar.leaveOverlayMode()
-        updateToolbarCurrentURL(fixupURL)
-        topToolbar.locationView.loading = true
-        let result = await decentralizedDNSHelper.lookup(
-          domain: fixupURL.schemelessAbsoluteDisplayString
-        )
-        topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
-        guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
-        switch result {
-        case .loadInterstitial(let service):
-          showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
+
+    if fixupURL.scheme == "brave" || fixupURL.scheme == "chrome" {
+      topToolbar.leaveOverlayMode()
+      return handleChromiumWebUIURL(fixupURL)
+    }
+
+    // check text is decentralized DNS supported domain
+    if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
+      topToolbar.leaveOverlayMode()
+      updateToolbarCurrentURL(fixupURL)
+      topToolbar.locationView.loading = true
+      let result = await decentralizedDNSHelper.lookup(
+        domain: fixupURL.schemelessAbsoluteDisplayString
+      )
+      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+      guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
+      switch result {
+      case .loadInterstitial(let service):
+        showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
+        return true
+      case .load(let resolvedURL):
+        if resolvedURL.isIPFSScheme {
+          return handleIPFSSchemeURL(resolvedURL)
+        } else {
+          finishEditingAndSubmit(resolvedURL)
           return true
-        case .load(let resolvedURL):
-          if resolvedURL.isIPFSScheme {
-            return handleIPFSSchemeURL(resolvedURL)
-          } else {
-            finishEditingAndSubmit(resolvedURL)
-            return true
-          }
-        case .none:
-          break
         }
+      case .none:
+        break
       }
     }
 
@@ -319,7 +321,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
     let controller = ChromeWebViewController(privateBrowsing: false)
     controller.loadURL(url.absoluteString)
-    controller.title = url.host
+    controller.title = url.host?.capitalizeFirstLetter
     let webView = controller.webView
     webView.isFindInteractionEnabled = true
     controller.navigationItem.rightBarButtonItem = UIBarButtonItem(

@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 
 public class URIFixup {
@@ -21,13 +22,11 @@ public class URIFixup {
     }
 
     // Validate if the HOST is a valid IP address.
-    if let url = URL(string: "https://\(string)"),
-      let host = url.host, !host.isEmpty
-    {
-      return isValidIPAddress(host)
-    } else {
-      return false
+    if let url = NSURL(idnString: "https://\(string)") {
+      return url.isHostIPAddress
     }
+
+    return false
   }
 
   private static func validateURL(_ url: URL) -> URL? {
@@ -50,6 +49,11 @@ public class URIFixup {
         return nil
       }
 
+      // The host is local host
+      if host == "localhost" {
+        return url
+      }
+
       // The host is a valid IPv4 or IPv6 address
       if isValidIPAddress(host) {
         return url
@@ -64,9 +68,11 @@ public class URIFixup {
 
     // NSURL: idnString from brave core handles the puny code represantation of Hostnames
     // Using Punycode, host names containing Unicode characters are transcoded to a subset of ASCII
-    let entryURL = NSURL(idnString: trimmed) as URL?
-    if let url = entryURL, InternalURL.isValid(url: url) {
-      return url
+    let entryURL = NSURL(idnString: trimmed)
+
+    // If the URL is internal, don't validate it
+    if let url = entryURL, InternalURL.isValid(url: url as URL) {
+      return url as URL
     }
 
     guard let escaped = trimmed.addingPercentEncoding(withAllowedCharacters: .urlAllowed) else {
@@ -79,74 +85,45 @@ public class URIFixup {
     // the official URI scheme list, so that other such search phrases
     // like "filetype:" are recognised as searches rather than URLs.
     // Use `URL(string: entry)` so it doesn't double percent escape URLs.
-    if let url = entryURL, url.schemeIsValid {
+    if let url = entryURL as URL?, url.schemeIsValid {
+      guard let match = AutocompleteClassifier.classify(url.absoluteString) else {
+        return nil
+      }
+
+      // brave.com -> https://brave.com
+      // brave.com. -> https://brave.com.
+      // 127.0.0.1 -> http://127.0.0.1:80
+      // localhost -> https://localhost:80
+      if match.type == .urlWhatYouTyped {
+        // Always return the suggested URL and not the input the user entered
+        // Do not return `entryURL` which is based on user input
+        return match.destinationURL
+      }
+
+      // dev@brave.com -> search_engine/?q=...
+      // Brandon -> search_engine/?q=Brandon
+      // http://dev@brave.com -> search_engine/?q=...
+      if match.type == .searchWhatYouTyped {
+        // Do not return the destinationURL which can be a search engine URL
+        // this is because this class can be used for validation, and not just URL-Bar/Omnibox.
+        // So return nil, indicating that the input is not a valid URL
+        return nil
+      }
+
       return validateURL(url)
     }
 
-    // If there's no scheme, we're going to prepend "http://". First,
-    // make sure there's at least one "." or ":" in the host. This means
-    // we'll allow single-word searches (e.g., "foo") at the expense
-    // of breaking single-word hosts without a scheme (e.g., "localhost").
-    if trimmed.range(of: ".") == nil && trimmed.range(of: ":") == nil {
+    // See above comments
+    guard let match = AutocompleteClassifier.classify(entry) else {
       return nil
     }
 
-    if trimmed.range(of: ":") != nil {
-      // The host is a valid IPv4 or IPv6 address
-      if isValidIPAddressURL(trimmed) {
-        // IP Addresses do NOT require a Scheme.
-        // However, Brave requires that URLs have a scheme.
-        return NSURL(idnString: "http://\(escaped)") as URL?
-      } else {
-        // If host is NOT an IP-Address, it should never contain a colon
-        // This is because it also doesn't contain a "." so it isn't a domain at all.
-        // IE: foo:5000 & brave:8080 are not valid addresses.
-        return nil
-      }
+    if match.type == .urlWhatYouTyped {
+      return match.destinationURL
     }
 
-    // Partially canonicalize the URL and check if it has a "user"..
-    // If it is, it should go to the search engine and not the DNS server..
-    // This behaviour is mimicking SAFARI! It has the safest behaviour so far.
-    //
-    // 1. If the url contains just "user@domain.com", ALL browsers take you to the search engine.
-    // 2. If it's an email with a PATH or QUERY such as "user@domain.com/whatever"
-    //    where "/whatever" is the path or "user@domain.com?something=whatever"
-    //    where "?something=whatever" is the query:
-    //    - Firefox warns you that a site is trying to log you in automatically to the domain.
-    //    - Chrome takes you to the domain (seems like a security flaw).
-    //    - Safari passes on the entire url to the Search Engine just like it does
-    //      without a path or query.
-    if URL(string: trimmed)?.user != nil || URL(string: escaped)?.user != nil
-      || URL(string: "http://\(trimmed)")?.user != nil
-      || URL(string: "http://\(escaped)")?.user != nil
-    {
+    if match.type == .searchWhatYouTyped {
       return nil
-    }
-
-    // URL contains more than 1 dot, but is NOT a valid IP.
-    // IE: brave.com.com.com.com or 123.4.5 or "hello.world.whatever"
-    // However, a valid URL can be "brave.com" or "hello.world"
-    if let url = URL(string: escaped),
-      url.scheme == nil
-    {
-      let dotCount = escaped.reduce(0, { $1 == "." ? $0 + 1 : $0 })
-      if dotCount > 0 && !isValidIPAddress(escaped) {
-        // If there is a "." or ":", prepend "http://" and try again. Since this
-        // is strictly an "http://" URL, we also require a host.
-        if let url = NSURL(idnString: "http://\(escaped)") as URL?, let host = url.host,
-          host.rangeOfCharacter(from: CharacterSet(charactersIn: "1234567890.[]:").inverted) != nil
-        {
-          return validateURL(url)
-        }
-        return nil
-      }
-    }
-
-    // If there is a "." or ":", prepend "http://" and try again. Since this
-    // is strictly an "http://" URL, we also require a host.
-    if let url = NSURL(idnString: "http://\(escaped)") as URL?, url.host != nil {
-      return validateURL(url)
     }
 
     return nil

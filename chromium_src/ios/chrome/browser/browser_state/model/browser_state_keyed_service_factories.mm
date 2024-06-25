@@ -6,6 +6,7 @@
 #include "ios/chrome/browser/browser_state/model/browser_state_keyed_service_factories.h"
 
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
+#include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
@@ -17,6 +18,7 @@
 #include "ios/chrome/browser/favicon/model/ios_chrome_large_icon_cache_factory.h"
 #include "ios/chrome/browser/favicon/model/ios_chrome_large_icon_service_factory.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
+#include "ios/chrome/browser/history/model/top_sites_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
 #include "ios/chrome/browser/invalidation/model/ios_chrome_profile_invalidation_provider_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
@@ -43,6 +45,8 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   ios::BookmarkUndoServiceFactory::GetInstance();
   ios::FaviconServiceFactory::GetInstance();
   ios::HistoryServiceFactory::GetInstance();
+  ios::TopSitesFactory::GetInstance();
+  ios::AutocompleteClassifierFactory::GetInstance();
   ios::HostContentSettingsMapFactory::GetInstance();
   ios::TemplateURLServiceFactory::GetInstance();
   ios::WebDataServiceFactory::GetInstance();

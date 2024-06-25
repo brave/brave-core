@@ -31,6 +31,7 @@ source_set("browser") {
     "api/ipfs",
     "api/net",
     "api/ntp_background_images",
+    "api/omnibox",
     "api/opentabs",
     "api/p3a",
     "api/password",

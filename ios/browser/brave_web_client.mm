@@ -33,7 +33,21 @@ void BraveWebClient::SetUserAgent(const std::string& user_agent) {
 }
 
 std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
+  if (user_agent_.empty()) {
+    return ChromeWebClient::GetUserAgent(type);
+  }
   return user_agent_;
+}
+
+void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
+  ChromeWebClient::AddAdditionalSchemes(schemes);
+
+  schemes->standard_schemes.push_back(kBraveUIScheme);
+  schemes->secure_schemes.push_back(kBraveUIScheme);
+}
+
+bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
+  return ChromeWebClient::IsAppSpecificURL(url) || url.SchemeIs(kBraveUIScheme);
 }
 
 bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {

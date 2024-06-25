@@ -31,7 +31,6 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
     "//brave/components/search_engines",
-    "//chrome/test:test_support",
     "//components/bookmarks/browser",
     "//components/bookmarks/test",
     "//components/omnibox/browser",
@@ -41,11 +40,17 @@ source_set("unit_tests") {
     "//components/search_engines",
     "//components/sync_preferences:test_support",
     "//components/variations:test_support",
-    "//content/test:test_support",
     "//services/network:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (!is_ios) {
+    deps += [
+      "//chrome/test:test_support",
+      "//content/test:test_support",
+    ]
+  }
 
   if (enable_commander) {
     sources +=

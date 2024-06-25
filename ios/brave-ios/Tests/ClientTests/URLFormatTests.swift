@@ -12,22 +12,13 @@ import XCTest
 
 @MainActor class URLFormatTests: XCTestCase {
 
-  // Only init once
-  private static let icuInitialized = BraveCoreMain.initializeICUForTesting()
-
-  override func setUp() {
-    super.setUp()
-    assert(Self.icuInitialized, "ICU should load for test")
-  }
-
   func testURIFixup() {
     // Check valid URLs. We can load these after some fixup.
-    checkValidURL("about:", afterFixup: "about:")
-    checkValidURL("about:config", afterFixup: "about:config")
-    checkValidURL("about: config", afterFixup: "about:%20config")
+    checkValidURL("about:", afterFixup: "chrome://version/")
+    checkValidURL("about:config", afterFixup: "chrome://config/")
+    checkValidURL("about: config", afterFixup: "chrome://%20config/")
 
-    checkValidURL("file:///f/o/o", afterFixup: "file:///f/o/o")
-    checkValidURL("ftp://ftp.mozilla.org", afterFixup: "ftp://ftp.mozilla.org/")
+    // Check valid URLs. We can load these after some fixup.
     checkValidURL("foo.bar", afterFixup: "http://foo.bar/")
     checkValidURL(" foo.bar ", afterFixup: "http://foo.bar/")
     checkValidURL(
@@ -75,12 +66,32 @@ import XCTest
     checkValidURL("http://1.1:80", afterFixup: "http://1.0.0.1/")
     checkValidURL("http://1.1:80", afterFixup: "http://1.0.0.1/")
     checkValidURL("http://1.1:80", afterFixup: "http://1.0.0.1/")
+    checkValidURL("https://google.com.", afterFixup: "https://google.com./")
+    checkValidURL("foo:5000", afterFixup: "http://foo:5000/")
+
+    // Check valid URLs. We can load these after some fixup.
+    checkValidURL("user@domain.com/whatever", afterFixup: "http://user@domain.com/whatever")
+    checkValidURL(
+      "user@domain.com?something=whatever",
+      afterFixup: "http://user@domain.com/?something=whatever"
+    )
+    checkValidURL(
+      "user:password@domain.com?something=whatever",
+      afterFixup: "http://user:password@domain.com/?something=whatever"
+    )
+    checkValidURL(
+      "data:text/html;base64,SGVsbG8gV29ybGQhCg==",
+      afterFixup: "data:text/html;base64,SGVsbG8gV29ybGQhCg=="
+    )
+    checkValidURL(
+      "data://www.example.com,fake example.com",
+      afterFixup: "data://www.example.com,fake%20example.com"
+    )
 
     // Check invalid URLs. These are passed along to the default search engine.
     checkInvalidURL("user@domain.com")
-    checkInvalidURL("user@domain.com/whatever")
-    checkInvalidURL("user@domain.com?something=whatever")
-
+    checkInvalidURL("file:///f/o/o")
+    checkInvalidURL("ftp://ftp.mozilla.org")
     checkInvalidURL("foobar")
     checkInvalidURL("foo bar")
     checkInvalidURL("brave. org")
@@ -89,12 +100,14 @@ import XCTest
     checkInvalidURL("创业咖啡")
     checkInvalidURL("创业咖啡 中国")
     checkInvalidURL("创业咖啡. 中国")
-    checkInvalidURL("data:text/html;base64,SGVsbG8gV29ybGQhCg==")
-    checkInvalidURL("data://https://www.example.com,fake example.com")
     checkInvalidURL("1.2.3")
     checkInvalidURL("1.1")
     checkInvalidURL("127.1")
     checkInvalidURL("127.1.1")
+    checkInvalidURL("brave://127.0.0.1")
+    checkInvalidURL("brave://127.0.0.1:443")
+    checkInvalidURL("brave://[::1]")
+    checkInvalidURL("brave://[::1]:443")
 
     // Check invalid quoted URLs, emails, and quoted domains.
     // These are passed along to the default search engine.
@@ -109,9 +122,13 @@ import XCTest
     checkInvalidURL("\"foo@brave.com\"")
     checkInvalidURL(#""创业咖啡.中国"#)
     checkInvalidURL(#""创业咖啡.中国""#)
-    checkInvalidURL("foo:5000")
     checkInvalidURL("http://::192.9.5.5")
     checkInvalidURL("http://::192.9.5.5:8080")
+
+    // Check valid URLs, but invalid domains.
+    checkInvalidURL("brave..com")
+    checkInvalidURL("brave...com")
+    checkInvalidURL("brave....com")
   }
 
   func testURIFixupPunyCode() {
