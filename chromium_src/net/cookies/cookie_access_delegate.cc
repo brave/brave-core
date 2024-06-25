@@ -18,10 +18,9 @@ bool CookieAccessDelegate::NotUsed() const {
 bool CookieAccessDelegate::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    net::CookieSettingOverrides overrides,
-    const std::optional<url::Origin>& top_frame_origin) const {
-  NOTREACHED_IN_MIGRATION() << "Should be overridden";
-  return false;
+    const std::optional<url::Origin>& top_frame_origin,
+    net::CookieSettingOverrides overrides) const {
+  NOTREACHED() << "Should be overridden";
 }
 
 }  // namespace net
