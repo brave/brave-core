@@ -88,6 +88,8 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
 
  private:
   bool ShouldShowVerticalTabs() const;
+  bool IsTabTiled(const Tab* tab) const;
+
   SkColor GetTargetTabBackgroundColor(
       TabStyle::TabSelectionState selection_state,
       bool hovered) const override;
@@ -167,14 +169,7 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
-  bool is_tab_tiled = false;
-  if (auto* browser = tab()->controller()->GetBrowser()) {
-    // browser can be null during tests.
-    if (auto* data = SplitViewBrowserData::FromBrowser(browser);
-        data && tab()->controller()->IsTabTiled(tab())) {
-      is_tab_tiled = true;
-    }
-  }
+  const bool is_tab_tiled = IsTabTiled(tab());
 
   if (is_tab_tiled && !tab()->IsActive() &&
       (path_type == TabStyle::PathType::kBorder ||
@@ -272,8 +267,18 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
     return {};
   }
 
+  if (IsTabTiled(tab())) {
+    return {};
+  }
+
+  const auto is_next_tab_tiled =
+      IsTabTiled(tab()->controller()->GetAdjacentTab(tab(), 1));
   if (!HorizontalTabsUpdateEnabled()) {
-    return BraveGM2TabStyle::GetSeparatorBounds(scale);
+    auto bounds = BraveGM2TabStyle::GetSeparatorBounds(scale);
+    if (is_next_tab_tiled) {
+      bounds.trailing = {};
+    }
+    return bounds;
   }
 
   gfx::SizeF size(tab_style()->GetSeparatorSize());
@@ -293,6 +298,10 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
   gfx::PointF origin(tab()->bounds().origin());
   origin.Scale(scale);
   bounds.trailing.Offset(-origin.x(), -origin.y());
+
+  if (is_next_tab_tiled) {
+    bounds.trailing = {};
+  }
 
   return bounds;
 }
@@ -418,6 +427,22 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab()->controller()->GetBrowser());
+}
+
+bool BraveVerticalTabStyle::IsTabTiled(const Tab* tab) const {
+  if (!tab) {
+    return false;
+  }
+
+  auto is_tab_tiled = false;
+  if (auto* browser = tab->controller()->GetBrowser()) {
+    // browser can be null during tests.
+    if (auto* data = SplitViewBrowserData::FromBrowser(browser);
+        data && tab->controller()->IsTabTiled(tab)) {
+      is_tab_tiled = true;
+    }
+  }
+  return is_tab_tiled;
 }
 
 }  // namespace
