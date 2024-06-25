@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 
@@ -51,7 +51,8 @@ export function AndroidSwapApp() {
 function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
-  render(AndroidSwapApp(), document.getElementById('root'))
+  const root = createRoot(document.getElementById('root')!)
+  root.render(<AndroidSwapApp />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
