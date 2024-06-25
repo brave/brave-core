@@ -108,7 +108,7 @@ void ConversationDriverIOS::OnAPIResponseError(ai_chat::mojom::APIError error) {
   [bridge_ onAPIResponseError:(AiChatAPIError)error];
 }
 
-void ConversationDriverIOS::OnModelChanged(
+void ConversationDriverIOS::OnModelDataChanged(
     const std::string& model_key,
     const std::vector<ai_chat::mojom::ModelPtr>& model_list) {
   NSMutableArray* list =
