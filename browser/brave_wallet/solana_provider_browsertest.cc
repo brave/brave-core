@@ -945,10 +945,10 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInIframes) {
   EXPECT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 0)));
   EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
 
-  // navigate second iframe awau will clear its connected status
+  // navigate second iframe away will clear its connected status
   EXPECT_TRUE(
       NavigateIframeToURL(web_contents(), "test-iframe-1", new_iframe_url));
-  EXPECT_TRUE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
+  EXPECT_FALSE(IsSolanaConnected(ChildFrameAt(main_frame, 1)));
 }
 
 IN_PROC_BROWSER_TEST_F(SolanaProviderTest, ConnectedStatusInMultiFrames) {
