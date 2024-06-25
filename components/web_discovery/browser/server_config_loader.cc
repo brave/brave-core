@@ -185,12 +185,12 @@ const PatternsGroup& ServerConfigLoader::GetLastPatterns() const {
   return *last_loaded_patterns_;
 }
 
-void ServerConfigLoader::SetLastServerConfigForTest(
+void ServerConfigLoader::SetLastServerConfigForTesting(
     std::unique_ptr<ServerConfig> server_config) {
   last_loaded_server_config_ = std::move(server_config);
 }
 
-void ServerConfigLoader::SetLastPatternsForTest(
+void ServerConfigLoader::SetLastPatternsForTesting(
     std::unique_ptr<PatternsGroup> patterns) {
   last_loaded_patterns_ = std::move(patterns);
 }
@@ -226,6 +226,9 @@ void ServerConfigLoader::OnConfigResponses(
   bool result = ProcessConfigResponses(response_bodies[0], response_bodies[1]);
 
   config_backoff_entry_.InformOfRequest(result);
+
+  collector_config_url_loader_ = nullptr;
+  quorum_config_url_loader_ = nullptr;
 
   if (!result) {
     update_time += config_backoff_entry_.GetTimeUntilRelease();
@@ -391,7 +394,7 @@ void ServerConfigLoader::HandlePatternsStatus(bool result) {
 
 void ServerConfigLoader::OnPatternsResponse(
     std::optional<std::string> response_body) {
-  auto* response_info = collector_config_url_loader_->ResponseInfo();
+  auto* response_info = patterns_url_loader_->ResponseInfo();
   if (!response_body || !response_info ||
       response_info->headers->response_code() != 200) {
     VLOG(1) << "Failed to retrieve patterns file";

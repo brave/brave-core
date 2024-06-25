@@ -28,8 +28,8 @@ constexpr auto kQueryActions = base::MakeFixedFlatSet<std::string_view>(
 
 bool ValueHasContent(const base::Value& value) {
   const auto* value_str = value.GetIfString();
-  if (value_str && !value_str->empty()) {
-    return true;
+  if (value_str) {
+    return !value_str->empty();
   }
   if (!value.is_none()) {
     return true;

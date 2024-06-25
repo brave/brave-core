@@ -75,8 +75,9 @@ class ServerConfigLoader {
   const ServerConfig& GetLastServerConfig() const;
   const PatternsGroup& GetLastPatterns() const;
 
-  void SetLastServerConfigForTest(std::unique_ptr<ServerConfig> server_config);
-  void SetLastPatternsForTest(std::unique_ptr<PatternsGroup> patterns);
+  void SetLastServerConfigForTesting(
+      std::unique_ptr<ServerConfig> server_config);
+  void SetLastPatternsForTesting(std::unique_ptr<PatternsGroup> patterns);
 
  private:
   void OnConfigResponses(

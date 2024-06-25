@@ -9,6 +9,8 @@ static_library("browser") {
     "content_scraper.h",
     "credential_manager.cc",
     "credential_manager.h",
+    "credential_signer.cc",
+    "credential_signer.h",
     "double_fetcher.cc",
     "double_fetcher.h",
     "ecdh_aes.cc",
@@ -64,10 +66,14 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "credential_manager_unittest.cc",
     "double_fetcher_unittest.cc",
     "hash_detection_unittest.cc",
     "patterns_unittest.cc",
+    "payload_generator_unittest.cc",
     "privacy_guard_unittest.cc",
+    "reporter_unittest.cc",
+    "server_config_loader_unittest.cc",
     "signature_basename_unittest.cc",
   ]
   deps = [
