@@ -85,7 +85,6 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   std::string page_content = "This is a test page content";
 
   auto* client = GetClient();
-  testing::StrictMock<MockCallback> mock_callbacks;
   base::RunLoop run_loop;
 
   auto invoke_completion_callback = [](const std::string& result_string) {
@@ -140,6 +139,49 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
             EXPECT_STREQ(result.value()[1].c_str(), "Question 2");
             run_loop.Quit();
           }));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
+  EngineConsumer::ConversationHistory history;
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+      mojom::ConversationTurnVisibility::VISIBLE,
+      "Which show is this catchphrase from?", "This is the way.",
+      std::nullopt));
+  history.push_back(mojom::ConversationTurn::New(
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
+      std::nullopt, std::nullopt));
+
+  auto* client = GetClient();
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions& model_options,
+              base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            EXPECT_EQ(*messages.front().GetDict().Find("role"), "system");
+            std::move(completed_callback)
+                .Run(EngineConsumer::GenerationResult(""));
+          });
+
+  {
+    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->text = "What's his name?";
+    entry->selected_text = "I'm groot.";
+    history.push_back(std::move(entry));
+  }
+
+  engine_->GenerateAssistantResponse(
+      false, "This is a page.", history, "What's his name?", base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);
