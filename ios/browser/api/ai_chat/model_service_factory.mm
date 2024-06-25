@@ -13,10 +13,6 @@
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
-#if !defined(__has_feature) || !__has_feature(objc_arc)
-#error "This file requires ARC support."
-#endif
-
 namespace ai_chat {
 ModelService* ModelServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {

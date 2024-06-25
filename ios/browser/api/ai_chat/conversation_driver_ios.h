@@ -6,6 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_CONVERSATION_DRIVER_IOS_H_
 #define BRAVE_IOS_BROWSER_API_AI_CHAT_CONVERSATION_DRIVER_IOS_H_
 
+#include <memory>
 #include <string>
 #include <string_view>
 #include <vector>
