@@ -769,9 +769,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
-            BDouble(gasBalance) > gasValue
+            let sendValue = BDouble(details.sendAmount)
           {
-            isBalanceSufficient = true
+            isBalanceSufficient = BDouble(gasBalance) > gasValue + sendValue
           } else {
             isBalanceSufficient = false
           }
