@@ -24,7 +24,7 @@ BuildCreativeAdModelBasedPredictorWeights() {
 
   weights.untargeted_segment = 0.0001;
 
-  weights.last_seen_ad = 1.0;
+  weights.last_seen_ad = 0.0;
 
   return weights;
 }
