@@ -12,6 +12,8 @@ component("renderer") {
   sources = [
     "ai_rewriter_agent.cc",
     "ai_rewriter_agent.h",
+    "ai_rewriter_button_positioner.cc",
+    "ai_rewriter_button_positioner.h",
   ]
 
   defines = [ "IS_AI_REWRITER_RENDERER_IMPL" ]

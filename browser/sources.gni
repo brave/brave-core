@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/ai_chat/android/sources.gni")
+import("//brave/browser/ai_rewriter/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_adaptive_captcha/sources.gni")
 import("//brave/browser/brave_ads/sources.gni")
@@ -351,6 +352,9 @@ if (enable_ai_chat) {
 
 if (enable_ai_rewriter) {
   brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
+
+  brave_chrome_browser_sources += brave_browser_ai_rewriter_sources
+  brave_chrome_browser_deps += brave_browser_ai_rewriter_deps
 }
 
 if (enable_brave_vpn) {

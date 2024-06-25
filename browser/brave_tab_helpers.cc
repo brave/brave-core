@@ -24,6 +24,7 @@
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -71,6 +72,11 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+#include "brave/browser/ai_rewriter/ai_rewriter_tab_helper.h"
+#include "brave/components/ai_rewriter/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/brave_drm_tab_helper.h"
@@ -146,6 +152,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
         nullptr
 #endif
     );
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  if (ai_rewriter::features::IsAIRewriterEnabled()) {
+    ai_rewriter::AIRewriterTabHelper::CreateForWebContents(web_contents);
   }
 #endif
 

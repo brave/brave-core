@@ -20,6 +20,7 @@
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/renderer/ai_rewriter_agent.h"
+#include "brave/components/ai_rewriter/renderer/ai_rewriter_button_positioner.h"
 #endif
 
 namespace {
@@ -40,6 +41,7 @@ void RenderFrameWithBinderRegistryCreated(
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {
     new ai_rewriter::AIRewriterAgent(render_frame, registry);
+    new ai_rewriter::AIRewriterButtonPositioner(render_frame);
   }
 #endif
 }

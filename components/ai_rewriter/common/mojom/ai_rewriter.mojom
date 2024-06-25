@@ -11,6 +11,16 @@ interface AIRewriterAgent {
   GetFocusBounds() => (gfx.mojom.RectF rect);
 };
 
+// Interface for the AI Rewriter Button
+interface AIRewriterButton {
+  // Shows the Button at a specific location. If already showing, the button
+  // will be moved.
+  Show(gfx.mojom.Rect rect);
+
+  // Hides the AIRewriter Button
+  Hide();
+};
+
 interface AIRewriterPage {
   OnUpdatedGeneratedText(string generate_text);
 };

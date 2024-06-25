@@ -621,6 +621,12 @@ source_set("ui") {
         "views/toolbar/ai_chat_button.h",
       ]
     }
+    if (enable_ai_rewriter) {
+      sources += [
+        "views/ai_rewriter/ai_rewriter_button_view.cc",
+        "views/ai_rewriter/ai_rewriter_button_view.h",
+      ]
+    }
     if (use_aura) {
       sources += [
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",

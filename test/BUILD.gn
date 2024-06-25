@@ -8,6 +8,7 @@ import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -1146,7 +1147,6 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
-      "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/browser/url_sanitizer:browser_tests",
@@ -1157,6 +1157,13 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
       "//components/autofill/content/browser",
       "//components/autofill/core/browser",
+    ]
+  }
+
+  if (enable_ai_rewriter) {
+    deps += [
+      "//brave/browser/ui/ai_rewriter:browser_tests",
+      "//brave/browser/ui/views/ai_rewriter:browser_tests",
     ]
   }
 
