@@ -6,6 +6,8 @@
 // types
 import {
   BraveWallet,
+  MeldCryptoCurrency,
+  MeldFiatCurrency,
   SerializableTransactionInfo,
   SpotPriceRegistry
 } from '../../constants/types'
@@ -1740,3 +1742,112 @@ export const mockTokenBalanceRegistry: TokenBalancesRegistry = {
     }
   }
 }
+
+export const mockMeldFiatCurrency: MeldFiatCurrency = {
+  currencyCode: 'USD',
+  name: 'United States Dollar',
+  symbolImageUrl: ''
+}
+
+export const mockMeldFiatCurrencies: MeldFiatCurrency[] = [
+  {
+    'currencyCode': 'AFN',
+    'name': 'Afghani',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/AFN/symbol.png'
+  },
+  {
+    'currencyCode': 'DZD',
+    'name': 'Algerian Dinar',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/DZD/symbol.png'
+  },
+  {
+    'currencyCode': 'ARS',
+    'name': 'Argentine Peso',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/ARS/symbol.png'
+  },
+  {
+    'currencyCode': 'AMD',
+    'name': 'Armenian Dram',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/AMD/symbol.png'
+  },
+  {
+    'currencyCode': 'AWG',
+    'name': 'Aruban Florin',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/AWG/symbol.png'
+  },
+  {
+    'currencyCode': 'AUD',
+    'name': 'Australian Dollar',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/AUD/symbol.png'
+  },
+  {
+    'currencyCode': 'AZN',
+    'name': 'Azerbaijan Manat',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/AZN/symbol.png'
+  },
+  {
+    'currencyCode': 'BSD',
+    'name': 'Bahamian Dollar',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/BSD/symbol.png'
+  },
+  {
+    'currencyCode': 'BHD',
+    'name': 'Bahraini Dinar',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/BHD/symbol.png'
+  },
+  {
+    'currencyCode': 'THB',
+    'name': 'Baht',
+    'symbolImageUrl': 'https://images-currency.meld.io/fiat/THB/symbol.png'
+  }
+]
+
+export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
+  {
+    'currencyCode': '00',
+    'name': '00 Token',
+    'chainCode': 'ETH',
+    'chainName': 'Ethereum',
+    'chainId': '0x1',
+    'contractAddress': undefined,
+    'symbolImageUrl': 'https://images-currency.meld.io/crypto/00/symbol.png'
+  },
+  {
+    'currencyCode': 'ZRX',
+    'name': '0x',
+    'chainCode': 'ETH',
+    'chainName': 'Ethereum',
+    'chainId': '0x1',
+    'contractAddress': '0xe41d2489571d322189246dafa5ebde1f4699f498',
+    'symbolImageUrl': 'https://images-currency.meld.io/crypto/ZRX/symbol.png'
+  },
+  {
+    'currencyCode': 'OXD_FTM',
+    'name': '0xDAO',
+    'chainCode': 'FTM',
+    'chainName': 'Fantom',
+    'chainId': '0xfa',
+    'contractAddress': undefined,
+    'symbolImageUrl':
+      'https://images-currency.meld.io/crypto/OXD_FTM/symbol.png'
+  },
+  {
+    'currencyCode': '1INCH',
+    'name': '1inch',
+    'chainCode': 'ETH',
+    'chainName': 'Ethereum',
+    'chainId': '0x1',
+    'contractAddress': '0x111111111117dc0aa78b770fa6a738034120c302',
+    'symbolImageUrl': 'https://images-currency.meld.io/crypto/1INCH/symbol.png'
+  },
+  {
+    'currencyCode': '1INCH_BSC',
+    'name': '1inch',
+    'chainCode': 'BSC',
+    'chainName': 'BNB Smart Chain',
+    'chainId': '0x38',
+    'contractAddress': '0x111111111117dc0aa78b770fa6a738034120c302',
+    'symbolImageUrl':
+      'https://images-currency.meld.io/crypto/1INCH_BSC/symbol.png'
+  }
+]
