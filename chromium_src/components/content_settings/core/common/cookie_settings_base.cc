@@ -78,7 +78,6 @@ CookieSettingsBase::~CookieSettingsBase() = default;
 bool CookieSettingsBase::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    net::CookieSettingOverrides overrides,
     const std::optional<url::Origin>& top_frame_origin) const {
   if (!base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage))
     return false;
@@ -96,7 +95,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     first_party_setting = GetCookieSettingInternal(
         first_party_url, net::SiteForCookies::FromUrl(first_party_url),
-        first_party_url, overrides, nullptr);
+        first_party_url, net::CookieSettingOverrides(), nullptr);
     if (IsSessionOnlyExplicit(*first_party_setting)) {
       return true;
     }
@@ -107,12 +106,13 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  bool allow_3p = IsFullCookieAccessAllowed(url, site_for_cookies,
-                                            top_frame_origin, overrides);
+  bool allow_3p = IsFullCookieAccessAllowed(
+      url, site_for_cookies, top_frame_origin, net::CookieSettingOverrides());
   bool allow_1p =
       first_party_setting
           ? IsAllowed(first_party_setting->cookie_setting())
-          : IsFirstPartyAccessAllowed(first_party_url, this, overrides);
+          : IsFirstPartyAccessAllowed(first_party_url, this,
+                                      net::CookieSettingOverrides());
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
@@ -123,8 +123,7 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const net::SiteForCookies& site_for_cookies,
     const std::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides) const {
-  if (ShouldUseEphemeralStorage(url, site_for_cookies, overrides,
-                                top_frame_origin)) {
+  if (ShouldUseEphemeralStorage(url, site_for_cookies, top_frame_origin)) {
     return true;
   }
 
