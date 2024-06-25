@@ -27,7 +27,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.BuildInfo;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
@@ -265,13 +264,17 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         TextView responseErrorText = mPopupView.findViewById(R.id.response_error_text);
 
         String actionText = mPopupView.getContext().getString(R.string.retry_text);
-        Log.e("wallet_error", "RewardsOnboarding : errorMessage : "+errorMessage);
         if (errorMessage.equals(BraveRewardsPanel.WALLET_GENERATION_DISABLED_ERROR)) {
-            String title = mPopupView.getContext().getString(
-                    R.string.wallet_generation_disabled_error_title);
-            String text = String.format(mPopupView.getContext().getString(
-                                                R.string.wallet_generation_disabled_error_text),
-                    mPopupView.getContext().getResources().getString(R.string.learn_more));
+            String title =
+                    mPopupView
+                            .getContext()
+                            .getString(R.string.wallet_generation_disabled_error_title);
+            String text =
+                    String.format(
+                            mPopupView
+                                    .getContext()
+                                    .getString(R.string.wallet_generation_disabled_error_text),
+                            mPopupView.getContext().getResources().getString(R.string.learn_more));
             SpannableString spannableWithLearnMore =
                     learnMoreSpannableString(mPopupView.getContext(), text);
             responseModalText.setMovementMethod(LinkMovementMethod.getInstance());
