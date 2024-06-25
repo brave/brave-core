@@ -42,7 +42,7 @@ NTPBackgroundPrefs::Type StringToType(const std::string& type_string) {
   if (type_string == "solid_color" || type_string == "color")
     return NTPBackgroundPrefs::Type::kColor;
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return NTPBackgroundPrefs::Type::kBrave;
 }
 

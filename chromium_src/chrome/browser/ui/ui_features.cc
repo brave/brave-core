@@ -14,7 +14,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kChromeLabs, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kHaTSWebUI, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSidePanelPinning, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

@@ -69,7 +69,7 @@ WebcompatReporterDialogDelegate::~WebcompatReporterDialogDelegate() = default;
 
 ui::ModalType WebcompatReporterDialogDelegate::GetDialogModalType() const {
   // Not used, returning dummy value.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return ui::MODAL_TYPE_WINDOW;
 }
 

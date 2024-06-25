@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/theme_source.cc b/chrome/browser/ui/webui/theme_source.cc
-index cf3fe5251f7e014cd67c944642bb9255f693c246..99ce3ceb0624fe5cf26d7a7dd0b7ec2b7e60b806 100644
+index db9ca69d3bbdce558d0937a58aecd9faf8b246aa..384f4cd0f5e9d460f4db23fd0935a2afa7666e78 100644
 --- a/chrome/browser/ui/webui/theme_source.cc
 +++ b/chrome/browser/ui/webui/theme_source.cc
 @@ -138,7 +138,7 @@ void ThemeSource::StartDataRequest(

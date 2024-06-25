@@ -207,7 +207,7 @@ class P3AMessageManagerTest : public testing::Test,
         histogram_names_end = kCollectedTypicalHistograms.cend();
         break;
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
     }
     for (auto histogram_name_i = histogram_names_begin;
          histogram_name_i != histogram_names_end; histogram_name_i++) {

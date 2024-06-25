@@ -81,9 +81,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                             merchantTrustSignalsCoordinatorSupplier,
             @NonNull OmniboxActionDelegate omniboxActionDelegate,
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
-            Callback<Throwable> reportExceptionCallback,
             @Nullable BackPressManager backPressManager,
-            @NonNull
+            @Nullable
                     OmniboxSuggestionsDropdownScrollListener
                             omniboxSuggestionsDropdownScrollListener,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
@@ -115,7 +114,6 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 merchantTrustSignalsCoordinatorSupplier,
                 omniboxActionDelegate,
                 browserControlsVisibilityDelegate,
-                reportExceptionCallback,
                 backPressManager,
                 omniboxSuggestionsDropdownScrollListener,
                 tabModelSelectorSupplier,

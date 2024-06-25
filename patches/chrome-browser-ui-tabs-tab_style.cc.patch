@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.cc b/chrome/browser/ui/tabs/tab_style.cc
-index aa9cd303743116892d65f71f66759bc4cefe05f5..25a252b713af07ecc4cf3ecd0312d48b9f9eba3a 100644
+index 7218fd7817da37188569f1a6459c6a2b03395128..c697d44065522cebd02b9e3b8d676d0d3598aa95 100644
 --- a/chrome/browser/ui/tabs/tab_style.cc
 +++ b/chrome/browser/ui/tabs/tab_style.cc
-@@ -275,6 +275,7 @@ SkColor ChromeRefresh2023TabStyle::GetTabBackgroundColor(
+@@ -189,6 +189,7 @@ float ChromeRefresh2023TabStyle::GetSelectedTabOpacity() const {
  
  // static
  const TabStyle* TabStyle::Get() {
 +  BRAVE_TAB_STYLE_GET
    static TabStyle* const tab_style =
-       features::IsChromeRefresh2023()
-           ? static_cast<TabStyle*>(new ChromeRefresh2023TabStyle())
+       static_cast<TabStyle*>(new ChromeRefresh2023TabStyle());
+ 

@@ -1015,7 +1015,7 @@ void PageGraph::AddGraphItem(std::unique_ptr<GraphItem> graph_item) {
       edges_.push_back(graph_edge);
     }
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

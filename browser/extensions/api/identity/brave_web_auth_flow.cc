@@ -98,7 +98,8 @@ void BraveWebAuthFlow::OnAuthFlowFailure(WebAuthFlow::Failure failure) {
           IdentityGetAuthTokenError::State::kRemoteConsentPageLoadFailure);
       break;
     default:
-      NOTREACHED() << "Unexpected error from web auth flow: " << failure;
+      NOTREACHED_IN_MIGRATION()
+          << "Unexpected error from web auth flow: " << failure;
       break;
   }
   if (web_auth_flow_) {

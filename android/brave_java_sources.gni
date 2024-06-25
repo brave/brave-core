@@ -399,6 +399,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletSolanaConnectedSitesPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",

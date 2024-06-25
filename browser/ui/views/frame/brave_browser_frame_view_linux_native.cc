@@ -34,7 +34,7 @@ ui::NavButtonProvider::ButtonState ButtonStateToNavButtonProviderState(
 
     case views::Button::STATE_COUNT:
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return ui::NavButtonProvider::ButtonState::kNormal;
   }
 }
@@ -121,7 +121,7 @@ views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
     case views::FrameButton::kClose:
       return close_button();
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 

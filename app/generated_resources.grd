@@ -352,6 +352,10 @@ are declared in tools/grit/grit_rule.gni.
         <part file="vr_strings.grdp" />
       </if>
 
+      <message name="IDS_WILDCARD" is_accessibility_with_no_ui="true" translateable="false" desc="A wildcard that allows for programmatically replacing IDS text based on context.">
+        <ph name="BODY">$1<ex>another IDS string</ex></ph>
+      </message>
+
       <!-- TODO add all of your "string table" messages here.  Remember to
       change nontranslateable parts of the messages into placeholders (using the
       <ph> element).  You can also use the 'grit add' tool to help you identify
@@ -558,18 +562,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_CONTENT_CONTEXT_LIVE_CAPTION_DISABLE" desc="The name of the Live Caption command in the content area context menu to disable Live Caption">
           &amp;Disable Live Caption
         </message>
-        <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_TITLE" desc="The title of the Autofill manual fallback for showing the Autofill suggestions in the content area context menu.">
-         Fill in form
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_ADDRESS" desc="The name of the Autofill manual fallback for showing address suggestions in the content area context menu.">
-         Addresses and more
-        </message>
-        <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
-         Payment methods
-        </message>
         <!-- TODO(321678141): Finalize the strings and make them translatable -->
         <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS" desc="This is a context menu entry. Upon clicking, it triggers the password selection bubble (for non-syncing users) or a submenu with more entries (for syncing users)." translateable="false">
-         Passwords
+          Passwords
         </message>
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_BACK" desc="The name of the Back command in the content area context menu">
@@ -805,9 +800,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_SEND_ONCE" desc="The context-menu sub-item that asks whether to integrate the accessibility image labeling service of Brave to Brave, for a single use.">
             Just once
           </message>
-          <message name="IDS_CONTENT_CONTEXT_PDF_OCR_MENU_OPTION" desc="The context-menu item that asks whether to use the PDF OCR service to convert image to text.">
-            Extract text from PDF
-          </message>
           <message name="IDS_CONTENT_CONTEXT_RUN_LAYOUT_EXTRACTION" desc="The context-menu item that runs a local machine intelligence model to extract visual layout semantics.">
            Recognize visual layout semantics
           </message>
@@ -872,7 +864,16 @@ are declared in tools/grit/grit_rule.gni.
             Open with <ph name="APP">$1<ex>Hangouts</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="The name of the Autofill Feedback command in the content area context menu">
-           Help improve autofill
+            Help improve autofill
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_TITLE" desc="The title of the Autofill manual fallback for showing the Autofill suggestions in the content area context menu.">
+            Fill in form
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_ADDRESS" desc="The name of the Autofill manual fallback for showing address suggestions in the content area context menu.">
+            Addresses and more
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
+            Payment methods
           </message>
           <!-- TODO(321678141): Finalize the strings and make them translatable -->
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="This is a context menu entry in the passwords submenu. It triggers the password selection bubble." translateable="false">
@@ -1192,8 +1193,17 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_GENERATEPASSWORD" desc="In Title Case: The name of the Generate Password command in the content area context menu">
             Suggest Password...
           </message>
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="The name of the Autofill Feedback command in the content area context menu">
-           Help Improve Autofill
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FEEDBACK" desc="In Title Case: The name of the Autofill Feedback command in the content area context menu">
+            Help Improve Autofill
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_TITLE" desc="In Title Case: The title of the Autofill manual fallback for showing the Autofill suggestions in the content area context menu.">
+            Fill in Form
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_ADDRESS" desc="In Title Case: The name of the Autofill manual fallback for showing address suggestions in the content area context menu.">
+            Addresses and More
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="In Title Case: The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
+            Payment Methods
           </message>
           <!-- TODO(321678141): Finalize the strings and make them translatable -->
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD" desc="In Title Case: This is a context menu entry in the passwords submenu. It triggers the password selection bubble." translateable="false">
@@ -2405,6 +2415,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BY_EXTENSION_URL" desc="Indicates which extension downloaded this file by name and URL.">
         Downloaded by &lt;a href="<ph name="URL">$1<ex>adblock.com</ex></ph>"&gt;<ph name="EXTENSION">$2<ex>The Best Brave Extension Ever</ex></ph>&lt;/a&gt;
       </message>
+      <message name="IDS_DOWNLOADS_PAGE_REFERRER_LINE" desc="Line that indicates the referrer url from which a file was downloaded and embeds a corresponding link">
+        From <ph name="BEGIN_LINK">&lt;a&gt;</ph><ph name="DISPLAY_REFERRER_URL">$1<ex>https://example.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
       <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Private mode.">
         Downloaded in Private
       </message>
@@ -3172,6 +3185,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_LOCAL_DECRYPTING" desc="Status text for a download item that is being checked for malware.">
         Checking for malware...
+      </message>
+      <message name="IDS_DOWNLOAD_LOCAL_DECRYPTION_PROMPT_ALERT" desc="Accessible alert announced when a local decryption prompt appears on a suspicious archive">
+        <ph name="FILENAME">$1<ex>bla.exe</ex></ph> may be dangerous. Add a password if you want Brave to verify it or you can download it directly.
       </message>
 
       <!-- Web App Window Title string -->
@@ -4853,9 +4869,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to install a particular extension or app.">
         Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
       </message>
-      <message name="IDS_EXTENSION_UNINSTALL_PROMPT_HEADING" desc="First bold line in the content area of the extension or app uninstallation prompt. Asks the user if they want to uninstall a particular extension or app.">
-        Remove "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
       <message name="IDS_EXTENSION_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Asks the user if they want to send installation request for a particular extension or app to their admin.">
         Send a request to your administrator to install "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
       </message>
@@ -4864,9 +4877,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_EXTENSION_BLOCKED_BY_POLICY_PROMPT_TITLE" desc="Title of the extension or app install blocked prompt. Tells the user they can't install this extension as it's blocked by policy.">
         Your admin has blocked "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" - App ID <ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_PROGRAMMATIC_UNINSTALL_PROMPT_HEADING" desc="First bold line in the content area of the extension or app uninstallation prompt when the uninstallation is programmatically triggered by another extension. Asks the user if they want to uninstall a particular extension or app.">
-        "<ph name="TRIGGERING_EXTENSION_NAME">$1<ex>Extension Manager</ex></ph>" would like to remove "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>".
       </message>
       <message name="IDS_EXTENSION_RE_ENABLE_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to re-enable a particular extension or app.">
         The newest version of "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it requires more permissions.
@@ -5995,9 +6005,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Another program on your computer added a theme that may change the way Brave works.
       </message>
 
-      <message name="IDS_EXTENSIONS_UNSUPPORTED_DISABLED_TITLE" desc="Title of the dialog shown when unsupported extensions have been disabled">
-        Unsupported extensions disabled
-      </message>
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
@@ -6121,9 +6128,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_DEPRECATED_APPS_CANCEL_LABEL" desc="Label for Cancel button on deprecated apps dialog">
           Cancel
         </message>
-        <message name="IDS_DEPRECATED_APPS_LAUNCH_ANYWAY_LABEL" desc="Label for button cancel button to launch the app anyways in the deprecated apps dialog">
-          Open Anyway
-        </message>
       </if>
         <if expr="not use_titlecase">
         <message name="IDS_DEPRECATED_APPS_OK_LABEL" desc="Label for OK button to delete deprecated apps on deprecated apps dialog">
@@ -6133,9 +6137,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_DEPRECATED_APPS_CANCEL_LABEL" desc="Label for Cancel button on deprecated apps dialog">
           Cancel
-        </message>
-        <message name="IDS_DEPRECATED_APPS_LAUNCH_ANYWAY_LABEL" desc="Label for button cancel button to launch the app anyways in the deprecated apps dialog">
-          Open anyway
         </message>
       </if>
       <!-- End Deprecated Apps Deletion Dialog strings. -->
@@ -6643,6 +6644,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM" desc="Text shown next to a generated password describing it as a suggestion.">
           Use strong password
         </message>
+        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM_WITHOUT_STRONG" desc="Text shown next to a generated password describing it as a suggestion.">
+          Use suggested password
+        </message>
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_TRUSTED_ADVICE" desc="Text shown next to a generated password describing it as recommended.">
           Use recommended password
         </message>
@@ -6671,6 +6675,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM" desc="In Title Case: Text shown next to a generated password describing it as a suggestion.">
           Use Strong Password
+        </message>
+        <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM_WITHOUT_STRONG" desc="In Title Case: Text shown next to a generated password describing it as a suggestion.">
+          Use Suggested Password
         </message>
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_TRUSTED_ADVICE" desc="Text shown next to a generated password describing it as recommended.">
           Use Recommended Password
@@ -7864,6 +7871,40 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_WALLPAPER_SEARCH_SIGNED_OUT_TITLE" desc="The title of the message displayed when a wallpaper search request rejected because the user is signed out.">
         Please sign in to continue.
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CHOOSE_ICONS_HEADER" desc="Header for the section of Customize Brave for selecting toolbar icons.">
+          Choose Your Toolbar Icons
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
+          Navigation
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME" desc="The label for the category of actions that involve your Brave data, such as opening the password manager or clearing browsing data.">
+          Your Brave
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_SIDE_PANELS" desc="The label for the category of actions that open side panels, such as reading mode and show all bookmarks.">
+          Side Panels
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLS_AND_ACTIONS" desc="The label for the category of actions that open special purpose tools, such as Brave Translate or developer tools.">
+          Tools and Actions
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CHOOSE_ICONS_HEADER" desc="Header for the section of Customize Brave for selecting toolbar icons.">
+          Choose your toolbar icons
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
+          Navigation
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME" desc="The label for the category of actions that involve your Brave data, such as opening the password manager or clearing browsing data.">
+          Your Brave
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_SIDE_PANELS" desc="The label for the category of actions that open side panels, such as reading mode and show all bookmarks.">
+          Side panels
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLS_AND_ACTIONS" desc="The label for the category of actions that open special purpose tools, such as Brave Translate or developer tools.">
+          Tools and actions
+        </message>
+      </if>
 
       <!-- NTP Modules -->
       <message name="IDS_NTP_MODULES_INFO_BUTTON_TITLE" desc="Text shown in tooltip of info button of an NTP module.">
@@ -8022,16 +8063,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
       </message>
-      <message name="IDS_NTP_MODULES_TODAY_CALENDAR_HEADER" desc="Header of the Calendar module when showing today's calendar on the NTP." meaning="Header of the calendar module to indicate that the events shown are for today." translateable="false">
-        Today's Calendar
+      <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISMISS_BUTTON_TEXT" desc="Text shown on the dismiss button of a Brave Calendar NTP card.">
+        Hide Brave Calendar
       </message>
-      <message name="IDS_NTP_MODULES_TODAY_CALENDAR_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Calendar card." translateable="false">
-        Don't show Today's Calendar
+      <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISMISS_TOAST_MESSAGE" desc="Text shown on the toast on the NTP indicating that the Brave Calendar card has been dismissed.">
+        Brave Calendar hidden
+      </message>
+      <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISABLE_TOAST_MESSAGE" desc="Text shown on the toast on the NTP indicating that the Brave Calendar card has been disabled.">
+        You won't see Brave Calendar on this page again
+      </message>
+      <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_MORE_ACTIONS" desc="Text shown on the tooltip for the 3 dot menu on the Brave Calendar card on the NTP.">
+        More actions for Brave Calendar
       </message>
       <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_TITLE" desc="Title of the Brave Calendar module shown in various UIs for Customize Brave and the NTP." meaning="Title of feature for showing a glimpse of a user's Google Calendar.">
         Brave Calendar
       </message>
-      <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Brave Calendar card." translateable="false">
+      <message name="IDS_NTP_MODULES_GOOGLE_CALENDAR_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Brave Calendar card.">
         Don't show Brave Calendar
       </message>
       <message name="IDS_NTP_MODULES_OUTLOOK_CALENDAR_TITLE" desc="Title of the Brave Calendar module shown in various UIs for Customize Brave and the NTP." meaning="Title of feature for showing a glimpse of a user's Google Calendar.">
@@ -8039,6 +8086,21 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_OUTLOOK_CALENDAR_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of a NTP Outlook Calendar card." translateable="false">
         Don't show Outlook Calendar
+      </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_JOIN_MEETING_BUTTON_TEXT" desc="Text shown on button on the NTP Calendar cards for joining a video conference." meaning="Click here to join your video conference meetings.">
+        Join Meeting
+      </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_IN_PROGRESS" desc="Text displaying that the meeting is in progress." meaning="The meeting is currently in progress.">
+        In Progress
+      </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_IN_X_MIN" desc="Text displaying that the meeting is in x minutes with shortened version of the word 'minutes'." meaning="The meeting will start in x minutes.">
+        In <ph name="NUM_MIN">$1<ex>5</ex></ph> min
+      </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_IN_X_HR" desc="Text displaying that the meeting is in x hours with shortened version of the word 'hours'." meaning="The meeting will start in x hours.">
+        In <ph name="NUM_HR">$1<ex>5</ex></ph> hr
+      </message>
+      <message name="IDS_NTP_MODULES_CALENDAR_SEE_MORE" desc="Text for a link to the user's calendar." meaning="Click here to view more of the calendar.">
+        See More
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module.">
         From your Google Photos
@@ -8489,16 +8551,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         To easily get back to the side panel, click Pin at the top right
       </message>
       <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_IPH" desc="The body text of the IPH describing that the Lens Overlay panel is pinnable.">
-        You can pin this feature for easy access
+        You can pin Google Lens for easy access
       </message>
       <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_IPH_SCREENREADER" desc="The screen reader text of the IPH describing that the Lens Overlay panel is pinnable." is_accessibility_with_no_ui="true">
-        You can pin this feature for easy access; click the Pin button at the top of the side panel
+        You can pin Google Lens for easy access; click the Pin button at the top of the side panel
       </message>
       <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_FOLLOWUP_IPH" desc="The body text of the IPH describing that the Lens Overlay panel has been pinned.">
-        Pinned! Use this feature again from the toolbar
+        Pinned! Use Google Lens again from the toolbar
       </message>
       <message name="IDS_SIDE_PANEL_LENS_OVERLAY_PINNABLE_FOLLOWUP_IPH_SCREENREADER" desc="The screen reader text of the IPH describing that the Lens Overlay panel has been pinned." is_accessibility_with_no_ui="true">
-        Pinned! You can access this feature again from the new button on the toolbar
+        Pinned! You can access Google Lens again from the new button on the toolbar
       </message>
 
       <!-- Bookmarks strings -->
@@ -8737,6 +8799,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_ENABLE_LINKS_BUTTON_LABEL" desc="Accessibility label for the button that enables all links in reading mode content.">
         Enable links
       </message>
+      <message name="IDS_READING_MODE_DISABLE_IMAGES_BUTTON_LABEL" desc="Accessibility label for the button that disables showing images in reading mode content.">
+        Disable images
+      </message>
+      <message name="IDS_READING_MODE_ENABLE_IMAGES_BUTTON_LABEL" desc="Accessibility label for the button that enables showing images in reading mode content.">
+        Enable images
+      </message>
       <message name="IDS_READING_MODE_COLORS_COMBOBOX_LABEL" desc="Accessibility label for the colors combobox of the reading mode feature.">
         Color theme
       </message>
@@ -8821,8 +8889,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_VOICE_SPEED" desc="Accessibility label for button that opens a dropdown with options for changing the speed of the voice for Read Aloud.">
         Voice speed
       </message>
+      <message name="IDS_READING_MODE_VOICE_SPEED_WITH_RATE" desc="Accessibility label for button that opens a dropdown with options for changing the speed of the voice for Read Aloud.">
+        Voice speed <ph name="RATE">$1<ex>1</ex></ph>x
+      </message>
       <message name="IDS_READING_MODE_VOICE_SELECTION" desc="Accessibility label for button that opens a dropdown with options for changing the voice used for Read Aloud.">
         Voice selection
+      </message>
+      <message name="IDS_READING_MODE_ITEM_SELECTED" desc="Accessibility label for an icon that indicates a menu item in Reading mode is selected.">
+        Selected.
       </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU" desc="Label for a button that opens a dialog with options for managing language preferences for Read Aloud.">
         Languages...
@@ -8860,6 +8934,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_INTERNET" desc="Label for status text when no internet prevents a voice from downloading from the Read Aloud language menu.">
         No internet
       </message>
+      <message name="IDS_READING_MODE_LANGUAGE_MENU_DOWNLOAD_FAILED" desc="Label for generic status text when there was an error when downloading a voice from the Read Aloud language menu and there's no more details on the error.">
+        Download failed
+      </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_SPACE" desc="Label for status text when no space on disk prevents a voice from downloading from the Read Aloud language menu.">
         To install this language, clear space on your device
       </message>
@@ -8886,50 +8963,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
      <message name="IDS_READING_MODE_FONT_LOADING_STRING" desc="Text added to a font name in the Reading Mode font dropdown when the font style hasn't loaded yet.">
          (loading)
-      </message>
-
-      <!-- User note strings -->
-      <message name="IDS_USER_NOTE_TITLE" desc="Title of the User note feature, which gives users access to private user notes.">
-        Notes
-      </message>
-      <message name="IDS_ADD_NEW_USER_NOTE_PLACEHOLDER_TEXT" desc="Placeholder for textarea, where users can add a new user note.">
-        Add a note
-      </message>
-      <message name="IDS_USER_NOTES_SORT_MENU_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which opens the sort menu in the user notes side panel.">
-        Order
-      </message>
-      <message name="IDS_LEARN_MORE_USER_NOTE" desc="User note menu label, which allows users to learn more about the user note feature.">
-        Learn more
-      </message>
-      <message name="IDS_ALL_NOTES" desc="The text label of a button in the side panel user notes UI, when clicked, takes the user to the notes overviews UI.">
-        All Notes
-      </message>
-      <message name="IDS_USER_NOTES_CURRENT_TAB_HEADER" desc="A header label in the list of all pages with notes for the current tab if it has notes.">
-        Current Tab
-      </message>
-      <message name="IDS_NOTES_COUNT" desc="Text description for the number of notes for a note overview item showing the number of notes on a page">
-        {NUM_NOTES, plural, =1 {1 Note} other {# Notes}}
-      </message>
-      <message name="IDS_USER_NOTES_MENU_OPEN_IN_NEW_TAB" desc="Menu description for opening a page with notes in a new tab.">
-        Open in New Tab
-      </message>
-      <message name="IDS_USER_NOTES_MENU_OPEN_IN_NEW_WINDOW" desc="Menu description for opening a page with notes in a new window.">
-        Open in New Window
-      </message>
-      <message name="IDS_USER_NOTES_MENU_OPEN_IN_INCOGNITO" desc="Menu description for opening a page with notes in a private window.">
-        Open in Private Window
-      </message>
-      <message name="IDS_USER_NOTES_EMPTY_STATE_TITLE" desc="Title for the user notes side panel empty state">
-        Add Notes About This Page
-      </message>
-      <message name="IDS_USER_NOTES_EMPTY_STATE_BODY" desc="Body text for the user notes side panel empty state">
-        Add a note or thought about this page to revisit later.
-      </message>
-      <message name="IDS_USER_NOTES_EMPTY_STATE_TITLE_GUEST" desc="Title for the user notes side panel empty state in guest mode">
-        Not Available in Guest Mode
-      </message>
-      <message name="IDS_USER_NOTES_EMPTY_STATE_BODY_GUEST" desc="Body text for the user notes side panel empty state in guest mode">
-        Log in as another user to view and take notes on this page.
       </message>
 
       <!-- Google Lens side panel -->
@@ -9275,6 +9308,40 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </if>
       </if>
 
+      <!--IOS Desktop address promo strings-->
+      <if expr="_google_chrome">
+        <if expr="not is_android">
+          <if expr="use_titlecase">
+            <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_TITLE" desc="In Title Case: The title for the iOS desktop address promo bubble letting users know their address is saved.">
+              Your Address Is Saved
+            </message>
+            <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_FOOTER_TITLE" desc="In Title Case: The title for the footer of the iOS desktop address promo bubble suggesting to users that they can use their addresses on their iOS devices.">
+              Use This Address On Your iPhone
+            </message>
+            <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_BUTTON_DECLINE" desc="In Title Case: The text inside the button allowing the user to decline.">
+              No Thanks
+            </message>
+          </if>
+          <if expr="not use_titlecase">
+            <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_TITLE" desc="The title for the iOS desktop address promo bubble letting users know their address is saved.">
+              Your address is saved
+            </message>
+            <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_FOOTER_TITLE" desc="The title for the footer of the iOS desktop address promo bubble suggesting to users that they can use their addresses on their iOS devices.">
+              Use this address on your iPhone
+            </message>
+            <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_BUTTON_DECLINE" desc="The text inside the button allowing the user to decline.">
+              No thanks
+            </message>
+          </if>
+          <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_SUBTITLE" desc="The subtitle for the iOS desktop address promo bubble which lets the user know they can access their saved addresses.">
+            You can access it in your Saved Addresses.
+          </message>
+          <message name="IDS_IOS_DESKTOP_ADDRESS_PROMO_BUBBLE_FOOTER_DESCRIPTION_QR" desc="The description for the iOS desktop address promo bubble footer which lets the user know how to use their saved addresses on their phone: follow the QR code, download Brave for iOS and sign in to their account.">
+            Download Brave with this QR code, and sign in to your Brave sync chain.
+          </message>
+        </if>
+      </if>
+
       <!--Accessible name/action strings-->
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
@@ -9320,6 +9387,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_GROUP_EDITOR_BUBBLE_FOOTER_SYNC_ENABLED" desc="Text shown on the footer of the editor bubble when sync is enabled, if visible">
         Your tab groups automatically save and update across all your signed-in devices.
+      </message>
+      <message name="IDS_TAB_GROUP_EDITOR_BUBBLE_FOOTER_LEARN_MORE" desc="Link shown in the tab group editor bubble footer to learn more about tabs">
+        Learn more about tabs
       </message>
       <message name="IDS_ACCNAME_TAB_GROUPS_EVERYTHING" desc="The accessible name for the tab group everything button in the bookmarks bar.">
         Tab groups
@@ -10401,6 +10471,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_PICTURE_IN_PICTURE_CLOSE_CONTROL_TEXT" desc="Text label of the close control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Close
       </message>
+      <message name="IDS_PICTURE_IN_PICTURE_MINIMIZE_CONTROL_TEXT" desc="Text label of the minimize control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Minimize
+      </message>
       <message name="IDS_PICTURE_IN_PICTURE_RESIZE_HANDLE_TEXT" desc="Text label of the resize handle. The button appears when the user hovers over the Picture-in-Picture window.">
         Resize
       </message>
@@ -10825,6 +10898,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_TAB_ORGANIZATION_IN_PROGRESS_TITLE" desc="The header text for the in progress state in the tab organization UI">
         Grouping your tabs…
       </message>
+      <message name="IDS_TAB_ORGANIZATION_SUCCESS_MISSING_ACTIVE_TAB_TITLE" translateable="false" desc="The header text for the success state in the tab organization UI, when there were no groups found for the selected tab">
+        No tab groups found for your selected tab.
+      </message>
       <message name="IDS_TAB_ORGANIZATION_SUCCESS_TITLE" desc="The header text for the MVP success state in the tab organization UI">
         Tab group suggestion
       </message>
@@ -10915,7 +10991,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
 
       <!-- Saved Tab Group V2 -->
       <message name="IDS_TABS_TITLE_CXMENU" desc="The label of the 'Tabs' title in the context menu of a saved tab group.">
-        Tabs
+        Tabs in group
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_SAVED_TAB_GROUP_TABS_COUNT" desc="Title of unnamed saved tab group in Everything menu. [ICU_Syntax]">
@@ -10925,8 +11001,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Create new tab group
         </message>
         <message name="IDS_SAVED_TAB_GROUPS_MENU" desc="The title of the 'Tab groups' menu in the App Menu.">
-      Tab groups
-    </message>
+          Tab groups
+        </message>
+        <message name="IDS_OPEN_GROUP_IN_BROWSER_MENU" desc="The title of the 'Open group' submenu item in the App Menu.">
+          Open group
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_SAVED_TAB_GROUP_TABS_COUNT" desc="In Title Case: Title of unnamed saved tab group in Everything menu. [ICU_Syntax]">
@@ -10936,17 +11015,56 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Create New Tab Group
         </message>
         <message name="IDS_SAVED_TAB_GROUPS_MENU" desc="The title of the 'Tab Groups' menu in the App Menu.">
-      Tab Groups
-    </message>
+          Tab Groups
+        </message>
+        <message name="IDS_OPEN_GROUP_IN_BROWSER_MENU" desc="The title of the 'Open Group' submenu item in the App Menu.">
+          Open Group
+        </message>
       </if>
 
-    <!-- Tab Group Editor Bubble -->
-      <message name="IDS_TAB_GROUP_DELETION_DIALOG_BODY_SYNCED_DELETE" desc=". Displayed in the Tab Group Deletion Dialog.">
-        This will delete the group from all devices signed into Brave with this Brave sync chain.
-      </message>
+        <message name="IDS_SAVED_TAB_GROUPS_V2_INTRO_IPH_APP_MENU_SYNCED_BODY" desc="The text of an IPH that shows up when the browser is started with tab groups defaulted to saved, sync is on, and there is no bookmarks bar.">
+          Your tab groups are saved here and get updated across all your signed-in devices
+        </message>
 
-      <message name="IDS_TAB_GROUP_DELETION_DIALOG_BODY_SYNCED_UNGROUP" desc="The body text for ungrouping. Displayed in the Tab Group Deletion Dialog.">
-        The tabs will remain open on this device but the group will be deleted from all devices signed into Brave with this Brave sync chain.
+        <message name="IDS_SAVED_TAB_GROUPS_V2_INTRO_DEFAULT_BODY_A11Y" is_accessibility_with_no_ui="true" desc="The A11y text of an IPH that shows up when the browser is started with tab groups defaulted to saved. Used for sync on/off and bookmarks bar displayed/not">
+          Your tab groups are saved in the bookmarks bar, app menu and get updated across all your signed-in devices if sync is turned on
+        </message>
+
+        <message name="IDS_SAVED_TAB_GROUPS_V2_INTRO_IPH_APP_MENU_NOT_SYNCED_BODY" desc="The text of an IPH that shows up when the browser is started with tab groups defaulted to saved, sync is off, and there is no bookmarks bar.">
+          Your tab groups are saved here
+        </message>
+
+        <message name="IDS_SAVED_TAB_GROUPS_V2_INTRO_IPH_BOOKMARKS_BAR_SYNCED_BODY" desc="The text of an IPH that shows up when the browser is started with tab groups defaulted to saved, sync is on, and there is a bookmarks bar.">
+          Your tab groups automatically save and update across all your devices
+        </message>
+
+        <message name="IDS_SAVED_TAB_GROUPS_V2_INTRO_IPH_BOOKMARKS_BAR_NOT_SYNCED_BODY" desc="The text of an IPH that shows up when the browser is started with tab groups defaulted to saved, sync is off, and there is a bookmarks bar.">
+          Your tab groups now automatically save
+        </message>
+
+    <!-- Tab Group Deletion Dialog -->
+      <message name="IDS_TAB_GROUP_DELETION_DIALOG_MISSING_EMAIL" desc="The email address used in the deletion dialog body when an email is missing.">
+        Brave with this Brave sync chain
+      </message>
+      <message name="IDS_TAB_GROUP_DELETION_DIALOG_BODY_SYNCED_DELETE" desc="The body text for deleting a synced group or groups. Displayed in the Tab Group Deletion Dialog.">
+        {GROUP_COUNT, plural,
+              =1 {This will delete the group from all devices signed into <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>}
+              other {This will delete the groups from all devices signed into <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>}}
+      </message>
+      <message name="IDS_TAB_GROUP_DELETION_DIALOG_BODY_SYNCED_UNGROUP" desc="The body text for ungrouping a synced group or groups. Displayed in the Tab Group Deletion Dialog.">
+        {GROUP_COUNT, plural,
+          =1 {The tabs will remain open on this device but the group will be deleted from all devices signed into <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>}
+          other {The tabs will remain open on this device but the groups will be deleted from all devices signed into <ph name="EMAIL">$1<ex>user@gmail.com</ex></ph>}}
+      </message>
+      <message name="IDS_TAB_GROUP_DELETION_DIALOG_BODY_NOT_SYNCED_DELETE" desc="The body text for deleting an unsynced group or groups. Displayed in the Tab Group Deletion Dialog.">
+        {GROUP_COUNT, plural,
+          =1 {This will permanently delete the group from your device.}
+          other {This will permanently delete the groups from your device.}}
+      </message>
+      <message name="IDS_TAB_GROUP_DELETION_DIALOG_BODY_NOT_SYNCED_UNGROUP" desc="The body text for ungrouping an unsynced group or groups. Displayed in the Tab Group Deletion Dialog.">
+        {GROUP_COUNT, plural,
+          =1 {The tabs will remain open on this device but the group will be permanently deleted.}
+          other {The tabs will remain open on this device but the groups will be permanently deleted.}}
       </message>
 
       <if expr="use_titlecase">
@@ -10956,20 +11074,38 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <!-- Title -->
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_DELETE" desc="The title for deleting. Displayed in the Tab Group Deletion Dialog.">
-          Delete Tab Group?
+          {GROUP_COUNT, plural,
+              =1 {Delete Tab Group?}
+              other {Delete Tab Groups?}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_UNGROUP" desc="The title for ungrouping. Displayed in the Tab Group Deletion Dialog.">
-          Ungroup Tab Group?
+          {GROUP_COUNT, plural,
+              =1 {Ungroup Tab Group?}
+              other {Ungroup Tab Groups?}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_CLOSE_TAB_AND_DELETE" desc="The title for closing the tab and deleting the group. Displayed in the Tab Group Deletion Dialog.">
-          Close Tab(s) and Delete Group?
+          {TAB_COUNT, plural,
+            =1 {{GROUP_COUNT, plural,
+              =1 {Close Tab and Delete Group?}
+              other {Close Tab and Delete Groups?}}}
+            other {{GROUP_COUNT, plural,
+              =1 {Close Tabs and Delete Group?}
+              other {Close Tabs and Delete Groups?}}}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_REMOVE_TAB_AND_DELETE" desc="The title for removing the tab and deleting the group. Displayed in the Tab Group Deletion Dialog.">
-          Remove Tab(s) and Delete Group?
+          {TAB_COUNT, plural,
+            =1 {{GROUP_COUNT, plural,
+              =1 {Remove Tab and Delete Group?}
+              other {Remove Tab and Delete Groups?}}}
+            other {{GROUP_COUNT, plural,
+              =1 {Remove Tabs and Delete Group?}
+              other {Remove Tabs and Delete Groups?}}}}
         </message>
         <!-- OK Text -->
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_OK_TEXT_DELETE" desc=". Displayed in the Tab Group Deletion Dialog.">
-          Delete Group
+          {GROUP_COUNT, plural,
+              =1 {Delete Group}
+              other {Delete Groups}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_OK_TEXT_UNGROUP" desc="The text displayed on the ok button for ungrouping. Displayed in the Tab Group Deletion Dialog.">
           Ungroup
@@ -10982,20 +11118,38 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <!-- Title -->
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_DELETE" desc="The title for deleting. Displayed in the Tab Group Deletion Dialog.">
-          Delete tab group?
+          {GROUP_COUNT, plural,
+              =1 {Delete tab group?}
+              other {Delete tab groups?}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_UNGROUP" desc="The title for ungrouping. Displayed in the Tab Group Deletion Dialog.">
-          Ungroup tab group?
+          {GROUP_COUNT, plural,
+              =1 {Ungroup tab group?}
+              other {Ungroup tab groups?}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_CLOSE_TAB_AND_DELETE" desc="The title for closing the tab and deleting the group. Displayed in the Tab Group Deletion Dialog.">
-          Close tab(s) and delete group?
+          {TAB_COUNT, plural,
+            =1 {{GROUP_COUNT, plural,
+              =1 {Close tab and delete group?}
+              other {Close tab and delete groups?}}}
+            other {{GROUP_COUNT, plural,
+              =1 {Close tabs and delete group?}
+              other {Close tabs and delete groups?}}}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_TITLE_REMOVE_TAB_AND_DELETE" desc="The title for removing the tab and deleting the group. Displayed in the Tab Group Deletion Dialog.">
-          Remove tab(s) and delete group?
+          {TAB_COUNT, plural,
+            =1 {{GROUP_COUNT, plural,
+              =1 {Remove tab and delete group?}
+              other {Remove tab and delete groups?}}}
+            other {{GROUP_COUNT, plural,
+              =1 {Remove tabs and delete group?}
+              other {Remove tabs and delete groups?}}}}
         </message>
         <!-- OK Text -->
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_OK_TEXT_DELETE" desc=". Displayed in the Tab Group Deletion Dialog.">
-          Delete group
+          {GROUP_COUNT, plural,
+              =1 {Delete group}
+              other {Delete groups}}
         </message>
         <message name="IDS_TAB_GROUP_DELETION_DIALOG_OK_TEXT_UNGROUP" desc="The text displayed on the ok button for ungrouping. Displayed in the Tab Group Deletion Dialog.">
           Ungroup
@@ -12516,14 +12670,8 @@ This can include information about installed software, files, your browser, and 
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_MANAGED_BY_DISCLAIMER" desc="Enterprise disclaimer for a managed account in the signin interception bubble, with the manager domain name.">
           This new profile will be managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>. <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>https://help.google.com/articleLink</ex></ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TITLE_SIGNIN" desc="This string is the headline of a confirmation message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. Now, this confirmation appears at the top right of Brave (pointing at the Profile Menu) to confirm that their choice was effective. This headline string comes before the 'When you sign in on this device, you get your passwords and more from your Brave sync chain' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
-          Welcome, <ph name="PROFILE_NAME">$1<ex>Elisa</ex></ph>
-        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TITLE_SIGNIN_REMINDER" desc="This string is the headline of a reminder message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. After a period of time, this reminder message appears at the top right of Brave (pointing at the Profile Menu) to remind the user that they made this choice a while ago. This headline string comes before the 'You’re signed in to Brave. You’ve got your passwords and more from your Brave sync chain.' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
-          Welcome back, <ph name="PROFILE_NAME">$2<ex>Elisa</ex></ph>
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN" desc="This string is the body text of a confirmation message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. Now, this confirmation appears at the top right of Brave (pointing at the Profile Menu) to confirm that their choice was effective. This body text string comes after the 'Welcome, Elisa' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
-          When you sign in on this device, you get your passwords and more from your Brave sync chain
+          Welcome back, <ph name="PROFILE_NAME">$1<ex>Elisa</ex></ph>
         </message>
         <if expr="use_titlecase">
           <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_OK_BUTTON" desc="This button appears on a confirmation message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. Now, this confirmation appears at the top right of Brave (pointing at the Profile Menu) to confirm that their choice was effective. This button string comes after the 'Welcome, Elisa' and 'When you sign in on this device, you get your passwords and more from your Brave sync chain' strings. Users click 'Got it' to convey that they saw the message and want to hide the message.">
@@ -12545,6 +12693,9 @@ This can include information about installed software, files, your browser, and 
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_SIGNOUT_BUTTON" desc="This string is found on a button that lets the user sign out of Brave when the user taps it. It is on an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This text is a verb and is short for the longer phrase 'Sign out of Brave anyway.'">
           Sign out anyway
+        </message>
+        <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_DELETE_AND_SIGNOUT_BUTTON" desc="This string is found on a button that lets the user sign out of Brave when the user taps it. It is on an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a network error; but, the data has been saved locally to Brave. This text is a verb and is short for the longer phrase 'Delete data and sign out of Brave anyway.'">
+          Delete and sign out
         </message>
 
         <message name="IDS_CLOSE_WARNING_FOR_CLEAR_COOKIES_ON_EXIT_TEXT_LINK" desc="Text of the link to open cookie settings, when closing the last browser window.">
@@ -12759,7 +12910,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           {NUM_TABS, plural, =1 {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - 1 Tab} other {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - # Tabs}}
         </message>
         <message name="IDS_RECENTLY_CLOSED_GROUP_UNNAMED" desc="In Title Case: Title of recently closed group that does not have a name, in Recent Tabs menu. [ICU_Syntax]">
-          {NUM_TABS, plural, =1 {Unnamed Group - 1 Tab} other {Unnamed Group - # Tabs}}
+          {NUM_TABS, plural, =1 {1 Tab} other {# Tabs}}
         </message>
         <message name="IDS_RECENT_TABS_NO_DEVICE_TABS" desc="In Title Case: The label in the Recent Tabs menu in the wrench menu when there's no tabs from other devices.">
           No Tabs From Other Devices
@@ -12779,7 +12930,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           {NUM_TABS, plural, =1 {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - 1 tab} other {<ph name="GROUP_TITLE">$1<ex>MyGroup</ex></ph> - # tabs}}
         </message>
         <message name="IDS_RECENTLY_CLOSED_GROUP_UNNAMED" desc="Title of recently closed group that does not have a name, in Recent Tabs menu. [ICU_Syntax]">
-          {NUM_TABS, plural, =1 {Unnamed group - 1 tab} other {Unnamed group - # tabs}}
+          {NUM_TABS, plural, =1 {1 tab} other {# tabs}}
         </message>
         <message name="IDS_RECENT_TABS_NO_DEVICE_TABS" desc="The label in the Recent Tabs menu in the wrench menu when there's no tabs from other devices.">
           No tabs from other devices
@@ -13373,6 +13524,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_CLOSE_WINDOW_MAC" desc="The Mac menu item to close a window in the file menu.">
           Close Window
         </message>
+        <message name="IDS_CLOSE_ALL_WINDOWS_MAC" desc="The Mac menu item to close all windows in the file menu.">
+          Close All
+        </message>
         <message name="IDS_CLOSE_TAB_MAC" desc="The Mac menu item to close a browser tab in the file menu.">
           Close Tab
         </message>
@@ -13735,7 +13889,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <if expr="is_chromeos">
         <message name="IDS_GEOLOCATION_TURNED_OFF_IN_OS" desc="Title for the geolocation bubble that is used when a site requests geolocation, but geolocation is blocked on an OS level.">
-          Location access is turned off in ChromeOS Settings
+          Location is turned off in ChromeOS Settings
         </message>
       </if>
       <if expr="is_macosx">
@@ -14320,6 +14474,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_MANAGED" desc="Text to display when picker choices have been limited by enterprise policies.">
         Options for sharing are managed by your organization. Some items may be hidden.
       </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_PERMISSION_BUTTON_MAC" desc="Text for a button to open the screen recording setting page in system preferences on Mac.">
+        Open System Preferences
+      </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_RESELECT_SCREEN" desc="Text for a button appearing on the window picker dialog which is displayed when there is a secondary, system-level picker in which the user must select the content to share. Clicking this button will re-open the picker to allow the user to choose a new monitor/desktop/screen to share.">
         Choose a different screen
       </message>
@@ -14578,6 +14735,21 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_A11Y_ALERT_FASTER_SPLITSCREEN_TOAST" desc="The text for the Faster Splitscreen toast during faster splitscreen setup.">
         Choose a window for this side
+        </message>
+        <message name="IDS_A11Y_ALERT_SNAP_GROUP_CREATION" desc="An alert for snap group creation.">
+        Group two side-by-side windows
+        </message>
+        <message name="IDS_A11Y_ALERT_SNAP_GROUP_RESIZE_LEFT" desc="An alert for snap group resize.">
+        Resized windows to the left
+        </message>
+        <message name="IDS_A11Y_ALERT_SNAP_GROUP_RESIZE_RIGHT" desc="An alert for snap group resize.">
+        Resized windows to the right
+        </message>
+        <message name="IDS_A11Y_ALERT_SNAP_GROUP_RESIZE_UP" desc="An alert for snap group resize.">
+        Resized windows to the top
+        </message>
+        <message name="IDS_A11Y_ALERT_SNAP_GROUP_RESIZE_DOWN" desc="An alert for snap group resize.">
+        Resized windows to the bottom
         </message>
         <message name="IDS_A11Y_ALERT_WINDOW_OVERVIEW_MODE_ENTERED" desc="The accessible text read when the user enters window overview mode in Ash.">
           Entered window overview mode. Swipe to navigate, or press tab if using a keyboard.
@@ -15540,6 +15712,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_PIN_ENTRY_ERROR_SAME_AS_CURRENT" desc="Error message. Displayed when the user attempts to set a new PIN code for their security key (an external physical device for user authentication), and the new PIN is the same as the currently set PIN.">
         Create a new PIN that's different from your current PIN
       </message>
+      <message name="IDS_WEBAUTHN_USE_PHONE_WITH_NAME" desc="Text that appears on a button to save or use a passkey on the user's phone. It identifies the phone by name.">
+        Use <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph>
+      </message>
 
       <!-- WebAuthn authenticator internal user verification -->
       <message name="IDS_WEBAUTHN_INLINE_ENROLLMENT_CANCEL_LABEL" desc="The label on a button allowing users to skip fingerprint registration when setting up a fingerprint enabled authenticator.">
@@ -15631,10 +15806,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
          This passkey will be saved only in Windows Hello. It will remain on this device after you close all Private windows.
       </message>
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_CHOOSE_DEVICE_TITLE" desc="The title of a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-         Create a passkey
-      </message>
-      <message name="IDS_WEBAUTHN_CREATE_PASSKEY_CHOOSE_DEVICE_BODY" desc="The body of a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-         Choose how you want to create a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+        Choose where to save your passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
       </message>
       <message name="IDS_WEBAUTHN_USE_PASSKEY_CHOOSE_DEVICE_TITLE" desc="The title of a dialog prompting the user to use a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          Use your passkey
@@ -15674,9 +15846,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_QR_USE_PASSKEY_ON_SECURITY_KEY_LABEL" desc="Label on a modal dialog with a QR code. The label indicates to the user that instead of scanning the QR code with a phone, they can insert and activate a security key to sign in with a passkey instead. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          If your passkey for <ph name="APP_NAME">$1<ex>google.com</ex></ph> is on a USB security key, insert and touch it now
-      </message>
-      <message name="IDS_WEBAUTHN_BACK" desc="Label on a button on a dialog for creating or using a passkey to sign into a website. Pressing the button will take the user to the previous step.">
-         Back
       </message>
 
       <!-- Multi source passkey picker -->
@@ -15795,6 +15964,25 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_GPM_INCOGNITO_CREATE_DESC" desc="The description of a dialog that is shown when a user is creating a Brave Password Manager passkey while browsing in Private mode. It is explaining to the user that the passkey will continue to exist in the password manager outside of Private mode.">
         This passkey will be saved to your password manager. Anyone with access to it will be able to use this passkey.
+      </message>
+      <message name="IDS_WEBAUTHN_GPM_PIN_OPTION_NUMBERS" desc="A label on the pin options dropdown menu that allows to choose a Brave Password Manager pin with digits only.">
+        Numbers
+      </message>
+      <message name="IDS_WEBAUTHN_GPM_PIN_OPTION_ALPHANUMERIC" desc="A label on the pin options dropdown menu that allows to choose an alphanumeric Brave Password Manager pin.">
+        Letters &amp;&amp; Numbers
+      </message>
+
+      <!-- Web-modal dialog shown during Digital Credential request -->
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_TITLE" translateable="false">
+        Retrieve credentials from phone or tablet.
+      </message>
+
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_BODY" translateable="false">
+        Scan this QR code with a camera on the device from which you want to retrieve credentials for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+      </message>
+
+      <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_CODE_ALT_TEXT" translateable="false">
+        QR code
       </message>
 
       <!-- Side Search -->
@@ -16025,6 +16213,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Don't copy
     </message>
 
+    <!-- Data sharing UI strings -->
+    <message name="IDS_DATA_SHARING_BUBBLE_DIALOG_TITLE" desc="Title of the data sharing bubble">
+      Data Sharing
+    </message>
 
     <!-- Deep scanning open now dialog strings -->
     <message name="IDS_DEEP_SCANNING_DIALOG_OPEN_NOW_TITLE" desc="Title shown in tab modal dialog when the user attempts to open a download while deep scanning is in progress">
@@ -16199,6 +16391,19 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <message name="IDS_APP_BLOCK_HEADING" desc="Tells the user the app is blocked.">
       <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> is blocked by admin. Ask admin for permission to use this app.
+    </message>
+
+    <!-- App local block prompt -->
+    <message name="IDS_APP_LOCAL_BLOCK_PROMPT_TITLE" desc="Titlebar of the app local block prompt window">
+      <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> is blocked on your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>
+    </message>
+    <message name="IDS_APP_LOCAL_BLOCK_PROMPT_MULTIPLE_TITLE" desc="Titlebar of the app local block prompt window with multiple blocked apps.">
+      <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> and a few more apps are blocked on your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>
+    </message>
+
+
+    <message name="IDS_APP_LOCAL_BLOCK_HEADING" desc="Tells the child that parent can unblock the app in the settings.">
+      Ask your parent to allow access in Settings
     </message>
 
     <!-- Extension request -->
@@ -16827,6 +17032,26 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_HOVERCARD_INACTIVE_TAB" desc="Text at the bottom of a hovercard indicating that a tab is inactive.">
         Inactive tab
+      </message>
+    </if>
+    <!-- Performance Intervention Strings-->
+    <!-- TODO(crbug.com/341709409): Finalize the intervention strings and mark them as translateable -->
+    <if expr="not is_android">
+        <message name="IDS_PERFORMANCE_INTERVENTION_DIALOG_TITLE" desc="Title text for a dialog with information on tabs that could be causing performance issues." translateable="false">
+        Performance Issue Detected
+        </message>
+      <if expr="use_titlecase">
+        <message name="IDS_PERFORMANCE_INTERVENTION_DEACTIVATE_TABS_BUTTON" desc="In Title Case: Label on a dialog button that deactivate the specified tabs in the dialog when clicked." translateable="false">
+        Deactivate Tabs
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_PERFORMANCE_INTERVENTION_DEACTIVATE_TABS_BUTTON" desc="Label on a dialog button that deactivate the specified tabs in the dialog when clicked." translateable="false">
+        Deactivate tabs
+      </message>
+      </if>
+      <message name="IDS_PERFORMANCE_INTERVENTION_DISMISS_BUTTON" desc="Label on a dialog button that dismisses the dialog when clicked." translateable="false">
+        Dismiss
       </message>
     </if>
     <message name="IDS_ACCNAME_SIDEBAR_WEBVIEW_LOCATION_BAR" desc="The accessible name of the sidebar webview's location bar.">

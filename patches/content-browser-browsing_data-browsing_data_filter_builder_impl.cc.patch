@@ -1,5 +1,5 @@
 diff --git a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
-index e23e591b58099c6dc41f6956270f42f6f8af7f92..51a2a848d81414eb6beff27baf3ac9dc3a284f08 100644
+index 04a97bf981a1a58e244ebf672dbc50a4e6d56858..a3bd38d3323f081cf014ceb240e99be3df0ea33a 100644
 --- a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
 +++ b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
 @@ -58,6 +58,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,

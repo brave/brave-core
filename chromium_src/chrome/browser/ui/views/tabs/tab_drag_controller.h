@@ -22,7 +22,6 @@ using TabDragControllerBrave = TabDragController;
   Unused_MoveUattached() {}      \
   friend TabDragControllerBrave; \
   virtual void InitDragData
-#define GetTabGroupForTargetIndex virtual GetTabGroupForTargetIndex
 #define GetAttachedBrowserWidget                   \
   GetAttachedBrowserWidget_Unused() { return {}; } \
   virtual views::Widget* GetAttachedBrowserWidget
@@ -41,7 +40,6 @@ using TabDragControllerBrave = TabDragController;
 #undef DetachAndAttachToNewContext
 #undef GetLocalProcessWindow
 #undef GetAttachedBrowserWidget
-#undef GetTabGroupForTargetIndex
 #undef TabDragController
 #undef InitDragData
 #undef GetAttachedDragPoint

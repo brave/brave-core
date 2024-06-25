@@ -1144,7 +1144,7 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
 
   const base::Value::Dict* dict = args[0].GetIfDict();
   if (!dict) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1172,7 +1172,7 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
 
   const base::Value::Dict* dict = args[0].GetIfDict();
   if (!dict) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1200,7 +1200,7 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
 
   const base::Value::Dict* dict = args[0].GetIfDict();
   if (!dict) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1228,7 +1228,7 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
 
   const base::Value::Dict* dict = args[0].GetIfDict();
   if (!dict) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1256,7 +1256,7 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
 
   const base::Value::Dict* dict = args[0].GetIfDict();
   if (!dict) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1284,7 +1284,7 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
 
   const base::Value::Dict* dict = args[0].GetIfDict();
   if (!dict) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1672,7 +1672,7 @@ void RewardsDOMHandler::EnableRewards(const base::Value::List& args) {
 #else
   // On Android, a native onboarding modal is displayed when the user navigates
   // to the Rewards page. This message handler should not be called.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 #endif
 }
 

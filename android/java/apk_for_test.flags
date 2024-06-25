@@ -41,7 +41,6 @@
     *** mMvTilesContainerLayout;
     *** mLogoCoordinator;
     *** insertSiteSectionView(...);
-    *** isScrollableMvtEnabled(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
@@ -122,7 +121,7 @@
     public <init>(...);
     *** mBottomControlsCoordinatorSupplier;
     *** mCallbackController;
-    *** mBrowserControlsSizer;
+    *** mBottomControlsStacker;
     *** mFullscreenManager;
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
@@ -293,7 +292,7 @@
     <init>(...);
     *** mBottomControlsHeight;
     *** mModel;
-    *** mBrowserControlsSizer;
+    *** mBottomControlsStacker;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
@@ -881,3 +880,7 @@
 -keep class org.chromium.chrome.browser.password_manager.settings.BraveExportFlow {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout
+
+-keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase

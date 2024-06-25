@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.toolbar.bottom;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.Supplier;
-import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
@@ -19,7 +19,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
     // To delete in bytecode, members from parent class will be used instead.
     private int mBottomControlsHeight;
     private PropertyModel mModel;
-    private BrowserControlsSizer mBrowserControlsSizer;
+    private BottomControlsStacker mBottomControlsStacker;
 
     // Own members.
     private ObservableSupplierImpl<Boolean> mTabGroupUiVisibleSupplier =
@@ -32,7 +32,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
     BraveBottomControlsMediator(
             WindowAndroid windowAndroid,
             PropertyModel model,
-            BrowserControlsSizer controlsSizer,
+            BottomControlsStacker controlsStacker,
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
@@ -42,7 +42,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         super(
                 windowAndroid,
                 model,
-                controlsSizer,
+                controlsStacker,
                 fullscreenManager,
                 tabObscuringHandler,
                 bottomControlsHeight,
@@ -91,7 +91,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
         // This indicates that both controls are visible, but bottom toolbar has already been
         // scrolled down, so we move scroll further for tab groups control.
         if (mBottomControlsHeight == mBottomControlsHeightDouble
-                && mBrowserControlsSizer.getBottomControlOffset() == mBottomControlsHeightSingle) {
+                && mBottomControlsStacker.getBrowserControls().getBottomControlOffset()
+                        == mBottomControlsHeightSingle) {
             mModel.set(BottomControlsProperties.Y_OFFSET, mBottomControlsHeightDouble);
         }
     }

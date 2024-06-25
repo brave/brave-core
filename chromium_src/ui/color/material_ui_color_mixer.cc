@@ -7,8 +7,10 @@
 
 #define AddMaterialUiColorMixer AddMaterialUiColorMixer_UnUsed
 
-#include "src/ui/color/material_ui_color_mixer.cc"
+#include "ui/color/color_transform.h"
 #include "ui/gfx/color_palette.h"
+
+#include "src/ui/color/material_ui_color_mixer.cc"
 
 #undef AddMaterialUiColorMixer
 
@@ -38,6 +40,10 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   mixer[ui::kColorComboboxInkDropHovered] = {ui::kColorSysStateHoverOnSubtle};
   mixer[ui::kColorComboboxInkDropRipple] = {
       ui::kColorSysStateRippleNeutralOnSubtle};
+  mixer[kColorComboboxBackground] = {kColorSysSurface};
+  mixer[kColorComboboxBackgroundDisabled] = {GetResultingPaintColor(
+      {kColorSysStateDisabledContainer}, {kColorComboboxBackground})};
+  mixer[kColorComboboxContainerOutline] = {kColorSysNeutralOutline};
   mixer[ui::kColorToolbarSearchFieldBackground] = {
       ui::kColorSysBaseContainerElevated};
   mixer[ui::kColorToolbarSearchFieldBackgroundHover] = {

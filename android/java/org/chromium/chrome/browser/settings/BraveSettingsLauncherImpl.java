@@ -39,15 +39,17 @@ public class BraveSettingsLauncherImpl extends SettingsLauncherImpl {
 
     @Override
     public Intent createSettingsActivityIntent(
-            Context context, @Nullable String fragmentName, @Nullable Bundle fragmentArgs) {
-        Intent intent = super.createSettingsActivityIntent(context, fragmentName, fragmentArgs);
+            Context context,
+            @Nullable Class<? extends Fragment> fragment,
+            @Nullable Bundle fragmentArgs) {
+        Intent intent = super.createSettingsActivityIntent(context, fragment, fragmentArgs);
         intent.setClass(context, BraveSettingsActivity.class);
         if (!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
-        if (fragmentName != null) {
-            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, fragmentName);
+        if (fragment != null) {
+            intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, fragment.getName());
         }
         if (fragmentArgs != null) {
             intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT_ARGUMENTS, fragmentArgs);

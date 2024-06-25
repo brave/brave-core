@@ -71,7 +71,7 @@ void HistogramsBraveizer::DoHistogramBravetization(
         answer = 1;
         break;
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
     }
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
   }

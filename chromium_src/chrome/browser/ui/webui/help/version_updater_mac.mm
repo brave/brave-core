@@ -180,7 +180,7 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
       break;
 
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 

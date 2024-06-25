@@ -120,7 +120,7 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
       break;                                                            \
     }                                                                   \
     default:                                                            \
-      NOTREACHED();                                                     \
+      NOTREACHED_IN_MIGRATION();                                        \
   }
 
 #include "src/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc"

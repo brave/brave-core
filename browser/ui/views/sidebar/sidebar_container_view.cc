@@ -27,6 +27,8 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -43,9 +45,9 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/input/native_web_keyboard_event.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/common/input/native_web_keyboard_event.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
@@ -144,7 +146,6 @@ void SidebarContainerView::Init() {
   panel_registry_observations_.AddObservation(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
-    DVLOG(1) << "Observing panel entry in ctor: " << entry->name();
     panel_entry_observations_.AddObservation(entry.get());
   }
 
@@ -699,9 +700,9 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
   auto has_panel_item =
       GetSidebarService(browser_)->GetDefaultPanelItem().has_value();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  if (browser_view->toolbar() &&
-      browser_view->toolbar()->GetSidePanelButton()) {
-    browser_view->toolbar()->GetSidePanelButton()->SetVisible(
+  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  if (brave_toolbar && brave_toolbar->side_panel_button()) {
+    brave_toolbar->side_panel_button()->SetVisible(
         has_panel_item && show_side_panel_button_.GetValue());
   }
 }
@@ -726,7 +727,6 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   // Make sure item is selected. We need to observe the SidePanel system
   // as well as Sidebar as there are other ways than Sidebar for SidePanel
   // items to be shown and hidden, e.g. toolbar button.
-  DVLOG(1) << "Panel shown: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -758,7 +758,6 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Make sure item is deselected
-  DVLOG(1) << "Panel hidden: " << entry->name();
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -793,14 +792,12 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
 void SidebarContainerView::OnEntryRegistered(SidePanelRegistry* registry,
                                              SidePanelEntry* entry) {
   // Observe when it's shown or hidden
-  DVLOG(1) << "Observing panel entry in registry observer: " << entry->name();
   panel_entry_observations_.AddObservation(entry);
 }
 
 void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
                                                  SidePanelEntry* entry) {
   // Stop observing
-  DVLOG(1) << "Unobserving panel entry in registry observer: " << entry->name();
   panel_entry_observations_.RemoveObservation(entry);
 }
 
@@ -842,9 +839,6 @@ void SidebarContainerView::StopObservingContextualSidePanelRegistry(
 
   for (const auto& entry : registry->entries()) {
     if (panel_entry_observations_.IsObservingSource(entry.get())) {
-      DVLOG(1) << "Removing panel entry observation from removed contextual "
-                  "registry : "
-               << entry->name();
       panel_entry_observations_.RemoveObservation(entry.get());
     }
   }
@@ -861,9 +855,6 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
 
   for (const auto& entry : registry->entries()) {
     if (!panel_entry_observations_.IsObservingSource(entry.get())) {
-      DVLOG(1) << "Observing existing panel entry from newly added contextual "
-                  "registry : "
-               << entry->name();
       panel_entry_observations_.AddObservation(entry.get());
     }
   }

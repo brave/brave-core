@@ -22,7 +22,6 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/pref_names.h"
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -162,7 +161,6 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean("isTor", profile->IsTor());
-    source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
   return new BraveNewTabMessageHandler(profile, was_restored);
 }
@@ -369,7 +367,7 @@ void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
   // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
   // deleted from NTP Webui.
   // https://github.com/brave/brave-browser/issues/23493
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(

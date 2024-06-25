@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/brave_browser_actions.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
@@ -25,9 +26,11 @@
 #define BookmarkTabHelper BraveBookmarkTabHelper
 #endif
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
+#define BrowserActions BraveBrowserActions
 
 #include "src/chrome/browser/ui/browser.cc"
 
+#undef BrowserActions
 #undef BrowserTabStripModelDelegate
 #undef BrowserLocationBarModelDelegate
 #undef BrowserContentSettingBubbleModelDelegate

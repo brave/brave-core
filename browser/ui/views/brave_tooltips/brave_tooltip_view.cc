@@ -38,7 +38,7 @@ constexpr int kBodyMaximumLines = 4;
 
 constexpr gfx::Size kTooltipSize(434 + 15, 104 + 15);
 constexpr gfx::Size kTitleSize(200, 20);
-constexpr gfx::Size kBodySize(279, 58);
+constexpr gfx::Size kBodySize(279, 72);
 constexpr gfx::Size kButtonSize(82, 24);
 
 constexpr char kFontName[] = "Roboto";
@@ -182,6 +182,7 @@ void BraveTooltipView::CreateView() {
   views::View* container_view = new views::View();
   container_view->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(), 4));
+  container_view->SetPreferredSize(kBodySize);
   AddChildView(container_view);
 
   // Header
@@ -274,6 +275,7 @@ void BraveTooltipView::UpdateTitleLabelColors() {
 
 views::View* BraveTooltipView::CreateButtonView() {
   views::View* view = new views::View();
+  view->SetPreferredSize(kButtonSize);
 
   view->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(), 7));

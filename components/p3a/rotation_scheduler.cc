@@ -77,7 +77,7 @@ base::Time GetNextJsonRotationTime(MetricLogType log_type,
     case MetricLogType::kExpress:
       return NextDay(last_rotation);
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 }
 
@@ -90,7 +90,7 @@ const char* GetJsonRotationTimestampPref(MetricLogType log_type) {
     case MetricLogType::kExpress:
       return kLastExpressJsonRotationTimeStampPref;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   return nullptr;
 }
@@ -104,7 +104,7 @@ const char* GetConstellationRotationTimestampPref(MetricLogType log_type) {
     case MetricLogType::kExpress:
       return kLastExpressConstellationRotationTimeStampPref;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   return nullptr;
 }
@@ -190,7 +190,7 @@ void RotationScheduler::UpdateJsonTimer(MetricLogType log_type) {
           : now + config_->json_rotation_intervals.at(log_type);
   if (now >= next_rotation) {
     // Should never happen, but let's stay on the safe side.
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
   json_rotation_timers_[log_type]->Start(
