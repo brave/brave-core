@@ -115,6 +115,19 @@ TEST_F(WebDiscoveryDoubleFetcherTest, ScheduleAndFetch) {
   EXPECT_TRUE(completed_fetches_.empty());
 }
 
+TEST_F(WebDiscoveryDoubleFetcherTest, LoadScheduleFromStorageAndFetch) {
+  GURL url(kTestUrl);
+  double_fetcher_->ScheduleDoubleFetch(url, base::Value(1));
+  double_fetcher_->ScheduleDoubleFetch(url, base::Value(2));
+
+  EXPECT_TRUE(completed_fetches_.empty());
+
+  InitDoubleFetcher();
+
+  task_environment_.FastForwardBy(base::Seconds(240));
+  EXPECT_EQ(completed_fetches_.size(), 2u);
+}
+
 TEST_F(WebDiscoveryDoubleFetcherTest, ScheduleRetry) {
   GURL url(kTestUrl);
   SetUpResponse(net::HTTP_INTERNAL_SERVER_ERROR);

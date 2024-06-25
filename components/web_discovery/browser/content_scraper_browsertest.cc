@@ -71,7 +71,8 @@ class WebDiscoveryContentScraperTest : public InProcessBrowserTest {
         base::DoNothing());
     auto server_config = std::make_unique<ServerConfig>();
     server_config->location = "us";
-    server_config_loader_->SetLastServerConfigForTest(std::move(server_config));
+    server_config_loader_->SetLastServerConfigForTesting(
+        std::move(server_config));
 
     auto patterns_group = std::make_unique<PatternsGroup>();
     std::vector<PatternsURLDetails> normal_patterns(1);
@@ -133,7 +134,7 @@ class WebDiscoveryContentScraperTest : public InProcessBrowserTest {
 
     patterns_group->strict_patterns = std::move(strict_patterns);
 
-    server_config_loader_->SetLastPatternsForTest(std::move(patterns_group));
+    server_config_loader_->SetLastPatternsForTesting(std::move(patterns_group));
 
     scraper_ = std::make_unique<ContentScraper>(server_config_loader_.get(),
                                                 &regex_util_);

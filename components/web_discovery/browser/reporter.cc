@@ -117,12 +117,12 @@ std::optional<AESEncryptResult> CompressAndEncrypt(
 
 Reporter::Reporter(PrefService* profile_prefs,
                    network::SharedURLLoaderFactory* shared_url_loader_factory,
-                   CredentialManager* credential_manager,
+                   CredentialSigner* credential_signer,
                    RegexUtil* regex_util,
                    const ServerConfigLoader* server_config_loader)
     : profile_prefs_(profile_prefs),
       shared_url_loader_factory_(shared_url_loader_factory),
-      credential_manager_(credential_manager),
+      credential_signer_(credential_signer),
       regex_util_(regex_util),
       server_config_loader_(server_config_loader),
       pool_sequenced_task_runner_(
@@ -146,7 +146,7 @@ void Reporter::ScheduleSend(base::Value::Dict payload) {
 
 void Reporter::PrepareRequest(const base::Value& request_data) {
   VLOG(1) << "Preparing request";
-  if (!credential_manager_->CredentialExistsForToday()) {
+  if (!credential_signer_->CredentialExistsForToday()) {
     // Backoff until credential is available to today
     VLOG(1) << "Credential does not exist for today";
     request_queue_.NotifyRequestComplete(false);
@@ -177,7 +177,7 @@ void Reporter::PrepareRequest(const base::Value& request_data) {
   }
 
   auto payload_hash = crypto::SHA256HashString(final_payload_json);
-  credential_manager_->Sign(
+  credential_signer_->Sign(
       std::vector<const uint8_t>(payload_hash.begin(), payload_hash.end()),
       basename_result->basename,
       base::BindOnce(&Reporter::OnRequestSigned, base::Unretained(this),

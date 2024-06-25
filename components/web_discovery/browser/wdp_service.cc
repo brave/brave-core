@@ -26,8 +26,7 @@
 namespace web_discovery {
 
 namespace {
-// constexpr base::TimeDelta kAliveCheckInterval = base::Minutes(5);
-constexpr base::TimeDelta kAliveCheckInterval = base::Seconds(10);
+constexpr base::TimeDelta kAliveCheckInterval = base::Minutes(1);
 constexpr size_t kMinPageCountForAliveMessage = 2;
 }  // namespace
 

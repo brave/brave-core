@@ -154,7 +154,7 @@ bool CredentialManager::LoadRSAKey() {
       profile_prefs_->GetString(kCredentialRSAPrivateKey);
   rsa_public_key_b64_ = profile_prefs_->GetString(kCredentialRSAPublicKey);
 
-  if (private_key_b64.empty() || !rsa_public_key_b64_->empty()) {
+  if (private_key_b64.empty() || rsa_public_key_b64_->empty()) {
     rsa_public_key_b64_ = std::nullopt;
     return true;
   }
@@ -426,6 +426,15 @@ void CredentialManager::OnSignResult(
     std::optional<std::vector<const uint8_t>> signed_message) {
   loaded_credential_date_ = credential_date;
   std::move(callback).Run(signed_message);
+}
+
+void CredentialManager::UseFixedSeedForTesting() {
+  anonymous_credential_manager_ =
+      std::unique_ptr<rust::Box<anonymous_credentials::CredentialManager>,
+                      base::OnTaskRunnerDeleter>(
+          new rust::Box(
+              anonymous_credentials::new_credential_manager_with_fixed_seed()),
+          base::OnTaskRunnerDeleter(pool_sequenced_task_runner_));
 }
 
 }  // namespace web_discovery

@@ -13,7 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "brave/components/web_discovery/browser/credential_manager.h"
+#include "brave/components/web_discovery/browser/credential_signer.h"
 #include "brave/components/web_discovery/browser/ecdh_aes.h"
 #include "brave/components/web_discovery/browser/regex_util.h"
 #include "brave/components/web_discovery/browser/request_queue.h"
@@ -33,7 +33,7 @@ class Reporter {
  public:
   Reporter(PrefService* profile_prefs,
            network::SharedURLLoaderFactory* shared_url_loader_factory,
-           CredentialManager* credential_manager,
+           CredentialSigner* credential_signer,
            RegexUtil* regex_util,
            const ServerConfigLoader* server_config_loader);
   ~Reporter();
@@ -62,7 +62,7 @@ class Reporter {
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 
-  raw_ptr<CredentialManager> credential_manager_;
+  raw_ptr<CredentialSigner> credential_signer_;
   raw_ptr<RegexUtil> regex_util_;
   raw_ptr<const ServerConfigLoader> server_config_loader_;
 

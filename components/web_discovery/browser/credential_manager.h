@@ -16,6 +16,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/anonymous_credentials/rs/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/credential_signer.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "net/base/backoff_entry.h"
@@ -34,24 +35,26 @@ struct GenerateJoinRequestResult {
   std::string signature;
 };
 
-class CredentialManager {
+class CredentialManager : public CredentialSigner {
  public:
-  using SignCallback =
-      base::OnceCallback<void(std::optional<std::vector<const uint8_t>>)>;
   CredentialManager(PrefService* profile_prefs,
                     network::SharedURLLoaderFactory* shared_url_loader_factory,
                     const ServerConfigLoader* server_config_loader);
-  ~CredentialManager();
+  ~CredentialManager() override;
 
   CredentialManager(const CredentialManager&) = delete;
   CredentialManager& operator=(const CredentialManager&) = delete;
 
   void JoinGroups();
 
-  bool CredentialExistsForToday();
+  // CredentialSigner:
+  bool CredentialExistsForToday() override;
+
   bool Sign(std::vector<const uint8_t> msg,
             std::vector<const uint8_t> basename,
-            SignCallback callback);
+            SignCallback callback) override;
+
+  void UseFixedSeedForTesting();
 
  private:
   bool LoadRSAKey();

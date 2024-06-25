@@ -25,6 +25,7 @@ mod ffi {
     extern "Rust" {
         type CredentialManager;
         fn new_credential_manager() -> Box<CredentialManager>;
+        fn new_credential_manager_with_fixed_seed() -> Box<CredentialManager>;
         fn start_join(&mut self, challenge: &[u8]) -> StartJoinResult;
         fn finish_join(&mut self, public_key: &[u8], gsk: &[u8], join_resp: &[u8]) -> VecU8Result;
         fn set_gsk_and_credentials(&mut self, gsk: &[u8], credentials: &[u8]) -> EmptyResult;
@@ -39,6 +40,12 @@ struct CredentialManager(InternalCredentialManager);
 
 fn new_credential_manager() -> Box<CredentialManager> {
     Box::new(CredentialManager(InternalCredentialManager::new()))
+}
+
+fn new_credential_manager_with_fixed_seed() -> Box<CredentialManager> {
+    Box::new(CredentialManager(InternalCredentialManager::new_with_seed(
+        &[0u8; 1],
+    )))
 }
 
 impl CredentialManager {
