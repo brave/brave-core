@@ -34,6 +34,10 @@ extension BrowserViewController {
   }
 
   private func presentScreenCallout(for type: FullScreenCalloutType, skipSafeGuards: Bool = false) {
+    
+    //disable callout for now
+    return 
+    
     // Check the type custom callout can be shown
     guard shouldShowCallout(calloutType: type, skipSafeGuards: skipSafeGuards) else {
       return

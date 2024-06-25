@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "Le **lecteur Brave** est votre ticket pour une expérience vidéo sans publicité et sans interruption.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie que leur site peut ne pas fonctionner correctement.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Brave peut ajuster vos paramètres de boucliers à votre place. Une fois qu'ils seront ajustés, vous pourrez plutôt essayer de regarder ce contenu dans le lecteur Brave.";
+"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Ping peut ajuster vos paramètres de boucliers à votre place. Une fois qu'ils seront ajustés, vous pourrez plutôt essayer de regarder ce contenu dans le lecteur Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Conserver les paramètres actuels";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "Standard";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Lecteur Brave";
+"BravePlayer" = "Lecteur Ping";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Toujours ouvrir les vidéos de ce site avec le lecteur Brave";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Toujours ouvrir les vidéos de ce site avec le lecteur Ping";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Faire un essai";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Pas maintenant";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Le lecteur Brave vous permet de regarder des vidéos sans interruption.";
+"BravePlayerInfoMessage" = "Le lecteur Ping vous permet de regarder des vidéos sans interruption.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Regarder plutôt dans le lecteur Brave";
+"BravePlayerInfoTitle" = "Regarder plutôt dans le lecteur Ping";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Revenir en arrière ";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Parce que vous avez demandé un blocage agressif des traqueurs et des publicités, Brave bloque ce site avant la première connexion au réseau.";
+"DomainBlockedPageDescription" = "Parce que vous avez demandé un blocage agressif des traqueurs et des publicités, Ping bloque ce site avant la première connexion au réseau.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave a empêché le site suivant de charger :";
+"DomainBlockedPageMessage" = "Ping a empêché le site suivant de charger :";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Ce site risque de vous pister lorsque vous consultez d'autres sites";

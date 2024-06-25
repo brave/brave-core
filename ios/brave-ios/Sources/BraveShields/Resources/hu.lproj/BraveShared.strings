@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "A **Brave lejátszó** a belépő a hirdetésmentes és megszakítás nélküli videóélményhez.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Ez a webhely elkezdett blokkolni néhány hirdetésblokkolót, ami azt eredményezheti, hogy webhelyük nem a várt módon fog működni.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "A probléma megoldása érdekében a Brave módosíthatja a pajzsok beállításait. A beállítás után megpróbálhatja megnézni ezt a tartalmat a Brave lejátszóban.";
+"AntiAdBlockWarningDescription2" = "A probléma megoldása érdekében a Ping módosíthatja a pajzsok beállításait. A beállítás után megpróbálhatja megnézni ezt a tartalmat a Ping lejátszóban.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Aktuális beállítások megtartása";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "Szokásos";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Brave lejátszó";
+"BravePlayer" = "Ping lejátszó";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "A webhelyről származó videókat mindig a Brave lejátszóval nyissa meg";
+"BravePlayerAlwaysOpenYouTubeLinks" = "A webhelyről származó videókat mindig a Ping lejátszóval nyissa meg";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Próbálja ki";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Ne most";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "A Brave lejátszó segítségével megszakítás nélkül nézhet videókat.";
+"BravePlayerInfoMessage" = "A Ping lejátszó segítségével megszakítás nélkül nézhet videókat.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Megtekintés inkább a Brave lejátszóban";
+"BravePlayerInfoTitle" = "Megtekintés inkább a Ping lejátszóban";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Vissza";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Mivel a követők és a hirdetés agresszív tiltását kérte, a Brave még az első hálózati csatlakozás előtt tiltja az oldalt.";
+"DomainBlockedPageDescription" = "Mivel a követők és a hirdetés agresszív tiltását kérte, a Ping még az első hálózati csatlakozás előtt tiltja az oldalt.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "A Brave megakadályozta a következő oldal betöltését:";
+"DomainBlockedPageMessage" = "A Ping megakadályozta a következő oldal betöltését:";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Ez a webhely megkísérelheti nyomon követni Önt más webhelyeken";

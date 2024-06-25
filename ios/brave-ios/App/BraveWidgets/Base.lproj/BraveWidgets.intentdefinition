@@ -130,7 +130,7 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>Brave Playlist</string>
+					<string>Ping Playlist</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>FGO5qW</string>
 					<key>INEnumValueIndex</key>
@@ -150,7 +150,7 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>Brave Wallet</string>
+					<string>Ping Wallet</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>jXiFQY</string>
 					<key>INEnumValueIndex</key>
@@ -168,7 +168,7 @@
 					<key>INEnumValueName</key>
 					<string>scanQRCode</string>
 				</dict>
-				<dict>
+				<!-- <dict>
 					<key>INEnumValueDisplayName</key>
 					<string>Brave News</string>
 					<key>INEnumValueDisplayNameID</key>
@@ -177,7 +177,7 @@
 					<integer>10</integer>
 					<key>INEnumValueName</key>
 					<string>braveNews</string>
-				</dict>
+				</dict> -->
 			</array>
 		</dict>
 	</array>

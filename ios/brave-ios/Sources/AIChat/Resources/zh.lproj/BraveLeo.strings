@@ -10,8 +10,8 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo 是采用 AI 技术的智慧助理，内置于浏览器中。";
 
-/* The title for the button which links purchase to Brave Account */
-"aichat.advancedSettingsLinkPurchaseActionTitle" = "将购买交易连接至您的 Brave 帐户";
+/* The title for the button which links purchase to Ping Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "将购买交易连接至您的 Ping 帐户";
 
 /* The title for the label showing the date which subscription expires */
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "过期";
@@ -35,7 +35,7 @@
 "aichat.chatIntroJustTalkTitle" = "只想聊聊天？";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "Brave 内置的人工智能智能助手。";
+"aichat.chatIntroSubTitle" = "Ping 内置的人工智能智能助手。";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "嗨，我是 Leo！";
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "喜欢答复";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "提供 Brave 人工智能反馈";
+"aichat.feedbackViewMainTitle" = "提供 Ping 人工智能反馈";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "訂閱 Premium";
@@ -92,7 +92,7 @@
 "aichat.infoAboutPageContext" = "根据页面内容生成答复";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "嗨，我是 Leo。我由 Brave 代理，并由 Claude Instant 支持，该模型由 Anthropic 创建，用于支持对话和文本处理任务。";
+"aichat.introMessageClaudeInstantMessageDescription" = "嗨，我是 Leo。我由 Ping 代理，并由 Claude Instant 支持，该模型由 Anthropic 创建，用于支持对话和文本处理任务。";
 
 /* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeInstantModelDescription" = "Claude Instant by Anthropic";
@@ -101,13 +101,13 @@
 "aichat.introMessageGenericMessageDescription" = "你好，我是 Leo，Brave 的智能助手。我由 %@ 研发支持。问我问题，我会尽力解答。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "嗨，我是 Leo。我是由 Brave 托管的人工智能助手。我由 Llama 13B 提供支持，Llama 13B 是由 Meta 创建的模型，性能卓越，适用于多种用例。";
+"aichat.introMessageLlamaMessageDescription" = "嗨，我是 Leo。我是由 Ping 托管的人工智能助手。我由 Llama 13B 提供支持，Llama 13B 是由 Meta 创建的模型，性能卓越，适用于多种用例。";
 
 /* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 2 13b by Meta";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageMixtralMessageDescription" = "你好，我是 Leo。我是由 Brave 托管的人工智能助手。我使用的是 Mixtral 8x7B，这是由 Mistral AI 开发的模型，可以处理高级任务。";
+"aichat.introMessageMixtralMessageDescription" = "你好，我是 Leo。我是由 Ping 托管的人工智能助手。我使用的是 Mixtral 8x7B，这是由 Mistral AI 开发的模型，可以处理高级任务。";
 
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral by Mistral AI";
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "点击询问本页内容。其内容将与您的信息一起发送给 Brave Leo。";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "点击询问本页内容。其内容将与您的信息一起发送给 Ping Leo。";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "页面上下文信息";
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "管理訂閱";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "请在 iOS 系统设置中允许麦克风访问，以便 Brave 使用匿名语音搜索。";
+"aichat.microphonePermissionAlertDescription" = "请在 iOS 系统设置中允许麦克风访问，以便 Ping 使用匿名语音搜索。";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "需要使用麦克风";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "重試";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave 不会存储或分享你的语音搜索。";
+"aichat.speechRecognizerDisclaimer" = "Ping 不会存储或分享你的语音搜索。";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "建议问题…";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "总结本网页";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "我理解";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo 是一个私密的人工智能助手，可以增强您对互联网的使用体验。Leo 的基础版是免费的，但功能有限。Brave Leo 高级版提供更多模型、更少限制，并为订阅用户提供新功能的早期访问权限。当前所有用户的默认模型是 Mixtral 8x7B。请参阅 **[Brave 维基](%1$@)** 获取更多详细信息。\n\n默认情况下，当您向 Leo 提问时，它可能会向 Brave Leo 发送并使用您当前浏览的网页内容或您在页面上突出显示的任何文本，以获取回应。回答的准确性不能保证，可能包含不准确、误导或虚假的信息。Leo 使用来自 Brave Search 的数据来提高回答的质量。请不要提交敏感或私人信息，并谨慎对待与健康、财务、个人安全或类似问题相关的任何答案。您可以随时在设定中调整 Leo 的选项。前往设定 Leo。\n\nLeo 不会收集与您相关联的标识符，例如您的 IP 地址。没有数据被用于训练 AI 模型，AI 模型也不会保留个人数据（除了 Anthropic 在删除之前会保留 30 天的数据）。请查看 **[隐私政策](%2$@)** 以获取更多信息。";
+"aichat.termsConditionsDescription" = "Ping Leo 是一个私密的人工智能助手，可以增强您对互联网的使用体验。Leo 的基础版是免费的，但功能有限。Brave Leo 高级版提供更多模型、更少限制，并为订阅用户提供新功能的早期访问权限。当前所有用户的默认模型是 Mixtral 8x7B。请参阅 **[Brave 维基](%1$@)** 获取更多详细信息。\n\n默认情况下，当您向 Leo 提问时，它可能会向 Ping Leo 发送并使用您当前浏览的网页内容或您在页面上突出显示的任何文本，以获取回应。回答的准确性不能保证，可能包含不准确、误导或虚假的信息。Leo 使用来自 Ping Search 的数据来提高回答的质量。请不要提交敏感或私人信息，并谨慎对待与健康、财务、个人安全或类似问题相关的任何答案。您可以随时在设定中调整 Leo 的选项。前往设定 Leo。\n\nLeo 不会收集与您相关联的标识符，例如您的 IP 地址。没有数据被用于训练 AI 模型，AI 模型也不会保留个人数据（除了 Anthropic 在删除之前会保留 30 天的数据）。请查看 **[隐私政策](%2$@)** 以获取更多信息。";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "与 Brave Leo 私密聊天";
+"aichat.termsConditionsTitle" = "与 Ping Leo 私密聊天";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "语音输入";

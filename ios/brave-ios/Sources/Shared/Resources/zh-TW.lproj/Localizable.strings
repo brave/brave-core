@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "資料無效";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "請前往「設定」->「隱私」->「相機」，允許 Brave 存取您裝置的相機。";
+"ScanQRCodePermissionErrorMessage" = "請前往「設定」->「隱私」->「相機」，允許 Ping 存取您裝置的相機。";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "掃描 QR 碼";

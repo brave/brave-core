@@ -22,7 +22,7 @@ struct AdvancedShieldsSettingsView: View {
 
   var body: some View {
     List {
-      DefaultShieldsViewView(settings: settings)
+      // DefaultShieldsViewView(settings: settings)
       ClearDataSectionView(settings: settings)
 
       Section {
@@ -46,14 +46,14 @@ struct AdvancedShieldsSettingsView: View {
           ManageWebsiteDataView()
         }
 
-        NavigationLink {
-          PrivacyReportSettingsView()
-        } label: {
-          LabelView(
-            title: Strings.PrivacyHub.privacyReportsTitle,
-            subtitle: nil
-          )
-        }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+        // NavigationLink {
+        //   PrivacyReportSettingsView()
+        // } label: {
+        //   LabelView(
+        //     title: Strings.PrivacyHub.privacyReportsTitle,
+        //     subtitle: nil
+        //   )
+        // }.listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       OtherPrivacySettingsSectionView(settings: settings)

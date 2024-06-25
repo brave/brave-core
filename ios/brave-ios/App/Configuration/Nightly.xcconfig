@@ -7,7 +7,7 @@
 
 #include "Base.xcconfig"
 
-MOZ_BUNDLE_DISPLAY_NAME = Brave Nightly
+MOZ_BUNDLE_DISPLAY_NAME = Ping Nightly
 
 BRAVE_URL_SCHEME = brave-nightly
 

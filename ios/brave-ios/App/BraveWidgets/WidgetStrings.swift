@@ -1,4 +1,4 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright 2022 The Ping Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -15,7 +15,7 @@ extension Strings {
     public static let noFavoritesFound = NSLocalizedString(
       "widgets.noFavoritesFound",
       bundle: widgetBundle,
-      value: "Please open Brave to view your favorites here",
+      value: "Please open Ping to view your favorites here",
       comment: "This shows when you add a widget but have no favorites added in your app"
     )
 
@@ -43,7 +43,7 @@ extension Strings {
     public static let shortcutsWidgetDescription = NSLocalizedString(
       "widgets.shortcutsWidgetDescription",
       bundle: widgetBundle,
-      value: "Quick access to search the web or open web pages in Brave.",
+      value: "Quick access to search the web or open web pages in Ping.",
       comment: "Description for shortcuts widget on 'add widget' screen."
     )
 
@@ -79,35 +79,35 @@ extension Strings {
       "widgets.shieldStatsTitle",
       bundle: widgetBundle,
       value: "Privacy Stats",
-      comment: "Title for Brave Shields widget on 'add widget' screen."
+      comment: "Title for Ping Shields widget on 'add widget' screen."
     )
 
     public static let shieldStatsDescription = NSLocalizedString(
       "widgets.shieldStatsDescription",
       bundle: widgetBundle,
-      value: "A summary of how Brave saves you time and protects you online.",
-      comment: "Description for Brave Shields widget on 'add widget' screen."
+      value: "A summary of how Ping saves you time and protects you online.",
+      comment: "Description for Ping Shields widget on 'add widget' screen."
     )
 
     public static let shieldStatsWidgetTitle = NSLocalizedString(
       "widgets.shieldStatsWidgetTitle",
       bundle: widgetBundle,
       value: "Privacy Stats",
-      comment: "Title of Brave Shields widget shown above stat numbers."
+      comment: "Title of Ping Shields widget shown above stat numbers."
     )
 
     public static let singleStatTitle = NSLocalizedString(
       "widgets.singleStatTitle",
       bundle: widgetBundle,
       value: "Privacy Stat",
-      comment: "Title for Brave Shields single stat widget on 'add widget' screen."
+      comment: "Title for Ping Shields single stat widget on 'add widget' screen."
     )
 
     public static let singleStatDescription = NSLocalizedString(
       "widgets.singleStatDescription",
       bundle: widgetBundle,
-      value: "A summary of how Brave has protected you online.",
-      comment: "Description for Brave Shields single stat widget on 'add widget' screen."
+      value: "A summary of how Ping has protected you online.",
+      comment: "Description for Ping Shields single stat widget on 'add widget' screen."
     )
 
     public static let searchShortcutTitle = NSLocalizedString(
@@ -120,8 +120,8 @@ extension Strings {
     public static let walletShortcutTitle = NSLocalizedString(
       "widgets.walletShortcutTitle",
       bundle: widgetBundle,
-      value: "Brave Wallet",
-      comment: "Description for the Brave Wallet option on the 'shortcuts' widget."
+      value: "Ping Wallet",
+      comment: "Description for the Ping Wallet option on the 'shortcuts' widget."
     )
     public static let bookmarksMenuItem = NSLocalizedString(
       "widgets.BookmarksMenuItem",
@@ -152,13 +152,13 @@ extension Strings {
       "widgets.newsClusteringWidgetTitle",
       bundle: widgetBundle,
       value: "Top News",
-      comment: "Title for Brave News widgets that display the top news"
+      comment: "Title for Ping News widgets that display the top news"
     )
     public static let newsClusteringWidgetDescription = NSLocalizedString(
       "widgets.newsClusteringWidgetDescription",
       bundle: widgetBundle,
       value: "Get the latest news",
-      comment: "Description for Brave News widgets that display the top news"
+      comment: "Description for Ping News widgets that display the top news"
     )
     public static let newsClusteringErrorLabel = NSLocalizedString(
       "widgets.newsClusteringErrorLabel",
@@ -170,12 +170,12 @@ extension Strings {
       "widgets.newsClusteringReadMoreButtonTitle",
       bundle: widgetBundle,
       value: "Read More",
-      comment: "Displayed on a news widget that links into the app to read more Brave News content"
+      comment: "Displayed on a news widget that links into the app to read more Ping News content"
     )
     public static let braveNews = NSLocalizedString(
       "widgets.braveNews",
       bundle: widgetBundle,
-      value: "Brave News",
+      value: "Ping News",
       comment: "The name of the feature"
     )
   }

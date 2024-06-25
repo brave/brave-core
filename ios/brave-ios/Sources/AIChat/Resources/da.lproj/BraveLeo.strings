@@ -10,7 +10,7 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo er en AI-drevet smart assistent, der er direkte indbygget browseren.";
 
-/* The title for the button which links purchase to Brave Account */
+/* The title for the button which links purchase to Ping Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Forbind købet med din Brave-konto";
 
 /* The title for the label showing the date which subscription expires */
@@ -35,7 +35,7 @@
 "aichat.chatIntroJustTalkTitle" = "Vil du bare chatte?";
 
 /* The subtitle for intro view */
-"aichat.chatIntroSubTitle" = "En AI-drevet intelligent assistent bygget direkte ind i Brave.";
+"aichat.chatIntroSubTitle" = "En AI-drevet intelligent assistent bygget direkte ind i Ping.";
 
 /* The title for intro view */
 "aichat.chatIntroTitle" = "Hej, jeg hedder Leo!";
@@ -83,7 +83,7 @@
 "aichat.feedbackSuccessAnswerLikedTitle" = "Svar Synes godt om";
 
 /* The title for view which user type feedback */
-"aichat.feedbackViewMainTitle" = "Giv Brave feedback om AI";
+"aichat.feedbackViewMainTitle" = "Giv Ping feedback om AI";
 
 /* The button title for opening paywall screen */
 "aichat.goPremiumButtonTitle" = "Vælg Premium";
@@ -92,7 +92,7 @@
 "aichat.infoAboutPageContext" = "Form svar baseret på sidens indhold";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hej, jeg hedder Leo. Jeg er en proxy fra Brave og udviklet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hej, jeg hedder Leo. Jeg er en proxy fra Ping og udviklet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver.";
 
 /* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeInstantModelDescription" = "Claude Instant af Anthropic";
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Aktiver for at spørge om denne side. Dens indhold vil blive sendt til Brave Leo sammen med dine beskeder.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Aktiver for at spørge om denne side. Dens indhold vil blive sendt til Ping Leo sammen med dine beskeder.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Oplysninger om sidekontekst";
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Administrer abonnementer";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Tillad venligst mikrofonadgang i iOS-systemindstillingerne, så Brave kan bruge anonym stemmeindtastning.";
+"aichat.microphonePermissionAlertDescription" = "Tillad venligst mikrofonadgang i iOS-systemindstillingerne, så Ping kan bruge anonym stemmeindtastning.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Mikrofonadgang påkrævet";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Prøv igen";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave gemmer eller deler ikke dine stemmeinput.";
+"aichat.speechRecognizerDisclaimer" = "Ping gemmer eller deler ikke dine stemmeinput.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Foreslå spørgsmål...";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Sammenfat denne side";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Jeg forstår";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Braves Leo er en privat AI-smart-assistent, der forbedrer din brug af internettet. Leo er gratis at bruge med begrænset adgang. Braves Leo Premium tilbyder flere modeller, højere grænser og giver abonnenter tidlig adgang til nye funktioner. Standardmodellen for alle brugere er i øjeblikket Mixtral 8x7B. Se **[Brave-wiki] (%1$ @)** for flere detaljer.\n\nNår du stiller Leo et spørgsmål, kan den bruge konteksten for den webside, du ser, eller tekst, du fremhæver, til at give et svar. Svarenes nøjagtighed er ikke garanteret og kan indeholde unøjagtige, vildledende eller falske oplysninger. Leo bruger data fra Brave Search til at forbedre svarkvaliteten. Indsend ikke følsomme eller private oplysninger, og vær forsigtig med eventuelle svar relateret til sundhed, økonomi, personlig sikkerhed eller lignende. Du kan til enhver tid justere Leos indstillinger i Indstillinger.\n\nLeo indsamler ikke identifikatorer såsom din IP-adresse, der kan linkes til dig. Hverken AI-modellen eller nogen tredjepartsmodeludbydere opbevarer nogen personlige data. Se **[fortrolighedspolitikken] (%2$ @)** for mere information.";
+"aichat.termsConditionsDescription" = "Braves Leo er en privat AI-smart-assistent, der forbedrer din brug af internettet. Leo er gratis at bruge med begrænset adgang. Braves Leo Premium tilbyder flere modeller, højere grænser og giver abonnenter tidlig adgang til nye funktioner. Standardmodellen for alle brugere er i øjeblikket Mixtral 8x7B. Se **[Brave-wiki] (%1$ @)** for flere detaljer.\n\nNår du stiller Leo et spørgsmål, kan den bruge konteksten for den webside, du ser, eller tekst, du fremhæver, til at give et svar. Svarenes nøjagtighed er ikke garanteret og kan indeholde unøjagtige, vildledende eller falske oplysninger. Leo bruger data fra Ping Search til at forbedre svarkvaliteten. Indsend ikke følsomme eller private oplysninger, og vær forsigtig med eventuelle svar relateret til sundhed, økonomi, personlig sikkerhed eller lignende. Du kan til enhver tid justere Leos indstillinger i Indstillinger.\n\nLeo indsamler ikke identifikatorer såsom din IP-adresse, der kan linkes til dig. Hverken AI-modellen eller nogen tredjepartsmodeludbydere opbevarer nogen personlige data. Se **[fortrolighedspolitikken] (%2$ @)** for mere information.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Chat privat med Brave Leo";
+"aichat.termsConditionsTitle" = "Chat privat med Ping Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Stemmeinput";

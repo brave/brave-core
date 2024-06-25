@@ -92,7 +92,7 @@
 "ScanQRCodeInvalidDataErrorMessage" = "La data és invàlida";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Permet que Brave accedeixi a la càmera del teu dispositiu a 'Configuració' -> 'Privacitat' -> 'Càmera'.";
+"ScanQRCodePermissionErrorMessage" = "Permet que Ping accedeixi a la càmera del teu dispositiu a 'Configuració' -> 'Privacitat' -> 'Càmera'.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Escaneja el codi QR";
@@ -119,7 +119,7 @@
 "UnableToAddPassErrorTitle" = "No s'ha pogut afegir el passi";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
-"UnableToOpenURLError" = "Brave no pot obrir la pàgina perquè té una adreça invàlida.";
+"UnableToOpenURLError" = "Ping no pot obrir la pàgina perquè té una adreça invàlida.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
 "UnableToOpenURLErrorTitle" = "No es pot obrir la pàgina";

@@ -86,7 +86,7 @@
 "wallet.addCustomTokenTitle" = "토큰";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
-"wallet.addNetworkDescription" = "Brave 월렛 내에서 이 네트워크를 사용하게 됩니다.";
+"wallet.addNetworkDescription" = "Ping 월렛 내에서 이 네트워크를 사용하게 됩니다.";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
 "wallet.addNetworkSubtitle" = "이 사이트가 네트워크를 추가할 수 있게 허용하시겠습니까?";
@@ -158,7 +158,7 @@
 "wallet.auroraPopupDontShowAgain" = "다시 표시하지 않음";
 
 /* The footer beneath the auto-lock title and interval duration */
-"wallet.autoLockFooter" = "Brave 지갑이 자동으로 잠길 때까지 대기 시간(분)";
+"wallet.autoLockFooter" = "Ping 지갑이 자동으로 잠길 때까지 대기 시간(분)";
 
 /* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
 "wallet.autoLockTitle" = "다음 시간 이후 자동 잠금";
@@ -218,21 +218,21 @@
 "wallet.biometricsSetupFaceId" = "Face ID";
 
 /* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupSubTitle" = "%@를 사용하여 Brave 월렛을 잠금 해제하시겠습니까?";
+"wallet.biometricsSetupSubTitle" = "%@를 사용하여 Ping 월렛을 잠금 해제하시겠습니까?";
 
 /* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
-"wallet.biometricsSetupTitle" = "%@로 Brave 월렛 잠금 해제";
+"wallet.biometricsSetupTitle" = "%@로 Ping 월렛 잠금 해제";
 
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
-/* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Brave 수수료: %@";
+/* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "Ping 수수료: %@";
 
-/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
-"wallet.braveSwapFeeDisclaimer" = "Brave 수수료 %@가 견적에 포함되어 있습니다.";
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
+"wallet.braveSwapFeeDisclaimer" = "Ping 수수료 %@가 견적에 포함되어 있습니다.";
 
-/* The text beside the striked-through percentage Brave would normally charge for a swap. */
+/* The text beside the striked-through percentage Ping would normally charge for a swap. */
 "wallet.braveSwapFree" = "무료";
 
 /* As in buying cryptocurrency */
@@ -374,7 +374,7 @@
 "wallet.creatingWallet" = "월렛 생성 중...";
 
 /* The title of the crypto tab */
-"wallet.cryptoTitle" = "Brave 월렛";
+"wallet.cryptoTitle" = "Ping 월렛";
 
 /* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
 "wallet.customizeIPFSNFTPublicGatewayNavTitle" = "NFT용 IPFS 게이트웨이 맞춤 설정";
@@ -451,14 +451,14 @@
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "맞춤 자산 추가";
 
-/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Brave Wallet\" */
-"wallet.dappsConnectionNotificationOriginTitle" = "%@이(가) Brave 월렛과 상호작용하려고 함";
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. The '%@' will be the site attempting to connect. For example: \"app.uniswap.org wants to interact with Ping Wallet\" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@이(가) Ping 월렛과 상호작용하려고 함";
 
-/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
-"wallet.dappsConnectionNotificationTitle" = "이 페이지가 Brave 월렛과 상호작용하려고 함";
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "이 페이지가 Ping 월렛과 상호작용하려고 함";
 
 /* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
-"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Brave 월렛에 연결한 DApps가 여기 표시됩니다.";
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "Ping 월렛에 연결한 DApps가 여기 표시됩니다.";
 
 /* The title of the section that will list all the permitted dapp connections */
 "wallet.dappsSettingsConnectedSitesSectionTitle" = "연결된 DApps";
@@ -634,7 +634,7 @@
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example \"1 account connected\" or \"2 accounts connected\") */
 "wallet.editSiteConnectionConnectedAccount" = "%1$lld개의 %2$@ 연결됨";
 
-/* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
+/* The navigation title of the screen for users to edit dapps site connection with users' Ping Wallet accounts. */
 "wallet.editSiteConnectionScreenTitle" = "연결";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
@@ -646,22 +646,22 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "표시되는 자산 편집";
 
-/* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the ENS domain they entered. */
 "wallet.ensDomainInterstitialPageButtonProceed" = "Infura 서버를 사용하여 계속하기";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.ensDomainInterstitialPageDescription" = "Brave는 Ethereum Name Service (ENS)상에서 .eth 도메인 이름을 해석하는 데 Infura를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 도메인을 방문하려고 한다는 사실 외에는 Infura가 확인할 수 없습니다. Infura의 <a href=%1$@>%2$@</a> 및 <a href=%3$@>%4$@</a>을 참조하세요.";
 
-/* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Brave에서 ENS(Ethereum Name Service) 지원을 활성화할까요?";
 
-/* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "오프체인 룩업으로 계속";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
 "wallet.ensOffchainDomainInterstitialPageDescription" = "이 .eth 도메인 이름은 오프체인으로 저장되어 제3자 게이트웨이가 해석합니다. ENS 오프체인 룩업을 활성화하면 귀하가 .eth 도메인 방문을 시도한다는 사실을 제3자 게이트웨이가 확인할 수 있습니다. <a href=%1$@>%2$@</a>.";
 
-/* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
 "wallet.ensOffchainDomainInterstitialPageTitle" = "Brave는 ENS(Ethereum Name Service) 오프체인 룩업 지원을 활성화할까요?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
@@ -955,8 +955,8 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "최대 우선순위 수수료";
 
-/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
-"wallet.module" = "Brave 월렛";
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Ping Wallet in wallet settings. */
+"wallet.module" = "Ping 월렛";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
 "wallet.more" = "더보기";
@@ -973,7 +973,7 @@
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
 "wallet.networkNameTitle" = "네트워크 이름";
 
-/* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
+/* A placeholder in Buy Screen, when user switched to a network that Ping currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "선택한 네트워크에 구매가 지원되지 않음";
 
 /* The title of the section for primary networks in the network selection view. */
@@ -1004,7 +1004,7 @@
 "wallet.newSiteConnectFooter" = "신뢰할 수 있는 사이트만 연결합니다.";
 
 /* The message displayed below the dapp's origin url in new site connection screen. */
-"wallet.newSiteConnectMessage" = "Brave 월렛에 연결";
+"wallet.newSiteConnectMessage" = "Ping 월렛에 연결";
 
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "연결";
@@ -1052,7 +1052,7 @@
 "wallet.nftDetailTokenStandard" = "토큰 표준";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "Brave 월렛은 귀하의 NFT를 자동으로 표시하기 위해 제3자 서비스를 사용할 수 있습니다. Brave는 이 서비스를 제공하기 위한 목적으로 SimpleHash에 귀하의 월렛 주소를 공유합니다. 자세히 알아보세요.";
+"wallet.nftDiscoveryCalloutDescription" = "Ping 월렛은 귀하의 NFT를 자동으로 표시하기 위해 제3자 서비스를 사용할 수 있습니다. Brave는 이 서비스를 제공하기 위한 목적으로 SimpleHash에 귀하의 월렛 주소를 공유합니다. 자세히 알아보세요.";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
 "wallet.nftDiscoveryCalloutDescriptionLearnMore" = "자세히 알아보기";
@@ -1091,10 +1091,10 @@
 "wallet.nftRemoveFromWallet" = "월렛 내에 표시하지 않음";
 
 /* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "NFT가 Brave 월렛에서 제거되지만 블록체인상에는 남아 있습니다. 제거한 후에는 마음이 바뀌면 다시 수동으로 가져와야 합니다.";
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT가 Ping 월렛에서 제거되지만 블록체인상에는 남아 있습니다. 제거한 후에는 마음이 바뀌면 다시 수동으로 가져와야 합니다.";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "Brave 월렛에서 제거하시겠습니까?";
+"wallet.nftRemoveFromWalletAlertTitle" = "Ping 월렛에서 제거하시겠습니까?";
 
 /* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
 "wallet.nftsDescription" = "NFT %d개";
@@ -1139,7 +1139,7 @@
 "wallet.onboardingCompletedButtonTitle" = "내 포트폴리오로 이동";
 
 /* The subtitle of the last step of creating a new wallet. */
-"wallet.onbordingCompletedSubTitle" = "Brave 월렛을 사용할 준비가 되었습니다.";
+"wallet.onbordingCompletedSubTitle" = "Ping 월렛을 사용할 준비가 되었습니다.";
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "설정이 다 끝났습니다!";
@@ -1249,7 +1249,7 @@
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "월렛 복구";
 
-/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Ping */
 "wallet.restoreWalletButtonTitle" = "복구";
 
 /* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
@@ -1439,7 +1439,7 @@
 "wallet.settingsResetWalletAlertMessage" = "이 액션은 되돌릴 수 없습니다. 복구 문구는 암호화폐 자산 계정에 다시 액세스할 수 있는 유일한 수단입니다.";
 
 /* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
-"wallet.settingsResetWalletAlertTitle" = "Brave 월렛을 재설정하시겠습니까?";
+"wallet.settingsResetWalletAlertTitle" = "Ping 월렛을 재설정하시겠습니까?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
 "wallet.setupCryptoButtonBackButtonTitle" = "환영합니다";
@@ -1448,13 +1448,13 @@
 "wallet.setupCryptoButtonTitle" = "시작하기";
 
 /* The subtitle displayed in the section for user that need to create a brand new wallet */
-"wallet.setupCryptoCreateNewSubTitle" = "Brave 월렛은 몇 분 만에 시작할 수 있습니다.";
+"wallet.setupCryptoCreateNewSubTitle" = "Ping 월렛은 몇 분 만에 시작할 수 있습니다.";
 
 /* The title displayed in the section for user that need to create a brand new wallet */
 "wallet.setupCryptoCreateNewTitle" = "새 월렛이 필요하신가요?";
 
 /* The disclaimer text at the bottom of the first step of onboarding flow. */
-"wallet.setupCryptoDisclaimer" = "©2023 Brave Software Inc. Brave 및 Brave 로고는 Brave의 등록 상표입니다. 기타 제품 명칭 및 로고는 해당 회사의 상표일 수 있습니다. 모든 권한 보유.";
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping 및 Ping 로고는 Brave의 등록 상표입니다. 기타 제품 명칭 및 로고는 해당 회사의 상표일 수 있습니다. 모든 권한 보유.";
 
 /* The subtitle displayed in the section for user that need to restore an existed wallet */
 "wallet.setupCryptoRestoreSubTitle" = "기존 월렛을 가져옵니다.";
@@ -1463,7 +1463,7 @@
 "wallet.setupCryptoRestoreTitle" = "이미 월렛이 있으십니까?";
 
 /* The subtitle displayed on the 'setup crypto' onboarding screen */
-"wallet.setupCryptoSubtitle" = "보유한 암호화폐 및 NFT를 온전히 관리하세요. Brave 월렛은 이더리움, EVM 체인, Solana 등을 지원합니다.";
+"wallet.setupCryptoSubtitle" = "보유한 암호화폐 및 NFT를 온전히 관리하세요. Ping 월렛은 이더리움, EVM 체인, Solana 등을 지원합니다.";
 
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "브라우저 네이티브.\n자기 보호관리.\n멀티체인.";
@@ -1508,10 +1508,10 @@
 "wallet.signedTransactionTitle" = "트랜잭션 서명됨";
 
 /* The title of the view shown above a Sign In With Ethereum request. */
-"wallet.signInWithBraveWallet" = "Brave 월렛으로 로그인";
+"wallet.signInWithBraveWallet" = "Ping 월렛으로 로그인";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
-"wallet.signInWithBraveWalletMessage" = "%1$@에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 %2$@에 공유합니다.";
+"wallet.signInWithBraveWalletMessage" = "%1$@에 로그인합니다. Ping 월렛이 귀하의 월렛 주소를 %2$@에 공유합니다.";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "연속된 줄바꿈 문자가 감지되었습니다!";
@@ -1573,13 +1573,13 @@
 /* The button title to skip recovery phrase backup */
 "wallet.skipButtonTitle" = "건너뛰기";
 
-/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+/* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
 "wallet.snsDomainInterstitialPageButtonProceed" = "SNS 서버를 이용하여 계속 진행";
 
-/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
 "wallet.snsDomainInterstitialPageDescription" = "Brave는 .sol 도메인 이름을 해석하는 데 타사 서비스를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 .sol 도메인을 방문하려고 한다는 사실 외에는 해당 타사가 확인할 수 없습니다. Brave가 사용하는 타사 서비스는 무엇인지, 해당 서비스의 개인정보 보호정책은 어떻게 되는지 자세히 알아보려면 <a href=%@>도움말 페이지</a>를 방문하세요.";
 
-/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Brave에서 SNS(Solana Name Service) 지원을 활성화할까요?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
@@ -1687,7 +1687,7 @@
 /* The title on top of a separater, and the transaction details will be displayed below the separater. */
 "wallet.solanaSignTransactionDetails" = "세부정보";
 
-/* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
+/* The warning message to let users understand the risk of using Ping Wallet to sign any transaction. */
 "wallet.solanaSignTransactionWarning" = "서명하면 어떤 일이 일어나든 Brave가 검증하지 않습니다. 서명은 요청하는 사이트에 귀하의 계정 내 거의 모든 동작에 대한 권한을 부여하며, 암호화폐 자산에 대한 전체적인 제어권도 포함하되 이에 국한되지 않습니다. 이 행동에 대한 책임을 스스로 지고 요청 사이트를 신뢰할 수 있는 경우에만 서명하세요.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
@@ -1786,7 +1786,7 @@
 /* The description of a swap button on the buy/send/swap/deposit modal */
 "wallet.swapDescription" = "토큰 및 자산을 스왑합니다.";
 
-/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+/* A longer disclaimer about the DEX aggrigator used by Ping for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "%1$@는 %2$@ 주소와 IP 주소를 처리하여 거래를 수행합니다(견적 받기 포함). %3$@는 거래 처리 목적으로만 이 데이터를 사용합니다.";
 
 /* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
@@ -1954,10 +1954,10 @@
 /* The short name of one of the on ramp provider. */
 "wallet.transakProviderShortName" = "Transak";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+/* Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave는 Unstoppable Domains상에서 .crypto(및 %1$@) 도메인 이름을 해석하는 데 Infura를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 도메인을 방문하려고 한다는 사실 외에는 Infura가 확인할 수 없습니다. Infura의 <a href=%2$@>%3$@</a> 및 <a href=%4$@>%5$@</a>을 참조하세요.";
 
-/* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+/* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Brave에서 Unstoppable Domains 지원을 활성화할까요?";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
@@ -2002,7 +2002,7 @@
 /* A button title when a user will tap to reveal the recovery phrases. */
 "wallet.viewRecoveryPhraseButtonTitle" = "내 복구 문구 보기";
 
-/* The title shown on the menu to access Brave Wallet */
+/* The title shown on the menu to access Ping Wallet */
 "wallet.wallet" = "월렛";
 
 /* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
@@ -2035,22 +2035,22 @@
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
 
-/* Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered. */
+/* Title on the button that users can click to disable Ping to resolve the ENS/SNS domain they entered. */
 "wallet.web3DomainInterstitialPageButtonDisable" = "비활성화";
 
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Ping uses to resolve SNS domain. */
 "wallet.web3DomainInterstitialPagePrivacyPolicy" = "개인정보 보호정책";
 
-/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Ping uses to resolve SNS domain. */
 "wallet.web3DomainInterstitialPageTAndU" = "이용 약관";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Ping will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionAsk" = "확인";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Ping will disable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionDisabled" = "비활성화됨";
 
-/* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Ping will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "활성화됨";
 
 /* The header for the options to resolve Solana Name service domain names. */
@@ -2059,7 +2059,7 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "SNS(Solana Name Service) 도메인 이름 해석";
 
-/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Brave article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
 "wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS(InterPlanetary File System)는 피어 투 피어 데이터 저장 및 전달을 위한 공개 네트워크입니다. 이 프로토콜의 프라이버시 고려 사항은 HTTP(S)와 다릅니다. <a href=%1$@>%2$@</a>";
 
 /* A brief explaination of resolving IPFS scheme url using a public gateway. */
@@ -2068,7 +2068,7 @@
 /* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
 "wallet.web3IPFSInterstitialIPFSTitle" = "IPFS 기본 환경 설정";
 
-/* The title of the button that user will click to let Brave to resolve IPFS shceme url. */
+/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
 "wallet.web3IPFSInterstitialProceedButton" = "공개 게이트웨이 사용";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */

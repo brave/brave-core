@@ -8,13 +8,13 @@
 "NSCameraUsageDescription" = "Isso permite que você tire e carregue fotos.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Isso autentica seu acesso ao Brave";
+"NSFaceIDUsageDescription" = "Isso autentica seu acesso ao Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Os sites que você visitar poderão solicitar sua localização.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Isto permite a utilização do seu microfone ao utilizar o Brave.";
+"NSMicrophoneUsageDescription" = "Isto permite a utilização do seu microfone ao utilizar o Ping.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Isso permite que você salve fotos.";

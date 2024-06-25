@@ -8,19 +8,19 @@
 "NSCameraUsageDescription" = "Això et permet fer i carregar fotos.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Això autentica el teu accés a Brave";
+"NSFaceIDUsageDescription" = "Això autentica el teu accés a Ping";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "Els llocs web que visites poden demanar-te la ubicació.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Això permet utilitzar el micròfon quan utilitzes Brave.";
+"NSMicrophoneUsageDescription" = "Això permet utilitzar el micròfon quan utilitzes Ping.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Això et permet desar fotos.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Aquest permís s'utilitza per habilitar Apple Advanced Speech Recognition. Si no es permet, s'utilitzarà el reconeixement \"al dispositiu\" i les cerques seran totalment privades. Brave no emmagatzema ni comparteix les teves cerques per veu.";
+"NSSpeechRecognitionUsageDescription" = "Aquest permís s'utilitza per habilitar Apple Advanced Speech Recognition. Si no es permet, s'utilitzarà el reconeixement \"al dispositiu\" i les cerques seran totalment privades. Ping no emmagatzema ni comparteix les teves cerques per veu.";
 
 /* (No Comment) */
 "OPML File" = "Fitxer OPML";

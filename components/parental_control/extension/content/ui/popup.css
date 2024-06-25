@@ -1,0 +1,120 @@
+body {
+  width: 260px;
+  height: 200px;
+  padding-bottom: 10%;
+}
+
+#container {
+  min-height: 335px;
+}
+
+#signUpContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#signInContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#kidsContent {
+  display: flex;
+  flex-direction: column;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#successStatus {
+  display: block;
+  height: 10px;
+  color: rgb(2, 168, 2);
+}
+
+#errorStatus {
+  display: block;
+  height: 10px;
+  color: red;
+}
+
+.session-time-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#sessionTime {
+  background-color: #dddfdd;
+  /* color: white; */
+  padding: 4px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+}
+
+.timerLabel {
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 10px;
+  color: #df8a1d;
+  display: flex;
+  align-items: center;
+}
+#timerDisplay {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 2px solid #ece2d4;
+  display: flex;
+}
+
+input:focus {
+  outline: none;
+  border-color: rgb(255, 190, 51);
+  box-shadow: 0 0 3px rgb(255, 190, 51);
+  -moz-box-shadow: 0 0 3px rgb(255, 190, 51);
+  -webkit-box-shadow: 0 0 3px rgb(255, 190, 51);
+}
+
+input[type="checkbox"]:checked {
+  background-color: #ffd000;
+}
+
+.checkbox-container input[type="checkbox"],
+.checkbox-container label {
+  display: inline;
+  vertical-align: middle;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.checkbox-container {
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 25px;
+  padding: 0.6rem;
+  padding-left: .8rem;
+  padding-right: .8rem;
+  background-color: rgb(252, 181, 88);
+  border-radius: 10px;
+  cursor: pointer;
+  border-style: none;
+  width: 100%;
+}

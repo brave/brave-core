@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Reproductor de Brave** es tu pase de oro para disfrutar de vídeos de forma ininterrumpida y sin anuncios.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Este sitio ha comenzado a bloquear algunos bloqueadores de anuncios, lo que significa que es posible que no funcione como debería.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Para corregir este problema, Brave puede ajustar la configuración de tus protecciones. Una vez que lo haga, prueba a ver este contenido en Reproductor de Brave.";
+"AntiAdBlockWarningDescription2" = "Para corregir este problema, Ping puede ajustar la configuración de tus protecciones. Una vez que lo haga, prueba a ver este contenido en Reproductor de Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Mantener la configuración actual";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "Estándar";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Reproductor de Brave";
+"BravePlayer" = "Reproductor de Ping";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Abrir siempre los vídeos de este sitio con Reproductor de Brave";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Abrir siempre los vídeos de este sitio con Reproductor de Ping";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Probar";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Ahora No";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Reproductor de Brave te permite ver vídeos sin interrupciones.";
+"BravePlayerInfoMessage" = "Reproductor de Ping te permite ver vídeos sin interrupciones.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Utiliza Reproductor de Brave";
+"BravePlayerInfoTitle" = "Utiliza Reproductor de Ping";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Volver";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Como has solicitado bloquear absolutamente todos los anuncios y rastreadores, Brave va a bloquear este sitio antes de que se produzca la primera conexión a la red.";
+"DomainBlockedPageDescription" = "Como has solicitado bloquear absolutamente todos los anuncios y rastreadores, Ping va a bloquear este sitio antes de que se produzca la primera conexión a la red.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave ha impedido que se cargue el siguiente sitio:\n";
+"DomainBlockedPageMessage" = "Ping ha impedido que se cargue el siguiente sitio:\n";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Este sitio puede intentar rastrear tu actividad en otros sitios";

@@ -10,7 +10,7 @@
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo on suoraan selaimeen integroitu tekoälyperusteinen älyavustaja.";
 
-/* The title for the button which links purchase to Brave Account */
+/* The title for the button which links purchase to Ping Account */
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Linkitä ostos Brave-tiliisi";
 
 /* The title for the label showing the date which subscription expires */
@@ -118,8 +118,8 @@
 /* The title of the advanced settings view */
 "aichat.leoNavigationTitle" = "Leo";
 
-/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
-"aichat.leoPageContextInfoDescriptionTitle" = "Siirry kysymään tietoa tästä verkkosivusta. Sen sisältö lähetetään Brave Leolle yhdessä viestisi kanssa.";
+/* The title to display when the user taps on the information icon on the page context view. Ping Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Siirry kysymään tietoa tästä verkkosivusta. Sen sisältö lähetetään Ping Leolle yhdessä viestisi kanssa.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Sivun kontekstitiedot";
@@ -131,7 +131,7 @@
 "aichat.manageSubscriptionsButtonTitle" = "Hallinnoi tilauksia";
 
 /* The description for alert needed to have microphone permission */
-"aichat.microphonePermissionAlertDescription" = "Myönnä mikrofonin käyttöoikeus iOS-järjestelmäasetuksissa, jotta Brave voi käyttää anonyymiä äänisyöttöä.";
+"aichat.microphonePermissionAlertDescription" = "Myönnä mikrofonin käyttöoikeus iOS-järjestelmäasetuksissa, jotta Ping voi käyttää anonyymiä äänisyöttöä.";
 
 /* The description for alert needed to have microphone permission */
 "aichat.microphonePermissionAlertTitle" = "Mikrofonin käyttöoikeus vaaditaan";
@@ -251,7 +251,7 @@
 "aichat.retryActionTitle" = "Yritä uudestaan";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave ei tallenna tai jaa äänisyötteitäsi.";
+"aichat.speechRecognizerDisclaimer" = "Ping ei tallenna tai jaa äänisyötteitäsi.";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Ehdota kysymyksiä...";
@@ -259,14 +259,14 @@
 /* The title for button that start summarizing page */
 "aichat.summarizePageActionTitle" = "Tee yhteenveto tästä sivusta";
 
-/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+/* The title for expressing acknowledgement for the terms and conditions of Ping AI */
 "aichat.termsConditionsApproveActionTitle" = "Ymmärrän";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
 "aichat.termsConditionsDescription" = "Braven Leo on yksityinen tekoälyavustaja, joka tehostaa Internetin käyttöä. Leon ilmaisversion käyttö on rajoitettua. Braven Leo Premium tarjoaa enemmän malleja, korkeammat rajat ja antaa tilaajien käyttää aikaisin uusia ominaisuuksia. Oletusmalli kaikille käyttäjille on tällä hetkellä Mixtral 8x7B. Katso lisätietoja **[Brave-wikistä] (%1$ @)**.\n\n Kun esität Leolle kysymyksen, se voi käyttää tarkastelemasi verkkosivun kontekstia tai korostamaasi tekstiä vastauksen antamiseen. Vastausten tarkkuus ei ole taattavissa, ja ne voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Leo käyttää Brave-haun tietoja parantaakseen vastausten laatua. Älä lähetä arkaluonteisia tai yksityisiä tietoja ja ole varovainen terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin liittyviin vastauksiin. Voit muuttaa Leon asetuksia milloin tahansa Asetukset-osiossa.\n\n Leo ei kerää tunnisteita, kuten IP-osoitettasi, jotka voidaan yhdistää sinuun. Tekoälymalli tai kolmannen osapuolen mallintoimittajat eivät säilytä henkilötietoja. Katso lisätietoja **[tietosuojakäytännöstä] (%2$ @)**.";
 
 /* The title terms and conditions for AI chat usage */
-"aichat.termsConditionsTitle" = "Juttele Brave Leon kanssa yksityisesti ";
+"aichat.termsConditionsTitle" = "Juttele Ping Leon kanssa yksityisesti ";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Äänisyöte";

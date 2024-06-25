@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** ile reklamsız ve kesintisiz bir video deneyimi elde edin.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Bu site bazı reklam engelleyicileri engellemeye başladı, bu durumda bu siteler beklendiği gibi çalışmayabilir.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Bu sorunu çözmek amacıyla Brave sizin için kalkan ayarlarını yapabilir. Ayar yapıldıktan sonra bu içeriği Brave Player'da izlemeyi deneyebilirsiniz.";
+"AntiAdBlockWarningDescription2" = "Bu sorunu çözmek amacıyla Ping sizin için kalkan ayarlarını yapabilir. Ayar yapıldıktan sonra bu içeriği Ping Player'da izlemeyi deneyebilirsiniz.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Mevcut Ayarları Tut";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "Standart";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Brave Player";
+"BravePlayer" = "Ping Player";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Bu sitedeki videoları her zaman Brave Player ile aç";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Bu sitedeki videoları her zaman Ping Player ile aç";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Dene";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Şimdi Değil";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave Player ile videoları kesintisiz izleyin.";
+"BravePlayerInfoMessage" = "Ping Player ile videoları kesintisiz izleyin.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Brave Player'da İzle";
+"BravePlayerInfoTitle" = "Ping Player'da İzle";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Geri Git";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "İzleyicilerin ve reklamların katı bir şekilde engellenmesini istediğiniz için, Brave bu siteyi ilk ağ bağlantısından önce engelliyor.";
+"DomainBlockedPageDescription" = "İzleyicilerin ve reklamların katı bir şekilde engellenmesini istediğiniz için, Ping bu siteyi ilk ağ bağlantısından önce engelliyor.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave şu sitenin yüklenmesini engelledi:";
+"DomainBlockedPageMessage" = "Ping şu sitenin yüklenmesini engelledi:";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Bu Site Diğer Sitelerdeki Hareketinizi İzleme Girişiminde Bulunabilir";

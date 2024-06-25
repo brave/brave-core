@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** er din billet til en reklamefri og uafbrudt videooplevelse.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Dette websted er begyndt at blokere nogle annonceblokkere, hvilket betyder, at deres websted muligvis ikke fungerer som forventet.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "For at løse dette problem kan Brave justere dine skjoldindstillinger for dig. Når disse er justeret, kan du prøve at se dette indhold i Brave Player i stedet for.";
+"AntiAdBlockWarningDescription2" = "For at løse dette problem kan Ping justere dine skjoldindstillinger for dig. Når disse er justeret, kan du prøve at se dette indhold i Ping Player i stedet for.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Behold de nuværende indstillinger";
@@ -32,7 +32,7 @@
 "BravePlayer" = "Brave-spiller";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Åbn altid videoer fra denne side med Brave Player";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Åbn altid videoer fra denne side med Ping Player";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Prøv det";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Ikke nu";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Brave Player lader dig se videoer uden afbrydelser.";
+"BravePlayerInfoMessage" = "Ping Player lader dig se videoer uden afbrydelser.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Se i Brave Player i stedet";
+"BravePlayerInfoTitle" = "Se i Ping Player i stedet";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Gå tilbage";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Fordi du har valgt at blokere sporingstjenester og reklamer aggressivt, blokerer Brave denne side før første netværksforbindelse.";
+"DomainBlockedPageDescription" = "Fordi du har valgt at blokere sporingstjenester og reklamer aggressivt, blokerer Ping denne side før første netværksforbindelse.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Brave har forhindret følgende hjemmeside i at blive indlæst:";
+"DomainBlockedPageMessage" = "Ping har forhindret følgende hjemmeside i at blive indlæst:";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Dette websted kan forsøge at spore dig på tværs af andre websteder";

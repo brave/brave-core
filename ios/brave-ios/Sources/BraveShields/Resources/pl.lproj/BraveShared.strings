@@ -1,4 +1,4 @@
-/* A discription of the Brave Player. */
+/* A discription of the Ping Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Odtwarzacz Brave** jest twoją przepustką do oglądania filmów bez reklam.";
 
 /* A button that disables ad-blocking and uses brave player. */
@@ -8,7 +8,7 @@
 "AntiAdBlockWarningDescription" = "Ta strona zaczęła wykrywać niektóre blokery reklam, z tego powodu może ona nie działać prawidłowo.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Aby rozwiązać ten problem, Brave może dostosować ustawienia tarcz. Po wprowadzeniu zmian można spróbować obejrzeć tę treść w Odtwarzaczu Brave.";
+"AntiAdBlockWarningDescription2" = "Aby rozwiązać ten problem, Ping może dostosować ustawienia tarcz. Po wprowadzeniu zmian można spróbować obejrzeć tę treść w Odtwarzaczu Ping.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Zachowaj obecne ustawienia";
@@ -29,10 +29,10 @@
 "BlockAdsAndTrackingStandard" = "Standardowo";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Odtwarzacz Brave";
+"BravePlayer" = "Odtwarzacz Ping";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Zawsze otwieraj filmy z tej strony w Odtwarzaczu Brave";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Zawsze otwieraj filmy z tej strony w Odtwarzaczu Ping";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Wypróbuj";
@@ -41,19 +41,19 @@
 "BravePlayerDismissButton" = "Nie teraz";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Odtwarzacz Brave pozwala Ci oglądać filmy bez przerw.";
+"BravePlayerInfoMessage" = "Odtwarzacz Ping pozwala Ci oglądać filmy bez przerw.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Obejrz w Odtwarzaczu Brave";
+"BravePlayerInfoTitle" = "Obejrz w Odtwarzaczu Ping";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Wróć";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Ponieważ wybrano agresywne blokowanie skryptów śledzących i reklam, Brave blokuje tę stronę przed nawiązaniem połączenia sieciowego.";
+"DomainBlockedPageDescription" = "Ponieważ wybrano agresywne blokowanie skryptów śledzących i reklam, Ping blokuje tę stronę przed nawiązaniem połączenia sieciowego.";
 
 /* A message in the warning page that appears when a page was blocked */
-"DomainBlockedPageMessage" = "Przeglądarka Brave zapobiegła wczytaniu następującej witryny:";
+"DomainBlockedPageMessage" = "Przeglądarka Ping zapobiegła wczytaniu następującej witryny:";
 
 /* A title in the warning page that appears when a page was blocked */
 "DomainBlockedPageTitle" = "Ta strona może próbować śledzić użytkownika na innych stronach";

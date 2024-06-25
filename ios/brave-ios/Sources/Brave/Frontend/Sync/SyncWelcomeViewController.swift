@@ -200,7 +200,8 @@ class SyncWelcomeViewController: SyncViewController {
 
     // Adding top margin to the image.
     let syncImageStackView = UIStackView(arrangedSubviews: [
-      UIView.spacer(.vertical, amount: 60), syncImage,
+      UIView.spacer(.vertical, amount: 60), 
+      // syncImage,
     ])
     syncImageStackView.axis = .vertical
     mainStackView.addArrangedSubview(syncImageStackView)

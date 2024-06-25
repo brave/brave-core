@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "Knjižne oznake";
 
 /* The name of the feature */
-"widgets.braveNews" = "Novosti Brave";
+"widgets.braveNews" = "Novosti Ping";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Preuzimanje";
@@ -19,17 +19,17 @@
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Pokušajte ponovno poslije";
 
-/* Displayed on a news widget that links into the app to read more Brave News content */
+/* Displayed on a news widget that links into the app to read more Ping News content */
 "widgets.newsClusteringReadMoreButtonTitle" = "Pročitajte više";
 
-/* Description for Brave News widgets that display the top news */
+/* Description for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetDescription" = "Doznajte najnovije vijesti";
 
-/* Title for Brave News widgets that display the top news */
+/* Title for Ping News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Najvažnije vijesti";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Otvorite preglednik Brave kako biste ovdje vidjeli svoje omiljene stavke";
+"widgets.noFavoritesFound" = "Otvorite preglednik Ping kako biste ovdje vidjeli svoje omiljene stavke";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR kȏd";
@@ -37,13 +37,13 @@
 /* Description for the search option on the 'shortcuts' widget. */
 "widgets.searchShortcutTitle" = "Pretraži";
 
-/* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Sažetak o tome kako upotrebom preglednika Brave štedite vrijeme i dobivate zaštitu na mreži.";
+/* Description for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Sažetak o tome kako upotrebom preglednika Ping štedite vrijeme i dobivate zaštitu na mreži.";
 
-/* Title for Brave Shields widget on 'add widget' screen. */
+/* Title for Ping Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Statistika privatnosti";
 
-/* Title of Brave Shields widget shown above stat numbers. */
+/* Title of Ping Shields widget shown above stat numbers. */
 "widgets.shieldStatsWidgetTitle" = "Statistika privatnosti";
 
 /* Button to the browser and enter URL or make a search query there. */
@@ -59,17 +59,17 @@
 "widgets.shortcutsPrivateTabButton" = "Kartica Privatno";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Brzo pristupite za pretraživanje mreže ili otvaranje mrežnih stranica u pregledniku Brave.";
+"widgets.shortcutsWidgetDescription" = "Brzo pristupite za pretraživanje mreže ili otvaranje mrežnih stranica u pregledniku Ping.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Prečice";
 
-/* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Sažetak pružene zaštite preglednikom Brave na mreži.";
+/* Description for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Sažetak pružene zaštite preglednikom Ping na mreži.";
 
-/* Title for Brave Shields single stat widget on 'add widget' screen. */
+/* Title for Ping Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Statistika privatnosti";
 
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Novčanik Brave";
+/* Description for the Ping Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Novčanik Ping";
 

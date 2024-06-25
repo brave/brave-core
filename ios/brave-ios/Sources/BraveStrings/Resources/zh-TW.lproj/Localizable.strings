@@ -43,8 +43,8 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ShowPreviousTabTitle" = "顯示上一個分頁";
 
-/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "開啟 Brave Shields";
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Ping Shields */
+"showShieldsTitle" = "開啟 Ping Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "顯示所有分頁";

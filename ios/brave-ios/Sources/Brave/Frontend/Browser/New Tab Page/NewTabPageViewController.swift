@@ -236,7 +236,7 @@ class NewTabPageViewController: UIViewController {
       sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
     }
 
-    if !privateBrowsingManager.isPrivateBrowsing {
+    if false && !privateBrowsingManager.isPrivateBrowsing {
       sections.append(
         BraveNewsSectionProvider(
           dataSource: feedDataSource,
@@ -576,7 +576,7 @@ class NewTabPageViewController: UIViewController {
     if let background = background.currentBackground {
       switch background {
       case .image(let background):
-        if case let name = background.author, !name.isEmpty {
+        if case let name = background.author, false && !name.isEmpty {
           backgroundButtonsView.activeButton = .imageCredit(name)
         } else {
           backgroundButtonsView.activeButton = .none

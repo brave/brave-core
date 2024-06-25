@@ -261,7 +261,7 @@ extension Preferences {
 
     /// Tells the app whether we should show Privacy Hub in new tab page view controller
     public static let showNewTabPrivacyHub =
-      Option<Bool>(key: "newtabpage.show-newtab-privacyhub", default: true)
+      Option<Bool>(key: "newtabpage.show-newtab-privacyhub", default: false)
 
     /// First time when privacy hub hide action is tieggered user will be shown alert
     static let hidePrivacyHubAlertShown = Option<Bool>(

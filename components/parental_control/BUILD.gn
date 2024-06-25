@@ -1,0 +1,40 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+
+brave_grit("static_resources") {
+  source = "resources.grd"
+  outputs = [
+    "grit/parental_control_resources_map.cc",
+    "grit/parental_control_resources_map.h",
+    "grit/parental_control_resources.h",
+    "parental_control_static.pak",
+  ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "parental_control"
+  output_dir = "$root_gen_dir/brave/components/parental_control"
+
+  # Need wepack and GRD generation first
+  deps = [ "extension:generate_parental_control" ]
+}
+
+repack("resources") {
+  deps = [
+    ":generated_resources",
+    ":static_resources",
+  ]
+  sources = [
+    "$root_gen_dir/brave/components/parental_control/parental_control_generated.pak",
+    "$root_gen_dir/brave/components/parental_control/parental_control_static.pak",
+  ]
+
+  # This output repacked by brave_paks.gni
+  output = "$root_gen_dir/brave/components/parental_control/parental_control_resources.pak"
+}
