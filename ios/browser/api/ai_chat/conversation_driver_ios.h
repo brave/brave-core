@@ -61,7 +61,7 @@ class ConversationDriverIOS : public ConversationDriver,
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
   void OnAPIResponseError(ai_chat::mojom::APIError error) override;
-  void OnModelChanged(
+  void OnModelDataChanged(
       const std::string& model_key,
       const std::vector<ai_chat::mojom::ModelPtr>& model_list) override;
   void OnSuggestedQuestionsChanged(

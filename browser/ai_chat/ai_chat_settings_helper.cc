@@ -31,6 +31,21 @@ namespace ai_chat {
 
 namespace {
 constexpr char kAccountHostnamePart[] = "account";
+
+std::vector<mojom::ModelPtr> GetCustomModelsFromService(
+    ModelService* model_service) {
+  const std::vector<mojom::ModelPtr>& models = model_service->GetModels();
+
+  std::vector<mojom::ModelPtr> models_copy;
+  for (auto& model : models) {
+    if (model->options->is_custom_model_options()) {
+      models_copy.push_back(model->Clone());
+    }
+  }
+
+  return models_copy;
+}
+
 }  // namespace
 
 AIChatSettingsHelper::AIChatSettingsHelper(content::BrowserContext* context) {
@@ -66,15 +81,8 @@ void AIChatSettingsHelper::OnPremiumStatusReceived(
 
 void AIChatSettingsHelper::OnModelListUpdated() {
   if (client_page_.is_bound()) {
-    const std::vector<mojom::ModelPtr>& models = model_service_->GetModels();
-
-    std::vector<mojom::ModelPtr> models_copy;
-    for (auto& model : models) {
-      if (model->options->is_custom_model_options()) {
-        models_copy.push_back(model->Clone());
-      }
-    }
-
+    std::vector<mojom::ModelPtr> models_copy =
+        GetCustomModelsFromService(model_service_);
     client_page_->OnModelListChanged(std::move(models_copy));
   }
 }
@@ -136,15 +144,8 @@ void AIChatSettingsHelper::GetManageUrl(GetManageUrlCallback callback) {
 }
 
 void AIChatSettingsHelper::GetCustomModels(GetCustomModelsCallback callback) {
-  const std::vector<mojom::ModelPtr>& models = model_service_->GetModels();
-
-  std::vector<mojom::ModelPtr> models_copy;
-  for (auto& model : models) {
-    if (model->options->is_custom_model_options()) {
-      models_copy.push_back(model->Clone());
-    }
-  }
-
+  std::vector<mojom::ModelPtr> models_copy =
+      GetCustomModelsFromService(model_service_);
   std::move(callback).Run(std::move(models_copy));
 }
 

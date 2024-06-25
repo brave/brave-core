@@ -10,7 +10,6 @@
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
-class PrefService;
 
 namespace ai_chat::prefs {
 
