@@ -22,6 +22,8 @@
 
 namespace ai_chat {
 
+inline constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
+inline constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 namespace {
 inline constexpr char kCustomModelItemLabelKey[] = "label";
 inline constexpr char kCustomModelItemModelKey[] = "model_request_name";
@@ -216,6 +218,31 @@ ModelService::ModelService(PrefService* prefs_service)
 ModelService::~ModelService() = default;
 
 // static
+void ModelService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterListPref(kCustomModelsList, {});
+  registry->RegisterStringPref(kDefaultModelKey,
+                               features::kAIModelsDefaultKey.Get());
+}
+
+// static
+void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
+  if (ai_chat::features::IsAIChatEnabled()) {
+    profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
+
+    // migrate model key from "chat-default" to "chat-basic"
+    static const std::string kDefaultModelBasicFrom = "chat-default";
+    static const std::string kDefaultModelBasicTo = "chat-basic";
+    if (auto* default_model_value =
+            profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
+      if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
+                                           kDefaultModelBasicFrom)) {
+        profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+      }
+    }
+  }
+}
+
+// static
 const mojom::Model* ModelService::GetModelForTesting(std::string_view key) {
   const std::vector<mojom::ModelPtr>& all_models = GetLeoModels();
 
@@ -277,18 +304,17 @@ void ModelService::AddCustomModel(mojom::ModelPtr model) {
        base::Uuid::GenerateRandomV4().AsLowercaseString().substr(0, 8)});
 
   base::Value::List custom_models_pref =
-      pref_service_->GetList(prefs::kCustomModelsList).Clone();
+      pref_service_->GetList(kCustomModelsList).Clone();
   base::Value::Dict model_dict = GetModelDict(std::move(model));
   custom_models_pref.Append(std::move(model_dict));
-  pref_service_->SetList(prefs::kCustomModelsList,
-                         std::move(custom_models_pref));
+  pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
 
   InitModels();
 }
 
 void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   base::Value::List custom_models_pref =
-      pref_service_->GetList(prefs::kCustomModelsList).Clone();
+      pref_service_->GetList(kCustomModelsList).Clone();
 
   if (index >= custom_models_pref.size() || index < 0) {
     return;
@@ -308,15 +334,14 @@ void ModelService::SaveCustomModel(uint32_t index, mojom::ModelPtr model) {
   base::Value::Dict model_dict = GetModelDict(std::move(model));
   model_iter->GetDict().Merge(std::move(model_dict));
 
-  pref_service_->SetList(prefs::kCustomModelsList,
-                         std::move(custom_models_pref));
+  pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
 
   InitModels();
 }
 
 void ModelService::DeleteCustomModel(uint32_t index) {
   base::Value::List custom_models_pref =
-      pref_service_->GetList(prefs::kCustomModelsList).Clone();
+      pref_service_->GetList(kCustomModelsList).Clone();
 
   if (index >= custom_models_pref.size() || index < 0) {
     return;
@@ -326,14 +351,13 @@ void ModelService::DeleteCustomModel(uint32_t index) {
   std::string removed_key = *model->GetDict().FindString(kCustomModelItemKey);
 
   custom_models_pref.erase(model);
-  pref_service_->SetList(prefs::kCustomModelsList,
-                         std::move(custom_models_pref));
+  pref_service_->SetList(kCustomModelsList, std::move(custom_models_pref));
 
-  auto current_default_key = pref_service_->GetString(prefs::kDefaultModelKey);
+  auto current_default_key = pref_service_->GetString(kDefaultModelKey);
 
   // If the removed model is the default model, clear the default model key.
   if (current_default_key == removed_key) {
-    pref_service_->ClearPref(prefs::kDefaultModelKey);
+    pref_service_->ClearPref(kDefaultModelKey);
     DVLOG(1) << "Default model key " << removed_key
              << " was removed. Cleared default model key.";
   }
@@ -345,7 +369,7 @@ void ModelService::DeleteCustomModel(uint32_t index) {
   }
 }
 
-void ModelService::ChangeDefaultModel(const std::string& new_key) {
+void ModelService::SetDefaultModelKey(const std::string& new_key) {
   const auto& models = GetModels();
 
   bool does_model_exist = base::Contains(
@@ -357,18 +381,22 @@ void ModelService::ChangeDefaultModel(const std::string& new_key) {
     return;
   }
 
-  pref_service_->SetString(prefs::kDefaultModelKey, new_key);
+  pref_service_->SetString(kDefaultModelKey, new_key);
 
   for (auto& obs : observers_) {
     obs.OnDefaultModelChanged(new_key);
   }
 }
 
+const std::string& ModelService::GetDefaultModelKey() {
+  return pref_service_->GetString(kDefaultModelKey);
+}
+
 std::vector<mojom::ModelPtr> ModelService::GetCustomModelsFromPrefs() {
   std::vector<mojom::ModelPtr> models;
 
   const base::Value::List& custom_models_pref =
-      pref_service_->GetList(prefs::kCustomModelsList);
+      pref_service_->GetList(kCustomModelsList);
 
   for (const base::Value& item : custom_models_pref) {
     const base::Value::Dict& model_pref = item.GetDict();

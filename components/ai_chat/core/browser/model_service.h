@@ -14,7 +14,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
-
+#include "components/prefs/pref_registry_simple.h"
 namespace ai_chat {
 
 class ModelService : public KeyedService {
@@ -35,6 +35,9 @@ class ModelService : public KeyedService {
   ModelService(const ModelService&) = delete;
   ModelService& operator=(const ModelService&) = delete;
 
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  static void MigrateProfilePrefs(PrefService* profile_prefs);
+
   // All models that the user can choose for chat conversations, in UI display
   // order.
   const std::vector<ai_chat::mojom::ModelPtr>& GetModels();
@@ -43,7 +46,8 @@ class ModelService : public KeyedService {
   void AddCustomModel(mojom::ModelPtr model);
   void SaveCustomModel(uint32_t index, mojom::ModelPtr model);
   void DeleteCustomModel(uint32_t index);
-  void ChangeDefaultModel(const std::string& model_key);
+  void SetDefaultModelKey(const std::string& model_key);
+  const std::string& GetDefaultModelKey();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

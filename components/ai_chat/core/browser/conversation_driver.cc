@@ -163,9 +163,9 @@ ConversationDriver::ConversationDriver(
   // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
   // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
   // not have to fetch premium status.
-  const base::Value* default_model_user_pref_value =
-      pref_service_->GetUserPrefValue(prefs::kDefaultModelKey);
-  if (!default_model_user_pref_value &&
+  const std::string& default_model_user_pref =
+      model_service_->GetDefaultModelKey();
+  if (!default_model_user_pref.empty() &&
       features::kAIModelsPremiumDefaultKey.Get() !=
           features::kAIModelsDefaultKey.Get()) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
@@ -179,25 +179,19 @@ ConversationDriver::ConversationDriver(
           // Use default premium model for this instance
           instance->ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
           // Make sure default model reflects premium status
-          const auto* current_default =
-              instance->pref_service_
-                  ->GetDefaultPrefValue(prefs::kDefaultModelKey)
-                  ->GetIfString();
+          const auto& current_default =
+              instance->model_service_->GetDefaultModelKey();
 
-          if (current_default &&
-              *current_default != features::kAIModelsPremiumDefaultKey.Get()) {
-            instance->pref_service_->SetDefaultPrefValue(
-                prefs::kDefaultModelKey,
-                base::Value(features::kAIModelsPremiumDefaultKey.Get()));
+          if (current_default != features::kAIModelsPremiumDefaultKey.Get()) {
+            instance->model_service_->SetDefaultModelKey(
+                features::kAIModelsPremiumDefaultKey.Get());
           }
         },
         // Unretained is ok as credential manager is owned by this class,
         // and it owns the mojo binding that is used to make async call in
         // |GetPremiumStatus|.
         base::Unretained(this)));
-  } else if (default_model_user_pref_value &&
-             default_model_user_pref_value->GetString() ==
-                 "chat-claude-instant") {
+  } else if (default_model_user_pref == "chat-claude-instant") {
     // 2024-05 Migration for old "claude instant" model
     // The migration is performed here instead of
     // ai_chat::prefs::MigrateProfilePrefs because the migration requires
@@ -209,8 +203,7 @@ ConversationDriver::ConversationDriver(
           const std::string model_key = IsPremiumStatus(status)
                                             ? "chat-claude-sonnet"
                                             : "chat-claude-haiku";
-          instance->pref_service_->SetString(prefs::kDefaultModelKey,
-                                             model_key);
+          instance->model_service_->SetDefaultModelKey(model_key);
           instance->ChangeModel(model_key);
         },
         // Unretained is ok as credential manager is owned by this class,
@@ -226,7 +219,7 @@ ConversationDriver::ConversationDriver(
   // Worst-case is that this will get double initialized for premium users
   // once whenever all credentials are expired.
   if (model_key_.empty()) {
-    model_key_ = pref_service_->GetString(prefs::kDefaultModelKey);
+    model_key_ = model_service_->GetDefaultModelKey();
   }
   InitEngine();
   DCHECK(engine_);
@@ -257,7 +250,7 @@ void ConversationDriver::ChangeModel(const std::string& model_key) {
 }
 
 std::string ConversationDriver::GetDefaultModel() {
-  return pref_service_->GetString(prefs::kDefaultModelKey);
+  return model_service_->GetDefaultModelKey();
 }
 
 void ConversationDriver::SetDefaultModel(const std::string& model_key) {
@@ -270,7 +263,7 @@ void ConversationDriver::SetDefaultModel(const std::string& model_key) {
     return;
   }
 
-  pref_service_->SetString(prefs::kDefaultModelKey, model_key);
+  model_service_->SetDefaultModelKey(model_key);
 }
 
 const mojom::Model& ConversationDriver::GetCurrentModel() {
@@ -367,7 +360,7 @@ void ConversationDriver::InitEngine() {
   // Pending requests have been deleted along with the model engine
   is_request_in_progress_ = false;
   for (auto& obs : observers_) {
-    obs.OnModelChanged(model_key_, GetModels());
+    obs.OnModelDataChanged(model_key_, GetModels());
     obs.OnAPIRequestInProgress(false);
   }
 
@@ -709,7 +702,7 @@ void ConversationDriver::CleanUp() {
 
 void ConversationDriver::OnModelListUpdated() {
   for (auto& obs : observers_) {
-    obs.OnModelChanged(model_key_, GetModels());
+    obs.OnModelDataChanged(model_key_, GetModels());
   }
 }
 

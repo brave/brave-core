@@ -377,7 +377,7 @@ void AIChatUIPageHandler::OnAPIResponseError(mojom::APIError error) {
   }
 }
 
-void AIChatUIPageHandler::OnModelChanged(
+void AIChatUIPageHandler::OnModelDataChanged(
     const std::string& model_key,
     const std::vector<mojom::ModelPtr>& model_list) {
   if (page_.is_bound()) {
@@ -385,7 +385,7 @@ void AIChatUIPageHandler::OnModelChanged(
     std::transform(model_list.cbegin(), model_list.cend(), models_copy.begin(),
                    [](auto& model) { return model.Clone(); });
 
-    page_->OnModelChanged(model_key, std::move(models_copy));
+    page_->OnModelDataChanged(model_key, std::move(models_copy));
   }
 }
 

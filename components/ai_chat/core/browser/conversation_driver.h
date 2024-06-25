@@ -55,7 +55,7 @@ class ConversationDriver : public ModelService::Observer {
     virtual void OnHistoryUpdate() {}
     virtual void OnAPIRequestInProgress(bool in_progress) {}
     virtual void OnAPIResponseError(mojom::APIError error) {}
-    virtual void OnModelChanged(
+    virtual void OnModelDataChanged(
         const std::string& model_key,
         const std::vector<mojom::ModelPtr>& model_list) {}
     virtual void OnSuggestedQuestionsChanged(

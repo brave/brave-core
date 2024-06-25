@@ -360,9 +360,9 @@ function DataContextProvider(props: DataContextProviderProps) {
     )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
 
-    getPageHandlerInstance().callbackRouter.onModelChanged.addListener((modelKey: string, modelList: mojom.Model[]) => {
+    getPageHandlerInstance().callbackRouter.onModelDataChanged.addListener((conversationModelKey: string, modelList: mojom.Model[]) => {
       setAllModels(modelList)
-      setCurrentModelKey(modelKey)
+      setCurrentModelKey(conversationModelKey)
     })
 
     // Since there is no server-side event for premium status changing,

@@ -272,8 +272,8 @@ interface ChatUIPage {
   OnAPIResponseError(APIError error);
   // Usually the model is changed from the UI client, but occassionally
   // it could be changed from the browser.
-  // Occassionally, when the browser changes the model, it will also provide a new list of models.
-  OnModelChanged(string model_key, array<Model> models);
+  // When the browser changes the model, it will also provide a new list of models.
+  OnModelDataChanged(string conversation_model_key, array<Model> all_models);
   // Provides the full list of questions for the active tab in the page's
   // Browser window.
   OnSuggestedQuestionsChanged(

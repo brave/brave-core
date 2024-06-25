@@ -27,6 +27,10 @@ function getIntroMessage(model: mojom.Model) {
   return getLocale(key)
 }
 
+function isLeoModel(model: mojom.Model) {
+  return model.options.leoModelOptions !== undefined
+}
+
 export default function ModelIntro() {
   const context = React.useContext(DataContext)
 
@@ -43,20 +47,20 @@ export default function ModelIntro() {
       </div>
       <div className={styles.meta}>
         <h4 className={styles.category}>
-          {model.options.leoModelOptions
-            ? getCategoryName(model.options.leoModelOptions.category)
+          {isLeoModel(model)
+            ? getCategoryName(model.options.leoModelOptions!.category)
             : model.displayName}
         </h4>
         <h3 className={styles.name}>
-          {model.options.leoModelOptions
+          {isLeoModel(model)
             ? formatMessage(getLocale('modelNameSyntax'), {
                 placeholders: {
                   $1: model.displayName,
-                  $2: model.options.leoModelOptions.displayMaker
+                  $2: model.options.leoModelOptions!.displayMaker
                 }
               })
             : `${model.options.customModelOptions?.modelRequestName}`}
-          {model.options.leoModelOptions && (
+          {isLeoModel(model) && (
             <Tooltip
               mode='default'
               className={styles.tooltip}

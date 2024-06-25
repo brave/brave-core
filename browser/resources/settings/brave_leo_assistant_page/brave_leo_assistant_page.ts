@@ -7,7 +7,6 @@ import '//resources/cr_elements/md_select.css.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {CrSettingsPrefs} from '/shared/settings/prefs/prefs_types.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
 import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess, Model}
@@ -15,8 +14,6 @@ import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, Premiu
 import 'chrome://resources/brave/leo.bundle.js'
 import { Router } from '../router.js';
 import {routes} from '../route.js';
-
-const MODEL_PREF_PATH = 'brave.ai_chat.default_model_key'
 
 const BraveLeoAssistantPageBase =
   WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
@@ -87,9 +84,9 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           this.manageUrl_ = value.url
         })
 
-      CrSettingsPrefs.initialized
-        .then(() => {
-          this.defaultModelKeyPrefValue_ = this.getPref(MODEL_PREF_PATH).value
+      this.browserProxy_.getSettingsHelper().getDefaultModel()
+        .then((value: { key: string }) => {
+          this.defaultModelKeyPrefValue_ = value.key
         })
 
       this.browserProxy_
@@ -136,11 +133,11 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
         }
       )
 
-      return foundEntry.model.displayName
+      return foundEntry?.model.displayName
     }
 
     onModelSelectionChange_(e: any) {
-      this.browserProxy_.getSettingsHelper().changeDefaultModel(e.value)
+      this.browserProxy_.getSettingsHelper().setDefaultModel(e.value)
     }
 
     private updateShowLeoAssistantIcon_() {

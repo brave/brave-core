@@ -47,7 +47,8 @@ class AIChatSettingsHelper : public mojom::AIChatSettingsHelper,
                        mojom::ModelPtr model,
                        SaveCustomModelCallback callback) override;
   void DeleteCustomModel(uint32_t index) override;
-  void ChangeDefaultModel(const std::string& model_key) override;
+  void SetDefaultModel(const std::string& model_key) override;
+  void GetDefaultModel(GetDefaultModelCallback callback) override;
   void SetClientPage(mojo::PendingRemote<mojom::SettingsPage> page) override;
 
   void BindInterface(

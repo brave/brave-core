@@ -166,9 +166,8 @@ class ConversationDriverUnitTest : public testing::Test {
 
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
-    if (!default_model_key_.empty()) {
-      prefs_.SetString(prefs::kDefaultModelKey, default_model_key_);
-    }
+    ModelService::RegisterProfilePrefs(prefs_.registry());
+
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
@@ -187,6 +186,10 @@ class ConversationDriverUnitTest : public testing::Test {
             });
 
     service_ = std::make_unique<ModelService>(&prefs_);
+
+    if (!default_model_key_.empty()) {
+      service_->SetDefaultModelKey(default_model_key_);
+    }
 
     conversation_driver_ = std::make_unique<MockConversationDriver>(
         &prefs_, &local_state_, service_.get(), nullptr,
