@@ -70,8 +70,17 @@ public class PlaylistManager: NSObject {
     downloadManager.delegate = self
     frc.delegate = self
 
-    // Delete system cache always on startup.
-    deleteUserManagedAssets()
+    let sevenDays =
+      Preferences.Playlist.lastCacheDataCleanupDate.value?.addingTimeInterval(7.days) ?? Date.now
+    if Date.now >= sevenDays {
+      Preferences.Playlist.lastCacheDataCleanupDate.value = Date.now
+
+      // Delete system cache always on startup.
+      deleteUserManagedAssets()
+
+      // Delete dangling cache always on startup.
+      deleteDanglingManagedAssets()
+    }
   }
 
   public var currentFolder: PlaylistFolder? {
@@ -502,8 +511,17 @@ public class PlaylistManager: NSObject {
       }
     }
 
-    // Delete system cache
-    deleteUserManagedAssets()
+    let sevenDays =
+      Preferences.Playlist.lastCacheDataCleanupDate.value?.addingTimeInterval(7.days) ?? Date.now
+    if Date.now >= sevenDays {
+      Preferences.Playlist.lastCacheDataCleanupDate.value = Date.now
+
+      // Delete system cache always on startup.
+      deleteUserManagedAssets()
+
+      // Delete dangling cache always on startup.
+      deleteDanglingManagedAssets()
+    }
   }
 
   private func deleteUserManagedAssets() {
@@ -547,6 +565,44 @@ public class PlaylistManager: NSObject {
         Logger.module.error(
           "Deleting Playlist Incomplete Items failed: \(error.localizedDescription)"
         )
+      }
+    }
+  }
+
+  private func deleteDanglingManagedAssets() {
+    if let playlistFolderPath = PlaylistDownloadManager.playlistDirectory {
+      let items = PlaylistItem.all().compactMap(\.cachedData)
+      Task.detached {
+        let cachedURLs = items.compactMap { cachedData in
+          var isStale: Bool = false
+          if let url = try? URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale) {
+            return url
+          }
+          return nil
+        }
+        do {
+          let urls = try FileManager.default.contentsOfDirectory(
+            at: playlistFolderPath,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+          )
+          for url in urls {
+            do {
+              // Playlist doesn't contain such an offline item, so it's dangling somehow and should be deleted.
+              if !cachedURLs.contains(where: { $0.path == url.path }) {
+                try FileManager.default.removeItem(at: url)
+              }
+            } catch {
+              Logger.module.error(
+                "Deleting Dangling Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
+              )
+            }
+          }
+        } catch {
+          Logger.module.error(
+            "Deleting Dangling Playlist Incomplete Items failed: \(error.localizedDescription)"
+          )
+        }
       }
     }
   }

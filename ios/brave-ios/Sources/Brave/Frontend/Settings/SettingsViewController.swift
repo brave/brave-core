@@ -1138,6 +1138,15 @@ class SettingsViewController: TableViewController {
           cellClass: MultilineValue1Cell.self
         ),
         Row(
+          text: "Playlist Debug",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: PlaylistDebugView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "StoreKit Receipt Viewer",
           selection: { [unowned self] in
             let controller = UIHostingController(rootView: StoreKitReceiptView())
