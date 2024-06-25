@@ -17,9 +17,9 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -387,7 +387,7 @@ void ToggleShieldsEnabled(Browser* browser) {
     return;
   }
   auto* shields =
-      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
   if (!shields) {
     return;
   }
@@ -405,7 +405,7 @@ void ToggleJavascriptEnabled(Browser* browser) {
     return;
   }
   auto* shields =
-      brave_shields::BraveShieldsDataController::FromWebContents(contents);
+      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
   if (!shields) {
     return;
   }
