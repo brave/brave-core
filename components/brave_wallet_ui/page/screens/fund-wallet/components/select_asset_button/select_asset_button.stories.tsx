@@ -1,0 +1,27 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { SelectAssetButton } from './select_asset_button'
+import WalletPageStory from '../../../../../stories/wrappers/wallet-page-story-wrapper'
+import { mockMeldCryptoCurrencies } from '../../../../../common/constants/mocks'
+
+export const _SelectAssetButton = () => {
+  return (
+    <WalletPageStory>
+      <SelectAssetButton
+        labelText='Asset'
+        selectedAsset={mockMeldCryptoCurrencies[0]}
+        onClick={() => console.log('Open asset selection modal')}
+      />
+    </WalletPageStory>
+  )
+}
+
+_SelectAssetButton.story = {
+  name: 'Fund Wallet - Select Asset Button'
+}
+
+export default _SelectAssetButton
