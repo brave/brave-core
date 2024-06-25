@@ -110,13 +110,13 @@ void AdHandler::TriggerInlineContentAdEvent(
 }
 
 void AdHandler::TriggerSearchResultAdEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK(ad_mojom);
+  CHECK(mojom_creative_ad);
 
-  search_result_ad_handler_.TriggerEvent(std::move(ad_mojom), event_type,
-                                         std::move(callback));
+  search_result_ad_handler_.TriggerEvent(std::move(mojom_creative_ad),
+                                         event_type, std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

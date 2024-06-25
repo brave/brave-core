@@ -104,7 +104,7 @@ CreativeSetConversionInfo GetFromRecord(mojom::DBRecordInfo* const record) {
   return creative_set_conversion;
 }
 
-void GetCallback(GetConversionsCallback callback,
+void GetCallback(GetCreativeSetConversionsCallback callback,
                  mojom::DBCommandResponseInfoPtr command_response) {
   if (!command_response ||
       command_response->status !=
@@ -325,7 +325,7 @@ void CreativeSetConversions::Save(
 }
 
 void CreativeSetConversions::GetUnexpired(
-    GetConversionsCallback callback) const {
+    GetCreativeSetConversionsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;

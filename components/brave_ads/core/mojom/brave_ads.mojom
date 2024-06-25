@@ -98,7 +98,7 @@ enum InlineContentAdEventType {
   kClicked
 };
 
-struct SearchResultAdInfo {
+struct CreativeSearchResultAdInfo {
   AdType type = kSearchResultAd;
   string placement_id;
   string creative_instance_id;

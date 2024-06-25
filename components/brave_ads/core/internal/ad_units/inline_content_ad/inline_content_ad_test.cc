@@ -46,7 +46,7 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  void TriggerInlineContentAdEvent(
+  void TriggerInlineContentAdEventAndVerifiyExpectations(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type,
@@ -55,17 +55,6 @@ class BraveAdsInlineContentAdIntegrationTest : public UnitTestBase {
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
     GetAds().TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                          event_type, callback.Get());
-  }
-
-  void TriggerInlineContentAdEvents(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const std::vector<mojom::InlineContentAdEventType>& event_types,
-      const bool should_fire_event) {
-    for (const auto& event_type : event_types) {
-      TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                  event_type, should_fire_event);
-    }
   }
 };
 
@@ -121,7 +110,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerInlineContentAdEvent(
+        TriggerInlineContentAdEventAndVerifiyExpectations(
             ad->placement_id, ad->creative_instance_id,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/true);
@@ -142,15 +131,16 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
-        TriggerInlineContentAdEvent(
+        TriggerInlineContentAdEventAndVerifiyExpectations(
             ad->placement_id, ad->creative_instance_id,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/true);
 
         // Act & Assert
-        TriggerInlineContentAdEvent(ad->placement_id, ad->creative_instance_id,
-                                    mojom::InlineContentAdEventType::kClicked,
-                                    /*should_fire_event=*/true);
+        TriggerInlineContentAdEventAndVerifiyExpectations(
+            ad->placement_id, ad->creative_instance_id,
+            mojom::InlineContentAdEventType::kClicked,
+            /*should_fire_event=*/true);
       });
 
   GetAds().MaybeServeInlineContentAd(kDimensions, callback.Get());
@@ -170,7 +160,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerInlineContentAdEvent(
+        TriggerInlineContentAdEventAndVerifiyExpectations(
             ad->placement_id, kInvalidCreativeInstanceId,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/false);

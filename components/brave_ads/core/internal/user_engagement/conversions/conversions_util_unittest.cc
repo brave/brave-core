@@ -22,7 +22,7 @@ class BraveAdsConversionsUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionsUtilTest, CanConvertInlineContentAdViewedEvent) {
   // Arrange
   const AdInfo ad =
-      test::BuildAd(AdType::kInlineContentAd, /*should_use_random_uuids=*/
+      test::BuildAd(AdType::kInlineContentAd, /*should_generate_random_uuids=*/
                     true);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
@@ -34,7 +34,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertInlineContentAdViewedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CanConvertInlineContentAdClickedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kInlineContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
 
@@ -45,7 +45,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertInlineContentAdClickedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CannotConvertInlineContentAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kInlineContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
 
@@ -59,7 +59,7 @@ TEST_F(BraveAdsConversionsUtilTest,
   test::OptOutOfBraveNewsAds();
 
   const AdInfo ad = test::BuildAd(AdType::kInlineContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -70,7 +70,7 @@ TEST_F(BraveAdsConversionsUtilTest,
 TEST_F(BraveAdsConversionsUtilTest, CanConvertPromotedContentAdViewedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kPromotedContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -81,7 +81,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertPromotedContentAdViewedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CanConvertPromotedContentAdClickedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kPromotedContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
 
@@ -92,7 +92,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertPromotedContentAdClickedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CannotConvertPromotedContentAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kPromotedContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
 
@@ -106,7 +106,7 @@ TEST_F(BraveAdsConversionsUtilTest,
   test::OptOutOfBraveNewsAds();
 
   const AdInfo ad = test::BuildAd(AdType::kPromotedContentAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -117,7 +117,7 @@ TEST_F(BraveAdsConversionsUtilTest,
 TEST_F(BraveAdsConversionsUtilTest, CanConvertNotificationAdViewedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -128,7 +128,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertNotificationAdViewedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CanConvertNotificationAdClickedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
 
@@ -139,7 +139,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertNotificationAdClickedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CannotConvertNotificationAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
 
@@ -153,7 +153,7 @@ TEST_F(BraveAdsConversionsUtilTest,
   test::OptOutOfNotificationAds();
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -164,7 +164,7 @@ TEST_F(BraveAdsConversionsUtilTest,
 TEST_F(BraveAdsConversionsUtilTest, CanConvertNewTabPageAdViewedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -175,7 +175,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertNewTabPageAdViewedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CanConvertNewTabPageAdClickedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
 
@@ -186,7 +186,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertNewTabPageAdClickedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CannotConvertNewTabPageAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
 
@@ -200,7 +200,7 @@ TEST_F(BraveAdsConversionsUtilTest,
   test::OptOutOfNewTabPageAds();
 
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -211,7 +211,7 @@ TEST_F(BraveAdsConversionsUtilTest,
 TEST_F(BraveAdsConversionsUtilTest, CanConvertSearchResultAdViewedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kSearchResultAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -222,7 +222,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertSearchResultAdViewedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CanConvertSearchResultAdClickedEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kSearchResultAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
 
@@ -233,7 +233,7 @@ TEST_F(BraveAdsConversionsUtilTest, CanConvertSearchResultAdClickedEvent) {
 TEST_F(BraveAdsConversionsUtilTest, CannotConvertSearchResultAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kSearchResultAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
 
@@ -249,7 +249,7 @@ TEST_F(BraveAdsConversionsUtilTest,
   test::OptOutOfNewTabPageAds();
 
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -260,7 +260,7 @@ TEST_F(BraveAdsConversionsUtilTest,
 TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventExpired) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 
@@ -274,7 +274,7 @@ TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventExpired) {
 TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventNotExpired) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
 

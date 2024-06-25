@@ -1717,7 +1717,8 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       }));
 }
 
-- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
+- (void)triggerSearchResultAdEvent:
+            (BraveAdsCreativeSearchResultAdInfo*)searchResultAd
                          eventType:(BraveAdsSearchResultAdEventType)eventType
                         completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning] || !searchResultAd) {

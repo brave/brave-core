@@ -196,46 +196,47 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
   }
 
   bool CheckSampleSearchAdMetadata(
-      const mojom::SearchResultAdInfoPtr& search_result_ad,
+      const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
       size_t ad_index) {
-    EXPECT_TRUE(search_result_ad);
+    EXPECT_TRUE(mojom_creative_ad);
 
     const std::string index =
         base::StrCat({"-", base::NumberToString(ad_index)});
-    if (search_result_ad->placement_id !=
+    if (mojom_creative_ad->placement_id !=
         base::StrCat({"data-placement-id", index})) {
       return false;
     }
 
-    EXPECT_EQ(search_result_ad->creative_instance_id,
+    EXPECT_EQ(mojom_creative_ad->creative_instance_id,
               base::StrCat({"data-creative-instance-id", index}));
-    EXPECT_EQ(search_result_ad->creative_set_id,
+    EXPECT_EQ(mojom_creative_ad->creative_set_id,
               base::StrCat({"data-creative-set-id", index}));
-    EXPECT_EQ(search_result_ad->campaign_id,
+    EXPECT_EQ(mojom_creative_ad->campaign_id,
               base::StrCat({"data-campaign-id", index}));
-    EXPECT_EQ(search_result_ad->advertiser_id,
+    EXPECT_EQ(mojom_creative_ad->advertiser_id,
               base::StrCat({"data-advertiser-id", index}));
-    EXPECT_EQ(search_result_ad->target_url,
+    EXPECT_EQ(mojom_creative_ad->target_url,
               GURL(base::StrCat({"https://foo.com/page", index})));
-    EXPECT_EQ(search_result_ad->headline_text,
+    EXPECT_EQ(mojom_creative_ad->headline_text,
               base::StrCat({"data-headline-text", index}));
-    EXPECT_EQ(search_result_ad->description,
+    EXPECT_EQ(mojom_creative_ad->description,
               base::StrCat({"data-description", index}));
-    EXPECT_DOUBLE_EQ(search_result_ad->value, 0.5 + ad_index);
+    EXPECT_DOUBLE_EQ(mojom_creative_ad->value, 0.5 + ad_index);
 
-    EXPECT_TRUE(search_result_ad->conversion);
-    EXPECT_EQ(search_result_ad->conversion->url_pattern,
+    EXPECT_TRUE(mojom_creative_ad->conversion);
+    EXPECT_EQ(mojom_creative_ad->conversion->url_pattern,
               base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {
-      EXPECT_FALSE(search_result_ad->conversion
+      EXPECT_FALSE(mojom_creative_ad->conversion
                        ->verifiable_advertiser_public_key_base64);
     } else {
       EXPECT_EQ(
-          search_result_ad->conversion->verifiable_advertiser_public_key_base64,
+          mojom_creative_ad->conversion
+              ->verifiable_advertiser_public_key_base64,
           base::StrCat({"data-conversion-advertiser-public-key-value", index}));
     }
     EXPECT_EQ(static_cast<size_t>(
-                  search_result_ad->conversion->observation_window.InDays()),
+                  mojom_creative_ad->conversion->observation_window.InDays()),
               ad_index);
 
     return true;
@@ -249,22 +250,23 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
                 TriggerSearchResultAdEvent(
                     _, mojom::SearchResultAdEventType::kViewedImpression, _))
         .Times(2)
-        .WillRepeatedly([this, &run_loop1, &run_loop2](
-                            mojom::SearchResultAdInfoPtr ad_mojom,
-                            const mojom::SearchResultAdEventType event_type,
-                            TriggerAdEventCallback callback) {
-          const bool is_search_result_ad_1 =
-              CheckSampleSearchAdMetadata(ad_mojom, 1);
-          const bool is_search_result_ad_2 =
-              CheckSampleSearchAdMetadata(ad_mojom, 2);
-          EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
+        .WillRepeatedly(
+            [this, &run_loop1, &run_loop2](
+                mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                const mojom::SearchResultAdEventType event_type,
+                TriggerAdEventCallback callback) {
+              const bool is_search_result_ad_1 =
+                  CheckSampleSearchAdMetadata(mojom_creative_ad, 1);
+              const bool is_search_result_ad_2 =
+                  CheckSampleSearchAdMetadata(mojom_creative_ad, 2);
+              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
 
-          if (is_search_result_ad_1) {
-            run_loop1->Quit();
-          } else if (is_search_result_ad_2) {
-            run_loop2->Quit();
-          }
-        });
+              if (is_search_result_ad_1) {
+                run_loop1->Quit();
+              } else if (is_search_result_ad_2) {
+                run_loop2->Quit();
+              }
+            });
 
     EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
@@ -290,14 +292,14 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce(
-          [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
-                            const mojom::SearchResultAdEventType event_type,
-                            TriggerAdEventCallback callback) {
-            EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
-            CheckSampleSearchAdMetadata(ad_mojom, 1);
-            run_loop.Quit();
-          });
+      .WillOnce([this, &run_loop](
+                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                    const mojom::SearchResultAdEventType event_type,
+                    TriggerAdEventCallback callback) {
+        EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
+        CheckSampleSearchAdMetadata(mojom_creative_ad, 1);
+        run_loop.Quit();
+      });
 
   EXPECT_TRUE(content::ExecJs(web_contents,
                               "document.getElementById('ad_link_1').click();"));
@@ -314,14 +316,14 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce(
-          [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
-                            const mojom::SearchResultAdEventType event_type,
-                            TriggerAdEventCallback callback) {
-            EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
-            CheckSampleSearchAdMetadata(ad_mojom, 2);
-            run_loop.Quit();
-          });
+      .WillOnce([this, &run_loop](
+                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                    const mojom::SearchResultAdEventType event_type,
+                    TriggerAdEventCallback callback) {
+        EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
+        CheckSampleSearchAdMetadata(mojom_creative_ad, 2);
+        run_loop.Quit();
+      });
 
   EXPECT_TRUE(content::ExecJs(web_contents,
                               "document.getElementById('ad_link_2').click();"));

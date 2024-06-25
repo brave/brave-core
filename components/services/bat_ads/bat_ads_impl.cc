@@ -193,12 +193,12 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
-    brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
+    brave_ads::mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const brave_ads::mojom::SearchResultAdEventType event_type,
     TriggerSearchResultAdEventCallback callback) {
   DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
-  GetAds()->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type,
+  GetAds()->TriggerSearchResultAdEvent(std::move(mojom_creative_ad), event_type,
                                        std::move(callback));
 }
 

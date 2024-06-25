@@ -27,7 +27,7 @@ Confirmations::Confirmations(TokenGeneratorInterface* const token_generator)
     : token_generator_(token_generator) {
   CHECK(token_generator_);
 
-  queue_.SetDelegate(this);
+  confirmation_queue_.SetDelegate(this);
 }
 
 Confirmations::~Confirmations() {
@@ -58,7 +58,7 @@ void Confirmations::Confirm(const TransactionInfo& transaction,
     return BLOG(0, "Failed to build confirmation");
   }
 
-  queue_.Add(*confirmation);
+  confirmation_queue_.Add(*confirmation);
 }
 
 void Confirmations::NotifyDidConfirm(

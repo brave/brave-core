@@ -33,7 +33,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
@@ -56,7 +57,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);
@@ -70,7 +72,8 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict user_data = BuildRotatingHashUserData(transaction);

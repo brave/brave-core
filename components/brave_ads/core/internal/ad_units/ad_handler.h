@@ -72,9 +72,10 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::PromotedContentAdEventType event_type,
       TriggerAdEventCallback callback);
 
-  void TriggerSearchResultAdEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  mojom::SearchResultAdEventType event_type,
-                                  TriggerAdEventCallback callback);
+  void TriggerSearchResultAdEvent(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      mojom::SearchResultAdEventType event_type,
+      TriggerAdEventCallback callback);
 
  private:
   // ConversionsObserver:

@@ -82,6 +82,7 @@ AdsTabHelper::~AdsTabHelper() {
 
 void AdsTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
   CHECK_IS_TEST();
+
   ads_service_ = ads_service;
 }
 

@@ -92,7 +92,7 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
   base::Value::List list;
 
   for (const auto& payment_token : payment_tokens_) {
-    const std::optional<base::Value::Dict> credential =
+    std::optional<base::Value::Dict> credential =
         cbr::BuildCredential(payment_token.unblinded_token, payload);
     if (!credential) {
       continue;
@@ -105,7 +105,7 @@ base::Value::List RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
     list.Append(
         base::Value::Dict()
             .Set("confirmationType", ToString(payment_token.confirmation_type))
-            .Set("credential", credential->Clone())
+            .Set("credential", std::move(*credential))
             .Set("publicKey", *public_key_base64));
   }
 

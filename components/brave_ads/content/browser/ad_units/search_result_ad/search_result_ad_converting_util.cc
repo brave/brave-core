@@ -20,13 +20,14 @@
 
 namespace brave_ads {
 
-using SearchResultAdMap =
-    base::flat_map</*placement_id*/ std::string, mojom::SearchResultAdInfoPtr>;
+using CreativeSearchResultAdMap =
+    base::flat_map</*placement_id*/ std::string,
+                   mojom::CreativeSearchResultAdInfoPtr>;
 
 namespace {
 
 constexpr char kProductType[] = "Product";
-constexpr char kSearchResultAdType[] = "SearchResultAd";
+constexpr char kCreativeSearchResultAdType[] = "SearchResultAd";
 
 constexpr char kCreativesPropertyName[] = "creatives";
 
@@ -164,50 +165,54 @@ bool GetUrlValue(const schema_org::mojom::PropertyPtr& ad_property,
   return true;
 }
 
-bool SetSearchAdProperty(const schema_org::mojom::PropertyPtr& ad_property,
-                         mojom::SearchResultAdInfo* search_result_ad) {
+bool SetCreativeSearchAdProperty(
+    const schema_org::mojom::PropertyPtr& ad_property,
+    mojom::CreativeSearchResultAdInfo* creative_search_result_ad) {
   CHECK(ad_property);
-  CHECK(search_result_ad);
+  CHECK(creative_search_result_ad);
 
   const std::string& name = ad_property->name;
   if (name == kDataPlacementId) {
-    return GetNotEmptyStringValue(ad_property, &search_result_ad->placement_id);
+    return GetNotEmptyStringValue(ad_property,
+                                  &creative_search_result_ad->placement_id);
   }
 
   if (name == kDataCreativeInstanceId) {
-    return GetNotEmptyStringValue(ad_property,
-                                  &search_result_ad->creative_instance_id);
+    return GetNotEmptyStringValue(
+        ad_property, &creative_search_result_ad->creative_instance_id);
   }
 
   if (name == kDataCreativeSetId) {
     return GetNotEmptyStringValue(ad_property,
-                                  &search_result_ad->creative_set_id);
+                                  &creative_search_result_ad->creative_set_id);
   }
 
   if (name == kDataCampaignId) {
-    return GetNotEmptyStringValue(ad_property, &search_result_ad->campaign_id);
+    return GetNotEmptyStringValue(ad_property,
+                                  &creative_search_result_ad->campaign_id);
   }
 
   if (name == kDataAdvertiserId) {
     return GetNotEmptyStringValue(ad_property,
-                                  &search_result_ad->advertiser_id);
+                                  &creative_search_result_ad->advertiser_id);
   }
 
   if (name == kDataLandingPage) {
-    return GetUrlValue(ad_property, &search_result_ad->target_url);
+    return GetUrlValue(ad_property, &creative_search_result_ad->target_url);
   }
 
   if (name == kDataHeadlineText) {
     return GetNotEmptyStringValue(ad_property,
-                                  &search_result_ad->headline_text);
+                                  &creative_search_result_ad->headline_text);
   }
 
   if (name == kDataDescription) {
-    return GetNotEmptyStringValue(ad_property, &search_result_ad->description);
+    return GetNotEmptyStringValue(ad_property,
+                                  &creative_search_result_ad->description);
   }
 
   if (name == kDataRewardsValue) {
-    return GetDoubleValue(ad_property, &search_result_ad->value);
+    return GetDoubleValue(ad_property, &creative_search_result_ad->value);
   }
 
   NOTREACHED_NORETURN();
@@ -249,17 +254,18 @@ bool SetConversionProperty(const schema_org::mojom::PropertyPtr& ad_property,
   NOTREACHED_NORETURN();
 }
 
-void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
-                                   SearchResultAdMap* search_result_ads) {
-  CHECK(search_result_ads);
+void ConvertEntityToCreativeSearchResultAd(
+    const schema_org::mojom::EntityPtr& entity,
+    CreativeSearchResultAdMap* creative_search_result_ads) {
+  CHECK(creative_search_result_ads);
 
-  // Wrong search result ad type specified.
-  if (!entity || entity->type != kSearchResultAdType) {
+  // Wrong creative search result ad type specified.
+  if (!entity || entity->type != kCreativeSearchResultAdType) {
     return;
   }
 
-  mojom::SearchResultAdInfoPtr search_result_ad =
-      mojom::SearchResultAdInfo::New();
+  mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad =
+      mojom::CreativeSearchResultAdInfo::New();
   mojom::ConversionInfoPtr conversion = mojom::ConversionInfo::New();
 
   base::flat_set<std::string_view> found_attributes;
@@ -271,14 +277,17 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
 
     const std::string_view property_name = ad_property->name;
     if (base::Contains(kSearchResultAdRequiredAttributes, property_name)) {
-      if (!SetSearchAdProperty(ad_property, search_result_ad.get())) {
-        return VLOG(6) << "Cannot read search result ad attribute value: "
+      if (!SetCreativeSearchAdProperty(ad_property,
+                                       creative_search_result_ad.get())) {
+        return VLOG(6) << "Invalid creative search result ad attribute value "
+                          "for property name: "
                        << property_name;
       }
       found_attributes.insert(property_name);
     } else if (base::Contains(kAllConversionAttributes, property_name)) {
       if (!SetConversionProperty(ad_property, conversion.get())) {
-        return VLOG(6) << "Cannot read search result ad attribute value: "
+        return VLOG(6) << "Failed to set creative search result ad attribute "
+                          "value for property name: "
                        << property_name;
       }
       found_conversion_attributes.insert(property_name);
@@ -293,8 +302,9 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
 
   // Not all of required attributes were specified.
   if (!absent_attributes.empty()) {
-    return VLOG(6) << "Some of search result ad attributes were not specified: "
-                   << base::JoinString(absent_attributes, ", ");
+    return VLOG(6)
+           << base::JoinString(absent_attributes, ", ")
+           << " creative search result ad required attributes are missing";
   }
 
   if (!found_conversion_attributes.empty()) {
@@ -307,25 +317,25 @@ void ConvertEntityToSearchResultAd(const schema_org::mojom::EntityPtr& entity,
         std::back_inserter(absent_conversion_attributes));
     // Check if all of conversion attributes were specified.
     if (absent_conversion_attributes.empty()) {
-      search_result_ad->conversion = std::move(conversion);
+      creative_search_result_ad->conversion = std::move(conversion);
     } else {
-      VLOG(6) << "Some of search result ad conversion attributes were not "
-                 "specified: "
-              << base::JoinString(absent_conversion_attributes, ", ");
+      VLOG(6) << base::JoinString(absent_conversion_attributes, ", ")
+              << " creative search result ad conversion required "
+                 "attributes are missing";
     }
   }
 
-  std::string placement_id = search_result_ad->placement_id;
+  std::string placement_id = creative_search_result_ad->placement_id;
   if (placement_id.empty()) {
     return;
   }
-  search_result_ads->emplace(std::move(placement_id),
-                             std::move(search_result_ad));
+  creative_search_result_ads->emplace(std::move(placement_id),
+                                      std::move(creative_search_result_ad));
 }
 
 void ConvertWebPageEntityProperty(
     const schema_org::mojom::PropertyPtr& property,
-    SearchResultAdMap* search_result_ads) {
+    CreativeSearchResultAdMap* creative_search_result_ads) {
   if (!property || property->name != kCreativesPropertyName) {
     return;
   }
@@ -336,48 +346,54 @@ void ConvertWebPageEntityProperty(
   }
 
   for (const auto& entity : values->get_entity_values()) {
-    ConvertEntityToSearchResultAd(entity, search_result_ads);
+    ConvertEntityToCreativeSearchResultAd(entity, creative_search_result_ads);
   }
 }
 
-void LogSearchResultAdMap(const SearchResultAdMap& search_result_ads) {
+void LogCreativeSearchResultAdMap(
+    const CreativeSearchResultAdMap& creative_search_result_ads) {
   if (!VLOG_IS_ON(6)) {
     return;
   }
 
-  for (const auto& [placement_id, search_result_ad] : search_result_ads) {
-    VLOG(6) << "A search result ad was delivered:\n  \"" << kDataPlacementId
-            << "\": " << search_result_ad->placement_id << "\n  \""
+  for (const auto& [placement_id, creative_search_result_ad] :
+       creative_search_result_ads) {
+    VLOG(6) << "Creative search result ad attributes:\n  \"" << kDataPlacementId
+            << "\": " << creative_search_result_ad->placement_id << "\n  \""
             << kDataCreativeInstanceId
-            << "\": " << search_result_ad->creative_instance_id << "\n  \""
-            << kDataCreativeSetId << "\": " << search_result_ad->creative_set_id
-            << "\n  \"" << kDataCampaignId
-            << "\": " << search_result_ad->campaign_id << "\n  \""
-            << kDataAdvertiserId << "\": " << search_result_ad->advertiser_id
-            << "\n  \"" << kDataLandingPage
-            << "\": " << search_result_ad->target_url << "\n  \""
-            << kDataHeadlineText << "\": " << search_result_ad->headline_text
-            << "\n  \"" << kDataDescription
-            << "\": " << search_result_ad->description << "\n  \""
-            << kDataRewardsValue << "\": " << search_result_ad->value;
-    if (search_result_ad->conversion) {
-      VLOG(6) << "Conversion attributes:\n  \""
+            << "\": " << creative_search_result_ad->creative_instance_id
+            << "\n  \"" << kDataCreativeSetId
+            << "\": " << creative_search_result_ad->creative_set_id << "\n  \""
+            << kDataCampaignId
+            << "\": " << creative_search_result_ad->campaign_id << "\n  \""
+            << kDataAdvertiserId
+            << "\": " << creative_search_result_ad->advertiser_id << "\n  \""
+            << kDataLandingPage
+            << "\": " << creative_search_result_ad->target_url << "\n  \""
+            << kDataHeadlineText
+            << "\": " << creative_search_result_ad->headline_text << "\n  \""
+            << kDataDescription
+            << "\": " << creative_search_result_ad->description << "\n  \""
+            << kDataRewardsValue << "\": " << creative_search_result_ad->value;
+
+    if (creative_search_result_ad->conversion) {
+      VLOG(6) << "Creative search result ad conversion attributes:\n  \""
               << kDataConversionUrlPatternValue
-              << "\": " << search_result_ad->conversion->url_pattern << "\n  \""
-              << kDataConversionAdvertiserPublicKeyValue << "\": "
-              << search_result_ad->conversion
+              << "\": " << creative_search_result_ad->conversion->url_pattern
+              << "\n  \"" << kDataConversionAdvertiserPublicKeyValue << "\": "
+              << creative_search_result_ad->conversion
                      ->verifiable_advertiser_public_key_base64.value_or("")
-              << "\n  \"" << kDataConversionObservationWindowValue
-              << "\": " << search_result_ad->conversion->observation_window;
+              << "\n  \"" << kDataConversionObservationWindowValue << "\": "
+              << creative_search_result_ad->conversion->observation_window;
     }
   }
 }
 
 }  // namespace
 
-SearchResultAdMap ConvertWebPageEntitiesToSearchResultAds(
+CreativeSearchResultAdMap ConvertWebPageEntitiesToCreativeSearchResultAds(
     const std::vector<::schema_org::mojom::EntityPtr>& web_page_entities) {
-  SearchResultAdMap search_result_ads;
+  CreativeSearchResultAdMap creative_search_result_ad;
 
   for (const auto& entity : web_page_entities) {
     if (!entity || entity->type != kProductType) {
@@ -385,12 +401,12 @@ SearchResultAdMap ConvertWebPageEntitiesToSearchResultAds(
     }
 
     for (const auto& property : entity->properties) {
-      ConvertWebPageEntityProperty(property, &search_result_ads);
+      ConvertWebPageEntityProperty(property, &creative_search_result_ad);
     }
   }
 
-  LogSearchResultAdMap(search_result_ads);
-  return search_result_ads;
+  LogCreativeSearchResultAdMap(creative_search_result_ad);
+  return creative_search_result_ad;
 }
 
 }  // namespace brave_ads

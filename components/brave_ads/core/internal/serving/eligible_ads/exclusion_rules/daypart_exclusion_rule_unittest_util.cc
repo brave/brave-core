@@ -9,7 +9,7 @@
 
 namespace brave_ads::test {
 
-int GetMinutes(const int hours, const int minutes) {
+int ConvertHoursAndMinutesToTotalMinutes(const int hours, const int minutes) {
   CHECK(hours >= 0 && hours <= 23);
   CHECK(minutes >= 0 && minutes <= 59);
 

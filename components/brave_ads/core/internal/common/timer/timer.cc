@@ -8,6 +8,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
@@ -57,6 +58,8 @@ bool Timer::Stop() {
 
 ScopedTimerDelaySetterForTesting::ScopedTimerDelaySetterForTesting(
     const base::TimeDelta delay) {
+  CHECK_IS_TEST();
+
   g_timer_delay_for_testing = delay;
 }
 

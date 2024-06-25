@@ -59,7 +59,7 @@ class Confirmations final : public ConfirmationQueueDelegate,
 
   raw_ptr<ConfirmationDelegate> delegate_ = nullptr;
 
-  ConfirmationQueue queue_;
+  ConfirmationQueue confirmation_queue_;
 
   base::WeakPtrFactory<Confirmations> weak_factory_{this};
 };

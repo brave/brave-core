@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
@@ -45,7 +45,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldAlwaysInclude) {
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -86,7 +86,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   const PageLandExclusionRule exclusion_rule(ad_events);
 
@@ -117,24 +117,24 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event_1 =
       test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 =
       test::BuildAdEvent(creative_ad_2, AdType::kNewTabPageAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = test::BuildAdEvent(
       creative_ad_2, AdType::kPromotedContentAd, ConfirmationType::kLanded,
-      Now(), /*should_use_random_uuids=*/true);
+      Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 =
       test::BuildAdEvent(creative_ad_2, AdType::kSearchResultAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -168,7 +168,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -195,7 +195,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -222,7 +222,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -253,7 +253,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                          ConfirmationType::kLanded, /*created_at=*/Now(),
-                         /*should_use_random_uuids=*/true);
+                         /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);

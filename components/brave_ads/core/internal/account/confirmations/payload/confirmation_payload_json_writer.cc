@@ -31,9 +31,9 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
           .Set(kTypeKey, ToString(confirmation.type));
 
   if (confirmation.reward) {
-    base::Value::Dict reward_dict =
+    base::Value::Dict reward_confirmation_payload_dict =
         BuildRewardConfirmationPayload(*confirmation.reward);
-    dict.Merge(std::move(reward_dict));
+    dict.Merge(std::move(reward_confirmation_payload_dict));
   }
 
   dict.Merge(confirmation.user_data.dynamic.Clone());

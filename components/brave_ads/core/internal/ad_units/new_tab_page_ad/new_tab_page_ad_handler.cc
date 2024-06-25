@@ -103,8 +103,7 @@ void NewTabPageAdHandler::TriggerEvent(
       event_type == mojom::NewTabPageAdEventType::kViewedImpression) {
     // `MaybeServe` will trigger a `kServedImpression` event if the user has
     // joined Brave Rewards; otherwise, we need to trigger a `kServedImpression`
-    // event when triggering a `kViewedImpression` event for non-Brave-Rewards
-    // users.
+    // event when triggering a `kViewedImpression` event for non-Rewards users.
     return event_handler_.FireEvent(
         placement_id, creative_instance_id,
         mojom::NewTabPageAdEventType::kServedImpression,

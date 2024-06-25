@@ -52,6 +52,7 @@ base::TimeDelta CalculateDelayBeforeProcessingConfirmationQueueItem(
     const ConfirmationQueueItemInfo& confirmation_queue_item) {
   if (g_scoped_delay_before_processing_confirmation_queue_item_for_testing) {
     CHECK_IS_TEST();
+
     return *g_scoped_delay_before_processing_confirmation_queue_item_for_testing;
   }
 
@@ -74,6 +75,8 @@ base::TimeDelta CalculateDelayBeforeProcessingConfirmationQueueItem(
 ScopedDelayBeforeProcessingConfirmationQueueItemForTesting::
     ScopedDelayBeforeProcessingConfirmationQueueItemForTesting(
         const base::TimeDelta delay) {
+  CHECK_IS_TEST();
+
   g_scoped_delay_before_processing_confirmation_queue_item_for_testing = delay;
 }
 

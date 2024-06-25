@@ -11,23 +11,25 @@
 
 namespace brave_ads {
 
-std::optional<CreativeSetConversionInfo> BuildCreativeSetConversion(
-    const mojom::SearchResultAdInfoPtr& ad_mojom) {
-  if (!ad_mojom || !ad_mojom->conversion) {
+std::optional<CreativeSetConversionInfo>
+FromMojomMaybeBuildCreativeSetConversion(
+    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad) {
+  if (!mojom_creative_ad || !mojom_creative_ad->conversion) {
     return std::nullopt;
   }
 
   CreativeSetConversionInfo creative_set_conversion;
 
-  creative_set_conversion.id = ad_mojom->creative_set_id;
+  creative_set_conversion.id = mojom_creative_ad->creative_set_id;
 
-  creative_set_conversion.url_pattern = ad_mojom->conversion->url_pattern;
+  creative_set_conversion.url_pattern =
+      mojom_creative_ad->conversion->url_pattern;
 
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
-      ad_mojom->conversion->verifiable_advertiser_public_key_base64;
+      mojom_creative_ad->conversion->verifiable_advertiser_public_key_base64;
 
   creative_set_conversion.observation_window =
-      ad_mojom->conversion->observation_window;
+      mojom_creative_ad->conversion->observation_window;
 
   // Creative set conversions are built and saved when a search result ad is
   // viewed, i.e., now, so the conversion should expire after the observation

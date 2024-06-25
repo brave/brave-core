@@ -12,7 +12,8 @@ namespace brave_ads {
 
 struct DepositInfo;
 
-DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom);
+DepositInfo FromMojomBuildDeposit(
+    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad);
 
 }  // namespace brave_ads
 

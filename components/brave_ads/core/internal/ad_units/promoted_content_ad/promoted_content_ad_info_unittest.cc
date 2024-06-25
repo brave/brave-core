@@ -20,7 +20,7 @@ TEST_F(BraveAdsPromotedContentAdInfoTest, IsValid) {
   // Arrange
   const CreativePromotedContentAdInfo creative_ad =
       test::BuildCreativePromotedContentAd(
-          /*should_use_random_uuids=*/true);
+          /*should_generate_random_uuids=*/true);
   const PromotedContentAdInfo ad = BuildPromotedContentAd(creative_ad);
 
   // Act & Assert

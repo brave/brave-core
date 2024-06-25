@@ -32,7 +32,7 @@ TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_use_random_uuids=*/false);
+                                    /*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const RewardInfo reward = test::BuildReward(*confirmation);

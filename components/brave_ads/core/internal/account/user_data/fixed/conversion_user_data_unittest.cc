@@ -27,8 +27,8 @@ class BraveAdsConversionUserDataBuilderTest : public UnitTestBase {};
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildConversionUserDataForRewardsUser) {
   // Arrange
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion =
@@ -53,8 +53,8 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
 TEST_F(BraveAdsConversionUserDataBuilderTest,
        BuildVerifiableConversionUserDataForRewardsUser) {
   // Arrange
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
@@ -80,8 +80,8 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion =
@@ -108,8 +108,8 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  const AdInfo ad =
-      test::BuildAd(AdType::kNotificationAd, /*should_use_random_uuids=*/false);
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(

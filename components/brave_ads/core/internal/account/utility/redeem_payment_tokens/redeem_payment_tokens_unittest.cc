@@ -60,7 +60,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
 
   EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
 
-  const WalletInfo wallet = test::GetWallet();
+  const WalletInfo wallet = test::Wallet();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   FastForwardClockToNextPendingTask();
 
@@ -84,7 +84,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
-  const WalletInfo wallet = test::GetWallet();
+  const WalletInfo wallet = test::Wallet();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   FastForwardClockToNextPendingTask();
 
@@ -115,7 +115,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
-  const WalletInfo wallet = test::GetWallet();
+  const WalletInfo wallet = test::Wallet();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   FastForwardClockToNextPendingTask();
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
   EXPECT_CALL(delegate_mock_, OnWillRetryRedeemingPaymentTokens).Times(0);
   EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens).Times(0);
-  const WalletInfo wallet = test::GetWallet();
+  const WalletInfo wallet = test::Wallet();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   FastForwardClockToNextPendingTask();
 
@@ -160,7 +160,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
   EXPECT_CALL(delegate_mock_, OnDidRetryRedeemingPaymentTokens);
   EXPECT_CALL(delegate_mock_, OnDidRedeemPaymentTokens);
   EXPECT_CALL(delegate_mock_, OnDidScheduleNextPaymentTokenRedemption);
-  const WalletInfo wallet = test::GetWallet();
+  const WalletInfo wallet = test::Wallet();
   redeem_payment_tokens_->MaybeRedeemAfterDelay(wallet);
   FastForwardClockToNextPendingTask();
   FastForwardClockToNextPendingTask();

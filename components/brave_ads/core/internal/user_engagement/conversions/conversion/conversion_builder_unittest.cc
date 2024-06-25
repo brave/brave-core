@@ -25,7 +25,7 @@ namespace brave_ads {
 TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now());
@@ -45,7 +45,7 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
+                                  /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now());

@@ -13,7 +13,7 @@ class BraveSearchResultAdManager: NSObject {
 
   private let rewards: BraveRewards
 
-  private var searchResultAds = [String: BraveAds.SearchResultAdInfo]()
+  private var searchResultAds = [String: BraveAds.CreativeSearchResultAdInfo]()
 
   init?(url: URL, rewards: BraveRewards, isPrivateBrowsing: Bool, isAggressiveAdsBlocking: Bool) {
     if isPrivateBrowsing || isAggressiveAdsBlocking || !BraveSearchManager.isValidURL(url)
@@ -31,7 +31,7 @@ class BraveSearchResultAdManager: NSObject {
 
   func triggerSearchResultAdViewedEvent(
     placementId: String,
-    searchResultAd: BraveAds.SearchResultAdInfo
+    searchResultAd: BraveAds.CreativeSearchResultAdInfo
   ) {
     searchResultAds[placementId] = searchResultAd
 

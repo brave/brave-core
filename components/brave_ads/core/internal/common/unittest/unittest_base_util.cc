@@ -304,7 +304,7 @@ void LoadState() {
       }));
 
   GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
-      test::GetWallet(), base::BindOnce([](const bool success) {
+      test::Wallet(), base::BindOnce([](const bool success) {
         CHECK(success) << "Failed to load confirmation state";
       }));
 }

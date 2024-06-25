@@ -25,6 +25,7 @@ const char kBrowserVersionForTesting[] = "1.2.3.4";
 std::string GetBrowserVersionNumber() {
   if (g_browser_version_for_testing) {
     CHECK_IS_TEST();
+
     return kBrowserVersionForTesting;
   }
 
@@ -32,6 +33,8 @@ std::string GetBrowserVersionNumber() {
 }
 
 ScopedBrowserVersionSetterForTesting::ScopedBrowserVersionSetterForTesting() {
+  CHECK_IS_TEST();
+
   g_browser_version_for_testing = true;
 }
 

@@ -15,7 +15,7 @@ struct ConfirmationInfo;
 namespace test {
 
 std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
-    bool should_use_random_uuids);
+    bool should_generate_random_uuids);
 
 }  // namespace test
 

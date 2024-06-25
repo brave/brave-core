@@ -90,6 +90,7 @@ void SearchResultAdTabHelper::SetAdsServiceForTesting(AdsService* ads_service) {
 AdsService* SearchResultAdTabHelper::GetAdsService() {
   if (g_ads_service_for_testing) {
     CHECK_IS_TEST();
+
     return g_ads_service_for_testing;
   }
 
