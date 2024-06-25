@@ -190,7 +190,7 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandToggleSplitViewOrientation:
       return true;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
   }
 
@@ -251,7 +251,7 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
       brave::ToggleSplitViewOrientation(browser_);
       return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 }

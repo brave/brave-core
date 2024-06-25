@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_HEADER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_NOTIFICATION_AD_HEADER_VIEW_H_
 
+#include <memory>
+
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/views/view.h"
@@ -19,8 +21,7 @@ namespace brave_ads {
 class NotificationAdHeaderView : public views::View {
   METADATA_HEADER(NotificationAdHeaderView, views::View)
  public:
-
-  explicit NotificationAdHeaderView(const int width);
+  NotificationAdHeaderView();
 
   NotificationAdHeaderView(const NotificationAdHeaderView&) = delete;
   NotificationAdHeaderView& operator=(const NotificationAdHeaderView&) = delete;
@@ -41,9 +42,9 @@ class NotificationAdHeaderView : public views::View {
   void OnThemeChanged() override;
 
  private:
-  void CreateView(const int width);
+  void CreateView();
 
-  views::Label* CreateTitleLabel();
+  std::unique_ptr<views::Label> CreateTitleLabel();
   void UpdateTitleLabel();
 
   raw_ptr<views::Label> title_label_ = nullptr;

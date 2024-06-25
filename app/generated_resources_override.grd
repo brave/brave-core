@@ -614,6 +614,11 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_NTP_WEBSTORE_TOAST_MESSAGE" desc="The message displayed on the New Tab Page toast that directs users to the Brave webstore themes.">
         You can find older colors in the Web Store
       </message>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
         See memories of your favorite profiles and more
       </message>
@@ -643,9 +648,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <message name="IDS_USER_NOTES_MENU_OPEN_IN_INCOGNITO" desc="Menu description for opening a page with notes in a private window.">
-        Open in Private Window
-      </message>
       <if expr="is_macosx">
         </if>
       <if expr="use_titlecase">
@@ -654,6 +656,15 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not is_android">
         </if>
+
+      <if expr="_google_chrome">
+        <if expr="not is_android">
+          <if expr="use_titlecase">
+            </if>
+          <if expr="not use_titlecase">
+            </if>
+          </if>
+      </if>
 
       <if expr="_google_chrome">
         <if expr="not is_android">
@@ -827,7 +838,7 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="use_titlecase">
         </if>
 
-    <if expr="use_titlecase">
+        <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -1305,6 +1316,12 @@ are declared in tools/grit/grit_rule.gni.
         </if>
     </if>
     <if expr="not is_android">
+      </if>
+    <if expr="not is_android">
+        <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       </if>
     <if expr="is_android">
       </if>

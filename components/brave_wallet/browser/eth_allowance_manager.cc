@@ -238,7 +238,7 @@ void EthAllowanceManager::LoadCachedAllowances(
     const auto* amount = ca_dict->FindString(kAmount);
 
     if (!approver_address || !contract_address || !spender_address || !amount) {
-      NOTREACHED() << " Wrong allowance cache format";
+      NOTREACHED_IN_MIGRATION() << " Wrong allowance cache format";
       continue;
     }
 

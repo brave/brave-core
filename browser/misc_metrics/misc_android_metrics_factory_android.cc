@@ -9,14 +9,14 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/build/android/jni_headers/MiscAndroidMetricsFactory_jni.h"
-#include "chrome/browser/profiles/profile_android.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace chrome {
 namespace android {
 static jlong JNI_MiscAndroidMetricsFactory_GetInterfaceToMiscAndroidMetrics(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+  auto* profile = Profile::FromJavaObject(profile_android);
   auto pending = misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance()
                      ->GetServiceForContext(profile)
                      ->GetMiscAndroidMetrics()

@@ -86,7 +86,6 @@ source_set("browser_tests") {
 
     sources = [
       "brave_main_delegate_browsertest.cc",
-      "brave_main_delegate_runtime_flags_browsertest.cc",
       "command_utils_browsertest.cc",
     ]
 
@@ -119,7 +118,6 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//chrome/browser",
-    "//chrome/browser/companion/core",
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/ui",
     "//chrome/common/companion/visual_query:flags",
@@ -135,6 +133,7 @@ source_set("unit_tests") {
     "//components/history_clusters/core",
     "//components/language/core/common",
     "//components/lens",
+    "//components/manta",
     "//components/metrics/structured:structured_metrics_features",
     "//components/network_time",
     "//components/omnibox/browser",
@@ -150,6 +149,7 @@ source_set("unit_tests") {
     "//components/shared_highlighting/core/common",
     "//components/signin/public/base:signin_buildflags",
     "//components/subresource_filter/core/common",
+    "//components/sync/base:features",
     "//gpu/config",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
@@ -167,8 +167,8 @@ source_set("unit_tests") {
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
       "//chrome/browser/apps/link_capturing:link_capturing",
+      "//chrome/browser/companion/core",
       "//chrome/common:chrome_features",
-      "//components/manta",
       "//components/translate/core/common",
       "//extensions/common",
       "//ui/accessibility:ax_base",

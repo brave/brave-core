@@ -64,7 +64,7 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
     case Result::kCouldNotWriteNodes:
       return _on_export_finished(BraveBookmarksExporterStateErrorWritingNodes);
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
   delete this;
 }
@@ -82,7 +82,9 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
 - (instancetype)init {
   if ((self = [super init])) {
-    export_thread_ = web::GetIOThreadTaskRunner({});
+    // This work must be done on the UI thread because it currently relies on
+    // fetching information from ChromeBrowserState which is main-thread bound
+    export_thread_ = web::GetUIThreadTaskRunner({});
   }
   return self;
 }

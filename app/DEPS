@@ -18,6 +18,7 @@ include_rules = [
   "+components/embedder_support/switches.h",
   "+components/feed/feed_feature_list.h",
   "+components/language/core/common",
+  "+components/manta/features.h",
   "+components/network_time/network_time_tracker.h",
   "+components/offline_pages/core/offline_page_feature.h",
   "+components/omnibox/common",

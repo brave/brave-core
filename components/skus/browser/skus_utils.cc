@@ -44,7 +44,7 @@ std::string GetDomain(const std::string& prefix,
     return prefix + ".brave.software";
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 
   return "";
 }

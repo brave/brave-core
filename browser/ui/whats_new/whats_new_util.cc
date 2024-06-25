@@ -162,7 +162,7 @@ bool ShouldShowBraveWhatsNewForState(PrefService* local_state) {
 
   const auto current_version = GetCurrentBrowserVersion();
   if (!current_version) {
-    NOTREACHED() << __func__ << " Should get current version.";
+    NOTREACHED_IN_MIGRATION() << __func__ << " Should get current version.";
     return false;
   }
 

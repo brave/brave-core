@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tab_search_bubble_host.cc b/chrome/browser/ui/views/tab_search_bubble_host.cc
+index 1022f23020fbd07b2020c1d65d5c3998ce9fd8aa..c32112d3afee5b07792982417ae3c33463d6d22c 100644
+--- a/chrome/browser/ui/views/tab_search_bubble_host.cc
++++ b/chrome/browser/ui/views/tab_search_bubble_host.cc
+@@ -269,6 +269,7 @@ bool TabSearchBubbleHost::ShouldTabSearchRenderBeforeTabStrip() {
+ // Tab Search button as a FrameCaptionButton, but it still needs to be on the
+ // left if it exists.
+ #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++  BRAVE_TAB_SEARCH_BUBBLE_HOST_SHOULD_TAB_SEARCH_RENDER_BEFORE_TAB_STRIP
+   return true;
+ #else
+   return false;

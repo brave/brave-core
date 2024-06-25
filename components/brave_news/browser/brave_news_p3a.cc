@@ -133,7 +133,7 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
       pref_name = prefs::kBraveNewsTotalSidebarFilterUsages;
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 
@@ -166,7 +166,7 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
                                          kSidebarFilterUsageBuckets, total);
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 }
 
@@ -214,7 +214,7 @@ void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
       histogram_name = kPublisherCountHistogramName;
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 

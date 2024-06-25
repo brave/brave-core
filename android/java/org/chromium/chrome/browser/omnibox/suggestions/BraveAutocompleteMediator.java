@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -71,7 +72,10 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             @NonNull OmniboxActionDelegate omniboxActionDelegate,
             @NonNull ActivityLifecycleDispatcher lifecycleDispatcher,
             @NonNull OmniboxSuggestionsDropdownEmbedder embedder,
-            WindowAndroid windowAndroid) {
+            @NonNull WindowAndroid windowAndroid,
+            @NonNull
+                    DeferredIMEWindowInsetApplicationCallback
+                            deferredIMEWindowInsetApplicationCallback) {
         super(
                 context,
                 delegate,
@@ -88,7 +92,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 omniboxActionDelegate,
                 lifecycleDispatcher,
                 embedder,
-                windowAndroid);
+                windowAndroid,
+                deferredIMEWindowInsetApplicationCallback);
 
         mContext = context;
         mDelegate = delegate;

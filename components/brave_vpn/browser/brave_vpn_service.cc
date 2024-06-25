@@ -580,8 +580,7 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   auto env = skus::GetEnvironmentForDomain(domain);
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie,
-                                      /*block_truncated=*/true, &status);
+  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
   // TODO(bsclifton): have a better check / logging.
   // should these failed states be considered NOT_PURCHASED?
   // or maybe it can be considered FAILED status?

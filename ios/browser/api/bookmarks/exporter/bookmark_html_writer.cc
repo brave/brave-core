@@ -35,11 +35,12 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/sync/base/features.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using bookmarks::BookmarkCodec;
@@ -301,7 +302,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
         break;
 
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
     }
 
     return Write(utf8_string);
@@ -329,7 +330,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     if (!title_ptr || !date_added_string || !type_string ||
         (*type_string != BookmarkCodec::kTypeURL &&
          *type_string != BookmarkCodec::kTypeFolder)) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return false;
     }
 
@@ -337,7 +338,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     if (*type_string == BookmarkCodec::kTypeURL) {
       const std::string* url_string = value.FindString(BookmarkCodec::kURLKey);
       if (!url_string) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         return false;
       }
 
@@ -368,7 +369,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     const base::Value::List* child_values =
         value.FindList(BookmarkCodec::kChildrenKey);
     if (!last_modified_date || !child_values) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return false;
     }
     if (folder_type != BookmarkNode::OTHER_NODE &&
@@ -398,7 +399,7 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
     // Write the children.
     for (const base::Value& child_value : *child_values) {
       if (!child_value.is_dict()) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         return false;
       }
       if (!WriteNode(child_value.GetDict(), BookmarkNode::FOLDER)) {
@@ -497,16 +498,23 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // BookmarkModel isn't thread safe (nor would we want to lock it down
   // for the duration of the write), as such we make a copy of the
   // BookmarkModel using BookmarkCodec then write from that.
+  bookmarks::BookmarkModel* bookmark_model_;
+  if (base::FeatureList::IsEnabled(
+          syncer::kEnableBookmarkFoldersForAccountStorage)) {
+    bookmark_model_ = ios::BookmarkModelFactory::
+        GetModelForBrowserStateIfUnificationEnabledOrDie(browser_state_);
+  } else {
+    bookmark_model_ = ios::LocalOrSyncableBookmarkModelFactory::
+        GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+            browser_state_);
+  }
   BookmarkCodec codec;
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
       base::BindOnce(
           &Writer::DoWrite,
-          base::MakeRefCounted<Writer>(
-              ios::LocalOrSyncableBookmarkModelFactory::
-                  GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-                      browser_state_),
-              path_, favicons_map_.release(), observer_)));
+          base::MakeRefCounted<Writer>(bookmark_model_, path_,
+                                       favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
 }

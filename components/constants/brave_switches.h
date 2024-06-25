@@ -43,9 +43,6 @@ inline constexpr char kDisableEncryptionWin[] = "disable-encryption-win";
 // Allows disabling the machine ID generation on Windows.
 inline constexpr char kDisableMachineId[] = "disable-machine-id";
 
-// Disables DOH using a runtime flag mainly for network audit
-inline constexpr char kDisableDnsOverHttps[] = "disable-doh";
-
 // Starts Brave in Tor mode.
 inline constexpr char kTor[] = "tor";
 
