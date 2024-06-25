@@ -82,20 +82,16 @@ bool EnableBraveVpnWireguardServiceImpl(
     return false;
   }
 
-  base::win::ScopedBstr server_public_key_data;
-  ::memcpy(server_public_key_data.AllocateBytes(server_public_key.length()),
-           server_public_key.data(), server_public_key.length());
-  base::win::ScopedBstr client_private_key_data;
-  ::memcpy(client_private_key_data.AllocateBytes(client_private_key.length()),
-           client_private_key.data(), client_private_key.length());
-  base::win::ScopedBstr mapped_ip4_address_data;
-  ::memcpy(mapped_ip4_address_data.AllocateBytes(mapped_ip4_address.length()),
-           mapped_ip4_address.data(), mapped_ip4_address.length());
-  base::win::ScopedBstr vpn_server_hostname_data;
-  ::memcpy(vpn_server_hostname_data.AllocateBytes(vpn_server_hostname.length()),
-           vpn_server_hostname.data(), vpn_server_hostname.length());
+  base::win::ScopedBstr server_public_key_data(
+      base::UTF8ToWide(server_public_key));
+  base::win::ScopedBstr client_private_key_data(
+      base::UTF8ToWide(client_private_key));
+  base::win::ScopedBstr mapped_ip4_address_data(
+      base::UTF8ToWide(mapped_ip4_address));
+  base::win::ScopedBstr vpn_server_hostname_data(
+      base::UTF8ToWide(vpn_server_hostname));
 
-  DWORD last_error;
+  DWORD last_error = ERROR_SUCCESS;
   HRESULT res = service->EnableVpn(server_public_key_data.Get(),
                                    client_private_key_data.Get(),
                                    mapped_ip4_address_data.Get(),

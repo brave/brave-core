@@ -41,6 +41,12 @@ fbFtShscNPxYrqQZHvXFnAago=)",
   EXPECT_TRUE(brave_vpn::wireguard::ValidateKey(
                   "MsdIM8m7Ee13QbjFe3fbFtShscNPxYrqQZHvXFnAago=", "public_key")
                   .has_value());
+  EXPECT_TRUE(brave_vpn::wireguard::ValidateKey(
+                  "0h6uFUScpGPOPZgPlEJ1zwcEs+2/CFHYtbLPcoBQYB0=", "public_key")
+                  .has_value());
+  EXPECT_TRUE(brave_vpn::wireguard::ValidateKey(
+                  "l/v3PVoEX618na0q3dwQZigne1xtRPKGqkoDa02a0ac=", "public_key")
+                  .has_value());
 }
 
 TEST(BraveVPNWireGuardUtilsUnitTest, ValidateAddress) {
@@ -58,6 +64,9 @@ TEST(BraveVPNWireGuardUtilsUnitTest, ValidateAddress) {
       brave_vpn::wireguard::ValidateAddress("  192.168.1.1   ").has_value());
 
   // Valid.
+  EXPECT_TRUE(
+      brave_vpn::wireguard::ValidateAddress("10.146.91.135").has_value());
+
   auto response = brave_vpn::wireguard::ValidateAddress("192.168.1.1");
   EXPECT_TRUE(response.has_value());
   // Verify parsing worked.
@@ -88,6 +97,8 @@ TEST(BraveVPNWireGuardUtilsUnitTest, ValidateEndpoint) {
   EXPECT_TRUE(
       brave_vpn::wireguard::ValidateEndpoint("toronto-ipsec-8.guardianapp.com")
           .has_value());
+  EXPECT_TRUE(brave_vpn::wireguard::ValidateEndpoint("a.b.guardianapp.com")
+                  .has_value());
   EXPECT_TRUE(brave_vpn::wireguard::ValidateEndpoint(
                   "france-ipsec-1.sudosecuritygroup.com")
                   .has_value());
