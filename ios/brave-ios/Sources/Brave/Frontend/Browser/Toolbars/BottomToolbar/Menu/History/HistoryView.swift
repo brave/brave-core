@@ -62,122 +62,123 @@ struct HistoryView: View {
   private var timer: Timer?
 
   var body: some View {
-    if model.items.isEmpty {
-      HistoryEmptyStateView(
-        details: .init(
-          title: Preferences.Privacy.privateBrowsingOnly.value
-            ? Strings.History.historyPrivateModeOnlyStateTitle
-            : Strings.History.historyEmptyStateTitle,
-          icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)
-        )
-      )
-      .navigationTitle(Strings.historyScreenTitle)
-    } else {
-      List {
-        ForEach(model.items.elements, id: \.key) { section, nodes in
-          Section {
-            ForEach(nodes, id: \.self) { node in
-              Button {
-                model.handleHistoryItemSelection(.selectTab, node: node)
-              } label: {
-                HistoryItemView(title: node.title ?? "", url: node.url)
-              }
-              .contextMenu(menuItems: {
-                Button {
-                  model.handleHistoryItemSelection(.openInNewTab, node: node)
-                } label: {
-                  Text(Strings.openNewTabButtonTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                  Image(systemName: "plus.square.on.square")
-                }
-
-                if !model.isPrivateBrowsing {
-                  Button {
-                    model.handleHistoryItemSelection(.openInNewPrivateTab, node: node)
-                  } label: {
-                    Text(Strings.openNewPrivateTabButtonTitle)
-                      .frame(maxWidth: .infinity, alignment: .leading)
-                      .fixedSize(horizontal: false, vertical: true)
-                    Image(systemName: "plus.square.fill.on.square.fill")
-                  }
-                }
-
-                Divider()
-
-                Button {
-                  model.handleHistoryItemSelection(.copyLink, node: node)
-                } label: {
-                  Text(Strings.copyLinkActionTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                  Image(systemName: "doc.on.doc")
-                }
-
-                Button {
-                  model.handleHistoryItemSelection(.shareLink, node: node)
-                } label: {
-                  Text(Strings.shareLinkActionTitle)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                  Image(systemName: "square.and.arrow.up")
-                }
-              })
-            }
-            .onDelete {
-              self.delete($0, in: section)
-            }
-          } header: {
-            Text(section.title)
-              .font(.headline)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .fixedSize(horizontal: false, vertical: true)
-              .foregroundStyle(Color(braveSystemName: .textPrimary))
-          }
-        }
-      }
-      .listStyle(.plain)
-      .searchable(
-        text: $searchText,
-        placement: .navigationBarDrawer(displayMode: .always),
-        prompt: Strings.History.historySearchBarTitle
-      )
-      .onChange(of: searchText) { searchText in
-        self.timer?.invalidate()
-        self.timer = Timer(
-          timeInterval: 0.1,
-          repeats: false,
-          block: { [weak model] timer in
-            timer.invalidate()
-            model?.refreshHistory(query: searchText)
-          }
-        )
-      }
-      .toolbar {
-        Button {
-          deleteAllAlertPresented = true
-        } label: {
-          Label {
-            Text(Strings.History.historyClearActionTitle)
-          } icon: {
-            Image(braveSystemName: "leo.trash")
-          }
-          .labelStyle(.iconOnly)
-        }
-      }
-      .alert(isPresented: $deleteAllAlertPresented) {
-        Alert(
-          title: Text(Strings.History.historyClearAlertTitle),
-          message: Text(Strings.History.historyClearAlertDescription),
-          dismissButton: .destructive(
-            Text(Strings.History.historyClearActionTitle),
-            action: {
-              model.deleteAll()
-            }
+    VStack(spacing: 0.0) {
+      if model.items.isEmpty {
+        HistoryEmptyStateView(
+          details: .init(
+            title: Preferences.Privacy.privateBrowsingOnly.value
+              ? Strings.History.historyPrivateModeOnlyStateTitle
+              : Strings.History.historyEmptyStateTitle,
+            icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)
           )
         )
+      } else {
+        List {
+          ForEach(model.items.elements, id: \.key) { section, nodes in
+            Section {
+              ForEach(nodes, id: \.self) { node in
+                Button {
+                  model.handleHistoryItemSelection(.selectTab, node: node)
+                } label: {
+                  HistoryItemView(title: node.title ?? "", url: node.url)
+                }
+                .contextMenu(menuItems: {
+                  Button {
+                    model.handleHistoryItemSelection(.openInNewTab, node: node)
+                  } label: {
+                    Text(Strings.openNewTabButtonTitle)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                      .fixedSize(horizontal: false, vertical: true)
+                    Image(systemName: "plus.square.on.square")
+                  }
+
+                  if !model.isPrivateBrowsing {
+                    Button {
+                      model.handleHistoryItemSelection(.openInNewPrivateTab, node: node)
+                    } label: {
+                      Text(Strings.openNewPrivateTabButtonTitle)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                      Image(systemName: "plus.square.fill.on.square.fill")
+                    }
+                  }
+
+                  Divider()
+
+                  Button {
+                    model.handleHistoryItemSelection(.copyLink, node: node)
+                  } label: {
+                    Text(Strings.copyLinkActionTitle)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                      .fixedSize(horizontal: false, vertical: true)
+                    Image(systemName: "doc.on.doc")
+                  }
+
+                  Button {
+                    model.handleHistoryItemSelection(.shareLink, node: node)
+                  } label: {
+                    Text(Strings.shareLinkActionTitle)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                      .fixedSize(horizontal: false, vertical: true)
+                    Image(systemName: "square.and.arrow.up")
+                  }
+                })
+              }
+              .onDelete {
+                self.delete($0, in: section)
+              }
+            } header: {
+              Text(section.title)
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+            }
+          }
+        }
+        .listStyle(.plain)
+        .toolbar {
+          Button {
+            deleteAllAlertPresented = true
+          } label: {
+            Label {
+              Text(Strings.History.historyClearActionTitle)
+            } icon: {
+              Image(braveSystemName: "leo.trash")
+            }
+            .labelStyle(.iconOnly)
+          }
+        }
+        .alert(isPresented: $deleteAllAlertPresented) {
+          Alert(
+            title: Text(Strings.History.historyClearAlertTitle),
+            message: Text(Strings.History.historyClearAlertDescription),
+            dismissButton: .destructive(
+              Text(Strings.History.historyClearActionTitle),
+              action: {
+                model.deleteAll()
+              }
+            )
+          )
+        }
       }
-      .navigationTitle(Strings.historyScreenTitle)
+    }
+    .navigationTitle(Strings.historyScreenTitle)
+    .searchable(
+      text: $searchText,
+      placement: .navigationBarDrawer(displayMode: .always),
+      prompt: Strings.History.historySearchBarTitle
+    )
+    .onChange(of: searchText) { searchText in
+      self.timer?.invalidate()
+      self.timer = Timer.scheduledTimer(
+        withTimeInterval: 0.1,
+        repeats: false,
+        block: { [weak model] timer in
+          timer.invalidate()
+          model?.refreshHistory(query: searchText)
+        }
+      )
     }
   }
 
