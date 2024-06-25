@@ -76,7 +76,13 @@ extension BrowserViewController: TopToolbarDelegate {
           case .loadInterstitial(let service):
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
           case .load(let resolvedURL):
-            tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
+            if resolvedURL.isIPFSScheme,
+              let resolvedIPRSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+            {
+              tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedIPRSURL))
+            } else {
+              tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
+            }
           case .none:
             tabManager.selectedTab?.reload()
           }
@@ -275,7 +281,13 @@ extension BrowserViewController: TopToolbarDelegate {
           showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
           return true
         case .load(let resolvedURL):
-          finishEditingAndSubmit(resolvedURL)
+          if resolvedURL.isIPFSScheme,
+            let resolvedIPRSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          {
+            finishEditingAndSubmit(resolvedIPRSURL)
+          } else {
+            finishEditingAndSubmit(resolvedURL)
+          }
           return true
         case .none:
           break

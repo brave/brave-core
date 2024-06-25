@@ -94,6 +94,9 @@ public struct Web3SettingsView: View {
           }
         }
     )
+    .onAppear {
+      settingsStore?.setup()
+    }
   }
 }
 

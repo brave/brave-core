@@ -278,7 +278,13 @@ extension BrowserViewController: WKNavigationDelegate {
         showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
         return (.cancel, preferences)
       case .load(let resolvedURL):
-        requestURL = resolvedURL
+        if resolvedURL.isIPFSScheme,
+          let resolvedIPRSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+        {
+          requestURL = resolvedIPRSURL
+        } else {
+          requestURL = resolvedURL
+        }
       case .none:
         break
       }

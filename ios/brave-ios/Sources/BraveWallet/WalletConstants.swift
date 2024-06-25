@@ -142,6 +142,9 @@ public struct WalletConstants {
     ".klever", ".manga", ".polygon", ".unstoppable", ".pudgy",
   ]
 
+  /// The supported IPFS schemes
+  static let supportedIPFSSchemes = ["ipfs", "ipns"]
+
   /// The supported send transaction types, used for P3A reporting.
   static let sendTransactionTypes: [BraveWallet.TransactionType] = [
     .ethSend, .erc20Transfer,
