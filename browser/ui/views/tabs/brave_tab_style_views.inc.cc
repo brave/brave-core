@@ -263,22 +263,8 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
     float scale) const {
-  if (ShouldShowVerticalTabs()) {
-    return {};
-  }
-
-  if (IsTabTiled(tab())) {
-    return {};
-  }
-
-  const auto is_next_tab_tiled =
-      IsTabTiled(tab()->controller()->GetAdjacentTab(tab(), 1));
   if (!HorizontalTabsUpdateEnabled()) {
-    auto bounds = BraveGM2TabStyle::GetSeparatorBounds(scale);
-    if (is_next_tab_tiled) {
-      bounds.trailing = {};
-    }
-    return bounds;
+    return BraveGM2TabStyle::GetSeparatorBounds(scale);
   }
 
   gfx::SizeF size(tab_style()->GetSeparatorSize());
@@ -298,17 +284,26 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
   gfx::PointF origin(tab()->bounds().origin());
   origin.Scale(scale);
   bounds.trailing.Offset(-origin.x(), -origin.y());
-
-  if (is_next_tab_tiled) {
-    bounds.trailing = {};
-  }
-
   return bounds;
 }
 
 float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
                                                  bool leading) const {
-  if (ShouldShowVerticalTabs() || !HorizontalTabsUpdateEnabled()) {
+  if (ShouldShowVerticalTabs()) {
+    return 0;
+  }
+
+  if (IsTabTiled(tab())) {
+    return 0;
+  }
+
+  const Tab* const next_tab = tab()->controller()->GetAdjacentTab(tab(), 1);
+  const auto is_next_tab_tiled = IsTabTiled(next_tab);
+  if (is_next_tab_tiled) {
+    return 0;
+  }
+
+  if (!HorizontalTabsUpdateEnabled()) {
     return BraveGM2TabStyle::GetSeparatorOpacity(for_layout, leading);
   }
 
@@ -327,8 +322,6 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
   if (has_visible_background(tab())) {
     return 0;
   }
-
-  const Tab* const next_tab = tab()->controller()->GetAdjacentTab(tab(), 1);
 
   const float visible_opacity =
       GetHoverInterpolatedSeparatorOpacity(for_layout, next_tab);
