@@ -253,12 +253,6 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
     return AllowPartitionedCookies{};                                         \
   }
 
-// Force GetCookieSetting to use a first-party context when calling into
-// GetCookieSettingInternal, rather than assuming a third-party context. This is
-// needed by our ephemeral storage implementation. See
-// https://chromium.googlesource.com/chromium/src/+/1eca8080b750b1b3e3067cfb7209163b9026de8a
-#define SiteForCookies() SiteForCookies::FromUrl(first_party_url)
-
 // This avoids a CHECK(!is_explicit_setting) in upstream code when allowing
 // partitioned cookies, which would fail with our current ephemeral storage
 // implementation. By default Chromimum allows all 3p cookies if applied
@@ -270,7 +264,7 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
 #define IsFullCookieAccessAllowed IsFullCookieAccessAllowed_ChromiumImpl
 
 #include "src/components/content_settings/core/common/cookie_settings_base.cc"
+
 #undef IsFullCookieAccessAllowed
-#undef SiteForCookies
 #undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
 #undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
