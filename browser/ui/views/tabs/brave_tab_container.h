@@ -49,6 +49,7 @@ class BraveTabContainer : public TabContainerImpl,
   void OnTabCloseAnimationCompleted(Tab* tab) override;
   void CompleteAnimationAndLayout() override;
   void PaintChildren(const views::PaintInfo& paint_info) override;
+  void SetTabSlotVisibility() override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
