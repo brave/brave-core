@@ -75,5 +75,8 @@ extension Preferences {
     /// Sync shared folders automatically preference
     public static let syncSharedFoldersAutomatically =
       Option<Bool>(key: "playlist.syncSharedFoldersAutomatically", default: true)
+    /// The date of the last cached data cleanup for dangling playlist items
+    public static let lastCacheDataCleanupDate =
+      Option<Date?>(key: "playlist.lastCacheDataCleanupDate", default: nil)
   }
 }
