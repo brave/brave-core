@@ -450,7 +450,7 @@ public struct AIChatView: View {
 
   @ViewBuilder
   private func apiErrorViews(for model: AIChatViewModel) -> some View {
-    let isPremiumAccess = 
+    let isPremiumAccess =
       model.currentModel.options.tag == .leoModelOptions
       && model.currentModel.options.leoModelOptions?.access == .premium
     let isPremium = model.premiumStatus == .active
