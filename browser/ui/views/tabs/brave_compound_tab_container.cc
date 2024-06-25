@@ -57,7 +57,6 @@ class ContentsView : public views::View {
 class CustomScrollView : public views::ScrollView {
   METADATA_HEADER(CustomScrollView, views::ScrollView)
  public:
-
   explicit CustomScrollView(PrefService* prefs)
       : views::ScrollView(views::ScrollView::ScrollWithLayers::kDisabled) {
     SetDrawOverflowIndicator(false);
@@ -526,19 +525,18 @@ void BraveCompoundTabContainer::ScrollTabToBeVisible(int model_index) {
     return;
   }
 
-  // Unfortunately, ScrollView's API doesn't work well for us. So we manually
-  // adjust scroll offset. Note that we change contents view's position as
-  // we disabled layered scroll view.
   if (visible_rect.CenterPoint().y() >=
       tab_bounds_in_contents_view.CenterPoint().y()) {
-    scroll_view_->contents()->SetPosition(
-        {0, -static_cast<int>(tab_bounds_in_contents_view.y())});
+    // Scroll Up
+    scroll_view_->ScrollToOffset(
+        gfx::PointF(0, static_cast<int>(tab_bounds_in_contents_view.y())));
   } else {
-    scroll_view_->contents()->SetPosition(
-        {0, std::min(0, scroll_view_->height() -
+    // Scroll Down
+    scroll_view_->ScrollToOffset(gfx::PointF(
+        0, -std::min(0, scroll_view_->height() -
                             static_cast<int>(
                                 tab_bounds_in_contents_view.bottom() +
-                                tabs::kMarginForVerticalTabContainers))});
+                                tabs::kMarginForVerticalTabContainers))));
   }
 }
 
