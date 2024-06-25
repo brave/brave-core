@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_browser.h"
+
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/browser/profiles/profile.h"
@@ -119,5 +121,23 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
   // Close the last tab.
   tab_strip->GetActiveWebContents()->Close();
   base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest,
+                       DoNotOpenNewTabWhenBringingAllTabs) {
+  // Given that kEnableClosingLastTab is false, which normally creates a new tab
+  // when tab strip is empty.
+  ASSERT_TRUE(embedded_test_server()->Start());
+  Browser* new_browser = OpenNewBrowser(browser()->profile());
+  ASSERT_TRUE(new_browser);
+  new_browser->profile()->GetPrefs()->SetBoolean(kEnableClosingLastTab, false);
+
+  // When "Bring all tabs to this window" commands executes
+  brave::BringAllTabs(browser());
+
+  // Then other windows should be closed
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
   EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
 }

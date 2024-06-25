@@ -19,6 +19,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -701,6 +702,9 @@ void BringAllTabs(Browser* browser) {
   base::ranges::for_each(browsers, [&detached_pinned_tabs,
                                     &detached_unpinned_tabs, &browsers_to_close,
                                     shared_pinned_tab_enabled](auto* other) {
+    static_cast<BraveBrowser*>(other)
+        ->set_ignore_enable_closing_last_tab_pref();
+
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
     for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
