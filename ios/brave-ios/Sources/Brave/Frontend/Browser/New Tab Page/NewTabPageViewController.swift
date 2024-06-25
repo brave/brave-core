@@ -1265,6 +1265,10 @@ extension NewTabPageViewController {
 
     // Weekly usage
     recordBraveNewsWeeklyUsageCountP3A()
+
+    // General Usage
+    UmaHistogramBoolean("Brave.Today.UsageDaily", true)
+    UmaHistogramBoolean("Brave.Today.UsageMonthly", true)
   }
 
   private func recordBraveNewsWeeklyUsageCountP3A() {
