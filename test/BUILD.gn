@@ -685,6 +685,9 @@ if (!is_android) {
     sources = [
       "//brave/browser/net/brave_network_audit_allowed_lists.h",
       "//brave/browser/net/brave_network_audit_browsertest.cc",
+      "//brave/browser/net/brave_network_audit_search_ad_browsertest.cc",
+      "//brave/browser/net/brave_network_audit_test_helper.cc",
+      "//brave/browser/net/brave_network_audit_test_helper.h",
     ]
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -694,6 +697,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//brave/base/test:test_vendor_is_brave",
+      "//brave/components/brave_ads/core/public:headers",
       "//brave/components/brave_rewards/browser",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
