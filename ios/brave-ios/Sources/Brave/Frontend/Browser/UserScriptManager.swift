@@ -18,16 +18,35 @@ class UserScriptManager {
   static let securityToken = ScriptLoader.uniqueID
   static let walletSolanaNameSpace = "W\(ScriptLoader.uniqueID)"
 
-  private let alwaysEnabledScripts: [ScriptType] = [
-    .faviconFetcher,
-    .rewardsReporting,
-    .playlist,
-    .resourceDownloader,
-    .windowRenderHelper,
-    .readyStateHelper,
-    .youtubeQuality,
-    .braveLeoAIChat,
-  ]
+  private var alwaysEnabledScripts: [ScriptType] {
+    var scripts: [ScriptType] = [
+      .faviconFetcher,
+      .rewardsReporting,
+      .resourceDownloader,
+    ]
+
+    if Preferences.UserScript.playlist.value {
+      scripts.append(.playlist)
+    }
+
+    if Preferences.UserScript.windowRender.value {
+      scripts.append(.windowRenderHelper)
+    }
+
+    if Preferences.UserScript.readyState.value {
+      scripts.append(.readyStateHelper)
+    }
+
+    if Preferences.UserScript.youtubeQuality.value {
+      scripts.append(.youtubeQuality)
+    }
+
+    if Preferences.UserScript.leo.value {
+      scripts.append(.braveLeoAIChat)
+    }
+
+    return scripts
+  }
 
   /// Scripts that are loaded after `staticScripts`
   private let dynamicScripts: [ScriptType: WKUserScript] = {
@@ -117,26 +136,49 @@ class UserScriptManager {
     fileprivate var script: WKUserScript? {
       switch self {
       // Conditionally enabled scripts
-      case .cookieBlocking: return loadScript(named: "CookieControlScript")
-      case .mediaBackgroundPlay: return loadScript(named: "MediaBackgroundingScript")
-      case .playlistMediaSource: return loadScript(named: "PlaylistSwizzlerScript")
+      case .cookieBlocking:
+        return Preferences.UserScript.cookieBlocking.value
+          ? loadScript(named: "CookieControlScript") : nil
+      case .mediaBackgroundPlay:
+        return Preferences.UserScript.mediaBackgroundPlay.value
+          ? loadScript(named: "MediaBackgroundingScript") : nil
+      case .playlistMediaSource:
+        return Preferences.UserScript.mediaSource.value
+          ? loadScript(named: "PlaylistSwizzlerScript") : nil
       case .nightMode: return NightModeScriptHandler.userScript
-      case .deAmp: return DeAmpScriptHandler.userScript
-      case .requestBlocking: return RequestBlockingContentScriptHandler.userScript
-      case .trackerProtectionStats: return ContentBlockerHelper.userScript
-      case .ethereumProvider: return EthereumProviderScriptHandler.userScript
-      case .solanaProvider: return SolanaProviderScriptHandler.userScript
+      case .deAmp: return Preferences.UserScript.deAmp.value ? DeAmpScriptHandler.userScript : nil
+      case .requestBlocking:
+        return Preferences.UserScript.requestBlocking.value
+          ? RequestBlockingContentScriptHandler.userScript : nil
+      case .trackerProtectionStats:
+        return Preferences.UserScript.trackingProtectionStats.value
+          ? ContentBlockerHelper.userScript : nil
+      case .ethereumProvider:
+        return Preferences.UserScript.ethereumProvider.value
+          ? EthereumProviderScriptHandler.userScript : nil
+      case .solanaProvider:
+        return Preferences.UserScript.solanaProvider.value
+          ? SolanaProviderScriptHandler.userScript : nil
       case .searchResultAd: return BraveSearchResultAdScriptHandler.userScript
 
       // Always enabled scripts
       case .faviconFetcher: return FaviconScriptHandler.userScript
-      case .rewardsReporting: return RewardsReportingScriptHandler.userScript
-      case .playlist: return PlaylistScriptHandler.userScript
+      case .rewardsReporting:
+        return Preferences.UserScript.rewardsReporting.value
+          ? RewardsReportingScriptHandler.userScript : nil
+      case .playlist:
+        return Preferences.UserScript.playlist.value ? PlaylistScriptHandler.userScript : nil
       case .resourceDownloader: return ResourceDownloadScriptHandler.userScript
-      case .windowRenderHelper: return WindowRenderScriptHandler.userScript
-      case .readyStateHelper: return ReadyStateScriptHandler.userScript
-      case .youtubeQuality: return YoutubeQualityScriptHandler.userScript
-      case .braveLeoAIChat: return BraveLeoScriptHandler.userScript
+      case .windowRenderHelper:
+        return Preferences.UserScript.windowRender.value
+          ? WindowRenderScriptHandler.userScript : nil
+      case .readyStateHelper:
+        return Preferences.UserScript.readyState.value ? ReadyStateScriptHandler.userScript : nil
+      case .youtubeQuality:
+        return Preferences.UserScript.youtubeQuality.value
+          ? YoutubeQualityScriptHandler.userScript : nil
+      case .braveLeoAIChat:
+        return Preferences.UserScript.leo.value ? BraveLeoScriptHandler.userScript : nil
       }
     }
 
@@ -243,6 +285,10 @@ class UserScriptManager {
   }
 
   public func loadScripts(into webView: WKWebView, scripts: Set<ScriptType>) {
+    if Preferences.UserScript.blockAllScripts.value {
+      return
+    }
+
     var scripts = scripts
 
     webView.configuration.userContentController.do { scriptController in
@@ -292,6 +338,10 @@ class UserScriptManager {
     userScripts: Set<ScriptType>,
     customScripts: Set<UserScriptType>
   ) {
+    if Preferences.UserScript.blockAllScripts.value {
+      return
+    }
+
     guard let webView = tab.webView else {
       Logger.module.info("Injecting Scripts into a Tab that has no WebView")
       return
@@ -332,7 +382,8 @@ class UserScriptManager {
       if !tab.isPrivate,
         Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value)
           == .brave,
-        let solanaWeb3Script = self.walletSolanaWeb3Script
+        let solanaWeb3Script = Preferences.UserScript.solanaProvider.value
+          ? self.walletSolanaWeb3Script : nil
       {
         scriptController.addUserScript(solanaWeb3Script)
       }
@@ -352,7 +403,8 @@ class UserScriptManager {
       }
 
       if !tab.isPrivate,
-        let walletStandardScript = self.walletSolanaWalletStandardScript
+        let walletStandardScript = Preferences.UserScript.solanaProvider.value
+          ? self.walletSolanaWalletStandardScript : nil
       {
         scriptController.addUserScript(walletStandardScript)
       }
