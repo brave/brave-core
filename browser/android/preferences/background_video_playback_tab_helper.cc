@@ -36,16 +36,16 @@ const char16_t k_youtube_background_playback_script[] =
     "    }"
     "}());";
 
-const char16_t k_youtube_highest_video_quality_script[] =
+const char16_t k_youtube_hd_video_quality_script[] =
     u"(function() {"
     "    var player = document.getElementById('movie_player');"
     "    if (player) {"
     "        if (player.setPlaybackQualityRange) {"
-    "            player.setPlaybackQualityRange('highres');"
+    "            player.setPlaybackQualityRange('hd720');"
     "            return;"
     "        }"
     "        if (player.setPlaybackQuality) {"
-    "            player.setPlaybackQuality('highres');"
+    "            player.setPlaybackQuality('hd720');"
     "            return;"
     "        }"
     "    }"
@@ -75,7 +75,7 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   return true;
 }
 
-bool IsHighestQualityPlaybackEnabled(content::WebContents* contents) {
+bool IsHDQualityPlaybackEnabled(content::WebContents* contents) {
   PrefService* prefs =
       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
 
@@ -112,9 +112,9 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
         k_youtube_background_playback_script, base::NullCallback());
   }
 
-  if (IsHighestQualityPlaybackEnabled(web_contents())) {
+  if (IsHDQualityPlaybackEnabled(web_contents())) {
     web_contents()->GetPrimaryMainFrame()->ExecuteJavaScript(
-        k_youtube_highest_video_quality_script, base::NullCallback());
+        k_youtube_hd_video_quality_script, base::NullCallback());
   }
 }
 

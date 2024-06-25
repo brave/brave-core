@@ -43,8 +43,8 @@
             android:defaultValue="false" />
         <Preference
             android:fragment="org.chromium.chrome.browser.settings.BraveMediaYTQualityPreferences"
-            android:title="@string/youtube_highest_quality_playback"
-            android:summary="@string/youtube_highest_quality_playback_description" />
+            android:title="@string/youtube_high_definition_playback"
+            android:summary="@string/youtube_high_definition_playback_description" />
 
     </PreferenceCategory>
 

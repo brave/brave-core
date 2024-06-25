@@ -22,22 +22,29 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:minHeight="@dimen/min_touch_target_size"
-         app:primaryText="@string/quality_settings_on" />
+         app:primaryText="@string/hd_quality_settings_on" />
 
       <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
          android:id="@+id/allow_over_wifi"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:minHeight="@dimen/min_touch_target_size"
-         app:primaryText="@string/quality_settings_allow_over_wifi" />
+         app:primaryText="@string/hd_quality_settings_allow_over_wifi" />
 
       <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
          android:id="@+id/off"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:minHeight="@dimen/min_touch_target_size"
-         app:primaryText="@string/quality_settings_off" />
+         app:primaryText="@string/hd_quality_settings_off" />
 
    </org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout>
+
+   <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="20dp"
+      android:text="@string/hd_quality_settings_note"
+      android:textSize="14sp"/>
 
 </LinearLayout>

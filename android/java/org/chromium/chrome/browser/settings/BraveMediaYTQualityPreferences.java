@@ -21,7 +21,7 @@ public class BraveMediaYTQualityPreferences extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
-        getActivity().setTitle(R.string.quality_settings_title);
+        getActivity().setTitle(R.string.hd_quality_settings_title);
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_media_yt_quality_preferences);
 
         BraveMediaRadioButtonYTQualityPreference mRadioButtons =
