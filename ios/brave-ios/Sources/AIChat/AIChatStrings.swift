@@ -649,6 +649,13 @@ extension Strings {
       value: "Chat",
       comment: "The title of the section where chat models are displayed as a list."
     )
+    public static let customModelChatSectionTitle = NSLocalizedString(
+      "aichat.customModelChatSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Custom Models",
+      comment: "The title of the section where custom models are displayed as a list."
+    )
     public static let unlimitedModelStatusTitle = NSLocalizedString(
       "aichat.unlimitedModelStatusTitle",
       tableName: "BraveLeo",
@@ -830,6 +837,13 @@ extension Strings {
       bundle: .module,
       value: "Chat",
       comment: "The title for the chat section in the menu"
+    )
+    public static let customModelsMenuSectionTitle = NSLocalizedString(
+      "aichat.customModelsMenuSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Custom Models",
+      comment: "The title for the custom models section in the menu"
     )
     public static let askLeoSearchSuggestionTitle = NSLocalizedString(
       "aichat.askLeoSearchSuggestionTitle",
