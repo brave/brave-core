@@ -88,4 +88,6 @@ export const _SolStakingChange = () => {
   )
 }
 
-export default {}
+export default {
+  title: 'SVM State Changes'
+}

@@ -10,16 +10,20 @@ import {
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { CopyLabel } from './copy_label'
 
-export const _CopyLabel = () => {
-  return (
-    <WalletPanelStory>
-      <CopyLabel textToCopy='text to copy'>
-        Text <strong>Bold</strong>
-      </CopyLabel>
-    </WalletPanelStory>
-  )
+export const _CopyLabel = {
+  title: 'Copy Label',
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <CopyLabel textToCopy='text to copy'>
+          Text <strong>Bold</strong>
+        </CopyLabel>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_CopyLabel.storyName = 'Copy Label'
-
-export default _CopyLabel
+export default {
+  title: 'Copy Label',
+  component: CopyLabel
+}

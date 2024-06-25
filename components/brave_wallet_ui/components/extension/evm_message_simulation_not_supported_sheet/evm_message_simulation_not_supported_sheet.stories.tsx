@@ -13,15 +13,18 @@ import {
   EvmMessageSimulationNotSupportedSheet //
 } from './evm_message_simulation_not_supported_sheet'
 
-export const _EvmMessageSimulationNotSupportedSheet = () => {
-  return (
-    <WalletPanelStory>
-      <EvmMessageSimulationNotSupportedSheet />
-    </WalletPanelStory>
-  )
+export const _EvmMessageSimulationNotSupportedSheet = {
+  title: 'EVM Message Simulation Not Supported Sheet',
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <EvmMessageSimulationNotSupportedSheet />
+      </WalletPanelStory>
+    )
+  }
 }
 
-_EvmMessageSimulationNotSupportedSheet.storyName =
-  'EVM Message Simulation Not Supported Sheet'
-
-export default _EvmMessageSimulationNotSupportedSheet
+export default {
+  title: 'EVM Message Simulation Not Supported Sheet',
+  component: EvmMessageSimulationNotSupportedSheet
+}

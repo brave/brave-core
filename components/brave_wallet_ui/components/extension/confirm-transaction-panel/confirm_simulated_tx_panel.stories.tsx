@@ -152,78 +152,78 @@ const svmSimulationResponse: BraveWallet.SolanaSimulationResponse = {
     .concat(mockSendSolNftEvent)
     .concat(mockSolStakingChangeSimulation.expectedStateChanges[0])
 }
-export const _ConfirmSimulatedEvmTransactionPanel = () => {
-  return (
-    <WalletPanelStory
-      walletStateOverride={{
-        hasInitialized: true,
-        isWalletCreated: true
-      }}
-      panelStateOverride={{
-        hasInitialized: true
-      }}
-      uiStateOverride={{
-        selectedPendingTransactionId: mockEvmTxInfos[0].id
-      }}
-      walletApiDataOverrides={{
-        accountInfos: _mockEvmAccountInfos,
-        evmSimulationResponse: evmSimulationResponse,
-        selectedAccountId: findAccountByAccountId(
-          mockEvmTxInfos[0].fromAccountId,
-          mockAccountsRegistry
-        )?.accountId,
-        transactionInfos: mockEvmTxInfos
-      }}
-    >
-      <PanelWrapper isLonger>
-        <LongWrapper padding='0px'>
-          <ConfirmSimulatedTransactionPanel
-            simulationType='EVM'
-            txSimulation={mockEvmSimulatedResponse}
-          />
-        </LongWrapper>
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _ConfirmSimulatedEvmTransactionPanel = {
+  title: 'Confirm Simulated EVM Transaction Panel',
+  render: () => {
+    return (
+      <WalletPanelStory
+        walletStateOverride={{
+          hasInitialized: true,
+          isWalletCreated: true
+        }}
+        panelStateOverride={{
+          hasInitialized: true
+        }}
+        uiStateOverride={{
+          selectedPendingTransactionId: mockEvmTxInfos[0].id
+        }}
+        walletApiDataOverrides={{
+          accountInfos: _mockEvmAccountInfos,
+          evmSimulationResponse: evmSimulationResponse,
+          selectedAccountId: findAccountByAccountId(
+            mockEvmTxInfos[0].fromAccountId,
+            mockAccountsRegistry
+          )?.accountId,
+          transactionInfos: mockEvmTxInfos
+        }}
+      >
+        <PanelWrapper isLonger>
+          <LongWrapper padding='0px'>
+            <ConfirmSimulatedTransactionPanel
+              simulationType='EVM'
+              txSimulation={mockEvmSimulatedResponse}
+            />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_ConfirmSimulatedEvmTransactionPanel.story = {
-  name: 'Confirm Simulated EVM Transaction Panel'
+export const _ConfirmSimulatedSvmTransactionPanel = {
+  title: 'Confirm Simulated SVM Transaction Panel',
+  render: () => {
+    return (
+      <WalletPanelStory
+        walletStateOverride={{
+          hasInitialized: true,
+          isWalletCreated: true
+        }}
+        panelStateOverride={{
+          hasInitialized: true
+        }}
+        uiStateOverride={{
+          selectedPendingTransactionId: mockSvmTxInfos[0].id
+        }}
+        walletApiDataOverrides={{
+          accountInfos: [mockSolanaTransactionInfoAccount],
+          svmSimulationResponse: svmSimulationResponse,
+          selectedAccountId: findAccountByAccountId(
+            mockSvmTxInfos[0].fromAccountId,
+            mockAccountsRegistry
+          )?.accountId,
+          transactionInfos: mockSvmTxInfos
+        }}
+      >
+        <ConfirmSimulatedTransactionPanel
+          simulationType='SVM'
+          txSimulation={mockSvmSimulationResult}
+        />
+      </WalletPanelStory>
+    )
+  }
 }
 
-export const _ConfirmSimulatedSvmTransactionPanel = () => {
-  return (
-    <WalletPanelStory
-      walletStateOverride={{
-        hasInitialized: true,
-        isWalletCreated: true
-      }}
-      panelStateOverride={{
-        hasInitialized: true
-      }}
-      uiStateOverride={{
-        selectedPendingTransactionId: mockSvmTxInfos[0].id
-      }}
-      walletApiDataOverrides={{
-        accountInfos: [mockSolanaTransactionInfoAccount],
-        svmSimulationResponse: svmSimulationResponse,
-        selectedAccountId: findAccountByAccountId(
-          mockSvmTxInfos[0].fromAccountId,
-          mockAccountsRegistry
-        )?.accountId,
-        transactionInfos: mockSvmTxInfos
-      }}
-    >
-      <ConfirmSimulatedTransactionPanel
-        simulationType='SVM'
-        txSimulation={mockSvmSimulationResult}
-      />
-    </WalletPanelStory>
-  )
+export default {
+  title: 'Confirm Simulated Transaction Panel'
 }
-
-_ConfirmSimulatedSvmTransactionPanel.story = {
-  name: 'Confirm Simulated SVM Transaction Panel'
-}
-
-export default _ConfirmSimulatedEvmTransactionPanel
