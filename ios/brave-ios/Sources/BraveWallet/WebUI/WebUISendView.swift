@@ -12,5 +12,7 @@ struct WebUISendView: View {
     ChromeWebView(title: Strings.Wallet.send, urlString: "brave://wallet/send")
       .navigationTitle(Strings.Wallet.send)
       .navigationBarTitleDisplayMode(.inline)
+      .background(Color(braveSystemName: .containerBackground))
+      .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 }
