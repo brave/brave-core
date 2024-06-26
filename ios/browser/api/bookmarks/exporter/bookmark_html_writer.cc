@@ -500,7 +500,7 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // BookmarkModel using BookmarkCodec then write from that.
   bookmarks::BookmarkModel* bookmark_model_;
   if (base::FeatureList::IsEnabled(
-          syncer::kEnableBookmarkFoldersForAccountStorage)) {
+          syncer::kSyncEnableBookmarksInTransportMode)) {
     bookmark_model_ = ios::BookmarkModelFactory::
         GetModelForBrowserStateIfUnificationEnabledOrDie(browser_state_);
   } else {

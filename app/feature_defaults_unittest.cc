@@ -260,7 +260,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &shared_highlighting::kIOSSharedHighlightingV2,
       &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
-      &syncer::kEnableBookmarkFoldersForAccountStorage,
+      &syncer::kSyncEnableBookmarksInTransportMode,
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif

@@ -86,7 +86,7 @@ void BookmarksImporter::AddBookmarks(
       browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
   bookmarks::BookmarkModel* model;
   if (base::FeatureList::IsEnabled(
-          syncer::kEnableBookmarkFoldersForAccountStorage)) {
+          syncer::kSyncEnableBookmarksInTransportMode)) {
     model = ios::BookmarkModelFactory::
         GetModelForBrowserStateIfUnificationEnabledOrDie(browser_state);
   } else {
