@@ -313,7 +313,7 @@ RegisterPolymerTemplateModifications({
       sectionLeoCustomModels.setAttribute('is', 'dom-if')
       sectionLeoCustomModels.setAttribute('restamp', 'true')
       sectionLeoCustomModels
-        .setAttribute('if', '[[showPage_(pageVisibility.leoCustomModels)]]')
+        .setAttribute('if', '[[showPage_(pageVisibility.leoAssistant)]]')
       sectionLeoCustomModels.content.appendChild(createNestedSectionElement(
         'leoAssistant',
         'leoAssistant',
