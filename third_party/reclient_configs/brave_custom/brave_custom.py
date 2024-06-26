@@ -33,6 +33,13 @@ def merge_reproxy_cfg(reproxy_cfg):
         if value:
             reproxy_cfg[env_var[4:]] = value
 
+    # Enable deps cache everywhere. It's cleaned automatically on any
+    # chromium_src/* touch to have correct builds.
+    reproxy_cfg = ReclientCfg.merge_cfg(reproxy_cfg, {
+        'enable_deps_cache': 'true',
+        'deps_cache_max_mb': '1024'
+    })
+
     return reproxy_cfg
 
 
