@@ -489,22 +489,22 @@ void BraveBrowserView::UpdateContentsWebViewBorder() {
   DCHECK(split_view_browser_data);
 
   if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
-    auto create_border = [this](SkColor color) {
-      constexpr auto kFocusRingThickness = 2;
+    auto create_border = [this](SkColor color, int border_thickness) {
       return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())
                  ? views::CreateRoundedRectBorder(
-                       kFocusRingThickness,
+                       border_thickness,
                        BraveContentsViewUtil::kBorderRadius +
-                           kFocusRingThickness / 2,
+                           border_thickness / 2,
                        color)
-                 : views::CreateSolidBorder(kFocusRingThickness, color);
+                 : views::CreateSolidBorder(border_thickness, color);
     };
 
-    contents_web_view_->SetBorder(create_border(leo::kColorPrimitivePrimary40));
-
     if (auto* cp = GetColorProvider()) {
+      contents_web_view_->SetBorder(
+          create_border(leo::kColorPrimitivePrimary40, 2));
+
       secondary_contents_web_view_->SetBorder(create_border(
-          cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder)));
+          cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder), 1));
     }
   } else {
     contents_web_view_->SetBorder(nullptr);

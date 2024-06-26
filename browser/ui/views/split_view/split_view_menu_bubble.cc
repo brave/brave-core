@@ -38,9 +38,6 @@ class ItemView : public views::LabelButton {
   METADATA_HEADER(ItemView, LabelButton)
  public:
   ItemView() {
-    auto* ink_drop = views::InkDrop::Get(this);
-    ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-    ink_drop->SetBaseColorId(ui::kColorSysOnSurfaceSubtle);
     SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(0, 13)));
 
     image_container_view()->SetPreferredSize(
@@ -80,7 +77,7 @@ void SplitViewMenuBubble::Show(Browser* browser, views::View* anchor) {
 
 SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::TOP_LEFT) {
-  set_margins(gfx::Insets());
+  set_margins(gfx::Insets::VH(4, 0));
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   SetButtons(ui::DIALOG_BUTTON_NONE);
