@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 
+#include <algorithm>
 #include <map>
 #include <optional>
 #include <utility>
