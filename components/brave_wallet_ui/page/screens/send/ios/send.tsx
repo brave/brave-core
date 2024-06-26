@@ -46,10 +46,10 @@ export function IOSSendApp() {
         >
           <Switch>
             <Route path={WalletRoutes.Send}>
-              <SendScreen />
+              <SendScreen isIOS={true} />
             </Route>
             <Route path={WalletRoutes.Swap}>
-              <Swap />
+              <Swap isIOS={true} />
             </Route>
           </Switch>
         </BraveCoreThemeProvider>
