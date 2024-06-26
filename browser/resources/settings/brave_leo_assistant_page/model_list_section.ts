@@ -86,19 +86,6 @@ class ModelListSection extends ModelListSectionBase {
       return
     }
 
-    // We need to check if the URL is valid because sending bad URL will cause
-    // renderer to crash. This is mainly due to mojo IPC not being able to
-    // handle bad URLs properly for |mojomUrl| type
-    try {
-      new URL(e.detail.modelConfig.options.customModelOptions.endpoint.url)
-    } catch {
-      modelConfigElement.isUrlInvalid = true
-      modelConfigElement.invalidUrlErrorMessage = this.i18n(
-        'braveLeoAssistantEndpointInvalidError'
-      )
-      return
-    }
-
     let response = null
     if (isEditing) {
       response = await this.browserProxy_

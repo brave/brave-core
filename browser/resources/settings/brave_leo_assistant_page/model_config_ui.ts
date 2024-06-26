@@ -48,7 +48,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       },
       isUrlInvalid: {
         type: Boolean,
-        value: false
+        value: false,
       },
       invalidUrlErrorMessage: {
         type: String,
@@ -131,6 +131,19 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   onModelServerEndpointChange_(e: any) {
     this.endpointUrl = e.target.value
+
+    // We need to check if the URL is valid because sending bad URL will cause
+    // renderer to crash. This is mainly due to mojo IPC not being able to
+    // handle bad URLs properly for |mojomUrl| type
+    try {
+      new URL(e.target.value)
+      this.isUrlInvalid = false
+    } catch {
+      this.isUrlInvalid = true
+      this.invalidUrlErrorMessage = this.i18n(
+        'braveLeoAssistantEndpointInvalidError'
+      )
+    }
   }
 
   onModelApiKeyChange_(e: any) {
@@ -139,7 +152,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
 
   private saveEnabled_() {
     // Make sure all required fields are filled
-    return this.label && this.modelRequestName && this.endpointUrl
+    return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
   }
 
   private onModelItemChange_(newValue: mojom.Model | null) {
