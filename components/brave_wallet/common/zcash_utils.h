@@ -57,6 +57,7 @@ struct DecodedZCashAddress {
 struct OrchardOutput {
   uint64_t value = 0;
   std::array<std::uint8_t, ::brave_wallet::kOrchardRawBytesSize> addr;
+  auto operator<=>(const OrchardOutput&) const = default;
 };
 
 bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);

@@ -99,19 +99,7 @@ class ZCashTransaction {
     std::vector<TxOutput> outputs;
   };
 
-  struct OrchardOutput {
-    OrchardOutput();
-    ~OrchardOutput();
-    OrchardOutput(OrchardOutput&& other);
-    OrchardOutput(const OrchardOutput& other) = delete;
-    OrchardOutput& operator=(const OrchardOutput& other) = delete;
-    OrchardOutput& operator=(OrchardOutput&& other);
-    bool operator==(const OrchardOutput& other) const;
-    bool operator!=(const OrchardOutput& other) const;
-
-    uint64_t value;
-    std::array<uint8_t, kOrchardRawBytesSize> address;
-  };
+  using OrchardOutput = ::brave_wallet::OrchardOutput;
 
   struct OrchardPart {
     OrchardPart();

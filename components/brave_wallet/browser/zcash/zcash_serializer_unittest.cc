@@ -223,16 +223,16 @@ TEST(ZCashSerializerTest, OrchardBundle) {
   {
     ZCashTransaction::OrchardOutput output;
     output.value = 100000;
-    output.address = {212, 113, 78,  231, 97,  209, 174, 130, 59,  105, 114,
-                      21,  46,  32,  149, 127, 239, 163, 246, 227, 18,  158,
-                      164, 223, 176, 169, 233, 135, 3,   166, 61,  171, 146,
-                      149, 137, 214, 220, 81,  201, 112, 249, 53,  179};
+    output.addr = {212, 113, 78,  231, 97,  209, 174, 130, 59,  105, 114,
+                   21,  46,  32,  149, 127, 239, 163, 246, 227, 18,  158,
+                   164, 223, 176, 169, 233, 135, 3,   166, 61,  171, 146,
+                   149, 137, 214, 220, 81,  201, 112, 249, 53,  179};
     tx.orchard_part().outputs.push_back(std::move(output));
   }
 
   std::vector<OrchardOutput> outputs;
   for (const auto& output : tx.orchard_part().outputs) {
-    outputs.push_back(OrchardOutput{output.value, output.address});
+    outputs.push_back(OrchardOutput{output.value, output.addr});
   }
 
   OrchardBundleManager::OverrideRandomSeedForTesting(0);

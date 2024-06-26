@@ -115,21 +115,6 @@ bool ZCashTransaction::Outpoint::operator!=(
   return !(*this == other);
 }
 
-ZCashTransaction::OrchardOutput::OrchardOutput() = default;
-ZCashTransaction::OrchardOutput::~OrchardOutput() = default;
-ZCashTransaction::OrchardOutput::OrchardOutput(OrchardOutput&& other) = default;
-ZCashTransaction::OrchardOutput& ZCashTransaction::OrchardOutput::operator=(
-    OrchardOutput&& other) = default;
-bool ZCashTransaction::OrchardOutput::operator==(
-    const ZCashTransaction::OrchardOutput& other) const {
-  return std::tie(this->address, this->value) ==
-         std::tie(other.address, other.value);
-}
-bool ZCashTransaction::OrchardOutput::operator!=(
-    const ZCashTransaction::OrchardOutput& other) const {
-  return !(*this == other);
-}
-
 ZCashTransaction::OrchardPart::OrchardPart() = default;
 ZCashTransaction::OrchardPart::~OrchardPart() = default;
 ZCashTransaction::OrchardPart::OrchardPart(OrchardPart&& other) = default;

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_GET_TRANSPARENT_UTXOS_CONTEXT_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_GET_TRANSPARENT_UTXOS_CONTEXT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GET_TRANSPARENT_UTXOS_CONTEXT_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GET_TRANSPARENT_UTXOS_CONTEXT_H_
 
 #include <string>
 
@@ -14,10 +14,9 @@
 
 namespace brave_wallet {
 
-class GetTransparentUtxosContext
-    : public base::RefCountedThreadSafe<GetTransparentUtxosContext> {
+class ZCashGetTransparentUtxosContext
+    : public base::RefCountedThreadSafe<ZCashGetTransparentUtxosContext> {
  public:
-  GetTransparentUtxosContext();
   using GetUtxosCallback = ZCashWalletService::GetUtxosCallback;
 
   std::set<std::string> addresses;
@@ -30,11 +29,13 @@ class GetTransparentUtxosContext
   void SetError(const std::string& error_string) { error = error_string; }
 
  protected:
-  friend class base::RefCountedThreadSafe<GetTransparentUtxosContext>;
+  friend class ZCashWalletService;
 
-  virtual ~GetTransparentUtxosContext();
+  friend class base::RefCountedThreadSafe<ZCashGetTransparentUtxosContext>;
+  ZCashGetTransparentUtxosContext();
+  virtual ~ZCashGetTransparentUtxosContext();
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_GET_TRANSPARENT_UTXOS_CONTEXT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_GET_TRANSPARENT_UTXOS_CONTEXT_H_

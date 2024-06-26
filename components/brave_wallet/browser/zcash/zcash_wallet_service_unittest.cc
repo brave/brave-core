@@ -510,7 +510,45 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
   }
 }
 
-#if BUILDFLAG(ENABLE_ORCHARD)
+// Disabled on android due timeout failures
+#if BUILDFLAG(ENABLE_ORCHARD) && !BUILDFLAG(IS_ANDROID)
+
+TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
+  // Creating authorized orchard bundle may take a time
+  base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
+                                                    base::Minutes(1));
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(
+      "gate junior chunk maple cage select orange circle price air tortoise "
+      "jelly art frequent fence middle ice moral wage toddler attitude sign "
+      "lesson grain",
+      kTestWalletPassword, false, base::DoNothing());
+  OrchardBundleManager::OverrideRandomSeedForTesting(70972);
+  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+  keyring_service()->UpdateNextUnusedAddressForZCashAccount(account_id, 1, 0);
+  ON_CALL(*zcash_rpc(), GetLatestTreeState(_, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const std::string& chain_id,
+                                ZCashRpc::GetTreeStateCallback callback) {
+            std::move(callback).Run(base::unexpected("error"));
+          }));
+
+  base::MockCallback<ZCashWalletService::ShieldFundsCallback>
+      shield_funds_callback;
+  EXPECT_CALL(shield_funds_callback, Run(_, _))
+      .WillOnce([&](const std::optional<std::string>& result,
+                    const std::optional<std::string>& error) {
+        EXPECT_FALSE(result);
+        EXPECT_TRUE(error);
+      });
+  zcash_wallet_service_->ShieldFunds(mojom::kZCashMainnet, account_id.Clone(),
+                                     shield_funds_callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&shield_funds_callback);
+}
 
 // https://zcashblockexplorer.com/transactions/9956437828356014ae531b71f6a0337bb7980abf5e4d3d572a117a3f97db8a15/raw
 TEST_F(ZCashWalletServiceUnitTest, ShieldFunds) {
@@ -891,6 +929,7 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds) {
       "a0cc1ee2786fcff9586d891fd0748430170aeba911fc42a632",
       ToHex(captured_data));
 }
+
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

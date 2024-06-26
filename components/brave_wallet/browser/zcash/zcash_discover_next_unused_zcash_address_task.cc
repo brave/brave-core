@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/discover_next_unused_zcash_address_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -12,26 +12,28 @@
 
 namespace brave_wallet {
 
-DiscoverNextUnusedZCashAddressTask::DiscoverNextUnusedZCashAddressTask(
-    base::WeakPtr<ZCashWalletService> zcash_wallet_service,
-    mojom::AccountIdPtr account_id,
-    mojom::ZCashAddressPtr start_address,
-    ZCashWalletService::DiscoverNextUnusedAddressCallback callback)
+ZCashDiscoverNextUnusedZCashAddressTask::
+    ZCashDiscoverNextUnusedZCashAddressTask(
+        base::WeakPtr<ZCashWalletService> zcash_wallet_service,
+        mojom::AccountIdPtr account_id,
+        mojom::ZCashAddressPtr start_address,
+        ZCashWalletService::DiscoverNextUnusedAddressCallback callback)
     : zcash_wallet_service_(std::move(zcash_wallet_service)),
       account_id_(std::move(account_id)),
       start_address_(std::move(start_address)),
       callback_(std::move(callback)) {}
 
-DiscoverNextUnusedZCashAddressTask::~DiscoverNextUnusedZCashAddressTask() =
-    default;
+ZCashDiscoverNextUnusedZCashAddressTask::
+    ~ZCashDiscoverNextUnusedZCashAddressTask() = default;
 
-void DiscoverNextUnusedZCashAddressTask::ScheduleWorkOnTask() {
+void ZCashDiscoverNextUnusedZCashAddressTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
-      base::BindOnce(&DiscoverNextUnusedZCashAddressTask::WorkOnTask, this));
+      base::BindOnce(&ZCashDiscoverNextUnusedZCashAddressTask::WorkOnTask,
+                     this));
 }
 
-mojom::ZCashAddressPtr DiscoverNextUnusedZCashAddressTask::GetNextAddress(
+mojom::ZCashAddressPtr ZCashDiscoverNextUnusedZCashAddressTask::GetNextAddress(
     const mojom::ZCashAddressPtr& address) {
   auto* keyring_service = zcash_wallet_service_->keyring_service_.get();
   CHECK(keyring_service);
@@ -42,7 +44,7 @@ mojom::ZCashAddressPtr DiscoverNextUnusedZCashAddressTask::GetNextAddress(
   return keyring_service->GetZCashAddress(*account_id_, *next_key_id);
 }
 
-void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
+void ZCashDiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   if (!callback_) {
     return;
   }
@@ -66,7 +68,7 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   if (!block_end_) {
     zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
         GetNetworkForZCashKeyring(account_id_->keyring_id),
-        base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
+        base::BindOnce(&ZCashDiscoverNextUnusedZCashAddressTask::OnGetLastBlock,
                        this));
     return;
   }
@@ -86,11 +88,11 @@ void DiscoverNextUnusedZCashAddressTask::WorkOnTask() {
   zcash_wallet_service_->zcash_rpc()->IsKnownAddress(
       GetNetworkForZCashKeyring(account_id_->keyring_id),
       current_address_->address_string, 1, block_end_.value(),
-      base::BindOnce(&DiscoverNextUnusedZCashAddressTask::OnGetIsKnownAddress,
-                     this));
+      base::BindOnce(
+          &ZCashDiscoverNextUnusedZCashAddressTask::OnGetIsKnownAddress, this));
 }
 
-void DiscoverNextUnusedZCashAddressTask::OnGetLastBlock(
+void ZCashDiscoverNextUnusedZCashAddressTask::OnGetLastBlock(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
     error_ = result.error();
@@ -102,7 +104,7 @@ void DiscoverNextUnusedZCashAddressTask::OnGetLastBlock(
   WorkOnTask();
 }
 
-void DiscoverNextUnusedZCashAddressTask::OnGetIsKnownAddress(
+void ZCashDiscoverNextUnusedZCashAddressTask::OnGetIsKnownAddress(
     base::expected<bool, std::string> result) {
   if (!result.has_value()) {
     error_ = result.error();

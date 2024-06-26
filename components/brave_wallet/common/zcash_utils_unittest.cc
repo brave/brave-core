@@ -350,4 +350,38 @@ TEST(ZCashUtilsUnitTest, GetMergedUnifiedAddress) {
   }
 }
 
+TEST(ZCashUtilsUnitTest, CalculateZCashTxFee) {
+  EXPECT_EQ(25000u, CalculateZCashTxFee(5, 0));
+  EXPECT_EQ(25000u, CalculateZCashTxFee(0, 5));
+  EXPECT_EQ(10000u, CalculateZCashTxFee(1, 0));
+  EXPECT_EQ(10000u, CalculateZCashTxFee(0, 1));
+  EXPECT_EQ(50000u, CalculateZCashTxFee(5, 5));
+  EXPECT_EQ(10000u, CalculateZCashTxFee(1, 1));
+}
+
+TEST(ZCashUtilsUnitTest, OutputZCashAddressSupported) {
+  EXPECT_FALSE(OutputZCashAddressSupported(
+      "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
+      "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl__",
+      false));
+  EXPECT_TRUE(OutputZCashAddressSupported(
+      "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
+      "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl",
+      false));
+  EXPECT_FALSE(OutputZCashAddressSupported(
+      "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
+      "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl",
+      true));
+  EXPECT_TRUE(OutputZCashAddressSupported(
+      "utest16zd8zfx6n6few7mjsjpn6qtn8tlg6law7qnq33257855mdqekk7vru8lettx3vud"
+      "4mh99elglddltmfjkduar69h7vy08h3xdq6zuls9pqq7quyuehjqwtthc3hfd8gshhw42d"
+      "fr96e",
+      true));
+  EXPECT_FALSE(OutputZCashAddressSupported(
+      "utest16zd8zfx6n6few7mjsjpn6qtn8tlg6law7qnq33257855mdqekk7vru8lettx3vud"
+      "4mh99elglddltmfjkduar69h7vy08h3xdq6zuls9pqq7quyuehjqwtthc3hfd8gshhw42d"
+      "fr96e",
+      false));
+}
+
 }  // namespace brave_wallet

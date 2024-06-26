@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/create_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -12,7 +12,7 @@
 namespace brave_wallet {
 
 // CreateTransparentTransactionTask
-CreateTransparentTransactionTask::CreateTransparentTransactionTask(
+ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
     ZCashWalletService* zcash_wallet_service,
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,
@@ -27,15 +27,17 @@ CreateTransparentTransactionTask::CreateTransparentTransactionTask(
   transaction_.set_amount(amount);
 }
 
-CreateTransparentTransactionTask::~CreateTransparentTransactionTask() = default;
+ZCashCreateTransparentTransactionTask::
+    ~ZCashCreateTransparentTransactionTask() = default;
 
-void CreateTransparentTransactionTask::ScheduleWorkOnTask() {
+void ZCashCreateTransparentTransactionTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&CreateTransparentTransactionTask::WorkOnTask,
-                                weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE,
+      base::BindOnce(&ZCashCreateTransparentTransactionTask::WorkOnTask,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CreateTransparentTransactionTask::WorkOnTask() {
+void ZCashCreateTransparentTransactionTask::WorkOnTask() {
   if (!callback_) {
     return;
   }
@@ -49,7 +51,7 @@ void CreateTransparentTransactionTask::WorkOnTask() {
   if (!chain_height_) {
     zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
         chain_id_,
-        base::BindOnce(&CreateTransparentTransactionTask::OnGetChainHeight,
+        base::BindOnce(&ZCashCreateTransparentTransactionTask::OnGetChainHeight,
                        weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -57,15 +59,16 @@ void CreateTransparentTransactionTask::WorkOnTask() {
   if (!change_address_) {
     zcash_wallet_service_->DiscoverNextUnusedAddress(
         account_id_, true,
-        base::BindOnce(&CreateTransparentTransactionTask::OnGetChangeAddress,
-                       weak_ptr_factory_.GetWeakPtr()));
+        base::BindOnce(
+            &ZCashCreateTransparentTransactionTask::OnGetChangeAddress,
+            weak_ptr_factory_.GetWeakPtr()));
     return;
   }
 
   if (utxo_map_.empty()) {
     zcash_wallet_service_->GetUtxos(
         chain_id_, account_id_.Clone(),
-        base::BindOnce(&CreateTransparentTransactionTask::OnGetUtxos,
+        base::BindOnce(&ZCashCreateTransparentTransactionTask::OnGetUtxos,
                        weak_ptr_factory_.GetWeakPtr()));
     return;
   }
@@ -94,7 +97,7 @@ void CreateTransparentTransactionTask::WorkOnTask() {
   zcash_wallet_service_->CreateTransactionTaskDone(this);
 }
 
-void CreateTransparentTransactionTask::OnGetChainHeight(
+void ZCashCreateTransparentTransactionTask::OnGetChainHeight(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
     SetError(std::move(result).error());
@@ -106,7 +109,7 @@ void CreateTransparentTransactionTask::OnGetChainHeight(
   WorkOnTask();
 }
 
-void CreateTransparentTransactionTask::OnGetChangeAddress(
+void ZCashCreateTransparentTransactionTask::OnGetChangeAddress(
     base::expected<mojom::ZCashAddressPtr, std::string> result) {
   if (!result.has_value()) {
     SetError(std::move(result).error());
@@ -118,7 +121,7 @@ void CreateTransparentTransactionTask::OnGetChangeAddress(
   WorkOnTask();
 }
 
-void CreateTransparentTransactionTask::OnGetUtxos(
+void ZCashCreateTransparentTransactionTask::OnGetUtxos(
     base::expected<UtxoMap, std::string> utxo_map) {
   if (!utxo_map.has_value()) {
     SetError(std::move(utxo_map).error());
@@ -130,7 +133,7 @@ void CreateTransparentTransactionTask::OnGetUtxos(
   WorkOnTask();
 }
 
-bool CreateTransparentTransactionTask::PickInputs() {
+bool ZCashCreateTransparentTransactionTask::PickInputs() {
   bool done = false;
 
   // TODO(apaymyshev): This just picks ouputs one by one and stops when picked
@@ -173,7 +176,7 @@ bool CreateTransparentTransactionTask::PickInputs() {
   return done;
 }
 
-bool CreateTransparentTransactionTask::PrepareOutputs() {
+bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
   auto& target_output = transaction_.transparent_part().outputs.emplace_back();
   target_output.address = transaction_.to();
   if (!OutputZCashAddressSupported(target_output.address, IsTestnet())) {

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
 
 #include <set>
 #include <string>
@@ -18,19 +18,21 @@ namespace brave_wallet {
 // This tasks takes all transparent UTXOs for an account and
 // creates transaction which transfers this funds to the internal shielded
 // address.
-class CreateShieldAllTransactionTask {
+class ZCashCreateShieldAllTransactionTask {
  public:
-  CreateShieldAllTransactionTask(
+  ~ZCashCreateShieldAllTransactionTask();
+
+  void ScheduleWorkOnTask();
+
+ private:
+  friend class ZCashWalletService;
+
+  ZCashCreateShieldAllTransactionTask(
       ZCashWalletService* zcash_wallet_service,
       const std::string& chain_id,
       const mojom::AccountIdPtr& account_id,
       ZCashWalletService::CreateTransactionCallback callback);
 
-  ~CreateShieldAllTransactionTask();
-
-  void ScheduleWorkOnTask();
-
- private:
   void WorkOnTask();
 
   void GetAllUtxos();
@@ -64,9 +66,10 @@ class CreateShieldAllTransactionTask {
 
   ZCashWalletService::CreateTransactionCallback callback_;
 
-  base::WeakPtrFactory<CreateShieldAllTransactionTask> weak_ptr_factory_{this};
+  base::WeakPtrFactory<ZCashCreateShieldAllTransactionTask> weak_ptr_factory_{
+      this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_ALL_TRANSACTION_TASK_H_

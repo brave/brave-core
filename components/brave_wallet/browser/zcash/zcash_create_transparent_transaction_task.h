@@ -3,31 +3,35 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-class CreateTransparentTransactionTask {
+class ZCashCreateTransparentTransactionTask {
  public:
   using UtxoMap = ZCashWalletService::UtxoMap;
   using CreateTransactionCallback =
       ZCashWalletService::CreateTransactionCallback;
 
-  CreateTransparentTransactionTask(ZCashWalletService* zcash_wallet_service,
-                                   const std::string& chain_id,
-                                   const mojom::AccountIdPtr& account_id,
-                                   const std::string& address_to,
-                                   uint64_t amount,
-                                   CreateTransactionCallback callback);
-  virtual ~CreateTransparentTransactionTask();
+  virtual ~ZCashCreateTransparentTransactionTask();
 
   void ScheduleWorkOnTask();
 
  private:
+  friend class ZCashWalletService;
+
+  ZCashCreateTransparentTransactionTask(
+      ZCashWalletService* zcash_wallet_service,
+      const std::string& chain_id,
+      const mojom::AccountIdPtr& account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      CreateTransactionCallback callback);
+
   void WorkOnTask();
 
   bool IsTestnet() { return chain_id_ == mojom::kZCashTestnet; }
@@ -57,10 +61,10 @@ class CreateTransparentTransactionTask {
 
   mojom::ZCashAddressPtr change_address_;
 
-  base::WeakPtrFactory<CreateTransparentTransactionTask> weak_ptr_factory_{
+  base::WeakPtrFactory<ZCashCreateTransparentTransactionTask> weak_ptr_factory_{
       this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TRANSACTION_TASK_H_

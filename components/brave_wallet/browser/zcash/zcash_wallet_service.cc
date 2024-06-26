@@ -11,9 +11,9 @@
 
 #include "base/barrier_callback.h"
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/zcash/create_transparent_transaction_task.h"
-#include "brave/components/brave_wallet/browser/zcash/discover_next_unused_zcash_address_task.h"
-#include "brave/components/brave_wallet/browser/zcash/get_transparent_utxos_context.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -23,7 +23,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-#include "brave/components/brave_wallet/browser/zcash/create_shield_all_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_shield_all_transaction_task.h"
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 namespace brave_wallet {
@@ -155,9 +155,10 @@ void ZCashWalletService::DiscoverNextUnusedAddress(
   auto start_address =
       change ? account_info->next_transparent_change_address.Clone()
              : account_info->next_transparent_receive_address.Clone();
-  auto task = base::MakeRefCounted<DiscoverNextUnusedZCashAddressTask>(
-      weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
-      std::move(start_address), std::move(callback));
+  auto task = base::WrapRefCounted<ZCashDiscoverNextUnusedZCashAddressTask>(
+      new ZCashDiscoverNextUnusedZCashAddressTask(
+          weak_ptr_factory_.GetWeakPtr(), account_id.Clone(),
+          std::move(start_address), std::move(callback)));
   task->ScheduleWorkOnTask();
 }
 
@@ -178,7 +179,8 @@ void ZCashWalletService::GetUtxos(const std::string& chain_id,
     return;
   }
 
-  auto context = base::MakeRefCounted<GetTransparentUtxosContext>();
+  auto context = base::WrapRefCounted<ZCashGetTransparentUtxosContext>(
+      new ZCashGetTransparentUtxosContext());
 
   context->callback = std::move(callback);
   for (const auto& address : addresses.value()) {
@@ -315,7 +317,7 @@ void ZCashWalletService::OnSendTransactionResult(
 }
 
 void ZCashWalletService::OnGetUtxos(
-    scoped_refptr<GetTransparentUtxosContext> context,
+    scoped_refptr<ZCashGetTransparentUtxosContext> context,
     const std::string& address,
     base::expected<zcash::mojom::GetAddressUtxosResponsePtr, std::string>
         result) {
@@ -335,7 +337,7 @@ void ZCashWalletService::OnGetUtxos(
 }
 
 void ZCashWalletService::WorkOnGetUtxos(
-    scoped_refptr<GetTransparentUtxosContext> context) {
+    scoped_refptr<ZCashGetTransparentUtxosContext> context) {
   if (!context->ShouldRespond()) {
     return;
   }
@@ -403,9 +405,10 @@ void ZCashWalletService::CreateTransaction(const std::string& chain_id,
   }
 
   auto& task = create_transaction_tasks_.emplace_back(
-      std::make_unique<CreateTransparentTransactionTask>(
-          this, chain_id, account_id, final_address, amount,
-          std::move(callback)));
+      base::WrapUnique<ZCashCreateTransparentTransactionTask>(
+          new ZCashCreateTransparentTransactionTask(this, chain_id, account_id,
+                                                    final_address, amount,
+                                                    std::move(callback))));
   task->ScheduleWorkOnTask();
 }
 
@@ -445,8 +448,9 @@ void ZCashWalletService::CreateShieldAllTransaction(
     return;
   }
 
-  shield_funds_task_ = std::make_unique<CreateShieldAllTransactionTask>(
-      this, chain_id, account_id, std::move(callback));
+  shield_funds_task_ = base::WrapUnique<ZCashCreateShieldAllTransactionTask>(
+      new ZCashCreateShieldAllTransactionTask(this, chain_id, account_id,
+                                              std::move(callback)));
   shield_funds_task_->ScheduleWorkOnTask();
 }
 
@@ -504,7 +508,7 @@ void ZCashWalletService::OnTransactionResolvedForStatus(
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
-    CreateTransparentTransactionTask* task) {
+    ZCashCreateTransparentTransactionTask* task) {
   CHECK(create_transaction_tasks_.remove_if(
       [task](auto& item) { return item.get() == task; }));
 }

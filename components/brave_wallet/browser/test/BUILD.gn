@@ -109,6 +109,10 @@ source_set("brave_wallet_unit_tests") {
     sources += [ "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc" ]
   }
 
+  if (enable_orchard) {
+    sources += [ "//brave/components/brave_wallet/browser/internal/orchard_bundle_manager_unittest.cc" ]
+  }
+
   deps = [
     ":test_data",
     ":test_support",

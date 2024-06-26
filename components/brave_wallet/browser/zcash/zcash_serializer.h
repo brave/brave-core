@@ -15,6 +15,7 @@
 
 namespace brave_wallet {
 
+// Implements algorithms for calculaction tx id, tx signature digest
 // https://zips.z.cash/zip-0244
 class ZCashSerializer {
  public:

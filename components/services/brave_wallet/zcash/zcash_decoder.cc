@@ -21,7 +21,7 @@ void ZCashDecoder::ParseRawTransaction(const std::string& data,
                                        ParseRawTransactionCallback callback) {
   ::zcash::RawTransaction result;
   auto serialized_message = ResolveSerializedMessage(data);
-  if (!serialized_message ||
+  if (!serialized_message || serialized_message->empty() ||
       !result.ParseFromString(serialized_message.value())) {
     std::move(callback).Run(nullptr);
     return;
@@ -35,7 +35,7 @@ void ZCashDecoder::ParseBlockID(const std::string& data,
                                 ParseBlockIDCallback callback) {
   ::zcash::BlockID result;
   auto serialized_message = ResolveSerializedMessage(data);
-  if (!serialized_message ||
+  if (!serialized_message || serialized_message->empty() ||
       !result.ParseFromString(serialized_message.value())) {
     std::move(callback).Run(nullptr);
     return;
@@ -49,7 +49,7 @@ void ZCashDecoder::ParseGetAddressUtxos(const std::string& data,
                                         ParseGetAddressUtxosCallback callback) {
   ::zcash::GetAddressUtxosResponse result;
   auto serialized_message = ResolveSerializedMessage(data);
-  if (!serialized_message ||
+  if (!serialized_message || serialized_message->empty() ||
       !result.ParseFromString(serialized_message.value())) {
     std::move(callback).Run(nullptr);
     return;
@@ -72,7 +72,7 @@ void ZCashDecoder::ParseSendResponse(const std::string& data,
                                      ParseSendResponseCallback callback) {
   ::zcash::SendResponse result;
   auto serialized_message = ResolveSerializedMessage(data);
-  if (!serialized_message ||
+  if (!serialized_message || serialized_message->empty() ||
       !result.ParseFromString(serialized_message.value())) {
     std::move(callback).Run(nullptr);
     return;
@@ -85,7 +85,7 @@ void ZCashDecoder::ParseTreeState(const std::string& data,
                                   ParseTreeStateCallback callback) {
   ::zcash::TreeState result;
   auto serialized_message = ResolveSerializedMessage(data);
-  if (!serialized_message ||
+  if (!serialized_message || serialized_message->empty() ||
       !result.ParseFromString(serialized_message.value())) {
     std::move(callback).Run(nullptr);
     return;

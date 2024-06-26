@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/get_transparent_utxos_context.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
 
 namespace brave_wallet {
 
-GetTransparentUtxosContext::GetTransparentUtxosContext() = default;
-GetTransparentUtxosContext::~GetTransparentUtxosContext() = default;
+ZCashGetTransparentUtxosContext::ZCashGetTransparentUtxosContext() = default;
+ZCashGetTransparentUtxosContext::~ZCashGetTransparentUtxosContext() = default;
 
 }  // namespace brave_wallet

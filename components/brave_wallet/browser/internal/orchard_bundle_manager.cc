@@ -19,6 +19,9 @@ std::optional<size_t> OrchardBundleManager::random_seed_for_testing_ =
 std::unique_ptr<OrchardBundleManager> OrchardBundleManager::Create(
     base::span<const uint8_t> tree_state,
     const std::vector<::brave_wallet::OrchardOutput> orchard_outputs) {
+  if (orchard_outputs.empty()) {
+    return nullptr;
+  }
   auto bundle = orchard::UnauthorizedOrchardBundle::Create(
       tree_state, orchard_outputs, random_seed_for_testing_);
   if (!bundle) {

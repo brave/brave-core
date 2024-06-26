@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ZCASH_WALLET_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ZCASH_WALLET_SERVICE_H_
 
 #include <list>
 #include <map>
@@ -25,9 +25,9 @@
 
 namespace brave_wallet {
 
-class CreateTransparentTransactionTask;
-class CreateShieldAllTransactionTask;
-class GetTransparentUtxosContext;
+class ZCashCreateTransparentTransactionTask;
+class ZCashCreateShieldAllTransactionTask;
+class ZCashGetTransparentUtxosContext;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
                            KeyringServiceObserverBase {
@@ -116,9 +116,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void SetZCashRpcForTesting(std::unique_ptr<ZCashRpc> zcash_rpc);
 
  private:
-  friend class CreateShieldAllTransactionTask;
-  friend class CreateTransparentTransactionTask;
-  friend class DiscoverNextUnusedZCashAddressTask;
+  friend class ZCashCreateShieldAllTransactionTask;
+  friend class ZCashCreateTransparentTransactionTask;
+  friend class ZCashDiscoverNextUnusedZCashAddressTask;
   friend class ZCashTxManager;
   friend class ZCashWalletServiceUnitTest;
 
@@ -136,11 +136,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       mojom::AccountIdPtr account_id,
       RunDiscoveryCallback callback,
       std::vector<base::expected<mojom::ZCashAddressPtr, std::string>> result);
-  void OnGetUtxos(scoped_refptr<GetTransparentUtxosContext> context,
+  void OnGetUtxos(scoped_refptr<ZCashGetTransparentUtxosContext> context,
                   const std::string& current_address,
                   base::expected<zcash::mojom::GetAddressUtxosResponsePtr,
                                  std::string> result);
-  void WorkOnGetUtxos(scoped_refptr<GetTransparentUtxosContext> context);
+  void WorkOnGetUtxos(scoped_refptr<ZCashGetTransparentUtxosContext> context);
 
   void OnDiscoveryDoneForBalance(mojom::AccountIdPtr account_id,
                                  std::string chain_id,
@@ -164,7 +164,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       ZCashTransaction zcash_transaction,
       base::expected<zcash::mojom::SendResponsePtr, std::string> result);
 
-  void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
+  void CreateTransactionTaskDone(ZCashCreateTransparentTransactionTask* task);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   void CreateShieldAllTransaction(const std::string& chain_id,
@@ -192,11 +192,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
 
-  std::list<std::unique_ptr<CreateTransparentTransactionTask>>
+  std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  std::unique_ptr<CreateShieldAllTransactionTask> shield_funds_task_;
+  std::unique_ptr<ZCashCreateShieldAllTransactionTask> shield_funds_task_;
 #endif
 
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
@@ -207,4 +207,4 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ZCASH_WALLET_SERVICE_H_

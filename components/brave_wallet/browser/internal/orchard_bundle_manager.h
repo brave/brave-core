@@ -16,22 +16,31 @@
 namespace brave_wallet {
 
 // This class manages orchard bundle unauthorized and authorized states
+// Initially state is unauthorized, to convert it to authorized state you need
+// to call ApplySignature with proper sighash.
+// See also orchard crate's Bundle:
+// https://github.com/zcash/orchard/blob/2b9c9a1deb66f8b20cd5c07fdd0cec87895f5c16/src/bundle.rs
 class OrchardBundleManager {
  public:
   ~OrchardBundleManager();
 
   // Orchard digest is used to construct tx signature digest see
   // https://zips.z.cash/zip-0244
+  // Called on unauthorized state
   std::optional<std::array<uint8_t, kZCashDigestSize>> GetOrchardDigest();
 
-  // Apply tx signature digest to create zk-proof
+  // Apply tx signature digest switch to authorized state
+  // Called on unauthorized state
   std::unique_ptr<OrchardBundleManager> ApplySignature(
       std::array<uint8_t, kZCashDigestSize> sighash);
 
   // Returns raw orchard bytes to use in transaction
+  // If state is unauthorized returns nullopt.
+  // Called on authorized state
   std::optional<std::vector<uint8_t>> GetRawTxBytes();
 
   // Creates instance for shielded outputs only
+  // Returns in unauthorized state
   static std::unique_ptr<OrchardBundleManager> Create(
       base::span<const uint8_t> tree_state,
       const std::vector<::brave_wallet::OrchardOutput> orchard_outputs);

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/create_shield_all_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_shield_all_transaction_task.h"
 
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
@@ -32,7 +32,7 @@ mojom::ZCashKeyIdPtr CreateOrchardInternalKeyId(
 
 }  // namespace
 
-CreateShieldAllTransactionTask::CreateShieldAllTransactionTask(
+ZCashCreateShieldAllTransactionTask::ZCashCreateShieldAllTransactionTask(
     ZCashWalletService* zcash_wallet_service,
     const std::string& chain_id,
     const mojom::AccountIdPtr& account_id,
@@ -42,15 +42,17 @@ CreateShieldAllTransactionTask::CreateShieldAllTransactionTask(
       account_id_(account_id.Clone()),
       callback_(std::move(callback)) {}
 
-CreateShieldAllTransactionTask::~CreateShieldAllTransactionTask() = default;
+ZCashCreateShieldAllTransactionTask::~ZCashCreateShieldAllTransactionTask() =
+    default;
 
-void CreateShieldAllTransactionTask::ScheduleWorkOnTask() {
+void ZCashCreateShieldAllTransactionTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&CreateShieldAllTransactionTask::WorkOnTask,
-                                weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE,
+      base::BindOnce(&ZCashCreateShieldAllTransactionTask::WorkOnTask,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CreateShieldAllTransactionTask::WorkOnTask() {
+void ZCashCreateShieldAllTransactionTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(error_.value()));
     return;
@@ -85,7 +87,7 @@ void CreateShieldAllTransactionTask::WorkOnTask() {
   std::move(callback_).Run(std::move(transaction_.value()));
 }
 
-bool CreateShieldAllTransactionTask::CreateTransaction() {
+bool ZCashCreateShieldAllTransactionTask::CreateTransaction() {
   CHECK(utxo_map_);
   CHECK(chain_height_);
 
@@ -129,7 +131,7 @@ bool CreateShieldAllTransactionTask::CreateTransaction() {
 
   orchard_output.value =
       zcash_transaction.TotalInputsAmount() - zcash_transaction.fee();
-  orchard_output.address = std::move(addr_bytes.value());
+  orchard_output.addr = std::move(addr_bytes.value());
 
   zcash_transaction.orchard_part().outputs.push_back(std::move(orchard_output));
 
@@ -142,7 +144,7 @@ bool CreateShieldAllTransactionTask::CreateTransaction() {
   return true;
 }
 
-void CreateShieldAllTransactionTask::CompleteTransaction() {
+void ZCashCreateShieldAllTransactionTask::CompleteTransaction() {
   CHECK(transaction_);
   CHECK_EQ(1u, transaction_->orchard_part().outputs.size());
   CHECK(tree_state_);
@@ -158,7 +160,7 @@ void CreateShieldAllTransactionTask::CompleteTransaction() {
 
   std::vector<OrchardOutput> outputs;
   for (const auto& output : transaction_->orchard_part().outputs) {
-    outputs.push_back(OrchardOutput{output.value, output.address});
+    outputs.push_back(OrchardOutput{output.value, output.addr});
   }
 
   auto orchard_bundle_manager =
@@ -181,11 +183,11 @@ void CreateShieldAllTransactionTask::CompleteTransaction() {
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ApplyOrchardSignatures, std::move(orchard_bundle_manager),
                      sighash),
-      base::BindOnce(&CreateShieldAllTransactionTask::OnSignatureApplied,
+      base::BindOnce(&ZCashCreateShieldAllTransactionTask::OnSignatureApplied,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CreateShieldAllTransactionTask::OnSignatureApplied(
+void ZCashCreateShieldAllTransactionTask::OnSignatureApplied(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -206,27 +208,28 @@ void CreateShieldAllTransactionTask::OnSignatureApplied(
   ScheduleWorkOnTask();
 }
 
-void CreateShieldAllTransactionTask::GetAllUtxos() {
+void ZCashCreateShieldAllTransactionTask::GetAllUtxos() {
   zcash_wallet_service_->GetUtxos(
       chain_id_, account_id_.Clone(),
-      base::BindOnce(&CreateShieldAllTransactionTask::OnGetUtxos,
+      base::BindOnce(&ZCashCreateShieldAllTransactionTask::OnGetUtxos,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CreateShieldAllTransactionTask::GetTreeState() {
+void ZCashCreateShieldAllTransactionTask::GetTreeState() {
   zcash_wallet_service_->zcash_rpc()->GetLatestTreeState(
-      chain_id_, base::BindOnce(&CreateShieldAllTransactionTask::OnGetTreeState,
-                                weak_ptr_factory_.GetWeakPtr()));
+      chain_id_,
+      base::BindOnce(&ZCashCreateShieldAllTransactionTask::OnGetTreeState,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CreateShieldAllTransactionTask::GetChainHeight() {
+void ZCashCreateShieldAllTransactionTask::GetChainHeight() {
   zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
       chain_id_,
-      base::BindOnce(&CreateShieldAllTransactionTask::OnGetChainHeight,
+      base::BindOnce(&ZCashCreateShieldAllTransactionTask::OnGetChainHeight,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void CreateShieldAllTransactionTask::OnGetUtxos(
+void ZCashCreateShieldAllTransactionTask::OnGetUtxos(
     base::expected<ZCashWalletService::UtxoMap, std::string> utxo_map) {
   if (!utxo_map.has_value()) {
     error_ = utxo_map.error();
@@ -237,7 +240,7 @@ void CreateShieldAllTransactionTask::OnGetUtxos(
   WorkOnTask();
 }
 
-void CreateShieldAllTransactionTask::OnGetTreeState(
+void ZCashCreateShieldAllTransactionTask::OnGetTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state) {
   if (!tree_state.has_value()) {
     error_ = tree_state.error();
@@ -248,7 +251,7 @@ void CreateShieldAllTransactionTask::OnGetTreeState(
   WorkOnTask();
 }
 
-void CreateShieldAllTransactionTask::OnGetChainHeight(
+void ZCashCreateShieldAllTransactionTask::OnGetChainHeight(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value() || !result.value()) {
     error_ = result.error();
