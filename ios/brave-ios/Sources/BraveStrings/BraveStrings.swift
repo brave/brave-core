@@ -1904,7 +1904,7 @@ extension Strings {
       "braveSearchPromotion.bannerDescription",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Search doesn't track you, your queries, or your clicks.",
+      value: "Brave Search doesn't profile you.",
       comment: "Brave Search Banner Promotion description content in Search Suggestions"
     )
     public static let braveSearchPromotionBannerTryButtonTitle = NSLocalizedString(

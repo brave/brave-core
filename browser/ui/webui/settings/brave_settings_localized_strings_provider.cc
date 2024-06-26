@@ -240,8 +240,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
       {"braveShieldsDefaultsSectionDescription1",
        IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1},
-      {"braveShieldsDefaultsSectionDescription2RewardsDisabled",
-       IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED},
+      {"braveShieldsDefaultsSectionDescription2",
+       IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2},
       {"socialBlocking", IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
       {"defaultView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DEFAULT_VIEW_LABEL},
       {"simpleView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_SIMPLE_VIEW_LABEL},
@@ -815,11 +815,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
                                  kEnsOffchainLookupLearnMoreURL));
-
-  html_source->AddString("braveShieldsDefaultsSectionDescription2",
-                         l10n_util::GetStringFUTF16(
-                             IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2,
-                             kBraveUIRewardsURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
