@@ -6,20 +6,20 @@
 import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
-transpile_web_ui("brave_wallet_send_page_ui") {
+transpile_web_ui("brave_wallet_ios_container_ui") {
   entry_points = [ [
-        "brave_wallet_send_page",
-        rebase_path("send.tsx"),
+        "brave_wallet_ios_container",
+        rebase_path("container.tsx"),
       ] ]
-  resource_name = "brave_wallet_send_page"
+  resource_name = "brave_wallet_ios_container"
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
 }
 
-pack_web_resources("brave_wallet_send_page_generated") {
-  resource_name = "brave_wallet_send_page"
+pack_web_resources("brave_wallet_ios_container_generated") {
+  resource_name = "brave_wallet_ios_container"
   output_dir = "$root_gen_dir/brave/components/brave_wallet_page/resources"
-  deps = [ ":brave_wallet_send_page_ui" ]
+  deps = [ ":brave_wallet_ios_container_ui" ]
 }

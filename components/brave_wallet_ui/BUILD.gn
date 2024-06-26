@@ -40,15 +40,9 @@ repack("resources") {
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_swap_page_generated.pak",
     ]
   } else if (is_ios) {
-    deps += [
-      "//brave/components/brave_wallet_ui/page/screens/send/ios:brave_wallet_send_page_generated",
-      "//brave/components/brave_wallet_ui/page/screens/swap/ios:brave_wallet_swap_page_generated",
-    ]
+    deps += [ "//brave/components/brave_wallet_ui/page/ios:brave_wallet_ios_container_generated" ]
 
-    sources += [
-      "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_send_page_generated.pak",
-      "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_swap_page_generated.pak",
-    ]
+    sources += [ "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_ios_container_generated.pak" ]
   } else {
     deps += [
       "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
