@@ -45,7 +45,6 @@ inline constexpr char kContextMenuFreeUsageCountHistogramName[] =
     "Brave.AIChat.ContextMenu.FreeUsages";
 inline constexpr char kContextMenuPremiumUsageCountHistogramName[] =
     "Brave.AIChat.ContextMenu.PremiumUsages";
-
 inline constexpr char kEnabledSidebarEnabledAHistogramName[] =
     "Brave.AIChat.Enabled.SidebarEnabledA";
 inline constexpr char kEnabledSidebarEnabledBHistogramName[] =
@@ -58,6 +57,8 @@ inline constexpr char kUsageWeeklySidebarEnabledAHistogramName[] =
     "Brave.AIChat.UsageWeekly.SidebarEnabledA";
 inline constexpr char kUsageWeeklySidebarEnabledBHistogramName[] =
     "Brave.AIChat.UsageWeekly.SidebarEnabledB";
+inline constexpr char kChatCountNebulaHistogramName[] =
+    "Brave.AIChat.ChatCount.Nebula";
 
 enum class AcquisitionSource {
   kOmnibox = 0,
