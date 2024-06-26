@@ -15,7 +15,7 @@ import { PopupModal } from '../../popup-modals/index'
 import { AddNftForm } from '../../../shared/add-custom-token-form/add-nft-form'
 
 // Styles
-import { DescriptionRow, StyledWrapper } from './add-edit-nft-modal.style'
+import { StyledWrapper } from './add-edit-nft-modal.style'
 
 interface Props {
   nftToken?: BraveWallet.BlockchainToken
@@ -41,11 +41,6 @@ export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm }: Props) => {
       headerPaddingHorizontal={32}
     >
       <StyledWrapper>
-        {!nftToken && (
-          <DescriptionRow>
-            {getLocale('braveWalletAddNftModalDescription')}
-          </DescriptionRow>
-        )}
         <AddNftForm
           selectedAsset={nftToken}
           contractAddress={contractAddress}

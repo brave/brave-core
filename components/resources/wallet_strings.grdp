@@ -1094,9 +1094,12 @@
   <message name="IDS_BRAVE_WALLET_GROUP_BY_COLLECTION" desc="Toggle label for grouping NFTs by collection">Group by collection</message>
   <message name="IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL" desc="Error message for when the user enters an invalid URL for a custom chain">Invalid URL</message>
   <message name="IDS_BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION" desc="Description of the of the add-nft modal purpose">If you can't see an NFT automatically detected by Brave, or want to track one owned by others, you can import it manually.</message>
-  <message name="IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_CONTRACT_ADDRESS" desc="Explaination on how to find the contract address for an NFT">You can find a contract address on the website of an NFT collection or next to the details of a specific NFT, such as its token ID and other metadata.</message>
-  <message name="IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_TOKEN_ID" desc="Explaination on how to find the token ID for an NFT">A token ID is a unique identifier assigned to each NFT. You can find an NFT's token ID by checking the contract address on a blockchain explorer.</message>
+  <message name="IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS" desc="Explaination of what a contract address is for an NFT">The contract address when adding an NFT to a wallet is the unique address on the blockchain where the smart contract for the NFT collection resides. You can find the contract address from marketplace, or blockchain explorers, etc.</message>
+  <message name="IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID" desc="Explaination of what an NFT token ID is">The unique identifier for the specific NFT within the collection.</message>
   <message name="IDS_BRAVE_WALLET_FETCH_NFT_METADATA_ERROR" desc="Error message explaining that the NFT Metadata lookup failed">Unable to fetch NFT metadata</message>
   <message name="IDS_BRAVE_WALLET_WATCH_THIS_NFT" desc="Button text for adding an NFT to the user's watch list">Watch this NFT</message>
   <message name="IDS_BRAVE_WALLET_UNOWNED_NFT_ALERT" desc="Alert text explaining that the user does not own the NFT">You do not own this NFT. While you can still add it to your wallet, you will not be able to make any transactions with it.</message>
+  <message name="IDS_BRAVE_WALLET_EXEMPLI_GRATIA" desc="Placeholder text for an example value">e.g <ph name="VALUE">$1<ex>0xDEADBEEF</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT name field">The token name for an NFT refers to the specific name given to a non-fungible token within a particular collection or project. This name distinguishes one NFT from another within the same collection.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT symbol field">The NFT symbol refers to the unique identifier used to distinguish the NFT collection or project.</message>
 </grit-part>

@@ -32,7 +32,6 @@ import {
 import Tooltip from '../tooltip'
 import { FormErrorsList } from './form-errors-list'
 import { NetworksDropdown } from '../dropdowns/networks_dropdown'
-import { InfoIconTooltip } from '../info_icon_tooltip/info_icon_tooltip'
 
 // styles
 import {
@@ -369,10 +368,6 @@ export const AddCustomTokenForm = (props: Props) => {
                     ? getLocale('braveWalletTokenMintAddress')
                     : getLocale('braveWalletNFTDetailContractAddress')}
                 </InputLabel>
-                <InfoIconTooltip
-                  placement='bottom'
-                  text={getLocale('braveWalletHowToFindNftContractAddress')}
-                />
               </Row>
             </Input>
           </FormColumn>

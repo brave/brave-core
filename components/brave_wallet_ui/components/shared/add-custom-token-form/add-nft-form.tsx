@@ -50,7 +50,8 @@ import {
   InputLoadingIndicator,
   PreviewImageContainer,
   TokenNamePreviewText,
-  TokenTickerPreviewText
+  TokenTickerPreviewText,
+  DescriptionRow
 } from './add-custom-token-form-styles'
 import { Column, LeoSquaredButton, Row } from '../style'
 import { Skeleton } from '../loading-skeleton/styles'
@@ -344,6 +345,14 @@ export const AddNftForm = (props: Props) => {
   return (
     <>
       <FormWrapper onClick={onHideNetworkDropDown}>
+        {!selectedAsset && (
+          <FullWidthFormColumn>
+            <DescriptionRow>
+              {getLocale('braveWalletAddNftModalDescription')}
+            </DescriptionRow>
+          </FullWidthFormColumn>
+        )}
+
         <FullWidthFormColumn>
           <NetworksDropdown
             placeholder={getLocale('braveWalletSelectNetwork')}
@@ -361,7 +370,10 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={tokenContractAddress}
             onChange={handleTokenAddressChanged}
-            placeholder={'0x099689220846644F87D1137665CDED7BF3422747'}
+            placeholder={getLocale('braveWalletExempliGratia').replace(
+              '$1',
+              '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d'
+            )}
           >
             <Row
               gap='4px'
@@ -374,7 +386,7 @@ export const AddNftForm = (props: Props) => {
               </InputLabel>
               <InfoIconTooltip
                 placement='bottom'
-                text={getLocale('braveWalletHowToFindNftContractAddress')}
+                text={getLocale('braveWalletWhatIsAnNftContractAddress')}
               />
             </Row>
           </Input>
@@ -387,7 +399,10 @@ export const AddNftForm = (props: Props) => {
                 value={customTokenID ? new Amount(customTokenID).format() : ''}
                 onInput={handleTokenIDChanged}
                 type='number'
-                placeholder={'1234'}
+                placeholder={getLocale('braveWalletExempliGratia').replace(
+                  '$1',
+                  '1234'
+                )}
               >
                 <Row
                   gap='4px'
@@ -398,7 +413,7 @@ export const AddNftForm = (props: Props) => {
                   </InputLabel>
                   <InfoIconTooltip
                     placement='bottom'
-                    text={getLocale('braveWalletHowToFindNftTokenId')}
+                    text={getLocale('braveWalletWhatIsAnNftTokenId')}
                   />
                 </Row>
               </Input>
@@ -410,11 +425,23 @@ export const AddNftForm = (props: Props) => {
             value={customTokenName}
             onInput={handleTokenNameChanged}
             type='text'
-            placeholder={getLocale('braveWalletWatchListTokenName')}
+            placeholder={getLocale('braveWalletExempliGratia').replace(
+              '$1',
+              'Bored Ape #1234'
+            )}
           >
-            <InputLabel>
-              {getLocale('braveWalletWatchListTokenName')}
-            </InputLabel>
+            <Row
+              gap='4px'
+              justifyContent='flex-start'
+            >
+              <InputLabel>
+                {getLocale('braveWalletWatchListTokenName')}
+              </InputLabel>
+              <InfoIconTooltip
+                placement='bottom'
+                text={getLocale('braveWalletNftNameFieldExplanation')}
+              />
+            </Row>
 
             {(isFetchingNftMetadata || isTokenInfoLoading) && (
               <InputLoadingIndicator slot='left-icon' />
@@ -427,11 +454,23 @@ export const AddNftForm = (props: Props) => {
             value={customTokenSymbol}
             onInput={handleTokenSymbolChanged}
             type='text'
-            placeholder={getLocale('braveWalletWatchListTokenSymbol')}
+            placeholder={getLocale('braveWalletExempliGratia').replace(
+              '$1',
+              'BAYC'
+            )}
           >
-            <InputLabel>
-              {getLocale('braveWalletWatchListTokenSymbol')}
-            </InputLabel>
+            <Row
+              gap='4px'
+              justifyContent='flex-start'
+            >
+              <InputLabel>
+                {getLocale('braveWalletWatchListTokenSymbol')}
+              </InputLabel>
+              <InfoIconTooltip
+                placement='bottom'
+                text={getLocale('braveWalletNftSymbolFieldExplanation')}
+              />
+            </Row>
             {(isFetchingNftMetadata || isTokenInfoLoading) && (
               <InputLoadingIndicator slot='left-icon' />
             )}

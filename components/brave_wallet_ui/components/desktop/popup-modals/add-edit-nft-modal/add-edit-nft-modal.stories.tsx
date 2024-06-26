@@ -10,19 +10,19 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { AddOrEditNftModal } from './add-edit-nft-modal'
 
-export const _AddNftModal = () => {
-  return (
-    <WalletPageStory>
-      <AddOrEditNftModal
-        onHideForm={() => alert('hide')}
-        onClose={() => alert('close')}
-      />
-    </WalletPageStory>
-  )
+export const _AddNftModal = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <AddOrEditNftModal
+          onHideForm={() => alert('hide')}
+          onClose={() => alert('close')}
+        />
+      </WalletPageStory>
+    )
+  }
 }
 
-_AddNftModal.story = {
-  name: 'Add NFT Modal'
+export default {
+  component: AddOrEditNftModal
 }
-
-export default _AddNftModal

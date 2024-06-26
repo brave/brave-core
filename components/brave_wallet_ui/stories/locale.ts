@@ -1283,14 +1283,21 @@ provideStrings({
   braveWalletAddNftModalDescription:
     "If you can't see an NFT automatically detected by Brave, " +
     'or want to track one owned by others, you can import it manually.',
-  braveWalletHowToFindNftContractAddress:
-    'You can find a contract address on the website of an NFT collection ' +
-    'or next to the details of a specific NFT, ' +
-    'such as its token ID and other metadata.',
-  braveWalletHowToFindNftTokenId:
-    'A token ID is a unique identifier assigned to each NFT. ' +
-    "You can find an NFT's token ID by checking " +
-    'the contract address on a blockchain explorer.',
+  braveWalletWhatIsAnNftContractAddress:
+    'The contract address when adding an NFT to a wallet is the unique ' +
+    'address on the blockchain where the smart contract ' +
+    'for the NFT collection resides. ' +
+    'You can find the contract address from marketplace, or ' +
+    'blockchain explorers, etc.',
+  braveWalletWhatIsAnNftTokenId:
+    'The unique identifier for the specific NFT within the collection.',
+  braveWalletNftNameFieldExplanation:
+    'The token name for an NFT refers to the specific name given to a ' +
+    'non-fungible token within a particular collection or project. ' +
+    'This name distinguishes one NFT from another within the same collection.',
+  braveWalletNftSymbolFieldExplanation:
+    'The NFT symbol refers to the unique identifier ' +
+    'used to distinguish the NFT collection or project.',
   braveWalletFetchNftMetadataError: 'Unable to fetch NFT metadata',
   braveWalletWatchThisNft: 'Watch this NFT',
   braveWalletUnownedNftAlert:
@@ -1363,5 +1370,8 @@ provideStrings({
     'A pending change in your wallet balance.',
   braveWalletTotalBalanceDescription:
     'Your available funds plus any not-yet-confirmed transactions.',
-  braveWalletUnavailableBalances: 'Some balances may be unavailable'
+  braveWalletUnavailableBalances: 'Some balances may be unavailable',
+
+  // Misc. placeholders
+  braveWalletExempliGratia: 'e.g $1'
 })

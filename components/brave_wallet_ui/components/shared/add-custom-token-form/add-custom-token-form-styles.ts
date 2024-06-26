@@ -155,3 +155,8 @@ export const InputLoadingIndicator = styled(ProgressRing)`
   --leo-progressring-size: ${leo.icon.m};
   --leo-progressring-color: ${leo.color.icon.default};
 `
+
+export const DescriptionRow = styled.div`
+  color: ${leo.color.text.secondary};
+  font: ${leo.font.default.regular};
+`

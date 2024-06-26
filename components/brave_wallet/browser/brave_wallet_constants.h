@@ -48,14 +48,18 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletNftSymbolFieldExplanation",
+     IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION},
+    {"braveWalletNftNameFieldExplanation",
+     IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION},
+    {"braveWalletExempliGratia", IDS_BRAVE_WALLET_EXEMPLI_GRATIA},
     {"braveWalletUnownedNftAlert", IDS_BRAVE_WALLET_UNOWNED_NFT_ALERT},
     {"braveWalletWatchThisNft", IDS_BRAVE_WALLET_WATCH_THIS_NFT},
     {"braveWalletFetchNftMetadataError",
      IDS_BRAVE_WALLET_FETCH_NFT_METADATA_ERROR},
-    {"braveWalletHowToFindNftTokenId",
-     IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_TOKEN_ID},
-    {"braveWalletHowToFindNftContractAddress",
-     IDS_BRAVE_WALLET_HOW_TO_FIND_NFT_CONTRACT_ADDRESS},
+    {"braveWalletWhatIsAnNftTokenId", IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID},
+    {"braveWalletWhatIsAnNftContractAddress",
+     IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS},
     {"braveWalletGroupByCollection", IDS_BRAVE_WALLET_GROUP_BY_COLLECTION},
     {"braveWalletAddNftModalDescription",
      IDS_BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION},
