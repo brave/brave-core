@@ -176,10 +176,14 @@ private struct BasicPickerInputView: View {
 private struct CustomSwitchInputView: View {
   @ObservedObject private var customSwitches = Preferences.BraveCore.customSwitches
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.dismiss) private var dismiss
 
   @State var key: String
   @State private var value: String = ""
+
+  init(key: String) {
+    _key = State(wrappedValue: key)
+  }
 
   var body: some View {
     List {
@@ -222,7 +226,7 @@ private struct CustomSwitchInputView: View {
           if !customSwitches.value.contains(key) {
             customSwitches.value.append(key)
           }
-          presentationMode.dismiss()
+          dismiss()
         } label: {
           Text("Save")
             .foregroundColor(
