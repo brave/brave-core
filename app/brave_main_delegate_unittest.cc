@@ -6,7 +6,6 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include "base/command_line.h"
-#include "base/time/time.h"
 #include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/variations/buildflags.h"
 #include "components/embedder_support/switches.h"
