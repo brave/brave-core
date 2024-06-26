@@ -69,7 +69,7 @@ private enum SkusEnvironment: String, CaseIterable {
 private struct BasicStringInputView: View {
   @ObservedObject private var activeSwitches = Preferences.BraveCore.activeSwitches
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.dismiss) private var dismiss
 
   var coreSwitch: BraveCoreSwitchKey
   var hint: String?
@@ -110,7 +110,7 @@ private struct BasicStringInputView: View {
               activeSwitches.value.append(coreSwitch.rawValue)
             }
           }
-          presentationMode.dismiss()
+          dismiss()
         } label: {
           Text("Save")
             .foregroundColor(Color(.braveBlurpleTint))
@@ -123,7 +123,7 @@ private struct BasicStringInputView: View {
 private struct BasicPickerInputView: View {
   @ObservedObject private var activeSwitches = Preferences.BraveCore.activeSwitches
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.dismiss) private var dismiss
 
   var coreSwitch: BraveCoreSwitchKey
   var options: [String]
@@ -163,7 +163,7 @@ private struct BasicPickerInputView: View {
               activeSwitches.value.append(coreSwitch.rawValue)
             }
           }
-          presentationMode.dismiss()
+          dismiss()
         } label: {
           Text("Save")
             .foregroundColor(Color(.braveBlurpleTint))
@@ -178,7 +178,7 @@ private struct CustomSwitchInputView: View {
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  @State var key: String = ""
+  @State var key: String
   @State private var value: String = ""
 
   var body: some View {
@@ -429,7 +429,7 @@ struct BraveCoreDebugSwitchesView: View {
               let keys = $0.map { Preferences.BraveCore.customSwitches.value[$0] }
 
               withAnimation(.default) {
-                keys.forEach { key in
+                for key in keys {
                   Preferences.BraveCore.switchValues.value[key] = nil
                   Preferences.BraveCore.customSwitches.value.removeAll(where: { $0 == key })
                 }
