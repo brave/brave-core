@@ -110,7 +110,10 @@ source_set("browser_tests") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "feature_defaults_unittest.cc" ]
+  sources = [
+    "brave_main_delegate_unittest.cc",
+    "feature_defaults_unittest.cc",
+  ]
   if (!is_android) {
     sources += [ "command_utils_unittest.cc" ]
   }
@@ -129,6 +132,7 @@ source_set("unit_tests") {
     "//components/compose/core/browser:features",
     "//components/content_settings/core/common:features",
     "//components/device_signals/core/common:features",
+    "//components/embedder_support",
     "//components/heap_profiling/in_process",
     "//components/history_clusters/core",
     "//components/language/core/common",
