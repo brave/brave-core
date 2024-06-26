@@ -14,8 +14,9 @@
 namespace attribution_reporting {
 
 std::optional<AggregatableTriggerConfig> AggregatableTriggerConfig::Create(
-    mojom::SourceRegistrationTimeConfig,
-    std::optional<std::string> trigger_context_id) {
+    SourceRegistrationTimeConfig source_registration_time_config,
+    std::optional<std::string> trigger_context_id,
+    AggregatableFilteringIdsMaxBytes max_bytes) {
   return std::nullopt;
 }
 
