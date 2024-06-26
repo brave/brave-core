@@ -54,11 +54,14 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
       BuildCreativeSearchResultAd(should_generate_random_uuids);
   CHECK(mojom_creative_ad);
 
-  mojom_creative_ad->conversion = mojom::ConversionInfo::New();
-  mojom_creative_ad->conversion->url_pattern = kConversionUrlPattern;
-  mojom_creative_ad->conversion->verifiable_advertiser_public_key_base64 =
+  mojom_creative_ad->creative_set_conversion =
+      mojom::CreativeSetConversionInfo::New();
+  mojom_creative_ad->creative_set_conversion->url_pattern =
+      kConversionUrlPattern;
+  mojom_creative_ad->creative_set_conversion
+      ->verifiable_advertiser_public_key_base64 =
       kVerifiableConversionAdvertiserPublicKey;
-  mojom_creative_ad->conversion->observation_window =
+  mojom_creative_ad->creative_set_conversion->observation_window =
       kConversionObservationWindow;
 
   return mojom_creative_ad;

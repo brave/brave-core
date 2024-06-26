@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
+
 #include <memory>
 
 #include "base/path_service.h"
@@ -10,7 +12,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -32,7 +33,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_browser_tests --filter=SearchResultAdTest*
+// npm run test -- brave_browser_tests
+// --filter=BraveAdsCreativeSearchResultAdTabHelperTest*
 
 namespace brave_ads {
 
@@ -46,21 +48,22 @@ constexpr char kClickRedirectPath[] = "/a/redirect";
 constexpr char kTargetDomain[] = "example.com";
 constexpr char kTargetPath[] = "/simple.html";
 constexpr char kSearchResultUrlPath[] =
-    "/brave_ads/search_result_ad_sample.html";
+    "/brave_ads/creative_search_result_ad.html";
 
-SearchResultAdTabHelper* GetSearchResultAdTabHelper(Browser* browser) {
+CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
+    Browser* browser) {
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
-  return SearchResultAdTabHelper::FromWebContents(web_contents);
+  return CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
 }
 
 class ScopedTestingAdsServiceSetter {
  public:
   explicit ScopedTestingAdsServiceSetter(AdsService* ads_service) {
-    SearchResultAdTabHelper::SetAdsServiceForTesting(ads_service);
+    CreativeSearchResultAdTabHelper::SetAdsServiceForTesting(ads_service);
   }
 
   ~ScopedTestingAdsServiceSetter() {
-    SearchResultAdTabHelper::SetAdsServiceForTesting(nullptr);
+    CreativeSearchResultAdTabHelper::SetAdsServiceForTesting(nullptr);
   }
 
   ScopedTestingAdsServiceSetter(const ScopedTestingAdsServiceSetter&) = delete;
@@ -70,9 +73,10 @@ class ScopedTestingAdsServiceSetter {
 
 }  // namespace
 
-class SearchResultAdTest : public CertVerifierBrowserTest {
+class BraveAdsCreativeSearchResultAdTabHelperTest
+    : public CertVerifierBrowserTest {
  public:
-  SearchResultAdTest() {
+  BraveAdsCreativeSearchResultAdTabHelperTest() {
     scoped_feature_list_.InitAndEnableFeature(
         kShouldSupportSearchResultAdsFeature);
   }
@@ -83,11 +87,12 @@ class SearchResultAdTest : public CertVerifierBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
 
     https_server_.RegisterRequestHandler(base::BindRepeating(
-        &SearchResultAdTest::HandleRequest, base::Unretained(this)));
+        &BraveAdsCreativeSearchResultAdTabHelperTest::HandleRequest,
+        base::Unretained(this)));
 
-    const base::FilePath test_data_dir =
+    const base::FilePath test_data_file_path =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
-    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.ServeFilesFromDirectory(test_data_file_path);
     ASSERT_TRUE(https_server_.Start());
   }
 
@@ -131,7 +136,8 @@ class SearchResultAdTest : public CertVerifierBrowserTest {
   AdsServiceMock ads_service_mock_;
 };
 
-IN_PROC_BROWSER_TEST_F(SearchResultAdTest, UserHasNotJoinedBraveRewards) {
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       UserHasNotJoinedBraveRewards) {
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
@@ -144,7 +150,8 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, UserHasNotJoinedBraveRewards) {
   EXPECT_EQ(url, web_contents->GetVisibleURL());
 }
 
-IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       NotAllowedDomain) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -158,7 +165,8 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, NotAllowedDomain) {
   EXPECT_EQ(url, web_contents->GetVisibleURL());
 }
 
-IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       BrokenSearchAdMetadata) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -166,17 +174,18 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, BrokenSearchAdMetadata) {
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent).Times(0);
 
   const GURL url =
-      GetURL(kAllowedDomain, "/brave_ads/search_result_ad_broken.html");
+      GetURL(kAllowedDomain, "/brave_ads/invalid_creative_search_result_ad");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, web_contents->GetVisibleURL());
 }
 
-IN_PROC_BROWSER_TEST_F(SearchResultAdTest, IncognitoBrowser) {
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       IncognitoBrowser) {
   const GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   Browser* incognito_browser = OpenURLOffTheRecord(browser()->profile(), url);
-  EXPECT_FALSE(GetSearchResultAdTabHelper(incognito_browser));
+  EXPECT_FALSE(GetCreativeSearchResultAdTabHelper(incognito_browser));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser, url));
   content::WebContents* web_contents =
@@ -189,7 +198,8 @@ IN_PROC_BROWSER_TEST_F(SearchResultAdTest, IncognitoBrowser) {
   observer.Wait();
 }
 
-class SampleSearchResultAdTest : public SearchResultAdTest {
+class SampleBraveAdsCreativeSearchResultAdTabHelperTest
+    : public BraveAdsCreativeSearchResultAdTabHelperTest {
  public:
   GURL GetSearchResultUrl() const {
     return GetURL(kAllowedDomain, kSearchResultUrlPath);
@@ -223,20 +233,20 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
               base::StrCat({"data-description", index}));
     EXPECT_DOUBLE_EQ(mojom_creative_ad->value, 0.5 + ad_index);
 
-    EXPECT_TRUE(mojom_creative_ad->conversion);
-    EXPECT_EQ(mojom_creative_ad->conversion->url_pattern,
+    EXPECT_TRUE(mojom_creative_ad->creative_set_conversion);
+    EXPECT_EQ(mojom_creative_ad->creative_set_conversion->url_pattern,
               base::StrCat({"data-conversion-url-pattern-value", index}));
     if (ad_index == 2) {
-      EXPECT_FALSE(mojom_creative_ad->conversion
+      EXPECT_FALSE(mojom_creative_ad->creative_set_conversion
                        ->verifiable_advertiser_public_key_base64);
     } else {
       EXPECT_EQ(
-          mojom_creative_ad->conversion
+          mojom_creative_ad->creative_set_conversion
               ->verifiable_advertiser_public_key_base64,
           base::StrCat({"data-conversion-advertiser-public-key-value", index}));
     }
-    EXPECT_EQ(static_cast<size_t>(
-                  mojom_creative_ad->conversion->observation_window.InDays()),
+    EXPECT_EQ(static_cast<size_t>(mojom_creative_ad->creative_set_conversion
+                                      ->observation_window.InDays()),
               ad_index);
 
     return true;
@@ -281,7 +291,7 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
+IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInSameTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
@@ -306,7 +316,8 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
+IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
+                       SearchResultAdOpenedInNewTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
   GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);

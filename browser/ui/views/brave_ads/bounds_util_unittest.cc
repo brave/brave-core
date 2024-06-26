@@ -9,7 +9,7 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 
-// npm run test -- brave_unit_tests --filter=BoundsUtilTest.*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -23,7 +23,7 @@ constexpr int kShiftY = 200;
 
 }  // namespace
 
-TEST(BoundsUtilTest, CheckSnapBoundsToEdgeOfWorkArea) {
+TEST(BraveAdsBoundsUtilTest, CheckSnapBoundsToEdgeOfWorkArea) {
   const gfx::Rect work_area(kWorkAreaOrigin, kWorkAreaSize);
   gfx::Rect bounds(kBoundsSize);
 

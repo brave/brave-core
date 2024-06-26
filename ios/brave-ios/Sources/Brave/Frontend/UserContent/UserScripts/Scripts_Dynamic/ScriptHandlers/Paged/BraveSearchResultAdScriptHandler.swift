@@ -98,7 +98,7 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
         return
       }
 
-      var conversion: BraveAds.ConversionInfo?
+      var conversion: BraveAds.CreativeSetConversionInfo?
       if let conversionUrlPatternValue = ad.conversionUrlPatternValue,
         let conversionObservationWindowValue = ad.conversionObservationWindowValue
       {
@@ -121,7 +121,7 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
         headlineText: ad.headlineText,
         description: ad.description,
         value: rewardsValue,
-        conversion: conversion
+        creativeSetConversion: conversion
       )
 
       braveSearchResultAdManager.triggerSearchResultAdViewedEvent(

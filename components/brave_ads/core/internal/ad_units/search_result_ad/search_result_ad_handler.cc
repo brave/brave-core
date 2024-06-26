@@ -27,7 +27,7 @@ namespace brave_ads {
 
 namespace {
 
-SearchResultAd* g_deferred_search_result_ad_for_testing = nullptr;
+SearchResultAdHandler* g_deferred_search_result_ad_for_testing = nullptr;
 bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
 void FireEventCallback(TriggerAdEventCallback callback,
@@ -39,15 +39,16 @@ void FireEventCallback(TriggerAdEventCallback callback,
 
 }  // namespace
 
-SearchResultAd::SearchResultAd(Account& account, SiteVisit& site_visit)
+SearchResultAdHandler::SearchResultAdHandler(Account& account,
+                                             SiteVisit& site_visit)
     : account_(account), site_visit_(site_visit) {
   event_handler_.SetDelegate(this);
 }
 
-SearchResultAd::~SearchResultAd() = default;
+SearchResultAdHandler::~SearchResultAdHandler() = default;
 
 // static
-void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
+void SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting() {
   CHECK_IS_TEST();
   CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
 
@@ -55,7 +56,7 @@ void SearchResultAd::DeferTriggeringOfAdViewedEventForTesting() {
 }
 
 // static
-void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
+void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
   CHECK_IS_TEST();
   CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
   CHECK(g_deferred_search_result_ad_for_testing);
@@ -70,7 +71,7 @@ void SearchResultAd::TriggerDeferredAdViewedEventForTesting() {
   g_deferred_search_result_ad_for_testing = nullptr;
 }
 
-void SearchResultAd::TriggerEvent(
+void SearchResultAdHandler::TriggerEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
@@ -91,7 +92,7 @@ void SearchResultAd::TriggerEvent(
     return event_handler_.FireEvent(
         std::move(mojom_creative_ad_copy),
         mojom::SearchResultAdEventType::kServedImpression,
-        base::BindOnce(&SearchResultAd::FireServedEventCallback,
+        base::BindOnce(&SearchResultAdHandler::FireServedEventCallback,
                        weak_factory_.GetWeakPtr(), std::move(mojom_creative_ad),
                        std::move(callback)));
   }
@@ -103,7 +104,7 @@ void SearchResultAd::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SearchResultAd::FireServedEventCallback(
+void SearchResultAdHandler::FireServedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     TriggerAdEventCallback callback,
     const bool success,
@@ -118,7 +119,7 @@ void SearchResultAd::FireServedEventCallback(
   MaybeTriggerAdViewedEventFromQueue(std::move(callback));
 }
 
-void SearchResultAd::MaybeTriggerAdViewedEventFromQueue(
+void SearchResultAdHandler::MaybeTriggerAdViewedEventFromQueue(
     TriggerAdEventCallback callback) {
   CHECK((!ad_viewed_event_queue_.empty() ||
          !trigger_ad_viewed_event_in_progress_));
@@ -135,11 +136,11 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue(
   event_handler_.FireEvent(
       std::move(mojom_creative_ad),
       mojom::SearchResultAdEventType::kViewedImpression,
-      base::BindOnce(&SearchResultAd::FireAdViewedEventCallback,
+      base::BindOnce(&SearchResultAdHandler::FireAdViewedEventCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void SearchResultAd::FireAdViewedEventCallback(
+void SearchResultAdHandler::FireAdViewedEventCallback(
     TriggerAdEventCallback callback,
     const bool success,
     const std::string& /*placement_id*/,
@@ -157,14 +158,14 @@ void SearchResultAd::FireAdViewedEventCallback(
   MaybeTriggerAdViewedEventFromQueue(std::move(callback));
 }
 
-void SearchResultAd::OnDidFireSearchResultAdServedEvent(
+void SearchResultAdHandler::OnDidFireSearchResultAdServedEvent(
     const SearchResultAdInfo& ad) {
   BLOG(3, "Served search result ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 }
 
-void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
+void SearchResultAdHandler::OnDidFireSearchResultAdViewedEvent(
     const SearchResultAdInfo& ad) {
   BLOG(3, "Viewed search result ad impression with placement id "
               << ad.placement_id << " and creative instance id "
@@ -176,7 +177,7 @@ void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
                     ConfirmationType::kViewedImpression);
 }
 
-void SearchResultAd::OnDidFireSearchResultAdClickedEvent(
+void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
     const SearchResultAdInfo& ad) {
   BLOG(3, "Clicked search result ad with placement id "
               << ad.placement_id << " and creative instance id "

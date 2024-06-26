@@ -9,11 +9,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkColor.h"
 
-// npm run test -- brave_unit_tests --filter=ColorUtilTest.*
+// npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(ColorUtilTest, CheckRgbStringToSkColor) {
+TEST(BraveAdsColorUtilTest, CheckRgbStringToSkColor) {
   SkColor color;
   EXPECT_TRUE(RgbStringToSkColor("42fe4c", &color));
   EXPECT_EQ(SkColorSetRGB(0x42, 0xfe, 0x4c), color);
