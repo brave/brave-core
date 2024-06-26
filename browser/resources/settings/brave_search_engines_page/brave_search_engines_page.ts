@@ -52,6 +52,10 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     return !loadTimeData.getBoolean('isGuest')
   }
 
+  isWebDiscoveryNativeEnabled_() {
+    return loadTimeData.getBoolean('isWebDiscoveryNativeEnabled');
+  }
+
   shouldShowPrivateSearchProvider_(prefs) {
     // When default search engine is enforced, configured provider is not used.
     // If we install search provider extension, that extension will be used on normal and

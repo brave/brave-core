@@ -20,6 +20,11 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/browser/pref_names.h"
+#include "brave/components/web_discovery/common/features.h"
+#endif
+
 namespace {
 
 // Preference name switch events are stored under.
@@ -176,13 +181,21 @@ SearchEngineTracker::SearchEngineTracker(
     }
   }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   RecordWebDiscoveryEnabledP3A();
   pref_change_registrar_.Init(profile_prefs);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   pref_change_registrar_.Add(
-      kWebDiscoveryEnabled,
+      kWebDiscoveryExtensionEnabled,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
                           base::Unretained(this)));
+#endif
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  pref_change_registrar_.Add(
+      web_discovery::kWebDiscoveryNativeEnabled,
+      base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
+                          base::Unretained(this)));
+#endif
   pref_change_registrar_.Add(
       brave_ads::prefs::kOptedInToNotificationAds,
       base::BindRepeating(&SearchEngineTracker::RecordWebDiscoveryEnabledP3A,
@@ -224,14 +237,24 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
   }
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
-  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric,
-                        profile_prefs_->GetBoolean(kWebDiscoveryEnabled));
-  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryAndAdsMetric,
-                        profile_prefs_->GetBoolean(kWebDiscoveryEnabled) &&
-                            profile_prefs_->GetBoolean(
-                                brave_ads::prefs::kOptedInToNotificationAds));
+  bool enabled = false;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  enabled = profile_prefs_->GetBoolean(kWebDiscoveryExtensionEnabled);
+#endif
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  if (base::FeatureList::IsEnabled(
+          web_discovery::features::kWebDiscoveryNative)) {
+    enabled =
+        profile_prefs_->GetBoolean(web_discovery::kWebDiscoveryNativeEnabled);
+  }
+#endif
+  UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);
+  UMA_HISTOGRAM_BOOLEAN(
+      kWebDiscoveryAndAdsMetric,
+      enabled && profile_prefs_->GetBoolean(
+                     brave_ads::prefs::kOptedInToNotificationAds));
 }
 #endif
 

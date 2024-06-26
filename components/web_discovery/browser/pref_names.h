@@ -9,6 +9,8 @@
 namespace web_discovery {
 
 // Profile prefs
+inline constexpr char kWebDiscoveryNativeEnabled[] =
+    "brave.web_discovery.wdp_native_enabled";
 inline constexpr char kCredentialRSAPrivateKey[] =
     "brave.web_discovery.rsa_priv_key";
 inline constexpr char kCredentialRSAPublicKey[] =

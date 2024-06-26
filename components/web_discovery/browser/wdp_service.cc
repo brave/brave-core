@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/constants/pref_names.h"
@@ -15,11 +16,13 @@
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "extensions/buildflags/buildflags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 
@@ -39,12 +42,19 @@ WDPService::WDPService(
       profile_prefs_(profile_prefs),
       user_data_dir_(user_data_dir),
       shared_url_loader_factory_(shared_url_loader_factory) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (profile_prefs_->GetBoolean(kWebDiscoveryExtensionEnabled)) {
+    profile_prefs_->ClearPref(kWebDiscoveryExtensionEnabled);
+    profile_prefs_->SetBoolean(kWebDiscoveryNativeEnabled, true);
+  }
+#endif
+
   pref_change_registrar_.Init(profile_prefs);
-  pref_change_registrar_.Add(kWebDiscoveryEnabled,
+  pref_change_registrar_.Add(kWebDiscoveryNativeEnabled,
                              base::BindRepeating(&WDPService::OnEnabledChange,
                                                  base::Unretained(this)));
 
-  if (profile_prefs_->GetBoolean(kWebDiscoveryEnabled)) {
+  if (profile_prefs_->GetBoolean(kWebDiscoveryNativeEnabled)) {
     Start();
   }
 }
@@ -56,6 +66,7 @@ void WDPService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kWebDiscoveryNativeEnabled, false);
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
   registry->RegisterStringPref(kCredentialRSAPublicKey, {});
@@ -63,6 +74,15 @@ void WDPService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kScheduledReports);
   registry->RegisterDictionaryPref(kUsedBasenameCounts);
   registry->RegisterDictionaryPref(kPageCounts);
+}
+
+void WDPService::SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (!base::FeatureList::IsEnabled(features::kWebDiscoveryNative) &&
+      profile_prefs->GetBoolean(kWebDiscoveryNativeEnabled)) {
+    profile_prefs->SetBoolean(kWebDiscoveryExtensionEnabled, true);
+  }
+#endif
 }
 
 void WDPService::Start() {
@@ -83,16 +103,16 @@ void WDPService::Start() {
 }
 
 void WDPService::Stop() {
+  alive_message_timer_.Stop();
   reporter_ = nullptr;
   double_fetcher_ = nullptr;
   content_scraper_ = nullptr;
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
-  alive_message_timer_.Stop();
 }
 
 void WDPService::OnEnabledChange() {
-  if (profile_prefs_->GetBoolean(kWebDiscoveryEnabled)) {
+  if (profile_prefs_->GetBoolean(kWebDiscoveryNativeEnabled)) {
     Start();
   } else {
     Stop();

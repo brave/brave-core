@@ -87,8 +87,9 @@ bool ShouldShowWebDiscoveryInfoBar(TemplateURLService* service,
                                    PrefService* prefs,
                                    const WebDiscoveryCTAState& state,
                                    base::Clock* test_clock) {
-  if (prefs->GetBoolean(kWebDiscoveryEnabled))
+  if (prefs->GetBoolean(kWebDiscoveryExtensionEnabled)) {
     return false;
+  }
 
   if (!service || !IsBraveSearchDefault(service))
     return false;

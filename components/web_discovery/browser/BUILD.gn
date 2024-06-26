@@ -58,6 +58,7 @@ static_library("browser") {
     "//components/prefs",
     "//content/public/browser",
     "//crypto",
+    "//extensions/buildflags",
     "//net",
     "//services/network/public/cpp",
     "//third_party/boringssl",

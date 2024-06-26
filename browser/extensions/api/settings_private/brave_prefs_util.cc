@@ -28,6 +28,7 @@
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
@@ -78,6 +79,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/browser/pref_names.h"
 #endif
 
 namespace extensions {
@@ -204,7 +209,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kNumber;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Web discovery prefs
-  (*s_brave_allowlist)[kWebDiscoveryEnabled] = settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kWebDiscoveryExtensionEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  (*s_brave_allowlist)[web_discovery::kWebDiscoveryNativeEnabled] =
+      settings_api::PrefType::kBoolean;
 #endif
   // Clear browsing data on exit prefs.
   (*s_brave_allowlist)[browsing_data::prefs::kDeleteBrowsingHistoryOnExit] =
