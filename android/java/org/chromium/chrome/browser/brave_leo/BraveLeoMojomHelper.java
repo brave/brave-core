@@ -106,20 +106,20 @@ public class BraveLeoMojomHelper implements ConnectionErrorHandler {
         mAIChatAndroidHelper.getModelsWithSubtitles(callback);
     }
 
-    public void getDefaultModel(AiChatSettingsHelper.GetDefaultModel_Response callback) {
+    public void getDefaultModelKey(AiChatSettingsHelper.GetDefaultModelKey_Response callback) {
         if (mAIChatAndroidHelper == null) {
             callback.call("");
             return;
         }
-        mAIChatAndroidHelper.getDefaultModel(callback);
+        mAIChatAndroidHelper.getDefaultModelKey(callback);
     }
 
-    public void setDefaultModel(String modelKey) {
+    public void setDefaultModelKey(String modelKey) {
         if (mAIChatAndroidHelper == null) {
             return;
         }
 
-        mAIChatAndroidHelper.setDefaultModel(modelKey);
+        mAIChatAndroidHelper.setDefaultModelKey(modelKey);
     }
 
     @Override
