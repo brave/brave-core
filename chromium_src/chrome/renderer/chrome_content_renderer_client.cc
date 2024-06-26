@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
-#include "brave/components/web_discovery/renderer/blink_document_extractor.h"
+#include "brave/components/web_discovery/common/buildflags/buildflags.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "components/dom_distiller/content/renderer/distillability_agent.h"
@@ -21,6 +22,11 @@
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/renderer/ai_rewriter_agent.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/common/features.h"
+#include "brave/components/web_discovery/renderer/blink_document_extractor.h"
 #endif
 
 namespace {
@@ -44,7 +50,12 @@ void RenderFrameWithBinderRegistryCreated(
   }
 #endif
 
-  new web_discovery::BlinkDocumentExtractor(render_frame, registry);
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  if (base::FeatureList::IsEnabled(
+          web_discovery::features::kWebDiscoveryNative)) {
+    new web_discovery::BlinkDocumentExtractor(render_frame, registry);
+  }
+#endif
 }
 
 }  // namespace
