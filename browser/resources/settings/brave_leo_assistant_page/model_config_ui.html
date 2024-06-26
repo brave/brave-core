@@ -161,13 +161,13 @@
       </div>
       <div class="note">$i18n{braveLeoAssistantProxyNote}</div>
       <cr-input
-        id="endpoint-input"
+        id="endpointInput"
         required
         type="url"
         value="[[endpointUrl]]"
         on-change="onModelServerEndpointChange_"
-        error-message="$i18n{braveLeoAssistantEndpointError}"
         invalid="[[isUrlInvalid]]"
+        error-message="[[invalidUrlErrorMessage]]"
       ></cr-input>
     </div>
     <div class="input-container">

@@ -73,7 +73,7 @@ class ModelListSection extends ModelListSectionBase {
       })
   }
 
-  async onModelConfigSave_(e: any) {
+  async onModelConfigSave_(e: { detail: { modelConfig: Model } }) {
     // Determine the action based on the editing index
     // Need to do explicit null check because 0 is a valid index
     const isEditing = this.isEditingModelIndex_ !== null
@@ -81,8 +81,25 @@ class ModelListSection extends ModelListSectionBase {
     // Since model-config-ui is conditionally rendered, we use this.$$ API to access the element
     const modelConfigElement = this.$$('#model-config-ui') as any
 
-    let response = null
+    if (!e.detail.modelConfig.options.customModelOptions) {
+      console.error('Custom model options are missing')
+      return
+    }
 
+    // We need to check if the URL is valid because sending bad URL will cause
+    // renderer to crash. This is mainly due to mojo IPC not being able to
+    // handle bad URLs properly for |mojomUrl| type
+    try {
+      new URL(e.detail.modelConfig.options.customModelOptions.endpoint.url)
+    } catch {
+      modelConfigElement.isUrlInvalid = true
+      modelConfigElement.invalidUrlErrorMessage = this.i18n(
+        'braveLeoAssistantEndpointInvalidError'
+      )
+      return
+    }
+
+    let response = null
     if (isEditing) {
       response = await this.browserProxy_
         .getSettingsHelper()
@@ -99,6 +116,9 @@ class ModelListSection extends ModelListSectionBase {
 
     if (response.result === OperationResult.InvalidUrl) {
       modelConfigElement.isUrlInvalid = true
+      modelConfigElement.invalidUrlErrorMessage = this.i18n(
+        'braveLeoAssistantEndpointError'
+      )
       return
     }
 

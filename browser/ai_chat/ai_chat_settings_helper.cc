@@ -182,11 +182,12 @@ void AIChatSettingsHelper::DeleteCustomModel(uint32_t index) {
   model_service_->DeleteCustomModel(index);
 }
 
-void AIChatSettingsHelper::SetDefaultModel(const std::string& model_key) {
+void AIChatSettingsHelper::SetDefaultModelKey(const std::string& model_key) {
   model_service_->SetDefaultModelKey(model_key);
 }
 
-void AIChatSettingsHelper::GetDefaultModel(GetDefaultModelCallback callback) {
+void AIChatSettingsHelper::GetDefaultModelKey(
+    GetDefaultModelKeyCallback callback) {
   std::move(callback).Run(model_service_->GetDefaultModelKey());
 }
 

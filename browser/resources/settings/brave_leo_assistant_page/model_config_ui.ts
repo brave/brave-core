@@ -6,6 +6,7 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
+import type { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -15,7 +16,13 @@ import { getTemplate } from './model_config_ui.html.js'
 
 const ModelConfigUIBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
-class ModelConfigUI extends ModelConfigUIBase {
+export interface ModelConfigUI {
+  $: {
+    endpointInput: CrInputElement
+  }
+}
+
+export class ModelConfigUI extends ModelConfigUIBase {
   static get is() {
     return 'model-config-ui'
   }
@@ -43,6 +50,10 @@ class ModelConfigUI extends ModelConfigUIBase {
         type: Boolean,
         value: false
       },
+      invalidUrlErrorMessage: {
+        type: String,
+        value: ''
+      },
       modelItem: {
         type: Object,
         value: null,
@@ -69,6 +80,7 @@ class ModelConfigUI extends ModelConfigUIBase {
   modelItem: mojom.Model | null
   isEditing_: boolean
   isUrlInvalid: boolean
+  invalidUrlErrorMessage: string
 
   override ready() {
     super.ready()
@@ -76,20 +88,6 @@ class ModelConfigUI extends ModelConfigUIBase {
 
   handleClick_() {
     if (!this.saveEnabled_()) {
-      return
-    }
-
-    // We need to check if the URL is valid because sending bad URL will cause
-    // renderer to crash. This is mainly due to mojo IPC not being able to
-    // handle bad URLs properly for mojomUrl type
-    try {
-      new URL(this.endpointUrl)
-    } catch (error) {
-      this.isUrlInvalid = true
-      // @ts-expect-error
-      this.$['endpoint-input'].errorMessage = this.i18n(
-        'braveLeoAssistantEndpointInvalidError'
-      )
       return
     }
 

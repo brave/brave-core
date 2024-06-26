@@ -84,7 +84,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
           this.manageUrl_ = value.url
         })
 
-      this.browserProxy_.getSettingsHelper().getDefaultModel()
+      this.browserProxy_.getSettingsHelper().getDefaultModelKey()
         .then((value: { key: string }) => {
           this.defaultModelKeyPrefValue_ = value.key
         })
@@ -137,7 +137,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     onModelSelectionChange_(e: any) {
-      this.browserProxy_.getSettingsHelper().setDefaultModel(e.value)
+      this.browserProxy_.getSettingsHelper().setDefaultModelKey(e.value)
     }
 
     private updateShowLeoAssistantIcon_() {

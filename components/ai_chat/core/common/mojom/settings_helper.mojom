@@ -20,8 +20,8 @@ interface AIChatSettingsHelper {
   AddCustomModel(Model model) => (OperationResult result);
   SaveCustomModel(uint32 index, Model model) => (OperationResult result);
   DeleteCustomModel(uint32 index);
-  SetDefaultModel(string key);
-  GetDefaultModel() => (string key);
+  SetDefaultModelKey(string key);
+  GetDefaultModelKey() => (string key);
   SetClientPage(pending_remote<SettingsPage> page);
 
   [EnableIf=is_android]
