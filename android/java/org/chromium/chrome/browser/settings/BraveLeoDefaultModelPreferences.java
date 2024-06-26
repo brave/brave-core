@@ -40,7 +40,7 @@ public class BraveLeoDefaultModelPreferences extends BravePreferenceFragment
 
     private void fetchDefaultModelInitRadioButtons(ModelWithSubtitle[] models) {
         BraveLeoMojomHelper.getInstance(getProfile())
-                .getDefaultModel(
+                .getDefaultModelKey(
                         (defaultModel -> {
                             mRadioButtons.initializeModels(models, defaultModel);
                         }));
@@ -48,6 +48,6 @@ public class BraveLeoDefaultModelPreferences extends BravePreferenceFragment
 
     @Override
     public void setDefaultModel(String key) {
-        BraveLeoMojomHelper.getInstance(getProfile()).setDefaultModel(key);
+        BraveLeoMojomHelper.getInstance(getProfile()).setDefaultModelKey(key);
     }
 }

@@ -73,7 +73,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
 
     private void setDefaultModelName(ModelWithSubtitle[] models) {
         BraveLeoMojomHelper.getInstance(getProfile())
-                .getDefaultModel(
+                .getDefaultModelKey(
                         (model -> {
                             Preference pref = findPreference(PREF_DEFAULT_MODEL);
                             if (pref == null) {
