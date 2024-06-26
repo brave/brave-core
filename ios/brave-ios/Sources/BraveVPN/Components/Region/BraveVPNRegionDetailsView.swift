@@ -182,8 +182,10 @@ struct BraveRegionDetailsView: View {
   }
 }
 
+#if DEBUG
 struct BraveRegionDetailsView_Previews: PreviewProvider {
   static var previews: some View {
     BraveRegionDetailsView(countryRegion: GRDRegion(dictionary: [:]))
   }
 }
+#endif
