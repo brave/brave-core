@@ -188,7 +188,8 @@ class ConversationDriverUnitTest : public testing::Test {
     service_ = std::make_unique<ModelService>(&prefs_);
 
     if (!default_model_key_.empty()) {
-      service_->SetDefaultModelKey(default_model_key_);
+      service_->SetDefaultModelKeyWithoutValidationForTesting(
+          default_model_key_);
     }
 
     conversation_driver_ = std::make_unique<MockConversationDriver>(

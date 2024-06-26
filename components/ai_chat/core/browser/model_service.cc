@@ -371,11 +371,27 @@ void ModelService::DeleteCustomModel(uint32_t index) {
 }
 
 void ModelService::SetDefaultModelKey(const std::string& new_key) {
+  const auto& models = GetModels();
+
+  bool does_model_exist = base::Contains(
+      models, new_key, [](const mojom::ModelPtr& model) { return model->key; });
+
+  if (!does_model_exist) {
+    DVLOG(1) << "Default model key " << new_key
+             << " does not exist in the model list.";
+    return;
+  }
+
   pref_service_->SetString(kDefaultModelKey, new_key);
 
   for (auto& obs : observers_) {
     obs.OnDefaultModelChanged(new_key);
   }
+}
+
+void ModelService::SetDefaultModelKeyWithoutValidationForTesting(
+    const std::string& model_key) {
+  pref_service_->SetString(kDefaultModelKey, model_key);
 }
 
 const std::string& ModelService::GetDefaultModelKey() {

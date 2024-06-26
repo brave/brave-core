@@ -54,6 +54,8 @@ class ModelService : public KeyedService {
 
   // Returns a static model
   static const mojom::Model* GetModelForTesting(std::string_view key);
+  void SetDefaultModelKeyWithoutValidationForTesting(
+      const std::string& model_key);
 
  private:
   void InitModels();

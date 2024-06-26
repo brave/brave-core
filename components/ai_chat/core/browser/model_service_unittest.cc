@@ -35,7 +35,7 @@ class ModelServiceTest : public ::testing::Test {
 };
 
 TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
-  service_->SetDefaultModelKey("chat-default");
+  service_->SetDefaultModelKeyWithoutValidationForTesting("chat-default");
   ModelService::MigrateProfilePrefs(&pref_service_);
 
   EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
@@ -72,7 +72,8 @@ TEST_F(ModelServiceTest, ChangeDefaultModelKey) {
   service_->SetDefaultModelKey("chat-basic");
   EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
   service_->SetDefaultModelKey("bad-key");
-  EXPECT_EQ(service_->GetDefaultModelKey(), "bad-key");
+  // Default model key should not change if the key is invalid.
+  EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
 }
 
 }  // namespace ai_chat
