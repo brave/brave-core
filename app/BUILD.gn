@@ -111,8 +111,8 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "feature_defaults_unittest.cc",
     "brave_main_delegate_unittest.cc",
+    "feature_defaults_unittest.cc",
   ]
   if (!is_android) {
     sources += [ "command_utils_unittest.cc" ]
