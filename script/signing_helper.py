@@ -17,7 +17,6 @@ import signing.model  # pylint: disable=import-error, reimported, wrong-import-p
 from lib.widevine import can_generate_sig_file, generate_sig_file
 from os.path import basename, splitext, exists
 from signing import model  # pylint: disable=import-error, reimported
-from signing import updater_parts  # pylint: disable=import-error
 
 # Construct path to signing modules in chrome/installer/mac/signing
 signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
@@ -167,6 +166,11 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
 
 
 def GetUpdaterSigningParts(config):
+    try:
+        from signing import updater_parts  # pylint: disable=import-outside-toplevel
+    except ImportError:
+        # brave_enable_updater is false.
+        return {}
     result = {}
     updater_config = ConfigWrapper(config)
     updater_config.app_product = 'BraveUpdater'  # pylint: disable=W0201
