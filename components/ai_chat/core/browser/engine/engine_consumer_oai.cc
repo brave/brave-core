@@ -90,12 +90,16 @@ base::Value::List BuildMessages(
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
                             : "assistant");
-    message.Set("content", turn->selected_text ? base::StrCat(
+    message.Set(
+        "content",
+        turn->selected_text
+            ? base::StrCat(
                   {base::ReplaceStringPlaceholders(
                        l10n_util::GetStringUTF8(
                            IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
                        {*turn->selected_text}, nullptr),
-                   "\n\n", turn->text}) : turn->text);
+                   "\n\n", turn->text})
+            : turn->text);
     messages.Append(std::move(message));
   }
 
@@ -127,10 +131,10 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     const std::string& question,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
-  const std::string& truncated_text =
-      text.substr(0, max_page_content_length_);
+  const std::string& truncated_text = text.substr(0, max_page_content_length_);
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
       {truncated_text, question}, nullptr);
 
   base::Value::List messages;
