@@ -10,7 +10,7 @@ use ed25519_dalek_bip32::derivation_path::{
     ChildIndexError, DerivationPath, DerivationPathParseError,
 };
 use ed25519_dalek_bip32::ed25519_dalek::{
-    SigningKey, Signature, SignatureError, Signer, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
+    Signature, SignatureError, Signer, SigningKey, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
     SECRET_KEY_LENGTH, SIGNATURE_LENGTH,
 };
 use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
@@ -160,7 +160,9 @@ impl fmt::Display for Error {
             Error::ChildIndex(e) => write!(f, "Error: {}", e.to_string()),
             Error::Signature(e) => write!(f, "Error: {}", e.to_string()),
             Error::Bech32(e) => write!(f, "Error: {}", e.to_string()),
-            Error::KeyLengthMismatch => write!(f, "Error: raw key bytes were not the expected length"),
+            Error::KeyLengthMismatch => {
+                write!(f, "Error: raw key bytes were not the expected length")
+            }
         }
     }
 }
@@ -179,7 +181,11 @@ struct Ed25519DalekSignatureResult(Result<Ed25519DalekSignature, Error>);
 struct Ed25519DalekVerificationResult(Result<(), Error>);
 struct Bech32DecodeResult(Result<Bech32DecodeValue, Error>);
 
-impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult, ExtendedSigningKey);
+impl_result!(
+    Ed25519DalekExtendedSecretKey,
+    Ed25519DalekExtendedSecretKeyResult,
+    ExtendedSigningKey
+);
 impl_result!(Ed25519DalekSignature, Ed25519DalekSignatureResult, Signature);
 impl_result!(Bech32DecodeValue, Bech32DecodeResult, Bech32Decoded);
 
@@ -238,7 +244,7 @@ fn generate_ed25519_extended_secret_key_from_bytes(
                 signing_key,
                 chain_code: [0; 32],
             })
-        },
+        }
     };
     Box::new(Ed25519DalekExtendedSecretKeyResult::from(key_result))
 }
@@ -299,7 +305,7 @@ impl Ed25519DalekExtendedSecretKey {
 
     fn sign(self: &Ed25519DalekExtendedSecretKey, msg: &[u8]) -> Box<Ed25519DalekSignatureResult> {
         Box::new(Ed25519DalekSignatureResult::from(
-            self.0.signing_key.try_sign(msg).map_err(Error::from)
+            self.0.signing_key.try_sign(msg).map_err(Error::from),
         ))
     }
 
@@ -309,10 +315,7 @@ impl Ed25519DalekExtendedSecretKey {
         sig: &[u8],
     ) -> Box<Ed25519DalekVerificationResult> {
         let sig_result = match Signature::from_slice(sig) {
-            Ok(signature) =>
-                self.0.signing_key
-                    .verify(msg, &signature)
-                    .map_err(Error::from),
+            Ok(signature) => self.0.signing_key.verify(msg, &signature).map_err(Error::from),
             Err(e) => Err(Error::from(e)),
         };
         Box::new(Ed25519DalekVerificationResult::from(sig_result))
