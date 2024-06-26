@@ -99,7 +99,7 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
-    Observe(vpn_service);
+    brave_vpn::BraveVPNServiceObserver::Observe(vpn_service);
   }
 #endif
 }
