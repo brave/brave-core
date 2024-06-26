@@ -85,9 +85,12 @@ extension PlaylistListViewController {
         UIAlertAction(
           title: Strings.PlayList.removeActionButtonTitle,
           style: .destructive,
-          handler: { [unowned self] _ in
-            _ = PlaylistManager.shared.deleteCache(item: item)
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+          handler: { [weak self] _ in
+            Task {
+              guard let self else { return }
+              await PlaylistManager.shared.deleteCache(item: item)
+              self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
           }
         )
       )

@@ -126,7 +126,6 @@ class BraveVPNContactFormViewController: TableViewController {
       )
 
     // MARK: AppStore receipt
-    let receipt = getReceipt
     let receiptRow = Row(
       text: Strings.VPN.contactFormAppStoreReceipt,
       accessory:
@@ -134,10 +133,13 @@ class BraveVPNContactFormViewController: TableViewController {
           SwitchAccessoryView(
             initialValue: false,
             valueChange: { [weak self] isOn in
+              guard let self else { return }
               if isOn {
-                self?.contactForm.receipt = receipt
+                Task {
+                  self.contactForm.receipt = await self.fetchReceipt()
+                }
               } else {
-                self?.contactForm.receipt = nil
+                contactForm.receipt = nil
               }
             }
           )
@@ -325,7 +327,7 @@ class BraveVPNContactFormViewController: TableViewController {
     }
   }
 
-  private var getReceipt: String? {
+  nonisolated private func fetchReceipt() async -> String? {
     guard let receiptUrl = Bundle.main.appStoreReceiptURL else { return nil }
     do {
       return try Data(contentsOf: receiptUrl).base64EncodedString()

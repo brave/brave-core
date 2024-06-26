@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveShared
 import Combine
 import CoreData
 import Data
@@ -75,11 +76,13 @@ public class PlaylistManager: NSObject {
     if Date.now >= sevenDays {
       Preferences.Playlist.lastCacheDataCleanupDate.value = Date.now
 
-      // Delete system cache always on startup.
-      deleteUserManagedAssets()
+      Task {
+        // Delete system cache always on startup.
+        await deleteUserManagedAssets()
 
-      // Delete dangling cache always on startup.
-      deleteDanglingManagedAssets()
+        // Delete dangling cache always on startup.
+        await deleteDanglingManagedAssets()
+      }
     }
   }
 
@@ -259,7 +262,8 @@ public class PlaylistManager: NSObject {
     return .invalid
   }
 
-  public func sizeOfDownloadedItem(for itemId: String) -> String? {
+  @available(iOS, deprecated)
+  public func sizeOfDownloadedItemSynchronous(for itemId: String) -> String? {
     var isDirectory: ObjCBool = false
     if let asset = downloadManager.localAsset(for: itemId),
       FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory)
@@ -366,12 +370,12 @@ public class PlaylistManager: NSObject {
     downloadManager.cancelDownload(itemId: itemId)
   }
 
-  public func delete(folder: PlaylistFolder, _ completion: ((_ success: Bool) -> Void)? = nil) {
+  @MainActor public func delete(folder: PlaylistFolder) async -> Bool {
     var success = true
     var itemsToDelete = [PlaylistInfo]()
 
-    folder.playlistItems?.forEach({
-      let item = PlaylistInfo(item: $0)
+    for playlistItem in folder.playlistItems ?? [] {
+      let item = PlaylistInfo(item: playlistItem)
       cancelDownload(itemId: item.tagId)
 
       if let index = assetInformation.firstIndex(where: { $0.itemId == item.tagId }) {
@@ -379,7 +383,7 @@ public class PlaylistManager: NSObject {
         assetFetcher.cancelLoading()
       }
 
-      if !deleteCache(item: item) {
+      if !(await deleteCache(item: item)) {
         // If we cannot delete an item's cache for any given reason,
         // Do NOT delete the folder containing the item.
         // Delete all other items.
@@ -387,45 +391,47 @@ public class PlaylistManager: NSObject {
       } else {
         itemsToDelete.append(item)
       }
-    })
+    }
 
     if success, currentFolder?.objectID == folder.objectID {
       currentFolder = nil
     }
 
     // Delete items from the folder
-    PlaylistItem.removeItems(itemsToDelete) {
-      // Attempt to delete the folder if we can
-      if success, folder.uuid != PlaylistFolder.savedFolderUUID {
-        PlaylistFolder.removeFolder(folder.uuid ?? "") { [weak self] in
-          guard let self = self else {
-            completion?(success)
-            return
-          }
+    return await withCheckedContinuation { continuation in
+      PlaylistItem.removeItems(itemsToDelete) {
+        // Attempt to delete the folder if we can
+        if success, folder.uuid != PlaylistFolder.savedFolderUUID {
+          PlaylistFolder.removeFolder(folder.uuid ?? "") { [weak self] in
+            defer {
+              continuation.resume(returning: success)
+            }
+            guard let self = self else {
+              return
+            }
 
+            if self.currentFolder?.isDeleted == true {
+              self.currentFolder = nil
+            }
+
+            self.onFolderDeleted.send()
+            self.reloadData()
+          }
+        } else {
           if self.currentFolder?.isDeleted == true {
             self.currentFolder = nil
           }
 
           self.onFolderDeleted.send()
           self.reloadData()
-
-          completion?(success)
+          continuation.resume(returning: success)
         }
-      } else {
-        if self.currentFolder?.isDeleted == true {
-          self.currentFolder = nil
-        }
-
-        self.onFolderDeleted.send()
-        self.reloadData()
-        completion?(success)
       }
     }
   }
 
   @discardableResult
-  public func delete(item: PlaylistInfo) -> Bool {
+  @MainActor public func delete(item: PlaylistInfo) async -> Bool {
     cancelDownload(itemId: item.tagId)
 
     if let index = assetInformation.firstIndex(where: { $0.itemId == item.tagId }) {
@@ -438,7 +444,7 @@ public class PlaylistManager: NSObject {
     {
       // Do NOT delete the item if we can't delete it's local cache.
       // That will cause zombie items.
-      if deleteCache(item: item) {
+      if await deleteCache(item: item) {
         PlaylistItem.removeItems([item])
         onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         return true
@@ -452,7 +458,7 @@ public class PlaylistManager: NSObject {
   }
 
   @discardableResult
-  public func deleteCache(item: PlaylistInfo) -> Bool {
+  @MainActor public func deleteCache(item: PlaylistInfo) async -> Bool {
     cancelDownload(itemId: item.tagId)
 
     if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
@@ -463,8 +469,8 @@ public class PlaylistManager: NSObject {
 
       do {
         let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-        if FileManager.default.fileExists(atPath: url.path) {
-          try FileManager.default.removeItem(atPath: url.path)
+        if await AsyncFileManager.default.fileExists(atPath: url.path) {
+          try await AsyncFileManager.default.removeItem(atPath: url.path)
           PlaylistItem.updateCache(uuid: item.tagId, pageSrc: item.pageSrc, cachedData: nil)
           onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
         }
@@ -479,7 +485,7 @@ public class PlaylistManager: NSObject {
     return true
   }
 
-  public func deleteAllItems(cacheOnly: Bool) {
+  @MainActor public func deleteAllItems(cacheOnly: Bool) async {
     guard let playlistItems = frc.fetchedObjects else {
       Logger.module.error("An error occured while fetching Playlist Objects")
       return
@@ -487,7 +493,7 @@ public class PlaylistManager: NSObject {
 
     for item in playlistItems {
       let item = PlaylistInfo(item: item)
-      if !deleteCache(item: item) {
+      if !(await deleteCache(item: item)) {
         continue
       }
 
@@ -503,9 +509,9 @@ public class PlaylistManager: NSObject {
 
     // Delete playlist directory.
     // Though it should already be empty
-    if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
+    if let playlistDirectory = await PlaylistDownloadManager.playlistDirectory {
       do {
-        try FileManager.default.removeItem(at: playlistDirectory)
+        try await AsyncFileManager.default.removeItem(at: playlistDirectory)
       } catch {
         Logger.module.error("Failed to delete Playlist Directory: \(error.localizedDescription)")
       }
@@ -517,26 +523,26 @@ public class PlaylistManager: NSObject {
       Preferences.Playlist.lastCacheDataCleanupDate.value = Date.now
 
       // Delete system cache always on startup.
-      deleteUserManagedAssets()
+      await deleteUserManagedAssets()
 
       // Delete dangling cache always on startup.
-      deleteDanglingManagedAssets()
+      await deleteDanglingManagedAssets()
     }
   }
 
-  private func deleteUserManagedAssets() {
+  @MainActor private func deleteUserManagedAssets() async {
     // Cleanup System Cache Folder com.apple.UserManagedAssets*
     if let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
     {
       do {
-        let urls = try FileManager.default.contentsOfDirectory(
+        let urls = try await AsyncFileManager.default.contentsOfDirectory(
           at: libraryPath,
           includingPropertiesForKeys: nil,
           options: [.skipsHiddenFiles]
         )
         for url in urls where url.absoluteString.contains("com.apple.UserManagedAssets") {
           do {
-            let assets = try FileManager.default.contentsOfDirectory(
+            let assets = try await AsyncFileManager.default.contentsOfDirectory(
               at: url,
               includingPropertiesForKeys: nil,
               options: [.skipsHiddenFiles]
@@ -554,7 +560,7 @@ public class PlaylistManager: NSObject {
           }
 
           do {
-            try FileManager.default.removeItem(at: url)
+            try await AsyncFileManager.default.removeItem(at: url)
           } catch {
             Logger.module.error(
               "Deleting Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
@@ -569,8 +575,8 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  private func deleteDanglingManagedAssets() {
-    if let playlistFolderPath = PlaylistDownloadManager.playlistDirectory {
+  @MainActor private func deleteDanglingManagedAssets() async {
+    if let playlistFolderPath = await PlaylistDownloadManager.playlistDirectory {
       let items = PlaylistItem.all().compactMap(\.cachedData)
       Task.detached {
         let cachedURLs = items.compactMap { cachedData in
@@ -933,7 +939,9 @@ extension PlaylistManager {
     let newItems = Set(model.mediaItems).subtracting(oldItems)
     oldItems = []
 
-    deletedItems.forEach({ PlaylistManager.shared.delete(item: $0) })
+    for deletedItem in deletedItems {
+      await PlaylistManager.shared.delete(item: deletedItem)
+    }
 
     if !newItems.isEmpty {
       await withCheckedContinuation { continuation in

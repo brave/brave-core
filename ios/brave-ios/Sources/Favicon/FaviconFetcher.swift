@@ -32,7 +32,7 @@ public class FaviconFetcher {
     case smallIcon
   }
 
-  public static func clearCache() {
+  public static func clearCache() async {
     SDImageCache.shared.memoryCache.removeAllObjects()
     SDImageCache.shared.diskCache.removeAllData()
   }
@@ -51,14 +51,14 @@ public class FaviconFetcher {
   ) async throws -> Favicon {
     try Task.checkCancellation()
 
-    if let favicon = getFromCache(for: url) {
+    if let favicon = await getFromCache(for: url) {
       return favicon
     }
 
     // Fetch the Brave-Core icons
     let favicon = try? await FaviconRenderer.loadIcon(for: url, persistent: persistent)
     if let favicon = favicon, !favicon.isMonogramImage {
-      storeInCache(favicon, for: url, persistent: persistent)
+      await storeInCache(favicon, for: url, persistent: persistent)
       try Task.checkCancellation()
       return favicon
     }
@@ -66,14 +66,14 @@ public class FaviconFetcher {
     // Fetch Bundled or Custom icons
     // If there is an error, we'll try to fetch the cached icons
     if let favicon = try? await BundledFaviconRenderer.loadIcon(url: url) {
-      storeInCache(favicon, for: url, persistent: true)
+      await storeInCache(favicon, for: url, persistent: true)
       try Task.checkCancellation()
       return favicon
     }
 
     // Cache and return Monogram icons
     if let favicon = favicon {
-      storeInCache(favicon, for: url, persistent: persistent)
+      await storeInCache(favicon, for: url, persistent: persistent)
       return favicon
     }
 
@@ -91,7 +91,7 @@ public class FaviconFetcher {
   ) async throws -> Favicon {
     try Task.checkCancellation()
 
-    if let favicon = getFromCache(for: url) {
+    if let favicon = await getFromCache(for: url) {
       return favicon
     }
 
@@ -113,13 +113,13 @@ public class FaviconFetcher {
       backgroundColor: backColor,
       monogramString: monogramText
     )
-    storeInCache(favicon, for: url, persistent: persistent)
+    await storeInCache(favicon, for: url, persistent: persistent)
     try Task.checkCancellation()
     return favicon
   }
 
   /// Retrieves a Favicon from the cache
-  public static func getIconFromCache(for url: URL) -> Favicon? {
+  public static func getIconFromCache(for url: URL) async -> Favicon? {
     // Handle internal URLs
     var url = url
     if let internalURL = InternalURL(url),
@@ -129,7 +129,7 @@ public class FaviconFetcher {
     }
 
     // Fetch from cache
-    if let favicon = getFromCache(for: url) {
+    if let favicon = await getFromCache(for: url) {
       return favicon
     }
 
@@ -141,7 +141,7 @@ public class FaviconFetcher {
       components.scheme = "https"
 
       // Fetch from cache
-      if let url = components.url, let favicon = FaviconFetcher.getIconFromCache(for: url) {
+      if let url = components.url, let favicon = await FaviconFetcher.getIconFromCache(for: url) {
         return favicon
       }
     }
@@ -150,7 +150,7 @@ public class FaviconFetcher {
   }
 
   /// Updates the Favicon in the cache with the specified icon if any, otherwise removes the favicon from the cache.
-  public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) {
+  public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) async {
     guard let favicon else {
       let cachedURL = cacheURL(for: url)
       SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
@@ -158,7 +158,7 @@ public class FaviconFetcher {
       return
     }
 
-    storeInCache(favicon, for: url, persistent: persistent)
+    await storeInCache(favicon, for: url, persistent: persistent)
   }
 
   private static func cacheURL(for url: URL) -> URL {
@@ -169,7 +169,7 @@ public class FaviconFetcher {
     return url.domainURL
   }
 
-  private static func storeInCache(_ favicon: Favicon, for url: URL, persistent: Bool) {
+  private static func storeInCache(_ favicon: Favicon, for url: URL, persistent: Bool) async {
     // Do not cache non-persistent icons to disk
     if persistent {
       do {
@@ -188,7 +188,7 @@ public class FaviconFetcher {
     }
   }
 
-  private static func getFromCache(for url: URL) -> Favicon? {
+  private static func getFromCache(for url: URL) async -> Favicon? {
     let cachedURL = cacheURL(for: url)
     if let favicon = SDImageCache.shared.memoryCache.object(forKey: cachedURL.absoluteString)
       as? Favicon

@@ -990,7 +990,7 @@ extension PlaylistListViewController {
       }
 
     case .downloaded:
-      if let itemSize = PlaylistManager.shared.sizeOfDownloadedItem(for: item.tagId) {
+      if let itemSize = PlaylistManager.shared.sizeOfDownloadedItemSynchronous(for: item.tagId) {
         getAssetDurationFormatted(item: item) { [weak cell] in
           guard cell?.itemId == item.id else { return }
           cell?.detailLabel.text = "\($0) - \(itemSize)"

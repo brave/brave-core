@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -292,9 +293,9 @@ import os.log
 
     do {
       do {
-        let filterSet = try String(contentsOf: localFileURL)
         result = try await Task.detached {
-          try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
+          let filterSet = try String(contentsOf: localFileURL)
+          return try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
         }.value
         Self.signpost.endInterval("convertRules", state)
       } catch {
@@ -543,14 +544,15 @@ import os.log
       return
     }
 
-    let encodedContentRuleList = try String(contentsOf: fileURL)
-    let type = BlocklistType.generic(genericType)
-    try await compile(
-      encodedContentRuleList: encodedContentRuleList,
-      for: type,
-      version: genericType.version,
-      modes: modes
-    )
+    if let encodedContentRuleList = await AsyncFileManager.default.utf8Contents(at: fileURL) {
+      let type = BlocklistType.generic(genericType)
+      try await compile(
+        encodedContentRuleList: encodedContentRuleList,
+        for: type,
+        version: genericType.version,
+        modes: modes
+      )
+    }
   }
 
   /// Return the valid generic types for the given domain

@@ -171,8 +171,10 @@ public struct BraveNewsDebugSettingsView: View {
             }
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
             Button {
-              if feedDataSource.clearCachedFiles() {
-                self.fileList = []
+              Task {
+                if await feedDataSource.clearCachedFiles() {
+                  self.fileList = []
+                }
               }
             } label: {
               Text("Clear News Cache")

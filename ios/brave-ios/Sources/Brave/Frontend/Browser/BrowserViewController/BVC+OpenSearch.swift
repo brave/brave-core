@@ -178,19 +178,20 @@ extension BrowserViewController {
     NetworkManager().downloadResource(with: url) { result in
       switch result {
       case .success(let response):
-        guard
-          let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
-            response.data,
-            referenceURL: reference,
-            image: icon,
-            isCustomEngine: true
-          )
-        else {
-          return
+        Task { @MainActor in
+          guard
+            let openSearchEngine = await OpenSearchParser(pluginMode: true).parse(
+              response.data,
+              referenceURL: reference,
+              image: icon,
+              isCustomEngine: true
+            )
+          else {
+            return
+          }
+
+          self.addSearchEngine(openSearchEngine)
         }
-
-        self.addSearchEngine(openSearchEngine)
-
       case .failure(let error):
         Logger.module.error("\(error.localizedDescription)")
       }
@@ -232,21 +233,23 @@ extension BrowserViewController {
         return
       }
 
-      do {
-        try self.profile.searchEngines.addSearchEngine(engine)
-        self.view.endEditing(true)
+      Task { @MainActor in
+        do {
+          try await self.profile.searchEngines.addSearchEngine(engine)
+          self.view.endEditing(true)
 
-        let toast = SimpleToast()
-        toast.showAlertWithText(
-          Strings.CustomSearchEngine.thirdPartySearchEngineAddedToastTitle,
-          bottomContainer: self.webViewContainer
-        )
+          let toast = SimpleToast()
+          toast.showAlertWithText(
+            Strings.CustomSearchEngine.thirdPartySearchEngineAddedToastTitle,
+            bottomContainer: self.webViewContainer
+          )
 
-        self.customSearchEngineButton.action = .disabled
-      } catch {
-        let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
-        self.present(alert, animated: true) {
-          self.customSearchEngineButton.action = .enabled
+          self.customSearchEngineButton.action = .disabled
+        } catch {
+          let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
+          self.present(alert, animated: true) {
+            self.customSearchEngineButton.action = .enabled
+          }
         }
       }
     }

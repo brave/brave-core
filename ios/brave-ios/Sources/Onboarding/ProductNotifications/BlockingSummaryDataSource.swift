@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Shared
 import UIKit
 import os.log
@@ -57,14 +58,14 @@ public class BlockingSummaryDataSource {
   // MARK: Lifecycle
 
   public init(with filePath: String? = nil) {
-    let path = filePath ?? Bundle.module.path(forResource: "blocking-summary-test", ofType: "json")
-
-    blockingSummaryList = fetchBlockingSummaryObjects(with: path)
+    self.filePath =
+      filePath ?? Bundle.module.path(forResource: "blocking-summary-test", ofType: "json")!
   }
 
-  // MARK: Internal
-
-  public func fetchDomainFetchedSiteSavings(_ url: URL) -> String? {
+  public func fetchDomainFetchedSiteSavings(_ url: URL) async -> String? {
+    if !isSummaryListLoaded {
+      await fetchBlockingSummaryObjects(with: filePath)
+    }
     let domain = url.baseDomain ?? url.host ?? url.hostSLD
 
     return blockingSummaryList.first(where: { $0.site.contains(domain) })?.avgsavings
@@ -72,15 +73,18 @@ public class BlockingSummaryDataSource {
 
   // MARK: Private
 
+  private let filePath: String
+  private var isSummaryListLoaded: Bool = false
+
   /// The list containing details related with blocking values of sites fetched from the JSON file
   private var blockingSummaryList = [BlockingSummary]()
 
   /// The function which uses the Data from Local JSON file to fetch list of objects
-  private func fetchBlockingSummaryObjects(with filePath: String?) -> [BlockingSummary] {
-    var blockingSummaryList = [BlockingSummary]()
-
-    guard let blockSummaryData = createJSONDataFrom(filePath: filePath) else {
-      return blockingSummaryList
+  private func fetchBlockingSummaryObjects(with filePath: String) async {
+    defer { isSummaryListLoaded = true }
+    guard let blockSummaryData = await AsyncFileManager.default.contents(atPath: filePath) else {
+      Logger.module.error("Failed to get bundle path for \(filePath)")
+      return
     }
 
     do {
@@ -90,21 +94,5 @@ public class BlockingSummaryDataSource {
         "Failed to decode blockign summary object from json Data \(error.localizedDescription)"
       )
     }
-
-    return blockingSummaryList
   }
-
-  /// The helper function with created the Data from parametrized file path
-  private func createJSONDataFrom(filePath: String?) -> Data? {
-    guard let path = filePath else { return nil }
-
-    do {
-      return try Data(contentsOf: URL(fileURLWithPath: path))
-    } catch {
-      Logger.module.error("Failed to get bundle path for \(path)")
-    }
-
-    return nil
-  }
-
 }

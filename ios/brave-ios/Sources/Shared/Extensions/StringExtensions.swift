@@ -46,18 +46,6 @@ extension String {
     return self.trimmingCharacters(in: CharacterSet(charactersIn: charactersInString))
   }
 
-  public static func contentsOfFileWithResourceName(
-    _ name: String,
-    ofType type: String,
-    fromBundle bundle: Bundle,
-    encoding: String.Encoding,
-    error: NSErrorPointer
-  ) -> String? {
-    return bundle.path(forResource: name, ofType: type).flatMap {
-      try? String(contentsOfFile: $0, encoding: encoding)
-    }
-  }
-
   public func separatedBy(_ string: String) -> [String] {
     let cleaned = self.replacingOccurrences(of: "\n", with: " ")
     return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)

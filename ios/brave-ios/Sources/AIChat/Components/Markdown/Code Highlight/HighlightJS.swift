@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Fuzi
 import JavaScriptCore
@@ -11,33 +12,34 @@ import SwiftUI
 import os.log
 
 class HighlightJS {
-  private let context: JSContext
-  private let theme: [BasicCSSParser.CSSStyle]
-  private let script: String
+  private var isDarkTheme: Bool
+  private(set) var isHighlighterPrepared: Bool = false
+  private var context: JSContext?
+  private var theme: [BasicCSSParser.CSSStyle]?
+  private var script: String?
 
   static let dark = HighlightJS(darkTheme: true)
   static let light = HighlightJS(darkTheme: false)
 
   private init(darkTheme: Bool) {
-    let styleSheet =
-      HighlightJS.loadScript(named: "atom-one-\(darkTheme ? "dark" : "light").min", type: "css")
-      ?? ""
-    theme = BasicCSSParser.parse(styleSheet)
-    script = HighlightJS.loadScript(named: "highlight.min", type: "js") ?? ""
-
-    context = JSContext()
-    context.evaluateScript("var window = {};\n\n\(script)")
+    isDarkTheme = darkTheme
   }
 
-  private static func loadScript(named: String, type: String) -> String? {
-    guard let path = Bundle.module.path(forResource: named, ofType: type),
-      let source = try? String(contentsOfFile: path)
-    else {
-      Logger.module.error("Failed to load script: \(named).js")
-      assertionFailure("Failed to Load Script: \(named).js")
-      return nil
+  func prepareHighlighter() async {
+    if context != nil {
+      return
     }
-    return source
+    let scriptName = "atom-one-\(isDarkTheme ? "dark" : "light").min"
+    guard let stylesheetPath = Bundle.module.url(forResource: scriptName, withExtension: "css"),
+      let scriptPath = Bundle.module.url(forResource: "highlight", withExtension: "js"),
+      let stylesheet = await AsyncFileManager.default.utf8Contents(at: stylesheetPath),
+      let script = await AsyncFileManager.default.utf8Contents(at: scriptPath)
+    else {
+      return
+    }
+    theme = BasicCSSParser.parse(stylesheet)
+    context = JSContext()
+    context?.evaluateScript("var window = {};\n\n\(script)")
   }
 
   func highlight(
@@ -45,6 +47,10 @@ class HighlightJS {
     preferredFont: UIFont,
     language: String? = nil
   ) -> (backgroundColor: Color?, string: AttributedString)? {
+    guard let context, let theme else {
+      Logger.module.warning("Attempted to highlight code without first calling prepareHighlighter")
+      return nil
+    }
     let result: JSValue?
     if let language = language {
       let highlight = context.objectForKeyedSubscript("hljs").objectForKeyedSubscript("highlight")
@@ -90,17 +96,6 @@ class HighlightJS {
     }
 
     return nil
-  }
-
-  private func availableLanguages() -> [String] {
-    let hljs = context.objectForKeyedSubscript("hljs").objectForKeyedSubscript("listLanguages")
-    let result = hljs?.call(withArguments: [])
-    if let result = result, !result.isUndefined, !result.isNull,
-      let languages = result.toArray() as? [String]
-    {
-      return languages
-    }
-    return []
   }
 
   private func normalizeLanguage(_ language: String) -> String {

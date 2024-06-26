@@ -221,7 +221,9 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
     }
 
     if validateReceipt {
-      BraveVPN.validateReceiptData()
+      Task {
+        _ = await BraveVPN.validateReceiptData()
+      }
     }
   }
 

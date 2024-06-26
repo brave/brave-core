@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import TestHelpers
 import XCTest
 
 @testable import Brave
@@ -53,13 +54,13 @@ final class BraveSkusWebHelperTests: XCTestCase {
     }
   }
 
-  func testReceiptJson() throws {
+  func testReceiptJson() async throws {
     let url = try XCTUnwrap(
       URL(string: "https://account.brave.com/?intent=connect-receipt&product=vpn")
     )
 
     let helper = try XCTUnwrap(BraveSkusWebHelperMock(for: url))
-    let receiptData = try XCTUnwrap(helper.receiptData)
+    let receiptData = try await XCTUnwrapAsync(await helper.fetchReceiptData())
     XCTAssertEqual(receiptData.key, "braveVpn.receipt")
     let value = receiptData.value
     let decodedData = try XCTUnwrap(Data(base64Encoded: value))

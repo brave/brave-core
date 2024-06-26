@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
 
@@ -39,7 +40,9 @@ class TemporaryDocument: NSObject {
 
     // Delete the temp file.
     if let url = localFileURL {
-      try? FileManager.default.removeItem(at: url)
+      Task {
+        try await AsyncFileManager.default.removeItem(at: url)
+      }
     }
   }
 
@@ -65,7 +68,9 @@ class TemporaryDocument: NSObject {
           // Calls `onDocumentDownloaded` on completion
           ResourceDownloadScriptHandler.downloadResource(for: tab, url: url)
         } else {
-          onDocumentDownloaded(document: nil, error: nil)
+          Task {
+            await onDocumentDownloaded(document: nil, error: nil)
+          }
         }
       }
     }
@@ -74,27 +79,27 @@ class TemporaryDocument: NSObject {
   }
 
   /// A callback available when there is a download response
-  func onDocumentDownloaded(document: DownloadedResourceResponse?, error: Error?) {
+  @MainActor func onDocumentDownloaded(document: DownloadedResourceResponse?, error: Error?) async {
     // Store the blob/data in a local temporary file.
     if let document = document, let data = document.data, !data.isEmpty {
       let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(
         "TempDocs"
       )
-      let url = tempDirectory.appendingPathComponent(filename)
+      let url = tempDirectory.appending(path: filename)
 
       do {
-        try FileManager.default.createDirectory(
+        try await AsyncFileManager.default.createDirectory(
           at: tempDirectory,
           withIntermediateDirectories: true,
           attributes: nil
         )
 
         // Delete the file if there is already one. We will replace it with a new file
-        if FileManager.default.fileExists(atPath: url.absoluteString) {
-          try FileManager.default.removeItem(at: url)
+        if await AsyncFileManager.default.fileExists(atPath: url.absoluteString) {
+          try await AsyncFileManager.default.removeItem(at: url)
         }
 
-        try data.write(to: url, options: [.atomic])
+        await AsyncFileManager.default.createFile(atPath: url.path(), contents: data)
 
         localFileURL = url
         pendingContinuation?.resume(returning: url)
@@ -134,29 +139,29 @@ extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate 
     downloadTask: URLSessionDownloadTask,
     didFinishDownloadingTo location: URL
   ) {
-    let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(
-      "TempDocs"
-    )
-    let url = tempDirectory.appendingPathComponent(filename)
+    Task {
+      let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appending(path: "TempDocs")
+      let url = tempDirectory.appending(path: filename)
 
-    try? FileManager.default.createDirectory(
-      at: tempDirectory,
-      withIntermediateDirectories: true,
-      attributes: nil
-    )
-    try? FileManager.default.removeItem(at: url)
+      try? await AsyncFileManager.default.createDirectory(
+        at: tempDirectory,
+        withIntermediateDirectories: true,
+        attributes: nil
+      )
+      try? await AsyncFileManager.default.removeItem(at: url)
 
-    do {
-      try FileManager.default.moveItem(at: location, to: url)
-      localFileURL = url
-      pendingContinuation?.resume(returning: url)
-      pendingContinuation = nil
-    } catch {
-      // If we encounter an error downloading the temp file, just return with the
-      // original remote URL so it can still be shared as a web URL.
-      if let remoteURL = request.url {
-        pendingContinuation?.resume(returning: remoteURL)
+      do {
+        try await AsyncFileManager.default.moveItem(at: location, to: url)
+        localFileURL = url
+        pendingContinuation?.resume(returning: url)
         pendingContinuation = nil
+      } catch {
+        // If we encounter an error downloading the temp file, just return with the
+        // original remote URL so it can still be shared as a web URL.
+        if let remoteURL = request.url {
+          pendingContinuation?.resume(returning: remoteURL)
+          pendingContinuation = nil
+        }
       }
     }
   }

@@ -14,18 +14,24 @@ public class BlockedDomainHandler: InternalSchemeResponse {
 
   public init() {}
 
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url, let internalURL = InternalURL(url),
       let originalURL = internalURL.extractedUrlParam
     else { return nil }
     let response = InternalSchemeHandler.response(forUrl: internalURL.url)
 
-    guard let asset = Bundle.module.path(forResource: "BlockedDomain", ofType: "html") else {
+    guard let asset = Bundle.module.url(forResource: "BlockedDomain", withExtension: "html") else {
       assert(false)
       return nil
     }
 
-    var html = try? String(contentsOfFile: asset)
+    guard var html = await AsyncFileManager.default.utf8Contents(at: asset) else {
+      assert(false)
+      return nil
+    }
+
+    html =
+      html
       .replacingOccurrences(of: "%page_title%", with: Strings.Shields.domainBlockedTitle)
       .replacingOccurrences(of: "%blocked_title%", with: Strings.Shields.domainBlockedPageTitle)
       .replacingOccurrences(
@@ -51,15 +57,12 @@ public class BlockedDomainHandler: InternalSchemeResponse {
       )
       .replacingOccurrences(of: "%security_token%", with: UserScriptManager.securityToken)
 
-    html = html?.replacingOccurrences(
+    html = html.replacingOccurrences(
       of: "<html lang=\"en\">",
       with: "<html lang=\"\(Locale.current.language.minimalIdentifier)\">"
     )
 
-    guard let data = html?.data(using: .utf8) else {
-      return nil
-    }
-
+    let data = Data(html.utf8)
     return (response, data)
   }
 }

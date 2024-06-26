@@ -449,7 +449,9 @@ extension BraveVPNSettingsViewController: BraveVPNInAppPurchaseObserverDelegate 
     }
 
     if validateReceipt {
-      BraveVPN.validateReceiptData()
+      Task {
+        _ = await BraveVPN.validateReceiptData()
+      }
     }
   }
 

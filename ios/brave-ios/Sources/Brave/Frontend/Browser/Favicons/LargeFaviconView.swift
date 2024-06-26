@@ -22,22 +22,21 @@ class LargeFaviconView: UIView {
     monogramFallbackCharacter: Character? = nil
   ) {
     faviconTask?.cancel()
-    if let favicon = FaviconFetcher.getIconFromCache(for: siteURL) {
-      faviconTask = nil
-
-      self.imageView.image = favicon.image ?? Favicon.defaultImage
-      self.backgroundColor = favicon.backgroundColor
-      self.imageView.contentMode = .scaleAspectFit
-
-      if let image = favicon.image {
-        self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
-      } else {
-        self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
-      }
-      return
-    }
-
     faviconTask = Task { @MainActor in
+      if let favicon = await FaviconFetcher.getIconFromCache(for: siteURL) {
+        self.imageView.image = favicon.image ?? Favicon.defaultImage
+        self.backgroundColor = favicon.backgroundColor
+        self.imageView.contentMode = .scaleAspectFit
+
+        if let image = favicon.image {
+          self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
+        } else {
+          self.backgroundView.isHidden =
+            !favicon.hasTransparentBackground && !favicon.isMonogramImage
+        }
+        return
+      }
+
       let isPersistent = !isPrivateBrowsing
       do {
         let favicon = try await FaviconFetcher.loadIcon(

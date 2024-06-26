@@ -317,10 +317,9 @@ public struct AIChatView: View {
         isModallyPresented: true
       )
     }
-    .onAppear {
-      Task { @MainActor in
-        await model.refreshPremiumStatus()
-      }
+    .task {
+      await model.refreshPremiumStatus()
+      await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
 
       if let query = model.querySubmited {
         model.querySubmited = nil

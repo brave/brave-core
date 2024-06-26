@@ -383,8 +383,13 @@ extension CertificateView {
 #if DEBUG
 struct CertificateView_Previews: PreviewProvider {
   static var previews: some View {
-    let model = BraveCertificateModel(name: "leaf")!
-
+    let model = BraveCertificateModel(
+      certificate: SecCertificateCreateWithData(
+        nil,
+        try! Data(contentsOf: Bundle.module.url(forResource: "leaf", withExtension: "cer")!)
+          as CFData
+      )!
+    )!
     CertificateView(model: model, evaluationError: nil)
   }
 }

@@ -180,8 +180,8 @@ extension BrowserViewController: TopToolbarDelegate {
         self.openPlaylist(tab: tab, item: info)
       }
     case .remove:
-      DispatchQueue.main.async {
-        if PlaylistManager.shared.delete(item: info) {
+      Task { @MainActor in
+        if await PlaylistManager.shared.delete(item: info) {
           self.updatePlaylistURLBar(tab: tab, state: .newItem, item: info)
         }
       }

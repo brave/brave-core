@@ -18,41 +18,25 @@ struct FaviconReader<Content: View>: View {
 
   var body: some View {
     content(image)
-      .onAppear {
-        load(url, transaction: Transaction())
-      }
-      .onChange(of: url) { newValue in
-        load(newValue, transaction: Transaction())
+      .task(id: url) {
+        await load(url)
       }
   }
 
-  private func load(_ url: URL?, transaction: Transaction) {
-    guard let url = url else { return }
-    faviconTask?.cancel()
-    if let favicon = FaviconFetcher.getIconFromCache(for: url) {
-      faviconTask = nil
-
-      withTransaction(transaction) {
-        self.image = favicon.image
-      }
+  private func load(_ url: URL) async {
+    if let favicon = await FaviconFetcher.getIconFromCache(for: url) {
+      self.image = favicon.image
       return
     }
-
-    faviconTask = Task { @MainActor in
-      do {
-        let favicon = try await FaviconFetcher.loadIcon(
-          url: url,
-          kind: .largeIcon,
-          persistent: true
-        )
-        withTransaction(transaction) {
-          self.image = favicon.image
-        }
-      } catch {
-        withTransaction(transaction) {
-          self.image = nil
-        }
-      }
+    do {
+      let favicon = try await FaviconFetcher.loadIcon(
+        url: url,
+        kind: .largeIcon,
+        persistent: true
+      )
+      self.image = favicon.image
+    } catch {
+      self.image = nil
     }
   }
 }

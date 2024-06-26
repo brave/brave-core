@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Data
 import Foundation
 import Playlist
@@ -84,9 +85,11 @@ struct PlaylistSidebarList: View {
           .contextMenu {
             if let cachedData = item.cachedData, !cachedData.isEmpty {
               Button {
-                PlaylistManager.shared.deleteCache(item: .init(item: item))
-                if let uuid = item.uuid {
-                  downloadStates.removeValue(forKey: uuid)
+                Task { @MainActor in
+                  await PlaylistManager.shared.deleteCache(item: .init(item: item))
+                  if let uuid = item.uuid {
+                    downloadStates.removeValue(forKey: uuid)
+                  }
                 }
               } label: {
                 Label("Remove Offline Data", braveSystemImage: "leo.cloud.off")
@@ -134,9 +137,11 @@ struct PlaylistSidebarList: View {
               .pickerStyle(.menu)
             }
             Button(role: .destructive) {
-              PlaylistManager.shared.delete(item: .init(item: item))
-              if selectedItemID == item.id {
-                selectedItemID = nil
+              Task {
+                await PlaylistManager.shared.delete(item: .init(item: item))
+                if selectedItemID == item.id {
+                  selectedItemID = nil
+                }
               }
             } label: {
               Label("Delete", braveSystemImage: "leo.trash")
@@ -210,7 +215,7 @@ struct PlaylistSidebarListHeader: View {
           let values = try cachedDataURL.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
           if values.isDirectory == true {
             // This item is an HLS stream saved as a movpkg, get the size of the directory instead
-            return Int(try FileManager.default.directorySize(at: cachedDataURL) ?? 0)
+            return Int(try await AsyncFileManager.default.sizeOfDirectory(at: cachedDataURL))
           }
           return values.fileSize ?? 0
         } catch {

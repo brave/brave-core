@@ -128,8 +128,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.BraveNews.isShowingOptIn.value = languageShouldShowOptIn
     }
 
-    SystemUtils.onFirstRun()
-
     // Clean Logger for Secure content state
     DebugLogger.cleanLogger(for: .secureState)
 
@@ -224,11 +222,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     Preferences.General.isFirstLaunch.value = false
 
-    // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
-    // There was a bug that when you skipped onboarding, default search engine preference
-    // was not set.
-    if Preferences.Search.defaultEngineName.value == nil {
-      AppState.shared.profile.searchEngines.searchEngineSetup()
+    Task {
+      await AppState.shared.profile.searchEngines.loadSearchEngines()
+      // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
+      // There was a bug that when you skipped onboarding, default search engine preference
+      // was not set.
+      if Preferences.Search.defaultEngineName.value == nil {
+        AppState.shared.profile.searchEngines.searchEngineSetup()
+      }
     }
 
     if isFirstLaunch {

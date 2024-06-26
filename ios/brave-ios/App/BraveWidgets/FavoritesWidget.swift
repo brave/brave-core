@@ -33,12 +33,16 @@ private struct FavoritesProvider: TimelineProvider {
     Entry(date: Date(), favorites: [])
   }
   func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
-    let favorites = FavoritesWidgetData.loadWidgetData() ?? []
-    completion(Entry(date: Date(), favorites: favorites))
+    Task {
+      let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
+      completion(Entry(date: Date(), favorites: favorites))
+    }
   }
   func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
-    let favorites = FavoritesWidgetData.loadWidgetData() ?? []
-    completion(Timeline(entries: [Entry(date: Date(), favorites: favorites)], policy: .never))
+    Task {
+      let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
+      completion(Timeline(entries: [Entry(date: Date(), favorites: favorites)], policy: .never))
+    }
   }
 }
 

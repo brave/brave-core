@@ -120,7 +120,7 @@ class BraveSearchScriptHandler: TabContentScript {
     Self.canSetAsDefaultCounter += 1
     maximumPromptCount.value += 1
 
-    let defaultEngine = profile.searchEngines.defaultEngine(forType: .standard).shortName
+    let defaultEngine = profile.searchEngines.defaultEngine(forType: .standard)?.shortName
     let canSetAsDefault = defaultEngine != OpenSearchEngine.EngineNames.brave
     replyHandler(canSetAsDefault, nil)
   }

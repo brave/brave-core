@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -246,31 +247,25 @@ extension BrowserViewController {
   }
 
   func recordAccessibilityDocumentsDirectorySizeP3A() {
-    func fetchDocumentsAndDataSize() -> Int? {
-      let fileManager = FileManager.default
+    @Sendable func fetchDocumentsAndDataSize() async -> Int? {
+      let fileManager = AsyncFileManager.default
 
       var directorySize = 0
 
-      if let documentsDirectory = FileManager.default.urls(
-        for: .documentDirectory,
-        in: .userDomainMask
-      ).first {
-        do {
-          if let documentsDirectorySize = try fileManager.directorySize(at: documentsDirectory) {
-            directorySize += Int(documentsDirectorySize / 1024 / 1024)
-          }
-        } catch {
-          Logger.module.error("Cant fetch document directory size")
-          return nil
-        }
+      do {
+        let documentsDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectorySize = try await fileManager.sizeOfDirectory(at: documentsDirectory)
+        directorySize += Int(documentsDirectorySize / 1024 / 1024)
+      } catch {
+        Logger.module.error("Cant fetch document directory size")
+        return nil
       }
 
       let temporaryDirectory = FileManager.default.temporaryDirectory
 
       do {
-        if let temporaryDirectorySize = try fileManager.directorySize(at: temporaryDirectory) {
-          directorySize += Int(temporaryDirectorySize / 1024 / 1024)
-        }
+        let temporaryDirectorySize = try await fileManager.sizeOfDirectory(at: temporaryDirectory)
+        directorySize += Int(temporaryDirectorySize / 1024 / 1024)
       } catch {
         Logger.module.error("Cant fetch temporary directory size")
         return nil
@@ -288,12 +283,14 @@ extension BrowserViewController {
     ]
 
     // Q103 What is the document directory size in MB?
-    if let documentsSize = fetchDocumentsAndDataSize() {
-      UmaHistogramRecordValueToBucket(
-        "Brave.Core.DocumentsDirectorySizeMB",
-        buckets: buckets,
-        value: documentsSize
-      )
+    Task { @MainActor in
+      if let documentsSize = await fetchDocumentsAndDataSize() {
+        UmaHistogramRecordValueToBucket(
+          "Brave.Core.DocumentsDirectorySizeMB",
+          buckets: buckets,
+          value: documentsSize
+        )
+      }
     }
   }
 

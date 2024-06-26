@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveUI
 import Foundation
 import OSLog
@@ -29,31 +30,23 @@ private class LogLineCell: UITableViewCell, TableViewReusable {
 struct RewardsInternalsLogsGenerator: RewardsInternalsFileGenerator {
   func generateFiles(
     at path: String,
-    using builder: RewardsInternalsSharableBuilder,
-    completion: @escaping (Error?) -> Void
-  ) {
+    using builder: RewardsInternalsSharableBuilder
+  ) async throws {
+    let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("rewards_log.txt")
+    let formatter = DateFormatter()
+    formatter.dateStyle = .short
+    formatter.timeStyle = .short
 
-    do {
-      let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("rewards_log.txt")
-      let formatter = DateFormatter()
-      formatter.dateStyle = .short
-      formatter.timeStyle = .short
+    let store = try OSLogStore(scope: .currentProcessIdentifier)
+    let logs = try store.getEntries()
+      .compactMap { $0 as? OSLogEntryLog }
+      .filter { $0.category == "ads-rewards" && $0.subsystem == Bundle.main.bundleIdentifier }
+      .map { "\(formatter.string(from: $0.date)): \($0.composedMessage)" }
+      .joined(separator: "\n")
 
-      let store = try OSLogStore(scope: .currentProcessIdentifier)
-      let logs = try store.getEntries()
-        .compactMap { $0 as? OSLogEntryLog }
-        .filter { $0.category == "ads-rewards" && $0.subsystem == Bundle.main.bundleIdentifier }
-        .map { "\(formatter.string(from: $0.date)): \($0.composedMessage)" }
-        .joined(separator: "\n")
-
-      try logs.write(toFile: tempURL.path, atomically: true, encoding: .utf8)
-      let logPath = URL(fileURLWithPath: path).appendingPathComponent(tempURL.lastPathComponent)
-      try FileManager.default.copyItem(atPath: tempURL.path, toPath: logPath.path)
-      try FileManager.default.removeItem(atPath: tempURL.path)
-
-      completion(nil)
-    } catch {
-      completion(error)
-    }
+    try logs.write(toFile: tempURL.path, atomically: true, encoding: .utf8)
+    let logPath = URL(fileURLWithPath: path).appendingPathComponent(tempURL.lastPathComponent)
+    try await AsyncFileManager.default.copyItem(atPath: tempURL.path, toPath: logPath.path)
+    try await AsyncFileManager.default.removeItem(atPath: tempURL.path)
   }
 }

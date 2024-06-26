@@ -22,6 +22,7 @@ protocol PlaylistDownloadManagerDelegate: AnyObject {
 }
 
 private protocol PlaylistStreamDownloadManagerDelegate: AnyObject {
+  // TODO: Should be async, fix when removing legacy playlist UI
   func localAsset(for itemId: String) -> AVURLAsset?
   func onDownloadProgressUpdate(streamDownloader: Any, id: String, percentComplete: Double)
   func onDownloadStateChanged(
@@ -59,11 +60,12 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
   weak var delegate: PlaylistDownloadManagerDelegate?
 
   public static var playlistDirectory: URL? {
-    FileManager.default.getOrCreateFolder(
-      name: "Playlist",
-      excludeFromBackups: true,
-      location: .applicationSupportDirectory
-    )
+    get async {
+      try? await AsyncFileManager.default.url(
+        for: .applicationSupportDirectory,
+        appending: "Playlist"
+      )
+    }
   }
 
   public enum DownloadState: String {
@@ -268,9 +270,9 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
     delegate?.onDownloadStateChanged(id: id, state: state, displayName: displayName, error: error)
   }
 
-  fileprivate static func uniqueDownloadPathForFilename(_ filename: String) throws -> URL? {
+  fileprivate static func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL? {
     let filename = Self.stripUnicode(fromFilename: filename)
-    let playlistDirectory = PlaylistDownloadManager.playlistDirectory
+    let playlistDirectory = await PlaylistDownloadManager.playlistDirectory
     return try playlistDirectory?.uniquePathForFilename(filename)
   }
 
@@ -498,16 +500,16 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
       let assetUrl = assetUrl
     else { return }
 
-    let cleanupAndFailDownload = { (location: URL?, error: Error) in
+    @Sendable func cleanupAndFailDownload(location: URL?, error: Error) async {
       if let location = location {
         do {
-          try FileManager.default.removeItem(at: location)
+          try await AsyncFileManager.default.removeItem(at: location)
         } catch {
           Logger.module.error("Error Deleting Playlist Item: \(error.localizedDescription)")
         }
       }
 
-      DispatchQueue.main.async {
+      await MainActor.run {
         PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
@@ -519,102 +521,108 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
       }
     }
 
-    if let error = error as NSError? {
-      switch (error.domain, error.code) {
-      case (NSURLErrorDomain, NSURLErrorCancelled):
-        // HLS streams can be in two spots, we need to delete from both
-        // just in case the download process was in the middle of transferring the asset
-        // to its proper location
-        if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
+    Task {
+      if let error = error as NSError? {
+        switch (error.domain, error.code) {
+        case (NSURLErrorDomain, NSURLErrorCancelled):
+          // HLS streams can be in two spots, we need to delete from both
+          // just in case the download process was in the middle of transferring the asset
+          // to its proper location
+          if let cacheLocation = await delegate?.localAsset(for: asset.id)?.url {
+            do {
+              try await AsyncFileManager.default.removeItem(at: cacheLocation)
+            } catch {
+              Logger.module.error(
+                "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
+              )
+            }
+          }
+
           do {
-            try FileManager.default.removeItem(at: cacheLocation)
+            try await AsyncFileManager.default.removeItem(atPath: assetUrl.path)
           } catch {
             Logger.module.error(
               "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
             )
           }
+
+          // Update the asset state, but do not propagate the error
+          // because the download was cancelled by the user
+          if pendingCancellationTasks.contains(task) {
+            pendingCancellationTasks.removeAll(where: { $0 == task })
+
+            await MainActor.run {
+              PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+              self.delegate?.onDownloadStateChanged(
+                streamDownloader: self,
+                id: asset.id,
+                state: .invalid,
+                displayName: nil,
+                error: nil
+              )
+            }
+            return
+          }
+
+        case (NSURLErrorDomain, NSURLErrorUnknown):
+          Logger.module.error("Downloading HLS streams is not supported on the simulator.")
+
+        default:
+          Logger.module.error(
+            "An unknown error occurred while attempting to donwload the playlist item: \(error)"
+          )
         }
 
+        await MainActor.run {
+          Logger.module.debug("\(PlaylistItem.getItem(uuid: asset.id).debugDescription)")
+          PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+          self.delegate?.onDownloadStateChanged(
+            streamDownloader: self,
+            id: asset.id,
+            state: .invalid,
+            displayName: nil,
+            error: error
+          )
+        }
+      } else {
         do {
-          try FileManager.default.removeItem(atPath: assetUrl.path)
+          guard
+            let path = try await PlaylistDownloadManager.uniqueDownloadPathForFilename(
+              assetUrl.lastPathComponent
+            )
+          else {
+            Logger.module.error("Failed to create unique path for playlist item.")
+            throw PlaylistDownloadError.uniquePathNotCreated
+          }
+
+          try await AsyncFileManager.default.moveItem(at: assetUrl, to: path)
+          do {
+            let cachedData = try path.bookmarkData()
+
+            await MainActor.run {
+              PlaylistItem.updateCache(
+                uuid: asset.id,
+                pageSrc: asset.pageSrc,
+                cachedData: cachedData
+              )
+              self.delegate?.onDownloadStateChanged(
+                streamDownloader: self,
+                id: asset.id,
+                state: .downloaded,
+                displayName: nil,
+                error: nil
+              )
+            }
+          } catch {
+            Logger.module.error("Failed to create bookmarkData for download URL.")
+            await cleanupAndFailDownload(location: path, error: error)
+          }
         } catch {
           Logger.module.error(
-            "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
+            "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
           )
+          await cleanupAndFailDownload(location: assetUrl, error: error)
         }
-
-        // Update the asset state, but do not propagate the error
-        // because the download was cancelled by the user
-        if pendingCancellationTasks.contains(task) {
-          pendingCancellationTasks.removeAll(where: { $0 == task })
-
-          DispatchQueue.main.async {
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .invalid,
-              displayName: nil,
-              error: nil
-            )
-          }
-          return
-        }
-
-      case (NSURLErrorDomain, NSURLErrorUnknown):
-        Logger.module.error("Downloading HLS streams is not supported on the simulator.")
-
-      default:
-        Logger.module.error(
-          "An unknown error occurred while attempting to donwload the playlist item: \(error)"
-        )
-      }
-
-      DispatchQueue.main.async {
-        Logger.module.debug("\(PlaylistItem.getItem(uuid: asset.id).debugDescription)")
-        PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
-        self.delegate?.onDownloadStateChanged(
-          streamDownloader: self,
-          id: asset.id,
-          state: .invalid,
-          displayName: nil,
-          error: error
-        )
-      }
-    } else {
-      do {
-        guard
-          let path = try PlaylistDownloadManager.uniqueDownloadPathForFilename(
-            assetUrl.lastPathComponent
-          )
-        else {
-          Logger.module.error("Failed to create unique path for playlist item.")
-          throw PlaylistDownloadError.uniquePathNotCreated
-        }
-
-        try FileManager.default.moveItem(at: assetUrl, to: path)
-        do {
-          let cachedData = try path.bookmarkData()
-
-          DispatchQueue.main.async {
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .downloaded,
-              displayName: nil,
-              error: nil
-            )
-          }
-        } catch {
-          Logger.module.error("Failed to create bookmarkData for download URL.")
-          cleanupAndFailDownload(path, error)
-        }
-      } catch {
-        Logger.module.error(
-          "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
-        )
-        cleanupAndFailDownload(assetUrl, error)
       }
     }
   }
@@ -719,53 +727,55 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
       let asset = activeDownloadTasks.removeValue(forKey: task)
     else { return }
 
-    if let error = error as NSError? {
-      switch (error.domain, error.code) {
-      case (NSURLErrorDomain, NSURLErrorCancelled):
-        if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
-          do {
-            try FileManager.default.removeItem(at: cacheLocation)
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
-          } catch {
-            Logger.module.error(
-              "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
-            )
+    Task {
+      if let error = error as NSError? {
+        switch (error.domain, error.code) {
+        case (NSURLErrorDomain, NSURLErrorCancelled):
+          if let cacheLocation = await delegate?.localAsset(for: asset.id)?.url {
+            do {
+              try await AsyncFileManager.default.removeItem(at: cacheLocation)
+              PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+            } catch {
+              Logger.module.error(
+                "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
+              )
+            }
           }
+
+          // Update the asset state, but do not propagate the error
+          // because the download was cancelled by the user
+          if pendingCancellationTasks.contains(task) {
+            pendingCancellationTasks.removeAll(where: { $0 == task })
+            await MainActor.run {
+              self.delegate?.onDownloadStateChanged(
+                streamDownloader: self,
+                id: asset.id,
+                state: .invalid,
+                displayName: nil,
+                error: nil
+              )
+            }
+            return
+          }
+
+        case (NSURLErrorDomain, NSURLErrorUnknown):
+          assertionFailure("Downloading HLS streams is not supported on the simulator.")
+
+        default:
+          assertionFailure(
+            "An unknown error occurred while attempting to download the playlist item: \(error.domain)"
+          )
         }
 
-        // Update the asset state, but do not propagate the error
-        // because the download was cancelled by the user
-        if pendingCancellationTasks.contains(task) {
-          pendingCancellationTasks.removeAll(where: { $0 == task })
-          DispatchQueue.main.async {
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .invalid,
-              displayName: nil,
-              error: nil
-            )
-          }
-          return
+        await MainActor.run {
+          self.delegate?.onDownloadStateChanged(
+            streamDownloader: self,
+            id: asset.id,
+            state: .invalid,
+            displayName: nil,
+            error: error
+          )
         }
-
-      case (NSURLErrorDomain, NSURLErrorUnknown):
-        assertionFailure("Downloading HLS streams is not supported on the simulator.")
-
-      default:
-        assertionFailure(
-          "An unknown error occurred while attempting to download the playlist item: \(error.domain)"
-        )
-      }
-
-      DispatchQueue.main.async {
-        self.delegate?.onDownloadStateChanged(
-          streamDownloader: self,
-          id: asset.id,
-          state: .invalid,
-          displayName: nil,
-          error: error
-        )
       }
     }
   }
@@ -802,6 +812,47 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     }
   }
 
+  private func detectedFileExtension(
+    for downloadTask: URLSessionDownloadTask,
+    location: URL
+  ) async -> String? {
+    var detectedFileExtension: String?
+    guard let response = downloadTask.response as? HTTPURLResponse else {
+      return nil
+    }
+
+    // Detect based on File Extension.
+    if let url = downloadTask.originalRequest?.url,
+      let detectedExtension = PlaylistMimeTypeDetector(url: url).fileExtension
+    {
+      detectedFileExtension = detectedExtension
+    }
+
+    // Detect based on Content-Type header.
+    if detectedFileExtension == nil,
+      let contentType = response.value(forHTTPHeaderField: "Content-Type"),
+      let detectedExtension = PlaylistMimeTypeDetector(mimeType: contentType).fileExtension
+    {
+      detectedFileExtension = detectedExtension
+    }
+
+    // Detect based on Data.
+    if detectedFileExtension == nil {
+      do {
+        let data = try Data(contentsOf: location, options: .mappedIfSafe)
+        if let detectedExtension = PlaylistMimeTypeDetector(data: data).fileExtension {
+          detectedFileExtension = detectedExtension
+        }
+      } catch {
+        Logger.module.error(
+          "Error mapping downloaded playlist file to virtual memory: \(error.localizedDescription)"
+        )
+      }
+    }
+
+    return detectedFileExtension
+  }
+
   func urlSession(
     _ session: URLSession,
     downloadTask: URLSessionDownloadTask,
@@ -810,16 +861,16 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
 
     guard let asset = activeDownloadTasks.removeValue(forKey: downloadTask) else { return }
 
-    func cleanupAndFailDownload(location: URL?, error: Error) {
+    @Sendable func cleanupAndFailDownload(location: URL?, error: Error) async {
       if let location = location {
         do {
-          try FileManager.default.removeItem(at: location)
+          try await AsyncFileManager.default.removeItem(at: location)
         } catch {
           Logger.module.error("Error Deleting Playlist Item: \(error.localizedDescription)")
         }
       }
 
-      DispatchQueue.main.async {
+      await MainActor.run {
         PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
@@ -834,82 +885,60 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     if let response = downloadTask.response as? HTTPURLResponse,
       response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299
     {
+      Task {
+        // Couldn't determine file type so we assume mp4 which is the most widely used container.
+        // If it doesn't work, the video/audio just won't play anyway.
+        var fileExtension = "mp4"
+        if let detectedFileExtension = await detectedFileExtension(
+          for: downloadTask,
+          location: location
+        ) {
+          fileExtension = detectedFileExtension
+        }
 
-      var detectedFileExtension: String?
-
-      // Detect based on File Extension.
-      if let url = downloadTask.originalRequest?.url,
-        let detectedExtension = PlaylistMimeTypeDetector(url: url).fileExtension
-      {
-        detectedFileExtension = detectedExtension
-      }
-
-      // Detect based on Content-Type header.
-      if detectedFileExtension == nil,
-        let contentType = response.value(forHTTPHeaderField: "Content-Type"),
-        let detectedExtension = PlaylistMimeTypeDetector(mimeType: contentType).fileExtension
-      {
-        detectedFileExtension = detectedExtension
-      }
-
-      // Detect based on Data.
-      if detectedFileExtension == nil {
         do {
-          let data = try Data(contentsOf: location, options: .mappedIfSafe)
-          if let detectedExtension = PlaylistMimeTypeDetector(data: data).fileExtension {
-            detectedFileExtension = detectedExtension
+          guard
+            let path = try await PlaylistDownloadManager.uniqueDownloadPathForFilename(
+              asset.name + ".\(fileExtension)"
+            )
+          else {
+            Logger.module.error("Failed to create unique path for playlist item.")
+            throw PlaylistDownloadError.uniquePathNotCreated
+          }
+
+          try await AsyncFileManager.default.moveItem(at: location, to: path)
+          do {
+            let cachedData = try path.bookmarkData()
+
+            DispatchQueue.main.async {
+              PlaylistItem.updateCache(
+                uuid: asset.id,
+                pageSrc: asset.pageSrc,
+                cachedData: cachedData
+              )
+              self.delegate?.onDownloadStateChanged(
+                streamDownloader: self,
+                id: asset.id,
+                state: .downloaded,
+                displayName: nil,
+                error: nil
+              )
+            }
+          } catch {
+            Logger.module.error("Failed to create bookmarkData for download URL.")
+            await cleanupAndFailDownload(location: path, error: error)
           }
         } catch {
           Logger.module.error(
-            "Error mapping downloaded playlist file to virtual memory: \(error.localizedDescription)"
+            "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
           )
+          await cleanupAndFailDownload(location: location, error: error)
         }
-      }
-
-      // Couldn't determine file type so we assume mp4 which is the most widely used container.
-      // If it doesn't work, the video/audio just won't play anyway.
-
-      var fileExtension = "mp4"
-      if let detectedFileExtension = detectedFileExtension {
-        fileExtension = detectedFileExtension
-      }
-
-      do {
-        guard
-          let path = try PlaylistDownloadManager.uniqueDownloadPathForFilename(
-            asset.name + ".\(fileExtension)"
-          )
-        else {
-          Logger.module.error("Failed to create unique path for playlist item.")
-          throw PlaylistDownloadError.uniquePathNotCreated
-        }
-
-        try FileManager.default.moveItem(at: location, to: path)
-        do {
-          let cachedData = try path.bookmarkData()
-
-          DispatchQueue.main.async {
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .downloaded,
-              displayName: nil,
-              error: nil
-            )
-          }
-        } catch {
-          Logger.module.error("Failed to create bookmarkData for download URL.")
-          cleanupAndFailDownload(location: path, error: error)
-        }
-      } catch {
-        Logger.module.error(
-          "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
-        )
-        cleanupAndFailDownload(location: location, error: error)
       }
     } else {
-      cleanupAndFailDownload(location: nil, error: URLError(.badServerResponse))
+      Task {
+        await cleanupAndFailDownload(location: nil, error: URLError(.badServerResponse))
+      }
     }
   }
 }
@@ -1013,53 +1042,57 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
       let asset = activeDownloadTasks.removeValue(forKey: task)
     else { return }
 
-    if let error = error as NSError? {
-      switch (error.domain, error.code) {
-      case (NSURLErrorDomain, NSURLErrorCancelled):
-        if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
-          do {
-            try FileManager.default.removeItem(at: cacheLocation)
-            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
-          } catch {
-            Logger.module.error(
-              "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
-            )
+    Task {
+      if let error = error as NSError? {
+        switch (error.domain, error.code) {
+        case (NSURLErrorDomain, NSURLErrorCancelled):
+          if let cacheLocation = await delegate?.localAsset(for: asset.id)?.url {
+            Task {
+              do {
+                try await AsyncFileManager.default.removeItem(at: cacheLocation)
+                PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
+              } catch {
+                Logger.module.error(
+                  "Could not delete asset cache \(asset.name): \(error.localizedDescription)"
+                )
+              }
+            }
           }
+
+          // Update the asset state, but do not propagate the error
+          // because the download was cancelled by the user
+          if pendingCancellationTasks.contains(task) {
+            pendingCancellationTasks.removeAll(where: { $0 == task })
+            await MainActor.run {
+              self.delegate?.onDownloadStateChanged(
+                streamDownloader: self,
+                id: asset.id,
+                state: .invalid,
+                displayName: nil,
+                error: nil
+              )
+            }
+            return
+          }
+
+        case (NSURLErrorDomain, NSURLErrorUnknown):
+          assertionFailure("Downloading HLS streams is not supported on the simulator.")
+
+        default:
+          assertionFailure(
+            "An unknown error occurred while attempting to download the playlist item: \(error.domain)"
+          )
         }
 
-        // Update the asset state, but do not propagate the error
-        // because the download was cancelled by the user
-        if pendingCancellationTasks.contains(task) {
-          pendingCancellationTasks.removeAll(where: { $0 == task })
-          DispatchQueue.main.async {
-            self.delegate?.onDownloadStateChanged(
-              streamDownloader: self,
-              id: asset.id,
-              state: .invalid,
-              displayName: nil,
-              error: nil
-            )
-          }
-          return
+        await MainActor.run {
+          self.delegate?.onDownloadStateChanged(
+            streamDownloader: self,
+            id: asset.id,
+            state: .invalid,
+            displayName: nil,
+            error: error
+          )
         }
-
-      case (NSURLErrorDomain, NSURLErrorUnknown):
-        assertionFailure("Downloading HLS streams is not supported on the simulator.")
-
-      default:
-        assertionFailure(
-          "An unknown error occurred while attempting to download the playlist item: \(error.domain)"
-        )
-      }
-
-      DispatchQueue.main.async {
-        self.delegate?.onDownloadStateChanged(
-          streamDownloader: self,
-          id: asset.id,
-          state: .invalid,
-          displayName: nil,
-          error: error
-        )
       }
     }
   }
@@ -1075,16 +1108,16 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
       )
     }
 
-    func cleanupAndFailDownload(location: URL?, error: Error) {
+    @Sendable func cleanupAndFailDownload(location: URL?, error: Error) async {
       if let location = location {
         do {
-          try FileManager.default.removeItem(at: location)
+          try await AsyncFileManager.default.removeItem(at: location)
         } catch {
           Logger.module.error("Error Deleting Playlist Item: \(error.localizedDescription)")
         }
       }
 
-      DispatchQueue.main.async {
+      await MainActor.run {
         PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
         self.delegate?.onDownloadStateChanged(
           streamDownloader: self,
@@ -1095,58 +1128,48 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
         )
       }
     }
+    Task.detached {
+      let path = try? await PlaylistDownloadManager.uniqueDownloadPathForFilename(
+        asset.name + ".mp4"
+      )
 
-    let path: URL? = {
-      do {
-        guard
-          let path = try PlaylistDownloadManager.uniqueDownloadPathForFilename(asset.name + ".mp4")
-        else {
-          Logger.module.error("Failed to create unique path for playlist item.")
-          return nil
-        }
-        return path
-      } catch {
-        return nil
-      }
-    }()
-
-    guard let path = path else {
-      DispatchQueue.main.async {
-        self.delegate?.onDownloadStateChanged(
-          streamDownloader: self,
-          id: asset.id,
-          state: .invalid,
-          displayName: nil,
-          error: PlaylistDownloadError.uniquePathNotCreated
-        )
-      }
-      return
-    }
-
-    do {
-      try data.write(to: path, options: .atomic)
-      do {
-        let cachedData = try path.bookmarkData()
-
-        DispatchQueue.main.async {
-          PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
+      guard let path = path else {
+        await MainActor.run {
           self.delegate?.onDownloadStateChanged(
             streamDownloader: self,
             id: asset.id,
-            state: .downloaded,
+            state: .invalid,
             displayName: nil,
-            error: nil
+            error: PlaylistDownloadError.uniquePathNotCreated
           )
         }
-      } catch {
-        Logger.module.error("Failed to create bookmarkData for download URL.")
-        cleanupAndFailDownload(location: path, error: error)
+        return
       }
-    } catch {
-      Logger.module.error(
-        "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
-      )
-      cleanupAndFailDownload(location: path, error: error)
+
+      do {
+        try data.write(to: path, options: .atomic)
+        do {
+          let cachedData = try path.bookmarkData()
+          await MainActor.run {
+            PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: cachedData)
+            self.delegate?.onDownloadStateChanged(
+              streamDownloader: self,
+              id: asset.id,
+              state: .downloaded,
+              displayName: nil,
+              error: nil
+            )
+          }
+        } catch {
+          Logger.module.error("Failed to create bookmarkData for download URL.")
+          await cleanupAndFailDownload(location: path, error: error)
+        }
+      } catch {
+        Logger.module.error(
+          "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
+        )
+        await cleanupAndFailDownload(location: path, error: error)
+      }
     }
 
     DispatchQueue.main.async {

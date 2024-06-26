@@ -16,15 +16,16 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     return CertificateErrorPageHandler.isValidCertificateError(error: error)
   }
 
-  func response(for model: ErrorPageModel) -> (URLResponse, Data)? {
+  func response(for model: ErrorPageModel) async -> (URLResponse, Data)? {
     let hasCertificate = model.components.valueForQuery("certerror") != nil
 
-    guard let asset = Bundle.module.path(forResource: "CertificateError", ofType: "html") else {
+    guard let asset = Bundle.module.url(forResource: "CertificateError", withExtension: "html")
+    else {
       assert(false)
       return nil
     }
 
-    guard var html = try? String(contentsOfFile: asset) else {
+    guard var html = await AsyncFileManager.default.utf8Contents(at: asset) else {
       assert(false)
       return nil
     }
@@ -92,10 +93,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
       html = html.replacingOccurrences(of: "%\(arg)%", with: value)
     }
 
-    guard let data = html.data(using: .utf8) else {
-      return nil
-    }
-
+    let data = Data(html.utf8)
     let response = InternalSchemeHandler.response(forUrl: model.originalURL)
     return (response, data)
   }

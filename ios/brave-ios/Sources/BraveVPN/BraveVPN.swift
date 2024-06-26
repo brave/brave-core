@@ -40,7 +40,7 @@ public class BraveVPN {
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
   public static func initialize(customCredential: SkusVPNCredential?) {
-    func clearConfiguration() {
+    @Sendable func clearConfiguration() {
       GRDVPNHelper.clearVpnConfiguration()
       clearCredentials()
 
@@ -80,17 +80,17 @@ public class BraveVPN {
       return
     }
 
-    BraveVPN.validateReceiptData { receiptResponse in
+    Task {
+      let receiptResponse = await validateReceiptData()
       // Clear configuration if only if the receipt response is expired (not retryPeriod)
       if receiptResponse?.status == .expired {
         clearConfiguration()
         logAndStoreError("Receipt expired")
-        return
       }
     }
   }
 
-  public static var receipt: String? {
+  public static func loadReceipt() async -> String? {
     guard let receiptUrl = Bundle.main.appStoreReceiptURL,
       let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString
     else { return nil }
@@ -121,68 +121,69 @@ public class BraveVPN {
 
   /// Connects to Guardian's server to validate locally stored receipt.
   /// Returns ReceiptResponse whoich hold information about status of receipt expiration etc
-  public static func validateReceiptData(receiptResponse: ((ReceiptResponse?) -> Void)? = nil) {
-    guard let receipt = receipt,
+  public static func validateReceiptData() async -> ReceiptResponse? {
+    guard let receipt = await loadReceipt(),
       let bundleId = Bundle.main.bundleIdentifier
     else {
-      receiptResponse?(nil)
-      return
+      return nil
     }
 
     if Preferences.VPN.skusCredential.value != nil {
       // Receipt verification applies to Apple's IAP only,
       // if we detect Brave's SKU token we should not look at Apple's receipt.
-      return
+      return nil
     }
 
-    housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId) { response, error in
-      if let error = error {
-        // Error while fetching receipt response, the variations of error can be listed
-        // No App Store receipt data present
-        // Failed to retrieve receipt data from server
-        // Failed to decode JSON response data
-        receiptResponse?(nil)
-        logAndStoreError("Call for receipt verification failed: \(error.localizedDescription)")
-        return
-      }
+    return await withCheckedContinuation { continuation in
+      housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId) { response, error in
+        if let error = error {
+          // Error while fetching receipt response, the variations of error can be listed
+          // No App Store receipt data present
+          // Failed to retrieve receipt data from server
+          // Failed to decode JSON response data
+          logAndStoreError("Call for receipt verification failed: \(error.localizedDescription)")
+          continuation.resume(returning: nil)
+          return
+        }
 
-      guard let response = response else {
-        receiptResponse?(nil)
-        logAndStoreError("Receipt verification response is empty")
-        return
-      }
+        guard let response = response else {
+          logAndStoreError("Receipt verification response is empty")
+          continuation.resume(returning: nil)
+          return
+        }
 
-      let receiptResponseItem = GRDIAPReceiptResponse(withReceiptResponse: response)
-      let processedReceiptDetail = BraveVPN.processReceiptResponse(
-        receiptResponseItem: receiptResponseItem
-      )
-
-      switch processedReceiptDetail.status {
-      case .expired:
-        Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
-        Preferences.VPN.originalTransactionId.value = nil
-        logAndStoreError(
-          "VPN Subscription LineItems are empty subscription expired",
-          printToConsole: false
+        let receiptResponseItem = GRDIAPReceiptResponse(withReceiptResponse: response)
+        let processedReceiptDetail = BraveVPN.processReceiptResponse(
+          receiptResponseItem: receiptResponseItem
         )
-      case .active, .retryPeriod:
-        if let expirationDate = processedReceiptDetail.expiryDate {
-          Preferences.VPN.expirationDate.value = expirationDate
+
+        switch processedReceiptDetail.status {
+        case .expired:
+          Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
+          Preferences.VPN.originalTransactionId.value = nil
+          logAndStoreError(
+            "VPN Subscription LineItems are empty subscription expired",
+            printToConsole: false
+          )
+        case .active, .retryPeriod:
+          if let expirationDate = processedReceiptDetail.expiryDate {
+            Preferences.VPN.expirationDate.value = expirationDate
+          }
+
+          if let gracePeriodExpirationDate = processedReceiptDetail.graceExpiryDate {
+            Preferences.VPN.gracePeriodExpirationDate.value = gracePeriodExpirationDate
+          }
+
+          Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
+
+          populateRegionDataIfNecessary()
+          GRDSubscriptionManager.setIsPayingUser(true)
         }
 
-        if let gracePeriodExpirationDate = processedReceiptDetail.graceExpiryDate {
-          Preferences.VPN.gracePeriodExpirationDate.value = gracePeriodExpirationDate
-        }
+        Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
 
-        Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
-
-        populateRegionDataIfNecessary()
-        GRDSubscriptionManager.setIsPayingUser(true)
+        continuation.resume(returning: processedReceiptDetail)
       }
-
-      Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
-
-      receiptResponse?(processedReceiptDetail)
     }
   }
 

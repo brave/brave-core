@@ -3,24 +3,27 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Shared
+import TestHelpers
 import UIKit
 import XCTest
 
 @testable import Brave
 
-@MainActor class SearchTests: XCTestCase {
+class SearchTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
   }
 
-  func testParsing() {
+  @MainActor func testParsing() async throws {
     let parser = OpenSearchParser(pluginMode: true)
     let file = Bundle.module.path(forResource: "google-search-plugin", ofType: "xml")
-    let engine: OpenSearchEngine! = parser.parse(
-      file!,
-      engineID: "google",
-      referenceURL: "google.com"
+    let engine = try await XCTUnwrapAsync(
+      await parser.parse(
+        file!,
+        engineID: "google",
+        referenceURL: "google.com"
+      )
     )
     XCTAssertEqual(engine.shortName, "Google")
 
@@ -37,13 +40,15 @@ import XCTest
     )
   }
 
-  func testExtractingOfSearchTermsFromURL() {
+  @MainActor func testExtractingOfSearchTermsFromURL() async throws {
     let parser = OpenSearchParser(pluginMode: true)
     var file = Bundle.module.path(forResource: "google-search-plugin", ofType: "xml")
-    let googleEngine: OpenSearchEngine! = parser.parse(
-      file!,
-      engineID: "google",
-      referenceURL: "google.com"
+    let googleEngine = try await XCTUnwrapAsync(
+      await parser.parse(
+        file!,
+        engineID: "google",
+        referenceURL: "google.com"
+      )
     )
 
     // create URL
@@ -64,10 +69,12 @@ import XCTest
 
     // check that it matches given a different configuration
     file = Bundle.module.path(forResource: "duckduckgo-search-plugin", ofType: "xml")
-    let duckDuckGoEngine: OpenSearchEngine! = parser.parse(
-      file!,
-      engineID: "duckduckgo",
-      referenceURL: "duckduckgo.com/opensearch"
+    let duckDuckGoEngine = try await XCTUnwrapAsync(
+      await parser.parse(
+        file!,
+        engineID: "duckduckgo",
+        referenceURL: "duckduckgo.com/opensearch"
+      )
     )
     XCTAssertEqual(searchTerm, duckDuckGoEngine.queryForSearchURL(duckDuckGoSearchURL))
 

@@ -4,10 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveShields
 import BraveUI
 import Data
 import DesignSystem
+import OSLog
 import Preferences
 import Strings
 import SwiftUI
@@ -75,7 +77,9 @@ struct DefaultShieldsViewView: View {
           if newValue {
             cookieAlertType = .confirm
           } else {
-            toggleCookieSetting(with: false)
+            Task {
+              await toggleCookieSetting(with: false)
+            }
           }
         }
       )
@@ -88,7 +92,9 @@ struct DefaultShieldsViewView: View {
             primaryButton: .default(
               Text(Strings.blockAllCookiesAction),
               action: {
-                toggleCookieSetting(with: true)
+                Task {
+                  await toggleCookieSetting(with: true)
+                }
               }
             ),
             secondaryButton: .cancel(
@@ -153,28 +159,27 @@ struct DefaultShieldsViewView: View {
     }.listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 
-  private func toggleCookieSetting(with status: Bool) {
-    let success = FileManager.default.setFolderAccess([
-      (.cookie, status),
-      (.webSiteData, status),
-    ])
+  private func toggleCookieSetting(with status: Bool) async {
+    do {
+      try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: status)
+      try await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: status)
 
-    if success {
       if Preferences.Privacy.blockAllCookies.value != status {
         Preferences.Privacy.blockAllCookies.value = status
       }
-    } else if status {
-      // Revert the changes. Not handling success here to avoid a loop.
-      FileManager.default.setFolderAccess([
-        (.cookie, false),
-        (.webSiteData, false),
-      ])
+    } catch {
+      Logger.module.error("Failed to change web data access to \(status)")
+      if status {
+        // Revert the changes. Not handling success here to avoid a loop.
+        try? await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: false)
+        try? await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: false)
 
-      if Preferences.Privacy.blockAllCookies.value != false {
-        Preferences.Privacy.blockAllCookies.value = false
+        if Preferences.Privacy.blockAllCookies.value != false {
+          Preferences.Privacy.blockAllCookies.value = false
+        }
+
+        cookieAlertType = .failed
       }
-
-      cookieAlertType = .failed
     }
   }
 }

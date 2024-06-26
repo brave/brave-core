@@ -43,13 +43,12 @@ extension UIImageView {
   ) {
     cancelFaviconLoad()
 
-    if let icon = FaviconFetcher.getIconFromCache(for: siteURL) {
-      self.image = icon.image ?? Favicon.defaultImage
-      return
-    }
-
     self.image = Favicon.defaultImage
     faviconTask = Task { @MainActor in
+      if let icon = await FaviconFetcher.getIconFromCache(for: siteURL) {
+        self.image = icon.image ?? Favicon.defaultImage
+        return
+      }
       do {
         let favicon = try await FaviconFetcher.loadIcon(
           url: siteURL,

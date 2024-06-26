@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 
 private let readerModeCacheErrorDomain = "com.mozilla.client.readermodecache."
@@ -20,13 +21,13 @@ private class ReadabilityResultWrapper: NSObject {
 }
 
 protocol ReaderModeCache {
-  func put(_ url: URL, _ readabilityResult: ReadabilityResult) throws
+  func put(_ url: URL, _ readabilityResult: ReadabilityResult) async throws
 
-  func get(_ url: URL) throws -> ReadabilityResult
+  func get(_ url: URL) async throws -> ReadabilityResult
 
-  func delete(_ url: URL, error: NSErrorPointer)
+  func delete(_ url: URL, error: NSErrorPointer) async
 
-  func contains(_ url: URL) -> Bool
+  func contains(_ url: URL) async -> Bool
 }
 
 /// A non-persistent cache for readerized content for times when you don't want to write reader data to disk.
@@ -77,7 +78,7 @@ class MemoryReaderModeCache: ReaderModeCache {
 class DiskReaderModeCache: ReaderModeCache {
   static let sharedInstance = DiskReaderModeCache()
 
-  func put(_ url: URL, _ readabilityResult: ReadabilityResult) throws {
+  func put(_ url: URL, _ readabilityResult: ReadabilityResult) async throws {
     guard let (cacheDirectoryPath, contentFilePath) = cachePathsForURL(url) else {
       throw NSError(
         domain: readerModeCacheErrorDomain,
@@ -86,48 +87,45 @@ class DiskReaderModeCache: ReaderModeCache {
       )
     }
 
-    try FileManager.default.createDirectory(
+    try await AsyncFileManager.default.createDirectory(
       atPath: cacheDirectoryPath,
       withIntermediateDirectories: true,
       attributes: nil
     )
     let string: String = readabilityResult.encode()
-    try string.write(toFile: contentFilePath, atomically: true, encoding: .utf8)
-    return
+    await AsyncFileManager.default.createUTF8File(atPath: contentFilePath, contents: string)
   }
 
-  func get(_ url: URL) throws -> ReadabilityResult {
-    if let (_, contentFilePath) = cachePathsForURL(url),
-      FileManager.default.fileExists(atPath: contentFilePath)
-    {
-      let string = try String(contentsOfFile: contentFilePath, encoding: .utf8)
-      if let value = ReadabilityResult(string: string) {
-        return value
-      }
+  func get(_ url: URL) async throws -> ReadabilityResult {
+    guard let (_, contentFilePath) = cachePathsForURL(url),
+      await AsyncFileManager.default.fileExists(atPath: contentFilePath),
+      let string = await AsyncFileManager.default.utf8Contents(at: URL(filePath: contentFilePath)),
+      let value = ReadabilityResult(string: string)
+    else {
+      throw NSError(
+        domain: readerModeCacheErrorDomain,
+        code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
+        userInfo: nil
+      )
     }
-
-    throw NSError(
-      domain: readerModeCacheErrorDomain,
-      code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
-      userInfo: nil
-    )
+    return value
   }
 
-  func delete(_ url: URL, error: NSErrorPointer) {
+  func delete(_ url: URL, error: NSErrorPointer) async {
     guard let (cacheDirectoryPath, _) = cachePathsForURL(url) else { return }
 
-    if FileManager.default.fileExists(atPath: cacheDirectoryPath) {
+    if await AsyncFileManager.default.fileExists(atPath: cacheDirectoryPath) {
       do {
-        try FileManager.default.removeItem(atPath: cacheDirectoryPath)
+        try await AsyncFileManager.default.removeItem(atPath: cacheDirectoryPath)
       } catch let error1 as NSError {
         error?.pointee = error1
       }
     }
   }
 
-  func contains(_ url: URL) -> Bool {
+  func contains(_ url: URL) async -> Bool {
     if let (_, contentFilePath) = cachePathsForURL(url),
-      FileManager.default.fileExists(atPath: contentFilePath)
+      await AsyncFileManager.default.fileExists(atPath: contentFilePath)
     {
       return true
     }

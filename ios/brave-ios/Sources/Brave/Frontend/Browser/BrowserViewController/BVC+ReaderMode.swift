@@ -173,9 +173,11 @@ extension BrowserViewController {
       ) { (object, error) -> Void in
         if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
           let playlistItem = tab.playlistItem
-          try? self.readerModeCache.put(currentURL, readabilityResult)
-          if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+          Task {
+            try? await self.readerModeCache.put(currentURL, readabilityResult)
+            if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
+              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+            }
           }
         }
       }

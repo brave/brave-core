@@ -21,7 +21,11 @@ public class BundledFaviconRenderer {
 
   @MainActor
   public static func loadIcon(url: URL) async throws -> Favicon {
-    guard let icon = customIcon(for: url) ?? bundledIcon(for: url) else {
+    var icon = await customIcon(for: url)
+    if icon == nil {
+      icon = await bundledIcon(for: url)
+    }
+    guard let icon else {
       // No need to render a monogram
       throw FaviconError.noBundledImages
     }
@@ -40,8 +44,13 @@ public class BundledFaviconRenderer {
   ///
   /// If the app does not contain a custom icon for the site provided `nil`
   /// will be returned
-  private static func customIcon(for url: URL) -> (image: UIImage, backgroundColor: UIColor)? {
-    guard let folder = FileManager.default.getOrCreateFolder(name: Self.faviconOverridesDirectory)
+  private static func customIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)?
+  {
+    guard
+      let folder = try? await AsyncFileManager.default.url(
+        for: .applicationSupportDirectory,
+        appending: Self.faviconOverridesDirectory
+      )
     else {
       return nil
     }
@@ -53,7 +62,9 @@ public class BundledFaviconRenderer {
       let colorString = try String(contentsOf: backgroundPath)
       let colorFromHex = UIColor(colorString: colorString)
 
-      if FileManager.default.fileExists(atPath: folder.appendingPathComponent(fileName).path) {
+      if await AsyncFileManager.default.fileExists(
+        atPath: folder.appendingPathComponent(fileName).path
+      ) {
         let imagePath = folder.appendingPathComponent(fileName)
         if let image = UIImage(contentsOfFile: imagePath.path) {
           return (image, colorFromHex)
@@ -67,37 +78,11 @@ public class BundledFaviconRenderer {
   }
 
   // MARK: - Bundled Icons
-  /// Icon attributes for icons that are bundled in the app by default.
-  ///
-  /// If the app does not contain the icon for the site provided `nil` will be
-  /// returned
-  private static func bundledIcon(for url: URL) -> (image: UIImage, backgroundColor: UIColor)? {
-    // Problem: Sites like amazon exist with .ca/.de and many other tlds.
-    // Solution: They are stored in the default icons list as "amazon" instead of "amazon.com" this allows us to have favicons for every tld."
-    // Here, If the site is in the multiRegionDomain array look it up via its second level domain (amazon) instead of its baseDomain (amazon.com)
-    let hostName = url.hostSLD
-    var bundleIcon: (color: UIColor, url: String)?
-    if Self.multiRegionDomains.contains(hostName), let icon = Self.bundledIcons[hostName] {
-      bundleIcon = icon
-    } else if let name = url.baseDomain, let icon = Self.bundledIcons[name] {
-      bundleIcon = icon
-    }
-    guard let icon = bundleIcon,
-      let image = UIImage(contentsOfFile: icon.url),
-      let scaledImage = image.createScaled(CGSize(width: 40.0, height: 40.0))
-    else {
-      return nil
-    }
 
-    return (scaledImage, icon.color)
-  }
-
-  private static let multiRegionDomains = ["craigslist", "google", "amazon"]
-
-  private static let bundledIcons: [String: (color: UIColor, url: String)] = {
+  private static func loadBundledIcons() async {
     guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
       Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
-      return [:]
+      return
     }
     do {
       let file = try Data(contentsOf: URL(fileURLWithPath: filePath))
@@ -121,14 +106,45 @@ public class BundledFaviconRenderer {
           }
         }
       })
-      return icons
+      bundledIcons = icons
     } catch {
       Logger.module.error(
         "Failed to get default icons at \(filePath): \(error.localizedDescription)"
       )
-      return [:]
     }
-  }()
+  }
+  /// Icon attributes for icons that are bundled in the app by default.
+  ///
+  /// If the app does not contain the icon for the site provided `nil` will be
+  /// returned
+  private static func bundledIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)?
+  {
+    if bundledIcons.isEmpty {
+      await loadBundledIcons()
+    }
+    // Problem: Sites like amazon exist with .ca/.de and many other tlds.
+    // Solution: They are stored in the default icons list as "amazon" instead of "amazon.com" this allows us to have favicons for every tld."
+    // Here, If the site is in the multiRegionDomain array look it up via its second level domain (amazon) instead of its baseDomain (amazon.com)
+    let hostName = url.hostSLD
+    var bundleIcon: (color: UIColor, url: String)?
+    if Self.multiRegionDomains.contains(hostName), let icon = Self.bundledIcons[hostName] {
+      bundleIcon = icon
+    } else if let name = url.baseDomain, let icon = Self.bundledIcons[name] {
+      bundleIcon = icon
+    }
+    guard let icon = bundleIcon,
+      let image = UIImage(contentsOfFile: icon.url),
+      let scaledImage = image.createScaled(CGSize(width: 40.0, height: 40.0))
+    else {
+      return nil
+    }
+
+    return (scaledImage, icon.color)
+  }
+
+  private static let multiRegionDomains = ["craigslist", "google", "amazon"]
+
+  private static var bundledIcons: [String: (color: UIColor, url: String)] = [:]
 
   private struct TopSite: Codable {
     let domain: String?

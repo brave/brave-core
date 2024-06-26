@@ -176,7 +176,7 @@ class SearchSettingsTableViewController: UITableViewController {
       // Every engine is a valid choice for the default engine, even the current default engine.
       $0.engines = searchPickerEngines(type: type)
       $0.delegate = self
-      $0.selectedSearchEngineName = searchEngines.defaultEngine(forType: type).shortName
+      $0.selectedSearchEngineName = searchEngines.defaultEngine(forType: type)?.shortName
     }
   }
 
@@ -434,9 +434,9 @@ extension SearchSettingsTableViewController {
     if editingStyle == .delete {
       guard let engine = customSearchEngines[safe: indexPath.row] else { return }
 
-      func deleteCustomEngine() {
+      func deleteCustomEngine() async {
         do {
-          try searchEngines.deleteCustomEngine(engine)
+          try await searchEngines.deleteCustomEngine(engine)
           tableView.deleteRows(at: [indexPath], with: .right)
           tableView.reloadData()
           updateTableEditModeVisibility()
@@ -461,19 +461,22 @@ extension SearchSettingsTableViewController {
           UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
             guard let self = self else { return }
 
-            self.searchEngines.updateDefaultEngine(
-              self.searchEngines.defaultEngine(forType: .privateMode).shortName,
-              forType: .standard
-            )
+            if let engine = self.searchEngines.defaultEngine(forType: .privateMode) {
+              self.searchEngines.updateDefaultEngine(engine.shortName, forType: .standard)
+            }
 
-            deleteCustomEngine()
+            Task {
+              await deleteCustomEngine()
+            }
           }
         )
 
         UIImpactFeedbackGenerator(style: .medium).vibrate()
         present(alert, animated: true, completion: nil)
       } else {
-        deleteCustomEngine()
+        Task {
+          await deleteCustomEngine()
+        }
       }
     }
   }

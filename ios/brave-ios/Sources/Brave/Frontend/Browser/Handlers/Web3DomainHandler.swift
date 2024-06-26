@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveWallet
 import Foundation
 import Shared
@@ -87,10 +88,10 @@ public class Web3DomainHandler: InternalSchemeResponse {
 
   public init() {}
 
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    guard let path = Bundle.module.path(forResource: "Web3Domain", ofType: "html"),
+    guard let asset = Bundle.module.url(forResource: "Web3Domain", withExtension: "html"),
       let serviceId = request.url?.getQuery()[
         Web3NameServiceScriptHandler.ParamKey.serviceId.rawValue
       ],
@@ -99,7 +100,7 @@ public class Web3DomainHandler: InternalSchemeResponse {
       return nil
     }
 
-    guard var html = try? String(contentsOfFile: path) else {
+    guard var html = await AsyncFileManager.default.utf8Contents(at: asset) else {
       assert(false)
       return nil
     }
@@ -118,10 +119,7 @@ public class Web3DomainHandler: InternalSchemeResponse {
       html = html.replacingOccurrences(of: "%\(arg)%", with: value)
     }
 
-    guard let data = html.data(using: .utf8) else {
-      return nil
-    }
-
+    let data = Data(html.utf8)
     return (response, data)
   }
 }

@@ -32,7 +32,9 @@ private struct FolderEditActionsModifier: ViewModifier {
       ) {
         Button(role: .destructive) {
           if let folder {
-            PlaylistManager.shared.delete(folder: folder)
+            Task {
+              await PlaylistManager.shared.delete(folder: folder)
+            }
           }
         } label: {
           Text("Delete Playlist")
