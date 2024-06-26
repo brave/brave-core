@@ -59,6 +59,7 @@ public struct BraveVPNRegionConfirmationView: View {
   }
 }
 
+#if DEBUG
 struct BraveVPNRegionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
     BraveVPNRegionConfirmationView(
@@ -68,6 +69,7 @@ struct BraveVPNRegionConfirmationView_Previews: PreviewProvider {
     )
   }
 }
+#endif
 
 public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentable {
 
