@@ -20,8 +20,7 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_send_page_generated_map.h"
-#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_swap_page_generated_map.h"
+#include "brave/components/brave_wallet_page/resources/grit/brave_wallet_ios_container_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -65,14 +64,11 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
 BraveWalletPageUI::BraveWalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()) {
   web::WebUIIOSDataSource* source;
-  if (url.path() == "/swap") {
-    source = CreateAndAddWebUIDataSource(
-        web_ui, url.host(), kBraveWalletSwapPageGenerated,
-        kBraveWalletSwapPageGeneratedSize, IDR_BRAVE_WALLET_SWAP_PAGE_HTML);
-  } else if (url.path() == "/send") {
-    source = CreateAndAddWebUIDataSource(
-        web_ui, url.host(), kBraveWalletSendPageGenerated,
-        kBraveWalletSendPageGeneratedSize, IDR_BRAVE_WALLET_SEND_PAGE_HTML);
+  if (url.path() == "/swap" || url.path() == "/send") {
+    source = CreateAndAddWebUIDataSource(web_ui, url.host(),
+                                         kBraveWalletIosContainerGenerated,
+                                         kBraveWalletIosContainerGeneratedSize,
+                                         IDR_BRAVE_WALLET_IOS_CONTAINER_HTML);
   } else {
     NOTREACHED() << "Failed to find page resources for:" << url.path();
   }

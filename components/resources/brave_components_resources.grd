@@ -65,8 +65,7 @@
 
       <!-- WebUI swap and send page resources for iOS -->
       <if expr="is_ios">
-        <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/ios/swap.html" type="BINDATA" />
-        <include name="IDR_BRAVE_WALLET_SEND_PAGE_HTML" file="../brave_wallet_ui/page/screens/send/ios/send.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_IOS_CONTAINER_HTML" file="../brave_wallet_ui/page/ios/container.html" type="BINDATA" />
       </if>
 
       <!-- WebUI vpn resources -->

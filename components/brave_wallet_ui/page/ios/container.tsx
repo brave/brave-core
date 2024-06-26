@@ -11,32 +11,32 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { initLocale } from 'brave-ui'
 
 // style
-import walletDarkTheme from '../../../../theme/wallet-dark'
-import walletLightTheme from '../../../../theme/wallet-light'
+import walletDarkTheme from '../../theme/wallet-dark'
+import walletLightTheme from '../../theme/wallet-light'
 import 'emptykit.css'
 
 // Utils
-import { loadTimeData } from '../../../../../common/loadTimeData'
+import { loadTimeData } from '../../../common/loadTimeData'
 
 // actions
-import * as WalletActions from '../../../../common/actions/wallet_actions'
+import * as WalletActions from '../../common/actions/wallet_actions'
 
 // Components
-import { store } from '../../../store'
+import { store } from '../store'
 import {
   // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider
-} from '../../../../../common/BraveCoreThemeProvider'
-import { Swap } from '../swap'
-import { SendScreen } from '../../send/send_screen/send_screen'
+} from '../../../common/BraveCoreThemeProvider'
+import { SendScreen } from '../screens/send/send_screen/send_screen'
+import { Swap } from '../screens/swap/swap'
 
 // types
-import { WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../constants/types'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-export function IOSSwapApp() {
+export function IOSSendSwapApp() {
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -45,11 +45,11 @@ export function IOSSwapApp() {
           light={walletLightTheme}
         >
           <Switch>
-            <Route path={WalletRoutes.Swap}>
-              <Swap isIOS={true} />
-            </Route>
             <Route path={WalletRoutes.Send}>
               <SendScreen isIOS={true} />
+            </Route>
+            <Route path={WalletRoutes.Swap}>
+              <Swap isIOS={true} />
             </Route>
           </Switch>
         </BraveCoreThemeProvider>
@@ -61,7 +61,7 @@ export function IOSSwapApp() {
 function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
-  render(IOSSwapApp(), document.getElementById('root'))
+  render(IOSSendSwapApp(), document.getElementById('root'))
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
