@@ -12,5 +12,7 @@ struct WebUISwapView: View {
     ChromeWebView(title: Strings.Wallet.swap, urlString: "brave://wallet/swap")
       .navigationTitle(Strings.Wallet.swap)
       .navigationBarTitleDisplayMode(.inline)
+      .background(Color(braveSystemName: .containerBackground))
+      .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 }

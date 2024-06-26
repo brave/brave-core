@@ -17,6 +17,11 @@ struct ChromeWebView: UIViewControllerRepresentable {
     return ChromeWebViewController(privateBrowsing: false).then {
       $0.title = title
       $0.loadURL(urlString)
+      $0.view.backgroundColor = UIColor(braveSystemName: .containerBackground)
+      $0.webView.backgroundColor = UIColor(braveSystemName: .containerBackground)
+      $0.webView.scrollView.backgroundColor = UIColor(braveSystemName: .containerBackground)
+      // WKWebView flashes white screen on load regardless of background colour assignments
+      $0.webView.isOpaque = false
       if #available(iOS 16.4, *) {
         $0.webView.isInspectable = true
       }
