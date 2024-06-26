@@ -16,12 +16,6 @@ import { getTemplate } from './model_config_ui.html.js'
 
 const ModelConfigUIBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
-export interface ModelConfigUI {
-  $: {
-    endpointInput: CrInputElement
-  }
-}
-
 export class ModelConfigUI extends ModelConfigUIBase {
   static get is() {
     return 'model-config-ui'
