@@ -42,6 +42,6 @@ void WebDiscoveryInfoBarDelegate::Close(bool dismiss) {
 }
 
 void WebDiscoveryInfoBarDelegate::EnableWebDiscovery() {
-  prefs_->SetBoolean(kWebDiscoveryEnabled, true);
+  prefs_->SetBoolean(kWebDiscoveryExtensionEnabled, true);
   infobar()->RemoveSelf();
 }

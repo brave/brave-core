@@ -50,6 +50,8 @@ class WDPService : public KeyedService {
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  static void SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs);
+
   void OnFinishNavigation(const GURL& url,
                           content::RenderFrameHost* render_frame_host);
 

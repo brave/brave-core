@@ -434,10 +434,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       prefs::kBraveDefaultSearchVersion,
       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
-#endif
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+  registry->RegisterBooleanPref(kWebDiscoveryExtensionEnabled, false);
   registry->RegisterDictionaryPref(kWebDiscoveryCTAState);
 #endif
 
