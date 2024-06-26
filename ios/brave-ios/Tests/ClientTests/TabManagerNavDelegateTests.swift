@@ -120,11 +120,14 @@ import XCTest
 
     sut.insert(delegate1)
     sut.insert(delegate2)
-    _ = await sut.webView(
+    let e = expectation(description: "decisionHandler")
+    sut.webView(
       anyWebView(),
       decidePolicyFor: WKNavigationAction(),
-      preferences: WKWebpagePreferences()
+      preferences: WKWebpagePreferences(),
+      decisionHandler: { _, _ in e.fulfill() }
     )
+    await fulfillment(of: [e])
 
     XCTAssertEqual(delegate1.receivedMessages, [.webViewDecidePolicyWithActionPolicy])
     XCTAssertEqual(delegate2.receivedMessages, [.webViewDecidePolicyWithActionPolicy])
@@ -138,10 +141,13 @@ import XCTest
 
     sut.insert(delegate1)
     sut.insert(delegate2)
-    _ = await sut.webView(
+    let e = expectation(description: "decisionHandler")
+    sut.webView(
       anyWebView(),
-      decidePolicyFor: WKNavigationResponse()
+      decidePolicyFor: WKNavigationResponse(),
+      decisionHandler: { _ in e.fulfill() }
     )
+    await fulfillment(of: [e])
 
     XCTAssertEqual(delegate1.receivedMessages, [.webViewDecidePolicyWithResponsePolicy])
     XCTAssertEqual(delegate2.receivedMessages, [.webViewDecidePolicyWithResponsePolicy])
