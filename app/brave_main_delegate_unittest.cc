@@ -11,7 +11,6 @@
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 const char kBraveOriginTrialsPublicKey[] =
