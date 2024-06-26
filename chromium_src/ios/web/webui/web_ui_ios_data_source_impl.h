@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_WEBUI_WEB_UI_IOS_DATA_SOURCE_IMPL_H_
 
 #include <cstdint>
+#include <set>
 
 namespace network::mojom {
 enum class CSPDirectiveName : std::int32_t;
