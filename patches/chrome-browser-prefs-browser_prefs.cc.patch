@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index f48b25bb957d11fc940c75a4dfea152cd0415667..5103ad90beecbd8bd51ab7e5dc73ee16fe1b28b0 100644
+index db03d8f4f8affa9f1211642e644508aa45835186..2483ab0fe04bbe64cf560ce045871441d2b8d16a 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1960,6 +1960,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1961,6 +1961,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index f48b25bb957d11fc940c75a4dfea152cd0415667..5103ad90beecbd8bd51ab7e5dc73ee16
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2401,6 +2402,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2403,6 +2404,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    registry->RegisterIntegerPref(prefs::kLensOverlayStartCount, 0);
