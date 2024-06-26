@@ -152,17 +152,7 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
   }
 
   // Handle error
-  mojom::APIError error;
-
-  if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error = mojom::APIError::RateLimitReached;
-  } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
-    error = mojom::APIError::ContextLimitReached;
-  } else {
-    error = mojom::APIError::ConnectionIssue;
-  }
-
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  std::move(callback).Run(base::unexpected(mojom::APIError::ConnectionIssue));
 }
 
 void OAIAPIClient::OnQueryDataReceived(
