@@ -294,14 +294,8 @@ void SkusInternalsUI::CreateOrderFromReceipt(
     CreateOrderFromReceiptCallback callback) {
   EnsureMojoConnected();
 
-  skus_service_->CreateOrderFromReceipt(
-      domain, receipt,
-      base::BindOnce(
-          [](CreateOrderFromReceiptCallback callback,
-             skus::mojom::SkusResultPtr result) {
-            std::move(callback).Run(result->message);
-          },
-          std::move(callback)));
+  skus_service_->CreateOrderFromReceipt(domain, receipt,
+                                        base::BindOnce(std::move(callback)));
 
   // TODO(bsclifton): remove once this has been tested.
   LOG(ERROR) << "skus-internals> CreateOrderFromReceipt> domain=" << domain

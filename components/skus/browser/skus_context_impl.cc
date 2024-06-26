@@ -45,11 +45,6 @@ logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
 }  // namespace
 
 namespace skus {
-skus::mojom::SkusResultPtr make_skus_result(
-    const skus::mojom::SkusResultCode code,
-    const std::string& message) {
-  return skus::mojom::SkusResult::New(code, message);
-}
 
 RustBoundPostTask::RustBoundPostTask(
     base::OnceCallback<void(skus::mojom::SkusResultPtr)> callback)
@@ -60,8 +55,8 @@ RustBoundPostTask::~RustBoundPostTask() = default;
 void RustBoundPostTask::Run(SkusResult result) {
   if (callback_) {
     // Call the bound callback with the result from Rust
-    std::move(callback_).Run(
-        make_skus_result(result.code, static_cast<std::string>(result.msg)));
+    std::move(callback_).Run(skus::mojom::SkusResult::New(
+        result.code, static_cast<std::string>(result.msg)));
   }
 }
 
@@ -70,11 +65,11 @@ void RustBoundPostTask::RunWithResponse(SkusResult result,
   if (callback_) {
     // Call the bound callback with the response from Rust
     if (result.code == skus::mojom::SkusResultCode::Ok) {
-      std::move(callback_).Run(make_skus_result(
+      std::move(callback_).Run(skus::mojom::SkusResult::New(
           skus::mojom::SkusResultCode::Ok, static_cast<std::string>(response)));
     } else {
-      std::move(callback_).Run(
-          make_skus_result(result.code, static_cast<std::string>(result.msg)));
+      std::move(callback_).Run(skus::mojom::SkusResult::New(
+          result.code, static_cast<std::string>(result.msg)));
     }
   }
 }
