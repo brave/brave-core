@@ -185,8 +185,11 @@ void BraveMainDelegate::AppendCommandLineOptions() {
         BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
   }
 
-  return ChromeMainDelegate::BasicStartupComplete();
-}
+  std::optional<int> BraveMainDelegate::BasicStartupComplete() {
+    BraveMainDelegate::AppendCommandLineOptions();
+    return ChromeMainDelegate::BasicStartupComplete();
+  }
+
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
