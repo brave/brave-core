@@ -112,6 +112,11 @@
       initWithFeature:&brave_shields::features::kBraveAdblockCosmeticFiltering];
 }
 
++ (Feature*)kBraveAdblockYouTubeRequestBlockingScript {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveAdblockYouTubeRequestBlockingScript];
+}
+
 + (Feature*)kBraveAdblockCspRules {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kBraveAdblockCspRules];

@@ -386,7 +386,9 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true)
+            && (FeatureList.kBraveAdblockYouTubeRequestBlockingScript.enabled
+              || requestURL.baseDomain != "youtube.com"),
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
