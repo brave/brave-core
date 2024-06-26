@@ -42,9 +42,12 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
 // a tab, based on its URL. Returns nullptr if the URL doesn't have WebUIIOS
 // associated with it.
 WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
+  const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
+
   // This will get called a lot to check all URLs, so do a quick check of other
   // schemes to filter out most URLs.
-  if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme)) {
+  if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme) &&
+      !url.SchemeIs(kChromeUIUntrustedScheme)) {
     return nullptr;
   }
 

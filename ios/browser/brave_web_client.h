@@ -28,6 +28,13 @@ class BraveWebClient : public ChromeWebClient {
   void PostBrowserURLRewriterCreation(
       web::BrowserURLRewriter* rewriter) override;
 
+  void AddAdditionalSchemes(Schemes* schemes) const override;
+
+  void GetAdditionalWebUISchemes(
+      std::vector<std::string>* additional_schemes) override;
+
+  bool IsAppSpecificURL(const GURL& url) const override;
+
  private:
   std::string user_agent_;
 };
