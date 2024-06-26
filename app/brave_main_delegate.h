@@ -36,8 +36,10 @@ class BraveMainDelegate : public ChromeMainDelegate {
       ChromeMainDelegate::InvokedIn invoked_in) override;
 
  private:
-  FRIEND_TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides);
-  FRIEND_TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine);
+  FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest,
+                           DefaultCommandLineOverrides);
+  FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest,
+                           OverrideSwitchFromCommandLine);
 
   static void AppendCommandLineOptions();
 };
