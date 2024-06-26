@@ -13,6 +13,8 @@ source_set("brave_wallet") {
     "brave_wallet_ipfs_service_factory.mm",
     "brave_wallet_service_factory.h",
     "brave_wallet_service_factory.mm",
+    "features.h",
+    "features.mm",
     "meld_integration_service_factory.cc",
     "meld_integration_service_factory.h",
     "swap_service_factory.cc",
@@ -21,6 +23,7 @@ source_set("brave_wallet") {
     "wallet_data_files_installer_delegate_impl.mm",
   ]
   deps = [
+    "//base",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common",

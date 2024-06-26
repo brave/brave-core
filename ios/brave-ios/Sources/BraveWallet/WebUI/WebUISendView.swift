@@ -6,22 +6,61 @@
 import BraveCore
 import SwiftUI
 
+struct SendView: View {
+
+  let keyringStore: KeyringStore
+  let cryptoStore: CryptoStore
+  let destination: WalletActionDestination
+  let completion: ((_ success: Bool) -> Void)?
+  let dismissAction: () -> Void
+
+  init(
+    keyringStore: KeyringStore,
+    cryptoStore: CryptoStore,
+    destination: WalletActionDestination,
+    completion: ((Bool) -> Void)? = nil,
+    dismissAction: @escaping () -> Void
+  ) {
+    self.keyringStore = keyringStore
+    self.cryptoStore = cryptoStore
+    self.destination = destination
+    self.completion = completion
+    self.dismissAction = dismissAction
+  }
+
+  var body: some View {
+    if BraveCore.FeatureList.kBraveWalletWebUIIOS.enabled {
+      WebUISendView()
+    } else {
+      SendTokenView(
+        keyringStore: keyringStore,
+        networkStore: cryptoStore.networkStore,
+        sendTokenStore: cryptoStore.openSendTokenStore(destination.initialToken),
+        completion: completion,
+        onDismiss: dismissAction
+      )
+    }
+  }
+}
+
 struct WebUISendView: View {
 
   @State private var title: String = Strings.Wallet.send
   @Environment(\.openURL) private var openWalletURL
 
   var body: some View {
-    ChromeWebView(
-      urlString: "brave://wallet/send",
-      title: $title,
-      openURL: { url in
-        openWalletURL(url)
-      }
-    )
-    .navigationTitle(title)
-    .navigationBarTitleDisplayMode(.inline)
-    .background(Color(braveSystemName: .containerBackground))
-    .ignoresSafeArea(.keyboard, edges: .bottom)
+    NavigationStack {
+      ChromeWebView(
+        urlString: "brave://wallet/send",
+        title: $title,
+        openURL: { url in
+          openWalletURL(url)
+        }
+      )
+      .navigationTitle(title)
+      .navigationBarTitleDisplayMode(.inline)
+      .background(Color(braveSystemName: .containerBackground))
+      .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
   }
 }
