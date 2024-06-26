@@ -184,11 +184,12 @@ void BraveMainDelegate::AppendCommandLineOptions() {
         variations::switches::kVariationsInsecureServerURL,
         BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
   }
+}
 
-  std::optional<int> BraveMainDelegate::BasicStartupComplete() {
-    BraveMainDelegate::AppendCommandLineOptions();
-    return ChromeMainDelegate::BasicStartupComplete();
-  }
+std::optional<int> BraveMainDelegate::BasicStartupComplete() {
+  BraveMainDelegate::AppendCommandLineOptions();
+  return ChromeMainDelegate::BasicStartupComplete();
+}
 
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
