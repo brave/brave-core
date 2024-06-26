@@ -10,6 +10,8 @@
 
 #include "chrome/app/chrome_main_delegate.h"
 
+class BraveMainDelegateUnitTest;
+
 // Chrome implementation of ContentMainDelegate.
 class BraveMainDelegate : public ChromeMainDelegate {
  public:
@@ -22,7 +24,12 @@ class BraveMainDelegate : public ChromeMainDelegate {
   explicit BraveMainDelegate(base::TimeTicks exe_entry_point_ticks);
   ~BraveMainDelegate() override;
 
- protected:
+ private:
+  FRIEND_TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides);
+  FRIEND_TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine);
+
+  static void AppendCommandLineOptions();
+
   // content::ContentMainDelegate implementation:
   content::ContentBrowserClient* CreateContentBrowserClient() override;
   content::ContentRendererClient* CreateContentRendererClient() override;
