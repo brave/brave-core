@@ -8,8 +8,8 @@ import SwiftUI
 
 struct ChromeWebView: UIViewControllerRepresentable {
 
-  var title: String
   let urlString: String
+  @Binding var title: String
 
   public func makeUIViewController(
     context: UIViewControllerRepresentableContext<ChromeWebView>
@@ -25,6 +25,7 @@ struct ChromeWebView: UIViewControllerRepresentable {
       if #available(iOS 16.4, *) {
         $0.webView.isInspectable = true
       }
+      context.coordinator.webView = $0.webView
     }
   }
 
@@ -33,5 +34,40 @@ struct ChromeWebView: UIViewControllerRepresentable {
     context: UIViewControllerRepresentableContext<ChromeWebView>
   ) {
     uiViewController.title = title
+  }
+
+  func makeCoordinator() -> Coordinator {
+    Coordinator(self)
+  }
+
+  class Coordinator: NSObject {
+
+    var parent: ChromeWebView
+    var webView: WKWebView? {
+      didSet {
+        guard let webView else { return }
+        webView.addObserver(
+          self,
+          forKeyPath: "title",
+          options: .new,
+          context: nil
+        )
+      }
+    }
+
+    init(_ parent: ChromeWebView) {
+      self.parent = parent
+    }
+
+    override func observeValue(
+      forKeyPath keyPath: String?,
+      of object: Any?,
+      change: [NSKeyValueChangeKey: Any]?,
+      context: UnsafeMutableRawPointer?
+    ) {
+      if keyPath == "title", let title = webView?.title {
+        parent.title = title
+      }
+    }
   }
 }

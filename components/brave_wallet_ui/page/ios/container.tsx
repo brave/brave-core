@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import { initLocale } from 'brave-ui'
 
@@ -27,16 +27,12 @@ import {
   // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider
 } from '../../../common/BraveCoreThemeProvider'
-import { SendScreen } from '../screens/send/send_screen/send_screen'
-import { Swap } from '../screens/swap/swap'
-
-// types
-import { WalletRoutes } from '../../constants/types'
+import { IOSSendSwap } from './send_and_swap'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
-export function IOSSendSwapApp() {
+export function IOSContainer() {
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -44,14 +40,7 @@ export function IOSSendSwapApp() {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <Switch>
-            <Route path={WalletRoutes.Send}>
-              <SendScreen isIOS={true} />
-            </Route>
-            <Route path={WalletRoutes.Swap}>
-              <Swap isIOS={true} />
-            </Route>
-          </Switch>
+          <IOSSendSwap/>
         </BraveCoreThemeProvider>
       </BrowserRouter>
     </Provider>
@@ -61,7 +50,7 @@ export function IOSSendSwapApp() {
 function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
-  render(IOSSendSwapApp(), document.getElementById('root'))
+  render(IOSContainer(), document.getElementById('root'))
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
