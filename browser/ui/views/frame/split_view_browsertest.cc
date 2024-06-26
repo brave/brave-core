@@ -9,10 +9,13 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
@@ -23,6 +26,10 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   BraveBrowserView& browser_view() {
     return *static_cast<BraveBrowserView*>(
         BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  views::WebView& contents_web_view() {
+    return *browser_view().contents_web_view();
   }
 
   views::WebView& secondary_contents_view() {
@@ -164,4 +171,26 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
 
   tab_strip_model().ActivateTabAt(3);
   EXPECT_EQ(kSizeDelta, contents_layout_manager->split_view_size_delta());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    SplitViewBrowserTest,
+    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
+  brave::NewSplitViewForTab(browser());
+  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
+
+  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
+      active_contents, active_contents, u"title",
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
+      base::DoNothing(), base::DoNothing());
+  ASSERT_TRUE(dialog);
+  auto* widget = dialog->GetWidget();
+  ASSERT_TRUE(widget);
+
+  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
+
+  auto web_view_bounds = contents_web_view().GetLocalBounds();
+  views::View::ConvertRectToScreen(&contents_web_view(), &web_view_bounds);
+
+  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }

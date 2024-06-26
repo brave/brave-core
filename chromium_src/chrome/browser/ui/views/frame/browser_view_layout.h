@@ -15,9 +15,14 @@
 #define LayoutBookmarkAndInfoBars virtual LayoutBookmarkAndInfoBars
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
+#define set_contents_border_widget           \
+  set_contents_border_widget_unused();       \
+  void NotifyDialogPositionRequiresUpdate(); \
+  void set_contents_border_widget
 
 #include "src/chrome/browser/ui/views/frame/browser_view_layout.h"  // IWYU pragma: export
 
+#undef set_contents_border_widget
 #undef LayoutContentsContainerView
 #undef LayoutInfoBar
 #undef LayoutBookmarkAndInfoBars

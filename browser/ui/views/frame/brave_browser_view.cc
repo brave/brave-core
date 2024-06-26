@@ -322,6 +322,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
     auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
         contents_container()->GetLayoutManager());
+    contents_layout_manager->set_browser_view(this);
     contents_layout_manager->set_secondary_contents_view(
         secondary_contents_web_view_);
     contents_layout_manager->set_secondary_devtools_view(
@@ -771,6 +772,10 @@ void BraveBrowserView::ShowWaybackMachineBubble() {
 
 WalletButton* BraveBrowserView::GetWalletButton() {
   return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
+}
+
+void BraveBrowserView::NotifyDialogPositionRequiresUpdate() {
+  GetBrowserViewLayout()->NotifyDialogPositionRequiresUpdate();
 }
 
 views::View* BraveBrowserView::GetWalletButtonAnchorView() {

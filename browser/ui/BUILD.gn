@@ -432,6 +432,8 @@ source_set("ui") {
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
       "views/brave_first_run_dialog.cc",
       "views/brave_first_run_dialog.h",
+      "views/brave_javascript_tab_modal_dialog_view_views.cc",
+      "views/brave_javascript_tab_modal_dialog_view_views.h",
       "views/brave_layout_provider.cc",
       "views/brave_layout_provider.h",
       "views/brave_news/brave_news_bubble_view.cc",

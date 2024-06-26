@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 
+class BraveBrowserView;
 class SplitViewBrowserData;
 
 class BraveContentsLayoutManager : public ContentsLayoutManager,
@@ -20,6 +21,10 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
 
   using ContentsLayoutManager::ContentsLayoutManager;
   ~BraveContentsLayoutManager() override;
+
+  void set_browser_view(BraveBrowserView* browser_view) {
+    browser_view_ = browser_view;
+  }
 
   void set_secondary_contents_view(views::View* secondary_contents_view) {
     secondary_contents_view_ = secondary_contents_view;
@@ -59,6 +64,8 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
 
  private:
   friend class BraveContentsLayoutManagerUnitTest;
+
+  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
 
   raw_ptr<SplitViewBrowserData> split_view_browser_data_ = nullptr;
   raw_ptr<views::View> secondary_contents_view_ = nullptr;
