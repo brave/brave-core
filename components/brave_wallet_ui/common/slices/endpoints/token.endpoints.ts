@@ -13,6 +13,7 @@ import { type BaseQueryCache } from '../../async/base-query-cache'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import {
+  addLogoToToken,
   getAssetIdKey,
   getDeletedTokenIds,
   getHiddenTokenIds
@@ -556,7 +557,7 @@ async function addUserToken({
       const metadata = await cache.getNftMetadata(tokenArg)
 
       if (metadata?.imageURL) {
-        tokenArg.logo = metadata?.imageURL
+        tokenArg = addLogoToToken(tokenArg, metadata.imageURL)
       }
     } catch (error) {
       console.log(error)

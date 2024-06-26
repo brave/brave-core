@@ -73,13 +73,8 @@ export const Header = styled.div<{
 `
 
 export const Title = styled.span`
-  font-family: Poppins;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 26px;
-  color: ${(p) => p.theme.color.text01};
-  margin-right: 16px;
+  color: ${leo.color.text.primary};
+  font: ${leo.font.heading.h2};
 `
 
 export const HeaderButton = styled(WalletButton)`

@@ -4,13 +4,16 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Icon from '@brave/leo/react/icon'
 
-export const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  flex: 1;
-  min-height: 320px;
+export const InfoIcon = styled(Icon).attrs({
+  name: 'info-outline'
+})`
+  --leo-icon-size: 16px;
+`
+
+export const TooltipTextContent = styled.div<{
+  maxWidth?: string
+}>`
+  max-width: ${(p) => p.maxWidth ?? '248px'};
 `

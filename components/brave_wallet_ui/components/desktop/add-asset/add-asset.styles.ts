@@ -11,4 +11,5 @@ export const AddAssetWrapper = styled.div`
   justify-content: center;
   width: 100%;
   flex: 1;
+  overflow: auto;
 `
