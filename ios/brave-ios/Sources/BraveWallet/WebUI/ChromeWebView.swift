@@ -10,6 +10,7 @@ struct ChromeWebView: UIViewControllerRepresentable {
 
   let urlString: String
   @Binding var title: String
+  let openURL: ((URL) -> Void)?
 
   public func makeUIViewController(
     context: UIViewControllerRepresentableContext<ChromeWebView>
@@ -26,6 +27,7 @@ struct ChromeWebView: UIViewControllerRepresentable {
         $0.webView.isInspectable = true
       }
       context.coordinator.webView = $0.webView
+      $0.delegate = context.coordinator
     }
   }
 
@@ -37,10 +39,10 @@ struct ChromeWebView: UIViewControllerRepresentable {
   }
 
   func makeCoordinator() -> Coordinator {
-    Coordinator(self)
+    Coordinator(self, openURL: openURL)
   }
 
-  class Coordinator: NSObject {
+  class Coordinator: NSObject, ChromeWebViewControllerUIDelegate {
 
     var parent: ChromeWebView
     var webView: WKWebView? {
@@ -54,9 +56,14 @@ struct ChromeWebView: UIViewControllerRepresentable {
         )
       }
     }
+    let openURL: ((URL) -> Void)?
 
-    init(_ parent: ChromeWebView) {
+    init(
+      _ parent: ChromeWebView,
+      openURL: ((URL) -> Void)?
+    ) {
       self.parent = parent
+      self.openURL = openURL
     }
 
     override func observeValue(
@@ -68,6 +75,15 @@ struct ChromeWebView: UIViewControllerRepresentable {
       if keyPath == "title", let title = webView?.title {
         parent.title = title
       }
+    }
+
+    func chromeWebViewController(
+      _ chromeWebViewController: ChromeWebViewController,
+      openNewWindowFor newWindowURL: URL,
+      openerURL: URL,
+      initiatedByUser: Bool
+    ) {
+      openURL?(newWindowURL)
     }
   }
 }
