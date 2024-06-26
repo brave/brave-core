@@ -390,7 +390,8 @@ export const SendScreen = React.memo((props: Props) => {
                   .toHex()
               : new Amount(sendAmount).toHex(),
             splTokenMintAddress: tokenFromParams.contractAddress,
-            decimals: tokenFromParams.decimals
+            decimals: tokenFromParams.decimals,
+            isCompressedNft: tokenFromParams.isCompressed
           })
           resetSendFields()
           return

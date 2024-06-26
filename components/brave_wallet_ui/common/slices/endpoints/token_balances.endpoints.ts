@@ -451,7 +451,8 @@ export const tokenBalancesEndpoints = ({
                                   {
                                     accountId,
                                     coin: CoinTypes.SOL,
-                                    chainId: network.chainId
+                                    chainId: network.chainId,
+                                    tokens
                                   }
                                 ]
                               : [
@@ -459,7 +460,7 @@ export const tokenBalancesEndpoints = ({
                                     accountId,
                                     coin: coinTypesMapping[network.coin],
                                     chainId: network.chainId,
-                                    tokens: tokens
+                                    tokens
                                   }
                                 ],
                           cache,
@@ -816,6 +817,30 @@ async function fetchAccountTokenCurrentBalance({
     }
     // Solana Network Tokens
     case BraveWallet.CoinType.SOL: {
+      if (token.isNft) {
+        const { balances, errorMessage } = await jsonRpcService.getNftBalances(
+          accountId.address,
+          [
+            {
+              chainId: token.chainId,
+              contractAddress: token.contractAddress,
+              tokenId: token.tokenId
+            }
+          ],
+          token.coin
+        )
+
+        if (errorMessage) {
+          throw new Error(
+            `Unable to fetch Compressed NFT (${
+              token.contractAddress //
+            }) balance -- error: ${errorMessage}`
+          )
+        }
+
+        return balances[0].toString()
+      }
+
       const { amount, uiAmountString, error, errorMessage } =
         await jsonRpcService.getSPLTokenAccountBalance(
           accountId.address,
