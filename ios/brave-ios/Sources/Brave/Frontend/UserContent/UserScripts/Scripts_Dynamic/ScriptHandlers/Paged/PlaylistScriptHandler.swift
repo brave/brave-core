@@ -85,6 +85,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
         handlerNamesMap: [
           "$<message_handler>": messageHandlerName,
           "$<tagUUID>": "tagId_\(uniqueID)",
+          "$<sendMessageTimeout>": "smt_\(uniqueID)",
           "$<playlistLongPressed>": playlistLongPressed,
           "$<playlistProcessDocumentLoad>": playlistProcessDocumentLoad,
           "$<mediaCurrentTimeFromTag>": mediaCurrentTimeFromTag,
