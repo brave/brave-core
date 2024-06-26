@@ -251,8 +251,10 @@ public struct BraveVPNRegionListView: View {
   }
 }
 
+#if DEBUG
 struct ServerRegionView_Previews: PreviewProvider {
   static var previews: some View {
     BraveVPNRegionListView()
   }
 }
+#endif

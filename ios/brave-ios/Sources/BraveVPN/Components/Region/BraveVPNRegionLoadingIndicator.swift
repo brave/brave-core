@@ -32,8 +32,10 @@ struct BraveVPNRegionLoadingIndicatorView: View {
   }
 }
 
+#if DEBUG
 struct BraveVPNLoadingIndicatorView_Previews: PreviewProvider {
   static var previews: some View {
     BraveVPNRegionLoadingIndicatorView()
   }
 }
+#endif
