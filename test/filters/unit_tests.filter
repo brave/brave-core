@@ -5,8 +5,45 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests crash because they call SyncServiceFactory's SetTestingFactory
+# with BrowserContextKeyedServiceFactory::TestingFactory after our
+# BraveSyncAlertsServiceFactory already subscribed to observe the previously
+# created MockSyncService. This call destroys the sync service without letting
+# it shut down, so we don't remove the observer. When the observer is being
+# removed in the d'tor it crashes because the service has been destroyed.
+-SyncInternalsMessageHandlerTest.AddRemoveObserversSyncDisabled
+-SyncInternalsMessageHandlerTest.SendAboutInfoSyncDisabled
+
+# These tests fail because the expected number of calls to add/remove observer
+# for MockSyncService ends up being wrong due to BraveSyncAlertsServiceFactory
+# adding/removing an observer. Perhaps BraveSyncAlertsServiceFactory should
+# be NULL for testing?
+-SyncInternalsMessageHandlerTest.AddRemoveObservers
+-SyncInternalsMessageHandlerTest.AddRemoveObserversDisallowJavascript
+
+# This test fails because we disable LensOverlay, which is one of the sidepanel
+# actions the test expects to find.
+-CustomizeToolbarHandlerTest.ListActions
+
 # These tests crash because brave.search.p3a_default_switch pref is not
 # registered.
+-All/ManagementToolbarButtonUnitTest.Visibility/*
+-BrowserFeaturePromoControllerReshowTest.ReshowKeyedPromoNoLimit
+-BrowserFeaturePromoControllerReshowTest.ReshowKeyedPromoWithLimit
+-BrowserFeaturePromoControllerReshowTest.ReshowLegalNoticeWithLimit
+-BrowserFeaturePromoControllerReshowTest.ReshowLegalNoticeWithNoLimit
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForCookieSettingEnforcement
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForPolicyEnforcement
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithEnforcementByCookieSetting
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOff 
+-CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOn
+-CookieControlsUserBypassTrackingProtectionUiTest.DisplayEyeIconWhenActFeaturesNotEnforced
+-CookieControlsUserBypassTrackingProtectionUiTest.DoesNotDisplayEyeIconWhenActFeaturesAreEnforced
+-TabListViewUnitTest.CloseButtonRemovesListItem
+-TabListViewUnitTest.CloseButtonShowsAndHides
+-TabListViewUnitTest.CloseButtonShowsAndHidesUpdate
+-TabListViewUnitTest.CloseButtonShowsAndHidesWithFocus
+-TabListViewUnitTest.PopulateTabList
 -VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveNoFrames
 
 # Unregistered brave.rewards.notifications pref.
@@ -38,7 +75,7 @@
 
 # These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
 # always return false
--SearchEngineChoiceDialogServiceTest.CanShowDialog
+-SearchEngineChoiceDialogServiceTest.*
 
 # These tests DCHECK because they pass their own pref service to the testing
 # profile so our prefs in pref_service_builder_utils.cc aren't initialized.
@@ -51,11 +88,6 @@
 # in PageActionIconController
 -CookieControlsBubbleCoordinatorTest.ShowBubbleTest
 -CookieControlsBubbleViewImplTest.BubbleWidth
--SearchEngineChoiceDialogServiceTest.DoNotDisplayDialogIfPolicyIsSetDynamically
--SearchEngineChoiceDialogServiceTest.NotifyChoiceMade*
--SearchEngineChoiceDialogServiceTest.NotifyDialogOpened
--SearchEngineChoiceDialogServiceTest.SearchEngineChoicePropagatesFromIncognitoToParentProfile
--SearchEngineChoiceDialogServiceTest.SearchEngineChoicePropagatesFromParentProfileToIncognito
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/AllEeaSearchEngineList
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/BelgiumSearchEngineList
 -SearchEngineListCountryOverrideParametrizedTest.CheckNumberOfSearchEngines/DefaultSearchEngineList
@@ -134,6 +166,10 @@
 -PermissionPromptBubbleTwoOriginsViewTest.DescriptionMentionsTwoOriginsAndPermission
 -PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsRequestingOriginAndPermission
 -SavedTabGroupBarUnitTest.*
+
+# These tests fail because local_state passed to KeyringService is nullptr.
+-All/CookieControlsUserBypassTrackingProtectionUiTest.AddsActFeaturesToVectorBasedOnFeatureAndExceptionStatus/*
+-TabGroupServiceWrapper/TabGroupServiceWrapperUnitTest.*
 
 # Prerender is disabled
 -PrerenderManagerBasicRequirementTest.*
@@ -353,6 +389,9 @@
 -ChromeTailoredSecurityServiceTest.TsEnabledEnablesEp
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostTest.*
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestAlreadyPhishing
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestNoEnforcedPing
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequest
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
@@ -360,6 +399,7 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
 -SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
@@ -429,6 +469,7 @@
 
 # This test times out because we Disable "Use a prediction service to load
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
+-NavigationPredictorUserInteractionsTest.MLModelMaxHoverTime
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
 
 # These tests fail a CalledOnValidSequence check when calling FindPreference
@@ -464,6 +505,10 @@
 # of being randomly delayed.
 -IdleDetectionPermissionContextTest.TestDenyInIncognitoAfterDelay
 -IdleDetectionPermissionContextTest.TestParallelDenyInIncognito
+
+# These tests fail because we set content settings default values to
+# CONTENT_SETTING_BLOCK, instead of CONTENT_SETTING_ASK which the tests expect.
+-All/ChromeBrowsingDataRemoverDelegateRelatedWebsiteSetsTest.RemoveRelatedWebsiteSetsPermissions/*
 
 # This test fails because our search engine keywords use a shorter syntax than
 # is expected (:b vs search.brave.com)
