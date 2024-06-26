@@ -894,7 +894,7 @@ SimpleHashClient::ParseSolCompressedNftProofData(
   }
 
   if (!root_opt || !data_hash_opt || !creator_hash_opt || !owner_opt ||
-      !merkle_tree_opt || !delegate_opt) {
+      !merkle_tree_opt) {
     return std::nullopt;
   }
 
