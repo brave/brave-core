@@ -33,4 +33,5 @@ public abstract class BraveFeatureList {
             "BraveShowStrictFingerprintingMode";
     public static final String BRAVE_DAY_ZERO_EXPERIMENT = "BraveDayZeroExperiment";
     public static final String BRAVE_FALLBACK_DOH_PROVIDER = "BraveFallbackDoHProvider";
+    public static final String BRAVE_WEB_DISCOVERY_NATIVE = "BraveWebDiscoveryNative";
 }

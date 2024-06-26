@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
+
+assert(enable_web_discovery_native)
+
 static_library("browser") {
   sources = [
     "content_scraper.cc",
@@ -96,8 +100,15 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/web_discovery/common:mojom",
-    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/service_manager/public/cpp",
     "//testing/gtest",
   ]
+  if (!is_android) {
+    deps += [ "//chrome/test:test_support_ui" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
+
+assert(enable_web_discovery_native)
+
 source_set("renderer") {
   sources = [
     "blink_document_extractor.cc",

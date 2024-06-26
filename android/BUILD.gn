@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
@@ -29,5 +30,6 @@ java_cpp_template("brave_config_java") {
     "BRAVE_ANDROID_ENABLE_IPFS=$enable_ipfs",
     "BRAVE_ANDROID_WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"",
     "BRAVE_ANDROID_AI_CHAT_ENABLED=$enable_ai_chat",
+    "BRAVE_ANDROID_WEB_DISCOVERY_ENABLED=$enable_web_discovery_native",
   ]
 }

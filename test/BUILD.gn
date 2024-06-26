@@ -18,6 +18,7 @@ import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//brave/updater/config.gni")
 import("//chrome/common/features.gni")
@@ -266,7 +267,6 @@ test("brave_unit_tests") {
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser:unittests",
     "//brave/components/version_info:unit_tests",
-    "//brave/components/web_discovery/browser:unit_tests",
     "//brave/extensions:common",
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net:unit_tests",
@@ -371,6 +371,10 @@ test("brave_unit_tests") {
       "//brave/components/ai_chat/core/common:unit_tests",
       "//brave/components/ai_chat/renderer:unit_tests",
     ]
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/browser:unit_tests" ]
   }
 
   data = [ "data/" ]
@@ -1042,6 +1046,10 @@ test("brave_browser_tests") {
       "//brave/components/greaselion/browser",
       "//chrome/browser",
     ]
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/browser:browser_tests" ]
   }
 
   if (ethereum_remote_client_enabled) {

@@ -55,6 +55,7 @@ import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_chrome_browser_visibility = [
@@ -135,7 +136,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
-  "//brave/browser/web_discovery",
   "//brave/common",
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/ai_rewriter/common/buildflags",
@@ -206,6 +206,8 @@ brave_chrome_browser_deps = [
   "//brave/components/tor/buildflags",
   "//brave/components/version_info",
   "//brave/components/web_discovery/browser",
+  "//brave/components/web_discovery/common",
+  "//brave/components/web_discovery/common/buildflags",
   "//brave/components/webcompat:core",
   "//brave/services/network/public/cpp",
   "//brave/third_party/blink/renderer",
@@ -324,6 +326,13 @@ if (enable_ai_chat) {
 
 if (enable_ai_rewriter) {
   brave_chrome_browser_deps += [ "//brave/components/ai_rewriter/common" ]
+}
+
+if (enable_web_discovery_native) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/web_discovery",
+    "//brave/components/web_discovery/browser",
+  ]
 }
 
 if (enable_brave_vpn) {

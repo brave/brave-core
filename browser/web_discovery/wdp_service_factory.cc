@@ -7,6 +7,7 @@
 
 #include "base/path_service.h"
 #include "brave/components/web_discovery/browser/wdp_service.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -48,6 +49,9 @@ KeyedService* WDPServiceFactory::BuildServiceInstanceFor(
 
 content::BrowserContext* WDPServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(features::kWebDiscoveryNative)) {
+    return nullptr;
+  }
   // Prevents creation of service instance for incognito/OTR profiles
   return context->IsOffTheRecord() ? nullptr : context;
 }
