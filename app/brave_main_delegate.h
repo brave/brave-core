@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/app/chrome_main_delegate.h"
 
 class BraveMainDelegateUnitTest;
@@ -24,12 +25,7 @@ class BraveMainDelegate : public ChromeMainDelegate {
   explicit BraveMainDelegate(base::TimeTicks exe_entry_point_ticks);
   ~BraveMainDelegate() override;
 
- private:
-  FRIEND_TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides);
-  FRIEND_TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine);
-
-  static void AppendCommandLineOptions();
-
+ protected:
   // content::ContentMainDelegate implementation:
   content::ContentBrowserClient* CreateContentBrowserClient() override;
   content::ContentRendererClient* CreateContentRendererClient() override;
@@ -38,6 +34,12 @@ class BraveMainDelegate : public ChromeMainDelegate {
   void PreSandboxStartup() override;
   std::optional<int> PostEarlyInitialization(
       ChromeMainDelegate::InvokedIn invoked_in) override;
+
+ private:
+  FRIEND_TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides);
+  FRIEND_TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine);
+
+  static void AppendCommandLineOptions();
 };
 
 #endif  // BRAVE_APP_BRAVE_MAIN_DELEGATE_H_
