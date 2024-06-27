@@ -127,12 +127,14 @@ public class BraveNewTabPageLayout
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
     private LogoCoordinator mLogoCoordinator;
+    private Integer mInitialTileNum;
 
     // Own members.
     private final Context mContext;
     private ImageView mBgImageView;
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
+    private boolean mIsTablet;
 
     private BitmapDrawable mImageDrawable;
 
@@ -1203,6 +1205,8 @@ public class BraveNewTabPageLayout
                 isTablet,
                 tabStripHeightSupplier);
 
+        mIsTablet = isTablet;
+
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 
         if (mMvTilesContainerLayout != null && useFixedMVTLayout()) {
@@ -1503,5 +1507,24 @@ public class BraveNewTabPageLayout
         }
 
         return 2;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mIsTablet) {
+            if (mInitialTileNum == null) {
+                // In the upstream `mMvTilesContainerLayout` is added as a view in
+                // `insertSiteSectionView`.
+                // We override `insertSiteSectionView` to add `mMvTilesContainerLayout` in our own
+                // RecyclerView to have own NTP UI.
+                // Thus upstream's NewTabPageLayout.findViewById does not see `mv_tiles_layout` and
+                // returns null.
+                mInitialTileNum =
+                        ((ViewGroup) mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout))
+                                .getChildCount();
+            }
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }
