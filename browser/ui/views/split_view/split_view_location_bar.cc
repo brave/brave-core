@@ -174,8 +174,8 @@ void SplitViewLocationBar::UpdateURLAndIcon() {
     auto origin = url::Origin::Create(url);
     auto formatted_origin = url_formatter::FormatUrl(
         origin.opaque() ? url : origin.GetURL(),
-        url_formatter::kFormatUrlOmitDefaults &
-            ~url_formatter::kFormatUrlOmitHTTP,
+        url_formatter::kFormatUrlOmitDefaults |
+            url_formatter::kFormatUrlOmitHTTPS,
         base::UnescapeRule::SPACES, nullptr, nullptr, nullptr);
     url_->SetText(formatted_origin);
     UpdateIcon();
@@ -197,10 +197,14 @@ bool SplitViewLocationBar::IsContentsSafe() const {
     return true;
   }
 
-  auto security_level = SecurityStateTabHelper::FromWebContents(web_contents())
-                            ->GetSecurityLevel();
-  return security_level == security_state::SecurityLevel::SECURE ||
-         security_level == security_state::SecurityLevel::NONE;
+  if (SecurityStateTabHelper::FromWebContents(web_contents())
+          ->GetSecurityLevel() == security_state::SecurityLevel::SECURE) {
+    return true;
+  }
+
+  auto url = web_contents()->GetLastCommittedURL();
+  return url.is_empty() || url.SchemeIs(url::kAboutScheme) ||
+         url.SchemeIs("chrome");
 }
 
 SkPath SplitViewLocationBar::GetBorderPath(bool close) {
