@@ -81,7 +81,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier,
-            boolean isTabToGtsAnimationEnabled,
             boolean isStartSurfaceEnabled,
             HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier,
@@ -116,7 +115,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 identityDiscButtonSupplier,
                 resourceManagerSupplier,
                 isIncognitoModeEnabledSupplier,
-                isTabToGtsAnimationEnabled,
                 isStartSurfaceEnabled,
                 historyDelegate,
                 partnerHomepageEnabledSupplier,
@@ -145,7 +143,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                                         .getRootView()
                                         .findViewById(R.id.tab_switcher_toolbar_stub),
                                 overviewModeMenuButtonCoordinator,
-                                isTabToGtsAnimationEnabled,
                                 isIncognitoModeEnabledSupplier,
                                 mToolbarColorObserverManager);
             }
