@@ -115,7 +115,7 @@ std::optional<std::string> ValidateKey(const std::string& key,
 }
 
 std::optional<std::string> ValidateAddress(const std::string& address) {
-  if (!re2::RE2::FullMatch(address, R"(^[A-z0-9._\-:[\]]+$)")) {
+  if (!re2::RE2::FullMatch(address, R"(^[A-Za-z0-9._\-:[\]]+$)")) {
     VLOG(1) << "address contains invalid characters";
     return std::nullopt;
   }
@@ -146,7 +146,7 @@ std::optional<std::string> ValidateAddress(const std::string& address) {
 }
 
 std::optional<std::string> ValidateEndpoint(const std::string& endpoint) {
-  if (!re2::RE2::FullMatch(endpoint, R"(^[A-z0-9._\-:]+$)")) {
+  if (!re2::RE2::FullMatch(endpoint, R"(^[A-Za-z0-9._\-:]+$)")) {
     VLOG(1) << "endpoint contains invalid characters";
     return std::nullopt;
   }
