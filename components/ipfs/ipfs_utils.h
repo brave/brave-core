@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 
+#include <string>
+
 #include "base/files/file_path.h"
 #include "url/gurl.h"
 

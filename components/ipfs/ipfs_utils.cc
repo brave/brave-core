@@ -18,11 +18,13 @@
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
+#include "build/build_config.h"
 #include "components/base32/base32.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
 namespace {
 constexpr char kIPFSScheme[] = "ipfs";
 constexpr char kIPNSScheme[] = "ipns";
@@ -50,7 +52,6 @@ static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";
 // Not used yet for Android/iOS
 static const char kIpfsClientComponentId[] = "";
 #endif
-
 
 // Decodes a varint from the given string piece into the given int64_t. Returns
 // remaining span if the string had a valid varint (where a byte was found with
@@ -210,7 +211,8 @@ std::string GetIpfsClientComponentId() {
   return kIpfsClientComponentId;
 }
 
-void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir, const std::string& ipfs_client_component_id) {
+void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir,
+                                const std::string& ipfs_client_component_id) {
   if (user_data_dir.empty() || !base::PathExists(user_data_dir)) {
     return;
   }

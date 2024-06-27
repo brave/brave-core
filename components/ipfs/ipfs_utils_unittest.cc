@@ -11,33 +11,31 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "content/public/test/browser_task_environment.h"
-#include "gtest/gtest.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
-  // Simple function to dump some text into a new file.
-  void CreateTextFile(const base::FilePath& filename,
-                      const std::wstring& contents) {
-    std::wofstream file;
-  #if BUILDFLAG(IS_WIN)
-    file.open(filename.value().c_str());
-  #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
-    file.open(filename.value());
-  #endif  // BUILDFLAG(IS_WIN)
-    ASSERT_TRUE(file.is_open());
-    file << contents;
-    file.close();
-  }
-
-  GURL GetDefaultIPFSGateway() {
-    return GURL(ipfs::kDefaultPublicGateway);
-  }
+// Simple function to dump some text into a new file.
+void CreateTextFile(const base::FilePath& filename,
+                    const std::wstring& contents) {
+  std::wofstream file;
+#if BUILDFLAG(IS_WIN)
+  file.open(filename.value().c_str());
+#elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+  file.open(filename.value());
+#endif  // BUILDFLAG(IS_WIN)
+  ASSERT_TRUE(file.is_open());
+  file << contents;
+  file.close();
 }
+
+GURL GetDefaultIPFSGateway() {
+  return GURL(ipfs::kDefaultPublicGateway);
+}
+}  // namespace
 
 class IpfsUtilsUnitTest : public testing::Test {
  public:
@@ -45,11 +43,10 @@ class IpfsUtilsUnitTest : public testing::Test {
   ~IpfsUtilsUnitTest() override = default;
 
  protected:
-  void SetUp() override {
-      ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-  }
+  void SetUp() override { ASSERT_TRUE(temp_dir_.CreateUniqueTempDir()); }
 
-  content::BrowserTaskEnvironment task_environment_{base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  content::BrowserTaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_dir_;
 };
 

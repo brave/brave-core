@@ -78,7 +78,7 @@ inline constexpr char kIPFSAlwaysStartMode[] = "brave.ipfs.always_start_mode";
 inline constexpr char kIPFSAlwaysStartInfobarShown[] =
     "brave.ipfs.ipfs_always_start_infobar_shown";
 
-inline  constexpr char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
+inline constexpr char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 }  // namespace
 
 namespace ipfs {
