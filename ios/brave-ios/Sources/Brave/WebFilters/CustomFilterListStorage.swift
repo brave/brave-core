@@ -209,7 +209,7 @@ extension CustomFilterListStorage {
       filterListsURLs
       .filter(\.setting.isEnabled)
       .map(\.setting.engineSource)
-    if (try? self.savedCustomRulesFileInfo()) == nil { return sources }
+    if (try? self.savedCustomRulesFileURL()) == nil { return sources }
     sources.append(.filterListText)
     return sources
   }
@@ -217,7 +217,7 @@ extension CustomFilterListStorage {
   /// Gives us source representations of all the custom filter lists
   @MainActor var allSources: [GroupedAdBlockEngine.Source] {
     var sources = filterListsURLs.map(\.setting.engineSource)
-    if (try? self.savedCustomRulesFileInfo()) == nil { return sources }
+    if (try? self.savedCustomRulesFileURL()) == nil { return sources }
     sources.append(.filterListText)
     return sources
   }

@@ -305,13 +305,6 @@ import os
     let availableSources = manager.compilableFiles(for: enabledSources)
       .map({ $0.filterListInfo.source })
     guard enabledSources.allSatisfy({ availableSources.contains($0) }) else {
-      ContentBlockerManager.log.debug(
-        """
-        Files are not yet ready for `\(engineType.debugDescription)`:
-        Expecting: \(enabledSources.debugDescription)
-        Available: \(availableSources.debugDescription)
-        """
-      )
       return
     }
 
