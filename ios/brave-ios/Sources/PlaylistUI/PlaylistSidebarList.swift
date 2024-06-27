@@ -309,8 +309,6 @@ struct PlaylistSidebarListHeader: View {
         Text("Edit")
           .fontWeight(.semibold)
       } primaryAction: {
-        // Stop playing when edit mode is brought up
-        isPlaying = false
         isEditModePresented = true
       }
       .foregroundStyle(Color(braveSystemName: .textPrimary))
