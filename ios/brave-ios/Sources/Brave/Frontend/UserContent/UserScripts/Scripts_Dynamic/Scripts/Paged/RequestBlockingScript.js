@@ -8,31 +8,51 @@
 window.__firefox__.execute(function($) {
   const messageHandler = '$<message_handler>';
   const blockingCache = new Map();
+  const strippedBlockingCache = new Map();
   const sendMessage = $((resourceURL) => {
+    let strippedURL = new URL(resourceURL)
+    strippedURL.hash = ''
+    strippedURL.search = ''
+
     if (blockingCache.has(resourceURL.href)) {
       return Promise.resolve(blockingCache.get(resourceURL.href)).then(blocked => {
         if (blocked) {
-          console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href} (cached)`)
+          console.info(
+            `Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href} (cached)`
+          )
         }
         return blocked
       })
+    } else if (
+      strippedBlockingCache.has(strippedURL.href) 
+        && strippedBlockingCache.get(strippedURL.href) === false
+    ) {
+      // We only check false because if we are supposed to block this request, 
+      // content blockers will still kick in and block it. The opposite is not true.
+      return Promise.resolve(false)
     }
 
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
         resourceURL: resourceURL.href,
+        strippedResourceURL: strippedURL.href,
         sourceURL: window.location.href,
         resourceType: 'xmlhttprequest'
       }
-    }).then(blocked => {
-      blockingCache.set(resourceURL.href, blocked)
-
-      if (blocked) {
-        console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`)
+    }).then(response => {
+      blockingCache.set(resourceURL.href, response.isBlocked)
+      if (response.isBlocked === response.isStrippedURLBlocked) {
+        strippedBlockingCache.set(strippedURL.href, response.isStrippedURLBlocked)
       }
 
-      return blocked
+      if (response.isBlocked) {
+        console.info(
+          `Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`
+        )
+      }
+
+      return response.isBlocked
     });
   });
 

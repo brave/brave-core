@@ -114,7 +114,8 @@
 
 + (Feature*)kBraveAdblockYouTubeRequestBlockingScript {
   return [[Feature alloc]
-      initWithFeature:&brave_shields::features::kBraveAdblockYouTubeRequestBlockingScript];
+      initWithFeature:&brave_shields::features::
+                          kBraveAdblockYouTubeRequestBlockingScript];
 }
 
 + (Feature*)kBraveAdblockCspRules {

@@ -12,15 +12,16 @@ import Shared
 import WebKit
 
 class RequestBlockingContentScriptHandler: TabContentScript {
-  struct RequestBlockingDTO: Decodable {
-    struct RequestBlockingDTOData: Decodable, Hashable {
+  struct RequestDTO: Decodable {
+    struct RequestDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String
+      let strippedResourceURL: String
       let sourceURL: String
     }
 
     let securityToken: String
-    let data: RequestBlockingDTOData
+    let data: RequestDTOData
   }
 
   static let scriptName = "RequestBlockingScript"
@@ -62,18 +63,27 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
     if !verifyMessage(message: message) {
       assertionFailure("Invalid security token. Fix the `RequestBlocking.js` script")
-      replyHandler(false, nil)
+      replyHandler(
+        [
+          "isBlocked": false,
+          "isStrippedURLBlocked": false,
+        ],
+        nil
+      )
       return
     }
 
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
-      let dto = try JSONDecoder().decode(RequestBlockingDTO.self, from: data)
+      let dto = try JSONDecoder().decode(RequestDTO.self, from: data)
 
       // Because javascript urls allow some characters that `URL` does not,
       // we use `NSURL(idnString: String)` to parse them
       guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
       guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
+      guard let strippedResourceURL = NSURL(idnString: dto.data.strippedResourceURL) as URL? else {
+        return
+      }
       let isPrivateBrowsing = tab.isPrivate
 
       Task { @MainActor in
@@ -86,6 +96,24 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           domain: domain
         )
 
+        let shouldBlockStrippedURL: Bool
+        if dto.data.resourceURL != dto.data.strippedResourceURL {
+          // Check the stripped url if it's different than the unstripped url
+          shouldBlockStrippedURL = await AdBlockGroupsManager.shared.shouldBlock(
+            requestURL: strippedResourceURL,
+            sourceURL: sourceURL,
+            resourceType: dto.data.resourceType,
+            domain: domain
+          )
+        } else {
+          shouldBlockStrippedURL = shouldBlock
+        }
+
+        let responseDTO = [
+          "isBlocked": shouldBlock,
+          "isStrippedURLBlocked": shouldBlockStrippedURL,
+        ]
+
         // Ensure we check that the stats we're tracking is still for the same page
         // Some web pages (like youtube) like to rewrite their main frame urls
         // so we check the source etld+1 agains the tab url etld+1
@@ -95,7 +123,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           tab.url?.baseDomain == sourceURL.baseDomain
             || self.tab?.currentPageData?.allSubframeURLs.contains(sourceURL) == true
         else {
-          replyHandler(shouldBlock, nil)
+          replyHandler(responseDTO, nil)
           return
         }
 
@@ -116,7 +144,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
           tab.contentBlocker.blockedRequests.insert(requestURL)
         }
 
-        replyHandler(shouldBlock, nil)
+        replyHandler(responseDTO, nil)
       }
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
