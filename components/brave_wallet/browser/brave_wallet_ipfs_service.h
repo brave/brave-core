@@ -30,17 +30,11 @@ class BraveWalletIpfsService : public KeyedService, public mojom::IpfsService {
   mojo::PendingRemote<mojom::IpfsService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::IpfsService> receiver);
 
-  //   void TranslateToNFTGatewayURL(
-  //       const std::string& url,
-  //       TranslateToNFTGatewayURLCallback callback) override;
   void TranslateToGatewayURL(const std::string& url,
                              TranslateToGatewayURLCallback callback) override;
   void ExtractIPFSUrlFromGatewayLikeUrl(
       const std::string& url,
       ExtractIPFSUrlFromGatewayLikeUrlCallback callback) override;
-
-  void GetNFTGatewayURL(GetNFTGatewayURLCallback override) override;
-  void GetGatewayURL(GetGatewayURLCallback callback) override;
 
   void ContentHashToCIDv1URL(const std::vector<uint8_t>& content_hash,
                              ContentHashToCIDv1URLCallback callback) override;

@@ -1125,15 +1125,8 @@ interface SwapService {
 };
 
 interface IpfsService {
-  GetNFTGatewayURL() => (string? url);
-  GetGatewayURL() => (string? url);
-
-  // SetGateway(string url) => (bool result);
-  // SetNFTGateway(string url) => (bool result);
-
   TranslateToGatewayURL(string url) => (string? translated_url);
-//  TranslateToNFTGatewayURL(string url) => (string? translated_url);
- ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
+  ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
 
   ContentHashToCIDv1URL(array<uint8> content_hash) => (string? url);
 };

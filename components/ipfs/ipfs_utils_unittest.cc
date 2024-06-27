@@ -5,19 +5,90 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 
+#include <fstream>
 #include <string>
 #include <vector>
 
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "content/public/test/browser_task_environment.h"
+#include "gtest/gtest.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using IpfsUtilsUnitTest = testing::Test;
+namespace {
+  // Simple function to dump some text into a new file.
+  void CreateTextFile(const base::FilePath& filename,
+                      const std::wstring& contents) {
+    std::wofstream file;
+  #if BUILDFLAG(IS_WIN)
+    file.open(filename.value().c_str());
+  #elif BUILDFLAG(IS_POSIX) || BUILDFLAG(IS_FUCHSIA)
+    file.open(filename.value());
+  #endif  // BUILDFLAG(IS_WIN)
+    ASSERT_TRUE(file.is_open());
+    file << contents;
+    file.close();
+  }
+
+  GURL GetDefaultIPFSGateway() {
+    return GURL(ipfs::kDefaultPublicGateway);
+  }
+}
+
+class IpfsUtilsUnitTest : public testing::Test {
+ public:
+  IpfsUtilsUnitTest() = default;
+  ~IpfsUtilsUnitTest() override = default;
+
+ protected:
+  void SetUp() override {
+      ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+  }
+
+  content::BrowserTaskEnvironment task_environment_{base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  base::ScopedTempDir temp_dir_;
+};
+
+TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
+  auto user_data_dir = temp_dir_.GetPath();
+  base::FilePath cache_folder =
+      user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"));
+  base::CreateDirectory(cache_folder);
+  EXPECT_TRUE(base::PathExists(cache_folder));
+  base::FilePath cache_folder_subdir =
+      cache_folder.Append(FILE_PATH_LITERAL("subdir1"));
+  base::CreateDirectory(cache_folder_subdir);
+  EXPECT_TRUE(base::PathExists(cache_folder_subdir));
+  base::FilePath cache_folder_subdir_file_01 =
+      cache_folder_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
+  CreateTextFile(cache_folder_subdir_file_01, L"12345678901234567890");
+
+  base::FilePath component_id_folder =
+      user_data_dir.Append(FILE_PATH_LITERAL(ipfs::GetIpfsClientComponentId()));
+  base::CreateDirectory(component_id_folder);
+  EXPECT_TRUE(base::PathExists(component_id_folder));
+  base::FilePath component_id_folde_subdir =
+      cache_folder.Append(FILE_PATH_LITERAL("subdir1"));
+  base::CreateDirectory(component_id_folde_subdir);
+  EXPECT_TRUE(base::PathExists(component_id_folde_subdir));
+  base::FilePath component_id_folde_subdir_file_01 =
+      cache_folder_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
+  CreateTextFile(component_id_folde_subdir_file_01, L"12345678901234567890");
+
+  ipfs::DeleteIpfsComponentAndData(user_data_dir,
+                                   ipfs::GetIpfsClientComponentId());
+  task_environment_.RunUntilIdle();
+  EXPECT_FALSE(base::PathExists(cache_folder));
+  EXPECT_FALSE(base::PathExists(component_id_folder));
+}
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {
   GURL url(
-      base::StrCat({ipfs::GetDefaultIPFSGateway().spec(),
+      base::StrCat({GetDefaultIPFSGateway().spec(),
                     "/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"}));
   GURL new_url;
   ASSERT_FALSE(ipfs::TranslateIPFSURI(url, &new_url, false));
@@ -29,7 +100,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSScheme) {
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
-                {ipfs::GetDefaultIPFSGateway().spec(),
+                {GetDefaultIPFSGateway().spec(),
                  "ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"})));
 }
 
@@ -39,7 +110,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSScheme) {
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
-                {ipfs::GetDefaultIPFSGateway().spec(),
+                {GetDefaultIPFSGateway().spec(),
                  "ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"})));
 }
 
@@ -49,7 +120,7 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPFSSchemePublic) {
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
-                {ipfs::GetDefaultIPFSGateway().spec(),
+                {GetDefaultIPFSGateway().spec(),
                  "ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"})));
 }
 
@@ -59,7 +130,7 @@ TEST_F(IpfsUtilsUnitTest, RFC3986TranslateIPFSURIIPNSSchemePublic) {
   ASSERT_TRUE(ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
-                {ipfs::GetDefaultIPFSGateway().spec(),
+                {GetDefaultIPFSGateway().spec(),
                  "ipns/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"})));
 }
 
@@ -72,7 +143,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPath) {
   EXPECT_EQ(
       new_url,
       GURL(base::StrCat(
-          {ipfs::GetDefaultIPFSGateway().spec(),
+          {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html"})));
 }
@@ -86,7 +157,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndHash) {
   EXPECT_EQ(
       new_url,
       GURL(base::StrCat(
-          {ipfs::GetDefaultIPFSGateway().spec(),
+          {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html#Emerging_artist"})));
 }
@@ -100,7 +171,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndQuery) {
   EXPECT_EQ(
       new_url,
       GURL(base::StrCat(
-          {ipfs::GetDefaultIPFSGateway().spec(),
+          {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html?test=true"})));
 }
@@ -114,7 +185,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathQueryHash) {
   EXPECT_EQ(
       new_url,
       GURL(base::StrCat(
-          {ipfs::GetDefaultIPFSGateway().spec(),
+          {GetDefaultIPFSGateway().spec(),
            "ipfs/bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq",
            "/wiki/Vincent_van_Gogh.html?test=true#test"})));
 }
@@ -135,7 +206,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeSubdomain) {
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
                 {"https://bafybeiffndsajwhk3lwjewwdxqntmjm4b5wxaaanokonsggenkb",
-                 "w6slwk4.ipfs.", ipfs::GetDefaultIPFSGateway().host(), "/"})));
+                 "w6slwk4.ipfs.", GetDefaultIPFSGateway().host(), "/"})));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSSchemeSubdomain) {
@@ -147,7 +218,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPNSSchemeSubdomain) {
             GURL(base::StrCat(
                 {"https://bafybeiffndsajwhk3lwjewwdxqntmjm4b5wxaaanokonsggenkb"
                  "w6slwk4.ipns.",
-                 ipfs::GetDefaultIPFSGateway().host(), "/"})));
+                 GetDefaultIPFSGateway().host(), "/"})));
 }
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathSubdomain) {
@@ -160,7 +231,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathSubdomain) {
             GURL(base::StrCat({
                 "https://bafybeiffndsajwhk3lwjewwdxqntmjm4b5wxaaanokonsggenkb",
                 "w6slwk4.ipfs.",
-                ipfs::GetDefaultIPFSGateway().host(),
+                GetDefaultIPFSGateway().host(),
                 "/wiki/Vincent_van_Gogh.html",
             })));
 }
@@ -174,7 +245,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndHashSubdomain) {
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
                 {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3ev",
-                 "fyavhwq.ipfs.", ipfs::GetDefaultIPFSGateway().host(),
+                 "fyavhwq.ipfs.", GetDefaultIPFSGateway().host(),
                  "/wiki/Vincent_van_Gogh.html#Emerging_artist"})));
 }
 
@@ -188,7 +259,7 @@ TEST_F(IpfsUtilsUnitTest, TranslateIPFSURIIPFSSchemeWithPathAndQuerySubdomain) {
       new_url,
       GURL(base::StrCat(
           {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evf",
-           "yavhwq.ipfs.", ipfs::GetDefaultIPFSGateway().host(),
+           "yavhwq.ipfs.", GetDefaultIPFSGateway().host(),
            "/wiki/Vincent_van_Gogh.html?test=true"})));
 }
 
@@ -202,7 +273,7 @@ TEST_F(IpfsUtilsUnitTest,
   EXPECT_EQ(new_url,
             GURL(base::StrCat(
                 {"https://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3ev",
-                 "fyavhwq.ipfs.", ipfs::GetDefaultIPFSGateway().host(),
+                 "fyavhwq.ipfs.", GetDefaultIPFSGateway().host(),
                  "/wiki/Vincent_van_Gogh.html?test=true", "#test"})));
 }
 

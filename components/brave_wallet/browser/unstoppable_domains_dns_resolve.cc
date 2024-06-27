@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 
-#include "base/logging.h"
 #include "base/no_destructor.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 

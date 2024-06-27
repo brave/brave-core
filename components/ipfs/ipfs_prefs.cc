@@ -6,6 +6,9 @@
 #include "brave/components/ipfs/ipfs_prefs.h"
 
 #include "base/files/file_path.h"
+#include "base/path_service.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace {
@@ -123,6 +126,11 @@ void ClearDeprecatedIpfsPrefs(PrefService* registry) {
   registry->ClearPref(kIPFSAutoRedirectGateway);
   registry->ClearPref(kIPFSAutoRedirectDNSLink);
   registry->ClearPref(kIPFSCompanionEnabled);
+
+  base::FilePath user_data_dir;
+  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+  ipfs::DeleteIpfsComponentAndData(user_data_dir,
+                                   ipfs::GetIpfsClientComponentId());
 }
 
 }  // namespace ipfs

@@ -15,9 +15,6 @@ OBJC_EXPORT
 @protocol IpfsAPI
 @required
 
-@property(readonly, nullable) NSURL* nftIpfsGateway;
-@property(readonly, nullable) NSURL* ipfsGateway;
-
 /// Resolve input url using the default IPFS public gateway
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
 /// Resolve input url using the default IPFS NFT public gateway

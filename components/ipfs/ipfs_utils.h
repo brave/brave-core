@@ -6,21 +6,26 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
 
+#include "base/files/file_path.h"
 #include "url/gurl.h"
 
 namespace ipfs {
 
 inline constexpr char kIPFSScheme[] = "ipfs";
+inline constexpr char kDefaultPublicGateway[] = "https://ipfs.io";
 
 bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       bool use_subdomain);
 
-GURL GetDefaultIPFSGateway();
-
 std::optional<GURL> ExtractSourceFromGateway(const GURL& url);
 
 GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
+
+std::string GetIpfsClientComponentId();
+
+void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir,
+                                const std::string& ipfs_client_component_id);
 
 }  // namespace ipfs
 

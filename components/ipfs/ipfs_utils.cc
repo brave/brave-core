@@ -9,26 +9,48 @@
 #include <string_view>
 #include <vector>
 
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "components/base32/base32.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-
 namespace {
 constexpr char kIPFSScheme[] = "ipfs";
 constexpr char kIPNSScheme[] = "ipns";
-constexpr char kDefaultPublicGateway[] = "https://ipfs.io";
 
 // Ipfs codes from multicodec table
 // https://github.com/multiformats/multicodec/blob/master/table.csv
 const int64_t kIpfsNSCodec = 0xE3;
 const int64_t kIpnsNSCodec = 0xE5;
+
+#if BUILDFLAG(IS_WIN)
+static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
+#elif BUILDFLAG(IS_MAC)
+#if defined(ARCH_CPU_ARM64)
+static const char kIpfsClientComponentId[] = "lejaflgbgglfaomemffoaappaihfligf";
+#else
+static const char kIpfsClientComponentId[] = "nljcddpbnaianmglkpkneakjaapinabi";
+#endif
+#elif BUILDFLAG(IS_LINUX)
+#if defined(ARCH_CPU_ARM64)
+static const char kIpfsClientComponentId[] = "fmmldihckdnognaabhligdpckkeancng";
+#else
+static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";
+#endif
+#else
+// Not used yet for Android/iOS
+static const char kIpfsClientComponentId[] = "";
+#endif
+
 
 // Decodes a varint from the given string piece into the given int64_t. Returns
 // remaining span if the string had a valid varint (where a byte was found with
@@ -52,6 +74,9 @@ base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
   return from.subspan(it - from.begin());
 }
 
+// Extracts cid and path from ipfs URLs like:
+// [scheme]://[cid][.gateway][/path]
+// [scheme]://[cid][/path]
 bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
                                 std::string* cid,
                                 std::string* path) {
@@ -64,7 +89,7 @@ bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
   DCHECK(cid);
   DCHECK(path);
   // ipfs: or ipfs://
-  size_t offset = (url.path().substr(0, 2) == "//") ? 2 : 0;
+  size_t offset = (url.path_piece().starts_with("//")) ? 2 : 0;
   // In the case of a URL like ipfs://[cid]/wiki/Vincent_van_Gogh.html
   // host is empty and path is //wiki/Vincent_van_Gogh.html
   std::string local_cid(url.path().substr(offset));
@@ -84,7 +109,7 @@ bool ParseCIDAndPathFromIPFSUrl(const GURL& url,
 
 // Simple CID validation based on multibase table.
 bool IsValidCID(const std::string& cid) {
-  if (!cid.size()) {
+  if (cid.empty()) {
     return false;
   }
   return filecoin::is_valid_cid(cid);
@@ -101,16 +126,15 @@ std::string DecodeSingleLabelForm(const std::string& input) {
     return input;
   }
   std::string result;
-  const char* chars = input.c_str();
-  size_t i = 0;
-  for (i = 0; i < input.size(); i++) {
-    if (chars[i] == '-' && (i < input.size() - 1) && chars[i + 1] == '-') {
+  result.reserve(input.size());
+  for (size_t i = 0; i < input.size(); i++) {
+    if (input[i] == '-' && (i < input.size() - 1) && input[i + 1] == '-') {
       result.push_back('-');
       i++;
-    } else if (chars[i] == '-') {
+    } else if (input[i] == '-') {
       result.push_back('.');
     } else {
-      result.push_back(chars[i]);
+      result.push_back(input[i]);
     }
   }
   return result;
@@ -182,6 +206,26 @@ std::optional<GURL> ExtractSourceFromGatewayPath(const GURL& url) {
 
 namespace ipfs {
 
+std::string GetIpfsClientComponentId() {
+  return kIpfsClientComponentId;
+}
+
+void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir, const std::string& ipfs_client_component_id) {
+  if (user_data_dir.empty() || !base::PathExists(user_data_dir)) {
+    return;
+  }
+  // Clean IPFS cache
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
+      base::GetDeletePathRecursivelyCallback(
+          user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"))));
+  // Remove IPFS component
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
+      base::GetDeletePathRecursivelyCallback(
+          user_data_dir.Append(FILE_PATH_LITERAL(ipfs_client_component_id))));
+}
+
 bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
   const GURL gateway_url{kDefaultPublicGateway};
   std::string cid, path;
@@ -215,10 +259,6 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
     return true;
   }
   return false;
-}
-
-GURL GetDefaultIPFSGateway() {
-  return GURL(kDefaultPublicGateway);
 }
 
 // Subdomain based gateway URL:

@@ -30,18 +30,6 @@ void BraveWalletIpfsService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-// void BraveWalletIpfsService::TranslateToNFTGatewayURL(
-//     const std::string& url,
-//     TranslateToNFTGatewayURLCallback callback) {
-//   GURL new_url;
-//   if (ipfs::TranslateIPFSURI(GURL(url), &new_url,
-//                              false)) {
-//     std::move(callback).Run(new_url.spec());
-//   } else {
-//     std::move(callback).Run(std::nullopt);
-//   }
-// }
-
 void BraveWalletIpfsService::TranslateToGatewayURL(
     const std::string& url,
     TranslateToGatewayURLCallback callback) {
@@ -63,15 +51,6 @@ void BraveWalletIpfsService::ExtractIPFSUrlFromGatewayLikeUrl(
   } else {
     std::move(callback).Run(std::nullopt);
   }
-}
-
-void BraveWalletIpfsService::GetNFTGatewayURL(
-    GetNFTGatewayURLCallback callback) {
-  std::move(callback).Run(ipfs::GetDefaultIPFSGateway().spec());
-}
-
-void BraveWalletIpfsService::GetGatewayURL(GetGatewayURLCallback callback) {
-  std::move(callback).Run(ipfs::GetDefaultIPFSGateway().spec());
 }
 
 void BraveWalletIpfsService::ContentHashToCIDv1URL(

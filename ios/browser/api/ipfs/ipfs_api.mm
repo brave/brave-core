@@ -21,8 +21,6 @@
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState {
   if ((self = [super init])) {
     _mainBrowserState = mainBrowserState;
-    _nftIpfsGateway = net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
-    _ipfsGateway = net::NSURLWithGURL(ipfs::GetDefaultIPFSGateway());
   }
   return self;
 }

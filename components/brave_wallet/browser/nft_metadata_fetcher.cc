@@ -169,8 +169,8 @@ void NftMetadataFetcher::FetchMetadata(
     GURL url,
     GetTokenMetadataIntermediateCallback callback) {
   // Obtain JSON from the URL depending on the scheme.
-  // HTTPS, and data URIs are supported.
-  // HTTPS URIs require an additional request to fetch the metadata.
+  // IPFS, HTTPS, and data URIs are supported.
+  // IPFS and HTTPS URIs require an additional request to fetch the metadata.
   std::string metadata_json;
   std::string scheme = url.scheme();
   if (scheme != url::kDataScheme && scheme != url::kHttpsScheme &&
