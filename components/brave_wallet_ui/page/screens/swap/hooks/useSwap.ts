@@ -71,6 +71,7 @@ import {
 } from '../../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 import { AccountInfoEntity } from '../../../../common/slices/entities/account-info.entity'
+import { TokenBalancesRegistry } from '../../../../common/slices/entities/token-balance.entity'
 import {
   useAccountFromAddressQuery,
   useGetCombinedTokensListQuery
@@ -110,6 +111,20 @@ const getTokenFromParam = (
         token.coin === network.coin &&
         token.contractAddress === '' &&
         token.symbol.toLowerCase() === contractOrSymbol.toLowerCase())
+  )
+}
+
+const getAssetBalance = (
+  token: BraveWallet.BlockchainToken,
+  fromAccount?: BraveWallet.AccountInfo,
+  tokenBalancesRegistry?: TokenBalancesRegistry
+): Amount => {
+  if (!fromAccount) {
+    return Amount.zero()
+  }
+
+  return new Amount(
+    getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
   )
 }
 
@@ -367,21 +382,8 @@ export const useSwap = () => {
     [quoteOptions, toToken]
   )
 
-  const getAssetBalance = useCallback(
-    (token: BraveWallet.BlockchainToken): Amount => {
-      if (!fromAccount) {
-        return Amount.zero()
-      }
-
-      return new Amount(
-        getBalance(fromAccount.accountId, token, tokenBalancesRegistry)
-      )
-    },
-    [tokenBalancesRegistry, fromAccount]
-  )
-
-  const fromAssetBalance = fromToken && getAssetBalance(fromToken)
-  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
+  const fromAssetBalance = fromToken && getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry)
+  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry)
 
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: SwapParamsOverrides) => {
