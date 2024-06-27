@@ -579,17 +579,23 @@ struct ZeroExQuote {
   ZeroExFees fees;
 };
 
-struct ZeroExErrorItem {
+struct ZeroExValidationError {
   string field;
   string code;
   string reason;
 };
 
+struct ZeroExGenericError {
+  string message;
+};
+
 struct ZeroExError {
   string code;
   string reason;
-  array<ZeroExErrorItem> validation_errors;
+  array<ZeroExValidationError> validation_errors;
+  ZeroExGenericError? values;
   bool is_insufficient_liquidity;
+  bool is_insufficient_allowance;
 };
 
 union SwapErrorUnion {

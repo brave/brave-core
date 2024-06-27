@@ -174,9 +174,11 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
 
   if (!params.from_amount.empty()) {
     url = net::AppendQueryParameter(url, "amount", params.from_amount);
+    url = net::AppendQueryParameter(url, "swapMode", "ExactIn");
+  } else if (!params.to_amount.empty()) {
+    url = net::AppendQueryParameter(url, "amount", params.to_amount);
+    url = net::AppendQueryParameter(url, "swapMode", "ExactOut");
   }
-
-  url = net::AppendQueryParameter(url, "swapMode", "ExactIn");
 
   double slippage_percentage = 0.0;
   if (base::StringToDouble(params.slippage_percentage, &slippage_percentage)) {
@@ -331,10 +333,15 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
   auto has_jupiter_support = params->from_chain_id == params->to_chain_id &&
                              IsNetworkSupportedByJupiter(params->from_chain_id);
   auto has_lifi_support = IsNetworkSupportedByLiFi(params->from_chain_id) &&
-                          IsNetworkSupportedByLiFi(params->to_chain_id);
+                          IsNetworkSupportedByLiFi(params->to_chain_id) &&
+                          // LiFi does not support ExactOut swaps.
+                          !params->from_amount.empty();
 
   // EVM swaps are served via 0x only if the provider is set to kZeroEx.
-  if (params->provider == mojom::SwapProvider::kZeroEx && has_zero_ex_support) {
+  if ((params->provider == mojom::SwapProvider::kZeroEx &&
+       has_zero_ex_support) ||
+      (params->provider == mojom::SwapProvider::kAuto && has_zero_ex_support &&
+       !has_lifi_support)) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 

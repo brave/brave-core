@@ -28,6 +28,11 @@ export const swapEndpoints = ({
         const { swapService } = baseQuery(undefined).data
         try {
           const result = await swapService.getQuote(params)
+
+          if (result.errorString) {
+            console.log(`generateSwapQuote API error: ${result.errorString}`)
+          }
+
           return {
             data: result
           }
