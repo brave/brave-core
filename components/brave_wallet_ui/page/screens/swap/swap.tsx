@@ -10,7 +10,7 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // Types
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // Hooks
 import { useSwap } from './hooks/useSwap'
@@ -161,11 +161,7 @@ export const Swap = () => {
           inputValue={toAmount}
           onClickSelectToken={() => setSelectingFromOrTo('to')}
           token={toToken}
-          inputDisabled={
-            (fromNetwork?.coin === BraveWallet.CoinType.SOL &&
-              toNetwork?.coin === BraveWallet.CoinType.SOL) ||
-            !fromToken
-          }
+          inputDisabled={false}
           hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
           network={toNetwork}
           selectedSendOption='#token'
