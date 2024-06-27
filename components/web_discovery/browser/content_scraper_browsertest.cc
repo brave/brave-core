@@ -15,6 +15,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -33,6 +34,8 @@ namespace web_discovery {
 
 class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
  public:
+  WebDiscoveryContentScraperTest()
+      : scoped_features_(features::kWebDiscoveryNative) {}
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath data_path =
@@ -145,6 +148,7 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
                                                 &regex_util_);
   }
 
+  base::test::ScopedFeatureList scoped_features_;
   RegexUtil regex_util_;
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
 };

@@ -18,6 +18,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -849,6 +850,13 @@ source_set("ui") {
         "//brave/components/brave_vpn/common/wireguard",
       ]
     }
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [
+      "//brave/components/web_discovery/common",
+      "//brave/components/web_discovery/common/buildflags",
+    ]
   }
 
   if (is_linux) {
