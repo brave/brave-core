@@ -52,7 +52,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
 
     /*
      * Compared to upstream, we have different behaviour on clicking url bar https://github.com/brave/brave-browser/issues/10524
-     * Instead of clearing it, we keep url showing.
+     * Instead of clearing it, we keep url showing. Default behavior on Chromium Desktop is to keep the url showing and we match that behavior for Brave Android.
      * This, however, changes showed suggestions on clicking url bar when we manually type url.
      * In this case the first suggestion shown has type `URL_WHAT_YOU_TYPED`,
      * suggestion's url hasn't been resolved and only contains typed text.
@@ -64,7 +64,8 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
         if (suggestion.getType() == OmniboxSuggestionType.URL_WHAT_YOU_TYPED
                 && activeTab != null
                 && tabMatchesSuggestion(activeTab, suggestion)) {
-            // For manually typed URLs update suggestion URL with properly resolved one from Tab.
+            // For manually typed URLs make a copy of suggestion URL with properly resolved one from
+            // the active tab.
             return new AutocompleteMatch(
                     OmniboxSuggestionType.URL_WHAT_YOU_TYPED,
                     suggestion.getSubtypes(),
@@ -76,7 +77,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getDescription(),
                     suggestion.getDescriptionClassifications(),
                     suggestion.getAnswer(),
-                    null,
+                    /* serializedAnswerTemplate */ null,
                     suggestion.getFillIntoEdit(),
                     activeTab.getUrl(),
                     suggestion.getImageUrl(),
