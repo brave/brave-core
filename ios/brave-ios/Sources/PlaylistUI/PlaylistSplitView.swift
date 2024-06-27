@@ -258,6 +258,8 @@ struct PlaylistSplitView<Sidebar: View, SidebarHeader: View, Content: View, Tool
         // Mimic an actual navigation bar re: sizing/layout
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .frame(height: 44)
+        .contentShape(.rect)
+        .zIndex(2)
         // --
       }
     }

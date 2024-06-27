@@ -49,6 +49,7 @@ struct PlayerView: View {
           .animation(.default, value: playerModel.isPlaying)
       }
     }
+    .allowsHitTesting(false)
     // For some reason this is required or the status bar breaks when touching anything on the
     // screen on an iPad...
     .statusBarHidden(isFullScreen && !isControlsVisible)

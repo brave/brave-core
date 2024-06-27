@@ -41,7 +41,7 @@ struct MediaContentView: View {
           if !isFullScreen {
             GeometryReader { proxy in
               Color.clear
-                .contentShape(.rect)
+                .contentShape(.rect.inset(by: 20))
                 .onTapGesture(count: 2) { point in
                   if point.x < proxy.size.width / 2 {
                     Task {
@@ -66,7 +66,14 @@ struct MediaContentView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isFullScreen ? .center : .top)
-    .background(isFullScreen ? .black : Color(braveSystemName: .containerBackground))
+    .background {
+      // For some reason (likely a SwiftUI bug) we need to ensure that this background doesn't allow
+      // hit testing otherwise it eats touches around the toolbar buttons and makes it harder to hit
+      // the PiP button
+      (isFullScreen ? .black : Color(braveSystemName: .containerBackground))
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+    }
     .onChange(of: isFullScreen) { newValue in
       handleFullScreenOrientationChanges(
         expectedFullScreen: newValue,

@@ -137,8 +137,9 @@ struct PlaylistContentView: View {
         Button {
           playerModel.startPictureInPicture()
         } label: {
-          Image(braveSystemName: "leo.picture.in-picture")
+          Label("Enter Picture in Picture", braveSystemImage: "leo.picture.in-picture")
         }
+        .labelStyle(.iconOnly)
         .transition(.opacity.animation(.default))
       }
     }
