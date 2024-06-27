@@ -445,12 +445,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         self.clearAllAmount()
         return false
       }
-      // these values are already in wei
-      gasLimit =
-        "0x\(walletAmountFormatter.weiString(from: evmTransaction.gasLimit, radix: .hex, decimals: 0) ?? "0")"
+      // these values are already in hex, can pass in directly
+      gasLimit = evmTransaction.gasLimit
       to = evmTransaction.to
-      value =
-        "0x\(walletAmountFormatter.weiString(from: evmTransaction.value, radix: .hex, decimals: 0) ?? "0")"
+      value = evmTransaction.value
       data = .init(hexString: evmTransaction.data) ?? .init()
     } else {
       assertionFailure("Only ZeroEx and LiFi supported for Ethereum swaps")
