@@ -927,8 +927,8 @@ void BraveBrowserView::AddedToWidget() {
   }
 
   if (secondary_contents_web_view_) {
-    secondary_location_bar_ = SplitViewLocationBar::Create(
-        browser()->profile()->GetPrefs(), secondary_contents_web_view_);
+    secondary_location_bar_ =
+        SplitViewLocationBar::Create(secondary_contents_web_view_);
   }
 }
 
