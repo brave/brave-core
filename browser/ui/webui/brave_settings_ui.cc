@@ -189,9 +189,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           ShouldExposeElementsForTesting());
 
   html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   html_source->AddBoolean("isWebDiscoveryNativeEnabled",
                           base::FeatureList::IsEnabled(
                               web_discovery::features::kWebDiscoveryNative));
+#endif
 
   html_source->AddBoolean("extensionsManifestV2Feature",
                           base::FeatureList::IsEnabled(kExtensionsManifestV2));
