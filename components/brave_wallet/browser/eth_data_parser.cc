@@ -8,6 +8,7 @@
 #include <map>
 #include <optional>
 #include <tuple>
+#include <utility>
 
 #include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -41,6 +42,15 @@ constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
 constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
 constexpr char kLiFiSwapTokensGeneric[] = "0x4630a0d8";
+constexpr char kLiFiSwapTokensSingleErc20ToErc20[] = "0x878863a4";
+constexpr char kLiFiSwapTokensSingleErc20ToNative[] = "0xd5bc7be1";
+constexpr char kLiFiSwapTokensSingleNativeToErc20[] = "0x8f0af374";
+
+struct LiFiSwapData {
+  std::string from_amount;
+  std::string sending_asset_id;
+  std::string receiving_asset_id;
+};
 
 std::string TransformLiFiAddress(const std::string& address) {
   if (address == kLiFiNativeEVMAssetContractAddress) {
@@ -48,6 +58,60 @@ std::string TransformLiFiAddress(const std::string& address) {
   }
 
   return address;
+}
+
+// ABI for SwapData from LibSwap.sol in LiFi contracts:
+//   (address callTo,
+//    address approveTo,
+//    address sendingAssetId,
+//    address receivingAssetId,
+//    uint256 fromAmount,
+//    bytes callData,
+//    bool requiresDeposit)
+//
+// Ref:
+// https://github.com/lifinance/contracts/blob/be045f90cec0fdd272417a2da7fc960c5be046c2/src/Libraries/LibSwap.sol#L10-L18
+eth_abi::Type MakeLiFiSwapDataType() {
+  return eth_abi::Tuple()
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Address())
+      .AddTupleType(eth_abi::Uint(256))
+      .AddTupleType(eth_abi::Bytes())
+      .AddTupleType(eth_abi::Bool())
+      .build();
+}
+
+std::optional<LiFiSwapData> LiFiSwapDataDecode(
+    const base::Value::List& swap_data_list) {
+  if (swap_data_list.size() == 1) {
+    // Direct swap.
+    auto& swap_data = swap_data_list.front().GetList();
+    return LiFiSwapData{
+        .from_amount = swap_data[4].GetString(),
+        .sending_asset_id = TransformLiFiAddress(swap_data[2].GetString()),
+        .receiving_asset_id = TransformLiFiAddress(swap_data[3].GetString()),
+    };
+  } else if (swap_data_list.size() >= 2) {
+    // Multi-hop swap.
+    //
+    // We are only interested in the first and last elements of the
+    // array, which represent the sending and receiving assets, respectively.
+    auto& swap_data_front = swap_data_list.front().GetList();
+    auto& swap_data_back = swap_data_list.back().GetList();
+
+    return LiFiSwapData{
+        .from_amount = swap_data_front[4].GetString(),
+        .sending_asset_id =
+            TransformLiFiAddress(swap_data_front[2].GetString()),
+        .receiving_asset_id =
+            TransformLiFiAddress(swap_data_back[3].GetString()),
+    };
+  }
+
+  // Invalid transaction.
+  return std::nullopt;
 }
 
 }  // namespace
@@ -482,7 +546,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
             decoded_calldata.value()[2].GetString(),
             decoded_calldata.value()[3].GetString()});
   } else if (selector == kLiFiSwapTokensGeneric) {
-    // The following block handles decoding of calldata for LiFi swap orders.
+    // The following block handles decoding of calldata for generic LiFi swap
+    // orders using GenericSwapFacet.
     //
     // TXN: token → token
     // Function:
@@ -501,25 +566,16 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //
     // Ref:
     // https://github.com/lifinance/contracts/blob/fe89ad34a9d2bff4dbf27c2d09b71363c282cd0b/src/Facets/GenericSwapFacet.sol#L207-L221
-    auto type = eth_abi::Tuple()
-                    .AddTupleType(eth_abi::Bytes(32))
-                    .AddTupleType(eth_abi::String())
-                    .AddTupleType(eth_abi::String())
-                    .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::Uint(256))
-                    .AddTupleType(
-                        eth_abi::Array()
-                            .SetArrayType(eth_abi::Tuple()
-                                              .AddTupleType(eth_abi::Address())
-                                              .AddTupleType(eth_abi::Address())
-                                              .AddTupleType(eth_abi::Address())
-                                              .AddTupleType(eth_abi::Address())
-                                              .AddTupleType(eth_abi::Uint(256))
-                                              .AddTupleType(eth_abi::Bytes())
-                                              .AddTupleType(eth_abi::Bool())
-                                              .build())
-                            .build())
-                    .build();
+    auto type =
+        eth_abi::Tuple()
+            .AddTupleType(eth_abi::Bytes(32))
+            .AddTupleType(eth_abi::String())
+            .AddTupleType(eth_abi::String())
+            .AddTupleType(eth_abi::Address())
+            .AddTupleType(eth_abi::Uint(256))
+            .AddTupleType(
+                eth_abi::Array().SetArrayType(MakeLiFiSwapDataType()).build())
+            .build();
     auto decoded = ABIDecode(type, calldata);
     if (!decoded) {
       return std::nullopt;
@@ -531,40 +587,111 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
 
     // The swapData field is an array of tuples, each representing a swap fill
     // operation.
-    auto& swap_data_list = decoded.value()[5].GetList();
-    std::string from_amount = "";
-    std::string sending_asset_id = "";
-    std::string receiving_asset_id = "";
-
-    if (swap_data_list.size() == 1) {
-      // Direct swap.
-      auto& swap_data = swap_data_list.front().GetList();
-      sending_asset_id = TransformLiFiAddress(swap_data[2].GetString());
-      from_amount = swap_data[4].GetString();
-      receiving_asset_id = TransformLiFiAddress(swap_data[3].GetString());
-    } else if (swap_data_list.size() >= 2) {
-      // Multi-hop swap.
-      //
-      // We are only interested in the first and last elements of the
-      // array, which represent the sending and receiving assets, respectively.
-      auto& swap_data_front = swap_data_list.front().GetList();
-      sending_asset_id = TransformLiFiAddress(swap_data_front[2].GetString());
-      from_amount = swap_data_front[4].GetString();
-
-      auto& swap_data_back = swap_data_list.back().GetList();
-      receiving_asset_id = TransformLiFiAddress(swap_data_back[3].GetString());
-    } else {
-      // Invalid transaction.
+    auto swap_data = LiFiSwapDataDecode(decoded.value()[5].GetList());
+    if (!swap_data) {
       return std::nullopt;
     }
 
-    return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{"bytes",     // fill path,
-                                                    "uint256",   // sell amount
-                                                    "uint256"},  // buy amount
-                           std::vector<std::string>{
-                               sending_asset_id + receiving_asset_id.substr(2),
-                               from_amount, min_amount_out});
+    return std::make_tuple(
+        mojom::TransactionType::ETHSwap,
+        std::vector<std::string>{"bytes",     // fill path,
+                                 "uint256",   // sell amount
+                                 "uint256"},  // buy amount
+        std::vector<std::string>{swap_data->sending_asset_id +
+                                     swap_data->receiving_asset_id.substr(2),
+                                 swap_data->from_amount, min_amount_out});
+  } else if (selector == kLiFiSwapTokensSingleErc20ToErc20 ||
+             selector == kLiFiSwapTokensSingleErc20ToNative ||
+             selector == kLiFiSwapTokensSingleNativeToErc20) {
+    // The following block handles decoding of calldata for generic LiFi swap
+    // orders using GenericSwapFacetV3. The following cases are handled:
+    //
+    // TXN: token → token
+    // Function:
+    // swapTokensSingleV3ERC20ToERC20(bytes32 transactionId,
+    //                                string integrator,
+    //                                string referrer,
+    //                                address receiver,
+    //                                uint256 minAmountOut,
+    //                                (address callTo,
+    //                                 address approveTo,
+    //                                 address sendingAssetId,
+    //                                 address receivingAssetId,
+    //                                 uint256 fromAmount,
+    //                                 bytes callData,
+    //                                 bool requiresDeposit) swapData)
+    //
+    // Ref:
+    // https://github.com/lifinance/contracts/blob/0becf25cb5983e88d58636b6215b5a7aa1b267e0/src/Facets/GenericSwapFacetV3.sol#L25-L39
+    //
+    // TXN: token → ETH
+    // Function:
+    // swapTokensSingleV3ERC20ToNative(bytes32 transactionId,
+    //                                 string integrator,
+    //                                 string referrer,
+    //                                 address receiver,
+    //                                 uint256 minAmountOut,
+    //                                 (address callTo,
+    //                                  address approveTo,
+    //                                  address sendingAssetId,
+    //                                  address receivingAssetId,
+    //                                  uint256 fromAmount,
+    //                                  bytes callData,
+    //                                  bool requiresDeposit) swapData)
+    //
+    // Ref:
+    // https://github.com/lifinance/contracts/blob/0becf25cb5983e88d58636b6215b5a7aa1b267e0/src/Facets/GenericSwapFacetV3.sol#L81-L95
+    //
+    // TXN: ETH → token
+    // Function:
+    // swapTokensSingleV3NativeToERC20(bytes32 transactionId,
+    //                                 string integrator,
+    //                                 string referrer,
+    //                                 address receiver,
+    //                                 uint256 minAmountOut,
+    //                                 (address callTo,
+    //                                  address approveTo,
+    //                                  address sendingAssetId,
+    //                                  address receivingAssetId,
+    //                                  uint256 fromAmount,
+    //                                  bytes callData,
+    //                                  bool requiresDeposit) swapData)
+    //
+    // Ref:
+    // https://github.com/lifinance/contracts/blob/0becf25cb5983e88d58636b6215b5a7aa1b267e0/src/Facets/GenericSwapFacetV3.sol#L135-L149
+
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Bytes(32))
+                    .AddTupleType(eth_abi::String())
+                    .AddTupleType(eth_abi::String())
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .AddTupleType(MakeLiFiSwapDataType())
+                    .build();
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
+      return std::nullopt;
+    }
+
+    CHECK_EQ(6u, decoded.value().size());
+
+    auto min_amount_out = decoded.value()[4].GetString();
+
+    auto swap_data_list = base::Value::List();
+    swap_data_list.Append(std::move(decoded.value()[5]));
+    auto swap_data = LiFiSwapDataDecode(swap_data_list);
+    if (!swap_data) {
+      return std::nullopt;
+    }
+
+    return std::make_tuple(
+        mojom::TransactionType::ETHSwap,
+        std::vector<std::string>{"bytes",     // fill path,
+                                 "uint256",   // sell amount
+                                 "uint256"},  // buy amount
+        std::vector<std::string>{swap_data->sending_asset_id +
+                                     swap_data->receiving_asset_id.substr(2),
+                                 swap_data->from_amount, min_amount_out});
   } else if (selector == kERC1155SafeTransferFromSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
