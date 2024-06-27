@@ -187,23 +187,6 @@ void BraveMainDelegate::AppendCommandLineOptions() {
         variations::switches::kVariationsInsecureServerURL,
         BUILDFLAG_CONFIG(BRAVE_VARIATIONS_SERVER_URL));
   }
-
-  std::string update_url = GetUpdateURLHost();
-  if (!update_url.empty()) {
-    std::string current_value;
-    if (command_line->HasSwitch(switches::kComponentUpdater)) {
-      current_value =
-          command_line->GetSwitchValueASCII(switches::kComponentUpdater);
-      command_line->RemoveSwitch(switches::kComponentUpdater);
-    }
-    if (!current_value.empty()) {
-      current_value += ',';
-    }
-
-    command_line->AppendSwitchASCII(
-        switches::kComponentUpdater,
-        (current_value + "url-source=" + update_url).c_str());
-  }
 }
 
 std::optional<int> BraveMainDelegate::BasicStartupComplete() {
@@ -251,4 +234,39 @@ void BraveMainDelegate::PreSandboxStartup() {
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
+}
+
+// static
+void BraveMainDelegate::OverrideComponentUpdaterURL() {
+  auto* command_line = base::CommandLine::ForCurrentProcess();
+  std::string update_url = GetUpdateURLHost();
+  if (!update_url.empty()) {
+    std::string current_value;
+    if (command_line->HasSwitch(switches::kComponentUpdater)) {
+      current_value =
+          command_line->GetSwitchValueASCII(switches::kComponentUpdater);
+      command_line->RemoveSwitch(switches::kComponentUpdater);
+    }
+    if (!current_value.empty()) {
+      current_value += ',';
+    }
+
+    command_line->AppendSwitchASCII(
+        switches::kComponentUpdater,
+        (current_value + "url-source=" + update_url).c_str());
+  }
+}
+
+std::optional<int> BraveMainDelegate::PostEarlyInitialization(
+    ChromeMainDelegate::InvokedIn invoked_in) {
+  auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
+  if (result.has_value()) {
+    // An exit code is set. Stop initialization.
+    return result;
+  }
+
+  // This needs to check for enabled features so it can't run in
+  // BasicStartupComplete
+  OverrideComponentUpdaterURL();
+  return result;
 }

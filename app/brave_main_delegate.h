@@ -31,6 +31,8 @@ class BraveMainDelegate : public ChromeMainDelegate {
   content::ContentRendererClient* CreateContentRendererClient() override;
   content::ContentUtilityClient* CreateContentUtilityClient() override;
   std::optional<int> BasicStartupComplete() override;
+  std::optional<int> PostEarlyInitialization(
+      ChromeMainDelegate::InvokedIn invoked_in) override;
   void PreSandboxStartup() override;
 
  private:
@@ -38,7 +40,9 @@ class BraveMainDelegate : public ChromeMainDelegate {
                            DefaultCommandLineOverrides);
   FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest,
                            OverrideSwitchFromCommandLine);
+  FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest, UseDevUpdaterEndpoint);
 
+  static void OverrideComponentUpdaterURL();
   static void AppendCommandLineOptions();
 };
 
