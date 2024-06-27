@@ -382,8 +382,14 @@ export const useSwap = () => {
     [quoteOptions, toToken]
   )
 
-  const fromAssetBalance = fromToken && getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry)
-  const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry)
+  const fromAssetBalance = useMemo(() =>
+    fromToken && getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry),
+    [fromToken, fromAccount, tokenBalancesRegistry]
+  )
+  const nativeAssetBalance = useMemo(() =>
+    nativeAsset && getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry),
+    [nativeAsset, fromAccount, tokenBalancesRegistry]
+  )
 
   const handleQuoteRefreshInternal = useCallback(
     async (overrides: SwapParamsOverrides) => {
