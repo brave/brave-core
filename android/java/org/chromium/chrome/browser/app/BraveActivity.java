@@ -737,8 +737,8 @@ public abstract class BraveActivity extends ChromeActivity
                             BraveReflectionUtil.getField(
                                     ChromeTabbedActivity.class, "mLayoutManager", this);
             if (layoutManager != null
-                    && layoutManager.getTabSwitcherLayoutForTesting() != null
-                    && !layoutManager.getTabSwitcherLayoutForTesting().isActive()
+                    && layoutManager.getHubLayoutForTesting() != null
+                    && !layoutManager.getHubLayoutForTesting().isActive()
                     && mMiscAndroidMetrics != null) {
                 mMiscAndroidMetrics.recordAppMenuNewTab();
             }
