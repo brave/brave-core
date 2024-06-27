@@ -479,7 +479,6 @@ export const useSwap = () => {
       }
 
       if (quoteResponse?.errorString) {
-        console.log(`generateSwapQuote failed: ${quoteResponse.errorString}`)
         setBackendError(quoteResponse.errorString)
       }
 
