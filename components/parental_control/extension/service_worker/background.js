@@ -28,10 +28,7 @@ chrome.tabs.onCreated.addListener(async (tab) => {
         chrome.tabs.update(tab.id, { url: '../content/ui/sessionTimeout.html' });
     }
     else if (data.loggedIn && !data.sessionTimeout) {
-        const tabs = await chrome.tabs.query({})
-        if (tabs.length === 1) {
-            startTimer();
-        }
+        startTimer();
     }
 });
 

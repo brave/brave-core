@@ -42,6 +42,10 @@ export function PdfRenderer(props: Props) {
       overlayCanvas.width = pageCanvas.width;
       overlayCanvas.height = pageCanvas.height;
     }
+    // Set the max width of the pdfContainerRef to the width of the page
+    if (pageCanvas && pdfContainerRef.current) {
+      pdfContainerRef.current.style.maxWidth = `${pageCanvas.width}px`;
+    }
   }, []);
 
   const handleFileInput = (event) => {
@@ -252,7 +256,7 @@ export function PdfRenderer(props: Props) {
             height: '100vh',
             backgroundColor: 'white',
             margin: '55px auto',
-            maxWidth: '70vw',
+            width: '65vw',
             display: 'flex',
             justifyContent: 'center',
             padding: '20px',
