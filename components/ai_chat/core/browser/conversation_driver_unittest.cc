@@ -92,6 +92,8 @@ class MockEngineConsumer : public EngineConsumer {
     supports_delta_text_responses_ = supports_delta_text_responses;
   }
 
+  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
+
  private:
   bool supports_delta_text_responses_ = false;
 };
@@ -126,12 +128,14 @@ class MockConversationDriver : public ConversationDriver {
   MockConversationDriver(
       PrefService* profile_prefs,
       PrefService* local_state,
+      ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
       std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string)
       : ConversationDriver(profile_prefs,
                            local_state,
+                           model_service,
                            ai_chat_metrics,
                            std::move(credential_manager),
                            url_loader_factory,
@@ -164,9 +168,8 @@ class ConversationDriverUnitTest : public testing::Test {
 
     prefs::RegisterProfilePrefs(prefs_.registry());
     prefs::RegisterLocalStatePrefs(local_state_.registry());
-    if (!default_model_key_.empty()) {
-      prefs_.SetString(prefs::kDefaultModelKey, default_model_key_);
-    }
+    ModelService::RegisterProfilePrefs(prefs_.registry());
+
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
@@ -184,9 +187,16 @@ class ConversationDriverUnitTest : public testing::Test {
                                       std::move(premium_info));
             });
 
+    service_ = std::make_unique<ModelService>(&prefs_);
+
+    if (!default_model_key_.empty()) {
+      service_->SetDefaultModelKeyWithoutValidationForTesting(
+          default_model_key_);
+    }
+
     conversation_driver_ = std::make_unique<MockConversationDriver>(
-        &prefs_, &local_state_, nullptr, std::move(credential_manager),
-        shared_url_loader_factory_, "");
+        &prefs_, &local_state_, service_.get(), nullptr,
+        std::move(credential_manager), shared_url_loader_factory_, "");
   }
 
   void EmulateUserOptedIn() {
@@ -202,6 +212,7 @@ class ConversationDriverUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<ModelService> service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   base::test::ScopedFeatureList features_;

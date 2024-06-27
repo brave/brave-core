@@ -145,7 +145,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
       {"maybeLaterLabel", IDS_AI_CHAT_MAYBE_LATER_LABEL},
       {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
-      {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL}};
+      {"useMicButtonLabel", IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL},
+      {"menuTitleCustomModels", IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS}};
 
   return kLocalizedStrings;
 }

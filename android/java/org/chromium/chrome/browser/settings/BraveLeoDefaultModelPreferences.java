@@ -9,9 +9,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
-import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class BraveLeoDefaultModelPreferences extends BravePreferenceFragment
@@ -34,13 +34,20 @@ public class BraveLeoDefaultModelPreferences extends BravePreferenceFragment
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getModels(
                         (models -> {
-                            mRadioButtons.initializeModels(
-                                    models, BraveLeoPrefUtils.getDefaultModel());
+                            fetchDefaultModelInitRadioButtons(models);
+                        }));
+    }
+
+    private void fetchDefaultModelInitRadioButtons(ModelWithSubtitle[] models) {
+        BraveLeoMojomHelper.getInstance(getProfile())
+                .getDefaultModelKey(
+                        (defaultModel -> {
+                            mRadioButtons.initializeModels(models, defaultModel);
                         }));
     }
 
     @Override
     public void setDefaultModel(String key) {
-        BraveLeoPrefUtils.setDefaultModel(key);
+        BraveLeoMojomHelper.getInstance(getProfile()).setDefaultModelKey(key);
     }
 }

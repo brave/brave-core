@@ -68,6 +68,10 @@ class MockEngineConsumer : public EngineConsumer {
               (override));
   MOCK_METHOD(void, SanitizeInput, (std::string&), (override));
   MOCK_METHOD(void, ClearAllQueries, (), (override));
+  MOCK_METHOD(void,
+              UpdateModelOptions,
+              (const mojom::ModelOptions&),
+              (override));
 };
 
 class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {

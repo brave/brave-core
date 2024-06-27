@@ -22,12 +22,4 @@ class AIChatPrefMigrationTest : public ::testing::Test {
   TestingPrefServiceSimple pref_service_;
 };
 
-TEST_F(AIChatPrefMigrationTest, ChangeOldDefaultKey) {
-  pref_service_.SetString(kDefaultModelKey, "chat-default");
-  MigrateProfilePrefs(&pref_service_);
-
-  EXPECT_EQ(pref_service_.GetUserPrefValue(kDefaultModelKey)->GetString(),
-            "chat-basic");
-}
-
 }  // namespace ai_chat::prefs

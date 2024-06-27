@@ -49,6 +49,8 @@ brave_settings_web_component_files = [
   "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
   "brave_tor_page/brave_tor_subpage.ts",
   "brave_leo_assistant_page/brave_leo_assistant_page.ts",
+  "brave_leo_assistant_page/model_list_section.ts",
+  "brave_leo_assistant_page/model_config_ui.ts",
   "brave_wallet_page/add_wallet_network_dialog.ts",
   "brave_wallet_page/brave_wallet_page.ts",
   "brave_wallet_page/wallet_networks_list.ts",

@@ -104,18 +104,21 @@ function DataContextProvider(props: DataContextProviderProps) {
     if (!currentModelKey) {
       return
     }
-    const found = allModels.find(m => m.key === currentModelKey)
+    const found = allModels.find(model => { return model.key === currentModelKey })
+
     if (!found) {
-      console.error(`onModelChanged: could not find matching model for key: "${currentModelKey}" in list of model keys: ${allModels.map(m => m.key).join(', ')}`)
+      console.error(`onModelChanged: could not find matching model for key: "${currentModelKey}"
+                    in list of model keys: ${allModels.map(model => model.key).join(', ')}`)
       return
     }
+
     return found
   }, [allModels, currentModelKey])
 
   const isPremiumUser = premiumStatus !== undefined && premiumStatus !== mojom.PremiumStatus.Inactive
 
   const apiHasError = (currentError !== mojom.APIError.None)
-  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.access === mojom.ModelAccess.PREMIUM))
+  const shouldDisableUserInput = !!(apiHasError || isGenerating || (!isPremiumUser && currentModel?.options.leoModelOptions?.access === mojom.ModelAccess.PREMIUM))
 
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
@@ -189,7 +192,7 @@ function DataContextProvider(props: DataContextProviderProps) {
   // a different in limitations between basic and freemium models.
   const switchToBasicModel = () => {
     // Select the first non-premium model
-    const nonPremium = allModels.find(m => m.access !== mojom.ModelAccess.PREMIUM)
+    const nonPremium = allModels.find(m => m.options.leoModelOptions?.access !== mojom.ModelAccess.PREMIUM)
     if (!nonPremium) {
       console.error('Could not find a non-premium model!')
       return
@@ -224,13 +227,21 @@ function DataContextProvider(props: DataContextProviderProps) {
     [conversationHistory.length, siteInfo?.contentUsedPercentage])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
-    if (!currentModel) return false
-
     const chatHistoryCharTotal = conversationHistory.reduce((charCount, curr) => charCount + curr.text.length, 0)
 
     // TODO(nullhook): make this more accurately based on the actual page content length
-    let totalCharLimit = currentModel?.longConversationWarningCharacterLimit
-    if (shouldSendPageContents) totalCharLimit += currentModel?.maxPageContentLength
+    let totalCharLimit =
+      currentModel?.options.leoModelOptions !== undefined
+        ? currentModel.options.leoModelOptions
+            ?.longConversationWarningCharacterLimit
+        : loadTimeData.getInteger('customModelLongConversationCharLimit')
+
+    if (shouldSendPageContents) {
+      totalCharLimit +=
+        currentModel?.options.leoModelOptions !== undefined
+          ? currentModel.options.leoModelOptions?.maxPageContentLength
+          : loadTimeData.getInteger('customModelMaxPageContentLength')
+    }
 
     if (
       !hasDismissedLongConversationInfo &&
@@ -349,8 +360,9 @@ function DataContextProvider(props: DataContextProviderProps) {
     )
     getPageHandlerInstance().callbackRouter.onAPIResponseError.addListener((error: mojom.APIError) => setCurrentError(error))
 
-    getPageHandlerInstance().callbackRouter.onModelChanged.addListener((modelKey: string) => {
-      setCurrentModelKey(modelKey)
+    getPageHandlerInstance().callbackRouter.onModelDataChanged.addListener((conversationModelKey: string, modelList: mojom.Model[]) => {
+      setAllModels(modelList)
+      setCurrentModelKey(conversationModelKey)
     })
 
     // Since there is no server-side event for premium status changing,

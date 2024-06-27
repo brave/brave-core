@@ -29,13 +29,13 @@ using ConversationEventType = ConversationAPIClient::ConversationEventType;
 }  // namespace
 
 EngineConsumerConversationAPI::EngineConsumerConversationAPI(
-    const mojom::Model& model,
+    const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager) {
-  DCHECK(!model.name.empty());
-  api_ = std::make_unique<ConversationAPIClient>(model.name, url_loader_factory,
-                                                 credential_manager);
-  max_page_content_length_ = model.max_page_content_length;
+  DCHECK(!model_options.name.empty());
+  api_ = std::make_unique<ConversationAPIClient>(
+      model_options.name, url_loader_factory, credential_manager);
+  max_page_content_length_ = model_options.max_page_content_length;
 }
 
 EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;

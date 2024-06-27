@@ -364,4 +364,7 @@
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature">
     Use microphone
   </message>
+  <message name="IDS_AI_CHAT_MENU_TITLE_CUSTOM_MODELS" desc="The menu section label for custom models added by the user">
+    Custom models
+  </message>
 </grit-part>

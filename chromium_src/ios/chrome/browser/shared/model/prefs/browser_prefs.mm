@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
@@ -42,6 +43,7 @@ void BraveRegisterBrowserStatePrefs(
   ipfs::IpfsService::RegisterProfilePrefs(registry);
 #endif
   ai_chat::prefs::RegisterProfilePrefs(registry);
+  ai_chat::ModelService::RegisterProfilePrefs(registry);
 }
 
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -30,7 +31,7 @@ using api_request_helper::APIRequestResult;
 class EngineConsumerLlamaRemote : public EngineConsumer {
  public:
   explicit EngineConsumerLlamaRemote(
-      const mojom::Model& model,
+      const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager);
   EngineConsumerLlamaRemote(const EngineConsumerLlamaRemote&) = delete;
@@ -63,6 +64,7 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
     api_ = std::move(api_for_testing);
   }
   RemoteCompletionClient* GetAPIForTesting() { return api_.get(); }
+  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
  private:
   void OnGenerateQuestionSuggestionsResponse(

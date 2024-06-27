@@ -7,16 +7,13 @@ import '//resources/cr_elements/md_select.css.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {CrSettingsPrefs} from '/shared/settings/prefs/prefs_types.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
 import {getTemplate} from './brave_leo_assistant_page.html.js'
-import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess}
+import {BraveLeoAssistantBrowserProxy, BraveLeoAssistantBrowserProxyImpl, PremiumStatus, ModelWithSubtitle, PremiumInfo, ModelAccess, Model}
   from './brave_leo_assistant_browser_proxy.js'
 import 'chrome://resources/brave/leo.bundle.js'
-import {SettingsRoutes, Router, Route} from '../router.js';
+import { Router } from '../router.js';
 import {routes} from '../route.js';
-
-const MODEL_PREF_PATH = 'brave.ai_chat.default_model_key'
 
 const BraveLeoAssistantPageBase =
   WebUiListenerMixin(I18nMixin(PrefsMixin(PolymerElement)))
@@ -75,25 +72,35 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
       this.updateShowLeoAssistantIcon_()
       this.updateCurrentPremiumStatus()
+      this.fetchModelsWithSubtitles_()
 
       this.addWebUiListener('settings-brave-leo-assistant-changed',
       (isLeoVisible: boolean) => {
         this.leoAssistantShowOnToolbarPref_ = isLeoVisible
       })
 
-      this.browserProxy_.getSettingsHelper().getModelsWithSubtitles()
-        .then((value: { models: ModelWithSubtitle[]; }) => {
-          this.models_ = value.models
-        })
-
       this.browserProxy_.getSettingsHelper().getManageUrl()
         .then((value: { url: string}) => {
           this.manageUrl_ = value.url
         })
 
-      CrSettingsPrefs.initialized
-        .then(() => {
-          this.defaultModelKeyPrefValue_ = this.getPref(MODEL_PREF_PATH).value
+      this.browserProxy_.getSettingsHelper().getDefaultModelKey()
+        .then((value: { key: string }) => {
+          this.defaultModelKeyPrefValue_ = value.key
+        })
+
+      this.browserProxy_
+        .getCallbackRouter()
+        .onDefaultModelChanged.addListener((newKey: string) => {
+          this.defaultModelKeyPrefValue_ = newKey
+        })
+
+      // To avoid having a seperate event for modelWithSubtitles changing, we
+      // can listen to the modelListChanged event.
+      this.browserProxy_
+        .getCallbackRouter()
+        .onModelListChanged.addListener(() => {
+          this.fetchModelsWithSubtitles_()
         })
 
       // Since there is no server-side event for premium status changing,
@@ -102,6 +109,13 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       window.addEventListener('focus', () => {
         this.updateCurrentPremiumStatus()
       })
+    }
+
+    private fetchModelsWithSubtitles_() {
+      this.browserProxy_.getSettingsHelper().getModelsWithSubtitles()
+        .then((value: { models: ModelWithSubtitle[]; }) => {
+          this.models_ = value.models
+        })
     }
 
     itemPref_(enabled: boolean) {
@@ -113,18 +127,17 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     computeDisplayName_() {
-      const model = this.models_?.find(
-        (model) => model.model.key === this.defaultModelKeyPrefValue_
+      const foundEntry = this.models_?.find(
+        (entry) => {
+          return entry.model.key === this.defaultModelKeyPrefValue_
+        }
       )
-      if (!model) {
-        return '' // It should appear as if nothing is selected
-      }
-      return model.model.displayName
+
+      return foundEntry?.model.displayName
     }
 
     onModelSelectionChange_(e: any) {
-      this.setPrefValue(MODEL_PREF_PATH, e.value)
-      this.defaultModelKeyPrefValue_ = e.value
+      this.browserProxy_.getSettingsHelper().setDefaultModelKey(e.value)
     }
 
     private updateShowLeoAssistantIcon_() {
@@ -137,6 +150,10 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       this.browserProxy_.getSettingsHelper().getPremiumStatus().then((value: { status: PremiumStatus; info: PremiumInfo | null; }) => {
         this.premiumStatus_ = value.status
       })
+    }
+
+    private isLeoModel_(model: Model) {
+      return model.options.leoModelOptions !== undefined
     }
 
     onLeoAssistantShowOnToolbarChange_(e: any) {

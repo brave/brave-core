@@ -1,0 +1,126 @@
+<style include="cr-shared-style settings-shared iron-flex">
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+  }
+
+  .model {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  .model:last-of-type {
+    border-bottom: none;
+  }
+
+  .list-container {
+    padding: 0 var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-xl);
+  }
+
+  .action-box {
+    padding: var(--leo-spacing-xl);
+  }
+
+  .label-secondary {
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .header {
+    padding: var(--leo-spacing-2xl);
+  }
+
+  .main-header {
+    font: var(--leo-font-heading-h4);
+  }
+</style>
+
+<div class="settings-box header">
+  <div class="flex">
+    <div class="main-header">$i18n{braveLeoAssistantYourModelsTitle}</div>
+    <div class="label secondary">
+      <p>$i18n{braveLeoAssistantYourModelsDesc1}</p>
+      <p>$i18n{braveLeoAssistantYourModelsDesc2}</p>
+    </div>
+  </div>
+</div>
+
+<div class="list-container">
+  <template
+    is="dom-if"
+    if="[[!hasCustomModels_(customModelsList_)]]"
+  >
+    <div class="alert-container">
+      <leo-alert
+        type="info"
+        has-actions="false"
+      >
+        $i18n{braveLeoAssistantModelListEmptyLabel}
+      </leo-alert>
+    </div>
+  </template>
+
+  <template
+    is="dom-if"
+    if="[[hasCustomModels_(customModelsList_)]]"
+  >
+    <div class="list">
+      <template
+        is="dom-repeat"
+        items="[[customModelsList_]]"
+      >
+        <div class="model">
+          <div class="model-info">
+            <div class="label">[[item.displayName]]</div>
+            <div class="label-secondary">
+              [[item.options.customModelOptions.modelRequestName]]
+            </div>
+          </div>
+          <div class="model-actions">
+            <cr-icon-button
+              on-click="handleEdit_"
+              iron-icon="brave_settings20:edit-pencil"
+            ></cr-icon-button>
+            <cr-icon-button
+              on-click="handleDelete_"
+              iron-icon="brave_settings20:trash-can"
+            ></cr-icon-button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>
+
+<div class="action-box">
+  <template
+    is="dom-if"
+    if="[[!showModelConfig_]]"
+  >
+    <leo-button
+      on-click="handleAddNewModel_"
+      class="action-button"
+      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
+    >
+  </template>
+</div>
+
+<template
+  is="dom-if"
+  if="[[showModelConfig_]]"
+  restamp
+>
+  <model-config-ui
+    id="model-config-ui"
+    model-item="[[getEditingModel_(isEditingModelIndex_, customModelsList_)]]"
+    on-save="onModelConfigSave_"
+    on-close="onModelConfigClose_"
+  ></model-config-ui>
+</template>

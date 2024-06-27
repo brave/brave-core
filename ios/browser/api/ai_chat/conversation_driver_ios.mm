@@ -24,6 +24,7 @@ namespace ai_chat {
 ConversationDriverIOS::ConversationDriverIOS(
     PrefService* profile_prefs,
     PrefService* local_state_prefs,
+    ModelService* model_service,
     AIChatMetrics* ai_chat_metrics,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter,
@@ -32,8 +33,29 @@ ConversationDriverIOS::ConversationDriverIOS(
     id<AIChatDelegate> delegate)
     : ConversationDriver(profile_prefs,
                          local_state_prefs,
+                         model_service,
                          ai_chat_metrics,
                          skus_service_getter,
+                         url_loader_factory,
+                         channel_string),
+      bridge_(delegate) {
+  chat_driver_observation_.Observe(this);
+}
+
+ConversationDriverIOS::ConversationDriverIOS(
+    PrefService* profile_prefs,
+    PrefService* local_state_prefs,
+    ModelService* model_service,
+    AIChatMetrics* ai_chat_metrics,
+    std::unique_ptr<AIChatCredentialManager> credential_manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    std::string_view channel_string,
+    id<AIChatDelegate> delegate)
+    : ConversationDriver(profile_prefs,
+                         local_state_prefs,
+                         model_service,
+                         std::move(ai_chat_metrics),
+                         std::move(credential_manager),
                          url_loader_factory,
                          channel_string),
       bridge_(delegate) {
@@ -86,8 +108,16 @@ void ConversationDriverIOS::OnAPIResponseError(ai_chat::mojom::APIError error) {
   [bridge_ onAPIResponseError:(AiChatAPIError)error];
 }
 
-void ConversationDriverIOS::OnModelChanged(const std::string& model_key) {
-  [bridge_ onModelChanged:base::SysUTF8ToNSString(model_key)];
+void ConversationDriverIOS::OnModelDataChanged(
+    const std::string& model_key,
+    const std::vector<ai_chat::mojom::ModelPtr>& model_list) {
+  NSMutableArray* list =
+      [[NSMutableArray alloc] initWithCapacity:model_list.size()];
+  for (auto& model : model_list) {
+    [list addObject:[[AiChatModel alloc] initWithModelPtr:model->Clone()]];
+  }
+  [bridge_ onModelChanged:base::SysUTF8ToNSString(model_key)
+                modelList:[list copy]];
 }
 
 void ConversationDriverIOS::OnSuggestedQuestionsChanged(

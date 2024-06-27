@@ -106,6 +106,10 @@
 #include "brave/browser/request_otr/request_otr_service_factory.h"
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/content/browser/model_service_factory.h"
+#endif
+
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -208,6 +212,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !BUILDFLAG(IS_ANDROID)
   BraveGlobalInfobarServiceFactory::GetInstance();
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat::ModelServiceFactory::GetInstance();
 #endif
 }
 

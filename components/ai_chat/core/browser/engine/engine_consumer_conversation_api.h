@@ -30,7 +30,7 @@ class AIChatCredentialManager;
 class EngineConsumerConversationAPI : public EngineConsumer {
  public:
   explicit EngineConsumerConversationAPI(
-      const mojom::Model& model,
+      const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager);
   EngineConsumerConversationAPI(const EngineConsumerConversationAPI&) = delete;
@@ -64,6 +64,7 @@ class EngineConsumerConversationAPI : public EngineConsumer {
     api_ = std::move(api_for_testing);
   }
   ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
+  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
