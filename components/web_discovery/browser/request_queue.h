@@ -16,6 +16,10 @@ class PrefService;
 
 namespace web_discovery {
 
+// Persists and schedules requests on randomized intervals within
+// an interval range. If request failures exceed the threshold defined in
+// `max_retries`, the request will be dropped from the list. If a persisted
+// request age exceeds `request_max_age`, the request will be dropped.
 class RequestQueue {
  public:
   RequestQueue(
@@ -31,6 +35,8 @@ class RequestQueue {
   RequestQueue(const RequestQueue&) = delete;
   RequestQueue& operator=(const RequestQueue&) = delete;
 
+  // Persist and schedule a request. The arbitrary data will be passed
+  // to `start_request_callback` on the scheduled interval.
   void ScheduleRequest(base::Value request_data);
   // Returns data value if request is deleted from queue, due to the retry limit
   // or success

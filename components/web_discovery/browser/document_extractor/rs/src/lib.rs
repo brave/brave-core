@@ -17,27 +17,39 @@ use kuchikiki::{
 #[cxx::bridge(namespace = "rust_document_extractor")]
 mod ffi {
     pub struct SelectAttributeRequest {
+        /// An optional selector for an element within the current selected element.
+        /// The attribute will be retrieved from the embedded element.
+        /// If not needed, an empty string should be provided.
         pub sub_selector: String,
+        /// Arbitrary ID used for storing the scraped result.
         pub key: String,
+        /// Name of the attribute to scrape.
         pub attribute: String,
     }
 
     pub struct SelectRequest {
+        /// The DOM selector for the element to scrape.
         pub root_selector: String,
+        /// Scrape requests for the selected element.
         pub attribute_requests: Vec<SelectAttributeRequest>,
     }
 
     pub struct AttributePair {
+        /// Arbitrary ID for the scraped result.
         pub key: String,
+        /// The scraped value. Will be empty if attribute is not available.
         pub value: String,
     }
 
     pub struct AttributeResult {
+        /// The DOM selector for the scraped element.
         pub root_selector: String,
+        /// A list of arbitrary IDs and scraped value pairs.
         pub attribute_pairs: Vec<AttributePair>,
     }
 
     extern "Rust" {
+        /// Extracts DOM attributes from the result of a double fetch.
         fn query_element_attributes(
             html: &CxxString,
             requests: &CxxVector<SelectRequest>,

@@ -58,6 +58,12 @@ struct ServerConfig {
   std::string location;
 };
 
+// Handles retrieval, updating and caching of the following server
+// configurations:
+// - HPN server config: contains public keys, and "source maps" used
+//   for generating basenames.
+// - "quorum" config: contains the country code of the user
+// - patterns: contains the rules for scraping/submission of certain pages
 class ServerConfigLoader {
  public:
   ServerConfigLoader(PrefService* local_state,
@@ -70,9 +76,16 @@ class ServerConfigLoader {
   ServerConfigLoader(const ServerConfigLoader&) = delete;
   ServerConfigLoader& operator=(const ServerConfigLoader&) = delete;
 
+  // Loads all three server configurations. Update requests will be scheduled
+  // once complete.
   void LoadConfigs();
 
+  // Returns the last loaded server config, which is a combination of the
+  // HPN and "quorum" configs. May only call after the config_callback is
+  // triggered.
   const ServerConfig& GetLastServerConfig() const;
+  // Returns the pattern config. May only call after the patterns_callback is
+  // triggered.
   const PatternsGroup& GetLastPatterns() const;
 
   void SetLastServerConfigForTesting(

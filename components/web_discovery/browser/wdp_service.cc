@@ -158,9 +158,8 @@ void WDPService::OnDoubleFetched(const GURL& url,
                      true));
 }
 
-void WDPService::OnFinishNavigation(
-    const GURL& url,
-    content::RenderFrameHost* render_frame_host) {
+void WDPService::DidFinishLoad(const GURL& url,
+                               content::RenderFrameHost* render_frame_host) {
   if (!content_scraper_) {
     return;
   }

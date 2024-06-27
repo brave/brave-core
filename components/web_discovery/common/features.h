@@ -10,6 +10,8 @@
 
 namespace web_discovery::features {
 
+// Enables the native re-implementation of the Web Discovery Project.
+// If enabled, the Web Discovery component of the extension should be disabled.
 BASE_DECLARE_FEATURE(kWebDiscoveryNative);
 
 }  // namespace web_discovery::features

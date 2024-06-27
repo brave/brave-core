@@ -33,16 +33,27 @@ struct BasenameResult {
   uint32_t count_tag_hash;
 };
 
+// Generates a basename used for the signature. The basename is a sha hash
+// of the message "action" (i.e. "query"), the settings for that action
+// (defined in the server's "source map"), cherry-picked attributes from the
+// payload and the count index for the given message. The count will be under
+// the limit defined for the action; the function will return nullopt if the
+// limit for the action is exceeded.
 std::optional<BasenameResult> GenerateBasename(
     PrefService* profile_prefs,
     const ServerConfig& server_config,
     RegexUtil& regex_util,
     const base::Value::Dict& payload);
 
+// Saves the count returned from `GenerateBasename` in the prefs.
+// This ensures that the count index cannot be used for future messages
+// within the defined action limit period (default is 24 hours).
+// This should be called after a submission is successfully sent to
+// the server.
 void SaveBasenameCount(PrefService* profile_prefs,
                        uint32_t count_tag_hash,
                        size_t count);
 
 }  // namespace web_discovery
 
-#endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PAYLOAD_GENERATOR_H_
+#endif  // BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_SIGNATURE_BASENAME_H_

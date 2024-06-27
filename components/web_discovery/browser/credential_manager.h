@@ -35,6 +35,16 @@ struct GenerateJoinRequestResult {
   std::string signature;
 };
 
+// Manages and utilizes anonymous credentials used for communicating
+// with Web Discovery servers. These Direct Anonymous Attestation credentials
+// are used to prevent Sybil attacks on the servers.
+// The manager provides two key functions:
+//
+// a) "joining": acquires credentials from the Web Discovery server. Join
+// requests
+//    are signed with a random RSA key that is persisted with the profile.
+// b) "signing": uses the previously acquired credentials to sign submissions
+//    which is required in order for the servers to accept the request.
 class CredentialManager : public CredentialSigner {
  public:
   CredentialManager(PrefService* profile_prefs,
@@ -45,6 +55,8 @@ class CredentialManager : public CredentialSigner {
   CredentialManager(const CredentialManager&) = delete;
   CredentialManager& operator=(const CredentialManager&) = delete;
 
+  // Acquires credentials for all dates/"group public keys" published in
+  // the server config, if not stored already.
   void JoinGroups();
 
   // CredentialSigner:
@@ -54,6 +66,9 @@ class CredentialManager : public CredentialSigner {
             std::vector<const uint8_t> basename,
             SignCallback callback) override;
 
+  // Uses a fixed seed in the anonymous credential manager
+  // to provide deterministic credentials & signatures which
+  // are useful for testing.
   void UseFixedSeedForTesting();
 
  private:

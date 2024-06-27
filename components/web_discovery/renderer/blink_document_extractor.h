@@ -16,6 +16,8 @@
 
 namespace web_discovery {
 
+// Extracts attributes from the current page
+// for the native re-implementation of Web Discovery.
 class BlinkDocumentExtractor : public content::RenderFrameObserver,
                                public mojom::DocumentExtractor {
  public:

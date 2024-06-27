@@ -16,6 +16,8 @@
 
 namespace web_discovery {
 
+// Lazily creates and caches pre-compiled regexes, mainly used for
+// privacy risk assessment of page URLs/contents.
 class RegexUtil {
  public:
   RegexUtil();
