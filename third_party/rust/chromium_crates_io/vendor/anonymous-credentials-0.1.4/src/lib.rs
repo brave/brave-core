@@ -1,3 +1,8 @@
+//! Partial implementation of Direct Anonymous Attestation (DAA) for the Web Discovery Project.
+//! Only signer functions are available. Performs the same elliptic curve operations as the [original C library](https://github.com/whotracksme/anonymous-credentials).
+//!
+//! bn254 is the only supported curve for this library.
+
 mod data;
 mod join;
 mod sign;
@@ -37,18 +42,22 @@ pub enum CredentialError {
 
 pub type Result<T> = std::result::Result<T, CredentialError>;
 
+/// Creates and manages Direct Anonymous Attestation credentials
+/// using the bn254 curve.
 pub struct CredentialManager {
     rng: RAND,
     gsk_and_credentials: Option<(CredentialBIG, UserCredentials)>,
 }
 
 impl CredentialManager {
+    /// Creates new manager with random seed.
     pub fn new() -> Self {
         let mut entropy = [0u8; 128];
         OsRng::default().fill_bytes(&mut entropy);
         Self::new_with_seed(&entropy)
     }
 
+    /// Creates new manager with fixed seed. Should only be used for testing.
     pub fn new_with_seed(entropy: &[u8]) -> Self {
         let mut rng = RAND::new();
 
@@ -60,10 +69,14 @@ impl CredentialManager {
         }
     }
 
+    /// Creates a "join" requests to be sent to the credential issuer,
+    /// for a given challenge.
     pub fn start_join(&mut self, challenge: &[u8]) -> StartJoinResult {
         start_join(&mut self.rng, challenge)
     }
 
+    /// Processes a "join" response from the issuer, and returns anonymous
+    /// credentials.
     pub fn finish_join(
         &mut self,
         public_key: &GroupPublicKey,
@@ -73,10 +86,13 @@ impl CredentialManager {
         finish_join(public_key, gsk, join_resp)
     }
 
+    /// Sets the key and credentials to be used for signing requests.
     pub fn set_gsk_and_credentials(&mut self, gsk: CredentialBIG, credentials: UserCredentials) {
         self.gsk_and_credentials = Some((gsk, credentials));
     }
 
+    /// Signs a message using the pre-set credentials and a given basename.
+    /// Returns a signature to be sent to the verifier.
     pub fn sign(&mut self, msg: &[u8], basename: &[u8]) -> Result<Signature> {
         match &self.gsk_and_credentials {
             Some((gsk, credentials)) => Ok(sign(&mut self.rng, gsk, credentials, msg, basename)),

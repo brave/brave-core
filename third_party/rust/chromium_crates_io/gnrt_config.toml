@@ -110,8 +110,8 @@ if (target_os == "android" && target_cpu == "arm64") {
 }
 ''' }
 
-[crate.anonymous_credentials]
-license_files = ['LICENCE']
+[crate.anonymous-credentials]
+license_files = ['LICENSE']
 
 [crate.ansi_term]
 license_files = ['LICENCE']
