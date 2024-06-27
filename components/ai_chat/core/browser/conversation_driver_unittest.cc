@@ -92,6 +92,8 @@ class MockEngineConsumer : public EngineConsumer {
     supports_delta_text_responses_ = supports_delta_text_responses;
   }
 
+  void UpdateModelOptions(const mojom::ModelOptions& options) override {}
+
  private:
   bool supports_delta_text_responses_ = false;
 };

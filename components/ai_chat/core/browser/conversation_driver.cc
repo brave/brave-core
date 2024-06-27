@@ -704,6 +704,12 @@ void ConversationDriver::OnModelListUpdated() {
   for (auto& obs : observers_) {
     obs.OnModelDataChanged(model_key_, GetModels());
   }
+
+  const mojom::Model* model = model_service_->GetModel(model_key_);
+
+  if (model && engine_) {
+    engine_->UpdateModelOptions(*model->options);
+  }
 }
 
 void ConversationDriver::OnModelRemoved(const std::string& removed_key) {

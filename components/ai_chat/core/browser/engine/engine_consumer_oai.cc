@@ -120,6 +120,13 @@ bool EngineConsumerOAIRemote::SupportsDeltaTextResponses() const {
   return true;
 }
 
+void EngineConsumerOAIRemote::UpdateModelOptions(
+    const mojom::ModelOptions& options) {
+  if (options.is_custom_model_options()) {
+    model_options_ = *options.get_custom_model_options();
+  }
+}
+
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     std::string text,
     const std::string& question,

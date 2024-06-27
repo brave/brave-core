@@ -56,7 +56,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
 
   void SetUp() override {
     auto options = mojom::CustomModelOptions::New();
-    options->endpoint = GURL("https://test.com");
+    options->endpoint = GURL("https://test.com/");
     options->model_request_name = "request_name";
     options->api_key = "api_key";
 
@@ -83,6 +83,52 @@ class EngineConsumerOAIUnitTest : public testing::Test {
   mojom::ModelPtr model_;
   std::unique_ptr<EngineConsumerOAIRemote> engine_;
 };
+
+TEST_F(EngineConsumerOAIUnitTest, UpdateModelOptions) {
+  auto* client = GetClient();
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const mojom::CustomModelOptions& model_options,
+                    base::Value::List, EngineConsumer::GenerationDataCallback,
+                    EngineConsumer::GenerationCompletedCallback) {
+        EXPECT_EQ("https://test.com/", model_options.endpoint.spec());
+
+        // Update the model options
+        auto options = mojom::CustomModelOptions::New();
+        options->endpoint = GURL("https://updated-test.com");
+        options->model_request_name = "request_name";
+        options->api_key = "api_key";
+
+        model_ = mojom::Model::New();
+        model_->key = "test_model_key";
+        model_->display_name = "Test Model Display Name";
+        model_->options =
+            mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+        engine_->UpdateModelOptions(*model_->options);
+
+        run_loop.Quit();
+      });
+
+  engine_->GenerateQuestionSuggestions(false, "Page content",
+                                       base::NullCallback());
+  run_loop.Run();
+
+  base::RunLoop run_loop2;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const mojom::CustomModelOptions& model_options,
+                    base::Value::List, EngineConsumer::GenerationDataCallback,
+                    EngineConsumer::GenerationCompletedCallback) {
+        EXPECT_EQ("https://updated-test.com/", model_options.endpoint.spec());
+        run_loop2.Quit();
+      });
+
+  engine_->GenerateQuestionSuggestions(false, "Page content",
+                                       base::NullCallback());
+  run_loop2.Run();
+
+  testing::Mock::VerifyAndClearExpectations(client);
+}
 
 TEST_F(EngineConsumerOAIUnitTest, GenerateQuestionSuggestions) {
   std::string page_content = "This is a test page content";

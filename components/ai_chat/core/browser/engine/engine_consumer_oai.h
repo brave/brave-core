@@ -61,6 +61,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
     api_ = std::move(api_for_testing);
   }
   OAIAPIClient* GetAPIForTesting() { return api_.get(); }
+  void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
