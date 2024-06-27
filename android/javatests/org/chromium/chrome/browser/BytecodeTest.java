@@ -1141,7 +1141,6 @@ public class BytecodeTest {
                         TabModelSelector.class,
                         TabContentManager.class,
                         ViewGroup.class,
-                        Supplier.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
                         SnackbarManager.class,
