@@ -286,7 +286,6 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mTabModelSelector,
                                     mTabContentManager,
                                     mCompositorViewHolder,
-                                    mCompositorViewHolder::getDynamicResourceLoader,
                                     mTabCreatorManager,
                                     mLayoutStateProviderSupplier,
                                     mSnackbarManager,
