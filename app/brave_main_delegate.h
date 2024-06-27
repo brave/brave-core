@@ -32,8 +32,6 @@ class BraveMainDelegate : public ChromeMainDelegate {
   content::ContentUtilityClient* CreateContentUtilityClient() override;
   std::optional<int> BasicStartupComplete() override;
   void PreSandboxStartup() override;
-  std::optional<int> PostEarlyInitialization(
-      ChromeMainDelegate::InvokedIn invoked_in) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest,

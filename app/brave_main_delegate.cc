@@ -14,6 +14,7 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
+#include "brave/base/buildflag_config.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_component_updater/browser/features.h"
@@ -47,6 +48,7 @@
 #include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
 #include "components/signin/public/base/account_consistency_method.h"
 #endif
+
 namespace {
 
 const char kBraveOriginTrialsPublicKey[] =
@@ -61,9 +63,9 @@ std::string GetUpdateURLHost() {
   if (!command_line.HasSwitch(brave_component_updater::kUseGoUpdateDev) &&
       !base::FeatureList::IsEnabled(
           brave_component_updater::kUseDevUpdaterUrl)) {
-    return BUILDFLAG(UPDATER_PROD_ENDPOINT);
+    return BUILDFLAG_CONFIG(UPDATER_PROD_ENDPOINT);
   }
-  return BUILDFLAG(UPDATER_DEV_ENDPOINT);
+  return BUILDFLAG_CONFIG(UPDATER_DEV_ENDPOINT);
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -156,7 +158,7 @@ void BraveMainDelegate::AppendCommandLineOptions() {
                                     kBraveOriginTrialsPublicKey);
   }
 
-  std::string brave_sync_service_url = BUILDFLAG(BRAVE_SYNC_ENDPOINT);
+  std::string brave_sync_service_url = BUILDFLAG_CONFIG(BRAVE_SYNC_ENDPOINT);
 #if BUILDFLAG(IS_ANDROID)
   AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -171,8 +173,9 @@ void BraveMainDelegate::AppendCommandLineOptions() {
 
   // Brave variations
   if (!command_line->HasSwitch(variations::switches::kVariationsServerURL)) {
-    command_line->AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                    BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+    command_line->AppendSwitchASCII(
+        variations::switches::kVariationsServerURL,
+        BUILDFLAG_CONFIG(BRAVE_VARIATIONS_SERVER_URL));
   }
   // Insecure fall-back for variations is set to the same (secure) URL. This is
   // done so that if VariationsService tries to fall back to insecure url the
@@ -182,7 +185,24 @@ void BraveMainDelegate::AppendCommandLineOptions() {
           variations::switches::kVariationsInsecureServerURL)) {
     command_line->AppendSwitchASCII(
         variations::switches::kVariationsInsecureServerURL,
-        BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+        BUILDFLAG_CONFIG(BRAVE_VARIATIONS_SERVER_URL));
+  }
+
+  std::string update_url = GetUpdateURLHost();
+  if (!update_url.empty()) {
+    std::string current_value;
+    if (command_line->HasSwitch(switches::kComponentUpdater)) {
+      current_value =
+          command_line->GetSwitchValueASCII(switches::kComponentUpdater);
+      command_line->RemoveSwitch(switches::kComponentUpdater);
+    }
+    if (!current_value.empty()) {
+      current_value += ',';
+    }
+
+    command_line->AppendSwitchASCII(
+        switches::kComponentUpdater,
+        (current_value + "url-source=" + update_url).c_str());
   }
 }
 
@@ -231,32 +251,4 @@ void BraveMainDelegate::PreSandboxStartup() {
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
-}
-
-std::optional<int> BraveMainDelegate::PostEarlyInitialization(
-    ChromeMainDelegate::InvokedIn invoked_in) {
-  auto result = ChromeMainDelegate::PostEarlyInitialization(invoked_in);
-  if (result.has_value()) {
-    // An exit code is set. Stop initialization.
-    return result;
-  }
-
-  auto* command_line = base::CommandLine::ForCurrentProcess();
-  std::string update_url = GetUpdateURLHost();
-  if (!update_url.empty()) {
-    std::string current_value;
-    if (command_line->HasSwitch(switches::kComponentUpdater)) {
-      current_value =
-          command_line->GetSwitchValueASCII(switches::kComponentUpdater);
-      command_line->RemoveSwitch(switches::kComponentUpdater);
-    }
-    if (!current_value.empty()) {
-      current_value += ',';
-    }
-
-    command_line->AppendSwitchASCII(
-        switches::kComponentUpdater,
-        (current_value + "url-source=" + update_url).c_str());
-  }
-  return result;
 }

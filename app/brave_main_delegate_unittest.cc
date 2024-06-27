@@ -8,8 +8,12 @@
 #include <string>
 
 #include "base/command_line.h"
+#include "base/strings/strcat.h"
+#include "brave/base/buildflag_config.h"
 #include "brave/components/brave_sync/buildflags.h"
+#include "brave/components/update_client/buildflags.h"
 #include "brave/components/variations/buildflags.h"
+#include "components/component_updater/component_updater_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
@@ -20,22 +24,33 @@ const char kBraveOriginTrialsPublicKey[] =
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 
 TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides) {
-  base::CommandLine& command_line = *base::CommandLine::ForCurrentProcess();
+  constexpr char kUpdaterProdEndpoint[] = "https://go-prod.com";
+  constexpr char kBraveSyncEndpoint[] = "https://sync.com";
+  constexpr char kVariationsServerURL[] = "https://variations.com";
+  SCOPED_BUILDFLAG_CONFIG_OVERRIDE(UPDATER_PROD_ENDPOINT, kUpdaterProdEndpoint)
+  SCOPED_BUILDFLAG_CONFIG_OVERRIDE(BRAVE_SYNC_ENDPOINT, kBraveSyncEndpoint)
+  SCOPED_BUILDFLAG_CONFIG_OVERRIDE(BRAVE_VARIATIONS_SERVER_URL,
+                                   kVariationsServerURL)
+
   BraveMainDelegate::AppendCommandLineOptions();
 
+  base::CommandLine& command_line = *base::CommandLine::ForCurrentProcess();
   ASSERT_STREQ(
-      BUILDFLAG(BRAVE_SYNC_ENDPOINT),
+      base::StrCat({"url-source=", kUpdaterProdEndpoint}).c_str(),
+      command_line.GetSwitchValueASCII(switches::kComponentUpdater).c_str());
+  ASSERT_STREQ(
+      kBraveSyncEndpoint,
       command_line.GetSwitchValueASCII(syncer::kSyncServiceURL).c_str());
   ASSERT_STREQ(
       kBraveOriginTrialsPublicKey,
       command_line.GetSwitchValueASCII(embedder_support::kOriginTrialPublicKey)
           .c_str());
   ASSERT_STREQ(
-      BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL),
+      kVariationsServerURL,
       command_line
           .GetSwitchValueASCII(variations::switches::kVariationsServerURL)
           .c_str());
-  ASSERT_STREQ(BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL),
+  ASSERT_STREQ(kVariationsServerURL,
                command_line
                    .GetSwitchValueASCII(
                        variations::switches::kVariationsInsecureServerURL)
@@ -44,34 +59,42 @@ TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides) {
 
 TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine) {
   base::CommandLine& command_line = *base::CommandLine::ForCurrentProcess();
-  const std::string override_sync_url = "https://sync.com";
-  const std::string override_origin_trials_public_key = "public_key";
-  const std::string override_variations_url = "https://variations.com";
-  const std::string override_insecure_variations_url = "https://variations.com";
-  command_line.AppendSwitchASCII(syncer::kSyncServiceURL, override_sync_url);
+  constexpr char kOverrideUpdaterProdEndpoint[] =
+      "https://go-prod-override.com";
+  constexpr char kOverrideSyncUrl[] = "https://sync-override.com";
+  constexpr char kOverrideVariationsServerURL[] =
+      "https://variations.com-override";
+  constexpr char kOverrideInsecureVariationsServerURL[] =
+      "https://variations-override.com";
+  constexpr char kOverrideOriginTrialPublicKey[] = "public_key-override";
+
+  command_line.AppendSwitchASCII(syncer::kSyncServiceURL, kOverrideSyncUrl);
   command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
-                                 override_origin_trials_public_key);
+                                 kOverrideOriginTrialPublicKey);
   command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                 override_variations_url);
+                                 kOverrideVariationsServerURL);
   command_line.AppendSwitchASCII(
       variations::switches::kVariationsInsecureServerURL,
-      override_insecure_variations_url);
+      kOverrideInsecureVariationsServerURL);
 
   BraveMainDelegate::AppendCommandLineOptions();
 
   ASSERT_STREQ(
-      override_sync_url.c_str(),
+      base::StrCat({"url-source=", kOverrideUpdaterProdEndpoint}).c_str(),
+      command_line.GetSwitchValueASCII(switches::kComponentUpdater).c_str());
+  ASSERT_STREQ(
+      kOverrideSyncUrl,
       command_line.GetSwitchValueASCII(syncer::kSyncServiceURL).c_str());
   ASSERT_STREQ(
-      override_origin_trials_public_key.c_str(),
+      kOverrideOriginTrialPublicKey,
       command_line.GetSwitchValueASCII(embedder_support::kOriginTrialPublicKey)
           .c_str());
   ASSERT_STREQ(
-      override_variations_url.c_str(),
+      kOverrideVariationsServerURL,
       command_line
           .GetSwitchValueASCII(variations::switches::kVariationsServerURL)
           .c_str());
-  ASSERT_STREQ(override_insecure_variations_url.c_str(),
+  ASSERT_STREQ(kOverrideInsecureVariationsServerURL,
                command_line
                    .GetSwitchValueASCII(
                        variations::switches::kVariationsInsecureServerURL)

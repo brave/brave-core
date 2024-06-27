@@ -4,7 +4,11 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 source_set("base") {
-  sources = [ "process/process_launcher.h" ]
+  sources = [
+    "buildflag_config.cc",
+    "buildflag_config.h",
+    "process/process_launcher.h",
+  ]
 
   if (is_posix) {
     sources += [ "process/process_launcher_posix.cc" ]
