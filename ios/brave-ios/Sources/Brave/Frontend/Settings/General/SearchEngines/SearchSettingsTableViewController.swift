@@ -86,6 +86,21 @@ class SearchSettingsTableViewController: UITableViewController {
     searchEngines.orderedEngines.filter { $0.isCustomEngine }
   }
 
+  private lazy var dismissBarButton: UIBarButtonItem = {
+    let doneButton = UIBarButtonItem(
+      title: Strings.settingsSearchDoneButton,
+      style: .done,
+      target: self,
+      action: #selector(close)
+    )
+
+    return doneButton
+  }()
+
+  private var isPresentedModally: Bool {
+    navigationController?.viewControllers.first === self
+  }
+
   // MARK: Lifecycle
 
   init(profile: Profile, privateBrowsingManager: PrivateBrowsingManager) {
@@ -136,14 +151,8 @@ class SearchSettingsTableViewController: UITableViewController {
     }
 
     // Insert Done button if being presented outside of the Settings Nav stack
-    if navigationController?.viewControllers.first === self {
-      navigationItem.leftBarButtonItem =
-        UIBarButtonItem(
-          title: Strings.settingsSearchDoneButton,
-          style: .done,
-          target: self,
-          action: #selector(dismissAnimated)
-        )
+    if isPresentedModally {
+      navigationItem.leftBarButtonItem = dismissBarButton
     }
 
     let footer = SettingsTableSectionHeaderFooterView(
@@ -202,11 +211,10 @@ class SearchSettingsTableViewController: UITableViewController {
   private func updateTableEditModeVisibility() {
     tableView.endEditing(true)
 
-    if customSearchEngines.isEmpty {
-      navigationItem.rightBarButtonItem = nil
-    } else {
-      navigationItem.rightBarButtonItem = editButtonItem
-    }
+    navigationItem.setRightBarButton(
+      customSearchEngines.isEmpty ? nil : editButtonItem,
+      animated: true
+    )
   }
 
   // MARK: TableViewDataSource - TableViewDelegate
@@ -351,7 +359,11 @@ class SearchSettingsTableViewController: UITableViewController {
     headerView.titleLabel.text = sectionTitle
     return headerView
   }
+}
 
+// MARK: - Edit Table Data
+
+extension SearchSettingsTableViewController {
   override func tableView(
     _ tableView: UITableView,
     willSelectRowAt indexPath: IndexPath
@@ -469,6 +481,16 @@ class SearchSettingsTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     return indexPath.section == Section.customSearch.rawValue
   }
+
+  override func setEditing(_ editing: Bool, animated: Bool) {
+    super.setEditing(editing, animated: animated)
+
+    // Hide the left bar button until edit action is finished
+    navigationItem.setLeftBarButton(
+      isPresentedModally && !editing ? dismissBarButton : nil,
+      animated: true
+    )
+  }
 }
 
 // MARK: - Actions
@@ -492,7 +514,7 @@ extension SearchSettingsTableViewController {
     searchEngines.shouldShowBrowserSuggestions = toggle.isOn
   }
 
-  @objc func dismissAnimated() {
+  @objc func close() {
     self.dismiss(animated: true, completion: nil)
   }
 }
