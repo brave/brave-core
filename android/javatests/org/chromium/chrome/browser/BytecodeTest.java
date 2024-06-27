@@ -665,8 +665,7 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         true,
                         boolean.class,
-                        long.class,
-                        boolean.class));
+                        long.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
