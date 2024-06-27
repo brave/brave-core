@@ -777,7 +777,6 @@ test("brave_browser_tests") {
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
     "//brave/browser/renderer_context_menu/brave_spelling_menu_observer_browsertest.cc",
-    "//brave/browser/renderer_context_menu/test/render_view_context_menu_browsertest.cc",
     "//brave/browser/search_engines/search_engine_provider_service_browsertest.cc",
     "//brave/browser/search_engines/search_engine_tracker_browsertest.cc",
     "//brave/browser/themes/brave_theme_service_browsertest.cc",
@@ -1133,6 +1132,7 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/brave_autofill_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
+      "//brave/browser/renderer_context_menu/test/render_view_context_menu_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
     ]
