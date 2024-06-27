@@ -5,11 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
-import android.annotation.SuppressLint;
-import android.hardware.biometrics.BiometricPrompt;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -25,17 +21,11 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
-
-import java.util.concurrent.Executor;
 
 public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragment {
     private EditText mRecoveryPhraseText;
@@ -125,63 +115,9 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                         mRetypePasswordEdittext.setError(
                                 getResources().getString(R.string.retype_password_error));
                     } else {
-                        proceedWithStrongPassword(passwordInput, recoverPhrase);
+                        goToTheNextPage(passwordInput, recoverPhrase);
                     }
                 });
-    }
-
-    private void proceedWithStrongPassword(
-            @NonNull final String password, @NonNull final String recoveryPhrase) {
-        if (Utils.isBiometricSupported(requireContext())) {
-            // Clear previously set bio-metric credentials
-            KeystoreHelper.resetBiometric();
-            // noinspection NewApi
-            setUpBiometric(password, recoveryPhrase);
-        } else {
-            goToTheNextPage(password, recoveryPhrase);
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    private void setUpBiometric(
-            @NonNull final String password, @NonNull final String recoveryPhrase) {
-        final BiometricPrompt.AuthenticationCallback authenticationCallback =
-                new BiometricPrompt.AuthenticationCallback() {
-                    @Override
-                    public void onAuthenticationSucceeded(
-                            BiometricPrompt.AuthenticationResult result) {
-                        super.onAuthenticationSucceeded(result);
-                        KeystoreHelper.useBiometricOnUnlock(password);
-                        goToTheNextPage(password, recoveryPhrase);
-                    }
-
-                    @Override
-                    public void onAuthenticationError(int errorCode, CharSequence errString) {
-                        super.onAuthenticationError(errorCode, errString);
-                        // Even though we have an error, we still let to proceed
-                        if (!TextUtils.isEmpty(errString)) {
-                            Toast.makeText(
-                                            ContextUtils.getApplicationContext(),
-                                            errString,
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                        goToTheNextPage(password, recoveryPhrase);
-                    }
-                };
-        Executor executor = ContextCompat.getMainExecutor(requireContext());
-        new BiometricPrompt.Builder(getActivity())
-                .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
-                .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-                .setNegativeButton(
-                        getResources().getString(android.R.string.cancel),
-                        executor,
-                        (dialog, which) ->
-                                authenticationCallback.onAuthenticationError(
-                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
-                .build()
-                .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
 
     private void goToTheNextPage(
@@ -214,6 +150,14 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                                 allAccounts.ethDappSelectedAccount.accountId,
                                                 success -> {
                                                     if (mOnNextPage != null) {
+                                                        // If biometric is not supported we should
+                                                        // skip the fingerprint setup screen.
+                                                        if (!Utils.isBiometricSupported(
+                                                                requireContext())) {
+                                                            mOnNextPage.incrementPages(1);
+                                                        }
+                                                        // TODO - Refactor this when confirmation
+                                                        // screen is implemented.
                                                         mOnNextPage.onboardingCompleted();
                                                     }
                                                 }));

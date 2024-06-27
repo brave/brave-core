@@ -216,12 +216,13 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public void gotoNextPage() {
+    public void incrementPages(int pages) {
         if (mCryptoWalletOnboardingViewPager.getAdapter() != null
                 && mCryptoWalletOnboardingViewPager.getCurrentItem()
-                        < mCryptoWalletOnboardingViewPager.getAdapter().getItemCount() - 1) {
+                        < mCryptoWalletOnboardingViewPager.getAdapter().getItemCount() - pages) {
+            final boolean smoothScroll = pages == 1;
             mCryptoWalletOnboardingViewPager.setCurrentItem(
-                    mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
+                    mCryptoWalletOnboardingViewPager.getCurrentItem() + pages, smoothScroll);
         }
     }
 

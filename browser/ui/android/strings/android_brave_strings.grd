@@ -3172,6 +3172,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System program">
       System Program
     </message>
+    <message name="IDS_BRAVE_WALLET_FINGERPRINT_UNLOCK_TITLE" desc="Title for Fingerprint unlock onboarding screen">
+      Unlock Brave Wallet with biometric authentication
+    </message>
+    <message name="IDS_BRAVE_WALLET_FINGERPRINT_UNLOCK_CONTENT" desc="Content for Fingerprint unlock onboarding screen">
+      Would you like to use biometric authentication to unlock your Brave Wallet?
+    </message>
+    <message name="IDS_BRAVE_WALLET_USE_FINGERPRINT_UNLOCK" desc="Text of Fingerprint unlock onboarding button">
+      Use Fingerprint Unlock
+    </message>
+    <message name="IDS_BRAVE_WALLET_SKIP" desc="Text to skip something">
+      Skip this for now
+    </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config program">
       Config Program
     </message>

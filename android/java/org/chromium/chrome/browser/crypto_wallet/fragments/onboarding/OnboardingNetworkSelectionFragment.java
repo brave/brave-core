@@ -144,7 +144,7 @@ public class OnboardingNetworkSelectionFragment extends BaseOnboardingWalletFrag
                             mOnboardingNetworkSelectorGridAdapter.getAvailableNetworks());
 
                     if (mOnNextPage != null) {
-                        mOnNextPage.gotoNextPage();
+                        mOnNextPage.incrementPages(1);
                     }
                 });
     }

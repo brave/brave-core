@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:background="@color/container_background"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ellipse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fingerprint_unlock_layer_list"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="97dp"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:id="@+id/fingerprint_unlock_title"
+            style="@style/HeadingH3"
+            android:gravity="center"
+            android:layout_below="@+id/ellipse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/brave_wallet_fingerprint_unlock_title"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/DefaultRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fingerprint_unlock_title"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:gravity="center"
+            android:text="@string/brave_wallet_fingerprint_unlock_content"
+            android:textColor="@color/text_secondary" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/BraveWalletOnboardingButton"
+            android:id="@+id/button_fingerprint_unlock_continue"
+            android:layout_above="@+id/skip"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="@string/brave_wallet_use_fingerprint_unlock"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/skip"
+            style="@style/DefaultRegular"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="16dp"
+            android:text="@string/brave_wallet_skip"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
