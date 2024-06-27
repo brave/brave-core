@@ -45,7 +45,6 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
-#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -550,7 +549,6 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     if (secondary_contents_web_view_->web_contents() != contents) {
       secondary_contents_web_view_->SetWebContents(nullptr);
       secondary_contents_web_view_->SetWebContents(contents);
-      secondary_location_bar_->SetWebContents(contents);
     }
 
     secondary_contents_web_view_->SetVisible(true);
@@ -562,7 +560,6 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
         second_tile_is_active_web_contents);
   } else {
     secondary_contents_web_view_->SetWebContents(nullptr);
-    secondary_location_bar_->SetWebContents(nullptr);
     secondary_contents_web_view_->SetVisible(false);
     secondary_devtools_web_view_->SetWebContents(nullptr);
     secondary_devtools_web_view_->SetVisible(false);
@@ -924,11 +921,6 @@ void BraveBrowserView::AddedToWidget() {
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
-  }
-
-  if (secondary_contents_web_view_) {
-    secondary_location_bar_ =
-        SplitViewLocationBar::Create(secondary_contents_web_view_);
   }
 }
 
