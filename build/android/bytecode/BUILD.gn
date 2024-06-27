@@ -43,6 +43,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDropdownItemViewInfoListBuilderClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDropdownItemViewInfoListManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveDynamicColorsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveEditUrlSuggestionProcessorBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveEditUrlSuggestionProcessorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveExportFlowClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveExternalNavigationHandlerClassAdapter.java",

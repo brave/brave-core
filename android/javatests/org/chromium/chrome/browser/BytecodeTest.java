@@ -996,6 +996,14 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         true,
                         void.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                        "onCopyLink",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class,
+                        AutocompleteMatch.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.
@@ -2173,6 +2181,10 @@ public class BytecodeTest {
                 checkSuperName(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesLayout",
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase"));
+        Assert.assertTrue(
+                checkSuperName(
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase"));
     }
 
     private boolean classExists(String className) {
