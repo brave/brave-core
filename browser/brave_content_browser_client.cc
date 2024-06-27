@@ -517,7 +517,12 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 void BraveContentBrowserClient::RenderProcessWillLaunch(
     content::RenderProcessHost* host) {
   Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
-  BraveRendererUpdaterFactory::GetForProfile(profile)->InitializeRenderer(host);
+  // The BraveRendererUpdater might be null for some irregular profiles, e.g.
+  // the System Profile.
+  if (BraveRendererUpdater* service =
+          BraveRendererUpdaterFactory::GetForProfile(profile)) {
+    service->InitializeRenderer(host);
+  }
 
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
 }
