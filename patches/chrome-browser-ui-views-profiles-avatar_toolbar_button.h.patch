@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 05b8f1996a55b29373346b8ae0051f5dc168abb1..9718bf76728f04f40d840cde69cea20d972ac12e 100644
+index 8da67fba572caa82a0c89b9b24f12b567d3522ce..511f084003bf3870b6ca412a394730119ad6b55b 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -126,6 +126,7 @@ class AvatarToolbarButton : public ToolbarButton {
+@@ -127,6 +127,7 @@ class AvatarToolbarButton : public ToolbarButton {
    void NotifyShowSigninPausedDelayEnded() const;
  
   private:

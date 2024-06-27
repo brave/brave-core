@@ -1,24 +1,26 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index 709730878178a351680177eadf0314985643b6b7..3eb13f2ae84a78532c292afec352778c0b93d6cf 100644
+index 27954816b023f72e535a68cdc5ed3310b22dd99e..b3229956edc2ba6e42ee90d5c4ab468bf6df0774 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-@@ -172,6 +172,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
+@@ -184,6 +184,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
    // From here on out, results must be returned asynchronously.
    StartAsyncRun();
  
 +  BRAVE_RUN
-   if (gaia_id.empty() || IsPrimaryAccountOnly()) {
-     // Try the primary account.
-     // TODO(crbug.com/40614113): collapse the asynchronicity
-@@ -396,10 +397,12 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
+   // TODO(crbug.com/40614113): collapse the asynchronicity
+   content::GetUIThreadTaskRunner({})->PostTask(
+       FROM_HERE,
+@@ -338,12 +339,14 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
  void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
  #if !BUILDFLAG(IS_CHROMEOS)
 +  BRAVE_START_MINT_TOKEN_FLOW_IF
    // ChromeOS in kiosk mode may start the mint token flow without account.
-   DCHECK(!token_key_.account_info.IsEmpty());
+   DCHECK(!token_key_.account_info.IsEmpty())
+       << "token_key_.account_info is empty!";
    DCHECK(IdentityManagerFactory::GetForProfile(GetProfile())
-              ->HasAccountWithRefreshToken(token_key_.account_info.account_id));
+              ->HasAccountWithRefreshToken(token_key_.account_info.account_id))
+       << "No Refresh token!";
 +  BRAVE_START_MINT_TOKEN_FLOW_ELSE
  #endif
    TRACE_EVENT_NESTABLE_ASYNC_BEGIN1("identity", "MintTokenFlow", this, "type",

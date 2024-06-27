@@ -548,6 +548,13 @@
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldBindAddRecoveryMethodApiInMainFrame
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 
+# These tests fail because they expect being signed into the primary account on
+# the web.
+-SigninViewControllerBrowserTest.ShowChromeSigninDialogForExtensionsPromptCancel
+-SigninViewControllerBrowserTest.ShowChromeSigninDialogForExtensionsPromptInNewTab
+-SigninViewControllerBrowserTest.ShowChromeSigninDialogForExtensionsPromptReuseInactiveOpenTab
+-SigninViewControllerBrowserTest.ShowChromeSigninDialogForExtensionsPromptReuseOpenTab
+
 # These tests fail because we patch
 # AccountConsistencyModeManager::ComputeAccountConsistencyMethod to return
 # AccountConsistencyMethod::kDisabled

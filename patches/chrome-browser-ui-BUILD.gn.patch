@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 74460ac47921070062237bdbec77a6e5980bc64d..6ed25511180344cc4c50cc6c27135259923f0db9 100644
+index 2c949df1e6cec9636acbb4236bbb25f44a062ebf..8bfd360fef3651a9a9efaadc99ac4cd8bf919127 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -772,6 +772,7 @@ static_library("ui") {
+@@ -773,6 +773,7 @@ static_library("ui") {
      # TODO(crbug.com/344921703): Remove circular dependencies.
      "//chrome/browser/sync",
    ]
@@ -10,7 +10,7 @@ index 74460ac47921070062237bdbec77a6e5980bc64d..6ed25511180344cc4c50cc6c27135259
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -4803,7 +4804,10 @@ static_library("ui") {
+@@ -4804,7 +4805,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
