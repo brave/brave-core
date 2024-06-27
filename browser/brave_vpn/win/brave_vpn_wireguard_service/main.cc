@@ -71,6 +71,12 @@ std::optional<int> ProcessUserLevelCommands(
 }
 
 int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prev, wchar_t*, int) {
+  // Process Mitigation Redirection Policy
+  PROCESS_MITIGATION_REDIRECTION_TRUST_POLICY signature = {0};
+  DWORD dwSize = sizeof(signature);
+  signature.EnforceRedirectionTrust = 1;
+  SetProcessMitigationPolicy(ProcessRedirectionTrustPolicy, &signature, dwSize);
+
   // Initialize the CommandLine singleton from the environment.
   base::CommandLine::Init(0, nullptr);
   auto* command_line = base::CommandLine::ForCurrentProcess();
