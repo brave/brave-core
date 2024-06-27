@@ -22,6 +22,9 @@ public class BraveNewTabPageLayoutClassAdapter extends BraveClassVisitor {
         deleteField(sBraveNewTabPageLayoutClassName, "mLogoCoordinator");
         makeProtectedField(sNewTabPageLayoutClassName, "mLogoCoordinator");
 
+        deleteField(sBraveNewTabPageLayoutClassName, "mInitialTileNum");
+        makeProtectedField(sNewTabPageLayoutClassName, "mInitialTileNum");
+
         makePublicMethod(sNewTabPageLayoutClassName, "insertSiteSectionView");
         addMethodAnnotation(
                 sBraveNewTabPageLayoutClassName, "insertSiteSectionView", "Ljava/lang/Override;");

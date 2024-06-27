@@ -1959,6 +1959,8 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mLogoCoordinator"));
         Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mInitialTileNum"));
+        Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/dom_distiller/ReaderModeManager", "mTab"));
         Assert.assertTrue(
                 fieldExists(
