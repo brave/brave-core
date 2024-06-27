@@ -146,39 +146,20 @@ extension PlayerView {
     var body: some View {
       VStack {
         HStack(spacing: 16) {
-          Button {
-            model.playbackSpeed.cycle()
-          } label: {
-            Label("Playback Speed", braveSystemImage: model.playbackSpeed.braveSystemName)
-              .transition(.opacity.animation(.linear(duration: 0.1)))
-          }
+          PlaybackSpeedPicker(playbackSpeed: $model.playbackSpeed)
           Spacer()
           Toggle(isOn: $model.isShuffleEnabled) {
             if model.isShuffleEnabled {
-              Image(braveSystemName: "leo.shuffle.toggle-on")
+              Label("Shuffle Mode: On", braveSystemImage: "leo.shuffle.toggle-on")
                 .transition(.opacity.animation(.linear(duration: 0.1)))
             } else {
-              Image(braveSystemName: "leo.shuffle.off")
+              Label("Shuffle Mode: Off", braveSystemImage: "leo.shuffle.off")
                 .transition(.opacity.animation(.linear(duration: 0.1)))
             }
           }
           .toggleStyle(.button)
-          Button {
-            model.repeatMode.cycle()
-          } label: {
-            Group {
-              // FIXME: Better accessibility labels
-              switch model.repeatMode {
-              case .none:
-                Label("Repeat Mode: Off", braveSystemImage: "leo.loop.off")
-              case .one:
-                Label("Repeat Mode: One", braveSystemImage: "leo.loop.1")
-              case .all:
-                Label("Repeat Mode: All", braveSystemImage: "leo.loop.all")
-              }
-            }
-            .transition(.opacity.animation(.linear(duration: 0.1)))
-          }
+          RepeatModePicker(repeatMode: $model.repeatMode)
+            .disabled(model.duration.isIndefinite)
         }
         Spacer()
         VStack {

@@ -224,7 +224,7 @@ public final class PlayerModel: ObservableObject {
 
   // MARK: - Playback Extras
 
-  enum RepeatMode {
+  enum RepeatMode: Hashable {
     case none
     case one
     case all
@@ -253,9 +253,13 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  struct PlaybackSpeed: Equatable {
+  struct PlaybackSpeed: Hashable, Identifiable {
     var rate: Float
     var braveSystemName: String
+
+    var id: Float {
+      rate
+    }
 
     static let normal = Self(rate: 1.0, braveSystemName: "leo.1x")
     static let fast = Self(rate: 1.5, braveSystemName: "leo.1.5x")
