@@ -118,11 +118,6 @@ class BraveBrowserView : public BrowserView,
   vertical_tab_strip_widget_delegate_view() {
     return vertical_tab_strip_widget_delegate_view_;
   }
-
-  const auto* secondary_contents_web_view() const {
-    return secondary_contents_web_view_.get();
-  }
-
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // commands::AcceleratorService:
