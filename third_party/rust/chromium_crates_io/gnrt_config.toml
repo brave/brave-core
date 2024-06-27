@@ -123,7 +123,7 @@ extra_input_roots = [ "../README.md" ]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
 
-[crate.const_oid]
+[crate.const-oid]
 extra_input_roots = [ "../README.md" ]
 
 [crate.cbor4ii]
