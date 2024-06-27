@@ -19,7 +19,16 @@ class CredentialSigner {
       base::OnceCallback<void(std::optional<std::vector<const uint8_t>>)>;
   virtual ~CredentialSigner();
 
+  // Returns true is a credential is available for the current date.
+  // The caller can expect future calls to `Sign` to succeed, if made today.
   virtual bool CredentialExistsForToday() = 0;
+
+  // Signs a message for a given basename. The server has the ability
+  // to check whether two messages with the same basename were signed
+  // with the same credential without revealing the credential used,
+  // preventing Sybil attacks.
+  // See signature_basename.h/cc for more information on how the basename
+  // should be generated.
   virtual bool Sign(std::vector<const uint8_t> msg,
                     std::vector<const uint8_t> basename,
                     SignCallback callback) = 0;

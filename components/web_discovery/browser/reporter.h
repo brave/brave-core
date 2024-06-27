@@ -29,6 +29,15 @@ class SimpleURLLoader;
 
 namespace web_discovery {
 
+// Handles all functions required for reporting generated payloads:
+// - zlib compression
+// - ECDH key derivation + key exchange
+// - AES encryption (to prevent eavesdropping by the server proxy)
+// - signing the request using anonymous credentials from the
+//   `CredentialManager` (to prevent Sybil attacks on the server)
+// - performing the request for submission
+// Uses `RequestQueue` to persist and schedule submissions. Reports
+// will be processed on somewhat random intervals averaging to a minute.
 class Reporter {
  public:
   Reporter(PrefService* profile_prefs,
@@ -41,6 +50,7 @@ class Reporter {
   Reporter(const Reporter&) = delete;
   Reporter& operator=(const Reporter&) = delete;
 
+  // Schedule a generated payload for submission.
   void ScheduleSend(base::Value::Dict payload);
 
  private:

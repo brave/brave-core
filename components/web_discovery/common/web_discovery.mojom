@@ -6,21 +6,31 @@
 module web_discovery.mojom;
 
 struct SelectAttributeRequest {
+  // An optional selector for an element within the current selected element.
+  // The attribute will be retrieved from the embedded element.
   string? sub_selector;
+  // Arbitrary ID used for storing the scraped result.
   string key;
+  // Name of the attribute to scrape.
   string attribute;
 };
 
 struct SelectRequest {
+  // The DOM selector for the element to scrape.
   string root_selector;
+  // Scrape requests for the selected element.
   array<SelectAttributeRequest> attribute_requests;
 };
 
 struct AttributeResult {
+  // The DOM selector for the scraped element.
   string root_selector;
+  // A map of arbitrary IDs to scraped results. Value will be set to
+  // nullopt if the attribute was not available.
   map<string, string?> attribute_values;
 };
 
 interface DocumentExtractor {
+  // Extracts DOM attributes from the current page in renderer.
   QueryElementAttributes(array<SelectRequest> requests) => (array<AttributeResult> results);
 };

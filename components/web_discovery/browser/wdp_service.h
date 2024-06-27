@@ -35,6 +35,8 @@ class SharedURLLoaderFactory;
 
 namespace web_discovery {
 
+// The main service for the native re-implementation of Web Discovery Project.
+// Handles scraping and reporting of relevant pages for opted-in users.
 class WDPService : public KeyedService {
  public:
   WDPService(
@@ -50,10 +52,14 @@ class WDPService : public KeyedService {
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  // Sets the extension preference to true if the preference for the native
+  // implementation is set to true and the feature is disabled.
+  // Relevant for a Griffin/variations rollback.
   static void SetExtensionPrefIfNativeDisabled(PrefService* profile_prefs);
 
-  void OnFinishNavigation(const GURL& url,
-                          content::RenderFrameHost* render_frame_host);
+  // Called by `WebDiscoveryTabHelper` to notify on a page load.
+  void DidFinishLoad(const GURL& url,
+                     content::RenderFrameHost* render_frame_host);
 
  private:
   void Start();

@@ -26,7 +26,7 @@ void WebDiscoveryTabHelper::DidFinishLoad(
   if (!render_frame_host->IsInPrimaryMainFrame()) {
     return;
   }
-  wdp_service_->OnFinishNavigation(url, render_frame_host);
+  wdp_service_->DidFinishLoad(url, render_frame_host);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);

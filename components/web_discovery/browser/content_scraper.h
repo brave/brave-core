@@ -33,6 +33,9 @@ struct PageScrapeResult {
   static std::unique_ptr<PageScrapeResult> FromValue(const base::Value& dict);
 
   GURL url;
+  // A map of DOM selectors to list of scraped values embedded in a Dict.
+  // Each dict contains arbitrary keys (defined in the patterns) to scraped
+  // values.
   base::flat_map<std::string, std::vector<base::Value::Dict>> fields;
   std::string id;
 
@@ -41,6 +44,18 @@ struct PageScrapeResult {
   std::optional<std::string> query;
 };
 
+// Extracts attribute values from the page DOM for reporting purposes.
+// ContentScraper utilizes the following techniques:
+//
+// a) Extraction within the current page in the renderer (via `ScrapePage`).
+//    The `mojom::DocumentExtractor` is used to request attribute values
+//    from the current DOM in the view. Typically, this is used to exact a
+//    search query, and decide whether the page is worthy of investigation
+//    and reporting.
+// b) Parsing and extracting HTML from a double fetch. This follows
+//    the extraction in a). Used to extract all other needed details
+//    from the page i.e. search results. Uses a Rust library for DOM
+//    operations, in respect of Rule of Two.
 class ContentScraper {
  public:
   using PageScrapeResultCallback =
