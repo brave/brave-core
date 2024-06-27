@@ -807,27 +807,35 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             {tokenList}
           </ScrollContainer>
         </PopupModal>
-        {isPanel && pendingSelectedAsset && (
-          <BottomSheet onClose={() => setPendingSelectedAsset(undefined)}>
-            <SelectAccount
-              token={pendingSelectedAsset}
-              accounts={accountsForPendingSelectedAsset}
-              tokenBalancesRegistry={tokenBalancesRegistry}
-              spotPrice={
-                spotPriceRegistry
-                  ? getTokenPriceFromRegistry(
-                      spotPriceRegistry,
-                      pendingSelectedAsset
-                    )
-                  : undefined
-              }
-              onSelectAccount={handleSelectAccount}
-            />
+        {isPanel && (
+          <BottomSheet
+            onClose={() => setPendingSelectedAsset(undefined)}
+            isOpen={pendingSelectedAsset !== undefined}
+          >
+            {pendingSelectedAsset && (
+              <SelectAccount
+                token={pendingSelectedAsset}
+                accounts={accountsForPendingSelectedAsset}
+                tokenBalancesRegistry={tokenBalancesRegistry}
+                spotPrice={
+                  spotPriceRegistry
+                    ? getTokenPriceFromRegistry(
+                        spotPriceRegistry,
+                        pendingSelectedAsset
+                      )
+                    : undefined
+                }
+                onSelectAccount={handleSelectAccount}
+              />
+            )}
           </BottomSheet>
         )}
-        {isPanel && tokenDetails && (
-          <BottomSheet onClose={() => setTokenDetails(undefined)}>
-            <TokenDetails token={tokenDetails} />
+        {isPanel && (
+          <BottomSheet
+            onClose={() => setTokenDetails(undefined)}
+            isOpen={tokenDetails !== undefined}
+          >
+            {tokenDetails && <TokenDetails token={tokenDetails} />}
           </BottomSheet>
         )}
       </>

@@ -10,20 +10,21 @@ import Icon from '@brave/leo/react/icon'
 // Shared Styles
 import { Column, WalletButton } from '../style'
 
-export const BottomCardWrapper = styled(Column)`
+export const Background = styled(Column)<{ isOpen: boolean }>`
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   position: fixed;
-  z-index: 31;
+  z-index: ${(p) => (p.isOpen ? 31 : -1)};
   background: rgba(0, 0, 0, 0.2);
 `
 
-export const BottomCard = styled(Column)`
-  position: absolute;
-  bottom: 0px;
-  border-radius: 12px 12px 0px 0px;
+export const BottomCard = styled(Column)<{ isOpen: boolean }>`
+  position: fixed;
+  bottom: ${(p) => (p.isOpen ? 0 : -500)}px;
+  transition: all 0.3s ease-in-out;
+  border-radius: 16px 16px 0px 0px;
   background-color: ${leo.color.container.background};
   z-index: 32;
 `
