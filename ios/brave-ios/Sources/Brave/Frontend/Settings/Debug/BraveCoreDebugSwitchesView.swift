@@ -69,7 +69,7 @@ private enum SkusEnvironment: String, CaseIterable {
 private struct BasicStringInputView: View {
   @ObservedObject private var activeSwitches = Preferences.BraveCore.activeSwitches
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.dismiss) private var dismiss
 
   var coreSwitch: BraveCoreSwitchKey
   var hint: String?
@@ -110,7 +110,7 @@ private struct BasicStringInputView: View {
               activeSwitches.value.append(coreSwitch.rawValue)
             }
           }
-          presentationMode.dismiss()
+          dismiss()
         } label: {
           Text("Save")
             .foregroundColor(Color(.braveBlurpleTint))
@@ -123,7 +123,7 @@ private struct BasicStringInputView: View {
 private struct BasicPickerInputView: View {
   @ObservedObject private var activeSwitches = Preferences.BraveCore.activeSwitches
   @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
-  @Environment(\.presentationMode) @Binding private var presentationMode
+  @Environment(\.dismiss) private var dismiss
 
   var coreSwitch: BraveCoreSwitchKey
   var options: [String]
@@ -163,11 +163,77 @@ private struct BasicPickerInputView: View {
               activeSwitches.value.append(coreSwitch.rawValue)
             }
           }
-          presentationMode.dismiss()
+          dismiss()
         } label: {
           Text("Save")
             .foregroundColor(Color(.braveBlurpleTint))
         }
+      }
+    }
+  }
+}
+
+private struct CustomSwitchInputView: View {
+  @ObservedObject private var customSwitches = Preferences.BraveCore.customSwitches
+  @ObservedObject private var switchValues = Preferences.BraveCore.switchValues
+  @Environment(\.dismiss) private var dismiss
+
+  @State var key: String
+  @State private var value: String = ""
+
+  init(key: String) {
+    _key = State(wrappedValue: key)
+  }
+
+  var body: some View {
+    List {
+      Section {
+        TextField("Key", text: $key)
+          .disableAutocorrection(true)
+          .autocapitalization(.none)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        Text("Enter the key. Format: --")
+          + Text("**Key**")
+          .foregroundColor(Color(braveSystemName: .textInteractive))
+          + Text("=Value")
+      }
+
+      Section {
+        TextField("Value", text: $value)
+          .disableAutocorrection(true)
+          .autocapitalization(.none)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } footer: {
+        Text("Enter the value. Format: --Key=")
+          + Text("**Value**")
+          .foregroundColor(Color(braveSystemName: .textInteractive))
+      }
+    }
+    .listStyle(.insetGrouped)
+    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .navigationTitle("Custom Switch")
+    .onAppear {
+      // SwiftUI bug, has to wait a bit
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        value = switchValues.value[key, default: ""]
+      }
+    }
+    .toolbar {
+      ToolbarItemGroup(placement: .confirmationAction) {
+        Button {
+          switchValues.value[key] = value
+          if !customSwitches.value.contains(key) {
+            customSwitches.value.append(key)
+          }
+          dismiss()
+        } label: {
+          Text("Save")
+            .foregroundColor(
+              !key.isEmpty ? Color(.braveBlurpleTint) : Color(braveSystemName: .buttonDisabled)
+            )
+        }
+        .disabled(key.isEmpty)
       }
     }
   }
@@ -339,6 +405,56 @@ struct BraveCoreDebugSwitchesView: View {
       } header: {
         Text("P3A")
       }
+
+      if !Preferences.BraveCore.customSwitches.value.isEmpty {
+        Section {
+          Group {
+            ForEach(Preferences.BraveCore.customSwitches.value, id: \.self) { switchKey in
+              NavigationLink {
+                CustomSwitchInputView(key: switchKey)
+              } label: {
+                VStack(alignment: .leading) {
+                  Text(String(switchKey.separatedBy("-").map({ $0.capitalized }).joined(by: " ")))
+                    .font(.headline)
+
+                  if let value = Preferences.BraveCore.switchValues.value[switchKey], !value.isEmpty
+                  {
+                    Text("--\(switchKey)=\(value)")
+                      .font(.caption)
+                      .foregroundColor(
+                        Color(.secondaryBraveLabel)
+                      )
+                      .lineLimit(1)
+                  }
+                }
+              }
+            }
+            .onDelete {
+              let keys = $0.map { Preferences.BraveCore.customSwitches.value[$0] }
+
+              withAnimation(.default) {
+                for key in keys {
+                  Preferences.BraveCore.switchValues.value[key] = nil
+                  Preferences.BraveCore.customSwitches.value.removeAll(where: { $0 == key })
+                }
+              }
+            }
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } header: {
+          Text("Custom Switches")
+        }
+      }
+
+      Section {
+        NavigationLink {
+          CustomSwitchInputView(key: "")
+        } label: {
+          Text("Add Custom Switch")
+        }
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+
       Section {
         Button("Disable All") {
           withAnimation {
