@@ -175,6 +175,13 @@ extension Preferences {
       key: "brave-core.switches.values",
       default: [:]
     )
+    /// Custom Switches that are passed into BraveCoreMain during launch.
+    ///
+    /// This preference stores a list of `BraveCoreSwitch` raw values
+    public static let customSwitches = Option<[String]>(
+      key: "brave-core.custom-switches",
+      default: []
+    )
   }
 
   public final class AppState {
