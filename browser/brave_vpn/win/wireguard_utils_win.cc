@@ -145,7 +145,7 @@ bool DisableBraveVpnWireguardServiceImpl() {
     return false;
   }
 
-  DWORD last_error = 0;
+  DWORD last_error = ERROR_SUCCESS;
   HRESULT res = service->DisableVpn(&last_error);
   if (!SUCCEEDED(res)) {
     VLOG(1) << "Failure calling DisableVpn. Result: "
@@ -187,7 +187,7 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
     return std::nullopt;
   }
 
-  DWORD last_error;
+  DWORD last_error = ERROR_SUCCESS;
   HRESULT res;
   base::win::ScopedBstr public_key_data;
   base::win::ScopedBstr private_key_data;
