@@ -71,7 +71,7 @@ struct AIChatPromptInputView: View {
         prompt: Strings.AIChat.promptPlaceHolderDescription,
         promptColor: UIColor(braveSystemName: .textTertiary),
         font: .preferredFont(forTextStyle: .subheadline),
-        submitLabel: .send,
+        submitLabel: .default,
         onBackspace: { wasEmpty in
           if wasEmpty {
             isShowingSlashTools = false
