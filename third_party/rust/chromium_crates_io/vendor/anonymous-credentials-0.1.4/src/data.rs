@@ -18,17 +18,21 @@ pub const JOIN_RESPONSE_SIZE: usize = USER_CREDENTIALS_SIZE + ECP_PROOF_SIZE;
 pub const GROUP_PUBLIC_KEY_SIZE: usize = ECP2_COMPAT_SIZE * 2 + BIG_SIZE * 4;
 pub const SIGNATURE_SIZE: usize = ECP_SIZE * 5 + ECP_PROOF_SIZE;
 
+/// A "join" request to be sent to the issuer.
 pub struct JoinRequest {
     pub(crate) q: ECP, // G1 ** gsk
 
     pub(crate) proof: ECPProof,
 }
 
+/// A "join" response from the issuer, to be used
+/// to generate DAA credentials.
 pub struct JoinResponse {
     pub(crate) cred: UserCredentials,
     pub(crate) proof: ECPProof,
 }
 
+/// DAA credentials to be used for signing messages.
 pub struct UserCredentials {
     pub(crate) a: ECP,
     pub(crate) b: ECP,
@@ -36,6 +40,7 @@ pub struct UserCredentials {
     pub(crate) d: ECP,
 }
 
+/// A DAA signature to be sent to the verifier.
 pub struct Signature {
     pub(crate) a: ECP,
     pub(crate) b: ECP,
@@ -46,6 +51,9 @@ pub struct Signature {
     pub(crate) proof: ECPProof,
 }
 
+/// A group public key published by the issuer.
+/// This is required to finish the "join" process
+/// and acquire credentials.
 pub struct GroupPublicKey {
     pub(crate) x: ECP2, // G2 ** x
     pub(crate) y: ECP2, // G2 ** y
@@ -57,15 +65,20 @@ pub struct GroupPublicKey {
     pub(crate) sy: BIG,
 }
 
-pub struct ECPProof {
-    pub(crate) c: BIG,
-    pub(crate) s: BIG,
+pub(crate) struct ECPProof {
+    pub c: BIG,
+    pub s: BIG,
 }
 
+/// Wrapper for a big number.
 pub struct CredentialBIG(pub(crate) BIG);
 
+/// A result of starting the "join" process to acquire credentials.
 pub struct StartJoinResult {
+    /// Private key which should be persisted for finishing the "join"
+    /// process and future signing requests.
     pub gsk: CredentialBIG,
+    /// The join request to be sent to the issuer.
     pub join_msg: JoinRequest,
 }
 
