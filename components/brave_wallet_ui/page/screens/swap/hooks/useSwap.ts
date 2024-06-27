@@ -387,7 +387,8 @@ export const useSwap = () => {
     [fromToken, fromAccount, tokenBalancesRegistry]
   )
   const nativeAssetBalance = useMemo(() =>
-    nativeAsset && getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry),
+    nativeAsset &&
+      getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry),
     [nativeAsset, fromAccount, tokenBalancesRegistry]
   )
 
