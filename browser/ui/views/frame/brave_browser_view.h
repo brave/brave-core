@@ -19,6 +19,8 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
+#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
+#include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
@@ -54,14 +56,13 @@ class SidebarBrowserTest;
 }  // namespace sidebar
 
 class BraveBrowser;
-class BraveHelpBubbleHostView;
 class ContentsLayoutManager;
 class SidebarContainerView;
-class SplitViewLocationBar;
-class SplitViewSeparator;
-class VerticalTabStripWidgetDelegateView;
-class ViewShadow;
 class WalletButton;
+class ViewShadow;
+class VerticalTabStripWidgetDelegateView;
+class BraveHelpBubbleHostView;
+class SplitViewSeparator;
 
 class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer,
