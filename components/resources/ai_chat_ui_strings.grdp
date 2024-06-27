@@ -217,6 +217,9 @@
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="An button label for sending a chat message">
     Send message to Leo
   </message>
+  <message name="IDS_CHAT_UI_STOP_GENERATION_BUTTON_LABEL" desc="An button label for stopping generation">
+    Stop answering
+  </message>
   <message name="IDS_CHAT_UI_GOT_IT_BUTTON_LABEL" desc="An button label for dismissing a warning">
     Got it
   </message>

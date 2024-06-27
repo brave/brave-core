@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 import styles from './style.module.scss'
-import { AIChatContext } from '../../state/context'
+import DataContext, { type AIChatContext } from '../../state/context'
 import getPageHandlerInstance from '../../api/page_handler'
 import ActionTypeLabel from '../action_type_label'
 
@@ -30,12 +30,10 @@ type Props = Pick<AIChatContext,
   | 'shouldDisableUserInput'>
 
 function InputBox(props: Props) {
+  const context = React.useContext(DataContext)
+
   const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     props.setInputText(e.target.value)
-  }
-
-  const handleSubmit = () => {
-    props.submitInputTextToAPI()
   }
 
   const handleMic = () => {
@@ -130,15 +128,28 @@ function InputBox(props: Props) {
           )}
         </div>
         <div>
-          <Button
-            fab
-            kind='plain-faint'
-            onClick={handleSubmit}
-            disabled={props.shouldDisableUserInput}
-            title={getLocale('sendChatButtonLabel')}
-          >
-            <Icon name='send' />
-          </Button>
+          {context.isGenerating ? (
+            <Button
+              fab
+              kind='plain-faint'
+              onClick={() =>
+                getPageHandlerInstance().pageHandler.stopGeneration()
+              }
+              disabled={context.shouldDisableUserInput}
+              title={getLocale('stopGenerationButtonLabel')}
+            >
+              <Icon name='stop-circle' />
+            </Button>
+          ) : (
+            <Button
+              fab
+              kind='plain-faint'
+              onClick={() => context.submitInputTextToAPI()}
+              title={getLocale('sendChatButtonLabel')}
+            >
+              <Icon name='send' />
+            </Button>
+          )}
         </div>
       </div>
     </form>

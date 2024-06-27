@@ -120,6 +120,7 @@ class ConversationDriver {
   void SubmitSummarizationRequest();
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
+  void StopGeneration();
 
   void AddSubmitSelectedTextError(const std::string& selected_text,
                                   mojom::ActionType action_type,
@@ -244,6 +245,7 @@ class ConversationDriver {
   bool IsContentAssociationPossible();
 
   void CleanUp();
+  void ClearAllQueries();
 
   raw_ptr<PrefService> pref_service_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
