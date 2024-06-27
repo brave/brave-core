@@ -72,6 +72,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
@@ -182,6 +183,8 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Added 2024-04
   ai_chat::prefs::MigrateProfilePrefs(profile_prefs);
+  // Added 2024-06
+  ai_chat::ResetBadModelKeys(profile_prefs);
 #endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
