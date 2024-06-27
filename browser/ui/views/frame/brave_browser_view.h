@@ -127,7 +127,6 @@ class BraveBrowserView : public BrowserView,
   void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
   void OnWillBreakTile(const SplitViewBrowserData::Tile& tile) override;
   void OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) override;
-  void OnOrientationChanged(const SplitViewBrowserData::Tile& tile) override;
 
  private:
   class TabCyclingEventHandler;
@@ -190,7 +189,6 @@ class BraveBrowserView : public BrowserView,
   bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
-  void UpdateSplitViewOrientation();
   void UpdateContentsWebViewVisual();
   void UpdateContentsWebViewBorder();
   void UpdateSecondaryContentsWebViewVisibility();

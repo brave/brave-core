@@ -1077,27 +1077,4 @@ void SwapTabsInTile(Browser* browser) {
                            /*select_after_move*/ false);
 }
 
-void ToggleSplitViewOrientation(Browser* browser) {
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  if (!split_view_data) {
-    return;
-  }
-
-  if (browser->tab_strip_model()->empty()) {
-    return;
-  }
-
-  if (!IsTabsTiled(browser)) {
-    return;
-  }
-
-  auto* model = browser->tab_strip_model();
-  auto tab = model->GetActiveTab()->GetHandle();
-  split_view_data->SetOrientation(
-      tab, split_view_data->GetOrientation(tab) ==
-                   SplitViewBrowserData::Orientation::kVertical
-               ? SplitViewBrowserData::Orientation::kHorizontal
-               : SplitViewBrowserData::Orientation::kVertical);
-}
-
 }  // namespace brave

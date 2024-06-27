@@ -148,28 +148,6 @@ int SplitViewBrowserData::GetSizeDelta(const tabs::TabHandle& tab) {
   return iter->split_view_size_delta;
 }
 
-void SplitViewBrowserData::SetOrientation(const tabs::TabHandle& tab,
-                                          Orientation orientation) {
-  auto iter = FindTile(tab);
-  CHECK(iter != tiles_.end());
-  if (iter->orientation == orientation) {
-    return;
-  }
-
-  iter->orientation = orientation;
-
-  for (auto& observer : observers_) {
-    observer.OnOrientationChanged(*iter);
-  }
-}
-
-SplitViewBrowserData::Orientation SplitViewBrowserData::GetOrientation(
-    const tabs::TabHandle& tab) const {
-  auto iter = FindTile(tab);
-  CHECK(iter != tiles_.end());
-  return iter->orientation;
-}
-
 void SplitViewBrowserData::AddObserver(SplitViewBrowserDataObserver* observer) {
   observers_.AddObserver(observer);
 }
