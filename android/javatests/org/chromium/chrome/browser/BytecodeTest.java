@@ -1221,7 +1221,6 @@ public class BytecodeTest {
                         Supplier.class,
                         BooleanSupplier.class,
                         boolean.class,
-                        boolean.class,
                         HistoryDelegate.class,
                         BooleanSupplier.class,
                         OfflineDownloader.class,
