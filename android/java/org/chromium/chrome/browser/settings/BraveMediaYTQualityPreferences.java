@@ -10,8 +10,11 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -37,6 +40,12 @@ public class BraveMediaYTQualityPreferences extends BravePreferenceFragment
     @Override
     public void setDefaultQuality(@YTVideoQuality int defaultQuality) {
         UserPrefs.get(getProfile()).setInteger(BravePref.YT_VIDEO_QUALITY_PREF, defaultQuality);
-        BraveRelaunchUtils.askForRelaunch(getActivity());
+        ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
+        if (chromeTabbedActivity != null && chromeTabbedActivity.getActivityTab() != null) {
+            Tab currentTab = chromeTabbedActivity.getActivityTab();
+            if (currentTab.getUrl().domainIs(BraveConstants.YOUTUBE_DOMAIN)) {
+                currentTab.reload();
+            }
+        }
     }
 }

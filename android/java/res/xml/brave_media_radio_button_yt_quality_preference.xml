@@ -21,6 +21,7 @@
          android:id="@+id/on"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
+         android:checked="false"
          android:minHeight="@dimen/min_touch_target_size"
          app:primaryText="@string/hd_quality_settings_on" />
 
@@ -28,6 +29,7 @@
          android:id="@+id/allow_over_wifi"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
+         android:checked="false"
          android:minHeight="@dimen/min_touch_target_size"
          app:primaryText="@string/hd_quality_settings_allow_over_wifi" />
 
@@ -35,6 +37,7 @@
          android:id="@+id/off"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
+         android:checked="false"
          android:minHeight="@dimen/min_touch_target_size"
          app:primaryText="@string/hd_quality_settings_off" />
 
