@@ -170,7 +170,7 @@ void SplitViewLocationBar::UpdateBounds() {
 
 void SplitViewLocationBar::UpdateURLAndIcon() {
   if (auto* contents = web_contents()) {
-    auto url = contents->GetLastCommittedURL();
+    auto url = contents->GetVisibleURL();
     auto origin = url::Origin::Create(url);
     auto formatted_origin = url_formatter::FormatUrl(
         origin.opaque() ? url : origin.GetURL(),
@@ -202,7 +202,7 @@ bool SplitViewLocationBar::IsContentsSafe() const {
     return true;
   }
 
-  auto url = web_contents()->GetLastCommittedURL();
+  auto url = web_contents()->GetVisibleURL();
   return url.is_empty() || url.SchemeIs(url::kAboutScheme) ||
          url.SchemeIs("chrome");
 }
