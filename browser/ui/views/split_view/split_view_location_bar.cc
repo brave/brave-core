@@ -97,8 +97,7 @@ SplitViewLocationBar* SplitViewLocationBar::Create(PrefService* service,
   CHECK(web_view->GetWidget());
   auto* location_bar = new SplitViewLocationBar(service);
 
-  views::Widget::InitParams params;
-  params.type = views::Widget::InitParams::TYPE_CONTROL;
+  views::Widget::InitParams params(views::Widget::InitParams::TYPE_CONTROL);
   params.parent = web_view->GetWidget()->GetNativeView();
   params.activatable = views::Widget::InitParams::Activatable::kNo;
   params.delegate = location_bar;
