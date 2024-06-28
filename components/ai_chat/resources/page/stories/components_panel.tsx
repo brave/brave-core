@@ -273,6 +273,7 @@ const SITE_INFO: mojom.SiteInfo = {
   contentUsedPercentage: 40,
   isContentAssociationPossible: true,
   hostname: 'www.example.com',
+  isContentRefined: false,
 }
 
 export default {

@@ -78,6 +78,9 @@ struct SiteInfo {
   string? hostname;
   // Percentage of the content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
+  // Indicates content has been refined through extracting most relevant parts
+  // from long page content
+  bool is_content_refined;
 };
 
 enum ActionType {

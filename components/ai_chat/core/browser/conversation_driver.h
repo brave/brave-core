@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -230,6 +231,13 @@ class ConversationDriver : public ModelService::Observer {
                                   std::string page_content = "",
                                   bool is_video = false,
                                   std::string invalidation_token = "");
+  void OnGetRefinedPageContent(
+      const std::string& input,
+      EngineConsumer::GenerationDataCallback data_received_callback,
+      EngineConsumer::GenerationCompletedCallback data_completed_callback,
+      std::string page_content,
+      bool is_video,
+      base::expected<std::string, std::string> refined_page_content);
 
   void GeneratePageContent(GetPageContentCallback callback);
   void OnGeneratePageContentComplete(int64_t navigation_id,
@@ -282,6 +290,7 @@ class ConversationDriver : public ModelService::Observer {
 
   // Page content
   std::string article_text_;
+  bool is_content_refined_ = false;
   std::string content_invalidation_token_;
   bool is_page_text_fetch_in_progress_ = false;
   bool is_print_preview_fallback_requested_ = false;
@@ -307,6 +316,8 @@ class ConversationDriver : public ModelService::Observer {
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
   mojom::ConversationTurnPtr pending_conversation_entry_;
+
+  std::unique_ptr<TextEmbedder> text_embedder_;
 
   base::WeakPtrFactory<ConversationDriver> weak_ptr_factory_{this};
 };

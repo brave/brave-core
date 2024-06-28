@@ -104,6 +104,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
+        os.path.join('brave', 'third_party', 'tflite'),
+        os.path.join('brave', 'third_party', 'tflite_support'),
         os.path.join('brave', 'patches', 'third_party'),
         os.path.join('brave', 'third_party', 'polymer'),
         os.path.join('brave', 'third_party', 'lit'),

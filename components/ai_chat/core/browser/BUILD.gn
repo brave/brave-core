@@ -49,7 +49,10 @@ static_library("browser") {
     ]
   }
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    ":text_embedder",
+    "//base",
+  ]
 
   deps = [
     "//brave/brave_domains",
@@ -84,6 +87,22 @@ static_library("browser") {
   if (enable_text_recognition) {
     deps += [ "//brave/components/text_recognition/browser" ]
   }
+}
+
+source_set("text_embedder") {
+  sources = [
+    "text_embedder.cc",
+    "text_embedder.h",
+  ]
+
+  deps = [ "//base" ]
+
+  public_deps = [
+    "//brave/third_party/tflite_support",
+    "//third_party/tflite",
+    "//third_party/tflite_support",
+    "//third_party/tflite_support:tflite_support_proto",
+  ]
 }
 
 if (!is_ios) {
