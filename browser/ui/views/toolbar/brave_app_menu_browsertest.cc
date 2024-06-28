@@ -122,24 +122,3 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, NotPurchasedVPN) {
   EXPECT_TRUE(!!menu_root->GetMenuItemByID(IDC_SHOW_BRAVE_VPN_PANEL));
 }
 #endif
-
-class BraveAppMenuBrowserTestWithChromeRefresh2023
-    : public BraveAppMenuBrowserTest {
- public:
-  BraveAppMenuBrowserTestWithChromeRefresh2023() = default;
-  ~BraveAppMenuBrowserTestWithChromeRefresh2023() override = default;
-
-  void SetUp() override {
-    BraveAppMenuBrowserTest::SetUp();
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-};
-
-// Test originally introduced before the chrome-refresh-2023 cleanup, to check
-// if sidebar crashes when opening.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTestWithChromeRefresh2023,
-                       AppMenuOpeningTest) {
-  // Open app menu to check it doesn't make crash.
-  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
-}
