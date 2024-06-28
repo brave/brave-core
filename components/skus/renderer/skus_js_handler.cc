@@ -44,14 +44,14 @@ SkusJSHandler::~SkusJSHandler() = default;
 
 bool SkusJSHandler::EnsureConnected() {
   if (!skus_service_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame_->GetBrowserInterfaceBroker().GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
   }
   bool result = skus_service_.is_bound();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     if (!vpn_service_.is_bound()) {
-      render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+      render_frame_->GetBrowserInterfaceBroker().GetInterface(
           vpn_service_.BindNewPipeAndPassReceiver());
     }
     result = result && vpn_service_.is_bound();
