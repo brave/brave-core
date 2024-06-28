@@ -37,8 +37,6 @@
 #include "components/strings/grit/components_strings.h"
 #include "components/sync/base/features.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
-#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
-#include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -468,22 +466,21 @@ BookmarkFaviconFetcher::BookmarkFaviconFetcher(
 }
 
 void BookmarkFaviconFetcher::ExportBookmarks() {
-  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                  browser_state_)
-                  ->bookmark_bar_node());
-  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                  browser_state_)
-                  ->other_node());
-  ExtractUrls(ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-                  browser_state_)
-                  ->mobile_node());
-  if (!bookmark_urls_.empty())
+  // bookmark_bar, mobile and other are children of the root node.
+  ExtractUrls(ios::BookmarkModelFactory::GetForBrowserState(browser_state_)
+                  ->root_node());
+  if (!bookmark_urls_.empty()) {
     FetchNextFavicon();
-  else
+  } else {
     ExecuteWriter();
+  }
 }
 
 void BookmarkFaviconFetcher::ExtractUrls(const BookmarkNode* node) {
+  DCHECK(node);
+  if (node == nullptr) {
+    return;
+  }
   if (node->is_url()) {
     std::string url = node->url().spec();
     if (!url.empty())
@@ -498,22 +495,14 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // BookmarkModel isn't thread safe (nor would we want to lock it down
   // for the duration of the write), as such we make a copy of the
   // BookmarkModel using BookmarkCodec then write from that.
-  bookmarks::BookmarkModel* bookmark_model_;
-  if (base::FeatureList::IsEnabled(
-          syncer::kSyncEnableBookmarksInTransportMode)) {
-    bookmark_model_ = ios::BookmarkModelFactory::
-        GetModelForBrowserStateIfUnificationEnabledOrDie(browser_state_);
-  } else {
-    bookmark_model_ = ios::LocalOrSyncableBookmarkModelFactory::
-        GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-            browser_state_);
-  }
+  bookmarks::BookmarkModel* bookmark_model =
+      ios::BookmarkModelFactory::GetForBrowserState(browser_state_);
   BookmarkCodec codec;
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
       base::BindOnce(
           &Writer::DoWrite,
-          base::MakeRefCounted<Writer>(bookmark_model_, path_,
+          base::MakeRefCounted<Writer>(bookmark_model, path_,
                                        favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!

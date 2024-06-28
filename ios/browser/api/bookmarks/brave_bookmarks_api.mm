@@ -23,7 +23,6 @@
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
-#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
 #include "ios/chrome/browser/bookmarks/ui_bundled/bookmark_utils_ios.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
