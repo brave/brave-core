@@ -340,6 +340,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/components/brave_vpn/browser:unit_tests",
       "//brave/components/brave_vpn/common:unit_tests",
+      "//brave/components/brave_vpn/common/wireguard:unit_tests",
       "//brave/components/skus/browser:unit_tests",
     ]
     if (is_win) {

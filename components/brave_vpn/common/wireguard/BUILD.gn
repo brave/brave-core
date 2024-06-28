@@ -15,6 +15,23 @@ source_set("wireguard") {
   deps = [
     "//base",
     "//crypto",
+    "//net",
     "//third_party/boringssl",
+    "//third_party/re2",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "wireguard_utils_unittest.cc" ]
+
+  deps = [
+    ":wireguard",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common",
+    "//testing/gmock",
+    "//testing/gtest",
   ]
 }

@@ -6,13 +6,13 @@
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 
 #include <objbase.h>
+
 #include <stdint.h>
 #include <wrl/client.h>
 
 #include <optional>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -59,7 +59,11 @@ bool IsBraveVPNWireguardTunnelServiceRunning() {
          status.value() == SERVICE_START_PENDING;
 }
 
-bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
+bool EnableBraveVpnWireguardServiceImpl(
+    const std::string& server_public_key,
+    const std::string& client_private_key,
+    const std::string& mapped_ip4_address,
+    const std::string& vpn_server_hostname) {
   base::win::AssertComInitialized();
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
   if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
@@ -77,16 +81,36 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& config) {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
-  DWORD error_code = 0;
-  if (FAILED(service->EnableVpn(
-          base::UTF8ToWide(base::Base64Encode(config)).c_str(), &error_code))) {
-    VLOG(1) << "Unable to call EnableVpn interface";
+
+  base::win::ScopedBstr server_public_key_data(
+      base::UTF8ToWide(server_public_key));
+  base::win::ScopedBstr client_private_key_data(
+      base::UTF8ToWide(client_private_key));
+  base::win::ScopedBstr mapped_ip4_address_data(
+      base::UTF8ToWide(mapped_ip4_address));
+  base::win::ScopedBstr vpn_server_hostname_data(
+      base::UTF8ToWide(vpn_server_hostname));
+
+  DWORD last_error = ERROR_SUCCESS;
+  HRESULT res = service->EnableVpn(server_public_key_data.Get(),
+                                   client_private_key_data.Get(),
+                                   mapped_ip4_address_data.Get(),
+                                   vpn_server_hostname_data.Get(), &last_error);
+
+  if (!SUCCEEDED(res)) {
+    VLOG(1) << "Failure calling EnableVpn. Result: "
+            << logging::SystemErrorCodeToString(res)
+            << " GetLastError: " << last_error;
     return false;
   }
-  return error_code == 0;
+
+  return true;
 }
 
-void EnableBraveVpnWireguardService(const std::string& config,
+void EnableBraveVpnWireguardService(const std::string& server_public_key,
+                                    const std::string& client_private_key,
+                                    const std::string& mapped_ip4_address,
+                                    const std::string& vpn_server_hostname,
                                     wireguard::BooleanCallback callback) {
   base::ThreadPool::CreateCOMSTATaskRunner(
       {base::MayBlock(), base::WithBaseSyncPrimitives(),
@@ -95,7 +119,9 @@ void EnableBraveVpnWireguardService(const std::string& config,
       base::SingleThreadTaskRunnerThreadMode::DEDICATED)
       ->PostTaskAndReplyWithResult(
           FROM_HERE,
-          base::BindOnce(&EnableBraveVpnWireguardServiceImpl, config),
+          base::BindOnce(&EnableBraveVpnWireguardServiceImpl, server_public_key,
+                         client_private_key, mapped_ip4_address,
+                         vpn_server_hostname),
           std::move(callback));
 }
 
@@ -118,12 +144,17 @@ bool DisableBraveVpnWireguardServiceImpl() {
     VLOG(1) << "Unable to call EnableVpn interface";
     return false;
   }
-  DWORD error_code = 0;
-  if (FAILED(service->DisableVpn(&error_code))) {
-    VLOG(1) << "Unable to call EnableVpn interface";
+
+  DWORD last_error = ERROR_SUCCESS;
+  HRESULT res = service->DisableVpn(&last_error);
+  if (!SUCCEEDED(res)) {
+    VLOG(1) << "Failure calling DisableVpn. Result: "
+            << logging::SystemErrorCodeToString(res)
+            << " GetLastError: " << last_error;
     return false;
   }
-  return error_code == 0;
+
+  return true;
 }
 
 void DisableBraveVpnWireguardService(wireguard::BooleanCallback callback) {
@@ -156,26 +187,24 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
     return std::nullopt;
   }
 
-  DWORD error_code = 0;
-  base::win::ScopedBstr public_key_raw;
-  base::win::ScopedBstr private_key_raw;
-  if (FAILED(service->GenerateKeypair(
-          public_key_raw.Receive(), private_key_raw.Receive(), &error_code)) ||
-      error_code) {
-    VLOG(1) << "Unable to generate keypair";
+  DWORD last_error = ERROR_SUCCESS;
+  HRESULT res;
+  base::win::ScopedBstr public_key_data;
+  base::win::ScopedBstr private_key_data;
+  res = service->GenerateKeypair(public_key_data.Receive(),
+                                 private_key_data.Receive(), &last_error);
+
+  if (!SUCCEEDED(res)) {
+    VLOG(1) << "Failure calling GenerateKeyPair. Result: "
+            << logging::SystemErrorCodeToString(res)
+            << " GetLastError: " << last_error;
     return std::nullopt;
   }
 
-  std::wstring public_key_wide;
-  public_key_wide.assign(
-      reinterpret_cast<std::wstring::value_type*>(public_key_raw.Get()),
-      public_key_raw.Length());
-  std::wstring private_key_wide;
-  private_key_wide.assign(
-      reinterpret_cast<std::wstring::value_type*>(private_key_raw.Get()),
-      private_key_raw.Length());
-  std::string public_key = base::WideToUTF8(public_key_wide);
-  std::string private_key = base::WideToUTF8(private_key_wide);
+  std::string public_key = reinterpret_cast<std::string::value_type*>(
+      public_key_data.Get(), public_key_data.ByteLength());
+  std::string private_key = reinterpret_cast<std::string::value_type*>(
+      private_key_data.Get(), private_key_data.ByteLength());
   return std::make_tuple(public_key, private_key);
 }
 
