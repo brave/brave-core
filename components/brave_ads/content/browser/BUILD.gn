@@ -5,12 +5,13 @@
 
 static_library("browser") {
   sources = [
-    "ad_units/search_result_ad/search_result_ad_converting_util.cc",
-    "ad_units/search_result_ad/search_result_ad_converting_util.h",
-    "ad_units/search_result_ad/search_result_ad_handler.cc",
-    "ad_units/search_result_ad/search_result_ad_handler.h",
-    "ad_units/search_result_ad/search_result_ad_util.cc",
-    "ad_units/search_result_ad/search_result_ad_util.h",
+    "creatives/search_result_ad/creative_search_result_ad_constants.h",
+    "creatives/search_result_ad/creative_search_result_ad_handler.cc",
+    "creatives/search_result_ad/creative_search_result_ad_handler.h",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h",
+    "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.cc",
+    "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h",
   ]
 
   deps = [
@@ -35,11 +36,14 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "ad_units/search_result_ad/search_result_ad_converting_util_unittest.cc",
-    "ad_units/search_result_ad/search_result_ad_handler_unittest.cc",
-    "ad_units/search_result_ad/search_result_ad_util_unittest.cc",
-    "ad_units/search_result_ad/test_web_page_util.cc",
-    "ad_units/search_result_ad/test_web_page_util.h",
+    "creatives/search_result_ad/creative_search_result_ad_handler_unittest.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_unittest_util.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_unittest_util.h",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor_unittest.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_for_testing.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_for_testing.h",
+    "creatives/search_result_ad/creative_search_result_ad_unittest_constants.h",
+    "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor_unittest.cc",
   ]
 
   deps = [

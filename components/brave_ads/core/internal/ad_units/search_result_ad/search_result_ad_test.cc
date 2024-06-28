@@ -61,7 +61,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
-  SearchResultAd::DeferTriggeringOfAdViewedEventForTesting();
+  SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting();
 
   TriggerSearchResultAdEventAndVerifiyExpectations(
       // This viewed impression ad event triggering will be deferred.
@@ -77,7 +77,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
-  SearchResultAd::TriggerDeferredAdViewedEventForTesting();
+  SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting();
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
@@ -140,7 +140,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   test::DisableBraveRewards();
 
-  SearchResultAd::DeferTriggeringOfAdViewedEventForTesting();
+  SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting();
 
   TriggerSearchResultAdEventAndVerifiyExpectations(
       // This ad viewe impressiond event triggering will be deferred.
@@ -156,7 +156,7 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
-  SearchResultAd::TriggerDeferredAdViewedEventForTesting();
+  SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting();
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,

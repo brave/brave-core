@@ -7,10 +7,10 @@ source_set("browser_tests") {
   testonly = true
 
   sources = [
-    "ad_units/search_result_ad/search_result_ad_browsertest.cc",
     "analytics/p3a/brave_stats_helper_browsertest.cc",
     "application_state/notification_helper/notification_helper_impl_mock.cc",
     "application_state/notification_helper/notification_helper_impl_mock.h",
+    "creatives/search_result_ad/creative_search_result_ad_tab_helper_browsertest.cc",
     "tabs/ads_tab_helper_browsertest.cc",
   ]
 

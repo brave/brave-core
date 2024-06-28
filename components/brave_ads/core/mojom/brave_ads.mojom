@@ -63,7 +63,7 @@ enum AdType {
   kSearchResultAd
 };
 
-struct ConversionInfo {
+struct CreativeSetConversionInfo {
   string url_pattern;
   string? verifiable_advertiser_public_key_base64;
   mojo_base.mojom.TimeDelta observation_window;
@@ -109,7 +109,7 @@ struct CreativeSearchResultAdInfo {
   string headline_text;
   string description;
   double value;
-  ConversionInfo? conversion;
+  CreativeSetConversionInfo? creative_set_conversion;
 };
 
 enum SearchResultAdEventType {

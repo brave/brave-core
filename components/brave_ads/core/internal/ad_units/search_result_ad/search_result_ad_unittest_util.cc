@@ -15,7 +15,7 @@ namespace brave_ads::test {
 SearchResultAdInfo BuildSearchResultAd(
     const bool should_generate_random_uuids) {
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(should_generate_random_uuids);
+      BuildCreativeSearchResultAd(should_generate_random_uuids);
   return FromMojomBuildSearchResultAd(mojom_creative_ad);
 }
 

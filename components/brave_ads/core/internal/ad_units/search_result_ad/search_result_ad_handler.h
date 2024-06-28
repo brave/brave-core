@@ -23,17 +23,17 @@ class Account;
 class SiteVisit;
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
+class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
  public:
-  SearchResultAd(Account& account, SiteVisit& site_visit);
+  SearchResultAdHandler(Account& account, SiteVisit& site_visit);
 
-  SearchResultAd(const SearchResultAd&) = delete;
-  SearchResultAd& operator=(const SearchResultAd&) = delete;
+  SearchResultAdHandler(const SearchResultAdHandler&) = delete;
+  SearchResultAdHandler& operator=(const SearchResultAdHandler&) = delete;
 
-  SearchResultAd(SearchResultAd&&) noexcept = delete;
-  SearchResultAd& operator=(SearchResultAd&&) noexcept = delete;
+  SearchResultAdHandler(SearchResultAdHandler&&) noexcept = delete;
+  SearchResultAdHandler& operator=(SearchResultAdHandler&&) noexcept = delete;
 
-  ~SearchResultAd() override;
+  ~SearchResultAdHandler() override;
 
   static void DeferTriggeringOfAdViewedEventForTesting();
   static void TriggerDeferredAdViewedEventForTesting();
@@ -75,7 +75,7 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
 
   bool trigger_ad_viewed_event_in_progress_ = false;
 
-  base::WeakPtrFactory<SearchResultAd> weak_factory_{this};
+  base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads
