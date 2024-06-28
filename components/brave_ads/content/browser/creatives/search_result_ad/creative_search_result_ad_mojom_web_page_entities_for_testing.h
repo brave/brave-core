@@ -21,6 +21,14 @@ CreativeSearchResultAdMojomWebPageEntities(
 blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPage(
     std::vector<std::string_view> excluded_property_names);
 
+std::vector<schema_org::mojom::EntityPtr>
+CreativeSearchResultAdMojomWebPageEntitiesWithProperty(std::string_view name,
+                                                       std::string_view value);
+
+blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPageWithProperty(
+    std::string_view name,
+    std::string_view value);
+
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CONTENT_BROWSER_CREATIVES_SEARCH_RESULT_AD_CREATIVE_SEARCH_RESULT_AD_MOJOM_WEB_PAGE_ENTITIES_FOR_TESTING_H_

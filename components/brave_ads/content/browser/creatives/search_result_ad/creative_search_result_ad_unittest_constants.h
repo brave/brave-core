@@ -25,6 +25,10 @@ inline constexpr char kCreativeAdLandingPage[] = "https://brave.com";
 inline constexpr char kCreativeAdHeadlineText[] = "Headline text";
 inline constexpr char kCreativeAdDescription[] = "Description";
 inline constexpr double kCreativeAdRewardsValue = 0.5;
+inline constexpr char kCreativeAdPlacementIdWithUnreservedCharacters[] =
+    "\"'+*&%";
+inline constexpr char kEscapedCreativeAdPlacementIdWithUnreservedCharacters[] =
+    "%22%27%2B%2A%26%25";
 
 // Creative set conversion.
 inline constexpr char kCreativeSetConversionUrlPattern[] =

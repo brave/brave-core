@@ -137,4 +137,28 @@ blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPage(
   return mojom_web_page;
 }
 
+std::vector<schema_org::mojom::EntityPtr>
+CreativeSearchResultAdMojomWebPageEntitiesWithProperty(std::string_view name,
+                                                       std::string_view value) {
+  CreativeAdMojomWebPageEntitiesConstructor constructor(
+      /*excluded_property_names=*/{name});
+  std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
+      constructor.GetMojomWebPageEntities();
+  const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
+  auto& mojom_entity = mojom_property->values->get_entity_values()[0];
+  test::AddMojomProperty<std::string>(&mojom_entity->properties,
+                                      /*name=*/std::string(name),
+                                      /*value=*/std::string(value));
+  return mojom_web_page_entities;
+}
+
+blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPageWithProperty(
+    std::string_view name,
+    std::string_view value) {
+  blink::mojom::WebPagePtr mojom_web_page = blink::mojom::WebPage::New();
+  mojom_web_page->entities =
+      CreativeSearchResultAdMojomWebPageEntitiesWithProperty(name, value);
+  return mojom_web_page;
+}
+
 }  // namespace brave_ads::test
