@@ -97,7 +97,6 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
-import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNtpCreator;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -1038,7 +1037,6 @@ public class BytecodeTest {
                         Supplier.class,
                         OneshotSupplier.class,
                         boolean.class,
-                        OverviewNtpCreator.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
                         Supplier.class,
