@@ -795,7 +795,7 @@ extension Strings {
         "callout.p3aCalloutToggleTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Share Completely Private and Anonymous Product Insights.",
+        value: "Share Private and Anonymous Product Insights.",
         comment:
           "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout"
       )

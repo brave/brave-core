@@ -134,7 +134,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       // The reason p3a user consent is necesserray to call search ad install attribution API methods
       if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
         // If P3A is not enabled, send the organic install code at daily pings which is BRV001
-        // User has not opted in to share completely private and anonymous product insights
+        // User has not opted in to share private and anonymous product insights
         if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
           Task { @MainActor in
             do {
