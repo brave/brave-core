@@ -8,17 +8,13 @@
 
 #include "v8/include/v8.h"
 
-#define CompileScript                                                 \
-  CompileScript(ScriptState*, const ClassicScript&, v8::ScriptOrigin, \
-                v8::ScriptCompiler::CompileOptions,                   \
-                v8::ScriptCompiler::NoCacheReason);                   \
-  static v8::MaybeLocal<v8::Script> CompileScript_ChromiumImpl
+#define CompileScript(...)    \
+  CompileScript(__VA_ARGS__); \
+  static v8::MaybeLocal<v8::Script> CompileScript_ChromiumImpl(__VA_ARGS__)
 
-#define CompileModule                                                          \
-  CompileModule(v8::Isolate*, const ModuleScriptCreationParams&,               \
-                const WTF::TextPosition&, v8::ScriptCompiler::CompileOptions,  \
-                v8::ScriptCompiler::NoCacheReason, const ReferrerScriptInfo&); \
-  static v8::MaybeLocal<v8::Module> CompileModule_ChromiumImpl
+#define CompileModule(...)    \
+  CompileModule(__VA_ARGS__); \
+  static v8::MaybeLocal<v8::Module> CompileModule_ChromiumImpl(__VA_ARGS__)
 
 #include "src/third_party/blink/renderer/bindings/core/v8/v8_script_runner.h"  // IWYU pragma: export
 
