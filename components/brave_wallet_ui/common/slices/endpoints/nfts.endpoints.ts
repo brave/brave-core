@@ -95,6 +95,26 @@ export const nftsEndpoints = ({
           ? ['NftMetadata']
           : [{ type: 'NftMetadata', id: getAssetIdKey(arg) }]
     }),
+    getIpfsGatewayTranslatedNftUrl: query<string | null, string>({
+      queryFn: async (urlArg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { cache } = baseQuery(undefined)
+          const translatedUrl = await cache.getIpfsGatewayTranslatedNftUrl(
+            urlArg || ''
+          )
+
+          return {
+            data: translatedUrl || urlArg.trim()
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to translate NFT IPFS gateway URL',
+            error
+          )
+        }
+      }
+    }),
     /**
      * Fetches a registry of NFT collection names by collection asset id.
      * Uses local storage to load the initial data and

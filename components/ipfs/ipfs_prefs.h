@@ -17,4 +17,4 @@ void ClearDeprecatedIpfsPrefs(PrefService* profile_prefs);
 
 }  // namespace ipfs
 
-#endif  // BRAVE_COMPONENTS_IPFS_PREF_NAMES_H_
+#endif  // BRAVE_COMPONENTS_IPFS_IPFS_PREFS_H_
