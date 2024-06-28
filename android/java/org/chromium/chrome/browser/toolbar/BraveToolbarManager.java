@@ -339,8 +339,7 @@ public class BraveToolbarManager extends ToolbarManager {
             OnClickListener tabSwitcherClickHandler,
             OnClickListener newTabClickHandler,
             OnClickListener bookmarkClickHandler,
-            OnClickListener customTabsBackClickHandler,
-            Supplier<Boolean> showStartSurfaceSupplier) {
+            OnClickListener customTabsBackClickHandler) {
         OnClickListener wrappedNewTabClickHandler =
                 v -> {
                     recordNewTabClick();
@@ -352,8 +351,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 tabSwitcherClickHandler,
                 wrappedNewTabClickHandler,
                 bookmarkClickHandler,
-                customTabsBackClickHandler,
-                showStartSurfaceSupplier);
+                customTabsBackClickHandler);
 
         if (isToolbarPhone() && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             enableBottomControls();
