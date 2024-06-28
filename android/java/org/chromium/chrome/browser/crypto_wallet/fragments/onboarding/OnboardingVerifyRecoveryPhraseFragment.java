@@ -96,9 +96,13 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                                     // only during onboarding process.
                                                     mOnNextPage.incrementPages(1);
                                                 } else {
+                                                    // It's important to call the
+                                                    // `showWallet` method instead of
+                                                    // finishing the activity as we need to
+                                                    // reload the portfolio section to hide the
+                                                    // backup banner.
                                                     mOnNextPage.showWallet();
                                                 }
-
                                             }
                                         } else {
                                             phraseNotMatch();
@@ -119,8 +123,14 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                         braveWalletP3A.reportOnboardingAction(
                                 OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
                     }
-                    if (mOnNextPage != null) {
-                        mOnNextPage.incrementPages(1);
+                    if (mIsOnboarding) {
+                        if (mOnNextPage != null) {
+                            // Show confirmation screen
+                            // only during onboarding process.
+                            mOnNextPage.incrementPages(1);
+                        }
+                    } else {
+                        requireActivity().finish();
                     }
                 });
 
