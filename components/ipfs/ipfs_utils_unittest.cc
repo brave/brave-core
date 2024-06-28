@@ -79,7 +79,7 @@ TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
   ipfs::DeleteIpfsComponentAndData(user_data_dir,
                                    ipfs::GetIpfsClientComponentId());
   task_environment_.RunUntilIdle();
-  EXPECT_FALSE(base::PathExists(cache_folder));
+  EXPECT_TRUE(base::PathExists(cache_folder));
   EXPECT_FALSE(base::PathExists(component_id_folder));
 }
 

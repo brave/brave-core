@@ -129,11 +129,6 @@ void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir,
   if (user_data_dir.empty() || !base::PathExists(user_data_dir)) {
     return;
   }
-  // Clean IPFS cache
-  base::ThreadPool::PostTask(
-      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::GetDeletePathRecursivelyCallback(
-          user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"))));
   // Remove IPFS component
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
