@@ -1139,7 +1139,6 @@ test("brave_browser_tests") {
       "//brave/browser/brave_resources_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
-      "//brave/browser/url_sanitizer/url_sanitizer_browsertest.cc",
     ]
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
@@ -1148,6 +1147,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
+      "//brave/browser/url_sanitizer:browser_tests",
       "//brave/components/brave_wallet/browser:test_support",
       "//chrome/browser/apps/app_service:app_service",
       "//chrome/browser/apps/app_service:constants",

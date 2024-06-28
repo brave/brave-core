@@ -1361,11 +1361,12 @@ GURL BraveContentBrowserClient::SanitizeURL(
   if (!base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkFromJs)) {
     return url;
   }
-  DCHECK(render_frame_host);
-  DCHECK(render_frame_host->GetBrowserContext());
+  CHECK(render_frame_host);
+  CHECK(render_frame_host->GetBrowserContext());
   auto* url_sanitizer_service =
       brave::URLSanitizerServiceFactory::GetForBrowserContext(
           render_frame_host->GetBrowserContext());
+  CHECK(url_sanitizer_service);
   if (!url_sanitizer_service->CheckJsPermission(
           render_frame_host->GetLastCommittedURL())) {
     return url;
