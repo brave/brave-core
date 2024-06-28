@@ -78,6 +78,7 @@ public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor 
                     suggestion.getDescriptionClassifications(),
                     suggestion.getAnswer(),
                     /* serializedAnswerTemplate */ null,
+                    suggestion.getAnswerType(),
                     suggestion.getFillIntoEdit(),
                     activeTab.getUrl(),
                     suggestion.getImageUrl(),
