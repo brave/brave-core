@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_FACTORY_H_
 #define BRAVE_BROWSER_PROFILES_BRAVE_RENDERER_UPDATER_FACTORY_H_
 
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include <memory>
+
+#include "base/no_destructor.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 class Profile;
 class BraveRendererUpdater;
@@ -18,7 +21,7 @@ class NoDestructor;
 
 // Singleton that creates/deletes BraveRendererUpdater as new Profiles are
 // created/shutdown.
-class BraveRendererUpdaterFactory : public BrowserContextKeyedServiceFactory {
+class BraveRendererUpdaterFactory : public ProfileKeyedServiceFactory {
  public:
   // Returns an instance of the BraveRendererUpdaterFactory singleton.
   static BraveRendererUpdaterFactory* GetInstance();
@@ -31,16 +34,12 @@ class BraveRendererUpdaterFactory : public BrowserContextKeyedServiceFactory {
       delete;
 
  protected:
-  // BrowserContextKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* profile) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
 
  private:
   friend base::NoDestructor<BraveRendererUpdaterFactory>;
-
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
 
   BraveRendererUpdaterFactory();
   ~BraveRendererUpdaterFactory() override;
