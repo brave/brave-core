@@ -345,7 +345,7 @@ void CosmeticFiltersJSHandler::BindFunctionToObject(
 
 bool CosmeticFiltersJSHandler::EnsureConnected() {
   if (!cosmetic_filters_resources_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame_->GetBrowserInterfaceBroker().GetInterface(
         cosmetic_filters_resources_.BindNewPipeAndPassReceiver());
     cosmetic_filters_resources_.set_disconnect_handler(
         base::BindOnce(&CosmeticFiltersJSHandler::OnRemoteDisconnect,
