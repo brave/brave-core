@@ -757,9 +757,47 @@ public final class PlayerModel: ObservableObject {
         handleAudioInterruption(type: type, options: options)
       }
     )
+
+    // In order for AVPlayer to correctly continue playing in the background you need to remove it
+    // from any active AVPlayerLayer's
+    let didEnterBackground = center.addObserver(
+      forName: UIApplication.didEnterBackgroundNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      if isPictureInPictureActive || !isPlaying {
+        return
+      }
+      playerLayer.player = nil
+    }
+
+    // Restore the AVPlayer to the AVPlayerLayer if it was previously removed on background
+    let willEnterForeground = center.addObserver(
+      forName: UIApplication.willEnterForegroundNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      if isPictureInPictureActive || playerLayer.player != nil {
+        return
+      }
+      // There is a bug in iOS that breaks restoring an AVPlayer to an AVPlayerLayer while its
+      // playing in the background, so we have to first pause it before restoring it and resume
+      // playback after.
+      let isPlayingDurationRestoration = isPlaying
+      pause()
+      playerLayer.player = player
+      if isPlayingDurationRestoration {
+        play()
+      }
+    }
+
     cancellables.formUnion([
       .init { _ = didPlayToEndTime },
       .init { _ = interruption },
+      .init { _ = didEnterBackground },
+      .init { _ = willEnterForeground },
     ])
   }
 
@@ -861,7 +899,7 @@ extension PlayerModel {
       MPNowPlayingInfoPropertyMediaType: mediaType.rawValue,
       MPNowPlayingInfoPropertyPlaybackRate: playbackSpeed.rate,
       MPMediaItemPropertyArtist: selectedItem.pageSrc.asURL?.baseDomain ?? selectedItem.pageSrc,
-      MPMediaItemPropertyPlaybackDuration: duration,
+      MPMediaItemPropertyPlaybackDuration: duration.seconds ?? 0,
       MPMediaItemPropertyTitle: selectedItem.name,
     ]
 
