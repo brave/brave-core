@@ -1299,4 +1299,314 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
   EXPECT_EQ(tx_args[2], "0x98647");                       // 0.624199 USDC.e
 }
 
+TEST(EthDataParser,
+     GetTransactionInfoFromDataLiFiSwapTokensSingleNativeToERC20) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: ETH → token
+  // Function:
+  // swapTokensSingleNativeToERC20(bytes32 transactionId,
+  //                               string integrator,
+  //                               string referrer,
+  //                               address receiver,
+  //                               uint256 minAmountOut,
+  //                               (address callTo,
+  //                                address approveTo,
+  //                                address sendingAssetId,
+  //                                address receivingAssetId,
+  //                                uint256 fromAmount,
+  //                                bytes callData,
+  //                                bool requiresDeposit) swapData)
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x8f0af374"  // function selector
+
+      /***************************** HEAD ****************************/
+      // transactionId
+      "94e4981b008883f7f7f34300c08227725cb259e7f341dfa94b81e2ed673b6571"
+      // integrator (offset)
+      "00000000000000000000000000000000000000000000000000000000000000c0"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000100"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmountOut
+      "0000000000000000000000000000000000000000000000000000000000052397"
+
+      // offset to start data part of swapData
+      "0000000000000000000000000000000000000000000000000000000000000160"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of referrer
+      // size of referrer string
+      "000000000000000000000000000000000000000000000000000000000000002a"
+      // referrer string
+      "3078303030303030303030303030303030303030303030303030303030303030"
+      "3030303030303030303000000000000000000000000000000000000000000000"
+
+      // callTo
+      "0000000000000000000000006a000f20005980200259b80c5102003040001068"
+      // approveTo
+      "0000000000000000000000006a000f20005980200259b80c5102003040001068"
+      // sendingAssetId
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // receivingAssetId
+      "000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      // fromAmount
+      "00000000000000000000000000000000000000000000000000005af3107a4000"
+      // callData
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // requiresDeposit
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      "00000000000000000000000000000000000000000000000000000000000001e4"
+      "e8bb3b6c00000000000000000000000000000000000000000000000000000000"
+      "000000608c208b7b5625d78deb49240ef28126cbe27380981000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "000001c0000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      "eeeeeeee000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce"
+      "3606eb4800000000000000000000000000000000000000000000000000005af3"
+      "107a400000000000000000000000000000000000000000000000000000000000"
+      "0005239700000000000000000000000000000000000000000000000000000000"
+      "00052a3362ce29e87edc4049a22351ea61154ecf000000000000000000000000"
+      "0133e4a600000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000010000000000000000000000000000000000000000000000000000000000"
+      "00000040a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48c02aaa39b223fe8d"
+      "0a0e5c4f27ead9083c756cc20000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint256");
+  EXPECT_EQ(tx_params[2], "uint256");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // ETH
+            "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(tx_args[1], "0x5af3107a4000");                // 0.0001 ETH
+  EXPECT_EQ(tx_args[2], "0x52397");                       // 0.336791 USDC
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataLiFiSwapTokensSingleERC20ToNative) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: token → ETH
+  // Function:
+  // swapTokensSingleERC20ToNative(bytes32 transactionId,
+  //                               string integrator,
+  //                               string referrer,
+  //                               address receiver,
+  //                               uint256 minAmountOut,
+  //                               (address callTo,
+  //                                address approveTo,
+  //                                address sendingAssetId,
+  //                                address receivingAssetId,
+  //                                uint256 fromAmount,
+  //                                bytes callData,
+  //                                bool requiresDeposit) swapData)
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xd5bc7be1"  // function selector
+
+      /***************************** HEAD ****************************/
+      // transactionId
+      "68ec9ff6350e2e873779da24892008b7347f3b38f78150ab2a6f5ae21a211077"
+      // integrator (offset)
+      "00000000000000000000000000000000000000000000000000000000000000c0"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000100"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmountOut
+      "000000000000000000000000000000000000000000000000000b4fb6da8128d1"
+
+      // offset to start data part of swapData
+      "0000000000000000000000000000000000000000000000000000000000000160"
+
+      // offset to start data part of integrator
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of referrer
+      // size of referrer string
+      "000000000000000000000000000000000000000000000000000000000000002a"
+      // referrer string
+      "3078303030303030303030303030303030303030303030303030303030303030"
+      "3030303030303030303000000000000000000000000000000000000000000000"
+
+      // callTo
+      "000000000000000000000000e43ca1dee3f0fc1e2df73a0745674545f11a59f5"
+      // approveTo
+      "000000000000000000000000e43ca1dee3f0fc1e2df73a0745674545f11a59f5"
+      // sendingAssetId
+      "0000000000000000000000006b175474e89094c44da98b954eedeac495271d0f"
+      // receivingAssetId
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // fromAmount
+      "00000000000000000000000000000000000000000000000096324f4223190000"
+      // callData
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // requiresDeposit
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      "0000000000000000000000000000000000000000000000000000000000000164"
+      "2646478b0000000000000000000000006b175474e89094c44da98b954eedeac4"
+      "95271d0f00000000000000000000000000000000000000000000000096324f42"
+      "23190000000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      "eeeeeeee000000000000000000000000000000000000000000000000000b4fb6"
+      "da8128d10000000000000000000000001231deb6f5749ef6ce6943a275a1d3e7"
+      "486f4eae00000000000000000000000000000000000000000000000000000000"
+      "000000c000000000000000000000000000000000000000000000000000000000"
+      "00000073026b175474e89094c44da98b954eedeac495271d0f01ffff00a478c2"
+      "975ab1ea89e8196811f51a7b7ade33eb1101e43ca1dee3f0fc1e2df73a074567"
+      "4545f11a59f5000bb801c02aaa39b223fe8d0a0e5c4f27ead9083c756cc201ff"
+      "ff02001231deb6f5749ef6ce6943a275a1d3e7486f4eae000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint256");
+  EXPECT_EQ(tx_params[2], "uint256");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0x6b175474e89094c44da98b954eedeac495271d0f"  // DAI
+            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
+  EXPECT_EQ(tx_args[1], "0x96324f4223190000");            // 10.8228 DAI
+  EXPECT_EQ(tx_args[2], "0xb4fb6da8128d1");  // 0.003183871512357073 ETH
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataLiFiSwapTokensSingleERC20ToERC20) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: token → token
+  // Function:
+  // swapTokensSingleERC20ToERC20(bytes32 transactionId,
+  //                               string integrator,
+  //                               string referrer,
+  //                               address receiver,
+  //                               uint256 minAmountOut,
+  //                               (address callTo,
+  //                                address approveTo,
+  //                                address sendingAssetId,
+  //                                address receivingAssetId,
+  //                                uint256 fromAmount,
+  //                                bytes callData,
+  //                                bool requiresDeposit) swapData)
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x878863a4"  // function selector
+
+      /***************************** HEAD ****************************/
+      // transactionId
+      "53c2133b1535c6e5b73787aef9e24785aab9ef18bd4232ded93bafb34c351148"
+      // integrator (offset)
+      "00000000000000000000000000000000000000000000000000000000000000c0"
+      // referrer
+      "0000000000000000000000000000000000000000000000000000000000000100"
+      // receiver
+      "000000000000000000000000a92d461a9a988a7f11ec285d39783a637fdd6ba4"
+      // minAmountOut
+      "0000000000000000000000000000000000000000000000061dc2169221089f5c"
+
+      // offset to start data part of swapData
+      "0000000000000000000000000000000000000000000000000000000000000160"
+
+      // offset to start data part of integrator
+      // size of integrator string
+      "0000000000000000000000000000000000000000000000000000000000000005"
+      // integrator string
+      "6272617665000000000000000000000000000000000000000000000000000000"
+
+      // offset to start data part of referrer
+      // size of referrer string
+      "000000000000000000000000000000000000000000000000000000000000002a"
+      // referrer string
+      "3078303030303030303030303030303030303030303030303030303030303030"
+      "3030303030303030303000000000000000000000000000000000000000000000"
+
+      // callTo
+      "000000000000000000000000e43ca1dee3f0fc1e2df73a0745674545f11a59f5"
+      // approveTo
+      "000000000000000000000000e43ca1dee3f0fc1e2df73a0745674545f11a59f5"
+      // sendingAssetId
+      "0000000000000000000000006b175474e89094c44da98b954eedeac495271d0f"
+      // receivingAssetId
+      "0000000000000000000000000d8775f648430679a709e98d2b0cb6250d2887ef"
+      // fromAmount
+      "0000000000000000000000000000000000000000000000012c64655a698c7e2b"
+      // callData
+      "00000000000000000000000000000000000000000000000000000000000000e0"
+      // requiresDeposit
+      "0000000000000000000000000000000000000000000000000000000000000001"
+
+      "0000000000000000000000000000000000000000000000000000000000000184"
+      "2646478b0000000000000000000000006b175474e89094c44da98b954eedeac4"
+      "95271d0f0000000000000000000000000000000000000000000000012c64655a"
+      "698c7e2b0000000000000000000000000d8775f648430679a709e98d2b0cb625"
+      "0d2887ef0000000000000000000000000000000000000000000000061dc21692"
+      "21089f5c0000000000000000000000001231deb6f5749ef6ce6943a275a1d3e7"
+      "486f4eae00000000000000000000000000000000000000000000000000000000"
+      "000000c000000000000000000000000000000000000000000000000000000000"
+      "00000087026b175474e89094c44da98b954eedeac495271d0f01ffff00a478c2"
+      "975ab1ea89e8196811f51a7b7ade33eb1101b6909b960dbbe7392d405429eb2b"
+      "3649752b4838000bb804c02aaa39b223fe8d0a0e5c4f27ead9083c756cc200b6"
+      "909b960dbbe7392d405429eb2b3649752b4838001231deb6f5749ef6ce6943a2"
+      "75a1d3e7486f4eae000bb8000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, std::nullopt);
+
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint256");
+  EXPECT_EQ(tx_params[2], "uint256");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0x6b175474e89094c44da98b954eedeac495271d0f"  // DAI
+            "0d8775f648430679a709e98d2b0cb6250d2887ef");  // BAT
+  EXPECT_EQ(tx_args[1], "0x12c64655a698c7e2b");  // 21.645537148041726 DAI
+  EXPECT_EQ(tx_args[2], "0x61dc2169221089f5c");  // 112.82476563171433 BAT
+}
+
 }  // namespace brave_wallet
