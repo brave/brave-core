@@ -4,7 +4,7 @@ Permission rules determine if users are allowed to see ads.
 
 | permission rule  | explanation  |
 |---|---|
-| allow notifications  | Check if system notifications are allowed. |
+| allow notifications  | Check if system notifications are allowed.  |
 | browser is active  | Check if the browser is active.  |
 | catalog  | Check if the catalog is valid.  |
 | command line  | Check if the user overrode the command line when using the production environment.  |
