@@ -1,0 +1,52 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//third_party/flatbuffers/flatbuffer.gni")
+
+flatbuffer("encoder_config") {
+  sources = [
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/sentencepiece/config.fbs",
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/sentencepiece/encoder_config.fbs",
+  ]
+
+  # Disable warnings as the flatbuffer uses snakecase for
+  # sentencePiece which
+  # now causes a warning message with flatc.
+  args = [ "--no-warnings" ]
+}
+
+static_library("tflite_support") {
+  sources = [
+    "//third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/utils/text_op_resolver.cc",
+    "//third_party/tflite_support/src/tensorflow_lite_support/cc/task/text/utils/text_op_resolver.h",
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/ragged/ragged_tensor_to_tensor_tflite.cc",
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/sentencepiece/optimized_encoder.cc",
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/sentencepiece/optimized_encoder.h",
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/sentencepiece/sentencepiece_tokenizer.h",
+    "//third_party/tflite_support/src/tensorflow_lite_support/custom_ops/kernel/sentencepiece/sentencepiece_tokenizer_tflite.cc",
+  ]
+
+  deps = [
+    ":encoder_config",
+    "//third_party/flatbuffers",
+    "//third_party/tflite",
+    "//third_party/tflite:tflite_builtin_op_resolver",
+    "//third_party/tflite:tflite_public_headers",
+    "//third_party/tflite_support:tflite_support_proto",
+  ]
+
+  public_deps = [ "//third_party/abseil-cpp:absl" ]
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+
+    # Must be after no_chromium_code for warning flags to be ordered correctly.
+    "//third_party/tflite_support:tflite_support_flags",
+  ]
+
+  public_configs = [ "//third_party/tflite_support:tflite_support_config" ]
+}

@@ -13,6 +13,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/debug/crash_logging.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
@@ -20,6 +21,7 @@
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -678,6 +680,7 @@ void ConversationDriver::CleanUp() {
   DVLOG(1) << __func__;
   chat_history_.clear();
   article_text_.clear();
+  is_content_refined_ = false;
   content_invalidation_token_.clear();
   on_page_text_fetch_complete_ = std::make_unique<base::OneShotEvent>();
   is_video_ = false;
@@ -691,6 +694,7 @@ void ConversationDriver::CleanUp() {
   OnSuggestedQuestionsChanged();
   SetAPIError(mojom::APIError::None);
   engine_->ClearAllQueries();
+  text_embedder_.reset();
 
   MaybeSeedOrClearSuggestions();
 
@@ -1052,9 +1056,52 @@ void ConversationDriver::PerformAssistantGeneration(
   auto data_completed_callback =
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
-  engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
-                                     input, std::move(data_received_callback),
-                                     std::move(data_completed_callback));
+  if (!text_embedder_) {
+    // TODO(darkdh): Use component updater or bundle the model
+    text_embedder_ = TextEmbedder::Create(base::FilePath(
+        "/tmp/universal_sentence_encoder_qa_with_metadata.tflite"));
+  }
+  if (text_embedder_ &&
+      page_content.length() > GetCurrentModel()
+                                  .options->get_leo_model_options()
+                                  ->max_page_content_length &&
+      input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE)) {
+    text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
+        input, page_content,
+        GetCurrentModel()
+            .options->get_leo_model_options()
+            ->max_page_content_length,
+        base::BindOnce(&ConversationDriver::OnGetRefinedPageContent,
+                       weak_ptr_factory_.GetWeakPtr(), input,
+                       std::move(data_received_callback),
+                       std::move(data_completed_callback), page_content,
+                       is_video));
+  } else {
+    engine_->GenerateAssistantResponse(is_video, page_content, chat_history_,
+                                       input, std::move(data_received_callback),
+                                       std::move(data_completed_callback));
+  }
+}
+
+void ConversationDriver::OnGetRefinedPageContent(
+    const std::string& input,
+    EngineConsumer::GenerationDataCallback data_received_callback,
+    EngineConsumer::GenerationCompletedCallback data_completed_callback,
+    std::string page_content,
+    bool is_video,
+    base::expected<std::string, std::string> refined_page_content) {
+  std::string page_content_to_use = std::move(page_content);
+  if (refined_page_content.has_value()) {
+    page_content_to_use = std::move(refined_page_content.value());
+    is_content_refined_ = true;
+    OnPageHasContentChanged(BuildSiteInfo());
+  } else {
+    VLOG(1) << "Failed to get refined page content: "
+               << refined_page_content.error();
+  }
+  engine_->GenerateAssistantResponse(
+      is_video, page_content_to_use, chat_history_, input,
+      std::move(data_received_callback), std::move(data_completed_callback));
 }
 
 void ConversationDriver::RetryAPIRequest() {
@@ -1187,6 +1234,7 @@ mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   site_info->title = base::UTF16ToUTF8(GetPageTitle());
   site_info->content_used_percentage = GetContentUsedPercentage();
   site_info->is_content_association_possible = IsContentAssociationPossible();
+  site_info->is_content_refined = is_content_refined_;
   const GURL url = GetPageURL();
 
   if (url.SchemeIsHTTPOrHTTPS()) {

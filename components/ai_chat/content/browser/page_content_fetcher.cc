@@ -256,7 +256,7 @@ class PageContentFetcher {
 
       if (!transcript_text.empty()) {
         // Add a space as a separator betwen texts.
-        transcript_text += " ";
+        transcript_text += ". ";
       }
 
       transcript_text += text;
