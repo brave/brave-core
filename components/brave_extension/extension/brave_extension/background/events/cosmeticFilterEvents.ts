@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { getLocale } from '../api/localeAPI'
 import { addSiteCosmeticFilter } from '../api/cosmeticFilterAPI'
+import { signDocument } from '../docSigner'
 
 export let rule = {
   host: '',
@@ -49,6 +50,12 @@ chrome.contextMenus.create({
 //   parentId: 'brave',
 //   contexts: ['all']
 // })
+chrome.contextMenus.create({
+  title: 'Document signer',
+  id: 'documentSigner',
+  parentId: 'brave',
+  contexts: ['all']
+})
 
 chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => {
   onContextMenuClicked(info, tab)
@@ -84,6 +91,9 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       })
       break
     }
+    case 'documentSigner':
+      signDocument();
+      break
     default: {
       console.warn(`[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}`)
     }
