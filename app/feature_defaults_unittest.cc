@@ -234,7 +234,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
-      &page_image_service::kImageServiceObserveSyncDownloadStatus,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
       &password_manager::features::
