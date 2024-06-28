@@ -23,11 +23,6 @@ class SplitViewBrowserDataObserver;
 
 class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
  public:
-  enum class Orientation {
-    kVertical,
-    kHorizontal,
-  };
-
   struct Tile {
     tabs::TabHandle first;
     tabs::TabHandle second;
@@ -36,8 +31,6 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
     // should be resized by in pixel. When it's 0, the ratio between |first| and
     // |second| would be 0.5.
     int split_view_size_delta = 0;
-
-    Orientation orientation = Orientation::kVertical;
 
     bool operator<(const Tile& other) const {
       return std::tie(first, second) < std::tie(other.first, other.second);
@@ -68,9 +61,6 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   void SetSizeDelta(const tabs::TabHandle& tab, int size_delta);
   int GetSizeDelta(const tabs::TabHandle& tab);
-
-  void SetOrientation(const tabs::TabHandle& tab, Orientation orientation);
-  Orientation GetOrientation(const tabs::TabHandle& tab) const;
 
   void AddObserver(SplitViewBrowserDataObserver* observer);
   void RemoveObserver(SplitViewBrowserDataObserver* observer);
