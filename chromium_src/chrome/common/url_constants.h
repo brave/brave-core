@@ -162,6 +162,10 @@ inline constexpr char kCrashReasonFeedbackDisplayedURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 
+// "Learn more" URL for the inactive tabs appearance setting.
+inline constexpr char kDiscardRingTreatmentLearnMoreUrl[] =
+    "https://support.brave.com/";
+
 // "Learn more" URL for the "Do not track" setting in the privacy section.
 inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
     u"https://support.brave.com/hc/en-us/articles/"
