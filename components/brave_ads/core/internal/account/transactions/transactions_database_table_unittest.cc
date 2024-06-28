@@ -27,7 +27,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*transactions=*/::testing::IsEmpty()));
   const Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
@@ -55,7 +56,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, ::testing::ElementsAreArray(transactions)));
   const Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
@@ -77,7 +79,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, transactions));
   const Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
@@ -146,7 +149,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
               Run(/*success=*/true,
                   ::testing::UnorderedElementsAreArray(
                       TransactionList{transaction_1, transaction_2})));
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
@@ -178,7 +182,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   base::MockCallback<GetTransactionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*transactions=*/::testing::IsEmpty()));
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTableName) {

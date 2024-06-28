@@ -304,7 +304,7 @@ void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
   // Optimize database query for `GetUnexpired`.
-  CreateTableIndex(transaction, "creative_set_conversions",
+  CreateTableIndex(transaction, /*table_name=*/"creative_set_conversions",
                    /*columns=*/{"expire_at"});
 }
 

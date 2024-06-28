@@ -322,7 +322,8 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
@@ -346,7 +347,8 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest,
@@ -371,7 +373,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::IsEmpty()));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest,
@@ -396,7 +399,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::IsEmpty()));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 }  // namespace brave_ads

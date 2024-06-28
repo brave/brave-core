@@ -28,7 +28,6 @@ class Transactions final : public TableInterface {
  public:
   void Save(const TransactionList& transactions, ResultCallback callback);
 
-  void GetAll(GetTransactionsCallback callback) const;
   void GetForDateRange(base::Time from_time,
                        base::Time to_time,
                        GetTransactionsCallback callback) const;
