@@ -91,7 +91,14 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                             }
                                             keyringService.notifyWalletBackupComplete();
                                             if (mOnNextPage != null) {
-                                                mOnNextPage.incrementPages(1);
+                                                if (mIsOnboarding) {
+                                                    // Show confirmation screen
+                                                    // only during onboarding process.
+                                                    mOnNextPage.incrementPages(1);
+                                                } else {
+                                                    mOnNextPage.showWallet();
+                                                }
+
                                             }
                                         } else {
                                             phraseNotMatch();
