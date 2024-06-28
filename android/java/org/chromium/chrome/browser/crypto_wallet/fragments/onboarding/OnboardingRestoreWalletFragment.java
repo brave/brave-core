@@ -152,8 +152,11 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                                     if (mOnNextPage != null) {
                                                         // If biometric is not supported we
                                                         // skip the fingerprint setup screen.
-                                                        mOnNextPage.incrementPages(Utils.isBiometricSupported(
-                                                                requireContext()) ? 1 : 2);
+                                                        mOnNextPage.incrementPages(
+                                                                Utils.isBiometricSupported(
+                                                                                requireContext())
+                                                                        ? 1
+                                                                        : 2);
                                                     }
                                                 }));
                     } else {
