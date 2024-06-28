@@ -395,34 +395,6 @@ extension BrowserViewController: TopToolbarDelegate {
     return false
   }
 
-  func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
-    var engine = profile.searchEngines.defaultEngine(
-      forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
-    )
-
-    if isBraveSearchPromotion {
-      let braveSearchEngine = profile.searchEngines.orderedEngines.first {
-        $0.shortName == OpenSearchEngine.EngineNames.brave
-      }
-
-      if let searchEngine = braveSearchEngine {
-        engine = searchEngine
-      }
-    }
-
-    if let searchURL = engine.searchURLForQuery(
-      text,
-      isBraveSearchPromotion: isBraveSearchPromotion
-    ) {
-      // We couldn't find a matching search keyword, so do a search query.
-      finishEditingAndSubmit(searchURL)
-    } else {
-      // We still don't have a valid URL, so something is broken. Give up.
-      print("Error handling URL entry: \"\(text)\".")
-      assertionFailure("Couldn't generate search URL: \(text)")
-    }
-  }
-
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
     updateTabsBarVisibility()
     displayFavoritesController()

@@ -20,15 +20,13 @@ class ActionToBraveViewController: UIViewController {
     for item in extensionContext?.inputItems as? [NSExtensionItem] ?? [] {
       for provider in item.attachments ?? [] {
 
-        // Opening browser with search url
-        if provider.hasItemConformingToTypeIdentifier(UTType.text.identifier) {
-          loadAttachmentFor(type: .query, using: provider)
-          break
-        }
-
         // Opening browser with site
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
           loadAttachmentFor(type: .url, using: provider)
+          break
+        } else {
+          // Opening browser with search url
+          loadAttachmentFor(type: .query, using: provider)
           break
         }
       }
