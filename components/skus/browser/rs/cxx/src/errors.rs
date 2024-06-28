@@ -7,52 +7,11 @@ use std::error::Error;
 
 use crate::ffi;
 
-impl From<skus::errors::InternalError> for ffi::SkusResult {
-    fn from(e: skus::errors::InternalError) -> Self {
-        ffi::SkusResult::from(&e)
-    }
-}
-
-impl From<&skus::errors::InternalError> for ffi::SkusResult {
-    fn from(e: &skus::errors::InternalError) -> Self {
-        match e {
-            skus::errors::InternalError::RequestFailed => ffi::SkusResult::RequestFailed,
-            skus::errors::InternalError::InternalServer(_) => ffi::SkusResult::InternalServer,
-            skus::errors::InternalError::BadRequest(_) => ffi::SkusResult::BadRequest,
-            skus::errors::InternalError::UnhandledStatus(_) => ffi::SkusResult::UnhandledStatus,
-            skus::errors::InternalError::RetryLater(_) => ffi::SkusResult::RetryLater,
-            skus::errors::InternalError::NotFound => ffi::SkusResult::NotFound,
-            skus::errors::InternalError::SerializationFailed => {
-                ffi::SkusResult::SerializationFailed
-            }
-            skus::errors::InternalError::InvalidResponse(_) => ffi::SkusResult::InvalidResponse,
-            skus::errors::InternalError::InvalidProof => ffi::SkusResult::InvalidProof,
-            skus::errors::InternalError::QueryError => ffi::SkusResult::QueryError,
-            skus::errors::InternalError::OutOfCredentials => ffi::SkusResult::OutOfCredentials,
-            skus::errors::InternalError::StorageWriteFailed(_) => {
-                ffi::SkusResult::StorageWriteFailed
-            }
-            skus::errors::InternalError::StorageReadFailed(_) => ffi::SkusResult::StorageReadFailed,
-            skus::errors::InternalError::OrderUnpaid => ffi::SkusResult::OrderUnpaid,
-            skus::errors::InternalError::UnhandledVariant => ffi::SkusResult::UnhandledVariant,
-            skus::errors::InternalError::OrderLocationMismatch => {
-                ffi::SkusResult::OrderLocationMismatch
-            }
-            skus::errors::InternalError::OrderMisconfiguration => {
-                ffi::SkusResult::OrderMisconfiguration
-            }
-            skus::errors::InternalError::ItemCredentialsMissing => {
-                ffi::SkusResult::ItemCredentialsMissing
-            }
-            skus::errors::InternalError::ItemCredentialsExpired => {
-                ffi::SkusResult::ItemCredentialsExpired
-            }
-            skus::errors::InternalError::InvalidMerchantOrSku => {
-                ffi::SkusResult::InvalidMerchantOrSku
-            }
-            skus::errors::InternalError::BorrowFailed => ffi::SkusResult::BorrowFailed,
-            skus::errors::InternalError::FutureCancelled => ffi::SkusResult::FutureCancelled,
-            skus::errors::InternalError::InvalidCall(_) => ffi::SkusResult::InvalidCall,
+impl ffi::SkusResult {
+    pub fn new(code: ffi::SkusResultCode, msg: &str) -> Self {
+        ffi::SkusResult {
+            code,
+            msg: msg.to_string(),
         }
     }
 }
@@ -67,78 +26,61 @@ impl From<skus::errors::SkusError> for ffi::SkusResult {
     }
 }
 
-impl From<ffi::SkusResult> for skus::errors::InternalError {
-    fn from(e: ffi::SkusResult) -> Self {
-        match e {
-            ffi::SkusResult::RequestFailed => skus::errors::InternalError::RequestFailed,
-            ffi::SkusResult::InternalServer => {
-                skus::errors::InternalError::InternalServer(skus::models::APIError {
-                    code: 599,
-                    message: "internal server error".to_string(),
-                    error_code: "unknown".to_string(),
-                    data: serde_json::Value::Null,
-                })
-            }
-            ffi::SkusResult::BadRequest => {
-                skus::errors::InternalError::BadRequest(skus::models::APIError {
-                    code: 499,
-                    message: "bad request error".to_string(),
-                    error_code: "unknown".to_string(),
-                    data: serde_json::Value::Null,
-                })
-            }
-            ffi::SkusResult::UnhandledStatus => {
-                skus::errors::InternalError::UnhandledStatus(skus::models::APIError {
-                    code: 699,
-                    message: "unhandled error".to_string(),
-                    error_code: "unknown".to_string(),
-                    data: serde_json::Value::Null,
-                })
-            }
-            ffi::SkusResult::RetryLater => skus::errors::InternalError::RetryLater(None),
-            ffi::SkusResult::NotFound => skus::errors::InternalError::NotFound,
-            ffi::SkusResult::SerializationFailed => {
-                skus::errors::InternalError::SerializationFailed
-            }
-            ffi::SkusResult::InvalidResponse => {
-                skus::errors::InternalError::InvalidResponse("".to_string())
-            }
-            ffi::SkusResult::InvalidProof => skus::errors::InternalError::InvalidProof,
-            ffi::SkusResult::QueryError => skus::errors::InternalError::QueryError,
-            ffi::SkusResult::OutOfCredentials => skus::errors::InternalError::OutOfCredentials,
-            ffi::SkusResult::StorageWriteFailed => {
-                skus::errors::InternalError::StorageWriteFailed("".to_string())
-            }
-            ffi::SkusResult::StorageReadFailed => {
-                skus::errors::InternalError::StorageReadFailed("".to_string())
-            }
-            ffi::SkusResult::OrderUnpaid => skus::errors::InternalError::OrderUnpaid,
-            ffi::SkusResult::UnhandledVariant => skus::errors::InternalError::UnhandledVariant,
-            ffi::SkusResult::OrderLocationMismatch => {
-                skus::errors::InternalError::OrderLocationMismatch
-            }
-            ffi::SkusResult::OrderMisconfiguration => {
-                skus::errors::InternalError::OrderMisconfiguration
-            }
-            ffi::SkusResult::ItemCredentialsMissing => {
-                skus::errors::InternalError::ItemCredentialsMissing
-            }
-            ffi::SkusResult::ItemCredentialsExpired => {
-                skus::errors::InternalError::ItemCredentialsExpired
-            }
-            ffi::SkusResult::InvalidMerchantOrSku => {
-                skus::errors::InternalError::InvalidMerchantOrSku
-            }
-            ffi::SkusResult::BorrowFailed => skus::errors::InternalError::BorrowFailed,
-            ffi::SkusResult::FutureCancelled => skus::errors::InternalError::FutureCancelled,
-            ffi::SkusResult::InvalidCall => {
-                skus::errors::InternalError::InvalidCall("".to_string())
-            }
-            _ => skus::errors::InternalError::UnhandledVariant,
+impl From<skus::errors::InternalError> for ffi::SkusResult {
+    fn from(e: skus::errors::InternalError) -> Self {
+        (&e).into()
+    }
+}
+
+impl From<&skus::errors::InternalError> for ffi::SkusResult {
+    fn from(e: &skus::errors::InternalError) -> Self {
+        ffi::SkusResult {
+            code: ffi::SkusResultCode::from(e),
+            msg: e.to_string(),
         }
     }
 }
 
-pub fn result_to_string(result: &ffi::SkusResult) -> String {
-    <ffi::SkusResult as Into<skus::errors::InternalError>>::into(*result).to_string()
+impl From<&skus::errors::InternalError> for ffi::SkusResultCode {
+    fn from(e: &skus::errors::InternalError) -> Self {
+        match e {
+            skus::errors::InternalError::RequestFailed => ffi::SkusResultCode::RequestFailed,
+            skus::errors::InternalError::InternalServer(_) => ffi::SkusResultCode::InternalServer,
+            skus::errors::InternalError::BadRequest(_) => ffi::SkusResultCode::BadRequest,
+            skus::errors::InternalError::UnhandledStatus(_) => ffi::SkusResultCode::UnhandledStatus,
+            skus::errors::InternalError::RetryLater(_) => ffi::SkusResultCode::RetryLater,
+            skus::errors::InternalError::NotFound => ffi::SkusResultCode::NotFound,
+            skus::errors::InternalError::SerializationFailed => {
+                ffi::SkusResultCode::SerializationFailed
+            }
+            skus::errors::InternalError::InvalidResponse(_) => ffi::SkusResultCode::InvalidResponse,
+            skus::errors::InternalError::InvalidProof => ffi::SkusResultCode::InvalidProof,
+            skus::errors::InternalError::QueryError => ffi::SkusResultCode::QueryError,
+            skus::errors::InternalError::OutOfCredentials => ffi::SkusResultCode::OutOfCredentials,
+            skus::errors::InternalError::StorageWriteFailed(_) => {
+                ffi::SkusResultCode::StorageWriteFailed
+            }
+            skus::errors::InternalError::StorageReadFailed(_) => ffi::SkusResultCode::StorageReadFailed,
+            skus::errors::InternalError::OrderUnpaid => ffi::SkusResultCode::OrderUnpaid,
+            skus::errors::InternalError::UnhandledVariant => ffi::SkusResultCode::UnhandledVariant,
+            skus::errors::InternalError::OrderLocationMismatch => {
+                ffi::SkusResultCode::OrderLocationMismatch
+            }
+            skus::errors::InternalError::OrderMisconfiguration => {
+                ffi::SkusResultCode::OrderMisconfiguration
+            }
+            skus::errors::InternalError::ItemCredentialsMissing => {
+                ffi::SkusResultCode::ItemCredentialsMissing
+            }
+            skus::errors::InternalError::ItemCredentialsExpired => {
+                ffi::SkusResultCode::ItemCredentialsExpired
+            }
+            skus::errors::InternalError::InvalidMerchantOrSku => {
+                ffi::SkusResultCode::InvalidMerchantOrSku
+            }
+            skus::errors::InternalError::BorrowFailed => ffi::SkusResultCode::BorrowFailed,
+            skus::errors::InternalError::FutureCancelled => ffi::SkusResultCode::FutureCancelled,
+            skus::errors::InternalError::InvalidCall(_) => ffi::SkusResultCode::InvalidCall,
+        }
+    }
 }

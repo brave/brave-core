@@ -76,13 +76,13 @@ class AIChatSettingsHelper : public mojom::AIChatSettingsHelper,
 
 #if BUILDFLAG(IS_ANDROID)
   void OnCreateOrderId(CreateOrderIdCallback callback,
-                       const std::string& response);
+                       skus::mojom::SkusResultPtr response);
   void OnFetchOrderCredentials(FetchOrderCredentialsCallback callback,
                                const std::string& order_id,
-                               const std::string& response);
+                               skus::mojom::SkusResultPtr response);
   void OnRefreshOrder(RefreshOrderCallback callback,
                       const std::string& order_id,
-                      const std::string& response);
+                      skus::mojom::SkusResultPtr response);
 #endif
 
   base::ScopedObservation<ModelService, ModelService::Observer>

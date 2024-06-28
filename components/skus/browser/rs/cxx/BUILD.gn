@@ -39,4 +39,6 @@ source_set("shim") {
     "//base",
     "//build/rust:cxx_cppdeps",
   ]
+
+  deps = [ "//brave/components/skus/common:mojom" ]
 }

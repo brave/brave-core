@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -72,7 +73,8 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting([&](const skus::HttpResponse& result) {
           callback_called = true;
           std::string body(result.body.begin(), result.body.end());
-          EXPECT_EQ(result.result, expected_result);
+          EXPECT_EQ(result.result.code, expected_result.code);
+          EXPECT_EQ(result.result.msg, expected_result.msg);
           EXPECT_EQ(body, expected_response);
         }));
     skus_url_loader()->BeginFetch(
@@ -105,18 +107,21 @@ TEST_F(SkusUrlLoaderImplUnitTest, BeginFetch) {
   FetchResponse(
       "GET",
       rust::cxxbridge1::Box<skus::HttpRoundtripContext>::from_raw(nullptr),
-      "https://brave.com", skus::SkusResult::Ok, "{}");
+      "https://brave.com",
+      skus::SkusResult(skus::mojom::SkusResultCode::Ok, "{}"), "{}");
 
   SetResponseText("");
   FetchResponse(
       "GET",
       rust::cxxbridge1::Box<skus::HttpRoundtripContext>::from_raw(nullptr),
-      "https://brave.com", skus::SkusResult::Ok, "");
+      "https://brave.com",
+      skus::SkusResult(skus::mojom::SkusResultCode::Ok, ""), "");
 
   SetResponseText("");
   SetResponseCode(net::HTTP_INTERNAL_SERVER_ERROR);
   FetchResponse(
       "GET",
       rust::cxxbridge1::Box<skus::HttpRoundtripContext>::from_raw(nullptr),
-      "https://brave.com", skus::SkusResult::Ok, std::string());
+      "https://brave.com",
+      skus::SkusResult(skus::mojom::SkusResultCode::Ok, ""), std::string());
 }

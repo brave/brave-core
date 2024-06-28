@@ -61,7 +61,7 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
   void OnRefreshOrder(v8::Global<v8::Promise::Resolver> promise_resolver,
                       v8::Isolate* isolate,
                       v8::Global<v8::Context> context_old,
-                      const std::string& response);
+                      skus::mojom::SkusResultPtr response);
 
   // window.chrome.braveSkus.fetch_order_credentials
   v8::Local<v8::Promise> FetchOrderCredentials(v8::Isolate* isolate,
@@ -70,7 +70,7 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       v8::Global<v8::Context> context_old,
-      const std::string& response);
+      skus::mojom::SkusResultPtr response);
 
   // window.chrome.braveSkus.prepare_credentials_presentation
   v8::Local<v8::Promise> PrepareCredentialsPresentation(v8::Isolate* isolate,
@@ -80,7 +80,7 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       v8::Global<v8::Context> context_old,
-      const std::string& response);
+      skus::mojom::SkusResultPtr response);
 
   // window.chrome.braveSkus.credential_summary
   v8::Local<v8::Promise> CredentialSummary(v8::Isolate* isolate,
@@ -89,7 +89,7 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
                            v8::Global<v8::Promise::Resolver> promise_resolver,
                            v8::Isolate* isolate,
                            v8::Global<v8::Context> context_old,
-                           const std::string& response);
+                           skus::mojom::SkusResultPtr response);
 
   content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;

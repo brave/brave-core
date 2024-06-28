@@ -48,8 +48,8 @@ impl TryFrom<http::Request<Vec<u8>>> for ffi::HttpRequest {
 
 impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalError> {
     fn from(resp: ffi::HttpResponse<'_>) -> Self {
-        match resp.result {
-            ffi::SkusResult::Ok => {
+        match resp.result.code {
+            ffi::SkusResultCode::Ok => {
                 let mut response = http::Response::builder().status(resp.return_code);
 
                 for header in resp.headers {

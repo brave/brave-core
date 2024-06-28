@@ -24,7 +24,6 @@ pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
-use errors::result_to_string;
 
 pub struct NativeClientExecutor {
     is_shutdown: bool,
@@ -126,7 +125,16 @@ mod ffi {
     }
 
     #[derive(Debug)]
-    pub enum SkusResult {
+    pub struct SkusResult {
+        code: SkusResultCode,
+        msg: String,
+    }
+
+    // Must match components/skus/common/skus_sdk.mojom
+    #[derive(Debug)]
+    #[repr(u32)]
+    #[namespace = "skus::mojom"]
+    pub enum SkusResultCode {
         Ok,
         RequestFailed,
         InternalServer,
@@ -210,8 +218,13 @@ mod ffi {
             mut callback: UniquePtr<RustBoundPostTask>,
             receipt: String,
         );
+    }
 
-        fn result_to_string(result: &SkusResult) -> String;
+    #[namespace = "skus::mojom"]
+    extern "C++" {
+        include!("brave/components/skus/common/skus_sdk.mojom-shared.h");
+
+        type SkusResultCode;
     }
 
     unsafe extern "C++" {
@@ -444,7 +457,7 @@ async fn refresh_order_task(
         .and_then(|order| serde_json::to_string(&order).map_err(|e| e.into()))
         .map_err(|e| e.into())
     {
-        Ok(order) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, &order),
+        Ok(order) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order),
         Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }
@@ -455,7 +468,7 @@ async fn fetch_order_credentials_task(
     order_id: String,
 ) {
     match sdk.fetch_order_credentials(&order_id).await.map_err(|e| e.into()) {
-        Ok(_) => callback.pin_mut().Run(ffi::SkusResult::Ok),
+        Ok(_) => callback.pin_mut().Run(ffi::SkusResult::new(ffi::SkusResultCode::Ok, "")),
         Err(e) => callback.pin_mut().Run(e),
     }
 }
@@ -467,8 +480,8 @@ async fn prepare_credentials_presentation_task(
     path: String,
 ) {
     match sdk.prepare_credentials_presentation(&domain, &path).await.map_err(|e| e.into()) {
-        Ok(Some(presentation)) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, &presentation),
-        Ok(None) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, ""),
+        Ok(Some(presentation)) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &presentation),
+        Ok(None) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), ""),
         Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }
@@ -486,8 +499,8 @@ async fn credential_summary_task(
         })
         .map_err(|e| e.into())
     {
-        Ok(Some(summary)) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, &summary),
-        Ok(None) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, "{}"), /* none, empty */
+        Ok(Some(summary)) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &summary),
+        Ok(None) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), "{}"), /* none, empty */
         Err(e) => callback.pin_mut().RunWithResponse(e, "{}"),                     // none, empty
     }
 }
@@ -499,7 +512,7 @@ async fn submit_receipt_task(
     receipt: String,
 ) {
     match sdk.submit_receipt(&order_id, &receipt).await.map_err(|e| e.into()) {
-        Ok(_) => callback.pin_mut().Run(ffi::SkusResult::Ok),
+        Ok(_) => callback.pin_mut().Run(ffi::SkusResult::new(ffi::SkusResultCode::Ok, "")),
         Err(e) => callback.pin_mut().Run(e),
     }
 }
@@ -510,7 +523,7 @@ async fn create_order_from_receipt_task(
     receipt: String,
 ) {
     match sdk.create_order_from_receipt(&receipt).await.map_err(|e| e.into()) {
-        Ok(order_id) => callback.pin_mut().RunWithResponse(ffi::SkusResult::Ok, &order_id),
+        Ok(order_id) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order_id),
         Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }

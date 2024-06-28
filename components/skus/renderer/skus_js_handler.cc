@@ -130,7 +130,7 @@ void SkusJSHandler::OnRefreshOrder(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -140,8 +140,8 @@ void SkusJSHandler::OnRefreshOrder(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
   std::optional<base::Value> records_v = base::JSONReader::Read(
-      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
+      response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                             base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
@@ -196,7 +196,7 @@ void SkusJSHandler::OnFetchOrderCredentials(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -205,9 +205,10 @@ void SkusJSHandler::OnFetchOrderCredentials(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::String> result =
-      v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+      v8::String::NewFromUtf8(isolate, response->message.c_str())
+          .ToLocalChecked();
 
-  if (response.empty()) {
+  if (response->message.empty()) {
     std::ignore = resolver->Resolve(context, result);
   } else {
     std::ignore = resolver->Reject(context, result);
@@ -246,7 +247,7 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -255,7 +256,8 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
 
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
   v8::Local<v8::String> result;
-  result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
+  result = v8::String::NewFromUtf8(isolate, response->message.c_str())
+               .ToLocalChecked();
 
   std::ignore = resolver->Resolve(context, result);
 }
@@ -291,7 +293,7 @@ void SkusJSHandler::OnCredentialSummary(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     v8::Global<v8::Context> context_old,
-    const std::string& response) {
+    skus::mojom::SkusResultPtr response) {
   v8::HandleScope handle_scope(isolate);
   v8::Local<v8::Context> context = context_old.Get(isolate);
   v8::Context::Scope context_scope(context);
@@ -301,8 +303,8 @@ void SkusJSHandler::OnCredentialSummary(
   v8::Local<v8::Promise::Resolver> resolver = promise_resolver.Get(isolate);
 
   std::optional<base::Value> records_v = base::JSONReader::Read(
-      response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                    base::JSONParserOptions::JSON_PARSE_RFC);
+      response->message, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                             base::JSONParserOptions::JSON_PARSE_RFC);
   if (!records_v) {
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
