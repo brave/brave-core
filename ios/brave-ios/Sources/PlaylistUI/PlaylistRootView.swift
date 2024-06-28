@@ -92,6 +92,16 @@ public struct PlaylistRootView: View {
         player.stopPictureInPicture()
       }
     }
+    .onReceive(
+      NotificationCenter.default.publisher(
+        for: UIApplication.didBecomeActiveNotification
+      ),
+      perform: { _ in
+        if player.isPictureInPictureActive {
+          player.stopPictureInPicture()
+        }
+      }
+    )
   }
 }
 
