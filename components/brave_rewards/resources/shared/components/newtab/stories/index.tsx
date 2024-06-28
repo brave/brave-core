@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import styled from 'styled-components'
 import * as knobs from '@storybook/addon-knobs'
 
 import { LocaleContext, createLocaleContextForTesting } from '../../../lib/locale_context'
-import { WithThemeVariables } from '../../with_theme_variables'
 import { RewardsCard } from '../rewards_card'
 
 import { localeStrings } from './locale_strings'
@@ -24,50 +24,64 @@ function actionLogger (name: string, ...args: any[]) {
   return (...args: any[]) => console.log(name, ...args)
 }
 
+const style = {
+  card: styled.div`
+    width: 284px;
+    background: #1C1E26B2;
+    backdrop-filter: blur(27.5px);
+    border-radius: 16px;
+    padding: 24px;
+  `
+}
+
 export function Card () {
   const daysUntilPayment = knobs.number('Days Until Payment', 20)
   const nextPaymentDate = Date.now() + 1000 * 60 * 60 * 24 * daysUntilPayment
   const disconnectedWallet = knobs.boolean('Disconnected', false)
+  const showSelfCustodyInvite = knobs.boolean('Show Self-Custody Invite', false)
+  const tosUpdateRequired = knobs.boolean('TOS Update Required', false)
+  const payoutStatus =
+    knobs.select('Payout Status', ['off', 'processing', 'complete'], 'off')
 
   return (
     <LocaleContext.Provider value={localeContext}>
-      <WithThemeVariables>
-        <div style={{ width: '284px' }}>
-          <RewardsCard
-            rewardsEnabled={true}
-            userType='unconnected'
-            declaredCountry='US'
-            needsBrowserUpgradeToServeAds={false}
-            rewardsBalance={optional(91.5812)}
-            exchangeCurrency='USD'
-            exchangeRate={0.82}
-            providerPayoutStatus={'off'}
-            externalWallet={disconnectedWallet ? {
-              provider: 'uphold',
-              status: mojom.WalletStatus.kLoggedOut,
-              username: '',
-              links: {}
-            } : null}
-            nextPaymentDate={nextPaymentDate}
-            minEarningsThisMonth={0.142}
-            maxEarningsThisMonth={1.142}
-            minEarningsLastMonth={1.00}
-            maxEarningsLastMonth={1.25}
-            contributionsThisMonth={10}
-            publishersVisited={4}
-            showSelfCustodyInvite={true}
-            isTermsOfServiceUpdateRequired={true}
-            onEnableRewards={actionLogger('onEnableRewards')}
-            onSelectCountry={actionLogger('onSelectCountry')}
-            onSelfCustodyInviteDismissed={
-              actionLogger('onSelfCustodyInviteDismissed')
-            }
-            onTermsOfServiceUpdateAccepted={
-              actionLogger('onTermsOfServiceUpdateAgreed')
-            }
-          />
-        </div>
-      </WithThemeVariables>
+      <style.card>
+        <RewardsCard
+          rewardsEnabled={true}
+          userType='connected'
+          declaredCountry='US'
+          needsBrowserUpgradeToServeAds={false}
+          rewardsBalance={optional(91.5812)}
+          exchangeCurrency='USD'
+          exchangeRate={0.82}
+          providerPayoutStatus={payoutStatus}
+          externalWallet={{
+            provider: 'uphold',
+            status: disconnectedWallet
+              ? mojom.WalletStatus.kLoggedOut
+              : mojom.WalletStatus.kConnected,
+            username: '',
+            links: {}
+          }}
+          nextPaymentDate={nextPaymentDate}
+          minEarningsThisMonth={0.142}
+          maxEarningsThisMonth={1.142}
+          minEarningsLastMonth={1.00}
+          maxEarningsLastMonth={1.25}
+          contributionsThisMonth={10}
+          publishersVisited={4}
+          showSelfCustodyInvite={showSelfCustodyInvite}
+          isTermsOfServiceUpdateRequired={tosUpdateRequired}
+          onEnableRewards={actionLogger('onEnableRewards')}
+          onSelectCountry={actionLogger('onSelectCountry')}
+          onSelfCustodyInviteDismissed={
+            actionLogger('onSelfCustodyInviteDismissed')
+          }
+          onTermsOfServiceUpdateAccepted={
+            actionLogger('onTermsOfServiceUpdateAgreed')
+          }
+        />
+      </style.card>
     </LocaleContext.Provider>
   )
 }

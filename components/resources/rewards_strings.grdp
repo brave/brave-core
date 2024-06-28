@@ -66,7 +66,7 @@
     Connect account
   </message>
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
-    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect or create an account with one of our partners.
+    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect an account so we have a place to send your earnings.
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
     Send contributions with Brave Rewards
@@ -86,7 +86,7 @@
     Using Brave Rewards helps support content creators, and lets you earn BAT.
   </message>
   <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
-    Brave Rewards
+    Rewards
   </message>
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue

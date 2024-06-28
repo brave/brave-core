@@ -10,6 +10,8 @@ interface WidgetPositionProps {
 }
 interface WidgetContainerProps extends WidgetPositionProps {
   textDirection: string
+  isCardWidget?: boolean
+  isForeground?: boolean
 }
 
 const getWidgetPadding = (type: string) => {
@@ -33,19 +35,27 @@ export const StyledWidgetContainer = styled('div')<WidgetContainerProps>`
   height: fit-content;
   min-width: 0;
   position: relative;
+
+  ${(p) => p.isCardWidget && `
+    --ntp-widget-menu-container-top: 18px;
+  `}
+
+  ${(p) => p.isCardWidget && !p.isForeground && `
+    --ntp-widget-menu-container-top: 10px;
+  `}
 `
 
 export const StyledWidgetMenuContainer = styled('div')<WidgetPaddingProps>`
   position: absolute;
-  top: ${({ paddingType }) => paddingType === 'right' ? 15 : 5}px;
-  right: 5px;
+  top: var(--ntp-widget-menu-container-top,
+           ${({ paddingType }) => paddingType === 'right' ? 15 : 5}px);
+  right: var(--ntp-widget-menu-container-right, 5px);
 `
 
 interface WidgetVisibilityProps {
   widgetMenuPersist: boolean
   preventFocus?: boolean
-  isCrypto?: boolean
-  isCryptoTab?: boolean
+  isCardWidget?: boolean
   isForeground?: boolean
 }
 
@@ -56,17 +66,17 @@ interface WidgetPaddingProps {
 export const StyledWidget = styled('div')<WidgetVisibilityProps & WidgetPaddingProps>`
   padding: ${({ paddingType }) => getWidgetPadding(paddingType)};
   max-width: 100%;
-  width: ${p => p.isCrypto ? '284px' : 'initial'};
+  width: ${p => p.isCardWidget ? '284px' : 'initial'};
   position: relative;
   transition: background 0.5s ease;
-  border-radius: ${p => p.isCrypto ? '6px' : '16px'};
+  border-radius: ${p => p.isCardWidget ? '0' : '16px'};
 
   ${StyledWidgetMenuContainer}:hover & {
     background: rgba(33, 37, 41, 0.48);
   }
 
   // Also hover when menu button has been clicked
-  ${p => (p.widgetMenuPersist && !p.isCryptoTab) && `
+  ${p => (p.widgetMenuPersist && !p.isCardWidget) && `
     background: rgba(33, 37, 41, 0.48);
   `}
 `
@@ -165,6 +175,8 @@ interface WidgetIconProps {
 export const StyledEllipsis = styled('div')<WidgetVisibilityProps>`
   visibility: hidden;
   pointer-events: none;
+
+  --leo-icon-size: 20px;
 
   ${p => (p.widgetMenuPersist || p.isForeground) && `
     visibility: visible;

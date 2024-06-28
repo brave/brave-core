@@ -10,7 +10,7 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
+  BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
@@ -385,10 +385,6 @@ class NewTabPage extends React.Component<Props, State> {
     brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaper)
   }
 
-  openSettingsEditCards = () => {
-    this.openSettings(SettingsTabType.Cards)
-  }
-
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
     this.props.actions.setForegroundStackWidget(widget)
   }
@@ -458,7 +454,6 @@ class NewTabPage extends React.Component<Props, State> {
   renderCryptoContent () {
     const { newTabData } = this.props
     const { widgetStackOrder } = newTabData
-    const allWidgetsHidden = this.allWidgetsHidden()
 
     if (!widgetStackOrder.length) {
       return null
@@ -467,9 +462,6 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Page.GridItemWidgetStack>
         {this.getCryptoContent()}
-        {!allWidgetsHidden &&
-          <EditCards onEditCards={this.openSettingsEditCards} />
-        }
       </Page.GridItemWidgetStack>
     )
   }
@@ -510,12 +502,23 @@ class NewTabPage extends React.Component<Props, State> {
         label: 'rewardsOpenPanel',
         renderIcon: () => {
           return (
-            <style.batIcon>
+            <style.rewardsMenuIcon>
               <Icon name='product-bat-outline' />
-            </style.batIcon>
+            </style.rewardsMenuIcon>
           )
         },
         onClick: () => { chrome.braveRewards.openRewardsPanel() }
+      },
+      {
+        label: 'rewardsSettings',
+        renderIcon: () => {
+          return (
+            <style.rewardsMenuIcon>
+              <Icon name='settings' />
+            </style.rewardsMenuIcon>
+          )
+        },
+        onClick: () => { window.open('chrome://rewards', '_blank', 'noopener') }
       }
     ]
 
@@ -533,9 +536,8 @@ class NewTabPage extends React.Component<Props, State> {
         widgetTitle={getLocale('rewardsWidgetBraveRewards')}
         onLearnMore={this.learnMoreRewards}
         menuPosition={'left'}
-        isCrypto={true}
+        isCardWidget
         paddingType={'none'}
-        isCryptoTab={!showContent}
         isForeground={showContent}
         stackPosition={position}
         textDirection={textDirection}
@@ -561,7 +563,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <BraveTalk
-        isCrypto={true}
+        isCardWidget
         paddingType={'none'}
         menuPosition={'left'}
         widgetTitle={getLocale('braveTalkWidgetTitle')}

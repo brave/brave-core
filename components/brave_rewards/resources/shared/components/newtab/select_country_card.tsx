@@ -4,9 +4,10 @@
 
 import * as React from 'react'
 
+import Button from '@brave/leo/react/button'
+
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GeoPinIcon } from '../icons/geo_pin_icon'
-import { TermsOfService } from '../terms_of_service'
 import { NewTabLink } from '../new_tab_link'
 import { privacyPolicyURL } from '../../lib/rewards_urls'
 
@@ -36,13 +37,10 @@ export function SelectCountryCard (props: Props) {
         }
       </style.text>
       <style.enable>
-        <button onClick={props.onContinue}>
+        <Button onClick={props.onContinue}>
           {getString('rewardsContinue')}
-        </button>
+        </Button>
       </style.enable>
-      <style.terms>
-        <TermsOfService text={getString('rewardsOptInTerms')} />
-      </style.terms>
     </style.root>
   )
 }
