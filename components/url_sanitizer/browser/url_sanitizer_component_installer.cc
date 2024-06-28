@@ -23,7 +23,31 @@
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
 
+namespace {
+constexpr const char kCleanURLsConfigFileVersion[] = "1";
+constexpr const char kCleanURLsConfigFile[] = "clean-urls.json";
+constexpr const char kCleanURLsPermissionsConfigFile[] =
+    "clean-urls-permissions.json";
+
+brave::URLSanitizerComponentInstaller::RawConfig LoadRawConfig(
+    const base::FilePath& resource_dir) {
+  brave::URLSanitizerComponentInstaller::RawConfig config;
+  config.matchers = brave_component_updater::GetDATFileAsString(
+      resource_dir.AppendASCII(kCleanURLsConfigFile));
+  config.permissions = brave_component_updater::GetDATFileAsString(
+      resource_dir.AppendASCII(kCleanURLsPermissionsConfigFile));
+  return config;
+}
+
+}  // namespace
+
 namespace brave {
+
+URLSanitizerComponentInstaller::RawConfig::RawConfig() = default;
+URLSanitizerComponentInstaller::RawConfig::RawConfig(const RawConfig&) =
+    default;
+URLSanitizerComponentInstaller::RawConfig::RawConfig(RawConfig&&) = default;
+URLSanitizerComponentInstaller::RawConfig::~RawConfig() = default;
 
 URLSanitizerComponentInstaller::URLSanitizerComponentInstaller(
     LocalDataFilesService* local_data_files_service)
@@ -32,13 +56,10 @@ URLSanitizerComponentInstaller::URLSanitizerComponentInstaller(
 URLSanitizerComponentInstaller::~URLSanitizerComponentInstaller() = default;
 
 void URLSanitizerComponentInstaller::LoadDirectlyFromResourcePath() {
-  base::FilePath dat_file_path =
-      resource_dir_.AppendASCII(kCleanURLsConfigFile);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     dat_file_path),
-      base::BindOnce(&URLSanitizerComponentInstaller::OnDATFileDataReady,
+      base::BindOnce(&LoadRawConfig, resource_dir_),
+      base::BindOnce(&URLSanitizerComponentInstaller::OnRawConfigReady,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -50,10 +71,10 @@ void URLSanitizerComponentInstaller::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void URLSanitizerComponentInstaller::OnDATFileDataReady(
-    const std::string& contents) {
-  for (Observer& observer : observers_)
-    observer.OnRulesReady(contents);
+void URLSanitizerComponentInstaller::OnRawConfigReady(const RawConfig& config) {
+  for (Observer& observer : observers_) {
+    observer.OnConfigReady(config);
+  }
 }
 
 void URLSanitizerComponentInstaller::OnComponentReady(
