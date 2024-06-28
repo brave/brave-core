@@ -109,7 +109,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                                 OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
                     }
                     if (mOnNextPage != null) {
-                        mOnNextPage.onboardingCompleted();
+                        mOnNextPage.incrementPages(2);
                     }
                 });
     }

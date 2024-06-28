@@ -91,7 +91,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                             }
                                             keyringService.notifyWalletBackupComplete();
                                             if (mOnNextPage != null) {
-                                                mOnNextPage.onboardingCompleted();
+                                                mOnNextPage.incrementPages(1);
                                             }
                                         } else {
                                             phraseNotMatch();
@@ -113,7 +113,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                 OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
                     }
                     if (mOnNextPage != null) {
-                        mOnNextPage.onboardingCompleted();
+                        mOnNextPage.incrementPages(1);
                     }
                 });
 

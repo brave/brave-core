@@ -134,7 +134,7 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                                 OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
                     }
                     if (mOnNextPage != null) {
-                        mOnNextPage.onboardingCompleted();
+                        mOnNextPage.incrementPages(3);
                     }
                 });
         mBiometricBackupWalletImage.setOnClickListener(
