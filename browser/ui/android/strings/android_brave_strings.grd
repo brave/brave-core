@@ -3184,6 +3184,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SKIP" desc="Text to skip something">
       Skip this for now
     </message>
+    <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Text to navigate to portfolio section">
+      Go to my portfolio
+    </message>
+    <message name="IDS_BRAVE_WALLET_ALL_SET" desc="Text to communicate the Wallet is correctly set">
+      You’re all set!
+    </message>
+    <message name="IDS_BRAVE_WALLET_READY_TO_USE" desc="Text to communicate the Wallet is ready to use">
+      Your Brave Wallet is ready to use
+    </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config program">
       Config Program
     </message>
