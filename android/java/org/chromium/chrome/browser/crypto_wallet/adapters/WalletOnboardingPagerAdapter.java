@@ -14,6 +14,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.browser.crypto_wallet.fragments.UnlockWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingBackupWalletFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingConfirmationFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingCreatingWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingFingerprintUnlockFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingInitWalletFragment;
@@ -133,6 +134,8 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     return OnboardingRecoveryPhraseFragment.newInstance(isOnboarding);
                 } else if (position == 8) {
                     return OnboardingVerifyRecoveryPhraseFragment.newInstance(isOnboarding);
+                } else if (position == 9) {
+                    return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
                             String.format(
@@ -155,6 +158,8 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     return new OnboardingFingerprintUnlockFragment();
                 } else if (position == 5) {
                     return new OnboardingCreatingWalletFragment();
+                } else if (position == 6) {
+                    return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
                             String.format(
@@ -175,6 +180,8 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     return new OnboardingFingerprintUnlockFragment();
                 } else if (position == 3) {
                     return new OnboardingCreatingWalletFragment();
+                } else if (position == 4) {
+                    return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
                             String.format(
@@ -207,13 +214,13 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         if (mWalletAction == WalletAction.ONBOARDING) {
             return 1;
         } else if (mWalletAction == WalletAction.PASSWORD_CREATION) {
-            return 9;
+            return 10;
         } else if (mWalletAction == WalletAction.ONBOARDING_RESTORE) {
-            return 6;
+            return 7;
         } else if (mWalletAction == WalletAction.UNLOCK) {
             return 1;
         } else if (mWalletAction == WalletAction.RESTORE) {
-            return 4;
+            return 5;
         } else if (mWalletAction == WalletAction.BACKUP) {
             return 3;
         }
