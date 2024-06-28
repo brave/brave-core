@@ -3,6 +3,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // Feature-specific components
 import {
@@ -12,27 +13,15 @@ import {
   IconButton,
   IconButtonContainer,
   IconButtonSideText,
-  IconLink,
   PhotoName
 } from '..'
 import * as S from '../page'
-
-// Items
-import {
-  SettingsIcon,
-  SettingsAdvancedIcon,
-  BookmarkBook,
-  HistoryIcon
-} from 'brave-ui/components/icons'
-
-import BraveTalkIcon from './braveTalkIcon'
 
 // Helpers
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
   textDirection: string
-  supportsBraveTalk: boolean
   backgroundImageInfo: NewTab.BackgroundWallpaper | undefined
   showPhotoInfo: boolean
   onClickSettings: () => any
@@ -42,7 +31,6 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
     const {
       textDirection,
-      supportsBraveTalk,
       backgroundImageInfo,
       showPhotoInfo,
       onClickSettings
@@ -68,25 +56,11 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             <IconButtonContainer textDirection={textDirection}>
               <IconButtonSideText textDirection={textDirection}>
                 <IconButton onClick={onClickSettings}>
-                  <SettingsIcon />
+                  <Icon name='tune' />
                 </IconButton>
                 {getLocale('customize')}
               </IconButtonSideText>
             </IconButtonContainer>
-            <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
-              <SettingsAdvancedIcon />
-            </IconLink>
-            <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks'>
-              <BookmarkBook />
-            </IconLink>
-            <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
-              <HistoryIcon />
-            </IconLink>
-            { supportsBraveTalk &&
-              <IconLink title={getLocale('braveTalkPromptTitle')} href='https://talk.brave.com/widget'>
-                <BraveTalkIcon />
-              </IconLink>
-            }
           </Navigation>
         </S.GridItemNavigation>
       </>

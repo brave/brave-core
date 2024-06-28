@@ -93,10 +93,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"GB", IDS_BRAVE_NEW_TAB_GIGABYTES},
                {"photoBy", IDS_BRAVE_NEW_TAB_PHOTO_BY},
                {"hide", IDS_BRAVE_NEW_TAB_HIDE},
-               {"preferencesPageTitle",
-                IDS_BRAVE_NEW_TAB_PREFERENCES_PAGE_TITLE},
-               {"bookmarksPageTitle", IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE},
-               {"historyPageTitle", IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE},
                {"dashboardSettingsTitle",
                 IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE},
                {"customize", IDS_BRAVE_NEW_TAB_CUSTOMIZE},
@@ -368,9 +364,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2},
                {"boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON},
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-               // Brave Talk shortcut
-               {"braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE},
 
                // Rewards widget
                {"rewardsAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS},
