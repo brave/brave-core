@@ -140,7 +140,7 @@ bool JSEthereumProvider::EnsureConnected() {
   }
 
   if (!ethereum_provider_.is_bound()) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
     ethereum_provider_->Init(receiver_.BindNewPipeAndPassRemote());
   }
@@ -278,7 +278,7 @@ const char* JSEthereumProvider::MetaMask::GetTypeName() {
 v8::Local<v8::Promise> JSEthereumProvider::MetaMask::IsUnlocked(
     v8::Isolate* isolate) {
   if (!ethereum_provider_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame_->GetBrowserInterfaceBroker().GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
   }
 
