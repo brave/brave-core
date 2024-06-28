@@ -82,7 +82,6 @@ export class BaseQueryCache {
   private _knownTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
-  private _extractedIPFSUrlRegistry: Record<string, string | undefined> = {}
   private _enabledCoinTypes: number[]
   private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
@@ -309,37 +308,16 @@ export class BaseQueryCache {
     this._userTokensRegistry = undefined
   }
 
-  /** Extracts ipfs:// url from gateway-like url */
-  getExtractedIPFSUrlFromGatewayLikeUrl = async (urlArg: string) => {
-    const trimmedURL = urlArg ? urlArg.trim() : ''
-    if (!this._extractedIPFSUrlRegistry[trimmedURL]) {
-      if (isIpfs(trimmedURL)) {
-        this._extractedIPFSUrlRegistry[trimmedURL] = trimmedURL
-      } else {
-        const api = getAPIProxy()
-        const { ipfsUrl } =
-          await api.braveWalletIpfsService.extractIPFSUrlFromGatewayLikeUrl(
-            trimmedURL
-          )
-        this._extractedIPFSUrlRegistry[trimmedURL] = ipfsUrl || undefined
-      }
-    }
-
-    return this._extractedIPFSUrlRegistry[trimmedURL]
-  }
-
   /** Translates ipfs:// url or gateway-like url to the NFT gateway url */
   getIpfsGatewayTranslatedNftUrl = async (urlArg: string) => {
     const trimmedURL = urlArg.trim()
     if (!this._nftImageIpfsGateWayUrlRegistry[trimmedURL]) {
       const { braveWalletIpfsService } = getAPIProxy()
 
-      const testUrl = isIpfs(trimmedURL)
-        ? trimmedURL
-        : await this.getExtractedIPFSUrlFromGatewayLikeUrl(trimmedURL)
-
       const { translatedUrl } =
-        await braveWalletIpfsService.translateToGatewayURL(testUrl || '')
+        isIpfs(trimmedURL)
+        ? await braveWalletIpfsService.translateToGatewayURL(trimmedURL || '')
+        : {translatedUrl : trimmedURL}
 
       this._nftImageIpfsGateWayUrlRegistry[trimmedURL] =
         translatedUrl || trimmedURL

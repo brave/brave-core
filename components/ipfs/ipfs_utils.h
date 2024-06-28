@@ -20,8 +20,6 @@ bool TranslateIPFSURI(const GURL& url,
                       GURL* new_url,
                       bool use_subdomain);
 
-std::optional<GURL> ExtractSourceFromGateway(const GURL& url);
-
 GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
 
 std::string GetIpfsClientComponentId();

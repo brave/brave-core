@@ -1126,8 +1126,6 @@ interface SwapService {
 
 interface IpfsService {
   TranslateToGatewayURL(string url) => (string? translated_url);
-  ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
-
   ContentHashToCIDv1URL(array<uint8> content_hash) => (string? url);
 };
 

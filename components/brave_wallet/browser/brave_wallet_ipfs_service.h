@@ -32,9 +32,6 @@ class BraveWalletIpfsService : public KeyedService, public mojom::IpfsService {
 
   void TranslateToGatewayURL(const std::string& url,
                              TranslateToGatewayURLCallback callback) override;
-  void ExtractIPFSUrlFromGatewayLikeUrl(
-      const std::string& url,
-      ExtractIPFSUrlFromGatewayLikeUrlCallback callback) override;
 
   void ContentHashToCIDv1URL(const std::vector<uint8_t>& content_hash,
                              ContentHashToCIDv1URLCallback callback) override;

@@ -42,17 +42,6 @@ void BraveWalletIpfsService::TranslateToGatewayURL(
   }
 }
 
-void BraveWalletIpfsService::ExtractIPFSUrlFromGatewayLikeUrl(
-    const std::string& url,
-    ExtractIPFSUrlFromGatewayLikeUrlCallback callback) {
-  auto result = ipfs::ExtractSourceFromGateway(GURL(url));
-  if (result.has_value()) {
-    std::move(callback).Run(result.value().spec());
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
-}
-
 void BraveWalletIpfsService::ContentHashToCIDv1URL(
     const std::vector<uint8_t>& content_hash,
     ContentHashToCIDv1URLCallback callback) {
