@@ -420,6 +420,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_APP_MENU_IPFS_UPDATE_IPNS" desc="Title case: The text label of a menu item to update IPNS.">
           Update IPNS
         </message>
+        <message name="IDS_CONTENT_CONTEXT_SPLIT_VIEW" desc="Title case: The name of the open a link in split view command">
+          Open Link in Split View
+        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_CONTENT_CONTEXT_IMPORT_IPFS_SELECTED_TEXT" desc="The name of the IPFS context menu item to import selected text using IPFS">
@@ -454,6 +457,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER" desc="Title case: The text label of a menu item to publish local fodler under IPFS key.">
           With a Directory
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SPLIT_VIEW" desc="The name of the open a link in split view command">
+          Open link in split view
         </message>
       </if>
       <!-- Dev channel deprecation infobar -->
