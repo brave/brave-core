@@ -166,7 +166,7 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvent(
     const std::string& placement_id) {
   CHECK(!placement_id.empty());
 
-  // It is safe to pass placement_id directly to the JavaScript function as it
+  // It is safe to pass `placement_id` directly to the JavaScript function as it
   // has all characters except alphanumerics and -._~ escaped.
   const std::string javascript = base::ReplaceStringPlaceholders(
       kDataPlacementIdVisibilityCheckJavaScript, {placement_id}, nullptr);

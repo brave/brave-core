@@ -13,6 +13,10 @@ namespace brave_ads::test {
 // Creative ad.
 inline constexpr char kCreativeAdPlacementId[] =
     "953f362e-98cd-4fa6-8403-e886185b88fc";
+inline constexpr char kCreativeAdPlacementIdWithUnreservedCharacters[] =
+    "\"'+*&%";
+inline constexpr char kEscapedCreativeAdPlacementIdWithUnreservedCharacters[] =
+    "%22%27%2B%2A%26%25";
 inline constexpr char kCreativeAdCreativeInstanceId[] =
     "d94f98e6-74f8-41cf-bfb2-3d753b94f8ef";
 inline constexpr char kCreativeAdCreativeSetId[] =
@@ -25,10 +29,6 @@ inline constexpr char kCreativeAdLandingPage[] = "https://brave.com";
 inline constexpr char kCreativeAdHeadlineText[] = "Headline text";
 inline constexpr char kCreativeAdDescription[] = "Description";
 inline constexpr double kCreativeAdRewardsValue = 0.5;
-inline constexpr char kCreativeAdPlacementIdWithUnreservedCharacters[] =
-    "\"'+*&%";
-inline constexpr char kEscapedCreativeAdPlacementIdWithUnreservedCharacters[] =
-    "%22%27%2B%2A%26%25";
 
 // Creative set conversion.
 inline constexpr char kCreativeSetConversionUrlPattern[] =

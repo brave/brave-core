@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_for_testing.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -390,7 +390,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       TriggerViewedAndClickedAdEventsWithUnreservedCharactersPlacementId) {
+       TriggerViewedAndClickedAdEventsWithUnreservedCharactersInPlacementId) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
