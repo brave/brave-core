@@ -45,7 +45,7 @@ namespace sync_preferences {
 
 std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
-    const std::string& pref_name) const {
+    std::string_view pref_name) const {
   const auto it = BraveSyncablePreferences().find(pref_name);
   if (it != BraveSyncablePreferences().end()) {
     return it->second;
@@ -55,7 +55,7 @@ CommonSyncablePrefsDatabase::GetSyncablePrefMetadata(
 
 std::optional<SyncablePrefMetadata>
 CommonSyncablePrefsDatabase::GetSyncablePrefMetadata_ChromiumImpl(
-    const std::string& pref_name) const {
+    std::string_view pref_name) const {
   return GetSyncablePrefMetadata(pref_name);
 }
 
