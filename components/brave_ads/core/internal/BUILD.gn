@@ -1090,6 +1090,8 @@ static_library("internal") {
     "user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.cc",
     "user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.h",
     "user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h",
+    "user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_util.cc",
+    "user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_util.h",
     "user_engagement/ad_events/search_result_ads/search_result_ad_event_served.cc",
     "user_engagement/ad_events/search_result_ads/search_result_ad_event_served.h",
     "user_engagement/ad_events/search_result_ads/search_result_ad_event_viewed.cc",

@@ -11,6 +11,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
@@ -388,6 +389,25 @@ TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
                       ad));
   FastForwardClockToNextPendingTask();
   EXPECT_FALSE(HasPendingTasks());
+}
+
+TEST_F(
+    BraveAdsSiteVisitTest,
+    DoNotLandOnPageIfTheTabIsVisibleAndTheRedirectChainMatchesTheLastClickedAdForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
+                                  /*should_generate_random_uuids=*/true);
+  site_visit_->SetLastClickedAd(ad);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnMaybeLandOnPage).Times(0);
+  NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false,
+      /*is_error_page=*/false, /*is_visible=*/true);
+  EXPECT_EQ(0U, GetPendingTaskCount());
 }
 
 TEST_F(BraveAdsSiteVisitTest,

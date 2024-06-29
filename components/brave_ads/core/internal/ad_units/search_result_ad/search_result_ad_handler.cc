@@ -21,13 +21,12 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
 namespace {
 
-SearchResultAdHandler* g_deferred_search_result_ad_for_testing = nullptr;
+SearchResultAdHandler* g_search_result_ad_handler_for_testing = nullptr;
 bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
 void FireEventCallback(TriggerAdEventCallback callback,
@@ -48,7 +47,7 @@ SearchResultAdHandler::SearchResultAdHandler(Account& account,
 SearchResultAdHandler::~SearchResultAdHandler() = default;
 
 // static
-void SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting() {
+void SearchResultAdHandler::DeferTriggeringAdViewedEventForTesting() {
   CHECK_IS_TEST();
   CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
 
@@ -59,16 +58,18 @@ void SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting() {
 void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
   CHECK_IS_TEST();
   CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
-  CHECK(g_deferred_search_result_ad_for_testing);
 
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
-  g_deferred_search_result_ad_for_testing
-      ->trigger_ad_viewed_event_in_progress_ = false;
+  if (g_search_result_ad_handler_for_testing) {
+    g_search_result_ad_handler_for_testing
+        ->trigger_ad_viewed_event_in_progress_ = false;
 
-  g_deferred_search_result_ad_for_testing->MaybeTriggerAdViewedEventFromQueue(
-      /*intentional*/ base::DoNothing());
-  g_deferred_search_result_ad_for_testing = nullptr;
+    g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
+        /*intentional*/ base::DoNothing());
+
+    g_search_result_ad_handler_for_testing = nullptr;
+  }
 }
 
 void SearchResultAdHandler::TriggerEvent(
@@ -79,9 +80,8 @@ void SearchResultAdHandler::TriggerEvent(
       << "Should not be called with kServedImpression as this event is handled "
          "when calling TriggerEvent with kViewedImpression";
 
-  if (!UserHasJoinedBraveRewards() &&
-      !ShouldAlwaysTriggerSearchResultAdEvents()) {
-    // No-op if we should not trigger events for non-Rewards users.
+  if (!UserHasOptedInToSearchResultAds()) {
+    // No-op if the user has not opted into search result ads.
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -116,10 +116,10 @@ void SearchResultAdHandler::FireServedEventCallback(
 
   ad_viewed_event_queue_.push_front(std::move(mojom_creative_ad));
 
-  MaybeTriggerAdViewedEventFromQueue(std::move(callback));
+  MaybeTriggerDeferredAdViewedEvent(std::move(callback));
 }
 
-void SearchResultAdHandler::MaybeTriggerAdViewedEventFromQueue(
+void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
     TriggerAdEventCallback callback) {
   CHECK((!ad_viewed_event_queue_.empty() ||
          !trigger_ad_viewed_event_in_progress_));
@@ -150,12 +150,14 @@ void SearchResultAdHandler::FireAdViewedEventCallback(
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {
     CHECK_IS_TEST();
 
-    g_deferred_search_result_ad_for_testing = this;
+    g_search_result_ad_handler_for_testing = this;
+
     return std::move(callback).Run(success);
   }
 
   trigger_ad_viewed_event_in_progress_ = false;
-  MaybeTriggerAdViewedEventFromQueue(std::move(callback));
+
+  MaybeTriggerDeferredAdViewedEvent(std::move(callback));
 }
 
 void SearchResultAdHandler::OnDidFireSearchResultAdServedEvent(
