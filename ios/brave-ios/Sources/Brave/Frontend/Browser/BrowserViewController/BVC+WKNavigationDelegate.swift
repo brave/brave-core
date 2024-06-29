@@ -1012,10 +1012,14 @@ extension BrowserViewController: WKNavigationDelegate {
 
     rewards.reportTabNavigation(tabId: tab.rewardsId)
 
-    if tabManager.selectedTab === tab {
-      updateUIForReaderHomeStateForTab(tab)
+    // The toolbar and url bar changes can not be
+    // on different tab than selected. Or the webview
+    // previews and etc will effect the status
+    guard tabManager.selectedTab === tab else {
+      return
     }
 
+    updateUIForReaderHomeStateForTab(tab)
     updateBackForwardActionStatus(for: webView)
   }
 
