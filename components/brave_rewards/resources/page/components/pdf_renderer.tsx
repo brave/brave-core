@@ -23,12 +23,45 @@ export function PdfRenderer(props: Props) {
   const [isSelectionEnabled, setIsSelectionEnabled] = useState(false);
   const [isSigned, setIsSigned] = useState(false);
   const [selectionCoords, setSelectionCoords] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
+  const [hsmPath, setHsmPath] = useState('');
+  const [signingPin, setSigningPin] = useState();
+  const [isSignatureValid, setIsSignatureValid] = useState(true)
+  const [currentPageIndex, setCurrentPageIndex] = useState(null);
 
   const overlayCanvasRefs = useRef([]);
   const pdfCanvasRefs = useRef([]);
   const pdfContainerRef = useRef(null);
   const pageRefs = useRef([]);
   const fixedText = "Signed by user";
+
+  const handlePinInput = () => {
+    if (!isSigned) {
+      const pin = prompt("Please enter the pin to sign the document:");
+      if (pin) 
+        setSigningPin(pin); 
+    }
+  }
+
+  useEffect(() => {
+    if (signingPin && currentPageIndex !== null) {
+      embedSignature(currentPageIndex);
+    }
+  }, [signingPin]);
+
+  const checkHsmPath = () => {
+    const storedHsmPath = localStorage.getItem('hsmPath');
+    if (!storedHsmPath) {
+      const path = prompt("Please enter the path of the HSM module:");
+      if (path) {
+        localStorage.setItem('hsmPath', path);
+        setHsmPath(path);
+        setIsSelectionEnabled(true); 
+      }
+    } else {
+      setHsmPath(storedHsmPath);
+      setIsSelectionEnabled(true); 
+    }
+  }
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -104,7 +137,8 @@ export function PdfRenderer(props: Props) {
   const showEmbedSignConfirmation = (pageIndex) => {
     const confirmation = window.confirm("Do you want to embed text in the selected area?");
     if (confirmation) {
-      embedSignature(pageIndex);
+      setCurrentPageIndex(pageIndex); 
+      handlePinInput();
     } else {
       clearSelection(pageIndex);
     }
@@ -126,6 +160,7 @@ export function PdfRenderer(props: Props) {
     setIsSigned(true);
     console.log(`Page number: ${pageIndex + 1}, Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
     document.getElementById('signButton').disabled = true;
+    handleSignatureValidation();
   };
 
   const clearSelection = (pageIndex) => {
@@ -133,12 +168,14 @@ export function PdfRenderer(props: Props) {
     clearOverlay(pageIndex);
   };
 
-  const handleSignButtonClick = () => {
-    if (!isSigned) {
-      setIsSelectionEnabled(true);
-      console.log("Selection tool enabled. Click and drag on the PDF to select an area.");
+  const handleSignatureValidation = () => {
+    if(!isSignatureValid){
+      const error = window.confirm("Invalid signature");
     }
-  };
+    else {
+      const success = window.confirm("Valid Signature");
+    }
+  }
 
   const handlePreviousPage = () => {
     if (pageNumber > 1) {
@@ -218,7 +255,7 @@ export function PdfRenderer(props: Props) {
           />
           <button 
             id="signButton" 
-            onClick={handleSignButtonClick} 
+            onClick={checkHsmPath} 
             disabled={isSigned} 
             style={{ padding: '10px', marginRight: '10px', borderRadius: '5px' }}
           >
