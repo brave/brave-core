@@ -21,6 +21,8 @@ static_library("internal") {
     "account/account.cc",
     "account/account.h",
     "account/account_observer.h",
+    "account/account_util.cc",
+    "account/account_util.h",
     "account/confirmations/confirmation_info.cc",
     "account/confirmations/confirmation_info.h",
     "account/confirmations/confirmation_type.cc",

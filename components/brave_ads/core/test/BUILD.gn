@@ -14,6 +14,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/account_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/account/account_observer_mock.h",
     "//brave/components/brave_ads/core/internal/account/account_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/account_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate_mock.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate_mock.h",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature_unittest.cc",
