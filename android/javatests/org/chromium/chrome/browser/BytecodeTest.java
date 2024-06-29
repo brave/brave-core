@@ -856,6 +856,7 @@ public class BytecodeTest {
                         AutocompleteMatch.class,
                         GURL.class,
                         long.class,
+                        boolean.class,
                         boolean.class));
 
         // Check for method type declaration changes here
