@@ -16,7 +16,6 @@ import Strings
 import SwiftUI
 import os
 
-// FIXME: Add unit tests
 public final class PlayerModel: ObservableObject {
 
   public init(
@@ -60,7 +59,9 @@ public final class PlayerModel: ObservableObject {
       log.warning("PlayerModel deallocated without first stopping the underlying media.")
       stop()
     }
-    try? AVAudioSession.sharedInstance().setActive(false)
+    DispatchQueue.global().async {
+      try? AVAudioSession.sharedInstance().setActive(false)
+    }
     MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
     Task { @MainActor in
       UIApplication.shared.endReceivingRemoteControlEvents()
@@ -86,13 +87,55 @@ public final class PlayerModel: ObservableObject {
 
   var currentTime: TimeInterval {
     guard let item = player.currentItem else { return 0 }
-    return max(0, min(duration, item.currentTime().seconds))
+    switch duration {
+    case .seconds(let timeInterval):
+      return max(0, min(timeInterval, item.currentTime().seconds))
+    case .unknown, .indefinite:
+      let currentTime = item.currentTime()
+      if currentTime.isIndefinite || currentTime.seconds.isNaN {
+        return 0
+      }
+      return currentTime.seconds
+    }
   }
 
-  var duration: TimeInterval {
-    guard let item = player.currentItem else { return 0 }
-    let seconds = item.asset.duration.seconds
-    return seconds.isNaN ? 0.0 : seconds
+  enum ItemDuration {
+    case unknown
+    case seconds(TimeInterval)
+    case indefinite  // Live video
+
+    var seconds: TimeInterval? {
+      if case .seconds(let timeInterval) = self {
+        return timeInterval
+      }
+      return nil
+    }
+
+    var isIndefinite: Bool {
+      if case .indefinite = self {
+        return true
+      }
+      return false
+    }
+
+    init(_ seconds: TimeInterval) {
+      if !seconds.isFinite || seconds == .greatestFiniteMagnitude {
+        self = .indefinite
+      } else {
+        self = .seconds(seconds)
+      }
+    }
+  }
+
+  var duration: ItemDuration {
+    guard let duration = player.currentItem?.asset.duration else { return .unknown }
+    if !duration.isValid {
+      return .unknown
+    }
+    if duration.isIndefinite {
+      return .indefinite
+    }
+    return .seconds(duration.seconds)
   }
 
   var currentTimeStream: AsyncStream<TimeInterval> {
@@ -116,7 +159,7 @@ public final class PlayerModel: ObservableObject {
     if isPlaying {
       return
     }
-    if currentTime == duration {
+    if case .seconds(let duration) = duration, currentTime == duration {
       player.seek(to: .zero)
     }
     player.play()
@@ -181,7 +224,7 @@ public final class PlayerModel: ObservableObject {
 
   // MARK: - Playback Extras
 
-  enum RepeatMode {
+  enum RepeatMode: Hashable {
     case none
     case one
     case all
@@ -210,9 +253,13 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  struct PlaybackSpeed: Equatable {
+  struct PlaybackSpeed: Hashable, Identifiable {
     var rate: Float
     var braveSystemName: String
+
+    var id: Float {
+      rate
+    }
 
     static let normal = Self(rate: 1.0, braveSystemName: "leo.1x")
     static let fast = Self(rate: 1.5, braveSystemName: "leo.1.5x")
@@ -377,6 +424,7 @@ public final class PlayerModel: ObservableObject {
     willSet {
       if let selectedItem {
         let currentTime = currentTime
+        let duration = duration.seconds ?? 0
         // Reset the current item's last played time if you changed videos in the last 10s
         PlaylistManager.shared.updateLastPlayed(
           item: .init(item: selectedItem),
@@ -403,22 +451,10 @@ public final class PlayerModel: ObservableObject {
     selectedItemID.flatMap { PlaylistItem.getItem(id: $0) }
   }
 
-  @MainActor public func prepareItemQueue() {
+  @MainActor public func prepareItemQueue() async {
     let firstLoadAutoPlay = Preferences.Playlist.firstLoadAutoPlay.value
     let lastPlayedItemURL = Preferences.Playlist.lastPlayedItemUrl.value
     let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
-
-    defer {
-      Task { @MainActor in
-        if !isPlaying {
-          await self.prepareToPlaySelectedItem(
-            initialOffset: seekToInitialTimestamp,
-            playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay
-          )
-        }
-        seekToInitialTimestamp = nil
-      }
-    }
 
     if !itemQueue.isEmpty {
       // Already prepared the queue, no need to do so again
@@ -460,6 +496,14 @@ public final class PlayerModel: ObservableObject {
         selectedItemID = itemQueue.first
       }
     }
+
+    if !isPlaying {
+      await self.prepareToPlaySelectedItem(
+        initialOffset: seekToInitialTimestamp,
+        playImmediately: initialPlaybackInfo != nil || firstLoadAutoPlay
+      )
+    }
+    seekToInitialTimestamp = nil
   }
 
   @MainActor func makeItemQueue(selectedItemID: PlaylistItem.ID?) {
@@ -481,22 +525,27 @@ public final class PlayerModel: ObservableObject {
     itemQueue = queue
   }
 
-  @MainActor func playPreviousItem() {
-    guard let currentItem = selectedItem, currentItem.id != itemQueue.first,
+  @MainActor func playPreviousItem() async {
+    guard let currentItem = selectedItem,
       let currentItemIndex = itemQueue.firstIndex(of: currentItem.id)
     else {
+      return
+    }
+
+    // If you attempt to play the previous item when on the first item in the queue just seek to
+    // the beginning of the video instead.
+    if currentItem.id == itemQueue.first {
+      await seek(to: 0)
       return
     }
 
     // This should be safe as we've already checked if the selected item is the first in the queue
     selectedItemID = itemQueue[currentItemIndex - 1]
 
-    Task {
-      await self.prepareToPlaySelectedItem(
-        initialOffset: seekToInitialTimestamp,
-        playImmediately: true
-      )
-    }
+    await self.prepareToPlaySelectedItem(
+      initialOffset: seekToInitialTimestamp,
+      playImmediately: true
+    )
   }
 
   @MainActor private var nextItemID: PlaylistItem.ID? {
@@ -519,7 +568,7 @@ public final class PlayerModel: ObservableObject {
     return itemQueue[currentItemIndex + 1]
   }
 
-  @MainActor func playNextItem() {
+  @MainActor func playNextItem() async {
     pause()
 
     let nextItemID = self.nextItemID
@@ -533,12 +582,10 @@ public final class PlayerModel: ObservableObject {
       // We'll set the selected item to the next item, or nil it out completely if we were never
       // able to set the player item at all due to an error meaning controls wouldn't work anyways
       self.selectedItemID = nextItemID
-      Task {
-        await self.prepareToPlaySelectedItem(
-          initialOffset: seekToInitialTimestamp,
-          playImmediately: true
-        )
-      }
+      await prepareToPlaySelectedItem(
+        initialOffset: seekToInitialTimestamp,
+        playImmediately: true
+      )
     }
   }
 
@@ -558,7 +605,7 @@ public final class PlayerModel: ObservableObject {
       case .loadingStreamingURLFailed(.cannotLoadMedia):
         return Strings.PlayList.sorryAlertTitle
       default:
-        return "Something went wrong"
+        return "Something went wrong"  // TODO: Localize
       }
     }
 
@@ -586,7 +633,9 @@ public final class PlayerModel: ObservableObject {
     guard let item = selectedItem else { return }
     var playerItemToReplace: AVPlayerItem?
     if let cachedDataURL = item.cachedDataURL {
-      playerItemToReplace = .init(url: cachedDataURL)
+      playerItemToReplace = await Task.detached {
+        .init(url: cachedDataURL)
+      }.value
     }
     if playerItemToReplace == nil, let mediaStreamer {
       if !isPictureInPictureActive {
@@ -598,12 +647,14 @@ public final class PlayerModel: ObservableObject {
       do {
         let newItem = try await mediaStreamer.loadMediaStreamingAsset(.init(item: item))
         if let url = URL(string: newItem.src) {
-          playerItemToReplace = .init(asset: AVURLAsset(url: url))
+          playerItemToReplace = await Task.detached {
+            .init(asset: AVURLAsset(url: url))
+          }.value
         }
       } catch {
         if isPictureInPictureActive {
           // Can't show any error in PiP, so skip to the next item
-          playNextItem()
+          await playNextItem()
         } else {
           let reason: PlayerModelError.Reason = {
             if let error = error as? PlaylistMediaStreamer.PlaybackError {
@@ -614,7 +665,9 @@ public final class PlayerModel: ObservableObject {
           self.error = .init(
             reason: reason,
             handler: { [weak self] in
-              self?.playNextItem()
+              Task {
+                await self?.playNextItem()
+              }
             }
           )
         }
@@ -680,7 +733,9 @@ public final class PlayerModel: ObservableObject {
           self.pause()
           self.sleepTimerCondition = nil
         } else {
-          self.playNextItem()
+          Task {
+            await self.playNextItem()
+          }
         }
       }
     }
@@ -702,9 +757,47 @@ public final class PlayerModel: ObservableObject {
         handleAudioInterruption(type: type, options: options)
       }
     )
+
+    // In order for AVPlayer to correctly continue playing in the background you need to remove it
+    // from any active AVPlayerLayer's
+    let didEnterBackground = center.addObserver(
+      forName: UIApplication.didEnterBackgroundNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      if isPictureInPictureActive || !isPlaying {
+        return
+      }
+      playerLayer.player = nil
+    }
+
+    // Restore the AVPlayer to the AVPlayerLayer if it was previously removed on background
+    let willEnterForeground = center.addObserver(
+      forName: UIApplication.willEnterForegroundNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      guard let self else { return }
+      if isPictureInPictureActive || playerLayer.player != nil {
+        return
+      }
+      // There is a bug in iOS that breaks restoring an AVPlayer to an AVPlayerLayer while its
+      // playing in the background, so we have to first pause it before restoring it and resume
+      // playback after.
+      let isPlayingDurationRestoration = isPlaying
+      pause()
+      playerLayer.player = player
+      if isPlayingDurationRestoration {
+        play()
+      }
+    }
+
     cancellables.formUnion([
       .init { _ = didPlayToEndTime },
       .init { _ = interruption },
+      .init { _ = didEnterBackground },
+      .init { _ = willEnterForeground },
     ])
   }
 
@@ -781,22 +874,7 @@ extension AVPlayer {
 
 // MARK: -
 
-// FIXME: Move to Data target
 extension PlaylistItem {
-  var cachedDataURL: URL? {
-    guard let cachedData else { return nil }
-    do {
-      var isStale: Bool = false
-      let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
-      if FileManager.default.fileExists(atPath: url.path) {
-        return url
-      }
-    } catch {
-      return nil
-    }
-    return nil
-  }
-
   /// The URL you would attempt to load in an AVAsset or fetch metadata from. This URL may be
   /// the cached file url or the video url found on the webpage
   var assetURL: URL? {
@@ -821,7 +899,7 @@ extension PlayerModel {
       MPNowPlayingInfoPropertyMediaType: mediaType.rawValue,
       MPNowPlayingInfoPropertyPlaybackRate: playbackSpeed.rate,
       MPMediaItemPropertyArtist: selectedItem.pageSrc.asURL?.baseDomain ?? selectedItem.pageSrc,
-      MPMediaItemPropertyPlaybackDuration: duration,
+      MPMediaItemPropertyPlaybackDuration: duration.seconds ?? 0,
       MPMediaItemPropertyTitle: selectedItem.name,
     ]
 

@@ -12,8 +12,17 @@ extension AnyTransition {
   }
 }
 
-/// Applies a scale effect when the user presses down with a spring animation attached to it
-// FIXME: More doc about icon only, background style, etc
+/// A special button style that applies to components shown in playback controls in playlist.
+///
+/// Playback controls can be sized with 3 different size modes (regular, large, and extra large)
+/// which will affect the overall button size, image scale and font style used to size SF Symbols.
+///
+/// Use the `.tint` modifier to apply the color that should be used for the icon and use
+/// `.backgroundStyle` modifier to choose which color should be used when the user is hovering over
+/// the button with a pointer device or the user is currently touching the button
+///
+/// - Note: This button style sets `labelStyle` to `iconOnly` and thus will not display the text
+///         component of any `Label` provided (though it will still be read aloud in VoiceOver)
 struct PlaybackControlButtonStyle: ButtonStyle {
   enum Size {
     case regular
@@ -26,6 +35,7 @@ struct PlaybackControlButtonStyle: ButtonStyle {
   @State private var isPressed: Bool = false
   @State private var pressDownTime: Date?
   @State private var delayedTouchUpTask: Task<Void, Error>?
+  @Environment(\.isEnabled) private var isEnabled
 
   private var length: CGFloat {
     switch size {
@@ -108,6 +118,8 @@ struct PlaybackControlButtonStyle: ButtonStyle {
         }
       )
       .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPressed)
+      .opacity(isEnabled ? 1 : 0.5)
+      .animation(.linear(duration: 0.1), value: isEnabled)
   }
 }
 

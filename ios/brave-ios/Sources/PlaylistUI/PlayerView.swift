@@ -49,6 +49,7 @@ struct PlayerView: View {
           .animation(.default, value: playerModel.isPlaying)
       }
     }
+    .allowsHitTesting(false)
     // For some reason this is required or the status bar breaks when touching anything on the
     // screen on an iPad...
     .statusBarHidden(isFullScreen && !isControlsVisible)
@@ -134,7 +135,6 @@ struct PlayerView: View {
 
 extension PlayerView {
   /// Controls shown inside of the PlayerView, typically in fullscreen mode
-  // FIXME: Find a way to share the actual control buttons?
   struct InlinePlaybackControlsView: View {
     @Environment(\.toggleFullScreen) private var toggleFullScreen
     @State private var currentTime: TimeInterval = 0
@@ -146,39 +146,20 @@ extension PlayerView {
     var body: some View {
       VStack {
         HStack(spacing: 16) {
-          Button {
-            model.playbackSpeed.cycle()
-          } label: {
-            Label("Playback Speed", braveSystemImage: model.playbackSpeed.braveSystemName)
-              .transition(.opacity.animation(.linear(duration: 0.1)))
-          }
+          PlaybackSpeedPicker(playbackSpeed: $model.playbackSpeed)
           Spacer()
           Toggle(isOn: $model.isShuffleEnabled) {
             if model.isShuffleEnabled {
-              Image(braveSystemName: "leo.shuffle.toggle-on")
+              Label("Shuffle Mode: On", braveSystemImage: "leo.shuffle.toggle-on")
                 .transition(.opacity.animation(.linear(duration: 0.1)))
             } else {
-              Image(braveSystemName: "leo.shuffle.off")
+              Label("Shuffle Mode: Off", braveSystemImage: "leo.shuffle.off")
                 .transition(.opacity.animation(.linear(duration: 0.1)))
             }
           }
           .toggleStyle(.button)
-          Button {
-            model.repeatMode.cycle()
-          } label: {
-            Group {
-              // FIXME: Better accessibility labels
-              switch model.repeatMode {
-              case .none:
-                Label("Repeat Mode: Off", braveSystemImage: "leo.loop.off")
-              case .one:
-                Label("Repeat Mode: One", braveSystemImage: "leo.loop.1")
-              case .all:
-                Label("Repeat Mode: All", braveSystemImage: "leo.loop.all")
-              }
-            }
-            .transition(.opacity.animation(.linear(duration: 0.1)))
-          }
+          RepeatModePicker(repeatMode: $model.repeatMode)
+            .disabled(model.duration.isIndefinite)
         }
         Spacer()
         VStack {
@@ -288,21 +269,19 @@ struct VideoAmbianceBackground: View {
 
 struct CompactMediaScrubberLabel: View {
   var currentTime: TimeInterval
-  var duration: TimeInterval
+  var duration: PlayerModel.ItemDuration
 
   private var currentValueLabel: Text {
     return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
-  private var remainingTimeLabel: Text {
-    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
-  }
-
   var body: some View {
     HStack {
       currentValueLabel
-      Text(verbatim: "/")  // FIXME: Does this need some sort of localization?
-      remainingTimeLabel
+      if case .seconds(let duration) = duration {
+        Text(verbatim: "/")  // FIXME: Does this need some sort of localization?
+        Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+      }
     }
     .font(.caption2)
   }

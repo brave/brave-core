@@ -9,7 +9,6 @@ import SwiftUI
 
 /// Displays controls for picking playback routes such as AirPlay
 struct RoutePickerView: View {
-  // FIXME: WeakBox?
   @State private var underlyingRoutePickerControl: UIControl?
 
   var body: some View {

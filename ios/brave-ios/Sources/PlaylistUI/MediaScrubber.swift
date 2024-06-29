@@ -3,21 +3,26 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import CoreMedia
 import Foundation
 import SwiftUI
 
-/// FIXME: Add doc
-/// FIXME: Support RTL layout direction
+/// A control which mimics a SwiftUI Slider but allows the user to change the current time of an
+/// associated piece of media using gestures.
+///
+/// `MediaScrubber` displays a provided `Label` View below it to display the current values it is
+/// displaying based on `currentTime` and `duration`. The default label is
+/// `DefaultMediaScrubberLabel` if none is provided in the initializer. `DefaultMediaScrubberLabel`
 struct MediaScrubber<Label: View>: View {
   @Binding var currentTime: TimeInterval
-  var duration: TimeInterval
+  var duration: PlayerModel.ItemDuration
   @Binding var isScrubbing: Bool
   var label: Label
 
   init(
     currentTime: Binding<TimeInterval>,
-    duration: TimeInterval,
+    duration: PlayerModel.ItemDuration,
     isScrubbing: Binding<Bool>,
     @ViewBuilder label: () -> Label
   ) {
@@ -30,21 +35,31 @@ struct MediaScrubber<Label: View>: View {
   @GestureState private var isScrubbingState: Bool = false
   @ScaledMetric private var barHeight = 4
   @ScaledMetric private var thumbSize = 12
+  @Environment(\.layoutDirection) private var layoutDirection
 
   private var currentValueLabel: Text {
     return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
   }
 
-  private var remainingTimeLabel: Text {
-    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+  @ViewBuilder private var remainingTimeLabel: some View {
+    switch duration {
+    case .unknown:
+      EmptyView()
+    case .seconds(let duration):
+      Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+    case .indefinite:
+      Text("Live")
+    }
   }
 
   private var durationLabel: Text {
-    Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+    if case .seconds(let duration) = duration {
+      return Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+    }
+    return Text("")
   }
 
   private var barShape: some InsettableShape {
-    // FIXME: Design uses a regular Rectangle
     RoundedRectangle(cornerRadius: barHeight / 2, style: .continuous)
   }
 
@@ -55,7 +70,7 @@ struct MediaScrubber<Label: View>: View {
         .foregroundStyle(.tint)
         .frame(height: barHeight)
         .overlay {
-          if duration > 0 {
+          if case .seconds(let duration) = duration {
             // Active value
             GeometryReader { proxy in
               barShape
@@ -67,13 +82,23 @@ struct MediaScrubber<Label: View>: View {
                   ),
                   alignment: .leading
                 )
-                .animation(.linear(duration: 0.1), value: currentTime)
+                .osAvailabilityModifiers { content in
+                  if #available(iOS 17.0, *) {
+                    content.transaction(value: currentTime) { tx in
+                      if tx.animation == nil && !tx.disablesAnimations {
+                        tx.animation = .linear(duration: 0.1)
+                      }
+                    }
+                  } else {
+                    content.animation(.linear(duration: 0.1), value: currentTime)
+                  }
+                }
             }
           }
         }
         .padding(.vertical, (thumbSize - barHeight) / 2)
         .overlay {
-          if duration > 0 {
+          if case .seconds(let duration) = duration {
             // Thumb
             GeometryReader { proxy in
               Circle()
@@ -82,9 +107,12 @@ struct MediaScrubber<Label: View>: View {
                 .contentShape(.rect)
                 .scaleEffect(isScrubbing ? 1.5 : 1)
                 .animation(.spring(response: 0.2, dampingFraction: 0.7), value: isScrubbing)
-                // The gesture needs to be added prior to the `offset` modifier due to a SwiftUI bug
-                // but because the offset affects the coordinate space, we need to make sure we use
-                // the offsetted coordinate space when doing calculations
+                .offset(
+                  x: min(
+                    proxy.size.width,
+                    CGFloat(currentTime / duration) * proxy.size.width
+                  ) - (thumbSize / 2)
+                )
                 .gesture(
                   DragGesture(minimumDistance: 0, coordinateSpace: .named("MediaScrubber"))
                     .updating(
@@ -94,35 +122,43 @@ struct MediaScrubber<Label: View>: View {
                       }
                     )
                     .onChanged { state in
+                      var percent = state.location.x / proxy.size.width
+                      if layoutDirection == .rightToLeft {
+                        percent = 1 - percent
+                      }
                       let seconds = max(
                         0,
                         min(
                           duration,
-                          (state.location.x / proxy.size.width) * CGFloat(duration)
+                          percent * CGFloat(duration)
                         )
                       )
                       currentTime = seconds
                     }
                 )
-                .offset(
-                  x: min(
-                    proxy.size.width,
-                    (CGFloat(currentTime / duration) * proxy.size.width)
-                  ) - (thumbSize / 2)
-                )
-                .coordinateSpace(name: "MediaScrubber")
-                .animation(.linear(duration: 0.1), value: currentTime)
+                .osAvailabilityModifiers { content in
+                  if #available(iOS 17.0, *) {
+                    content.transaction(value: currentTime) { tx in
+                      if tx.animation == nil && !tx.disablesAnimations {
+                        tx.animation = .linear(duration: 0.1)
+                      }
+                    }
+                  } else {
+                    content.animation(.linear(duration: 0.1), value: currentTime)
+                  }
+                }
             }
           }
         }
-        .disabled(duration.isZero)
+        .disabled(duration.seconds == nil)
       label
     }
+    .coordinateSpace(name: "MediaScrubber")
     .onChange(of: isScrubbingState) { newValue in
       isScrubbing = newValue
     }
     .accessibilityRepresentation {
-      if duration > 0 {
+      if case .seconds(let duration) = duration {
         Slider(
           value: $currentTime,
           in: 0.0...duration,
@@ -142,7 +178,7 @@ struct MediaScrubber<Label: View>: View {
 extension MediaScrubber where Label == DefaultMediaScrubberLabel {
   init(
     currentTime: Binding<TimeInterval>,
-    duration: TimeInterval,
+    duration: PlayerModel.ItemDuration,
     isScrubbing: Binding<Bool>
   ) {
     self._currentTime = currentTime
@@ -157,37 +193,38 @@ extension MediaScrubber where Label == DefaultMediaScrubberLabel {
 
 struct DefaultMediaScrubberLabel: View {
   var currentTime: TimeInterval
-  var duration: TimeInterval
+  var duration: PlayerModel.ItemDuration
 
   @State private var isShowingTotalTime: Bool = false
 
-  private var currentValueLabel: Text {
-    return Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
-  }
-
-  private var remainingTimeLabel: Text {
-    return Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
-  }
-
-  private var durationLabel: Text {
-    Text(.seconds(duration), format: .time(pattern: .minuteSecond))
-  }
-
   var body: some View {
     HStack {
-      currentValueLabel
+      Text(.seconds(currentTime), format: .time(pattern: .minuteSecond))
       Spacer()
-      Button {
-        isShowingTotalTime.toggle()
-      } label: {
-        Group {
-          if isShowingTotalTime {
-            durationLabel
-          } else {
-            remainingTimeLabel
+      switch duration {
+      case .unknown:
+        EmptyView()
+      case .seconds(let duration):
+        Button {
+          // Only allow swapping when there's a remaining time available
+          isShowingTotalTime.toggle()
+        } label: {
+          Group {
+            if isShowingTotalTime {
+              Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+            } else {
+              Text(.seconds(currentTime - duration), format: .time(pattern: .minuteSecond))
+            }
           }
+          .transition(.move(edge: .trailing).combined(with: .opacity))
         }
-        .transition(.move(edge: .trailing).combined(with: .opacity))
+      case .indefinite:
+        HStack(spacing: 4) {
+          Image(systemName: "circlebadge.fill")
+            .imageScale(.small)
+            .foregroundStyle(Color(braveSystemName: .red50))
+          Text("Live")
+        }
       }
     }
     .foregroundStyle(.primary)
@@ -204,32 +241,39 @@ private struct MediaScrubberPreview: View {
     VStack {
       MediaScrubber(
         currentTime: $currentTime,
-        duration: 1000,
+        duration: .seconds(1000),
         isScrubbing: $isScrubbing
       )
       .padding()
       MediaScrubber(
         currentTime: $currentTime,
-        duration: 1000,
+        duration: .seconds(1000),
         isScrubbing: $isScrubbing
       )
       .tint(.red)
       .environment(\.colorScheme, .dark)
       .padding()
       .background(Color.black)
+      .environment(\.layoutDirection, .rightToLeft)
+
+      MediaScrubber(
+        currentTime: $currentTime,
+        duration: .indefinite,
+        isScrubbing: $isScrubbing
+      )
+      .padding()
 
       Button {
-        // FIXME: Currently animation is linear(0.1) based on animations in the actual MediaScrubber, see if its possible to only use those animations while scrubbing
-        //        withAnimation(.spring()) {
-        currentTime = 500
-        //        }
+        withAnimation(.snappy) {
+          currentTime = 500
+        }
       } label: {
         Text(verbatim: "Go to 50%")
       }
     }
   }
 }
-// swift-format-ignore
+
 #Preview {
   MediaScrubberPreview()
 }

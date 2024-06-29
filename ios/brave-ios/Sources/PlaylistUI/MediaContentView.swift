@@ -41,7 +41,7 @@ struct MediaContentView: View {
           if !isFullScreen {
             GeometryReader { proxy in
               Color.clear
-                .contentShape(.rect)
+                .contentShape(.rect.inset(by: 20))
                 .onTapGesture(count: 2) { point in
                   if point.x < proxy.size.width / 2 {
                     Task {
@@ -66,7 +66,14 @@ struct MediaContentView: View {
       }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: isFullScreen ? .center : .top)
-    .background(isFullScreen ? .black : Color(braveSystemName: .containerBackground))
+    .background {
+      // For some reason (likely a SwiftUI bug) we need to ensure that this background doesn't allow
+      // hit testing otherwise it eats touches around the toolbar buttons and makes it harder to hit
+      // the PiP button
+      (isFullScreen ? .black : Color(braveSystemName: .containerBackground))
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+    }
     .onChange(of: isFullScreen) { newValue in
       handleFullScreenOrientationChanges(
         expectedFullScreen: newValue,
@@ -212,19 +219,19 @@ extension MediaContentView {
             RoutePickerView()
           }
         }
-        // FIXME: Handle live video better
         PlaybackScrubber(model: model)
         VStack(spacing: verticalStackSpacing) {
           HStack {
             Toggle(isOn: $model.isShuffleEnabled) {
               if model.isShuffleEnabled {
-                Image(braveSystemName: "leo.shuffle.toggle-on")
+                Label("Shuffle Mode: On", braveSystemImage: "leo.shuffle.toggle-on")
                   .transition(.opacity.animation(.linear(duration: 0.1)))
               } else {
-                Image(braveSystemName: "leo.shuffle.off")
+                Label("Shuffle Mode: Off", braveSystemImage: "leo.shuffle.off")
                   .transition(.opacity.animation(.linear(duration: 0.1)))
               }
             }
+            .labelStyle(.iconOnly)
             .toggleStyle(.button)
             Spacer()
             Button {
@@ -257,32 +264,13 @@ extension MediaContentView {
             .buttonStyle(.playbackControl(size: .large))
             .tint(Color(braveSystemName: .textPrimary))
             Spacer()
-            Button {
-              model.repeatMode.cycle()
-            } label: {
-              // FIXME: Better accessibility labels
-              Group {
-                switch model.repeatMode {
-                case .none:
-                  Label("Repeat Mode: Off", braveSystemImage: "leo.loop.off")
-                case .one:
-                  Label("Repeat Mode: One", braveSystemImage: "leo.loop.1")
-                case .all:
-                  Label("Repeat Mode: All", braveSystemImage: "leo.loop.all")
-                }
-              }
-              .transition(.opacity.animation(.linear(duration: 0.1)))
-            }
+            RepeatModePicker(repeatMode: $model.repeatMode)
           }
           .buttonStyle(.playbackControl)
           .tint(Color(braveSystemName: .textSecondary))
           HStack {
-            Button {
-              model.playbackSpeed.cycle()
-            } label: {
-              Label("Playback Speed", braveSystemImage: model.playbackSpeed.braveSystemName)
-                .transition(.opacity.animation(.linear(duration: 0.1)))
-            }
+            PlaybackSpeedPicker(playbackSpeed: $model.playbackSpeed)
+              .disabled(model.duration.isIndefinite)
             Spacer()
             Menu {
               Section {

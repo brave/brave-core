@@ -328,7 +328,6 @@ extension PlaylistCoordinator: AVPictureInPictureControllerDelegate {
     // We need to mark that PiP _will_ start, so that when `PlaylistRootView.Delegate.onDismissal`
     // is called we don't kill the player box
     isPiPStarting = true
-    browserController?.dismiss(animated: true)
   }
 
   public func pictureInPictureControllerDidStartPictureInPicture(

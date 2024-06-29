@@ -136,14 +136,16 @@ struct PlaylistContentView: View {
       if playerModel.isPictureInPictureSupported {
         Button {
           playerModel.startPictureInPicture()
+          dismiss()
         } label: {
-          Image(braveSystemName: "leo.picture.in-picture")
+          Label("Enter Picture in Picture", braveSystemImage: "leo.picture.in-picture")
         }
+        .labelStyle(.iconOnly)
         .transition(.opacity.animation(.default))
       }
     }
-    .onAppear {
-      playerModel.prepareItemQueue()
+    .task {
+      await playerModel.prepareItemQueue()
       if selectedItem != nil {
         selectedDetent = .anchor(.mediaControls)
       } else {

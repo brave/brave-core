@@ -11,24 +11,11 @@ enum ItemDownloadState {
   case completed
 }
 
-enum ItemDuration {
-  case seconds(Duration)
-  case live
-
-  init(_ value: TimeInterval) {
-    if !value.isFinite || value == .greatestFiniteMagnitude {
-      self = .live
-    } else {
-      self = .seconds(.seconds(value))
-    }
-  }
-}
-
 struct PlaylistItemView: View {
   var title: String
   var assetURL: URL?
   var pageURL: URL?
-  var duration: ItemDuration
+  var duration: PlayerModel.ItemDuration
   var isSelected: Bool
   var isPlaying: Bool
   var downloadState: ItemDownloadState?
@@ -61,7 +48,6 @@ struct PlaylistItemView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
           if isSelected {
             LeoPlayingSoundView(isAnimating: isPlaying)
-              // FIXME: Should this scale? Its just cosmetic
               .frame(width: 16, height: 16)
               .tint(Color(braveSystemName: .primary50))
           }
@@ -69,9 +55,11 @@ struct PlaylistItemView: View {
         HStack(alignment: .firstTextBaseline) {
           switch duration {
           case .seconds(let duration):
-            Text(duration, format: .time(pattern: .minuteSecond))
-          case .live:
+            Text(.seconds(duration), format: .time(pattern: .minuteSecond))
+          case .indefinite:
             Text("Live")
+          case .unknown:
+            EmptyView()
           }
           if let downloadState {
             switch downloadState {
@@ -197,22 +185,38 @@ struct LeoPlayingSoundView: View {
 }
 
 #if DEBUG
-// swift-format-ignore
 #Preview {
-  LazyVStack(spacing: 0) {
+  LazyVStack(spacing: 12) {
     Button {
     } label: {
-      PlaylistItemView(title: "The Worst Product I've Ever Reviewed... For Now", duration: .init(1504), isSelected: true, isPlaying: true)
+      PlaylistItemView(
+        title: "The Worst Product I've Ever Reviewed... For Now",
+        duration: .seconds(1504),
+        isSelected: true,
+        isPlaying: true
+      )
     }
     Button {
     } label: {
-      PlaylistItemView(title: "1 Hour of Epic Final Fantasy Remixes", duration: .init(3081), isSelected: true, isPlaying: false, downloadState: .completed)
+      PlaylistItemView(
+        title: "1 Hour of Epic Final Fantasy Remixes",
+        duration: .seconds(3081),
+        isSelected: true,
+        isPlaying: false,
+        downloadState: .completed
+      )
     }
     Button {
     } label: {
-      PlaylistItemView(title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones", duration: .init(1641), isSelected: false, isPlaying: false, downloadState: .downloading(percentComplete: 0.33))
+      PlaylistItemView(
+        title: "Conan O'Brien Needs a Doctor While Eating Spicy Wings | Hot Ones",
+        duration: .seconds(1641),
+        isSelected: false,
+        isPlaying: false,
+        downloadState: .downloading(percentComplete: 0.33)
+      )
     }
   }
-  .buttonStyle(.spring(scale: 0.9))
+  .padding()
 }
 #endif
