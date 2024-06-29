@@ -101,6 +101,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "anonymous-credentials"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "brave-miracl",
+ "lazy_static",
+ "rand 0.8.5",
+ "thiserror",
+]
+
+[[package]]
+name = "anonymous-credentials-cxx"
+version = "0.1.0"
+dependencies = [
+ "anonymous-credentials",
+ "cxx",
+]
+
+[[package]]
 name = "ansi_term"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -252,6 +271,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "brave-miracl"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "brave-news-cxx"
 version = "1.0.0"
 dependencies = [
@@ -373,10 +397,12 @@ name = "chromium"
 version = "0.1.0"
 dependencies = [
  "adblock-cxx",
+ "anonymous-credentials-cxx",
  "brave-news-cxx",
  "brave_wallet",
  "challenge-bypass-ristretto-cxx",
  "constellation-cxx",
+ "document-extractor-cxx",
  "filecoin-cxx",
  "json-cxx",
  "skus-cxx",
@@ -658,6 +684,15 @@ dependencies = [
  "block-buffer 0.10.4",
  "crypto-common",
  "subtle",
+]
+
+[[package]]
+name = "document-extractor-cxx"
+version = "0.1.0"
+dependencies = [
+ "cxx",
+ "html5ever",
+ "kuchikiki",
 ]
 
 [[package]]

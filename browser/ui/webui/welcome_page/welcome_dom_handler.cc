@@ -170,7 +170,7 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
 void WelcomeDOMHandler::HandleEnableWebDiscovery(
     const base::Value::List& args) {
   DCHECK(profile_);
-  profile_->GetPrefs()->SetBoolean(kWebDiscoveryEnabled, true);
+  profile_->GetPrefs()->SetBoolean(kWebDiscoveryExtensionEnabled, true);
 }
 
 void WelcomeDOMHandler::SetLocalStateBooleanEnabled(

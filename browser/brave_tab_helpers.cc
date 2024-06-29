@@ -34,6 +34,7 @@
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/channel_info.h"
@@ -64,6 +65,12 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/browser/web_discovery/wdp_service_factory.h"
+#include "brave/components/web_discovery/browser/web_discovery_tab_helper.h"
+#include "brave/components/web_discovery/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -224,6 +231,18 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     }
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  if (base::FeatureList::IsEnabled(
+          web_discovery::features::kWebDiscoveryNative)) {
+    auto* wdp_service = web_discovery::WDPServiceFactory::GetForBrowserContext(
+        web_contents->GetBrowserContext());
+    if (wdp_service) {
+      web_discovery::WebDiscoveryTabHelper::CreateForWebContents(web_contents,
+                                                                 wdp_service);
+    }
+  }
+#endif
 }
 
 }  // namespace brave

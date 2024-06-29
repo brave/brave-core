@@ -1,0 +1,117 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/web_discovery/common/buildflags/buildflags.gni")
+
+assert(enable_web_discovery_native)
+
+static_library("browser") {
+  sources = [
+    "content_scraper.cc",
+    "content_scraper.h",
+    "credential_manager.cc",
+    "credential_manager.h",
+    "credential_signer.cc",
+    "credential_signer.h",
+    "double_fetcher.cc",
+    "double_fetcher.h",
+    "ecdh_aes.cc",
+    "ecdh_aes.h",
+    "hash_detection.cc",
+    "hash_detection.h",
+    "patterns.cc",
+    "patterns.h",
+    "payload_generator.cc",
+    "payload_generator.h",
+    "pref_names.h",
+    "privacy_guard.cc",
+    "privacy_guard.h",
+    "regex_util.cc",
+    "regex_util.h",
+    "reporter.cc",
+    "reporter.h",
+    "request_queue.cc",
+    "request_queue.h",
+    "rsa.cc",
+    "rsa.h",
+    "server_config_loader.cc",
+    "server_config_loader.h",
+    "signature_basename.cc",
+    "signature_basename.h",
+    "util.cc",
+    "util.h",
+    "wdp_service.cc",
+    "wdp_service.h",
+    "web_discovery_tab_helper.cc",
+    "web_discovery_tab_helper.h",
+  ]
+  deps = [
+    "anonymous_credentials/rs:rust_lib",
+    "document_extractor/rs:rust_lib",
+    "//base",
+    "//brave/brave_domains",
+    "//brave/components/constants",
+    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/common:mojom",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//content/public/browser",
+    "//crypto",
+    "//extensions/buildflags",
+    "//net",
+    "//services/network/public/cpp",
+    "//third_party/boringssl",
+    "//third_party/re2",
+    "//third_party/zlib/google:compression_utils",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "credential_manager_unittest.cc",
+    "double_fetcher_unittest.cc",
+    "hash_detection_unittest.cc",
+    "patterns_unittest.cc",
+    "payload_generator_unittest.cc",
+    "privacy_guard_unittest.cc",
+    "reporter_unittest.cc",
+    "server_config_loader_unittest.cc",
+    "signature_basename_unittest.cc",
+  ]
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//components/prefs:test_support",
+    "//crypto",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "content_scraper_browsertest.cc" ]
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/common:mojom",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/service_manager/public/cpp",
+    "//testing/gtest",
+  ]
+  if (!is_android) {
+    deps += [ "//chrome/test:test_support_ui" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui_android" ]
+  }
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

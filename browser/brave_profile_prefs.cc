@@ -48,6 +48,7 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -118,6 +119,10 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/browser/wdp_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -436,8 +441,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  // Web discovery extension, default false
-  registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
+  registry->RegisterBooleanPref(kWebDiscoveryExtensionEnabled, false);
   registry->RegisterDictionaryPref(kWebDiscoveryCTAState);
 #endif
 
@@ -508,6 +512,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->SetDefaultPrefValue(prefs::kSearchSuggestEnabled,
                                 base::Value(false));
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  web_discovery::WDPService::RegisterProfilePrefs(registry);
+#endif
 }
 
 }  // namespace brave

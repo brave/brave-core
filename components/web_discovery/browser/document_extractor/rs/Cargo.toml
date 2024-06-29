@@ -1,0 +1,15 @@
+[package]
+name = "document-extractor-cxx"
+version = "0.1.0"
+authors = ["Darnell Andries <dandries@brave.com>"]
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+cxx = "1"
+kuchikiki = "0.8.4-speedreader"
+html5ever = "0.25"
+
+[lib]
+name = "document_extractor_cxx"
+crate-type = ["rlib"]

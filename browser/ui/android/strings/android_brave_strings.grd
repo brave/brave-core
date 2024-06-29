@@ -746,6 +746,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SEND_P3A_ANALYTICS_SUMMARY" desc="Summary for checkbox of send p3a analytics.">
         Anonymized P3A info helps Brave estimate overall usage, and ensure we’re improving popular features.
       </message>
+      <message name="IDS_SEND_WEB_DISCOVERY_TITLE" desc="Title for checkbox of Web Discovery setting.">
+        Web Discovery Project
+      </message>
+      <message name="IDS_SEND_WEB_DISCOVERY_SUMMARY" desc="Summary for checkbox of Web Discovery setting.">
+        Contribute some anonymous search &amp; browsing data to refine Brave Search.
+      </message>
       <message name="IDS_SEND_CRASH_REPORTS_TITLE" desc="Title for checkbox enable/disable sending diagnostic reports (crashes, hangs).">
         Automatically send diagnostic reports
       </message>
