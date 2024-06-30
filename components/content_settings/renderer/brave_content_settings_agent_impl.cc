@@ -330,7 +330,8 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
   cached_ephemeral_storage_origins_.clear();
 }
 
-BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
+BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
+    ContentSettingsType webcompat_settings_type) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
@@ -341,6 +342,15 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
     } else {
       setting = brave_shields::GetBraveFPContentSettingFromRules(
           content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
+    }
+    if (setting != CONTENT_SETTING_ALLOW) {
+      auto webcompat_setting =
+          brave_shields::GetBraveWebcompatContentSettingFromRules(
+              content_setting_rules_->webcompat_rules, GetOriginOrURL(frame),
+              webcompat_settings_type);
+      if (webcompat_setting == CONTENT_SETTING_ALLOW) {
+        setting = CONTENT_SETTING_ALLOW;
+      }
     }
   }
 

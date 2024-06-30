@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 
+#include <map>
 #include <set>
 #include <string>
 
@@ -30,6 +31,23 @@ ContentSetting GetBraveFPContentSettingFromRules(
     }
   }
 
+  return CONTENT_SETTING_DEFAULT;
+}
+
+ContentSetting GetBraveWebcompatContentSettingFromRules(
+    const std::map<ContentSettingsType, ContentSettingsForOneType>&
+        webcompat_rules,
+    const GURL& primary_url,
+    const ContentSettingsType content_settings_type) {
+  const auto& item = webcompat_rules.find(content_settings_type);
+  if (item == webcompat_rules.end()) {
+    return CONTENT_SETTING_DEFAULT;
+  }
+  for (const auto& rule : item->second) {
+    if (rule.primary_pattern.Matches(primary_url)) {
+      return rule.GetContentSetting();
+    }
+  }
   return CONTENT_SETTING_DEFAULT;
 }
 

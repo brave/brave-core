@@ -93,6 +93,13 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  void EnableWebcompatException() {
+    brave_shields::SetWebcompatFeatureSetting(
+        content_settings(),
+        ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+        ControlType::ALLOW, top_level_page_url_, nullptr);
+  }
+
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
@@ -125,4 +132,13 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   std::string maximum_value =
       content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
   EXPECT_EQ(balanced_value, maximum_value);
+
+  // Farbling level: default, but with webcompat exception enabled
+  // get real navigator.mediaDevices.enumerateDevices array
+  SetFingerprintingDefault();
+  EnableWebcompatException();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
+  std::string real_value2 =
+      content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
+  ASSERT_NE(real_value2, "");
 }

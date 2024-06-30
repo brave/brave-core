@@ -5,6 +5,10 @@
 
 #include "components/content_settings/core/browser/content_settings_utils.h"
 
+#include <iostream>
+
+#include "url/gurl.h"
+
 #define GetRendererContentSettingRules \
   GetRendererContentSettingRules_ChromiumImpl
 
@@ -44,6 +48,13 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
     DCHECK(
         RendererContentSettingRules::IsRendererContentSetting(setting.first));
     *setting.second = map->GetSettingsForOneType(setting.first);
+  }
+  for (auto webcompat_settings_type = ContentSettingsType::BRAVE_WEBCOMPAT_NONE;
+       webcompat_settings_type != ContentSettingsType::BRAVE_WEBCOMPAT_ALL;
+       webcompat_settings_type = static_cast<ContentSettingsType>(
+           static_cast<int32_t>(webcompat_settings_type) + 1)) {
+    rules->webcompat_rules[webcompat_settings_type] =
+        map->GetSettingsForOneType(webcompat_settings_type);
   }
 }
 

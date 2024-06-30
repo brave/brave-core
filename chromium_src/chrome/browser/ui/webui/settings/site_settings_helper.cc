@@ -32,7 +32,27 @@
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, nullptr},            \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},             \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},       \
-  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, nullptr},
+  {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, nullptr},          \
+                                                                   \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_FONT, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
+  {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
@@ -49,8 +69,20 @@
   if (name == brave_shields::kBraveShields)                              \
     return ContentSettingsType::BRAVE_SHIELDS;
 
+#define kInstalledWebappProvider         \
+  kRemoteListProvider:                   \
+  return SiteSettingSource::kRemoteList; \
+  case content_settings::ProviderType::kInstalledWebappProvider
+
+#define kNumSources     \
+  kRemoteList:          \
+  return "remote-list"; \
+  case SiteSettingSource::kNumSources
+
 #include "src/chrome/browser/ui/webui/settings/site_settings_helper.cc"
 
+#undef kNumSources
+#undef kInstalledWebappProvider
 #undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
 #undef GetVisiblePermissionCategories

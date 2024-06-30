@@ -307,6 +307,20 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,
   SetFingerprintingDefault(domain_z);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   EXPECT_EQ("Qv2Eh368mTRQv26G", EvalJs(web_contents(), kRequestDeviceScript));
+
+  // Reload once more with farbling at default but enable a webcompat exception.
+  SetFingerprintingDefault(domain_b);
+  brave_shields::SetWebcompatFeatureSetting(
+      content_settings(),
+      ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
+      ControlType::ALLOW, GURL(url_b), nullptr);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
+
+  // Call getDevices again. The fake device is still included, but now its
+  // serial number is not farbled.
+  EXPECT_EQ(content::ListValueOf(kTestDeviceSerialNumber),
+            EvalJs(web_contents(), kGetDevicesScript));
 }
 
 }  // namespace
