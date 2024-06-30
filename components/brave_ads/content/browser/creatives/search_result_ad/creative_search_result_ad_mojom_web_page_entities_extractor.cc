@@ -14,6 +14,7 @@
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -142,8 +143,17 @@ bool ExtractCreativeAdMojomProperty(
 
   const std::string& property_name = mojom_property->name;
   if (property_name == kCreativeAdPlacementIdPropertyName) {
-    return GetRequiredStringValue(mojom_property,
-                                  &mojom_creative_ad->placement_id);
+    std::string placement_id;
+    if (!GetRequiredStringValue(mojom_property, &placement_id)) {
+      return false;
+    }
+
+    // Escape all characters except alphanumerics and -._~ to make sure that the
+    // placement id can be safely passed to JS function and can be compared with
+    // an encoded placement id from search result click url.
+    mojom_creative_ad->placement_id =
+        base::EscapeAllExceptUnreserved(placement_id);
+    return true;
   }
 
   if (property_name == kCreativeAdCreativeInstanceIdPropertyName) {

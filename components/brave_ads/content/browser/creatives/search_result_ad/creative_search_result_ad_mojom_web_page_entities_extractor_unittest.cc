@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_unittest_util.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_for_testing.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "components/schema_org/common/metadata.mojom.h"
@@ -165,14 +165,42 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 }
 
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
-     ExtractWhenIncludesUnknownProperties) {
+     DoNotExtractForMissingPlacementId) {
   const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
       test::CreativeSearchResultAdMojomWebPageEntities(
-          /*excluded_property_names=*/{});
-  const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
-  auto& mojom_entity = mojom_property->values->get_entity_values()[0];
-  test::AddMojomProperty<std::string>(&mojom_entity->properties, /*name=*/"foo",
-                                      /*value=*/"bar");
+          /*excluded_property_names=*/{"data-placement-id"});
+
+  const CreativeSearchResultAdMap creative_search_result_ads =
+      ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
+          mojom_web_page_entities);
+  EXPECT_THAT(creative_search_result_ads, ::testing::IsEmpty());
+}
+
+TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
+     ExtractWhenDataPlacementIdIncludeUnreservedCharacters) {
+  const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
+      test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+          kCreativeAdPlacementIdPropertyName,
+          test::kCreativeAdPlacementIdWithUnreservedCharacters);
+
+  const CreativeSearchResultAdMap creative_search_result_ads =
+      ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
+          mojom_web_page_entities);
+  ASSERT_THAT(creative_search_result_ads, ::testing::SizeIs(1));
+  const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad =
+      creative_search_result_ads.at(
+          test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters);
+  ASSERT_TRUE(mojom_creative_ad);
+  EXPECT_EQ(test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters,
+            mojom_creative_ad->placement_id);
+}
+
+TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
+     ExtractWhenIncludesUnknownProperties) {
+  const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
+      test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+          /*name=*/"foo",
+          /*value=*/"bar");
 
   const CreativeSearchResultAdMap creative_search_result_ads =
       ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -219,13 +247,8 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
   {
     // Invalid "data-landing-page".
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
-        test::CreativeSearchResultAdMojomWebPageEntities(
-            /*excluded_property_names=*/{kCreativeAdLandingPagePropertyName});
-    const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
-    auto& mojom_entity = mojom_property->values->get_entity_values()[0];
-    test::AddMojomProperty<std::string>(&mojom_entity->properties,
-                                        kCreativeAdLandingPagePropertyName,
-                                        /*value=*/"http://brave.com");
+        test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+            kCreativeAdLandingPagePropertyName, /*value=*/"http://brave.com");
 
     const CreativeSearchResultAdMap creative_search_result_ads =
         ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -236,13 +259,8 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
   {
     // Invalid "data-rewards-value".
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
-        test::CreativeSearchResultAdMojomWebPageEntities(
-            /*excluded_property_names=*/{kCreativeAdRewardsValuePropertyName});
-    const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
-    auto& mojom_entity = mojom_property->values->get_entity_values()[0];
-    test::AddMojomProperty<std::string>(&mojom_entity->properties,
-                                        kCreativeAdRewardsValuePropertyName,
-                                        /*value=*/"0-5");
+        test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+            kCreativeAdRewardsValuePropertyName, /*value=*/"0-5");
 
     const CreativeSearchResultAdMap creative_search_result_ads =
         ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -253,15 +271,8 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
   {
     // Invalid "data-conversion-observation-window-value".
     const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
-        test::CreativeSearchResultAdMojomWebPageEntities(
-            /*excluded_property_names=*/{
-                kCreativeSetConversionObservationWindowPropertyName});
-    const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
-    auto& mojom_entity = mojom_property->values->get_entity_values()[0];
-    test::AddMojomProperty<std::string>(
-        &mojom_entity->properties,
-        kCreativeSetConversionObservationWindowPropertyName,
-        /*value=*/"1");
+        test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+            kCreativeSetConversionObservationWindowPropertyName, /*value=*/"1");
 
     const CreativeSearchResultAdMap creative_search_result_ads =
         ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -291,15 +302,8 @@ TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
 TEST(BraveAdsCreativeSearchResultAdMojomWebPageEntitiesExtractorTest,
      ExtractIfMissingOptionalCreativeSetConversionAdvertiserPublicKey) {
   const std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
-      test::CreativeSearchResultAdMojomWebPageEntities(
-          /*excluded_property_names=*/{
-              kCreativeSetConversionAdvertiserPublicKeyPropertyName});
-  const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
-  auto& mojom_entity = mojom_property->values->get_entity_values()[0];
-  test::AddMojomProperty<std::string>(
-      &mojom_entity->properties,
-      kCreativeSetConversionAdvertiserPublicKeyPropertyName,
-      /*value=*/"");
+      test::CreativeSearchResultAdMojomWebPageEntitiesWithProperty(
+          kCreativeSetConversionAdvertiserPublicKeyPropertyName, /*value=*/"");
 
   const CreativeSearchResultAdMap creative_search_result_ads =
       ExtractCreativeSearchResultAdsFromMojomWebPageEntities(

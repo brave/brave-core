@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/browser/ads_service_mock.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_for_testing.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -36,6 +36,12 @@ constexpr char kDisallowedDomain[] = "https://brave.com";
 GURL ClickRedirectUrl() {
   return GURL(base::StrCat({"https://search.brave.com/a/redirect?placement_id=",
                             test::kCreativeAdPlacementId}));
+}
+
+GURL ClickRedirectUrlWithUnreservedCharactersInPlacementId() {
+  return GURL(base::StrCat(
+      {"https://search.brave.com/a/redirect?placement_id=",
+       test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters}));
 }
 
 GURL InvalidClickRedirectUrlWithNoQueryValue() {
@@ -381,6 +387,71 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 
   creative_search_result_ad_handler->MaybeTriggerCreativeAdClickedEvent(
       InvalidClickRedirectUrlWithNoQueryNameOrValue());
+}
+
+TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
+       TriggerViewedAndClickedAdEventsWithUnreservedCharactersInPlacementId) {
+  // Arrange
+  const auto creative_search_result_ad_handler =
+      CreativeSearchResultAdHandler::MaybeCreate(
+          &ads_service_mock_, GURL(kAllowedDomain),
+          /*should_trigger_creative_ad_viewed_events=*/true);
+  ASSERT_TRUE(creative_search_result_ad_handler);
+
+  const blink::mojom::WebPagePtr mojom_web_page =
+      test::CreativeSearchResultAdMojomWebPageWithProperty(
+          /*property_name=*/"data-placement-id",
+          /*property_value=*/test::
+              kCreativeAdPlacementIdWithUnreservedCharacters);
+  ASSERT_TRUE(mojom_web_page);
+
+  // Act & Assert
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(
+          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+          ::testing::_))
+      .WillOnce([&mojom_web_page](
+                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                    mojom::SearchResultAdEventType /*event_type*/,
+                    TriggerAdEventCallback /*callback*/) {
+        const CreativeSearchResultAdMap creative_search_result_ads =
+            ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
+                mojom_web_page->entities);
+        ASSERT_TRUE(creative_search_result_ads.contains(
+            test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters));
+
+        EXPECT_EQ(
+            creative_search_result_ads.at(
+                test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters),
+            mojom_creative_ad);
+      });
+
+  EXPECT_CALL(
+      ads_service_mock_,
+      TriggerSearchResultAdEvent(
+          ::testing::_, mojom::SearchResultAdEventType::kClicked, ::testing::_))
+      .WillOnce([&mojom_web_page](
+                    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                    mojom::SearchResultAdEventType /*event_type*/,
+                    TriggerAdEventCallback /*callback*/) {
+        const CreativeSearchResultAdMap creative_search_result_ads =
+            ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
+                mojom_web_page->entities);
+        ASSERT_TRUE(creative_search_result_ads.contains(
+            test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters));
+
+        EXPECT_EQ(
+            creative_search_result_ads.at(
+                test::kEscapedCreativeAdPlacementIdWithUnreservedCharacters),
+            mojom_creative_ad);
+      });
+
+  SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
+      creative_search_result_ad_handler.get(), mojom_web_page->Clone());
+
+  creative_search_result_ad_handler->MaybeTriggerCreativeAdClickedEvent(
+      ClickRedirectUrlWithUnreservedCharactersInPlacementId());
 }
 
 }  // namespace brave_ads

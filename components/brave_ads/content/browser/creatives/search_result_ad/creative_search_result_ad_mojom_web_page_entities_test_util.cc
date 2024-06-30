@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_for_testing.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 
 #include <cstdint>
 #include <string>
@@ -134,6 +134,30 @@ blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPage(
   blink::mojom::WebPagePtr mojom_web_page = blink::mojom::WebPage::New();
   mojom_web_page->entities = CreativeSearchResultAdMojomWebPageEntities(
       std::move(excluded_property_names));
+  return mojom_web_page;
+}
+
+std::vector<schema_org::mojom::EntityPtr>
+CreativeSearchResultAdMojomWebPageEntitiesWithProperty(std::string_view name,
+                                                       std::string_view value) {
+  CreativeAdMojomWebPageEntitiesConstructor constructor(
+      /*excluded_property_names=*/{name});
+  std::vector<schema_org::mojom::EntityPtr> mojom_web_page_entities =
+      constructor.GetMojomWebPageEntities();
+  const auto& mojom_property = mojom_web_page_entities[0]->properties[0];
+  auto& mojom_entity = mojom_property->values->get_entity_values()[0];
+  test::AddMojomProperty<std::string>(&mojom_entity->properties,
+                                      /*name=*/std::string(name),
+                                      /*value=*/std::string(value));
+  return mojom_web_page_entities;
+}
+
+blink::mojom::WebPagePtr CreativeSearchResultAdMojomWebPageWithProperty(
+    std::string_view name,
+    std::string_view value) {
+  blink::mojom::WebPagePtr mojom_web_page = blink::mojom::WebPage::New();
+  mojom_web_page->entities =
+      CreativeSearchResultAdMojomWebPageEntitiesWithProperty(name, value);
   return mojom_web_page;
 }
 

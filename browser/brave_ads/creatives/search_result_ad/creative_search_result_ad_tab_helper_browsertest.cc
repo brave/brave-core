@@ -40,8 +40,6 @@ namespace brave_ads {
 
 namespace {
 
-using testing::_;
-
 constexpr char kAllowedDomain[] = "search.brave.com";
 constexpr char kNotAllowedDomain[] = "brave.com";
 constexpr char kClickRedirectPath[] = "/a/redirect";
@@ -49,6 +47,12 @@ constexpr char kTargetDomain[] = "example.com";
 constexpr char kTargetPath[] = "/simple.html";
 constexpr char kSearchResultUrlPath[] =
     "/brave_ads/creative_search_result_ad.html";
+
+// Placement IDs are defined in the `search_result_ad_sample.html` file.
+constexpr auto kCreativeAdPlacementIdToIndex =
+    base::MakeFixedFlatMap<std::string_view, size_t>(
+        {{"824657d0-eaed-4b80-8a42-a18c12f2977d", 1},
+         {"fE%22%27%2B%2A%26-._~", 2}});
 
 CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
     Browser* browser) {
@@ -58,7 +62,7 @@ CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
 
 class ScopedTestingAdsServiceSetter {
  public:
-  explicit ScopedTestingAdsServiceSetter(AdsService* ads_service) {
+  explicit ScopedTestingAdsServiceSetter(AdsService* const ads_service) {
     CreativeSearchResultAdTabHelper::SetAdsServiceForTesting(ads_service);
   }
 
@@ -205,18 +209,15 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
     return GetURL(kAllowedDomain, kSearchResultUrlPath);
   }
 
-  bool CheckSampleSearchAdMetadata(
+  void VerifyCreativeAdMetadataExpectations(
       const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
-      size_t ad_index) {
+      const std::string& expected_placement_id,
+      const size_t ad_index) {
     EXPECT_TRUE(mojom_creative_ad);
+    EXPECT_EQ(expected_placement_id, mojom_creative_ad->placement_id);
 
     const std::string index =
         base::StrCat({"-", base::NumberToString(ad_index)});
-    if (mojom_creative_ad->placement_id !=
-        base::StrCat({"data-placement-id", index})) {
-      return false;
-    }
-
     EXPECT_EQ(mojom_creative_ad->creative_instance_id,
               base::StrCat({"data-creative-instance-id", index}));
     EXPECT_EQ(mojom_creative_ad->creative_set_id,
@@ -248,32 +249,35 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
     EXPECT_EQ(static_cast<size_t>(mojom_creative_ad->creative_set_conversion
                                       ->observation_window.InDays()),
               ad_index);
-
-    return true;
   }
 
   content::WebContents* LoadAndCheckSampleSearchResultAdWebPage(
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(ads_service(),
-                TriggerSearchResultAdEvent(
-                    _, mojom::SearchResultAdEventType::kViewedImpression, _))
+    EXPECT_CALL(
+        ads_service(),
+        TriggerSearchResultAdEvent(
+            ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+            ::testing::_))
         .Times(2)
         .WillRepeatedly(
             [this, &run_loop1, &run_loop2](
                 mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                 const mojom::SearchResultAdEventType event_type,
                 TriggerAdEventCallback callback) {
-              const bool is_search_result_ad_1 =
-                  CheckSampleSearchAdMetadata(mojom_creative_ad, 1);
-              const bool is_search_result_ad_2 =
-                  CheckSampleSearchAdMetadata(mojom_creative_ad, 2);
-              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
+              ASSERT_TRUE(mojom_creative_ad);
 
-              if (is_search_result_ad_1) {
+              const auto iter = kCreativeAdPlacementIdToIndex.find(
+                  mojom_creative_ad->placement_id);
+              ASSERT_TRUE(iter != kCreativeAdPlacementIdToIndex.cend());
+              const size_t ad_index = iter->second;
+              VerifyCreativeAdMetadataExpectations(
+                  mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
+
+              if (ad_index == 1) {
                 run_loop1->Quit();
-              } else if (is_search_result_ad_2) {
+              } else if (ad_index == 2) {
                 run_loop2->Quit();
               }
             });
@@ -307,7 +311,15 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                     const mojom::SearchResultAdEventType event_type,
                     TriggerAdEventCallback callback) {
         EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
-        CheckSampleSearchAdMetadata(mojom_creative_ad, 1);
+        const auto iter =
+            kCreativeAdPlacementIdToIndex.find(mojom_creative_ad->placement_id);
+        ASSERT_TRUE(iter != kCreativeAdPlacementIdToIndex.cend());
+        const size_t ad_index = iter->second;
+        // We clicked on the first ad in `search_result_ad_sample.html`.
+        EXPECT_EQ(1u, ad_index);
+
+        VerifyCreativeAdMetadataExpectations(
+            mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
         run_loop.Quit();
       });
 
@@ -332,7 +344,15 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
                     const mojom::SearchResultAdEventType event_type,
                     TriggerAdEventCallback callback) {
         EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
-        CheckSampleSearchAdMetadata(mojom_creative_ad, 2);
+        const auto iter =
+            kCreativeAdPlacementIdToIndex.find(mojom_creative_ad->placement_id);
+        ASSERT_TRUE(iter != kCreativeAdPlacementIdToIndex.cend());
+        const size_t ad_index = iter->second;
+        // We clicked on the second ad in `search_result_ad_sample.html`.
+        EXPECT_EQ(2u, ad_index);
+
+        VerifyCreativeAdMetadataExpectations(
+            mojom_creative_ad, mojom_creative_ad->placement_id, ad_index);
         run_loop.Quit();
       });
 

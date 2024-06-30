@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
@@ -167,12 +166,8 @@ void CreativeSearchResultAdTabHelper::MaybeHandleCreativeAdViewedEvent(
     const std::string& placement_id) {
   CHECK(!placement_id.empty());
 
-  // TODO(https://github.com/brave/brave-browser/issues/39404): Remove
-  // `base::Contains` and Sanitize JSON-LD placement id.
-  if (base::Contains(placement_id, '\"')) {
-    return;
-  }
-
+  // It is safe to pass `placement_id` directly to the JavaScript function as it
+  // has all characters except alphanumerics and -._~ escaped.
   const std::string javascript = base::ReplaceStringPlaceholders(
       kDataPlacementIdVisibilityCheckJavaScript, {placement_id}, nullptr);
 
