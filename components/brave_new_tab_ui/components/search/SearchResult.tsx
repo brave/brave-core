@@ -29,6 +29,8 @@ const Container = styled.a`
 
   text-decoration: none;
 
+  overflow: hidden;
+
   &[aria-selected=true], &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
