@@ -43,6 +43,7 @@ import {
   BraveRewardsProxyOverrides,
   WalletApiDataOverrides
 } from '../constants/testing_types'
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -115,6 +116,18 @@ export function renderHookOptionsWithMockStore(
   return {
     wrapper: ({ children }: { children?: React.ReactNode }) => (
       <Provider store={store}>{children}</Provider>
+    )
+  }
+}
+
+export function renderComponentOptionsWithMockStore(
+  store: ReturnType<typeof createMockStore>
+) {
+  return {
+    wrapper: ({ children }: { children?: React.ReactNode }) => (
+      <BraveCoreThemeProvider>
+        <Provider store={store}>{children}</Provider>
+      </BraveCoreThemeProvider>
     )
   }
 }
