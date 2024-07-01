@@ -7,10 +7,12 @@
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
@@ -34,8 +36,11 @@ const char kTitleScript[] = "document.title;";
 class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveWebAudioFarblingBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        webcompat::features::kBraveWebcompatExceptionsService);
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/
+        {webcompat::features::kBraveWebcompatExceptionsService,
+         brave_shields::features::kBraveShowStrictFingerprintingMode},
+        /*disabled_features=*/{});
   }
 
   void SetUpOnMainThread() override {
