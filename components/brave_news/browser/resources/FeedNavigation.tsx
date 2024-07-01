@@ -153,7 +153,8 @@ export default function Sidebar() {
       <summary>
         {subscribedChannels.length ? Marker : PlaceholderMarker}
         {getLocale('braveNewsChannelsHeader')}
-        <AddButton size="tiny" onClick={() => {
+        <AddButton size="tiny" onClick={(event) => {
+          event.preventDefault()
           setCustomizePage('news')
         }}>
           <Icon name='plus-add' />
@@ -171,7 +172,8 @@ export default function Sidebar() {
       <summary>
         {subscribedPublisherIds.length ? Marker : PlaceholderMarker}
         {getLocale('braveNewsPublishersHeading')}
-        <AddButton size="tiny" onClick={() => {
+        <AddButton size="tiny" onClick={(event) => {
+          event.preventDefault()
           setCustomizePage('popular')
         }}>
           <Icon name='plus-add' />
