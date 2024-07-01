@@ -146,6 +146,8 @@ void SidebarContainerView::Init() {
   panel_registry_observations_.AddObservation(side_panel_registry);
 
   for (const auto& entry : side_panel_registry->entries()) {
+    DVLOG(1) << "Observing panel entry in ctor: "
+             << SidePanelEntryIdToString(entry->key().id());
     panel_entry_observations_.AddObservation(entry.get());
   }
 
@@ -508,45 +510,41 @@ void SidebarContainerView::ShowSidebarControlView() {
 void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   DVLOG(1) << __func__ << ": show panel: " << show_side_panel;
 
-  if (width_animation_.is_animating()) {
-    DVLOG(1) << __func__ << ": Finish previous show/hide animation.";
-    width_animation_.End();
+  // Don't need to show again if it's showing now.
+  if (width_animation_.is_animating() && width_animation_.IsShowing()) {
+    DVLOG(1) << __func__ << ": showing in-progress.";
+    return;
   }
 
-  width_animation_.Reset();
-  side_panel_->set_fixed_contents_width(std::nullopt);
+  // Stop closing animation and will start showing from there.
+  // Unfortunately, this optimization doesn't have much effect
+  // because showing can start only after panel's contents is ready.
+  if (width_animation_.is_animating() && width_animation_.IsClosing()) {
+    DVLOG(1) << __func__ << ": stop hiding and start showing from there.";
+    width_animation_.Stop();
+  }
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the show animation.
-  animation_start_width_ = 0;
-  animation_end_width_ = 0;
-
-  // Don't need event detect widget when sidebar gets visible.
-  ShowOptionsEventDetectWidget(false);
-
-  if (sidebar_control_view_->GetVisible()) {
-    animation_start_width_ = sidebar_control_view_->GetPreferredSize().width();
-  }
-
-  if (side_panel_->GetVisible()) {
-    animation_start_width_ += side_panel_->GetPreferredSize().width();
-  }
-
+  animation_start_width_ = width();
   animation_end_width_ = sidebar_control_view_->GetPreferredSize().width();
   if (show_side_panel) {
     animation_end_width_ += side_panel_->GetPreferredSize().width();
   }
 
+  // Don't need event detect widget when sidebar gets visible.
+  ShowOptionsEventDetectWidget(false);
+
   DVLOG(1) << __func__ << ": show animation (start, end) width: ("
            << animation_start_width_ << ", " << animation_end_width_ << ")";
 
-  if (animation_start_width_ == animation_end_width_) {
-    DVLOG(1) << __func__ << ": don't need show animation.";
-    return;
-  }
-
   sidebar_control_view_->SetVisible(true);
   side_panel_->SetVisible(show_side_panel);
+
+  if (animation_start_width_ == animation_end_width_) {
+    DVLOG(1) << __func__ << ": already at the target width.";
+    return;
+  }
 
   // Don't do show animation for control view when show always options is used.
   // This animation can cause upstream browser test
@@ -599,33 +597,28 @@ void SidebarContainerView::ShowSidebarAll() {
 void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   DVLOG(1) << __func__ << ": hide control: " << hide_sidebar_control;
 
-  if (width_animation_.is_animating()) {
-    DVLOG(1) << __func__ << ": Finish previous show/hide animation.";
-    width_animation_.End();
+  // Don't need to close again if it's closing now.
+  if (width_animation_.is_animating() && width_animation_.IsClosing()) {
+    DVLOG(1) << __func__ << ": hiding in-progress.";
+    return;
   }
 
-  width_animation_.Reset(1.0);
-  side_panel_->set_fixed_contents_width(std::nullopt);
+  // Stop showing animation and start closing immediately from there.
+  if (width_animation_.is_animating() && width_animation_.IsShowing()) {
+    DVLOG(1) << __func__ << ": stop showing and start hiding from there.";
+    width_animation_.Stop();
+  }
 
   // Calculate the start & end width for animation. Both are used when
   // calculating preferred width during the hide animation.
-  animation_start_width_ = 0;
+  animation_start_width_ = width();
   animation_end_width_ = 0;
-
-  if (sidebar_control_view_->GetVisible()) {
-    animation_start_width_ = sidebar_control_view_->width();
-  }
-
-  if (side_panel_->GetVisible()) {
-    animation_start_width_ += side_panel_->width();
-  }
-
   if (!hide_sidebar_control) {
     animation_end_width_ = sidebar_control_view_->GetPreferredSize().width();
   }
 
   if (animation_start_width_ == animation_end_width_) {
-    DVLOG(1) << __func__ << ": don't need hide animation.";
+    DVLOG(1) << __func__ << ": already at the target width.";
 
     // At startup, make event detect widget visible even if children's
     // visibility state is not changed.
@@ -633,6 +626,8 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
       ShowOptionsEventDetectWidget(true);
     }
 
+    sidebar_control_view_->SetVisible(!hide_sidebar_control);
+    side_panel_->SetVisible(false);
     return;
   }
 
@@ -727,6 +722,7 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
   // Make sure item is selected. We need to observe the SidePanel system
   // as well as Sidebar as there are other ways than Sidebar for SidePanel
   // items to be shown and hidden, e.g. toolbar button.
+  DVLOG(1) << "Panel shown: " << SidePanelEntryIdToString(entry->key().id());
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -758,6 +754,7 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 
 void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
   // Make sure item is deselected
+  DVLOG(1) << "Panel hidden: " << SidePanelEntryIdToString(entry->key().id());
   auto* controller = browser_->sidebar_controller();
 
   // Handling if |entry| is managed one.
@@ -792,12 +789,16 @@ void SidebarContainerView::OnEntryHidden(SidePanelEntry* entry) {
 void SidebarContainerView::OnEntryRegistered(SidePanelRegistry* registry,
                                              SidePanelEntry* entry) {
   // Observe when it's shown or hidden
+  DVLOG(1) << "Observing panel entry in registry observer: "
+           << SidePanelEntryIdToString(entry->key().id());
   panel_entry_observations_.AddObservation(entry);
 }
 
 void SidebarContainerView::OnEntryWillDeregister(SidePanelRegistry* registry,
                                                  SidePanelEntry* entry) {
   // Stop observing
+  DVLOG(1) << "Unobserving panel entry in registry observer: "
+           << SidePanelEntryIdToString(entry->key().id());
   panel_entry_observations_.RemoveObservation(entry);
 }
 
@@ -839,6 +840,9 @@ void SidebarContainerView::StopObservingContextualSidePanelRegistry(
 
   for (const auto& entry : registry->entries()) {
     if (panel_entry_observations_.IsObservingSource(entry.get())) {
+      DVLOG(1) << "Removing panel entry observation from removed contextual "
+                  "registry : "
+               << SidePanelEntryIdToString(entry->key().id());
       panel_entry_observations_.RemoveObservation(entry.get());
     }
   }
@@ -855,6 +859,9 @@ void SidebarContainerView::StartObservingContextualSidePanelRegistry(
 
   for (const auto& entry : registry->entries()) {
     if (!panel_entry_observations_.IsObservingSource(entry.get())) {
+      DVLOG(1) << "Observing existing panel entry from newly added contextual "
+                  "registry : "
+               << SidePanelEntryIdToString(entry->key().id());
       panel_entry_observations_.AddObservation(entry.get());
     }
   }
