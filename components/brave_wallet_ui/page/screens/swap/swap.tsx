@@ -10,7 +10,11 @@ import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../common/selectors'
 
 // Types
-import { WalletRoutes } from '../../../constants/types'
+import {
+  WalletRoutes,
+  BraveWallet,
+  SwapProviderNameMapping
+} from '../../../constants/types'
 
 // Hooks
 import { useSwap } from './hooks/useSwap'
@@ -31,6 +35,11 @@ import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
 import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PanelActionHeader } from '../../../components/desktop/card-headers/panel-action-header'
+import { SwapProviders } from './components/swap/swap_providers/swap_providers'
+import {
+  BottomSheet //
+} from '../../../components/shared/bottom_sheet/bottom_sheet'
+import { PopupModal } from '../../../components/desktop/popup-modals/index'
 
 // Styled Components
 import {
@@ -38,7 +47,12 @@ import {
   LeoSquaredButton,
   VerticalSpace
 } from '../../../components/shared/style'
-import { ReviewButtonRow } from '../composer_ui/shared_composer.style'
+import {
+  ReviewButtonRow,
+  AlertMessage,
+  AlertMessageButton,
+  AlertMessageWrapper
+} from '../composer_ui/shared_composer.style'
 
 export const Swap = () => {
   // Hooks
@@ -68,6 +82,7 @@ export const Swap = () => {
     setSlippageTolerance,
     onSubmit,
     onChangeRecipient,
+    onChangeSwapProvider,
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
@@ -76,11 +91,15 @@ export const Swap = () => {
     swapFees,
     isBridge,
     toAccount,
-    timeUntilNextQuote
+    timeUntilNextQuote,
+    selectedProvider,
+    availableProvidersForSwap
   } = swap
 
   // State
   const [showSwapSettings, setShowSwapSettings] = React.useState<boolean>(false)
+  const [showSwapProviders, setShowSwapProviders] =
+    React.useState<boolean>(false)
   const [showPrivacyModal, setShowPrivacyModal] = React.useState<boolean>(false)
 
   // Selectors
@@ -97,6 +116,15 @@ export const Swap = () => {
       setSlippageTolerance('0.5')
     }
   }, [slippageTolerance, setSlippageTolerance])
+
+  // Methods
+  const handleOnChangeSwapProvider = React.useCallback(
+    (provider: BraveWallet.SwapProvider) => {
+      onChangeSwapProvider(provider)
+      setShowSwapProviders(false)
+    },
+    [onChangeSwapProvider]
+  )
 
   // Hooks
   useOnClickOutside(
@@ -153,7 +181,8 @@ export const Swap = () => {
         />
         <ComposerControls
           onFlipAssets={onClickFlipSwapTokens}
-          onOpenSettings={onToggleShowSwapSettings}
+          onOpenProviders={() => setShowSwapProviders(true)}
+          selectedProvider={selectedProvider}
           flipAssetsDisabled={!fromToken || !toToken}
         />
         <ToAsset
@@ -213,16 +242,41 @@ export const Swap = () => {
             ) : (
               <VerticalSpace space='2px' />
             )}
-            <ReviewButtonRow width='100%'>
-              <LeoSquaredButton
-                onClick={onSubmit}
-                size='large'
-                isDisabled={isSubmitButtonDisabled}
-                isLoading={isFetchingQuote}
-              >
-                {submitButtonText}
-              </LeoSquaredButton>
-            </ReviewButtonRow>
+            <Column fullWidth={true}>
+              {swapValidationError === 'providerNotSupported' && (
+                <AlertMessage type='info'>
+                  <AlertMessageWrapper
+                    width='unset'
+                    justifyContent='flex-start'
+                    gap='4px'
+                  >
+                    {getLocale('braveWalletProviderNotSupported').replace(
+                      '$1',
+                      SwapProviderNameMapping[selectedProvider]
+                    )}
+                    <div>
+                      <AlertMessageButton
+                        kind='plain-faint'
+                        size='tiny'
+                        onClick={() => setShowSwapProviders(true)}
+                      >
+                        {getLocale('braveWalletChangeProvider')}
+                      </AlertMessageButton>
+                    </div>
+                  </AlertMessageWrapper>
+                </AlertMessage>
+              )}
+              <ReviewButtonRow width='100%'>
+                <LeoSquaredButton
+                  onClick={onSubmit}
+                  size='large'
+                  isDisabled={isSubmitButtonDisabled}
+                  isLoading={isFetchingQuote}
+                >
+                  {submitButtonText}
+                </LeoSquaredButton>
+              </ReviewButtonRow>
+            </Column>
           </Column>
         </ToAsset>
         {showSwapSettings && (
@@ -260,6 +314,33 @@ export const Swap = () => {
           ref={privacyModalRef}
           onClose={() => setShowPrivacyModal(false)}
         />
+      )}
+      {!isPanel && showSwapProviders && (
+        <PopupModal
+          title=''
+          onClose={() => setShowSwapProviders(false)}
+          width='560px'
+          showDivider={false}
+          height='unset'
+        >
+          <SwapProviders
+            onChangeSwapProvider={handleOnChangeSwapProvider}
+            selectedProvider={selectedProvider}
+            availableProvidersForSwap={availableProvidersForSwap}
+          />
+        </PopupModal>
+      )}
+      {isPanel && (
+        <BottomSheet
+          onClose={() => setShowSwapProviders(false)}
+          isOpen={showSwapProviders}
+        >
+          <SwapProviders
+            onChangeSwapProvider={handleOnChangeSwapProvider}
+            selectedProvider={selectedProvider}
+            availableProvidersForSwap={availableProvidersForSwap}
+          />
+        </BottomSheet>
       )}
     </>
   )

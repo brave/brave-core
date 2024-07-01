@@ -128,6 +128,27 @@ const getAssetBalance = (
   )
 }
 
+const defaultProviders = [
+  BraveWallet.SwapProvider.kAuto,
+  BraveWallet.SwapProvider.kLiFi
+]
+
+const allProviders = [
+  ...defaultProviders,
+  BraveWallet.SwapProvider.kZeroEx,
+  BraveWallet.SwapProvider.kJupiter
+]
+
+const solSupportedProviders = [
+  ...defaultProviders,
+  BraveWallet.SwapProvider.kJupiter
+]
+
+const ethSupportedProviders = [
+  ...defaultProviders,
+  BraveWallet.SwapProvider.kZeroEx
+]
+
 export const useSwap = () => {
   // routing
   const query = useQuery()
@@ -191,6 +212,8 @@ export const useSwap = () => {
   const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
     number | undefined
   >(undefined)
+  const [selectedProvider, setSelectedProvider] =
+    useState<BraveWallet.SwapProvider>(BraveWallet.SwapProvider.kAuto)
 
   // Mutations
   const [generateSwapQuote] = useGenerateSwapQuoteMutation()
@@ -407,7 +430,11 @@ export const useSwap = () => {
           overrides.toAmount === undefined ? toAmount : overrides.toAmount,
         fromToken: overrides.fromToken || fromToken,
         toToken: overrides.toToken || toToken,
-        editingFromOrToAmount
+        editingFromOrToAmount,
+        provider:
+          overrides.provider === undefined
+            ? selectedProvider
+            : overrides.provider
       }
 
       if (params.fromAmount && !params.toAmount) {
@@ -468,7 +495,7 @@ export const useSwap = () => {
             params.fromToken.chainId === params.toToken.chainId
               ? BraveWallet.RoutePriority.kCheapest
               : BraveWallet.RoutePriority.kRecommended,
-          provider: BraveWallet.SwapProvider.kAuto
+          provider: params.provider
         }).unwrap()
       } catch (e) {
         setIsFetchingQuote(false)
@@ -585,7 +612,8 @@ export const useSwap = () => {
       reset,
       generateSwapQuote,
       slippageTolerance,
-      checkAllowance
+      checkAllowance,
+      selectedProvider
     ]
   )
 
@@ -848,8 +876,30 @@ export const useSwap = () => {
     return Amount.zero()
   }, [quoteOptions])
 
+  const availableProvidersForSwap = useMemo(() => {
+    // Bridge only supports Auto and Li.Fi.
+    if (isBridge) {
+      return defaultProviders
+    }
+    // Returns all providers if no from token has been selected yet.
+    if (!fromToken) {
+      return allProviders
+    }
+    // Returns default providers and Jupiter for SOL swaps.
+    if (fromToken && fromToken.coin === BraveWallet.CoinType.SOL) {
+      return solSupportedProviders
+    }
+    // Returns default providers and Ox for ETH swaps.
+    return ethSupportedProviders
+  }, [isBridge, fromToken])
+
   const swapValidationError: SwapValidationErrorType | undefined =
     useMemo(() => {
+      // Display error if provider is not supported for a swap.
+      if (!availableProvidersForSwap.includes(selectedProvider)) {
+        return 'providerNotSupported'
+      }
+
       // No validation to perform when From and To amounts
       // are empty, since quote is not fetched.
       if (!fromAmount && !toAmount) {
@@ -961,7 +1011,9 @@ export const useSwap = () => {
       quoteUnion?.jupiterQuote?.routePlan.length,
       hasAllowance,
       quoteErrorUnion,
-      backendError
+      backendError,
+      selectedProvider,
+      availableProvidersForSwap
     ])
 
   const onSubmit = useCallback(async () => {
@@ -1056,6 +1108,16 @@ export const useSwap = () => {
     lifi,
     jupiter
   ])
+
+  const onChangeSwapProvider = useCallback(
+    async (provider: BraveWallet.SwapProvider) => {
+      setSelectedProvider(provider)
+      await handleQuoteRefresh({
+        provider
+      })
+    },
+    [handleQuoteRefresh]
+  )
 
   const submitButtonText = useMemo(() => {
     if (isFetchingQuote) {
@@ -1208,6 +1270,7 @@ export const useSwap = () => {
     setUseDirectRoute,
     onSubmit,
     onChangeRecipient,
+    onChangeSwapProvider,
     submitButtonText,
     isSubmitButtonDisabled,
     swapValidationError,
@@ -1216,7 +1279,9 @@ export const useSwap = () => {
     isLoadingBalances,
     isBridge,
     toAccount,
-    timeUntilNextQuote
+    timeUntilNextQuote,
+    selectedProvider,
+    availableProvidersForSwap
   }
 }
 export default useSwap

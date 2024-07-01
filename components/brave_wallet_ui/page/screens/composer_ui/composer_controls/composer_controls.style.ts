@@ -26,8 +26,8 @@ export const Button = styled(WalletButton)`
 `
 
 export const FlipButton = styled(Button)`
-  padding: 10px;
-  border-radius: 100%;
+  padding: 12px;
+  border-radius: 12px;
   left: 24px;
   :disabled {
     cursor: not-allowed;
@@ -37,20 +37,18 @@ export const FlipButton = styled(Button)`
   }
 `
 
-export const SettingsButton = styled(Button)`
-  padding: 10px;
-  border-radius: 100%;
+export const ProvidersButton = styled(FlipButton)`
   right: 24px;
+  left: unset;
   @media screen and (max-width: ${layoutSmallWidth}px) {
+    left: unset;
     right: 16px;
   }
 `
 
-export const SettingsIcon = styled(Icon).attrs({
-  name: 'settings'
-})`
-  --leo-icon-size: 20px;
-  color: ${leo.color.icon.default};
+export const ProviderIcon = styled.img`
+  height: 20px;
+  width: auto;
 `
 
 export const FlipIcon = styled(Icon).attrs({

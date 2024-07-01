@@ -7,6 +7,7 @@ import ZeroXIcon from '../assets/lp-icons/0x.svg'
 import AaveIcon from '../assets/lp-icons/aave.svg'
 import AldrinIcon from '../assets/lp-icons/aldrin.svg'
 import ApeSwapIcon from '../assets/lp-icons/apeswap.svg'
+import BraveIcon from '../../../../assets/svg-icons/brave-icon.svg'
 import BalancerIcon from '../assets/lp-icons/balancer.svg'
 import BalansolIcon from '../assets/lp-icons/balansol.svg'
 import BancorIcon from '../assets/lp-icons/bancor.svg'
@@ -63,6 +64,7 @@ const LPMetadata: LPMetadataType = {
   'Aave_V2': AaveIcon,
   'Aldrin': AldrinIcon,
   'ApeSwap': ApeSwapIcon,
+  'Auto': BraveIcon,
   'Balancer': BalancerIcon,
   'Balancer_V2': BalancerIcon,
   'Balansol': BalansolIcon,
