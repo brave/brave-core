@@ -308,9 +308,9 @@ void MigrateToV40(mojom::DBTransactionInfo* const transaction) {
           DELETE FROM
             transactions
           WHERE
-            creative_instance_id == ''
-            OR segment == ''
-            OR ad_type == '';)";
+            COALESCE(creative_instance_id, '') = ''
+            OR COALESCE(segment, '') = ''
+            OR ad_type = '';)";
     transaction->commands.push_back(std::move(command));
   }
 
@@ -335,8 +335,8 @@ void MigrateToV40(mojom::DBTransactionInfo* const transaction) {
           );)";
     transaction->commands.push_back(std::move(command));
 
-    // Copy legacy columns to the temporary table, drop the legacy table, rename
-    // the temporary table and create an index.
+    // Copy legacy columns to the temporary table, drop the legacy table,
+    // rename the temporary table and create an index.
     const std::vector<std::string> columns = {
         "id",      "created_at", "creative_instance_id", "value",
         "segment", "ad_type",    "confirmation_type",    "reconciled_at"};
