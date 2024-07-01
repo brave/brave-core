@@ -1500,10 +1500,6 @@
 # not expect
 -FullscreenTabSearchBubbleDialogTest.InvokeUi_default
 
-# Temporarily needed due to ChromeRefresh2023 changes, but will be addressed
-# shortly by https://github.com/brave/brave-browser/issues/39041
--ExtensionSidePanelBrowserTest.TabSpecificPanelsOwnViewState
-
 # This test fails because we remove toolbar's panel pin button container.
 # When extension side panel is opened, usptream shows close button in toolbar
 # for closing it. However, it's not shown if panel pin button container is not
