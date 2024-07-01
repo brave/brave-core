@@ -123,6 +123,9 @@ function DataContextProvider(props: DataContextProviderProps) {
   const isCharLimitExceeded = inputText.length >= MAX_INPUT_CHAR
   const isCharLimitApproaching = inputText.length >= CHAR_LIMIT_THRESHOLD
   const inputTextCharCountDisplay = `${inputText.length} / ${MAX_INPUT_CHAR}`
+  const isPremiumUserDisconnected =
+    premiumStatus === mojom.PremiumStatus.ActiveDisconnected &&
+    currentModel?.options.customModelOptions === undefined
 
   const getConversationHistory = () => {
     getPageHandlerInstance()
@@ -394,7 +397,7 @@ function DataContextProvider(props: DataContextProviderProps) {
     shouldDisableUserInput,
     isPremiumStatusFetching: premiumStatus === undefined,
     isPremiumUser,
-    isPremiumUserDisconnected: premiumStatus === mojom.PremiumStatus.ActiveDisconnected,
+    isPremiumUserDisconnected,
     canShowPremiumPrompt,
     shouldShowLongPageWarning,
     shouldShowLongConversationInfo,
