@@ -67,6 +67,7 @@ export type SwapValidationErrorType =
   | 'insufficientFundsForGas'
   | 'insufficientAllowance'
   | 'insufficientLiquidity'
+  | 'providerNotSupported'
   | 'unknownError'
 
 export type SwapParams = {
@@ -91,4 +92,5 @@ export type SwapParamsOverrides = {
   toAmount?: string
   fromToken?: BraveWallet.BlockchainToken
   toToken?: BraveWallet.BlockchainToken
+  provider?: BraveWallet.SwapProvider
 }

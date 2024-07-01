@@ -118,6 +118,12 @@
   <message name="IDS_BRAVE_WALLET_BRIDGING_VIA" desc="Bridging via provider label">Bridging via</message>
   <message name="IDS_BRAVE_WALLET_SWAPPING_VIA" desc="Bridging via provider label">Swapping via</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_SWAP" desc="Review swap button">Review swap</message>
+  <message name="IDS_BRAVE_WALLET_CHOOSE_QUOTE_PROVIDER" desc="Choose quote provider modal title">Choose quote provider</message>
+  <message name="IDS_BRAVE_WALLET_QUOTE_PROVIDER_INFO" desc="Choose quote provider informational tooltip">Each aggregator provides quotes by using liquidity from its API. They gather price information from various exchanges and offer the prices based on this data.</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_NOT_AVAILABLE" desc="Quote provider option not availble label">Not available</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_UPDATE" desc="Choose provider update button">Update</message>
+  <message name="IDS_BRAVE_WALLET_PROVIDER_NOT_SUPPORTED" desc="Quote provider is not supported error message">This pair is not supported by <ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>  
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
   <message name="IDS_BRAVE_WALLET_EST_FEES" desc="Bridge and Swap estimated fees label">Est fees</message>
   <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
