@@ -11,6 +11,9 @@ export class BraveIPFSBrowserProxyImpl {
   }
 
   setIPFSStorageMax (value) {
+    if (typeof value === 'number' && !Number.isInteger(value)) {
+      value = Math.round(value)
+    }
     chrome.send('setIPFSStorageMax', [value])
   }
 
