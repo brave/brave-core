@@ -492,11 +492,8 @@ export const ConfirmTransactionPanel = ({
           setIsWarningCollapsed={setIsWarningCollapsed}
         />
       </Column>
-      {transactionsNetwork && (
-        <TransactionSimulationNotSupportedSheet
-          isOpen={!!showSimulationNotSupportedMessage}
-          network={transactionsNetwork}
-        />
+      {showSimulationNotSupportedMessage && transactionsNetwork && (
+        <TransactionSimulationNotSupportedSheet network={transactionsNetwork} />
       )}
     </StyledWrapper>
   )
