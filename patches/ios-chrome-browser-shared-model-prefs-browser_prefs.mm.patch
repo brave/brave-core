@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index e6eb53bce1864168cbaf611b8188f7f18cb3d8ec..9171e0a1ea97c5e99737c6474f8bd76e13b3a7b8 100644
+index e9610dca94cd455f7948d1ac559f9d95c8349dde..ee8b2a14ba3649569c9ffd8b8260988ff65f2f13 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -569,6 +569,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index e6eb53bce1864168cbaf611b8188f7f18cb3d8ec..9171e0a1ea97c5e99737c6474f8bd76e
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -864,6 +865,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -869,6 +870,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    registry->RegisterBooleanPref(
        kObsoleteBookmarksAndReadingListAccountStorageOptIn, false);

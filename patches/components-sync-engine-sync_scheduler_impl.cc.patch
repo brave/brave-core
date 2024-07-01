@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/sync_scheduler_impl.cc b/components/sync/engine/sync_scheduler_impl.cc
-index b3cafb91fd1825021d8d21b69be56824d3d6d6bf..08871061495e9651f29610f93350809980d16995 100644
+index 4217615786ed47380aec65bfda4072120f3bc854..1db088eccc4ab5d64d04b30b3ee6677f833654da 100644
 --- a/components/sync/engine/sync_scheduler_impl.cc
 +++ b/components/sync/engine/sync_scheduler_impl.cc
-@@ -494,6 +494,7 @@ void SyncSchedulerImpl::HandleFailure(
+@@ -475,6 +475,7 @@ void SyncSchedulerImpl::HandleFailure(
      SDVLOG(2) << "Sync cycle failed.  Will back off for "
                << wait_interval_->length.InMilliseconds() << "ms.";
    }
