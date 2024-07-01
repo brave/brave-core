@@ -1001,8 +1001,8 @@ are declared in tools/grit/grit_rule.gni.
         <if expr="use_titlecase">
           <then>
             </then>
-         <else>
-          </else>
+          <else>
+            </else>
         </if>
 
         <if expr="use_titlecase">
@@ -1340,6 +1340,8 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="is_chromeos">
         </if>
 
-    </messages>
+    <if expr="is_android">
+        </if>
+  </messages>
 </release>
 </grit>

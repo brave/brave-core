@@ -3203,7 +3203,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_INSTALL_PWA_BUTTON_LABEL" desc="Text for button that installs a web app to the operating system.">
         Install
       </message>
-      <message name="IDS_INSTALL_PWA_DIALOG_TITLE" desc="Title for dialog that shows up when a web app needs to be installed to the operating system.">
+      <message name="IDS_INSTALL_PWA_DIALOG_TITLE" meaning="Shown only on PWA install dialogs" desc="Title for dialog that shows up when a web app needs to be installed to the operating system.">
         Install app
       </message>
       <message name="IDS_WEB_APP_DETAILED_INSTALL_DIALOG_DESCRIPTION_TITLE" desc="Title above app description to explain the content below is from this app">
@@ -7494,7 +7494,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Shortcuts
       </message>
       <message name="IDS_NTP_CUSTOMIZE_MENU_TOOLBAR_LABEL" desc="The label for the option to customize toolbar icons in the customization menu on the New Tab Page. This is a button which opens a panel for customizing toolbar icons when clicked.">
-        Toolbar Icons
+        Toolbar
       </message>
       <message name="IDS_NTP_CUSTOMIZE_MENU_MODULES_LABEL" desc="The label for the modules option in the customization menu on the New Tab Page.">
         Cards
@@ -7874,10 +7874,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_WALLPAPER_SEARCH_SIGNED_OUT_TITLE" desc="The title of the message displayed when a wallpaper search request rejected because the user is signed out.">
         Please sign in to continue.
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CHOOSE_ICONS_LABEL" desc="Label for the description of the functionality of the section of Customize Brave for selecting toolbar icons.">
+        Choose what buttons show in the toolbar
+      </message>
       <if expr="use_titlecase">
-        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CHOOSE_ICONS_HEADER" desc="Header for the section of Customize Brave for selecting toolbar icons.">
-          Choose Your Toolbar Icons
-        </message>
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
           Navigation
         </message>
@@ -7890,11 +7890,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLS_AND_ACTIONS" desc="The label for the category of actions that open special purpose tools, such as Brave Translate or developer tools.">
           Tools and Actions
         </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_RESET_TO_DEFAULT_BUTTON_LABEL" desc="The label for the button to reset the set of pinned toolbar actions to the default.">
+          Reset to Default
+        </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CHOOSE_ICONS_HEADER" desc="Header for the section of Customize Brave for selecting toolbar icons.">
-          Choose your toolbar icons
-        </message>
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_NAVIGATION" desc="The label for the category of actions that involve navigation, such as the home button or opening a new private window.">
           Navigation
         </message>
@@ -7906,6 +7906,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLS_AND_ACTIONS" desc="The label for the category of actions that open special purpose tools, such as Brave Translate or developer tools.">
           Tools and actions
+        </message>
+        <message name="IDS_NTP_CUSTOMIZE_TOOLBAR_RESET_TO_DEFAULT_BUTTON_LABEL" desc="The label for the button to reset the set of pinned toolbar actions to the default.">
+          Reset to default
         </message>
       </if>
 
@@ -12329,6 +12332,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_NEW_TAB_GUEST_SESSION_LEARN_MORE_ACCESSIBILITY_TEXT" desc="Accessibility label for a link labeled 'Learn more' that links to a help article about browsing as a guest.">
           Learn more about browsing as a guest
         </message>
+        <message name="IDS_NEW_TAB_ENTERPRISE_GUEST_SESSION_LEARN_MORE_ACCESSIBILITY_TEXT" desc="Accessibility label for a link labeled 'Learn more' that links to a help article about enterprise enrolled devices.">
+          Learn more about enterprise enrolled devices
+        </message>
         <message name="IDS_NEW_TAB_TILE_GRID_ACCESSIBLE_DESCRIPTION" desc="Help message for screenreader users, spoken when navigating to a tile grid for the first time.">
           Use left and right arrow keys to navigate.
         </message>
@@ -12663,21 +12669,27 @@ This can include information about installed software, files, your browser, and 
             <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_STAY_HERE_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
               Stay Here
             </message>
-         </then>
-         <else>
-          <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_AVATAR_BUTTON_SEPARATE_BROWSING_TEXT" desc="Text to be displayed on the extended avatar pill while the bubble for separating accounts into different browsers is displayed.">
-            Separate browsing?
-          </message>
-          <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_AVATAR_BUTTON_SWITCH_PROFILE_TEXT" desc="Text to be displayed on the extended avatar pill while the bubble for switching to a profile that has the account intercepted already signed into is displayed.">
-            Switch profile?
-          </message>
-          <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CREATE_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble. This action will create a new Brave profile for the intercepted account.">
-            Create profile
-          </message>
-          <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_STAY_HERE_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
-            Stay here
-          </message>
-         </else>
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE_SUPERVISED" desc="Title of the Signin Bubble intercept that is shown when a signed out user signs in on the web with a supervised account." translateable="false">
+              Be Safe Online
+            </message>
+          </then>
+          <else>
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_AVATAR_BUTTON_SEPARATE_BROWSING_TEXT" desc="Text to be displayed on the extended avatar pill while the bubble for separating accounts into different browsers is displayed.">
+              Separate browsing?
+            </message>
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_AVATAR_BUTTON_SWITCH_PROFILE_TEXT" desc="Text to be displayed on the extended avatar pill while the bubble for switching to a profile that has the account intercepted already signed into is displayed.">
+              Switch profile?
+            </message>
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CREATE_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble. This action will create a new Brave profile for the intercepted account.">
+              Create profile
+            </message>
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_STAY_HERE_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
+              Stay here
+            </message>
+            <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_TITLE_SUPERVISED" desc="Title of the Signin Bubble intercept that is shown when a signed out user signs in on the web with a supervised account." translateable="false">
+              Be safe online
+            </message>
+          </else>
         </if>
 
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
@@ -14049,6 +14061,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <message name="IDS_A11Y_OMNIBOX_CHIP_HINT" desc="A navigational hint given to screenreader users, informing them that a setting which was just announced is accessible via the address bar.">
         Change this setting in the address bar.
+      </message>
+      <message name="IDS_A11Y_INDICATORS_ANNOUNCEMENT" desc="A permission usage status text that is used when a permission activity indicator is displayed. Additionally it contains a hint how to change this setting. All these strings are already defined.">
+        <ph name="PERMISSION_USAGE">$1<ex>This page is accessing your camera</ex></ph> <ph name="PERMISSION_INDICATOR_DESCRIPTION">$2<ex>Change this setting in the address bar</ex></ph>
       </message>
 
       <!-- Media Left-Hand Side indicators -->
@@ -16046,6 +16061,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_MANAGE_PASSWORDS_AND_PASSKEYS" desc="The label of a button in a passkey saved confirmation bubble that leads to password manager. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
         Manage passwords and passkeys
       </message>
+      <message name="IDS_WEBAUTHN_SHOW_PIN" desc="The tooltip of a button that is used to show the PIN.">
+        Show PIN
+      </message>
+      <message name="IDS_WEBAUTHN_HIDE_PIN" desc="The tooltip of a button that is used to hide the PIN.">
+        Hide PIN
+      </message>
 
       <!-- Web-modal dialog shown during Digital Credential request -->
       <message name="IDS_WEB_DIGITAL_CREDENTIALS_QR_TITLE" translateable="false">
@@ -16674,6 +16695,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_LENS_OVERLAY_CURSOR_TOOLTIP_LIVE_PAGE_MESSAGE" desc="Text that is shown in the Lens Overlay tooltip that appears beneath the cursor. Informs the user to click to exit Google Lens.">
       Click to exit Google Lens
+    </message>
+    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search anything on the page via Google Lens.">
+      Search anything on this page
+    </message>
+    <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL" desc="Label     for the Google Lens button in the CTRL+F dialog.">
+      Google Lens
     </message>
     <message name="IDS_LENS_SEND_FEEDBACK" desc="Text that is shown in the more options menu to open the feedback dialog.">
       Send feedback
@@ -17366,6 +17393,29 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_EXPERIMENTAL_FEATURE_DISCLAIMER" desc="Text used for experimental features.">
       This is an experimental AI feature.
     </message>
+
+    <!-- Safety Hub elements. -->
+    <!-- TODO(crbug.com/324562205): Make strings translateable once finalized. -->
+    <if expr="is_android">
+        <message name="IDS_SETTINGS_SAFETY_HUB_SAFE_BROWSING_MENU_NOTIFICATION" translateable="false">
+          Get protection against dangerous sites
+        </message>
+        <message name="IDS_SETTINGS_SAFETY_HUB_REVIEW_NOTIFICATION_PERMISSIONS_MENU_NOTIFICATION" translateable="false">
+          {NUM_SITES, plural,
+          =1 {Found 1 site with lots of notifications}
+          other {Found {NUM_SITES} sites with lots of notifications}}
+        </message>
+        <message name="IDS_SETTINGS_SAFETY_HUB_REVOKED_PERMISSIONS_MENU_NOTIFICATION" translateable="false">
+          {NUM_SITES, plural,
+          =1 {Brave removed permissions for 1 site}
+          other {Brave removed permissions for {NUM_SITES} sites}}
+        </message>
+        <message name="IDS_SETTINGS_SAFETY_HUB_UNUSED_SITE_PERMISSIONS_MENU_NOTIFICATION" translateable="false">
+          {NUM_SITES, plural,
+          =1 {Brave removed permissions for 1 unused site}
+          other {Brave removed permissions for {NUM_SITES} ununsed sites}}
+        </message>
+    </if>
   </messages>
 </release>
 </grit>

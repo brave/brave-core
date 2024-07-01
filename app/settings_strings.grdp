@@ -825,7 +825,24 @@
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_HASH_COPIED_TOAST" desc="Label for the hash copied toast message in certificate manager." translateable="false">
       Hash copied to clipboard
     </message>
-
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_ADMIN_CERTS_TITLE" desc="Label for the title of the admin certs subpage." translateable="false">
+      Installed by your Administrator
+    </message>
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_TRUSTED_CERTS_LIST" desc="Label for a list of trusted certificates." translateable="false">
+      Trusted Certificates
+    </message>
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_INTERMEDIATE_CERTS_LIST" desc="Label for a list of certificates that are used for path building." translateable="false">
+      Intermediate Certificates
+    </message>
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_DISTRUSTED_CERTS_LIST" desc="Label for a list of distrusted certificates." translateable="false">
+      Distrusted Certificates
+    </message>
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_NO_CERTIFICATES_ROW" desc="Text for an entry indicating that a list of certificates is empty." translateable="false">
+      No certificates
+    </message>
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_EXPORT_BUTTON_LABEL" desc="Label for button that exports a list of certificates." translateable="false">
+      Export
+    </message>
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_ADMIN_CERTS_SINGULAR" desc="One certificate installed via enterprise policy." translateable="false">
       1 certificate
     </message>
@@ -1338,8 +1355,14 @@
   <message name="IDS_SETTINGS_PERFORMANCE_DISCARD_RING_TREATMENT_ENABLED_LABEL" desc="Label for a performance settings toggle that controls whether the inactive tab UI is shown">
     Inactive tabs appearance
   </message>
-  <message name="IDS_SETTINGS_PERFORMANCE_DISCARD_RING_TREATMENT_ENABLED_DESCRIPTION" desc="Label for a performance settings toggle description that controls whether the inactive tab UI is shown">
-    A dotted circle appears around site icons.
+  <message name="IDS_SETTINGS_PERFORMANCE_DISCARD_RING_TREATMENT_ENABLED_DESCRIPTION_WITH_LEARN_LINK" desc="Label for a performance settings toggle description that controls whether the inactive tab UI is shown. Also contains a link to the help center article.">
+    A dotted circle appears around site icons. <ph name="BEGIN_LINK">&lt;a href="#" aria-description="$1"&gt;</ph>Learn more about inactive tabs<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_TAB_HOVER_PREVIEW_CARD_LINK_TITLE" desc="Title for the link row that points to tab hover preview card apperance settings.">
+    Tab hover preview card appearance
+  </message>
+  <message name="IDS_SETTINGS_PERFORMANCE_TAB_HOVER_PREVIEW_CARD_LINK_SUBTITLE" desc="Subtitle for the link row that points to tab hover preview card apperance settings.">
+    Choose to show memory usage and images in the tab hover preview card
   </message>
 
   <!-- Languages Page -->
@@ -4496,7 +4519,7 @@
   <message name="IDS_SETTINGS_SAFETY_HUB" desc="Name of a page in settings that gives users an overview over their safety status and where users can take action to improve their safety.">
     Safety Check
   </message>
-  <message name="IDS_SETTINGS_SAFETY_HUB_ENTRY_POINT_BUTTON" desc="This is the label of a button that takes users to the Safety Check page in Brave settings. This button appears in a section in privacy settings next to a text that gives more details on Safety Check.">
+  <message name="IDS_SETTINGS_SAFETY_HUB_ENTRY_POINT_BUTTON_LABEL" desc="This is the label of a button that takes users to the Safety Check page in Brave settings. This button appears in a section in privacy settings, after the 'Safety Check' and 'Brave found some safety recommendations for your review' strings. The words 'Safety Check' should be translated to match https://localizer.google.com/glossary/termset?gid=27517723&amp;tsid=4e021eb4 or if it's not available https://localizer.google.com/messages/details/BraveClient/7810354727545555354. The tone should be terse, because we need this button to be as short as possible. If it is impossible to say 'Go to Safety Check' in 30 characters, you may translate this as 'Review'. (CHAR LIMIT = 30)">
     Go to Safety Check
   </message>
   <message name="IDS_SETTINGS_SAFETY_HUB_PAGE_CARD_SECTION_HEADER" desc="The title of the first section in the Safety Hub page. The 'Safety at a glance' section gives an overview about the current state of passwords, browser version and safe browsing setting of the browser. ">
