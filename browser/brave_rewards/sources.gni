@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_brave_rewards_sources = [
@@ -24,7 +23,6 @@ brave_browser_brave_rewards_deps = [
   "//brave/components/brave_rewards/browser",
   "//brave/components/brave_rewards/common",
   "//brave/components/brave_rewards/core:headers",
-  "//brave/components/ipfs/buildflags",
   "//chrome/browser:browser_process",
   "//chrome/browser/profiles:profile",
   "//chrome/browser/ui",
@@ -55,10 +53,6 @@ if (enable_extensions) {
     "//chrome/browser/ui",
     "//extensions/browser",
   ]
-}
-
-if (enable_ipfs) {
-  brave_browser_brave_rewards_deps += [ "//brave/components/ipfs" ]
 }
 
 if (is_android) {

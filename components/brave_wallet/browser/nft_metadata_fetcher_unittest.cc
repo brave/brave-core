@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -110,7 +109,6 @@ class NftMetadataFetcherUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
-    ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
         shared_url_loader_factory_, &prefs_);
     nft_metadata_fetcher_ = std::make_unique<NftMetadataFetcher>(

@@ -7,7 +7,6 @@
 
 import * as React from 'react'
 import { background } from 'ethereum-blockies'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -18,16 +17,10 @@ import {
   isRemoteImageURL,
   isValidIconExtension,
   isDataURL,
-  isIpfs,
   isComponentInStorybook,
   stripChromeImageURL
 } from '../../../utils/string-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
-
-// Hooks
-import {
-  useGetIpfsGatewayTranslatedNftUrlQuery //
-} from '../../../common/slices/api.slice'
 
 // Styled components
 import { AssetIconSizes, IconWrapper, PlaceholderText } from './style'
@@ -87,11 +80,6 @@ export function withPlaceholderIcon<
 
     const isNonFungibleToken = asset?.isNft || asset?.isErc721
 
-    // queries
-    const { data: ipfsUrl } = useGetIpfsGatewayTranslatedNftUrlQuery(
-      tokenImageURL || skipToken
-    )
-
     // memos + computed
     const isValidIcon = React.useMemo(() => {
       if (isStorybook) {
@@ -102,7 +90,6 @@ export function withPlaceholderIcon<
 
       if (isRemoteURL || isDataUri) {
         return tokenImageURL?.includes('data:image/') ||
-          isIpfs(tokenImageURL) ||
           isNonFungibleToken
           ? true
           : isValidIconExtension(new URL(asset?.logo || '').pathname)
@@ -123,19 +110,12 @@ export function withPlaceholderIcon<
       }
     }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
-    const remoteImage = React.useMemo(() => {
-      if (isRemoteURL) {
-        return isStorybook ? ipfsUrl || '' : `chrome://image?${ipfsUrl}`
-      }
-      return ''
-    }, [isRemoteURL, ipfsUrl])
-
     // render
     if (!asset) {
       return null
     }
 
-    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : asset?.logo)
+    const icon = nativeAssetLogo || asset?.logo
 
     if (needsPlaceholder || !icon) {
       return (

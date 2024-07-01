@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
@@ -18,11 +17,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/utility/importer/brave_profile_import_impl.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/services/ipfs/ipfs_service_impl.h"
-#include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -39,12 +33,6 @@ namespace {
 auto RunBraveProfileImporter(
     mojo::PendingReceiver<brave::mojom::ProfileImport> receiver) {
   return std::make_unique<BraveProfileImportImpl>(std::move(receiver));
-}
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-auto RunIpfsService(mojo::PendingReceiver<ipfs::mojom::IpfsService> receiver) {
-  return std::make_unique<ipfs::IpfsServiceImpl>(std::move(receiver));
 }
 #endif
 
@@ -82,10 +70,6 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
     mojo::ServiceFactory& services) {
 #if !BUILDFLAG(IS_ANDROID)
   services.Add(RunBraveProfileImporter);
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  services.Add(RunIpfsService);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

@@ -123,10 +123,6 @@ void AndroidWalletPageUI::CreatePageHandler(
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
         brave_wallet_p3a_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-        brave_wallet_pin_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
@@ -159,8 +155,6 @@ void AndroidWalletPageUI::CreatePageHandler(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::MeldIntegrationServiceFactory::BindForContext(
       profile, std::move(meld_integration_service));
-  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
-      profile, std::move(ipfs_service_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/p3a/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
@@ -17,7 +16,6 @@ java_cpp_enum("brave_android_java_enums_srcjar") {
   sources = [
     "//brave/chromium_src/chrome/browser/notifications/notification_handler_impl.h",
     "//brave/components/decentralized_dns/core/constants.h",
-    "//brave/components/ipfs/ipfs_constants.h",
   ]
 }
 
@@ -26,7 +24,6 @@ java_cpp_template("brave_config_java") {
   defines = [
     "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"",
     "BRAVE_ANDROID_P3A_ENABLED=$brave_p3a_enabled",
-    "BRAVE_ANDROID_ENABLE_IPFS=$enable_ipfs",
     "BRAVE_ANDROID_WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"",
     "BRAVE_ANDROID_AI_CHAT_ENABLED=$enable_ai_chat",
   ]

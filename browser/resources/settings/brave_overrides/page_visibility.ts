@@ -27,7 +27,6 @@ function getPageVisibility () {
       braveSync: false,
       getStarted: false,
       newTab: false,
-      braveIPFS: false,
       braveWallet: false,
       braveWeb3: false,
       leoAssistant: false,

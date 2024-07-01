@@ -32,7 +32,6 @@ source_set("browser_process") {
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/greaselion/browser/buildflags",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/request_otr/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
@@ -51,7 +50,6 @@ group("browser") {
     # these are layering violation and need to be fixed
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
-    "//brave/components/ipfs/test:*",
   ]
 
   if (enable_sparkle) {

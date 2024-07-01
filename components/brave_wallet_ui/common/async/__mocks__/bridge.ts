@@ -1074,7 +1074,6 @@ export class MockedWalletApiProxy {
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,
-          isNftPinningFeatureEnabled: false,
           isAnkrBalancesFeatureEnabled: false,
           isTransactionSimulationsFeatureEnabled: false
         }
@@ -1158,14 +1157,6 @@ export class MockedWalletApiProxy {
   braveWalletIpfsService: Partial<
     InstanceType<typeof BraveWallet.IpfsServiceInterface>
   > = {
-    extractIPFSUrlFromGatewayLikeUrl: async function (url: string) {
-      return { ipfsUrl: url }
-    },
-    translateToNFTGatewayURL: async function (url: string) {
-      return {
-        translatedUrl: url
-      }
-    },
     translateToGatewayURL: async function (url: string) {
       return {
         translatedUrl: url

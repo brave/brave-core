@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/utility/importer/sources.gni")
 
@@ -22,7 +21,6 @@ if (is_android) {
 brave_utility_sources += brave_utility_importer_sources
 
 brave_utility_deps = [
-  "//brave/components/ipfs/buildflags",
   "//brave/components/services/bat_ads:lib",
   "//brave/components/services/bat_ads/public/interfaces",
   "//brave/components/services/bat_rewards:lib",
@@ -34,13 +32,6 @@ brave_utility_deps = [
 ]
 
 brave_utility_deps += brave_utility_importer_deps
-
-if (enable_ipfs) {
-  brave_utility_deps += [
-    "//brave/components/services/ipfs",
-    "//brave/components/services/ipfs/public/mojom",
-  ]
-}
 
 if (enable_tor) {
   brave_utility_deps += [

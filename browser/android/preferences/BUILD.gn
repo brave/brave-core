@@ -45,7 +45,6 @@ java_cpp_strings("java_pref_names_srcjar") {
     "//brave/components/de_amp/common/pref_names.h",
     "//brave/components/debounce/core/common/pref_names.h",
     "//brave/components/decentralized_dns/core/pref_names.h",
-    "//brave/components/ipfs/pref_names.h",
     "//brave/components/ntp_background_images/common/pref_names.h",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
     "//brave/components/omnibox/browser/brave_omnibox_prefs.h",

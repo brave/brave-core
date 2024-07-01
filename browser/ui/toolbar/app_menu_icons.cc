@@ -32,7 +32,6 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_SHOW_BRAVE_REWARDS, kLeoProductBatOutlineIcon},
           {IDC_SHOW_BRAVE_WALLET, kLeoProductBraveWalletIcon},
           {IDC_BRAVE_VPN_MENU, kLeoProductVpnIcon},
-          {IDC_APP_MENU_IPFS, kLeoProductIpfsOutlineIcon},
           {IDC_PASSWORDS_AND_AUTOFILL_MENU, kLeoKeyIcon},
           {IDC_RECENT_TABS_MENU, kLeoHistoryIcon},
           {IDC_BOOKMARKS_MENU, kLeoProductBookmarksIcon},

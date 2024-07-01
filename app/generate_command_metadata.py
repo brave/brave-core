@@ -176,13 +176,6 @@ EXCLUDE_COMMANDS = [
 
     # Not useful menu commands - mostly these are submenu commands, which do
     # nothing unless the parent menu is open.
-    "IDC_APP_MENU_IPFS",
-    "IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE",
-    "IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER",
-    "IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE",
-    "IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER"
-    "IDC_APP_MENU_IPFS_OPEN_FILES",
-    "IDC_APP_MENU_IPFS_UPDATE_IPNS",
     "IDC_SIDEBAR_SHOW_OPTION_MENU",
     "IDC_BRAVE_BOOKMARK_BAR_SUBMENU",
     "IDC_SIDEBAR_SHOW_OPTION_ALWAYS",

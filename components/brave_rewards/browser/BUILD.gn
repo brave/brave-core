@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_rewards/core/config.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
@@ -68,10 +67,6 @@ static_library("browser") {
       # for one shot event
       "//extensions/common",
     ]
-  }
-
-  if (enable_ipfs) {
-    deps += [ "//brave/components/ipfs" ]
   }
 
   public_deps += [ "//brave/components/brave_rewards/core:headers" ]

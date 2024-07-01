@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_player/common/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//chrome/common/features.gni")
@@ -17,7 +16,6 @@ brave_grit("brave_theme_resources") {
   defines += [
     "enable_ai_chat=$enable_ai_chat",
     "enable_brave_player=$enable_brave_player",
-    "enable_ipfs=$enable_ipfs",
     "enable_playlist_webui=$enable_playlist_webui",
   ]
   outputs = [

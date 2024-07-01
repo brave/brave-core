@@ -35,7 +35,6 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
 bool IsZCashKeyring(mojom::KeyringId keyring_id);
 
 bool IsNativeWalletEnabled();
-bool IsNftPinningEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsZCashEnabled();

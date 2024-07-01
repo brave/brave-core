@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 
-class IPFSDOMHandler;
-
 namespace chrome {
 namespace android {
 class BraveComponentUpdaterAndroid;
@@ -19,7 +17,6 @@ class BraveOnDemandUpdater;
 }
 
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ \
-  friend class ::IPFSDOMHandler;           \
   friend class ::chrome::android::BraveComponentUpdaterAndroid;
 
 #define BRAVE_COMPONENT_UPDATER_SERVICE_H_ON_DEMAND_UPDATER          \

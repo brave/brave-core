@@ -4,7 +4,6 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_autocomplete_sources = [
@@ -16,15 +15,10 @@ brave_browser_autocomplete_deps = [
   "//base",
   "//brave/common",
   "//brave/components/brave_webtorrent/browser/buildflags",
-  "//brave/components/ipfs/buildflags",
   "//chrome/browser/profiles:profile",
 ]
 
 if (enable_extensions && enable_brave_webtorrent) {
   brave_browser_autocomplete_deps +=
       [ "//brave/components/brave_webtorrent/browser" ]
-}
-
-if (enable_ipfs) {
-  brave_browser_autocomplete_deps += [ "//brave/components/ipfs" ]
 }

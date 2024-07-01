@@ -142,22 +142,6 @@
     >
     </cr-input>
   </div>
-  <template is="dom-if" if="[[isNftPinningEnabled_]]" restamp>
-      <settings-toggle-button id="enableNftPinning"
-        class="cr-row"
-        pref="{{prefs.brave.wallet.auto_pin_enabled}}"
-        label="$i18n{enableNftPinning}"
-        sub-label="$i18n{enableNftPinningDesc}">
-      </settings-toggle-button>
-
-      <div class="settings-box " hidden="[[!shouldShowClearNftButton_]]"
-         disabled="[[!shouldEnableClearNftButton_]]" on-click="onClearPinnedNftTapped_">
-        <div class="flex cr-padded-text reset-transaction-info">
-          <div>$i18n{clearPinnedNft}</div>
-          <div class="secondary">[[i18n('clearPinnedNftDesc', pinnedNftCount_)]]</div>
-        </div>
-      </div>
-  </template>
 </div>
 <template is="dom-if" if="{{ showRestartToast_ }}">
   <div id="needsRestart">

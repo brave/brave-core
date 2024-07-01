@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_browsing_data_sources = [
@@ -15,7 +14,6 @@ brave_browser_browsing_data_sources = [
 
 brave_browser_browsing_data_deps = [
   "//base",
-  "//brave/components/ipfs/buildflags",
   "//chrome/browser:browser_process",
   "//chrome/browser/browsing_data:constants",
   "//chrome/browser/profiles:profile",
@@ -32,8 +30,4 @@ if (enable_extensions) {
     "//brave/common/extensions/api",
     "//extensions/browser",
   ]
-}
-
-if (enable_ipfs) {
-  brave_browser_browsing_data_deps += [ "//brave/components/ipfs" ]
 }

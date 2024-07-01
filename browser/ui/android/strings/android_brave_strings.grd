@@ -494,12 +494,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
-      <message name="IDS_IPFS_GATEWAY_TITLE" desc="Title for IPFS setting.">
-        IPFS Gateway
-      </message>
-      <message name="IDS_IPFS_GATEWAY_SUMMARY" desc="Summary for IPFS gateway setting.">
-        Allows for navigation to IPFS resources through an IPFS Gateway
-      </message>
       <message name="IDS_BLOCK_COOKIE_CONSENT_NOTICES_TITLE" desc="Title for Block cookie consent notices setting.">
         Block cookie consent notices
       </message>

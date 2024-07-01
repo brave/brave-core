@@ -9,15 +9,10 @@
 
 #include "base/strings/string_util.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
 #endif
 
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
@@ -47,14 +42,6 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
   if (base::IsStringASCII(scheme) &&
       webtorrent::IsWebtorrentPrefEnabled(profile_->GetPrefs()) &&
       base::EqualsCaseInsensitiveASCII(scheme, kMagnetScheme)) {
-    return metrics::OmniboxInputType::URL;
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  if (base::IsStringASCII(scheme) &&
-      (base::EqualsCaseInsensitiveASCII(scheme, ipfs::kIPFSScheme) ||
-       base::EqualsCaseInsensitiveASCII(scheme, ipfs::kIPNSScheme))) {
     return metrics::OmniboxInputType::URL;
   }
 #endif

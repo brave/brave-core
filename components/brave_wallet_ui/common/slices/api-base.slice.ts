@@ -56,7 +56,6 @@ export function createWalletApiBase() {
       'CoingeckoId',
       'AutoPinEnabled',
       'SimpleHashSpamNFTs',
-      'LocalIPFSNodeStatus',
       'TokenInfo',
       'EthTokenDecimals',
       'EthTokenSymbol',

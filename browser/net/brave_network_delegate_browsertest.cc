@@ -122,11 +122,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
         "example.wp.com", "/set-cookie?frame=true;SameSite=None;Secure");
     a_frame_url_ = https_server_.GetURL(
         "a.com", "/set-cookie?frame=true;SameSite=None;Secure");
-
-    ipfs_cid1_url_ =
-        https_server_.GetURL("cid1.ipfs.localhost", "/ipfs_cookie_iframe.html");
-    ipfs_cid2_frame_url_ = https_server_.GetURL(
-        "cid2.ipfs.localhost", "/set-cookie?frame=true;SameSite=None;Secure");
   }
 
   HostContentSettingsMap* content_settings() {
@@ -229,8 +224,6 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL wp_top_url_;
   GURL wp_frame_url_;
   GURL a_frame_url_;
-  GURL ipfs_cid1_url_;
-  GURL ipfs_cid2_frame_url_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   base::flat_map<GURL, std::string> seen_cookies_;
@@ -595,24 +588,4 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ASSERT_TRUE(base::Contains(seen_cookies(), wp_top_url_));
   EXPECT_EQ(seen_cookies().at(wp_top_url_), "frame=true");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       BlockThirdPartyCookiesIPFSLocalhost) {
-  DefaultBlockThirdPartyCookies();
-
-  NavigateToPageWithFrame(ipfs_cid1_url_);
-  NavigateFrameTo(ipfs_cid2_frame_url_);
-  ExpectCookiesOnHost(ipfs_cid1_url_, "name=Good");
-  ExpectCookiesOnHost(ipfs_cid2_frame_url_, "");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       AllowAllCookiesIPFSLocalhost) {
-  DefaultAllowAllCookies();
-
-  NavigateToPageWithFrame(ipfs_cid1_url_);
-  NavigateFrameTo(ipfs_cid2_frame_url_);
-  ExpectCookiesOnHost(ipfs_cid1_url_, "name=Good");
-  ExpectCookiesOnHost(ipfs_cid2_frame_url_, "frame=true");
 }

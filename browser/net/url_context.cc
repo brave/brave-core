@@ -12,7 +12,6 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
@@ -20,15 +19,6 @@
 #include "net/base/isolation_info.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "url/origin.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/pref_names.h"
-#include "chrome/common/channel_info.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#endif
 
 namespace brave {
 
@@ -120,21 +110,6 @@ std::shared_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     ctx->internal_redirect = old_ctx->internal_redirect;
     ctx->redirect_source = old_ctx->redirect_source;
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
-  ctx->ipfs_gateway_url =
-      ipfs::GetConfiguredBaseGateway(prefs, chrome::GetChannel());
-  ctx->ipfs_auto_fallback = prefs->GetBoolean(kIPFSAutoRedirectGateway);
-
-  // ipfs:// navigations have no tab origin set, but we want it to be the tab
-  // origin of the gateway so that ad-block in particular won't give up early.
-  if (ipfs::IsLocalGatewayConfigured(prefs) && ctx->tab_origin.is_empty() &&
-      ipfs::IsLocalGatewayURL(ctx->initiator_url)) {
-    ctx->tab_url = ctx->initiator_url;
-    ctx->tab_origin = url::Origin::Create(ctx->initiator_url).GetURL();
-  }
-#endif
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);

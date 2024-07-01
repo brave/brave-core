@@ -91,7 +91,6 @@
       <part file="brave_translate_resources.grdp" />
       <part file="speedreader_resources.grdp" />
       <part file="brave_flags_ui_resources.grdp" />
-      <part file="ipfs_resources.grdp" />
       <part file="domain_block_resources.grdp" />
       <part file="request_otr_resources.grdp" />
       <if expr="not is_ios">

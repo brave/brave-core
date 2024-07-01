@@ -10,7 +10,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_constants.h"
 #include "brave/components/tor/tor_utils.h"
@@ -25,12 +24,6 @@
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "base/test/scoped_feature_list.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/features.h"
-#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
@@ -68,17 +61,6 @@ std::vector<TestProfileData> GetTestProfileData(
 }  // namespace
 
 class BraveProfileManagerTest : public PlatformBrowserTest {
- public:
-  BraveProfileManagerTest() {
-#if BUILDFLAG(ENABLE_IPFS)
-    feature_list_.InitAndEnableFeature(ipfs::features::kIpfsFeature);
-#endif
-  }
-
- private:
-#if BUILDFLAG(ENABLE_IPFS)
-  base::test::ScopedFeatureList feature_list_;
-#endif
 };
 
 // Test that legacy profile names (Person X) that have
@@ -133,6 +115,9 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   }
 }
 
+// We use x86 builds on Android to run tests and rewards with ads
+// are off on x86 builds
+#if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
                        ExcludeServicesInOTRAndGuestProfiles) {
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -141,9 +126,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
   Profile* otr_profile =
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
-// We use x86 builds on Android to run tests and rewards with ads
-// are off on x86 builds
-#if !BUILDFLAG(IS_ANDROID)
   profiles::SwitchToGuestProfile(base::DoNothing());
   ui_test_utils::WaitForBrowserToOpen();
 
@@ -159,25 +141,15 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
 
   ASSERT_TRUE(otr_profile->IsOffTheRecord());
 
-  EXPECT_NE(
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile), nullptr);
-  EXPECT_EQ(
-      brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
-      nullptr);
+  EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+            nullptr);
+  EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(otr_profile),
+            nullptr);
 
   EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile), nullptr);
-  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile),
-            nullptr);
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  EXPECT_NE(ipfs::IpfsServiceFactory::GetForContext(profile), nullptr);
-  EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(otr_profile), nullptr);
-#if !BUILDFLAG(IS_ANDROID)
-  EXPECT_EQ(ipfs::IpfsServiceFactory::GetForContext(guest_profile), nullptr);
-#endif
-#endif
+  EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(otr_profile), nullptr);
 }
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,

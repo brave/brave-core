@@ -58,7 +58,6 @@
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
@@ -816,7 +815,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
     decentralized_dns::RegisterLocalStatePrefs(local_state_prefs_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
-    ipfs::IpfsService::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         shared_url_loader_factory_, &prefs_, &local_state_prefs_);
     SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt);
@@ -3281,7 +3279,8 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
 
   std::string DnsIpfsResponse() const {
     return MakeJsonRpcStringArrayResponse(
-        {"ipfs_hash", "", "", "", "", "https://brave.com"});
+        {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
+         "https://brave.com"});
   }
 
   std::string DnsBraveResponse() const {
@@ -3578,8 +3577,11 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   base::MockCallback<ResolveDnsCallback> callback;
-  EXPECT_CALL(callback, Run(std::optional<GURL>("ipfs://ipfs_hash"),
-                            mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(
+      callback,
+      Run(std::optional<GURL>("https://ipfs.io/ipfs/"
+                              "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
+          mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsIpfsResponse());
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
@@ -3635,21 +3637,26 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   EXPECT_CALL(callback2, Run(std::optional<GURL>("https://brave.com"),
                              mojom::ProviderError::kSuccess, ""));
   base::MockCallback<ResolveDnsCallback> callback3;
-  EXPECT_CALL(callback3, Run(std::optional<GURL>("ipfs://ipfs_hash"),
-                             mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(
+      callback3,
+      Run(std::optional<GURL>("https://ipfs.io/ipfs/"
+                              "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
+          mojom::ProviderError::kSuccess, ""));
 
   auto& keys = unstoppable_domains::GetRecordKeys();
   ASSERT_EQ(6u, keys.size());
   // This will resolve brave.crypto requests.
-  eth_mainnet_getmany_call_handler_->AddItem("brave.crypto", keys[0],
-                                             "ipfs_hash");
+  eth_mainnet_getmany_call_handler_->AddItem(
+      "brave.crypto", keys[0],
+      "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
   eth_mainnet_getmany_call_handler_->AddItem("brave.crypto", keys[5],
                                              "https://brave.com");
   polygon_getmany_call_handler_->AddItem("brave.crypto", keys[5],
                                          "https://brave.com");
 
   // This will resolve brave.x requests.
-  polygon_getmany_call_handler_->AddItem("brave.x", keys[0], "ipfs_hash");
+  polygon_getmany_call_handler_->AddItem(
+      "brave.x", keys[0], "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
   polygon_getmany_call_handler_->AddItem("brave.x", keys[5],
                                          "https://brave.com");
   eth_mainnet_getmany_call_handler_->AddItem("brave.x", keys[5],

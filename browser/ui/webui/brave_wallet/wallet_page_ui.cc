@@ -29,7 +29,6 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
@@ -43,10 +42,6 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
-#endif
 
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
@@ -125,10 +120,6 @@ void WalletPageUI::CreatePageHandler(
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
         brave_wallet_p3a_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-        brave_wallet_pin_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
@@ -162,13 +153,6 @@ void WalletPageUI::CreatePageHandler(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::MeldIntegrationServiceFactory::BindForContext(
       profile, std::move(meld_integration_service));
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_pin_service_receiver));
-  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_auto_pin_service_receiver));
-#endif
   brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
       profile, std::move(ipfs_service_receiver));
 

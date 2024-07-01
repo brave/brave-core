@@ -56,7 +56,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveSync;
 @property(class, nonatomic, readonly) Feature* kBraveWalletAnkrBalancesFeature;
 @property(class, nonatomic, readonly) Feature* kBraveWalletBitcoinFeature;
-@property(class, nonatomic, readonly) Feature* kBraveWalletNftPinningFeature;
 @property(class, nonatomic, readonly) Feature* kBraveWalletZCashFeature;
 @property(class, nonatomic, readonly) Feature* kConstellation;
 @property(class, nonatomic, readonly) Feature* kConstellationEnclaveAttestation;
@@ -65,7 +64,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringJsPerformance;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
 @property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
-@property(class, nonatomic, readonly) Feature* kIpfsFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
 @property(class, nonatomic, readonly) Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kOtherJSONDeprecation;

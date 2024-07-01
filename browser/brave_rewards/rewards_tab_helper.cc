@@ -8,7 +8,6 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/publisher_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/navigation_entry.h"
@@ -17,10 +16,6 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -81,14 +76,6 @@ void RewardsTabHelper::DidFinishLoad(
   if (!rewards_service_ || render_frame_host->GetParent()) {
     return;
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  auto ipns_url = GetWebContents().GetVisibleURL();
-  if (ipns_url.SchemeIs(ipfs::kIPNSScheme)) {
-    rewards_service_->OnLoad(tab_id_, ipns_url);
-    return;
-  }
-#endif
 
   rewards_service_->OnLoad(tab_id_, validated_url);
 }

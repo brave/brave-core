@@ -29,7 +29,6 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -253,9 +252,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
   }
-#endif
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -540,9 +536,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::CopySanitizedURL(
           &*browser_,
           browser_->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
-      break;
-    case IDC_APP_MENU_IPFS_OPEN_FILES:
-      brave::OpenIpfsFilesWebUI(&*browser_);
       break;
     case IDC_TOGGLE_TAB_MUTE:
       brave::ToggleActiveTabAudioMute(&*browser_);

@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -115,10 +116,6 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::RemoveHiddenNetwork,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "isNftPinningEnabled",
-      base::BindRepeating(&BraveWalletHandler::IsNftPinningEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "isBitcoinEnabled",
       base::BindRepeating(&BraveWalletHandler::IsBitcoinEnabled,
                           base::Unretained(this)));
@@ -129,13 +126,6 @@ void BraveWalletHandler::RegisterMessages() {
       "isTransactionSimulationsFeatureEnabled",
       base::BindRepeating(&BraveWalletHandler::IsTransactionSimulationsEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "getPinnedNftCount",
-      base::BindRepeating(&BraveWalletHandler::GetPinnedNftCount,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "clearPinnedNft", base::BindRepeating(&BraveWalletHandler::ClearPinnedNft,
-                                            base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setWalletInPrivateWindowsEnabled",
       base::BindRepeating(&BraveWalletHandler::SetWalletInPrivateWindowsEnabled,
@@ -381,19 +371,6 @@ PrefService* BraveWalletHandler::GetPrefs() {
   return Profile::FromWebUI(web_ui())->GetPrefs();
 }
 
-brave_wallet::BraveWalletPinService*
-BraveWalletHandler::GetBraveWalletPinService() {
-  return brave_wallet::BraveWalletPinServiceFactory::GetInstance()
-      ->GetServiceForContext(Profile::FromWebUI(web_ui()));
-}
-
-void BraveWalletHandler::IsNftPinningEnabled(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-  ResolveJavascriptCallback(args[0],
-                            base::Value(::brave_wallet::IsNftPinningEnabled()));
-}
-
 void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
@@ -416,28 +393,6 @@ void BraveWalletHandler::IsTransactionSimulationsEnabled(
       args[0], base::Value(::brave_wallet::IsTransactionSimulationsEnabled()));
 }
 
-void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-
-  auto* service = GetBraveWalletPinService();
-  if (!service) {
-    ResolveJavascriptCallback(args[0], base::Value());
-    return;
-  }
-  ResolveJavascriptCallback(
-      args[0], base::Value(static_cast<int>(service->GetPinnedTokensCount())));
-}
-
-void BraveWalletHandler::ClearPinnedNft(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-  auto* service = GetBraveWalletPinService();
-  service->Reset(
-      base::BindOnce(&BraveWalletHandler::OnBraveWalletPinServiceReset,
-                     weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
-}
-
 void BraveWalletHandler::SetWalletInPrivateWindowsEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 2U);
@@ -455,10 +410,4 @@ void BraveWalletHandler::GetWalletInPrivateWindowsEnabled(
       kBraveWalletPrivateWindowsEnabled);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], enabled);
-}
-
-void BraveWalletHandler::OnBraveWalletPinServiceReset(
-    base::Value javascript_callback,
-    bool result) {
-  ResolveJavascriptCallback(javascript_callback, base::Value(result));
 }

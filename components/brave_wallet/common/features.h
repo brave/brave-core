@@ -13,7 +13,6 @@ namespace brave_wallet {
 namespace features {
 
 BASE_DECLARE_FEATURE(kNativeBraveWalletFeature);
-BASE_DECLARE_FEATURE(kBraveWalletNftPinningFeature);
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 extern const base::FeatureParam<int> kBitcoinRpcThrottle;
 extern const base::FeatureParam<bool> kBitcoinTestnetDiscovery;

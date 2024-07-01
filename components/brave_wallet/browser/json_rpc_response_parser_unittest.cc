@@ -12,7 +12,6 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/json_rpc_responses.h"
-#include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"

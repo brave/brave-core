@@ -7,7 +7,6 @@
 
 #include <string_view>
 
-#include "brave/components/ipfs/ipfs_node_traffic_recognizer.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
 #include "url/origin.h"
@@ -27,10 +26,6 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
        base::StartsWith(path, "/oauth2/token",
                         base::CompareCase::INSENSITIVE_ASCII))) {
     return true;  // protected URL
-  }
-
-  if (ipfs::IpfsNodeTrafficRecognizer::IsKuboRelatedUrl(request.url)) {
-    return true;
   }
 
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,

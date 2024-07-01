@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 brave_browser_infobar_sources = []
@@ -14,12 +13,6 @@ if (!is_android) {
     "//brave/browser/infobars/brave_confirm_infobar_creator.h",
     "//brave/browser/infobars/brave_confirm_p3a_infobar_delegate.cc",
     "//brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h",
-    "//brave/browser/infobars/brave_global_confirm_infobar_delegate.cc",
-    "//brave/browser/infobars/brave_global_confirm_infobar_delegate.h",
-    "//brave/browser/infobars/brave_global_infobar_service.cc",
-    "//brave/browser/infobars/brave_global_infobar_service.h",
-    "//brave/browser/infobars/brave_global_infobar_service_factory.cc",
-    "//brave/browser/infobars/brave_global_infobar_service_factory.h",
     "//brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.cc",
     "//brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h",
     "//brave/browser/infobars/dev_channel_deprecation_infobar_delegate.cc",
@@ -37,6 +30,7 @@ if (!is_android) {
     "//brave/components/brave_sync:features",
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
+    "//brave/components/infobars/core:core",
     "//brave/components/p3a",
     "//chrome/app:branded_strings",
     "//chrome/browser/ui",
@@ -48,21 +42,4 @@ if (!is_android) {
     "//ui/views",
     "//url",
   ]
-
-  if (enable_ipfs) {
-    brave_browser_infobar_sources += [
-      "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.cc",
-      "//brave/browser/infobars/brave_ipfs_always_start_infobar_delegate.h",
-      "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.cc",
-      "//brave/browser/infobars/brave_ipfs_fallback_infobar_delegate.h",
-      "//brave/browser/infobars/brave_ipfs_infobar_delegate.cc",
-      "//brave/browser/infobars/brave_ipfs_infobar_delegate.h",
-    ]
-    brave_browser_infobar_deps += [
-      "//brave/components/infobars/core:core",
-      "//brave/components/ipfs",
-      "//brave/components/vector_icons",
-      "//components/user_prefs",
-    ]
-  }
 }

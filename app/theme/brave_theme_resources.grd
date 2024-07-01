@@ -55,9 +55,6 @@
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="brave/sidebar_item_highlight_right.png" />
         <structure type="chrome_scaled_image" name="IDR_SIDEBAR_READING_LIST_PANEL_HEADER" file="brave/sidebar_reading_list_panel_header.png" />
       </if>
-      <if expr="enable_ipfs and not is_android">
-        <structure type="chrome_scaled_image" name="IDR_BRAVE_IPFS_LOGO" file="brave/ipfs_logo.png" />
-      </if>
 
       <if expr="not is_android">
         <structure type="chrome_scaled_image" name="IDR_TOR_WINDOW_FRAME_GRAPHIC" file="brave/tor_window_frame_graphic.png" />

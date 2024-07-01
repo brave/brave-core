@@ -17,7 +17,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -30,11 +29,6 @@
 #include "components/prefs/pref_service.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "url/gurl.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/pref_names.h"
-#endif
 
 using base::android::ConvertUTF8ToJavaString;
 using base::android::JavaParamRef;
