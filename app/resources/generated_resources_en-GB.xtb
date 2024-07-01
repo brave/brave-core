@@ -11075,11 +11075,11 @@ Permissions that you've already given to websites and apps may apply to this acc
 <translation id="1860933807472918250">{0,plural, =1{Private}other{# open Private windows}}</translation>
 <translation id="8712375231869053533">{0,plural, =1{Private}other{Private (#)}}</translation>
 <translation id="4304377874648098617">You're Private</translation>
-<translation id="7171000599584840888">Add Person...</translation>
+<translation id="7171000599584840888">Add Profile...</translation>
 <translation id="4536111748245793305">Person <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">Add person</translation>
-<translation id="2254158488150713536">To continue, click OK, then click Add Person to create a new profile for your email address.</translation>
-<translation id="1725743343613175327">To continue, click OK, then click Add Person to create a new profile for your <ph name="DOMAIN"/> email address.</translation>
+<translation id="5828545842856466741">Add profile</translation>
+<translation id="2254158488150713536">To continue, click OK, then click Add Profile to create a new profile for your email address.</translation>
+<translation id="1725743343613175327">To continue, click OK, then click Add Profile to create a new profile for your <ph name="DOMAIN"/> email address.</translation>
 <translation id="3707212204259470604">Manage other profiles</translation>
 <translation id="7253003527666031200">Find more accessibility tools in the web store</translation>
 <translation id="154633726381112301">You can limit sign-in to certain users. This removes the "Add profile" option on the sign-in screen. You can also remove current users.</translation>
