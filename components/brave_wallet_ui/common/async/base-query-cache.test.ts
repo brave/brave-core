@@ -5,6 +5,7 @@
 
 import { getAPIProxy } from './bridge'
 import { BaseQueryCache } from './base-query-cache'
+import { mockMoonCatNFT } from '../../stories/mock-data/mock-asset-options'
 
 describe('BaseQueryCache', () => {
   it('should cache WalletInfo after fetching', async () => {
@@ -131,5 +132,14 @@ describe('BaseQueryCache', () => {
     getAllNetworksSpy.mockRestore()
     getHiddenNetworksSpy.mockReset()
     getHiddenNetworksSpy.mockRestore()
+  })
+
+  it('should include collection names in the NFT metadata cache', async () => {
+    const cache = new BaseQueryCache()
+
+    const metadata = await cache.getNftMetadata(mockMoonCatNFT)
+    expect(metadata).toBeDefined()
+    expect(metadata.collection?.name).toBeDefined()
+    expect(metadata.collection?.name).toBe('MoonCatsRescue')
   })
 })

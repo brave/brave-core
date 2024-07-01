@@ -216,7 +216,7 @@ export const {
   useGetIsWalletBackedUpQuery,
   useGetLocalIpfsNodeStatusQuery,
   useGetNetworksRegistryQuery,
-  useGetNftCollectionNameRegistryQuery,
+  useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery,

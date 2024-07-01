@@ -465,6 +465,8 @@ export class BaseQueryCache {
           logo: '',
           twitter: ''
         },
+        collection:
+          (metadata?.collection && { name: metadata.collection }) || undefined,
         attributes: metadata.attributes
       }
 

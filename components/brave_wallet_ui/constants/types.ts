@@ -551,7 +551,7 @@ export enum WalletRoutes {
   Portfolio = '/crypto/portfolio',
   PortfolioAssets = '/crypto/portfolio/assets',
   PortfolioNFTs = '/crypto/portfolio/nfts',
-  PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionId',
+  PortfolioNFTCollection = '/crypto/portfolio/collections/:collectionName',
   PortfolioNFTAsset = '/crypto/portfolio/nfts/' + ':assetId',
   PortfolioAsset = '/crypto/portfolio/assets/' + ':assetId',
 
@@ -1057,3 +1057,5 @@ export type RewardsExternalWallet = Pick<
 > & {
   status: WalletStatus
 }
+
+export type AssetIdsByCollectionNameRegistry = Record<string, string[]>

@@ -279,7 +279,7 @@ export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
 }
 
 export const makePortfolioNftCollectionRoute = (
-  collectionId: string,
+  collectionName: string,
   page?: number
 ) => {
   if (page) {
@@ -287,13 +287,13 @@ export const makePortfolioNftCollectionRoute = (
       page: page.toString()
     })
     return `${WalletRoutes.PortfolioNFTCollection.replace(
-      ':collectionId',
-      collectionId
+      ':collectionName',
+      collectionName
     )}?${params.toString()}`
   }
   return WalletRoutes.PortfolioNFTCollection.replace(
-    ':collectionId',
-    collectionId
+    ':collectionName',
+    collectionName
   )
 }
 

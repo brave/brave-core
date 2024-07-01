@@ -8,7 +8,8 @@ import {
   SupportedTestNetworks,
   SupportedCoinTypes,
   BraveWallet,
-  PanelTypes
+  PanelTypes,
+  AssetIdsByCollectionNameRegistry
 } from '../constants/types'
 import {
   TokenBalancesRegistry //
@@ -187,26 +188,24 @@ export const setPersistedPortfolioSpamTokenBalances = (
   }
 }
 
-export const getPersistedNftCollectionNamesRegistry = (): Record<
-  string,
-  string
-> => {
-  const emptyRegistry: Record<string, string> = {}
-  try {
-    const registry: Record<string, string> = JSON.parse(
-      window.localStorage.getItem(
-        LOCAL_STORAGE_KEYS.NFT_COLLECTION_NAMES_REGISTRY
-      ) || JSON.stringify(emptyRegistry)
-    )
-    return registry ?? emptyRegistry
-  } catch (error) {
-    console.error(error)
-    return emptyRegistry
+export const getPersistedNftCollectionNamesRegistry =
+  (): AssetIdsByCollectionNameRegistry => {
+    const emptyRegistry: AssetIdsByCollectionNameRegistry = {}
+    try {
+      const registry: AssetIdsByCollectionNameRegistry = JSON.parse(
+        window.localStorage.getItem(
+          LOCAL_STORAGE_KEYS.NFT_COLLECTION_NAMES_REGISTRY
+        ) || JSON.stringify(emptyRegistry)
+      )
+      return registry ?? emptyRegistry
+    } catch (error) {
+      console.error(error)
+      return emptyRegistry
+    }
   }
-}
 
 export const setPersistedNftCollectionNamesRegistry = (
-  registry: Record<string, string>
+  registry: AssetIdsByCollectionNameRegistry
 ) => {
   try {
     window.localStorage.setItem(
