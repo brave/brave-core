@@ -29,6 +29,12 @@ const char kLogFile[] = "log-file";
 }  // namespace
 
 int main(int argc, char* argv[]) {
+  // Process Mitigation Redirection Policy
+  PROCESS_MITIGATION_REDIRECTION_TRUST_POLICY signature = {0};
+  DWORD dwSize = sizeof(signature);
+  signature.EnforceRedirectionTrust = 1;
+  SetProcessMitigationPolicy(ProcessRedirectionTrustPolicy, &signature, dwSize);
+
   // Initialize the CommandLine singleton from the environment.
   base::CommandLine::Init(argc, argv);
   auto* command_line = base::CommandLine::ForCurrentProcess();
