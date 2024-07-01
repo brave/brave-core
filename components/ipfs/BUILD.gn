@@ -3,8 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//third_party/widevine/cdm/widevine.gni")
-
 static_library("ipfs") {
   sources = [
     "ipfs_prefs.cc",
@@ -19,7 +17,6 @@ static_library("ipfs") {
     "//components/base32",
     "//components/prefs:prefs",
     "//net",
-    "//third_party/widevine/cdm:buildflags",
     "//url",
   ]
 }
@@ -32,7 +29,5 @@ source_set("brave_ipfs_unit_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/components/ipfs",
-    "//content/test:test_support",
-    "//net:net",
   ]
 }
