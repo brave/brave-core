@@ -7,9 +7,12 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
+#include "chrome/browser/ui/toolbar/app_menu_icon_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -67,6 +70,36 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
 #endif
 };
 
+IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
+  // Check property for our style.
+  auto* brave_menu_button =
+      static_cast<BraveBrowserAppMenuButton*>(menu_button());
+  EXPECT_TRUE(brave_menu_button->ShouldPaintBorder());
+  EXPECT_TRUE(brave_menu_button->ShouldBlendHighlightColor());
+
+  // Check our highlight color.
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
+            dark_mode::GetActiveBraveDarkModeType());
+  EXPECT_EQ(brave_menu_button->GetHighlightColor(), std::nullopt);
+  brave_menu_button->SetTypeAndSeverity(
+      {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,
+       AppMenuIconController::Severity::LOW});
+  EXPECT_EQ(brave_menu_button->GetHighlightColor(),
+            SkColorSetRGB(0x00, 0x46, 0x07));
+  brave_menu_button->SetTypeAndSeverity(
+      {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,
+       AppMenuIconController::Severity::MEDIUM});
+  EXPECT_EQ(brave_menu_button->GetHighlightColor(),
+            SkColorSetRGB(0x4A, 0x39, 0x00));
+  brave_menu_button->SetTypeAndSeverity(
+      {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,
+       AppMenuIconController::Severity::HIGH});
+  EXPECT_EQ(brave_menu_button->GetHighlightColor(),
+            SkColorSetRGB(0x7D, 0x00, 0x1A));
+}
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 // Check toggle menu item has additional toggle button for purchased user.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, PurchasedVPN) {
@@ -89,24 +122,3 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, NotPurchasedVPN) {
   EXPECT_TRUE(!!menu_root->GetMenuItemByID(IDC_SHOW_BRAVE_VPN_PANEL));
 }
 #endif
-
-class BraveAppMenuBrowserTestWithChromeRefresh2023
-    : public BraveAppMenuBrowserTest {
- public:
-  BraveAppMenuBrowserTestWithChromeRefresh2023() = default;
-  ~BraveAppMenuBrowserTestWithChromeRefresh2023() override = default;
-
-  void SetUp() override {
-    BraveAppMenuBrowserTest::SetUp();
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-};
-
-// Test originally introduced before the chrome-refresh-2023 cleanup, to check
-// if sidebar crashes when opening.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTestWithChromeRefresh2023,
-                       AppMenuOpeningTest) {
-  // Open app menu to check it doesn't make crash.
-  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
-}

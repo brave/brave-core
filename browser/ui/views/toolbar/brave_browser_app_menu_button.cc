@@ -29,5 +29,13 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
   }
 }
 
+bool BraveBrowserAppMenuButton::ShouldPaintBorder() const {
+  return true;
+}
+
+bool BraveBrowserAppMenuButton::ShouldBlendHighlightColor() const {
+  return true;
+}
+
 BEGIN_METADATA(BraveBrowserAppMenuButton)
 END_METADATA
