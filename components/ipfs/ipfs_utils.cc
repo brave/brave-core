@@ -124,17 +124,21 @@ std::string GetIpfsClientComponentId() {
   return kIpfsClientComponentId;
 }
 
-void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir,
-                                const std::string& ipfs_client_component_id) {
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+void DeleteIpfsComponentAndData(
+    const base::FilePath& user_data_dir,
+    const base::FilePath& ipfs_client_component_id) {
   if (user_data_dir.empty() || !base::PathExists(user_data_dir)) {
     return;
   }
+  auto path_to_delete = user_data_dir.Append(ipfs_client_component_id);
   // Remove IPFS component
   base::ThreadPool::PostTask(
       FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::GetDeletePathRecursivelyCallback(
-          user_data_dir.Append(FILE_PATH_LITERAL(ipfs_client_component_id))));
+      base::BindOnce(IgnoreResult(&base::DeletePathRecursively),
+                     path_to_delete));
 }
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 
 bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
   const GURL gateway_url{kDefaultPublicGateway};

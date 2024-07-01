@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
@@ -18,6 +19,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 // Simple function to dump some text into a new file.
 void CreateTextFile(const base::FilePath& filename,
                     const std::wstring& contents) {
@@ -31,6 +33,7 @@ void CreateTextFile(const base::FilePath& filename,
   file << contents;
   file.close();
 }
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 
 GURL GetDefaultIPFSGateway() {
   return GURL(ipfs::kDefaultPublicGateway);
@@ -50,6 +53,7 @@ class IpfsUtilsUnitTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
 };
 
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
   auto user_data_dir = temp_dir_.GetPath();
   base::FilePath cache_folder =
@@ -69,19 +73,20 @@ TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
   base::CreateDirectory(component_id_folder);
   EXPECT_TRUE(base::PathExists(component_id_folder));
   base::FilePath component_id_folde_subdir =
-      cache_folder.Append(FILE_PATH_LITERAL("subdir1"));
+      component_id_folder.Append(FILE_PATH_LITERAL("subdir1"));
   base::CreateDirectory(component_id_folde_subdir);
   EXPECT_TRUE(base::PathExists(component_id_folde_subdir));
   base::FilePath component_id_folde_subdir_file_01 =
-      cache_folder_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
+      component_id_folde_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
   CreateTextFile(component_id_folde_subdir_file_01, L"12345678901234567890");
 
-  ipfs::DeleteIpfsComponentAndData(user_data_dir,
-                                   ipfs::GetIpfsClientComponentId());
+  ipfs::DeleteIpfsComponentAndData(
+      user_data_dir, base::FilePath(ipfs::GetIpfsClientComponentId()));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(base::PathExists(cache_folder));
   EXPECT_FALSE(base::PathExists(component_id_folder));
 }
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {
   GURL url(

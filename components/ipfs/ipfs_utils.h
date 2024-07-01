@@ -24,9 +24,10 @@ GURL ContentHashToCIDv1URL(base::span<const uint8_t> contenthash);
 
 std::string GetIpfsClientComponentId();
 
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir,
-                                const std::string& ipfs_client_component_id);
-
+                                const base::FilePath& ipfs_client_component_id);
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPFS_UTILS_H_
