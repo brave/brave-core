@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
 
 class SidebarContainerView;
@@ -34,6 +35,15 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   void set_sidebar_separator(views::View* sidebar_separator) {
     sidebar_separator_ = sidebar_separator;
   }
+
+  void set_contents_container(views::View* container) {
+    const_cast<std::remove_const_t<decltype(contents_container_)>*>(
+        &contents_container_)
+        ->
+        operator=(container);
+  }
+
+  views::View* contents_container() { return contents_container_; }
 
   // Returns the ideal sidebar width, given the current available width. Used
   // for determining the target width in sidebar width animations.

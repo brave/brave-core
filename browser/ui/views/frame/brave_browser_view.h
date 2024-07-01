@@ -58,21 +58,23 @@ class BraveHelpBubbleHostView;
 class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
+class SplitView;
 class SplitViewLocationBar;
-class SplitViewSeparator;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
 class WalletButton;
 
 class BraveBrowserView : public BrowserView,
-                         public commands::AcceleratorService::Observer,
-                         public SplitViewBrowserDataObserver {
+                         public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
+
+  SplitView* split_view() { return split_view_; }
+  const SplitView* split_view() const { return split_view_; }
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
@@ -128,15 +130,6 @@ class BraveBrowserView : public BrowserView,
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
-
-  // SplitViewBrowserDataObserver:
-  void OnTileTabs(const TabTile& tile) override;
-  void OnDidBreakTile(const TabTile& tile) override;
-  void OnSwapTabsInTile(const TabTile& tile) override;
-
-  views::WebView* secondary_contents_web_view() {
-    return secondary_contents_web_view_.get();
-  }
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
@@ -201,16 +194,6 @@ class BraveBrowserView : public BrowserView,
 
   void UpdateSideBarHorizontalAlignment();
 
-  tabs::TabHandle GetActiveTabHandle();
-  bool IsActiveWebContentsTiled(const TabTile& tile);
-  void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
-                                content::WebContents* new_contents);
-  void UpdateContentsWebViewVisual();
-  void UpdateContentsWebViewBorder();
-  void UpdateSecondaryContentsWebViewVisibility();
-  void UpdateSecondaryDevtoolsLayoutAndVisibility(
-      content::WebContents* inspected_contents);
-
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
@@ -235,9 +218,7 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
 
-  raw_ptr<views::WebView> secondary_devtools_web_view_ = nullptr;
-  raw_ptr<ContentsWebView> secondary_contents_web_view_ = nullptr;
-  raw_ptr<SplitViewSeparator> split_view_separator_ = nullptr;
+  raw_ptr<SplitView> split_view_ = nullptr;
 
   std::unique_ptr<SplitViewLocationBar> secondary_location_bar_;
   std::unique_ptr<views::Widget> secondary_location_bar_widget_;
@@ -246,9 +227,6 @@ class BraveBrowserView : public BrowserView,
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};
-
-  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
-      split_view_observation_{this};
 
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };
