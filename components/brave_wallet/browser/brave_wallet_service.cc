@@ -803,6 +803,44 @@ void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
   prefs->SetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated, true);
 }
 
+void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletGoerliNetworkMigrated)) {
+    return;
+  }
+
+  // Migrate current chain id to Sepolia for default origin.
+  if (GetCurrentChainId(prefs, mojom::CoinType::ETH, std::nullopt) == "0x5") {
+    SetCurrentChainId(prefs, mojom::CoinType::ETH, std::nullopt,
+                      mojom::kSepoliaChainId);
+  }
+
+  // Migrate current chain id to Sepolia for all origins.
+  const auto& selected_networks =
+      prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
+
+  const auto* coin_dict =
+      selected_networks.FindDict(GetPrefKeyForCoinType(mojom::CoinType::ETH));
+  if (!coin_dict) {
+    prefs->SetBoolean(kBraveWalletGoerliNetworkMigrated, true);
+    return;
+  }
+
+  for (auto origin : *coin_dict) {
+    const auto* chain_id_each = origin.second.GetIfString();
+    if (!chain_id_each) {
+      continue;
+    }
+
+    if (base::ToLowerASCII(*chain_id_each) == "0x5") {
+      SetCurrentChainId(prefs, mojom::CoinType::ETH,
+                        url::Origin::Create(GURL(origin.first)),
+                        mojom::kSepoliaChainId);
+    }
+  }
+
+  prefs->SetBoolean(kBraveWalletGoerliNetworkMigrated, true);
+}
+
 void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
   if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
     return;

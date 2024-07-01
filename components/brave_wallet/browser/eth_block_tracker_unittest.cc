@@ -87,7 +87,7 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
   EXPECT_FALSE(request_sent);
   task_environment_.FastForwardBy(base::Seconds(4));
   EXPECT_TRUE(request_sent);
-  EXPECT_FALSE(tracker.IsRunning(mojom::kGoerliChainId));
+  EXPECT_FALSE(tracker.IsRunning(mojom::kSepoliaChainId));
 
   // interval will be changed
   tracker.Start(mojom::kMainnetChainId, base::Seconds(30));
@@ -96,7 +96,7 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
   EXPECT_FALSE(request_sent);
   task_environment_.FastForwardBy(base::Seconds(25));
   EXPECT_TRUE(request_sent);
-  EXPECT_FALSE(tracker.IsRunning(mojom::kGoerliChainId));
+  EXPECT_FALSE(tracker.IsRunning(mojom::kSepoliaChainId));
 
   tracker.Stop(mojom::kMainnetChainId);
   EXPECT_FALSE(tracker.IsRunning(mojom::kMainnetChainId));
@@ -104,11 +104,11 @@ TEST_F(EthBlockTrackerUnitTest, Timer) {
   EXPECT_TRUE(tracker.IsRunning(mojom::kMainnetChainId));
 
   request_sent = false;
-  tracker.Start(mojom::kGoerliChainId, base::Seconds(10));
-  EXPECT_TRUE(tracker.IsRunning(mojom::kGoerliChainId));
+  tracker.Start(mojom::kSepoliaChainId, base::Seconds(10));
+  EXPECT_TRUE(tracker.IsRunning(mojom::kSepoliaChainId));
   tracker.Stop();
   EXPECT_FALSE(tracker.IsRunning(mojom::kMainnetChainId));
-  EXPECT_FALSE(tracker.IsRunning(mojom::kGoerliChainId));
+  EXPECT_FALSE(tracker.IsRunning(mojom::kSepoliaChainId));
   task_environment_.FastForwardBy(base::Seconds(10));
   EXPECT_FALSE(request_sent);
 }
@@ -125,35 +125,35 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   MockTrackerObserver observer(&tracker);
 
   tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
-  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  tracker.Start(mojom::kSepoliaChainId, base::Seconds(2));
   EXPECT_CALL(observer, OnLatestBlock(mojom::kMainnetChainId, 1)).Times(1);
-  EXPECT_CALL(observer, OnLatestBlock(mojom::kGoerliChainId, 1)).Times(2);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kSepoliaChainId, 1)).Times(2);
   EXPECT_CALL(observer, OnNewBlock(mojom::kMainnetChainId, 1)).Times(1);
-  EXPECT_CALL(observer, OnNewBlock(mojom::kGoerliChainId, 1)).Times(1);
+  EXPECT_CALL(observer, OnNewBlock(mojom::kSepoliaChainId, 1)).Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(1));
-  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(1));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kSepoliaChainId), uint256_t(1));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   response_block_num_ = 3;
   tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
-  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  tracker.Start(mojom::kSepoliaChainId, base::Seconds(2));
   EXPECT_CALL(observer, OnLatestBlock(mojom::kMainnetChainId, 3)).Times(1);
-  EXPECT_CALL(observer, OnLatestBlock(mojom::kGoerliChainId, 3)).Times(2);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kSepoliaChainId, 3)).Times(2);
   EXPECT_CALL(observer, OnNewBlock(mojom::kMainnetChainId, 3)).Times(1);
-  EXPECT_CALL(observer, OnNewBlock(mojom::kGoerliChainId, 3)).Times(1);
+  EXPECT_CALL(observer, OnNewBlock(mojom::kSepoliaChainId, 3)).Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(3));
-  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(3));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kSepoliaChainId), uint256_t(3));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   // Still response_block_num_ 3
   EXPECT_CALL(observer, OnLatestBlock(mojom::kMainnetChainId, 3)).Times(1);
-  EXPECT_CALL(observer, OnLatestBlock(mojom::kGoerliChainId, 3)).Times(3);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kSepoliaChainId, 3)).Times(3);
   EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(3));
-  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(3));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kSepoliaChainId), uint256_t(3));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   tracker.Stop();
@@ -161,7 +161,7 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumber) {
   // Explicity check latest block won't trigger observer nor update current
   // block
   for (const std::string& chain_id :
-       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+       {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
     EXPECT_CALL(observer, OnLatestBlock(_, _)).Times(0);
     EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
@@ -195,16 +195,16 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberInvalidResponseJSON) {
   MockTrackerObserver observer(&tracker);
 
   tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
-  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  tracker.Start(mojom::kSepoliaChainId, base::Seconds(2));
   EXPECT_CALL(observer, OnLatestBlock(_, _)).Times(0);
   EXPECT_CALL(observer, OnNewBlock(_, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(0));
-  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kSepoliaChainId), uint256_t(0));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   for (const std::string& chain_id :
-       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+       {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
     base::RunLoop run_loop;
     tracker.CheckForLatestBlock(
@@ -242,16 +242,16 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberLimitExceeded) {
   MockTrackerObserver observer(&tracker);
 
   tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
-  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  tracker.Start(mojom::kSepoliaChainId, base::Seconds(2));
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_CALL(observer, OnLatestBlock(testing::_, testing::_)).Times(0);
   EXPECT_CALL(observer, OnNewBlock(testing::_, testing::_)).Times(0);
   EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(0));
-  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kSepoliaChainId), uint256_t(0));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   for (const std::string& chain_id :
-       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+       {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
     base::RunLoop run_loop;
     tracker.CheckForLatestBlock(
@@ -281,16 +281,16 @@ TEST_F(EthBlockTrackerUnitTest, GetBlockNumberRequestTimeout) {
   MockTrackerObserver observer(&tracker);
 
   tracker.Start(mojom::kMainnetChainId, base::Seconds(5));
-  tracker.Start(mojom::kGoerliChainId, base::Seconds(2));
+  tracker.Start(mojom::kSepoliaChainId, base::Seconds(2));
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_CALL(observer, OnLatestBlock(testing::_, testing::_)).Times(0);
   EXPECT_CALL(observer, OnNewBlock(testing::_, testing::_)).Times(0);
   EXPECT_EQ(tracker.GetCurrentBlock(mojom::kMainnetChainId), uint256_t(0));
-  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kGoerliChainId), uint256_t(0));
+  EXPECT_EQ(tracker.GetCurrentBlock(mojom::kSepoliaChainId), uint256_t(0));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   for (const std::string& chain_id :
-       {mojom::kMainnetChainId, mojom::kGoerliChainId}) {
+       {mojom::kMainnetChainId, mojom::kSepoliaChainId}) {
     SCOPED_TRACE(chain_id);
     base::RunLoop run_loop;
     tracker.CheckForLatestBlock(

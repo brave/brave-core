@@ -1978,11 +1978,11 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
     EXPECT_TRUE(
         SetNetwork(network->chain_id, mojom::CoinType::ETH, std::nullopt));
     EXPECT_TRUE(
-        SetNetwork(mojom::kGoerliChainId, mojom::CoinType::ETH, origin_a));
+        SetNetwork(mojom::kSepoliaChainId, mojom::CoinType::ETH, origin_a));
 
     EXPECT_EQ(network->chain_id, network_manager_->GetCurrentChainId(
                                      mojom::CoinType::ETH, std::nullopt));
-    EXPECT_EQ(mojom::kGoerliChainId, network_manager_->GetCurrentChainId(
+    EXPECT_EQ(mojom::kSepoliaChainId, network_manager_->GetCurrentChainId(
                                          mojom::CoinType::ETH, origin_a));
     EXPECT_EQ(network->chain_id, network_manager_->GetCurrentChainId(
                                      mojom::CoinType::ETH, origin_b));
@@ -1990,7 +1990,7 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
     EXPECT_EQ(GetChainId(mojom::CoinType::ETH, std::nullopt),
               network->chain_id);
     EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_a),
-              mojom::kGoerliChainId);
+              mojom::kSepoliaChainId);
     EXPECT_EQ(GetChainId(mojom::CoinType::ETH, origin_b), network->chain_id);
 
     EXPECT_EQ(url::Origin::Create(network_manager_->GetNetworkURL(
@@ -1998,7 +1998,7 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
               url::Origin::Create(GetActiveEndpointUrl(*network)));
     EXPECT_EQ(url::Origin::Create(network_manager_->GetNetworkURL(
                   mojom::CoinType::ETH, origin_a)),
-              url::Origin::Create(GURL("https://goerli-infura.brave.com")));
+              url::Origin::Create(GURL("https://ethereum-sepolia.wallet.brave.com")));
     EXPECT_EQ(url::Origin::Create(network_manager_->GetNetworkURL(
                   mojom::CoinType::ETH, origin_b)),
               url::Origin::Create(GetActiveEndpointUrl(*network)));
@@ -2118,8 +2118,8 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
 
   EXPECT_CALL(callback,
               Run(ElementsAreArray({"0x1", "0x4e454152", "0x89", "0x38", "0xa",
-                                    "0xa86a", "0x13a", "0xe9ac0d6", "0x5",
-                                    "0xaa36a7", "0x4cb2f", "0x539"})));
+                                    "0xa86a", "0x13a", "0xe9ac0d6", "0xaa36a7",
+                                    "0x4cb2f", "0x539"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -2129,19 +2129,17 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
 
   // Test networks are hidden by default.
   // kLocalhostChainId is active so not listed as hidden.
-  EXPECT_CALL(
-      callback,
-      Run(ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                            mojom::kFilecoinEthereumTestnetChainId})));
+  EXPECT_CALL(callback,
+              Run(ElementsAreArray({mojom::kSepoliaChainId,
+                                    mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Remove network hidden by default.
   network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH,
-                                        mojom::kGoerliChainId);
+                                        mojom::kSepoliaChainId);
   EXPECT_CALL(callback,
-              Run(ElementsAreArray({mojom::kSepoliaChainId,
-                                    mojom::kFilecoinEthereumTestnetChainId})));
+              Run(ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -2149,25 +2147,22 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   network_manager_->AddHiddenNetwork(mojom::CoinType::ETH, "0x123");
   EXPECT_CALL(
       callback,
-      Run(ElementsAreArray({mojom::kSepoliaChainId,
-                            mojom::kFilecoinEthereumTestnetChainId, "0x123"})));
+      Run(ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId, "0x123"})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Making custom network visible.
   network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH, "0x123");
   EXPECT_CALL(callback,
-              Run(ElementsAreArray({mojom::kSepoliaChainId,
-                                    mojom::kFilecoinEthereumTestnetChainId})));
+              Run(ElementsAreArray({mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Change active network so kLocalhostChainId becomes hidden.
   SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH, std::nullopt);
-  EXPECT_CALL(
-      callback,
-      Run(ElementsAreArray({mojom::kSepoliaChainId, mojom::kLocalhostChainId,
-                            mojom::kFilecoinEthereumTestnetChainId})));
+  EXPECT_CALL(callback,
+              Run(ElementsAreArray({mojom::kLocalhostChainId,
+                                    mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
@@ -3077,7 +3072,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalances) {
   // Unsupported chain ID yields invalid params
   TestGetERC20TokenBalances(
       std::vector<std::string>({"0x0d8775f648430679a709e98d2b0cb6250d2887ef"}),
-      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kGoerliChainId, {},
+      "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", mojom::kSepoliaChainId, {},
       mojom::ProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 

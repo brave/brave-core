@@ -59,7 +59,7 @@ constexpr char kArbitrum[] = "arbitrum";
 constexpr char kOptimism[] = "optimism";
 constexpr char kAvalanche[] = "avalanche";
 constexpr char kBsc[] = "bsc";
-constexpr char kEthereumGoerli[] = "ethereum-goerli";
+constexpr char kEthereumSepolia[] = "ethereum-sepolia";
 constexpr char kSolanaTestnet[] = "solana-testnet";
 constexpr char kSolanaDevnet[] = "solana-devnet";
 constexpr char kArbitrumNova[] = "arbitrum-nova";
@@ -82,7 +82,7 @@ std::optional<std::string> ChainIdToSimpleHashChainId(
           {brave_wallet::mojom::kOptimismMainnetChainId, kOptimism},
           {brave_wallet::mojom::kAvalancheMainnetChainId, kAvalanche},
           {brave_wallet::mojom::kBnbSmartChainMainnetChainId, kBsc},
-          {brave_wallet::mojom::kGoerliChainId, kEthereumGoerli},
+          {brave_wallet::mojom::kSepoliaChainId, kEthereumSepolia},
           {brave_wallet::mojom::kSolanaTestnet, kSolanaTestnet},
           {brave_wallet::mojom::kSolanaDevnet, kSolanaDevnet},
           {brave_wallet::mojom::kArbitrumNovaChainId, kArbitrumNova},
@@ -110,7 +110,7 @@ std::optional<std::string> SimpleHashChainIdToChainId(
           {kOptimism, brave_wallet::mojom::kOptimismMainnetChainId},
           {kAvalanche, brave_wallet::mojom::kAvalancheMainnetChainId},
           {kBsc, brave_wallet::mojom::kBnbSmartChainMainnetChainId},
-          {kEthereumGoerli, brave_wallet::mojom::kGoerliChainId},
+          {kEthereumSepolia, brave_wallet::mojom::kSepoliaChainId},
           {kSolanaTestnet, brave_wallet::mojom::kSolanaTestnet},
           {kSolanaDevnet, brave_wallet::mojom::kSolanaDevnet},
           {kArbitrumNova, brave_wallet::mojom::kArbitrumNovaChainId},

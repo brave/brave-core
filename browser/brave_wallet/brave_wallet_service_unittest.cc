@@ -98,7 +98,7 @@ const char token_list_json[] = R"(
    }
   })";
 
-const char goerli_list_json[] = R"(
+const char sepolia_list_json[] = R"(
   {
    "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
     "name": "USD Coin",
@@ -107,7 +107,7 @@ const char goerli_list_json[] = R"(
     "erc721": false,
     "symbol": "USDC",
     "decimals": 6,
-    "chainId": "0x5"
+    "chainId": "0xaa36a7"
    },
    "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
      "name": "Crypto Kitties",
@@ -116,7 +116,7 @@ const char goerli_list_json[] = R"(
      "erc721": true,
      "symbol": "CK",
      "decimals": 0,
-     "chainId": "0x5"
+     "chainId": "0xaa36a7"
    },
    "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
      "name": "Uniswap",
@@ -124,7 +124,7 @@ const char goerli_list_json[] = R"(
      "erc20": true,
      "symbol": "UNI",
      "decimals": 18,
-     "chainId": "0x5"
+     "chainId": "0xaa36a7"
    }
   })";
 
@@ -349,7 +349,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     TokenListMap token_list_map;
     ASSERT_TRUE(
         ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-    ASSERT_TRUE(ParseTokenList(goerli_list_json, &token_list_map,
+    ASSERT_TRUE(ParseTokenList(sepolia_list_json, &token_list_map,
                                mojom::CoinType::ETH));
     ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
                                mojom::CoinType::SOL));
@@ -780,8 +780,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     EXPECT_EQ(requests[0]->token, expected_token);
 
     if (run_switch_network) {
-      json_rpc_service_->SetNetwork(mojom::kGoerliChainId, mojom::CoinType::ETH,
-                                    std::nullopt);
+      json_rpc_service_->SetNetwork(mojom::kSepoliaChainId,
+                                    mojom::CoinType::ETH, std::nullopt);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
           approve, {suggested_token->contract_address});
@@ -887,10 +887,10 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
 
   // Create ETH token with 0x5 chain_id.
   mojom::BlockchainTokenPtr eth_0x5_token = GetEthToken();
-  eth_0x5_token->chain_id = "0x5";
+  eth_0x5_token->chain_id = "0xaa36a7";
 
   // ETH should be returned before any token is added.
-  GetUserAssets("0x5", mojom::CoinType::ETH, &tokens);
+  GetUserAssets("0xaa36a7", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(tokens[0], eth_0x5_token);
 
@@ -1312,7 +1312,7 @@ TEST_F(BraveWalletServiceUnitTest, SetUserAssetVisible) {
 
   // List for this network_id is not existed should return false.
   auto token1_0x5 = token1.Clone();
-  token1_0x5->chain_id = "0x5";
+  token1_0x5->chain_id = "0xaa36a7";
   EXPECT_FALSE(SetUserAssetVisible(std::move(token1_0x5), false));
 
   auto token1_0xaa36a7 = token1.Clone();
@@ -2100,6 +2100,43 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
       GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigrateGoerliNetwork) {
+  // Note: The testing profile has already performed the prefs migration by the
+  // time this test runs, so undo its effects here for testing purposes
+  ASSERT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
+  GetPrefs()->SetBoolean(kBraveWalletGoerliNetworkMigrated, false);
+  GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
+
+  auto selected_networks = base::JSONReader::Read(R"({
+    "ethereum": {
+      "https://app.uniswap.org": "0x5"
+    }
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
+
+  auto default_networks = base::JSONReader::Read(R"({
+    "ethereum": "0x5"
+  })");
+  GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
+
+  // CASE 1: Goerli is the selected network of some origin
+  ASSERT_FALSE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
+  BraveWalletService::MigrateGoerliNetwork(GetPrefs());
+  EXPECT_EQ(
+      GetCurrentChainId(GetPrefs(), mojom::CoinType::ETH,
+                        url::Origin::Create(GURL("https://app.uniswap.org"))),
+      mojom::kSepoliaChainId);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
+
+  // CASE 2: Goerli is the default ETH network
+  GetPrefs()->SetBoolean(kBraveWalletGoerliNetworkMigrated, false);
+  BraveWalletService::MigrateGoerliNetwork(GetPrefs());
+  EXPECT_EQ(
+      *GetPrefs()->GetDict(kBraveWalletSelectedNetworks).FindString("ethereum"),
+      mojom::kSepoliaChainId);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
+}
+
 TEST_F(BraveWalletServiceUnitTest, MigrateAssetsPrefToList) {
   ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
 
@@ -2351,7 +2388,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
 
 TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
-                                        mojom::kGoerliChainId};
+                                        mojom::kSepoliaChainId};
 
   const auto get_user_asset =
       [this](const std::string& chain_id,
@@ -2976,8 +3013,7 @@ TEST_F(BraveWalletServiceUnitTest, GetAnkrSupportedChainIds) {
             mojom::kFlareMainnetChainId,    mojom::kGnosisChainId,
             mojom::kOptimismMainnetChainId, mojom::kPolygonMainnetChainId,
             mojom::kPolygonZKEVMChainId,    mojom::kRolluxMainnetChainId,
-            mojom::kSyscoinMainnetChainId,  mojom::kZkSyncEraChainId,
-            mojom::kGoerliChainId};
+            mojom::kSyscoinMainnetChainId,  mojom::kZkSyncEraChainId};
         EXPECT_THAT(chains,
                     testing::UnorderedElementsAreArray(expected_chains));
       }));
