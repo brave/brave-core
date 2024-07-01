@@ -47,6 +47,8 @@ constexpr int kAddPriorityFeeComputeUnits = 300;
 // Minimum fee per compute units is 1 micro lamport.
 // There are 10^6 micro-lamports in one lamport.
 constexpr int kMininumFeePerComputeUnits = 1;
+// Add a 10% buffer to the compute units estimate returned by the simulation.
+constexpr double kComputeUnitsBufferMultiplier = 1.10;
 
 // Transactions submitted after 30 minutes are safe to be updated to dropped
 // since usual transactions are only valid for about 2 minutes.
@@ -138,6 +140,11 @@ void MergeGetTxFeeEstimationResponses(
   // budget and priority fee, so we must add those as well.
   estimation->compute_units =
       simulate_it->compute_units + kAddPriorityFeeComputeUnits;
+
+  // Add a 10% buffer for compute units, just in case the estimate returned by
+  // the simulation is too low in practice.
+  estimation->compute_units =
+      std::ceil(estimation->compute_units * kComputeUnitsBufferMultiplier);
 
   // If the call to fetch recent priority fees fails, we'll still propagate
   // the base fee and compute units, but use the default fee per compute unit.

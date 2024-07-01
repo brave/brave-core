@@ -109,7 +109,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
     last_valid_block_height3_ = 3490;
     fee_estimation1_ = mojom::SolanaFeeEstimation::New();
     fee_estimation1_->base_fee = 5000;
-    fee_estimation1_->compute_units = 69017 + 300;
+    fee_estimation1_->compute_units = 76249U;  // ceil(1.10 * (69017 + 300))
     fee_estimation1_->fee_per_compute_unit = 100;
 
     SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_, "",
@@ -804,7 +804,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   ASSERT_TRUE(tx_meta3);
   EXPECT_TRUE(tx_meta3->tx()->fee_estimation());
   EXPECT_EQ(tx_meta3->tx()->fee_estimation()->base_fee, 5000U);
-  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->compute_units, 69317U);
+  EXPECT_EQ(tx_meta3->tx()->fee_estimation()->compute_units, 76249U);
   EXPECT_EQ(tx_meta3->tx()->fee_estimation()->fee_per_compute_unit, 1U);
 
   // When `everything is successful, the tx should have a fee estimation with
@@ -821,7 +821,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   ASSERT_TRUE(tx_meta4);
   EXPECT_EQ(tx_meta4->chain_id(), mojom::kSolanaMainnet);
   tx->message()->AddPriorityFee(
-      69017 + 300,
+      76249U,
       100);  // Added priority automatically in AddUnapprovedTransaction
   tx->set_fee_estimation(fee_estimation1_.Clone());
   EXPECT_EQ(*tx_meta4->tx(), *tx);
@@ -1616,7 +1616,7 @@ TEST_F(SolanaTxManagerUnitTest, GetTransactionMessageToSign) {
       "aezhZAMzywrLOSju1o9VJQ5KaB2lsblgqvdjtkDFlmZHz4KQDBkZv5SEXMv/"
       "srbpyw5vnvIzlu8X3EmssQ5s6QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
       "AzEkOkozS44c7s0P8ldozF5ymD02/"
-      "RsLDbpEpnVXU5rkDAgAFAsUOAQACAAkDZAAAAAAAAAADAgABDAIAAAABAAAAAAAAAA==");
+      "RsLDbpEpnVXU5rkDAgAFAtkpAQACAAkDZAAAAAAAAAADAgABDAIAAAABAAAAAAAAAA==");
   TestGetTransactionMessageToSign(system_transfer_meta_id, message);
 
   // Valid cached latest blockhash
@@ -1812,7 +1812,7 @@ TEST_F(SolanaTxManagerUnitTest, GetSolanaTxFeeEstimation) {
   mojom::SolanaFeeEstimationPtr expected_estimate =
       mojom::SolanaFeeEstimation::New();
   expected_estimate->base_fee = 5000;
-  expected_estimate->compute_units = 69017 + 300;
+  expected_estimate->compute_units = 76249U;
   expected_estimate->fee_per_compute_unit = 100;
   TestGetSolanaTxFeeEstimation(mojom::kSolanaMainnet, meta.id(),
                                std::move(expected_estimate),
