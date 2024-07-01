@@ -133,8 +133,14 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                         braveWalletP3A.reportOnboardingAction(
                                 OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
                     }
-                    if (mOnNextPage != null) {
-                        mOnNextPage.onboardingCompleted();
+                    if (mIsOnboarding) {
+                        if (mOnNextPage != null) {
+                            // Show confirmation screen
+                            // only during onboarding process.
+                            mOnNextPage.incrementPages(3);
+                        }
+                    } else {
+                        requireActivity().finish();
                     }
                 });
         mBiometricBackupWalletImage.setOnClickListener(

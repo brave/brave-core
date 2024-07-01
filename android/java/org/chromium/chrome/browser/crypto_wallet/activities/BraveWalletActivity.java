@@ -227,7 +227,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
-    public void onboardingCompleted() {
+    public void showWallet() {
         if (mIsFromDapps) {
             finish();
             try {

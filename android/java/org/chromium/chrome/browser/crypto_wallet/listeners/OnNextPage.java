@@ -13,7 +13,7 @@ package org.chromium.chrome.browser.crypto_wallet.listeners;
 public interface OnNextPage {
     void incrementPages(int pages);
 
-    void onboardingCompleted();
+    void showWallet();
 
     void gotoCreationPage();
 

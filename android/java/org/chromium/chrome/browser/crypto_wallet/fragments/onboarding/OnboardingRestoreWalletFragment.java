@@ -150,15 +150,13 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                                                 allAccounts.ethDappSelectedAccount.accountId,
                                                 success -> {
                                                     if (mOnNextPage != null) {
-                                                        // If biometric is not supported we should
+                                                        // If biometric is not supported we
                                                         // skip the fingerprint setup screen.
-                                                        if (!Utils.isBiometricSupported(
-                                                                requireContext())) {
-                                                            mOnNextPage.incrementPages(1);
-                                                        }
-                                                        // TODO - Refactor this when confirmation
-                                                        // screen is implemented.
-                                                        mOnNextPage.onboardingCompleted();
+                                                        mOnNextPage.incrementPages(
+                                                                Utils.isBiometricSupported(
+                                                                                requireContext())
+                                                                        ? 1
+                                                                        : 2);
                                                     }
                                                 }));
                     } else {

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/confirmation_wallet_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/wallet_portfolio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/wallet_portfolio"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="97dp"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:id="@+id/all_set_title"
+            style="@style/HeadingH3"
+            android:gravity="center"
+            android:layout_below="@+id/wallet_portfolio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/brave_wallet_all_set"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/DefaultRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/all_set_title"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:gravity="center"
+            android:text="@string/brave_wallet_ready_to_use"
+            android:textColor="@color/text_secondary" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/BraveWalletOnboardingButton"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/button_go_to_portfolio"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="@string/brave_wallet_go_to_portfolio"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

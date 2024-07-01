@@ -108,8 +108,14 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                         braveWalletP3A.reportOnboardingAction(
                                 OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
                     }
-                    if (mOnNextPage != null) {
-                        mOnNextPage.onboardingCompleted();
+                    if (mIsOnboarding) {
+                        if (mOnNextPage != null) {
+                            // Show confirmation screen
+                            // only during onboarding process.
+                            mOnNextPage.incrementPages(2);
+                        }
+                    } else {
+                        requireActivity().finish();
                     }
                 });
     }
