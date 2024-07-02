@@ -17,12 +17,13 @@ namespace brave_ads {
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
     const ConfirmationType confirmation_type) {
   if (!UserHasJoinedBraveRewards()) {
-    // User has not joined Brave Rewards, so desposits should be non-cash.
     return std::make_unique<NonCashDeposit>();
+    // User has not joined Brave Rewards, so all desposits are non-rewardable.
   }
 
   switch (confirmation_type) {
     case ConfirmationType::kViewedImpression: {
+      // Rewardable.
       return std::make_unique<CashDeposit>();
     }
 
@@ -38,6 +39,7 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
     case ConfirmationType::kMediaPlay:
     case ConfirmationType::kMedia25:
     case ConfirmationType::kMedia100: {
+      // Non-rewardable.
       return std::make_unique<NonCashDeposit>();
     }
 

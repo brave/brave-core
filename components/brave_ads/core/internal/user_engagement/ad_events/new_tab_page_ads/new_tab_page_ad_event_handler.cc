@@ -43,7 +43,7 @@ void NewTabPageAdEventHandler::FireEvent(
                              std::move(callback));
   }
 
-  database_table_.GetForCreativeInstanceId(
+  creative_ads_database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           &NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback,

@@ -94,7 +94,7 @@ class InlineContentAdEventHandler final
 
   raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ = nullptr;
 
-  const database::table::CreativeInlineContentAds database_table_;
+  const database::table::CreativeInlineContentAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 

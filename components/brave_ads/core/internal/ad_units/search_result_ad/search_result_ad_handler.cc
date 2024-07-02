@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
@@ -79,9 +78,8 @@ void SearchResultAdHandler::TriggerEvent(
       << "Should not be called with kServedImpression as this event is handled "
          "when calling TriggerEvent with kViewedImpression";
 
-  if (!UserHasJoinedBraveRewards() &&
-      !ShouldAlwaysTriggerSearchResultAdEvents()) {
-    // No-op if we should not trigger events for non-Rewards users.
+  if (!UserHasOptedInToSearchResultAds()) {
+    // No-op if the user has not opted into search result ads.
     return std::move(callback).Run(/*success=*/false);
   }
 

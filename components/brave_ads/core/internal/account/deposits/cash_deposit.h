@@ -19,7 +19,7 @@ class CashDeposit final : public DepositInterface {
                 GetDepositCallback callback) override;
 
  private:
-  database::table::Deposits database_table_;
+  database::table::Deposits deposits_database_table_;
 };
 
 }  // namespace brave_ads

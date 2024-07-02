@@ -423,8 +423,9 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
             );)",
       {GetTableName(),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now())),
-       BuildBindingParameterPlaceholder(transaction_ids.size()),
-       BuildBindingParameterPlaceholder(1)},
+       BuildBindingParameterPlaceholder(
+           /*parameters_count=*/transaction_ids.size()),
+       BuildBindingParameterPlaceholder(/*parameters_count=*/1)},
       nullptr);
 
   int index = 0;

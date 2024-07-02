@@ -77,7 +77,7 @@ void EligibleNotificationAdsV2::GetEligibleAds(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  database_table_.GetForActiveCampaigns(
+  creative_ads_database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNotificationAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));

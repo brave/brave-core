@@ -10,14 +10,22 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
 bool CanConvertAdEvent(const AdEventInfo& ad_event) {
-  // Only convert view-through and click-through ad events.
-  if (ad_event.confirmation_type != ConfirmationType::kViewedImpression &&
-      ad_event.confirmation_type != ConfirmationType::kClicked) {
-    return false;
+  if (!UserHasJoinedBraveRewards()) {
+    // Convert click-through ad events for non-Rewards users.
+    if (ad_event.confirmation_type != ConfirmationType::kClicked) {
+      return false;
+    }
+  } else {
+    // Convert view-through and click-through ad events for Rewards users.
+    if (ad_event.confirmation_type != ConfirmationType::kViewedImpression &&
+        ad_event.confirmation_type != ConfirmationType::kClicked) {
+      return false;
+    }
   }
 
   switch (ad_event.type) {
@@ -27,7 +35,12 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kNewTabPageAd: {
-      return UserHasOptedInToNewTabPageAds();
+      // Only if:
+      // - The user has opted into new tab page ads and has either joined Brave
+      //   Rewards or new tab page ad events should always be triggered.
+      return UserHasOptedInToNewTabPageAds() &&
+             (UserHasJoinedBraveRewards() ||
+              ShouldAlwaysTriggerNewTabPageAdEvents());
     }
 
     case AdType::kNotificationAd: {
@@ -47,10 +60,10 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
                         << base::to_underlying(ad_event.type);
 }
 
-bool HasObservationWindowForAdEventExpired(
-    const base::TimeDelta observation_window,
-    const AdEventInfo& ad_event) {
-  return ad_event.created_at < base::Time::Now() - observation_window;
+bool DidAdEventOccurWithinObservationWindow(
+    const AdEventInfo& ad_event,
+    const base::TimeDelta observation_window) {
+  return ad_event.created_at >= base::Time::Now() - observation_window;
 }
 
 }  // namespace brave_ads

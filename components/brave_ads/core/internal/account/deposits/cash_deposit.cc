@@ -15,7 +15,7 @@ namespace brave_ads {
 
 void CashDeposit::GetValue(const std::string& creative_instance_id,
                            GetDepositCallback callback) {
-  database_table_.GetForCreativeInstanceId(
+  deposits_database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           [](GetDepositCallback callback, const bool success,

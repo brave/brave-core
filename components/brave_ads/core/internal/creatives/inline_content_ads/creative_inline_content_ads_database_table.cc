@@ -412,7 +412,8 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
             segments.segment IN $2
             AND creative_inline_content_ad.dimensions = '$3'
             AND $4 BETWEEN campaigns.start_at AND campaigns.end_at;)",
-      {GetTableName(), BuildBindingParameterPlaceholder(segments.size()),
+      {GetTableName(),
+       BuildBindingParameterPlaceholder(/*parameters_count=*/segments.size()),
        dimensions,
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);

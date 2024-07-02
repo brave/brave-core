@@ -16,8 +16,8 @@ struct AdEventInfo;
 
 bool CanConvertAdEvent(const AdEventInfo& ad_event);
 
-bool HasObservationWindowForAdEventExpired(base::TimeDelta observation_window,
-                                           const AdEventInfo& ad_event);
+bool DidAdEventOccurWithinObservationWindow(const AdEventInfo& ad_event,
+                                            base::TimeDelta observation_window);
 
 }  // namespace brave_ads
 

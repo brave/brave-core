@@ -65,7 +65,7 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
                                    const AdEventList& ad_events,
                                    const BrowsingHistoryList& browsing_history);
 
-  const database::table::CreativeInlineContentAds database_table_;
+  const database::table::CreativeInlineContentAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 
