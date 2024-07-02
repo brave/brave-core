@@ -282,6 +282,10 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
     std::optional<tab_groups::TabGroupId> group,
     content::WebContents* contents,
     int index) {
+  if (!group.has_value()) {
+    return;
+  }
+
   if (is_in_synch_grouped_state_) {
     return;
   }
