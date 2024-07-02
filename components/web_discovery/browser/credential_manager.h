@@ -15,7 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/wall_clock_timer.h"
-#include "brave/components/web_discovery/browser/anonymous_credentials/rs/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/anonymous_credentials/rs/cxx/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"

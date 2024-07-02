@@ -48,7 +48,7 @@ static_library("browser") {
     "web_discovery_tab_helper.h",
   ]
   deps = [
-    "anonymous_credentials/rs:rust_lib",
+    "anonymous_credentials/rs/cxx:rust_lib",
     "document_extractor/rs:rust_lib",
     "//base",
     "//brave/brave_domains",
