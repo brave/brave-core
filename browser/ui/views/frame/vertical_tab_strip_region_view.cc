@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
@@ -414,7 +415,7 @@ class VerticalTabStripScrollContentsView : public views::View {
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override {
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
       return;
     }
 
@@ -957,7 +958,7 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kVertical);
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
       auto* scroll_container = GetTabStripScrollContainer();
       scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>());
       scroll_container->scroll_view_->SetTreatAllScrollEventsAsHorizontal(
@@ -980,7 +981,7 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())
         ->SetOrientation(views::LayoutOrientation::kHorizontal);
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
       auto* scroll_container = GetTabStripScrollContainer();
       scroll_container->SetLayoutManager(std::make_unique<views::FillLayout>())
           ->SetMinimumSizeEnabled(true);
@@ -1318,7 +1319,7 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
 
 TabStripScrollContainer*
 VerticalTabStripRegionView::GetTabStripScrollContainer() {
-  CHECK(base::FeatureList::IsEnabled(features::kScrollableTabStrip));
+  CHECK(base::FeatureList::IsEnabled(tabs::kScrollableTabStrip));
   auto* scroll_container = views::AsViewClass<TabStripScrollContainer>(
       original_region_view_->tab_strip_container_);
   CHECK(scroll_container)

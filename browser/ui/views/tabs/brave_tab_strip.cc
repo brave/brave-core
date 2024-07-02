@@ -425,7 +425,7 @@ void BraveTabStrip::UpdateTabContainer() {
           base::Unretained(vertical_region_view)));
     }
   } else {
-    if (base::FeatureList::IsEnabled(features::kScrollableTabStrip)) {
+    if (base::FeatureList::IsEnabled(tabs::kScrollableTabStrip)) {
       auto* browser_view = static_cast<BraveBrowserView*>(
           BrowserView::GetBrowserViewForBrowser(browser));
       DCHECK(browser_view);
