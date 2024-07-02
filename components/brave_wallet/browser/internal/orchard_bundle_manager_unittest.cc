@@ -26,8 +26,8 @@ TEST(OrchardBundleManagerTest, SingleOutput) {
        127, 239, 163, 246, 227, 18,  158, 164, 223, 176, 169, 233, 135, 3,  166,
        61,  171, 146, 149, 137, 214, 220, 81,  201, 112, 249, 53,  179}});
 
-  auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<const uint8_t>(), std::move(outputs));
+  auto unauthorized_state =
+      OrchardBundleManager::Create(std::vector<uint8_t>(), std::move(outputs));
   EXPECT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
@@ -323,8 +323,8 @@ TEST(OrchardBundleManagerTest, MultiplyOutputs) {
                0x91, 0xd7, 0x34, 0xdf, 0x12, 0xd0, 0x46, 0xc9, 0x69, 0x75, 0x13,
                0x30, 0xbb, 0xf4, 0x93, 0xa2, 0x41, 0xec, 0x4b, 0x88, 0xbc}});
 
-  auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<const uint8_t>(), std::move(outputs));
+  auto unauthorized_state =
+      OrchardBundleManager::Create(std::vector<uint8_t>(), std::move(outputs));
   EXPECT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
@@ -603,7 +603,7 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
 
   std::vector<OrchardOutput> outputs;
   auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<const uint8_t>(), std::vector<OrchardOutput>());
+      std::vector<uint8_t>(), std::vector<OrchardOutput>());
   EXPECT_FALSE(unauthorized_state);
 }
 
