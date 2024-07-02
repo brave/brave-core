@@ -270,9 +270,9 @@ extension BraveWallet.CoinType {
     case .sol:
       return "sol-asset-icon"
     case .fil:
-      return "filecoin-asset-icon"
+      return "fil-asset-icon"
     case .btc:
-      return "bitcoin-asset-icon"
+      return "btc-asset-icon"
     case .zec:
       fallthrough
     @unknown default:

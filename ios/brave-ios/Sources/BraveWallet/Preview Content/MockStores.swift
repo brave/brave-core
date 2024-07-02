@@ -103,8 +103,10 @@ extension KeyringStore {
   }
   static var previewStoreWithWalletCreated: KeyringStore {
     let store = KeyringStore.previewStore
-    store.createWallet(password: "password")
-    store.allAccounts = [.previewAccount, .mockSolAccount]
+    Task {
+      let _ = await store.createWallet(password: "password", networks: [])
+      store.allAccounts = [.previewAccount, .mockSolAccount]
+    }
     return store
   }
 }

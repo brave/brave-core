@@ -86,6 +86,12 @@ public struct WalletConstants {
     BraveWallet.BitcoinMainnet,
   ]
 
+  /// Chain ids that are required and cannot be de-selected during onboarding.
+  static let mandatoryNetworkChainIds: [String] = [
+    BraveWallet.SolanaMainnet,
+    BraveWallet.MainnetChainId,
+  ]
+
   public enum SupportedCoinTypesMode {
     case general
     case dapps

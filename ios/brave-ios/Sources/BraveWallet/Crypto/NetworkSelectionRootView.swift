@@ -55,26 +55,29 @@ struct NetworkSelectionRootView: View {
           .buttonStyle(FadeButtonStyle())
         }
 
-        DividerLine()
-          .padding(.top, 12)
+        if !allNetworks.secondaryNetworks.isEmpty {
 
-        SelectAllHeaderView(
-          title: Strings.Wallet.networkSelectionSecondaryNetworks,
-          showsSelectAllButton: showsSelectAllButton,
-          allModels: allNetworks.secondaryNetworks,
-          selectedModels: selectedNetworks,
-          select: selectNetwork
-        )
-        ForEach(allNetworks.secondaryNetworks) { network in
-          Button {
-            selectNetwork(network)
-          } label: {
-            NetworkRowView(
-              network: network,
-              isSelected: selectedNetworks.contains(network)
-            )
+          DividerLine()
+            .padding(.top, 12)
+
+          SelectAllHeaderView(
+            title: Strings.Wallet.networkSelectionSecondaryNetworks,
+            showsSelectAllButton: showsSelectAllButton,
+            allModels: allNetworks.secondaryNetworks,
+            selectedModels: selectedNetworks,
+            select: selectNetwork
+          )
+          ForEach(allNetworks.secondaryNetworks) { network in
+            Button {
+              selectNetwork(network)
+            } label: {
+              NetworkRowView(
+                network: network,
+                isSelected: selectedNetworks.contains(network)
+              )
+            }
+            .buttonStyle(FadeButtonStyle())
           }
-          .buttonStyle(FadeButtonStyle())
         }
 
         if !allNetworks.testNetworks.isEmpty {

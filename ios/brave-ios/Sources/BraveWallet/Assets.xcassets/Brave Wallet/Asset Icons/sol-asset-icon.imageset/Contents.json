@@ -1,8 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sol-asset-icon.pdf",
-      "idiom" : "universal"
+      "filename" : "sol-color.svg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

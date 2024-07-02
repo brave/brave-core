@@ -5582,5 +5582,54 @@ extension Strings {
       comment:
         "A pop up message that will prompt to user before user confirms to edit the existing network."
     )
+    public static let onboardingNetworkSelectionTitle = NSLocalizedString(
+      "wallet.onboardingNetworkSelectionTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Supported Networks",
+      comment: "The title of the view during wallet onboarding that allows user to select which networks they want to see."
+    )
+    public static let onboardingNetworkSelectionDescription = NSLocalizedString(
+      "wallet.onboardingNetworkSelectionDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Choose which blockchains to use in your wallet.",
+      comment: "The description of the view during wallet onboarding that allows user to select which networks they want to see."
+    )
+    public static let showTestnets = NSLocalizedString(
+      "wallet.showTestnets",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Show Testnets",
+      comment: "The title beside the toggle in onboarding network selection screen that shows test networks."
+    )
+    public static let featured = NSLocalizedString(
+      "wallet.featured",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Featured",
+      comment: "The title above the featured networks in onboarding network selection screen."
+    )
+    public static let popular = NSLocalizedString(
+      "wallet.popular",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Popular",
+      comment: "The title above the popular networks in onboarding network selection screen."
+    )
+    public static let testnets = NSLocalizedString(
+      "wallet.testnets",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Testnets",
+      comment: "The title above the testnets in onboarding network selection screen."
+    )
+    public static let onboardingNetworkSelectionContinue = NSLocalizedString(
+      "wallet.onboardingNetworkSelectionContinue",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Continue with %lld Networks",
+      comment: "The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example \"Continue with 8 Networks\")"
+    )
   }
 }

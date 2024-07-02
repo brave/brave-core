@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "btc-color.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "aurora.pdf",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -17,5 +17,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }
