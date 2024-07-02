@@ -361,27 +361,15 @@ TEST(ZCashUtilsUnitTest, CalculateZCashTxFee) {
 
 TEST(ZCashUtilsUnitTest, OutputZCashAddressSupported) {
   EXPECT_FALSE(OutputZCashAddressSupported(
-      "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
-      "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl__",
-      false));
-  EXPECT_TRUE(OutputZCashAddressSupported(
-      "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
-      "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl",
-      false));
+      "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs__", false));
+  EXPECT_TRUE(OutputZCashAddressSupported("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs",
+                                          false));
+  EXPECT_FALSE(
+      OutputZCashAddressSupported("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", true));
+  EXPECT_TRUE(
+      OutputZCashAddressSupported("tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", true));
   EXPECT_FALSE(OutputZCashAddressSupported(
-      "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
-      "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl",
-      true));
-  EXPECT_TRUE(OutputZCashAddressSupported(
-      "utest16zd8zfx6n6few7mjsjpn6qtn8tlg6law7qnq33257855mdqekk7vru8lettx3vud"
-      "4mh99elglddltmfjkduar69h7vy08h3xdq6zuls9pqq7quyuehjqwtthc3hfd8gshhw42d"
-      "fr96e",
-      true));
-  EXPECT_FALSE(OutputZCashAddressSupported(
-      "utest16zd8zfx6n6few7mjsjpn6qtn8tlg6law7qnq33257855mdqekk7vru8lettx3vud"
-      "4mh99elglddltmfjkduar69h7vy08h3xdq6zuls9pqq7quyuehjqwtthc3hfd8gshhw42d"
-      "fr96e",
-      false));
+      "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", false));
 }
 
 }  // namespace brave_wallet

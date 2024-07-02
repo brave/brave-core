@@ -79,6 +79,9 @@ pub(crate) struct MockRng(u64);
 
 impl CryptoRng for MockRng {}
 
+// Used for determenistic zk-proof generation in the
+// brave_wallet unittests.
+// Must not be used in production see create_testing_orchard_bundle
 impl RngCore for MockRng {
     fn next_u32(&mut self) -> u32 {
         self.next_u64() as u32
@@ -140,7 +143,8 @@ mod ffi {
             outputs: Vec<OrchardOutput>
         ) -> Box<OrchardUnauthorizedBundleResult>;
 
-        // Testing rng is used with the provided rng_seed
+        // Creates orchard bundle with mocked rng using provided rng seed.
+        // Must not be used in production, only in tests.
         fn create_testing_orchard_bundle(
             tree_state: &[u8],
             outputs: Vec<OrchardOutput>,

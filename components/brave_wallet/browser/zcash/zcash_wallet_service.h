@@ -60,6 +60,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void Bind(mojo::PendingReceiver<mojom::ZCashWalletService> receiver);
 
+  // Returns transparent balance for the account
   void GetBalance(const std::string& chain_id,
                   mojom::AccountIdPtr account_id,
                   GetBalanceCallback) override;
@@ -75,6 +76,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   // TODO(cypt4): Make this a part of zcash
   // transaction
+  // Sends all account funds from transparent pool to orchard pool.
   void ShieldFunds(const std::string& chain_id,
                    mojom::AccountIdPtr account_id,
                    ShieldFundsCallback callback) override;
