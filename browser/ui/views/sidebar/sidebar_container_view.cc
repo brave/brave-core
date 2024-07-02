@@ -522,6 +522,9 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
   if (width_animation_.is_animating() && width_animation_.IsClosing()) {
     DVLOG(1) << __func__ << ": stop hiding and start showing from there.";
     width_animation_.Stop();
+  } else {
+    // Otherwise, reset animation to start from the beginning.
+    width_animation_.Reset();
   }
 
   // Calculate the start & end width for animation. Both are used when
@@ -607,6 +610,9 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
   if (width_animation_.is_animating() && width_animation_.IsShowing()) {
     DVLOG(1) << __func__ << ": stop showing and start hiding from there.";
     width_animation_.Stop();
+  } else {
+    // Otherwise, reset animation to hide from the end.
+    width_animation_.Reset(1.0);
   }
 
   // Calculate the start & end width for animation. Both are used when
