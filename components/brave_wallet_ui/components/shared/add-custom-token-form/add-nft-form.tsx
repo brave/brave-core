@@ -372,7 +372,7 @@ export const AddNftForm = (props: Props) => {
             onChange={handleTokenAddressChanged}
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
-              '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d'
+              '0xbd3531da5cf5857e7cfaa92426877b022e612cf8'
             )}
           >
             <Row
@@ -427,7 +427,7 @@ export const AddNftForm = (props: Props) => {
             type='text'
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
-              'Bored Ape #1234'
+              'Pudgy Penguin #1234'
             )}
           >
             <Row
@@ -456,7 +456,7 @@ export const AddNftForm = (props: Props) => {
             type='text'
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
-              'BAYC'
+              'PPG'
             )}
           >
             <Row
