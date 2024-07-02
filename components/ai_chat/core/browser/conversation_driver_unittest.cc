@@ -123,6 +123,14 @@ class MockConversationDriverObserver : public ConversationDriver::Observer {
       observation_{this};
 };
 
+class MockSubmitSelectedTextCallbackHandler {
+ public:
+  MOCK_METHOD(void, OnGeneratedText, (const std::string& text));
+  MOCK_METHOD(void,
+              OnGenerationComplete,
+              ((base::expected<std::string, mojom::APIError>)));
+};
+
 class MockConversationDriver : public ConversationDriver {
  public:
   MockConversationDriver(
@@ -153,12 +161,12 @@ class MockConversationDriver : public ConversationDriver {
 
 }  // namespace
 
-class ConversationDriverUnitTest : public testing::Test {
+class TestHelper {
  public:
-  ConversationDriverUnitTest() = default;
-  ~ConversationDriverUnitTest() override = default;
+  TestHelper() = default;
+  ~TestHelper() = default;
 
-  void SetUp() override {
+  void HelperSetUp() {
     // TODO(petemill): Mock the engine requests so that we are not dependent on
     // specific network API calls for any particular engine. This test only
     // specifies the completion API responses and so doesn't work with the
@@ -205,12 +213,6 @@ class ConversationDriverUnitTest : public testing::Test {
     conversation_driver_->SetUserOptedIn(true);
   }
 
-  // Waiting for is_request_in_progress_ to be false.
-  void WaitForOnEngineCompletionComplete() { task_environment_.RunUntilIdle(); }
-
-  void TearDown() override {}
-
- protected:
   base::test::TaskEnvironment task_environment_;
   std::unique_ptr<ModelService> service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -222,6 +224,32 @@ class ConversationDriverUnitTest : public testing::Test {
   std::unique_ptr<MockConversationDriver> conversation_driver_;
   std::string default_model_key_;
   bool is_premium_ = false;
+};
+
+class ConversationDriverUnitTest : public testing::Test, public TestHelper {
+ public:
+  ConversationDriverUnitTest() = default;
+  ~ConversationDriverUnitTest() override = default;
+
+  void SetUp() override { HelperSetUp(); }
+
+  void TearDown() override {}
+
+  // Waiting for is_request_in_progress_ to be false.
+  void WaitForOnEngineCompletionComplete() { task_environment_.RunUntilIdle(); }
+};
+
+struct TestParams {
+  bool is_delta_text = false;
+};
+
+class ConversationDriverUnitTest_Parameterized
+    : public testing::TestWithParam<TestParams>,
+      public TestHelper {
+ public:
+  void SetUp() override { HelperSetUp(); }
+
+  void TearDown() override {}
 };
 
 // Test fixture which emulates premium user state
@@ -704,5 +732,69 @@ TEST_F(ConversationDriverUnitTest,
               "This is successful.");
   }
 }
+
+TEST_P(ConversationDriverUnitTest_Parameterized, SubmitSelectedText_DeltaText) {
+  TestParams params = GetParam();
+
+  conversation_driver_->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_driver_->GetEngineForTesting());
+  mock_engine->SetSupportsDeltaTextResponses(params.is_delta_text);
+
+  // Always expect the full text in each partial response callback
+  MockSubmitSelectedTextCallbackHandler response_handler;
+  testing::Sequence seq;
+  EXPECT_CALL(response_handler, OnGeneratedText(testing::StrEq("This")))
+      .InSequence(seq);
+  EXPECT_CALL(response_handler, OnGeneratedText(testing::StrEq("This is")))
+      .InSequence(seq);
+  EXPECT_CALL(response_handler,
+              OnGeneratedText(testing::StrEq("This is the selected text.")))
+      .InSequence(seq);
+
+  // Mock the text generation, providing either delta text or full text
+  // for multiple partial responses.
+  EXPECT_CALL(*mock_engine, GenerateRewriteSuggestion)
+      .WillOnce([&](std::string text, const std::string& question,
+                    EngineConsumer::GenerationDataCallback received_callback,
+                    EngineConsumer::GenerationCompletedCallback
+                        completed_callback) {
+        received_callback.Run(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("This")));
+        received_callback.Run(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(params.is_delta_text ? " is"
+                                                             : "This is")));
+        received_callback.Run(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(params.is_delta_text
+                                            ? " the selected text."
+                                            : "This is the selected text.")));
+        // Verify </respons is ignored
+        received_callback.Run(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(
+                params.is_delta_text ? "</respons"
+                                     : "This is the selected text.</respons")));
+        // Verify full </response> tags are also ignored
+        received_callback.Run(mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New(
+                params.is_delta_text
+                    ? "</response>"
+                    : "This is the selected text.</response>")));
+        std::move(completed_callback).Run("");
+      });
+
+  conversation_driver_->SubmitSelectedText(
+      "Some selected text", mojom::ActionType::ACADEMICIZE,
+      base::BindRepeating(
+          &MockSubmitSelectedTextCallbackHandler::OnGeneratedText,
+          base::Unretained(&response_handler)),
+      base::BindRepeating(
+          &MockSubmitSelectedTextCallbackHandler::OnGenerationComplete,
+          base::Unretained(&response_handler)));
+}
+
+INSTANTIATE_TEST_SUITE_P(,
+                         ConversationDriverUnitTest_Parameterized,
+                         testing::Values(TestParams{true}, TestParams{false}));
 
 }  // namespace ai_chat
