@@ -30,7 +30,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   var shieldsSettingsChanged: ((ShieldsViewController, BraveShield) -> Void)?
   var showGlobalShieldsSettings: ((ShieldsViewController) -> Void)?
-  var showShredSettings: ((ShieldsViewController) -> Void)?
+  var shredTab: ((ShieldsViewController, Tab) -> Void)?
   var showSubmitReportView: ((ShieldsViewController) -> Void)?
 
   private var statsUpdateObservable: AnyObject?
@@ -370,7 +370,16 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   }
 
   @objc private func tappedShredLinkButton() {
-    showShredSettings?(self)
+    guard let url = url else { return }
+    let viewController = ShredSettingsHostingController(
+      url: url,
+      isPersistent: !browserTab.isPrivate
+    ) { [weak self] in
+      guard let self = self else { return }
+      self.shredTab?(self, browserTab)
+    }
+    viewController.preferredContentSize = preferredContentSize
+    navigationController?.pushViewController(viewController, animated: true)
   }
 
   @available(*, unavailable)
