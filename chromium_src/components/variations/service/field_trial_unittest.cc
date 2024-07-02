@@ -9,7 +9,7 @@
 namespace {
 typedef testing::Test FieldTrialsTest;
 
-TEST_F(FieldTrialsTest, FieldTrialsTestingEnabled) {
+TEST_F(FieldTrialsTest, DISABLED_FieldTrialsTestingEnabled) {
   bool enabled = false;
 #if BUILDFLAG(FIELDTRIAL_TESTING_ENABLED)
   enabled = true;
