@@ -14,12 +14,6 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 const mockInitialFilteredOutNetworkKeys = [
   networkEntityAdapter
     .selectId({
-      chainId: BraveWallet.GOERLI_CHAIN_ID,
-      coin: BraveWallet.CoinType.ETH
-    })
-    .toString(),
-  networkEntityAdapter
-    .selectId({
       chainId: BraveWallet.SEPOLIA_CHAIN_ID,
       coin: BraveWallet.CoinType.ETH
     })

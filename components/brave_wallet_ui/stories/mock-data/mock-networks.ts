@@ -25,23 +25,6 @@ export const mockEthMainnet: BraveWallet.NetworkInfo = {
   symbolName: 'Ethereum'
 }
 
-export const mockGoerli: BraveWallet.NetworkInfo = {
-  activeRpcEndpointIndex: 0,
-  blockExplorerUrls: ['https://goerli.etherscan.io'],
-  chainId: BraveWallet.GOERLI_CHAIN_ID,
-  chainName: 'Goerli Test Network',
-  coin: BraveWallet.CoinType.ETH,
-  supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-  decimals: 18,
-  iconUrls: [ETHIconUrl],
-  rpcEndpoints: [
-    { url: 'https://goerli.infura.io/v3/' },
-    { url: 'wss://goerli.infura.io/ws/v3/' }
-  ],
-  symbol: 'ETH',
-  symbolName: 'Ethereum'
-}
-
 export const mockSepolia: BraveWallet.NetworkInfo = {
   activeRpcEndpointIndex: 0,
   blockExplorerUrls: ['https://sepolia.etherscan.io'],
@@ -156,7 +139,6 @@ export const mockBitcoinTestnet: BraveWallet.NetworkInfo = {
 
 export const mockNetworks: BraveWallet.NetworkInfo[] = [
   mockEthMainnet,
-  mockGoerli,
   mockSepolia,
   mockFilecoinMainnetNetwork,
   mockFilecoinTestnetNetwork,

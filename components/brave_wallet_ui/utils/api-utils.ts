@@ -31,15 +31,8 @@ export const getPriceIdForToken = (
     return token.coingeckoId.toLowerCase()
   }
 
-  // Skip price of testnet tokens other than goerli-eth
+  // Skip price of testnet tokens
   if (SupportedTestNetworks.includes(token.chainId)) {
-    // Goerli ETH has a real-world value
-    if (
-      token.chainId === BraveWallet.GOERLI_CHAIN_ID &&
-      !token.contractAddress
-    ) {
-      return 'goerli-eth' // coingecko id
-    }
     return SKIP_PRICE_LOOKUP_COINGECKO_ID
   }
 

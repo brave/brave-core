@@ -734,7 +734,7 @@ export const BlowfishEVMAssets = {
     symbol: mockEthToken.symbol,
     verified: true
   } as BraveWallet.BlowfishEVMAsset,
-  goerliLink: {
+  sepoliaLink: {
     address: '0x326c977e6efc84e512bb9c30f76e30c160ed06fb',
     symbol: 'LINK',
     name: 'ChainLink Token',
@@ -850,7 +850,7 @@ export const BlowfishEVMAssets = {
   } as BraveWallet.BlowfishEVMAsset
 } as const
 
-const goerliLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
+const sepoliaLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
   counterparty: {
     address: '0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4',
     kind: BraveWallet.BlowfishEVMAddressKind.kAccount
@@ -859,7 +859,7 @@ const goerliLinkTransferData: BraveWallet.BlowfishERC20TransferData = {
     before: '28907865866843658798',
     after: '14453965866843658798'
   },
-  asset: BlowfishEVMAssets.goerliLink
+  asset: BlowfishEVMAssets.sepoliaLink
 }
 
 const mockedSimulationWarnings: BraveWallet.BlowfishWarning[] = [
@@ -1051,7 +1051,7 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
         kind: BraveWallet.BlowfishEVMRawInfoKind.kErc20Transfer,
         data: {
           ...emptyEvmRawInfo,
-          erc20TransferData: goerliLinkTransferData
+          erc20TransferData: sepoliaLinkTransferData
         }
       }
     },
@@ -1066,7 +1066,7 @@ export const mockEvmSimulatedResponse: BraveWallet.EVMSimulationResponse = {
               after: '10000000000000000000',
               before: '1'
             },
-            asset: BlowfishEVMAssets.goerliLink,
+            asset: BlowfishEVMAssets.sepoliaLink,
             owner: {
               address: mockAccount.address,
               kind: BraveWallet.BlowfishEVMAddressKind.kAccount
@@ -1601,7 +1601,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '2621',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '0',
-    [BraveWallet.GOERLI_CHAIN_ID]: '67',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '133',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '7798',
     // Other
@@ -1631,7 +1630,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.ZK_SYNC_ERA_CHAIN_ID]: '5377',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '1',
-    [BraveWallet.GOERLI_CHAIN_ID]: '7',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '3',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '9',
     // Other
@@ -1654,7 +1652,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '330',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '220',
-    [BraveWallet.GOERLI_CHAIN_ID]: '30',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '11110',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '5550',
     // Other
@@ -1671,7 +1668,6 @@ export const mockNativeBalanceRegistry: NativeAssetBalanceRegistry = {
     [BraveWallet.POLYGON_MAINNET_CHAIN_ID]: '30',
     // Test Networks
     [BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID]: '20',
-    [BraveWallet.GOERLI_CHAIN_ID]: '3',
     [BraveWallet.LOCALHOST_CHAIN_ID]: '110',
     [BraveWallet.SEPOLIA_CHAIN_ID]: '50',
     // Other

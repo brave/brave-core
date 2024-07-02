@@ -136,7 +136,6 @@ public class AssetUtils {
                             BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID,
                             Arrays.asList("avax", "avaxc")),
                     // Testnets
-                    Map.entry(BraveWalletConstants.GOERLI_CHAIN_ID, List.of("eth")),
                     Map.entry(BraveWalletConstants.SEPOLIA_CHAIN_ID, List.of("eth")),
                     Map.entry(BraveWalletConstants.SOLANA_TESTNET, List.of("sol")),
                     Map.entry(BraveWalletConstants.SOLANA_DEVNET, List.of("sol")),

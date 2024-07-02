@@ -178,7 +178,7 @@ const createMockRegistry = (balance: string) => {
   )
   setBalance(
     mockEthAccountInfo.accountId,
-    BraveWallet.GOERLI_CHAIN_ID,
+    BraveWallet.SEPOLIA_CHAIN_ID,
     '',
     balance,
     registry
@@ -249,7 +249,7 @@ describe('getActiveWalletCount', () => {
 
     setBalance(
       mockEthAccountInfo.accountId,
-      BraveWallet.GOERLI_CHAIN_ID,
+      BraveWallet.SEPOLIA_CHAIN_ID,
       '',
       '1',
       registry
@@ -276,7 +276,7 @@ describe('getActiveWalletCount', () => {
 
     setBalance(
       mockEthAccountInfo.accountId,
-      BraveWallet.GOERLI_CHAIN_ID,
+      BraveWallet.SEPOLIA_CHAIN_ID,
       '',
       '1',
       registry

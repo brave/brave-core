@@ -20,7 +20,7 @@ import EditGas, { MaxPriorityPanels } from './edit-gas'
 import {
   mockTransactionInfo //
 } from '../../../stories/mock-data/mock-transaction-info'
-import { mockGoerli } from '../../../stories/mock-data/mock-networks'
+import { mockSepolia } from '../../../stories/mock-data/mock-networks'
 import { PanelWrapper } from '../../../panel/style'
 
 export const _EditGas = {
@@ -33,7 +33,7 @@ export const _EditGas = {
               alert('onCancel')
             }}
             transactionInfo={mockTransactionInfo}
-            selectedNetwork={mockGoerli}
+            selectedNetwork={mockSepolia}
             baseFeePerGas={'1'}
             suggestedMaxPriorityFeeChoices={[]}
             suggestedSliderStep={''}

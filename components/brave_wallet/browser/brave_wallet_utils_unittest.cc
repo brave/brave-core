@@ -539,7 +539,7 @@ TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
   auto known_chains = GetAllKnownChains(mojom::CoinType::ETH);
-  EXPECT_EQ(known_chains.size(), 12u);
+  EXPECT_EQ(known_chains.size(), 11u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(KnownChainExists(known_chain->chain_id, mojom::CoinType::ETH));
     // Test that uppercase chain ID works too
@@ -664,7 +664,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(GetAllChains(&prefs).size(), 23u);
+  EXPECT_EQ(GetAllChains(&prefs).size(), 22u);
   for (auto& chain : GetAllChains(&prefs)) {
     EXPECT_TRUE(chain->rpc_endpoints[0].is_valid());
     EXPECT_EQ(chain->active_rpc_endpoint_index, 0);
@@ -871,7 +871,6 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLForKnownChains) {
       brave_wallet::mojom::kOptimismMainnetChainId,
       brave_wallet::mojom::kAuroraMainnetChainId,
       brave_wallet::mojom::kAvalancheMainnetChainId,
-      brave_wallet::mojom::kGoerliChainId,
       brave_wallet::mojom::kSepoliaChainId};
 
   for (const auto& chain : GetAllKnownChains(mojom::CoinType::ETH)) {
@@ -1042,7 +1041,6 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
             "http://localhost:7545/");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kMainnetChainId), "mainnet");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kGoerliChainId), "goerli");
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kSepoliaChainId), "sepolia");
 }
 
@@ -1110,7 +1108,6 @@ TEST(BraveWalletUtilsUnitTest, Eip1559Chain) {
       {mojom::kPolygonMainnetChainId, true},
       {mojom::kAvalancheMainnetChainId, true},
       {mojom::kOptimismMainnetChainId, true},
-      {mojom::kGoerliChainId, true},
       {mojom::kSepoliaChainId, true},
       {mojom::kFilecoinEthereumMainnetChainId, true},
       {mojom::kFilecoinEthereumTestnetChainId, true},
@@ -1238,11 +1235,11 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetworkTwice) {
   mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
 
   auto assets = GetAllUserAssets(&prefs);
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(23u, assets.size());
 
   AddCustomNetwork(&prefs, chain1);
   assets = GetAllUserAssets(&prefs);
-  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(24u, assets.size());
 
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
@@ -1255,14 +1252,14 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetworkTwice) {
   RemoveCustomNetwork(&prefs, chain1.chain_id, chain1.coin);
   // TODO(apaymyshev): Maybe we should remove such assets.
   assets = GetAllUserAssets(&prefs);
-  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(24u, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_FALSE(assets.back()->visible);
 
   // Network added again. No duplicate assets.
   AddCustomNetwork(&prefs, chain1);
   assets = GetAllUserAssets(&prefs);
-  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(24u, assets.size());
   EXPECT_EQ(assets.back()->name, chain1.symbol_name);
   EXPECT_TRUE(assets.back()->visible);
 }
@@ -1385,11 +1382,10 @@ TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_THAT(
-      GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
-      ElementsAreArray<std::string>(
-          {mojom::kGoerliChainId, mojom::kSepoliaChainId,
-           mojom::kLocalhostChainId, mojom::kFilecoinEthereumTestnetChainId}));
+  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
+              ElementsAreArray<std::string>(
+                  {mojom::kSepoliaChainId, mojom::kLocalhostChainId,
+                   mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::FIL),
               ElementsAreArray<std::string>(
                   {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));
@@ -1459,7 +1455,7 @@ TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
       {mojom::CoinType::FIL, mojom::kFilecoinMainnet},
   };
   const base::flat_map<mojom::CoinType, std::string> new_default_chain_ids = {
-      {mojom::CoinType::ETH, mojom::kGoerliChainId},
+      {mojom::CoinType::ETH, mojom::kSepoliaChainId},
       {mojom::CoinType::SOL, mojom::kSolanaTestnet},
       {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
   };
@@ -1755,7 +1751,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllUserAssets) {
   RegisterProfilePrefs(prefs.registry());
 
   auto assets = GetAllUserAssets(&prefs);
-  EXPECT_EQ(24u, assets.size());
+  EXPECT_EQ(23u, assets.size());
   for (auto& asset : assets) {
     EXPECT_NE(asset->name, "");
     if (asset->symbol == "BAT") {
@@ -1783,7 +1779,7 @@ TEST(BraveWalletUtilsUnitTest, GetUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
   EXPECT_EQ(GetAllUserAssets(&prefs)[1],
             GetUserAsset(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId,
                          "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "",
@@ -1841,7 +1837,7 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
 
   auto asset = GetAllUserAssets(&prefs)[4]->Clone();
   asset->chain_id = "0x98765";
@@ -1852,14 +1848,14 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
   AddCustomNetwork(&prefs,
                    GetTestNetworkInfo1("0x98765", mojom::CoinType::ETH));
 
-  EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
 
   ASSERT_TRUE(AddUserAsset(&prefs, asset->Clone()));
 
   // Address gets checksum format.
   asset->contract_address = "0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed";
 
-  EXPECT_EQ(26u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Contains(Eq(std::ref(asset))));
 
   // Adding same asset again fails.
@@ -1867,7 +1863,7 @@ TEST(BraveWalletUtilsUnitTest, AddUserAsset) {
 
   ASSERT_TRUE(RemoveUserAsset(&prefs, asset));
 
-  EXPECT_EQ(25u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
 
   // SPL token program is set to unsupported for non-SPL tokens.
@@ -1902,12 +1898,12 @@ TEST(BraveWalletUtilsUnitTest, RemoveUserAsset) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_EQ(24u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
 
   auto asset = GetAllUserAssets(&prefs)[4]->Clone();
 
   EXPECT_TRUE(RemoveUserAsset(&prefs, asset));
-  EXPECT_EQ(23u, GetAllUserAssets(&prefs).size());
+  EXPECT_EQ(22u, GetAllUserAssets(&prefs).size());
   EXPECT_THAT(GetAllUserAssets(&prefs), Not(Contains(Eq(std::ref(asset)))));
 
   asset->chain_id = "0x98765";

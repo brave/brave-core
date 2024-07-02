@@ -35,8 +35,8 @@ void TestValueToBlockchainTokenFailCases(const base::Value::Dict& value,
 }
 
 constexpr char kNetworkDataValue[] = R"({
-      "chainId": "0x5",
-      "chainName": "Goerli",
+      "chainId": "0xaa36a7",
+      "chainName": "Sepolia",
       "activeRpcEndpointIndex": 3,
       "rpcUrls": [
         "ftp://bar/",
@@ -44,7 +44,7 @@ constexpr char kNetworkDataValue[] = R"({
         "http://bar/",
         "http://localhost/",
         "http://127.0.0.1/",
-        "https://goerli.infura.io/v3/INSERT_API_KEY_HERE",
+        "https://sepolia.infura.io/v3/INSERT_API_KEY_HERE",
         "https://second.infura.io/",
         []
       ],
@@ -59,8 +59,8 @@ constexpr char kNetworkDataValue[] = R"({
         {}
       ],
       "nativeCurrency": {
-        "name": "Goerli ETH",
-        "symbol": "gorETH",
+        "name": "Sepolia ETH",
+        "symbol": "ETH",
         "decimals": 18
       },
       "blockExplorerUrls": [
@@ -69,7 +69,7 @@ constexpr char kNetworkDataValue[] = R"({
         "http://bar/",
         "http://localhost/",
         "http://127.0.0.1/",
-        "https://goerli.etherscan.io",
+        "https://sepolia.etherscan.io",
         2
       ]
     })";
@@ -81,20 +81,20 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
     auto value = base::test::ParseJson(kNetworkDataValue);
     mojom::NetworkInfoPtr chain = ParseEip3085Payload(value);
     ASSERT_TRUE(chain);
-    EXPECT_EQ("0x5", chain->chain_id);
-    EXPECT_EQ("Goerli", chain->chain_name);
+    EXPECT_EQ("0xaa36a7", chain->chain_id);
+    EXPECT_EQ("Sepolia", chain->chain_name);
     EXPECT_EQ(0, chain->active_rpc_endpoint_index);
     EXPECT_EQ(chain->rpc_endpoints,
               std::vector<GURL>(
                   {GURL("http://localhost/"), GURL("http://127.0.0.1/"),
-                   GURL("https://goerli.infura.io/v3/INSERT_API_KEY_HERE"),
+                   GURL("https://sepolia.infura.io/v3/INSERT_API_KEY_HERE"),
                    GURL("https://second.infura.io/")}));
     EXPECT_EQ(
         chain->block_explorer_urls,
         std::vector<std::string>({"http://localhost/", "http://127.0.0.1/",
-                                  "https://goerli.etherscan.io"}));
-    EXPECT_EQ("Goerli ETH", chain->symbol_name);
-    EXPECT_EQ("gorETH", chain->symbol);
+                                  "https://sepolia.etherscan.io"}));
+    EXPECT_EQ("Sepolia ETH", chain->symbol_name);
+    EXPECT_EQ("ETH", chain->symbol);
     EXPECT_EQ(18, chain->decimals);
     EXPECT_EQ(chain->icon_urls,
               std::vector<std::string>(
@@ -106,10 +106,10 @@ TEST(ValueConversionUtilsUnitTest, ParseEip3085Payload) {
   }
   {
     mojom::NetworkInfoPtr chain = ParseEip3085Payload(base::test::ParseJson(R"({
-      "chainId": "0x5"
+      "chainId": "0xaa36a7"
     })"));
     ASSERT_TRUE(chain);
-    EXPECT_EQ("0x5", chain->chain_id);
+    EXPECT_EQ("0xaa36a7", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
     ASSERT_EQ(0, chain->active_rpc_endpoint_index);
     ASSERT_TRUE(chain->rpc_endpoints.empty());
@@ -138,23 +138,23 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
     auto value = base::test::ParseJson(kNetworkDataValue);
     mojom::NetworkInfoPtr chain = ValueToNetworkInfo(value);
     ASSERT_TRUE(chain);
-    EXPECT_EQ("0x5", chain->chain_id);
-    EXPECT_EQ("Goerli", chain->chain_name);
+    EXPECT_EQ("0xaa36a7", chain->chain_id);
+    EXPECT_EQ("Sepolia", chain->chain_name);
     EXPECT_EQ(3, chain->active_rpc_endpoint_index);
     EXPECT_EQ(
         chain->rpc_endpoints,
         std::vector<GURL>(
             {GURL("ftp://bar/"), GURL("ftp://localhost/"), GURL("http://bar/"),
              GURL("http://localhost/"), GURL("http://127.0.0.1/"),
-             GURL("https://goerli.infura.io/v3/INSERT_API_KEY_HERE"),
+             GURL("https://sepolia.infura.io/v3/INSERT_API_KEY_HERE"),
              GURL("https://second.infura.io/")}));
     EXPECT_EQ(chain->block_explorer_urls,
               std::vector<std::string>({"ftp://bar/", "ftp://localhost/",
                                         "http://bar/", "http://localhost/",
                                         "http://127.0.0.1/",
-                                        "https://goerli.etherscan.io"}));
-    EXPECT_EQ("Goerli ETH", chain->symbol_name);
-    EXPECT_EQ("gorETH", chain->symbol);
+                                        "https://sepolia.etherscan.io"}));
+    EXPECT_EQ("Sepolia ETH", chain->symbol_name);
+    EXPECT_EQ("ETH", chain->symbol);
     EXPECT_EQ(18, chain->decimals);
     EXPECT_EQ(chain->icon_urls,
               std::vector<std::string>(
@@ -167,10 +167,10 @@ TEST(ValueConversionUtilsUnitTest, ValueToNetworkInfoTest) {
                 ElementsAreArray({mojom::KeyringId::kDefault}));
   }
   {
-    mojom::NetworkInfoPtr chain =
-        ValueToNetworkInfo(base::test::ParseJson(R"({"chainId": "0x5" })"));
+    mojom::NetworkInfoPtr chain = ValueToNetworkInfo(
+        base::test::ParseJson(R"({"chainId": "0xaa36a7" })"));
     ASSERT_TRUE(chain);
-    EXPECT_EQ("0x5", chain->chain_id);
+    EXPECT_EQ("0xaa36a7", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
     ASSERT_EQ(0, chain->active_rpc_endpoint_index);
     ASSERT_TRUE(chain->rpc_endpoints.empty());
@@ -496,18 +496,18 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
 
 TEST(ValueConversionUtilsUnitTest, GetFirstValidChainURL) {
   std::vector<GURL> urls = {
-      GURL("https://goerli.infura.io/v3/${INFURA_API_KEY}"),
-      GURL("https://goerli.alchemy.io/v3/${ALCHEMY_API_KEY}"),
-      GURL("https://goerli.apikey.io/v3/${API_KEY}"),
-      GURL("https://goerli.apikey.io/v3/${PULSECHAIN_API_KEY}"),
-      GURL("wss://goerli.infura.io/v3/")};
+      GURL("https://sepolia.infura.io/v3/${INFURA_API_KEY}"),
+      GURL("https://sepolia.alchemy.io/v3/${ALCHEMY_API_KEY}"),
+      GURL("https://sepolia.apikey.io/v3/${API_KEY}"),
+      GURL("https://sepolia.apikey.io/v3/${PULSECHAIN_API_KEY}"),
+      GURL("wss://sepolia.infura.io/v3/")};
 
   // Uses the first URL when a good URL is not available
   auto index = GetFirstValidChainURLIndex(urls);
   EXPECT_EQ(index, 0);
 
-  urls.emplace_back("https://goerli.infura.io/v3/rpc");
-  urls.emplace_back("https://goerli.infura.io/v3/rpc2");
+  urls.emplace_back("https://sepolia.infura.io/v3/rpc");
+  urls.emplace_back("https://sepolia.infura.io/v3/rpc2");
   // Uses the first HTTP(S) URL without a variable when possible
   index = GetFirstValidChainURLIndex(urls);
   EXPECT_EQ(index, 5);

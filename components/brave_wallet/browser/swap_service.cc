@@ -55,7 +55,7 @@ namespace brave_wallet {
 
 namespace {
 bool IsNetworkSupportedByZeroEx(const std::string& chain_id) {
-  return (chain_id == mojom::kGoerliChainId ||
+  return (chain_id == mojom::kSepoliaChainId ||
           chain_id == mojom::kMainnetChainId ||
           chain_id == mojom::kPolygonMainnetChainId ||
           chain_id == mojom::kBnbSmartChainMainnetChainId ||
@@ -202,8 +202,8 @@ base::flat_map<std::string, std::string> GetHeaders() {
 }
 
 std::string GetBaseSwapURL(const std::string& chain_id) {
-  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
-    return brave_wallet::kZeroExGoerliBaseAPIURL;
+  if (chain_id == brave_wallet::mojom::kSepoliaChainId) {
+    return brave_wallet::kZeroExSepoliaBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
     return brave_wallet::kZeroExEthereumBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {

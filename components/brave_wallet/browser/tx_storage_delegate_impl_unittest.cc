@@ -30,16 +30,16 @@ namespace {
 constexpr char kLegacyFormatTransactionsDict[] = R"({
     "chain_id_migrated": true,
     "ethereum": {
-        "goerli": {
+        "sepolia": {
             "a336ef2c-9716-4cb7-8bb2-7fce8704a661": {
-                "chain_id": "0x5",
+                "chain_id": "0xaa36a7",
                 "confirmed_time": "13324786394428041",
                 "tx": {
                     "data": "",
                 },
             },
             "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
-                "chain_id": "0x5",
+                "chain_id": "0xaa36a7",
             }
         },
         "mainnet": {
@@ -78,7 +78,7 @@ constexpr char kLegacyFormatTransactionsDict[] = R"({
 constexpr char kCurrentFormatTransactionsDict[] = R"({
     "a336ef2c-9716-4cb7-8bb2-7fce8704a661": {
         "coin": 60,
-        "chain_id": "0x5",
+        "chain_id": "0xaa36a7",
         "confirmed_time": "13324786394428041",
         "tx": {
             "data": "",
@@ -86,7 +86,7 @@ constexpr char kCurrentFormatTransactionsDict[] = R"({
     },
     "c6d9bc1a-b8a2-4abe-919e-3f6c1dc78ef4": {
         "coin": 60,
-        "chain_id": "0x5",
+        "chain_id": "0xaa36a7",
     },
     "71a841a4-83dc-4286-9acd-9b7f50e90fda": {
         "coin": 60,

@@ -101,7 +101,6 @@ public final class WalletConstants {
 
     public static final Map<String, Integer> KNOWN_TEST_CHAINS_MAP =
             Map.of(
-                    BraveWalletConstants.GOERLI_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.SEPOLIA_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.LOCALHOST_CHAIN_ID, CoinType.ETH, //
                     BraveWalletConstants.SOLANA_TESTNET, CoinType.SOL, //

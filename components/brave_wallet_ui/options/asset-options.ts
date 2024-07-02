@@ -94,12 +94,8 @@ export const makeNetworkAsset = <
     tokenId: '',
     coingeckoId:
       // skip getting prices of known testnet tokens
-      // except Goerli ETH, which has real-world value
       SupportedTestNetworks.includes(network.chainId)
-        ? network.chainId === BraveWallet.GOERLI_CHAIN_ID &&
-          network.symbol.toLowerCase() === 'eth'
-          ? 'goerli-eth'
-          : SKIP_PRICE_LOOKUP_COINGECKO_ID
+        ? SKIP_PRICE_LOOKUP_COINGECKO_ID
         : '',
     chainId: network.chainId,
     coin: network.coin

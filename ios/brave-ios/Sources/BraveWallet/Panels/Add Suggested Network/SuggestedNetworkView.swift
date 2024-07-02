@@ -383,8 +383,11 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
         mode: .switchNetworks(
           .init(
             requestId: UUID().uuidString,
-            originInfo: .init(originSpec: "https://app.uniswap.org", eTldPlusOne: "uniswap.org"),
-            chainId: BraveWallet.GoerliChainId
+            originInfo: .init(
+              originSpec: "https://polygon.technology/",
+              eTldPlusOne: "polygon.technology"
+            ),
+            chainId: BraveWallet.NetworkInfo.mockPolygon.chainId
           )
         ),
         cryptoStore: .previewStore,

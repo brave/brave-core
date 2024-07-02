@@ -431,8 +431,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
       return;
     }
     if (!count_test_networks &&
-        (chain_id == mojom::kGoerliChainId ||
-         chain_id == mojom::kSepoliaChainId ||
+        (chain_id == mojom::kSepoliaChainId ||
          chain_id == mojom::kLocalhostChainId ||
          chain_id == mojom::kFilecoinEthereumTestnetChainId)) {
       return;

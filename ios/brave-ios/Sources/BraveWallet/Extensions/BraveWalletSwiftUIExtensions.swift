@@ -108,7 +108,6 @@ extension BraveWallet.NetworkInfo: Identifiable {
 
   private func assetIconNameByChainId(_ chainId: String) -> String? {
     if chainId.caseInsensitiveCompare(BraveWallet.MainnetChainId) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.GoerliChainId) == .orderedSame
       || chainId.caseInsensitiveCompare(BraveWallet.SepoliaChainId) == .orderedSame
     {
       return AssetImageName.ethereum.rawValue

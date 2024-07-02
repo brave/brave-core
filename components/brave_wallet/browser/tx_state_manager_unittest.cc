@@ -249,7 +249,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       if (i % 6 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {
-        meta.set_chain_id(mojom::kGoerliChainId);
+        meta.set_chain_id(mojom::kSepoliaChainId);
       }
       meta.set_status(mojom::TransactionStatus::Confirmed);
     } else {
@@ -259,7 +259,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       if (i % 7 == 0) {
         meta.set_chain_id(mojom::kMainnetChainId);
       } else {
-        meta.set_chain_id(mojom::kGoerliChainId);
+        meta.set_chain_id(mojom::kSepoliaChainId);
       }
       meta.set_status(mojom::TransactionStatus::Submitted);
     }
@@ -285,7 +285,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
                 .size(),
             4u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::kGoerliChainId,
+                ->GetTransactionsByStatus(mojom::kSepoliaChainId,
                                           mojom::TransactionStatus::Confirmed,
                                           std::nullopt)
                 .size(),
@@ -303,7 +303,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
                 .size(),
             1u);
   EXPECT_EQ(tx_state_manager_
-                ->GetTransactionsByStatus(mojom::kGoerliChainId,
+                ->GetTransactionsByStatus(mojom::kSepoliaChainId,
                                           mojom::TransactionStatus::Submitted,
                                           std::nullopt)
                 .size(),
@@ -331,7 +331,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       2u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, std::nullopt, acc1)
+          ->GetTransactionsByStatus(mojom::kSepoliaChainId, std::nullopt, acc1)
           .size(),
       3u);
   EXPECT_EQ(tx_state_manager_
@@ -345,7 +345,7 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
       0u);
   EXPECT_EQ(
       tx_state_manager_
-          ->GetTransactionsByStatus(mojom::kGoerliChainId, std::nullopt, acc2)
+          ->GetTransactionsByStatus(mojom::kSepoliaChainId, std::nullopt, acc2)
           .size(),
       2u);
 
@@ -483,7 +483,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   // Other chain id doesn't matter
   EthTxMeta meta1003(eth_account_id_, std::make_unique<EthTransaction>());
   meta1003.set_id("1003");
-  meta1003.set_chain_id(mojom::kGoerliChainId);
+  meta1003.set_chain_id(mojom::kSepoliaChainId);
   meta1003.set_status(mojom::TransactionStatus::Confirmed);
   meta1003.set_created_time(base::Time::Now());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta1003));

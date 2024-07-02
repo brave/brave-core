@@ -203,8 +203,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     for chainId in WalletConstants.supportedTestNetworkChainIds {
       var coin: BraveWallet.CoinType = .eth
       switch chainId {
-      case BraveWallet.GoerliChainId,
-        BraveWallet.SepoliaChainId,
+      case BraveWallet.SepoliaChainId,
         BraveWallet.FilecoinEthereumTestnetChainId:
         coin = .eth
       case BraveWallet.SolanaDevnet,
