@@ -12,13 +12,33 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ChromeWebViewControllerUIDelegate;
 OBJC_EXPORT
 @interface ChromeWebViewController : UIViewController
 @property(nonatomic, readonly) WKWebView* webView;
 @property(nonatomic, readonly) bool isOffTheRecord;
+@property(nonatomic, weak) id<ChromeWebViewControllerUIDelegate> delegate;
 
 - (instancetype)initWithPrivateBrowsing:(bool)isPrivateBrowsing;
 - (void)loadURL:(NSString*)urlString;
+@end
+
+OBJC_EXPORT
+@protocol ChromeWebViewControllerUIDelegate <NSObject>
+
+/**
+ * Called when the web page wants to open a new window.
+ *
+ * @param URL The url of the new window.
+ * @param openerURL the URL of the page which requested a window to be open.
+ * @param initiatedByUser If action was caused by the user.
+ */
+@optional
+- (void)chromeWebViewController:
+            (ChromeWebViewController*)chromeWebViewController
+               openNewWindowFor:(const NSURL*)newWindowURL
+                      openerURL:(const NSURL*)openerURL
+                initiatedByUser:(BOOL)initiatedByUser;
 @end
 
 NS_ASSUME_NONNULL_END

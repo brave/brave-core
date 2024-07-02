@@ -31,7 +31,7 @@
 
 @class ChromeWebViewController;
 
-@protocol ChromeWebControllerUIDelegate <NSObject>
+@protocol WebViewJavaScriptDialogPresenterUIDelegate <NSObject>
 @optional
 - (void)webController:(ChromeWebViewController*)controller
     runJavaScriptAlertPanelWithMessage:(NSString*)message
@@ -64,7 +64,8 @@ class WebViewJavaScriptDialogPresenter final
 
   ~WebViewJavaScriptDialogPresenter() override;
 
-  void SetUIDelegate(id<ChromeWebControllerUIDelegate> ui_delegate);
+  void SetUIDelegate(
+      id<WebViewJavaScriptDialogPresenterUIDelegate> ui_delegate);
 
   // web::JavaScriptDialogPresenter overrides:
   void RunJavaScriptAlertDialog(web::WebState* web_state,
@@ -86,7 +87,7 @@ class WebViewJavaScriptDialogPresenter final
 
  private:
   __weak ChromeWebViewController* controller_ = nil;
-  __weak id<ChromeWebControllerUIDelegate> ui_delegate_ = nil;
+  __weak id<WebViewJavaScriptDialogPresenterUIDelegate> ui_delegate_ = nil;
 };
 
 WebViewJavaScriptDialogPresenter::WebViewJavaScriptDialogPresenter(
@@ -156,14 +157,15 @@ void WebViewJavaScriptDialogPresenter::CancelDialogs(web::WebState* web_state) {
 }
 
 void WebViewJavaScriptDialogPresenter::SetUIDelegate(
-    id<ChromeWebControllerUIDelegate> ui_delegate) {
+    id<WebViewJavaScriptDialogPresenterUIDelegate> ui_delegate) {
   ui_delegate_ = ui_delegate;
 }
 }  // namespace
 
-@interface ChromeWebViewController () <CRWWebStateDelegate,
-                                       CRWWebStateObserver,
-                                       ChromeWebControllerUIDelegate> {
+@interface ChromeWebViewController () <
+    CRWWebStateDelegate,
+    CRWWebStateObserver,
+    WebViewJavaScriptDialogPresenterUIDelegate> {
   raw_ptr<ChromeBrowserState> browser_state_;
   std::unique_ptr<web::WebState> web_state_;
   std::unique_ptr<web::WebStateObserverBridge> web_state_observer_;
@@ -278,7 +280,7 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
   return dialog_presenter_.get();
 }
 
-// MARK: - ChromeWebControllerUIDelegate implementation
+// MARK: - WebViewJavaScriptDialogPresenter implementation
 
 - (void)webController:(ChromeWebViewController*)controller
     runJavaScriptAlertPanelWithMessage:(NSString*)message
@@ -351,5 +353,23 @@ void WebViewJavaScriptDialogPresenter::SetUIDelegate(
                                           }]];
 
   [controller presentViewController:alert animated:YES completion:nil];
+}
+
+- (web::WebState*)webState:(web::WebState*)webState
+    createNewWebStateForURL:(const GURL&)URL
+                  openerURL:(const GURL&)openerURL
+            initiatedByUser:(BOOL)initiatedByUser {
+  SEL delegate_method = @selector
+      (chromeWebViewController:openNewWindowFor:openerURL:initiatedByUser:);
+  if ([_delegate respondsToSelector:delegate_method]) {
+    NSURL* nsURL = net::NSURLWithGURL(URL);
+    NSURL* nsOpenerURL = net::NSURLWithGURL(openerURL);
+    [_delegate chromeWebViewController:self
+                      openNewWindowFor:nsURL
+                             openerURL:nsOpenerURL
+                       initiatedByUser:initiatedByUser];
+  }
+  // return nil to indicate `webState` not to open new window.
+  return nil;
 }
 @end

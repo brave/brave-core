@@ -29,6 +29,7 @@ source_set("features") {
     "//brave/components/ntp_background_images/browser:browser",
     "//brave/components/p3a:p3a",
     "//brave/components/skus/common:common",
+    "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/playlist",
     "//build:blink_buildflags",
   ]

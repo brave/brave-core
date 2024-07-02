@@ -13,14 +13,15 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/brave_wallet_page_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
-#include "ios/components/webui/web_ui_url_constants.h"
-#include "url/gurl.h"
-
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
+#include "ios/components/webui/web_ui_url_constants.h"
+#include "url/gurl.h"
 
 using web::WebUIIOS;
 using web::WebUIIOSController;
@@ -42,9 +43,12 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
 // a tab, based on its URL. Returns nullptr if the URL doesn't have WebUIIOS
 // associated with it.
 WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
+  const char kChromeUIUntrustedScheme[] = "chrome-untrusted";
+
   // This will get called a lot to check all URLs, so do a quick check of other
   // schemes to filter out most URLs.
-  if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme)) {
+  if (!url.SchemeIs(kBraveUIScheme) && !url.SchemeIs(kChromeUIScheme) &&
+      !url.SchemeIs(kChromeUIUntrustedScheme)) {
     return nullptr;
   }
 
@@ -62,6 +66,10 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
 
   if (url_host == kSkusInternalsHost) {
     return &NewWebUIIOS<SkusInternalsUI>;
+  } else if (url_host == kWalletPageHost) {
+    return &NewWebUIIOS<BraveWalletPageUI>;
+  } else if (url_host == kUntrustedNftHost) {
+    return &NewWebUIIOS<UntrustedNftUI>;
   }
   return nullptr;
 }
