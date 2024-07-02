@@ -158,6 +158,8 @@ source_set("ui") {
       "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_scheme_utils.cc",
+      "brave_scheme_utils.h",
       "brave_shields_data_controller.cc",
       "brave_shields_data_controller.h",
       "brave_tab_strip_model_delegate.cc",
@@ -1351,8 +1353,11 @@ source_set("ui") {
 source_set("unit_tests") {
   if (!is_android) {
     testonly = true
-    sources = []
-    deps = []
+    sources = [ "brave_scheme_utils_unittest.cc" ]
+    deps = [
+      "//chrome/browser/ui",
+      "//testing/gtest",
+    ]
 
     if (enable_brave_vpn) {
       sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]
@@ -1365,7 +1370,6 @@ source_set("unit_tests") {
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",
-        "//testing/gtest",
         "//third_party/abseil-cpp:absl",
       ]
     }

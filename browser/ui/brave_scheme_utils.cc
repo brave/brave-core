@@ -3,18 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/common/brave_common_utils.h"
+#include "brave/browser/ui/brave_scheme_utils.h"
 
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 
 namespace brave_utils {
-std::u16string ReplaceChromeToBraveScheme(const std::u16string& url_string) {
-  std::u16string new_url_string = url_string;
-  ReplaceChromeToBraveScheme(&new_url_string);
-  return new_url_string;
-}
+constexpr char16_t kChromeSchema16[] = u"chrome://";
+constexpr char16_t kBraveSchema16[] = u"brave://";
 
 void ReplaceChromeToBraveScheme(std::u16string* url_string) {
   if (base::StartsWith(*url_string, kChromeSchema16,
