@@ -226,4 +226,8 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [63020],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_education/brave_education.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [61030],
+  },
 }

@@ -26,6 +26,7 @@ void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
 
 void NewTorConnectionForSite(Browser*);
+void ShowShieldsBubble(Browser* browser);
 void ShowWalletBubble(Browser* browser);
 void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);

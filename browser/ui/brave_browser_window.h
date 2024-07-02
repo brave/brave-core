@@ -73,6 +73,8 @@ class BraveBrowserWindow : public BrowserWindow {
 
   virtual void ShowBraveVPNBubble() {}
 
+  virtual void ShowBraveShieldsBubble() {}
+
   // Returns true if all tabs in this window is being dragged.
   virtual bool IsInTabDragging() const;
 };

@@ -272,6 +272,13 @@ void BraveShieldsActionView::Update() {
   UpdateIconState();
 }
 
+void BraveShieldsActionView::ShowBubble() {
+  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
+    return;
+  }
+  ButtonPressed();
+}
+
 void BraveShieldsActionView::OnResourcesChanged() {
   UpdateIconState();
 }

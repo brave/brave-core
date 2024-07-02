@@ -61,6 +61,7 @@ class WalletButton;
 class ViewShadow;
 class VerticalTabStripWidgetDelegateView;
 class BraveHelpBubbleHostView;
+class BraveShieldsActionView;
 class SplitViewSeparator;
 
 class BraveBrowserView : public BrowserView,
@@ -152,6 +153,7 @@ class BraveBrowserView : public BrowserView,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
   void ShowBraveVPNBubble() override;
+  void ShowBraveShieldsBubble() override;
   views::CloseRequestResult OnWindowCloseRequested() override;
   void ConfirmBrowserCloseWithPendingDownloads(
       int download_count,
@@ -168,6 +170,7 @@ class BraveBrowserView : public BrowserView,
   void OnPreferenceChanged(const std::string& pref_name);
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
+  BraveShieldsActionView* GetShieldsActionView() const;
   void UpdateWebViewRoundedCorners();
 
   sidebar::Sidebar* InitSidebar() override;

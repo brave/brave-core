@@ -105,6 +105,7 @@
       <part file="../ai_rewriter/resources/page/ai_rewriter_ui_resources.grdp" />
       <part file="brave_wallet_resources.grdp" />
       <part file="../brave_player/browser/resources/brave_player_resources.grdp" />
+      <part file="../brave_education/resources/brave_education_resources.grdp" />
     </includes>
   </release>
 </grit>

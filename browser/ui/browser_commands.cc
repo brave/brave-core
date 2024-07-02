@@ -167,6 +167,12 @@ void NewTorConnectionForSite(Browser* browser) {
 #endif
 }
 
+void ShowShieldsBubble(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  static_cast<BraveBrowserWindow*>(browser->window())->ShowBraveShieldsBubble();
+#endif
+}
+
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/browser_command/browser_command_handler.cc b/chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+index 2c6fab86614fa3cfce24ef67ac6f0b096c5078e2..bed70179015c68d5f6e9545651cac04c0a7e9a0d 100644
+--- a/chrome/browser/ui/webui/browser_command/browser_command_handler.cc
++++ b/chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+@@ -121,6 +121,7 @@ void BrowserCommandHandler::CanExecuteCommand(
+     case Command::kOpenSafetyCheckFromWhatsNew:
+       can_execute = true;
+       break;
++    default: break;
+   }
+   std::move(callback).Run(can_execute);
+ }

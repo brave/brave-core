@@ -603,6 +603,12 @@ void BraveBrowserView::ShowBraveVPNBubble() {
 #endif
 }
 
+void BraveBrowserView::ShowBraveShieldsBubble() {
+  if (auto* shields_action_view = GetShieldsActionView()) {
+    shields_action_view->ShowBubble();
+  }
+}
+
 views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   auto* vpn_button =
@@ -617,25 +623,12 @@ views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 }
 
 gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
-  auto* brave_location_bar_view =
-      static_cast<BraveLocationBarView*>(GetLocationBarView());
-  if (!brave_location_bar_view) {
-    return gfx::Rect();
+  if (auto* shields_action_view = GetShieldsActionView()) {
+    if (auto* bubble_widget = shields_action_view->GetBubbleWidget()) {
+      return bubble_widget->GetClientAreaBoundsInScreen();
+    }
   }
-
-  auto* shields_action_view =
-      brave_location_bar_view->brave_actions_contatiner_view()
-          ->GetShieldsActionView();
-  if (!shields_action_view) {
-    return gfx::Rect();
-  }
-
-  auto* bubble_widget = shields_action_view->GetBubbleWidget();
-  if (!bubble_widget) {
-    return gfx::Rect();
-  }
-
-  return bubble_widget->GetClientAreaBoundsInScreen();
+  return {};
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
@@ -1176,6 +1169,16 @@ bool BraveBrowserView::IsSidebarVisible() const {
 
 BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
   return static_cast<BraveBrowser*>(browser_.get());
+}
+
+BraveShieldsActionView* BraveBrowserView::GetShieldsActionView() const {
+  auto* brave_location_bar_view =
+      static_cast<BraveLocationBarView*>(GetLocationBarView());
+  if (!brave_location_bar_view) {
+    return nullptr;
+  }
+  return brave_location_bar_view->brave_actions_contatiner_view()
+      ->GetShieldsActionView();
 }
 
 void BraveBrowserView::UpdateWebViewRoundedCorners() {

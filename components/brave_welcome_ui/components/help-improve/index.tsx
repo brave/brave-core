@@ -48,7 +48,12 @@ function HelpImprove () {
     WelcomeBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
     WelcomeBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
     WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Finished)
-    window.open('chrome://newtab', '_self')
+    // TODO(zenparsing): Instead of fetching the URL here (which might introduce
+    // a small delay), would it make more sense to load the complete URL into
+    // the store at app startup? But what if it's not ready when we get here for
+    // some strange reason?
+    WelcomeBrowserProxyImpl.getInstance().getWelcomeCompleteURL().then(
+        (url) => { window.open(url, '_self', 'noopener') })
   }
 
   const handleOpenSettingsPage = () => {

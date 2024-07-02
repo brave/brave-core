@@ -36,6 +36,7 @@ class BraveShieldsActionView
 
   void Init();
   void Update();
+  void ShowBubble();
 
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
