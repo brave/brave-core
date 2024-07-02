@@ -1,5 +1,6 @@
 specific_include_rules = {
   "background_video_playback_tab_helper.cc": [
+    "+content/browser/media/session/media_session_impl.h",
     "+content/browser/web_contents/web_contents_impl.h",
   ],
 }

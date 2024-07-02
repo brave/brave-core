@@ -144,9 +144,13 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
-        implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
-                   BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver,
-                   ConnectionErrorHandler, PlaylistServiceObserverImplDelegate {
+        implements BraveToolbarLayout,
+                OnClickListener,
+                View.OnLongClickListener,
+                BraveRewardsObserver,
+                BraveRewardsNativeWorker.PublisherObserver,
+                ConnectionErrorHandler,
+                PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BraveToolbar";
 
     private static final List<String> BRAVE_SEARCH_ENGINE_DEFAULT_REGIONS =
