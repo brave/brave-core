@@ -10,6 +10,7 @@ import { skipToken } from '@reduxjs/toolkit/query'
 // utils
 import {
   isComponentInStorybook,
+  isIpfs,
   stripERC20TokenImageURL
 } from '../../../utils/string-utils'
 
@@ -41,10 +42,13 @@ export const NftIcon = (props: NftIconProps) => {
   // refs
   const nftImageIframeRef = React.useRef<HTMLIFrameElement>(null)
 
+  const isIpfsTokenImageURL = isIpfs(tokenImageURL)
+
   // queries
-  const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
-    tokenImageURL || skipToken
+  const { data: ipfsGatewayURL } = useGetIpfsGatewayTranslatedNftUrlQuery(
+    isIpfsTokenImageURL ? tokenImageURL : skipToken
   )
+  const remoteImage = ipfsGatewayURL ?? tokenImageURL
 
   // memos
   const nftIframeUrl = React.useMemo(() => {
