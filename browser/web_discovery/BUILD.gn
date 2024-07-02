@@ -31,6 +31,7 @@ source_set("unit_tests") {
     testonly = true
 
     sources = [ "web_discovery_unittest.cc" ]
+
     deps = [
       "//brave/components/constants",
       "//brave/components/search_engines",
@@ -43,6 +44,14 @@ source_set("unit_tests") {
       "//content/test:test_support",
       "//testing/gtest",
     ]
+
+    if (enable_web_discovery_native) {
+      sources += [ "wdp_service_factory_unittest.cc" ]
+      deps += [
+        ":web_discovery",
+        "//brave/components/web_discovery/common",
+      ]
+    }
   }
 }
 
