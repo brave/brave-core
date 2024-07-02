@@ -220,7 +220,13 @@ extension BrowserViewController: TopToolbarDelegate {
       hideSearchController()
     } else {
       showSearchController()
-      searchController?.setSearchQuery(query: text)
+
+      searchController?.setSearchQuery(
+        query: text,
+        showSearchSuggestions: URLBarHelper.shared.shouldShowSearchSuggestions(
+          using: topToolbar.locationLastReplacement
+        )
+      )
       searchLoader?.query = text.lowercased()
     }
   }
@@ -1137,7 +1143,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
   private func makePasteMenu() -> UIMenu? {
     guard UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs else { return nil }
 
-    var children: [UIAction] = [
+    let children: [UIAction] = [
       UIAction(
         identifier: .pasteAndGo,
         handler: UIAction.deferredActionHandler { _ in

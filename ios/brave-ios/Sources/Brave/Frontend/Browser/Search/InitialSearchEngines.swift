@@ -83,16 +83,16 @@ class InitialSearchEngines {
     engines.filter { !$0.id.excludedFromOnboarding(for: locale) }
   }
 
-  static let braveSearchDefaultRegions = [
+  let braveSearchDefaultRegions = [
     "US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN", "IT",
   ]
-  static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
-  static let ecosiaEnabledRegions = [
+  let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
+  let ecosiaEnabledRegions = [
     "AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
     "LU", "NO", "PT", "US", "GB", "FR", "DE", "NL", "CH", "SE", "IE",
   ]
-  static let naverDefaultRegions = ["KR"]
-  static let daumEnabledRegions = ["KR"]
+  let naverDefaultRegions = ["KR"]
+  let daumEnabledRegions = ["KR"]
 
   /// Sets what should be the default search engine for given locale.
   /// If the engine does not exist in `engines` list, it is added to it.
@@ -116,6 +116,14 @@ class InitialSearchEngines {
         engines.append(.init(id: engine))
       }
     }
+  }
+
+  public var isBraveSearchDefaultRegion: Bool {
+    guard let regionID = locale.region?.identifier ?? Locale.current.region?.identifier else {
+      return false
+    }
+
+    return braveSearchDefaultRegions.contains(regionID)
   }
 
   init(locale: Locale = .current) {
@@ -147,25 +155,25 @@ class InitialSearchEngines {
   // MARK: - Locale overrides
 
   private func regionOverrides() {
-    guard let region = locale.regionCode else { return }
+    guard let region = locale.region?.identifier else { return }
 
-    if Self.yandexDefaultRegions.contains(region) {
+    if yandexDefaultRegions.contains(region) {
       defaultSearchEngine = .yandex
     }
 
-    if Self.ecosiaEnabledRegions.contains(region) {
+    if ecosiaEnabledRegions.contains(region) {
       replaceOrInsert(engineId: .ecosia, customId: nil)
     }
 
-    if Self.braveSearchDefaultRegions.contains(region) {
+    if braveSearchDefaultRegions.contains(region) {
       defaultSearchEngine = .braveSearch
     }
 
-    if Self.naverDefaultRegions.contains(region) {
+    if naverDefaultRegions.contains(region) {
       defaultSearchEngine = .naver
     }
 
-    if Self.daumEnabledRegions.contains(region) {
+    if daumEnabledRegions.contains(region) {
       replaceOrInsert(engineId: .daum, customId: nil)
     }
   }

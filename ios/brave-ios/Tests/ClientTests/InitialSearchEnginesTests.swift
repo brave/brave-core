@@ -38,11 +38,37 @@ class InitialSearchEnginesTests: XCTestCase {
   // MARK: - Locale overrides
 
   func testYandexRegions() throws {
+    var localeSE = SE()
 
-    for region in InitialSearchEngines.yandexDefaultRegions {
-      let localeSE = SE(locale: Locale(identifier: "ru_\(region)"))
+    for region in localeSE.yandexDefaultRegions {
+      localeSE = SE(locale: Locale(identifier: "ru_\(region)"))
       XCTAssertEqual(localeSE.defaultSearchEngine, .yandex)
     }
+  }
+
+  func testBraveSearchDefaultRegion() throws {
+    var localeSE = SE(locale: Locale(identifier: "en_US"))
+
+    localeSE = SE(locale: Locale(identifier: "en_GB"))
+    XCTAssertTrue(localeSE.isBraveSearchDefaultRegion)
+
+    localeSE = SE(locale: Locale(identifier: "ja_JP"))
+    XCTAssertFalse(localeSE.isBraveSearchDefaultRegion)
+
+    localeSE = SE(locale: Locale(identifier: "de_DE"))
+    XCTAssertTrue(localeSE.isBraveSearchDefaultRegion)
+
+    localeSE = SE(locale: Locale(identifier: "fr_FR"))
+    XCTAssertTrue(localeSE.isBraveSearchDefaultRegion)
+
+    localeSE = SE(locale: Locale(identifier: "pl_PL"))
+    XCTAssertFalse(localeSE.isBraveSearchDefaultRegion)
+
+    localeSE = SE(locale: Locale(identifier: "ru_AZ"))
+    XCTAssertFalse(localeSE.isBraveSearchDefaultRegion)
+
+    localeSE = SE(locale: Locale(identifier: "xx_XX"))
+    XCTAssertFalse(localeSE.isBraveSearchDefaultRegion)
   }
 
   // MARK: - Country specific tests

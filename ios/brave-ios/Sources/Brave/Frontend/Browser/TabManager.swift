@@ -47,7 +47,6 @@ class WeakTabManagerDelegate {
 // TabManager must extend NSObjectProtocol in order to implement WKNavigationDelegate
 class TabManager: NSObject {
   fileprivate var delegates = [WeakTabManagerDelegate]()
-  fileprivate let tabEventHandlers: [TabEventHandler]
   weak var stateDelegate: TabManagerStateDelegate?
 
   /// Internal url to access the new tab page.
@@ -128,7 +127,6 @@ class TabManager: NSObject {
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
     self.privateBrowsingManager = privateBrowsingManager
-    self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
 
     self.navDelegate.tabManager = self

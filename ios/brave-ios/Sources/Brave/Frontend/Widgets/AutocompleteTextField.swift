@@ -50,7 +50,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   // in touchesEnd() (eg. applyCompletion() is called or not)
   fileprivate var notifyTextChanged: (() -> Void)?
   fileprivate var notifyTextDeleted: (() -> Void)?
-  private var lastReplacement: String?
+  public var lastReplacement: String?
 
   var highlightColor = AutocompleteTextFieldUX.highlightColor
 
