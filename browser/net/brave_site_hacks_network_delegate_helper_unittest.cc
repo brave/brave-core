@@ -20,11 +20,11 @@
 using brave::ResponseCallback;
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, UANotAllowedTest) {
-  const std::vector<const GURL> urls(
-      {GURL("https://brianbondy.com"), GURL("https://bravecombo.com"),
-       GURL("https://brave.example.com"),
-       GURL("https://a.netflix.com/something"),
-       GURL("https://a.duckduckgo.com/something")});
+  const std::vector<GURL> urls({GURL("https://brianbondy.com"),
+                                GURL("https://bravecombo.com"),
+                                GURL("https://brave.example.com"),
+                                GURL("https://a.netflix.com/something"),
+                                GURL("https://a.duckduckgo.com/something")});
   for (const auto& url : urls) {
     net::HttpRequestHeaders headers;
     headers.SetHeader(kUserAgentHeader,
@@ -43,9 +43,9 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, UANotAllowedTest) {
 }
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
-  const std::vector<const GURL> urls(
-      {GURL("https://brianbondy.com/7"), GURL("https://www.brianbondy.com/5"),
-       GURL("https://brian.bondy.brianbondy.com")});
+  const std::vector<GURL> urls({GURL("https://brianbondy.com/7"),
+                                GURL("https://www.brianbondy.com/5"),
+                                GURL("https://brian.bondy.brianbondy.com")});
   for (const auto& url : urls) {
     net::HttpRequestHeaders headers;
     const GURL original_referrer("https://hello.brianbondy.com/about");
@@ -62,9 +62,9 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
 }
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerTruncated) {
-  const std::vector<const GURL> urls({GURL("https://digg.com/7"),
-                                      GURL("https://slashdot.org/5"),
-                                      GURL("https://bondy.brian.org")});
+  const std::vector<GURL> urls({GURL("https://digg.com/7"),
+                                GURL("https://slashdot.org/5"),
+                                GURL("https://bondy.brian.org")});
   for (const auto& url : urls) {
     const GURL original_referrer("https://hello.brianbondy.com/about");
 
@@ -83,9 +83,9 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, ReferrerTruncated) {
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest,
      ReferrerWouldBeClearedButExtensionSite) {
-  const std::vector<const GURL> urls({GURL("https://digg.com/7"),
-                                      GURL("https://slashdot.org/5"),
-                                      GURL("https://bondy.brian.org")});
+  const std::vector<GURL> urls({GURL("https://digg.com/7"),
+                                GURL("https://slashdot.org/5"),
+                                GURL("https://bondy.brian.org")});
   for (const auto& url : urls) {
     auto brave_request_info = std::make_shared<brave::BraveRequestInfo>(url);
     brave_request_info->tab_origin =
@@ -120,7 +120,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, OnionReferrerStripped) {
 }
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringUntouched) {
-  const std::vector<const std::string> urls(
+  const std::vector<std::string> urls(
       {"https://example.com/",
        "https://example.com/?",
        "https://example.com/?+%20",
@@ -226,7 +226,7 @@ TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringExempted) {
 }
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, QueryStringFiltered) {
-  const std::vector<const std::pair<const std::string, const std::string>> urls(
+  const std::vector<std::pair<std::string, std::string>> urls(
       {// { original url, expected url after filtering ("" means unchanged) }
        {"https://example.com/?fbclid=1234", "https://example.com/"},
        {"https://example.com/?fbclid=1234&", "https://example.com/"},

@@ -58,7 +58,7 @@ class DebounceTabHelper
  private:
   friend class content::WebContentsUserData<DebounceTabHelper>;
 
-  std::vector<const std::string> redirects_;
+  std::vector<std::string> redirects_;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
