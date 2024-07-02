@@ -49,14 +49,18 @@ public final class Domain: NSManagedObject, CRUD {
   @NSManaged private var shield_shredLevel: String?
 
   /// The shred level for this current domain
-  @MainActor public var shredLevel: SiteShredLevel? {
+  ///
+  /// When getting, it will return the global shred level if the domain level is not set
+  @MainActor public var shredLevel: SiteShredLevel {
     get {
-      guard let shredLevel = self.shield_shredLevel else { return nil }
-      return SiteShredLevel(rawValue: shredLevel)
+      guard let shredLevel = self.shield_shredLevel else {
+        return ShieldPreferences.shredLevel
+      }
+      return SiteShredLevel(rawValue: shredLevel) ?? ShieldPreferences.shredLevel
     }
 
     set {
-      shield_shredLevel = newValue?.rawValue
+      shield_shredLevel = newValue.rawValue
     }
   }
 

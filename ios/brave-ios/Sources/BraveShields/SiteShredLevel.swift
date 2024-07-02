@@ -7,6 +7,8 @@ import Foundation
 
 /// A setting that will shred site data at various times
 public enum SiteShredLevel: String, CaseIterable, Hashable {
+  /// An explicit value to never shred site data
+  case never
   /// Shred the site data when the site is closed
   case whenSiteClosed
   /// Shred the site data when the application is closed
@@ -15,7 +17,7 @@ public enum SiteShredLevel: String, CaseIterable, Hashable {
   /// Tells us if this setting shreds data when the app is closed
   public var shredOnAppExit: Bool {
     switch self {
-    case .whenSiteClosed:
+    case .never, .whenSiteClosed:
       return false
     case .appExit:
       return true

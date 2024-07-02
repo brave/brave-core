@@ -49,17 +49,13 @@ public class ShieldPreferences {
   }
 
   /// Get the global shred level value
-  public static var shredLevel: SiteShredLevel? {
+  public static var shredLevel: SiteShredLevel {
     get {
-      guard let shredLevelRaw = self.shredLevelRaw.value else { return nil }
-      return SiteShredLevel(rawValue: shredLevelRaw)
+      guard let shredLevelRaw = self.shredLevelRaw.value else { return .never }
+      return SiteShredLevel(rawValue: shredLevelRaw) ?? .never
     }
     set {
-      guard let shredLevel = newValue else {
-        shredLevelRaw.value = nil
-        return
-      }
-      shredLevelRaw.value = shredLevel.rawValue
+      shredLevelRaw.value = newValue.rawValue
     }
   }
 
