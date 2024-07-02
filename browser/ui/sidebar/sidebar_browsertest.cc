@@ -181,6 +181,14 @@ class SidebarBrowserTest : public InProcessBrowserTest {
            GetSidebarControlView()->sidebar_on_left_;
   }
 
+  void ShowSidebar(bool show_side_panel) {
+    GetSidebarContainerView()->ShowSidebar(show_side_panel);
+  }
+
+  void HideSidebar(bool hide_sidebar_control) {
+    GetSidebarContainerView()->HideSidebar(hide_sidebar_control);
+  }
+
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
     if (condition.Run())
       return;
@@ -583,6 +591,31 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, EventDetectWidgetTest) {
             widget->GetWindowBoundsInScreen().right());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, HideSidebarUITest) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* sidebar_container = GetSidebarContainerView();
+
+  // Set to on mouse over and check sidebar ui is not shown.
+  service->SetSidebarShowOption(
+      SidebarService::ShowSidebarOption::kShowOnMouseOver);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return sidebar_container->width() == 0; }));
+
+  // Ask to show sidebar ui and check it's shown.
+  ShowSidebar(false);
+  const int target_control_view_width =
+      GetSidebarControlView()->GetPreferredSize().width();
+  EXPECT_GT(target_control_view_width, 0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return sidebar_container->width() == target_control_view_width;
+  }));
+
+  // Ask to hide sidebar ui and check it's not shown.
+  HideSidebar(true);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return sidebar_container->width() == 0; }));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
@@ -973,31 +1006,6 @@ INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
     ::testing::Bool());
-
-class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
- public:
-  SidebarBrowserTestWithChromeRefresh2023() = default;
-  ~SidebarBrowserTestWithChromeRefresh2023() override = default;
-
-  void SetUp() override {
-    SidebarBrowserTest::SetUp();
-  }
-
-  base::test::ScopedFeatureList feature_list_;
-};
-
-// Test originally introduced before the chrome-refresh-2023 cleanup, to check
-// if sidebar crashes when opening.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithChromeRefresh2023,
-                       SidebarOpeningTest) {
-  // Open side panel to check it doesn't make crash.
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
-  panel_ui->Toggle();
-
-  // Wait till panel UI opens.
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->GetVisible(); }));
-}
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
