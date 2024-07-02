@@ -19,7 +19,7 @@ BraveWalletUtilsServiceImpl::BraveWalletUtilsServiceImpl(
 BraveWalletUtilsServiceImpl::~BraveWalletUtilsServiceImpl() = default;
 
 void BraveWalletUtilsServiceImpl::CreateZCashDecoderService(
-    mojo::PendingAssociatedReceiver<mojom::ZCashDecoder>
+    mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder>
         zcash_decoder_receiver) {
   if (!instance_) {
     instance_ = mojo::MakeSelfOwnedAssociatedReceiver(

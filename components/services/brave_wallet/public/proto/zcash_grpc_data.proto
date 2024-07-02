@@ -4,6 +4,15 @@ option optimize_for = LITE_RUNTIME;
 
 package zcash;
 
+message TreeState {
+  string network = 1;
+  uint64 height = 2;
+  string hash = 3;
+  uint32 time = 4;
+  string saplingTree = 5;
+  string orchardTree = 6;
+}
+
 message GetAddressUtxosRequest {
   repeated string addresses = 1;
   uint64 startHeight = 2;
@@ -24,6 +33,8 @@ message GetAddressUtxosResponse {
 }
 
 message ChainSpec {}
+
+message Empty {}
 
 message BlockID {
   uint64 height = 1;

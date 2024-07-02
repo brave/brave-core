@@ -781,7 +781,7 @@ TEST_F(BraveWalletP3AUnitTest, ZecTransactionSentObservation) {
     input.utxo_value = 537000;
     input.script_pub_key =
         ZCashAddressToScriptPubkey(input.utxo_address, false);
-    zcash_transaction.inputs().push_back(std::move(input));
+    zcash_transaction.transparent_part().inputs.push_back(std::move(input));
   }
 
   {
@@ -789,7 +789,7 @@ TEST_F(BraveWalletP3AUnitTest, ZecTransactionSentObservation) {
     output.address = "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi";
     output.amount = 500000;
     output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
-    zcash_transaction.outputs().push_back(std::move(output));
+    zcash_transaction.transparent_part().outputs.push_back(std::move(output));
   }
 
   std::string tx_meta_id;

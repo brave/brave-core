@@ -155,6 +155,12 @@
       "components/webpack/gen-webpack-grd\\.js",
       "test/data/speedreader/",
     ],
+    "CheckStableMojomChanges": [
+      // Temporary fix to silence presubmit on mojom check error after zcash_decoder namespace
+      // renaming
+      "components/services/brave_wallet/public/mojom/brave_wallet_utils_service\\.mojom",
+      "components/services/brave_wallet/public/mojom/zcash_decoder\\.mojom"
+    ]
   },
 
   // Additional excludes to _BANRULE_* lists in //PRESUBMIT.py.

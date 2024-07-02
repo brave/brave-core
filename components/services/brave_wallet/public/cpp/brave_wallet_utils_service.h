@@ -24,7 +24,7 @@ class BraveWalletUtilsService {
 
   // Creates decoder in brave wallet utils process and provides handles.
   void CreateZCashDecoder(
-      mojo::PendingAssociatedReceiver<mojom::ZCashDecoder> receiver);
+      mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder> receiver);
 
   static BraveWalletUtilsService* GetInstance();
 

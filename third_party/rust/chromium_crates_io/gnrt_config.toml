@@ -405,3 +405,12 @@ license_files = ['LICENSE.txt']
 
 [crate.zcash]
 license_files = ['../../../../../common/licenses/MPL-2.0']
+
+[crate.zcash_encoding]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.zcash_primitives]
+license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.zcash_protocol]
+license_files = ['../../../../../common/licenses/Apache-2.0']
