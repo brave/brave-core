@@ -1,0 +1,12 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index cee9eeba25fc1f6354125474a9031c7d9f5cddde..df3f04ef0bd04dfd2d78fe84b74294c69e24500f 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -3476,6 +3476,7 @@ source_set("browser") {
+       "profiling_utils.cc",
+     ]
+   }
++  import("//brave/content/browser/sources.gni") deps += brave_content_browser_deps
+ }
+ 
+ if (is_android) {
