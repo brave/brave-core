@@ -12,6 +12,7 @@ import { omniboxController, search, useSearchContext } from './SearchContext'
 import { braveSearchHost } from './config'
 import { stringToMojoString16 } from 'gen/ui/webui/resources/tsc/js/mojo_type_util';
 import { handleOpenURLClick, validateScheme } from '$web-common/SecureLink';
+import MaybePromptEnableSuggestions from './MaybePromptEnableSuggestions';
 
 const Container = styled.div`
   border-top: 1px solid ${color.divider.subtle};
@@ -174,6 +175,7 @@ export default function SearchResults() {
   }
 
   return matches.length ? <Container data-theme="dark" className='search-results'>
+    <MaybePromptEnableSuggestions />
     {matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} onClick={onSearchResultClick(r)} match={r} />)}
   </Container> : null
 }

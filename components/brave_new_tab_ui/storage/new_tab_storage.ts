@@ -28,6 +28,8 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showBraveTalk: false,
   showSearchBox: true,
+  promptEnableSearchSuggestions: true,
+  searchSuggestionsEnabled: false,
   showBitcoinDotCom: false,
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
@@ -99,7 +101,7 @@ if (chrome.extension.inIncognitoContext) {
 export const addNewStackWidget = (state: NewTab.State) => {
   defaultState.widgetStackOrder.map((widget: NewTab.StackWidget) => {
     if (!state.widgetStackOrder.includes(widget) &&
-        !state.removedStackWidgets.includes(widget)) {
+      !state.removedStackWidgets.includes(widget)) {
       state.widgetStackOrder.unshift(widget)
     }
   })
@@ -126,7 +128,7 @@ export const replaceStackWidgets = (state: NewTab.State) => {
   for (const key in displayLookup) {
     const widget = key as NewTab.StackWidget
     if (!state.widgetStackOrder.includes(widget) &&
-        displayLookup[widget].display) {
+      displayLookup[widget].display) {
       state.widgetStackOrder.unshift(widget)
     }
   }

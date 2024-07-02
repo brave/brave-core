@@ -40,6 +40,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/common/chrome_features.h"
+#include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -95,6 +96,11 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set(
       "showSearchBox",
       prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
+  pref_data.Set("promptEnableSearchSuggestions",
+                prefs->GetBoolean(
+                    brave_search_conversion::prefs::kPromptEnableSuggestions));
+  pref_data.Set("searchSuggestionsEnabled",
+                prefs->GetBoolean(prefs::kSearchSuggestEnabled));
   return pref_data;
 }
 
@@ -288,6 +294,14 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kPromptEnableSuggestions,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kSearchSuggestEnabled,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       kNewTabPageShowClock,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -438,6 +452,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowBraveTalk;
   } else if (settingsKeyInput == "showSearchBox") {
     settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
+  } else if (settingsKeyInput == "promptEnableSearchSuggestions") {
+    settingsKey = brave_search_conversion::prefs::kPromptEnableSuggestions;
+  } else if (settingsKeyInput == "searchSuggestionsEnabled") {
+    settingsKey = prefs::kSearchSuggestEnabled;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
