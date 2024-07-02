@@ -205,14 +205,26 @@ private struct FaviconImage: View {
 #if DEBUG
 extension CredentialListModel {
   private class MockCredential: NSObject, Credential {
+    func isPasskey() -> Bool {
+      return false
+    }
+
     var favicon: String!
+    var recordIdentifier: String!
+    var username: String!
     var password: String!
     var rank: Int64 = 0
-    var recordIdentifier: String!
     var serviceIdentifier: String!
     var serviceName: String!
-    var username: String!
     var note: String!
+    var syncId: String!
+    var userDisplayName: String!
+    var userId: String!
+    var credentialId: String!
+    var rpId: String!
+    var privateKey: String!
+    var encrypted: String!
+    var creationTime: Int64 = 0
 
     init(
       favicon: FaviconAttributes?,
