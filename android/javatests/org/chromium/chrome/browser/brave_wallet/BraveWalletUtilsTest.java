@@ -174,34 +174,6 @@ public class BraveWalletUtilsTest {
         assertEquals(Utils.isJSONValid("'name': 'brave'"), false);
     }
 
-    @Test
-    @SmallTest
-    public void getContractAddressTest() {
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "USDC",
-                             "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "DAI",
-                             "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0x73967c6a0904aa032c103b4104747e88c566b1a2");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.GOERLI_CHAIN_ID, "BAT",
-                             "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-        assertEquals(Utils.getContractAddress(BraveWalletConstants.SEPOLIA_CHAIN_ID, "USDC",
-                             "0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
-    }
-
-    @Test
-    @SmallTest
-    public void getGoerliContractAddressTest() {
-        assertEquals(Utils.getGoerliContractAddress("0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"),
-                "0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557");
-        assertEquals(Utils.getGoerliContractAddress("0x6b175474e89094c44da98b954eedeac495271d0f"),
-                "0x73967c6a0904aa032c103b4104747e88c566b1a2");
-        assertEquals(
-                Utils.getGoerliContractAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"), "");
-    }
-
     private static String getStackTrace(Exception ex) {
         String stack = "";
         StackTraceElement[] st = ex.getStackTrace();

@@ -131,7 +131,7 @@ public class TokenUtils {
         blockchainRegistry.getAllTokens(
                 chainId,
                 coinType,
-                tokens -> callback.call(Utils.fixupTokensRegistry(tokens, chainId)));
+                tokens -> callback.call(tokens));
     }
 
     /**
