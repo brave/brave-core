@@ -175,6 +175,7 @@ public struct AIChatAdvancedSettingsView: View {
       Section {
         OptionToggleView(
           title: Strings.AIChat.advancedSettingsAutocompleteTitle,
+          subtitle: Strings.AIChat.advancedSettingsAutocompleteDescription,
           option: Preferences.AIChat.autocompleteSuggestionsEnabled
         )
 

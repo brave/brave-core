@@ -62,8 +62,14 @@ struct AIChatResponseMessageView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      AIChatProductIcon(containerShape: Circle(), padding: 6.0)
-        .font(.callout)
+      HStack {
+        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
+          .font(.callout)
+
+        Text("Leo")
+          .font(.body.weight(.semibold))
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
+      }
 
       ForEach(turn.events ?? [], id: \.self) { event in
         if event.tag == .completionEvent {

@@ -6,10 +6,9 @@
 import DesignSystem
 import SwiftUI
 
-private struct AIChatIntroBubbleView<ImageOverlay: View>: View {
+private struct AIChatIntroBubbleView: View {
   var title: String
   var subtitle: String
-  var image: ImageOverlay
   var onSummarizePage: (() -> Void)?
 
   var body: some View {
@@ -46,10 +45,6 @@ private struct AIChatIntroBubbleView<ImageOverlay: View>: View {
       }
     }
     .padding(24.0)
-    .background(alignment: .bottomTrailing) {
-      image
-        .opacity(0.40)
-    }
   }
 }
 
@@ -77,9 +72,6 @@ struct AIChatIntroView: View {
         subtitle: onSummarizePage != nil
           ? Strings.AIChat.chatIntroWebsiteHelpSubtitlePageSummarize
           : Strings.AIChat.chatIntroWebsiteHelpSubtitleArticleSummarize,
-        image: Image("leo-intro-website-shape", bundle: .module)
-          .renderingMode(.template)
-          .foregroundStyle(Color(braveSystemName: .purple20)),
         onSummarizePage: onSummarizePage
       )
       .background(Color(braveSystemName: .purple10))
@@ -89,9 +81,6 @@ struct AIChatIntroView: View {
       AIChatIntroBubbleView(
         title: Strings.AIChat.chatIntroJustTalkTitle,
         subtitle: Strings.AIChat.chatIntroJustTalkSubTitle,
-        image: Image("leo-intro-star-burst", bundle: .module)
-          .renderingMode(.template)
-          .foregroundStyle(Color(braveSystemName: .teal20)),
         onSummarizePage: nil
       )
       .background(Color(braveSystemName: .teal10))
