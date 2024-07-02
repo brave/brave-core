@@ -186,6 +186,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
     auto* wallet_service =
         BraveWalletServiceFactory::GetServiceForContext(browser()->profile());
+    network_manager_ = wallet_service->network_manager();
     json_rpc_service_ = wallet_service->json_rpc_service();
     json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
     keyring_service_ = wallet_service->keyring_service();
@@ -581,6 +582,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   std::string chain_id(const std::optional<::url::Origin>& origin) {
     return json_rpc_service_->GetChainIdSync(mojom::CoinType::ETH, origin);
   }
+  NetworkManager* network_manager() { return network_manager_.get(); }
 
  protected:
   mojom::AccountInfoPtr default_account_;
@@ -591,6 +593,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_for_files_;
   net::test_server::EmbeddedTestServer https_server_for_rpc_;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
@@ -941,7 +944,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
   RestoreWallet();
 
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
-  AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
+  network_manager()->AddCustomNetwork(chain);
 
   SetNetworkForTesting("0x5566", std::nullopt);
   observer()->SetExpectEip1559Tx(false);
@@ -974,7 +977,7 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
   RestoreWallet();
 
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
-  AddCustomNetwork(browser()->profile()->GetPrefs(), chain);
+  network_manager()->AddCustomNetwork(chain);
 
   SetNetworkForTesting("0x5566", std::nullopt);
   observer()->SetExpectEip1559Tx(false);

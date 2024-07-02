@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -170,7 +171,9 @@ void EthTxManager::AddUnapprovedEvmTransaction(
       mojom::TxData::New("", "", params->gas_limit, params->to, params->value,
                          params->data, false, std::nullopt);
 
-  if (!IsEip1559Chain(prefs_, params->chain_id).value_or(false)) {
+  if (!json_rpc_service_->network_manager()
+           ->IsEip1559Chain(params->chain_id)
+           .value_or(false)) {
     AddUnapprovedTransaction(params->chain_id, std::move(tx_data), params->from,
                              std::move(origin_val), std::move(callback));
   } else {

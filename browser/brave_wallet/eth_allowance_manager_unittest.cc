@@ -513,7 +513,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
   TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    return brave_wallet::GetNetworkURL(GetPrefs(), chain_id, coin);
+    return wallet_service_->network_manager()->GetNetworkURL(chain_id, coin);
   }
 
   network::TestURLLoaderFactory url_loader_factory_;

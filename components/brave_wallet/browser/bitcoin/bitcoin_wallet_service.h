@@ -21,10 +21,13 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
+class PrefService;
+
 namespace brave_wallet {
 class CreateTransactionTask;
 class DiscoverNextUnusedAddressTask;
 class KeyringService;
+class NetworkManager;
 
 struct DiscoveredBitcoinAccount {
   mojom::KeyringId keyring_id = mojom::KeyringId::kBitcoin84;
@@ -41,6 +44,7 @@ class BitcoinWalletService : public mojom::BitcoinWalletService,
   BitcoinWalletService(
       KeyringService* keyring_service,
       PrefService* prefs,
+      NetworkManager* network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinWalletService() override;
 

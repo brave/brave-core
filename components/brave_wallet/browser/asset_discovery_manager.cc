@@ -132,16 +132,16 @@ AssetDiscoveryManager::GetNonFungibleSupportedChains() {
 
   // Add in all the user networks that are supported by SimpleHash
   auto custom_non_fungible_eth_chains =
-      CustomChainsExist(prefs_,
-                        {
-                            mojom::kArbitrumNovaChainId,
-                            mojom::kGnosisChainId,
-                            mojom::kGodwokenChainId,
-                            mojom::kPalmChainId,
-                            mojom::kPolygonZKEVMChainId,
-                            mojom::kZkSyncEraChainId,
-                        },
-                        mojom::CoinType::ETH);
+      wallet_service_->network_manager()->CustomChainsExist(
+          {
+              mojom::kArbitrumNovaChainId,
+              mojom::kGnosisChainId,
+              mojom::kGodwokenChainId,
+              mojom::kPalmChainId,
+              mojom::kPolygonZKEVMChainId,
+              mojom::kZkSyncEraChainId,
+          },
+          mojom::CoinType::ETH);
 
   for (auto custom_chain : custom_non_fungible_eth_chains) {
     // Only insert the chain if it does not exist in the set

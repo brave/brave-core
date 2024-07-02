@@ -40,10 +40,11 @@ class PrefService;
 
 namespace brave_wallet {
 
-class KeyringService;
-class JsonRpcService;
-class TxService;
 class EthAllowanceManager;
+class JsonRpcService;
+class KeyringService;
+class NetworkManager;
+class TxService;
 class AccountDiscoveryManager;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
@@ -297,6 +298,7 @@ class BraveWalletService : public KeyedService,
     return delegate_.get();
   }
 
+  NetworkManager* network_manager() { return network_manager_.get(); }
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
   KeyringService* keyring_service() { return keyring_service_.get(); }
   TxService* tx_service() { return tx_service_.get(); }
@@ -397,6 +399,7 @@ class BraveWalletService : public KeyedService,
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;

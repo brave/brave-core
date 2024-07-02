@@ -912,10 +912,11 @@ void DiscoverAccountTask::OnGetAddressStats(
 BitcoinWalletService::BitcoinWalletService(
     KeyringService* keyring_service,
     PrefService* prefs,
+    NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
       bitcoin_rpc_(
-          std::make_unique<bitcoin_rpc::BitcoinRpc>(prefs,
+          std::make_unique<bitcoin_rpc::BitcoinRpc>(network_manager,
                                                     url_loader_factory)) {
   keyring_service_->AddObserver(
       keyring_service_observer_receiver_.BindNewPipeAndPassRemote());

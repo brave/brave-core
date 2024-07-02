@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -39,11 +40,12 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
+    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
-        keyring_service_.get(), &prefs_,
+        keyring_service_.get(), &prefs_, network_manager_.get(),
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
     bitcoin_wallet_service_->SetArrangeTransactionsForTesting(true);
 
@@ -70,6 +72,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable local_state_;
 
   std::unique_ptr<BitcoinTestRpcServer> bitcoin_test_rpc_server_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<BitcoinHDKeyring> keyring_;

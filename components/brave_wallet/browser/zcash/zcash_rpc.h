@@ -9,18 +9,15 @@
 #include <list>
 #include <memory>
 #include <string>
-#include <utility>
-#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_grpc_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "mojo/public/cpp/bindings/pending_associated_remote.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
@@ -43,7 +40,7 @@ class ZCashRpc {
   using IsKnownAddressCallback =
       base::OnceCallback<void(base::expected<bool, std::string>)>;
 
-  ZCashRpc(PrefService* prefs,
+  ZCashRpc(NetworkManager* network_manager,
            scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   virtual ~ZCashRpc();
 
@@ -102,9 +99,11 @@ class ZCashRpc {
 
   mojo::AssociatedRemote<mojom::ZCashDecoder>& GetDecoder();
 
+  GURL GetNetworkURL(const std::string& chain_id);
+
   UrlLoadersList url_loaders_list_;
   StreamHandlersList stream_handlers_list_;
-  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_ = nullptr;
 
   mojo::AssociatedRemote<mojom::ZCashDecoder> zcash_decoder_;

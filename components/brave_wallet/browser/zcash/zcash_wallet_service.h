@@ -47,6 +47,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   ZCashWalletService(
       KeyringService* keyring_service,
       PrefService* prefs,
+      NetworkManager* network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   ZCashWalletService(KeyringService* keyring_service,

@@ -17,7 +17,10 @@
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
-#include "components/prefs/pref_service.h"
+
+namespace brave_wallet {
+class NetworkManager;
+}
 
 namespace brave_wallet::bitcoin_rpc {
 
@@ -27,9 +30,8 @@ struct EndpointQueue;
 
 class BitcoinRpc {
  public:
-  explicit BitcoinRpc(
-      PrefService* prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  BitcoinRpc(NetworkManager* network_manager,
+             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~BitcoinRpc();
 
   using APIRequestHelper = api_request_helper::APIRequestHelper;
@@ -97,7 +99,9 @@ class BitcoinRpc {
   void OnPostTransaction(PostTransactionCallback callback,
                          APIRequestResult api_request_result);
 
-  const raw_ptr<PrefService> prefs_;
+  GURL GetNetworkURL(const std::string& chain_id);
+
+  const raw_ptr<NetworkManager> network_manager_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   // Uses hostname as key. Tracks request throttling(if required) per host.
   std::map<std::string, EndpointQueue> endpoints_;

@@ -15,6 +15,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/grit/brave_components_strings.h"
@@ -56,18 +57,20 @@ class BitcoinRpcUnitTest : public testing::Test {
 
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     bitcoin_rpc_ = std::make_unique<bitcoin_rpc::BitcoinRpc>(
-        &prefs_, shared_url_loader_factory_);
+        network_manager_.get(), shared_url_loader_factory_);
 
     mainnet_rpc_url_ =
-        GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
+        network_manager_
+            ->GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
             ->rpc_endpoints.front()
             .spec();
-
-    auto btc_testnet =
-        GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC);
-    btc_testnet->rpc_endpoints[0] = GURL(testnet_rpc_url_);
-    AddCustomNetwork(&prefs_, *btc_testnet);
+    testnet_rpc_url_ =
+        network_manager_
+            ->GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC)
+            ->rpc_endpoints.front()
+            .spec();
   }
 
   std::string GetResponseString() const {
@@ -76,12 +79,13 @@ class BitcoinRpcUnitTest : public testing::Test {
 
  protected:
   std::string mainnet_rpc_url_;
-  std::string testnet_rpc_url_ = "https://btc-testnet.com/api/";
+  std::string testnet_rpc_url_;
   uint32_t response_height_ = 0;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };

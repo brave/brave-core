@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/bind.h"
@@ -19,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
@@ -48,6 +48,11 @@ class EthNonceTrackerUnitTest : public testing::Test {
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
+
+    network_manager_ = std::make_unique<NetworkManager>(GetPrefs());
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory(), network_manager_.get(), GetPrefs(),
+        nullptr);
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -81,16 +86,17 @@ class EthNonceTrackerUnitTest : public testing::Test {
     // See JsonRpcService::SetNetwork() to better understand where the
     // http://localhost:7545 URL used below is coming from.
     url_loader_factory_.AddResponse(
-        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId,
-                                    mojom::CoinType::ETH)
+        network_manager_
+            ->GetNetworkURL(mojom::kLocalhostChainId, mojom::CoinType::ETH)
             .spec(),
         GetResultString());
     url_loader_factory_.AddResponse(
-        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kMainnetChainId,
-                                    mojom::CoinType::ETH)
+        network_manager_
+            ->GetNetworkURL(mojom::kMainnetChainId, mojom::CoinType::ETH)
             .spec(),
         GetResultString());
   }
+  JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
 
  private:
   std::string GetResultString() const {
@@ -102,13 +108,13 @@ class EthNonceTrackerUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<NetworkManager> network_manager_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-
   base::ScopedTempDir temp_dir;
   scoped_refptr<value_store::TestValueStoreFactory> factory =
       GetTestValueStoreFactory(temp_dir);
@@ -118,7 +124,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
       std::make_unique<AccountResolverDelegateForTest>();
   EthTxStateManager tx_state_manager(GetPrefs(), delegate.get(),
                                      account_resolver_delegate.get());
-  EthNonceTracker nonce_tracker(&tx_state_manager, &service);
+  EthNonceTracker nonce_tracker(&tx_state_manager, json_rpc_service());
 
   SetTransactionCount(2);
 

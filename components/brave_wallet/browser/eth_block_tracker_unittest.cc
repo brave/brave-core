@@ -13,6 +13,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -54,8 +55,9 @@ class EthBlockTrackerUnitTest : public testing::Test {
                 &url_loader_factory_)) {}
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     json_rpc_service_ = std::make_unique<brave_wallet::JsonRpcService>(
-        shared_url_loader_factory_, &prefs_);
+        shared_url_loader_factory_, network_manager_.get(), &prefs_, nullptr);
   }
   std::string GetResponseString() const {
     return "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":\"" +
@@ -69,6 +71,7 @@ class EthBlockTrackerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 };
 

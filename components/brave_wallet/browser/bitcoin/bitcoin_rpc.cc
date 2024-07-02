@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "components/grit/brave_components_strings.h"
@@ -206,9 +207,9 @@ struct EndpointQueue {
 };
 
 BitcoinRpc::BitcoinRpc(
-    PrefService* prefs,
+    NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs),
+    : network_manager_(network_manager),
       api_request_helper_(new APIRequestHelper(GetNetworkTrafficAnnotationTag(),
                                                url_loader_factory)) {}
 
@@ -216,8 +217,7 @@ BitcoinRpc::~BitcoinRpc() = default;
 
 void BitcoinRpc::GetChainHeight(const std::string& chain_id,
                                 GetChainHeightCallback callback) {
-  GURL request_url = MakeGetChainHeightUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  GURL request_url = MakeGetChainHeightUrl(GetNetworkURL(chain_id));
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -254,8 +254,7 @@ void BitcoinRpc::OnGetChainHeight(GetChainHeightCallback callback,
 
 void BitcoinRpc::GetFeeEstimates(const std::string& chain_id,
                                  GetFeeEstimatesCallback callback) {
-  GURL request_url = MakeGetFeeEstimatesUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  GURL request_url = MakeGetFeeEstimatesUrl(GetNetworkURL(chain_id));
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -294,8 +293,7 @@ void BitcoinRpc::OnGetFeeEstimates(GetFeeEstimatesCallback callback,
 void BitcoinRpc::GetTransaction(const std::string& chain_id,
                                 const std::string& txid,
                                 GetTransactionCallback callback) {
-  GURL request_url = MakeGetTransactionUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC), txid);
+  GURL request_url = MakeGetTransactionUrl(GetNetworkURL(chain_id), txid);
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -323,8 +321,7 @@ void BitcoinRpc::OnGetTransaction(GetTransactionCallback callback,
 void BitcoinRpc::GetAddressStats(const std::string& chain_id,
                                  const std::string& address,
                                  GetAddressStatsCallback callback) {
-  GURL request_url = MakeAddressStatsUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC), address);
+  GURL request_url = MakeAddressStatsUrl(GetNetworkURL(chain_id), address);
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -354,8 +351,7 @@ void BitcoinRpc::OnGetAddressStats(GetAddressStatsCallback callback,
 void BitcoinRpc::GetUtxoList(const std::string& chain_id,
                              const std::string& address,
                              GetUtxoListCallback callback) {
-  GURL request_url = MakeUtxoListUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC), address);
+  GURL request_url = MakeUtxoListUrl(GetNetworkURL(chain_id), address);
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -397,8 +393,7 @@ void BitcoinRpc::OnGetUtxoList(GetUtxoListCallback callback,
 void BitcoinRpc::PostTransaction(const std::string& chain_id,
                                  const std::vector<uint8_t>& transaction,
                                  PostTransactionCallback callback) {
-  GURL request_url = MakePostTransactionUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::BTC));
+  GURL request_url = MakePostTransactionUrl(GetNetworkURL(chain_id));
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -499,6 +494,10 @@ void BitcoinRpc::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   api_request_helper_->SetUrlLoaderFactoryForTesting(  // IN-TEST
       std::move(url_loader_factory));
+}
+
+GURL BitcoinRpc::GetNetworkURL(const std::string& chain_id) {
+  return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::BTC);
 }
 
 }  // namespace brave_wallet::bitcoin_rpc

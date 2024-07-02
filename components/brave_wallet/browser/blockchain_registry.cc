@@ -16,8 +16,9 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/url_util.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
@@ -478,8 +479,8 @@ std::vector<mojom::NetworkInfoPtr>
 BlockchainRegistry::GetPrepopulatedNetworks() {
   std::vector<mojom::NetworkInfoPtr> result;
   for (auto& chain : chain_list_) {
-    if (auto known_chain =
-            GetKnownChain(chain->chain_id, mojom::CoinType::ETH)) {
+    if (auto known_chain = NetworkManager::GetKnownChain(
+            chain->chain_id, mojom::CoinType::ETH)) {
       result.push_back(known_chain.Clone());
     } else {
       result.push_back(chain.Clone());

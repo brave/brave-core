@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 
-#include <list>
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -29,7 +27,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -45,6 +42,7 @@ namespace brave_wallet {
 
 class EnsResolverTask;
 class NftMetadataFetcher;
+class NetworkManager;
 struct PendingAddChainRequest;
 struct PendingSwitchChainRequest;
 
@@ -65,14 +63,9 @@ class JsonRpcService : public mojom::JsonRpcService {
  public:
   JsonRpcService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      NetworkManager* network_manager,
       PrefService* prefs,
       PrefService* local_state_prefs);
-  // For testing:
-  JsonRpcService(
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs);
-  // For testing:
-  JsonRpcService();
   ~JsonRpcService() override;
 
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
@@ -285,8 +278,6 @@ class JsonRpcService : public mojom::JsonRpcService {
   void RemoveHiddenNetwork(mojom::CoinType coin,
                            const std::string& chain_id,
                            RemoveHiddenNetworkCallback callback) override;
-  std::string GetNetworkUrl(mojom::CoinType coin,
-                            const std::optional<::url::Origin>& origin) const;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
@@ -583,6 +574,8 @@ class JsonRpcService : public mojom::JsonRpcService {
       const std::string& token_address,
       SimpleHashClient::FetchSolCompressedNftProofDataCallback callback);
 
+  NetworkManager* network_manager() { return network_manager_; }
+
  private:
   void FireNetworkChanged(mojom::CoinType coin,
                           const std::string& chain_id,
@@ -662,6 +655,9 @@ class JsonRpcService : public mojom::JsonRpcService {
                        const std::string& base_fee_per_gas,
                        mojom::ProviderError error,
                        const std::string& error_message);
+  void AddCustomNetworkInternal(const mojom::NetworkInfo& network);
+
+  GURL GetNetworkURL(const std::string& chain_id, mojom::CoinType coin);
 
   void RequestInternal(
       const std::string& json_payload,
@@ -821,11 +817,12 @@ class JsonRpcService : public mojom::JsonRpcService {
   std::optional<std::string> gas_price_for_testing_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   const raw_ptr<PrefService> prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_prefs_ = nullptr;
   std::unique_ptr<NftMetadataFetcher> nft_metadata_fetcher_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
-  base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_;
+  base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
