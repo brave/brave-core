@@ -96,6 +96,8 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     showRewards: boolean('Show rewards?', true),
     showBraveTalk: boolean('Show Brave Talk?', true),
     showSearchBox: boolean('Show search box', true),
+    promptEnableSearchSuggestions: boolean('Prompt to enable search suggestions', true),
+    searchSuggestionsEnabled: boolean('Search suggestions enabled', false),
     braveTalkSupported: boolean('Brave Talk supported?', true),
     hideAllWidgets: boolean('Hide all widgets?', false),
     isBraveNewsOptedIn: boolean('Brave News opted-in?', false),
