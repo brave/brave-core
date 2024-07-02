@@ -39,7 +39,7 @@ import {
   LOCAL_STORAGE_KEYS //
 } from '../../../../../common/constants/local-storage-keys'
 import {
-  useGetNftCollectionNameRegistryQuery,
+  useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
@@ -49,8 +49,8 @@ import {
   compareTokensByName,
   filterTokensByNetworks,
   getAllSpamNftsAndIds,
-  getAssetCollectionIdKey,
   getAssetIdKey,
+  getTokenCollectionName,
   getTokensWithBalanceForAccounts,
   groupSpamAndNonSpamNfts
 } from '../../../../../utils/asset-utils'
@@ -97,7 +97,7 @@ import { Column, Row } from '../../../../shared/style'
 import { ContentWrapper } from '../../portfolio/style'
 
 interface Params {
-  collectionId: string
+  collectionName: string
 }
 
 interface Props {
@@ -120,7 +120,7 @@ export const NftCollection = ({
   // routing
   const history = useHistory()
 
-  const { collectionId } = useParams<Params>()
+  const { collectionName } = useParams<Params>()
   const urlSearchParams = useQuery()
   const currentPageNumber = Number(urlSearchParams.get('page')) || 1
 
@@ -224,20 +224,13 @@ export const NftCollection = ({
     return hiddenNfts.concat(allSpamNfts)
   }, [allSpamNfts, hiddenNfts])
 
-  const selectedNftList = React.useMemo(() => {
-    const listForAllCollections =
-      visibleUserNonSpamNfts.concat(hiddenAndSpamNfts)
-    if (collectionId !== null) {
-      return listForAllCollections.filter(
-        (token) => getAssetCollectionIdKey(token) === collectionId
-      )
-    }
-    return listForAllCollections
-  }, [collectionId, hiddenAndSpamNfts, visibleUserNonSpamNfts])
+  const allNfts = React.useMemo(() => {
+    return visibleUserNonSpamNfts.concat(hiddenAndSpamNfts)
+  }, [hiddenAndSpamNfts, visibleUserNonSpamNfts])
 
   const sortedSelectedNftList = React.useMemo(() => {
-    return selectedNftList.slice().sort(compareTokensByName)
-  }, [selectedNftList])
+    return allNfts.slice().sort(compareTokensByName)
+  }, [allNfts])
 
   // Filters the user's tokens based on the users
   // filteredOutPortfolioNetworkKeys pref and visible networks.
@@ -265,26 +258,49 @@ export const NftCollection = ({
   ])
 
   // differed queries
-  const { data: tokenCollectionNameRegistryInfo } =
-    useGetNftCollectionNameRegistryQuery(
+  const { data: nftAssetIdsByCollectionRegistryInfo } =
+    useGetNftAssetIdsByCollectionRegistryQuery(
       sortedSelectedNftListForChainsAndAccounts.length
         ? sortedSelectedNftListForChainsAndAccounts
         : skipToken
     )
-  const tokenCollectionNameRegistry = tokenCollectionNameRegistryInfo?.registry
+  const nftAssetIdsByCollectionRegistry =
+    nftAssetIdsByCollectionRegistryInfo?.registry
+
+  // memos
+  const collectionNames = React.useMemo(() => {
+    return Object.keys(nftAssetIdsByCollectionRegistry || {})
+  }, [nftAssetIdsByCollectionRegistry])
+
+  const nftListForCollection = React.useMemo(() => {
+    return sortedSelectedNftListForChainsAndAccounts.filter((token) => {
+      return (
+        getTokenCollectionName(
+          collectionNames,
+          nftAssetIdsByCollectionRegistry,
+          token
+        ) === collectionName
+      )
+    })
+  }, [
+    collectionName,
+    collectionNames,
+    nftAssetIdsByCollectionRegistry,
+    sortedSelectedNftListForChainsAndAccounts
+  ])
 
   const lastPageNumber = getLastPageNumber(
-    sortedSelectedNftListForChainsAndAccounts,
+    nftListForCollection,
     LIST_PAGE_ITEM_COUNT
   )
 
   const renderedListPage = React.useMemo(() => {
     return getListPageItems(
-      sortedSelectedNftListForChainsAndAccounts,
+      nftListForCollection,
       currentPageNumber,
       LIST_PAGE_ITEM_COUNT
     )
-  }, [sortedSelectedNftListForChainsAndAccounts, currentPageNumber])
+  }, [nftListForCollection, currentPageNumber])
 
   const isLoadingAssets =
     isLoadingSimpleHashNfts ||
@@ -329,10 +345,10 @@ export const NftCollection = ({
 
   const navigateToPage = React.useCallback(
     (pageNumber: number) => {
-      history.push(makePortfolioNftCollectionRoute(collectionId, pageNumber))
+      history.push(makePortfolioNftCollectionRoute(collectionName, pageNumber))
       listScrollContainerRef.current?.scrollIntoView(scrollOptions)
     },
-    [collectionId, history]
+    [collectionName, history]
   )
 
   // render
@@ -344,9 +360,7 @@ export const NftCollection = ({
       cardHeader={
         <NftAssetHeader
           onBack={history.goBack}
-          assetName={
-            collectionId ? tokenCollectionNameRegistry?.[collectionId] : ''
-          }
+          assetName={collectionName || ''}
         />
       }
     >

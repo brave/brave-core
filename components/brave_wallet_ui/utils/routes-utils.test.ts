@@ -3,12 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { AccountPageTabs } from '../constants/types'
+import { AccountPageTabs, WalletRoutes } from '../constants/types'
 import {
   mockBitcoinAccount,
   mockEthAccount
 } from '../stories/mock-data/mock-wallet-accounts'
-import { makeAccountRoute, makeAccountTransactionRoute } from './routes-utils'
+import {
+  makeAccountRoute,
+  makeAccountTransactionRoute,
+  makePortfolioNftCollectionRoute
+} from './routes-utils'
 
 describe('makeAccountRoute', () => {
   it('routes for eth account', () => {
@@ -54,6 +58,24 @@ describe('makeAccountTransactionRoute', () => {
       makeAccountTransactionRoute(mockBitcoinAccount, '#transactionId')
     ).toBe(
       '/crypto/accounts/mockBitcoinAccount_uniqueKey/transactions#transactionId'
+    )
+  })
+})
+
+describe('makePortfolioNftCollectionRoute', () => {
+  it('uses the correct router params', () => {
+    expect(WalletRoutes.PortfolioNFTCollection).toBe(
+      '/crypto/portfolio/collections/:collectionName'
+    )
+
+    const routeWithoutPage = makePortfolioNftCollectionRoute('MoonCatsRescue')
+    expect(routeWithoutPage).toBe(
+      '/crypto/portfolio/collections/MoonCatsRescue'
+    )
+
+    const routeWithPage = makePortfolioNftCollectionRoute('MoonCatsRescue', 2)
+    expect(routeWithPage).toBe(
+      '/crypto/portfolio/collections/MoonCatsRescue?page=2'
     )
   })
 })

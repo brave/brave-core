@@ -5,11 +5,12 @@
 import { NFTMetadataReturnType } from '../../constants/types'
 import MoonCatIcon from '../../assets/png-icons/mooncat.png'
 import MooncatProjectIcon from '../../assets/png-icons/mooncat-project-icon.png'
+import { mockMoonCatNFT } from './mock-asset-options'
 
-const mockMoonCatMetadata = {
+export const mockMoonCatMetadata: NFTMetadataReturnType = {
   chainName: 'Ethereum',
   tokenType: 'ERC721',
-  tokenID: '0x42a5',
+  tokenID: mockMoonCatNFT.tokenId,
   metadataUrl: 'ipfs://bafy1',
   imageURL: MoonCatIcon,
   imageMimeType: 'image/png',
@@ -18,7 +19,7 @@ const mockMoonCatMetadata = {
   floorFiatPrice: '2123.42',
   floorCryptoPrice: '0.64922',
   contractInformation: {
-    address: '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69',
+    address: mockMoonCatNFT.contractAddress,
     name: 'MoonCatsRescue',
     description:
       'After a whirlwind adventure four years in the making, ' +
@@ -66,7 +67,11 @@ const mockMoonCatMetadata = {
       traitType: 'Background',
       value: 'Blue'
     }
-  ]
+  ],
+  collection: {
+    family: 'MoonCatsRescue',
+    name: 'MoonCatsRescue'
+  }
 }
 export const mockNFTMetadata: NFTMetadataReturnType[] = [
   // Image

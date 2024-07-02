@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 // Types
-import { BraveWallet } from '../constants/types'
+import {
+  AssetIdsByCollectionNameRegistry,
+  BraveWallet
+} from '../constants/types'
 import {
   TokenBalancesRegistry //
 } from '../common/slices/entities/token-balance.entity'
@@ -193,21 +196,6 @@ export const getAssetIdKey = (
     : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
 }
 
-/**
- * Used to generate an id for a NFT collection.
- * Only nft collection assets should be passed into the function
- */
-export const getAssetCollectionIdKey = (
-  asset: Pick<
-    BraveWallet.BlockchainToken,
-    'chainId' | 'coin' | 'symbol' | 'contractAddress'
-  >
-) => {
-  return `${asset.coin}-${asset.chainId}-${asset.symbol}${
-    asset.coin === BraveWallet.CoinType.ETH ? `-${asset.contractAddress}` : ''
-  }`
-}
-
 export const findTokenByContractAddress = <
   T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>
 >(
@@ -332,7 +320,10 @@ export const isTokenIdRemoved = (tokenId: string, removedIds: string[]) => {
 }
 
 export function makeCountCollectionAssetsInRegistry(
-  collectionAssetsRegistry: Record<string, BraveWallet.BlockchainToken[]>
+  collectionAssetsRegistry: Record<
+    string, // collection name
+    BraveWallet.BlockchainToken[]
+  >
 ): (
   total: number,
   currentCollectionToken: BraveWallet.BlockchainToken,
@@ -340,11 +331,7 @@ export function makeCountCollectionAssetsInRegistry(
   array: BraveWallet.BlockchainToken[]
 ) => number {
   return (acc, collection) => {
-    return (
-      acc +
-      (collectionAssetsRegistry[getAssetCollectionIdKey(collection)]?.length ??
-        0)
-    )
+    return acc + (collectionAssetsRegistry[collection.name]?.length ?? 0)
   }
 }
 
@@ -492,7 +479,10 @@ export const searchNfts = (
 export const searchNftCollectionsAndGetTotalNftsFound = (
   searchValue: string,
   collections: BraveWallet.BlockchainToken[],
-  collectionAssetsRegistry: Record<string, BraveWallet.BlockchainToken[]>
+  collectionAssetsRegistry: Record<
+    string, // collection name
+    BraveWallet.BlockchainToken[]
+  >
 ): {
   foundCollections: BraveWallet.BlockchainToken[]
   totalNftsFound: number
@@ -518,21 +508,40 @@ export const searchNftCollectionsAndGetTotalNftsFound = (
     }
 
     // search collection assets and count how many NFTs were found
-    return collectionAssetsRegistry[getAssetCollectionIdKey(collection)]?.some(
-      (asset) => {
-        const tokenId = new Amount(asset.tokenId).toNumber().toString()
-        return (
-          asset.name.toLocaleLowerCase().includes(searchValueLower) ||
-          asset.symbol.toLocaleLowerCase().includes(searchValueLower) ||
-          tokenId.includes(searchValueLower) ||
-          asset.contractAddress.toLocaleLowerCase().startsWith(searchValueLower)
-        )
-      }
-    )
+    return collectionAssetsRegistry[collection.name]?.some((asset) => {
+      const tokenId = new Amount(asset.tokenId).toNumber().toString()
+      return (
+        asset.name.toLocaleLowerCase().includes(searchValueLower) ||
+        asset.symbol.toLocaleLowerCase().includes(searchValueLower) ||
+        tokenId.includes(searchValueLower) ||
+        asset.contractAddress.toLocaleLowerCase().startsWith(searchValueLower)
+      )
+    })
   })
 
   return {
     foundCollections,
     totalNftsFound: foundCollections.reduce(countCollectionAssets, 0)
   }
+}
+
+export function getTokenCollectionName(
+  collectionNames: string[],
+  assetIdsByCollectionNameRegistry:
+    | AssetIdsByCollectionNameRegistry
+    | undefined,
+  token: BraveWallet.BlockchainToken
+) {
+  if (!assetIdsByCollectionNameRegistry) {
+    return tokenNameToNftCollectionName(token)
+  }
+
+  return (
+    collectionNames.find((collectionName) => {
+      return assetIdsByCollectionNameRegistry[collectionName].includes(
+        // token id is not used in the collection name registry to reduce size
+        getAssetIdKey({ ...token, tokenId: '' })
+      )
+    }) || tokenNameToNftCollectionName(token)
+  )
 }

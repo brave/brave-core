@@ -116,7 +116,7 @@ export const PortfolioOverview = () => {
   const history = useHistory()
   const location = useLocation()
   const isCollectionView = location.pathname.includes(
-    WalletRoutes.PortfolioNFTCollection.replace(':collectionId', '')
+    WalletRoutes.PortfolioNFTCollection.replace(':collectionName', '')
   )
 
   // local-storage

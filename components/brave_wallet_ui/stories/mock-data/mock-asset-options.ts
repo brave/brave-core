@@ -377,6 +377,10 @@ export const mockErc20TokensList = [
   mockUSDCoin
 ]
 
+export const mockNfts = [mockSplNft, mockMoonCatNFT, mockErc721Token]
+
+export const mockTokensList = mockNfts.concat(mockErc20TokensList)
+
 export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
   mockEthToken,
   {

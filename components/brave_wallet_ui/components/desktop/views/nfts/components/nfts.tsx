@@ -44,7 +44,7 @@ import {
   LOCAL_STORAGE_KEYS //
 } from '../../../../../common/constants/local-storage-keys'
 import {
-  useGetNftCollectionNameRegistryQuery,
+  useGetNftAssetIdsByCollectionRegistryQuery,
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
@@ -55,13 +55,12 @@ import {
   compareTokensByName,
   filterTokensByNetworks,
   getAllSpamNftsAndIds,
-  getAssetCollectionIdKey,
   getAssetIdKey,
+  getTokenCollectionName,
   getTokensWithBalanceForAccounts,
   groupSpamAndNonSpamNfts,
   searchNftCollectionsAndGetTotalNftsFound,
-  searchNfts,
-  tokenNameToNftCollectionName
+  searchNfts
 } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import {
@@ -278,60 +277,82 @@ export const Nfts = ({
 
   // differed queries
   const {
-    data: tokenCollectionNameRegistryInfo,
-    isFetching: isFetchingTokenCollectionNameRegistryInfo
-  } = useGetNftCollectionNameRegistryQuery(
+    data: assetIdsByCollectionNameRegistryInfo,
+    isFetching: isFetchingAssetIdsByCollectionNameRegistryInfo
+  } = useGetNftAssetIdsByCollectionRegistryQuery(
     sortedSelectedNftListForChainsAndAccounts.length && groupNftsByCollection
       ? sortedSelectedNftListForChainsAndAccounts
       : skipToken
   )
 
-  const tokenCollectionNameRegistry = tokenCollectionNameRegistryInfo?.registry
-  const isFetchingLatestTokenCollectionNameRegistry =
-    tokenCollectionNameRegistryInfo?.isStreaming ??
-    isFetchingTokenCollectionNameRegistryInfo ??
+  const assetIdsByCollectionNameRegistry =
+    assetIdsByCollectionNameRegistryInfo?.registry
+  const isFetchingLatestAssetIdsByCollectionNameRegistry =
+    assetIdsByCollectionNameRegistryInfo?.isStreaming ??
+    isFetchingAssetIdsByCollectionNameRegistryInfo ??
     false
 
-  const { nftCollectionAssets, assetsByCollectionId } = React.useMemo(() => {
+  const collectionNames = React.useMemo(() => {
+    return Object.keys(assetIdsByCollectionNameRegistry ?? {})
+  }, [assetIdsByCollectionNameRegistry])
+
+  const { nftCollectionAssets, assetsByCollectionName } = React.useMemo(() => {
     const nftCollectionAssets: BraveWallet.BlockchainToken[] = []
-    const assetsByCollectionId: Record<string, BraveWallet.BlockchainToken[]> =
-      {}
+    const assetsByCollectionName: Record<
+      string,
+      BraveWallet.BlockchainToken[]
+    > = {}
 
     // skip if not in "group by collection" mode
     if (!groupNftsByCollection) {
-      return { nftCollectionAssets, assetsByCollectionId }
+      return {
+        nftCollectionAssets,
+        assetsByCollectionName
+      }
+    }
+
+    // skip if registry is not ready
+    if (!assetIdsByCollectionNameRegistry) {
+      return {
+        nftCollectionAssets,
+        assetsByCollectionName
+      }
     }
 
     for (const token of sortedSelectedNftListForChainsAndAccounts) {
-      const collectionId = getAssetCollectionIdKey(token)
-      const nameFromRegistry = tokenCollectionNameRegistry?.[collectionId]
+      const collectionNameForToken = getTokenCollectionName(
+        collectionNames,
+        assetIdsByCollectionNameRegistry,
+        token
+      )
 
       // create collection and collection token if it doesn't exist
-      if (!assetsByCollectionId[collectionId]) {
+      if (!assetsByCollectionName[collectionNameForToken]) {
         // add collection asset to the list
         const collectionToken = {
           ...token,
           tokenId: '',
-          name: nameFromRegistry || tokenNameToNftCollectionName(token)
+          name: collectionNameForToken
         }
         nftCollectionAssets.push(collectionToken)
 
         // create collection in assets map
-        assetsByCollectionId[collectionId] = []
+        assetsByCollectionName[collectionNameForToken] = []
       }
 
       // add token to the collection
-      assetsByCollectionId[collectionId].push(token)
+      assetsByCollectionName[collectionNameForToken].push(token)
     }
 
     // sort collections by name
     nftCollectionAssets.sort(compareTokensByName)
 
-    return { nftCollectionAssets, assetsByCollectionId }
+    return { nftCollectionAssets, assetsByCollectionName }
   }, [
     groupNftsByCollection,
+    assetIdsByCollectionNameRegistry,
     sortedSelectedNftListForChainsAndAccounts,
-    tokenCollectionNameRegistry
+    collectionNames
   ])
 
   const { searchResults, totalNftsFound } = React.useMemo(() => {
@@ -340,7 +361,7 @@ export const Nfts = ({
         searchNftCollectionsAndGetTotalNftsFound(
           searchValue,
           nftCollectionAssets,
-          assetsByCollectionId
+          assetsByCollectionName
         )
       return {
         searchResults: foundCollections,
@@ -357,7 +378,7 @@ export const Nfts = ({
       totalNftsFound: searchResults.length
     }
   }, [
-    assetsByCollectionId,
+    assetsByCollectionName,
     groupNftsByCollection,
     nftCollectionAssets,
     searchValue,
@@ -392,7 +413,8 @@ export const Nfts = ({
 
   const isLoadingAssets =
     !assetAutoDiscoveryCompleted ||
-    (groupNftsByCollection && isFetchingLatestTokenCollectionNameRegistry) ||
+    (groupNftsByCollection &&
+      isFetchingLatestAssetIdsByCollectionNameRegistry) ||
     (selectedTab === 'hidden' &&
       (isLoadingSpamNfts ||
         (shouldFetchSpamNftBalances && !spamTokenBalancesRegistry)))
@@ -419,11 +441,16 @@ export const Nfts = ({
 
   const onSelectCollection = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
-      history.push(
-        makePortfolioNftCollectionRoute(getAssetCollectionIdKey(asset))
+      const collectionNameForToken = getTokenCollectionName(
+        collectionNames,
+        assetIdsByCollectionNameRegistry,
+        asset
       )
+      if (collectionNameForToken) {
+        history.push(makePortfolioNftCollectionRoute(collectionNameForToken))
+      }
     },
-    [history]
+    [assetIdsByCollectionNameRegistry, collectionNames, history]
   )
 
   const onClickIpfsButton = React.useCallback(() => {
@@ -573,14 +600,12 @@ export const Nfts = ({
             <NftGrid padding='0px'>
               {groupNftsByCollection
                 ? renderedListPage.map((collectionToken) => {
-                    const collectionIdKey =
-                      getAssetCollectionIdKey(collectionToken)
                     return (
                       <NftCollectionGridViewItem
-                        key={collectionIdKey}
+                        key={collectionToken.name}
                         collectionToken={collectionToken}
                         tokensInCollection={
-                          assetsByCollectionId[collectionIdKey]
+                          assetsByCollectionName[collectionToken.name]
                         }
                         onSelectAsset={onSelectCollection}
                       />

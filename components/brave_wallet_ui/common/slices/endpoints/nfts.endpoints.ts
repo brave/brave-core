@@ -6,12 +6,15 @@
 import { filterLimit, mapLimit } from 'async'
 
 // types
-import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
+import {
+  AssetIdsByCollectionNameRegistry,
+  BraveWallet,
+  NFTMetadataReturnType
+} from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 // utils
 import {
-  getAssetCollectionIdKey,
   getAssetIdKey,
   tokenNameToNftCollectionName
 } from '../../../utils/asset-utils'
@@ -102,9 +105,9 @@ export const nftsEndpoints = ({
      * Uses local storage to load the initial data and
      * then fetches the latest data from the token contract or NFT metadata
      */
-    getNftCollectionNameRegistry: query<
+    getNftAssetIdsByCollectionRegistry: query<
       /** collection names by collection asset id */
-      { registry: Record<string, string>; isStreaming: boolean },
+      { registry: AssetIdsByCollectionNameRegistry; isStreaming: boolean },
       /** asset id keys */
       BraveWallet.BlockchainToken[]
     >({
@@ -132,7 +135,7 @@ export const nftsEndpoints = ({
               data: { jsonRpcService }
             } = baseQueryFunction()
 
-            const registry: Record<string, string> = {}
+            const registry: AssetIdsByCollectionNameRegistry = {}
 
             // prevent looking up token info multiple times
             const uniqueTokenChainIdAndContractAddresses: string[] = []
@@ -190,9 +193,16 @@ export const nftsEndpoints = ({
                 }
               }
 
-              // update the registry
-              const collectionId = getAssetCollectionIdKey(token)
-              registry[collectionId] = collectionName
+              // initialize the collection assets list in the registry if needed
+              if (!registry[collectionName]) {
+                registry[collectionName] = []
+              }
+
+              // add the asset id to the collection assets list
+              registry[collectionName].push(
+                // remove the token id to reduce the sie of the registry
+                getAssetIdKey({ ...token, tokenId: '' })
+              )
             }
 
             updateCachedData((draft) => {

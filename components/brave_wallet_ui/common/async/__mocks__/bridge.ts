@@ -46,7 +46,8 @@ import {
   mockErc721Token,
   mockSplBat,
   mockSplNft,
-  mockSplUSDC
+  mockSplUSDC,
+  mockTokensList
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockFilSendTransaction,
@@ -1014,16 +1015,24 @@ export class MockedWalletApiProxy {
     },
 
     getEthTokenInfo: async (contractAddress, chainId) => {
-      const foundToken = mockErc20TokensList.find(
+      const foundToken = mockTokensList.find(
         (t) => t.contractAddress === contractAddress
       )
+
+      const metadata = mockNFTMetadata.find((meta) => {
+        return meta.contractInformation.address === contractAddress
+      })
 
       return {
         token: {
           contractAddress,
           chainId,
           coin: BraveWallet.CoinType.ETH,
-          name: foundToken?.name || 'Mocked Token',
+          name:
+            metadata?.collection?.name ||
+            metadata?.contractInformation?.name ||
+            foundToken?.name ||
+            'Mocked Token',
           symbol: foundToken?.symbol || 'MTK',
           decimals: foundToken?.decimals || 18,
           coingeckoId: foundToken?.coingeckoId || 'mocked-token',
