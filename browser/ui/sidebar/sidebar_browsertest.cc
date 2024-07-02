@@ -862,6 +862,46 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       [&]() { return GetSidePanel()->GetVisible(); }));
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
+  // Create another tab.
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+
+  // Open contextual panel to tab at 0.
+  tab_model()->ActivateTabAt(0);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+
+  // No panel when activated tab at 1 because we don't open any global panel.
+  tab_model()->ActivateTabAt(1);
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+
+  // Open global panel when active tab indext is 1.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
+
+  // Contextual panel should be set when activate tab at 0.
+  tab_model()->ActivateTabAt(0);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+  }));
+
+  // Global panel should be set when activate tab at 1.
+  tab_model()->ActivateTabAt(1);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+  }));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
   auto* controller = guest_browser->sidebar_controller();
