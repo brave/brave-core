@@ -375,7 +375,7 @@ static bool CustomLogHandler(int severity,
   if (!_bookmarksAPI) {
     bookmarks::BookmarkModel* bookmark_model_;
     if (base::FeatureList::IsEnabled(
-            syncer::kEnableBookmarkFoldersForAccountStorage)) {
+            syncer::kSyncEnableBookmarksInTransportMode)) {
       bookmark_model_ = ios::BookmarkModelFactory::
           GetModelForBrowserStateIfUnificationEnabledOrDie(_mainBrowserState);
     } else {

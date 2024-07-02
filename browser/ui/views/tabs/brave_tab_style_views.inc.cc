@@ -30,7 +30,7 @@ bool IsBrowserFrameCondensed(const Browser* browser) {
 ////////////////////////////////////////////////////////////////////////////////
 // BraveGM2TabStyle
 //
-class BraveGM2TabStyle : public GM2TabStyleViews {
+class BraveGM2TabStyle : public TabStyleViewsImpl {
  public:
   explicit BraveGM2TabStyle(Tab* tab);
   BraveGM2TabStyle(const BraveGM2TabStyle&) = delete;
@@ -45,10 +45,10 @@ class BraveGM2TabStyle : public GM2TabStyleViews {
 };
 
 BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
-    : GM2TabStyleViews(tab), tab_(tab) {}
+    : TabStyleViewsImpl(tab), tab_(tab) {}
 
 TabStyle::TabColors BraveGM2TabStyle::CalculateTargetColors() const {
-  auto colors = GM2TabStyleViews::CalculateTargetColors();
+  auto colors = TabStyleViewsImpl::CalculateTargetColors();
   const SkColor inactive_non_hovered_fg_color = SkColorSetA(
       colors.foreground_color,
       gfx::Tween::IntValueBetween(0.7, SK_AlphaTRANSPARENT, SK_AlphaOPAQUE));

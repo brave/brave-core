@@ -8,11 +8,11 @@ package org.chromium.chrome.browser.tasks;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 
 public final class BraveReturnToChromeUtil {
-    public static boolean shouldShowTabSwitcher(final long lastTimeMillis, boolean isTablet) {
+    public static boolean shouldShowTabSwitcher(final long lastTimeMillis) {
         if (!ChromeFeatureList.sStartSurfaceReturnTime.isEnabled()) {
             return false;
         }
 
-        return ReturnToChromeUtil.shouldShowTabSwitcher(lastTimeMillis, isTablet);
+        return ReturnToChromeUtil.shouldShowTabSwitcher(lastTimeMillis);
     }
 }

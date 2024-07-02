@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index b1ffa404e405dff3ec523a8100df0cadd1354f6a..ee015d36fdbffb4a3d39016ff86b33243e095209 100644
+index b425a6a75b0c2198dce23d36d34b0d5ca4bf7808..e6f5f87dea5232170eda35de8b6f3617bcb06520 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -451,6 +451,7 @@ public class ToolbarPhone extends ToolbarLayout

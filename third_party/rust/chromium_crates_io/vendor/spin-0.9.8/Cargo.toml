@@ -1,0 +1,31 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/removed_Cargo.toml
+# by tools/crates/gnrt. Do not edit!
+
+# This is an empty crate that has replaced the 'spin' crate, since
+# it was listed in `resolve.remove_crates` in gnrt_config.toml.
+
+[package]
+name = "spin"
+version = "0.9.8"
+
+[features]
+"barrier" = []
+"default" = []
+"fair_mutex" = []
+"lazy" = []
+"lock_api" = []
+"lock_api_crate" = []
+"mutex" = []
+"once" = []
+"portable-atomic" = []
+"portable_atomic" = []
+"rwlock" = []
+"spin_mutex" = []
+"std" = []
+"ticket_mutex" = []
+"use_ticket_mutex" = []
+

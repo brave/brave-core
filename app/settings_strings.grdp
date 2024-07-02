@@ -385,13 +385,16 @@
   <message name="IDS_SETTINGS_SHOW_HOVER_CARD_MEMORY_USAGE_STANDALONE" desc="Label for the toggle which enables or disables showing tabs' memory usage in tab hovercards. This longer string is shown when then toggle is in it's own row without a title to indicate the setting is to do with tab hovercards.">
     Show memory usage on tab hover preview card
   </message>
-  <message name="IDS_SETTINGS_SIDE_PANEL" desc="Title for the side panel section. Allows the user to toggle which side the side panel is displayed on.">
-    Side panel
+  <message name="IDS_SETTINGS_SIDE_PANEL_POSITION" desc="Title for the side panel section. Allows the user to toggle which side the side panel is displayed on.">
+    Side panel position
   </message>
-  <message name="IDS_SETTINGS_SIDE_PANEL_ALIGN_LEFT" desc="Label for the button that allows the side panel to appear on the left side of the browser. Translate this verbatim, do not localize for RTL languages.">
+  <message name="IDS_SETTINGS_TAB_SEARCH_POSITION" desc="Title for the tab search section. Allows the user to toggle which side the side panel is displayed on.">
+    Tab search position
+  </message>
+  <message name="IDS_SETTINGS_UI_FEATURE_ALIGN_LEFT" desc="Label for the button that configures a feature to appear on the left side of the browser. Translate this verbatim, do not localize for RTL languages.">
     Show on left
   </message>
-  <message name="IDS_SETTINGS_SIDE_PANEL_ALIGN_RIGHT" desc="Label for the button that allows the side panel to appear on the right side of the browser. Translate this verbatim, do not localize for RTL languages.">
+  <message name="IDS_SETTINGS_UI_FEATURE_ALIGN_RIGHT" desc="Label for the button that configures a feature to appear on the right side of the browser. Translate this verbatim, do not localize for RTL languages.">
     Show on right
   </message>
   <message name="IDS_SETTINGS_HOME_PAGE_NTP" desc="Description of the New Tab Page when set as the home page.">
@@ -807,6 +810,9 @@
   <if expr="chrome_root_store_cert_management_ui">
     <!-- TODO(crbug.com/40928765): Make translatable once UI/strings are finalized. -->
     <!-- Certificate Manager V2 Page -->
+    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_TITLE" desc="Label for the title of the certificate manager page." translateable="false">
+      Certificate Manager
+    </message>
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_V2_CLIENT_CERTIFICATES" desc="Label for the client certificates tab in certificate manager." translateable="false">
       Your certificates
     </message>
@@ -1827,6 +1833,10 @@
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_LABEL" desc="Text of the Privacy Sandbox label in the completion card of the 'Privacy Guide'.">
     Ad privacy
   </message>
+  <!-- TODO(crbug.com/331970504): Make privacy guide ad topics strings translateable. -->
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_PRIVACY_SANDBOX_SUB_LABEL_AD_TOPICS" desc="Text of the Privacy Sandbox sublabel in the completion card of the 'Privacy Guide' - This text is used when the ad topics card is added." translateable="false">
+    Manage your ad topics and other settings to limit what sites can learn about you to show you personalized ads
+  </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_LABEL" desc="Text of the Web and App Activity label in the completion card of the 'Privacy Guide'.">
     Web &amp; App Activity
   </message>
@@ -2604,6 +2614,18 @@
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_INACTIVE_SITES" desc="Label for button that expands the Inactive Sites list of search engines to show all entries">
     Additional inactive sites
   </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_MORE_ACTIONS_ARIA_LABEL" desc="Accessibility label for the three-dot more actions menu button associated with each search engine on chrome://settings/searchEngines">
+    More actions for <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ACTIVATE_BUTTON_ARIA_LABEL" desc="Accessibility label for the Activate button associated with each inactive search engine on chrome://settings/searchEngines">
+    Click to activate <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_ADD_SITE_SEARCH_BUTTON_ARIA_LABEL" desc="Accessibility label for the Add button that opens the Add Site search dialog on chrome://settings/searchEngines.">
+    Click to open Add Site Search dialog
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_ENGINES_EDIT_SEARCH_ENGINE_BUTTON_ARIA_LABEL" desc="Accessibility label for the Edit (pencil-icon) button that opens the Edit Site search/Search engine dialog for the associated search engine on chrome://settings/searchEngines.">
+    Click to open Edit dialog for <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph>
+  </message>
 
   <!-- Site Settings Page -->
   <message name="IDS_SETTINGS_EXCEPTIONS_EMBEDDED_ON_HOST" desc="Template text for a child row in the content Exceptions page view. Controls the permission setting for the parent page when embedded on the specified site.">
@@ -2943,19 +2965,19 @@
     Not allowed to use V8 optimizer
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_DESCRIPTION" desc="Description of the keyboard lock content setting.">
-    Sites use keyboard lock to capture keyboard input that would otherwise be handled by the browser or the operating system.
+    Sites use this feature to capture and use the input of your keyboard, like for games or remote desktop apps
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED" desc="Label for the enabled option of the keyboard lock content setting.">
-    Sites can ask to lock your keyboard
+    Sites can ask to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED" desc="Label for the disabled option of the keyboard lock content setting.">
-    Don't allow sites to lock your keyboard
+    Don't allow sites to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the keyboard lock content setting.">
-    Allowed to lock your keyboard
+    Allowed to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the keyboard lock content setting.">
-    Not allowed to lock your keyboard
+    Not allowed to capture and use your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_DESCRIPTION" desc="Description of the location content setting.">
     Sites usually use your location for relevant features or info, like local news or nearby shops
@@ -3084,19 +3106,19 @@
     Download PDFs
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_DESCRIPTION" desc="Description of the pointer lock content setting.">
-    Sites use pointer lock to hide the mouse pointer and prevent it from leaving the page.
+    Sites use this feature to capture and use the input of your mouse, like for games or remote desktop apps
   </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_ALLOWED" desc="Label for the enabled option of the pointer lock content setting.">
-    Sites can ask to lock your mouse pointer
+    Sites can ask to capture and use your mouse input
   </message>
     <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_BLOCKED" desc="Label for the disabled option of the pointer lock content setting.">
-    Don't allow sites to lock your pointer
+    Don't allow sites to capture and use your mouse input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the pointer lock content setting.">
-    Allowed to lock your pointer
+    Allowed to capture and use your mouse input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POINTER_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the pointer lock content setting.">
-    Not allowed to lock your pointer
+    Not allowed to capture and use your mouse input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_POPUPS_DESCRIPTION" desc="Description of the pop-ups content setting.">
     Sites might send pop-ups to show ads, or use redirects to lead you to websites you may not want to visit
@@ -3597,8 +3619,11 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_DISPLAYED_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing storage used by displayed sites.">
     You'll be signed out of displayed sites, including in open tabs
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_CONFIRMATION" desc="Text for the dialog that warns about resetting all permissions for a site.">
-    Reset site permissions for <ph name="SITE">$1<ex>www.example.com</ex></ph>?
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_DIALOG_TITLE" desc="Title of a dialog that asks users to confirm that they want to reset all permissions for a site.">
+    Reset permissions?
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_CONFIRMATION" desc="Body text of a dialog that asks users to confirm that they want to reset all permissions for a site.">
+    The next time you visit, <ph name="SITE">$1<ex>www.example.com</ex></ph> will use default permissions
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_DELETE_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting storage used by a site.">
     Delete site data?
@@ -4063,26 +4088,22 @@
   </message>
 
   <!-- History search -->
-  <!-- TODO(b/328300718): Finalize strings. -->
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search." translateable="false">
-    History search
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_LABEL" desc="Title of the page of the settings that enables history search.">
+    History search, powered by AI
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL" desc="Sublabel of the setting that enables history search." translateable="false">
-    Search through history
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_SETTING_SUBLABEL" desc="Sublabel of the setting that enables history search.">
+    Use everyday language to search your browsing history and find sites you visited.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_BULLET_ONE" desc="Bullet point in the 'When on' column of the description of the setting that enables history search." translateable="false">
-    You can search through your history
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_WHEN_ON_BULLET_ONE" desc="Bullet point in the 'When on' column of the description of the setting that enables history search.">
+    You can search your browsing history based on general page content, not only page title and URL. This gives you improved results, whether you're searching browsing history in the address bar using @history or from the History page.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_ONE" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search." translateable="false">
-    You should consider this
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_ONE" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search.">
+    When you search browsing history, your history search terms, page content of best matches, and generated model outputs are sent to Brave and may be seen by human reviewers to improve this feature.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search." translateable="false">
-    You should consider this too
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables history search.">
+    As you browse sites, their page contents are saved in an encrypted form on your device.
   </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE" desc="Footer text for the setting that enables history search that links out to a help article." translateable="false">
-    <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-label="$2"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph> about history searches
-  </message>
-  <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the footer text for teh setting that enables history search." translateable="false">
+  <message name="IDS_SETTINGS_HISTORY_SEARCH_LEARN_MORE_A11Y_LABEL" desc="Label for the 'Learn more' link in the toggle for the setting that enables history search.">
     Learn more about history searches
   </message>
 

@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
+import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
@@ -80,7 +81,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier,
-            boolean isTabToGtsAnimationEnabled,
             boolean isStartSurfaceEnabled,
             HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier,
@@ -93,7 +93,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                     browserStateBrowserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             TabObscuringHandler tabObscuringHandler,
-            @Nullable DesktopWindowStateProvider desktopWindowStateProvider) {
+            @Nullable DesktopWindowStateProvider desktopWindowStateProvider,
+            OneshotSupplier<TabStripTransitionDelegate> tabStripTransitionDelegateSupplier) {
         super(
                 controlContainer,
                 toolbarStub,
@@ -114,7 +115,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 identityDiscButtonSupplier,
                 resourceManagerSupplier,
                 isIncognitoModeEnabledSupplier,
-                isTabToGtsAnimationEnabled,
                 isStartSurfaceEnabled,
                 historyDelegate,
                 partnerHomepageEnabledSupplier,
@@ -126,7 +126,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 browserStateBrowserControlsVisibilityDelegate,
                 fullscreenManager,
                 tabObscuringHandler,
-                desktopWindowStateProvider);
+                desktopWindowStateProvider,
+                tabStripTransitionDelegateSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
@@ -142,7 +143,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                                         .getRootView()
                                         .findViewById(R.id.tab_switcher_toolbar_stub),
                                 overviewModeMenuButtonCoordinator,
-                                isTabToGtsAnimationEnabled,
                                 isIncognitoModeEnabledSupplier,
                                 mToolbarColorObserverManager);
             }

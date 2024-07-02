@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
+index d5c9b4a92a155547547b77d41ab41bb7ca0f696c..aba28dc6dae1a5df43347f9f4930a140466969cc 100644
+--- a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
++++ b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
+@@ -82,7 +82,7 @@ base::FilePath GetChromeAppsFolderImpl() {
+     return path;
+   }
+ 
+-  return path.Append(GetLocalizableAppShortcutsSubdirName());
++  return path.Append(GetLocalizableBraveAppShortcutsSubdirName());
+ }
+ 
+ // Helper function to extract the single NSImageRep held in a resource bundle

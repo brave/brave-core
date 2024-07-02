@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
@@ -262,7 +263,9 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 
   // If side panel is shown, contents container should have margin
   // because panel doesn't have margin.
-  if (SidePanelUI::GetSidePanelUIForBrowser(browser_view_->browser())
+  if (browser_view_->browser()
+          ->GetFeatures()
+          .side_panel_ui()
           ->GetCurrentEntryId()) {
     contents_container_bounds.Inset(contents_margins);
     return;

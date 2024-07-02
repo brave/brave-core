@@ -36,11 +36,5 @@ void PageInfoCookiesContentView::SetCookieInfo(
           cookies_buttons_container_view_->children()[0]);
     }
   }
-
-  // Hide 3P cookies toggle if shown.
-  if (blocking_third_party_cookies_row_) {
-    blocking_third_party_cookies_row_->SetVisible(false);
-  }
-
   PreferredSizeChanged();
 }

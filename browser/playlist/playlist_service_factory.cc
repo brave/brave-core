@@ -25,6 +25,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -112,7 +113,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
         continue;
       }
 
-      auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser);
+      auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
       if (!side_panel_ui ||
           side_panel_ui->GetCurrentEntryId() != SidePanelEntryId::kPlaylist) {
         continue;

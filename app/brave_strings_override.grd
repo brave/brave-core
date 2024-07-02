@@ -267,7 +267,6 @@ Permissions you've already given to websites and apps may apply to this account.
           </if>
         <if expr="use_titlecase">
           </if>
-
         </if>
 
       <if expr="not chromeos_ash and not is_android">

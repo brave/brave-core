@@ -80,12 +80,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mBottomSheetController");
         makeProtectedField(sToolbarManagerClassName, "mBottomSheetController");
 
-        deleteField(sBraveToolbarManagerClassName, "mActivityLifecycleDispatcher");
-        makeProtectedField(sToolbarManagerClassName, "mActivityLifecycleDispatcher");
-
-        deleteField(sBraveToolbarManagerClassName, "mIsWarmOnResumeSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mIsWarmOnResumeSupplier");
-
         deleteField(sBraveToolbarManagerClassName, "mTabContentManager");
         makeProtectedField(sToolbarManagerClassName, "mTabContentManager");
 

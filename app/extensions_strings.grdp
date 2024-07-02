@@ -503,6 +503,9 @@
   <message name="IDS_EXTENSIONS_REMOVE" desc="The generic label for a button to remove an entry.">
     Remove
   </message>
+  <message name="IDS_EXTENSIONS_MORE_OPTIONS" desc="The generic label for a button to open an action menu.">
+    More options
+  </message>
   <message name="IDS_EXTENSIONS_RUNTIME_HOSTS_DIALOG_TITLE" desc="The title of the dialog used to allow a user to add a new site that an extension is allowed to run on.">
     Add a site
   </message>
@@ -605,7 +608,7 @@
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_WARNING_HEADER" desc="Header text displayed in the manifest v2 deprecation panel for the warning stage.">
     {NUM_EXTENSIONS, plural,
-      =1 {This extension may soon no longer be suported}
+      =1 {This extension may soon no longer be supported}
       other {These extensions may soon no longer be supported}
     }
   </message>
@@ -616,7 +619,7 @@
     }
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_WARNING_HEADER" desc="Header text displayed in the manifest v2 deprecation message for a specific extension during the warning stage.">
-    This extension may soon no longer be suported
+    This extension may soon no longer be supported
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_WARNING_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation message for a specific extension during the warning stage.">
     Remove or replace it with similar extensions from the <ph name="BEGIN_LINK">&lt;a href='https://chromewebstore.google.com/category/extensions'&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -629,6 +632,12 @@
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_KEEP_FOR_NOW_BUTTON" desc="The label for a button to dismiss the deprecation warning for a given extension, keeping it installed for the time being.">
     Keep for now
+  </message>
+  <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_ACTION_MENU_BUTTON_LABEL" desc="The (accessible) label for the button whichs opens an extension's action menu.">
+    More options for <ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>
+  </message>
+  <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_FIND_ALTERNATIVE_BUTTON_ACC_LABEL" desc="The (accessible) label for the button to find an alternative extension.">
+    Find alternative for  <ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>
   </message>
 <if expr="is_macosx">
   <message name="IDS_EXTENSIONS_INCLUDE_START_MODIFIER" desc="Error message explaining that shortcuts must start with either the Control, Alt, or Command key.">

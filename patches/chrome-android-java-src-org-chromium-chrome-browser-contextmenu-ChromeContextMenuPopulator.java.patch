@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 229cd448a170ca46036b1e68f8f24791841503be..80b11649205bb2e56b25da43aeea1bcfcb00860c 100644
+index 7cca76269ca8e78217757f91ec0b7ff40689c238..78c6cff5bc7050760845636958f17b58b2ef8b24 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -153,7 +153,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -159,7 +159,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.SHARE_HIGHLIGHT,
              Action.REMOVE_HIGHLIGHT,
              Action.LEARN_MORE,
@@ -11,7 +11,7 @@ index 229cd448a170ca46036b1e68f8f24791841503be..80b11649205bb2e56b25da43aeea1bcf
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -198,7 +198,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -204,7 +204,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int LEARN_MORE = 38;
              int OPEN_IN_NEW_TAB_IN_GROUP = 39;
              int OPEN_IN_NEW_WINDOW = 40;
@@ -20,7 +20,7 @@ index 229cd448a170ca46036b1e68f8f24791841503be..80b11649205bb2e56b25da43aeea1bcf
          }
      }
  
-@@ -287,6 +287,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -293,6 +293,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));

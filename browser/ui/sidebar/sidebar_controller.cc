@@ -19,11 +19,13 @@
 #include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
@@ -127,7 +129,7 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 void SidebarController::ActivatePanelItem(
     SidebarItem::BuiltInItemType panel_item) {
   // For panel item activation, SidePanelUI is the single source of truth.
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser_);
+  auto* panel_ui = browser_->GetFeatures().side_panel_ui();
   if (!panel_ui) {
     return;
   }

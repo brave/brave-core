@@ -317,6 +317,20 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // Related Chromium commit 7cdf92e9470fc73a09b871f99d14ff115edef652
   brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
 
+  // We have to cleanup SyncServiceCrypto.state_.engine with Reset
+  // because on 2nd OnEngineInitialized call it is non-null and CHECK gets
+  // invoked. Then call again OnPassphraseRequired/data_type_manager_->Stop.
+  // Related Chromium change b0567d24a6da98c40363c693fccfd63688f43bb3.
+  // TODO(alexeybarabash): revert PR#13397 if it is not required anymore.
+  // https://github.com/brave/brave-browser/issues/39353
+
+  brave_sync_service_impl()->GetCryptoForTests()->Reset();
+  brave_sync_service_impl()->GetCryptoForTests()->OnPassphraseRequired(
+      KeyDerivationParams::CreateForPbkdf2(),
+      MakeEncryptedData(kValidSyncCode,
+                        KeyDerivationParams::CreateForPbkdf2()));
+  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
+
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());

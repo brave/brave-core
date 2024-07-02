@@ -61,7 +61,12 @@ namespace android {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAddToHomescreenIPH, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kAndroidHub, base::FEATURE_DISABLED_BY_DEFAULT},
+    // TODO(alexeybarabash): kAndroidHub was removed at upstream.
+    // Previously it was enabled at Chromium and disabled at Brave.
+    // Need to check how it does affect Brave now and does it require any
+    // additional changes.
+    // The obvious problem is top toolbar during tab overview.
+    // {kAndroidHub, base::FEATURE_DISABLED_BY_DEFAULT},
     {tab_groups::kAndroidTabGroupStableIds, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIncognitoReauthenticationForAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},

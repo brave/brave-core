@@ -12,7 +12,9 @@
 #include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "components/google/core/common/google_util.h"
@@ -99,7 +101,7 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
     return;
   }
 
-  auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser);
+  auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
   if (!side_panel_ui) {
     return;
   }

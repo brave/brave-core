@@ -1698,6 +1698,73 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_HUB_NOTIFICATIONS_PAGE_HEADER" translateable="false">
         You can review sites that send a lot of notifications and stop them from sending more in the future
       </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_SUBLABEL" translateable="false">
+        {NUM_SITES, plural, =1 {About 1 notification a day} other {About # notifications a day}}
+      </message>
+      <message name="IDS_SAFETY_HUB_BLOCK_NOTIFICATIONS_MENU_ITEM" translateable="false">
+        Block notifications from this site
+      </message>
+      <message name="IDS_SAFETY_HUB_ALLOW_NOTIFICATIONS_MENU_ITEM" translateable="false">
+        Always allow notifications from this site
+      </message>
+      <message name="IDS_SAFETY_HUB_ASK_NOTIFICATIONS_MENU_ITEM" translateable="false">
+        Don’t allow but ask later
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_MODULES_SECTION_HEADER" translateable="false">
+        Safety at a glance
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_SECTION_HEADER" translateable="false">
+        More ways to stay safer with Brave
+      </message>
+      <message name="IDS_SAFETY_HUB_DESCRIPTION" translateable="false">
+        Brave regularly checks to make sure your browser has the safest settings. We'll let you know if anything needs review.
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_BLOCK_ALL_BUTTON" translateable="false">
+        Block all
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_ONE_PERMISSION_SUBLABEL" translateable="false">
+        You haven't visited recently. Brave removed <ph name="PERMISSION">%1$s<ex>location</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_TWO_PERMISSIONS_SUBLABEL" translateable="false">
+        You haven't visited recently. Brave removed <ph name="PERMISSION_1">%1$s<ex>location</ex></ph>, <ph name="PERMISSION_2">%2$s<ex>notifications</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_THREE_PERMISSIONS_SUBLABEL" translateable="false">
+        You haven't visited recently. Brave removed <ph name="PERMISSION_1">%1$s<ex>location</ex></ph>, <ph name="PERMISSION_2">%2$s<ex>notifications</ex></ph>, <ph name="PERMISSION_3">%3$s<ex>camera</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_REMOVED_FOUR_OR_MORE_PERMISSIONS_SUBLABEL" translateable="false">
+        You haven't visited recently. Brave removed <ph name="PERMISSION_1">%1$s<ex>location</ex></ph>, <ph name="PERMISSION_2">%2$s<ex>notifications</ex></ph>, and <ph name="COUNT">%3$s<ex>2</ex></ph> more
+      </message>
+      <message name="IDS_SAFETY_HUB_ABUSIVE_NOTIFICATION_PERMISSIONS_SUBLABEL" translateable="false">
+        Dangerous site. Brave removed notifications.
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_BLOCK_SNACKBAR" translateable="false">
+        Notifications not allowed for <ph name="SITE_NAME">%1$s<ex>https://example.com:443</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_ALLOW_SNACKBAR" translateable="false">
+        Notifications allowed for <ph name="SITE_NAME">%1$s<ex>https://example.com:443</ex></ph>
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_ASK_SNACKBAR" translateable="false">
+        Notifications not allowed for <ph name="SITE_NAME">%1$s<ex>https://example.com:443</ex></ph>. You'll be asked again on your next visit.
+      </message>
+      <message name="IDS_SAFETY_HUB_NOTIFICATIONS_BULK_BLOCK_SNACKBAR" translateable="false">
+        Notifications not allowed for <ph name="SITE_NUMBER">%1$s<ex>3</ex></ph> sites
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ON_TITLE" translateable="false">
+        Safe Browsing is on
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ON_SUMMARY" translateable="false">
+        You're getting standard protection
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ENHANCED_TITLE" translateable="false">
+        Enhanced Safe Browsing is on
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_ENHANCED_SUMMARY" translateable="false">
+        You have Brave's strongest security
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFE_BROWSING_OFF_SUMMARY" translateable="false">
+        Turn on Safe Browsing to get protection against dangerous sites
+      </message>
+
 
        <!-- Safe Browsing preferences -->
       <message name="IDS_PREFS_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing preferences. [CHAR_LIMIT=32]">
@@ -3374,7 +3441,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Sign in to browse easier across devices
       </message>
       <message name="IDS_SIGNIN_FRE_SUBTITLE" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
-        Sign in to get your bookmarks, passwords and more on all your devices
+        Sign in to get your bookmarks, passwords, and more on all your devices
       </message>
       <message name="IDS_SIGNIN_FRE_SUBTITLE_WITHOUT_SYNC" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). However, we introduce a caveat, because the user has a managed account (such as Enterprise); this means that, depending on their organization's settings, the user might not be able to save all types of data in their Brave sync chain. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
         Sign in to get the most out of Brave
@@ -4156,9 +4223,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_BOOKMARK_TOOLBAR_SEARCH_TITLE" desc="Toolbar search title [CHAR_LIMIT=32]">
         Search
       </message>
-      <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
-        Can’t find that bookmark. Check your spelling or add a new bookmark.
-      </message>
       <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR_LIMIT=30]">
         Edit bookmark
       </message>
@@ -4241,6 +4305,24 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_IPH_PRICE_TRACKING_MENU_ITEM_ACCESSIBILITY" is_accessibility_with_no_ui="true" desc="In-product-help accessibility text that describes that a user can track the price of a product in the overflow menu.">
         Track price from the More options button
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_BOTTOM_SHEET_CONTENT_CLOSED" desc="Accessibility string that describes closing a price insights bottom sheet.">
+        Price insights bottom sheet closed
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the price insights bottom sheet.">
+        Price insights bottom sheet
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_BOTTOM_SHEET_CONTENT_OPENED_FULL" desc="Accessibility string that describes fully opening a price insights bottom sheet.">
+        Price insights bottom sheet opened at full height
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_TITLE" desc="The title for the price insights button.">
+        Price insights
+      </message>
+      <message name="IDS_PRICE_INSIGHTS_PRICE_IS_LOW_TITLE" desc="The title when a user see the price insights contextual page action while price is low.">
+        Price is low
+      </message>
+      <message name="IDS_PRICE_HISTORY_TITLE" desc="The title when a user see the price history graph section in the price insights bottom sheet.">
+        Price history across the web
       </message>
       <message name="IDS_IPH_SHOPPING_LIST_SAVE_FLOW" desc="In-product help text that notifies a user that they can organize their saved products from a folder in bookmarks.">
         Organize your tracked products in Bookmarks

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 
@@ -36,7 +37,7 @@ void ClosePanel(content::WebContents* web_contents) {
     return;
   }
 
-  if (SidePanelUI* ui = SidePanelUI::GetSidePanelUIForBrowser(browser)) {
+  if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
     ui->Close();
   }
 }

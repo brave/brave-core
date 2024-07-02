@@ -12,8 +12,8 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#define rail_mutex_                                                          \
-  rail_mutex_;                                                               \
+#define api_interrupts_queue_                                                \
+  api_interrupts_queue_;                                                     \
                                                                              \
  public:                                                                     \
   void set_page_graph_delegate(                                              \
@@ -34,7 +34,7 @@
 #include "src/v8/src/execution/isolate.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#undef rail_mutex_
+#undef api_interrupts_queue_
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
 #endif  // BRAVE_CHROMIUM_SRC_V8_SRC_EXECUTION_ISOLATE_H_
