@@ -37,7 +37,8 @@ namespace skus {
 // will be able to purchase VPN from account.brave.com and the browser can
 // detect the purchase and use those credentials during authentication when
 // establishing a connection to our partner providing the VPN service.
-class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
+class SkusJSHandler : public content::RenderFrameObserver,
+                      public gin::Wrappable<SkusJSHandler> {
  public:
   explicit SkusJSHandler(content::RenderFrame* render_frame);
   SkusJSHandler(const SkusJSHandler&) = delete;
@@ -47,6 +48,9 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
   static gin::WrapperInfo kWrapperInfo;
 
   static void Install(content::RenderFrame* render_frame);
+
+  // content::RenderFrameObserver:
+  void OnDestruct() override;
 
  private:
   bool EnsureConnected();
@@ -91,7 +95,6 @@ class SkusJSHandler : public gin::Wrappable<SkusJSHandler> {
                            v8::Global<v8::Context> context_old,
                            skus::mojom::SkusResultPtr response);
 
-  content::RenderFrame* render_frame_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;

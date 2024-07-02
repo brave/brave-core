@@ -38,20 +38,20 @@ namespace skus {
 gin::WrapperInfo SkusJSHandler::kWrapperInfo = {gin::kEmbedderNativeGin};
 
 SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+    : content::RenderFrameObserver(render_frame) {}
 
 SkusJSHandler::~SkusJSHandler() = default;
 
 bool SkusJSHandler::EnsureConnected() {
   if (!skus_service_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker().GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         skus_service_.BindNewPipeAndPassReceiver());
   }
   bool result = skus_service_.is_bound();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     if (!vpn_service_.is_bound()) {
-      render_frame_->GetBrowserInterfaceBroker().GetInterface(
+      render_frame()->GetBrowserInterfaceBroker().GetInterface(
           vpn_service_.BindNewPipeAndPassReceiver());
     }
     result = result && vpn_service_.is_bound();
@@ -100,10 +100,14 @@ void SkusJSHandler::Install(content::RenderFrame* render_frame) {
       .Check();
 }
 
+void SkusJSHandler::OnDestruct() {
+  delete this;
+}
+
 // window.chrome.braveSkus.refresh_order
 v8::Local<v8::Promise> SkusJSHandler::RefreshOrder(v8::Isolate* isolate,
                                                    std::string order_id) {
-  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
+  auto host = render_frame()->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   auto connected = EnsureConnected();
   if (!connected)
     return v8::Local<v8::Promise>();
@@ -182,7 +186,7 @@ v8::Local<v8::Promise> SkusJSHandler::FetchOrderCredentials(
       v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
   auto context_old(
       v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
-  auto host = render_frame_->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
+  auto host = render_frame()->GetWebFrame()->GetSecurityOrigin().Host().Utf8();
   skus_service_->FetchOrderCredentials(
       host, order_id,
       base::BindOnce(&SkusJSHandler::OnFetchOrderCredentials,
