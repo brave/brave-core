@@ -3,6 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Check Node and NPM version before running the script.
+require('../lib/checkNodeNpmVersion')
+
 const program = require('commander');
 const path = require('path')
 const fs = require('fs-extra')
