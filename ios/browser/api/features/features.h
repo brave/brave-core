@@ -32,6 +32,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveAdblockCookieListDefault;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockCookieListOptIn;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockCosmeticFiltering;
+@property(class, nonatomic, readonly) Feature* kBraveAdblockYouTubeRequestBlockingScript;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockCspRules;
 @property(class, nonatomic, readonly) Feature* kBraveAdblockDefault1pBlocking;
 @property(class, nonatomic, readonly)

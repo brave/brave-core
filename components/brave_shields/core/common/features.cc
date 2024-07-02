@@ -43,6 +43,11 @@ BASE_FEATURE(kBraveAdblockCookieListOptIn,
 BASE_FEATURE(kBraveAdblockCosmeticFiltering,
              "BraveAdblockCosmeticFiltering",
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When disabled, the request blocking script will not be injected into YouTube
+// This feature only applies to iOS applications.
+BASE_FEATURE(kBraveAdblockYouTubeRequestBlockingScript,
+             "BraveAdblockYouTubeRequestBlockingScript",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAdblockScriptletDebugLogs,
              "BraveAdblockScriptletDebugLogs",
              base::FEATURE_DISABLED_BY_DEFAULT);
