@@ -22,8 +22,8 @@ index 118c8a892272124c4a74aab5615e6e1fea5f0deb..31472339015963b14a5fbe582dd74d19
  std::optional<HeapVector<Member<WebGLShader>>>
  WebGLRenderingContextBase::getAttachedShaders(WebGLProgram* program) {
    if (!ValidateWebGLProgramOrShader("getAttachedShaders", program))
-+  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT
      return std::nullopt;
++  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT
  
    HeapVector<Member<WebGLShader>> shader_objects;
 @@ -3284,6 +3287,7 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,

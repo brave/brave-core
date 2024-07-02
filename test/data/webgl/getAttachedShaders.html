@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL getAttachedShaders() test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="test" width="8" height="8"></canvas>
+    <script>
+      const canvas = document.getElementById("test");
+      const gl = canvas.getContext("webgl");
+      const vsSource = `
+            attribute vec4 aVertexPosition;
+            void main(void) {
+                gl_Position = aVertexPosition;
+            }
+        `;
+        // Create a vertex shader
+      const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vertexShader, vsSource);
+      gl.compileShader(vertexShader);
+      const shaderProgram = gl.createProgram();
+      gl.attachShader(shaderProgram, vertexShader);
+      // Link the shader program
+      gl.linkProgram(shaderProgram);
+      // Get the attached shaders
+      const attachedShaders = gl.getAttachedShaders(shaderProgram);
+      document.title = attachedShaders;
+    </script>
+  </body>
+</html>
