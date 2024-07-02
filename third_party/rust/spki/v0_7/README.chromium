@@ -1,0 +1,11 @@
+Name: spki
+URL: https://crates.io/crates/spki
+Description: X.509 Subject Public Key Info (RFC5280) describing public keys as well as their
+associated AlgorithmIdentifiers (i.e. OIDs)
+
+Version: 0.7.3
+Security Critical: yes
+Shipped: yes
+License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/spki-0.7.3/LICENSE-APACHE
+Revision: 15ea461dc3484d48710deed932e4d3d9052c1f9b
