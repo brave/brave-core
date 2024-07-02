@@ -12,6 +12,7 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -52,20 +53,15 @@ namespace speedreader {
 
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<std::string_view, int>> resources) {
-  std::u16string result = u"speedreaderData = {";
-
-  if (kSpeedreaderTTS.Get()) {
-    result += u"ttsEnabled: true,";
-  }
-
+  base::Value::Dict sr_data;
+  sr_data.Set("ttsEnabled", kSpeedreaderTTS.Get());
   for (const auto& r : resources) {
-    auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
-    // Make sure that the text doesn't contain js injection
-    base::ReplaceChars(text, u"\"", u"\\\"", &text);
-    result += base::StrCat({base::UTF8ToUTF16(r.first), u": \"", text, u"\","});
+    sr_data.Set(r.first, brave_l10n::GetLocalizedResourceUTF16String(r.second));
   }
 
-  return result + u"}\n\n";
+  return base::StrCat(
+      {u"speedreaderData = ",
+       base::UTF8ToUTF16(base::WriteJson(sr_data).value_or("{}"))});
 }
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
@@ -380,14 +376,11 @@ void SpeedreaderTabHelper::DOMContentLoaded(
   }
   UpdateUI();
 
-  static base::NoDestructor<std::u16string> kSpeedreaderData(
-      GetSpeedreaderData({
-        {"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
-            {"minutesText", IDS_READER_MODE_MINUTES_TEXT},
+  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
+      {{"showOriginalLinkText", IDS_READER_MODE_SHOW_ORIGINAL_PAGE_LINK},
+       {"minutesText", IDS_READER_MODE_MINUTES_TEXT},
 #if defined(IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE)
-        {
-          "playButtonTitle", IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE
-        }
+       {"playButtonTitle", IDS_READER_MODE_TEXT_TO_SPEECH_PLAY_PAUSE}
 #endif
       }));
 

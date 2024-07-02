@@ -2,80 +2,80 @@
 <p>Let’s get to the meat of the post — how to express all this in Rust.
 This section will have a bit of a literal programming vibe to it.</p>
 <p>So far, it sounds like we need some kind of <code>Cell</code> object:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">struct</span> <span class="n">Cell</span> <span class="p">{</span>
-  <span class="n">right</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">Cell</span><span class="p">,</span>
-  <span class="n">left</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">Cell</span><span class="p">,</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>struct</span> <span>Cell</span> <span>{</span>
+  <span>right</span><span>:</span> <span>&amp;</span><span>Cell</span><span>,</span>
+  <span>left</span><span>:</span> <span>&amp;</span><span>Cell</span><span>,</span>
 
-  <span class="n">up</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">Cell</span><span class="p">,</span>
-  <span class="n">down</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">Cell</span><span class="p">,</span>
+  <span>up</span><span>:</span> <span>&amp;</span><span>Cell</span><span>,</span>
+  <span>down</span><span>:</span> <span>&amp;</span><span>Cell</span><span>,</span>
 
-  <span class="n">column</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">Cell</span><span class="p">,</span>
+  <span>column</span><span>:</span> <span>&amp;</span><span>Cell</span><span>,</span>
 
-  <span class="c">// `Some` for header cells.</span>
-  <span class="n">size</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="nb">usize</span><span class="o">&gt;</span><span class="p">,</span>
-<span class="p">}</span></code></pre>
+  <span>// `Some` for header cells.</span>
+  <span>size</span><span>:</span> <span>Option</span><span>&lt;</span><span>usize</span><span>&gt;</span><span>,</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Seasoned Rusteceans will see that this won’t end up good.
 Bidirectional linked lists require that all <code>Cell</code>s are aliased, which would make mutating links harder.
 Specifically, writing a function like this will be a problem:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">fn</span> <span class="nf">link</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">a</span><span class="py">.right</span> <span class="o">=</span> <span class="o">&amp;*</span><span class="n">b</span><span class="p">;</span>
-  <span class="n">b</span><span class="py">.left</span> <span class="o">=</span> <span class="o">&amp;*</span><span class="n">a</span><span class="p">;</span>
-<span class="p">}</span></code></pre>
+<div>
+<div>
+<pre><code data-lang="rust"><span>fn</span> <span>link</span><span>(</span><span>a</span><span>:</span> <span>&amp;</span><span>mut</span> <span>Cell</span><span>,</span> <span>b</span><span>:</span> <span>&amp;</span><span>mut</span> <span>Cell</span><span>)</span> <span>{</span>
+  <span>a</span><span>.right</span> <span>=</span> <span>&amp;*</span><span>b</span><span>;</span>
+  <span>b</span><span>.left</span> <span>=</span> <span>&amp;*</span><span>a</span><span>;</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>We need exclusive references to <code>Cell</code>s to change <code>right</code> and <code>left</code> fields, but there might be other cells pointing to (aliasing) <code>a</code> and <code>b</code>.</p>
 <p>Instead, we can use a setup like this, with using indices instead of references:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="n">ops</span><span class="p">;</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>use</span> <span>std</span><span>::</span><span>ops</span><span>;</span>
 
-<span class="k">struct</span> <span class="nf">Cell</span><span class="p">(</span><span class="nb">usize</span><span class="p">);</span>
+<span>struct</span> <span>Cell</span><span>(</span><span>usize</span><span>);</span>
 
-<span class="k">struct</span> <span class="n">CellData</span> <span class="p">{</span>
-  <span class="n">right</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
-  <span class="n">left</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
+<span>struct</span> <span>CellData</span> <span>{</span>
+  <span>right</span><span>:</span> <span>Cell</span><span>,</span>
+  <span>left</span><span>:</span> <span>Cell</span><span>,</span>
 
-  <span class="n">up</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
-  <span class="n">down</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
+  <span>up</span><span>:</span> <span>Cell</span><span>,</span>
+  <span>down</span><span>:</span> <span>Cell</span><span>,</span>
 
-  <span class="n">column</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
+  <span>column</span><span>:</span> <span>Cell</span><span>,</span>
 
-  <span class="c">// `Some` for header cells.</span>
-  <span class="n">size</span><span class="p">:</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="nb">usize</span><span class="o">&gt;</span><span class="p">,</span>
-<span class="p">}</span>
+  <span>// `Some` for header cells.</span>
+  <span>size</span><span>:</span> <span>Option</span><span>&lt;</span><span>usize</span><span>&gt;</span><span>,</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="nn">ops</span><span class="p">::</span><span class="nb">Index</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="k">for</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">CellData</span><span class="o">&gt;</span> <span class="p">{</span>
-  <span class="k">type</span> <span class="n">Output</span> <span class="o">=</span> <span class="n">CellData</span><span class="p">;</span>
-  <span class="k">fn</span> <span class="nf">index</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="n">CellData</span> <span class="p">{</span>
-    <span class="o">&amp;</span><span class="k">self</span><span class="p">[</span><span class="n">index</span><span class="err">.</span><span class="mi">0</span><span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span>impl</span> <span>ops</span><span>::</span><span>Index</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>for</span> <span>Vec</span><span>&lt;</span><span>CellData</span><span>&gt;</span> <span>{</span>
+  <span>type</span> <span>Output</span> <span>=</span> <span>CellData</span><span>;</span>
+  <span>fn</span> <span>index</span><span>(</span><span>&amp;</span><span>self</span><span>,</span> <span>index</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>&amp;</span><span>CellData</span> <span>{</span>
+    <span>&amp;</span><span>self</span><span>[</span><span>index</span><span>.</span><span>0</span><span>]</span>
+  <span>}</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="nn">ops</span><span class="p">::</span><span class="n">IndexMut</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="k">for</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">CellData</span><span class="o">&gt;</span> <span class="p">{</span>
-  <span class="k">type</span> <span class="n">Output</span> <span class="o">=</span> <span class="n">CellData</span><span class="p">;</span>
-  <span class="k">fn</span> <span class="nf">index_mut</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">CellData</span> <span class="p">{</span>
-    <span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">[</span><span class="n">index</span><span class="err">.</span><span class="mi">0</span><span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+<span>impl</span> <span>ops</span><span>::</span><span>IndexMut</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>for</span> <span>Vec</span><span>&lt;</span><span>CellData</span><span>&gt;</span> <span>{</span>
+  <span>type</span> <span>Output</span> <span>=</span> <span>CellData</span><span>;</span>
+  <span>fn</span> <span>index_mut</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>index</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>&amp;</span><span>mut</span> <span>CellData</span> <span>{</span>
+    <span>&amp;</span><span>mut</span> <span>self</span><span>[</span><span>index</span><span>.</span><span>0</span><span>]</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>With this setup, the above function becomes possible:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">fn</span> <span class="nf">link</span><span class="p">(</span><span class="n">cells</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">CellData</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">cells</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="py">.right</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-  <span class="n">cells</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.left</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-<span class="p">}</span></code></pre>
+<div>
+<div>
+<pre><code data-lang="rust"><span>fn</span> <span>link</span><span>(</span><span>cells</span><span>:</span> <span>&amp;</span><span>mut</span> <span>Vec</span><span>&lt;</span><span>CellData</span><span>&gt;</span><span>,</span> <span>a</span><span>:</span> <span>Cell</span><span>,</span> <span>b</span><span>:</span> <span>Cell</span><span>)</span> <span>{</span>
+  <span>cells</span><span>[</span><span>a</span><span>]</span><span>.right</span> <span>=</span> <span>b</span><span>;</span>
+  <span>cells</span><span>[</span><span>b</span><span>]</span><span>.left</span> <span>=</span> <span>a</span><span>;</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Here are some nice little details about the setup above I like and typically use:</p>
-<div class="ulist">
+<div>
 <ul>
 <li>
 <p><code>Cell</code> / <code>CellData</code> naming. An alternative, <code>CellIdx</code> / <code>Cell</code> turns out to be more noisy down the line.</p>
@@ -100,35 +100,35 @@ And that trait is “ours”, because the <code>Cell</code> type is local.</p>
 Remember, for cells that represent column headers (and only for them), we store column sizes.
 In an OOP language, we’d use inheritance and downcasting to add this field only to headers.
 In C, we’d do the same, but manually:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="c"><span class="k">struct</span> <span class="n">cell</span> <span class="p">{</span>
-  <span class="n">cell</span><span class="o">*</span> <span class="n">right</span><span class="p">;</span> <span class="n">cell</span><span class="o">*</span> <span class="n">left</span><span class="p">;</span>
-  <span class="n">cell</span><span class="o">*</span> <span class="n">up</span><span class="p">;</span> <span class="n">cell</span><span class="o">*</span> <span class="n">down</span><span class="p">;</span>
-  <span class="n">cell</span><span class="o">*</span> <span class="n">column</span><span class="p">;</span>
-<span class="p">}</span>
+<div>
+<div>
+<pre><code data-lang="c"><span>struct</span> <span>cell</span> <span>{</span>
+  <span>cell</span><span>*</span> <span>right</span><span>;</span> <span>cell</span><span>*</span> <span>left</span><span>;</span>
+  <span>cell</span><span>*</span> <span>up</span><span>;</span> <span>cell</span><span>*</span> <span>down</span><span>;</span>
+  <span>cell</span><span>*</span> <span>column</span><span>;</span>
+<span>}</span>
 
-<span class="k">struct</span> <span class="n">header_cell</span> <span class="p">{</span>
-  <span class="n">cell</span> <span class="n">base</span><span class="p">;</span>
-  <span class="kt">size_t</span> <span class="n">size</span><span class="p">;</span>
-<span class="p">}</span></code></pre>
+<span>struct</span> <span>header_cell</span> <span>{</span>
+  <span>cell</span> <span>base</span><span>;</span>
+  <span>size_t</span> <span>size</span><span>;</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>In Rust, as we are allocating everything in a <code>Vec</code>, we need to carry this semi-useless <code>Option</code>.
 There’s a way to get rid of it though while preserving <code>Vec</code>-ness — the <strong>E</strong>ntity <strong>C</strong>omponent <strong>S</strong>ystem pattern:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">struct</span> <span class="n">Matrix</span> <span class="p">{</span>
-  <span class="n">data</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">CellData</span><span class="o">&gt;</span><span class="p">,</span>
-  <span class="n">size</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">usize</span><span class="o">&gt;</span>
-<span class="p">}</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>struct</span> <span>Matrix</span> <span>{</span>
+  <span>data</span><span>:</span> <span>Vec</span><span>&lt;</span><span>CellData</span><span>&gt;</span><span>,</span>
+  <span>size</span><span>:</span> <span>Vec</span><span>&lt;</span><span>usize</span><span>&gt;</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="nn">ops</span><span class="p">::</span><span class="nb">Index</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="k">for</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">usize</span><span class="o">&gt;</span> <span class="p">{</span>
-  <span class="k">type</span> <span class="n">Output</span> <span class="o">=</span> <span class="nb">usize</span><span class="p">;</span>
-  <span class="k">fn</span> <span class="nf">index</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="nb">usize</span> <span class="p">{</span>
-    <span class="o">&amp;</span><span class="k">self</span><span class="p">[</span><span class="n">index</span><span class="err">.</span><span class="mi">0</span><span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+<span>impl</span> <span>ops</span><span>::</span><span>Index</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>for</span> <span>Vec</span><span>&lt;</span><span>usize</span><span>&gt;</span> <span>{</span>
+  <span>type</span> <span>Output</span> <span>=</span> <span>usize</span><span>;</span>
+  <span>fn</span> <span>index</span><span>(</span><span>&amp;</span><span>self</span><span>,</span> <span>index</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>&amp;</span><span>usize</span> <span>{</span>
+    <span>&amp;</span><span>self</span><span>[</span><span>index</span><span>.</span><span>0</span><span>]</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>We will make sure that header cells are assigned small indexes, and will store column sizes in a separate array.
@@ -136,85 +136,85 @@ This is the core of the ECS — it is a flexible way to extend entities with
 In some sense, this isn’t better — we are just trading options for index checks.
 But it is more flexible — now, <code>data</code> and <code>size</code> vectors, for example, could be defined in separate modules, instead of being fields of the single struct.</p>
 <p>And, while we are at it, let’s also flatten other fields in a similar way:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">struct</span> <span class="n">Matrix</span> <span class="p">{</span>
-  <span class="c">/// Links along the horizontal dimension.</span>
-  <span class="n">x</span><span class="p">:</span> <span class="n">LinkedList</span><span class="p">,</span>
-  <span class="c">/// Links along the vertical dimension.</span>
-  <span class="n">y</span><span class="p">:</span> <span class="n">LinkedList</span><span class="p">,</span>
-  <span class="c">/// Pointer to column headers.</span>
-  <span class="n">c</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span><span class="p">,</span>
-  <span class="c">/// For column headers, the size of the column.</span>
-  <span class="n">size</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="nb">u32</span><span class="o">&gt;</span><span class="p">,</span>
-<span class="p">}</span></code></pre>
+<div>
+<div>
+<pre><code data-lang="rust"><span>struct</span> <span>Matrix</span> <span>{</span>
+  <span>/// Links along the horizontal dimension.</span>
+  <span>x</span><span>:</span> <span>LinkedList</span><span>,</span>
+  <span>/// Links along the vertical dimension.</span>
+  <span>y</span><span>:</span> <span>LinkedList</span><span>,</span>
+  <span>/// Pointer to column headers.</span>
+  <span>c</span><span>:</span> <span>Vec</span><span>&lt;</span><span>Cell</span><span>&gt;</span><span>,</span>
+  <span>/// For column headers, the size of the column.</span>
+  <span>size</span><span>:</span> <span>Vec</span><span>&lt;</span><span>u32</span><span>&gt;</span><span>,</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>After this, we can generically express linked lists across both dimensions:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">struct</span> <span class="n">Link</span> <span class="p">{</span>
-  <span class="n">prev</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
-  <span class="n">next</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
-<span class="p">}</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>struct</span> <span>Link</span> <span>{</span>
+  <span>prev</span><span>:</span> <span>Cell</span><span>,</span>
+  <span>next</span><span>:</span> <span>Cell</span><span>,</span>
+<span>}</span>
 
-<span class="nd">#[derive(Default,</span> <span class="nd">Debug)]</span>
-<span class="k">struct</span> <span class="n">LinkedList</span> <span class="p">{</span>
-  <span class="n">data</span><span class="p">:</span> <span class="nb">Vec</span><span class="o">&lt;</span><span class="n">Link</span><span class="o">&gt;</span><span class="p">,</span>
-<span class="p">}</span>
+<span>#[derive(Default,</span> <span>Debug)]</span>
+<span>struct</span> <span>LinkedList</span> <span>{</span>
+  <span>data</span><span>:</span> <span>Vec</span><span>&lt;</span><span>Link</span><span>&gt;</span><span>,</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="nn">ops</span><span class="p">::</span><span class="nb">Index</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">LinkedList</span> <span class="p">{</span>
-  <span class="k">type</span> <span class="n">Output</span> <span class="o">=</span> <span class="n">Link</span><span class="p">;</span>
-  <span class="k">fn</span> <span class="nf">index</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="n">Link</span> <span class="p">{</span>
-    <span class="o">&amp;</span><span class="k">self</span><span class="py">.data</span><span class="p">[</span><span class="n">index</span><span class="err">.</span><span class="mi">0</span><span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span>impl</span> <span>ops</span><span>::</span><span>Index</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>for</span> <span>LinkedList</span> <span>{</span>
+  <span>type</span> <span>Output</span> <span>=</span> <span>Link</span><span>;</span>
+  <span>fn</span> <span>index</span><span>(</span><span>&amp;</span><span>self</span><span>,</span> <span>index</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>&amp;</span><span>Link</span> <span>{</span>
+    <span>&amp;</span><span>self</span><span>.data</span><span>[</span><span>index</span><span>.</span><span>0</span><span>]</span>
+  <span>}</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="nn">ops</span><span class="p">::</span><span class="n">IndexMut</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">LinkedList</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">index_mut</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Link</span> <span class="p">{</span>
-    <span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="py">.data</span><span class="p">[</span><span class="n">index</span><span class="err">.</span><span class="mi">0</span><span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span>impl</span> <span>ops</span><span>::</span><span>IndexMut</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>for</span> <span>LinkedList</span> <span>{</span>
+  <span>fn</span> <span>index_mut</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>index</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>&amp;</span><span>mut</span> <span>Link</span> <span>{</span>
+    <span>&amp;</span><span>mut</span> <span>self</span><span>.data</span><span>[</span><span>index</span><span>.</span><span>0</span><span>]</span>
+  <span>}</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="n">LinkedList</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">with_capacity</span><span class="p">(</span><span class="n">cap</span><span class="p">:</span> <span class="nb">usize</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">LinkedList</span> <span class="p">{</span>
-    <span class="n">LinkedList</span> <span class="p">{</span> <span class="n">data</span><span class="p">:</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">cap</span><span class="p">)</span> <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">fn</span> <span class="nf">alloc</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Cell</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">cell</span> <span class="o">=</span> <span class="nf">Cell</span><span class="p">(</span><span class="k">self</span><span class="py">.data</span><span class="nf">.len</span><span class="p">());</span>
-    <span class="k">self</span><span class="py">.data</span><span class="nf">.push</span><span class="p">(</span><span class="n">Link</span> <span class="p">{</span> <span class="n">prev</span><span class="p">:</span> <span class="n">cell</span><span class="p">,</span> <span class="n">next</span><span class="p">:</span> <span class="n">cell</span> <span class="p">});</span>
-    <span class="n">cell</span>
-  <span class="p">}</span>
-  <span class="c">/// Inserts `b` into `a &lt;-&gt; c` to get `a &lt;-&gt; b &lt;-&gt; c`</span>
-  <span class="k">fn</span> <span class="nf">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="py">.next</span><span class="p">;</span>
+<span>impl</span> <span>LinkedList</span> <span>{</span>
+  <span>fn</span> <span>with_capacity</span><span>(</span><span>cap</span><span>:</span> <span>usize</span><span>)</span> <span>-&gt;</span> <span>LinkedList</span> <span>{</span>
+    <span>LinkedList</span> <span>{</span> <span>data</span><span>:</span> <span>Vec</span><span>::</span><span>with_capacity</span><span>(</span><span>cap</span><span>)</span> <span>}</span>
+  <span>}</span>
+  <span>fn</span> <span>alloc</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>)</span> <span>-&gt;</span> <span>Cell</span> <span>{</span>
+    <span>let</span> <span>cell</span> <span>=</span> <span>Cell</span><span>(</span><span>self</span><span>.data</span><span>.len</span><span>());</span>
+    <span>self</span><span>.data</span><span>.push</span><span>(</span><span>Link</span> <span>{</span> <span>prev</span><span>:</span> <span>cell</span><span>,</span> <span>next</span><span>:</span> <span>cell</span> <span>});</span>
+    <span>cell</span>
+  <span>}</span>
+  <span>/// Inserts `b` into `a &lt;-&gt; c` to get `a &lt;-&gt; b &lt;-&gt; c`</span>
+  <span>fn</span> <span>insert</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>a</span><span>:</span> <span>Cell</span><span>,</span> <span>b</span><span>:</span> <span>Cell</span><span>)</span> <span>{</span>
+    <span>let</span> <span>c</span> <span>=</span> <span>self</span><span>[</span><span>a</span><span>]</span><span>.next</span><span>;</span>
 
-    <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.prev</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
-    <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.next</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+    <span>self</span><span>[</span><span>b</span><span>]</span><span>.prev</span> <span>=</span> <span>a</span><span>;</span>
+    <span>self</span><span>[</span><span>b</span><span>]</span><span>.next</span> <span>=</span> <span>c</span><span>;</span>
 
-    <span class="k">self</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="py">.next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-    <span class="k">self</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="py">.prev</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="c">/// Removes `b` from `a &lt;-&gt; b &lt;-&gt; c` to get `a &lt;-&gt; c`</span>
-  <span class="k">fn</span> <span class="nf">remove</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.prev</span><span class="p">;</span>
-    <span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.next</span><span class="p">;</span>
+    <span>self</span><span>[</span><span>a</span><span>]</span><span>.next</span> <span>=</span> <span>b</span><span>;</span>
+    <span>self</span><span>[</span><span>c</span><span>]</span><span>.prev</span> <span>=</span> <span>b</span><span>;</span>
+  <span>}</span>
+  <span>/// Removes `b` from `a &lt;-&gt; b &lt;-&gt; c` to get `a &lt;-&gt; c`</span>
+  <span>fn</span> <span>remove</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>b</span><span>:</span> <span>Cell</span><span>)</span> <span>{</span>
+    <span>let</span> <span>a</span> <span>=</span> <span>self</span><span>[</span><span>b</span><span>]</span><span>.prev</span><span>;</span>
+    <span>let</span> <span>c</span> <span>=</span> <span>self</span><span>[</span><span>b</span><span>]</span><span>.next</span><span>;</span>
 
-    <span class="k">self</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="py">.next</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.next</span><span class="p">;</span>
-    <span class="k">self</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="py">.prev</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.prev</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="c">/// Restores previously removed `b` to get `a &lt;-&gt; b &lt;-&gt; c`</span>
-  <span class="k">fn</span> <span class="nf">restore</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.prev</span><span class="p">;</span>
-    <span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="k">self</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="py">.next</span><span class="p">;</span>
-    <span class="k">self</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="py">.next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-    <span class="k">self</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="py">.prev</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+    <span>self</span><span>[</span><span>a</span><span>]</span><span>.next</span> <span>=</span> <span>self</span><span>[</span><span>b</span><span>]</span><span>.next</span><span>;</span>
+    <span>self</span><span>[</span><span>c</span><span>]</span><span>.prev</span> <span>=</span> <span>self</span><span>[</span><span>b</span><span>]</span><span>.prev</span><span>;</span>
+  <span>}</span>
+  <span>/// Restores previously removed `b` to get `a &lt;-&gt; b &lt;-&gt; c`</span>
+  <span>fn</span> <span>restore</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>b</span><span>:</span> <span>Cell</span><span>)</span> <span>{</span>
+    <span>let</span> <span>a</span> <span>=</span> <span>self</span><span>[</span><span>b</span><span>]</span><span>.prev</span><span>;</span>
+    <span>let</span> <span>c</span> <span>=</span> <span>self</span><span>[</span><span>b</span><span>]</span><span>.next</span><span>;</span>
+    <span>self</span><span>[</span><span>a</span><span>]</span><span>.next</span> <span>=</span> <span>b</span><span>;</span>
+    <span>self</span><span>[</span><span>c</span><span>]</span><span>.prev</span> <span>=</span> <span>b</span><span>;</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Things to note:</p>
-<div class="ulist">
+<div>
 <ul>
 <li>
 <p><code>next</code> / <code>prev</code> is a nice symmetric pair of names.</p>
@@ -237,35 +237,35 @@ This is the main idea of dancing links, which allows to implement <code>restore<
 </ul>
 </div>
 <p>Now we can also mount a generic iteration scheme:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">impl</span> <span class="n">LinkedList</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">cursor</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Cursor</span> <span class="p">{</span>
-    <span class="n">Cursor</span> <span class="p">{</span> <span class="n">head</span><span class="p">,</span> <span class="n">curr</span><span class="p">:</span> <span class="n">head</span> <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>impl</span> <span>LinkedList</span> <span>{</span>
+  <span>fn</span> <span>cursor</span><span>(</span><span>&amp;</span><span>self</span><span>,</span> <span>head</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>Cursor</span> <span>{</span>
+    <span>Cursor</span> <span>{</span> <span>head</span><span>,</span> <span>curr</span><span>:</span> <span>head</span> <span>}</span>
+  <span>}</span>
+<span>}</span>
 
-<span class="k">struct</span> <span class="n">Cursor</span> <span class="p">{</span>
-  <span class="n">head</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
-  <span class="n">curr</span><span class="p">:</span> <span class="n">Cell</span><span class="p">,</span>
-<span class="p">}</span>
+<span>struct</span> <span>Cursor</span> <span>{</span>
+  <span>head</span><span>:</span> <span>Cell</span><span>,</span>
+  <span>curr</span><span>:</span> <span>Cell</span><span>,</span>
+<span>}</span>
 
-<span class="k">impl</span> <span class="n">Cursor</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">list</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">LinkedList</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="p">{</span>
-    <span class="k">self</span><span class="py">.curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">[</span><span class="k">self</span><span class="py">.curr</span><span class="p">]</span><span class="py">.next</span><span class="p">;</span>
-    <span class="k">if</span> <span class="k">self</span><span class="py">.curr</span> <span class="o">==</span> <span class="k">self</span><span class="py">.head</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nb">None</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nf">Some</span><span class="p">(</span><span class="k">self</span><span class="py">.curr</span><span class="p">)</span>
-  <span class="p">}</span>
-  <span class="k">fn</span> <span class="nf">prev</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">list</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">LinkedList</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">Option</span><span class="o">&lt;</span><span class="n">Cell</span><span class="o">&gt;</span> <span class="p">{</span>
-    <span class="k">self</span><span class="py">.curr</span> <span class="o">=</span> <span class="n">list</span><span class="p">[</span><span class="k">self</span><span class="py">.curr</span><span class="p">]</span><span class="py">.prev</span><span class="p">;</span>
-    <span class="k">if</span> <span class="k">self</span><span class="py">.curr</span> <span class="o">==</span> <span class="k">self</span><span class="py">.head</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nb">None</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nf">Some</span><span class="p">(</span><span class="k">self</span><span class="py">.curr</span><span class="p">)</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+<span>impl</span> <span>Cursor</span> <span>{</span>
+  <span>fn</span> <span>next</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>list</span><span>:</span> <span>&amp;</span><span>LinkedList</span><span>)</span> <span>-&gt;</span> <span>Option</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>{</span>
+    <span>self</span><span>.curr</span> <span>=</span> <span>list</span><span>[</span><span>self</span><span>.curr</span><span>]</span><span>.next</span><span>;</span>
+    <span>if</span> <span>self</span><span>.curr</span> <span>==</span> <span>self</span><span>.head</span> <span>{</span>
+      <span>return</span> <span>None</span><span>;</span>
+    <span>}</span>
+    <span>Some</span><span>(</span><span>self</span><span>.curr</span><span>)</span>
+  <span>}</span>
+  <span>fn</span> <span>prev</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>list</span><span>:</span> <span>&amp;</span><span>LinkedList</span><span>)</span> <span>-&gt;</span> <span>Option</span><span>&lt;</span><span>Cell</span><span>&gt;</span> <span>{</span>
+    <span>self</span><span>.curr</span> <span>=</span> <span>list</span><span>[</span><span>self</span><span>.curr</span><span>]</span><span>.prev</span><span>;</span>
+    <span>if</span> <span>self</span><span>.curr</span> <span>==</span> <span>self</span><span>.head</span> <span>{</span>
+      <span>return</span> <span>None</span><span>;</span>
+    <span>}</span>
+    <span>Some</span><span>(</span><span>self</span><span>.curr</span><span>)</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Notice some duplication between <code>next</code> and <code>prev</code> methods.
@@ -274,45 +274,45 @@ Usually, it can be removed by changing definition of <code>Link</code> to</p>
 <p>This representation allows writing algorithms generic over direction (<code>0</code> or <code>1</code>, <code>d ^ 1</code> flips direction), but it doesn’t buy us much in this case.</p>
 <p>Now, let’s write routines to create a matrix with <code>n</code> columns.
 We will populate the matrix with rows separately, here we only add the header row.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">const</span> <span class="n">H</span><span class="p">:</span> <span class="n">Cell</span> <span class="o">=</span> <span class="nf">Cell</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>const</span> <span>H</span><span>:</span> <span>Cell</span> <span>=</span> <span>Cell</span><span>(</span><span>0</span><span>);</span>
 
-<span class="k">impl</span> <span class="n">Matrix</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">new</span><span class="p">(</span><span class="n">n_cols</span><span class="p">:</span> <span class="nb">usize</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Matrix</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">res</span> <span class="o">=</span> <span class="n">Matrix</span> <span class="p">{</span>
-      <span class="n">size</span><span class="p">:</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">n_cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-      <span class="n">c</span><span class="p">:</span> <span class="nn">Vec</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">n_cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-      <span class="n">x</span><span class="p">:</span> <span class="nn">LinkedList</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">n_cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-      <span class="n">y</span><span class="p">:</span> <span class="nn">LinkedList</span><span class="p">::</span><span class="nf">with_capacity</span><span class="p">(</span><span class="n">n_cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="p">};</span>
-    <span class="nd">assert_eq!</span><span class="p">(</span><span class="n">res</span><span class="nf">.alloc_column</span><span class="p">(),</span> <span class="n">H</span><span class="p">);</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">n_cols</span> <span class="p">{</span>
-      <span class="n">res</span><span class="nf">.add_column</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="n">res</span>
-  <span class="p">}</span>
-  <span class="k">fn</span> <span class="nf">add_column</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">new_col</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.alloc_column</span><span class="p">();</span>
-    <span class="k">self</span><span class="py">.x</span><span class="nf">.insert</span><span class="p">(</span><span class="k">self</span><span class="py">.x</span><span class="p">[</span><span class="n">H</span><span class="p">]</span><span class="py">.prev</span><span class="p">,</span> <span class="n">new_col</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="k">fn</span> <span class="nf">alloc_column</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Cell</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">cell</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.alloc</span><span class="p">(</span><span class="n">H</span><span class="p">);</span>
-    <span class="k">self</span><span class="py">.c</span><span class="p">[</span><span class="n">cell</span><span class="p">]</span> <span class="o">=</span> <span class="n">cell</span><span class="p">;</span>
-    <span class="k">self</span><span class="py">.size</span><span class="nf">.push</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="n">cell</span>
-  <span class="p">}</span>
-  <span class="k">fn</span> <span class="nf">alloc</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="n">Cell</span> <span class="p">{</span>
-    <span class="k">self</span><span class="py">.c</span><span class="nf">.push</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-    <span class="k">let</span> <span class="n">cell</span> <span class="o">=</span> <span class="k">self</span><span class="py">.x</span><span class="nf">.alloc</span><span class="p">();</span>
-    <span class="nd">assert_eq!</span><span class="p">(</span><span class="k">self</span><span class="py">.y</span><span class="nf">.alloc</span><span class="p">(),</span> <span class="n">cell</span><span class="p">);</span>
-    <span class="n">cell</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+<span>impl</span> <span>Matrix</span> <span>{</span>
+  <span>fn</span> <span>new</span><span>(</span><span>n_cols</span><span>:</span> <span>usize</span><span>)</span> <span>-&gt;</span> <span>Matrix</span> <span>{</span>
+    <span>let</span> <span>mut</span> <span>res</span> <span>=</span> <span>Matrix</span> <span>{</span>
+      <span>size</span><span>:</span> <span>Vec</span><span>::</span><span>with_capacity</span><span>(</span><span>n_cols</span> <span>+</span> <span>1</span><span>),</span>
+      <span>c</span><span>:</span> <span>Vec</span><span>::</span><span>with_capacity</span><span>(</span><span>n_cols</span> <span>+</span> <span>1</span><span>),</span>
+      <span>x</span><span>:</span> <span>LinkedList</span><span>::</span><span>with_capacity</span><span>(</span><span>n_cols</span> <span>+</span> <span>1</span><span>),</span>
+      <span>y</span><span>:</span> <span>LinkedList</span><span>::</span><span>with_capacity</span><span>(</span><span>n_cols</span> <span>+</span> <span>1</span><span>),</span>
+    <span>};</span>
+    <span>assert_eq!</span><span>(</span><span>res</span><span>.alloc_column</span><span>(),</span> <span>H</span><span>);</span>
+    <span>for</span> <span>_</span> <span>in</span> <span>0</span><span>..</span><span>n_cols</span> <span>{</span>
+      <span>res</span><span>.add_column</span><span>();</span>
+    <span>}</span>
+    <span>res</span>
+  <span>}</span>
+  <span>fn</span> <span>add_column</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>)</span> <span>{</span>
+    <span>let</span> <span>new_col</span> <span>=</span> <span>self</span><span>.alloc_column</span><span>();</span>
+    <span>self</span><span>.x</span><span>.insert</span><span>(</span><span>self</span><span>.x</span><span>[</span><span>H</span><span>]</span><span>.prev</span><span>,</span> <span>new_col</span><span>);</span>
+  <span>}</span>
+  <span>fn</span> <span>alloc_column</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>)</span> <span>-&gt;</span> <span>Cell</span> <span>{</span>
+    <span>let</span> <span>cell</span> <span>=</span> <span>self</span><span>.alloc</span><span>(</span><span>H</span><span>);</span>
+    <span>self</span><span>.c</span><span>[</span><span>cell</span><span>]</span> <span>=</span> <span>cell</span><span>;</span>
+    <span>self</span><span>.size</span><span>.push</span><span>(</span><span>0</span><span>);</span>
+    <span>cell</span>
+  <span>}</span>
+  <span>fn</span> <span>alloc</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>c</span><span>:</span> <span>Cell</span><span>)</span> <span>-&gt;</span> <span>Cell</span> <span>{</span>
+    <span>self</span><span>.c</span><span>.push</span><span>(</span><span>c</span><span>);</span>
+    <span>let</span> <span>cell</span> <span>=</span> <span>self</span><span>.x</span><span>.alloc</span><span>();</span>
+    <span>assert_eq!</span><span>(</span><span>self</span><span>.y</span><span>.alloc</span><span>(),</span> <span>cell</span><span>);</span>
+    <span>cell</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Things to note:</p>
-<div class="ulist">
+<div>
 <ul>
 <li>
 <p>We set aside the special cell, <code>H</code>, to serve as a header cell of a header row.</p>
@@ -329,81 +329,81 @@ We will populate the matrix with rows separately, here we only add the header ro
 </ul>
 </div>
 <p>Now let’s add a function to populate the matrix with rows:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">impl</span> <span class="n">Matrix</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="nb">bool</span><span class="p">])</span> <span class="p">{</span>
-    <span class="nd">assert_eq!</span><span class="p">(</span><span class="n">row</span><span class="nf">.len</span><span class="p">(),</span> <span class="k">self</span><span class="py">.size</span><span class="nf">.len</span><span class="p">()</span> - <span class="mi">1</span><span class="p">);</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">c</span> <span class="o">=</span> <span class="n">H</span><span class="p">;</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">prev</span> <span class="o">=</span> <span class="nb">None</span><span class="p">;</span>
-    <span class="k">for</span> <span class="o">&amp;</span><span class="n">is_filled</span> <span class="n">in</span> <span class="n">row</span> <span class="p">{</span>
-      <span class="n">c</span> <span class="o">=</span> <span class="k">self</span><span class="py">.x</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="py">.next</span><span class="p">;</span>
-      <span class="k">if</span> <span class="n">is_filled</span> <span class="p">{</span>
-        <span class="k">self</span><span class="py">.size</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="k">let</span> <span class="n">new_cell</span> <span class="o">=</span> <span class="k">self</span><span class="nf">.alloc</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-        <span class="k">self</span><span class="py">.y</span><span class="nf">.insert</span><span class="p">(</span><span class="k">self</span><span class="py">.y</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="py">.prev</span><span class="p">,</span> <span class="n">new_cell</span><span class="p">);</span>
-        <span class="k">if</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">prev</span><span class="p">)</span> <span class="o">=</span> <span class="n">prev</span> <span class="p">{</span>
-          <span class="k">self</span><span class="py">.x</span><span class="nf">.insert</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="n">new_cell</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="n">prev</span> <span class="o">=</span> <span class="nf">Some</span><span class="p">(</span><span class="n">new_cell</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+<div>
+<div>
+<pre><code data-lang="rust"><span>impl</span> <span>Matrix</span> <span>{</span>
+  <span>fn</span> <span>add_row</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>row</span><span>:</span> <span>&amp;</span><span>[</span><span>bool</span><span>])</span> <span>{</span>
+    <span>assert_eq!</span><span>(</span><span>row</span><span>.len</span><span>(),</span> <span>self</span><span>.size</span><span>.len</span><span>()</span> - <span>1</span><span>);</span>
+    <span>let</span> <span>mut</span> <span>c</span> <span>=</span> <span>H</span><span>;</span>
+    <span>let</span> <span>mut</span> <span>prev</span> <span>=</span> <span>None</span><span>;</span>
+    <span>for</span> <span>&amp;</span><span>is_filled</span> <span>in</span> <span>row</span> <span>{</span>
+      <span>c</span> <span>=</span> <span>self</span><span>.x</span><span>[</span><span>c</span><span>]</span><span>.next</span><span>;</span>
+      <span>if</span> <span>is_filled</span> <span>{</span>
+        <span>self</span><span>.size</span><span>[</span><span>c</span><span>]</span> <span>+=</span> <span>1</span><span>;</span>
+        <span>let</span> <span>new_cell</span> <span>=</span> <span>self</span><span>.alloc</span><span>(</span><span>c</span><span>);</span>
+        <span>self</span><span>.y</span><span>.insert</span><span>(</span><span>self</span><span>.y</span><span>[</span><span>c</span><span>]</span><span>.prev</span><span>,</span> <span>new_cell</span><span>);</span>
+        <span>if</span> <span>let</span> <span>Some</span><span>(</span><span>prev</span><span>)</span> <span>=</span> <span>prev</span> <span>{</span>
+          <span>self</span><span>.x</span><span>.insert</span><span>(</span><span>prev</span><span>,</span> <span>new_cell</span><span>);</span>
+        <span>}</span>
+        <span>prev</span> <span>=</span> <span>Some</span><span>(</span><span>new_cell</span><span>);</span>
+      <span>}</span>
+    <span>}</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Now that we have all the code to construct the two dimensional linked lists, it’s useful to visualize the state of the matrix.
 In general, when implementing complex algorithms, putting time into visualization code pays-off well.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">impl</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Display</span> <span class="k">for</span> <span class="n">Matrix</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">fmt</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Formatter</span><span class="o">&lt;</span><span class="nv">'_</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nn">fmt</span><span class="p">::</span><span class="n">Result</span> <span class="p">{</span>
-    <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"s: "</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="n">in</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.size</span> <span class="p">{</span>
-      <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"{:^5}"</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nd">writeln!</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>impl</span> <span>fmt</span><span>::</span><span>Display</span> <span>for</span> <span>Matrix</span> <span>{</span>
+  <span>fn</span> <span>fmt</span><span>(</span><span>&amp;</span><span>self</span><span>,</span> <span>f</span><span>:</span> <span>&amp;</span><span>mut</span> <span>fmt</span><span>::</span><span>Formatter</span><span>&lt;</span><span>'_</span><span>&gt;</span><span>)</span> <span>-&gt;</span> <span>fmt</span><span>::</span><span>Result</span> <span>{</span>
+    <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"s: "</span><span>)</span><span>?</span><span>;</span>
+    <span>for</span> <span>s</span> <span>in</span> <span>&amp;</span><span>self</span><span>.size</span> <span>{</span>
+      <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"{:^5}"</span><span>,</span> <span>s</span><span>)</span><span>?</span><span>;</span>
+    <span>}</span>
+    <span>writeln!</span><span>(</span><span>f</span><span>)</span><span>?</span><span>;</span>
 
-    <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"c: "</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="k">for</span> <span class="o">&amp;</span><span class="nf">Cell</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="n">in</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.c</span> <span class="p">{</span>
-      <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"{:^5}"</span><span class="p">,</span> <span class="n">c</span><span class="nf">.saturating_sub</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">?</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nd">writeln!</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+    <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"c: "</span><span>)</span><span>?</span><span>;</span>
+    <span>for</span> <span>&amp;</span><span>Cell</span><span>(</span><span>c</span><span>)</span> <span>in</span> <span>&amp;</span><span>self</span><span>.c</span> <span>{</span>
+      <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"{:^5}"</span><span>,</span> <span>c</span><span>.saturating_sub</span><span>(</span><span>1</span><span>))</span><span>?</span><span>;</span>
+    <span>}</span>
+    <span>writeln!</span><span>(</span><span>f</span><span>)</span><span>?</span><span>;</span>
 
-    <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"x: "</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="k">for</span> <span class="n">link</span> <span class="n">in</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.x.data</span> <span class="p">{</span>
-      <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">" {:&gt;1}|{:&lt;1} "</span><span class="p">,</span> <span class="n">link</span><span class="py">.prev</span>.<span class="mi">0</span><span class="p">,</span> <span class="n">link</span><span class="py">.next</span>.<span class="mi">0</span><span class="p">)</span><span class="o">?</span>
-    <span class="p">}</span>
-    <span class="nd">writeln!</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+    <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"x: "</span><span>)</span><span>?</span><span>;</span>
+    <span>for</span> <span>link</span> <span>in</span> <span>&amp;</span><span>self</span><span>.x.data</span> <span>{</span>
+      <span>write!</span><span>(</span><span>f</span><span>,</span> <span>" {:&gt;1}|{:&lt;1} "</span><span>,</span> <span>link</span><span>.prev</span>.<span>0</span><span>,</span> <span>link</span><span>.next</span>.<span>0</span><span>)</span><span>?</span>
+    <span>}</span>
+    <span>writeln!</span><span>(</span><span>f</span><span>)</span><span>?</span><span>;</span>
 
-    <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"y: "</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="k">for</span> <span class="n">link</span> <span class="n">in</span> <span class="o">&amp;</span><span class="k">self</span><span class="py">.y.data</span> <span class="p">{</span>
-      <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">" {:&gt;1}|{:&lt;1} "</span><span class="p">,</span> <span class="n">link</span><span class="py">.prev</span>.<span class="mi">0</span><span class="p">,</span> <span class="n">link</span><span class="py">.next</span>.<span class="mi">0</span><span class="p">)</span><span class="o">?</span>
-    <span class="p">}</span>
-    <span class="nd">writeln!</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+    <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"y: "</span><span>)</span><span>?</span><span>;</span>
+    <span>for</span> <span>link</span> <span>in</span> <span>&amp;</span><span>self</span><span>.y.data</span> <span>{</span>
+      <span>write!</span><span>(</span><span>f</span><span>,</span> <span>" {:&gt;1}|{:&lt;1} "</span><span>,</span> <span>link</span><span>.prev</span>.<span>0</span><span>,</span> <span>link</span><span>.next</span>.<span>0</span><span>)</span><span>?</span>
+    <span>}</span>
+    <span>writeln!</span><span>(</span><span>f</span><span>)</span><span>?</span><span>;</span>
 
-    <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"i: "</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="k">self</span><span class="py">.x.data</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
-      <span class="nd">write!</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">"{:^5}"</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nd">writeln!</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">?</span><span class="p">;</span>
+    <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"i: "</span><span>)</span><span>?</span><span>;</span>
+    <span>for</span> <span>i</span> <span>in</span> <span>0</span><span>..</span><span>self</span><span>.x.data</span><span>.len</span><span>()</span> <span>{</span>
+      <span>write!</span><span>(</span><span>f</span><span>,</span> <span>"{:^5}"</span><span>,</span> <span>i</span><span>)</span><span>?</span><span>;</span>
+    <span>}</span>
+    <span>writeln!</span><span>(</span><span>f</span><span>)</span><span>?</span><span>;</span>
 
-    <span class="nf">Ok</span><span class="p">(())</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+    <span>Ok</span><span>(())</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>For matrix like this:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">let</span> <span class="k">mut</span> <span class="n">m</span> <span class="o">=</span> <span class="nn">Matrix</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="k">true</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">true</span><span class="p">]);</span></code></pre>
+<div>
+<div>
+<pre><code data-lang="rust"><span>let</span> <span>mut</span> <span>m</span> <span>=</span> <span>Matrix</span><span>::</span><span>new</span><span>(</span><span>3</span><span>);</span>
+<span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>true</span><span>,</span> <span>false</span><span>,</span> <span>true</span><span>]);</span></code></pre>
 </div>
 </div>
 <p>we’ll get the following representation:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code>s:   0    1    0    1
+<div>
+<div>
+<pre><code>s:   0    1    0    1
 c:   0    0    1    2    0    2
 x:  3|1  0|2  1|3  2|0  5|5  4|4
 y:  0|0  4|4  2|2  5|5  1|1  3|3
@@ -418,81 +418,81 @@ Let’s get to solving the problem.</p>
 <p>We start with code to cover and uncover the columns.
 The <code>cover</code> operation takes a cell for a column header, and unlinks this column and all of it’s rows from the matrix.
 The <code>uncover</code> operation reverses this, taking advantage of the fact that we don’t zero out links when removing the node from the linked list.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">impl</span> <span class="n">Matrix</span> <span class="p">{</span>
-  <span class="k">fn</span> <span class="nf">cover</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">self</span><span class="py">.x</span><span class="nf">.remove</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">i</span> <span class="o">=</span> <span class="k">self</span><span class="py">.y</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-    <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span><span class="nf">.next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.y</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">let</span> <span class="k">mut</span> <span class="n">j</span> <span class="o">=</span> <span class="k">self</span><span class="py">.x</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-      <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span><span class="nf">.next</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.x</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">self</span><span class="py">.y</span><span class="nf">.remove</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
-        <span class="k">self</span><span class="py">.size</span><span class="p">[</span><span class="k">self</span><span class="py">.c</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="err">-</span><span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">fn</span> <span class="nf">uncover</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="k">self</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span> <span class="n">Cell</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">i</span> <span class="o">=</span> <span class="k">self</span><span class="py">.y</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-    <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span><span class="nf">.prev</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.y</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">let</span> <span class="k">mut</span> <span class="n">j</span> <span class="o">=</span> <span class="k">self</span><span class="py">.x</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-      <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span><span class="nf">.prev</span><span class="p">(</span><span class="o">&amp;</span><span class="k">self</span><span class="py">.x</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">self</span><span class="py">.size</span><span class="p">[</span><span class="k">self</span><span class="py">.c</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="k">self</span><span class="py">.y</span><span class="nf">.restore</span><span class="p">(</span><span class="n">j</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">self</span><span class="py">.x</span><span class="nf">.restore</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+<div>
+<div>
+<pre><code data-lang="rust"><span>impl</span> <span>Matrix</span> <span>{</span>
+  <span>fn</span> <span>cover</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>c</span><span>:</span> <span>Cell</span><span>)</span> <span>{</span>
+    <span>self</span><span>.x</span><span>.remove</span><span>(</span><span>c</span><span>);</span>
+    <span>let</span> <span>mut</span> <span>i</span> <span>=</span> <span>self</span><span>.y</span><span>.cursor</span><span>(</span><span>c</span><span>);</span>
+    <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>i</span><span>)</span> <span>=</span> <span>i</span><span>.next</span><span>(</span><span>&amp;</span><span>self</span><span>.y</span><span>)</span> <span>{</span>
+      <span>let</span> <span>mut</span> <span>j</span> <span>=</span> <span>self</span><span>.x</span><span>.cursor</span><span>(</span><span>i</span><span>);</span>
+      <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>j</span><span>)</span> <span>=</span> <span>j</span><span>.next</span><span>(</span><span>&amp;</span><span>self</span><span>.x</span><span>)</span> <span>{</span>
+        <span>self</span><span>.y</span><span>.remove</span><span>(</span><span>j</span><span>);</span>
+        <span>self</span><span>.size</span><span>[</span><span>self</span><span>.c</span><span>[</span><span>j</span><span>]]</span> <span>-</span><span>=</span> <span>1</span><span>;</span>
+      <span>}</span>
+    <span>}</span>
+  <span>}</span>
+  <span>fn</span> <span>uncover</span><span>(</span><span>&amp;</span><span>mut</span> <span>self</span><span>,</span> <span>c</span><span>:</span> <span>Cell</span><span>)</span> <span>{</span>
+    <span>let</span> <span>mut</span> <span>i</span> <span>=</span> <span>self</span><span>.y</span><span>.cursor</span><span>(</span><span>c</span><span>);</span>
+    <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>i</span><span>)</span> <span>=</span> <span>i</span><span>.prev</span><span>(</span><span>&amp;</span><span>self</span><span>.y</span><span>)</span> <span>{</span>
+      <span>let</span> <span>mut</span> <span>j</span> <span>=</span> <span>self</span><span>.x</span><span>.cursor</span><span>(</span><span>i</span><span>);</span>
+      <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>j</span><span>)</span> <span>=</span> <span>j</span><span>.prev</span><span>(</span><span>&amp;</span><span>self</span><span>.x</span><span>)</span> <span>{</span>
+        <span>self</span><span>.size</span><span>[</span><span>self</span><span>.c</span><span>[</span><span>j</span><span>]]</span> <span>+=</span> <span>1</span><span>;</span>
+        <span>self</span><span>.y</span><span>.restore</span><span>(</span><span>j</span><span>);</span>
+      <span>}</span>
+    <span>}</span>
+    <span>self</span><span>.x</span><span>.restore</span><span>(</span><span>c</span><span>);</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Finally, let’s implement the recursive trial and error algorithm which counts the number of solutions
 (see the <a href="https://github.com/matklad/dlx">full source</a> for code to recover the solution):</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="k">pub</span> <span class="k">fn</span> <span class="nf">solve</span><span class="p">(</span><span class="k">mut</span> <span class="n">m</span><span class="p">:</span> <span class="n">Matrix</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="nb">usize</span> <span class="p">{</span>
-  <span class="k">let</span> <span class="k">mut</span> <span class="n">n_answers</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="nf">go</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">m</span><span class="p">,</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">n_answers</span><span class="p">);</span>
-  <span class="n">n_answers</span>
-<span class="p">}</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>pub</span> <span>fn</span> <span>solve</span><span>(</span><span>mut</span> <span>m</span><span>:</span> <span>Matrix</span><span>)</span> <span>-&gt;</span> <span>usize</span> <span>{</span>
+  <span>let</span> <span>mut</span> <span>n_answers</span> <span>=</span> <span>0</span><span>;</span>
+  <span>go</span><span>(</span><span>&amp;</span><span>mut</span> <span>m</span><span>,</span> <span>&amp;</span><span>mut</span> <span>n_answers</span><span>);</span>
+  <span>n_answers</span>
+<span>}</span>
 
-<span class="k">fn</span> <span class="nf">go</span><span class="p">(</span><span class="n">m</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="n">Matrix</span><span class="p">,</span> <span class="n">n_answers</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="nb">usize</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">i</span> <span class="o">=</span> <span class="n">m</span><span class="py">.x</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">H</span><span class="p">);</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">c</span> <span class="o">=</span> <span class="k">match</span> <span class="n">i</span><span class="nf">.next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="py">.x</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nf">Some</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="n">it</span><span class="p">,</span>
-      <span class="nb">None</span> <span class="k">=&gt;</span> <span class="p">{</span>
-        <span class="o">*</span><span class="n">n_answers</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="k">return</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">};</span>
-    <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">next_c</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span><span class="nf">.next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="py">.x</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="n">m</span><span class="py">.size</span><span class="p">[</span><span class="n">next_c</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">m</span><span class="py">.size</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="p">{</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">next_c</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="n">c</span>
-  <span class="p">};</span>
+<span>fn</span> <span>go</span><span>(</span><span>m</span><span>:</span> <span>&amp;</span><span>mut</span> <span>Matrix</span><span>,</span> <span>n_answers</span><span>:</span> <span>&amp;</span><span>mut</span> <span>usize</span><span>)</span> <span>{</span>
+  <span>let</span> <span>c</span> <span>=</span> <span>{</span>
+    <span>let</span> <span>mut</span> <span>i</span> <span>=</span> <span>m</span><span>.x</span><span>.cursor</span><span>(</span><span>H</span><span>);</span>
+    <span>let</span> <span>mut</span> <span>c</span> <span>=</span> <span>match</span> <span>i</span><span>.next</span><span>(</span><span>&amp;</span><span>m</span><span>.x</span><span>)</span> <span>{</span>
+      <span>Some</span><span>(</span><span>it</span><span>)</span> <span>=&gt;</span> <span>it</span><span>,</span>
+      <span>None</span> <span>=&gt;</span> <span>{</span>
+        <span>*</span><span>n_answers</span> <span>+=</span> <span>1</span><span>;</span>
+        <span>return</span><span>;</span>
+      <span>}</span>
+    <span>};</span>
+    <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>next_c</span><span>)</span> <span>=</span> <span>i</span><span>.next</span><span>(</span><span>&amp;</span><span>m</span><span>.x</span><span>)</span> <span>{</span>
+      <span>if</span> <span>m</span><span>.size</span><span>[</span><span>next_c</span><span>]</span> <span>&lt;</span> <span>m</span><span>.size</span><span>[</span><span>c</span><span>]</span> <span>{</span>
+        <span>c</span> <span>=</span> <span>next_c</span><span>;</span>
+      <span>}</span>
+    <span>}</span>
+    <span>c</span>
+  <span>};</span>
 
-  <span class="n">m</span><span class="nf">.cover</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-  <span class="k">let</span> <span class="k">mut</span> <span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="py">.y</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-  <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="n">r</span><span class="nf">.next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="py">.y</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">j</span> <span class="o">=</span> <span class="n">m</span><span class="py">.x</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
-    <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span><span class="nf">.next</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="py">.x</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">m</span><span class="nf">.cover</span><span class="p">(</span><span class="n">m</span><span class="py">.c</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
-    <span class="p">}</span>
-    <span class="nf">go</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n_answers</span><span class="p">);</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">j</span> <span class="o">=</span> <span class="n">m</span><span class="py">.x</span><span class="nf">.cursor</span><span class="p">(</span><span class="n">r</span><span class="p">);</span>
-    <span class="k">while</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">j</span><span class="nf">.prev</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m</span><span class="py">.x</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">m</span><span class="nf">.uncover</span><span class="p">(</span><span class="n">m</span><span class="py">.c</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="n">m</span><span class="nf">.uncover</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
-<span class="p">}</span></code></pre>
+  <span>m</span><span>.cover</span><span>(</span><span>c</span><span>);</span>
+  <span>let</span> <span>mut</span> <span>r</span> <span>=</span> <span>m</span><span>.y</span><span>.cursor</span><span>(</span><span>c</span><span>);</span>
+  <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>r</span><span>)</span> <span>=</span> <span>r</span><span>.next</span><span>(</span><span>&amp;</span><span>m</span><span>.y</span><span>)</span> <span>{</span>
+    <span>let</span> <span>mut</span> <span>j</span> <span>=</span> <span>m</span><span>.x</span><span>.cursor</span><span>(</span><span>r</span><span>);</span>
+    <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>j</span><span>)</span> <span>=</span> <span>j</span><span>.next</span><span>(</span><span>&amp;</span><span>m</span><span>.x</span><span>)</span> <span>{</span>
+      <span>m</span><span>.cover</span><span>(</span><span>m</span><span>.c</span><span>[</span><span>j</span><span>]);</span>
+    <span>}</span>
+    <span>go</span><span>(</span><span>m</span><span>,</span> <span>n_answers</span><span>);</span>
+    <span>let</span> <span>mut</span> <span>j</span> <span>=</span> <span>m</span><span>.x</span><span>.cursor</span><span>(</span><span>r</span><span>);</span>
+    <span>while</span> <span>let</span> <span>Some</span><span>(</span><span>j</span><span>)</span> <span>=</span> <span>j</span><span>.prev</span><span>(</span><span>&amp;</span><span>m</span><span>.x</span><span>)</span> <span>{</span>
+      <span>m</span><span>.uncover</span><span>(</span><span>m</span><span>.c</span><span>[</span><span>j</span><span>]);</span>
+    <span>}</span>
+  <span>}</span>
+  <span>m</span><span>.uncover</span><span>(</span><span>c</span><span>);</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Things to note:</p>
-<div class="ulist">
+<div>
 <ul>
 <li>
 <p>As usual with recursive algorithms, it’s better to provide a public non-recursive API which calls into a private helper.</p>
@@ -517,79 +517,79 @@ After recursion, we take care to restore the old state of the matrix, repeated t
 <p>So it seems we are done?
 How do we test our implementation to make sure that it is correct?
 We surely can start with throwing the example from the paper:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="err">#</span><span class="p">[</span><span class="n">test</span><span class="p">]</span>
-<span class="k">fn</span> <span class="nf">sample_problem</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
-  <span class="k">let</span> <span class="n">t</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>#</span><span>[</span><span>test</span><span>]</span>
+<span>fn</span> <span>sample_problem</span><span>()</span> <span>{</span>
+  <span>let</span> <span>f</span> <span>=</span> <span>false</span><span>;</span>
+  <span>let</span> <span>t</span> <span>=</span> <span>true</span><span>;</span>
 
-  <span class="k">let</span> <span class="k">mut</span> <span class="n">m</span> <span class="o">=</span> <span class="nn">Matrix</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
-  <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">]);</span>
-  <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">]);</span>
-  <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">]);</span>
-  <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">]);</span>
-  <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">]);</span>
-  <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="p">[</span><span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">]);</span>
+  <span>let</span> <span>mut</span> <span>m</span> <span>=</span> <span>Matrix</span><span>::</span><span>new</span><span>(</span><span>7</span><span>);</span>
+  <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>]);</span>
+  <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>t</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>]);</span>
+  <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>f</span><span>,</span> <span>t</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>]);</span>
+  <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>t</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>]);</span>
+  <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>f</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>]);</span>
+  <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>[</span><span>f</span><span>,</span> <span>f</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>,</span> <span>t</span><span>,</span> <span>f</span><span>,</span> <span>t</span><span>]);</span>
 
-  <span class="k">let</span> <span class="n">solutions</span> <span class="o">=</span> <span class="nf">solve</span><span class="p">(</span><span class="n">m</span><span class="p">);</span>
-  <span class="nd">assert_eq!</span><span class="p">(</span><span class="n">solutions</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">}</span></code></pre>
+  <span>let</span> <span>solutions</span> <span>=</span> <span>solve</span><span>(</span><span>m</span><span>);</span>
+  <span>assert_eq!</span><span>(</span><span>solutions</span><span>,</span> <span>1</span><span>);</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Given the complexity of the algorithm though, a single test is not really encouraging.
 Indeed, we can do much better!
 Let’s just check that the algorithm correctly handles all 4x4 matrices.
 There are only 65536 of them, so this should be relatively fast:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="rust"><span class="err">#</span><span class="p">[</span><span class="n">test</span><span class="p">]</span>
-<span class="k">fn</span> <span class="nf">exhaustive_test</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nv">'matrix</span><span class="p">:</span> <span class="k">for</span> <span class="n">bits</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..=</span><span class="mi">0b1111_1111_1111_1111</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="k">mut</span> <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0u32</span><span class="p">;</span> <span class="mi">4</span><span class="p">];</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span> <span class="n">in</span> <span class="n">rows</span><span class="nf">.iter_mut</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
-      <span class="o">*</span><span class="n">row</span> <span class="o">=</span> <span class="p">(</span><span class="n">bits</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span> <span class="o">&amp;</span> <span class="mi">0b1111</span><span class="p">;</span>
-      <span class="k">if</span> <span class="o">*</span><span class="n">row</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="n">continue</span> <span class="nv">'matrix</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
+<div>
+<div>
+<pre><code data-lang="rust"><span>#</span><span>[</span><span>test</span><span>]</span>
+<span>fn</span> <span>exhaustive_test</span><span>()</span> <span>{</span>
+  <span>'matrix</span><span>:</span> <span>for</span> <span>bits</span> <span>in</span> <span>0</span><span>..=</span><span>0b1111_1111_1111_1111</span> <span>{</span>
+    <span>let</span> <span>mut</span> <span>rows</span> <span>=</span> <span>[</span><span>0u32</span><span>;</span> <span>4</span><span>];</span>
+    <span>for</span> <span>(</span><span>i</span><span>,</span> <span>row</span><span>)</span> <span>in</span> <span>rows</span><span>.iter_mut</span><span>()</span><span>.enumerate</span><span>()</span> <span>{</span>
+      <span>*</span><span>row</span> <span>=</span> <span>(</span><span>bits</span> <span>&gt;&gt;</span> <span>(</span><span>i</span> <span>*</span> <span>4</span><span>))</span> <span>&amp;</span> <span>0b1111</span><span>;</span>
+      <span>if</span> <span>*</span><span>row</span> <span>==</span> <span>0</span> <span>{</span>
+        <span>continue</span> <span>'matrix</span><span>;</span>
+      <span>}</span>
+    <span>}</span>
 
-    <span class="k">let</span> <span class="n">brute_force</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="k">let</span> <span class="k">mut</span> <span class="n">n_solutions</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-      <span class="k">for</span> <span class="n">mask</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..=</span><span class="mi">0b1111</span> <span class="p">{</span>
-        <span class="k">let</span> <span class="k">mut</span> <span class="n">or</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">let</span> <span class="k">mut</span> <span class="n">n_ones</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">row</span><span class="p">)</span> <span class="n">in</span> <span class="n">rows</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
-          <span class="k">if</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="n">or</span> <span class="p">|</span><span class="o">=</span> <span class="n">row</span><span class="p">;</span>
-            <span class="n">n_ones</span> <span class="o">+=</span> <span class="n">row</span><span class="nf">.count_ones</span><span class="p">()</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="n">or</span> <span class="o">==</span> <span class="mi">0b1111</span> <span class="o">&amp;&amp;</span> <span class="n">n_ones</span> <span class="o">==</span> <span class="mi">4</span> <span class="p">{</span>
-          <span class="n">n_solutions</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-      <span class="n">n_solutions</span>
-    <span class="p">};</span>
+    <span>let</span> <span>brute_force</span> <span>=</span> <span>{</span>
+      <span>let</span> <span>mut</span> <span>n_solutions</span> <span>=</span> <span>0</span><span>;</span>
+      <span>for</span> <span>mask</span> <span>in</span> <span>0</span><span>..=</span><span>0b1111</span> <span>{</span>
+        <span>let</span> <span>mut</span> <span>or</span> <span>=</span> <span>0</span><span>;</span>
+        <span>let</span> <span>mut</span> <span>n_ones</span> <span>=</span> <span>0</span><span>;</span>
+        <span>for</span> <span>(</span><span>i</span><span>,</span> <span>&amp;</span><span>row</span><span>)</span> <span>in</span> <span>rows</span><span>.iter</span><span>()</span><span>.enumerate</span><span>()</span> <span>{</span>
+          <span>if</span> <span>mask</span> <span>&amp;</span> <span>(</span><span>1</span> <span>&lt;&lt;</span> <span>i</span><span>)</span> <span>!=</span> <span>0</span> <span>{</span>
+            <span>or</span> <span>|</span><span>=</span> <span>row</span><span>;</span>
+            <span>n_ones</span> <span>+=</span> <span>row</span><span>.count_ones</span><span>()</span>
+          <span>}</span>
+        <span>}</span>
+        <span>if</span> <span>or</span> <span>==</span> <span>0b1111</span> <span>&amp;&amp;</span> <span>n_ones</span> <span>==</span> <span>4</span> <span>{</span>
+          <span>n_solutions</span> <span>+=</span> <span>1</span><span>;</span>
+        <span>}</span>
+      <span>}</span>
+      <span>n_solutions</span>
+    <span>};</span>
 
-    <span class="k">let</span> <span class="n">dlx</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="k">let</span> <span class="k">mut</span> <span class="n">m</span> <span class="o">=</span> <span class="nn">Matrix</span><span class="p">::</span><span class="nf">new</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-      <span class="k">for</span> <span class="n">row_bits</span> <span class="n">in</span> <span class="n">rows</span><span class="nf">.iter</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">let</span> <span class="k">mut</span> <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="k">false</span><span class="p">;</span> <span class="mi">4</span><span class="p">];</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="mi">4</span> <span class="p">{</span>
-          <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_bits</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="n">m</span><span class="nf">.add_row</span><span class="p">(</span><span class="o">&amp;</span><span class="n">row</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="nf">solve</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-    <span class="p">};</span>
-    <span class="nd">assert_eq!</span><span class="p">(</span><span class="n">brute_force</span><span class="p">,</span> <span class="n">dlx</span><span class="p">)</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre>
+    <span>let</span> <span>dlx</span> <span>=</span> <span>{</span>
+      <span>let</span> <span>mut</span> <span>m</span> <span>=</span> <span>Matrix</span><span>::</span><span>new</span><span>(</span><span>4</span><span>);</span>
+      <span>for</span> <span>row_bits</span> <span>in</span> <span>rows</span><span>.iter</span><span>()</span> <span>{</span>
+        <span>let</span> <span>mut</span> <span>row</span> <span>=</span> <span>[</span><span>false</span><span>;</span> <span>4</span><span>];</span>
+        <span>for</span> <span>i</span> <span>in</span> <span>0</span><span>..</span><span>4</span> <span>{</span>
+          <span>row</span><span>[</span><span>i</span><span>]</span> <span>=</span> <span>row_bits</span> <span>&amp;</span> <span>(</span><span>1</span> <span>&lt;&lt;</span> <span>i</span><span>)</span> <span>!=</span> <span>0</span><span>;</span>
+        <span>}</span>
+        <span>m</span><span>.add_row</span><span>(</span><span>&amp;</span><span>row</span><span>);</span>
+      <span>}</span>
+      <span>solve</span><span>(</span><span>m</span><span>)</span>
+    <span>};</span>
+    <span>assert_eq!</span><span>(</span><span>brute_force</span><span>,</span> <span>dlx</span><span>)</span>
+  <span>}</span>
+<span>}</span></code></pre>
 </div>
 </div>
 <p>Things to note:</p>
-<div class="ulist">
+<div>
 <ul>
 <li>
 <p>We heavily rely on bit vector representation of vectors and matrices.
@@ -606,7 +606,7 @@ We also use <a href="https://en.wikipedia.org/wiki/Hamming_weight">popcount</a> 
 </ul>
 </div>
 <p>Running this test gives us much more confidence in the correctness of the implementation!
-Full source, including the code to restore the answer, can be found at <a href="https://github.com/matklad/dlx" class="bare">https://github.com/matklad/dlx</a>.</p>
+Full source, including the code to restore the answer, can be found at <a href="https://github.com/matklad/dlx">https://github.com/matklad/dlx</a>.</p>
 <p>It’s also interesting to reflect on the unusual effectiveness of linked list for this problem.
 Remember that on the modern hardware, a <code>Vec</code> beats <code>LinkedList</code> for the overwhelming majority of the problems.
 While linked lists have a better theoretical complexity for the insertion and removal from the middle, most benchmarks are dominated by the traversal time to get to this middle.

@@ -53,13 +53,14 @@ static ALTER_TO_DIV_EXCEPTIONS: [&LocalName; 3] = [
     &local_name!("section"),
     &local_name!("p"),
 ];
-static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 12] = [
+static PRESENTATIONAL_ATTRIBUTES: [&LocalName; 13] = [
     &local_name!("align"),
     &local_name!("background"),
     &local_name!("bgcolor"),
     &local_name!("border"),
     &local_name!("cellpadding"),
     &local_name!("cellspacing"),
+    &local_name!("class"),
     &local_name!("frame"),
     &local_name!("hspace"),
     &local_name!("rules"),
