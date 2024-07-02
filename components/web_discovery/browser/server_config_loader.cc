@@ -170,7 +170,7 @@ ServerConfigLoader::ServerConfigLoader(
   quorum_config_url_ = GURL(GetQuorumHost() + kQuorumConfigPath);
   patterns_url_ = GetPatternsEndpoint();
 
-  patterns_path_ = user_data_dir.Append(kPatternsFilename);
+  patterns_path_ = user_data_dir.AppendASCII(kPatternsFilename);
 }
 
 ServerConfigLoader::~ServerConfigLoader() = default;

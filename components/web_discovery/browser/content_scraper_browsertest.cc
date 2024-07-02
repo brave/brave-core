@@ -50,8 +50,8 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
     InitScraper();
     run_loop_ = std::make_unique<base::RunLoop>();
 
-    ASSERT_TRUE(
-        base::ReadFileToString(data_path.Append("page.html"), &page_content_));
+    ASSERT_TRUE(base::ReadFileToString(data_path.AppendASCII("page.html"),
+                                       &page_content_));
   }
 
  protected:

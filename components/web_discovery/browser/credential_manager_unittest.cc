@@ -48,7 +48,8 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     std::string test_data_json;
     ASSERT_TRUE(base::ReadFileToString(
-        data_path.Append("web_discovery/credential_keys_and_responses.json"),
+        data_path.AppendASCII(
+            "web_discovery/credential_keys_and_responses.json"),
         &test_data_json));
     auto test_data_value = base::JSONReader::Read(test_data_json);
     ASSERT_TRUE(test_data_value);
