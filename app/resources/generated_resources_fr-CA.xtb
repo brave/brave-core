@@ -11065,17 +11065,17 @@ Les autorisations que vous avez déjà accordées à des sites Web et à des app
       }</translation>
 <translation id="8712375231869053533">{0,plural, =1{Navigation privée}one{Navigation privée (#)}other{Navigation privée (#)}}</translation>
 <translation id="4304377874648098617">Vous êtes en mode navigation privée</translation>
-<translation id="7171000599584840888">Ajouter un personne...</translation>
+<translation id="7171000599584840888">Ajouter un profil...</translation>
 <translation id="4536111748245793305">Personne <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">Ajouter une personne...</translation>
-<translation id="2254158488150713536">Pour continuer, cliquez sur OK, puis sur Ajouter une personne pour créer un nouveau profil pour votre adresse de courriel.</translation>
-<translation id="1725743343613175327">Pour continuer, cliquez sur OK, puis sur Ajouter une personne pour créer un nouveau profil pour votre adresse de courriel <ph name="DOMAIN"/>.</translation>
+<translation id="5828545842856466741">Ajouter un profil...</translation>
+<translation id="2254158488150713536">Pour continuer, cliquez sur OK, puis sur Ajouter un profil pour créer un nouveau profil pour votre adresse de courriel.</translation>
+<translation id="1725743343613175327">Pour continuer, cliquez sur OK, puis sur Ajouter un profil pour créer un nouveau profil pour votre adresse de courriel <ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">Gérer d'autres personnes</translation>
 <translation id="7253003527666031200">Trouver d'autres outils d'accessibilité dans la boutique en ligne</translation>
 <translation id="154633726381112301">Vous pouvez limiter la connexion à certains utilisateurs. Cela supprime l'option « Ajouter un profil » sur l'écran de connexion. Vous pouvez également supprimer les utilisateurs actuels.</translation>
 <translation id="8273477935094091719">Votre <ph name="DEVICE_TYPE"/> utilise un capteur intégré pour détecter les profils devant votre appareil. Toutes les données sont traitées immédiatement sur votre appareil, puis supprimées. Les données du capteur ne sont jamais envoyées à Brave. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Faites en sorte qu'il soit plus difficile pour les profils ayant accès à votre trafic Internet de voir les sites que vous consultez. <ph name="PRODUCT_NAME"/> utilise une connexion sécurisée pour rechercher l'adresse IP d'un site dans le DNS (système de noms de domaine).</translation>
-<translation id="5832813618714645810">Personnes</translation>
+<translation id="5832813618714645810">Profils</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Votre fenêtre privée ne s'ouvrira pas après le relancement}
       other {Vos {COUNT} fenêtres privées ne se rouvriront pas après le relancement}}</translation>

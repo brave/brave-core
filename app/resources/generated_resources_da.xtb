@@ -11087,9 +11087,9 @@ De tilladelser, du har givet til websites og apps, gælder muligvis for denne ko
 <translation id="4304377874648098617">Dette er en Privat fane</translation>
 <translation id="7171000599584840888">Tilføj profil...</translation>
 <translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">Tilføj person...</translation>
-<translation id="2254158488150713536">Hvis du vil fortsætte, skal du klikke på OK og derefter klikke på Tilføj person for at oprette en ny profil til din mailadresse.</translation>
-<translation id="1725743343613175327">Hvis du vil fortsætte, skal du klikke på Tilføj person for at oprette en ny profil til din mailadresse på <ph name="DOMAIN"/>.</translation>
+<translation id="5828545842856466741">Tilføj profil...</translation>
+<translation id="2254158488150713536">Hvis du vil fortsætte, skal du klikke på OK og derefter klikke på Tilføj profil for at oprette en ny profil til din mailadresse.</translation>
+<translation id="1725743343613175327">Hvis du vil fortsætte, skal du klikke på Tilføj profil for at oprette en ny profil til din mailadresse på <ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">Administrer andre profiler</translation>
 <translation id="7253003527666031200">Find flere tilgængelighedsværktøjer i Web Store</translation>
 <translation id="154633726381112301">Du kan begrænse login for bestemte brugere. Dette fjerner muligheden "Tilføj profil" på login-skærmen. Du kan også fjerne nuværende brugere.</translation>

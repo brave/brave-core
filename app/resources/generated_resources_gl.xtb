@@ -11069,7 +11069,7 @@ Consulta máis información sobre os datos que recompila Brave e por que o fai e
 <translation id="154633726381112301">Podes limitar o acceso a determinados usuarios. Desta forma eliminarase a opción "Engadir perfil" na pantalla de inicio de sesión. Tamén podes eliminar usuarios actuais.</translation>
 <translation id="8273477935094091719">O seu <ph name="DEVICE_TYPE"/> utiliza un sensor integrado para detectar perfís diante do seu dispositivo. Todos os datos procésanse no seu dispositivo inmediatamente e, a continuación, elimínanse. Os datos do sensor nunca se envían a Brave. <ph name="LINK_BEGIN"/>Máis información<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Fai máis difícil que os perfís con acceso ao teu tráfico de Internet vexan os sitios que visitas. <ph name="PRODUCT_NAME"/> usa unha conexión segura para buscar o enderezo IP dun sitio no DNS (Domain Name System).</translation>
-<translation id="5832813618714645810">Persoas</translation>
+<translation id="5832813618714645810">Perfís</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {A túa ventá no modo de incógnito non se abrirá despois do reinicio}
       other {As túas {COUNT} ventás no modo de incógnito non se abrirán de novo despois do reinicio}}</translation>

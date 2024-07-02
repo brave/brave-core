@@ -11065,9 +11065,9 @@ Web sitelerine ve uygulamalara verdiğiniz izinler, bu hesap için geçerli olab
 <translation id="4304377874648098617">Gizli moddasınız</translation>
 <translation id="7171000599584840888">Profil Ekle...</translation>
 <translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">Kişi ekle...</translation>
-<translation id="2254158488150713536">Devam etmek için Tamam'ı tıklayın, ardından Kişi Ekle'yi tıklayıp e-posta adresiniz için yeni profil oluşturun.</translation>
-<translation id="1725743343613175327">Devam etmek için Tamam'ı tıklayın, ardından <ph name="DOMAIN"/> e-posta adresiniz için yeni profil oluşturmak üzere Kişi Ekle'yi tıklayın.</translation>
+<translation id="5828545842856466741">Profil Ekle...</translation>
+<translation id="2254158488150713536">Devam etmek için Tamam'ı tıklayın, ardından Profil Ekle'yi tıklayıp e-posta adresiniz için yeni profil oluşturun.</translation>
+<translation id="1725743343613175327">Devam etmek için Tamam'ı tıklayın, ardından <ph name="DOMAIN"/> e-posta adresiniz için yeni profil oluşturmak üzere Profil Ekle'yi tıklayın.</translation>
 <translation id="3707212204259470604">Diğer profilleri yönet</translation>
 <translation id="7253003527666031200">İnternet Mağazasında daha fazla erişilebilirlik aracı bul</translation>
 <translation id="154633726381112301">Oturum açmayı belirli kullanıcılar için kısıtlayabilirsiniz. Bu ayar, oturum açma ekranındaki "Profil ekle" seçeneğini kaldırır. Ayrıca mevcut kullanıcıları da kaldırabilirsiniz.</translation>
