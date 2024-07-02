@@ -77,6 +77,7 @@ public class WebcompatReporter {
       case languageFarblingEnabled
       case braveVPNEnabled
       case channel
+      case version
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -106,7 +107,9 @@ public class WebcompatReporter {
       var container: KeyedEncodingContainer<CodingKeys> = encoder.container(
         keyedBy: CodingKeys.self
       )
+      let version = String(format: "%@ (%@)", AppInfo.appVersion, AppInfo.buildNumber)
       try container.encode(domain, forKey: .domain)
+      try container.encode(version, forKey: .version)
       try container.encode(report.cleanedURL.absoluteString, forKey: .url)
       try container.encodeIfPresent(report.additionalDetails, forKey: .additionalDetails)
       try container.encodeIfPresent(report.contactInfo, forKey: .contactInfo)
