@@ -15,13 +15,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
-import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
 // Currently safety check setion is not used in Brave.
 // Main purpose of these tests id to detect that something new, that we may consider valuable, is
 // appeared in this section .
-@RunWith(ChromeJUnit4ClassRunner.class)
+@RunWith(BaseJUnit4ClassRunner.class)
 public class BraveSafetyCheckSettingsFragmentTest {
     private static final String PASSWORDS_LOCAL = "passwords_local";
     private static final String PASSWORDS_ACCOUNT = "passwords_account";

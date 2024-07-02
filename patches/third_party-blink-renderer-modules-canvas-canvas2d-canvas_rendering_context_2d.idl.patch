@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
-index ee02d822ff8c1ba9ed5cf38d7230589d5413bd5f..e571b2e24466828a26a9a0bff42754522a713286 100644
+index 5edfbb82c8bee629fe09202f57f40ea961c0bc2c..56aa4111518438c6ac69446d5da950733b489e7d 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.idl
 @@ -118,10 +118,10 @@ interface CanvasRenderingContext2D {

@@ -40,7 +40,7 @@ std::u16string GetAppShortcutsSubdirName() {
       id = IDS_APP_SHORTCUTS_SUBDIR_NAME_BRAVE_DEVELOPMENT;
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
   }
 

@@ -100,7 +100,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
 
   if (!dynamic_params.install_window_brave_ethereum_provider &&
       dynamic_params.install_window_ethereum_provider) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 

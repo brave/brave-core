@@ -48,7 +48,7 @@ void BookmarkModelListener::BookmarkModelLoaded(bool ids_reassigned) {
 void BookmarkModelListener::BookmarkModelBeingDeleted() {
   // This is an inconsistent state in the application lifecycle. The bookmark
   // model shouldn't disappear.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BookmarkModelListener::BookmarkNodeMoved(

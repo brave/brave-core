@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/android/jni_string.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/android/chrome_jni_headers/AboutSettingsBridge_jni.h"
 

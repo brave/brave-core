@@ -197,7 +197,7 @@ void IPFSOnboardingPage::CommandReceived(const std::string& command) {
       controller()->OpenUrlInNewForegroundTab(GURL(ipfs::kIPFSSettingsURL));
       break;
     default:
-      NOTREACHED() << "Unsupported command: " << command;
+      NOTREACHED_IN_MIGRATION() << "Unsupported command: " << command;
   }
 }
 

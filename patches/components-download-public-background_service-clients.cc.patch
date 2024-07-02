@@ -1,5 +1,5 @@
 diff --git a/components/download/public/background_service/clients.cc b/components/download/public/background_service/clients.cc
-index ca9151e61761137094c550fdbe25e204fa2916e1..e7047b84199e9f962666cc7bdd2ea9c545f898ae 100644
+index 969153db7eb99cf2a700770243e0a51532e85243..2e830d1463ae8b8461c905ee0ba1fc2974797510 100644
 --- a/components/download/public/background_service/clients.cc
 +++ b/components/download/public/background_service/clients.cc
 @@ -28,6 +28,7 @@ std::string BackgroundDownloadClientToString(DownloadClient client) {

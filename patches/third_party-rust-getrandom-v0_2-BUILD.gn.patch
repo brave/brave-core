@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/getrandom/v0_2/BUILD.gn b/third_party/rust/getrandom/v0_2/BUILD.gn
-index cc01a328786cdcdfb983f6dead0bb9549754aaff..cf91a47fcc7096e48804448ab352360571ec73c1 100644
+index 07f41eb13c66c5d04004ea8b11fbe7ce7cb4749c..ddd219b3b1bf1f0f788b1af328491e9ad5512f0f 100644
 --- a/third_party/rust/getrandom/v0_2/BUILD.gn
 +++ b/third_party/rust/getrandom/v0_2/BUILD.gn
-@@ -69,5 +69,4 @@ cargo_crate("lib") {
+@@ -64,5 +64,4 @@ cargo_crate("lib") {
    # //third_party/rust/chromium_crates_io/Cargo.toml to use
    # it from first-party code.
    visibility = [ "//third_party/rust/*" ]

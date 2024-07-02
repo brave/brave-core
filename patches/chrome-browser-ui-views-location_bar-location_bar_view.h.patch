@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 840ef31f580e817605c4d43044bb7dc84011493c..8d8dd66e5dcd3acc86038f62d08a18b981c0bb43 100644
+index 7e6f12b15de4225180a5c0a647ceb8050f776731..b9fddf0ffe60e8cf6095b86f80b752f9a6006433 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -114,6 +114,7 @@ class LocationBarView

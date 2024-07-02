@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/log/v0_4/BUILD.gn b/third_party/rust/log/v0_4/BUILD.gn
-index dbf08e71afa0896093d07658f69bf0247e3a81de..852f326e5b0fe1b0832db3f0dbe1502b3ede97d9 100644
+index ecdfbfd7b886dc5c340cfcfa254a7561ea598442..b80eaf94e1e358edc82117d1fc2c499d0d06b7a4 100644
 --- a/third_party/rust/log/v0_4/BUILD.gn
 +++ b/third_party/rust/log/v0_4/BUILD.gn
-@@ -39,5 +39,4 @@ cargo_crate("lib") {
-   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+@@ -40,5 +40,4 @@ cargo_crate("lib") {
    proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
    proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+ 
 -  testonly = true
  }

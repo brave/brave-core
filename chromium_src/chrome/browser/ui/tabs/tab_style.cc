@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_style.h"
 
-#define BRAVE_TAB_STYLE_GET return new BraveTabStyle<GM2TabStyle>();
+#define BRAVE_TAB_STYLE_GET \
+  return new BraveTabStyle<ChromeRefresh2023TabStyle>();
 #include "src/chrome/browser/ui/tabs/tab_style.cc"
 #undef BRAVE_TAB_STYLE_GET

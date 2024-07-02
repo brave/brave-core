@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_views.cc b/chrome/browser/ui/views/tabs/tab_group_views.cc
-index dcbb1f288a43972334f31554870b9a88cd83e78b..6cb47ecc649f1605df71fa441f25ec7dfb085eaa 100644
+index a1a63e801871c7e5d22762278bf562d20711b8cb..e17fa9419b8f28dd519a44c2fdb4dcf6c4719355 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_group_views.cc
-@@ -167,6 +167,7 @@ TabGroupViews::GetLeadingTrailingGroupViews(
+@@ -164,6 +164,7 @@ TabGroupViews::GetLeadingTrailingGroupViews(
    views::View* trailing_child = nullptr;
    gfx::Rect trailing_child_widget_bounds;
  

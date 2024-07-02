@@ -34,7 +34,7 @@ void ShowPanel(content::WebContents* web_contents) {
 }
 
 void ShowWalletBackup() {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void ShowWalletOnboarding(content::WebContents* web_contents) {

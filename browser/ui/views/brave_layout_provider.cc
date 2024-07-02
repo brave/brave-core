@@ -21,3 +21,11 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
       return 4;
   }
 }
+
+int BraveLayoutProvider::GetDistanceMetric(int metric) const {
+  if (metric == views::DISTANCE_CONTROL_VERTICAL_TEXT_PADDING) {
+    return 8;
+  }
+
+  return ChromeLayoutProvider::GetDistanceMetric(metric);
+}

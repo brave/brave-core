@@ -21,7 +21,6 @@
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/download/public/common/download_task_runner.h"
 #include "components/pref_registry/pref_registry_syncable.h"

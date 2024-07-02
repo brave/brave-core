@@ -33,7 +33,7 @@ std::string HDKeyring::GetRootPath(mojom::KeyringId keyring_id) {
     return "m/44'/1'";
   }
 
-  NOTREACHED() << keyring_id;
+  NOTREACHED_IN_MIGRATION() << keyring_id;
   return "";
 }
 

@@ -12,7 +12,6 @@
   GetInputInsets_Unused();                                                     \
   void SetBoundsForButton(views::FrameButton button_id, views::Button* button, \
                           ButtonAlignment align) override;                     \
-  int GetNonClientRestoredExtraThickness() const override;                     \
   gfx::Insets GetInputInsets
 
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"  // IWYU pragma: export

@@ -36,7 +36,7 @@ std::string GetPrefNameFromPinningMode(PinningMode mode) {
     case RECURSIVE:
       return kRecursiveMode;
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return kRecursiveMode;
 }
 
@@ -182,7 +182,7 @@ void RemoveLocalPinJob::Start() {
     for (const auto pair : pinning_modes_dict) {
       auto* cids_dict = pair.second.GetIfDict();
       if (!cids_dict) {
-        NOTREACHED() << "Corrupted prefs structure.";
+        NOTREACHED_IN_MIGRATION() << "Corrupted prefs structure.";
         continue;
       }
 
@@ -386,7 +386,7 @@ void IpfsLocalPinService::AddPins(const std::string& key,
                                   AddPinCallback callback) {
   auto pins_data = ExtractMergedPinData(ipfs_urls);
   if (!pins_data) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     std::move(callback).Run(false);
     return;
   }
@@ -410,7 +410,7 @@ void IpfsLocalPinService::ValidatePins(
     ValidatePinsCallback callback) {
   auto pins_data = ExtractMergedPinData(ipfs_urls);
   if (!pins_data) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     std::move(callback).Run(std::nullopt);
     return;
   }

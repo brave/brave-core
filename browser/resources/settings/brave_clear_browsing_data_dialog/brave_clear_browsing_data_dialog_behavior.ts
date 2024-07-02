@@ -90,7 +90,7 @@ export class BraveSettingsClearBrowsingDataDialogElement extends BaseElement {
       return;
     }
     const isOnExitPage = (page.id === 'on-exit-tab');
-    this.$.clearBrowsingDataConfirm.hidden = isOnExitPage;
+    this.$.clearButton.hidden = isOnExitPage;
     this.shadowRoot.querySelector('#saveOnExitSettingsConfirm').hidden = !isOnExitPage;
   }
 

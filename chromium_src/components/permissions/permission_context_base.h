@@ -93,7 +93,8 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
                          ContentSetting content_setting,
                          bool is_one_time,
                          bool is_final_decision) override;
-  void CleanUpRequest(const PermissionRequestID& id) override;
+  void CleanUpRequest(const PermissionRequestID& id,
+                      bool embedded_permission_element_initiated) override;
 
   std::map<std::string, std::unique_ptr<GroupedPermissionRequests>>
       pending_grouped_requests_;

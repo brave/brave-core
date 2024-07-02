@@ -61,7 +61,7 @@ void EnsOffchainLookupOptInPage::CommandReceived(const std::string& command) {
       controller()->Proceed();
       break;
     default:
-      NOTREACHED() << "Unsupported command: " << command;
+      NOTREACHED_IN_MIGRATION() << "Unsupported command: " << command;
   }
 }
 

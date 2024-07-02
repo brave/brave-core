@@ -67,7 +67,7 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   if (url == "chrome://history/")
     return SidebarItem::BuiltInItemType::kHistory;
 
-  NOTREACHED() << url;
+  NOTREACHED_IN_MIGRATION() << url;
   return SidebarItem::BuiltInItemType::kNone;
 }
 
@@ -663,7 +663,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
     }
     case SidebarItem::BuiltInItemType::kNone: {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
     }
   }

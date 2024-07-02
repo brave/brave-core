@@ -49,7 +49,7 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
       case mojom::KeyringId::kBitcoinImportTestnet:
         return "Bitcoin Imported Testnet Account";
     }
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return "";
   };
 

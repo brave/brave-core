@@ -43,7 +43,8 @@ std::string WalletTypeToState(const std::string& wallet_type) {
   } else if (wallet_type == "test") {
     return "wallets." + wallet_type;
   } else {
-    NOTREACHED() << "Unexpected wallet type " << wallet_type << '!';
+    NOTREACHED_IN_MIGRATION()
+        << "Unexpected wallet type " << wallet_type << '!';
     return "";
   }
 }

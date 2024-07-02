@@ -10,12 +10,13 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -45,10 +46,10 @@ class SidebarContainerViewBrowserTest : public InProcessBrowserTest {
     return static_cast<SidebarContainerView*>(controller->sidebar());
   }
 
-  SidePanelToolbarButton* toolbar_button() {
-    return BrowserView::GetBrowserViewForBrowser(browser())
-        ->toolbar_button_provider()
-        ->GetSidePanelButton();
+  SidePanelButton* toolbar_button() {
+    return static_cast<BraveToolbarView*>(
+               BrowserView::GetBrowserViewForBrowser(browser())->toolbar())
+        ->side_panel_button();
   }
 };
 

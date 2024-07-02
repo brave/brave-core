@@ -11,7 +11,10 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 
@@ -31,32 +34,12 @@ std::optional<SidePanelEntry::Id> GetDefaultEntryId(Profile* profile) {
 BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;
 
 void BraveSidePanelCoordinator::Show(
-    std::optional<SidePanelEntry::Id> entry_id,
+    SidePanelEntry::Key entry_key,
     std::optional<SidePanelUtil::SidePanelOpenTrigger> open_trigger) {
-  // If user clicks sidebar toolbar button, |entry_id| is null.
-  // Then, choose Brave's own default, and exclude items that user has removed
-  // from sidebar. If none are enabled, do nothing.
-  auto* profile = browser_view_->GetProfile();
-  if (!entry_id) {
-    // Early return as user removes all default panel entries.
-    auto default_entry_id = GetDefaultEntryId(profile);
-    if (!default_entry_id.has_value()) {
-      return;
-    }
-    entry_id = sidebar::GetLastUsedSidePanel(browser_view_->browser());
-    if (!entry_id.has_value()) {
-      // Use default pick when we don't have lastly used panel.
-      entry_id = default_entry_id;
-    }
-  }
+  sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
+                                entry_key.id());
 
-  // Cache lastly shown entry id to make it persist across the re-launch.
-  if (entry_id) {
-    sidebar::SetLastUsedSidePanel(browser_view_->GetProfile()->GetPrefs(),
-                                  *entry_id);
-  }
-
-  SidePanelCoordinator::Show(entry_id, open_trigger);
+  SidePanelCoordinator::Show(entry_key, open_trigger);
 }
 
 void BraveSidePanelCoordinator::OnTabStripModelChanged(
@@ -105,6 +88,46 @@ std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
   return header;
 }
 
+void BraveSidePanelCoordinator::Toggle() {
+  if (IsSidePanelShowing() &&
+      !browser_view_->unified_side_panel()->IsClosing()) {
+    Close();
+  } else if (const auto key = GetLastActiveEntryKey()) {
+    Show(*key, SidePanelUtil::SidePanelOpenTrigger::kToolbarButton);
+  }
+}
+
+void BraveSidePanelCoordinator::Toggle(
+    SidePanelEntryKey key,
+    SidePanelUtil::SidePanelOpenTrigger open_trigger) {
+  SidePanelCoordinator::Toggle(key, open_trigger);
+}
+
+void BraveSidePanelCoordinator::OnViewVisibilityChanged(
+    views::View* observed_view,
+    views::View* starting_from) {
+  UpdateToolbarButtonHighlight(observed_view->GetVisible());
+  SidePanelCoordinator::OnViewVisibilityChanged(observed_view, starting_from);
+}
+
+std::optional<SidePanelEntry::Key>
+BraveSidePanelCoordinator::GetLastActiveEntryKey() const {
+  // Don't give last active if user removed all panel items.
+  const auto default_entry_id = GetDefaultEntryId(browser_view_->GetProfile());
+  if (!default_entry_id) {
+    return std::nullopt;
+  }
+
+  // Use last used one from previous launch instead of default entry if we have
+  // it.
+  if (const auto entry_id =
+          sidebar::GetLastUsedSidePanel(browser_view_->browser())) {
+    return SidePanelEntryKey(*entry_id);
+  }
+
+  return SidePanelEntryKey(*default_entry_id);
+}
+
 void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
     bool side_panel_visible) {
   // Workaround to prevent crashing while window closing.
@@ -114,5 +137,12 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
     return;
   }
 
-  SidePanelCoordinator::UpdateToolbarButtonHighlight(side_panel_visible);
+  auto* brave_toolbar =
+      static_cast<BraveToolbarView*>(browser_view_->toolbar());
+  if (auto* side_panel_button = brave_toolbar->side_panel_button()) {
+    side_panel_button->SetHighlighted(side_panel_visible);
+    side_panel_button->SetTooltipText(l10n_util::GetStringUTF16(
+        side_panel_visible ? IDS_TOOLTIP_SIDEBAR_HIDE
+                           : IDS_TOOLTIP_SIDEBAR_SHOW));
+  }
 }

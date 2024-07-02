@@ -109,7 +109,7 @@ std::string NTPSponsoredImagesSource::GetMimeType(const GURL& url) {
   } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
     return "image/avif";
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return "image/jpeg";
   }
 }
@@ -148,7 +148,7 @@ base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
     }
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return base::FilePath();
 }
 

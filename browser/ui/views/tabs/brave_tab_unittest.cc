@@ -16,17 +16,13 @@ class BraveTabTest : public ChromeViewsTestBase {
   BraveTabTest() = default;
   ~BraveTabTest() override = default;
 
-  void LayoutAndCheckBorder(BraveTab* tab,
-                            const gfx::Rect& bounds,
-                            bool gave_extra_padding) {
+  void LayoutAndCheckBorder(BraveTab* tab, const gfx::Rect& bounds) {
     tab->SetBoundsRect(bounds);
     views::test::RunScheduledLayout(tab);
 
     auto insets = tab->tab_style_views()->GetContentsInsets();
     int left_inset = insets.left();
-    if (gave_extra_padding) {
-      left_inset += BraveTab::kExtraLeftPadding;
-    }
+    left_inset += BraveTab::kExtraLeftPadding;
     EXPECT_EQ(left_inset, tab->GetInsets().left());
   }
 };
@@ -35,10 +31,11 @@ TEST_F(BraveTabTest, ExtraPaddingLayoutTest) {
   FakeTabSlotController tab_slot_controller;
   BraveTab tab(&tab_slot_controller);
 
-  // Smaller width tab will be given extra padding.
-  LayoutAndCheckBorder(&tab, {0, 0, 30, 50}, true);
-  LayoutAndCheckBorder(&tab, {0, 0, 50, 50}, true);
-  LayoutAndCheckBorder(&tab, {0, 0, 100, 50}, false);
-  LayoutAndCheckBorder(&tab, {0, 0, 150, 50}, false);
-  LayoutAndCheckBorder(&tab, {0, 0, 30, 50}, true);
+  // Our tab should have extra padding always.
+  // See the comment at BraveTab::GetInsets().
+  LayoutAndCheckBorder(&tab, {0, 0, 30, 50});
+  LayoutAndCheckBorder(&tab, {0, 0, 50, 50});
+  LayoutAndCheckBorder(&tab, {0, 0, 100, 50});
+  LayoutAndCheckBorder(&tab, {0, 0, 150, 50});
+  LayoutAndCheckBorder(&tab, {0, 0, 30, 50});
 }

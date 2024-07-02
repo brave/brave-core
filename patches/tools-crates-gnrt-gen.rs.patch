@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/gen.rs b/tools/crates/gnrt/gen.rs
-index c1c4b1b73e50ccd306f7c7e9773aa2bbbfff8eb3..0b1593d17d1ee223b365d0bf5f227061a811a680 100644
+index 5ef8e564b1dcdd62743391ef68c45fd97f4c827e..486c25e8500691739472afaddc7e3a0f8930a876 100644
 --- a/tools/crates/gnrt/gen.rs
 +++ b/tools/crates/gnrt/gen.rs
 @@ -278,6 +278,7 @@ fn generate_for_third_party(args: GenCommandArgs, paths: &paths::ChromiumPaths)

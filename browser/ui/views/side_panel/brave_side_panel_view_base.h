@@ -14,6 +14,8 @@
 class BraveSidePanelViewBase : public views::View, public views::ViewObserver {
   METADATA_HEADER(BraveSidePanelViewBase, views::View)
  public:
+  static constexpr inline int kHeaderHeight = 60;
+
   BraveSidePanelViewBase();
   ~BraveSidePanelViewBase() override;
   BraveSidePanelViewBase(const BraveSidePanelViewBase&) = delete;

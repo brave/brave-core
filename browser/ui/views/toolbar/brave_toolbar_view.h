@@ -19,6 +19,7 @@ class BraveVPNButton;
 #endif
 
 class BraveBookmarkButton;
+class SidePanelButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
@@ -30,6 +31,7 @@ class BraveToolbarView : public ToolbarView,
 
   BraveBookmarkButton* bookmark_button() const { return bookmark_; }
   WalletButton* wallet_button() const { return wallet_; }
+  SidePanelButton* side_panel_button() const { return side_panel_; }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNButton* brave_vpn_button() const { return brave_vpn_; }
@@ -56,6 +58,9 @@ class BraveToolbarView : public ToolbarView,
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
 
+  // ToolbarButtonProvider:
+  views::View* GetAnchorView(std::optional<PageActionIconType> type) override;
+
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
@@ -68,6 +73,7 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember edit_bookmarks_enabled_;
 
   raw_ptr<WalletButton> wallet_ = nullptr;
+  raw_ptr<SidePanelButton> side_panel_ = nullptr;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   raw_ptr<BraveVPNButton> brave_vpn_ = nullptr;

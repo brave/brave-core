@@ -39,15 +39,6 @@ void SetBraveAsDefaultPrivateSearchProvider(Profile* profile) {
                  TemplateURLDataToDictionary(*data));
 }
 
-bool IsRegionForQwant(Profile* profile) {
-  search_engines::SearchEngineChoiceService* search_engine_choice_service =
-      search_engines::SearchEngineChoiceServiceFactory::GetForProfile(profile);
-  return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-             profile->GetPrefs(), search_engine_choice_service)
-             ->prepopulate_id ==
-         TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
-}
-
 void RegisterSearchEngineProviderPrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kUseAlternativePrivateSearchEngineProvider,

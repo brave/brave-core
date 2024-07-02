@@ -45,13 +45,15 @@ std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
 
 class BraveTemplateURLServiceUtilTest : public testing::Test {
  public:
-  BraveTemplateURLServiceUtilTest() : search_engine_choice_service_(prefs_) {}
+  BraveTemplateURLServiceUtilTest()
+      : search_engine_choice_service_(prefs_, &local_state_) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
   }
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  TestingPrefServiceSimple local_state_;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
 };
 

@@ -30,7 +30,7 @@ void GetSearchProvidersUsingKeywordResult(
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
         TemplateURLPrepopulateData::GetPrepopulatedEngines(
-            prefs, search_engine_choice_service, nullptr);
+            prefs, search_engine_choice_service);
     for (const auto& template_url_data : base::Reversed(prepopulated_urls)) {
       auto it = base::ranges::find_if(
           *template_urls,

@@ -143,7 +143,7 @@ ChildProcessMonitor::ChildProcessMonitor()
   SetupPipeHack();
 #endif
   if (!child_monitor_thread_->Start()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

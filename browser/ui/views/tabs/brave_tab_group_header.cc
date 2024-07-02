@@ -73,6 +73,20 @@ void BraveTabGroupHeader::VisualsChanged() {
     title_chip_->SetBackground(nullptr);
   }
 
+  // When the title is empty, upstream (127) ignores the top value returned from
+  // `GetInsetsForHeaderChip`, which throws off the header size. Adjust the
+  // vertical layout to maintain the group header height.
+  if (!title_->GetText().empty()) {
+    const gfx::Insets title_chip_insets =
+        group_style_->GetInsetsForHeaderChip(ShouldShowSyncIcon());
+    title_chip_->SetSize(
+        {title_chip_->width(), title_->height() + 2 * title_chip_insets.top()});
+    title_->SetY(title_chip_insets.top());
+    if (ShouldShowSyncIcon()) {
+      sync_icon_->SetY(title_chip_insets.top());
+    }
+  }
+
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
   }

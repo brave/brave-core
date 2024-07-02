@@ -32,7 +32,7 @@ BraveTabStripModel::~BraveTabStripModel() = default;
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            TabStripUserGestureDetails detail) {
-  if (GetContentsDataAsVector().empty()) {
+  if (GetTabCount() == 0) {
     return;
   }
 

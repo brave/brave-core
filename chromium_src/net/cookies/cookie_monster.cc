@@ -104,7 +104,7 @@ void CookieMonster::SetCanonicalCookieAsync(
   if (options.should_use_ephemeral_storage()) {
     if (!options.top_frame_origin()) {
       // Shouldn't happen, but don't do anything in this case.
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       MaybeRunCookieCallback(
           std::move(callback),
           CookieAccessResult(CookieInclusionStatus(
@@ -133,7 +133,7 @@ void CookieMonster::GetCookieListWithOptionsAsync(
   if (options.should_use_ephemeral_storage()) {
     if (!options.top_frame_origin()) {
       // Shouldn't happen, but don't do anything in this case.
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       MaybeRunCookieCallback(std::move(callback), CookieAccessResultList(),
                              CookieAccessResultList());
       return;

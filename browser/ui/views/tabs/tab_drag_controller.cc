@@ -133,54 +133,6 @@ void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
   last_move_attached_context_loc_ = point_in_attached_context.y();
 }
 
-std::optional<tab_groups::TabGroupId>
-TabDragController::GetTabGroupForTargetIndex(const std::vector<int>& selected) {
-  auto group_id =
-      TabDragControllerChromium::GetTabGroupForTargetIndex(selected);
-  if (group_id.has_value() || !is_showing_vertical_tabs_) {
-    return group_id;
-  }
-
-  // We have corner cases where the chromium code can't handle.
-  // When former group and latter group of selected tabs are different, Chromium
-  // calculates the target index based on the x coordinate. So we need to check
-  // this again based on y coordinate.
-  const auto previous_tab_index = selected.front() - 1;
-
-  const TabStripModel* attached_model = attached_context_->GetTabStripModel();
-  const std::optional<tab_groups::TabGroupId> former_group =
-      attached_model->GetTabGroupForTab(previous_tab_index);
-  const std::optional<tab_groups::TabGroupId> latter_group =
-      attached_model->GetTabGroupForTab(selected.back() + 1);
-  // We assume that Chromium can handle it when former and latter group are
-  // same. So just return here.
-  if (former_group == latter_group) {
-    return group_id;
-  }
-
-  const auto top_edge =
-      previous_tab_index >= 0
-          ? attached_context_->GetTabAt(previous_tab_index)->bounds().bottom()
-          : 0;
-  const auto first_selected_tab_y =
-      attached_context_->GetTabAt(selected.front())->bounds().y();
-  if (former_group.has_value() &&
-      !attached_model->IsGroupCollapsed(*former_group)) {
-    if (first_selected_tab_y <= top_edge) {
-      return former_group;
-    }
-  }
-
-  if (latter_group.has_value() &&
-      !attached_model->IsGroupCollapsed(*latter_group)) {
-    if (first_selected_tab_y >= top_edge) {
-      return latter_group;
-    }
-  }
-
-  return group_id;
-}
-
 views::Widget* TabDragController::GetAttachedBrowserWidget() {
   auto* widget = TabDragControllerChromium::GetAttachedBrowserWidget();
   if (!is_showing_vertical_tabs_) {

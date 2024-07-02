@@ -22,8 +22,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/webui_url_constants.h"
@@ -142,8 +142,9 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
       [[fallthrough]];
     case BuiltInItemType::kNone:
       // Add a new case for any new types which we want to support.
-      NOTREACHED() << "Asked for a panel Id from a sidebar item which should "
-                      "not have a panel Id, sending Reading List instead.";
+      NOTREACHED_IN_MIGRATION()
+          << "Asked for a panel Id from a sidebar item which should "
+             "not have a panel Id, sending Reading List instead.";
       return SidePanelEntryId::kReadingList;
   }
 }

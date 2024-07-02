@@ -9,7 +9,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 
 import org.chromium.base.IntentUtils;
-import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras;
 
 public class SearchWidgetProviderActivity extends SearchActivity {
     @Override
@@ -23,9 +23,9 @@ public class SearchWidgetProviderActivity extends SearchActivity {
 
         int searchType =
                 IntentUtils.safeGetInt(
-                        intent.getExtras(), SearchActivityUtils.EXTRA_SEARCH_TYPE, -1);
-        if (searchType == SearchActivityClient.SearchType.TEXT) {
-            newIntent.putExtra(SearchActivityUtils.EXTRA_SEARCH_TYPE, searchType);
+                        intent.getExtras(), SearchActivityExtras.EXTRA_SEARCH_TYPE, -1);
+        if (searchType == SearchActivityExtras.SearchType.TEXT) {
+            newIntent.putExtra(SearchActivityExtras.EXTRA_SEARCH_TYPE, searchType);
         }
 
         super.onNewIntent(newIntent);

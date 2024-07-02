@@ -64,8 +64,6 @@ void RegisterContextualSidePanel(content::WebContents* web_contents) {
     // If |registry| already has it, it's no-op.
     registry->Register(std::make_unique<SidePanelEntry>(
         SidePanelEntry::Id::kChatUI,
-        l10n_util::GetStringUTF16(IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE),
-        ui::ImageModel(),
         base::BindRepeating(
             &CreateAIChatSidePanelWebView,
             Profile::FromBrowserContext(context)->GetWeakPtr())));

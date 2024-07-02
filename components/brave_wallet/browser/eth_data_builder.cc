@@ -403,7 +403,7 @@ std::vector<uint8_t> GetWalletAddr(const std::string& domain,
       key_list = MakeFilLookupKeyList();
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 
   // getMany(string[],uint256)

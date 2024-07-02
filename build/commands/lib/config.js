@@ -512,7 +512,7 @@ Config.prototype.buildArgs = function () {
 
   if (this.useRemoteExec) {
     args.rbe_exec_root = this.rbeExecRoot
-    args.rbe_bin_dir = path.join(this.nativeRedirectCCDir)
+    args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
   } else {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }

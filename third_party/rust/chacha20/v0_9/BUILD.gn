@@ -42,6 +42,9 @@ cargo_crate("lib") {
     "//brave/third_party/rust/cfg_if/v1:lib",
     "//brave/third_party/rust/cipher/v0_4:lib",
   ]
+  if (target_cpu == "x64" || target_cpu == "x86") {
+    deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
+  }
   features = [ "zeroize" ]
   if (target_cpu == "x64" || target_cpu == "x86") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]

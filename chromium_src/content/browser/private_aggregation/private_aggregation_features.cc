@@ -12,8 +12,6 @@ namespace content {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrivateAggregationApiDebugModeRequires3pcEligibility,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivateAggregationApiContextIdEnhancements,
-     base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace content

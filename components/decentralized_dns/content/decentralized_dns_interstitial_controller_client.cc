@@ -63,7 +63,7 @@ void DecentralizedDnsInterstitialControllerClient::SetResolveMethodAndReload(
   } else if (IsSnsTLD(request_url_.host_piece())) {
     pref_name = kSnsResolveMethod;
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 

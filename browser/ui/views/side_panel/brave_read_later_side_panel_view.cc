@@ -13,8 +13,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -63,10 +63,6 @@ class ReadLaterSidePanelHeaderView : public views::View {
     header_label->SetFontList(gfx::FontList("Poppins, Semi-Bold 16px"));
     header_label->SetEnabledColorId(kColorSidebarPanelHeaderTitle);
     header_label->SetAutoColorReadabilityEnabled(false);
-    header_label->SetProperty(
-        views::kFlexBehaviorKey,
-        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
-                                 views::MaximumFlexSizeRule::kPreferred));
 
     AddChildView(std::make_unique<views::View>())
         ->SetProperty(
@@ -96,6 +92,16 @@ class ReadLaterSidePanelHeaderView : public views::View {
         ui::ImageModel::FromVectorIcon(kLeoCloseIcon,
                                        kColorSidebarPanelHeaderButtonHovered,
                                        kHeaderButtonSize));
+  }
+
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
+    if (available_size.is_fully_bounded()) {
+      return {available_size.width().value(),
+              BraveSidePanelViewBase::kHeaderHeight};
+    }
+
+    return View::CalculatePreferredSize(available_size);
   }
 
   ~ReadLaterSidePanelHeaderView() override = default;

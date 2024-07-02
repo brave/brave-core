@@ -15,6 +15,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
 #include "chrome/browser/ui/color/material_chrome_color_mixer.h"
@@ -438,15 +439,8 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
                                        const ui::ColorProviderKey& key) {
   AddChromeColorMixerForAllThemes(provider, key);
 
-  // This is behind features::IsChromeRefresh2023 upstream, but without it the
-  // colors are not set correctly.
-  // These mixers should be called always as upstream does. Otherwise,
-  // some colors are missed for private windows because we use custom theme
-  // for private/tor window.
-  if (!features::IsChromeRefresh2023()) {
-    AddMaterialChromeColorMixer(provider, key);
-    AddMaterialSidePanelColorMixer(provider, key);
-  }
+  AddMaterialChromeColorMixer(provider, key);
+  AddMaterialSidePanelColorMixer(provider, key);
 
   // TODO(simonhong): Use leo color when it's ready.
   ui::ColorMixer& mixer = provider->AddMixer();

@@ -129,7 +129,7 @@ bool BraveWireguardCrashReporterClient::GetShouldDumpLargerDumps() {
 
 int BraveWireguardCrashReporterClient::GetResultCodeRespawnFailed() {
   // The restart dialog is never shown.
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return 0;
 }
 
@@ -172,6 +172,6 @@ bool BraveWireguardCrashReporterClient::ShouldMonitorCrashHandlerExpensively() {
 bool BraveWireguardCrashReporterClient::EnableBreakpadForProcess(
     const std::string& process_type) {
   // This is not used by Crashpad (at least on Windows).
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return true;
 }

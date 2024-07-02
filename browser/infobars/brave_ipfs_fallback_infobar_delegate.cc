@@ -49,7 +49,7 @@ std::u16string BraveIPFSFallbackInfoBarDelegate::GetCheckboxText() const {
 }
 
 void BraveIPFSFallbackInfoBarDelegate::SetCheckboxChecked(bool checked) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 bool BraveIPFSFallbackInfoBarDelegate::InterceptClosing() {

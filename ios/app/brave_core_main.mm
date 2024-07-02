@@ -56,7 +56,9 @@
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
+#include "components/sync/base/features.h"
 #include "ios/chrome/app/startup/provider_registration.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
@@ -371,10 +373,16 @@ static bool CustomLogHandler(int severity,
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
-    bookmarks::BookmarkModel* bookmark_model_ =
-        ios::LocalOrSyncableBookmarkModelFactory::
-            GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-                _mainBrowserState);
+    bookmarks::BookmarkModel* bookmark_model_;
+    if (base::FeatureList::IsEnabled(
+            syncer::kEnableBookmarkFoldersForAccountStorage)) {
+      bookmark_model_ = ios::BookmarkModelFactory::
+          GetModelForBrowserStateIfUnificationEnabledOrDie(_mainBrowserState);
+    } else {
+      bookmark_model_ = ios::LocalOrSyncableBookmarkModelFactory::
+          GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+              _mainBrowserState);
+    }
     BookmarkUndoService* bookmark_undo_service_ =
         ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index f9192285fba43be32ba1bfb1214959ac969186bf..83740dd1568fa8dca7adb677abf8d85b83282936 100644
+index ef22b3c2b00c9757ede91062aba188266716d2d7..ab9648368e849c72bafce2d99a46d9c7c6131caa 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -28,6 +28,7 @@ by a child template that "extends" this file.
@@ -66,7 +66,7 @@ index f9192285fba43be32ba1bfb1214959ac969186bf..83740dd1568fa8dca7adb677abf8d85b
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1210,6 +1224,7 @@ by a child template that "extends" this file.
+@@ -1207,6 +1221,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

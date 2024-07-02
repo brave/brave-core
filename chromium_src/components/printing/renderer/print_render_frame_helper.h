@@ -14,12 +14,12 @@ using PrintRenderFrameHelper_BraveImpl = PrintRenderFrameHelper;
 }  // namespace printing
 
 #define PrintRenderFrameHelper PrintRenderFrameHelper_ChromiumImpl
-#define WaitForLoad                        \
-  WaitForLoad_Unused();                    \
+#define SetupOnStopLoadingTimeout          \
+  SetupOnStopLoadingTimeout_Unused();      \
   friend PrintRenderFrameHelper_BraveImpl; \
-  void WaitForLoad
+  void SetupOnStopLoadingTimeout
 #include "src/components/printing/renderer/print_render_frame_helper.h"  // IWYU pragma: export
-#undef WaitForLoad
+#undef SetupOnStopLoadingTimeout
 #undef PrintRenderFrameHelper
 #undef SetPrintPreviewUI
 

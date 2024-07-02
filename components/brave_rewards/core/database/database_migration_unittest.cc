@@ -80,7 +80,7 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
     base::FilePath path = GetTestDataPath().AppendASCII(script_path);
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
-    ASSERT_TRUE(GetDB()->Execute(init_script.c_str()));
+    ASSERT_TRUE(GetDB()->Execute(init_script));
   }
 
   void InitializeDatabaseAtVersion(int version) {
@@ -89,13 +89,13 @@ class RewardsDatabaseMigrationTest : public RewardsEngineTest {
 
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
-    ASSERT_TRUE(GetDB()->Execute(init_script.c_str()));
+    ASSERT_TRUE(GetDB()->Execute(init_script));
   }
 
   int CountTableRows(const std::string& table) {
     const std::string sql =
         base::StringPrintf("SELECT COUNT(*) FROM %s", table.c_str());
-    sql::Statement s(GetDB()->GetUniqueStatement(sql.c_str()));
+    sql::Statement s(GetDB()->GetUniqueStatement(sql));
     return s.Step() ? static_cast<int>(s.ColumnInt64(0)) : -1;
   }
 };
@@ -248,7 +248,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
   )sql";
 
   // One-time tip
-  sql::Statement tip_sql(GetDB()->GetUniqueStatement(query.c_str()));
+  sql::Statement tip_sql(GetDB()->GetUniqueStatement(query));
   tip_sql.BindString(0, "id_1570614352_%");
 
   ASSERT_TRUE(tip_sql.Step());
@@ -261,7 +261,7 @@ TEST_F(RewardsDatabaseMigrationTest, Migration_11_ContributionInfo) {
   EXPECT_EQ(tip_sql.ColumnDouble(6), 1.0);
 
   // Auto contribute
-  sql::Statement ac_sql(GetDB()->GetUniqueStatement(query.c_str()));
+  sql::Statement ac_sql(GetDB()->GetUniqueStatement(query));
   ac_sql.BindString(0, "id_1574671381_%");
 
   ASSERT_TRUE(ac_sql.Step());

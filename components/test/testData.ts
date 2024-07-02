@@ -41,7 +41,6 @@ export const newTabInitialState: NewTab.ApplicationState = {
     torCircuitEstablished: false,
     torInitProgress: '',
     isTor: false,
-    isQwant: false,
     stats: {
       adsBlockedStat: 0,
       javascriptBlockedStat: 0,

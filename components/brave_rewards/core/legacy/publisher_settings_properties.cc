@@ -99,7 +99,7 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
     min_page_time_before_logging_a_visit =
         static_cast<uint64_t>(*min_page_time_value_double);
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -114,7 +114,7 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
     min_visits_for_publisher_relevancy =
         static_cast<unsigned int>(*min_visits_value_double);
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -122,27 +122,27 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   if (auto value = dict.FindBool(kAllowNonVerifiedSitesInListKey)) {
     allow_non_verified_sites_in_list = *value;
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
   // Monthly Balances
   const auto* monthly_balances_list = dict.FindList(kMonthlyBalancesKey);
   if (!monthly_balances_list) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
   for (const auto& item : *monthly_balances_list) {
     const auto* monthly_balance_value = item.GetIfDict();
     if (!monthly_balance_value) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       continue;
     }
 
     for (const auto [key, value] : *monthly_balance_value) {
       if (!value.is_dict()) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         continue;
       }
       ReportBalanceProperties report_balance;
@@ -158,7 +158,7 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   if (const auto* value = dict.FindList(kProcessedPendingPublishersKey)) {
     for (const auto& processed_pending_publisher_value : *value) {
       if (!processed_pending_publisher_value.is_string()) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         continue;
       }
 

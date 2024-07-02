@@ -33,8 +33,6 @@ class TabDragController : public TabDragControllerChromium {
   gfx::Point GetAttachedDragPoint(const gfx::Point& point_in_screen) override;
   void MoveAttached(const gfx::Point& point_in_screen,
                     bool just_attached) override;
-  std::optional<tab_groups::TabGroupId> GetTabGroupForTargetIndex(
-      const std::vector<int>& selected) override;
   views::Widget* GetAttachedBrowserWidget() override;
 
   Liveness GetLocalProcessWindow(const gfx::Point& screen_point,

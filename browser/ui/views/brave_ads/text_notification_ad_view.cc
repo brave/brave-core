@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/brave_ads/text_notification_ad_view.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/browser/ui/views/brave_ads/insets_util.h"
@@ -104,34 +105,43 @@ void TextNotificationAdView::CreateView(const NotificationAd& notification_ad) {
       views::BoxLayout::Orientation::kVertical, gfx::Insets()));
 
   // Header
-  NotificationAdHeaderView* header_view = CreateHeaderView(notification_ad);
-  NotificationAdControlButtonsView* control_buttons_view =
-      new NotificationAdControlButtonsView(*this);
-  header_view->AddChildView(control_buttons_view);
-  AddChildView(header_view);
+  auto header_container_view = std::make_unique<views::View>();
+  views::BoxLayout* header_layout = header_container_view->SetLayoutManager(
+      std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kHorizontal, gfx::Insets()));
+  NotificationAdHeaderView* header_view =
+      header_container_view->AddChildView(CreateHeaderView(notification_ad));
+  header_container_view->AddChildView(
+      std::make_unique<NotificationAdControlButtonsView>(*this));
 
-  // Container
-  views::View* container_view = new views::View();
-  views::BoxLayout* box_layout =
-      container_view->SetLayoutManager(std::make_unique<views::BoxLayout>(
+  header_layout->SetFlexForView(header_view, 1);
+  header_layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kEnd);
+
+  AddChildView(std::move(header_container_view));
+
+  // Body
+  auto body_container_view = std::make_unique<views::View>();
+  views::BoxLayout* body_layout =
+      body_container_view->SetLayoutManager(std::make_unique<views::BoxLayout>(
           views::BoxLayout::Orientation::kHorizontal,
           kContainerViewInsideBorderInsets));
 
-  box_layout->set_cross_axis_alignment(
+  body_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kStart);
 
-  AddChildView(container_view);
+  views::View* body_view =
+      body_container_view->AddChildView(CreateBodyView(notification_ad));
+  body_layout->SetFlexForView(body_view, 1);
 
-  // Body
-  views::View* body_view = CreateBodyView(notification_ad);
-  container_view->AddChildView(body_view);
-  box_layout->SetFlexForView(body_view, 1);
+  AddChildView(std::move(body_container_view));
 }
 
-NotificationAdHeaderView* TextNotificationAdView::CreateHeaderView(
+std::unique_ptr<NotificationAdHeaderView>
+TextNotificationAdView::CreateHeaderView(
     const NotificationAd& notification_ad) {
-  const int width = View::width();
-  NotificationAdHeaderView* view = new NotificationAdHeaderView(width);
+  std::unique_ptr<NotificationAdHeaderView> view =
+      std::make_unique<NotificationAdHeaderView>();
 
   view->SetTitle(notification_ad.title());
   view->SetTitleElideBehavior(kTitleElideBehavior);
@@ -139,9 +149,9 @@ NotificationAdHeaderView* TextNotificationAdView::CreateHeaderView(
   return view;
 }
 
-views::View* TextNotificationAdView::CreateBodyView(
+std::unique_ptr<views::View> TextNotificationAdView::CreateBodyView(
     const NotificationAd& notification_ad) {
-  views::View* view = new views::View();
+  auto view = std::make_unique<views::View>();
 
   view->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets()));
@@ -149,17 +159,16 @@ views::View* TextNotificationAdView::CreateBodyView(
   view->SetBorder(views::CreateEmptyBorder(kBodyViewBorderInsets));
 
   CHECK(!body_label_);
-  body_label_ = CreateBodyLabel(notification_ad);
-  view->AddChildView(body_label_.get());
+  body_label_ = view->AddChildView(CreateBodyLabel(notification_ad));
 
   return view;
 }
 
-views::Label* TextNotificationAdView::CreateBodyLabel(
+std::unique_ptr<views::Label> TextNotificationAdView::CreateBodyLabel(
     const NotificationAd& notification_ad) {
   const std::u16string body = notification_ad.body();
 
-  views::Label* label = new views::Label(body);
+  auto label = std::make_unique<views::Label>(body);
 
   const gfx::FontList font_list({kBodyFontName}, kBodyFontStyle, kBodyFontSize,
                                 kBodyFontWeight);

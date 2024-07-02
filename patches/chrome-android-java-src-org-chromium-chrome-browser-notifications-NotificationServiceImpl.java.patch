@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-index 3a04e6269b7922a81261ff4b7d9e8cc4d5e25f77..0170f6987aa6603c92428188c6d12c99a8b1b4c4 100644
+index 1e701c576f4af1f8f8cfd21b87c471bd2e971664..da037d4409b1b0b10524a91ca0064c0b35c6ced1 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-@@ -198,7 +198,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {
+@@ -205,7 +205,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {
                                  .recordIntentHandlerJobStage(
                                          NotificationUmaTracker.IntentHandlerJobStage.DISPATCH_EVENT,
                                          intent.getAction());

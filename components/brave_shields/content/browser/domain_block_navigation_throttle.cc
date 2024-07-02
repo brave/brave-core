@@ -11,9 +11,11 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/content/browser/domain_block_page.h"
 #include "brave/components/brave_shields/content/browser/domain_block_tab_storage.h"
@@ -112,11 +114,11 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   DCHECK(handle->IsInMainFrame());
   GURL request_url = handle->GetURL();
 
-  domain_blocking_type_ =
+  DomainBlockingType domain_blocking_type =
       brave_shields::GetDomainBlockingType(content_settings_, request_url);
   content::WebContents* web_contents = handle->GetWebContents();
   // Maybe don't block based on Brave Shields settings
-  if (domain_blocking_type_ == DomainBlockingType::kNone) {
+  if (domain_blocking_type == DomainBlockingType::kNone) {
     DomainBlockTabStorage* tab_storage =
         DomainBlockTabStorage::FromWebContents(web_contents);
     if (tab_storage) {
@@ -144,7 +146,7 @@ DomainBlockNavigationThrottle::WillStartRequest() {
       base::BindOnce(&ShouldBlockDomainOnTaskRunner, ad_block_service_,
                      request_url, aggressive_mode),
       base::BindOnce(&DomainBlockNavigationThrottle::OnShouldBlockDomain,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), domain_blocking_type));
 
   // Since the call to the ad block service is asynchronous, we defer the final
   // decision of whether to allow or block this navigation. The callback from
@@ -171,6 +173,7 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 }
 
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
+    DomainBlockingType domain_blocking_type,
     std::pair<bool, std::string> block_result) {
   const bool should_block = block_result.first;
   const GURL new_url(block_result.second);
@@ -191,17 +194,15 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
   } else if (new_url.is_valid()) {
     RestartNavigation(new_url);
   } else {
-    switch (domain_blocking_type_) {
-      case DomainBlockingType::kNone:
-        NOTREACHED();
-        Resume();
-        break;
+    switch (domain_blocking_type) {
       case DomainBlockingType::k1PES:
         Enable1PESAndResume();
         break;
       case DomainBlockingType::kAggressive:
         ShowInterstitial();
         break;
+      case DomainBlockingType::kNone:
+        NOTREACHED_NORETURN();
     }
   }
 }

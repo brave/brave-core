@@ -15,7 +15,6 @@ class PrefRegistrySyncable;
 
 namespace brave {
 
-bool IsRegionForQwant(Profile* profile);
 void SetBraveAsDefaultPrivateSearchProvider(Profile* profile);
 
 // For prefs migration.

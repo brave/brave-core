@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 
+#include <map>
 #include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/check_op.h"
@@ -172,11 +174,11 @@ void MigrateDerivedAccountIndex(PrefService* profile_prefs) {
     for (auto acc_item : *account_metas_dict) {
       auto account_index = ExtractAccountIndex(keyring_id, acc_item.first);
       if (!account_index) {
-        NOTREACHED() << acc_item.first;
+        NOTREACHED_IN_MIGRATION() << acc_item.first;
         continue;
       }
       if (!acc_item.second.is_dict()) {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
         continue;
       }
 
@@ -258,10 +260,10 @@ void MaybeMigrateSelectedAccountPrefs(
       wallet_selected = fil_selected.Clone();
       break;
     case mojom::CoinType::ZEC:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
     case mojom::CoinType::BTC:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
   }
 

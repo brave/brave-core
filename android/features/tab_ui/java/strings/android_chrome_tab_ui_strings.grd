@@ -385,11 +385,6 @@
         To group tabs, touch &amp; hold a tab. Then, drag it onto another tab.
       </message>
 
-      <!-- Tab Carousel strings -->
-      <message name="IDS_TAB_SWITCHER_CAROUSEL_TITLE" desc="Title of the Tabs carousel section on the single pane start surface.">
-          Continue browsing
-      </message>
-
       <!-- Single Tab module strings -->
       <message name="IDS_SINGLE_TAB_MODULE_TITLE" desc="Title of the single Tab module on the magic space of the start surface or NTP home surface.">
           Your last tab
@@ -404,37 +399,6 @@
       </message>
       <message name="IDS_TAB_SUGGESTION_GROUP_TABS_MESSAGE" desc="On Brave mobile, this text shows as a suggestion under a user's tabs. The suggestion prompts the user to automatically group some tabs that haven been detected as closely related to each other. The placeholder denotes the number of suggested tabs to group, which will always be 2 or more (so 'tabs' should be plural).">
           <ph name="NUMBER_OF_TABS">%1$s<ex>2</ex></ph> tabs seem related. Group them?
-      </message>
-
-      <!-- Tab Cleanup strings -->
-      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_TITLE" desc="Header for the Tab Cleanup message card where a user can review suggested tabs to close before closing or just close them outright.">
-          Want to close old tabs?
-      </message>
-      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_SUBTITLE" desc="Subtitle for the Tab Cleanup message card that indicates the number of suggested tabs a user can review to close before closing or just close them outright.">
-          {TABS_COUNT, plural,
-            =1 {You have <ph name="TABS_COUNT_ONE">%1$s<ex>1</ex></ph> tab you haven't used recently}
-            other {You have <ph name="TABS_COUNT_MANY">%1$s<ex>8</ex></ph> tabs you haven't used recently}
-          }
-      </message>
-      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_REVIEW_TABS_BUTTON" desc="Button text where a user can review suggested tabs to close before closing.">
-          Review tabs
-      </message>
-      <message name="IDS_TAB_CLEANUP_MESSAGE_CARD_CLOSE_TABS_BUTTON" desc="Button text where a user can close suggested tabs without reviewing them.">
-          Close without reviewing
-      </message>
-
-      <!-- Tab Declutter strings -->
-      <message name="IDS_TAB_DECLUTTER_MESSAGE_CARD_TEXT_INFO" desc="Text info for the Tab Declutter message card that indicates the number of archived tabs a user can review to close.">
-          {TABS_COUNT, plural,
-            =1 {You have <ph name="TABS_COUNT_ONE">%1$s<ex>1</ex></ph> archived tab}
-            other {You have <ph name="TABS_COUNT_MANY">%1$s<ex>8</ex></ph> archived tabs}
-          }
-      </message>
-      <message name="IDS_TAB_DECLUTTER_MESSAGE_CARD_REVIEW_SETTINGS_DESCRIPTION" desc="Acessibility string describing the settings icon on the tab declutter message card interface.">
-          Review the current declutter settings.
-      </message>
-      <message name="IDS_TAB_DECLUTTER_MESSAGE_CARD_REVIEW_ARCHIVED_TABS_DESCRIPTION" desc="Acessibility string describing the expand icon for reviewing archived tabs on the tab declutter message card interface.">
-          Review all archived tabs for declutter by entering this editor.
       </message>
 
       <!-- Accessibility strings for Tab Suggestion -->
@@ -586,14 +550,6 @@
       <!-- Close All Tabs Dialog Strings -->
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_TITLE" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the title of the dialog.">
         Close all tabs?
-      </message>
-      <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog.">
-        You can find your closed tabs in Recent tabs under the Brave main menu.
-      </message>
-      <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_WITH_INCOGNITO_TABS" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog. If there are any Private tabs opened this message would warn users that those Private tabs would be lost.">
-      {INCOGNITO_TABS_COUNT, plural,
-        =1 {You can find your closed tabs in Recent tabs under the Brave main menu. Your Private tab won't be available.}
-        other {You can find your closed tabs in Recent tabs under the Brave main menu. Your # Private tabs won't be available.}}
       </message>
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_TITLE_INCOGNITO" desc="When users click the menu item 'Close all tabs' in Private tab switcher, a dialog will pop up and this text is the title of the dialog.">
         Close all Private tabs?
@@ -766,6 +722,11 @@
       <message name="IDS_CLOSE_ALL_TABS_AND_GROUPS_DIALOG_MESSAGE" desc="Description of the action of closing all tabs and groups, shown in a confirmation dialog.">
         Your closed tabs and groups can be reopened from the Recent tabs section and the Tab groups section.
       </message>
+      <message name="IDS_CLOSE_ALL_TABS_AND_GROUPS_DIALOG_MESSAGE_WITH_INCOGNITO_TABS" desc="Description of the action of closing all tabs and group, shown in a confirmation dialog. If there are any Private tabs opened this message would warn users that those Private tabs would be lost.">
+      {INCOGNITO_TABS_COUNT, plural,
+        =1 {Your closed tabs and groups can be reopened from the Recent tabs section and the Tab groups section. Your Private tab won't be available.}
+        other {Your closed tabs and groups can be reopened from the Recent tabs section and the Tab groups section. Your # Private tabs won't be available.}}
+      </message>
       <message name="IDS_CLOSE_ALL_TABS_AND_GROUPS_ACTION" desc="Button text in a confirmation dialog which will close all tabs and groups.">
         Close all tabs and groups
       </message>
@@ -775,9 +736,6 @@
       <message name="IDS_REMOVE_FROM_GROUP_DESCRIPTION" desc="Descirotion of the action of removing all tabs in a group, shown in a confirmation dialog.">
         This will delete the group from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>
       </message>
-      <message name="IDS_CLOSE_FROM_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to close a tab and group.">
-        Close tab and delete group?
-      </message>
       <message name="IDS_CLOSE_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to close a tab group.">
         Close
       </message>
@@ -786,9 +744,6 @@
       </message>
       <message name="IDS_ACCESSIBILITY_OPEN_TAB_GROUP_OVERFLOW_MENU_WITH_GROUP_NAME" desc="Accessibility string for opening the overflow menu on a tab group, which will allow the user to perform several actions on the tab group. TITLE_OF_GROUP is the title of the group.">
         Open the tab group action menu for tab group <ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>
-      </message>
-      <message name="IDS_CLOSE_FROM_GROUP_DESCRIPTION" desc="Description of the ation of deleting a tab and a group, shown in a confirmation dialog.">
-        This will delete the group from all devices signed into <ph name="USER_EMAIL">%1$s<ex>test@gmail.com</ex></ph>
       </message>
       <message name="IDS_REMOVE_LAST_TAB_ACTION" desc="The text shown on the bottom bar when the user is dragging the last tab of a group around. Indicates removing this tab will also delete the group.">
         Remove tab and delete group
@@ -808,6 +763,9 @@
       <message name="IDS_TAB_GROUPS_EMPTY_STATE_DESCRIPTION" desc="The detailed description of the purpose of the tab groups surface. Shown when the user does not currently have any tab groups.">
         Tab groups automatically save and update across all your devices
       </message>
+      <message name="IDS_TAB_GROUPS_EMPTY_STATE_DESCRIPTION_NO_SYNC" desc="The detailed description of the purpose of the tab groups surface. Shown when the user does not currently have any tab groups and is not syncing.">
+        Create groups to organize your tabs.
+      </message>
       <message name="IDS_TAB_GROUP_SURFACE_IPH_WITH_SYNC" desc="IPH text to hint the user to opening the dedicated tab groups UI surface when syncing tab groups is enabled.">
         Your tab groups are saved here and get updated across all your signed-in devices
       </message>
@@ -817,8 +775,17 @@
       <message name="IDS_NEWLY_SYNCED_TAB_GROUP_IPH" desc="IPH text highlighting a tab group that was synced from another device">
         New group from your other device
       </message>
+      <message name="IDS_FIND_HIDDEN_TAB_GROUP_IPH" desc="IPH text to hint the user to opening the dedicated tab groups UI surface after hiding a tab group.">
+        You can find all your tab groups here
+      </message>
       <message name="IDS_OPEN_TAB_GROUP_MENU_ITEM" desc="Menu item to open a more detailed view of a tab group.">
         Open
+      </message>
+      <message name="IDS_TAB_GROUP_ROW_ACCESSIBILITY_TEXT" desc="Content description for accessibility to describe action of tapping on a tab group row.">
+        Open <ph name="TITLE_OF_GROUP">%s<ex>shopping</ex></ph>
+      </message>
+      <message name="IDS_TAB_GROUP_MENU_ACCESSIBILITY_TEXT" desc="Content description for accessibility to describe the action of tapping on the more menu button.">
+        <ph name="TITLE_OF_GROUP">%s<ex>shopping</ex></ph> tab group options
       </message>
 
       <!-- Tabs Settings Strings -->
@@ -827,6 +794,17 @@
       </message>
       <message name="IDS_AUTO_OPEN_SYNCED_TAB_GROUPS_SUMMARY" desc="A title to show in the top toolbar when the Tabs settings page is open.">
         Automatically open tab groups from other devices
+      </message>
+
+    <!-- Archived tabs strings -->
+      <message name="IDS_ARCHIVED_TABS_DIALOG_TITLE" desc="The toolbar title for the archived tabs dialog.">
+        {TABS_COUNT, plural,
+          =1 {<ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> inactive tab}
+          other {<ph name="TABS_COUNT_MANY">%1$d<ex>8</ex></ph> inactive tabs}
+        }
+      </message>
+      <message name="IDS_ARCHIVED_TABS_DIALOG_CLOSE_ALL_BUTTON" desc="The button title for the archived tabs dialog. Closes all inactive tabs.">
+        Close all inactive tabs
       </message>
     </messages>
   </release>

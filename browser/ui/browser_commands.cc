@@ -232,7 +232,7 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
           brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment());
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 
   chrome::AddTabAt(browser, GURL(target_url), -1, true);

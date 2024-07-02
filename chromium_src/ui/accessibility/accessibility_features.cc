@@ -10,9 +10,7 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if !BUILDFLAG(IS_ANDROID)
-    {kReadAnything, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
-}});
+    {kUseMoveNotCopyInMergeTreeUpdate, base::FEATURE_DISABLED_BY_DEFAULT},
 
+}});
 }  // namespace features

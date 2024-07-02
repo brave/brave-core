@@ -248,15 +248,12 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
-  if (!WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
-          browser_.get())) {
-    pref_change_registrar_.Add(
-        kTabsSearchShow,
-        base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                            base::Unretained(this)));
-    // Show the correct value in settings on initial start
-    UpdateSearchTabsButtonState();
-  }
+  pref_change_registrar_.Add(
+      kTabsSearchShow,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+  // Show the correct value in settings on initial start
+  UpdateSearchTabsButtonState();
 
   auto* rewards_service =
       brave_rewards::RewardsServiceFactory::GetForProfile(browser_->profile());
@@ -1077,8 +1074,7 @@ void BraveBrowserView::OnThemeChanged() {
 }
 
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
-      WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(browser())) {
+  if (!tabs::utils::ShouldShowVerticalTabs(browser())) {
     return BrowserView::GetTabSearchBubbleHost();
   }
 

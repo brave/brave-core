@@ -263,7 +263,7 @@ void PlaylistMediaFileDownloader::OnRenameFile(const base::FilePath& new_path,
 
 void PlaylistMediaFileDownloader::OnDownloadRemoved(
     download::DownloadItem* item) {
-  NOTREACHED()
+  NOTREACHED_IN_MIGRATION()
       << "`item` was removed out of this class. This could cause flaky tests";
 }
 

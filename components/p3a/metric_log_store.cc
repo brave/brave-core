@@ -219,17 +219,17 @@ const std::string& MetricLogStore::staged_log_key() const {
 }
 
 const std::string& MetricLogStore::staged_log_hash() const {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return staged_log_hash_;
 }
 
 const std::string& MetricLogStore::staged_log_signature() const {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return staged_log_signature_;
 }
 
 std::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return std::nullopt;
 }
 
@@ -277,7 +277,7 @@ void MetricLogStore::DiscardStagedLog(std::string_view reason) {
 void MetricLogStore::MarkStagedLogAsSent() {}
 
 void MetricLogStore::TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void MetricLogStore::LoadPersistedUnsentLogs() {

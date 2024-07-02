@@ -19,7 +19,7 @@ SkRect AdjustRingBounds(const gfx::RectF& ring_bounds);
 
 #define RectFToSkRect(ring_bounds) AdjustRingBounds(ring_bounds)
 #define DownloadToolbarButtonView DownloadToolbarButtonViewChromium
-#define FromVectorIcon(icon, color) FromVectorIcon(icon, color, 16)
+#define FromVectorIcon(icon, color) FromVectorIcon(icon, color, GetIconSize())
 
 #include "src/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc"
 
@@ -76,21 +76,21 @@ void DownloadToolbarButtonView::UpdateIcon() {
     SkColor icon_color =
         GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
 
-    constexpr int kIconSize = 16;
+    const int icon_size = GetIconSize();
     SetImageModel(
         ButtonState::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));
     SetImageModel(
         ButtonState::STATE_HOVERED,
-        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));
     SetImageModel(
         ButtonState::STATE_PRESSED,
-        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, kIconSize));
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));
     SetImageModel(
         Button::STATE_DISABLED,
         ui::ImageModel::FromVectorIcon(
             *new_icon, GetForegroundColor(ButtonState::STATE_DISABLED),
-            kIconSize));
+            icon_size));
   }
 }
 

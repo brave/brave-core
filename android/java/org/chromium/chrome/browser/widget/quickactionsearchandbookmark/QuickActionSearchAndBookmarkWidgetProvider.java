@@ -49,12 +49,13 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
-import org.chromium.chrome.browser.searchwidget.SearchActivityUtils;
+import org.chromium.chrome.browser.searchwidget.SearchActivityClientImpl;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityExtras;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -432,15 +433,15 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
-        SearchActivityClient client = new SearchActivityUtils();
+        SearchActivityClient client = new SearchActivityClientImpl();
         Intent searchIntent =
                 client.createIntent(
                         context,
-                        SearchActivityClient.IntentOrigin.SEARCH_WIDGET,
+                        SearchActivityExtras.IntentOrigin.SEARCH_WIDGET,
                         null,
                         startVoiceSearch
-                                ? SearchActivityClient.SearchType.VOICE
-                                : SearchActivityClient.SearchType.TEXT);
+                                ? SearchActivityExtras.SearchType.VOICE
+                                : SearchActivityExtras.SearchType.TEXT);
 
         searchIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         searchIntent.setComponent(new ComponentName(context, SearchActivity.class));

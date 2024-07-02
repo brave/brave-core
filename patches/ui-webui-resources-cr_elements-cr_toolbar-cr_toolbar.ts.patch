@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts
-index 373d40085893060668d7a9de4dc97892cb25a0be..88ba654c61e665b1509e78d1da67b67baa85bfc2 100644
+index cef314e6e983d546b0c42d40ada95c9a66b4662c..f6712cd7f5b7f401bbf659886a3c24a094db078e 100644
 --- a/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts
 +++ b/ui/webui/resources/cr_elements/cr_toolbar/cr_toolbar.ts
-@@ -156,4 +156,4 @@ declare global {
+@@ -158,4 +158,4 @@ declare global {
    }
  }
  

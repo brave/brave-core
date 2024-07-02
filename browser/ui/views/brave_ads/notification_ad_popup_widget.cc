@@ -28,9 +28,9 @@ void NotificationAdPopupWidget::InitWidget(
     gfx::NativeView browser_native_view) {
   CHECK(delegate);
 
-  views::Widget::InitParams params;
+  views::Widget::InitParams params(
+      views::Widget::InitParams::TYPE_WINDOW_FRAMELESS);
   params.delegate = delegate;
-  params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
   params.bounds = bounds;
 

@@ -34,24 +34,15 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
   EXPECT_TRUE(prefs->GetBoolean(kTabsSearchShow));
 
   views::View* button = nullptr;
-  if (WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(browser())) {
-    auto* frame_view = BrowserView::GetBrowserViewForBrowser(browser())
-                           ->frame()
-                           ->GetFrameView();
-    auto* tab_search_bubble_host = frame_view->GetTabSearchBubbleHost();
-    ASSERT_NE(nullptr, tab_search_bubble_host);
-    button = tab_search_bubble_host->button();
-  } else {
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    auto* tab_search_container =
-        browser_view->tab_strip_region_view()->tab_search_container();
-    if (!tab_search_container) {
-      return;
-    }
-    button = browser_view->tab_strip_region_view()
-                 ->tab_search_container()
-                 ->tab_search_button();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* tab_search_container =
+      browser_view->tab_strip_region_view()->tab_search_container();
+  if (!tab_search_container) {
+    return;
   }
+  button = browser_view->tab_strip_region_view()
+               ->tab_search_container()
+               ->tab_search_button();
   ASSERT_NE(nullptr, button);
   EXPECT_TRUE(button->GetVisible());
 
