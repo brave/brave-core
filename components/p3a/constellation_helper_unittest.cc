@@ -343,7 +343,7 @@ TEST_F(P3AConstellationHelperTest, NebulaMessage) {
 
 TEST_F(P3AConstellationHelperTest, NebulaSample) {
   size_t points_request_count = 0;
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 100; i++) {
     SetUpHelper();
 
     helper_->UpdateRandomnessServerInfo(MetricLogType::kTypical);
@@ -373,7 +373,7 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
     EXPECT_EQ(histogram_name_from_callback_, kTestNebulaHistogramName);
   }
   EXPECT_GE(points_request_count, 1u);
-  EXPECT_LE(points_request_count, 4u);
+  EXPECT_LE(points_request_count, 20u);
 }
 
 }  // namespace p3a
