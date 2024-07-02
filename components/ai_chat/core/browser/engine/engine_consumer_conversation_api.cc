@@ -50,9 +50,8 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
   std::vector<ConversationEvent> conversation = {
-      {mojom::CharacterType::HUMAN, ConversationEventType::UserText, text},
-      {mojom::CharacterType::HUMAN, ConversationEventType::RequestRewrite,
-       question}};
+      {mojom::CharacterType::HUMAN, ConversationEventType::PageExcerpt, text},
+      {mojom::CharacterType::HUMAN, ConversationEventType::ChatMessage, question}};
   api_->PerformRequest(std::move(conversation), std::move(received_callback),
                        std::move(completed_callback));
 }

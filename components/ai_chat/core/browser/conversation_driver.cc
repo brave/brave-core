@@ -896,6 +896,7 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
         selected_text, question,
         base::BindRepeating(
             [](GeneratedTextCallback received_callback,
+               std::string& accumulator,
                mojom::ConversationEntryEventPtr rewrite_event) {
               constexpr char kResponseTagPattern[] =
                   "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
@@ -906,8 +907,6 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
               std::string suggestion =
                   rewrite_event->get_completion_event()->completion;
 
-              base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL,
-                                        &suggestion);
               if (suggestion.empty()) {
                 return;
               }
@@ -917,9 +916,10 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
                 return;
               }
 
-              received_callback.Run(suggestion);
+              accumulator += suggestion;
+              received_callback.Run(accumulator);
             },
-            std::move(received_callback)),
+            std::move(received_callback), base::OwnedRef(std::string(""))),
         std::move(completed_callback));
   } else if (!received_callback && !completed_callback) {
     // Use sidebar.
