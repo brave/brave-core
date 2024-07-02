@@ -11,6 +11,7 @@ import Shared
 import Static
 import UIKit
 import os.log
+import SwiftUI
 
 public class BraveVPNSettingsViewController: TableViewController {
 
@@ -20,7 +21,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   public init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
 
-    super.init(style: .grouped)
+    super.init(style: .insetGrouped)
   }
 
   @available(*, unavailable)
@@ -199,7 +200,8 @@ public class BraveVPNSettingsViewController: TableViewController {
         footer: .title(Strings.VPN.settingsLinkReceiptFooter)
       )
 
-    let location = BraveVPN.serverLocation ?? "-"
+    let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
+    let locationCountry = BraveVPN.serverLocationDetailed.country ?? hostname
 
     let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
     let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(
@@ -207,16 +209,17 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let serverSection = Section(
-      header: .title(Strings.VPN.settingsServerSection),
+      header: .title(Strings.support.capitalized),
       rows: [
-        Row(text: Strings.VPN.settingsServerHost, detailText: hostname, uuid: hostCellId),
         Row(
-          text: Strings.VPN.settingsServerLocation,
-          detailText: location,
+          text: locationCountry,
+          detailText: locationCity,
           selection: { [unowned self] in
             self.selectServerTapped()
           },
+          image: BraveVPN.serverLocation.isoCode?.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
+          cellClass: MultilineSubtitleCell.self,
           uuid: locationCellId
         ),
         Row(
@@ -241,6 +244,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
 
     let techSupportSection = Section(
+      header: .title(Strings.VPN.settingsServerSection),
       rows: [
         Row(
           text: Strings.VPN.settingsContactSupport,
@@ -248,11 +252,7 @@ public class BraveVPNSettingsViewController: TableViewController {
             self.sendContactSupportEmail()
           },
           accessory: .disclosureIndicator
-        )
-      ])
-
-    let termsSection = Section(
-      rows: [
+        ),
         Row(
           text: Strings.VPN.settingsFAQ,
           selection: { [unowned self] in
@@ -266,8 +266,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       vpnStatusSection,
       subscriptionSection,
       serverSection,
-      techSupportSection,
-      termsSection,
+      techSupportSection
     ]
   }
 
@@ -308,7 +307,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     dataSource.sections[hostIndexPath.section].rows[hostIndexPath.row]
       .detailText = hostname
     dataSource.sections[locationIndexPath.section].rows[locationIndexPath.row]
-      .detailText = BraveVPN.serverLocation ?? "-"
+      .detailText = BraveVPN.serverLocation.hostName ?? "-"
   }
 
   private func sendContactSupportEmail() {
@@ -370,7 +369,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   }
 
   private func selectServerTapped() {
-    if BraveVPN.regions.isEmpty {
+    if BraveVPN.allRegions.isEmpty {
       let alert = UIAlertController(
         title: Strings.VPN.vpnConfigGenericErrorTitle,
         message: Strings.VPN.settingsFailedToFetchServerList,
@@ -384,7 +383,8 @@ public class BraveVPNSettingsViewController: TableViewController {
       return
     }
 
-    let vc = BraveVPNRegionPickerViewController()
+    let vc = UIHostingController(rootView: BraveVPNRegionListView())
+    vc.title = Strings.VPN.vpnRegionListServerScreenTitle
     navigationController?.pushViewController(vc, animated: true)
   }
 

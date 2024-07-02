@@ -6,7 +6,7 @@
 import Foundation
 
 /// This structure stores all important data needed to connect to the VPN service using the cross platform credential.
-public struct SkusVPNCredential {
+public struct BraveVPNSkusCredential {
   /// The actual credential to pass to the GuardianConnect framework.
   public let guardianCredential: String
   /// Which environment was the `guardianCredential` registered to.

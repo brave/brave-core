@@ -41,8 +41,8 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     // For safety let's start processing from the newest transaction.
     transactions
       .filter({
-        ($0.payment.productIdentifier == VPNProductInfo.ProductIdentifiers.monthlySub)
-          || ($0.payment.productIdentifier == VPNProductInfo.ProductIdentifiers.yearlySub)
+        ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub)
+          || ($0.payment.productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub)
       })
       .sorted(by: { $0.transactionDate ?? Date() > $1.transactionDate ?? Date() })
       .forEach { transaction in
@@ -130,8 +130,8 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     // This check is done because this observer is used in browser
     let productIdentifier = product.productIdentifier
     guard
-      productIdentifier == VPNProductInfo.ProductIdentifiers.monthlySub
-        || productIdentifier == VPNProductInfo.ProductIdentifiers.yearlySub
+      productIdentifier == BraveVPNProductInfo.ProductIdentifiers.monthlySub
+        || productIdentifier == BraveVPNProductInfo.ProductIdentifiers.yearlySub
     else {
       return false
     }

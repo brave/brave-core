@@ -15,7 +15,7 @@ struct VPNMenuButton: View {
   /// The status indicating VPN is in retry state
   var retryStateActive: Bool
   /// The product info
-  var vpnProductInfo: VPNProductInfo
+  var vpnProductInfo: BraveVPNProductInfo
   /// The description for product info
   var description: String?
   /// A closure executed when the parent must display a VPN-specific view controller due to some
@@ -54,7 +54,7 @@ struct VPNMenuButton: View {
 
     let vpnState = BraveVPN.vpnState
 
-    if !VPNProductInfo.isComplete {
+    if !BraveVPNProductInfo.isComplete {
       isErrorShowing = true
       // Reattempt to connect to the App Store to get VPN prices.
       vpnProductInfo.load()
