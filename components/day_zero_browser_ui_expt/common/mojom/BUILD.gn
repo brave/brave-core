@@ -1,0 +1,16 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  generate_java = true
+  sources = [ "day_zero.mojom" ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}
