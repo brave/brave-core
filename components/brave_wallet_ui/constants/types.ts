@@ -1057,3 +1057,17 @@ export type RewardsExternalWallet = Pick<
 > & {
   status: WalletStatus
 }
+
+export const SwapProviderNameMapping = {
+  [BraveWallet.SwapProvider.kAuto]: 'Auto',
+  [BraveWallet.SwapProvider.kJupiter]: 'Jupiter',
+  [BraveWallet.SwapProvider.kZeroEx]: '0x',
+  [BraveWallet.SwapProvider.kLiFi]: 'Li.Fi'
+}
+
+export const SupportedSwapProviders = [
+  BraveWallet.SwapProvider.kAuto,
+  BraveWallet.SwapProvider.kJupiter,
+  BraveWallet.SwapProvider.kZeroEx,
+  BraveWallet.SwapProvider.kLiFi
+]

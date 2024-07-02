@@ -29,6 +29,7 @@ export interface TextProps {
     | 'primary'
     | 'secondary'
     | 'info'
+    | 'disabled'
   maintainHeight?: boolean
   textAlign?: 'left' | 'right'
 }
@@ -40,6 +41,7 @@ export const Text = styled.span<TextProps>`
   --info: ${leo.color.systemfeedback.infoText};
   --error: ${leo.color.systemfeedback.errorText};
   --warning: ${leo.color.systemfeedback.warningText};
+  --disabled: ${leo.color.text.disabled};
   // ToDo: We should to remove these old color variables
   // in a refactor.
   --text01: ${(p) => p.theme.color.text01};

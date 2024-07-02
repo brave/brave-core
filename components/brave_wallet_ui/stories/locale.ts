@@ -601,6 +601,15 @@ provideStrings({
   braveWalletNoRoutesFound: 'No routes found',
   braveWalletSwappingVia: 'Swapping via',
   braveWalletReviewSwap: 'Review swap',
+  braveWalletChooseQuoteProvider: 'Choose quote provider',
+  braveWalletQuoteProviderInfo:
+    'Each aggregator provides quotes by using liquidity from its API. ' +
+    'They gather price information from various exchanges and offer the ' +
+    'prices based on this data.',
+  braveWalletNotAvailable: 'Not available',
+  braveWalletUpdate: 'Update',
+  braveWalletProviderNotSupported: 'This pair is not supported by $1',
+  braveWalletChangeProvider: 'Change provider',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
