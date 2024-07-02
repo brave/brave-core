@@ -11,8 +11,8 @@
 #include "components/sync_preferences/common_syncable_prefs_database.h"
 #include "components/sync_preferences/syncable_prefs_database.h"
 
-#define GetSyncablePrefMetadata                                             \
-  GetSyncablePrefMetadata_ChromiumImpl(const std::string& pref_name) const; \
+#define GetSyncablePrefMetadata                                           \
+  GetSyncablePrefMetadata_ChromiumImpl(std::string_view pref_name) const; \
   std::optional<sync_preferences::SyncablePrefMetadata> GetSyncablePrefMetadata
 
 #include "src/chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"  // IWYU pragma: export

@@ -131,9 +131,9 @@ class BraveRenderViewContextMenuTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
+  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
-  ScopedTestingLocalState testing_local_state_;
   std::unique_ptr<Browser> browser_;
   std::unique_ptr<ChromeAutocompleteProviderClient> client_;
   std::unique_ptr<content::WebContents> web_contents_;

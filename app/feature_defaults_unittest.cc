@@ -79,7 +79,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &android_webview::features::kWebViewEnumerateDevicesCache,
 #endif
       &attribution_reporting::features::kConversionMeasurement,
-      &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
       &autofill::features::test::kAutofillServerCommunication,
 #if BUILDFLAG(IS_ANDROID)
       &base::features::kCollectAndroidFrameTimelineMetrics,
@@ -156,7 +155,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
-      &features::kOmniboxTriggerForPrerender2,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuidePreloadAndroid,
 #endif
@@ -233,7 +231,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
       &page_image_service::kImageService,
-      &page_image_service::kImageServiceObserveSyncDownloadStatus,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
       &password_manager::features::
@@ -252,7 +249,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
       &safe_browsing::kExtensionTelemetryDisableOffstoreExtensions,
       &safe_browsing::kExtensionTelemetryTabsApiSignal,
-      &safe_browsing::kImprovedDownloadPageWarnings,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
       &segmentation_platform::features::kSegmentationPlatformDeviceTier,
       &segmentation_platform::features::kSegmentationPlatformFeature,
@@ -260,7 +256,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &shared_highlighting::kIOSSharedHighlightingV2,
       &shared_highlighting::kSharedHighlightingManager,
       &subresource_filter::kAdTagging,
-      &syncer::kEnableBookmarkFoldersForAccountStorage,
+      &syncer::kSyncEnableBookmarksInTransportMode,
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif

@@ -12,6 +12,8 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
@@ -102,8 +104,7 @@ class BookmarksSidePanelHeaderView : public views::View {
     button =
         AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
             [](Browser* browser) {
-              if (SidePanelUI* ui =
-                      SidePanelUI::GetSidePanelUIForBrowser(browser)) {
+              if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
                 ui->Close();
               }
             },

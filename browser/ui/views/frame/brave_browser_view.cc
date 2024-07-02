@@ -58,6 +58,7 @@
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -594,7 +595,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 void BraveBrowserView::ToggleSidebar() {
-  SidePanelUI::GetSidePanelUIForBrowser(browser_.get())->Toggle();
+  browser_->GetFeatures().side_panel_ui()->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble() {

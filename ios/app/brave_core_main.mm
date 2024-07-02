@@ -373,22 +373,14 @@ static bool CustomLogHandler(int severity,
 
 - (BraveBookmarksAPI*)bookmarksAPI {
   if (!_bookmarksAPI) {
-    bookmarks::BookmarkModel* bookmark_model_;
-    if (base::FeatureList::IsEnabled(
-            syncer::kEnableBookmarkFoldersForAccountStorage)) {
-      bookmark_model_ = ios::BookmarkModelFactory::
-          GetModelForBrowserStateIfUnificationEnabledOrDie(_mainBrowserState);
-    } else {
-      bookmark_model_ = ios::LocalOrSyncableBookmarkModelFactory::
-          GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-              _mainBrowserState);
-    }
-    BookmarkUndoService* bookmark_undo_service_ =
+    bookmarks::BookmarkModel* bookmark_model =
+        ios::BookmarkModelFactory::GetForBrowserState(_mainBrowserState);
+    BookmarkUndoService* bookmark_undo_service =
         ios::BookmarkUndoServiceFactory::GetForBrowserState(_mainBrowserState);
 
-    _bookmarksAPI = [[BraveBookmarksAPI alloc]
-        initWithBookmarkModel:bookmark_model_
-          bookmarkUndoService:bookmark_undo_service_];
+    _bookmarksAPI =
+        [[BraveBookmarksAPI alloc] initWithBookmarkModel:bookmark_model
+                                     bookmarkUndoService:bookmark_undo_service];
   }
   return _bookmarksAPI;
 }

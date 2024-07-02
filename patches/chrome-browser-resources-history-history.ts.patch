@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history.ts b/chrome/browser/resources/history/history.ts
-index 4d26b67d7c52330fd6f3bab1d7e66d1a0b14c4d8..470b62456b61c51f4ca7c012cb9bc5db43fa8b3d 100644
+index 91fd0f25c44aea794f26c3886503e5c95614e42b..6290bc9e96f8a3ec0c79d7f7adb998db62bd1061 100644
 --- a/chrome/browser/resources/history/history.ts
 +++ b/chrome/browser/resources/history/history.ts
 @@ -2,6 +2,7 @@

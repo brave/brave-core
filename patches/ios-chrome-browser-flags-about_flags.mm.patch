@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 6788c5c5db12c6fc6363767f8ed73a92867b3d96..cc33b3e704b96d2d0c617dd2a9446716ba0cad13 100644
+index 279ef550779a9130417f009a4583b4bbd1e03f47..15c389f304e6014bfc4dde8db6bbb5bce0454c32 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -782,6 +782,7 @@ const FeatureEntry::FeatureVariation kLensTranslateToggleModeVariations[] = {
+@@ -931,6 +931,7 @@ const FeatureEntry::FeatureVariation kSaveToPhotosImprovementsVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

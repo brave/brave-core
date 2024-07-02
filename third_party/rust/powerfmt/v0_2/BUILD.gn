@@ -1,0 +1,38 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "powerfmt"
+  epoch = "0.2"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/src/buf.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/src/ext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/src/smart_display.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/powerfmt-0.2.0/src/smart_display_impls.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.2.0"
+  cargo_pkg_authors = "Jacob Pratt <jacob@jhpratt.dev>"
+  cargo_pkg_name = "powerfmt"
+  cargo_pkg_description = "    `powerfmt` is a library that provides utilities for formatting values. This crate makes it     significantly easier to support filling to a minimum width with alignment, avoid heap     allocation, and avoid repetitive calculations."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+}

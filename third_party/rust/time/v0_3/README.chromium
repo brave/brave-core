@@ -1,9 +1,9 @@
 Name: time
 URL: https://crates.io/crates/time
 Description: Date and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std].
-Version: 0.3.20
+Version: 0.3.36
 Security Critical: yes
 Shipped: yes
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/time-0.3.20/LICENSE-Apache
-Revision: d7c725c422e6cb551302601464042d434a91b6da
+License File: //brave/third_party/rust/chromium_crates_io/vendor/time-0.3.36/LICENSE-Apache
+Revision: 3c3c546a661ac59e1a586a4edc65adff04fd1335

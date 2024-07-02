@@ -36,7 +36,6 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.omnibox.OmniboxFocusReason;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.tasks.ReturnToChromeUtil;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
@@ -197,11 +196,8 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "initializeWithNative " + e);
         }
-        // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
-        // customized.
-        if (!ReturnToChromeUtil.shouldShowStartSurfaceAsTheHomePage(
-                        activity != null ? activity : mContext)
-                && BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
+        // Do not change bottom bar if HomePage is not customized.
+        if (BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
             mLayoutStateObserver =
                     new LayoutStateProvider.LayoutStateObserver() {
                         @Override

@@ -15,8 +15,6 @@
 void ConfigureInkDropForRefresh2023(views::View* const view,
                                     const ChromeColorIds hover_color_id,
                                     const ChromeColorIds ripple_color_id) {
-  if (features::IsChromeRefresh2023()) {
-    ConfigureInkDropForRefresh2023_ChromiumImpl(view, hover_color_id,
-                                                ripple_color_id);
-  }
+  ConfigureInkDropForRefresh2023_ChromiumImpl(view, hover_color_id,
+                                              ripple_color_id);
 }

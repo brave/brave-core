@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
@@ -766,7 +767,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   Click(toolbar, "ai");
-  auto* side_panel = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* side_panel = browser()->GetFeatures().side_panel_ui();
   while (side_panel->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
     NonBlockingDelay(base::Milliseconds(10));
   }

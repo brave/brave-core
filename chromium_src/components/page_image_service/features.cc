@@ -11,7 +11,6 @@ namespace page_image_service {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kImageService, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kImageServiceObserveSyncDownloadStatus, base::FEATURE_DISABLED_BY_DEFAULT},
     {kImageServiceSuggestPoweredImages, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

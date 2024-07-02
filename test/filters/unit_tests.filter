@@ -5,6 +5,22 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests crash due to TestingBraveBrowserProcess::process_misc_metrics()
+# returning nullptr.
+-AddressBubblesControllerTestToolbarPinningOnly.ToggleBubbleOnIconClick
+-All/ManagedUserProfileNoticeHandleProceedTest.HandleProceedWithDoneCallback/*
+-SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultLocalHasNoCards/*
+-SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultLocalHasSavedCards/*
+-SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultUploadHasNoCards/*
+-SaveCreditCardPromptResultMetricTest.EmitsSavePromptResultUploadHasSavedCards/*
+-SyncConfirmationHandlerTest.*
+
+# These tests crash because brave.search.p3a_default_switch pref is not
+# registered.
+-TabListViewUnitTest.CloseButtonRemovesListItem
+-TabListViewUnitTest.CloseButtonShowsAndHides
+-TabListViewUnitTest.PopulateTabList
+
 # These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
 # having NOTREACHED which causes an immediate crash
 # https://github.com/brave/brave-browser/issues/25726
@@ -306,6 +322,9 @@
 -PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsRequestingOriginAndPermission
 -SavedTabGroupBarUnitTest.*
 
+# These tests fail because local_state passed to KeyringService is nullptr.
+-All/CookieControlsUserBypassTrackingProtectionUiTest.AddsActFeaturesToVectorBasedOnFeatureAndExceptionStatus/*
+
 # Prerender is disabled
 -PrerenderManagerBasicRequirementTest.*
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
@@ -496,6 +515,9 @@
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ClientSideDetectionHostNotificationTest.*
 -ClientSideDetectionHostTest.*
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestAlreadyPhishing
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestNoEnforcedPing
+-ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequest
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -DownloadBubbleRowViewInfoTest.ShouldShowNoticeForEnhancedProtectionScan
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
@@ -503,6 +525,7 @@
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
 -SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
@@ -546,11 +569,6 @@
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -TestAppMenuModelCR2023.ModelHasIcons
-
-# These tests fail because we set kIsolatedAppsDeveloperModeAllowed to false
--All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.ErrorsOnBundleError/InstalledBundle
--All/IsolatedWebAppInstallCommandHelperTrustAndSignaturesBundleTest.SucceedsWhenThereIsNoError/InstalledBundle
--IsolatedWebAppInstallCommandHelperTrustAndSignaturesTest.DevProxySucceeds
 
 # This test fails because we override Chromium's "what's new" util functionality
 # see brave/chromium_src/chrome/browser/ui/webui/whats_new/whats_new_util.cc
@@ -604,6 +622,10 @@
 # of being randomly delayed.
 -IdleDetectionPermissionContextTest.TestDenyInIncognitoAfterDelay
 -IdleDetectionPermissionContextTest.TestParallelDenyInIncognito
+
+# These tests fail because we set content settings default values to
+# CONTENT_SETTING_BLOCK, instead of CONTENT_SETTING_ASK which the tests expect.
+-All/ChromeBrowsingDataRemoverDelegateRelatedWebsiteSetsTest.RemoveRelatedWebsiteSetsPermissions/*
 
 # This test fails because our search engine keywords use a shorter syntax than
 # is expected (:b vs search.brave.com)

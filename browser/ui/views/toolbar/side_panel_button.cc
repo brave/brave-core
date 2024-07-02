@@ -12,6 +12,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -80,7 +81,7 @@ SidePanelButton::SidePanelButton(Browser* browser)
 SidePanelButton::~SidePanelButton() = default;
 
 void SidePanelButton::ButtonPressed() {
-  SidePanelUI::GetSidePanelUIForBrowser(&(browser_.get()))->Toggle();
+  browser_->GetFeatures().side_panel_ui()->Toggle();
 }
 
 void SidePanelButton::UpdateToolbarButtonIcon() {

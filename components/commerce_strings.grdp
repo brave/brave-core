@@ -441,6 +441,12 @@
   <message name="IDS_PRICE_INSIGHTS_TRACK_BUTTON_TITLE" desc="The title text for track button of price insights.">
     Track
   </message>
+  <message name="IDS_PRICE_INSIGHTS_RANGE_LABEL_LOW" desc="The range slider label text for low prices.">
+    Low
+  </message>
+  <message name="IDS_PRICE_INSIGHTS_RANGE_LABEL_HIGH" desc="The range slider label text for high prices.">
+    High
+  </message>
   <message name="IDS_PRICE_INSIGHTS_TRACKING_BUTTON_TITLE" desc="The title text for tracking button of price insights.">
     Tracking
   </message>
@@ -456,6 +462,21 @@
   <message name="IDS_PRICE_INSIGHTS_ACCESSIBILITY" desc="Accessibility string for the price insights entry point when the confidence is low.">
     Price Insights
   </message>
+  <message name="IDS_PRICE_INSIGHTS_SNACKBAR_BUTTON_TITLE" desc="The snackbar button title for Price Insights when the user has notification enabled.">
+    VIEW
+  </message>
+  <message name="IDS_PRICE_INSIGHTS_SNACKBAR_MESSAGE_TITLE_NOTIFICATION_DISABLED" desc="The snackbar title for Price Insights when the user has notification disabled.">
+    Bookmark saved.
+  </message>
+  <message name="IDS_PRICE_RANGE_ACCESSIBILITY_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string for the price range component.">
+    Typical price for <ph name="PRODUCT_NAME">$1<ex>iPhone 15 Pro</ex></ph> is <ph name="LOW_PRICE">$2<ex>500</ex></ph> - <ph name="HIGH_PRICE">$3<ex>600</ex></ph> but current price is <ph name="CURRENT_PRICE">$4<ex>600</ex></ph> across the web.
+  </message>
+  <message name="IDS_BUYING_OPTIONS_ACCESSIBILITY_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string for the buying option component of Price Insights.">
+    Open a page that shows other stores that sell this product.
+  </message>
+  <message name="IDS_PRICE_TRACKING_NOT_TRACKING_ACCESSIBILITY_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string for the price tracking button when the current product is not being tracked.">
+    Not tracking
+  </message>
   <if expr="use_titlecase">
     <message name="IDS_PRICE_HISTORY_TITLE_SINGLE_OPTION" desc="The title of the Price History section in the Shopping Insights side panel when we only find one option of this product.">
       Price History Across the Web
@@ -466,8 +487,11 @@
     <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
       Price is High
     </message>
-    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE" desc="The title text for the price range component of price insights.">
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_VARIANT" desc="The title text for the price range component of price insights when the product has a variant.">
       Price Range for All Options
+    </message>
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_NO_VARIANT" desc="The title text for the price range component of price insights when the product has no variant.">
+      Price Range
     </message>
   </if> <!-- use_titlecase -->
   <if expr="not use_titlecase">
@@ -480,8 +504,11 @@
     <message name="IDS_SHOPPING_INSIGHTS_ICON_EXPANDED_TEXT_HIGH_PRICE" desc="The expanded text for the price insights icon in the location bar, indicating an option has relatively high price.">
       Price is high
     </message>
-    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE" desc="The title text for the price range component of price insights.">
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_VARIANT" desc="The title text for the price range component of price insights when the product has a variant.">
       Price range for all options
+    </message>
+    <message name="IDS_PRICE_INSIGHTS_PRICE_RANGE_TITLE_NO_VARIANT" desc="The title text for the price range component of price insights when the product has no variant.">
+      Price range
     </message>
   </if> <!-- not use_titlecase -->
 
@@ -505,8 +532,8 @@
   <message name="IDS_PRODUCT_SPECIFICATIONS_HISTORY_MENU_ITEM" translateable="false" desc="The title of the link in the history UI that navigates the user to a page showing the lists being maintained by the product specifications feature.">
     Product specifications lists
   </message>
-  <message name="IDS_PRODUCT_SPECIFICATIONS_OPEN_TABS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of open tabs.">
-    Open Tabs
+  <message name="IDS_PRODUCT_SPECIFICATIONS_SUGGESTIONS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of tabs suggested by the browser to be put into the table.">
+    Suggestions
   </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_RECENTLY_VIEWED_TABS_SECTION" translateable="false" desc="The title of the section in the product selection drop-down in the product specifications UI that shows a list of recently viewed tabs.">
     Recently Viewed
@@ -531,6 +558,9 @@
   </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_PAGE_ACTION_ADDED" translateable="false" desc="The text for the Product Specifications page action chip with a placeholder for what the specifications are for, after adding the current page.">
     Added to <ph name="SPECIFICATION">$1<ex>analysis</ex></ph>
+  </message>
+  <message name="IDS_PRODUCT_SPECIFICATIONS_PRICE_ROW_TITLE" translateable="false" desc="The title for the product price row in the product specifications table.">
+    Price
   </message>
   <message name="IDS_PRODUCT_SPECIFICATIONS_RENAME_GROUP" translateable="false" desc="The title of the menu item for renaming the product specification list.">
     Rename group

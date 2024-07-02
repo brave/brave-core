@@ -13,16 +13,17 @@ cargo_crate("lib") {
   crate_name = "time_core"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.0/src/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.2/src/convert.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/time-core-0.1.2/src/util.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2021"
-  cargo_pkg_version = "0.1.0"
+  cargo_pkg_version = "0.1.2"
   cargo_pkg_authors = "Jacob Pratt <open-source@jhpratt.dev>, Time contributors"
   cargo_pkg_name = "time-core"
   cargo_pkg_description = "This crate is an implementation detail and should not be relied upon directly."

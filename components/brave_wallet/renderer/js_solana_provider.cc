@@ -278,7 +278,7 @@ bool JSSolanaProvider::EnsureConnected() {
     return false;
   }
   if (!solana_provider_.is_bound()) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
     solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
   }

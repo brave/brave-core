@@ -498,22 +498,14 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
   // BookmarkModel isn't thread safe (nor would we want to lock it down
   // for the duration of the write), as such we make a copy of the
   // BookmarkModel using BookmarkCodec then write from that.
-  bookmarks::BookmarkModel* bookmark_model_;
-  if (base::FeatureList::IsEnabled(
-          syncer::kEnableBookmarkFoldersForAccountStorage)) {
-    bookmark_model_ = ios::BookmarkModelFactory::
-        GetModelForBrowserStateIfUnificationEnabledOrDie(browser_state_);
-  } else {
-    bookmark_model_ = ios::LocalOrSyncableBookmarkModelFactory::
-        GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-            browser_state_);
-  }
+  bookmarks::BookmarkModel* bookmark_model =
+      ios::BookmarkModelFactory::GetForBrowserState(browser_state_);
   BookmarkCodec codec;
   base::ThreadPool::PostTask(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
       base::BindOnce(
           &Writer::DoWrite,
-          base::MakeRefCounted<Writer>(bookmark_model_, path_,
+          base::MakeRefCounted<Writer>(bookmark_model, path_,
                                        favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!

@@ -48,13 +48,12 @@ actions::ActionItem::ActionItemBuilder SidePanelAction(
 }  // namespace
 
 BraveBrowserActions::BraveBrowserActions(Browser& browser)
-    : BrowserActions(browser) {
-  InitializeBraveBrowserActions();
-}
+    : BrowserActions(browser) {}
 
 BraveBrowserActions::~BraveBrowserActions() = default;
 
-void BraveBrowserActions::InitializeBraveBrowserActions() {
+void BraveBrowserActions::InitializeBrowserActions() {
+  BrowserActions::InitializeBrowserActions();
   Browser* browser = &(browser_.get());
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

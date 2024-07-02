@@ -34,7 +34,7 @@ BraveSearchDefaultJSHandler::~BraveSearchDefaultJSHandler() = default;
 
 bool BraveSearchDefaultJSHandler::EnsureConnected() {
   if (!brave_search_default_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker()->GetInterface(
+    render_frame_->GetBrowserInterfaceBroker().GetInterface(
         brave_search_default_.BindNewPipeAndPassReceiver());
     if (can_always_set_default_)
       brave_search_default_->SetCanAlwaysSetDefault();

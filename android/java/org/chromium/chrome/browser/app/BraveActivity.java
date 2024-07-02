@@ -728,8 +728,14 @@ public abstract class BraveActivity extends ChromeActivity
                             BraveReflectionUtil.getField(
                                     ChromeTabbedActivity.class, "mLayoutManager", this);
             if (layoutManager != null
-                    && layoutManager.getTabSwitcherLayoutForTesting() != null
-                    && !layoutManager.getTabSwitcherLayoutForTesting().isActive()
+                    // && layoutManager.getTabSwitcherLayoutForTesting() != null
+                    // && !layoutManager.getTabSwitcherLayoutForTesting().isActive()
+                    // TODO(alexeybarabash) this seems not a proper fix and affects
+                    // the bottom toolbar feature.
+                    // According to the change at LayoutManagerChrome.getTabSwitcherLayoutForTesting
+                    // => LayoutManagerChrome.getHubLayoutForTesting - another value is returned.
+                    && layoutManager.getHubLayoutForTesting() != null
+                    && !layoutManager.getHubLayoutForTesting().isActive()
                     && mMiscAndroidMetrics != null) {
                 mMiscAndroidMetrics.recordAppMenuNewTab();
             }

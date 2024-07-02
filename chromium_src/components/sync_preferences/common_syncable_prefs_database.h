@@ -15,11 +15,11 @@
 // add two additional methods here. GetSyncablePrefMetadata_ChromiumImpl will
 // just call GetSyncablePrefMetadata and GetSyncablePrefMetadata of this class
 // will become GetSyncablePrefMetadata_ChromiumOriginalImpl.
-#define GetSyncablePrefMetadata                                              \
-  GetSyncablePrefMetadata_ChromiumImpl(const std::string& pref_name) const;  \
-  std::optional<sync_preferences::SyncablePrefMetadata>                      \
-  GetSyncablePrefMetadata_ChromiumOriginalImpl(const std::string& pref_name) \
-      const;                                                                 \
+#define GetSyncablePrefMetadata                                            \
+  GetSyncablePrefMetadata_ChromiumImpl(std::string_view pref_name) const;  \
+  std::optional<sync_preferences::SyncablePrefMetadata>                    \
+  GetSyncablePrefMetadata_ChromiumOriginalImpl(std::string_view pref_name) \
+      const;                                                               \
   std::optional<sync_preferences::SyncablePrefMetadata> GetSyncablePrefMetadata
 
 #include "src/components/sync_preferences/common_syncable_prefs_database.h"  // IWYU pragma: export

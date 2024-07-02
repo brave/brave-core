@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
-index 10becbd14aa99ec5f67e97e07cb591d5eb823cb1..83d36a1d28810d6a5ef63fcbe4f8554a6e76b5ee 100644
+index 812301ebe859f50507e0ee6af4df7aa243f704cc..a743301224ac14932352885b6304623923294f8b 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
 @@ -38,6 +38,7 @@ found in the LICENSE file.
@@ -17,4 +17,4 @@ index 10becbd14aa99ec5f67e97e07cb591d5eb823cb1..83d36a1d28810d6a5ef63fcbe4f8554a
 +        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
          <org.chromium.chrome.browser.toolbar.top.ToggleTabStackButton
              android:id="@+id/tab_switcher_button"
-             style="@style/ToolbarButton"
+             style="@style/ToolbarHoverableButton"

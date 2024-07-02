@@ -54,8 +54,6 @@ import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntent
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
-import org.chromium.chrome.browser.contextmenu.ContextMenuItemDelegate;
-import org.chromium.chrome.browser.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.BravePartialCustomTabBottomSheetStrategy;
 import org.chromium.chrome.browser.customtabs.features.partialcustomtab.PartialCustomTabHandleStrategyFactory;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
@@ -99,7 +97,6 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
-import org.chromium.chrome.browser.tabmodel.ChromeTabCreator.OverviewNtpCreator;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -138,6 +135,8 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListL
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.externalauth.ExternalAuthUtils;
@@ -665,8 +664,7 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         true,
                         boolean.class,
-                        long.class,
-                        boolean.class));
+                        long.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
@@ -858,6 +856,7 @@ public class BytecodeTest {
                         AutocompleteMatch.class,
                         GURL.class,
                         long.class,
+                        boolean.class,
                         boolean.class));
 
         // Check for method type declaration changes here
@@ -1039,7 +1038,6 @@ public class BytecodeTest {
                         Supplier.class,
                         OneshotSupplier.class,
                         boolean.class,
-                        OverviewNtpCreator.class,
                         AsyncTabParamsManager.class,
                         Supplier.class,
                         Supplier.class,
@@ -1083,7 +1081,6 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
                         BottomSheetController.class,
-                        Supplier.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
                         SnackbarManager.class,
@@ -1139,12 +1136,9 @@ public class BytecodeTest {
                         ScrimCoordinator.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
-                        ActivityLifecycleDispatcher.class,
-                        Supplier.class,
                         TabModelSelector.class,
                         TabContentManager.class,
                         ViewGroup.class,
-                        Supplier.class,
                         TabCreatorManager.class,
                         OneshotSupplier.class,
                         SnackbarManager.class,
@@ -1226,7 +1220,6 @@ public class BytecodeTest {
                         Supplier.class,
                         BooleanSupplier.class,
                         boolean.class,
-                        boolean.class,
                         HistoryDelegate.class,
                         BooleanSupplier.class,
                         OfflineDownloader.class,
@@ -1237,7 +1230,8 @@ public class BytecodeTest {
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         FullscreenManager.class,
                         TabObscuringHandler.class,
-                        DesktopWindowStateProvider.class));
+                        DesktopWindowStateProvider.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
@@ -1474,13 +1468,13 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
+                        Supplier.class,
                         Supplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,
@@ -1499,7 +1493,6 @@ public class BytecodeTest {
                         Supplier.class,
                         ObservableSupplierImpl.class,
                         int.class,
-                        Supplier.class,
                         Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
@@ -1808,14 +1801,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mBottomSheetController"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mActivityLifecycleDispatcher"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mIsWarmOnResumeSupplier"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",

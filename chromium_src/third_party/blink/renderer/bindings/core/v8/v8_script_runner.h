@@ -11,7 +11,8 @@
 #define CompileScript                                                 \
   CompileScript(ScriptState*, const ClassicScript&, v8::ScriptOrigin, \
                 v8::ScriptCompiler::CompileOptions,                   \
-                v8::ScriptCompiler::NoCacheReason);                   \
+                v8::ScriptCompiler::NoCacheReason,                    \
+                bool can_use_crowdsourced_compile_hints = false);     \
   static v8::MaybeLocal<v8::Script> CompileScript_ChromiumImpl
 
 #define CompileModule                                                          \

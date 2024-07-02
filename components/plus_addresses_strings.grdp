@@ -8,20 +8,6 @@
     </message>
 
     <!-- Creation dialog strings -->
-    <!-- Deprecated strings - to be removed once M127 UI refresh is default-enabled. -->
-    <message name="IDS_PLUS_ADDRESS_MODAL_REPORT_ERROR_INSTRUCTION_V2" desc="The error message shown on the android bottom sheet." translateable="false">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, <ph name="BEGIN_LINK">&lt;link&gt;</ph>incididunt ut labore et<ph name="END_LINK">&lt;/link&gt;</ph>.
-    </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_DESCRIPTION_V2" desc="An illustrative description of the plus addresses modal" translateable="false">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua <ph name="BEGIN_LINK">&lt;link&gt;</ph>Ut enim ad minim veniam<ph name="END_LINK">&lt;/link&gt;</ph> for <ph name="BEGIN_BOLD">&lt;b&gt;</ph><ph name="REGULAR_ADDRESS">$1<ex>test@example.test</ex></ph><ph name="END_BOLD">&lt;/b&gt;</ph>.
-    </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_REPORT_ERROR_INSTRUCTION_IOS" desc="The error message shown on the iOS bottom sheet." translateable="false">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, <ph name="BEGIN_LINK">BEGIN_LINK</ph>Ut enim ad minim veniam<ph name="END_LINK">END_LINK</ph>.
-    </message>
-    <message name="IDS_PLUS_ADDRESS_MODAL_PLUS_ADDRESS_DESCRIPTION_IOS" desc="An illustrative description of the plus addresses modal, with iOS formatting" translateable="false">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua <ph name="BEGIN_LINK">BEGIN_LINK</ph>Ut enim ad minim veniam<ph name="END_LINK">END_LINK</ph>. For
-    </message>
-
     <!-- Android strings -->
     <message name="IDS_PLUS_ADDRESS_BOTTOMSHEET_TITLE_ANDROID" desc="Title for the experimental enterprise plus addresses feature modal on Android" translateable="false">
       Lorem Ipsum
@@ -54,6 +40,12 @@
     </message>
     <message name="IDS_PLUS_ADDRESS_BOTTOMSHEET_DESCRIPTION_IOS" desc="The description text on the creation bottomsheet for plus addresses on iOS." translateable="false">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua (<ph name="GAIA_EMAIL">$1<ex>foo@gmail.com</ex></ph>).
+    </message>
+   <message name="IDS_PLUS_ADDRESS_BOTTOMSHEET_NOTICE_IOS" desc="The notice text on the creation bottomsheet for plus addresses on iOS." translateable="false">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua (<ph name="GAIA_EMAIL">$1<ex>foo@gmail.com</ex></ph>). <ph name="BEGIN_LINK">BEGIN_LINK</ph>Ut enim ad minim veniam<ph name="END_LINK">END_LINK</ph>
+    </message>
+    <message name="IDS_PLUS_ADDRESS_BOTTOMSHEET_DESCRIPTION_NOTICE_SCREEN" desc="The description text on the creation bottomsheet for plus addresses on iOS." translateable="false">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </message>
     <message name="IDS_PLUS_ADDRESS_BOTTOMSHEET_REPORT_ERROR_INSTRUCTION_IOS" desc="The error message shown on the iOS bottomsheet." translateable="false">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, <ph name="BEGIN_LINK">BEGIN_LINK</ph>Ut enim ad minim veniam<ph name="END_LINK">END_LINK</ph>.
@@ -111,7 +103,7 @@
 
     <!-- Settings strings -->
     <message name="IDS_PLUS_ADDRESS_SETTINGS_LABEL" desc="A button in settings for management of experimental enterprise plus addresses" translateable="false">
-      Lorem Ipsum
+      Plus Address
     </message>
 
     <!-- Suggestion strings -->
@@ -126,6 +118,14 @@
     </message>
     <message name="IDS_PLUS_ADDRESS_MANAGE_PLUS_ADDRESSES_TEXT" desc="The main text in the Autofill suggestion for opening the settings page with creates plus addresses." translateable="false">
       Lorem Ipsum dolor ...
+    </message>
+
+    <!-- IPH strings -->
+    <message name="IDS_PLUS_ADDRESS_CREATE_SUGGESTION_IPH" desc="Text shown in the IPH bubble for educating the user on creating plus addresses." translateable="false">
+      Placeholder Plus Address Create Suggestion IPH String
+    </message>
+    <message name="IDS_PLUS_ADDRESS_CREATE_SUGGESTION_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text shown in the IPH bubble for educating the user on creating plus addresses." translateable="false">
+      Placeholder Plus Address Create Suggestion IPH Screenreader String
     </message>
 
 </grit-part>

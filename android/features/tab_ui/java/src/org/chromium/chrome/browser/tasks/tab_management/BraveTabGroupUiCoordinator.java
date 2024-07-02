@@ -15,10 +15,8 @@ import androidx.annotation.NonNull;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
-import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider.IncognitoStateObserver;
@@ -30,7 +28,6 @@ import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.ui.resources.dynamics.DynamicResourceLoader;
 import org.chromium.ui.widget.ChromeImageView;
 
 public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
@@ -49,12 +46,9 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull ScrimCoordinator scrimCoordinator,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             @NonNull BottomSheetController bottomSheetController,
-            @NonNull ActivityLifecycleDispatcher activityLifecycleDispatcher,
-            @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabModelSelector tabModelSelector,
             @NonNull TabContentManager tabContentManager,
             @NonNull ViewGroup rootView,
-            @NonNull Supplier<DynamicResourceLoader> dynamicResourceLoaderSupplier,
             @NonNull TabCreatorManager tabCreatorManager,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull SnackbarManager snackbarManager,
@@ -67,12 +61,9 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 scrimCoordinator,
                 omniboxFocusStateSupplier,
                 bottomSheetController,
-                activityLifecycleDispatcher,
-                isWarmOnResumeSupplier,
                 tabModelSelector,
                 tabContentManager,
                 rootView,
-                dynamicResourceLoaderSupplier,
                 tabCreatorManager,
                 layoutStateProviderSupplier,
                 snackbarManager,

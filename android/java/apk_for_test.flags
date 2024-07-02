@@ -141,8 +141,6 @@
     *** mIncognitoStateProvider;
     *** mTabGroupUi;
     *** mBottomSheetController;
-    *** mActivityLifecycleDispatcher;
-    *** mIsWarmOnResumeSupplier;
     *** mTabContentManager;
     *** mTabCreatorManager;
     *** mSnackbarManager;

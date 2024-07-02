@@ -1,5 +1,5 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index 874ade6000ded00a2f3ac571c024053fd951387e..4e35a5ab0d49ae389e3d571fed74d918721ca41b 100644
+index 9281b367f6d886468343c22be8fd8fc5c54dd2ad..9fbb620cf127482aa2138d52fc05983d6e4553c0 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
 @@ -105,6 +105,7 @@ bool InitializeCrashpadImpl(bool initial_client,
