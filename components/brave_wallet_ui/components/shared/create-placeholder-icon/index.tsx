@@ -87,9 +87,11 @@ export function withPlaceholderIcon<
 
     const isNonFungibleToken = asset?.isNft || asset?.isErc721
 
+    const isIpfsTokenImageURL = isIpfs(tokenImageURL)
+
     // queries
     const { data: ipfsUrl } = useGetIpfsGatewayTranslatedNftUrlQuery(
-      tokenImageURL || skipToken
+      isIpfsTokenImageURL ? tokenImageURL : skipToken
     )
 
     // memos + computed
@@ -102,13 +104,19 @@ export function withPlaceholderIcon<
 
       if (isRemoteURL || isDataUri) {
         return tokenImageURL?.includes('data:image/') ||
-          isIpfs(tokenImageURL) ||
+          isIpfsTokenImageURL ||
           isNonFungibleToken
           ? true
           : isValidIconExtension(new URL(asset?.logo || '').pathname)
       }
       return false
-    }, [asset?.logo, isRemoteURL, tokenImageURL, isNonFungibleToken])
+    }, [
+      asset?.logo,
+      isRemoteURL,
+      tokenImageURL,
+      isIpfsTokenImageURL,
+      isNonFungibleToken
+    ])
 
     const needsPlaceholder =
       (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
