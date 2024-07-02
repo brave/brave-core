@@ -108,7 +108,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
       )
       return
     }
-    let credential = ASPasswordCredential(user: item.user, password: password)
+    let credential = ASPasswordCredential(user: item.username, password: password)
     extensionContext.completeRequest(withSelectedCredential: credential)
   }
 

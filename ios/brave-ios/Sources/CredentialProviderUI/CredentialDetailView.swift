@@ -34,13 +34,13 @@ struct CredentialDetailView: View {
       HStack {
         Text(Strings.CredentialProvider.detailsFormUsernameField)
         Spacer()
-        Text(credential.user ?? "")
+        Text(credential.username ?? "")
       }
       .menuController(
         prompt: Strings.CredentialProvider.copyMenuItemTitle,
         action: {
           // Not sure if we need to set this securely
-          UIPasteboard.general.string = credential.user ?? ""
+          UIPasteboard.general.string = credential.username ?? ""
         }
       )
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
