@@ -25,10 +25,13 @@ if (npmVersion !== undefined) {
 // Check if a version is within a min-max range (excluding max unless max is
 // '*').
 function checkVersionInRange(type, version, range) {
+  const extractNumericVersion = (version) =>
+    version.split('.').map((part) => parseInt(part, 10))
+
   const [min, max] = range
-  const versionParts = version.split('.').map(Number)
+  const versionParts = extractNumericVersion(version)
   assert(versionParts.length === 3)
-  const minParts = min.split('.').map(Number)
+  const minParts = extractNumericVersion(min)
   assert(minParts.length === 3)
 
   // Check if version is greater than or equal to min.
@@ -48,7 +51,7 @@ function checkVersionInRange(type, version, range) {
     return
   }
 
-  const maxParts = max.split('.').map(Number)
+  const maxParts = extractNumericVersion(max)
   assert(maxParts.length === 3)
 
   // Check if version is less than max.
