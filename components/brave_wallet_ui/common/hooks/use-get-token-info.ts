@@ -39,7 +39,11 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
     )
   }, [combinedTokensList, arg])
 
-  const { data: tokenInfoFromRpc, isFetching } = useGetTokenInfoQuery(
+  const {
+    data: tokenInfoFromRpc,
+    isFetching,
+    isError
+  } = useGetTokenInfoQuery(
     arg !== skipToken &&
       arg.network &&
       arg.contractAddress &&
@@ -58,10 +62,13 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
       : undefined
   }, [arg, tokenInfoFromRpc])
 
+  const tokenInfoResult =
+    tokenInfoFromTokensList ?? nftFromRpc ?? tokenInfoFromRpc ?? undefined
+
   return {
     isVisible: tokenInfoFromTokensList?.visible ?? false,
-    tokenInfo:
-      tokenInfoFromTokensList ?? nftFromRpc ?? tokenInfoFromRpc ?? undefined,
-    isLoading: combinedTokensList.length === 0 || isFetching
+    tokenInfo: tokenInfoResult,
+    isLoading: combinedTokensList.length === 0 || isFetching,
+    isError: !isFetching && !tokenInfoResult && isError
   }
 }
