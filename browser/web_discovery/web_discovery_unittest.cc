@@ -37,10 +37,6 @@ class WebDiscoveryCTATest : public testing::Test {
     TestingBrowserProcess::GetGlobal()->SetLocalState(&test_local_state_);
     test_clock_.SetNow(base::Time::Now());
     test_util_ = std::make_unique<TemplateURLServiceTestUtil>();
-    test_util_->profile()
-        ->GetTestingPrefService()
-        ->registry()
-        ->RegisterBooleanPref(prefs::kDefaultSearchProviderByExtension, false);
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
     ASSERT_TRUE(web_contents_.get());
@@ -102,9 +98,9 @@ class WebDiscoveryCTATest : public testing::Test {
   base::SimpleTestClock test_clock_;
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
+  TestingPrefServiceSimple test_local_state_;
   std::unique_ptr<TemplateURLServiceTestUtil> test_util_;
   std::unique_ptr<content::WebContents> web_contents_;
-  TestingPrefServiceSimple test_local_state_;
 };
 
 TEST_F(WebDiscoveryCTATest, InitialDataTest) {

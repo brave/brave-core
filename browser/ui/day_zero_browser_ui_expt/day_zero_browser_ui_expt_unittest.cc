@@ -23,7 +23,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 class DayZeroBrowserUIExptTest : public testing::Test,
-                                 public ProfileManagerObserver,
                                  public testing::WithParamInterface<bool> {
  public:
   DayZeroBrowserUIExptTest()
@@ -36,7 +35,6 @@ class DayZeroBrowserUIExptTest : public testing::Test,
 
   void SetUp() override {
     ASSERT_TRUE(testing_profile_manager_.SetUp());
-    observation_.Observe(g_browser_process->profile_manager());
     if (IsDayZeroEnabled()) {
       // Get mock first run time and uset it for current time also.
       base::Time first_run_time;
@@ -79,27 +77,10 @@ class DayZeroBrowserUIExptTest : public testing::Test,
 
   bool IsDayZeroEnabled() { return GetParam(); }
 
-  // ProfileManagerObserver overrides:
-  void OnProfileAdded(Profile* profile) override {
-    // Need to explicitely register as it's done via its factory.
-    ntp_background_images::ViewCounterService::RegisterProfilePrefs(
-        static_cast<TestingProfile*>(profile)
-            ->GetTestingPrefService()
-            ->registry());
-  }
-
-  void OnProfileManagerDestroying() override {
-    if (observation_.IsObserving()) {
-      observation_.Reset();
-    }
-  }
-
   content::BrowserTaskEnvironment task_environment_;
   TestingProfileManager testing_profile_manager_;
   base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<DayZeroBrowserUIExptManager> manager_;
-  base::ScopedObservation<ProfileManager, ProfileManagerObserver> observation_{
-      this};
 };
 
 TEST_P(DayZeroBrowserUIExptTest, PrefsTest) {

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
 
+#include "base/check_is_test.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -21,8 +22,12 @@ BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
           &BraveBookmarkBarView::OnShowAllBookmarksButtonPrefChanged,
           base::Unretained(this)));
 
-  if (bookmark_model_->loaded()) {
-    UpdateOtherAndManagedButtonsVisibility();
+  if (bookmark_model_) {
+    if (bookmark_model_->loaded()) {
+      UpdateOtherAndManagedButtonsVisibility();
+    }
+  } else {
+    CHECK_IS_TEST();
   }
 }
 

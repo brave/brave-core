@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
@@ -81,12 +82,16 @@ BraveRendererUpdater::BraveRendererUpdater(
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  widevine_enabled_.Init(kWidevineEnabled, local_state);
-  local_state_change_registrar_.Init(local_state);
-  local_state_change_registrar_.Add(
-      kWidevineEnabled,
-      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                          base::Unretained(this)));
+  if (local_state_) {
+    widevine_enabled_.Init(kWidevineEnabled, local_state_);
+    local_state_change_registrar_.Init(local_state_);
+    local_state_change_registrar_.Add(
+        kWidevineEnabled,
+        base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                            base::Unretained(this)));
+  } else {
+    CHECK_IS_TEST();
+  }
 #endif
 
   pref_change_registrar_.Add(
@@ -219,7 +224,11 @@ void BraveRendererUpdater::UpdateRenderer(
 #endif
   bool widevine_enabled = false;
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  if (local_state_) {
+    widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  } else {
+    CHECK_IS_TEST();
+  }
 #endif
 
   const bool playlist_enabled =

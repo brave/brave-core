@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
@@ -60,18 +61,21 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
       profile_prefs_(profile_prefs),
       local_state_(local_state) {
   DCHECK(profile_prefs);
-  DCHECK(local_state);
 
   MigrateUsageProfilePrefsToLocalState();
 
   RecordInitialBraveWalletP3AState();
   AddObservers();
 
-  local_state_change_registrar_.Init(local_state_);
-  local_state_change_registrar_.Add(
-      kBraveWalletLastUnlockTime,
-      base::BindRepeating(&BraveWalletP3A::ReportUsage, base::Unretained(this),
-                          true));
+  if (local_state_) {
+    local_state_change_registrar_.Init(local_state_);
+    local_state_change_registrar_.Add(
+        kBraveWalletLastUnlockTime,
+        base::BindRepeating(&BraveWalletP3A::ReportUsage,
+                            base::Unretained(this), true));
+  } else {
+    CHECK_IS_TEST();
+  }
   profile_pref_change_registrar_.Init(profile_prefs_);
   profile_pref_change_registrar_.Add(
       kBraveWalletNftDiscoveryEnabled,
@@ -107,6 +111,10 @@ void BraveWalletP3A::Bind(
 }
 
 void BraveWalletP3A::ReportUsage(bool unlocked) {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   VLOG(1) << "Wallet P3A: starting report";
   base::Time wallet_last_used =
       local_state_->GetTime(kBraveWalletLastUnlockTime);
@@ -189,6 +197,10 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
 
 std::optional<mojom::OnboardingAction>
 BraveWalletP3A::GetLastOnboardingAction() {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return std::nullopt;
+  }
   if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {
     int pref_value =
         local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
@@ -198,6 +210,10 @@ BraveWalletP3A::GetLastOnboardingAction() {
 }
 
 void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   if (action == mojom::OnboardingAction::StartRestore) {
     // We do not want to monitor wallet restores; cancel the
     // histogram record timer and wipe out the last onboarding step.
@@ -229,6 +245,10 @@ void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
 }
 
 void BraveWalletP3A::RecordOnboardingHistogram() {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
   if (!last_step.has_value()) {
     return;
@@ -338,6 +358,10 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
 }
 
 void BraveWalletP3A::RecordNFTGalleryView(int nft_count) {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   if (!local_state_->GetBoolean(kBraveWalletP3ANFTGalleryUsed)) {
     local_state_->SetBoolean(kBraveWalletP3ANFTGalleryUsed, true);
     UMA_HISTOGRAM_BOOLEAN(kBraveWalletNFTNewUserHistogramName, true);
@@ -347,6 +371,10 @@ void BraveWalletP3A::RecordNFTGalleryView(int nft_count) {
 }
 
 void BraveWalletP3A::MaybeRecordNewUserBalance() {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   base::Time deadline = base::Time::Now() - base::Days(7);
   if (local_state_->GetTime(kBraveWalletP3AFirstUnlockTime) >= deadline &&
       !local_state_->GetBoolean(kBraveWalletP3ANewUserBalanceReported)) {
@@ -356,6 +384,10 @@ void BraveWalletP3A::MaybeRecordNewUserBalance() {
 }
 
 void BraveWalletP3A::ReportNftDiscoverySetting() {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   if (!local_state_->GetTime(kBraveWalletLastUnlockTime).is_null()) {
     UMA_HISTOGRAM_BOOLEAN(
         kBraveWalletNFTDiscoveryEnabledHistogramName,
@@ -365,6 +397,10 @@ void BraveWalletP3A::ReportNftDiscoverySetting() {
 
 // TODO(djandries): remove pref migration around April 2024
 void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return;
+  }
   for (const char* pref_name : kTimePrefsToMigrateToLocalState) {
     if (local_state_->GetTime(pref_name).is_null()) {
       base::Time profile_time = profile_prefs_->GetTime(pref_name);

@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/containers/span.h"
@@ -550,7 +551,9 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
       profile_prefs_(profile_prefs),
       local_state_(local_state) {
   DCHECK(profile_prefs);
-  DCHECK(local_state);
+  if (!local_state) {
+    CHECK_IS_TEST();
+  }
   auto_lock_timer_ = std::make_unique<base::OneShotTimer>();
 
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
@@ -655,7 +658,9 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
   }
 
   ResetAutoLockTimer();
-  UpdateLastUnlockPref(local_state_);
+  if (local_state_) {
+    UpdateLastUnlockPref(local_state_);
+  }
 
   return true;
 }
@@ -1606,7 +1611,9 @@ void KeyringService::Unlock(const std::string& password,
   CreateKeyrings(*keyring_seed);
   LoadAllAccountsFromPrefs();
 
-  UpdateLastUnlockPref(local_state_);
+  if (local_state_) {
+    UpdateLastUnlockPref(local_state_);
+  }
   request_unlock_pending_ = false;
   for (const auto& observer : observers_) {
     observer->Unlocked();

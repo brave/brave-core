@@ -20,7 +20,7 @@ void BraveUnitTestSuite::Initialize() {
   // When ChromeExtensionsBrowserClient is initialized, it needs
   install_static::InitializeProductDetailsForPrimaryModule();
 #endif
+  // This will also add Brave resources bundle via chromium_src override.
   ChromeUnitTestSuite::Initialize();
 
-  brave::InitializeResourceBundle();
 }

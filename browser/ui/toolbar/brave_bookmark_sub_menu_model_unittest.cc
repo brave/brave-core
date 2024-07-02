@@ -85,6 +85,7 @@ class BraveBookmarkSubMenuModelUnitTest : public testing::Test {
   }
   void TearDown() override {
     browser_.reset();
+    profile_.reset();
     TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
 

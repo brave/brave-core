@@ -62,6 +62,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "base/check_is_test.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif
@@ -147,9 +148,15 @@ void AttachTabHelpers(content::WebContents* web_contents) {
             return skus::SkusServiceFactory::GetForContext(context);
           },
           context);
+      if (!g_brave_browser_process->process_misc_metrics()) {
+        CHECK_IS_TEST();
+      }
       ai_chat::AIChatTabHelper::CreateForWebContents(
           web_contents,
-          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
+          g_brave_browser_process->process_misc_metrics()
+              ? g_brave_browser_process->process_misc_metrics()
+                    ->ai_chat_metrics()
+              : nullptr,
           skus_service_getter, g_browser_process->local_state(),
           std::string(version_info::GetChannelString(chrome::GetChannel())));
     }

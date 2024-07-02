@@ -1,39 +1,14 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#define AddProfilesExtraParts AddProfilesExtraParts_ChromiumImpl
-#include "src/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc"
-#undef AddProfilesExtraParts
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
+#include "chrome/browser/webdata_services/web_data_service_factory.h"
 
-namespace {
+#define WebDataServiceFactory                              \
+  brave::EnsureBrowserContextKeyedServiceFactoriesBuilt(); \
+  WebDataServiceFactory
 
-class BraveBrowserMainExtraPartsProfiles
-    : public ChromeBrowserMainExtraPartsProfiles {
- public:
-  BraveBrowserMainExtraPartsProfiles()
-      : ChromeBrowserMainExtraPartsProfiles() {}
-
-  BraveBrowserMainExtraPartsProfiles(
-      const BraveBrowserMainExtraPartsProfiles&) = delete;
-  BraveBrowserMainExtraPartsProfiles& operator=(
-      const BraveBrowserMainExtraPartsProfiles&) = delete;
-
-  void PreProfileInit() override {
-    brave::EnsureBrowserContextKeyedServiceFactoriesBuilt();
-    ChromeBrowserMainExtraPartsProfiles::PreProfileInit();
-  }
-};
-
-}  // namespace
-
-namespace chrome {
-
-void AddProfilesExtraParts(ChromeBrowserMainParts* main_parts) {
-  main_parts->AddParts(std::make_unique<BraveBrowserMainExtraPartsProfiles>());
-}
-
-}  // namespace chrome
+#include "src/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc"
+#undef WebDataServiceFactory

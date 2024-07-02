@@ -57,8 +57,11 @@ void ToolbarButton::OnInkDropStateChanged(views::InkDropState state) {
   activated_ = state == views::InkDropState::ACTIVATED;
 
   if (!activated_) {
-    // Set upstream colors for deactivated state.
-    UpdateIcon();
+    // Set upstream colors for deactivated state. When called from the button
+    // destructor, the color provider may no longer be there.
+    if (GetColorProvider()) {
+      UpdateIcon();
+    }
     return;
   }
 
