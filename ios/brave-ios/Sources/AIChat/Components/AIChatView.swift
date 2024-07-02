@@ -19,6 +19,9 @@ public struct AIChatView: View {
   @ObservedObject
   var speechRecognizer: SpeechRecognizer
 
+  @State
+  private var prompt: String = ""
+
   @Environment(\.dismiss)
   private var dismiss
 
@@ -36,6 +39,12 @@ public struct AIChatView: View {
 
   @State
   private var feedbackToast: AIChatFeedbackToastType = .none
+
+  @State
+  private var isShowingSlashTools = false
+
+  @State
+  private var slashToolsOption: (group: AiChat.ActionGroup, entry: AiChat.ActionEntry)?
 
   @ObservedObject
   private var hasSeenIntro = Preferences.AIChat.hasSeenIntro
@@ -74,171 +83,206 @@ public struct AIChatView: View {
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
 
-      GeometryReader { geometry in
-        ScrollViewReader { scrollViewReader in
-          ScrollView {
-            if hasSeenIntro.value {
-              if model.isAgreementAccepted {
-                VStack(spacing: 0.0) {
-                  if model.shouldShowPremiumPrompt {
-                    AIChatPremiumUpsellView(
-                      upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
-                      upgradeAction: {
-                        isPremiumPaywallPresented = true
-                      },
-                      dismissAction: {
-                        if model.apiError == .rateLimitReached {
-                          if let basicModel = model.models.first(where: { $0.access == .basic }) {
-                            model.changeModel(modelKey: basicModel.key)
-                            model.retryLastRequest()
+      VStack(spacing: 0.0) {
+        GeometryReader { geometry in
+          ScrollViewReader { scrollViewReader in
+            ScrollView {
+              if hasSeenIntro.value {
+                if model.isAgreementAccepted {
+                  VStack(spacing: 0.0) {
+                    if model.shouldShowPremiumPrompt {
+                      AIChatPremiumUpsellView(
+                        upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
+                        upgradeAction: {
+                          isPremiumPaywallPresented = true
+                        },
+                        dismissAction: {
+                          if model.apiError == .rateLimitReached {
+                            if let basicModel = model.models.first(where: { $0.access == .basic }) {
+                              model.changeModel(modelKey: basicModel.key)
+                              model.retryLastRequest()
+                            } else {
+                              Logger.module.error("No basic models available")
+                            }
                           } else {
-                            Logger.module.error("No basic models available")
+                            model.shouldShowPremiumPrompt = false
+                          }
+                        }
+                      )
+                      .padding()
+                    } else {
+                      AIChatIntroMessageView(model: model.currentModel)
+                        .padding()
+                        .background(Color(braveSystemName: .containerBackground))
+
+                      ForEach(Array(model.conversationHistory.enumerated()), id: \.offset) {
+                        index,
+                        turn in
+                        if turn.characterType == .human {
+                          AIChatUserMessageView(prompt: turn.text)
+                            .padding()
+                            .background(Color(braveSystemName: .containerBackground))
+
+                          if index == 0, model.shouldSendPageContents,
+                            let url = model.getLastCommittedURL()
+                          {
+                            AIChatPageInfoBanner(url: url, pageTitle: model.getPageTitle() ?? "")
+                              .padding([.horizontal, .bottom])
+                              .background(Color(braveSystemName: .containerBackground))
+                          }
+
+                          // Show loader view before first part of conversation reply
+                          if model.apiError == .none, model.requestInProgress,
+                            index == model.conversationHistory.count - 1
+                          {
+                            VStack(alignment: .leading) {
+                              AIChatLoaderView()
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
                           }
                         } else {
-                          model.shouldShowPremiumPrompt = false
-                        }
-                      }
-                    )
-                    .padding()
-                  } else {
-                    AIChatIntroMessageView(model: model.currentModel)
-                      .padding()
-                      .background(Color(braveSystemName: .containerBackground))
-
-                    ForEach(Array(model.conversationHistory.enumerated()), id: \.offset) {
-                      index,
-                      turn in
-                      if turn.characterType == .human {
-                        AIChatUserMessageView(prompt: turn.text)
-                          .padding()
-                          .background(Color(braveSystemName: .containerBackground))
-
-                        if index == 0, model.shouldSendPageContents,
-                          let url = model.getLastCommittedURL()
-                        {
-                          AIChatPageInfoBanner(url: url, pageTitle: model.getPageTitle() ?? "")
-                            .padding([.horizontal, .bottom])
-                            .background(Color(braveSystemName: .containerBackground))
-                        }
-
-                        // Show loader view before first part of conversation reply
-                        if model.apiError == .none, model.requestInProgress,
-                          index == model.conversationHistory.count - 1
-                        {
-                          VStack(alignment: .leading) {
-                            AIChatLoaderView()
-                          }
-                          .padding()
-                          .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                      } else {
-                        AIChatResponseMessageView(prompt: turn.text)
+                          AIChatResponseMessageView(
+                            turn: turn,
+                            isEntryInProgress: index == model.conversationHistory.count - 1
+                              && model.requestInProgress
+                          )
                           .padding()
                           .background(Color(braveSystemName: .containerBackground))
                           .contextMenu {
                             responseContextMenuItems(for: index, turn: turn)
                           }
 
-                        if let feedbackInfo = customFeedbackInfo, feedbackInfo.turnId == index {
-                          feedbackView
+                          if let feedbackInfo = customFeedbackInfo, feedbackInfo.turnId == index {
+                            feedbackView
+                          }
                         }
                       }
-                    }
 
-                    apiErrorViews(for: model)
+                      apiErrorViews(for: model)
 
-                    if model.shouldShowSuggestions && !model.requestInProgress
-                      && model.apiError == .none
-                    {
-                      if model.suggestionsStatus != .isGenerating
-                        && !model.suggestedQuestions.isEmpty
+                      if model.shouldShowSuggestions && !model.requestInProgress
+                        && model.apiError == .none
                       {
-                        AIChatSuggestionsView(
-                          geometry: geometry,
-                          suggestions: model.suggestedQuestions
-                        ) { suggestion in
-                          hasSeenIntro.value = true
-                          hideKeyboard()
-                          model.submitSuggestion(suggestion)
+                        if model.suggestionsStatus != .isGenerating
+                          && !model.suggestedQuestions.isEmpty
+                        {
+                          AIChatSuggestionsView(
+                            geometry: geometry,
+                            suggestions: model.suggestedQuestions
+                          ) { suggestion in
+                            hasSeenIntro.value = true
+                            hideKeyboard()
+                            model.submitSuggestion(suggestion)
+                          }
+                          .padding(.horizontal)
+                          .padding(.bottom, 8.0)
+                          .disabled(
+                            model.suggestionsStatus == .isGenerating
+                          )
                         }
-                        .padding(.horizontal)
-                        .padding(.bottom, 8.0)
-                        .disabled(
-                          model.suggestionsStatus == .isGenerating
-                        )
+
+                        if model.shouldShowGenerateSuggestionsButton {
+                          AIChatSuggestionsButton(
+                            title: Strings.AIChat.suggestionsGenerationButtonTitle,
+                            isLoading: model.suggestionsStatus == .isGenerating
+                          ) {
+                            hideKeyboard()
+                            model.generateSuggestions()
+                          }
+                          .padding(.horizontal)
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                          .disabled(
+                            model.suggestionsStatus == .isGenerating
+                          )
+                        }
                       }
 
-                      if model.shouldShowGenerateSuggestionsButton {
-                        AIChatSuggestionsButton(
-                          title: Strings.AIChat.suggestionsGenerationButtonTitle,
-                          isLoading: model.suggestionsStatus == .isGenerating
-                        ) {
-                          hideKeyboard()
-                          model.generateSuggestions()
-                        }
-                        .padding(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .disabled(
-                          model.suggestionsStatus == .isGenerating
-                        )
-                      }
+                      Color.clear.id(lastMessageId)
                     }
-
-                    Color.clear.id(lastMessageId)
                   }
-                }
-                .onChange(of: model.requestInProgress) { _ in
-                  scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
-                }
-                .onChange(of: model.conversationHistory) { _ in
-                  scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
-                }
-                .onChange(of: customFeedbackInfo) { _ in
-                  hideKeyboard()
-                  withAnimation {
+                  .onChange(of: model.requestInProgress) { _ in
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                   }
+                  .onChange(of: model.conversationHistory) { _ in
+                    scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
+                  }
+                  .onChange(of: customFeedbackInfo) { _ in
+                    hideKeyboard()
+                    withAnimation {
+                      scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
+                    }
+                  }
+                } else {
+                  AIChatTermsAndConditionsView(
+                    termsAndConditionsAccepted: $model.isAgreementAccepted
+                  )
+                  .padding()
+                  .frame(minHeight: geometry.size.height)
                 }
               } else {
-                AIChatTermsAndConditionsView(
-                  termsAndConditionsAccepted: $model.isAgreementAccepted
+                AIChatIntroView(
+                  onSummarizePage: model.isContentAssociationPossible
+                    && model.shouldSendPageContents
+                    ? {
+                      hasSeenIntro.value = true
+                      model.summarizePage()
+                    } : nil
                 )
-                .padding()
-                .frame(minHeight: geometry.size.height)
+                .frame(minHeight: geometry.size.height, alignment: .bottom)
               }
-            } else {
-              AIChatIntroView(
-                onSummarizePage: model.isContentAssociationPossible && model.shouldSendPageContents
-                  ? {
-                    hasSeenIntro.value = true
-                    model.summarizePage()
-                  } : nil
-              )
-              .frame(minHeight: geometry.size.height, alignment: .bottom)
             }
           }
         }
-      }
 
-      if model.apiError == .none && model.isAgreementAccepted
-        || (!hasSeenIntro.value && !model.isAgreementAccepted)
-      {
-        if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
-          AIChatPageContextView(
-            isToggleOn: $model.shouldSendPageContents,
-            url: model.getLastCommittedURL(),
-            pageTitle: model.getPageTitle() ?? ""
+        if !isShowingSlashTools
+          && (model.apiError == .none && model.isAgreementAccepted
+            || (!hasSeenIntro.value && !model.isAgreementAccepted))
+        {
+          if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
+            AIChatPageContextView(
+              isToggleOn: $model.shouldSendPageContents,
+              url: model.getLastCommittedURL(),
+              pageTitle: model.getPageTitle() ?? ""
+            )
+            .padding(.horizontal, 8.0)
+            .padding(.bottom, 12.0)
+            .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
+          }
+        }
+      }
+      .overlay(alignment: .bottom) {
+        if isShowingSlashTools {
+          AIChatSlashToolsView(
+            isShowing: $isShowingSlashTools,
+            prompt: $prompt,
+            slashActions: model.slashActions,
+            selectedOption: $slashToolsOption
           )
-          .padding(.horizontal, 8.0)
-          .padding(.bottom, 12.0)
-          .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
         }
       }
 
       if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView(speechRecognizer: speechRecognizer) { prompt in
+        AIChatPromptInputView(
+          prompt: $prompt,
+          speechRecognizer: speechRecognizer,
+          isShowingSlashTools: $isShowingSlashTools,
+          slashToolsOption: $slashToolsOption
+        ) { prompt in
           hasSeenIntro.value = true
-          model.submitQuery(prompt)
+
+          if let actionType = slashToolsOption?.entry.details?.type {
+            model.submitSelectedText(
+              prompt,
+              action: actionType
+            )
+
+            slashToolsOption = nil
+            isShowingSlashTools = false
+          } else {
+            model.submitQuery(prompt)
+          }
+
           hideKeyboard()
         }
         .disabled(
@@ -559,8 +603,17 @@ struct AIChatView_Preview: PreviewProvider {
             .background(Color(braveSystemName: .pageBackground))
 
             AIChatResponseMessageView(
-              prompt:
-                "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio."
+              turn:
+                .init(
+                  characterType: .assistant,
+                  actionType: .response,
+                  visibility: .visible,
+                  text:
+                    "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.",
+                  selectedText: nil,
+                  events: nil
+                ),
+              isEntryInProgress: false
             )
             .padding()
             .background(Color(braveSystemName: .containerBackground))
@@ -602,7 +655,12 @@ struct AIChatView_Preview: PreviewProvider {
       )
       .padding()
 
-      AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
+      AIChatPromptInputView(
+        prompt: .constant(""),
+        speechRecognizer: SpeechRecognizer(),
+        isShowingSlashTools: .constant(false),
+        slashToolsOption: .constant(nil)
+      ) {
         print("Prompt Submitted: \($0)")
       }
     }
