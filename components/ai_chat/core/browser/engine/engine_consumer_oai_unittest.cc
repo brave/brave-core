@@ -232,11 +232,10 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
-  std::string expected_system_message = base::StrCat(
-      {prompt_segment_article,
-       base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
-           {date_and_time_string}, nullptr)});
+  std::string expected_system_message =
+      base::StrCat({base::ReplaceStringPlaceholders(
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
+          {date_and_time_string}, nullptr)});
 
   auto* client = GetClient();
   base::RunLoop run_loop;
@@ -254,13 +253,17 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                      prompt_segment_article);
+
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"),
                       expected_human_input);
 
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "assistant");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"), assistant_input);
+            EXPECT_EQ(*messages[3].GetDict().Find("role"), "assistant");
+            EXPECT_EQ(*messages[3].GetDict().Find("content"), assistant_input);
 
-            EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[3].GetDict().Find("content"),
+            EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[4].GetDict().Find("content"),
                       "What's his name?");
 
             std::move(completed_callback)
