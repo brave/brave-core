@@ -929,5 +929,23 @@ extension Strings {
       comment:
         "The text displayed on the loading screen when searching for a user query"
     )
+    public static let youMessageTitle = NSLocalizedString(
+      "aichat.youMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "You",
+      comment:
+        "The word 'You' as in 'Me', 'Myself', 'I' (the user)."
+    )
+    public static let leoAssistantNameTitle = NSLocalizedString(
+      "aichat.leoAssistantNameTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo",
+      comment:
+        "The name of the AI-Assistant that's responsing to the user"
+    )
   }
 }

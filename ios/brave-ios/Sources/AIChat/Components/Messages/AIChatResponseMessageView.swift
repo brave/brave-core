@@ -66,7 +66,7 @@ struct AIChatResponseMessageView: View {
         AIChatProductIcon(containerShape: Circle(), padding: 6.0)
           .font(.callout)
 
-        Text("Leo")
+        Text(Strings.AIChat.leoAssistantNameTitle)
           .font(.body.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       }
@@ -198,7 +198,7 @@ struct AIChatResponseMessageView: View {
     period.foregroundColor = Color(braveSystemName: .textPrimary)
 
     var learnMoreLink = AttributedString(Strings.learnMore)
-    learnMoreLink.link = AIChatConstants.braveLeoSearchLearnMore
+    learnMoreLink.link = AIChatConstants.braveLeoLearnMore
     learnMoreLink.font = font
     learnMoreLink.foregroundColor = Color(braveSystemName: .textTertiary)
     learnMoreLink.underlineColor = UIColor(braveSystemName: .textTertiary)

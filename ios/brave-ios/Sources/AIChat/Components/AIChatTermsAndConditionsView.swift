@@ -26,7 +26,7 @@ public struct AIChatTermsAndConditionsView: View {
         LocalizedStringKey(
           String.localizedStringWithFormat(
             Strings.AIChat.termsConditionsDescription,
-            AIChatConstants.braveLeoHelpCenterURL.absoluteString,
+            AIChatConstants.braveLeoLearnMore.absoluteString,
             AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString
           )
         )

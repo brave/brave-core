@@ -18,7 +18,7 @@ struct AIChatUserMessageView: View {
           .padding(8.0)
           .background(Color(braveSystemName: .containerHighlight), in: Circle())
 
-        Text("You")
+        Text(Strings.AIChat.youMessageTitle)
           .font(.body.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       }

@@ -6,11 +6,8 @@
 import Foundation
 
 public struct AIChatConstants {
-  static let braveLeoHelpCenterURL = URL(
-    string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
-  )!
   static let braveLeoPrivacyPolicyURL = URL(string: "https://brave.com/privacy/browser/#brave-leo")!
-  static let braveLeoSearchLearnMore = URL(
+  static let braveLeoLearnMore = URL(
     string: "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo"
   )!
   static let braveSearchURL = URL(string: "https://search.brave.com/search")!
