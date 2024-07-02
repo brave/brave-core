@@ -26,7 +26,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
-#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
@@ -865,7 +865,7 @@ class VerticalTabStripWithScrollableTabBrowserTest
     : public VerticalTabStripBrowserTest {
  public:
   VerticalTabStripWithScrollableTabBrowserTest()
-      : feature_list_(features::kScrollableTabStrip) {}
+      : feature_list_(tabs::kScrollableTabStrip) {}
 
   ~VerticalTabStripWithScrollableTabBrowserTest() override = default;
 
