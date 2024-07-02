@@ -5,9 +5,10 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
-import { Text, Row } from '../../../../components/shared/style'
+import { Text, Row, WalletButton } from '../../../../components/shared/style'
 
 export const ReceiveAndQuoteText = styled(Text)`
   line-height: 18px;
@@ -29,4 +30,33 @@ export const SelectAndInputRow = styled(Row)`
 
 export const NetworkAndFiatRow = styled(Row)`
   min-height: 22px;
+`
+
+export const RefreshIcon = styled(Icon).attrs({
+  name: 'refresh'
+})`
+  --leo-icon-size: 16px;
+  color: ${leo.color.icon.default};
+`
+
+export const RefreshButton = styled(WalletButton)<{
+  clicked: boolean
+}>`
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0px;
+  animation: ${(p) => (p.clicked ? 'spin 1s 1' : 'none')};
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
 `
