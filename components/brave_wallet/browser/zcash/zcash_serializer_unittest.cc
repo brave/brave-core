@@ -237,8 +237,7 @@ TEST(ZCashSerializerTest, OrchardBundle) {
 
   OrchardBundleManager::OverrideRandomSeedForTesting(0);
   auto orchard_bundle_manager = OrchardBundleManager::Create(
-      std::vector<const uint8_t>() /* Use empty orchard tree */,
-      std::move(outputs));
+      std::vector<uint8_t>() /* Use empty orchard tree */, std::move(outputs));
 
   tx.orchard_part().digest = orchard_bundle_manager->GetOrchardDigest();
 

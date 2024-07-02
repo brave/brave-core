@@ -29,7 +29,7 @@ namespace brave {
 base::span<const webui::ResourcePath> GetWebUIResources(
     std::string_view webui_name) {
   static const base::NoDestructor<
-      base::flat_map<std::string_view, std::vector<const webui::ResourcePath>>>
+      base::flat_map<std::string_view, std::vector<webui::ResourcePath>>>
       kResources{{
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
           {"newtab",
@@ -63,8 +63,8 @@ base::span<const webui::ResourcePath> GetWebUIResources(
 
 base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
     std::string_view webui_name) {
-  static const base::NoDestructor<base::flat_map<
-      std::string_view, std::vector<const webui::LocalizedString>>>
+  static const base::NoDestructor<
+      base::flat_map<std::string_view, std::vector<webui::LocalizedString>>>
       kLocalizedStrings{{
           {"newtab",
            {
