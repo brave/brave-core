@@ -212,3 +212,15 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetExtension) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
 }
+
+IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetAttachedShaders) {
+  std::string domain = "a.com";
+  GURL url = embedded_test_server()->GetURL(domain, "/getAttachedShaders.html");
+  // In default fingerprinting mode...
+  SetFingerprintingDefault(domain);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  //... getAttachedShaders() should not be null:
+  // https://github.com/brave/brave-browser/issues/37044
+  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
+            "[object WebGLShader]");
+}
