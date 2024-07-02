@@ -15,7 +15,6 @@ source_set("browser_state") {
     "//base",
     "//brave/ios/browser/api/ai_chat",
     "//brave/ios/browser/brave_wallet",
-    "//brave/ios/browser/component_updater",
     "//brave/ios/browser/debounce",
     "//brave/ios/browser/favicon",
     "//brave/ios/browser/skus",

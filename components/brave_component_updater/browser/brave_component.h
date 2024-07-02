@@ -33,7 +33,7 @@ class BraveComponent {
                           base::OnceClosure registered_callback,
                           ReadyCallback ready_callback) = 0;
     virtual bool Unregister(const std::string& component_id) = 0;
-    virtual void OnDemandUpdate(const std::string& component_id) = 0;
+    virtual void OnDemandInstall(const std::string& component_id) = 0;
     // An observer should not be added more than once.
     // The caller retains the ownership of the observer object.
     virtual void AddObserver(ComponentObserver* observer) = 0;

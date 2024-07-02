@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+
 #define RegisterFileTypePoliciesComponent \
   RegisterFileTypePoliciesComponent_ChromiumImpl
 #include "src/chrome/browser/component_updater/file_type_policies_component_installer.cc"
@@ -16,7 +18,8 @@ namespace component_updater {
 const char kFileTypePoliciesComponentId[] = "khaoiebndkojlmppeemjhbpbandiljpe";
 
 void OnFileTypePoliciesRegistered() {
-  component_updater::BraveOnDemandUpdate(kFileTypePoliciesComponentId);
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandInstall(
+      kFileTypePoliciesComponentId);
 }
 
 void RegisterFileTypePoliciesComponent(ComponentUpdateService* cus) {

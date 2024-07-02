@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
 #include "components/component_updater/component_updater_service.h"
 
 namespace base {
@@ -28,14 +29,19 @@ class BraveOnDemandUpdater {
   component_updater::OnDemandUpdater* RegisterOnDemandUpdater(
       component_updater::OnDemandUpdater* on_demand_updater);
 
-  void OnDemandUpdate(const std::string& id);
+  // Install the component with the given id. If the component is already
+  // installed, do nothing.
+  void OnDemandInstall(
+      const std::string& id,
+      component_updater::Callback callback = base::DoNothing());
 
   void OnDemandUpdate(const std::string& id,
                       component_updater::OnDemandUpdater::Priority priority,
-                      component_updater::Callback callback);
+                      component_updater::Callback callback = base::DoNothing());
+
   void OnDemandUpdate(const std::vector<std::string>& ids,
                       component_updater::OnDemandUpdater::Priority priority,
-                      component_updater::Callback callback);
+                      component_updater::Callback callback = base::DoNothing());
 
  private:
   friend base::NoDestructor<BraveOnDemandUpdater>;

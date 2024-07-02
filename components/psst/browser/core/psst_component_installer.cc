@@ -15,6 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "components/component_updater/component_installer.h"
@@ -145,9 +146,7 @@ bool PsstComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-void RegisterPsstComponent(
-    component_updater::ComponentUpdateService* cus,
-    base::OnceCallback<void(const std::string&)> callback) {
+void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
     // In test, |cus| could be nullptr.
     return;
@@ -157,9 +156,10 @@ void RegisterPsstComponent(
       std::make_unique<PsstComponentInstallerPolicy>());
   installer->Register(
       // After Register, run the callback with component id.
-      cus, base::BindOnce([](base::OnceCallback<void(const std::string&)> cb,
-                             const std::string& id) { std::move(cb).Run(id); },
-                          std::move(callback), kPsstComponentId));
+      cus, base::BindOnce([]() {
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->OnDemandInstall(kPsstComponentId);
+      }));
 }
 
 }  // namespace psst

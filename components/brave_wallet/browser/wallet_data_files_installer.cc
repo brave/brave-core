@@ -173,7 +173,7 @@ void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
   installer->Register(
       cus, base::BindOnce([]() {
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->OnDemandUpdate(kComponentId);
+            ->OnDemandInstall(kComponentId);
       }));
 }
 

@@ -142,7 +142,7 @@ bool MediaDetectorComponentInstallerPolicy::IsBraveComponent() const {
 }
 
 void OnRegisteredToComponentUpdateService() {
-  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(kComponentID);
+  BraveOnDemandUpdater::GetInstance()->OnDemandInstall(kComponentID);
 }
 
 }  // namespace

@@ -8,12 +8,12 @@
 #include <string>
 
 #include "brave/browser/widevine/widevine_permission_request.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/widevine/constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/permissions/permission_request_manager.h"
@@ -26,7 +26,8 @@ namespace {
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 void InstallWidevineOnceRegistered() {
-  component_updater::BraveOnDemandUpdate(kWidevineComponentId);
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandInstall(
+      kWidevineComponentId);
 }
 #endif
 
