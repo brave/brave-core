@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 948fc15a146b85f8e4b91e677e54ac2ae77bbabe..8debc2f85562a462ecdf1a1e1517bbc94eeb85af 100644
+index 948fc15a146b85f8e4b91e677e54ac2ae77bbabe..b530ea92efa9a9299ae7a6ff835414b1f0ebd5a7 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -11,7 +11,7 @@ index 948fc15a146b85f8e4b91e677e54ac2ae77bbabe..8debc2f85562a462ecdf1a1e1517bbc9
  chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir assembly manifest.
-@@ -18,9 +18,19 @@ chrome_proxy.exe: %(ChromeDir)s\
+@@ -18,14 +18,26 @@ chrome_proxy.exe: %(ChromeDir)s\
  #
  # Chrome version dir entries, sorted alphabetically.
  #
@@ -31,7 +31,14 @@ index 948fc15a146b85f8e4b91e677e54ac2ae77bbabe..8debc2f85562a462ecdf1a1e1517bbc9
  chrome_elf.dll: %(VersionDir)s\
  chrome_pwa_launcher.exe: %(VersionDir)s\
  chrome_wer.dll: %(VersionDir)s\
-@@ -60,6 +70,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
+ d3dcompiler_47.dll: %(VersionDir)s\
+ eventlog_provider.dll: %(VersionDir)s\
++gkboaolpopklhgplhaaiboijnklogmbc\list_catalog.json: %(VersionDir)s\gkboaolpopklhgplhaaiboijnklogmbc\
++gkboaolpopklhgplhaaiboijnklogmbc\manifest.json: %(VersionDir)s\gkboaolpopklhgplhaaiboijnklogmbc\
+ icudtl.dat: %(VersionDir)s\
+ libEGL.dll: %(VersionDir)s\
+ libGLESv2.dll: %(VersionDir)s\
+@@ -60,6 +71,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\
