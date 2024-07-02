@@ -1,0 +1,12 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_day_zero_browser_ui_expt_sources = [
+  "//brave/browser/day_zero_browser_ui_expt/android/day_zero_browser_ui_expt.cc",
+  "//brave/browser/day_zero_browser_ui_expt/android/day_zero_browser_ui_expt.h",
+]
+
+brave_browser_day_zero_browser_ui_expt_deps =
+    [ "//brave/components/day_zero_browser_ui_expt/common/mojom" ]

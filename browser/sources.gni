@@ -17,6 +17,7 @@ import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/brave_wallet/android/sources.gni")
 import("//brave/browser/brave_wallet/notifications/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
+import("//brave/browser/day_zero_browser_ui_expt/android/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/download/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
@@ -349,7 +350,9 @@ if (is_android) {
 
   brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
   brave_chrome_browser_sources += brave_browser_misc_metrics_android_sources
+  brave_chrome_browser_sources += brave_browser_day_zero_browser_ui_expt_sources
   brave_chrome_browser_deps += brave_browser_brave_wallet_android_deps
+  brave_chrome_browser_deps += brave_browser_day_zero_browser_ui_expt_deps
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",

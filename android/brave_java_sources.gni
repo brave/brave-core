@@ -206,6 +206,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/PopupWindowTooltip.java",
   "../../brave/android/java/org/chromium/chrome/browser/custom_layout/popup_window_tooltip/PopupWindowTooltipUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/features/partialcustomtab/BravePartialCustomTabBottomSheetStrategy.java",
+  "../../brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroMojomHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/ENSSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/RadioButtonGroupDDnsResolveMethodPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/RadioButtonGroupEnsOffchainResolveMethodPreference.java",
