@@ -156,6 +156,8 @@ source_set("ui") {
       "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_scheme_utils.cc",
+      "brave_scheme_utils.h",
       "brave_tab_strip_model_delegate.cc",
       "brave_tab_strip_model_delegate.h",
       "brave_view_ids.h",
@@ -1335,7 +1337,10 @@ source_set("ui") {
 source_set("unit_tests") {
   if (!is_android) {
     testonly = true
-    sources = [ "brave_layout_constants_unittest.cc" ]
+    sources = [
+      "brave_layout_constants_unittest.cc",
+      "brave_scheme_utils_unittest.cc",
+    ]
     deps = [
       "//chrome/browser/ui",
       "//testing/gtest",
@@ -1354,7 +1359,6 @@ source_set("unit_tests") {
         "//chrome/browser/themes",
         "//chrome/test:test_support",
         "//skia",
-        "//testing/gtest",
         "//third_party/abseil-cpp:absl",
       ]
     }
