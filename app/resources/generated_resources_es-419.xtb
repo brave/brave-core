@@ -11059,17 +11059,17 @@ other{Abrir todo ({COUNT}) en una ventana de &amp;incógnito}}</translation>
       }</translation>
 <translation id="8712375231869053533">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
 <translation id="4304377874648098617">Estás en modo incógnito</translation>
-<translation id="7171000599584840888">Agregar una persona…</translation>
+<translation id="7171000599584840888">Agregar perfil…</translation>
 <translation id="4536111748245793305">Persona <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">Agregar persona…</translation>
-<translation id="2254158488150713536">Para continuar, haz clic en Aceptar y, luego, en Agregar un usuario para crear un nuevo perfil para tu dirección de correo electrónico.</translation>
-<translation id="1725743343613175327">Para continuar, haz clic en Aceptar y, luego, en Agregar un usuario para crear un perfil nuevo para tu dirección de correo electrónico de <ph name="DOMAIN"/>.</translation>
+<translation id="5828545842856466741">Agregar perfil…</translation>
+<translation id="2254158488150713536">Para continuar, haz clic en Aceptar y, luego, en Agregar perfil para crear un nuevo perfil para tu dirección de correo electrónico.</translation>
+<translation id="1725743343613175327">Para continuar, haz clic en Aceptar y, luego, en Agregar perfil para crear un perfil nuevo para tu dirección de correo electrónico de <ph name="DOMAIN"/>.</translation>
 <translation id="3707212204259470604">Administrar otras personas</translation>
 <translation id="7253003527666031200">Encuentra más herramientas de accesibilidad en la tienda web</translation>
 <translation id="154633726381112301">Puede limitar el inicio de sesión a determinados usuarios. Esto elimina la opción "Agregar perfil" en la pantalla de inicio de sesión. También puede eliminar a los usuarios actuales.</translation>
 <translation id="8273477935094091719">Tu <ph name="DEVICE_TYPE"/> tiene un sensor integrado para detectar los perfiles que se posicionan delante de tu dispositivo. Todos los datos se procesan inmediatamente en tu dispositivo y, luego, se eliminan. Los datos del sensor nunca se envían a Brave. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="3096545662097412065">Evita que los perfiles con acceso a tu tráfico de internet puedan ver qué sitios visitas. <ph name="PRODUCT_NAME"/> usa una conexión segura para buscar la dirección IP de un sitio en el DNS (sistema de nombres de dominio).</translation>
-<translation id="5832813618714645810">Personas</translation>
+<translation id="5832813618714645810">Perfiles</translation>
 <translation id="3216703137209942563">{COUNT, plural,
       =1 {Tu ventana de incógnito no se abrirá después del reinicio}
       other {Tus {COUNT} ventanas de incógnito no se volverán a abrir después del reinicio}}</translation>

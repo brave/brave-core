@@ -11057,11 +11057,11 @@
       }</translation>
 <translation id="8712375231869053533">{0,plural, =1{無痕模式}other{無痕模式 (#)}}</translation>
 <translation id="4304377874648098617">您正於無痕模式中</translation>
-<translation id="7171000599584840888">新增使用者...</translation>
+<translation id="7171000599584840888">新增個人資料...</translation>
 <translation id="4536111748245793305">人員 <ph name="VALUE"/></translation>
-<translation id="5828545842856466741">新增使用者...</translation>
-<translation id="2254158488150713536">如要繼續操作，請依序點選 [確定] 和 [新增使用者]，為你的電子郵件地址建立新的設定檔。</translation>
-<translation id="1725743343613175327">如要繼續操作，請依序點選 [確定] 和 [新增使用者]，為你的 <ph name="DOMAIN"/> 電子郵件地址建立新的設定檔。</translation>
+<translation id="5828545842856466741">新增個人資料...</translation>
+<translation id="2254158488150713536">如要繼續操作，請依序點選 [確定] 和 [新增個人資料]，為你的電子郵件地址建立新的設定檔。</translation>
+<translation id="1725743343613175327">如要繼續操作，請依序點選 [確定] 和 [新增個人資料]，為你的 <ph name="DOMAIN"/> 電子郵件地址建立新的設定檔。</translation>
 <translation id="3707212204259470604">管理其他使用者</translation>
 <translation id="7253003527666031200">在線上應用程式商店中查找更多協助工具</translation>
 <translation id="154633726381112301">您可以限定登入特定使用者帳戶。這會移除登入畫面上的「新增個人資料」選項。您也可以移除目前使用者。</translation>
