@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import StoreKit
 import os.log
@@ -41,6 +42,8 @@ public class AppStoreReceipt {
   /// This function forces the AppStore to place it in the bundle. Once back-end services update to use Transactions API
   /// this function will be obsolete
   static func sync() async throws {
+    Logger.module.info("[AppStoreReceipt] - Refreshing Receipt")
+
     let fetcher = AppStoreReceiptRefresher()
     return try await withCheckedThrowingContinuation { continuation in
       fetcher.refreshReceipt { error in
@@ -206,21 +209,21 @@ public class AppStoreReceipt {
 /// A class using StoreKit 2, to handle transactions and purchases
 public class AppStoreSDK: ObservableObject {
   /// A structure containing all products available to the customer
-  struct Products {
+  public struct Products {
     /// Products the customer consumes once. Not a subscription product.
-    let consumable: [Product]
+    public let consumable: [Product]
 
     /// Products the customer does not consume. Not a subscription product.
-    let nonConsumable: [Product]
+    public let nonConsumable: [Product]
 
     /// Products the customer purchased that cannot be automatically renewed. Not a subscription product.
-    let nonRenewable: [Product]
+    public let nonRenewable: [Product]
 
     /// Products the customer purchased as a subscription that automatically renews. A subscription product.
-    let autoRenewable: [Product]
+    public let autoRenewable: [Product]
 
     /// All products the user has purchased or was given.
-    var all: [Product] {
+    public var all: [Product] {
       return consumable + nonConsumable + nonRenewable + autoRenewable
     }
 
@@ -253,11 +256,11 @@ public class AppStoreSDK: ObservableObject {
 
   /// Products Available on the AppStore
   @Published
-  private(set) var allProducts = Products()
+  private(set) public var allProducts = Products()
 
   /// Products the customer has purchased
   @Published
-  private(set) var purchasedProducts = Products()
+  private(set) public var purchasedProducts = Products()
 
   // MARK: - Private
 
@@ -268,20 +271,14 @@ public class AppStoreSDK: ObservableObject {
     // Start updater immediately
     updateTask = Task.detached {
       for await result in Transaction.updates {
+        Logger.module.info("[AppStoreSDK] - Transaction Update Received")
+
         do {
           // Verify the transaction
           let transaction = try self.verify(result)
 
-          // Retrieve all products the user purchased
-          let purchasedProducts = await self.fetchPurchasedProducts()
-
-          // Transactions must be marked as completed once processed
-          await transaction.finish()
-
-          // Distribute the purchased products to the customer
-          await MainActor.run {
-            self.purchasedProducts = purchasedProducts
-          }
+          // Process the transaction with our backend
+          try await self.processTransaction(transaction, for: transaction.productID)
         } catch {
           Logger.module.error(
             "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
@@ -316,7 +313,7 @@ public class AppStoreSDK: ObservableObject {
   /// - Parameter product: The product whose SKU to retrieve
   /// - Returns: The AppStore renewable subscription product
   @MainActor
-  func subscription(for product: any AppStoreProduct) async -> Product? {
+  public func subscription(for product: any AppStoreProduct) async -> Product? {
     allProducts.autoRenewable.first(where: { $0.id == product.rawValue })
   }
 
@@ -324,7 +321,7 @@ public class AppStoreSDK: ObservableObject {
   /// - Parameter product: The product whose subscription status to retrieve
   /// - Returns: The renewable subscription's status
   @MainActor
-  func status(for product: any AppStoreProduct) async -> [Product.SubscriptionInfo.Status] {
+  public func status(for product: any AppStoreProduct) async -> [Product.SubscriptionInfo.Status] {
     (try? await subscription(for: product)?.subscription?.status) ?? []
   }
 
@@ -332,7 +329,7 @@ public class AppStoreSDK: ObservableObject {
   /// - Parameter product: The product whose renewal to retrieve
   /// - Returns: The renewable subscription's renewal information
   @MainActor
-  func renewalState(
+  public func renewalState(
     for product: any AppStoreProduct
   ) async -> Product.SubscriptionInfo.RenewalState? {
     await status(for: product).first?.state
@@ -342,7 +339,7 @@ public class AppStoreSDK: ObservableObject {
   /// - Parameter product: The product whose last transaction history to retrieve
   /// - Returns: The product's latest transaction history
   @MainActor
-  func latestTransaction(for product: any AppStoreProduct) async -> Transaction? {
+  public func latestTransaction(for product: any AppStoreProduct) async -> Transaction? {
     if let transaction = await Transaction.latest(for: product.rawValue) {
       do {
         return try verify(transaction)
@@ -360,7 +357,7 @@ public class AppStoreSDK: ObservableObject {
   /// - Parameter product: The product whose current subscription to retrieve
   /// - Returns: The current product entitlement/purchase. Null if the customer is not currently entitled to this product
   @MainActor
-  func currentTransaction(for product: any AppStoreProduct) async -> Transaction? {
+  public func currentTransaction(for product: any AppStoreProduct) async -> Transaction? {
     if let transaction = await Transaction.currentEntitlement(for: product.rawValue) {
       do {
         return try verify(transaction)
@@ -377,74 +374,33 @@ public class AppStoreSDK: ObservableObject {
   /// Purchases a product using In-App Purchases
   /// - Parameter product: The product customer wants to purchase
   /// - Returns: Returns the validated purchase transaction. Returns null if the transaction failed
-  func purchase(_ product: Product) async throws -> Transaction? {
+  public func purchase(_ product: Product) async throws -> Transaction? {
     let result = try await product.purchase(options: [.simulatesAskToBuyInSandbox(false)])
     switch result {
     case .success(let result):
-      Logger.module.info("[AppStoreSDK] - Verifying Transaction")
-
-      // Verify the transaction
-      let transaction = try self.verify(result)
-
-      Logger.module.info("[AppStoreSDK] - Fetching Purchases")
-
-      // Retrieve all products the user purchased
-      let purchasedProducts = await self.fetchPurchasedProducts()
-
-      Logger.module.info("[AppStoreSDK] - Refreshing Receipt")
-
       // If we cannot force a receipt to be added to the app,
       // leave the transaction pending.
       try await AppStoreReceipt.sync()
 
-      if try AppStoreReceipt.receipt.isEmpty {
+      let receipt = try AppStoreReceipt.receipt
+      if receipt.isEmpty {
         Logger.module.info("[AppStoreSDK] - Receipt is NOT valid!")
         return nil
       }
 
-      var processingError: Error?
-
-      // Try a maximum of 10 times before considering the purchase a failure
-      for _ in 0..<10 {
-        do {
-          // Do additional purchase processing such as server-side validation
-          // This function also asks for a receipt refresh
-          try await processPurchase(of: product, transaction: transaction)
-
-          Logger.module.info("[AppStoreSDK] - Transaction Verified with Backend")
-          processingError = nil
-          break
-        } catch {
-          processingError = error
-
-          Logger.module.error(
-            "[AppStoreSDK] - Backend Processing Failed: \(error, privacy: .public)"
-          )
-
-          Logger.module.info("[AppStoreSDK] - Waiting 2s and trying again...")
-
-          try? await Task.sleep(seconds: 1.0)
-        }
+      if let data = Data(base64Encoded: receipt),
+        let receipt = BraveStoreKitReceipt(data: data),
+        receipt.inAppPurchaseReceipts.isEmpty
+      {
+        Logger.module.info("[AppStoreSDK] - Receipt is Empty!")
+        return nil
       }
 
-      if let processingError {
-        Logger.module.info(
-          "[AppStoreSDK] - Marking Transaction In-Completed: \(processingError, privacy: .public)"
-        )
-        throw processingError
-      }
+      // Verify the transaction
+      let transaction = try self.verify(result)
 
-      Logger.module.info("[AppStoreSDK] - Marking Transaction Completed")
-
-      // Transactions must be marked as completed once processed
-      await transaction.finish()
-
-      Logger.module.info("[AppStoreSDK] - Distributing Purchase To User")
-
-      // Distribute the purchased products to the customer
-      await MainActor.run {
-        self.purchasedProducts = purchasedProducts
-      }
+      // Process the transaction with our backend
+      try await processTransaction(transaction, for: product.id)
 
       // Return the processed transaction
       return transaction
@@ -465,7 +421,7 @@ public class AppStoreSDK: ObservableObject {
   /// Determines if the customer has currently purchased a product and is entitled to it.
   /// - Parameter product: The product whose purchase status to check
   /// - Returns: True if the customer is entitled to this product. False if the customer did not purchase the specified product
-  func isPurchased(_ product: Product) async throws -> Bool {
+  public func isPurchased(_ product: Product) async throws -> Bool {
     switch product.type {
     case .consumable:
       return allProducts.consumable.contains(product)
@@ -487,11 +443,8 @@ public class AppStoreSDK: ObservableObject {
     }
   }
 
-  /// An abstract function that is called to process a purchase further
-  /// If the transaction for the product cannot be processed, validated, etc, an error must be thrown
-  /// - Parameter product: The product that is currently being purchased
-  /// - Parameter transaction: The verified purchase transaction for the product
-  func processPurchase(of product: Product, transaction: Transaction) async throws {
+  /// - Parameter productId: The ID of the product that is currently being purchased
+  public func processPurchase(of productId: Product.ID) async throws {
     fatalError("[AppStoreSDK] - ProcessTransaction Not Implemented")
   }
 
@@ -502,12 +455,50 @@ public class AppStoreSDK: ObservableObject {
   /// - Throws: Throws an exception if verification failed
   /// - Returns: Returns the transaction or product if the verification was successful
   private func verify<T>(_ result: VerificationResult<T>) throws -> T {
+    Logger.module.info("[AppStoreSDK] - Verifying Transaction")
+
     switch result {
     case .unverified(_, let error):
+      Logger.module.info("[AppStoreSDK] - Failed Verifying Transaction: \(error)")
       throw error
 
     case .verified(let signedType):
+      Logger.module.info("[AppStoreSDK] - Transaction Verified")
       return signedType
+    }
+  }
+
+  /// Processes a transaction and adds a receipt to our Bundle
+  /// - Parameter transaction: The verified transaction to process
+  /// - Parameter productId: The ID of the product or line item
+  /// - Throws: Throws an exception if processing fails for any reason
+  private func processTransaction(
+    _ transaction: Transaction,
+    for productId: Product.ID
+  ) async throws {
+    Logger.module.info("[AppStoreSDK] - Processing Transaction: \(productId, privacy: .public)")
+
+    // Retrieve all products the user purchased
+    let purchasedProducts = await self.fetchPurchasedProducts()
+
+    // Do additional purchase processing such as server-side validation
+    // This function also asks for a receipt refresh
+    try await processPurchase(of: productId)
+
+    Logger.module.info("[AppStoreSDK] - Marking Transaction Completed")
+
+    // If there is an error, do NOT call `transaction.finish`
+    // For non-consumable products, it can be called.
+    // For consumable products, they are removed from the receipt FOREVER and it should never be called,
+    // until we can guarantee it is delivered to the user.
+    // Transactions must be marked as completed once processed
+    await transaction.finish()
+
+    Logger.module.info("[AppStoreSDK] - Distributing Purchase To User")
+
+    // Distribute the purchased products to the customer
+    await MainActor.run {
+      self.purchasedProducts = purchasedProducts
     }
   }
 

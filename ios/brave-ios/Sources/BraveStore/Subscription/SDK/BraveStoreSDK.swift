@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Combine
 import Foundation
 import Preferences
@@ -64,16 +65,16 @@ public enum BraveStoreProductGroup: String, CaseIterable {
 /// A structure representing a Product offered by Brave's Store
 public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
   /// VPN Monthly AppStore SKU
-  case vpnMonthly = "bravevpn.monthly"
+  case vpnMonthly
 
   /// VPN Yearly AppStore SKU
-  case vpnYearly = "bravevpn.yearly"
+  case vpnYearly
 
   /// Leo Monthly AppStore SKU
-  case leoMonthly = "braveleo.monthly"
+  case leoMonthly
 
   /// Leo Yearly AppStore SKU
-  case leoYearly = "braveleo.yearly"
+  case leoYearly
 
   /// The Title of the SKU Group
   public var subscriptionGroup: String {
@@ -101,6 +102,22 @@ public enum BraveStoreProduct: String, AppStoreProduct, CaseIterable {
     case .leoMonthly, .leoYearly: return .leo
     }
   }
+
+  public var rawValue: String {
+    var productId: String {
+      switch self {
+      case .vpnMonthly, .vpnYearly:
+        return Bundle.main.getPlistString(for: "VPN_PRODUCT_ID_PREFIX") ?? "bravevpn"
+      case .leoMonthly, .leoYearly:
+        return Bundle.main.getPlistString(for: "LEO_PRODUCT_ID_PREFIX") ?? "braveleo"
+      }
+    }
+
+    switch self {
+    case .vpnMonthly, .leoMonthly: return "\(productId).monthly"
+    case .vpnYearly, .leoYearly: return "\(productId).yearly"
+    }
+  }
 }
 
 /// A structure for handling Brave Store transactions, products, and purchases
@@ -120,29 +137,29 @@ public class BraveStoreSDK: AppStoreSDK {
 
   /// The AppStore Vpn Monthly Product offering
   @Published
-  private(set) var vpnMonthlyProduct: Product?
+  private(set) public var vpnMonthlyProduct: Product?
 
   /// The AppStore Vpn Yearly Product offering
   @Published
-  private(set) var vpnYearlyProduct: Product?
+  private(set) public var vpnYearlyProduct: Product?
 
   /// The AppStore Vpn customer purchase Subscription Status
   @Published
-  private(set) var vpnSubscriptionStatus: Product.SubscriptionInfo.Status?
+  private(set) public var vpnSubscriptionStatus: Product.SubscriptionInfo.Status?
 
   // MARK: - LEO
 
   /// The AppStore Leo Monthly Product offering
   @Published
-  private(set) var leoMonthlyProduct: Product?
+  private(set) public var leoMonthlyProduct: Product?
 
   /// The AppStore Leo Monthly Product offering
   @Published
-  private(set) var leoYearlyProduct: Product?
+  private(set) public var leoYearlyProduct: Product?
 
   /// The AppStore Leo customer purchase Subscription Status
   @Published
-  private(set) var leoSubscriptionStatus: Product.SubscriptionInfo.Status?
+  private(set) public var leoSubscriptionStatus: Product.SubscriptionInfo.Status?
 
   // MARK: - Private
 
@@ -287,13 +304,12 @@ public class BraveStoreSDK: AppStoreSDK {
 
   /// Processes the product purchase transaction with the BraveSkusSDK
   /// If the transaction cannot be processed (receipt is empty or null), throw an exception
-  /// - Parameter product: The product that is currently being purchased
-  /// - Parameter transaction: The verified purchase transaction for the product
-  override func processPurchase(of product: Product, transaction: Transaction) async throws {
+  /// - Parameter productId: The ID of the product that is currently being purchased
+  override public func processPurchase(of productId: Product.ID) async throws {
     // Find the Brave offered product from the AppStore Product ID
-    guard let product = BraveStoreProduct.allCases.first(where: { product.id == $0.rawValue })
+    guard let product = BraveStoreProduct.allCases.first(where: { productId == $0.rawValue })
     else {
-      Logger.module.info("[BraveStoreSDK] - Not a Brave Product! - \(product.id, privacy: .public)")
+      Logger.module.info("[BraveStoreSDK] - Not a Brave Product! - \(productId, privacy: .public)")
       throw BraveStoreSDKError.invalidProduct
     }
 
@@ -360,6 +376,14 @@ public class BraveStoreSDK: AppStoreSDK {
 
       // Save subscription Ids
       Preferences.AIChat.subscriptionProductId.value = leoSubscriptions.first?.id
+
+      // Restore product subscription if necessary
+      if Preferences.AIChat.subscriptionOrderId.value == nil {
+        // We don't have a cached subscriptionOrderId
+        // This means the product was purchased on a different device
+        // So let's automatically restore it to this device as well
+        _ = await restorePurchases()
+      }
     }
   }
 

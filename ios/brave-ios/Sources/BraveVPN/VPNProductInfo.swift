@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStore
 import Foundation
 import Shared
 import StoreKit
@@ -36,9 +37,9 @@ public class VPNProductInfo: NSObject {
   /// These product ids work only on release channel.
   struct ProductIdentifiers {
     /// Apple's monthly IAP
-    static let monthlySub = "bravevpn.monthly"
+    static let monthlySub = BraveStoreProduct.vpnMonthly.rawValue
     /// Apple's yearly IAP
-    static let yearlySub = "bravevpn.yearly"
+    static let yearlySub = BraveStoreProduct.vpnYearly.rawValue
     /// account.brave.com  monthly subscription product
     static let monthlySubSKU = "brave-premium"
 

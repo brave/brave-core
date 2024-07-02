@@ -9,6 +9,7 @@ import BraveCore
 import BraveNews
 import BraveShared
 import BraveShields
+import BraveStore
 import BraveVPN
 import BraveWallet
 import Combine
