@@ -3,8 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
-import {BraveSettingsPrivacyPageElement} from '../brave_privacy_page/brave_privacy_page.js'
+import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
@@ -182,30 +181,6 @@ function InsertShieldsSubpage (pages: Element)
     `)
 }
 
-function InsertCookiesSubpage (pages: Element)
-{
-  pages.appendChild(
-    html`
-      <template is="dom-if" route-path="/cookies/detail" no-search>
-        <settings-subpage
-          associated-control="[[$$('#cookiesLink')]]"
-          page-title="[[pageTitle]]">
-          <cr-button slot="subpage-title-extra" id="remove-all-button"
-            on-click="onRemoveAllCookiesFromSite_">
-            ${loadTimeData.getString('siteSettingsCookieRemoveAll')}
-          </cr-button>
-          <brave-site-data-details-subpage page-title="{{pageTitle}}">
-          </brave-site-data-details-subpage>
-        </settings-subpage>
-      </template>
-    `)
-}
-
-RegisterPolymerComponentReplacement(
-  'settings-privacy-page',
-  BraveSettingsPrivacyPageElement
-)
-
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
     const pages = templateContent.getElementById('pages')
@@ -241,7 +216,6 @@ RegisterPolymerTemplateModifications({
         InsertSolanaSubpage(pages)
       }
       InsertShieldsSubpage(pages)
-      InsertCookiesSubpage(pages)
       const permissionsLinkRow =
         templateContent.getElementById('permissionsLinkRow')
       if (!permissionsLinkRow) {
