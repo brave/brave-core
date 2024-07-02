@@ -117,6 +117,27 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   isRetriable: false
 }
 
+export const mockSolanaTransactionInfoAccount: BraveWallet.AccountInfo = {
+  ...mockSolanaAccount,
+  address: mockSolanaTransactionInfo.fromAddress || '',
+  accountId: mockSolanaTransactionInfo.fromAccountId
+}
+
+export const mockSvmTxInfos: BraveWallet.TransactionInfo[] = [
+  deserializeTransaction({
+    ...mockSolanaTransactionInfo,
+    fromAddress: mockSolanaTransactionInfoAccount.address,
+    txStatus: BraveWallet.TransactionStatus.Unapproved,
+    txType: BraveWallet.TransactionType.SolanaSystemTransfer
+  }),
+  deserializeTransaction({
+    ...mockSolanaTransactionInfo,
+    fromAddress: mockSolanaTransactionInfoAccount.address,
+    txStatus: BraveWallet.TransactionStatus.Unapproved,
+    txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer
+  })
+]
+
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
   chainId: BraveWallet.FILECOIN_MAINNET,
   confirmedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },

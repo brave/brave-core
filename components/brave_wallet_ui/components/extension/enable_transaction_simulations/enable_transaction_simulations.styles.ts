@@ -9,32 +9,19 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 export const errorIconColor = leo.color.systemfeedback.errorIcon
 
-export const Header = styled.div`
-  width: 100%;
-  min-height: 136px;
-  padding: 40px 62px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  background-color: ${leo.color.page.background};
-`
-
 export const IconContainer = styled.div<{
   iconColor?: string
 }>`
-  --leo-icon-size: 20px;
+  --leo-icon-size: 35px;
   --leo-icon-color: ${(p) => p.iconColor || 'unset'};
-  width: 56px;
-  height: 56px;
+  width: 80px;
+  height: 80px;
   padding: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  background-color: ${leo.color.container.background};
+  border-radius: 120px;
+  background-color: ${leo.color.container.highlight};
 `
 
 export const DashedHorizontalLine = styled.div`
@@ -48,56 +35,68 @@ export const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding: 0px 16px;
+  border-radius: 16px;
+  margin: 8px;
+  background: ${leo.color.container.background};
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+`
+
+export const Title = styled.p`
+  margin: 0px;
+  padding: 16px 16px;
   width: 100%;
-  padding-top: 24px;
-  padding-left: 24px;
-  padding-right: 24px;
+  vertical-align: middle;
+  min-height: 44px;
+  color: ${leo.color.text.primary};
+  text-align: center;
+  font: ${leo.font.heading.h4};
+  border-bottom: 1px solid ${leo.color.divider.subtle};
 `
 
 export const HeadingText = styled.p`
-  padding: 0px 26px;
+  padding: 0px;
   text-align: center;
   margin: 0;
   color: ${leo.color.text.primary};
-  font-size: 16px;
-  font-family: Poppins;
-  font-weight: 600;
-  line-height: 24px;
+  font: ${leo.font.heading.h3};
 `
 
 export const BulletPoints = styled.ul`
   text-align: left;
   padding-left: 38px;
-  & > li {
-    margin-bottom: 4px;
-    font-size: 12px;
-    font-family: Poppins;
-    line-height: 18px;
-    line-height: 18px;
-    color: ${leo.color.text.primary};
+  & li {
+    color: ${leo.color.text.secondary};
+    font: ${leo.font.default.regular};
+  }
+  & a {
+    color: ${leo.color.text.secondary};
+    font: ${leo.font.default.regular};
   }
 `
 
 export const TermsText = styled.p`
-  width: 100%;
-  margin-bottom: 4px;
-  text-align: left;
-  font-size: 11px;
-  font-family: Poppins;
-  line-height: 16px;
+  display: flex;
+  padding: ${leo.spacing.l};
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: ${leo.radius.l};
+  background: ${leo.color.page.background};
   color: ${leo.color.text.tertiary};
+  text-align: center;
+  font: ${leo.font.small.regular};
 
-  & > strong {
-    color: ${leo.color.text.secondary};
+  & strong {
+    font-weight: 600;
   }
-`
 
-export const LearnMoreLink = styled.a`
-  line-height: 16px;
-  text-decoration: none;
-  color: ${leo.color.text.interactive};
-  font: ${leo.font.xSmall.regular};
+  & a {
+    color: ${leo.color.text.tertiary};
+    font: ${leo.font.small.regular};
+  }
 `
 
 export const OptionsRow = styled.div`

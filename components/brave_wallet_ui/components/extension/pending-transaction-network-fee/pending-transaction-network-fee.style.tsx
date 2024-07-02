@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { SettingsAdvancedIcon } from 'brave-ui/components/icons'
 
 import { WalletButton } from '../../shared/style'
@@ -14,7 +15,11 @@ export const NetworkFeeAndSettingsContainer = styled.div`
   width: calc(100% - 8px);
 `
 
-export const NetworkFeeContainer = styled.div``
+export const NetworkFeeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+`
 
 export const NetworkFeeTitle = styled.div`
   font-family: 'Poppins';
@@ -26,15 +31,12 @@ export const NetworkFeeTitle = styled.div`
 `
 
 export const NetworkFeeValue = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 18px;
+  color: ${leo.color.text.primary};
+  text-align: right;
+  font: ${leo.font.small.semibold};
   display: flex;
   align-items: center;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
   gap: 6px;
 `
 

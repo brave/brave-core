@@ -12,10 +12,7 @@ import { BraveWallet, Url } from '../../../constants/types'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockEthAccount } from '../../../stories/mock-data/mock-wallet-accounts'
 import { PanelWrapper } from '../../../panel/style'
-import {
-  LongWrapper,
-  StyledExtensionWrapperLonger
-} from '../../../stories/style'
+import { LongWrapper } from '../../../stories/style'
 import WalletPanelStory from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
 let mockURLPath = new Url()
@@ -117,12 +114,14 @@ export const _SignData = {
 
     return (
       <WalletPanelStory>
-        <StyledExtensionWrapperLonger>
-          <SignPanel
-            signMessageData={signMessageDataPayload}
-            showWarning={true}
-          />
-        </StyledExtensionWrapperLonger>
+        <PanelWrapper isLonger={true}>
+          <LongWrapper>
+            <SignPanel
+              signMessageData={signMessageDataPayload}
+              showWarning={true}
+            />
+          </LongWrapper>
+        </PanelWrapper>
       </WalletPanelStory>
     )
   }
