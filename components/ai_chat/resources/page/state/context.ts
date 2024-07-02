@@ -44,6 +44,7 @@ export interface AIChatContext extends CharCountContext {
   selectedActionType: mojom.ActionType | undefined
   isToolsMenuOpen: boolean
   actionList: mojom.ActionGroup[]
+  isCurrentModelLeo: boolean
   setCurrentModel: (model: mojom.Model) => void,
   switchToBasicModel: () => void,
   generateSuggestedQuestions: () => void
@@ -88,6 +89,7 @@ export const defaultContext: AIChatContext = {
   selectedActionType: undefined,
   isToolsMenuOpen: false,
   actionList: [],
+  isCurrentModelLeo: true,
   setCurrentModel: () => {},
   switchToBasicModel: () => {},
   generateSuggestedQuestions: () => {},

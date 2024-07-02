@@ -154,7 +154,7 @@ export class MockPageHandlerAPI {
     this.callbackRouter.onFaviconImageDataChanged = router
     this.callbackRouter.onSiteInfoChanged = router
     this.callbackRouter.onAPIResponseError = router
-    this.callbackRouter.onModelChanged = router
+    this.callbackRouter.onModelDataChanged = router
     this.callbackRouter.onSuggestedQuestionsChanged = router
   }
 }

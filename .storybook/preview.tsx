@@ -47,6 +47,9 @@ global.loadTimeData = {
   getString,
   getBoolean(key: string) {
     return false
+  },
+  getInteger(key: string) {
+    return 0
   }
 }
 

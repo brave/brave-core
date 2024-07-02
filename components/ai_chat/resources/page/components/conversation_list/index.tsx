@@ -152,13 +152,15 @@ function ConversationList(props: ConversationListProps) {
                   {isAIAssistant && (
                     <div className={styles.turnActions}>
                       <CopyButton onClick={handleCopyText} />
-                      <ContextMenuAssistant
-                        ref={portalRefs}
-                        turnId={id}
-                        isOpen={activeMenuId === id}
-                        onClick={() => showAssistantMenu(id)}
-                        onClose={hideAssistantMenu}
-                      />
+                      {context.currentModel?.options.leoModelOptions && (
+                        <ContextMenuAssistant
+                          ref={portalRefs}
+                          turnId={id}
+                          isOpen={activeMenuId === id}
+                          onClick={() => showAssistantMenu(id)}
+                          onClose={hideAssistantMenu}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
