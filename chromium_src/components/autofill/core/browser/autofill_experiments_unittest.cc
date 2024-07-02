@@ -68,7 +68,8 @@ TEST_F(
       /*disabled_features=*/{});
   // When we have no primary account, Sync will start in Transport-only mode
   // (if allowed).
-  sync_service_.SetHasSyncConsent(false);
+  sync_service_.SetDisableReasons(
+      {syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY});
 
   // Update the active types to only include Wallet. This disables all other
   // types, including profiles.
