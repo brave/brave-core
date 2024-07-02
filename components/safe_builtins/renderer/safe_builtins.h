@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/stack_allocated.h"
 #include "v8/include/v8-forward.h"
 #include "v8/include/v8-persistent-handle.h"
 
@@ -16,6 +17,8 @@ namespace brave {
 // This is originated from extensions::SafeBuiltins
 // see //extensions/renderer/safe_builtins.h for details
 class SafeBuiltins {
+  STACK_ALLOCATED();
+
  public:
   // Creates the v8::Extension which manages SafeBuiltins instances.
   static std::unique_ptr<v8::Extension> CreateV8Extension();
