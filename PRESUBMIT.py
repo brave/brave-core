@@ -33,7 +33,10 @@ def CheckLeoVariables(input_api, output_api):
             files_to_check=[
                 r'.+\.(js|jsx|ts|tsx|css|less|lss|sass|scss|svelte)$',
                 r'package\.json$'
-            ])
+            ],
+            files_to_skip=input_api.DEFAULT_FILES_TO_SKIP + (
+                r"\.storybook-out/",
+            ))
 
     # If no web files were affected, this shouldn't change any Leo variables, so
     # we can skip running leo-check.
