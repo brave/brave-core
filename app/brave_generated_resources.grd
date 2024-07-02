@@ -188,6 +188,9 @@
         Copy clean link
       </message>
       <if expr="use_titlecase">
+        <message name="IDS_BRAVE_NEW_PRIVATE_TAB" desc="In Title Case: The text label of a menu item for opening a new private tab">
+          New Private &amp;tab
+        </message>
         <message name="IDS_BRAVE_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
           New &amp;Private Window
         </message>
@@ -202,6 +205,9 @@
         </message>
       </if>
       <if expr="not use_titlecase">
+        <message name="IDS_BRAVE_NEW_PRIVATE_TAB" desc="The text label of a menu item for opening a new private tab">
+          New private &amp;tab
+        </message>
         <message name="IDS_BRAVE_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new Private window">
           New &amp;private window
         </message>
