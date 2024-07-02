@@ -87,6 +87,15 @@ bool isPrivateURL(const GURL& url) {
   return false;
 }
 
+bool isRewardsRelatedURL(const GURL& url) {
+for (const char* domain : kRewardsRelatedDomains) {
+if (url.spec().rfind(domain, 0) == 0) {
+return true;
+}
+}
+return false;
+}
+
 bool PerformNetworkAuditProcess(base::Value::List* events) {
   DCHECK(events);
 
@@ -172,8 +181,11 @@ bool PerformNetworkAuditProcess(base::Value::List* events) {
         return false;
       }
 
-      LOG(ERROR) << "NETWORK AUDIT FAIL:" << url.spec() << std::endl;
+      // Check if the URL is related to Rewards
+      if (isRewardsRelatedURL(url)) {
+      LOG(ERROR) << "NETWORK AUDIT FAIL (Rewards related):" << url.spec() << std::endl;
       failed = true;
+    }
     }
 
     return false;
@@ -213,6 +225,12 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     base::RunLoop run_loop;
     rewards_service_->StartProcessForTesting(run_loop.QuitClosure());
     run_loop.Run();
+
+    // Disable Brave Rewards by default
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_rewards::prefs::kBraveRewardsEnabled, false);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    results_path_ = temp_dir_.GetPath().AppendASCII("network-audit-results.json");
   }
 
   void TearDownOnMainThread() override {
@@ -289,6 +307,8 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   base::FilePath net_log_path_;
   base::FilePath audit_results_path_;
+  base::ScopedTempDir temp_dir_;
+  base::FilePath results_path_;
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -298,6 +318,32 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 // Loads brave://welcome first to simulate a first run and then loads another
 // URL, and finally enables brave rewards, waiting some time after each load to
 // allow gathering network requests.
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, RewardsNetworkAudit) {
+  std::vector<GURL> urls_to_load = {
+      GURL("https://twitter.com/"),
+      GURL("https://github.com/"),
+      GURL("https://youtube.com/"),
+      GURL("https://reddit.com/"),
+  };
+
+  // Load the URLs.
+  for (const auto& url : urls_to_load) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    WaitForTimeout(kMaxTimeoutPerLoadedURL);
+  }
+
+  base::RunLoop run_loop;
+  base::Value::List network_events;
+
+  ASSERT_TRUE(PerformNetworkAuditProcess(&network_events));
+
+  base::Value::Dict results_dic;
+  results_dic.Set("events", std::move(network_events));
+
+  WriteNetworkAuditResultsToDisk(results_dic, GetResultsPath());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   // Load the Welcome page.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://welcome")));
