@@ -26,6 +26,7 @@ import {
 
 // Types
 import { BraveWallet, SendPageTabHashes } from '../../../../constants/types'
+import { SwapParamsOverrides } from '../../swap/constants/types'
 
 // Components
 import { SelectButton } from '../select_button/select_button'
@@ -39,7 +40,9 @@ import {
   ReceiveAndQuoteText,
   NetworkAndFiatRow,
   ReceiveAndQuoteRow,
-  SelectAndInputRow
+  SelectAndInputRow,
+  RefreshIcon,
+  RefreshButton
 } from './to_asset.style'
 import { AmountInput, ToSectionWrapper } from '../shared_composer.style'
 import { Column, Row, Text } from '../../../../components/shared/style'
@@ -60,6 +63,7 @@ const millisecondToString = (milliseconds: number) => {
 interface Props {
   onClickSelectToken: () => void
   onInputChange: (value: string) => void
+  onRefreshQuote: (overrides: SwapParamsOverrides) => void
   inputValue: string
   inputDisabled: boolean
   buttonDisabled?: boolean
@@ -76,6 +80,7 @@ export const ToAsset = (props: Props) => {
   const {
     token,
     onClickSelectToken,
+    onRefreshQuote,
     onInputChange: onChange,
     hasInputError,
     inputDisabled,
@@ -101,6 +106,9 @@ export const ToAsset = (props: Props) => {
       querySubscriptionOptions60s
     )
 
+  // State
+  const [refreshClicked, setRefreshClicked] = React.useState<boolean>(false)
+
   // methods
   const onInputChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,6 +116,11 @@ export const ToAsset = (props: Props) => {
     },
     [onChange]
   )
+
+  const handleRefreshQuote = React.useCallback(() => {
+    setRefreshClicked(true)
+    onRefreshQuote({})
+  }, [onRefreshQuote])
 
   // Memos
   const fiatValue = React.useMemo(() => {
@@ -171,26 +184,39 @@ export const ToAsset = (props: Props) => {
           >
             {getLocale('braveWalletReceiveEstimate')}
           </ReceiveAndQuoteText>
-          {!isFetchingQuote && timeUntilNextQuote !== undefined && (
-            <Row
-              width='unset'
-              gap='4px'
-            >
-              <ReceiveAndQuoteText
-                textSize='12px'
-                isBold={false}
+          <Row width='unset'>
+            {!isFetchingQuote && timeUntilNextQuote !== undefined && (
+              <Row
+                width='unset'
+                gap='4px'
+                margin='0px 4px 0px 0px'
               >
-                {beforeTag}
-              </ReceiveAndQuoteText>
-              <Text
-                textSize='12px'
-                isBold={true}
-                textColor='primary'
+                <ReceiveAndQuoteText
+                  textSize='12px'
+                  isBold={false}
+                >
+                  {beforeTag}
+                </ReceiveAndQuoteText>
+                <Text
+                  textSize='12px'
+                  isBold={true}
+                  textColor='primary'
+                >
+                  {duringTag}
+                </Text>
+              </Row>
+            )}
+            {timeUntilNextQuote !== undefined && (
+              <RefreshButton
+                onClick={handleRefreshQuote}
+                clicked={refreshClicked}
+                onAnimationEnd={() => setRefreshClicked(false)}
+                disabled={refreshClicked || isFetchingQuote}
               >
-                {duringTag}
-              </Text>
-            </Row>
-          )}
+                <RefreshIcon />
+              </RefreshButton>
+            )}
+          </Row>
         </ReceiveAndQuoteRow>
         <SelectAndInputRow
           width='100%'

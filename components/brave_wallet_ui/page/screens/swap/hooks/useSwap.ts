@@ -1197,6 +1197,7 @@ export const useSwap = () => {
     setSelectingFromOrTo,
     handleOnSetFromAmount,
     handleOnSetToAmount,
+    handleQuoteRefresh,
     onClickFlipSwapTokens,
     setSwapAndSendSelected,
     handleOnSetToAnotherAddress,

@@ -64,6 +64,7 @@ export const Swap = () => {
     setSelectingFromOrTo,
     handleOnSetFromAmount,
     handleOnSetToAmount,
+    handleQuoteRefresh,
     setSelectedGasFeeOption,
     setSlippageTolerance,
     onSubmit,
@@ -158,6 +159,7 @@ export const Swap = () => {
         />
         <ToAsset
           onInputChange={handleOnSetToAmount}
+          onRefreshQuote={handleQuoteRefresh}
           inputValue={toAmount}
           onClickSelectToken={() => setSelectingFromOrTo('to')}
           token={toToken}
