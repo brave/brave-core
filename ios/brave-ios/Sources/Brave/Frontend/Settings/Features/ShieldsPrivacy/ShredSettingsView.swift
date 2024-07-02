@@ -61,6 +61,9 @@ struct ShredSettingsView: View {
         Text(settings.url.displayURL?.baseDomain ?? settings.url.absoluteString)
       }.listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
+    .scrollContentBackground(.hidden)
+    .background(Color(.braveGroupedBackground))
+    .navigationTitle(Strings.Shields.shredSitesData)
   }
 
   private var confirmationAlert: Alert {
