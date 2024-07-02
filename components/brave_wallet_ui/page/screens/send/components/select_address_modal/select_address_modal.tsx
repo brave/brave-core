@@ -556,7 +556,6 @@ function getAddressMessageInfo({
   messageId: AddressMessageInfoIds | undefined
   coinType: BraveWallet.CoinType | undefined
 }): AddressMessageInfo | undefined {
-  console.log(coinType)
   if (showFilecoinFEVMWarning) {
     return {
       ...FEVMAddressConvertionMessage,

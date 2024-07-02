@@ -265,24 +265,34 @@ export const transactionEndpoints = ({
             })
     }),
 
+    /** works for SPL tokens and Solana compressed NFTs */
     sendSPLTransfer: mutation<{ success: boolean }, SPLTransferFromParams>({
       queryFn: async (payload, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { solanaTxManagerProxy, txService } = baseQuery(undefined).data
 
           const { errorMessage: transferTxDataErrorMessage, txData } =
-            await solanaTxManagerProxy.makeTokenProgramTransferTxData(
-              payload.network.chainId,
-              payload.splTokenMintAddress,
-              payload.fromAccount.address,
-              payload.to,
-              BigInt(payload.value),
-              payload.decimals,
-            )
+            payload.isCompressedNft
+              ? await solanaTxManagerProxy.makeBubbleGumProgramTransferTxData(
+                  payload.network.chainId,
+                  payload.splTokenMintAddress,
+                  payload.fromAccount.address,
+                  payload.to
+                )
+              : await solanaTxManagerProxy.makeTokenProgramTransferTxData(
+                  payload.network.chainId,
+                  payload.splTokenMintAddress,
+                  payload.fromAccount.address,
+                  payload.to,
+                  BigInt(payload.value),
+                  payload.decimals
+                )
 
           if (!txData) {
             throw new Error(
-              `Failed making SPL transfer data: ${transferTxDataErrorMessage}`
+              `Failed making ${
+                payload.isCompressedNft ? 'Compressed NFT' : 'SPL'
+              } transfer data: ${transferTxDataErrorMessage}`
             )
           }
 
@@ -305,19 +315,25 @@ export const transactionEndpoints = ({
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            `SPL Transfer failed:
+            `${
+              payload.isCompressedNft ? 'Compressed NFT' : 'SPL'
+            } Transfer failed:
                   to: ${payload.to}
                   value: ${payload.value}`,
             error
           )
         }
       },
-      invalidatesTags: (res, err, arg) =>
-        TX_CACHE_TAGS.LISTS({
+      invalidatesTags: (res, err, arg) => [
+        ...TX_CACHE_TAGS.LISTS({
           chainId: null,
           coin: arg.fromAccount.accountId.coin,
           fromAccountId: arg.fromAccount.accountId
-        })
+        }),
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
     }),
 
     sendSolanaSerializedTransaction: mutation<
@@ -1769,10 +1785,10 @@ export const transactionEndpoints = ({
             throw new Error(errorMessage)
           }
 
-          const priorityFee = (BigInt(fee.computeUnits)
-                            * BigInt(fee.feePerComputeUnit))
-            / BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT);
-          const totalFee = BigInt(fee.baseFee) + priorityFee;
+          const priorityFee =
+            (BigInt(fee.computeUnits) * BigInt(fee.feePerComputeUnit)) /
+            BigInt(BraveWallet.MICRO_LAMPORTS_PER_LAMPORT)
+          const totalFee = BigInt(fee.baseFee) + priorityFee
 
           return {
             data: totalFee.toString()
