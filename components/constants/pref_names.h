@@ -115,6 +115,7 @@ inline constexpr char kPlayYTVideoInBrowserEnabled[] =
     "brave.play_yt_video_in_browser_enabled";
 inline constexpr char kBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
+inline constexpr char kYTVideoQualityPref[] = "brave.yt_video_quality";
 inline constexpr char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 inline constexpr char kSafetynetStatus[] = "safetynet.status";
 #endif

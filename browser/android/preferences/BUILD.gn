@@ -13,6 +13,7 @@ source_set("preferences") {
     "background_video_playback_tab_helper.cc",
     "background_video_playback_tab_helper.h",
     "brave_pref_service_bridge.cc",
+    "constants.h",
     "features.cc",
     "features.h",
   ]
