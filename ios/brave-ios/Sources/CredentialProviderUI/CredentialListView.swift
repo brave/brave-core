@@ -53,8 +53,8 @@ public struct CredentialListView: View {
             .padding(.vertical, 4)
             VStack(alignment: .leading, spacing: 0) {
               Text(credential.serviceName)
-              if !credential.user.isEmpty {
-                Text(credential.user)
+              if !credential.username.isEmpty {
+                Text(credential.username)
                   .foregroundStyle(.secondary)
               }
             }
@@ -211,14 +211,14 @@ extension CredentialListModel {
     var recordIdentifier: String!
     var serviceIdentifier: String!
     var serviceName: String!
-    var user: String!
+    var username: String!
     var note: String!
 
     init(
       favicon: FaviconAttributes?,
       rank: Int64,
       serviceName: String,
-      user: String,
+      username: String,
       password: String,
       note: String
     ) {
@@ -240,7 +240,7 @@ extension CredentialListModel {
       self.recordIdentifier = UUID().uuidString
       self.serviceIdentifier = UUID().uuidString
       self.serviceName = serviceName
-      self.user = user
+      self.username = username
       self.note = note
       super.init()
     }
@@ -252,11 +252,18 @@ extension CredentialListModel {
           favicon: nil,
           rank: 1,
           serviceName: "github.com",
-          user: "user",
+          username: "user",
           password: "test",
           note: ""
         ),
-      .init(favicon: nil, rank: 2, serviceName: "github.com", user: "", password: "test", note: "")
+      .init(
+        favicon: nil,
+        rank: 2,
+        serviceName: "github.com",
+        username: "",
+        password: "test",
+        note: ""
+      )
     ),
     originHost: "github.com",
     isAuthenticated: true
