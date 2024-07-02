@@ -26,6 +26,7 @@ adblock-cxx = { version = "1" }
 constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
 zcash = "1"
+anonymous-credentials-cxx = "0.1"
 
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"
@@ -78,6 +79,14 @@ package = "constellation-cxx"
 [patch.crates-io.challenge-bypass-ristretto-cxx_v1]
 path = "../../../components/challenge_bypass_ristretto/rust/cxx"
 package = "challenge-bypass-ristretto-cxx"
+
+[patch.crates-io.anonymous-credentials_v0_1]
+path = "../../../components/web_discovery/browser/anonymous_credentials/rs/lib"
+package = "anonymous-credentials"
+
+[patch.crates-io.anonymous-credentials-cxx_v0_1]
+path = "../../../components/web_discovery/browser/anonymous_credentials/rs/cxx"
+package = "anonymous-credentials-cxx"
 
 [patch.crates-io.aho_corasick_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3"
