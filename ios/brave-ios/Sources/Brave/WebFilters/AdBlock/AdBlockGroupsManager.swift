@@ -91,6 +91,34 @@ import os
         version: genericType.version
       )
 
+      // When we drop slim list, we don't use the `blockAds` type
+      // once we have the proper rule list downloaded and compiled.
+      // So we have to check against different type if 'drop slim list' is enabled
+      // and remove those from the missing modes.
+      if genericType == .blockAds, FeatureList.kBraveAdblockDropSlimList.enabled {
+        // This type is temproary and replaced with a downloaded filter list
+        // Check if we have the downloaded version of this replacement.
+        await blocklistType.allowedModes.asyncForEach { mode in
+          if await self.contentBlockerManager.hasRuleList(
+            for: self.standardManager.blocklistType,
+            mode: mode
+          ) {
+            missingModes.removeAll(where: { $0 == mode })
+            guard !missingModes.contains(mode) else { return }
+
+            do {
+              // Remove this as it's no longer needed
+              try await self.contentBlockerManager.removeRuleLists(
+                for: blocklistType,
+                mode: mode
+              )
+            } catch {
+              // we don't care if we failed to remove this
+            }
+          }
+        }
+      }
+
       do {
         try await self.contentBlockerManager.compileBundledRuleList(
           for: genericType,
@@ -358,7 +386,23 @@ import os
     guard !domain.areAllShieldsOff else { return [] }
 
     // 1. Get the generic types
-    let genericTypes = contentBlockerManager.validGenericTypes(for: domain)
+    let genericTypes = contentBlockerManager.validGenericTypes(for: domain).filter { type in
+      switch type {
+      case .blockAds:
+        if FeatureList.kBraveAdblockDropSlimList.enabled {
+          // We only use this legacy list during the upgrade so we don't have
+          // a pause on network blocking. Later we can remove this logic.
+          return !contentBlockerManager.isReady(
+            for: standardManager.blocklistType,
+            mode: .standard
+          )
+        } else {
+          return true
+        }
+      default:
+        return true
+      }
+    }
     let genericRuleLists = genericTypes.map { genericType -> ContentBlockerManager.BlocklistType in
       return .generic(genericType)
     }
@@ -367,20 +411,31 @@ import os
       return Set(genericRuleLists)
     }
 
+    let engineBlocklistTypes = GroupedAdBlockEngine.EngineType.allCases.compactMap {
+      engineType -> ContentBlockerManager.BlocklistType? in
+      guard engineType.combineContentBlockers else { return nil }
+      return getManager(for: engineType).blocklistType
+    }
+
     let sourceBlocklistTypes = GroupedAdBlockEngine.EngineType.allCases.flatMap {
       engineType -> [ContentBlockerManager.BlocklistType] in
+      guard !engineType.combineContentBlockers else { return [] }
       return sourceProvider.enabledBlocklistTypes(for: engineType)
     }
 
     // 2. Get the sources types
-    return Set(genericRuleLists).union(sourceBlocklistTypes)
+    return Set(genericRuleLists).union(engineBlocklistTypes).union(sourceBlocklistTypes)
   }
 
   /// Remove all un-needed content blockers
   public func cleaupInvalidRuleLists() async {
     let engineGroupTypes = GroupedAdBlockEngine.EngineType.allCases
       .flatMap({ engineType -> [ContentBlockerManager.BlocklistType] in
-        return sourceProvider.blocklistTypes(for: engineType)
+        if engineType.combineContentBlockers {
+          return [getManager(for: engineType).blocklistType]
+        } else {
+          return sourceProvider.blocklistTypes(for: engineType)
+        }
       })
     let allBlocklistTypes = ContentBlockerManager.BlocklistType.allStaticTypes
       .union(engineGroupTypes)
@@ -392,6 +447,9 @@ import os
     for enabledSources: [GroupedAdBlockEngine.Source],
     engineType: GroupedAdBlockEngine.EngineType
   ) {
+    // Only do this for content blockers that should not be grouped
+    guard !engineType.combineContentBlockers else { return }
+
     let manager = getManager(for: engineType)
     // Compile all content blockers for the given manager
     manager.compilableFiles(for: enabledSources).forEach { fileInfo in
@@ -406,6 +464,9 @@ import os
     for fileInfo: AdBlockEngineManager.FileInfo,
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
+    // Only do this for content blockers that should not be grouped
+    guard !engineType.combineContentBlockers else { return }
+
     guard
       let blocklistType = fileInfo.filterListInfo.source.blocklistType(
         engineType: engineType

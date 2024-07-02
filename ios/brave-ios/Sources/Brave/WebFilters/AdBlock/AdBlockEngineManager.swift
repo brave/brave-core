@@ -39,6 +39,13 @@ import os
   /// This is the current pending group we are compiling.
   /// This allows us to ensure we are not already compiling a newer version of the rules before setting the engine
   private var pendingGroup: GroupedAdBlockEngine.FilterListGroup?
+  /// This is the current pending group we are compiling into content blockers
+  /// This allows us to ensure we are not compiling the same rules more than once
+  private var pendingContentBlockerGroup: GroupedAdBlockEngine.FilterListGroup?
+  /// The blocklist type this manager represents if we are combining content blockers
+  var blocklistType: ContentBlockerManager.BlocklistType {
+    return .engineGroup(id: cacheFolderName, engineType: engineType)
+  }
 
   /// This structure represents encodable info on what cached engine data contains
   private struct CachedEngineInfo: Codable {
@@ -207,6 +214,17 @@ import os
       let compilableFiles = compilableFiles(for: enabledSources)
 
       guard self.checkNeedsCompile(for: compilableFiles) else {
+        // Still ensure we have our content blockers because they might not be available
+        // after an upgrade. Only do this for content blockers that should be combined
+        guard engineType.combineContentBlockers else { return }
+        let version = compilableFiles.map({ $0.filterListInfo }).groupedVersion
+        let modes = await contentBlockerManager.missingModes(
+          for: blocklistType,
+          version: version
+        )
+        guard !modes.isEmpty else { return }
+        let group = try combineRules(for: compilableFiles)
+        await ensureContentBlockers(for: group, contentBlockerManager: contentBlockerManager)
         return
       }
 
@@ -255,7 +273,37 @@ import os
     guard pendingGroup == group else { return }
     self.set(engine: groupedEngine)
     await cache(engine: groupedEngine)
+    await ensureContentBlockers(for: group, contentBlockerManager: contentBlockerManager)
     self.pendingGroup = nil
+  }
+
+  /// Compile content blockers for a group if the engine type supports it
+  private func ensureContentBlockers(
+    for group: GroupedAdBlockEngine.FilterListGroup,
+    contentBlockerManager: ContentBlockerManager
+  ) async {
+    // We only comile the group if slim list is disabled
+    guard FeatureList.kBraveAdblockDropSlimList.enabled else { return }
+    // Only do this for content blockers that should be combined
+    guard engineType.combineContentBlockers else { return }
+    guard !group.infos.isEmpty else { return }
+
+    // Ensure we're not already compiling the same group
+    guard pendingContentBlockerGroup != group else { return }
+    pendingContentBlockerGroup = group
+
+    let version = group.infos.groupedVersion
+    let modes = await contentBlockerManager.missingModes(
+      for: blocklistType,
+      version: version
+    )
+    await contentBlockerManager.compileRuleList(
+      at: group.localFileURL,
+      for: blocklistType,
+      version: version,
+      modes: modes
+    )
+    pendingContentBlockerGroup = nil
   }
 
   private func set(engine: GroupedAdBlockEngine) {
@@ -397,7 +445,11 @@ extension GroupedAdBlockEngine.Source {
   func blocklistType(
     engineType: GroupedAdBlockEngine.EngineType
   ) -> ContentBlockerManager.BlocklistType? {
-    // Check if we have some other restriction for this filter list
+    // The standard engine uses either (a) slm list for its content blockers
+    // or (if we drop slim list) (b) it combines all of the filter lists into one content blocker.
+    // Either way, we don't use individual blocklist types for the standard engine
+    guard engineType != .standard else { return nil }
+    // Otherwise, check if we have some other restriction for this filter list
     guard allowContentBlockers else { return nil }
     return .engineSource(self, engineType: engineType)
   }

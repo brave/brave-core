@@ -52,6 +52,17 @@ public actor GroupedAdBlockEngine {
       }
     }
 
+    /// Tells us wether or not the content blockers should be combined for this type
+    ///
+    /// - Note: This is only possible for the default (i.e. `standard`) engine
+    /// as we control the filter lists for this type and we can guarantee they don't surpas 150k network rules.
+    var combineContentBlockers: Bool {
+      switch self {
+      case .standard: return FeatureList.kBraveAdblockDropSlimList.enabled
+      case .aggressive: return false
+      }
+    }
+
     public var debugDescription: String {
       switch self {
       case .aggressive: return "aggressive"

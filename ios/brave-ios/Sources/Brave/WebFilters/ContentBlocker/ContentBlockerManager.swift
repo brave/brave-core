@@ -100,6 +100,7 @@ import os.log
 
     case generic(GenericBlocklistType)
     case engineSource(GroupedAdBlockEngine.Source, engineType: GroupedAdBlockEngine.EngineType)
+    case engineGroup(id: String, engineType: GroupedAdBlockEngine.EngineType)
 
     private var identifier: String {
       switch self {
@@ -114,6 +115,8 @@ import os.log
         case .filterListText:
           return [Self.filterListPrefix, "text"].joined(separator: "-")
         }
+      case .engineGroup(let id, _):
+        return [Self.filterListPrefix, "group", id].joined(separator: "-")
       }
     }
 
@@ -121,7 +124,7 @@ import os.log
       switch self {
       case .generic(let genericType):
         return genericType.mode(isAggressiveMode: isAggressiveMode)
-      case .engineSource(_, let engineType):
+      case .engineSource(_, let engineType), .engineGroup(_, let engineType):
         switch engineType {
         case .standard:
           return isAggressiveMode ? .aggressive : .standard
