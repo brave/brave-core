@@ -19,15 +19,12 @@ static_library("ipfs") {
     "//net",
     "//url",
   ]
-}
 
-source_set("brave_ipfs_unit_tests") {
-  testonly = true
-
-  sources = [ "ipfs_utils_unittest.cc" ]
-
-  deps = [
-    "//base/test:test_support",
-    "//brave/components/ipfs",
-  ]
+  if (!is_android && !is_ios) {
+    sources += [
+      "ipfs_component_cleaner.cc",
+      "ipfs_component_cleaner.h",
+    ]
+    deps += [ "//chrome/common:constants" ]
+  }
 }

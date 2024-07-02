@@ -6,10 +6,12 @@
 #include "brave/components/ipfs/ipfs_prefs.h"
 
 #include "base/files/file_path.h"
-#include "base/path_service.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#include "chrome/common/chrome_paths.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
+
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#include "brave/components/ipfs/ipfs_component_cleaner.h"
+#endif
 
 namespace {
 // Used to determine which method should be used to resolve ipfs:// and ipns:///
@@ -127,10 +129,9 @@ void ClearDeprecatedIpfsPrefs(PrefService* registry) {
   registry->ClearPref(kIPFSAutoRedirectDNSLink);
   registry->ClearPref(kIPFSCompanionEnabled);
 
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  ipfs::DeleteIpfsComponentAndData(user_data_dir,
-                                   ipfs::GetIpfsClientComponentId());
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  ipfs::DeleteIpfsComponent(ipfs::GetIpfsClientComponentPath());
+#endif
 }
 
 }  // namespace ipfs

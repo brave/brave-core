@@ -7,16 +7,10 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/location.h"
 #include "base/logging.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/task/thread_pool.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "build/build_config.h"
 #include "components/base32/base32.h"
@@ -34,25 +28,6 @@ constexpr char kIPNSScheme[] = "ipns";
 const int64_t kIpfsNSCodec = 0xE3;
 const int64_t kIpnsNSCodec = 0xE5;
 
-#if BUILDFLAG(IS_WIN)
-static const char kIpfsClientComponentId[] = "lnbclahgobmjphilkalbhebakmblnbij";
-#elif BUILDFLAG(IS_MAC)
-#if defined(ARCH_CPU_ARM64)
-static const char kIpfsClientComponentId[] = "lejaflgbgglfaomemffoaappaihfligf";
-#else
-static const char kIpfsClientComponentId[] = "nljcddpbnaianmglkpkneakjaapinabi";
-#endif
-#elif BUILDFLAG(IS_LINUX)
-#if defined(ARCH_CPU_ARM64)
-static const char kIpfsClientComponentId[] = "fmmldihckdnognaabhligdpckkeancng";
-#else
-static const char kIpfsClientComponentId[] = "oecghfpdmkjlhnfpmmjegjacfimiafjp";
-#endif
-#else
-// Not used yet for Android/iOS
-static const char kIpfsClientComponentId[] = "";
-#endif
-
 // Decodes a varint from the given string piece into the given int64_t. Returns
 // remaining span if the string had a valid varint (where a byte was found with
 // it's top bit set).
@@ -62,8 +37,9 @@ base::span<const uint8_t> DecodeVarInt(base::span<const uint8_t> from,
   int shift = 0;
   uint64_t ret = 0;
   do {
-    if (it == from.end())
+    if (it == from.end()) {
       return {};
+    }
 
     // Shifting 64 or more bits is undefined behavior.
     DCHECK_LT(shift, 64);
@@ -119,23 +95,6 @@ bool IsValidCID(const std::string& cid) {
 }  // namespace
 
 namespace ipfs {
-
-std::string GetIpfsClientComponentId() {
-  return kIpfsClientComponentId;
-}
-
-void DeleteIpfsComponentAndData(const base::FilePath& user_data_dir,
-                                const std::string& ipfs_client_component_id) {
-  if (user_data_dir.empty() || !base::PathExists(user_data_dir)) {
-    return;
-  }
-  // Remove IPFS component
-  base::ThreadPool::PostTask(
-      FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
-      base::GetDeletePathRecursivelyCallback(
-          user_data_dir.Append(FILE_PATH_LITERAL(ipfs_client_component_id))));
-}
-
 bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
   const GURL gateway_url{kDefaultPublicGateway};
   std::string cid, path;

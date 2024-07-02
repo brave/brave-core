@@ -6,18 +6,32 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 
 #include <fstream>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/browser/sync/sync_service_factory.h"
+#include "chrome/test/base/testing_profile.h"
+#include "components/sync_preferences/pref_service_mock_factory.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+#include "base/path_service.h"
+#include "brave/components/ipfs/ipfs_component_cleaner.h"
+#include "chrome/common/chrome_paths.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 namespace {
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 // Simple function to dump some text into a new file.
 void CreateTextFile(const base::FilePath& filename,
                     const std::wstring& contents) {
@@ -31,6 +45,21 @@ void CreateTextFile(const base::FilePath& filename,
   file << contents;
   file.close();
 }
+std::unique_ptr<Profile> CreateProfile(const base::FilePath& path) {
+  SyncServiceFactory::GetInstance();
+
+  sync_preferences::PrefServiceMockFactory factory;
+  auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
+  std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(
+      factory.CreateSyncable(registry.get()));
+  RegisterUserProfilePrefs(registry.get());
+
+  TestingProfile::Builder profile_builder;
+  profile_builder.SetPrefService(std::move(prefs));
+  profile_builder.SetPath(path);
+  return profile_builder.Build();
+}
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 
 GURL GetDefaultIPFSGateway() {
   return GURL(ipfs::kDefaultPublicGateway);
@@ -43,15 +72,27 @@ class IpfsUtilsUnitTest : public testing::Test {
   ~IpfsUtilsUnitTest() override = default;
 
  protected:
-  void SetUp() override { ASSERT_TRUE(temp_dir_.CreateUniqueTempDir()); }
+  void SetUp() override {
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    profile_ = CreateProfile(temp_dir_.GetPath());
+    EXPECT_TRUE(profile_);
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  }
 
   content::BrowserTaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<Profile> profile_;
   base::ScopedTempDir temp_dir_;
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 };
 
+#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
-  auto user_data_dir = temp_dir_.GetPath();
+  base::FilePath user_data_dir;
+  DCHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir));
+
   base::FilePath cache_folder =
       user_data_dir.Append(FILE_PATH_LITERAL("brave_ipfs"));
   base::CreateDirectory(cache_folder);
@@ -65,23 +106,23 @@ TEST_F(IpfsUtilsUnitTest, DeleteIpfsComponentAndDataTest) {
   CreateTextFile(cache_folder_subdir_file_01, L"12345678901234567890");
 
   base::FilePath component_id_folder =
-      user_data_dir.Append(FILE_PATH_LITERAL(ipfs::GetIpfsClientComponentId()));
+      user_data_dir.Append(base::FilePath(ipfs::GetIpfsClientComponentId()));
   base::CreateDirectory(component_id_folder);
   EXPECT_TRUE(base::PathExists(component_id_folder));
   base::FilePath component_id_folde_subdir =
-      cache_folder.Append(FILE_PATH_LITERAL("subdir1"));
+      component_id_folder.Append(FILE_PATH_LITERAL("subdir1"));
   base::CreateDirectory(component_id_folde_subdir);
   EXPECT_TRUE(base::PathExists(component_id_folde_subdir));
   base::FilePath component_id_folde_subdir_file_01 =
-      cache_folder_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
+      component_id_folde_subdir.Append(FILE_PATH_LITERAL("The file 01.txt"));
   CreateTextFile(component_id_folde_subdir_file_01, L"12345678901234567890");
 
-  ipfs::DeleteIpfsComponentAndData(user_data_dir,
-                                   ipfs::GetIpfsClientComponentId());
+  ipfs::DeleteIpfsComponent(ipfs::GetIpfsClientComponentPath());
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(base::PathExists(cache_folder));
   EXPECT_FALSE(base::PathExists(component_id_folder));
 }
+#endif  // !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
 
 TEST_F(IpfsUtilsUnitTest, TranslateIPFSURINotIPFSScheme) {
   GURL url(
