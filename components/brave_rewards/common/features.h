@@ -26,6 +26,10 @@ BASE_DECLARE_FEATURE(kAllowUnsupportedWalletProvidersFeature);
 
 BASE_DECLARE_FEATURE(kAllowSelfCustodyProvidersFeature);
 
+BASE_DECLARE_FEATURE(kNewRewardsUIFeature);
+
+BASE_DECLARE_FEATURE(kAnimatedBackgroundFeature);
+
 }  // namespace brave_rewards::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_COMMON_FEATURES_H_

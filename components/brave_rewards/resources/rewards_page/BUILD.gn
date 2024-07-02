@@ -1,0 +1,23 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+transpile_web_ui("rewards_page") {
+  entry_points = [ [
+        "rewards_page",
+        rebase_path("rewards_page.tsx"),
+      ] ]
+  resource_name = "rewards_page"
+  output_module = true
+  deps = [ "//brave/components/brave_rewards/common/mojom:webui_js" ]
+}
+
+pack_web_resources("rewards_page_generated") {
+  resource_name = "rewards_page"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+  deps = [ ":rewards_page" ]
+}

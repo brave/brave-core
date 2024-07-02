@@ -17,9 +17,9 @@
           <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page.html" type="BINDATA" />
         </else>
       </if>
-      <if expr="not is_android">
-        <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/assets/favicon.ico" type="BINDATA" />
-      </if>
+
+      <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/assets/favicon.ico" type="BINDATA" />
+      <include name="IDR_NEW_BRAVE_REWARDS_PAGE_HTML" file="rewards_page/rewards_page.html" type="BINDATA" />
 
       <!-- WebUI Brave Rewards Internals resources -->
       <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />

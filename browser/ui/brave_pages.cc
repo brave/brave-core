@@ -21,7 +21,7 @@
 namespace brave {
 
 void ShowBraveRewards(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIRewardsURL));
+  ShowSingletonTabOverwritingNTP(browser, GURL(kRewardsPageURL));
 }
 
 void ShowBraveAdblock(Browser* browser) {

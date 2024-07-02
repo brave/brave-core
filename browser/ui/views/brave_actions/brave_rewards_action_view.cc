@@ -13,9 +13,11 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
@@ -172,6 +174,20 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
   raw_ptr<PrefService> prefs_ = nullptr;
 };
 
+std::unique_ptr<WebUIBubbleManager> CreateBubbleManager(
+    views::View* anchor_view,
+    Profile* profile) {
+  if (base::FeatureList::IsEnabled(
+          brave_rewards::features::kNewRewardsUIFeature)) {
+    return WebUIBubbleManager::Create<brave_rewards::RewardsPageTopUI>(
+        anchor_view, profile, GURL(kRewardsPageTopURL),
+        IDS_BRAVE_UI_BRAVE_REWARDS);
+  }
+  return WebUIBubbleManager::Create<brave_rewards::RewardsPanelUI>(
+      anchor_view, profile, GURL(kBraveRewardsPanelURL),
+      IDS_BRAVE_UI_BRAVE_REWARDS);
+}
+
 }  // namespace
 
 BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
@@ -183,12 +199,7 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           nullptr,
           false),
       browser_(browser),
-      bubble_manager_(WebUIBubbleManager::Create<RewardsPanelUI>(
-          this,
-          browser_->profile(),
-          GURL(kBraveRewardsPanelURL),
-          IDS_BRAVE_UI_BRAVE_REWARDS,
-          /*force_load_on_create=*/false)) {
+      bubble_manager_(CreateBubbleManager(this, browser->profile())) {
   DCHECK(browser_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(
