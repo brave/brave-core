@@ -90,9 +90,10 @@ export function withPlaceholderIcon<
     const isIpfsTokenImageURL = isIpfs(tokenImageURL)
 
     // queries
-    const { data: ipfsUrl } = useGetIpfsGatewayTranslatedNftUrlQuery(
+    const { data: gatewayURL } = useGetIpfsGatewayTranslatedNftUrlQuery(
       isIpfsTokenImageURL ? tokenImageURL : skipToken
     )
+    const imgSrc = gatewayURL ?? tokenImageURL
 
     // memos + computed
     const isValidIcon = React.useMemo(() => {
@@ -133,10 +134,10 @@ export function withPlaceholderIcon<
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return isStorybook ? ipfsUrl || '' : `chrome://image?${ipfsUrl}`
+        return isStorybook ? imgSrc || '' : `chrome://image?${imgSrc}`
       }
       return ''
-    }, [isRemoteURL, ipfsUrl])
+    }, [isRemoteURL, imgSrc])
 
     // render
     if (!asset) {
