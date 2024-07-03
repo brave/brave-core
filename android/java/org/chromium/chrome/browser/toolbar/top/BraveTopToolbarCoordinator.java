@@ -11,7 +11,6 @@ import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
 
-import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -27,7 +26,6 @@ import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.ButtonData;
 import org.chromium.chrome.browser.toolbar.ButtonDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
@@ -40,7 +38,6 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
-import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.resources.ResourceManager;
 
 import java.util.List;
@@ -71,22 +68,17 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             List<ButtonDataProvider> buttonDataProviders,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ThemeColorProvider normalThemeColorProvider,
-            ThemeColorProvider overviewThemeColorProvider,
             MenuButtonCoordinator browsingModeMenuButtonCoordinator,
             MenuButtonCoordinator overviewModeMenuButtonCoordinator,
             ObservableSupplier<AppMenuButtonHelper> appMenuButtonHelperSupplier,
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> homepageEnabledSupplier,
-            ButtonDataProvider identityDiscController,
-            Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier,
-            boolean isStartSurfaceEnabled,
             HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier,
             OfflineDownloader offlineDownloader,
             boolean initializeWithIncognitoColors,
-            Callback<LoadUrlParams> startSurfaceLogoClickedCallback,
             ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<Boolean> compositorInMotionSupplier,
             BrowserStateBrowserControlsVisibilityDelegate
@@ -105,22 +97,17 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 buttonDataProviders,
                 layoutStateProviderSupplier,
                 normalThemeColorProvider,
-                overviewThemeColorProvider,
                 browsingModeMenuButtonCoordinator,
                 overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier,
                 tabModelSelectorSupplier,
                 homepageEnabledSupplier,
-                identityDiscController,
-                identityDiscButtonSupplier,
                 resourceManagerSupplier,
                 isIncognitoModeEnabledSupplier,
-                isStartSurfaceEnabled,
                 historyDelegate,
                 partnerHomepageEnabledSupplier,
                 offlineDownloader,
                 initializeWithIncognitoColors,
-                startSurfaceLogoClickedCallback,
                 constraintsSupplier,
                 compositorInMotionSupplier,
                 browserStateBrowserControlsVisibilityDelegate,
@@ -136,16 +123,14 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         mControlContainer = controlContainer;
 
         if (isToolbarPhone()) {
-            if (!isStartSurfaceEnabled) {
-                mTabSwitcherModeCoordinator =
-                        new BraveTabSwitcherModeTTCoordinator(
-                                controlContainer
-                                        .getRootView()
-                                        .findViewById(R.id.tab_switcher_toolbar_stub),
-                                overviewModeMenuButtonCoordinator,
-                                isIncognitoModeEnabledSupplier,
-                                mToolbarColorObserverManager);
-            }
+            mTabSwitcherModeCoordinator =
+                    new BraveTabSwitcherModeTTCoordinator(
+                            controlContainer
+                                    .getRootView()
+                                    .findViewById(R.id.tab_switcher_toolbar_stub),
+                            overviewModeMenuButtonCoordinator,
+                            isIncognitoModeEnabledSupplier,
+                            mToolbarColorObserverManager);
         }
     }
 
