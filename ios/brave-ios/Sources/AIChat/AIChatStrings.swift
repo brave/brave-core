@@ -517,8 +517,16 @@ extension Strings {
       "aichat.advancedSettingsAutocompleteTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Show autocomplete suggestions in address bar",
+      value: "Show In Address Bar",
       comment: "The title for the settings to show search suggestions from Leo in url-address bar"
+    )
+    public static let advancedSettingsAutocompleteDescription = NSLocalizedString(
+      "aichat.advancedSettingsAutocompleteDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Turn on to show a shortcut to launch Leo from the address bar.",
+      comment:
+        "The description for the settings to show search suggestions from Leo in url-address bar"
     )
     public static let advancedSettingsDefaultModelTitle = NSLocalizedString(
       "aichat.advancedSettingsDefaultModelTitle",
@@ -707,7 +715,7 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value:
-        "Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the **[Brave wiki](%@)** for more details.\n\nWhen you ask Leo a question it may use the context of the web page you are viewing or text you highlight to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers. See the **[privacy policy](%@)** for more information.",
+        "Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the Brave **[Help Center](%@)** for more details.\n\nBy default, when you ask Leo a question it may send and use the content of the web page you are viewing or any text you highlight on a page to Brave Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the **[privacy policy](%@)** for more information.",
       comment:
         "The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls"
     )
@@ -882,6 +890,24 @@ extension Strings {
         "Improved answer searching for",
       comment:
         "The text displayed on the loading screen when searching for a user query"
+    )
+    public static let youMessageTitle = NSLocalizedString(
+      "aichat.youMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "You",
+      comment:
+        "The word 'You' as in 'Me', 'Myself', 'I' (the user)."
+    )
+    public static let leoAssistantNameTitle = NSLocalizedString(
+      "aichat.leoAssistantNameTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo",
+      comment:
+        "The name of the AI-Assistant that's responsing to the user"
     )
   }
 }
