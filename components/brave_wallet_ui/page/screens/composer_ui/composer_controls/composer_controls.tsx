@@ -5,6 +5,15 @@
 
 import * as React from 'react'
 
+// Constants
+import LPMetadata from '../../swap/constants/LpMetadata'
+
+// Types
+import {
+  BraveWallet,
+  SwapProviderNameMapping
+} from '../../../../constants/types'
+
 // Hooks
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
@@ -12,19 +21,25 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import {
   FlipButton,
   FlipIcon,
-  SettingsButton,
-  SettingsIcon
+  ProvidersButton,
+  ProviderIcon
 } from './composer_controls.style'
 import { Row } from '../../../../components/shared/style'
 
 interface Props {
-  onFlipAssets?: () => void
+  onFlipAssets: () => void
+  onOpenProviders: () => void
+  selectedProvider: BraveWallet.SwapProvider
   flipAssetsDisabled?: boolean
-  onOpenSettings?: () => void
 }
 
 export const ComposerControls = (props: Props) => {
-  const { onFlipAssets, onOpenSettings, flipAssetsDisabled } = props
+  const {
+    onFlipAssets,
+    onOpenProviders,
+    flipAssetsDisabled,
+    selectedProvider
+  } = props
 
   // State
   const [showComposerMenu, setShowComposerMenu] = React.useState<boolean>(false)
@@ -49,10 +64,12 @@ export const ComposerControls = (props: Props) => {
           <FlipIcon />
         </FlipButton>
       )}
-      {onOpenSettings && (
-        <SettingsButton onClick={onOpenSettings}>
-          <SettingsIcon />
-        </SettingsButton>
+      {onOpenProviders && (
+        <ProvidersButton onClick={onOpenProviders}>
+          <ProviderIcon
+            src={LPMetadata[SwapProviderNameMapping[selectedProvider]]}
+          />
+        </ProvidersButton>
       )}
     </Row>
   )

@@ -6,6 +6,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
+import Alert from '@brave/leo/react/alert'
+import LeoButton from '@brave/leo/react/button'
 
 // Shared Styles
 import {
@@ -144,4 +146,17 @@ export const Button = styled(WalletButton)<{
   &:hover:not([disabled]) {
     color: ${leo.color.text.interactive};
   }
+`
+
+export const AlertMessage = styled(Alert)`
+  --leo-alert-center-width: 100%;
+  margin-bottom: 16px;
+`
+
+export const AlertMessageButton = styled(LeoButton)`
+  --leo-button-padding: 0px;
+`
+
+export const AlertMessageWrapper = styled(Row)`
+  flex-wrap: wrap;
 `
