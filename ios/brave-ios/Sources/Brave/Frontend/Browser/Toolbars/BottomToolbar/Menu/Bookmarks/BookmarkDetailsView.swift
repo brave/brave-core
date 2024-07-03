@@ -25,6 +25,7 @@ private class URLTextField: UITextField {
 
     self.addTarget(self, action: #selector(didBeginEditing), for: .editingDidBegin)
     self.addTarget(self, action: #selector(didEndEditing), for: .editingDidEnd)
+    self.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
   }
 
   required init?(coder: NSCoder) {
@@ -32,11 +33,15 @@ private class URLTextField: UITextField {
   }
 
   override var text: String? {
-    didSet {
-      if oldValue != text {
-        oldText = text
+    get {
+      return oldText
+    }
 
-        let urlText = text ?? ""
+    set(newValue) {
+      if oldText != newValue {
+        oldText = newValue
+
+        let urlText = newValue ?? ""
         let suggestedText = URLFormatter.formatURLOrigin(
           forDisplayOmitSchemePathAndTrivialSubdomains: urlText
         )
@@ -72,6 +77,11 @@ private class URLTextField: UITextField {
     if !suggestedText.isEmpty {
       super.text = suggestedText
     }
+  }
+
+  @objc
+  private func editingChanged() {
+    oldText = super.text
   }
 }
 
