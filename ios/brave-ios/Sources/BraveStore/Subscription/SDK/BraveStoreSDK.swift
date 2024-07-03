@@ -376,6 +376,8 @@ public class BraveStoreSDK: AppStoreSDK {
 
       // Save subscription Ids
       Preferences.AIChat.subscriptionProductId.value = leoSubscriptions.first?.id
+      // Once our backend allows restoring purchases `without` linking, we can get rid of this and just use `processTransaction`.
+      #if BACKEND_SUPPORTS_IOS_MULTI_DEVICE_RESTORE
 
       // Restore product subscription if necessary
       if Preferences.AIChat.subscriptionOrderId.value == nil {
@@ -384,6 +386,7 @@ public class BraveStoreSDK: AppStoreSDK {
         // So let's automatically restore it to this device as well
         _ = await restorePurchases()
       }
+      #endif
     }
   }
 
