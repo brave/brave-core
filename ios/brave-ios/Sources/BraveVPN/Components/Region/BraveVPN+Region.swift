@@ -81,7 +81,6 @@ extension BraveVPN {
     }
   }
 
-  @MainActor
   static func changeVPNRegionForPrecision(
     to region: GRDRegion?,
     with precision: RegionPrecision
