@@ -757,7 +757,7 @@ class TabManager: NSObject {
         persistent: !tab.isPrivate
       )
 
-      if siteDomain.shredLevel?.shredOnAppExit == true {
+      if siteDomain.shredLevel.shredOnAppExit {
         Task {
           await forgetData(for: url, in: tab)
         }
@@ -787,7 +787,7 @@ class TabManager: NSObject {
     )
 
     switch siteDomain.shredLevel {
-    case .appExit, .none:
+    case .appExit, .never:
       return
     case .whenSiteClosed:
       let tabs = tabs(withType: tab.type).filter { existingTab in
