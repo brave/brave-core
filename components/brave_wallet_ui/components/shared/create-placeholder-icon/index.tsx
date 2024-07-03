@@ -115,13 +115,6 @@ export function withPlaceholderIcon<
       }
     }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
-    const remoteImage = React.useMemo(() => {
-      if (isRemoteURL) {
-        return isStorybook ? tokenImageURL || '' : `chrome://image?${tokenImageURL}`
-      }
-      return ''
-    }, [isRemoteURL, tokenImageURL])
-
     // render
     if (!asset) {
       return null
