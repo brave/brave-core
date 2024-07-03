@@ -55,7 +55,7 @@ struct AIChatPaywallView: View {
 
   var premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)?
 
-  var openPrivacyReportsUrl: (() -> Void)?
+  var refreshCredentials: (() -> Void)?
 
   var body: some View {
     NavigationView {
@@ -143,7 +143,8 @@ struct AIChatPaywallView: View {
         }
       }
       .onChange(of: shouldRefreshCredentials) { shouldRefreshCredentials in
-        openPrivacyReportsUrl?()
+        dismiss()
+        refreshCredentials?()
       }
     }
     .navigationViewStyle(.stack)

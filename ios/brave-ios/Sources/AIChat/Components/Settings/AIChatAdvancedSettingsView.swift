@@ -312,7 +312,12 @@ public struct AIChatAdvancedSettingsView: View {
                   await model.refreshPremiumStatus()
                   await viewModel.fetchCredentialSummary()
                 }
-              })
+              },
+              refreshCredentials: {
+                openURL(.brave.braveLeoRefreshCredentials)
+                dismiss()
+              }
+            )
           }
           .alert(isPresented: $appStoreConnectionErrorPresented) {
             Alert(
