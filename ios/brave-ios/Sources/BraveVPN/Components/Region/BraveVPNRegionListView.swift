@@ -42,37 +42,37 @@ public struct BraveVPNRegionListView: View {
   }
 
   public var body: some View {
-    ZStack {
-      VStack {
-        List {
-          Section(
-            footer: Text(Strings.VPN.serverRegionAutoSelectDescription)
-              .font(.footnote)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-          ) {
-            automaticRegionToggle
-          }
+    VStack {
+      List {
+        Section(
+          footer: Text(Strings.VPN.serverRegionAutoSelectDescription)
+            .font(.footnote)
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+        ) {
+          automaticRegionToggle
+        }
 
-          if !isAutomatic {
-            Section {
-              ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
-                index,
-                region in
-                countryRegionItem(at: index, region: region)
-              }
+        if !isAutomatic {
+          Section {
+            ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
+              index,
+              region in
+              countryRegionItem(at: index, region: region)
             }
-            .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
           }
+          .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
         }
       }
-      .opacity(isLoading ? 0.5 : 1.0)
-
-      if isLoading {
-        BraveVPNRegionLoadingIndicatorView()
-          .transition(.opacity)
-          .zIndex(1)
-      }
     }
+    .opacity(isLoading ? 0.5 : 1.0)
+    .overlay(
+      Group {
+        if isLoading {
+          BraveVPNRegionLoadingIndicatorView()
+            .transition(.opacity)
+        }
+      }
+    )
     .background {
       NavigationLink("", isActive: $isRegionDetailsPresented) {
         BraveRegionDetailsView(
@@ -84,10 +84,13 @@ public struct BraveVPNRegionListView: View {
     .background {
       BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
-        regionCountry: BraveVPN.serverLocationDetailed.country,
-        regionCity: BraveVPN.serverLocationDetailed.city,
-        regionCountryISOCode: BraveVPN.serverLocation.isoCode
+        country: BraveVPN.serverLocationDetailed.country,
+        city: BraveVPN.serverLocationDetailed.city,
+        countryISOCode: BraveVPN.serverLocation.isoCode
       )
+    }
+    .onAppear {
+      isAutomatic = BraveVPN.isAutomaticRegion
     }
     .alert(isPresented: $isShowingChangeRegionAlert) {
       Alert(
