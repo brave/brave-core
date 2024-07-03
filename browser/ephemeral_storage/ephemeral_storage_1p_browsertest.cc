@@ -284,6 +284,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorage1pBrowserTest,
       "b.com", "/set-cookie?name=bcom_ephemeral;path=/;SameSite=None;Secure");
   NavigateIframeToURL(site_a, "third_party_iframe_a",
                       b_site_set_ephemeral_cookie_url);
+  iframe_a = content::ChildFrameAt(main_frame, 0);
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_a));
   ASSERT_EQ("name=bcom_ephemeral", GetCookiesInFrame(iframe_b));
 
