@@ -14,28 +14,33 @@ public struct AIChatTermsAndConditionsView: View {
   var termsAndConditionsAccepted: Bool
 
   public var body: some View {
-    VStack(spacing: 16.0) {
-      Text(Strings.AIChat.termsConditionsTitle)
-        .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
-        .font(.body.weight(.semibold))
-        .foregroundStyle(Color(braveSystemName: .textPrimary))
+    VStack {
+      ScrollView {
+        LazyVStack(spacing: 16.0) {
+          Text(Strings.AIChat.termsConditionsTitle)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
+            .font(.body.weight(.semibold))
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
 
-      Text(
-        LocalizedStringKey(
-          String.localizedStringWithFormat(
-            Strings.AIChat.termsConditionsDescription,
-            AIChatConstants.braveLeoLearnMore.absoluteString,
-            AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString
+          Text(
+            LocalizedStringKey(
+              String.localizedStringWithFormat(
+                Strings.AIChat.termsConditionsDescription,
+                AIChatConstants.braveLeoLearnMore.absoluteString,
+                AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString
+              )
+            )
           )
-        )
-      )
-      .multilineTextAlignment(.leading)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .fixedSize(horizontal: false, vertical: true)
-      .foregroundStyle(Color(braveSystemName: .textPrimary))
-      .tint(Color(braveSystemName: .primary50))
+          .multilineTextAlignment(.leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .tint(Color(braveSystemName: .primary50))
+        }
+        .padding()
+      }
 
       Button(
         action: {
