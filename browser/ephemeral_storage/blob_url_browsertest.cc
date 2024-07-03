@@ -105,8 +105,8 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
     content::TestFrameNavigationObserver observer(render_frame_host);
     EXPECT_TRUE(ExecJs(render_frame_host, script));
     observer.Wait();
-    EXPECT_EQ(url, render_frame_host->GetLastCommittedURL());
-    EXPECT_FALSE(render_frame_host->IsErrorDocument());
+    EXPECT_EQ(url, observer.last_committed_url());
+    EXPECT_TRUE(observer.last_navigation_succeeded());
   }
 
   static void EnsureBlobsAreCrossAvailable(
