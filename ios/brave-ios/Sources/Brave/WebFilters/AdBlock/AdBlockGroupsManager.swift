@@ -230,7 +230,6 @@ import os
           // This file is not for this engine type
           continue
         }
-
         if enabledSources.contains(fileInfo.filterListInfo.source) {
           await ensureIndividualContentBlockers(for: fileInfo, engineType: engineType)
         }
@@ -697,6 +696,7 @@ extension AdBlockEngineManager.FileInfo {
     case .standard:
       var sources = [GroupedAdBlockEngine.Source.slimList]
       sources.append(contentsOf: FilterListStorage.shared.sources(for: engineType))
+      sources.append(contentsOf: CustomFilterListStorage.shared.allSources)
       return sources
     }
   }
@@ -741,6 +741,21 @@ extension AdBlockGroupsManager.SourceProvider {
   ) -> [ContentBlockerManager.BlocklistType] {
     return sources(for: engineType).compactMap { source in
       return source.blocklistType(engineType: engineType)
+    }
+  }
+}
+
+extension GroupedAdBlockEngine.Source {
+  /// Tells us if we allow exceptions to be pulled out for this filter list
+  func onlyExceptions(for engineType: GroupedAdBlockEngine.EngineType) -> Bool {
+    switch engineType {
+    case .aggressive:
+      return false
+    case .standard:
+      switch self {
+      case .filterList, .slimList, .filterListURL: return false
+      case .filterListText: return true
+      }
     }
   }
 }

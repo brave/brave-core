@@ -82,14 +82,21 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public struct FilterListGroup: Hashable, Equatable, CustomDebugStringConvertible {
+  public struct FilterListGroup: Hashable, Equatable {
     let infos: [FilterListInfo]
     let localFileURL: URL
     let fileType: GroupedAdBlockEngine.FileType
 
-    public var debugDescription: String {
+    public func makeDebugDescription(for engineType: GroupedAdBlockEngine.EngineType) -> String {
       return infos.enumerated()
-        .map({ " #\($0) \($1.debugDescription)" })
+        .map({
+          let string = " #\($0) \($1.debugDescription)"
+          if $1.source.onlyExceptions(for: engineType) {
+            return "\(string) (exceptions)"
+          } else {
+            return string
+          }
+        })
         .joined(separator: "\n")
     }
   }
@@ -235,7 +242,7 @@ public actor GroupedAdBlockEngine {
     let state = Self.signpost.beginInterval(
       "compileEngine",
       id: signpostID,
-      "\(type.debugDescription) (\(group.fileType.debugDescription)): \(group.debugDescription)"
+      "\(type.debugDescription) (\(group.fileType.debugDescription))"
     )
 
     do {

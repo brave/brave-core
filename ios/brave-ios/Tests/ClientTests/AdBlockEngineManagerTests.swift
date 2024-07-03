@@ -18,7 +18,6 @@ final class AdBlockEngineManagerTests: XCTestCase {
   func testEngineManager() async throws {
     // Given
     // Engine manager and file info and resources info
-    let contentBlockerManager = await makeContentBlockerManager()
     let engineManager = await AdBlockEngineManager(
       engineType: .standard,
       cacheFolderName: "test-standard"
