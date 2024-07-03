@@ -9,14 +9,14 @@ import Shared
 import SwiftUI
 
 public struct BraveVPNRegionConfirmationView: View {
-  let regionCountry: String?
-  let regionCity: String?
-  let regionCountryFlag: Image?
+  let country: String?
+  let city: String?
+  let countryFlag: Image
 
-  public init(regionCountry: String?, regionCity: String?, regionCountryISOCode: String?) {
-    self.regionCountry = regionCountry
-    self.regionCity = regionCity
-    self.regionCountryFlag = regionCountryISOCode?.regionFlag ?? Image(braveSystemName: "leo.globe")
+  public init(country: String?, city: String?, countryISOCode: String?) {
+    self.country = country
+    self.city = city
+    self.countryFlag = countryISOCode?.regionFlag ?? Image(braveSystemName: "leo.globe")
   }
 
   public var body: some View {
@@ -29,33 +29,31 @@ public struct BraveVPNRegionConfirmationView: View {
         .font(.headline)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
       HStack {
-        if let regionCountryFlag = regionCountryFlag {
-          regionCountryFlag
-            .frame(width: 32, height: 32)
-            .padding(4)
-            .overlay(
-              RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-                .strokeBorder(Color(.lightGray), lineWidth: 1.0)
-            )
-        }
+        countryFlag
+          .frame(width: 32, height: 32)
+          .padding(4)
+          .overlay(
+            RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+              .strokeBorder(Color(.lightGray), lineWidth: 1.0)
+          )
         VStack(alignment: .leading) {
-          if let regionCountry = regionCountry {
-            Text(regionCountry)
+          if let country = country {
+            Text(country)
               .font(.headline)
               .foregroundStyle(Color(braveSystemName: .textPrimary))
           }
-          if let regionCity = regionCity {
-            Text(regionCity)
+          if let city = city {
+            Text(city)
               .font(.subheadline)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
         }
-        Spacer()
       }
+      .frame(maxWidth: .infinity, alignment: .leading)
     }
     .padding(48)
-    .background(Color(braveSystemName: .containerBackgroundMobile))
     .frame(maxWidth: 350)
+    .background(Color(braveSystemName: .containerBackgroundMobile))
   }
 }
 
@@ -63,9 +61,9 @@ public struct BraveVPNRegionConfirmationView: View {
 struct BraveVPNRegionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
     BraveVPNRegionConfirmationView(
-      regionCountry: "Canada",
-      regionCity: "Saskatchewan",
-      regionCountryISOCode: "CA"
+      country: "Canada",
+      city: "Saskatchewan",
+      countryISOCode: "CA"
     )
   }
 }
@@ -76,20 +74,20 @@ public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentab
   @Binding
   var isPresented: Bool
 
-  let regionCountry: String?
-  let regionCity: String?
-  let regionCountryISOCode: String?
+  let country: String?
+  let city: String?
+  let countryISOCode: String?
 
   public init(
     isPresented: Binding<Bool>,
-    regionCountry: String?,
-    regionCity: String? = nil,
-    regionCountryISOCode: String? = nil
+    country: String?,
+    city: String? = nil,
+    countryISOCode: String? = nil
   ) {
     _isPresented = isPresented
-    self.regionCountry = regionCountry
-    self.regionCity = regionCity
-    self.regionCountryISOCode = regionCountryISOCode
+    self.country = country
+    self.city = city
+    self.countryISOCode = countryISOCode
   }
 
   public func makeUIViewController(context: Context) -> UIViewController {
@@ -104,9 +102,9 @@ public struct BraveVPNRegionConfirmationContentView: UIViewControllerRepresentab
 
       let controller = PopupViewController(
         rootView: BraveVPNRegionConfirmationView(
-          regionCountry: regionCountry,
-          regionCity: regionCity,
-          regionCountryISOCode: regionCountryISOCode
+          country: country,
+          city: city,
+          countryISOCode: countryISOCode
         )
       )
 

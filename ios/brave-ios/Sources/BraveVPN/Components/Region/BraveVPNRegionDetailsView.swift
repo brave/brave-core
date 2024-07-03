@@ -10,9 +10,6 @@ import SwiftUI
 struct BraveRegionDetailsView: View {
 
   @State
-  private var isAutoSelectEnabled: Bool
-
-  @State
   private var isLoading = false
 
   @State
@@ -21,56 +18,46 @@ struct BraveRegionDetailsView: View {
   @State
   private var isShowingChangeRegionAlert = false
 
-  @ObservedObject
-  private var cityRegionDetail: VPNCityRegionDetail
+  @StateObject
+  private var cityRegionDetail = VPNCityRegionDetail()
 
   @State
   private var regionModificationTimer: Timer?
 
-  @State
+  private var isAutoSelectEnabled: Bool
+
   private var cityRegions: [GRDRegion]
+
+  private var countryRegion: GRDRegion?
 
   public init(
     countryRegion: GRDRegion?,
     with cityRegions: [GRDRegion] = [],
     isAutoSelectEnabled: Bool = true
   ) {
-    self.isAutoSelectEnabled = isAutoSelectEnabled
+    self.countryRegion = countryRegion
     self.cityRegions = cityRegions
-
-    var regions: [BraveVPNCityRegion] = []
-
-    for cityRegion in cityRegions {
-      regions.append(
-        BraveVPNCityRegion(displayName: cityRegion.displayName, regionName: cityRegion.regionName)
-      )
-    }
-
-    cityRegionDetail = VPNCityRegionDetail(
-      countryName: countryRegion?.country ?? "",
-      countryISOCode: countryRegion?.countryISOCode ?? "",
-      cityRegions: regions
-    )
+    self.isAutoSelectEnabled = isAutoSelectEnabled
   }
 
   var body: some View {
-    ZStack {
-      List {
-        Section(header: Text(Strings.VPN.availableServerTitle)) {
-          ForEach(cityRegionDetail.cityRegions) { server in
-            cityRegionItem(at: 0, region: server)
-          }
+    List {
+      Section(header: Text(Strings.VPN.availableServerTitle)) {
+        ForEach(cityRegionDetail.cityRegions) { server in
+          cityRegionItem(at: 0, region: server)
         }
-        .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
       }
-      .opacity(isLoading ? 0.5 : 1.0)
-
-      if isLoading {
-        BraveVPNRegionLoadingIndicatorView()
-          .transition(.opacity)
-          .zIndex(1)
-      }
+      .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
     }
+    .opacity(isLoading ? 0.5 : 1.0)
+    .overlay(
+      Group {
+        if isLoading {
+          BraveVPNRegionLoadingIndicatorView()
+            .transition(.opacity)
+        }
+      }
+    )
     .navigationBarTitle(
       String(format: Strings.VPN.serverNameTitle, cityRegionDetail.countryName),
       displayMode: .inline
@@ -78,16 +65,21 @@ struct BraveRegionDetailsView: View {
     .background {
       BraveVPNRegionConfirmationContentView(
         isPresented: $isConfirmationPresented,
-        regionCountry: BraveVPN.serverLocationDetailed.country,
-        regionCity: BraveVPN.serverLocationDetailed.city,
-        regionCountryISOCode: BraveVPN.serverLocation.isoCode
+        country: BraveVPN.serverLocationDetailed.country,
+        city: BraveVPN.serverLocationDetailed.city,
+        countryISOCode: BraveVPN.serverLocation.isoCode
       )
     }
-    .alert(isPresented: $isShowingChangeRegionAlert) {
-      Alert(
-        title: Text(Strings.VPN.regionPickerErrorTitle),
-        message: Text(Strings.VPN.regionPickerErrorMessage),
-        dismissButton: .default(Text(Strings.OKString))
+    .onAppear {
+      let regions = cityRegions.map {
+        BraveVPNCityRegion(displayName: $0.displayName, regionName: $0.regionName)
+      }
+
+      cityRegionDetail.assignSelectedRegion(
+        isAutoSelectEnabled: isAutoSelectEnabled,
+        countryName: countryRegion?.country ?? "",
+        countryISOCode: countryRegion?.countryISOCode ?? "",
+        cityRegions: regions
       )
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
@@ -102,6 +94,13 @@ struct BraveRegionDetailsView: View {
           isConfirmationPresented = false
         }
       }
+    }
+    .alert(isPresented: $isShowingChangeRegionAlert) {
+      Alert(
+        title: Text(Strings.VPN.regionPickerErrorTitle),
+        message: Text(Strings.VPN.regionPickerErrorMessage),
+        dismissButton: .default(Text(Strings.OKString))
+      )
     }
   }
 
