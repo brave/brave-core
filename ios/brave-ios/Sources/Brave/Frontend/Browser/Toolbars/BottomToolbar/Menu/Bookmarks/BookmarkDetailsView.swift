@@ -37,7 +37,7 @@ private class URLTextField: UITextField {
       return oldText
     }
 
-    set(newValue) {
+    set {
       if oldText != newValue {
         oldText = newValue
 
