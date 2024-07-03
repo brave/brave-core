@@ -11,11 +11,17 @@ struct AIChatUserMessageView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      Image(braveSystemName: "leo.user.circle")
-        .renderingMode(.template)
-        .foregroundStyle(Color(braveSystemName: .iconDefault))
-        .padding(8.0)
-        .background(Color(braveSystemName: .containerHighlight), in: Circle())
+      HStack {
+        Image(braveSystemName: "leo.user.circle")
+          .renderingMode(.template)
+          .foregroundStyle(Color(braveSystemName: .iconDefault))
+          .padding(8.0)
+          .background(Color(braveSystemName: .containerHighlight), in: Circle())
+
+        Text(Strings.AIChat.youMessageTitle)
+          .font(.body.weight(.semibold))
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
+      }
 
       Text(prompt)
         .font(.subheadline)

@@ -62,8 +62,14 @@ struct AIChatResponseMessageView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      AIChatProductIcon(containerShape: Circle(), padding: 6.0)
-        .font(.callout)
+      HStack {
+        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
+          .font(.callout)
+
+        Text(Strings.AIChat.leoAssistantNameTitle)
+          .font(.body.weight(.semibold))
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
+      }
 
       ForEach(turn.events ?? [], id: \.self) { event in
         if event.tag == .completionEvent {
@@ -192,7 +198,7 @@ struct AIChatResponseMessageView: View {
     period.foregroundColor = Color(braveSystemName: .textPrimary)
 
     var learnMoreLink = AttributedString(Strings.learnMore)
-    learnMoreLink.link = AIChatConstants.braveLeoSearchLearnMore
+    learnMoreLink.link = AIChatConstants.braveLeoLearnMore
     learnMoreLink.font = font
     learnMoreLink.foregroundColor = Color(braveSystemName: .textTertiary)
     learnMoreLink.underlineColor = UIColor(braveSystemName: .textTertiary)
