@@ -143,7 +143,6 @@ declare namespace NewTab {
     torCircuitEstablished: boolean,
     torInitProgress: string,
     isTor: boolean
-    isQwant: boolean
     gridLayoutSize?: 'small'
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean

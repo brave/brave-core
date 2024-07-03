@@ -45,7 +45,6 @@ export const defaultState: NewTab.State = {
   torCircuitEstablished: false,
   torInitProgress: '',
   isTor: false,
-  isQwant: false,
   stats: {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
@@ -92,7 +91,6 @@ export const defaultState: NewTab.State = {
 
 if (chrome.extension.inIncognitoContext) {
   defaultState.isTor = loadTimeData.getBoolean('isTor')
-  defaultState.isQwant = loadTimeData.getBoolean('isQwant')
 }
 
 // Ensure any new stack widgets introduced are put behind

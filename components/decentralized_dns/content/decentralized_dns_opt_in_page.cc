@@ -63,7 +63,7 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
       controller()->Proceed();
       break;
     default:
-      NOTREACHED() << "Unsupported command: " << command;
+      NOTREACHED_IN_MIGRATION() << "Unsupported command: " << command;
   }
 }
 
@@ -130,7 +130,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                                IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
                            {sol_domain, sns_wiki_link}, nullptr));
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 
   if (IsSnsTLD(request_url_.host_piece())) {

@@ -1,18 +1,17 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 21f6c6f5edc956c131d198e652330f0b2ef21ac8..411c4c7f8ee95f08567f053fc20d8306e6c15a03 100644
+index db03d8f4f8affa9f1211642e644508aa45835186..2483ab0fe04bbe64cf560ce045871441d2b8d16a 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1839,6 +1839,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
-   DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
+@@ -1961,6 +1961,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif
  
+   // This is intentionally last.
 +  brave::RegisterLocalStatePrefs(registry);
-+
- #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-   screen_ai::RegisterLocalStatePrefs(registry);
- #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2316,6 +2318,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
-                                 false);
+   RegisterLocalStatePrefsForMigration(registry);
+ }
+ 
+@@ -2403,6 +2404,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #endif
  
    registry->RegisterIntegerPref(prefs::kLensOverlayStartCount, 0);
 +  brave::RegisterProfilePrefs(registry);

@@ -50,8 +50,6 @@ void PlaylistSidePanelCoordinator::CreateAndRegisterEntry(
     SidePanelRegistry* global_registry) {
   global_registry->Register(std::make_unique<SidePanelEntry>(
       SidePanelEntry::Id::kPlaylist,
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
-      ui::ImageModel(),
       base::BindRepeating(&PlaylistSidePanelCoordinator::CreateWebView,
                           base::Unretained(this))));
 }

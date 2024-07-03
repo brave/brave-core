@@ -470,7 +470,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
         pending_follow_redirect_params_->modified_headers.SetHeader(
             set_header, header_value);
       } else {
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
       }
     }
 

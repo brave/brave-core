@@ -81,8 +81,7 @@ bool DataStore::InitializeDatabase() {
 int DataStore::GetNextTrainingInstanceId() {
   sql::Statement statement(database_.GetUniqueStatement(
       base::StringPrintf("SELECT MAX(training_instance_id) FROM %s",
-                         data_store_task_.name.c_str())
-          .c_str()));
+                         data_store_task_.name.c_str())));
 
   if (statement.Step()) {
     return statement.ColumnInt(0) + 1;
@@ -99,8 +98,7 @@ void DataStore::SaveCovariate(
                          "feature_name, feature_type, "
                          "feature_value, created_at) "
                          "VALUES (?,?,?,?,?)",
-                         data_store_task_.name.c_str())
-          .c_str()));
+                         data_store_task_.name.c_str())));
 
   BindCovariateToStatement(covariate, training_instance_id, created_at,
                            &statement);
@@ -129,8 +127,7 @@ TrainingData DataStore::LoadTrainingData() {
   sql::Statement statement(database_.GetUniqueStatement(
       base::StringPrintf("SELECT id, training_instance_id, feature_name, "
                          "feature_type, feature_value FROM %s",
-                         data_store_task_.name.c_str())
-          .c_str()));
+                         data_store_task_.name.c_str())));
 
   training_instances.clear();
   while (statement.Step()) {
@@ -149,10 +146,10 @@ TrainingData DataStore::LoadTrainingData() {
 bool DataStore::DeleteTrainingData() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!database_.Execute(
-          base::StringPrintf("DELETE FROM %s", data_store_task_.name.c_str())
-              .c_str()))
+  if (!database_.Execute(base::StringPrintf("DELETE FROM %s",
+                                            data_store_task_.name.c_str()))) {
     return false;
+  }
 
   std::ignore = database_.Execute("VACUUM");
   return true;
@@ -161,12 +158,11 @@ bool DataStore::DeleteTrainingData() {
 void DataStore::PurgeTrainingDataAfterExpirationDate() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  sql::Statement delete_statement(database_.GetUniqueStatement(
-      base::StringPrintf(" DELETE FROM %s WHERE created_at < ? OR id NOT IN "
-                         "(SELECT id FROM %s ORDER BY id DESC LIMIT ?)",
-                         data_store_task_.name.c_str(),
-                         data_store_task_.name.c_str())
-          .c_str()));
+  sql::Statement delete_statement(
+      database_.GetUniqueStatement(base::StringPrintf(
+          " DELETE FROM %s WHERE created_at < ? OR id NOT IN "
+          "(SELECT id FROM %s ORDER BY id DESC LIMIT ?)",
+          data_store_task_.name.c_str(), data_store_task_.name.c_str())));
   base::Time expiration_threshold =
       base::Time::Now() - data_store_task_.max_retention_days;
   delete_statement.BindDouble(0,
@@ -182,14 +178,12 @@ bool DataStore::MaybeCreateTable() {
 
   sql::Transaction transaction(&database_);
   return transaction.Begin() &&
-         database_.Execute(
-             base::StringPrintf(
-                 "CREATE TABLE %s (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                 "training_instance_id INTEGER NOT NULL, feature_name INTEGER "
-                 "NOT NULL, feature_type INTEGER NOT NULL, "
-                 "feature_value TEXT NOT NULL, created_at DOUBLE NOT NULL)",
-                 data_store_task_.name.c_str())
-                 .c_str()) &&
+         database_.Execute(base::StringPrintf(
+             "CREATE TABLE %s (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+             "training_instance_id INTEGER NOT NULL, feature_name INTEGER "
+             "NOT NULL, feature_type INTEGER NOT NULL, "
+             "feature_value TEXT NOT NULL, created_at DOUBLE NOT NULL)",
+             data_store_task_.name.c_str())) &&
          transaction.Commit();
 }
 

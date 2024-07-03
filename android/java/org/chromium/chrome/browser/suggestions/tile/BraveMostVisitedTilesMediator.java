@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.suggestions.tile;
 
 import android.content.res.Resources;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import androidx.annotation.Nullable;
@@ -21,11 +20,10 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
     public BraveMostVisitedTilesMediator(
             Resources resources,
             UiConfig uiConfig,
-            ViewGroup mvTilesLayout,
+            MostVisitedTilesLayout mvTilesLayout,
             ViewStub noMvPlaceholderStub,
             TileRenderer renderer,
             PropertyModel propertyModel,
-            boolean isScrollableMVTEnabled,
             boolean isTablet,
             @Nullable Runnable snapshotTileGridChangedRunnable,
             @Nullable Runnable tileCountChangedRunnable) {
@@ -36,7 +34,6 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
                 noMvPlaceholderStub,
                 renderer,
                 propertyModel,
-                isScrollableMVTEnabled,
                 isTablet,
                 snapshotTileGridChangedRunnable,
                 tileCountChangedRunnable);

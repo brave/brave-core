@@ -25,7 +25,7 @@ mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type) {
     }
     default: {
       // missing conversion, returning dummy value.
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return mojom::ReportType::TIP;
     }
   }

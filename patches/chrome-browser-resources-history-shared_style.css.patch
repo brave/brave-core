@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/shared_style.css b/chrome/browser/resources/history/shared_style.css
-index 12398fbab88c139f6e4a211d18ae8c7119512676..37487dc865a4733aad5e616e98fdfa52c722d0f1 100644
+index 5db7e1351e8e9f28e85bd26d26683718db58eeeb..ee1bd0150987feac40f2dc75804654b9d1381b2d 100644
 --- a/chrome/browser/resources/history/shared_style.css
 +++ b/chrome/browser/resources/history/shared_style.css
 @@ -7,7 +7,7 @@

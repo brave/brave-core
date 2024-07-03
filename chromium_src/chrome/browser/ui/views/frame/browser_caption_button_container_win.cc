@@ -7,9 +7,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/win/titlebar_config.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
@@ -31,39 +29,9 @@ BrowserCaptionButtonContainer::BrowserCaptionButtonContainer(
     BrowserFrameViewWin* frame_view)
     : BrowserCaptionButtonContainer_ChromiumImpl(frame_view),
       frame_view_(frame_view) {
-  if (WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
-          frame_view_->browser_view()->browser())) {
-    pref_change_registrar_.Init(
-        frame_view_->browser_view()->GetProfile()->GetPrefs());
-    pref_change_registrar_.Add(
-        kTabsSearchShow,
-        base::BindRepeating(&BrowserCaptionButtonContainer::OnPreferenceChanged,
-                            base::Unretained(this)));
-    // Show the correct value in settings on initial start
-    UpdateSearchTabsButtonState();
-  }
 }
 
 BrowserCaptionButtonContainer::~BrowserCaptionButtonContainer() = default;
-
-void BrowserCaptionButtonContainer::OnPreferenceChanged(
-    const std::string& pref_name) {
-  if (pref_name == kTabsSearchShow) {
-    UpdateSearchTabsButtonState();
-    return;
-  }
-}
-
-void BrowserCaptionButtonContainer::UpdateSearchTabsButtonState() {
-  auto* tab_search_bubble_host = GetTabSearchBubbleHost();
-  if (tab_search_bubble_host) {
-    auto* button = tab_search_bubble_host->button();
-    bool is_tab_search_visible =
-        frame_view_->browser_view()->GetProfile()->GetPrefs()->GetBoolean(
-            kTabsSearchShow);
-    button->SetVisible(is_tab_search_visible);
-  }
-}
 
 BEGIN_METADATA(BrowserCaptionButtonContainer)
 END_METADATA

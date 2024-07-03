@@ -22,7 +22,9 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/sync/base/features.h"
 #include "components/user_prefs/user_prefs.h"
+#include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -60,7 +62,7 @@ std::u16string GenerateUniqueFolderName(BookmarkModel* model,
       return name;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return folder_name;
 }
 
@@ -82,9 +84,16 @@ void BookmarksImporter::AddBookmarks(
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browser_state =
       browser_state_manager->GetLastUsedBrowserStateDeprecatedDoNotUse();
-  bookmarks::BookmarkModel* model = ios::LocalOrSyncableBookmarkModelFactory::
-      GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
-          browser_state);
+  bookmarks::BookmarkModel* model;
+  if (base::FeatureList::IsEnabled(
+          syncer::kEnableBookmarkFoldersForAccountStorage)) {
+    model = ios::BookmarkModelFactory::
+        GetModelForBrowserStateIfUnificationEnabledOrDie(browser_state);
+  } else {
+    model = ios::LocalOrSyncableBookmarkModelFactory::
+        GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+            browser_state);
+  }
   DCHECK(model->loaded());
 
   // If the bookmark bar is currently empty, we should import directly to it.

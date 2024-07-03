@@ -13,12 +13,14 @@
 using tabs::features::HorizontalTabsUpdateEnabled;
 
 std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
+  const bool touch_ui = ui::TouchUiController::Get()->touch_ui();
   switch (inset) {
     case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
       return gfx::Insets::VH(6, 6);
-
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
       return gfx::Insets::VH(4, 4);
+    case TOOLBAR_INTERIOR_MARGIN:
+      return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 8);
     default:
       break;
   }

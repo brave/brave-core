@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index f3a8ba3756a19beb286a3f7bba52399705bf59bf..59b7f2ac132cb6ff921fc23009fa74e76c6f88a5 100755
+index d2ec0bae06276fdb42dc43704b73c1705461d994..7ab6a87d7b5197278933d28da9ca796298d81986 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -41,6 +41,7 @@ _REPOSITORY_ROOT = os.path.abspath(
@@ -18,7 +18,7 @@ index f3a8ba3756a19beb286a3f7bba52399705bf59bf..59b7f2ac132cb6ff921fc23009fa74e7
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -783,7 +785,8 @@ def FindThirdPartyDirs(prune_paths, root, extra_third_party_dirs=None):
+@@ -788,7 +790,8 @@ def FindThirdPartyDirs(root, extra_third_party_dirs=None):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -26,9 +26,9 @@ index f3a8ba3756a19beb286a3f7bba52399705bf59bf..59b7f2ac132cb6ff921fc23009fa74e7
 +    if (os.path.basename(path) == 'third_party' or
 +        os.path.basename(path) in BRAVE_THIRD_PARTY_DIRS or IsBraveRustCrate(path)):
        # Add all subdirectories that are not marked for skipping.
-       for dir in dirs:
-         dirpath = os.path.join(path, dir)
-@@ -1045,8 +1048,10 @@ def GenerateCredits(file_template_file,
+       for d in dirs:
+         dirpath = os.path.join(path, d)
+@@ -1035,8 +1038,10 @@ def GenerateCredits(file_template_file,
                                         _REPOSITORY_ROOT,
                                         enable_warnings=enable_warnings)
        if not directory_metadata:

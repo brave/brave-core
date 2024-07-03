@@ -151,7 +151,7 @@ void BraveWalletAutoPinService::OnTokenRemoved(BlockchainTokenPtr token) {
 
 void BraveWalletAutoPinService::Restore() {
   if (!IsAutoPinEnabled()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
   tokens_.clear();

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java b/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java
-index 909b1e20c33a87e5b29bf69ce542060fffd4bfb3..ae030ce894d23fe5cefb5a7489bf884f8cd4a5cf 100644
+index 3985c8f2b5b66482f6cd73518a3bb270843110dc..97de32ec70399ee5318a4a3a8275645a150a9ff2 100644
 --- a/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java
 +++ b/chrome/android/feed/core/java/src/org/chromium/chrome/browser/feed/FeedSurfaceMediator.java
 @@ -301,7 +301,7 @@ public class FeedSurfaceMediator

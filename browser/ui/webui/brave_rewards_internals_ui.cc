@@ -395,7 +395,7 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(
 void RewardsInternalsDOMHandler::GetAdDiagnostics(
     const base::Value::List& args) {
   if (!ads_service_) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 

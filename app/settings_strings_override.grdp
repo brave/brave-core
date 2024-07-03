@@ -58,6 +58,9 @@
   <message name="IDS_SETTINGS_SHOW_TAB_GROUPS_IN_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing saved tab groups in bookmarks bar.">
     Show tab groups in bookmarks
   </message>
+  <message name="IDS_SETTINGS_AUTO_PIN_NEW_TAB_GROUPS" desc="Label for the checkbox which enables or disables auto pin new tab groups.">
+    Automatically pin new tab groups created on any device to the bookmarks
+  </message>
   <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
     Open Web Store
   </message>
@@ -82,6 +85,9 @@
   </if>
 
   <if expr="not is_chromeos">
+    </if>
+
+  <if expr="chrome_root_store_cert_management_ui">
     </if>
 
   <if expr="use_nss_certs">

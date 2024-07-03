@@ -134,8 +134,9 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         if (mSubscriptionFilterLists.size() > 0) {
             isEditSelected(false);
         }
-        Intent intent = mSettingsLauncher.createSettingsActivityIntent(
-                getActivity(), AddCustomFilterListsFragment.class.getName(), null);
+        Intent intent =
+                mSettingsLauncher.createSettingsActivityIntent(
+                        getActivity(), AddCustomFilterListsFragment.class, null);
         mAddCustomFilterResultLauncher.launch(intent);
     }
 
@@ -158,7 +159,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         }
         Intent intent =
                 mSettingsLauncher.createSettingsActivityIntent(
-                        getActivity(), CreateCustomFiltersFragment.class.getName(), null);
+                        getActivity(), CreateCustomFiltersFragment.class, null);
         getActivity().startActivity(intent);
     }
 

@@ -113,7 +113,7 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
   auto addr = keyring_service_->GetDiscoveryAddress(
       context->keyring_id, context->discovery_account_index);
   if (!addr) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -146,7 +146,7 @@ void AccountDiscoveryManager::AddDiscoveryAccount(
                        weak_ptr_factory_.GetWeakPtr(), std::move(context)));
 
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

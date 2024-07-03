@@ -29,7 +29,6 @@
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_android.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -100,7 +99,7 @@ static base::android::ScopedJavaLocalRef<jobject>
 JNI_NTPBackgroundImagesBridge_GetInstance(
     JNIEnv* env,
     const JavaParamRef<jobject>& j_profile) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  auto* profile = Profile::FromJavaObject(j_profile);
   return ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance()
       ->GetForProfile(profile)
       ->GetJavaObject();

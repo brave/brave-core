@@ -7,10 +7,9 @@
 
 #include "base/strings/string_util.h"
 
-// Disabling these tests because they refer g_brave_browser_process which is not
-// initialized in unit tests, is null and so they are crashing.
-// Not related to change in RecentTabsSubMenuModel for additional `More...`
-// menu item
+// Disabling these tests because they refer to g_brave_browser_process which is
+// not initialized in unit tests, is null and so they are crashing. Not related
+// to change in RecentTabsSubMenuModel for additional `More...` menu item
 #define RecentlyClosedTabsFromCurrentSession \
   DISABLED_RecentlyClosedTabsFromCurrentSession
 
@@ -55,22 +54,21 @@
 #undef RecentlyClosedTabsFromCurrentSession
 #undef RecentlyClosedGroupsFromCurrentSession
 
-// This override is in place because we replace the "Sign in to see tabs
-// from other devices" menu command with the non-command string "No tabs from
-// other devices" and need to adjust the data. Additionally, we disable
-// kSidePanelPinning feature, so we need to also remove the "History Cluster"
-// command from the data if added as the 2nd item.
+// This override is in place because we must adjust the menu model to match our
+// expectations
 void RecentTabsSubMenuModelTest::VerifyModel(
     const RecentTabsSubMenuModel& model,
     base::span<const ModelData> data) {
   std::vector<ModelData> v_data{data.begin(), data.end()};
-  if (GetParam()) {
-    v_data.erase(std::next(v_data.begin()));
-  }
+
+  // We replace the "Sign in to see tabs from other devices" menu command with
+  // the non-command string "No tabs from other devices" and need to adjust the
+  // data
   auto& item_data = v_data.back();
   if (item_data.type == ui::MenuModel::TYPE_COMMAND) {
     item_data.enabled = false;
   }
+
   ::VerifyModel(model, base::make_span(v_data.begin(), v_data.size()));
 }
 

@@ -589,7 +589,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
         DVLOG(1) << "Step 6: None (approximately half the time)";
       }
     } else {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
     }
 
     // If we couldn't generate a normal block, break.

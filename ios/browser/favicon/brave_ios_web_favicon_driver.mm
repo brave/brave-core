@@ -61,7 +61,7 @@ int BraveIOSWebFaviconDriver::DownloadImage(const GURL& url,
 void BraveIOSWebFaviconDriver::DownloadManifest(
     const GURL& url,
     ManifestDownloadCallback callback) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 bool BraveIOSWebFaviconDriver::IsOffTheRecord() {

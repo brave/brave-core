@@ -146,7 +146,7 @@ bool Transit(State& state, const State& desired) {
     }
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return false;
 }
 

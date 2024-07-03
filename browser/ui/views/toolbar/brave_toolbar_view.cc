@@ -15,6 +15,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -28,7 +29,10 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
+#include "chrome/browser/ui/views/toolbar/pinned_toolbar_actions_container.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/hit_test.h"
@@ -129,14 +133,14 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
-  if (features::IsChromeRefresh2023()) {
-    // Upstream has two more children |background_view_left_| and
-    // |background_view_right_| behind the container view.
-    DCHECK_EQ(3u, children().size());
-  } else {
-    DCHECK_EQ(1u, children().size());
-  }
-  views::SetHitTestComponent(children()[0], HTCAPTION);
+
+  DCHECK(location_bar_);
+  // Get ToolbarView's container_view as a parent of location_bar_ because
+  // container_view's type in ToolbarView is internal to toolbar_view.cc.
+  views::View* container_view = location_bar_->parent();
+  DCHECK(container_view);
+
+  views::SetHitTestComponent(container_view, HTCAPTION);
 
   // For non-normal mode, we don't have to more.
   if (display_mode_ != DisplayMode::NORMAL) {
@@ -205,11 +209,6 @@ void BraveToolbarView::Init() {
         browser, command, ui::DispositionFromEventFlags(event.flags()));
   };
 
-  DCHECK(location_bar_);
-  // Get ToolbarView's container_view as a parent of location_bar_ because
-  // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  views::View* container_view = location_bar_->parent();
-  DCHECK(container_view);
   bookmark_ = container_view->AddChildViewAt(
       std::make_unique<BraveBookmarkButton>(
           base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
@@ -217,6 +216,10 @@ void BraveToolbarView::Init() {
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
+
+  side_panel_ = container_view->AddChildViewAt(
+      std::make_unique<SidePanelButton>(browser()),
+      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
 
   wallet_ = container_view->AddChildViewAt(
       std::make_unique<WalletButton>(GetAppMenuButton(), profile),
@@ -252,6 +255,16 @@ void BraveToolbarView::Init() {
 
   brave_initialized_ = true;
   UpdateHorizontalPadding();
+
+  // We want to hide pin action buttons(side panel's pin button) in toolbar.
+  // As toolbar is shared for different types of windows, this action button
+  // container could be null. So Upstream code has assumption that
+  // |pinned_toolbar_actions_container_| could be null.
+  // If it's changed, we should check again.
+  if (pinned_toolbar_actions_container_) {
+    RemoveChildView(pinned_toolbar_actions_container_.get());
+    pinned_toolbar_actions_container_ = nullptr;
+  }
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -294,6 +307,11 @@ void BraveToolbarView::OnThemeChanged() {
     bookmark_->UpdateImageAndText();
   if (display_mode_ == DisplayMode::NORMAL && wallet_)
     wallet_->UpdateImageAndText();
+}
+
+views::View* BraveToolbarView::GetAnchorView(
+    std::optional<PageActionIconType> type) {
+  return ToolbarView::GetAnchorView(type);
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -383,7 +401,12 @@ void BraveToolbarView::ViewHierarchyChanged(
     const views::ViewHierarchyChangedDetails& details) {
   ToolbarView::ViewHierarchyChanged(details);
 
-  if (details.is_add && details.parent == children()[0]) {
+  // Upstream has two more children |background_view_left_| and
+  // |background_view_right_| behind the container view.
+  const int container_view_index = 2;
+
+  if (details.is_add && children().size() > container_view_index &&
+      details.parent == children()[container_view_index]) {
     // Mark children of the container view as client area so that they are not
     // perceived as caption area. See brave_non_client_hit_test_helper.h
     views::SetHitTestComponent(details.child, HTCLIENT);

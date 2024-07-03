@@ -23,8 +23,8 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mCallbackController");
         makeProtectedField(sToolbarManagerClassName, "mCallbackController");
 
-        deleteField(sBraveToolbarManagerClassName, "mBrowserControlsSizer");
-        makeProtectedField(sToolbarManagerClassName, "mBrowserControlsSizer");
+        deleteField(sBraveToolbarManagerClassName, "mBottomControlsStacker");
+        makeProtectedField(sToolbarManagerClassName, "mBottomControlsStacker");
 
         deleteField(sBraveToolbarManagerClassName, "mFullscreenManager");
         makeProtectedField(sToolbarManagerClassName, "mFullscreenManager");

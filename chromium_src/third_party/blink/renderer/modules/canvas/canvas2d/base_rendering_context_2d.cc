@@ -63,7 +63,7 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sw,
     int sh,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 
@@ -74,7 +74,7 @@ ImageData* BaseRenderingContext2D::getImageData(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 
@@ -85,7 +85,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 
@@ -96,7 +96,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal_Unused(
     int sh,
     ImageDataSettings* image_data_settings,
     ExceptionState& exception_state) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return nullptr;
 }
 

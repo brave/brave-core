@@ -66,7 +66,7 @@ const char* GetContextMenuActionKey(ContextMenuAction action) {
     case ContextMenuAction::kChangeLength:
       return kChangeLengthActionKey;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return nullptr;
   }
 }

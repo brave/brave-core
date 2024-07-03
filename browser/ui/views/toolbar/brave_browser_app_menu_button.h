@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 
 class BraveBrowserAppMenuButton : public BrowserAppMenuButton {
@@ -17,6 +18,12 @@ class BraveBrowserAppMenuButton : public BrowserAppMenuButton {
   using BrowserAppMenuButton::BrowserAppMenuButton;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveAppMenuBrowserTest,
+                           AppMenuButtonUpgradeAlertTest);
+
+  // BrowserAppMenuButton overrides:
+  bool ShouldPaintBorder() const override;
+  bool ShouldBlendHighlightColor() const override;
   std::optional<SkColor> GetHighlightTextColor() const override;
   std::optional<SkColor> GetHighlightColor() const override;
 };

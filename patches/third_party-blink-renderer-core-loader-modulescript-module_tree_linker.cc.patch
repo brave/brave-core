@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
-index a9cb36eff7946e63b11265442d6a0e265915bf24..811234b2dbf4eff5206baaf48de1120a92b7df10 100644
+index ce143009784bed6df938aac4c150d580fe28d1dc..ac6c819091b152c1852f7b9c7a0240765c2531be 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
 @@ -449,6 +449,7 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {

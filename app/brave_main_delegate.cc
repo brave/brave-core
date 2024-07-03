@@ -177,17 +177,6 @@ std::optional<int> BraveMainDelegate::BasicStartupComplete() {
       variations::switches::kVariationsInsecureServerURL,
       BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
 
-  if (command_line->HasSwitch(switches::kDisableDnsOverHttps)) {
-    std::string disabled_features = "";
-    if (command_line->HasSwitch(switches::kDisableFeatures)) {
-      disabled_features = base::StrCat(
-          {command_line->GetSwitchValueASCII(switches::kDisableFeatures), ","});
-    }
-    command_line->AppendSwitchASCII(
-        switches::kDisableFeatures,
-        base::StrCat({disabled_features, features::kDnsOverHttps.name}));
-  }
-
   return ChromeMainDelegate::BasicStartupComplete();
 }
 void BraveMainDelegate::PreSandboxStartup() {

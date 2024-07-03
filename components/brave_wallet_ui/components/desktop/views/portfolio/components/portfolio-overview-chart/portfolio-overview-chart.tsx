@@ -104,7 +104,7 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
           src={`chrome-untrusted://line-chart-display${
             isLoading || !isIframeLoaded ? '' : `?${encodedPriceData}`
           }`}
-          sandbox='allow-scripts'
+          sandbox='allow-scripts allow-same-origin'
         />
       </Column>
     </>
