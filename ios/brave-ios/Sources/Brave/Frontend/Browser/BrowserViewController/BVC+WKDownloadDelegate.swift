@@ -62,17 +62,23 @@ extension BrowserViewController: WKDownloadDelegate {
       textEncodingName: downloadInfo.response.textEncodingName
     )
 
-    if let passbookHelper = OpenPassBookHelper(
-      request: nil,
-      response: response,
-      canShowInWebView: false,
-      forceDownload: false,
-      browserViewController: self
-    ) {
-      passbookHelper.open()
+    guard
+      let passbookHelper = OpenPassBookHelper(
+        request: nil,
+        response: response,
+        canShowInWebView: false,
+        forceDownload: false,
+        browserViewController: self
+      )
+    else {
+      Task.detached {
+        try FileManager.default.removeItem(at: downloadInfo.fileURL)
+      }
+      return
     }
 
-    Task {
+    Task.detached {
+      await passbookHelper.open()
       try FileManager.default.removeItem(at: downloadInfo.fileURL)
     }
   }

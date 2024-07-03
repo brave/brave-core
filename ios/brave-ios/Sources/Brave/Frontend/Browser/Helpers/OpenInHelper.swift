@@ -148,32 +148,39 @@ class OpenPassBookHelper: NSObject {
     super.init()
   }
 
-  func open() {
+  func open() async {
+    precondition(!Thread.isMainThread)
+
     guard let passData = try? Data(contentsOf: url) else { return }
     do {
       let pass = try PKPass(data: passData)
       let passLibrary = PKPassLibrary()
       if passLibrary.containsPass(pass) {
-        UIApplication.shared.open(pass.passURL!, options: [:])
+        await MainActor.run {
+          UIApplication.shared.open(pass.passURL!, options: [:])
+        }
       } else {
-        if let addController = PKAddPassesViewController(pass: pass) {
-          browserViewController.present(addController, animated: true, completion: nil)
+        await MainActor.run {
+          if let addController = PKAddPassesViewController(pass: pass) {
+            browserViewController.present(addController, animated: true, completion: nil)
+          }
         }
       }
     } catch {
-      // display an error
-      let alertController = UIAlertController(
-        title: Strings.unableToAddPassErrorTitle,
-        message: Strings.unableToAddPassErrorMessage,
-        preferredStyle: .alert
-      )
-      alertController.addAction(
-        UIAlertAction(title: Strings.unableToAddPassErrorDismiss, style: .cancel) { (action) in
-          // Do nothing.
-        }
-      )
-      browserViewController.present(alertController, animated: true, completion: nil)
-      return
+      await MainActor.run {
+        // display an error
+        let alertController = UIAlertController(
+          title: Strings.unableToAddPassErrorTitle,
+          message: Strings.unableToAddPassErrorMessage,
+          preferredStyle: .alert
+        )
+        alertController.addAction(
+          UIAlertAction(title: Strings.unableToAddPassErrorDismiss, style: .cancel) { (action) in
+            // Do nothing.
+          }
+        )
+        browserViewController.present(alertController, animated: true, completion: nil)
+      }
     }
   }
 }
