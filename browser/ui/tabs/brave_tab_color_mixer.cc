@@ -120,6 +120,8 @@ void AddBraveTabLightThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveSplitViewInactiveWebViewBorder, kLightFrame},
           {kColorBraveSplitViewMenuItemIcon,
            leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)},
+          {kColorBraveSplitViewUrl,
+           leo::GetColor(leo::Color::kColorTextTertiary, leo::Theme::kLight)},
       });
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     mixer[color_id] =
@@ -166,6 +168,8 @@ void AddBraveTabDarkThemeColorMixer(ui::ColorProvider* provider,
           {kColorBraveSplitViewInactiveWebViewBorder, kDarkFrame},
           {kColorBraveSplitViewMenuItemIcon,
            leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)},
+          {kColorBraveSplitViewUrl,
+           leo::GetColor(leo::Color::kColorTextTertiary, leo::Theme::kDark)},
       });
   for (const auto& [color_id, default_color] : *kDefaultColorMap) {
     auto color =
