@@ -115,12 +115,19 @@ export function withPlaceholderIcon<
       }
     }, [needsPlaceholder, asset?.contractAddress, asset?.name])
 
+    const remoteImage = React.useMemo(() => {
+      if (isRemoteURL) {
+        return isStorybook ? tokenImageURL || '' : `chrome://image?${tokenImageURL}`
+      }
+      return ''
+    }, [isRemoteURL, tokenImageURL])
+
     // render
     if (!asset) {
       return null
     }
 
-    const icon = nativeAssetLogo || asset?.logo
+    const icon = nativeAssetLogo || (isRemoteURL ? remoteImage : asset?.logo)
 
     if (needsPlaceholder || !icon) {
       return (
