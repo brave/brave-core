@@ -533,6 +533,8 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_utils.cc",
       "views/side_panel/brave_side_panel_view_base.cc",
       "views/side_panel/brave_side_panel_view_base.h",
+      "views/split_view/split_view_location_bar.cc",
+      "views/split_view/split_view_location_bar.h",
       "views/split_view/split_view_menu_bubble.cc",
       "views/split_view/split_view_menu_bubble.h",
       "views/split_view/split_view_separator.cc",
