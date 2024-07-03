@@ -1196,11 +1196,11 @@
     "domain": "twitch.tv"
   },
   {
-    "title": "twitter",
-    "url": "https://twitter.com/",
-    "image_url": "twitter-com.png",
-    "background_color": "#049ff5",
-    "domain": "twitter.com"
+    "title": "X",
+    "url": "https://x.com/",
+    "image_url": "x-com.png",
+    "background_color": "#000000",
+    "domain": "x.com"
   },
   {
     "title": "ups",
