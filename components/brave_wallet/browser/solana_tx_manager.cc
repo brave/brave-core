@@ -48,7 +48,7 @@ constexpr int kAddPriorityFeeComputeUnits = 300;
 // There are 10^6 micro-lamports in one lamport.
 constexpr int kMininumFeePerComputeUnits = 1;
 // Add a 10% buffer to the compute units estimate returned by the simulation.
-constexpr double kComputeUnitsBufferMultiplier = 1.10;
+constexpr double kComputeUnitsBufferMultiplier = 2.00;
 
 // Transactions submitted after 30 minutes are safe to be updated to dropped
 // since usual transactions are only valid for about 2 minutes.
