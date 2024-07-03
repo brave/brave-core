@@ -18,9 +18,25 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+#include "base/test/mock_callback.h"
+#include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
+#include "chrome/browser/first_run/upgrade_util.h"
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+
 class CommandUtilsBrowserTest : public InProcessBrowserTest {
  public:
-  CommandUtilsBrowserTest() = default;
+  CommandUtilsBrowserTest() {
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+    // Expect a browser relaunch late in browser shutdown.
+    mock_relaunch_callback_ = std::make_unique<::testing::StrictMock<
+        base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>>();
+    EXPECT_CALL(*mock_relaunch_callback_, Run);
+    relaunch_chrome_override_ =
+        std::make_unique<upgrade_util::ScopedRelaunchChromeBrowserOverride>(
+            mock_relaunch_callback_->Get());
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+  }
   ~CommandUtilsBrowserTest() override = default;
 
   void SetUp() override {
@@ -30,6 +46,13 @@ class CommandUtilsBrowserTest : public InProcessBrowserTest {
 
  private:
   base::test::ScopedFeatureList features_;
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+  std::unique_ptr<
+      base::MockCallback<upgrade_util::RelaunchChromeBrowserCallback>>
+      mock_relaunch_callback_;
+  std::unique_ptr<upgrade_util::ScopedRelaunchChromeBrowserOverride>
+      relaunch_chrome_override_;
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 };
 
 // This test is a sanity check - if commands fail here but work when testing
@@ -73,7 +96,29 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
       continue;
     }
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+    if (command == IDC_CLOSE_TAB) {
+      // If this is the only tab the browser will exit, so add a new tab
+      // before executing the command
+      SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
+      chrome::ExecuteCommand(browser(), IDC_NEW_TAB);
+      base::RunLoop().RunUntilIdle();
+    } else if (command == IDC_CLOSE_WINDOW) {
+      // If this is the only window the browser will exit, so add a new window
+      // before executing the command
+      SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
+      chrome::ExecuteCommand(browser(), IDC_NEW_WINDOW);
+      base::RunLoop().RunUntilIdle();
+    }
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+
+    // Use the first browser instance for each command.
+    SelectFirstBrowser();
+
     SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
+    LOG(INFO) << command << ": " << commands::GetCommandName(command);
     chrome::ExecuteCommand(browser(), command);
   }
+  SCOPED_TRACE(testing::Message() << commands::GetCommandName(IDC_EXIT));
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
 }
