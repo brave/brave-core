@@ -66,7 +66,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   }
 
   let sendMessage = $(function(name, node, target, type, detected) {
-    let post = $(function() {
+    $(function() {
       var location = "";
       var pageTitle = "";
 
@@ -90,16 +90,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         "tagId": target.$<tagUUID>,
         "invisible": !target.parentNode
       });
-    });
-    
-    if (node.$<sendMessageTimeout>) {
-      clearTimeout(node.$<sendMessageTimeout>);
-    }
-    
-    node.$<sendMessageTimeout> = setTimeout(function(){
-      node.$<sendMessageTimeout> = null;
-      post();
-    }, 2000);
+    })();
   });
 
   function isVideoNode(node) {
@@ -237,14 +228,9 @@ window.__firefox__.includeOnce("Playlist", function($) {
   // MARK: ---------------------------------------
 
   function setupDetector() {
-    var readyTimeout = null;
     function onReady(fn) {
       if (document.readyState === "complete" || document.readyState === "ready") {
-        if (readyTimeout) {
-          clearTimeout(readyTimeout);
-        }
-        
-        readyTimeout = setTimeout(fn, 2000);
+        fn();
       } else {
         document.addEventListener("DOMContentLoaded", fn);
       }
@@ -331,6 +317,12 @@ window.__firefox__.includeOnce("Playlist", function($) {
           setAudioAttribute.call(this, key, value);
           if (key.toLowerCase() == 'src') {
             notifyNode(this, 'audio', true, false);
+            
+            // Instead of using an interval and polling,
+            // we can check the page after a short period when an audio source has been setup.
+            setTimeout(function() {
+              checkPageForVideos(false);
+            }, 100);
           }
         });
       }
@@ -386,9 +378,12 @@ window.__firefox__.includeOnce("Playlist", function($) {
             });
           })();
         });
-
+        
+        fetchMedia();
+        
+        // Do one last check (if the page took too long to load - DailyMotion)
         setTimeout(function() {
-          fetchMedia();
+          checkPageForVideos(false);
         }, 5000);
       }
 
@@ -419,9 +414,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         });
       }
 
-      setTimeout(function() {
-        checkPageForVideos(false);
-      }, 2000);
+      checkPageForVideos(false);
     }
 
     observePage();
