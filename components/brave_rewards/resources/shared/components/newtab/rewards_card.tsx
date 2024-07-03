@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
 import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
@@ -288,6 +289,11 @@ export function RewardsCard (props: Props) {
         <RewardsCardHeader />
         <style.selfCustodyInvite>
           <style.selfCustodyInviteHeader>
+            <style.selfCustodyInviteClose>
+              <button onClick={props.onSelfCustodyInviteDismissed}>
+                <Icon name='close' />
+              </button>
+            </style.selfCustodyInviteClose>
             {getString('rewardsSelfCustodyInviteHeader')}
           </style.selfCustodyInviteHeader>
           <style.selfCustodyInviteText>
