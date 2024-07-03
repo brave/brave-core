@@ -11,7 +11,7 @@ import Preferences
 import SwiftUI
 
 struct HistoryItemView: View {
-  var title: String
+  var title: String?
   var url: URL
 
   var body: some View {
@@ -27,12 +27,15 @@ struct HistoryItemView: View {
       .containerShape(RoundedRectangle(cornerRadius: 6.0, style: .continuous))
 
       VStack {
-        Text(title)
-          .font(.subheadline)
-          .truncationMode(.tail)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .fixedSize(horizontal: false, vertical: true)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
+        if let title = title, !title.isEmpty {
+          Text(title)
+            .font(.subheadline)
+            .lineLimit(2)
+            .truncationMode(.tail)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
+            .foregroundStyle(Color(braveSystemName: .textPrimary))
+        }
 
         Text(
           URLFormatter.formatURLOrigin(
@@ -80,7 +83,7 @@ struct HistoryView: View {
                 Button {
                   model.handleHistoryItemSelection(.selectTab, node: node)
                 } label: {
-                  HistoryItemView(title: node.title ?? "", url: node.url)
+                  HistoryItemView(title: node.title, url: node.url)
                 }
                 .contextMenu(menuItems: {
                   Button {
