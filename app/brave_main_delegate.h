@@ -8,7 +8,10 @@
 
 #include <optional>
 
+#include "base/gtest_prod_util.h"
 #include "chrome/app/chrome_main_delegate.h"
+
+class BraveMainDelegateUnitTest;
 
 // Chrome implementation of ContentMainDelegate.
 class BraveMainDelegate : public ChromeMainDelegate {
@@ -31,6 +34,14 @@ class BraveMainDelegate : public ChromeMainDelegate {
   void PreSandboxStartup() override;
   std::optional<int> PostEarlyInitialization(
       ChromeMainDelegate::InvokedIn invoked_in) override;
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest,
+                           DefaultCommandLineOverrides);
+  FRIEND_TEST_ALL_PREFIXES(BraveMainDelegateUnitTest,
+                           OverrideSwitchFromCommandLine);
+
+  static void AppendCommandLineOptions();
 };
 
 #endif  // BRAVE_APP_BRAVE_MAIN_DELEGATE_H_

@@ -143,7 +143,8 @@ content::ContentUtilityClient* BraveMainDelegate::CreateContentUtilityClient() {
 #endif
 }
 
-std::optional<int> BraveMainDelegate::BasicStartupComplete() {
+// static
+void BraveMainDelegate::AppendCommandLineOptions() {
   auto* command_line = base::CommandLine::ForCurrentProcess();
   command_line->AppendSwitch(switches::kDisableDomainReliability);
   command_line->AppendSwitch(switches::kEnableDomDistiller);
@@ -160,25 +161,36 @@ std::optional<int> BraveMainDelegate::BasicStartupComplete() {
   AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  // Brave's sync protocol does not use the sync service url
-  command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
-                                  brave_sync_service_url.c_str());
-
   command_line->AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
+  // Brave's sync protocol does not use the sync service url
+  if (!command_line->HasSwitch(syncer::kSyncServiceURL)) {
+    command_line->AppendSwitchASCII(syncer::kSyncServiceURL,
+                                    brave_sync_service_url.c_str());
+  }
+
   // Brave variations
-  command_line->AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                  BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+  if (!command_line->HasSwitch(variations::switches::kVariationsServerURL)) {
+    command_line->AppendSwitchASCII(variations::switches::kVariationsServerURL,
+                                    BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+  }
   // Insecure fall-back for variations is set to the same (secure) URL. This is
   // done so that if VariationsService tries to fall back to insecure url the
   // check for kHttpScheme in VariationsService::MaybeRetryOverHTTP would
   // prevent it from doing so as we don't want to use an insecure fall-back.
-  command_line->AppendSwitchASCII(
-      variations::switches::kVariationsInsecureServerURL,
-      BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+  if (!command_line->HasSwitch(
+          variations::switches::kVariationsInsecureServerURL)) {
+    command_line->AppendSwitchASCII(
+        variations::switches::kVariationsInsecureServerURL,
+        BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+  }
+}
 
+std::optional<int> BraveMainDelegate::BasicStartupComplete() {
+  BraveMainDelegate::AppendCommandLineOptions();
   return ChromeMainDelegate::BasicStartupComplete();
 }
+
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
