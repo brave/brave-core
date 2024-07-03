@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <message name="IDS_REQUEST_OTR_TITLE" desc="Title of request OTR interstitial page.">
-    Sensitive Website
   </message>
   <message name="IDS_REQUEST_OTR_HEADING" desc="Heading of request OTR interstitial page.">
     This site may contain sensitive content.
