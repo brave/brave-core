@@ -87,7 +87,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SEND_P3A = "send_p3a_analytics";
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
-    // private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
     public static final String PREF_APP_LINKS = "app_links";
     public static final String PREF_APP_LINKS_RESET = "app_links_reset";
 
@@ -223,8 +222,6 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
-
-        // mManagedPreferenceDelegate = createManagedPreferenceDelegate();
 
         // override title
         getActivity().setTitle(R.string.brave_shields_and_privacy);

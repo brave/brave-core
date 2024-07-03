@@ -4003,8 +4003,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill switch tutorial action text">
       Open Android settings
     </message>
-    <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in git diff
-      app update snackbar">
+    <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
       Update is downloaded.
     </message>
     <message name="IDS_UPDATE_FILTER_LIST_SUCCESS_TEXT" desc="Text to notify users for updating filterlist successfully">
