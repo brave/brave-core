@@ -122,7 +122,11 @@ struct AIChatSlashToolsView: View {
       return text.replacing(#/\s/#, with: "").uppercased()
     }
 
-    let prompt = normalizeText(prompt.hasPrefix("/") ? String(prompt.dropFirst()) : prompt)
+    if !prompt.hasPrefix("/") {
+      return slashActions
+    }
+
+    let prompt = normalizeText(String(prompt.dropFirst()))
     if prompt.isEmpty {
       return slashActions
     }
