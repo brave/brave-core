@@ -27,6 +27,8 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) bool isRequestInProgress;
 
+@property(nonatomic, readonly) NSInteger contentUsedPercentage;
+
 @property(nonatomic, readonly) NSArray<NSString*>* suggestedQuestions;
 
 @property(nonatomic, readonly) NSArray<AiChatActionGroup*>* slashActions;
@@ -56,6 +58,22 @@ OBJC_EXPORT
 - (void)clearConversationHistory;
 
 - (void)getPremiumStatus:(void (^_Nullable)(AiChatPremiumStatus))completion;
+
+- (void)submitSelectedText:(NSString*)selectedText
+                actionType:(AiChatActionType)actionType;
+
+- (void)submitSelectedText:(NSString*)selectedText
+                actionType:(AiChatActionType)actionType
+              onSuggestion:(void (^_Nullable)(NSString* _Nullable))onSuggestion
+               onCompleted:(void (^_Nullable)(NSString* _Nullable result,
+                                              AiChatAPIError error))onCompleted;
+
+- (void)submitSelectedText:(NSString*)selectedText
+                  question:(NSString*)question
+                actionType:(AiChatActionType)actionType
+              onSuggestion:(void (^)(NSString* _Nullable))onSuggestion
+               onCompleted:(void (^)(NSString* _Nullable result,
+                                     AiChatAPIError error))onCompleted;
 
 - (void)rateMessage:(bool)isLiked
              turnId:(NSUInteger)turnId

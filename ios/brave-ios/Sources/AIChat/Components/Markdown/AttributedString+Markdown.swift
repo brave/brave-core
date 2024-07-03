@@ -80,7 +80,7 @@ extension AttributedString {
         for intent in intentAttribute.components {
           switch intent.kind {
           case .paragraph:
-            break
+            result.characters.insert(contentsOf: "\n", at: range.upperBound)
           case .header(let level):
             switch level {
             case 1:
@@ -104,13 +104,13 @@ extension AttributedString {
             listType = .unordered
           case .listItem(let index):
             if listType != .unordered {
-              listType = .ordered
+              listType = .unordered
             }
 
             if listType == .ordered {
-              result.characters.insert(contentsOf: "\(index).\t", at: range.lowerBound)
+              result.characters.insert(contentsOf: "\(index).  ", at: range.lowerBound)
             } else {
-              result.characters.insert(contentsOf: "•\t", at: range.lowerBound)
+              result.characters.insert(contentsOf: "•  ", at: range.lowerBound)
             }
           case .codeBlock(_):
             result[range].font = preferredFont.monospaced()  //.italic()

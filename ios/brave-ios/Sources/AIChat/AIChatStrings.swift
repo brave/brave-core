@@ -838,5 +838,50 @@ extension Strings {
       comment:
         "The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated."
     )
+    public static let leoSlashToolsButtonAccessibilityTitle = NSLocalizedString(
+      "aichat.leoSlashToolsButtonAccessibilityTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Slash Tools",
+      comment:
+        "The text that's read aloud to the user when accessibility is enabled for the Slash Tools button"
+    )
+    public static let leoSlashToolsOptionNull = NSLocalizedString(
+      "aichat.leoSlashToolsOptionNull",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "None",
+      comment:
+        "The text that's displayed when the user selects an invalid slash tools option"
+    )
+    public static let leoSlashToolsOptionUnknown = NSLocalizedString(
+      "aichat.leoSlashToolsOptionUnknown",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Unknown",
+      comment:
+        "The text that's displayed when the user selects an invalid slash tools option"
+    )
+    public static let leoImprovingAnswerBraveSearch = NSLocalizedString(
+      "aichat.leoImprovingAnswerBraveSearch",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Improving answer with Brave Search...",
+      comment:
+        "The text displayed on the loading screen when searching for a user query"
+    )
+    public static let leoImprovedAnswerBraveSearch = NSLocalizedString(
+      "aichat.leoImprovedAnswerBraveSearch",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Improved answer searching for",
+      comment:
+        "The text displayed on the loading screen when searching for a user query"
+    )
   }
 }

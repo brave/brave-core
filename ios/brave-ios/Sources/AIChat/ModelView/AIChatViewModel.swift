@@ -167,6 +167,43 @@ public class AIChatViewModel: NSObject, ObservableObject {
     api.submitHumanConversationEntry(text)
   }
 
+  func submitSelectedText(_ text: String, action: AiChat.ActionType) {
+    apiError = .none
+    api.submitSelectedText(text, actionType: action)
+  }
+
+  func submitSelectedText(
+    _ text: String,
+    action: AiChat.ActionType,
+    onSuggestion: @escaping (String?) -> Void,
+    onCompleted: @escaping (String?, AiChat.APIError) -> Void
+  ) {
+    apiError = .none
+    api.submitSelectedText(
+      text,
+      actionType: action,
+      onSuggestion: onSuggestion,
+      onCompleted: onCompleted
+    )
+  }
+
+  func submitSelectedText(
+    _ text: String,
+    question: String,
+    action: AiChat.ActionType,
+    onSuggestion: @escaping (String?) -> Void,
+    onCompleted: @escaping (String?, AiChat.APIError) -> Void
+  ) {
+    apiError = .none
+    api.submitSelectedText(
+      text,
+      question: question,
+      actionType: action,
+      onSuggestion: onSuggestion,
+      onCompleted: onCompleted
+    )
+  }
+
   func retryLastRequest() {
     if !api.conversationHistory.isEmpty {
       api.retryAPIRequest()

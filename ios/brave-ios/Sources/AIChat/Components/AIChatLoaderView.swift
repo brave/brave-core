@@ -75,6 +75,65 @@ struct DotsProgressViewStyle: ProgressViewStyle {
   }
 }
 
+struct CircularProgressViewStyle: ProgressViewStyle {
+  private let thickness: Double
+
+  init(thickness: Double) {
+    self.thickness = thickness
+  }
+
+  func makeBody(configuration: Configuration) -> some View {
+    let startDate = Date()
+
+    TimelineView(.animation(minimumInterval: 0.25, paused: false)) { context in
+      CircularProgressView(
+        endDate: context.date,
+        thickness: thickness
+      )
+    }
+  }
+
+  private struct CircularProgressView: View {
+    @State
+    private var startDate: Date = .now
+
+    private var thickness: Double
+    private let endDate: Date
+
+    init(endDate: Date, thickness: Double) {
+      self.endDate = endDate
+      self.thickness = thickness
+    }
+
+    private var progress: Double {
+      return endDate.timeIntervalSince1970 - startDate.timeIntervalSince1970
+    }
+
+    var body: some View {
+      ZStack {
+        Circle()
+          .stroke(
+            .background,
+            lineWidth: thickness
+          )
+
+        Circle()
+          .trim(from: 0.0, to: 0.25)
+          .stroke(
+            .foreground,
+            style: StrokeStyle(
+              lineWidth: thickness,
+              lineCap: .round
+            )
+          )
+          .rotationEffect(.degrees(90.0 * progress))
+          .animation(.linear, value: endDate)
+
+      }
+    }
+  }
+}
+
 struct AIChatLoaderView: View {
   var body: some View {
     AIChatProductIcon(containerShape: Circle(), padding: 6.0)
