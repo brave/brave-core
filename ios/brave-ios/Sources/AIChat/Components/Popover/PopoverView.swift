@@ -70,9 +70,10 @@ struct BravePopoverView<Content: View & PopoverContentComponent>: UIViewControll
         // The system dismissed our popover automatically, but never updated our presentation state
         // It usually does this if you present another popover or sheet
         // Manually update it
-        if context.coordinator.presentedViewController != nil {
+        if let controller = context.coordinator.presentedViewController?.value as? PopoverController
+        {
           DispatchQueue.main.async {
-            isPresented = false
+            controller.dismissPopover()
           }
         }
         return
@@ -83,6 +84,7 @@ struct BravePopoverView<Content: View & PopoverContentComponent>: UIViewControll
         context.coordinator.presentedViewController = .init(controller)
         controller.arrowDirectionBehavior = arrowDirection
         controller.popoverDidDismiss = { _ in
+          context.coordinator.presentedViewController = nil
           self.isPresented = false
         }
 
