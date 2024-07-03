@@ -7,6 +7,9 @@ import BraveCore
 import Foundation
 
 extension AdblockFilterListCatalogEntry {
+  /// The component ID of the "Default list"
+  /// This is a special filter list that is enabled by default
+  public static let defaultListComponentID = "iodkpdagapdfkphljnddpjlldadblomo"
   /// The component ID of the "Fanboy's Mobile Notifications List"
   /// This is a special filter list that is enabled by default
   public static let mobileAnnoyancesComponentID = "bfpgedeaaibpoidldhjcknekahbikncb"
@@ -21,7 +24,7 @@ extension AdblockFilterListCatalogEntry {
     // For now we don't compile this into content blockers because we use the one coming from slim list
     // We might change this in the future as it ends up with 95k items whereas the limit is 150k.
     // So there is really no reason to use slim list except perhaps for performance which we need to test out.
-    "iodkpdagapdfkphljnddpjlldadblomo",
+    defaultListComponentID,
   ]
 
   /// Lets us know if this filter list is always aggressive.

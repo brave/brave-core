@@ -16,12 +16,14 @@ public actor GroupedAdBlockEngine {
     case filterList(componentId: String)
     case filterListURL(uuid: String)
     case filterListText
+    case slimList
 
     public var debugDescription: String {
       switch self {
       case .filterList(let componentId): return componentId
       case .filterListURL(let uuid): return uuid
       case .filterListText: return "filter-list-text"
+      case .slimList: return "slim-list"
       }
     }
   }
@@ -49,6 +51,17 @@ public actor GroupedAdBlockEngine {
       switch self {
       case .standard: return false
       case .aggressive: return true
+      }
+    }
+
+    /// Tells us wether or not the content blockers should be combined for this type
+    ///
+    /// - Note: This is only possible for the default (i.e. `standard`) engine
+    /// as we control the filter lists for this type and we can guarantee they don't surpas 150k network rules.
+    var combineContentBlockers: Bool {
+      switch self {
+      case .standard: return true
+      case .aggressive: return false
       }
     }
 

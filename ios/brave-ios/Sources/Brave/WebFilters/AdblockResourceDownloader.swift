@@ -14,7 +14,7 @@ public actor AdblockResourceDownloader: Sendable {
 
   /// All the different resources this downloader handles
   static let handledResources: [BraveS3Resource] = {
-    return [.adBlockRules]
+    return [.slimList]
   }()
 
   /// A list of old resources that need to be deleted so as not to take up the user's disk space
@@ -83,34 +83,22 @@ public actor AdblockResourceDownloader: Sendable {
     allowedModes: Set<ContentBlockerManager.BlockingMode>
   ) async {
     switch resource {
-    case .adBlockRules:
-      let blocklistType = ContentBlockerManager.BlocklistType.generic(.blockAds)
-      var modes = blocklistType.allowedModes
-
-      if !downloadResult.isModified && !allowedModes.isEmpty {
-        // If the download is not modified, only compile the missing modes for performance reasons
-        let missingModes = await AdBlockGroupsManager.shared.contentBlockerManager.missingModes(
-          for: blocklistType,
-          version: downloadResult.version
-        )
-        modes = missingModes.filter({ allowedModes.contains($0) })
-      }
-
-      // No modes are needed to be compiled
-      guard !modes.isEmpty else { return }
-
+    case .slimList:
       guard let fileURL = resource.downloadedFileURL else {
         assertionFailure("This file was downloaded successfully so it should not be nil")
         return
       }
 
-      // try to compile
-      await AdBlockGroupsManager.shared.contentBlockerManager.compileRuleList(
-        at: fileURL,
-        for: blocklistType,
-        version: downloadResult.version,
-        modes: modes
+      await AdBlockGroupsManager.shared.update(
+        fileInfo: AdBlockEngineManager.FileInfo(
+          filterListInfo: GroupedAdBlockEngine.FilterListInfo(
+            source: .slimList,
+            version: downloadResult.version
+          ),
+          localFileURL: fileURL
+        )
       )
+      await AdBlockGroupsManager.shared.compileIfFilesAreReady(for: .standard)
     }
   }
 }

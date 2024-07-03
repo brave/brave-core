@@ -12,6 +12,16 @@ import os
 
 /// A class for managing a single grouped engine
 @MainActor class AdBlockEngineManager {
+  enum CompileTarget {
+    case engine, contentBlockers
+    var combinedFileName: String {
+      switch self {
+      case .engine: return "list.txt"
+      case .contentBlockers: return "content-blocker-list.txt"
+      }
+    }
+  }
+
   public struct FileInfo: Hashable, Equatable {
     let filterListInfo: GroupedAdBlockEngine.FilterListInfo
     let localFileURL: URL
@@ -35,6 +45,13 @@ import os
   /// This is the current pending group we are compiling.
   /// This allows us to ensure we are not already compiling a newer version of the rules before setting the engine
   private var pendingGroup: GroupedAdBlockEngine.FilterListGroup?
+  /// This is the current pending group we are compiling into content blockers
+  /// This allows us to ensure we are not compiling the same rules more than once
+  private var pendingContentBlockerGroup: GroupedAdBlockEngine.FilterListGroup?
+  /// The blocklist type this manager represents if we are combining content blockers
+  var blocklistType: ContentBlockerManager.BlocklistType {
+    return .engineGroup(id: cacheFolderName, engineType: engineType)
+  }
 
   /// This structure represents encodable info on what cached engine data contains
   private struct CachedEngineInfo: Codable {
@@ -101,7 +118,7 @@ import os
   }
 
   /// Checks to see if we need to compile or recompile the engine based on the available info
-  func checkNeedsCompile(for fileInfos: [AdBlockEngineManager.FileInfo]) -> Bool {
+  func checkNeedsEngineCompile(for fileInfos: [AdBlockEngineManager.FileInfo]) -> Bool {
     if let pendingGroup = pendingGroup {
       return pendingGroup.infos != fileInfos.map({ $0.filterListInfo })
     }
@@ -119,7 +136,7 @@ import os
       guard let cachedGroupInfo = await loadCachedInfo(cacheFolderURL: createdCacheFolderURL) else {
         return false
       }
-
+      let start = ContinuousClock().now
       let engineType = self.engineType
       let groupedEngine = try await Task.detached(priority: .high) {
         let engine = try GroupedAdBlockEngine.compile(
@@ -134,7 +151,7 @@ import os
         return engine
       }.value
 
-      self.set(engine: groupedEngine)
+      self.set(engine: groupedEngine, start: start)
       return true
     } catch {
       ContentBlockerManager.log.error(
@@ -154,7 +171,7 @@ import os
   /// This will compile available data, but will wait a little bit in case something new gets downloaded.
   /// Especially needed during launch when we have a bunch of downloads coming at the same time.
   func compileDelayedIfNeeded(
-    for enabledSources: [GroupedAdBlockEngine.Source],
+    for sourceProvider: AdBlockGroupsManager.SourceProvider,
     resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
     contentBlockerManager: ContentBlockerManager
   ) {
@@ -164,27 +181,18 @@ import os
     // Restart the task
     delayTask = Task {
       try await Task.sleep(seconds: 60)
-      await compileAvailableIfNeeded(
+      let enabledSources = sourceProvider.enabledSources(for: engineType)
+      await compileAvailableEnginesIfNeeded(
         for: enabledSources,
-        resourcesInfo: resourcesInfo,
-        contentBlockerManager: contentBlockerManager
+        resourcesInfo: resourcesInfo
       )
+      if engineType.combineContentBlockers {
+        await ensureGroupedContentBlockers(
+          for: enabledSources,
+          contentBlockerManager: contentBlockerManager
+        )
+      }
     }
-  }
-
-  /// This will compile available data right away if it is needed and cancel any delayedTasks
-  func compileImmediatelyIfNeeded(
-    for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    contentBlockerManager: ContentBlockerManager
-  ) async {
-    delayTask?.cancel()
-
-    await self.compileAvailableIfNeeded(
-      for: enabledSources,
-      resourcesInfo: resourcesInfo,
-      contentBlockerManager: contentBlockerManager
-    )
   }
 
   /// Add or update `resourcesInfo` if it is a newer version. This information is used for lazy loading.
@@ -198,28 +206,21 @@ import os
     }
   }
 
-  func checkHasAllInfo(for sources: [GroupedAdBlockEngine.Source]) -> Bool {
-    let availableSources = compilableFiles(for: sources).map({ $0.filterListInfo.source })
-    return sources.allSatisfy({ availableSources.contains($0) })
-  }
-
   /// This will compile available data right away if it is needed
-  private func compileAvailableIfNeeded(
+  func compileAvailableEnginesIfNeeded(
     for enabledSources: [GroupedAdBlockEngine.Source],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    contentBlockerManager: ContentBlockerManager
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) async {
     do {
       let compilableFiles = compilableFiles(for: enabledSources)
 
-      guard self.checkNeedsCompile(for: compilableFiles) else {
+      guard self.checkNeedsEngineCompile(for: compilableFiles) else {
         return
       }
 
-      try await compileAvailable(
+      try await compileAvailableEngines(
         for: compilableFiles,
-        resourcesInfo: resourcesInfo,
-        contentBlockerManager: contentBlockerManager
+        resourcesInfo: resourcesInfo
       )
     } catch {
       ContentBlockerManager.log.error(
@@ -229,13 +230,13 @@ import os
   }
 
   /// Compile an engine from all available data
-  private func compileAvailable(
+  private func compileAvailableEngines(
     for files: [AdBlockEngineManager.FileInfo],
-    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?,
-    contentBlockerManager: ContentBlockerManager
+    resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
   ) async throws {
+    let start = ContinuousClock().now
     let engineType = self.engineType
-    let group = try await combineRules(for: files)
+    let group = try await combineRules(for: files, target: .engine)
     self.pendingGroup = group
 
     ContentBlockerManager.log.debug(
@@ -259,16 +260,75 @@ import os
     // 3. Ensure our file is still up to date before setting it
     // (avoid race conditiions)
     guard pendingGroup == group else { return }
-    self.set(engine: groupedEngine)
+    self.set(engine: groupedEngine, start: start)
     await cache(engine: groupedEngine)
     self.pendingGroup = nil
   }
 
-  private func set(engine: GroupedAdBlockEngine) {
+  /// Compile content blockers for a group if the engine type supports it
+  func ensureGroupedContentBlockers(
+    for enabledSources: [GroupedAdBlockEngine.Source],
+    contentBlockerManager: ContentBlockerManager
+  ) async {
+    // Only do this for content blockers that should be combined
+    guard engineType.combineContentBlockers else { return }
+    let compilableFiles = compilableFiles(for: enabledSources.map({ $0.contentBlockerSource }))
+    guard !compilableFiles.isEmpty else { return }
+
+    let version = compilableFiles.map({ $0.filterListInfo }).groupedVersion
+    let modes = await contentBlockerManager.missingModes(
+      for: blocklistType,
+      version: version
+    )
+
+    guard !modes.isEmpty else {
+      ContentBlockerManager.log.debug(
+        "Rule lists already compiled for `\(self.engineType.debugDescription)` engine"
+      )
+      return
+    }
+
+    let clock = ContinuousClock()
+    let start = clock.now
+    do {
+      let group = try await combineRules(for: compilableFiles, target: .contentBlockers)
+      guard !group.infos.isEmpty else { return }
+
+      // Ensure we're not already compiling the same group
+      guard pendingContentBlockerGroup != group else { return }
+      pendingContentBlockerGroup = group
+
+      ContentBlockerManager.log.debug(
+        """
+        Compiling grouped Rule Lists for `\(self.engineType.debugDescription)` engine:
+        \(group.debugDescription)
+        """
+      )
+      try await contentBlockerManager.compileRuleList(
+        at: group.localFileURL,
+        for: blocklistType,
+        version: version,
+        modes: modes
+      )
+      ContentBlockerManager.log.debug(
+        """
+        Compiled grouped Rule Lists for `\(self.engineType.debugDescription)` engine (\(clock.now.formatted(since: start))):
+        \(group.debugDescription)
+        """
+      )
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to compile grouped rule lists for `\(self.blocklistType.debugDescription)`"
+      )
+    }
+    pendingContentBlockerGroup = nil
+  }
+
+  private func set(engine: GroupedAdBlockEngine, start: ContinuousClock.Instant) {
     let group = engine.group
     ContentBlockerManager.log.debug(
       """
-      Set `\(self.cacheFolderName)` (\(group.fileType.debugDescription)) engine from \(group.infos.count) sources:
+      Set `\(self.cacheFolderName)` (\(group.fileType.debugDescription)) engine from \(group.infos.count) sources (\(ContinuousClock().now.formatted(since: start))):
       \(group.debugDescription)
       """
     )
@@ -277,11 +337,12 @@ import os
 
   /// Take all the filter lists and combine them into one then save them into a cache folder.
   nonisolated private func combineRules(
-    for compilableFiles: [AdBlockEngineManager.FileInfo]
+    for compilableFiles: [AdBlockEngineManager.FileInfo],
+    target: CompileTarget
   ) async throws -> GroupedAdBlockEngine.FilterListGroup {
     // 1. Create a file url
     let cachedFolder = try await getOrCreateCacheFolder()
-    let fileURL = cachedFolder.appendingPathComponent("list.txt", conformingTo: .text)
+    let fileURL = cachedFolder.appendingPathComponent(target.combinedFileName)
     var compiledInfos: [GroupedAdBlockEngine.FilterListInfo] = []
     var unifiedRules = ""
     // 2. Join all the rules together
@@ -385,15 +446,12 @@ import os
 }
 
 extension GroupedAdBlockEngine.Source {
-  /// For some sources we don't support content blockers because of various reasons
-  private var allowContentBlockers: Bool {
+  var contentBlockerSource: GroupedAdBlockEngine.Source {
     switch self {
     case .filterList(let componentId):
-      return !AdblockFilterListCatalogEntry.disabledContentBlockersComponentIDs.contains(
-        componentId
-      )
-    case .filterListURL, .filterListText:
-      return true
+      return AdblockFilterListCatalogEntry.defaultListComponentID == componentId ? .slimList : self
+    case .filterListURL, .filterListText, .slimList:
+      return self
     }
   }
 
@@ -401,8 +459,7 @@ extension GroupedAdBlockEngine.Source {
   func blocklistType(
     engineType: GroupedAdBlockEngine.EngineType
   ) -> ContentBlockerManager.BlocklistType? {
-    // Check if we have some other restriction for this filter list
-    guard allowContentBlockers else { return nil }
+    guard engineType == .aggressive else { return nil }
     return .engineSource(self, engineType: engineType)
   }
 }
