@@ -91,4 +91,37 @@ describe('useGetTokenInfo hook', () => {
     expect(result.current.isLoading).toBe(false)
     expect(result.current.tokenInfo?.name).toEqual('Mocked Token')
   })
+
+  it('Should return an error if token info is not found', async () => {
+    const store = createMockStore(
+      {},
+      {
+        blockchainTokens: mockErc20TokensList,
+        userAssets: mockAccountAssetOptions
+      }
+    )
+
+    const renderOptions = renderHookOptionsWithMockStore(store)
+
+    const { result } = renderHook(
+      () =>
+        useGetTokenInfo({
+          contractAddress: '0xInvalidToken',
+          network: mockNetwork
+        }),
+      renderOptions
+    )
+
+    // initial state
+    expect(result.current.tokenInfo).toBeUndefined()
+    expect(result.current.isLoading).toBeDefined()
+
+    // loading
+    await waitFor(() => expect(result.current.isLoading).toBeFalsy())
+
+    // done loading
+    expect(result.current.isLoading).toBe(false)
+    expect(result.current.tokenInfo).toBe(undefined)
+    expect(result.current.isError).toBe(true)
+  })
 })

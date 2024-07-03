@@ -1015,6 +1015,15 @@ export class MockedWalletApiProxy {
     },
 
     getEthTokenInfo: async (contractAddress, chainId) => {
+      // handle error case
+      if (contractAddress === '0xInvalidToken') {
+        return {
+          token: null,
+          error: BraveWallet.ProviderError.kResourceNotFound,
+          errorMessage: 'token not found'
+        }
+      }
+
       const foundToken = mockTokensList.find(
         (t) => t.contractAddress === contractAddress
       )

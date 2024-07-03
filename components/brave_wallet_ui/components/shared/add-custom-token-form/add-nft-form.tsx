@@ -7,7 +7,6 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
-import Tooltip from '@brave/leo/react/tooltip'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
@@ -55,6 +54,8 @@ import {
 } from './add-custom-token-form-styles'
 import { Column, LeoSquaredButton, Row } from '../style'
 import { Skeleton } from '../loading-skeleton/styles'
+import Icon from '@brave/leo/react/icon'
+import Tooltip from '../tooltip'
 
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, {
   size: 'extra-big',
@@ -110,7 +111,8 @@ export const AddNftForm = (props: Props) => {
   const {
     tokenInfo: matchedTokenInfo,
     isVisible: tokenAlreadyExists,
-    isLoading: isTokenInfoLoading
+    isLoading: isTokenInfoLoading,
+    isError: hasGetTokenInfoError
   } = useGetTokenInfo(
     customAssetsNetwork &&
       tokenContractAddress &&
@@ -329,17 +331,32 @@ export const AddNftForm = (props: Props) => {
 
   // effects
   React.useEffect(() => {
+    // wait for new data before syncing
+    if (isFetchingNftMetadata || isTokenInfoLoading) {
+      return
+    }
+
     // sync form fields with found token info
-    setCustomTokenName(
-      nftMetadata?.contractInformation.name ||
-        matchedTokenInfo?.name ||
-        selectedAsset?.name ||
-        ''
-    )
-    setCustomTokenSymbol(
-      matchedTokenInfo?.symbol || selectedAsset?.symbol || ''
-    )
-  }, [nftMetadata, matchedTokenInfo, selectedAsset])
+    if (!hasGetTokenInfoError && matchedTokenInfo?.name) {
+      setCustomTokenName(matchedTokenInfo.name)
+    }
+
+    if (!hasNftMetadataError && nftMetadata?.contractInformation.name) {
+      setCustomTokenName(nftMetadata.contractInformation.name)
+    }
+
+    if (!hasGetTokenInfoError && matchedTokenInfo?.symbol) {
+      setCustomTokenSymbol(matchedTokenInfo.symbol)
+    }
+  }, [
+    hasGetTokenInfoError,
+    hasNftMetadataError,
+    isFetchingNftMetadata,
+    isTokenInfoLoading,
+    matchedTokenInfo,
+    nftMetadata,
+    selectedAsset
+  ])
 
   // render
   return (
@@ -443,9 +460,11 @@ export const AddNftForm = (props: Props) => {
               />
             </Row>
 
-            {(isFetchingNftMetadata || isTokenInfoLoading) && (
-              <InputLoadingIndicator slot='left-icon' />
-            )}
+            <div slot='left-icon'>
+              {(isFetchingNftMetadata || isTokenInfoLoading) && (
+                <InputLoadingIndicator />
+              )}
+            </div>
           </Input>
         </FullWidthFormColumn>
 
@@ -471,9 +490,11 @@ export const AddNftForm = (props: Props) => {
                 text={getLocale('braveWalletNftSymbolFieldExplanation')}
               />
             </Row>
-            {(isFetchingNftMetadata || isTokenInfoLoading) && (
-              <InputLoadingIndicator slot='left-icon' />
-            )}
+            <div slot='left-icon'>
+              {(isFetchingNftMetadata || isTokenInfoLoading) && (
+                <InputLoadingIndicator />
+              )}
+            </div>
           </Input>
         </FullWidthFormColumn>
 
@@ -531,22 +552,52 @@ export const AddNftForm = (props: Props) => {
                         fullWidth
                         gap={'16px'}
                       >
-                        <Column fullWidth>
-                          <PreviewImageContainer>
-                            <NftIconWithPlaceholder
-                              key={getAssetIdKey(metadataAsset)}
-                              asset={metadataAsset}
-                              responsive
-                            />
-                          </PreviewImageContainer>
+                        <Row
+                          alignItems='center'
+                          gap='16px'
+                        >
+                          {selectedAsset && (
+                            <>
+                              <Column>
+                                <PreviewImageContainer>
+                                  <NftIconWithPlaceholder
+                                    key={getAssetIdKey(selectedAsset)}
+                                    asset={selectedAsset}
+                                    responsive
+                                  />
+                                </PreviewImageContainer>
 
-                          <TokenNamePreviewText>
-                            {metadataAsset.name}
-                          </TokenNamePreviewText>
-                          <TokenTickerPreviewText>
-                            {metadataAsset.symbol}
-                          </TokenTickerPreviewText>
-                        </Column>
+                                <TokenNamePreviewText>
+                                  {selectedAsset.name}
+                                </TokenNamePreviewText>
+                                <TokenTickerPreviewText>
+                                  {selectedAsset.symbol}
+                                </TokenTickerPreviewText>
+                              </Column>
+
+                              <Column>
+                                <Icon name={'carat-right'} />
+                              </Column>
+                            </>
+                          )}
+
+                          <Column>
+                            <PreviewImageContainer>
+                              <NftIconWithPlaceholder
+                                key={getAssetIdKey(metadataAsset)}
+                                asset={metadataAsset}
+                                responsive
+                              />
+                            </PreviewImageContainer>
+
+                            <TokenNamePreviewText>
+                              {metadataAsset.name}
+                            </TokenNamePreviewText>
+                            <TokenTickerPreviewText>
+                              {metadataAsset.symbol}
+                            </TokenTickerPreviewText>
+                          </Column>
+                        </Row>
 
                         {!userOwnsNft && (
                           <Alert
@@ -576,13 +627,12 @@ export const AddNftForm = (props: Props) => {
           {getLocale('braveWalletButtonCancel')}
         </LeoSquaredButton>
 
-        <Tooltip placement='top'>
-          {buttonDisabled && (
-            <div slot='content'>
-              <FormErrorsList errors={formErrors} />
-            </div>
-          )}
-
+        <Tooltip
+          text={<FormErrorsList errors={formErrors} />}
+          isVisible={buttonDisabled}
+          maxWidth={120}
+          verticalPosition='above'
+        >
           <Row>
             <LeoSquaredButton
               onClick={addOrUpdateToken}

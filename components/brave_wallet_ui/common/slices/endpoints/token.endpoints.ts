@@ -394,11 +394,16 @@ export const tokenEndpoints = ({
             data: token
           }
         } catch (err) {
-          console.error(err)
           // Typically this means the token does not exist on the chain
-          return {
-            data: null
-          }
+          return handleEndpointError(
+            api.endpoint,
+            `Failed to get token info for: ${JSON.stringify(
+              { coin, chainId, contractAddress },
+              undefined,
+              2
+            )}`,
+            err
+          )
         }
       },
       providesTags: (result, err, args) =>
