@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index de89b448cc7b50c0711955e96b911efb89f61166..6ddc079b7479c73a9ff106d36ac33520eb488356 100644
+index de89b448cc7b50c0711955e96b911efb89f61166..a689f4cae301dbfc586ff841173069cfd09bddc7 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
 @@ -705,6 +705,7 @@ void LocationBarView::Layout(PassKey) {
@@ -14,7 +14,15 @@ index de89b448cc7b50c0711955e96b911efb89f61166..6ddc079b7479c73a9ff106d36ac33520
      }
    };
  
-+  BRAVE_LAYOUT_TRAILING_DECORATIONS
++  BRAVE_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
    add_trailing_decoration(page_action_icon_container_,
                            /*intra_item_padding=*/0);
    for (ContentSettingImageView* view : base::Reversed(content_setting_views_)) {
+@@ -804,6 +806,7 @@ void LocationBarView::Layout(PassKey) {
+   }
+ 
+   add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0);
++  BRAVE_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
+ 
+   // Perform layout.
+   int entry_width = width();
