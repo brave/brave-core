@@ -41,10 +41,7 @@ struct NetworkFilterView: View {
 
   private var allSelected: Bool {
     networks
-      .filter { network in
-        !networkStore.hiddenChains.contains { hiddenChain in
-          hiddenChain.chainId == network.model.chainId
-        }
+      .filter { network in !network.model.props.isHidden
       }
       .allSatisfy(\.isSelected)
   }

@@ -152,18 +152,6 @@ import XCTest
 
   func testUpdateChainList() async {
     let (keyringService, rpcService, walletService, swapService) = setupServices()
-    rpcService._hiddenNetworks = { coin, completion in
-      if coin == .eth {
-        completion(
-          [
-            BraveWallet.NetworkInfo.mockSepolia.chainId,
-            BraveWallet.NetworkInfo.mockPolygon.chainId,
-          ]
-        )
-      } else {
-        completion([])
-      }
-    }
     rpcService._network = { coin, _, completion in
       switch coin {
       case .eth:
@@ -228,52 +216,11 @@ import XCTest
       }
       .store(in: &cancellables)
 
-    // wait for all chains to populate
-    let customChainsExpectation = expectation(description: "networkStore-customChains")
-    store.$customChains
-      .dropFirst()
-      .sink { customChains in
-        defer { customChainsExpectation.fulfill() }
-        XCTAssertEqual(customChains, expectedCustomChains)
-      }
-      .store(in: &cancellables)
-
-    let defaultNetworksExpectation = expectation(description: "networkStore-defaultNetworks")
-    store.$defaultNetworks
-      .dropFirst()
-      .collect(4)
-      .sink { defaultNetworks in
-        defer { defaultNetworksExpectation.fulfill() }
-        guard let lastUpdatedDefaultNetworks = defaultNetworks.last else {
-          XCTFail("Unexpected test result")
-          return
-        }
-        XCTAssertEqual(lastUpdatedDefaultNetworks.count, expectedDefaultNetworks.count)
-        for coin in lastUpdatedDefaultNetworks.keys {
-          XCTAssertEqual(
-            lastUpdatedDefaultNetworks[coin]?.chainId,
-            expectedDefaultNetworks[coin]?.chainId
-          )
-        }
-      }
-      .store(in: &cancellables)
-
-    let hiddenChainsExpectation = expectation(description: "networkStore-hiddenChains")
-    store.$hiddenChains
-      .dropFirst()
-      .sink { hiddenChains in
-        defer { hiddenChainsExpectation.fulfill() }
-        XCTAssertEqual(hiddenChains.count, expectedHiddenChains.count)
-        XCTAssertTrue(expectedHiddenChains.allSatisfy(expectedHiddenChains.contains(_:)))
-      }
-      .store(in: &cancellables)
-
     await store.updateChainList()
 
     await fulfillment(
       of: [
-        allChainsExpectation, customChainsExpectation,
-        hiddenChainsExpectation, defaultNetworksExpectation,
+        allChainsExpectation
       ],
       timeout: 1
     )
@@ -292,6 +239,7 @@ extension BraveWallet.NetworkInfo {
     symbolName: "TEST",
     decimals: 18,
     coin: .eth,
-    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
+    supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
+    props: BraveWallet.NetworkProps()
   )
 }

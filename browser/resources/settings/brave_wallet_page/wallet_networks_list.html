@@ -34,10 +34,10 @@
                 <span hidden="[[hideNativeCurrencyInfo]]">({{item.nativeCurrency.name}}) </span>
                 {{item.chainName}}
               </div>
-              <div class="secondary">[[getItemDescritionText(item)]]</div>
+              <div class="secondary">[[getItemDescriptionText(item)]]</div>
             </div>
             <div title=[[eyeButtonTitle_(item)]]>
-              <cr-icon-button class$="[[getHideButtonClass(hiddenNetworks, item)]]"
+              <cr-icon-button class$="[[getHideButtonClass(item)]]"
                               disabled=[[!canHideNetwork_(item)]]
                               on-click="onHideButtonClicked_"
                               on-dblclick="onEmptyDoubleClick"

@@ -7,6 +7,7 @@
 
 #include <map>
 
+#include "base/containers/contains.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -42,6 +43,14 @@ GetAssetDiscoveryManagerNetworkTrafficAnnotationTag() {
       }
     )");
 }
+
+const char* kCustomNetworkSupportedBySimpleHash[] = {
+    brave_wallet::mojom::kArbitrumNovaChainId,
+    brave_wallet::mojom::kGnosisChainId,
+    brave_wallet::mojom::kGodwokenChainId,
+    brave_wallet::mojom::kPalmChainId,
+    brave_wallet::mojom::kPolygonZKEVMChainId,
+    brave_wallet::mojom::kZkSyncEraChainId};
 
 }  // namespace
 
@@ -130,24 +139,19 @@ AssetDiscoveryManager::GetNonFungibleSupportedChains() {
       non_fungible_supported_chains[mojom::CoinType::ETH].begin(),
       non_fungible_supported_chains[mojom::CoinType::ETH].end());
 
-  // Add in all the user networks that are supported by SimpleHash
-  auto custom_non_fungible_eth_chains =
-      wallet_service_->network_manager()->CustomChainsExist(
-          {
-              mojom::kArbitrumNovaChainId,
-              mojom::kGnosisChainId,
-              mojom::kGodwokenChainId,
-              mojom::kPalmChainId,
-              mojom::kPolygonZKEVMChainId,
-              mojom::kZkSyncEraChainId,
-          },
-          mojom::CoinType::ETH);
+  auto all_networks = wallet_service_->network_manager()->GetAllChains();
 
-  for (auto custom_chain : custom_non_fungible_eth_chains) {
-    // Only insert the chain if it does not exist in the set
-    if (base_set.find(custom_chain) == base_set.end()) {
+  // Add in all the user networks that are supported by SimpleHash
+  for (auto& network : all_networks) {
+    if (network->coin != mojom::CoinType::ETH || !network->props->is_custom) {
+      continue;
+    }
+
+    if (!base_set.contains(network->chain_id) &&
+        base::Contains(kCustomNetworkSupportedBySimpleHash,
+                       network->chain_id)) {
       non_fungible_supported_chains[mojom::CoinType::ETH].push_back(
-          custom_chain);
+          network->chain_id);
     }
   }
 

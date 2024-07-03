@@ -21,7 +21,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -159,13 +161,15 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
                                                            base::DoNothing());
 
     SetEthChainIdInterceptor(
-        {GURL(kSomeEndpoint), brave_wallet_service_->network_manager()
-                                  ->GetKnownChain(mojom::kNeonEVMMainnetChainId,
-                                                  mojom::CoinType::ETH)
-                                  ->rpc_endpoints.front()},
+        {GURL(kSomeEndpoint), GetNeonEVMMainnet()->rpc_endpoints.front()},
         mojom::kNeonEVMMainnetChainId);
 
     CreateWalletTab();
+  }
+
+  mojom::NetworkInfoPtr GetNeonEVMMainnet() {
+    return brave_wallet_service_->network_manager()->GetChain(
+        mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH);
   }
 
   void CreateWalletTab() {
@@ -358,11 +362,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   CreateSettingsTab();
-  auto known_neon_evm_rpc =
-      brave_wallet_service()
-          ->network_manager()
-          ->GetKnownChain(mojom::kNeonEVMMainnetChainId, mojom::CoinType::ETH)
-          ->rpc_endpoints.front();
+  auto known_neon_evm_rpc = GetNeonEVMMainnet()->rpc_endpoints.front();
   // Neon EVM rpc is from known info.
   WaitForNeonEVMNetworkUrl(known_neon_evm_rpc);
 

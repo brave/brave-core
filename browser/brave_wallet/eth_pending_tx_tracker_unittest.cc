@@ -91,9 +91,10 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   void WaitForResponse() { task_environment_.RunUntilIdle(); }
 
  private:
+  content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   base::ScopedTempDir temp_dir_;
@@ -101,7 +102,6 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
   std::unique_ptr<TxStorageDelegateImpl> delegate_;
   std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
-  std::unique_ptr<TestingProfile> profile_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 
  protected:

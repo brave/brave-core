@@ -3038,6 +3038,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, AccountDiscovery) {
       shared_url_loader_factory(), TestBraveWalletServiceDelegate::Create(),
       GetPrefs(), GetLocalState());
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   KeyringService& service = *brave_wallet_service.keyring_service();
@@ -3080,6 +3081,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, SolAccountDiscovery) {
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
@@ -3122,6 +3124,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, FilAccountDiscovery) {
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
@@ -3166,6 +3169,7 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
@@ -3244,6 +3248,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, StopsOnError) {
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
@@ -3286,6 +3291,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, ManuallyAddAccount) {
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
@@ -3349,6 +3355,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
       GetPrefs(), GetLocalState());
   KeyringService& service = *brave_wallet_service.keyring_service();
   BitcoinTestRpcServer bitcoin_test_rpc_server(
+      brave_wallet_service.network_manager(),
       brave_wallet_service.GetBitcoinWalletService());
 
   std::vector<std::string> requested_addresses;

@@ -659,10 +659,11 @@ struct NetworkDetailsView: View {
         activeRpcEndpointIndex: Int32(activeRpcEndpointIndex),
         rpcEndpoints: rpcEndpoints,
         symbol: model.networkSymbol.input,
-        symbolName: model.networkSymbol.input,
+        symbolName: model.networkSymbolName.input,
         decimals: Int32(model.networkDecimals.input) ?? 18,
         coin: .eth,
-        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:))
+        supportedKeyrings: [BraveWallet.KeyringId.default.rawValue].map(NSNumber.init(value:)),
+        props: BraveWallet.NetworkProps()
       )
     case .edit(let editNetwork):
       network = .init(
@@ -673,10 +674,11 @@ struct NetworkDetailsView: View {
         activeRpcEndpointIndex: Int32(activeRpcEndpointIndex),
         rpcEndpoints: rpcEndpoints,
         symbol: model.networkSymbol.input,
-        symbolName: model.networkSymbol.input,
+        symbolName: model.networkSymbolName.input,
         decimals: Int32(model.networkDecimals.input) ?? editNetwork.decimals,
         coin: editNetwork.coin,
-        supportedKeyrings: editNetwork.supportedKeyrings
+        supportedKeyrings: editNetwork.supportedKeyrings,
+        props: BraveWallet.NetworkProps()
       )
     case .view(_):
       break

@@ -469,7 +469,9 @@ void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
     return;
   }
 
-  if (network_manager_->CustomChainExists(chain_id, chain->coin)) {
+  auto existing_chain = network_manager_->GetChain(chain_id, chain->coin);
+
+  if (existing_chain && existing_chain->props->is_custom) {
     std::move(callback).Run(
         chain_id, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
@@ -479,12 +481,13 @@ void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
   // Custom networks for non-EVM chain are allowed to replace only known chain
   // ids. So just update prefs without chain id validation.
   if (chain->coin != mojom::CoinType::ETH) {
-    if (!network_manager_->KnownChainExists(chain_id, chain->coin)) {
+    if (!existing_chain) {
       std::move(callback).Run(
           chain_id, mojom::ProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
       return;
     }
+    DCHECK(existing_chain->props->is_known);
     AddCustomNetworkInternal(*chain);
     std::move(callback).Run(chain->chain_id, mojom::ProviderError::kSuccess,
                             "");
@@ -525,8 +528,7 @@ std::string JsonRpcService::AddEthereumChainForOrigin(
     mojom::NetworkInfoPtr chain,
     const url::Origin& origin) {
   auto chain_id = chain->chain_id;
-  if (network_manager_->KnownChainExists(chain_id, mojom::CoinType::ETH) ||
-      network_manager_->CustomChainExists(chain_id, mojom::CoinType::ETH)) {
+  if (network_manager_->GetChain(chain_id, mojom::CoinType::ETH)) {
     return l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
   }
   if (origin.opaque() || add_chain_pending_requests_.contains(chain_id) ||
@@ -610,7 +612,9 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
     return false;
   }
 
-  FireNetworkChanged(coin, chain_id, origin);
+  if (CoinSupportsDapps(coin)) {
+    FireNetworkChanged(coin, chain_id, origin);
+  }
 
   if (coin == mojom::CoinType::ETH) {
     MaybeUpdateIsEip1559(chain_id);
@@ -638,15 +642,15 @@ mojom::NetworkInfoPtr JsonRpcService::GetNetworkSync(
 }
 
 void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
-  // Only try to update is_eip1559 for localhost or custom chains.
-  if (chain_id != brave_wallet::mojom::kLocalhostChainId &&
-      !network_manager_->CustomChainExists(chain_id, mojom::CoinType::ETH)) {
-    return;
-  }
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::ETH);
 
-  GetBaseFeePerGas(chain_id,
-                   base::BindOnce(&JsonRpcService::UpdateIsEip1559,
-                                  weak_ptr_factory_.GetWeakPtr(), chain_id));
+  // Only try to update is_eip1559 for localhost or custom chains.
+  if (chain_id == brave_wallet::mojom::kLocalhostChainId ||
+      (network && network->props->is_custom)) {
+    GetBaseFeePerGas(chain_id,
+                     base::BindOnce(&JsonRpcService::UpdateIsEip1559,
+                                    weak_ptr_factory_.GetWeakPtr(), chain_id));
+  }
 }
 
 void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
@@ -663,9 +667,13 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
 
 void JsonRpcService::AddCustomNetworkInternal(
     const mojom::NetworkInfo& network) {
-  // FIL and SOL allow custom chains only over known ones.
+#if DCHECK_IS_ON()
+  auto existing_network =
+      network_manager_->GetChain(network.chain_id, network.coin);
+  // All coins except ETH  allow custom chains only over known ones.
   DCHECK(network.coin == mojom::CoinType::ETH ||
-         network_manager_->KnownChainExists(network.chain_id, network.coin));
+         (existing_network && existing_network->props->is_known));
+#endif
 
   network_manager_->AddCustomNetwork(network);
   EnsureNativeTokenForNetwork(prefs_, network);
@@ -686,12 +694,6 @@ std::string JsonRpcService::GetChainIdSync(
   return network_manager_->GetCurrentChainId(coin, origin);
 }
 
-void JsonRpcService::GetDefaultChainId(
-    mojom::CoinType coin,
-    mojom::JsonRpcService::GetDefaultChainIdCallback callback) {
-  std::move(callback).Run(GetChainIdSync(coin, std::nullopt));
-}
-
 void JsonRpcService::GetChainIdForOrigin(
     mojom::CoinType coin,
     const ::url::Origin& origin,
@@ -703,49 +705,10 @@ void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
   std::move(callback).Run(network_manager_->GetAllChains());
 }
 
-void JsonRpcService::GetCustomNetworks(mojom::CoinType coin,
-                                       GetCustomNetworksCallback callback) {
-  std::vector<std::string> chain_ids;
-  for (const auto& it : network_manager_->GetAllCustomChains(coin)) {
-    chain_ids.push_back(it->chain_id);
-  }
-  std::move(callback).Run(std::move(chain_ids));
-}
-
-void JsonRpcService::GetKnownNetworks(mojom::CoinType coin,
-                                      GetKnownNetworksCallback callback) {
-  std::vector<std::string> chain_ids;
-  for (const auto& it : network_manager_->GetAllKnownChains(coin)) {
-    chain_ids.push_back(it->chain_id);
-  }
-  std::move(callback).Run(std::move(chain_ids));
-}
-
-void JsonRpcService::GetHiddenNetworks(mojom::CoinType coin,
-                                       GetHiddenNetworksCallback callback) {
-  auto hidden_networks = network_manager_->GetHiddenNetworks(coin);
-
-  // Currently selected chain is never hidden for coin.
-  std::erase(hidden_networks,
-             base::ToLowerASCII(GetChainIdSync(coin, std::nullopt)));
-
-  std::move(callback).Run(hidden_networks);
-}
-
-void JsonRpcService::AddHiddenNetwork(mojom::CoinType coin,
+void JsonRpcService::SetNetworkHidden(mojom::CoinType coin,
                                       const std::string& chain_id,
-                                      AddHiddenNetworkCallback callback) {
-  network_manager_->AddHiddenNetwork(coin, chain_id);
-
-  std::move(callback).Run(true);
-}
-
-void JsonRpcService::RemoveHiddenNetwork(mojom::CoinType coin,
-                                         const std::string& chain_id,
-                                         RemoveHiddenNetworkCallback callback) {
-  network_manager_->RemoveHiddenNetwork(coin, chain_id);
-
-  std::move(callback).Run(true);
+                                      bool hidden) {
+  network_manager_->SetNetworkHidden(coin, chain_id, hidden);
 }
 
 void JsonRpcService::GetBlockNumber(const std::string& chain_id,

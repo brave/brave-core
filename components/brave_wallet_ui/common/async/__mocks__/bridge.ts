@@ -708,12 +708,6 @@ export class MockedWalletApiProxy {
     getAllNetworks: async () => {
       return { networks: this.networks }
     },
-    getHiddenNetworks: async () => {
-      return { chainIds: [] }
-    },
-    getDefaultChainId: async (coin) => {
-      return { chainId: this.chainIdsForCoins[coin] }
-    },
     getNetwork: async (coin) => {
       return { network: this.chainsForCoins[coin] }
     },

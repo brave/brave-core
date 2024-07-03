@@ -55,9 +55,6 @@ inline constexpr char kBraveWalletUserAssetsList[] =
     "brave.wallet.wallet_user_assets_list";
 inline constexpr char kBraveWalletEthAllowancesCache[] =
     "brave.wallet.eth_allowances_cache";
-// Added 03/2023 to add networks hidden by default
-inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
-    "brave.wallet.user.assets.default_hidden_networks_version";
 inline constexpr char kBraveWalletAutoLockMinutes[] =
     "brave.wallet.auto_lock_minutes";
 inline constexpr char kBraveWalletP3AFirstUnlockTime[] =
@@ -92,10 +89,7 @@ inline constexpr char kBraveWalletMnemonicBackedUp[] =
 // Added 07/2023 to migrate transactions from prefs to DB.
 inline constexpr char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
     "brave.wallet.transactions.from_prefs_to_db_migrated";
-// Added 08/2023 to migrate Fantom mainnet, previously a preloaded network,
-// to a custom network.
-inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
-    "brave.wallet.custom_networks.fantom_mainnet_migrated";
+
 // Added 01/2024 to migrate transactions DB to one-level dict.
 inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
     "brave.wallet.transactions_db_format_migrated";

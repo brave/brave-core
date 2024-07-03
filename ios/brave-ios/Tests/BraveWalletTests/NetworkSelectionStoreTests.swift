@@ -41,10 +41,9 @@ import XCTest
     rpcService._setNetwork = { chainId, coin, origin, completion in
       completion(true)
     }
-    rpcService._customNetworks = { $1([]) }
-    rpcService._hiddenNetworks = { $1([]) }
-    rpcService._addHiddenNetwork = { $2(true) }
-    rpcService._removeHiddenNetwork = { $2(true) }
+    rpcService._setNetworkHidden = { _, _, _, completion in
+      completion(true)
+    }
 
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }

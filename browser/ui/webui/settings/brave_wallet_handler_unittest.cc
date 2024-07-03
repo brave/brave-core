@@ -45,22 +45,6 @@ using testing::Contains;
 using testing::Eq;
 using testing::Not;
 
-namespace {
-
-void UpdateCustomNetworks(PrefService* prefs,
-                          CoinType coin,
-                          std::vector<base::Value::Dict>* values) {
-  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value::List* list =
-      update->EnsureList(brave_wallet::GetPrefKeyForCoinType(coin));
-  list->clear();
-  for (auto& it : *values) {
-    list->Append(std::move(it));
-  }
-}
-
-}  // namespace
-
 class TestBraveWalletHandler : public BraveWalletHandler {
  public:
   TestBraveWalletHandler()
@@ -106,12 +90,25 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains() {
-    return GetNetworkManager()->GetAllCustomChains(CoinType::ETH);
+    std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
+    for (auto& network : GetNetworkManager()->GetAllChains()) {
+      if (network->coin == brave_wallet::mojom::CoinType::ETH &&
+          network->props->is_custom) {
+        result.push_back(std::move(network));
+      }
+    }
+    return result;
   }
 
   std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllCustomChains(
       brave_wallet::mojom::CoinType coin) {
-    return GetNetworkManager()->GetAllCustomChains(coin);
+    std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
+    for (auto& network : GetNetworkManager()->GetAllChains()) {
+      if (network->props->is_custom) {
+        result.push_back(std::move(network));
+      }
+    }
+    return result;
   }
 
   void RegisterMessages() override {}
@@ -154,13 +151,10 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 TEST(TestBraveWalletHandler, RemoveChain) {
   TestBraveWalletHandler handler;
 
-  std::vector<base::Value::Dict> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
-  values.push_back(brave_wallet::NetworkInfoToValue(chain1));
-
+  handler.GetNetworkManager()->AddCustomNetwork(chain1);
   brave_wallet::mojom::NetworkInfo chain2 = brave_wallet::GetTestNetworkInfo2();
-  values.push_back(brave_wallet::NetworkInfoToValue(chain2));
-  UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
+  handler.GetNetworkManager()->AddCustomNetwork(chain2);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
   base::Value::List args;
@@ -179,13 +173,11 @@ TEST(TestBraveWalletHandler, RemoveChain) {
 TEST(TestBraveWalletHandler, ResetChain) {
   TestBraveWalletHandler handler;
 
-  std::vector<base::Value::Dict> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1(
       brave_wallet::mojom::kPolygonMainnetChainId);
-  values.push_back(brave_wallet::NetworkInfoToValue(chain1));
 
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 0u);
-  UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
+  handler.GetNetworkManager()->AddCustomNetwork(chain1);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
 
   base::Value::List args;
@@ -282,20 +274,17 @@ TEST(TestBraveWalletHandler, AddChainWrongNetwork) {
   EXPECT_EQ(arg3_list[1].GetString(), error_message);
 }
 
-TEST(TestBraveWalletHandler, GetNetworkListEth) {
+TEST(TestBraveWalletHandler, GetNetworkList) {
   TestBraveWalletHandler handler;
-  std::vector<base::Value::Dict> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
-  values.push_back(brave_wallet::NetworkInfoToValue(chain1));
-
+  handler.GetNetworkManager()->AddCustomNetwork(chain1);
   brave_wallet::mojom::NetworkInfo chain2 = brave_wallet::GetTestNetworkInfo2();
-  values.push_back(brave_wallet::NetworkInfoToValue(chain2));
-  UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
+  handler.GetNetworkManager()->AddCustomNetwork(chain2);
+
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
   base::Value::List args;
   args.Append(base::Value("id"));
-  args.Append(base::Value(static_cast<int>(CoinType::ETH)));
   handler.GetNetworksList(args);
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
@@ -304,49 +293,19 @@ TEST(TestBraveWalletHandler, GetNetworkListEth) {
   const auto& networks = *data.arg3()->GetDict().FindList("networks");
 
   size_t index = 0u;
-  for (auto& known_chain :
-       handler.GetNetworkManager()->GetAllKnownChains(CoinType::ETH)) {
-    EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]),
-              *known_chain);
-  }
-  EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]), chain1);
-  EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]), chain2);
-}
-
-TEST(TestBraveWalletHandler, GetNetworkListFilSol) {
-  for (auto coin : {CoinType::FIL, CoinType::SOL}) {
-    TestBraveWalletHandler handler;
-
-    base::Value::List args;
-    args.Append(base::Value("id"));
-    args.Append(base::Value(static_cast<int>(coin)));
-
-    handler.GetNetworksList(args);
-    const auto& data = *handler.web_ui()->call_data()[0];
-    ASSERT_TRUE(data.arg1()->is_string());
-    EXPECT_EQ(data.arg1()->GetString(), "id");
-    ASSERT_TRUE(data.arg3()->is_dict());
-    const auto& networks = *data.arg3()->GetDict().FindList("networks");
-
-    size_t index = 0u;
-    for (auto& known_chain :
-         handler.GetNetworkManager()->GetAllKnownChains(coin)) {
-      EXPECT_EQ(*brave_wallet::ValueToNetworkInfo(networks[index++]),
-                *known_chain);
-    }
+  for (auto& known_chain : handler.GetNetworkManager()->GetAllChains()) {
+    EXPECT_EQ(networks[index++],
+              brave_wallet::NetworkInfoToValueForSettings(*known_chain));
   }
 }
 
 TEST(TestBraveWalletHandler, SetDefaultNetwork) {
   TestBraveWalletHandler handler;
 
-  std::vector<base::Value::Dict> values;
   brave_wallet::mojom::NetworkInfo chain1 = brave_wallet::GetTestNetworkInfo1();
-  values.push_back(brave_wallet::NetworkInfoToValue(chain1));
-
+  handler.GetNetworkManager()->AddCustomNetwork(chain1);
   brave_wallet::mojom::NetworkInfo chain2 = brave_wallet::GetTestNetworkInfo2();
-  values.push_back(brave_wallet::NetworkInfoToValue(chain2));
-  UpdateCustomNetworks(handler.prefs(), CoinType::ETH, &values);
+  handler.GetNetworkManager()->AddCustomNetwork(chain2);
   EXPECT_EQ(handler.GetAllEthCustomChains().size(), 2u);
 
   ScopedDictPrefUpdate update(handler.prefs(), kBraveWalletSelectedNetworks);

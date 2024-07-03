@@ -130,10 +130,7 @@ struct FiltersDisplaySettingsView: View {
   /// Returns true if all visible networks are selected
   var allNetworksSelected: Bool {
     networks
-      .filter { network in
-        !networkStore.hiddenChains.contains { hiddenChain in
-          hiddenChain.chainId == network.model.chainId
-        }
+      .filter { network in !network.model.props.isHidden
       }
       .allSatisfy(\.isSelected)
   }

@@ -47,8 +47,9 @@ inline constexpr char kBtcTestnetImportAccount1[] =
 
 class BitcoinTestRpcServer {
  public:
-  BitcoinTestRpcServer();
-  explicit BitcoinTestRpcServer(BitcoinWalletService* bitcoin_wallet_service);
+  explicit BitcoinTestRpcServer(NetworkManager* network_manager);
+  BitcoinTestRpcServer(NetworkManager* network_manager,
+                       BitcoinWalletService* bitcoin_wallet_service);
   ~BitcoinTestRpcServer();
 
   static bitcoin_rpc::AddressStats EmptyAddressStats(
@@ -100,6 +101,7 @@ class BitcoinTestRpcServer {
   std::optional<uint32_t> account_index_;
 
   network::TestURLLoaderFactory url_loader_factory_;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<BitcoinHDKeyring> keyring_;
 };

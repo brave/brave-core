@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/test/values_test_util.h"
@@ -29,17 +30,18 @@ namespace brave_wallet {
 
 namespace {
 
-std::string ExtractApiRequestPath(const GURL& request_url) {
+std::string ExtractApiRequestPath(NetworkManager* network_manager,
+                                  const GURL& request_url) {
   std::string spec = request_url.spec();
 
-  auto mainnet_url_spec = NetworkManager::GetKnownChain(mojom::kBitcoinMainnet,
-                                                        mojom::CoinType::BTC)
-                              ->rpc_endpoints[0]
-                              .spec();
-  auto testnet_url_spec = NetworkManager::GetKnownChain(mojom::kBitcoinTestnet,
-                                                        mojom::CoinType::BTC)
-                              ->rpc_endpoints[0]
-                              .spec();
+  auto mainnet_url_spec =
+      network_manager->GetChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
+          ->rpc_endpoints[0]
+          .spec();
+  auto testnet_url_spec =
+      network_manager->GetChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC)
+          ->rpc_endpoints[0]
+          .spec();
 
   if (base::StartsWith(spec, mainnet_url_spec)) {
     return spec.substr(mainnet_url_spec.size());
@@ -51,22 +53,24 @@ std::string ExtractApiRequestPath(const GURL& request_url) {
   return spec;
 }
 
-bool IsTxPostRequest(const network::ResourceRequest& request) {
+bool IsTxPostRequest(NetworkManager* network_manager,
+                     const network::ResourceRequest& request) {
   if (request.method != net::HttpRequestHeaders::kPostMethod) {
     return false;
   }
 
   auto parts =
-      base::SplitString(ExtractApiRequestPath(request.url), "/",
-                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(network_manager, request.url),
+                        "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   return parts.size() == 1 && parts[0] == "tx";
 }
 
 std::optional<std::string> IsTxStatusRequest(
+    NetworkManager* network_manager,
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitString(ExtractApiRequestPath(request.url), "/",
-                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(network_manager, request.url),
+                        "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "tx") {
     return parts[1];
   }
@@ -75,10 +79,11 @@ std::optional<std::string> IsTxStatusRequest(
 }
 
 std::optional<std::string> IsAddressStatsRequest(
+    NetworkManager* network_manager,
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitString(ExtractApiRequestPath(request.url), "/",
-                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(network_manager, request.url),
+                        "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 2 && parts[0] == "address") {
     return parts[1];
   }
@@ -87,10 +92,11 @@ std::optional<std::string> IsAddressStatsRequest(
 }
 
 std::optional<std::string> IsAddressUtxoRequest(
+    NetworkManager* network_manager,
     const network::ResourceRequest& request) {
   auto parts =
-      base::SplitString(ExtractApiRequestPath(request.url), "/",
-                        base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+      base::SplitString(ExtractApiRequestPath(network_manager, request.url),
+                        "/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   if (parts.size() == 3 && parts[0] == "address" && parts[2] == "utxo") {
     return parts[1];
   }
@@ -100,7 +106,8 @@ std::optional<std::string> IsAddressUtxoRequest(
 
 }  // namespace
 
-BitcoinTestRpcServer::BitcoinTestRpcServer() {
+BitcoinTestRpcServer::BitcoinTestRpcServer(NetworkManager* network_manager)
+    : network_manager_(network_manager) {
   shared_url_loader_factory_ =
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
           &url_loader_factory_);
@@ -110,8 +117,9 @@ BitcoinTestRpcServer::BitcoinTestRpcServer() {
 }
 
 BitcoinTestRpcServer::BitcoinTestRpcServer(
+    NetworkManager* network_manager,
     BitcoinWalletService* bitcoin_wallet_service)
-    : BitcoinTestRpcServer() {
+    : BitcoinTestRpcServer(network_manager) {
   bitcoin_wallet_service->SetUrlLoaderFactoryForTesting(GetURLLoaderFactory());
 }
 
@@ -157,7 +165,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     const network::ResourceRequest& request) {
   url_loader_factory_.ClearResponses();
 
-  if (IsTxPostRequest(request)) {
+  if (IsTxPostRequest(network_manager_, request)) {
     auto request_string(request.request_body->elements()
                             ->at(0)
                             .As<network::DataElementBytes>()
@@ -176,7 +184,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  if (auto txid = IsTxStatusRequest(request)) {
+  if (auto txid = IsTxStatusRequest(network_manager_, request)) {
     for (auto& tx : broadcasted_transactions_) {
       if (tx.txid == *txid) {
         url_loader_factory_.AddResponse(request.url.spec(),
@@ -201,7 +209,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  if (auto address = IsAddressStatsRequest(request)) {
+  if (auto address = IsAddressStatsRequest(network_manager_, request)) {
     if (address_stats_map_.contains(*address)) {
       url_loader_factory_.AddResponse(
           request.url.spec(),
@@ -215,7 +223,7 @@ void BitcoinTestRpcServer::RequestInterceptor(
     return;
   }
 
-  if (auto address = IsAddressUtxoRequest(request)) {
+  if (auto address = IsAddressUtxoRequest(network_manager_, request)) {
     if (utxos_map_.contains(*address)) {
       base::Value::List items;
       for (auto& utxo : utxos_map_[*address]) {

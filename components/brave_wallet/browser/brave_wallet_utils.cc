@@ -707,11 +707,15 @@ bool SetAssetCompressed(PrefService* prefs,
   return false;
 }
 
-std::vector<mojom::BlockchainTokenPtr> GetDefaultEthereumAssets() {
+std::vector<mojom::BlockchainTokenPtr> GetDefaultEthereumAssets(
+    const std::vector<const mojom::NetworkInfo*>& known_networks) {
   std::vector<mojom::BlockchainTokenPtr> user_assets_list;
 
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::ETH)) {
+  for (const auto* chain : known_networks) {
+    if (chain->coin != mojom::CoinType::ETH) {
+      continue;
+    }
+
     auto asset = NetworkToNativeToken(*chain);
     user_assets_list.push_back(std::move(asset));
 
@@ -730,11 +734,15 @@ std::vector<mojom::BlockchainTokenPtr> GetDefaultEthereumAssets() {
   return user_assets_list;
 }
 
-std::vector<mojom::BlockchainTokenPtr> GetDefaultSolanaAssets() {
+std::vector<mojom::BlockchainTokenPtr> GetDefaultSolanaAssets(
+    const std::vector<const mojom::NetworkInfo*>& known_networks) {
   std::vector<mojom::BlockchainTokenPtr> user_assets_list;
 
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::SOL)) {
+  for (const auto* chain : known_networks) {
+    if (chain->coin != mojom::CoinType::SOL) {
+      continue;
+    }
+
     auto asset = NetworkToNativeToken(*chain);
     asset->logo = "sol.png";
     user_assets_list.push_back(std::move(asset));
@@ -743,11 +751,15 @@ std::vector<mojom::BlockchainTokenPtr> GetDefaultSolanaAssets() {
   return user_assets_list;
 }
 
-std::vector<mojom::BlockchainTokenPtr> GetDefaultFilecoinAssets() {
+std::vector<mojom::BlockchainTokenPtr> GetDefaultFilecoinAssets(
+    const std::vector<const mojom::NetworkInfo*>& known_networks) {
   std::vector<mojom::BlockchainTokenPtr> user_assets_list;
 
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::FIL)) {
+  for (const auto* chain : known_networks) {
+    if (chain->coin != mojom::CoinType::FIL) {
+      continue;
+    }
+
     auto asset = NetworkToNativeToken(*chain);
     asset->logo = "fil.png";
     user_assets_list.push_back(std::move(asset));
@@ -775,14 +787,16 @@ std::vector<mojom::BlockchainTokenPtr> GetDefaultZCashAssets() {
 }
 
 base::Value::List GetDefaultUserAssets() {
+  auto all_networks = NetworkManager::GetAllKnownChains();
+
   base::Value::List user_assets_pref;
-  for (auto& asset : GetDefaultEthereumAssets()) {
+  for (auto& asset : GetDefaultEthereumAssets(all_networks)) {
     user_assets_pref.Append(BlockchainTokenToValue(asset));
   }
-  for (auto& asset : GetDefaultSolanaAssets()) {
+  for (auto& asset : GetDefaultSolanaAssets(all_networks)) {
     user_assets_pref.Append(BlockchainTokenToValue(asset));
   }
-  for (auto& asset : GetDefaultFilecoinAssets()) {
+  for (auto& asset : GetDefaultFilecoinAssets(all_networks)) {
     user_assets_pref.Append(BlockchainTokenToValue(asset));
   }
   for (auto& asset : GetDefaultBitcoinAssets()) {
@@ -856,10 +870,17 @@ std::string WalletInternalErrorMessage() {
 }
 
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id) {
-  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::BTC);
-  CHECK(network);
+  const mojom::NetworkInfo* btc_network = nullptr;
+  for (auto* network : NetworkManager::GetAllKnownChains()) {
+    if (network->coin == mojom::CoinType::BTC &&
+        network->chain_id == chain_id) {
+      btc_network = network;
+      break;
+    }
+  }
+  CHECK(btc_network);
 
-  auto result = NetworkToNativeToken(*network);
+  auto result = NetworkToNativeToken(*btc_network);
   // TODO(apaymyshev): testnet has different logo.
   result->logo = "btc.png";
   if (chain_id == mojom::kBitcoinMainnet) {
@@ -872,10 +893,17 @@ mojom::BlockchainTokenPtr GetBitcoinNativeToken(const std::string& chain_id) {
 }
 
 mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
-  auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::ZEC);
-  CHECK(network);
+  const mojom::NetworkInfo* zec_network = nullptr;
+  for (auto* network : NetworkManager::GetAllKnownChains()) {
+    if (network->coin == mojom::CoinType::ZEC &&
+        network->chain_id == chain_id) {
+      zec_network = network;
+      break;
+    }
+  }
+  CHECK(zec_network);
 
-  auto result = NetworkToNativeToken(*network);
+  auto result = NetworkToNativeToken(*zec_network);
   result->logo = "zec.png";
   result->coingecko_id = "zec";
 

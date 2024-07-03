@@ -16,10 +16,14 @@ import java.util.List;
 
 public interface CryptoSharedData {
     int getCoinType();
+
     String getChainId();
+
     Context getContext();
+
     LiveData<Integer> getCoinTypeLd();
+
     List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes();
-    List<Integer> getSupportedCryptoCoins();
+
     LiveData<List<AccountInfo>> getAccounts();
 }

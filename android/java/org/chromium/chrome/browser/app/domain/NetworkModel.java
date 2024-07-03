@@ -49,13 +49,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private final MediatorLiveData<Pair<String, List<NetworkInfo>>> _mPairChainAndNetwork;
     private final MediatorLiveData<NetworkInfo> _mNeedToCreateAccountForNetwork;
     private final MediatorLiveData<NetworkInfo> _mDefaultNetwork;
-    private final MediatorLiveData<String[]> _mCustomNetworkIds;
     private final MediatorLiveData<List<NetworkInfo>> _mPrimaryNetworks;
     private final MediatorLiveData<List<NetworkInfo>> _mSecondaryNetworks;
 
     public final LiveData<String> mChainId;
     private final MutableLiveData<NetworkLists> _mNetworkLists;
-    public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
     public final LiveData<Pair<String, List<NetworkInfo>>> mPairChainAndNetwork;
     public final LiveData<List<NetworkInfo>> mDefaultCoinCryptoNetworks;
@@ -88,9 +86,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mDefaultNetwork = _mDefaultNetwork;
         _mNeedToCreateAccountForNetwork = new MediatorLiveData<>();
         mNeedToCreateAccountForNetwork = _mNeedToCreateAccountForNetwork;
-        _mCustomNetworkIds = new MediatorLiveData<>();
-        _mCustomNetworkIds.postValue(new String[0]);
-        mCustomNetworkIds = _mCustomNetworkIds;
         _mPrimaryNetworks = new MediatorLiveData<>();
         mPrimaryNetworks = _mPrimaryNetworks;
         _mSecondaryNetworks = new MediatorLiveData<>();
@@ -138,30 +133,32 @@ public class NetworkModel implements JsonRpcServiceObserver {
                             });
                 });
 
-        _mCustomNetworkIds.addSource(
-                mSharedData.getCoinTypeLd(),
-                coinType -> {
-                    mJsonRpcService.getCustomNetworks(coinType, _mCustomNetworkIds::postValue);
+        _mPrimaryNetworks.addSource(
+                mCryptoNetworks,
+                networkInfos -> {
+                    List<NetworkInfo> primaryNws = new ArrayList<>();
+                    for (NetworkInfo networkInfo : networkInfos) {
+                        if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                networkInfo.chainId)) {
+                            primaryNws.add(networkInfo);
+                        }
+                    }
+                    _mPrimaryNetworks.postValue(primaryNws);
                 });
-        _mPrimaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
-            List<NetworkInfo> primaryNws = new ArrayList<>();
-            for (NetworkInfo networkInfo : networkInfos) {
-                if (WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId)) {
-                    primaryNws.add(networkInfo);
-                }
-            }
-            _mPrimaryNetworks.postValue(primaryNws);
-        });
-        _mSecondaryNetworks.addSource(mCryptoNetworks, networkInfos -> {
-            List<NetworkInfo> secondaryNws = new ArrayList<>();
-            for (NetworkInfo networkInfo : networkInfos) {
-                if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId)
-                        && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(networkInfo.chainId)) {
-                    secondaryNws.add(networkInfo);
-                }
-            }
-            _mSecondaryNetworks.postValue(secondaryNws);
-        });
+        _mSecondaryNetworks.addSource(
+                mCryptoNetworks,
+                networkInfos -> {
+                    List<NetworkInfo> secondaryNws = new ArrayList<>();
+                    for (NetworkInfo networkInfo : networkInfos) {
+                        if (!WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(
+                                        networkInfo.chainId)
+                                && !WalletConstants.KNOWN_TEST_CHAIN_IDS.contains(
+                                        networkInfo.chainId)) {
+                            secondaryNws.add(networkInfo);
+                        }
+                    }
+                    _mSecondaryNetworks.postValue(secondaryNws);
+                });
     }
 
     private void updateChainId() {
@@ -265,11 +262,9 @@ public class NetworkModel implements JsonRpcServiceObserver {
                 if (!AndroidUtils.isDebugBuild()
                         && entry.getKey().equals(BraveWalletConstants.LOCALHOST_CHAIN_ID)) {
                     // Hide local host for non-debug builds.
-                    mJsonRpcService.addHiddenNetwork(
-                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                    mJsonRpcService.setNetworkHidden(entry.getValue(), entry.getKey(), true);
                 } else {
-                    mJsonRpcService.removeHiddenNetwork(
-                            entry.getValue(), entry.getKey(), result -> {/* No-op. */});
+                    mJsonRpcService.setNetworkHidden(entry.getValue(), entry.getKey(), false);
                 }
             }
 
@@ -298,24 +293,18 @@ public class NetworkModel implements JsonRpcServiceObserver {
         }
     }
 
-    public void setNetworkWithAccountCheck(NetworkInfo networkToBeSetAsSelected,
-            boolean setNetworkAsDefault, Callbacks.Callback1<Boolean> callback) {
-        NetworkInfo selectedNetwork = _mDefaultNetwork.getValue();
-        if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
-
+    public void setNetworkWithAccountCheck(
+            NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
         mBraveWalletService.ensureSelectedAccountForChain(
-                networkToBeSetAsSelected.coin, networkToBeSetAsSelected.chainId, accountId -> {
+                networkToBeSetAsSelected.coin,
+                networkToBeSetAsSelected.chainId,
+                accountId -> {
                     if (accountId == null) {
                         _mNeedToCreateAccountForNetwork.postValue(networkToBeSetAsSelected);
                         callback.call(false);
                         return;
                     }
-                    if (setNetworkAsDefault) {
-                        setDefaultNetwork(networkToBeSetAsSelected, callback);
-                    } else {
-                        setNetworkForSelectedAccountOnActiveOrigin(
-                                networkToBeSetAsSelected, callback);
-                    }
+                    setNetworkForSelectedAccountOnActiveOrigin(networkToBeSetAsSelected, callback);
                 });
     }
 

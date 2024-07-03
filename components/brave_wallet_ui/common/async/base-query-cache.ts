@@ -9,7 +9,6 @@ import { EntityId } from '@reduxjs/toolkit'
 // constants
 import {
   BraveWallet,
-  SupportedCoinTypes,
   SupportedTestNetworks,
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
@@ -127,21 +126,6 @@ export class BaseQueryCache {
     if (!this._networksRegistry) {
       const { jsonRpcService } = getAPIProxy()
 
-      // network type flags
-      const { isBitcoinEnabled, isZCashEnabled } = await this.getWalletInfo()
-
-      // Get all networks
-      const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
-        // FIL and SOL networks, unless enabled by brave://flags
-        return (
-          coin === BraveWallet.CoinType.FIL ||
-          coin === BraveWallet.CoinType.SOL ||
-          (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
-          (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
-          coin === BraveWallet.CoinType.ETH
-        )
-      })
-
       const visibleIds: string[] = []
       const hiddenIds: string[] = []
       const visibleIdsByCoinType: Record<EntityId, EntityId[]> = {}
@@ -153,82 +137,41 @@ export class BaseQueryCache {
 
       const { networks } = await jsonRpcService.getAllNetworks()
 
-      // Get all networks for supported coin types
-      const networkLists: BraveWallet.NetworkInfo[][] = await mapLimit(
-        filteredSupportedCoinTypes,
-        10,
-        async (coin: BraveWallet.CoinType) => {
-          // hidden networks for coin
-          let hiddenNetworkIds: string[] = []
-          try {
-            const { chainIds } = await jsonRpcService.getHiddenNetworks(coin)
-            hiddenNetworkIds = chainIds.map(
-              (id) =>
-                networkEntityAdapter.selectId({
-                  coin,
-                  chainId: id
-                }) as string
-            )
-          } catch (error) {
-            console.log(error)
-            console.log(
-              `Unable to fetch Hidden ChainIds for coin: ${
-                coin //
-              }`
-            )
-            throw new Error(
-              `Unable to fetch Hidden ChainIds for coin: ${
-                coin //
-              }`
-            )
-          }
+      networks.map((n) => {
+        const networkId = networkEntityAdapter.selectId(n).toString()
 
-          visibleIdsByCoinType[coin] = []
-          hiddenIdsByCoinType[coin] = []
-
-          networks.forEach(({ chainId, coin: networkCoin }) => {
-            if (networkCoin !== coin) {
-              return
-            }
-            const networkId = networkEntityAdapter
-              .selectId({
-                chainId,
-                coin
-              })
-              .toString()
-
-            if (SupportedTestNetworks.includes(chainId)) {
-              testnetIds.push(networkId)
-            } else {
-              mainnetIds.push(networkId)
-            }
-
-            if (hiddenNetworkIds.includes(networkId)) {
-              hiddenIdsByCoinType[coin].push(networkId)
-              hiddenIds.push(networkId)
-            } else {
-              // visible networks for coin
-              visibleIdsByCoinType[coin].push(networkId)
-              visibleIds.push(networkId)
-            }
-
-            // on-ramps
-            if (SupportedOnRampNetworks.includes(chainId)) {
-              onRampIds.push(networkId)
-            }
-
-            // off-ramps
-            if (SupportedOffRampNetworks.includes(chainId)) {
-              offRampIds.push(networkId)
-            }
-          })
-
-          // all networks
-          return networks
+        if (visibleIdsByCoinType[n.coin] === undefined) {
+          visibleIdsByCoinType[n.coin] = []
         }
-      )
+        if (hiddenIdsByCoinType[n.coin] === undefined) {
+          hiddenIdsByCoinType[n.coin] = []
+        }
 
-      const networksList = networkLists.flat(1)
+        if (n.props.isHidden) {
+          hiddenIdsByCoinType[n.coin].push(networkId)
+          hiddenIds.push(networkId)
+        } else {
+          // visible networks for coin
+          visibleIdsByCoinType[n.coin].push(networkId)
+          visibleIds.push(networkId)
+        }
+
+        if (SupportedTestNetworks.includes(n.chainId)) {
+          testnetIds.push(networkId)
+        } else {
+          mainnetIds.push(networkId)
+        }
+
+        // on-ramps
+        if (SupportedOnRampNetworks.includes(n.chainId)) {
+          onRampIds.push(networkId)
+        }
+
+        // off-ramps
+        if (SupportedOffRampNetworks.includes(n.chainId)) {
+          offRampIds.push(networkId)
+        }
+      })
 
       // normalize list into a registry
       const normalizedNetworksState = networkEntityAdapter.setAll(
@@ -243,7 +186,7 @@ export class BaseQueryCache {
           mainnetIds,
           testnetIds
         },
-        networksList
+        networks
       )
 
       this._networksRegistry = normalizedNetworksState

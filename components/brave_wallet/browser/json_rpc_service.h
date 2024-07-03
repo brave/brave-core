@@ -251,9 +251,6 @@ class JsonRpcService : public mojom::JsonRpcService {
 
   std::string GetChainIdSync(mojom::CoinType coin,
                              const std::optional<::url::Origin>& origin) const;
-  void GetDefaultChainId(
-      mojom::CoinType coin,
-      mojom::JsonRpcService::GetDefaultChainIdCallback callback) override;
   void GetChainIdForOrigin(
       mojom::CoinType coin,
       const ::url::Origin& origin,
@@ -266,18 +263,9 @@ class JsonRpcService : public mojom::JsonRpcService {
   void NotifySwitchChainRequestProcessed(const std::string& request_id,
                                          bool approved) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
-  void GetCustomNetworks(mojom::CoinType coin,
-                         GetCustomNetworksCallback callback) override;
-  void GetKnownNetworks(mojom::CoinType coin,
-                        GetKnownNetworksCallback callback) override;
-  void GetHiddenNetworks(mojom::CoinType coin,
-                         GetHiddenNetworksCallback callback) override;
-  void AddHiddenNetwork(mojom::CoinType coin,
+  void SetNetworkHidden(mojom::CoinType coin,
                         const std::string& chain_id,
-                        AddHiddenNetworkCallback callback) override;
-  void RemoveHiddenNetwork(mojom::CoinType coin,
-                           const std::string& chain_id,
-                           RemoveHiddenNetworkCallback callback) override;
+                        bool hidden) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;

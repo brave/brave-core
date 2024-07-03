@@ -56,6 +56,12 @@ constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
 // Deprecated 06/2024.
 constexpr char kBraveWalletTransactionsChainIdMigrated[] =
     "brave.wallet.transactions.chain_id_migrated";
+// Deprecated 07/2024.
+inline constexpr char kBraveWalletDefaultHiddenNetworksVersion[] =
+    "brave.wallet.user.assets.default_hidden_networks_version";
+// Deprecated 07/2024.
+inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
+    "brave.wallet.custom_networks.fantom_mainnet_migrated";
 
 // Deprecated 07/2024
 constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
@@ -138,6 +144,11 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
                                 false);
   // Deprecated 06/2024.
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
+  // Deprecated 07/2024
+  registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
+  // Deprecated 07/2024
+  registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
+                                false);
 }
 
 void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -164,6 +175,10 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
   // Deprecated 06/2024.
   prefs->ClearPref(kBraveWalletTransactionsChainIdMigrated);
+  // Deprecated 07/2024.
+  prefs->ClearPref(kBraveWalletDefaultHiddenNetworksVersion);
+  // Deprecated 07/2024.
+  prefs->ClearPref(kBraveWalletCustomNetworksFantomMainnetMigrated);
 }
 
 void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
@@ -262,9 +277,6 @@ void RegisterProfilePrefsForMigration(
                              base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
-  // Added 03/2023
-  registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
   // Added 06/2023
   registry->RegisterIntegerPref(
       kBraveWalletSelectedCoinDeprecated,
@@ -272,10 +284,6 @@ void RegisterProfilePrefsForMigration(
 
   // Added 07/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsFromPrefsToDBMigrated,
-                                false);
-
-  // Added 08/2023
-  registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
                                 false);
 
   // Added 01/2024
@@ -337,13 +345,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   ClearDeprecatedProfilePrefsMigrationFlags(prefs);
-
-  // Added 03/2023 to add filecoin evm support.
-  BraveWalletService::MigrateHiddenNetworks(prefs);
-
-  // Added 08/2023 to add Fantom as a custom network if selected for the default
-  // or custom origins.
-  BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
 
   // Added 07/2023
   MigrateDerivedAccountIndex(prefs);

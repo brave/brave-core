@@ -150,7 +150,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
     @Override
     public void onNetworkItemSelected(@NonNull final NetworkInfo networkInfo) {
         mNetworkModel.setNetworkWithAccountCheck(
-                networkInfo, false, isSelected -> updateNetworkUi(networkInfo, isSelected));
+                networkInfo, isSelected -> updateNetworkUi(networkInfo, isSelected));
     }
 
     private void updateNetworkUi(NetworkInfo networkInfo, boolean isSelected) {

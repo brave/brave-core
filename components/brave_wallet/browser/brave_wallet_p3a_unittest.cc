@@ -60,11 +60,11 @@ class BraveWalletP3AUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterLocalStatePrefsForMigration(local_state_.registry());
 
-    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
-
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_, TestBraveWalletServiceDelegate::Create(),
         &prefs_, &local_state_);
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>(
+        brave_wallet_service_->network_manager());
     brave_wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
     keyring_service_ = brave_wallet_service_->keyring_service();

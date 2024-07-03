@@ -1351,6 +1351,13 @@ enum CoinType {
   SOL = 501
 };
 
+struct NetworkProps {
+  bool is_known;
+  bool is_custom;
+  bool is_hidden;
+  bool is_dapp_default;
+};
+
 struct NetworkInfo {
   string chain_id;
   string chain_name;
@@ -1363,6 +1370,7 @@ struct NetworkInfo {
   int32 decimals;
   CoinType coin;
   array<KeyringId> supported_keyrings;
+  NetworkProps props;
 };
 
 struct OriginInfo {
@@ -1480,15 +1488,8 @@ interface JsonRpcService {
     => (bool success);
   GetNetwork(CoinType coin, url.mojom.Origin? origin) => (NetworkInfo network);
   GetAllNetworks() => (array<NetworkInfo> networks);
-  GetCustomNetworks(CoinType coin) => (array<string> chain_ids);
-  GetKnownNetworks(CoinType coin) => (array<string> chain_ids);
-  GetHiddenNetworks(CoinType coin) => (array<string> chain_ids);
-  AddHiddenNetwork(CoinType coin, string chain_id) => (bool success);
-  RemoveHiddenNetwork(CoinType coin, string chain_id) => (bool success);
+  SetNetworkHidden(CoinType coin, string chain_id, bool hidden);
 
-  // Obtains the default network's chain ID when there is no origin info
-  // available. Ex. wallet page.
-  GetDefaultChainId(CoinType coin) => (string chain_id);
   // Obtains the selected network's chain ID for origin.
   GetChainIdForOrigin(CoinType coin, url.mojom.Origin origin) => (string chain_id);
 
