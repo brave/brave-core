@@ -277,8 +277,22 @@ public class AppStoreSDK: ObservableObject {
           // Verify the transaction
           let transaction = try self.verify(result)
 
+          // Once our backend allows restoring purchases `without` linking, we can get rid of this and just use `processTransaction`.
+          #if !BACKEND_SUPPORTS_IOS_MULTI_DEVICE_RESTORE
+          // Retrieve all products the user purchased
+          let purchasedProducts = await self.fetchPurchasedProducts()
+
+          // Transactions must be marked as completed once processed
+          await transaction.finish()
+
+          // Distribute the purchased products to the customer
+          await MainActor.run {
+            self.purchasedProducts = purchasedProducts
+          }
+          #else
           // Process the transaction with our backend
           try await self.processTransaction(transaction, for: transaction.productID)
+          #endif
         } catch {
           Logger.module.error(
             "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
