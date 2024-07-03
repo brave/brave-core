@@ -103,15 +103,11 @@ source_set("browser_tests") {
     "//brave/components/constants",
     "//brave/components/web_discovery/common",
     "//brave/components/web_discovery/common:mojom",
+    "//chrome/test:test_support",
     "//content/test:test_support",
     "//net:test_support",
     "//services/service_manager/public/cpp",
     "//testing/gtest",
   ]
-  if (!is_android) {
-    deps += [ "//chrome/test:test_support_ui" ]
-  } else {
-    deps += [ "//chrome/test:test_support_ui_android" ]
-  }
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }

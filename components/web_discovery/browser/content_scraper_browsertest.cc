@@ -12,13 +12,18 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_base.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -36,16 +41,18 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
  public:
   WebDiscoveryContentScraperTest()
       : scoped_features_(features::kWebDiscoveryNative) {}
+
+  // PlatformBrowserTest:
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
     base::FilePath data_path =
         base::PathService::CheckedGet(brave::DIR_TEST_DATA);
     data_path = data_path.AppendASCII("web_discovery");
 
     host_resolver()->AddRule("*", "127.0.0.1");
-    auto& test_server = embedded_https_test_server();
-    test_server.ServeFilesFromDirectory(data_path);
-    ASSERT_TRUE(test_server.Start());
+    test_server_.ServeFilesFromDirectory(data_path);
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    ASSERT_TRUE(test_server_.Start());
 
     InitScraper();
     run_loop_ = std::make_unique<base::RunLoop>();
@@ -54,12 +61,29 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
                                        &page_content_));
   }
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
  protected:
   mojo::Remote<mojom::DocumentExtractor> LoadTestPageAndGetExtractor() {
     mojo::Remote<mojom::DocumentExtractor> remote;
 
-    auto url = embedded_https_test_server().GetURL("example.com", "/page.html");
-    auto* render_frame_host = ui_test_utils::NavigateToURL(browser(), url);
+    auto url = test_server_.GetURL("example.com", "/page.html");
+    auto* contents = chrome_test_utils::GetActiveWebContents(this);
+    EXPECT_TRUE(content::NavigateToURL(contents, url));
+    auto* render_frame_host = contents->GetPrimaryMainFrame();
 
     if (render_frame_host) {
       render_frame_host->GetRemoteInterfaces()->GetInterface(
@@ -148,6 +172,8 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
                                                 &regex_util_);
   }
 
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  net::EmbeddedTestServer test_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   base::test::ScopedFeatureList scoped_features_;
   RegexUtil regex_util_;
   std::unique_ptr<ServerConfigLoader> server_config_loader_;

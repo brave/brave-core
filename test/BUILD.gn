@@ -928,7 +928,6 @@ test("brave_browser_tests") {
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/url_sanitizer/browser",
-    "//brave/components/web_discovery/browser:browser_tests",
     "//brave/components/webcompat:core",
     "//brave/renderer/skus:browser_tests",
     "//brave/renderer/test:browser_tests",
