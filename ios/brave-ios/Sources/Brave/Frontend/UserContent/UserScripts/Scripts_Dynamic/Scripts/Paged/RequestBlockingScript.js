@@ -35,6 +35,14 @@ window.__firefox__.execute(function($) {
       return blocked
     });
   });
+  const patchProgressEvent = $((progressEvent) =>{
+    Object.setPrototypeOf(progressEvent, window.XMLHttpRequestProgressEvent.prototype)
+    Object.defineProperties(progressEvent, {
+      position: { value: 0 },
+      totalSize: { value: 0 }
+    })
+    return progressEvent
+  });
 
   const { fetch: originalFetch } = window
   window.fetch = $(function() {
@@ -102,8 +110,10 @@ window.__firefox__.execute(function($) {
         Object.defineProperties(this, {
           readyState: { value: 4 }
         })
+        this.dispatchEvent(patchProgressEvent(new ProgressEvent('loadstart')))
         this.dispatchEvent(new Event('readystatechange'))
-        this.dispatchEvent(new ProgressEvent('error'))
+        this.dispatchEvent(patchProgressEvent(new ProgressEvent('error')))
+        this.dispatchEvent(patchProgressEvent(new ProgressEvent('loadend')))
       } else {
         originalSend.apply(this, arguments)
       }
