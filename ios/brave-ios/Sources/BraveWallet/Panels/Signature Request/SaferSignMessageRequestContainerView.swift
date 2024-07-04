@@ -162,7 +162,7 @@ struct SaferSignMessageRequestContainerView: View {
 
   private var networkFeeSection: some View {
     VStack(alignment: .leading, spacing: 4) {
-      HStack {
+      HStack(alignment: .top) {
         VStack(alignment: .leading, spacing: 4) {
           Text(Strings.Wallet.swapConfirmationNetworkFee)
             .fontWeight(.medium)
@@ -193,6 +193,9 @@ struct SaferSignMessageRequestContainerView: View {
           Text(detailsButtonTitle)
             .fontWeight(.medium)
             .foregroundColor(Color(braveSystemName: .textInteractive))
+        }
+        .transaction {
+          $0.disablesAnimations = true
         }
       }
     }
