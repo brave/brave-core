@@ -81,6 +81,11 @@ private class URLTextField: UITextField {
 
   @objc
   private func editingChanged() {
+    // The current design of the bookmarks screen allows the user to save a bookmark without this
+    // textField ending editing (losing first responder)
+    // So the internal text tracking will not match what the user entered unless we track their typed characters.
+    // It is much easier to keep this logic here (incapsulated) than to add it to the navigation bar button.
+    // Once we rewrite bookmarks screen to SwiftUI, we can get rid of all this stuff.
     oldText = super.text
   }
 }
