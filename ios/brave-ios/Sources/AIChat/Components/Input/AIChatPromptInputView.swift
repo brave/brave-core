@@ -150,6 +150,7 @@ struct AIChatPromptInputView: View {
             .padding(.vertical, 4.0)
             .padding(.bottom, 16.0)
         }
+        .disabled(prompt.isEmpty)
       }
       .padding(.horizontal, 8.0)
     }
