@@ -34,7 +34,7 @@ constexpr net::NetworkTrafficAnnotationTag kFetchNetworkTrafficAnnotation =
     semantics {
       sender: "Brave Web Discovery Double Fetch"
       description:
-        "Retrieves a page of interest without session cookies for
+        "Retrieves a page of interest without cookies for
          scraping and reporting via Web Discovery."
       trigger:
         "Requests are sent minutes after the original

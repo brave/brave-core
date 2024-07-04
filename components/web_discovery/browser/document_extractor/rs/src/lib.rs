@@ -13,7 +13,6 @@ use kuchikiki::{
     traits::TendrilSink,
 };
 
-#[allow(unsafe_op_in_unsafe_fn)]
 #[cxx::bridge(namespace = "rust_document_extractor")]
 mod ffi {
     pub struct SelectAttributeRequest {
