@@ -21,6 +21,7 @@ static_library("browser") {
     "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
+    "//brave/components/version_info",
     "//brave/components/webcompat_reporter/buildflags",
     "//content/public/browser",
     "//net",
