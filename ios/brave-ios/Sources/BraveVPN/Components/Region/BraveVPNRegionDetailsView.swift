@@ -24,27 +24,23 @@ struct BraveRegionDetailsView: View {
   @State
   private var regionModificationTimer: Timer?
 
-  private var isAutoSelectEnabled: Bool
+  private var countryRegion: GRDRegion?
 
   private var cityRegions: [GRDRegion]
 
-  private var countryRegion: GRDRegion?
-
   public init(
     countryRegion: GRDRegion?,
-    with cityRegions: [GRDRegion] = [],
-    isAutoSelectEnabled: Bool = true
+    with cityRegions: [GRDRegion] = []
   ) {
     self.countryRegion = countryRegion
     self.cityRegions = cityRegions
-    self.isAutoSelectEnabled = isAutoSelectEnabled
   }
 
   var body: some View {
     List {
       Section(header: Text(Strings.VPN.availableServerTitle)) {
         ForEach(cityRegionDetail.cityRegions) { server in
-          cityRegionItem(at: 0, region: server)
+          cityRegionItem(region: server)
         }
       }
       .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
@@ -76,9 +72,7 @@ struct BraveRegionDetailsView: View {
       }
 
       cityRegionDetail.assignSelectedRegion(
-        isAutoSelectEnabled: isAutoSelectEnabled,
         countryName: countryRegion?.country ?? "",
-        countryISOCode: countryRegion?.countryISOCode ?? "",
         cityRegions: regions
       )
     }
@@ -105,7 +99,7 @@ struct BraveRegionDetailsView: View {
   }
 
   @ViewBuilder
-  private func cityRegionItem(at index: Int, region: BraveVPNCityRegion) -> some View {
+  private func cityRegionItem(region: BraveVPNCityRegion) -> some View {
     HStack {
       VStack(alignment: .leading) {
         Text(region.displayName.capitalizeFirstLetter)
@@ -146,17 +140,23 @@ struct BraveRegionDetailsView: View {
 
     Task { @MainActor in
       var regionToChange: GRDRegion?
+      var regionPrecision: BraveVPN.RegionPrecision
 
       // If the optimal server is chosen, we activate the country
       // This is done in order to handle auto selection
       // cities among the list in selected region/country
       if region.regionName == BraveVPNCityRegion.optimalCityRegionName {
-        regionToChange = nil
+        regionToChange = countryRegion
+        regionPrecision = .country
       } else {
         regionToChange = cityRegions.filter { $0.regionName == region.regionName }.first
+        regionPrecision = .city
       }
 
-      let success = await BraveVPN.changeVPNRegionForPrecision(to: regionToChange, with: .city)
+      let success = await BraveVPN.changeVPNRegionForPrecision(
+        to: regionToChange,
+        with: regionPrecision
+      )
 
       isLoading = false
 
