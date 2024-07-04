@@ -206,14 +206,21 @@ public struct BraveVPNRegionListView: View {
   private func enableAutomaticServer(_ enabled: Bool) {
     isAutomatic = enabled
 
+    guard isAutomatic else {
+      let autoRegion = BraveVPN.allRegions.first(where: {
+        $0.countryISOCode == BraveVPN.lastKnownRegion?.countryISOCode
+      })
+      changeCountryRegion(with: autoRegion)
+      return
+    }
+
     // Implementation detail: nil region means we use an automatic way to connect to the host.
     changeCountryRegion(with: nil)
   }
 
-  private func selectDesignatedVPNRegion(at index: Int, isAutomatic: Bool = false) {
+  private func selectDesignatedVPNRegion(at index: Int) {
     guard !isLoading, let desiredRegion = BraveVPN.allRegions[safe: index],
-      desiredRegion.regionName != BraveVPN.selectedRegion?.regionName,
-      desiredRegion.countryISOCode != BraveVPN.selectedRegion?.countryISOCode
+      desiredRegion.regionName != BraveVPN.selectedRegion?.regionName
     else {
       return
     }
