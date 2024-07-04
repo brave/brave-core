@@ -87,10 +87,25 @@ std::optional<std::string> FinishJoin(
     std::vector<const uint8_t> group_pub_key,
     std::vector<const uint8_t> gsk,
     std::vector<const uint8_t> join_resp_bytes) {
-  auto finish_res = anonymous_credential_manager->finish_join(
-      rust::Slice(group_pub_key.data(), group_pub_key.size()),
-      rust::Slice(gsk.data(), gsk.size()),
+  auto pub_key_result = anonymous_credentials::load_group_public_key(
+      rust::Slice(group_pub_key.data(), group_pub_key.size()));
+  auto gsk_result = anonymous_credentials::load_credential_big(
+      rust::Slice(gsk.data(), gsk.size()));
+  auto join_resp_result = anonymous_credentials::load_join_response(
       rust::Slice(join_resp_bytes.data(), join_resp_bytes.size()));
+  if (!pub_key_result.error_message.empty() ||
+      !gsk_result.error_message.empty() ||
+      !join_resp_result.error_message.empty()) {
+    VLOG(1) << "Failed to finish credential join due to deserialization error "
+               "with group pub key, gsk, or join response: "
+            << pub_key_result.error_message.c_str()
+            << gsk_result.error_message.c_str()
+            << join_resp_result.error_message.c_str();
+    return std::nullopt;
+  }
+  auto finish_res = anonymous_credential_manager->finish_join(
+      *pub_key_result.value, *gsk_result.value,
+      std::move(join_resp_result.value));
   if (!finish_res.error_message.empty()) {
     VLOG(1) << "Failed to finish credential join for " << date << ": "
             << finish_res.error_message.c_str();
@@ -106,16 +121,22 @@ std::optional<std::vector<const uint8_t>> PerformSign(
     std::optional<std::vector<uint8_t>> gsk_bytes,
     std::optional<std::vector<uint8_t>> credential_bytes) {
   if (gsk_bytes && credential_bytes) {
-    auto set_res = anonymous_credential_manager->set_gsk_and_credentials(
+    auto gsk_result = anonymous_credentials::load_credential_big(
         rust::Slice(reinterpret_cast<const uint8_t*>(gsk_bytes->data()),
-                    gsk_bytes->size()),
+                    gsk_bytes->size()));
+    auto credential_result = anonymous_credentials::load_user_credentials(
         rust::Slice(reinterpret_cast<const uint8_t*>(credential_bytes->data()),
                     credential_bytes->size()));
-    if (!set_res.error_message.empty()) {
-      VLOG(1) << "Failed to sign due to credential set failure: "
-              << set_res.error_message.c_str();
+    if (!gsk_result.error_message.empty() ||
+        !credential_result.error_message.empty()) {
+      VLOG(1) << "Failed to sign due to deserialization error with gsk, or "
+                 "user credential: "
+              << gsk_result.error_message.c_str()
+              << credential_result.error_message.c_str();
       return std::nullopt;
     }
+    anonymous_credential_manager->set_gsk_and_credentials(
+        std::move(gsk_result.value), std::move(credential_result.value));
   }
   auto sig_res = anonymous_credential_manager->sign(
       rust::Slice(msg.data(), msg.size()),

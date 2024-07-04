@@ -76,9 +76,9 @@ constexpr char kPatternsFilename[] = "wdp_patterns.json";
 constexpr char kOmittedLocationValue[] = "--";
 constexpr auto kAllowedReportLocations =
     base::MakeFixedFlatSet<std::string_view>(
-        {"de", "at", "ch", "es", "us", "fr", "nl", "gb", "it", "be",
-         "se", "dk", "fi", "cz", "gr", "hu", "ro", "no", "ca", "au",
-         "ru", "ua", "in", "pl", "jp", "br", "mx", "cn", "ar"});
+        {"ar", "at", "au", "be", "br", "ca", "ch", "cn", "cz", "de",
+         "dk", "es", "fi", "fr", "gb", "gr", "hu", "in", "it", "jp",
+         "mx", "nl", "no", "pl", "ro", "ru", "se", "ua", "us"});
 
 KeyMap ParseKeys(const base::Value::Dict& encoded_keys) {
   KeyMap map;

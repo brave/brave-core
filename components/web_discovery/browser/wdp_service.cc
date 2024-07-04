@@ -109,6 +109,15 @@ void WDPService::Stop() {
   content_scraper_ = nullptr;
   server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
+
+  profile_prefs_->ClearPref(kWebDiscoveryNativeEnabled);
+  profile_prefs_->ClearPref(kAnonymousCredentialsDict);
+  profile_prefs_->ClearPref(kCredentialRSAPrivateKey);
+  profile_prefs_->ClearPref(kCredentialRSAPublicKey);
+  profile_prefs_->ClearPref(kScheduledDoubleFetches);
+  profile_prefs_->ClearPref(kScheduledReports);
+  profile_prefs_->ClearPref(kUsedBasenameCounts);
+  profile_prefs_->ClearPref(kPageCounts);
 }
 
 void WDPService::OnEnabledChange() {

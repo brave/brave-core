@@ -11,12 +11,18 @@ namespace web_discovery {
 // Profile prefs
 inline constexpr char kWebDiscoveryNativeEnabled[] =
     "brave.web_discovery.wdp_native_enabled";
+
+// The following pref values are used for generating
+// anonymous signatures for user submissions.
+// Since they are not used for encrypting sensitive data,
+// they do not require secure storage.
 inline constexpr char kCredentialRSAPrivateKey[] =
     "brave.web_discovery.rsa_priv_key";
 inline constexpr char kCredentialRSAPublicKey[] =
     "brave.web_discovery.rsa_pub_key";
 inline constexpr char kAnonymousCredentialsDict[] =
     "brave.web_discovery.anon_creds";
+
 inline constexpr char kScheduledDoubleFetches[] =
     "brave.web_discovery.scheduled_double_fetches";
 inline constexpr char kScheduledReports[] =
