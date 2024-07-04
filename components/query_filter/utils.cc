@@ -30,6 +30,9 @@ static constexpr auto kSimpleQueryStringTrackers =
             "__hstc",
             // https://github.com/brave/brave-browser/issues/8975
             "__s",
+            // https://github.com/brave/brave-browser/issues/39575
+            "_branch_match_id",
+            "_branch_referrer",
             // https://github.com/brave/brave-browser/issues/33188
             "_gl",
             // https://github.com/brave/brave-browser/issues/9019
