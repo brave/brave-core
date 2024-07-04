@@ -90,8 +90,7 @@ export const formatAsDouble = (value: string): string =>
   value.replace(/[^0-9.,]+/g, '')
 
 export const isHttpsUrl = (url: string) => {
-  const re = /^\s*https?:\/\//
-  return re.test(url)
+  return url.startsWith('https://')
 }
 
 export function hasUnicode(str: string) {
