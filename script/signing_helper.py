@@ -15,6 +15,7 @@ import signing.signing  # pylint: disable=import-error, wrong-import-position, u
 import signing.model  # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 
 from lib.widevine import can_generate_sig_file, generate_sig_file
+from os.path import basename, splitext, exists
 from signing import model  # pylint: disable=import-error, reimported
 
 # Construct path to signing modules in chrome/installer/mac/signing
@@ -94,17 +95,20 @@ def BraveModifyPartsForSigning(parts, config):
                                    | CodeSignOptions.KILL
                                    | CodeSignOptions.HARDENED_RUNTIME)
 
-    # Change privileged helper entry with hardcoded org.chromium.Chromium brand
-    # since we don't override branding file for it yet and we don't use it.
-    parts['privileged-helper'].path = re.sub(
-        r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
-        'org.chromium.Chromium.UpdaterPrivilegedHelper',
-        parts['privileged-helper'].path,
-        flags=re.VERBOSE)
-    parts['privileged-helper'].identifier = re.sub(
-        r'com.brave.Browser(.*).UpdaterPrivilegedHelper',
-        'org.chromium.Chromium.UpdaterPrivilegedHelper',
-        parts['privileged-helper'].identifier)
+    # The privileged helper is com.brave.Browser.UpdaterPrivilegedHelper. But
+    # the value here is com.brave.Browser.<channel>.UpdaterPrivilegedHelper.
+    # This is because our current branding logic treats each channel as a
+    # separate product. We should instead use upstream's channel_customize
+    # mechanism. See https://github.com/brave/brave-browser/issues/39347.
+    privileged_helper = parts['privileged-helper']
+    channel_re = 'com.brave.Browser(.*).UpdaterPrivilegedHelper'
+    replacement = 'com.brave.Browser.UpdaterPrivilegedHelper'
+    privileged_helper.path = re.sub(channel_re, replacement,
+                                    privileged_helper.path)
+    privileged_helper.identifier = re.sub(channel_re, replacement,
+                                          privileged_helper.identifier)
+
+    parts.update(GetUpdaterSigningParts(config))
 
     return parts
 
@@ -159,3 +163,37 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
             return True
 
     return ProvisioningProfileCodeSignConfig
+
+
+def GetUpdaterSigningParts(config):
+    try:
+        from signing import updater_parts  # pylint: disable=import-outside-toplevel
+    except ImportError:
+        # brave_enable_updater is false.
+        return {}
+    result = {}
+    updater_config = ConfigWrapper(config)
+    updater_config.app_product = 'BraveUpdater'  # pylint: disable=W0201
+    updater_config.keystone_app_name = 'BraveSoftwareUpdate'  # pylint: disable=W0201
+    for part in updater_parts.get_parts(updater_config):
+        name = 'updater-' + basename(splitext(part.path)[0]).lower()
+        part.path = \
+            '{0.framework_dir}/Versions/{0.version}/Helpers/'.format(config) + \
+            part.path
+        if exists(part.path):
+            result[name] = part
+    assert result, "No Updater files. Has upstream's directory layout changed?"
+    return result
+
+
+class ConfigWrapper:
+    """
+    DistributionCodeSignConfig's attributes are read-only. ConfigWrapper lets us
+    wrap its instances and partially set different attribute values.
+    """
+
+    def __init__(self, target):
+        self._target = target
+
+    def __getattr__(self, name):
+        return getattr(self._target, name)

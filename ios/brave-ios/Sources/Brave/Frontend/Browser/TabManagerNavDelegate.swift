@@ -11,13 +11,13 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     delegates.insert(delegate)
   }
 
-  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation) {
     for delegate in delegates {
       delegate.webView?(webView, didCommit: navigation)
     }
   }
 
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+  func webView(_ webView: WKWebView, didFail navigation: WKNavigation, withError error: Error) {
     for delegate in delegates {
       delegate.webView?(webView, didFail: navigation, withError: error)
     }
@@ -25,7 +25,7 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
 
   func webView(
     _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
+    didFailProvisionalNavigation navigation: WKNavigation,
     withError error: Error
   ) {
     for delegate in delegates {
@@ -33,7 +33,7 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
   }
 
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
     for delegate in delegates {
       delegate.webView?(webView, didFinish: navigation)
     }
@@ -45,10 +45,11 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
   }
 
-  public func webView(
+  func webView(
     _ webView: WKWebView,
-    respondTo challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+    didReceive challenge: URLAuthenticationChallenge,
+    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+  ) {
     let authenticatingDelegates = delegates.filter { wv in
       return wv.responds(
         to: #selector(WKNavigationDelegate.webView(_:didReceive:completionHandler:))
@@ -56,12 +57,15 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
 
     guard let firstAuthenticatingDelegate = authenticatingDelegates.first else {
-      return (.performDefaultHandling, nil)
+      completionHandler(.performDefaultHandling, nil)
+      return
     }
 
-    // Do NOT change to `delegate.webView?(....)` the optional operator makes async-await calls crash the compiler atm!
-    // It must be force-unwrapped at the time of writing `January 17th, 2023`.
-    return await firstAuthenticatingDelegate.webView!(webView, respondTo: challenge)
+    firstAuthenticatingDelegate.webView?(
+      webView,
+      didReceive: challenge,
+      completionHandler: completionHandler
+    )
   }
 
   func webView(
@@ -103,83 +107,74 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     return .allow
   }
 
-  @MainActor
   func webView(
     _ webView: WKWebView,
     decidePolicyFor navigationAction: WKNavigationAction,
-    preferences: WKWebpagePreferences
-  ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
+    preferences: WKWebpagePreferences,
+    decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
+  ) {
     var res = defaultAllowPolicy(for: navigationAction)
     var pref = preferences
 
+    let group = DispatchGroup()
+
     for delegate in delegates {
-      // Needed to resolve ambiguous delegate signatures: https://github.com/apple/swift/issues/45652#issuecomment-1149235081
-      typealias WKNavigationActionSignature = (WKNavigationDelegate) -> (
-        (
-          WKWebView, WKNavigationAction, WKWebpagePreferences,
-          @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void
-        ) -> Void
-      )?
-
-      // Needed to detect if async implementations exist as we cannot detect them directly
-      if delegate.responds(
-        to: #selector(
-          WKNavigationDelegate.webView(_:decidePolicyFor:preferences:decisionHandler:)
-            as WKNavigationActionSignature
-        )
-      ) {
-        // Do NOT change to `delegate.webView?(....)` the optional operator makes async-await calls crash the compiler atm!
-        // It must be force-unwrapped at the time of writing `January 10th, 2023`.
-        let (policy, preferences) = await delegate.webView!(
-          webView,
-          decidePolicyFor: navigationAction,
-          preferences: preferences
-        )
-        if policy == .cancel {
-          res = policy
-        }
-
-        if policy == .download {
-          res = policy
-        }
-
-        pref = preferences
+      if !delegate.responds(to: #selector(webView(_:decidePolicyFor:preferences:decisionHandler:)))
+      {
+        continue
       }
+      group.enter()
+      delegate.webView?(
+        webView,
+        decidePolicyFor: navigationAction,
+        preferences: pref,
+        decisionHandler: { policy, preferences in
+          if policy == .cancel {
+            res = policy
+          }
+
+          if policy == .download {
+            res = policy
+          }
+
+          pref = preferences
+
+          group.leave()
+        }
+      )
     }
 
-    return (res, pref)
+    group.notify(queue: .main) {
+      decisionHandler(res, pref)
+    }
   }
 
-  @MainActor
   func webView(
     _ webView: WKWebView,
-    decidePolicyFor navigationResponse: WKNavigationResponse
-  ) async -> WKNavigationResponsePolicy {
+    decidePolicyFor navigationResponse: WKNavigationResponse,
+    decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
+  ) {
     var res = WKNavigationResponsePolicy.allow
+    let group = DispatchGroup()
     for delegate in delegates {
-      // Needed to resolve ambiguous delegate signatures: https://github.com/apple/swift/issues/45652#issuecomment-1149235081
-      typealias WKNavigationResponseSignature = (WKNavigationDelegate) -> (
-        (WKWebView, WKNavigationResponse, @escaping (WKNavigationResponsePolicy) -> Void) -> Void
-      )?
-
-      // Needed to detect if async implementations exist as we cannot detect them directly
-      if delegate.responds(
-        to: #selector(
-          WKNavigationDelegate.webView(_:decidePolicyFor:decisionHandler:)
-            as WKNavigationResponseSignature
-        )
-      ) {
-        // Do NOT change to `delegate.webView?(....)` the optional operator makes async-await calls crash the compiler atm!
-        // It must be force-unwrapped at the time of writing `January 10th, 2023`.
-        let policy = await delegate.webView!(webView, decidePolicyFor: navigationResponse)
-        if policy == .cancel {
-          res = policy
-        }
-
-        if policy == .download {
-          res = policy
-        }
+      if !delegate.responds(to: #selector(webView(_:decidePolicyFor:decisionHandler:))) {
+        continue
       }
+      group.enter()
+      delegate.webView?(
+        webView,
+        decidePolicyFor: navigationResponse,
+        decisionHandler: { policy in
+          if policy == .cancel {
+            res = policy
+          }
+
+          if policy == .download {
+            res = policy
+          }
+          group.leave()
+        }
+      )
     }
 
     if res == .allow {
@@ -187,11 +182,12 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
       tab?.mimeType = navigationResponse.response.mimeType
     }
 
-    return res
+    group.notify(queue: .main) {
+      decisionHandler(res)
+    }
   }
 
-  @MainActor
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     navigationAction: WKNavigationAction,
     didBecome download: WKDownload
@@ -204,8 +200,7 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
     }
   }
 
-  @MainActor
-  public func webView(
+  func webView(
     _ webView: WKWebView,
     navigationResponse: WKNavigationResponse,
     didBecome download: WKDownload

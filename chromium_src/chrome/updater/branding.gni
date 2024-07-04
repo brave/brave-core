@@ -12,6 +12,23 @@
 # in upstream's .gni file to apply the changes from this scope.
 
 brave_updater_branding = {
+  browser_name = "Brave"
+  browser_product_name = "Brave Browser"
+  crash_product_name = "BraveUpdater"
+  keystone_app_name = "BraveSoftwareUpdate"
+  keystone_bundle_identifier = "com.brave.Keystone"
+  mac_browser_bundle_identifier = "com.brave.Browser"
+  mac_updater_bundle_identifier = "com.brave.Updater"
+  privileged_helper_bundle_name = "BraveUpdaterPrivilegedHelper"
+  privileged_helper_name = "com.brave.Browser.UpdaterPrivilegedHelper"
+  updater_company_full_name = "Brave Software, Inc"
+  updater_company_short_name = "BraveSoftware"
+  updater_company_short_name_uppercase = "BRAVESOFTWARE"
+  updater_copyright = "Copyright 2024 The Brave Authors. All rights reserved."
+  updater_product_full_name = "BraveUpdater"
+  mac_team_identifier = "KL8N8XSYF4"
+  grdfile_name = "brave_strings"
+
   # The following values come from our Omaha 3 implementation:
   legacy_service_name_prefix = "brave"
   UpdaterLegacyLibGUID = "6FF4F468-0B5A-4878-ACEB-86263DAAD877"
@@ -37,6 +54,10 @@ brave_updater_branding = {
 
   # These constants are defined upstream, but not in Omaha 3. Their values
   # were randomly generated to make sure our GUIDs do not clash with upstream:
+  updater_appid = "{72cffe90-7630-4699-85ef-e1ca7199f29c}"
+  qualification_appid = "{912564a7-d68a-4db7-9c0c-9053037b0c96}"
+  prefs_access_mutex = "{102CE911-5DF8-471E-98DD-7EA671821241}"
+  setup_mutex_prefix = "{96CFCDD9-360E-4F0B-A133-A4495C726440}"
   IAppVersionWebUserGUID = "B1FC3654-D8D0-466C-A048-A9DCB7ADB1F3"
   IAppVersionWebSystemGUID = "69F71AD3-C3AE-45C1-A39B-35E013BB162A"
   ICurrentStateUserGUID = "AEA2D927-1846-45D3-BA0A-AEC6B13A663D"
@@ -58,6 +79,9 @@ brave_updater_branding = {
   IPolicyStatusValueUserGUID = "63107867-A897-46C3-AC56-89A07C0A2044"
   IPolicyStatusValueSystemGUID = "2592AA42-E23E-43C8-829A-46ECE27A5AA3"
 
-  # Development server until we have set it up in Brave's AWS account:
-  update_check_url = "https://omaha4.omaha-consulting.com/6f797447-684d-40cf-8d90-075b21aba1f0/service/update2/json"
+  declare_args() {
+    # Omaha 4 update server:
+    update_check_url =
+        "https://updates.bravesoftware.com/non-stable/service/update2/json"
+  }
 }

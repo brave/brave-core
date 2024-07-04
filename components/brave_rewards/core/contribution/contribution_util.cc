@@ -9,8 +9,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type) {
   switch (static_cast<int>(type)) {
@@ -25,7 +24,7 @@ mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type) {
     }
     default: {
       // missing conversion, returning dummy value.
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return mojom::ReportType::TIP;
     }
   }
@@ -100,5 +99,4 @@ int32_t GetVotesFromAmount(const double amount) {
   return std::floor(amount / constant::kVotePrice);
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

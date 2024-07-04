@@ -956,8 +956,6 @@ SimpleHashClient::ParseBalances(const base::Value& json_value,
       continue;
     }
 
-    const std::string* token_id = nft->FindString("token_id");
-
     std::optional<std::string> chain_id_str =
         SimpleHashChainIdToChainId(*chain_id);
     if (!chain_id_str) {
@@ -981,8 +979,14 @@ SimpleHashClient::ParseBalances(const base::Value& json_value,
       nft_identifier->contract_address = *contract_address;
     }
 
+    const std::string* token_id = nft->FindString("token_id");
     if (token_id) {
-      nft_identifier->token_id = *token_id;
+      // Convert the decimal string SimpleHash gives us to a hex string
+      uint256_t token_id_uint256;
+      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+        continue;
+      }
+      nft_identifier->token_id = Uint256ValueToHex(token_id_uint256);
     }
 
     const base::Value::List* owners_list = nft->FindList("owners");
@@ -1046,8 +1050,6 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value,
       continue;
     }
 
-    const std::string* token_id = nft->FindString("token_id");
-
     std::optional<std::string> chain_id_str =
         SimpleHashChainIdToChainId(*chain_id);
     if (!chain_id_str) {
@@ -1069,8 +1071,14 @@ SimpleHashClient::ParseMetadatas(const base::Value& json_value,
       nft_identifier->contract_address = *contract_address;
     }
 
+    const std::string* token_id = nft->FindString("token_id");
     if (token_id) {
-      nft_identifier->token_id = *token_id;
+      // Convert the decimal string SimpleHash gives us to a hex string
+      uint256_t token_id_uint256;
+      if (!Base10ValueToUint256(*token_id, &token_id_uint256)) {
+        continue;
+      }
+      nft_identifier->token_id = Uint256ValueToHex(token_id_uint256);
     }
 
     mojom::NftMetadataPtr nft_metadata = mojom::NftMetadata::New();
@@ -1214,9 +1222,14 @@ GURL SimpleHashClient::GetNftsUrl(
       query_params +=
           *simple_hash_chain_id + "." + nft_identifiers[i]->contract_address;
     } else {
+      uint256_t token_id_uint256;
+      if (!HexValueToUint256(nft_identifiers[i]->token_id, &token_id_uint256)) {
+        return GURL();
+      }
+      std::string token_id_base10 = Uint256ValueToBase10(token_id_uint256);
       query_params += *simple_hash_chain_id + "." +
                       nft_identifiers[i]->contract_address + "." +
-                      nft_identifiers[i]->token_id;
+                      token_id_base10;
     }
     if (i <
         max_items - 1) {  // Check to ensure we do not append a comma at the end

@@ -510,17 +510,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
   @MainActor private func fetchSolEstimatedTxFees(
     for transactions: [BraveWallet.TransactionInfo]
   ) async {
-    for transaction in transactions where transaction.coin == .sol {
-      let (solEstimatedTxFee, _, _) = await solTxManagerProxy.solanaTxFeeEstimation(
-        chainId: transaction.chainId,
-        txMetaId: transaction.id
-      )
-      let priorityFee =
-        UInt64(solEstimatedTxFee.computeUnits) * solEstimatedTxFee.feePerComputeUnit
-        * BraveWallet.MicroLamportsPerLamport
-      let totalFee = solEstimatedTxFee.baseFee + priorityFee
-      self.solEstimatedTxFeeCache[transaction.id] = totalFee
-    }
+    let solTxs = transactions.filter { $0.coin == .sol }
+    let txFees = await solTxManagerProxy.solanaTxFeeEstimations(for: solTxs)
+    solEstimatedTxFeeCache.merge(with: txFees)
     updateTransaction(
       with: activeTransaction,
       shouldFetchCurrentAllowance: false,
@@ -558,17 +550,21 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         gasSymbol = activeParsedTransaction.networkSymbol
         gasAssetRatio = assetRatios[activeParsedTransaction.networkSymbol.lowercased(), default: 0]
 
-        if let gasBalance = gasTokenBalanceCache[network.chainId]?[
+        let gasBalance = gasTokenBalanceCache[network.chainId]?[
           activeParsedTransaction.fromAccountInfo.id
-        ] {
-          if let gasValue = BDouble(gasFee.fee),
-            BDouble(gasBalance) > gasValue
-          {
-            isBalanceSufficient = true
+        ]
+        if let gasBalance,
+          let gasValue = BDouble(gasFee.fee),
+          let fromToken = details.fromToken,
+          let fromValue = BDouble(details.fromAmount)
+        {
+          if network.isNativeAsset(fromToken) {
+            isBalanceSufficient = BDouble(gasBalance) > gasValue + fromValue
           } else {
-            isBalanceSufficient = false
+            isBalanceSufficient = BDouble(gasBalance) > gasValue
           }
-        } else if shouldFetchGasTokenBalance {
+        } else if shouldFetchGasTokenBalance || gasBalance == nil {
+          isBalanceSufficient = false
           if let account = accounts.first(where: {
             $0.id == activeParsedTransaction.fromAccountInfo.id
           }) {
@@ -578,6 +574,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
               network: network
             )
           }
+        } else {
+          isBalanceSufficient = true
         }
       }
       if let fromToken = details.fromToken {
@@ -771,9 +769,9 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           activeParsedTransaction.fromAccountInfo.id
         ] {
           if let gasValue = BDouble(gasFee.fee),
-            BDouble(gasBalance) > gasValue
+            let sendValue = BDouble(details.sendAmount)
           {
-            isBalanceSufficient = true
+            isBalanceSufficient = BDouble(gasBalance) > gasValue + sendValue
           } else {
             isBalanceSufficient = false
           }

@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "リンクをコピー";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "タブ情報をクリップボードにコピーします。";
+
 /* Copy codewords title */
 "CopyToClipboard" = "クリップボードにコピーしました";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "このサイトへの接続は保護されていません。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "サイトの接続が確認されていません";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "このサイトへの接続が完全に確認できませんでした。続行するか、ページを再読み込みして安全な接続を確立してください。";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "証明書を見る";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "同期アカウントを削除";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "ただし、それらのデバイスでローカルに格納されたデータは削除されません。";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "同期チェーンでのデバイス取得中に問題が発生しました。";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "同期アカウントを削除";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "このコードは、古いバージョンのBraveを実行しているデバイスで作成されたようです。他のデバイスでBraveの最新バージョンにアップデートしてから、新しい同期コードを作成してください。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "デバイスと設定";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "接続信頼性の問題";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "問題に当てはまるカテゴリーを選択してください。";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "接続時にインターネットに接続できなかった";

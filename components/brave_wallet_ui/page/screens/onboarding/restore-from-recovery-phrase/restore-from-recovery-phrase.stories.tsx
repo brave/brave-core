@@ -5,44 +5,50 @@
 
 import * as React from 'react'
 
+import { Meta } from '@storybook/react'
 import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingRestoreFromExtension } from './restore-from-extension'
 import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phrase'
 
-export const _OnboardingRestoreFromRecoveryPhrase = () => {
-  return (
-    <WalletPageStory>
+export const _OnboardingRestoreFromRecoveryPhrase = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <OnboardingRestoreFromRecoveryPhrase />
+      </WalletPageStory>
+    )
+  },
+  title: 'Restore From Recovery Phrase'
+
+}
+
+export default {
+  component: OnboardingRestoreFromExtension,
+  render: (args) => {
+    return <WalletPageStory>
+      <OnboardingRestoreFromExtension restoreFrom={args.restoreFrom} />
+    </WalletPageStory>
+  }
+} as Meta<typeof OnboardingRestoreFromExtension>
+
+
+export const RestoreFromRecoveryPhrase = {
+  render: () => {
+    return <WalletPageStory>
       <OnboardingRestoreFromRecoveryPhrase />
     </WalletPageStory>
-  )
+  }
 }
 
-_OnboardingRestoreFromRecoveryPhrase.story = {
-  name: 'Restore From Recovery Phrase'
+export const RestoreFromMetamaskWallet = {
+  args: {
+    restoreFrom: 'metamask'
+  }
 }
 
-export const _OnboardingRestoreFromMetaMaskExtension = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingRestoreFromExtension restoreFrom='metamask' />
-    </WalletPageStory>
-  )
+export const RestoreFromLegacyWallet = {
+  args: {
+    restoreFrom: 'legacy'
+  }
 }
 
-_OnboardingRestoreFromMetaMaskExtension.story = {
-  name: 'Restore From MetaMask (Extension)'
-}
-
-export const _OnboardingRestoreFromLegacyWallet = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingRestoreFromExtension restoreFrom='legacy' />
-    </WalletPageStory>
-  )
-}
-
-_OnboardingRestoreFromLegacyWallet.story = {
-  name: 'Restore From Legacy Wallet'
-}
-
-export default _OnboardingRestoreFromRecoveryPhrase

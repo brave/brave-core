@@ -505,9 +505,15 @@ extension OnboardingPlaylistView {
         .padding()
         .frame(maxWidth: .infinity)
         .background {
-          LottieAnimationView(name: "playlist-confetti", bundle: .module)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
+          LottieView(
+            animation: .named(
+              "playlist-confetti",
+              bundle: .module
+            )
+          )
+          .playing()
+          .resizable()
+          .aspectRatio(contentMode: .fill)
         }
         .clipShape(Rectangle())
         .background(Color(uiColor: .init(rgb: 0x423EEE)))

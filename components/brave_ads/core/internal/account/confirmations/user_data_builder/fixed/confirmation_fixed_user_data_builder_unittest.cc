@@ -33,7 +33,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);
@@ -66,7 +67,8 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForNonRewardsUser) {
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/false);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/false);
 
   // Act
   const base::Value::Dict fixed_user_data = BuildFixedUserData(transaction);

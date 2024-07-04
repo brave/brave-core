@@ -12,28 +12,29 @@ import { AutoLockSettings } from './auto_lock_settings'
 import { Row } from '../../../../../components/shared/style'
 import { autoLockOptions } from '../../../../../options/auto_lock_options'
 
-export const _AutoLockSettings = () => {
-  const [value, setValue] = React.useState(autoLockOptions[0].minutes)
+export const AutoLock = {
+  render: () => {
+    const [value, setValue] = React.useState(autoLockOptions[0].minutes)
 
-  return (
-    <WalletPageStory>
-      <Row
-        justifyContent='center'
-        alignItems='center'
-        padding='0 23px 0'
-      >
-        <AutoLockSettings
-          options={autoLockOptions}
-          value={value}
-          onChange={setValue}
-        />
-      </Row>
-    </WalletPageStory>
-  )
+    return (
+      <WalletPageStory>
+        <Row
+          justifyContent='center'
+          alignItems='center'
+          padding='0 23px 0'
+        >
+          <AutoLockSettings
+            options={autoLockOptions}
+            value={value}
+            onChange={setValue}
+          />
+        </Row>
+      </WalletPageStory>
+    )
+  },
+  title: 'Auto lock settings'
 }
 
-_AutoLockSettings.story = {
-  name: 'Auto lock settings'
+export default {
+  component: AutoLockSettings
 }
-
-export default _AutoLockSettings

@@ -361,7 +361,7 @@ export const ConfirmTransactionPanel = () => {
             <WarningBox warningType={'warning'}>
               <WarningBoxTitleRow>
                 <WarningTitle warningType={'warning'}>
-                  {getLocale('braveWalletConfirmTransactionAccountCreationFee')}
+                  {getLocale('braveWalletConfirmTransactionAccountCreationFee')}{' '}
                   <LearnMoreButton
                     onClick={openAssociatedTokenAccountSupportArticleTab}
                   >

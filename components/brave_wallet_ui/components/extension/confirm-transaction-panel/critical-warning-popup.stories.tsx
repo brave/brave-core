@@ -6,17 +6,19 @@
 import * as React from 'react'
 import { CriticalWarningPopup } from './critical-warning-popup'
 
-export const _TransactionCriticalWarningPopup = () => {
-  return (
-    <CriticalWarningPopup
-      onProceed={function () {
-        alert('On Proceed')
-      }}
-      onCancel={function () {
-        alert('On Cancel')
-      }}
-    />
-  )
+export const _TransactionCriticalWarningPopup = {
+  render: () => {
+    return (
+      <CriticalWarningPopup
+        onProceed={function () {
+          alert('On Proceed')
+        }}
+        onCancel={function () {
+          alert('On Cancel')
+        }}
+      />
+    )
+  }
 }
 
-export default _TransactionCriticalWarningPopup
+export default { component: CriticalWarningPopup }

@@ -72,7 +72,6 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
@@ -98,7 +97,7 @@ import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
-import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesGridLayout;
+import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
@@ -109,7 +108,6 @@ import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.WindowAndroid;
 
 import java.util.ArrayList;
@@ -129,12 +127,14 @@ public class BraveNewTabPageLayout
     // To delete in bytecode, parent variable will be used instead.
     private ViewGroup mMvTilesContainerLayout;
     private LogoCoordinator mLogoCoordinator;
+    private Integer mInitialTileNum;
 
     // Own members.
     private final Context mContext;
     private ImageView mBgImageView;
     private Profile mProfile;
     private SponsoredTab mSponsoredTab;
+    private boolean mIsTablet;
 
     private BitmapDrawable mImageDrawable;
 
@@ -241,29 +241,45 @@ public class BraveNewTabPageLayout
     protected void insertSiteSectionView() {
         mMainLayout = findViewById(R.id.ntp_content);
 
-        mMvTilesContainerLayout = (ViewGroup) LayoutInflater.from(mMainLayout.getContext())
-                                          .inflate(R.layout.mv_tiles_container, mMainLayout, false);
+        mMvTilesContainerLayout =
+                (ViewGroup)
+                        LayoutInflater.from(mMainLayout.getContext())
+                                .inflate(R.layout.mv_tiles_container, mMainLayout, false);
+        mMvTilesContainerLayout.setPadding(0, 0, 0, 0);
         mMvTilesContainerLayout.setVisibility(View.VISIBLE);
 
-        mMvTilesContainerLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mMvTilesContainerLayout.addOnLayoutChangeListener(
-                        (View view, int left, int top, int right, int bottom, int oldLeft,
-                                int oldTop, int oldRight, int oldBottom) -> {
-                            int oldHeight = oldBottom - oldTop;
-                            int newHeight = bottom - top;
+        mMvTilesContainerLayout.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        mMvTilesContainerLayout.addOnLayoutChangeListener(
+                                (View view,
+                                        int left,
+                                        int top,
+                                        int right,
+                                        int bottom,
+                                        int oldLeft,
+                                        int oldTop,
+                                        int oldRight,
+                                        int oldBottom) -> {
+                                    int oldHeight = oldBottom - oldTop;
+                                    int newHeight = bottom - top;
 
-                            if (oldHeight != newHeight && mIsTopSitesEnabled
-                                    && mNtpAdapter != null) {
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    mNtpAdapter.notifyItemRangeChanged(mNtpAdapter.getStatsCount(),
-                                            mNtpAdapter.getNewContentCount() + 2);
+                                    if (oldHeight != newHeight
+                                            && mIsTopSitesEnabled
+                                            && mNtpAdapter != null) {
+                                        new Handler(Looper.getMainLooper())
+                                                .post(
+                                                        () -> {
+                                                            mNtpAdapter.notifyItemRangeChanged(
+                                                                    mNtpAdapter.getStatsCount(),
+                                                                    mNtpAdapter.getNewContentCount()
+                                                                            + 2);
+                                                        });
+                                    }
                                 });
-                            }
-                        });
-            }
-        });
+                    }
+                });
 
         // The page contents are initially hidden; otherwise they'll be drawn centered on the
         // page before the tiles are available and then jump upwards to make space once the
@@ -1189,17 +1205,18 @@ public class BraveNewTabPageLayout
                 isTablet,
                 tabStripHeightSupplier);
 
+        mIsTablet = isTablet;
+
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
 
-        if (mMvTilesContainerLayout != null && !isScrollableMvtEnabled()) {
+        if (mMvTilesContainerLayout != null && useFixedMVTLayout()) {
             ViewGroup tilesLayout = mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
 
-            assert tilesLayout instanceof MostVisitedTilesGridLayout
+            assert tilesLayout instanceof BraveMostVisitedTilesLayoutBase
                     : "Something has changed in the upstream!";
 
-            if (tilesLayout instanceof MostVisitedTilesGridLayout) {
-                ((MostVisitedTilesGridLayout) tilesLayout)
-                        .setMaxRows(getMaxRowsForMostVisitedTiles());
+            if (tilesLayout instanceof BraveMostVisitedTilesLayoutBase) {
+                ((BraveMostVisitedTilesLayoutBase) tilesLayout).setUseFixedLayout(true);
             }
         }
 
@@ -1207,6 +1224,11 @@ public class BraveNewTabPageLayout
         mActivity = activity;
         ((BraveActivity) mActivity).dismissShieldsTooltip();
         ((BraveActivity) mActivity).setNewTabPageManager(manager);
+    }
+
+    protected boolean useFixedMVTLayout() {
+        return !UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
     public void setTabProvider(Supplier<Tab> tabProvider) {
@@ -1471,13 +1493,6 @@ public class BraveNewTabPageLayout
         }
     }
 
-    protected boolean isScrollableMvtEnabled() {
-        return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
-                && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
-                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
-    }
-
     private int getMaxRowsForMostVisitedTiles() {
         try {
             if (!ProfileManager.isInitialized()
@@ -1492,5 +1507,24 @@ public class BraveNewTabPageLayout
         }
 
         return 2;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mIsTablet) {
+            if (mInitialTileNum == null) {
+                // In the upstream `mMvTilesContainerLayout` is added as a view in
+                // `insertSiteSectionView`.
+                // We override `insertSiteSectionView` to add `mMvTilesContainerLayout` in our own
+                // RecyclerView to have own NTP UI.
+                // Thus upstream's NewTabPageLayout.findViewById does not see `mv_tiles_layout` and
+                // returns null.
+                mInitialTileNum =
+                        ((ViewGroup) mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout))
+                                .getChildCount();
+            }
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

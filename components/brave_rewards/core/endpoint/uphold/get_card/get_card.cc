@@ -17,9 +17,7 @@
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace uphold {
+namespace brave_rewards::internal::endpoint::uphold {
 
 GetCard::GetCard(RewardsEngine& engine) : engine_(engine) {}
 
@@ -103,6 +101,4 @@ void GetCard::OnRequest(GetCardCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace uphold
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::uphold

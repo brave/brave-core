@@ -54,7 +54,7 @@ std::u16string BraveIPFSInfoBarDelegate::GetCheckboxText() const {
 }
 
 void BraveIPFSInfoBarDelegate::SetCheckboxChecked(bool checked) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 bool BraveIPFSInfoBarDelegate::InterceptClosing() {

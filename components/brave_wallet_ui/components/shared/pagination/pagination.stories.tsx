@@ -10,22 +10,22 @@ import {
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { Pagination } from './pagination'
 
-export const _Pagination = () => {
-  // state
-  const [currentPageNumber, onSelectPageNumber] = React.useState(1)
+export const _Pagination = {
+  render: () => {
+    // state
+    const [currentPageNumber, onSelectPageNumber] = React.useState(1)
 
-  // render
-  return (
-    <WalletPanelStory>
-      <Pagination
-        currentPageNumber={currentPageNumber}
-        onSelectPageNumber={onSelectPageNumber}
-        lastPageNumber={99999}
-      />
-    </WalletPanelStory>
-  )
+    // render
+    return (
+      <WalletPanelStory>
+        <Pagination
+          currentPageNumber={currentPageNumber}
+          onSelectPageNumber={onSelectPageNumber}
+          lastPageNumber={99999}
+        />
+      </WalletPanelStory>
+    )
+  }
 }
 
-_Pagination.storyName = 'Pagination'
-
-export default _Pagination
+export default { component: Pagination }

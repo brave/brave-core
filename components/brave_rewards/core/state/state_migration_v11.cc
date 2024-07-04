@@ -12,8 +12,7 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
 StateMigrationV11::StateMigrationV11(RewardsEngine& engine) : engine_(engine) {}
 
@@ -33,5 +32,4 @@ void StateMigrationV11::Migrate(ResultCallback callback) {
   std::move(callback).Run(mojom::Result::OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

@@ -47,7 +47,7 @@ class SearchResultAdEventHandler final
     delegate_ = delegate;
   }
 
-  void FireEvent(mojom::SearchResultAdInfoPtr ad_mojom,
+  void FireEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                  mojom::SearchResultAdEventType event_type,
                  FireSearchResultAdEventHandlerCallback callback) const;
 
@@ -60,20 +60,21 @@ class SearchResultAdEventHandler final
                          FireSearchResultAdEventHandlerCallback callback,
                          bool success) const;
 
-  void FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
+  void FireViewedEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                        FireSearchResultAdEventHandlerCallback callback) const;
 
-  void SaveDeposit(mojom::SearchResultAdInfoPtr ad_mojom,
+  void SaveDeposit(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                    FireSearchResultAdEventHandlerCallback callback) const;
-  void SaveDepositCallback(mojom::SearchResultAdInfoPtr ad_mojom,
-                           FireSearchResultAdEventHandlerCallback callback,
-                           bool success) const;
+  void SaveDepositCallback(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      FireSearchResultAdEventHandlerCallback callback,
+      bool success) const;
 
   void SaveCreativeSetConversion(
-      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       FireSearchResultAdEventHandlerCallback callback) const;
   void SaveCreativeSetConversionCallback(
-      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       FireSearchResultAdEventHandlerCallback callback,
       bool success) const;
 

@@ -28,6 +28,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.ChatCount.Nebula",
     "Brave.AIChat.ContextMenu.FreeUsages",
     "Brave.AIChat.ContextMenu.MostUsedAction",
     "Brave.AIChat.ContextMenu.PremiumUsages",
@@ -54,6 +55,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
     "Brave.Core.WeeklyUsage",
+    "Brave.Core.WeeklyUsage.Nebula",
     "Brave.Core.WindowCount.2",
     "Brave.DNS.AutoSecureRequests",
     "Brave.DNS.AutoSecureRequests.Cloudflare",
@@ -371,6 +373,19 @@ inline constexpr auto kHistogramsWithRefcodeIncluded =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.DayZero.A.InstallTime",
     "Brave.DayZero.B.InstallTime",
+});
+
+// List of metrics that should be protected by Nebula.
+//
+// We intend to apply Nebula to all questions by default,
+// subject to verification that it behaves as expected.
+// This list tests a small number of questions to confirm
+// this, and should be removed or converted to an exception
+// list once we're satisfied with the implementation.
+inline constexpr auto kNebulaOnlyHistograms =
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.AIChat.ChatCount.Nebula",
+    "Brave.Core.WeeklyUsage.Nebula",
 });
 
 // clang-format on

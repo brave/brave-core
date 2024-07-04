@@ -10,16 +10,16 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingSuccess } from './onboarding_success'
 
-export const _OnboardingSuccess = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingSuccess />
-    </WalletPageStory>
-  )
+export const OnboardingSuccessStory = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <OnboardingSuccess />
+      </WalletPageStory>
+    )
+  }
 }
 
-_OnboardingSuccess.story = {
-  name: 'Success'
+export default {
+  component: OnboardingSuccess,
 }
-
-export default _OnboardingSuccess

@@ -14,8 +14,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/extensions/api/brave_theme.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
   std::string json_string;
@@ -40,5 +39,4 @@ ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

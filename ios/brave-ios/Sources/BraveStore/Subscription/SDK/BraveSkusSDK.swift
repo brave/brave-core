@@ -109,8 +109,20 @@ public class BraveSkusSDK {
     /// The SDK was unable to create a purchase order or retrieve an existing order
     case cannotCreateOrder
 
+    /// The SDK was unable to submit a receipt
+    case cannotSubmitReceipt
+
+    /// The SDK was unable to refresh an order
+    case cannotRefreshOrder
+
+    ///  The SDK was unable to fetch the customer's purchase credential summary
+    case cannotFetchCredentialSummary
+
     ///  The SDK was unable to fetch the customer's purchase credentials
     case cannotFetchCredentials
+
+    ///  The SDK was unable to prepare the customer's purchase credentials
+    case cannotPrepareCredentials
 
     /// There was an error decoding an SDK response
     /// Can be thrown when the SDK fails to decode an order, order summary, credentials, etc
@@ -216,11 +228,17 @@ public class BraveSkusSDK {
     Logger.module.info("[BraveSkusSDK] - Fetched Receipt")
 
     Logger.module.info("[BraveSkusSDK] - Creating Order From Receipt")
-    let orderId = await skusService.createOrderFromReceipt(
+    let skusResult = await skusService.createOrderFromReceipt(
       domain: product.group.skusDomain,
       receipt: receipt
     )
 
+    if skusResult.code != Skus.SkusResultCode.ok {
+      Logger.module.info("[BraveSkusSDK] - No OrderID - \(skusResult.message, privacy: .public)")
+      throw SkusError.cannotCreateOrder
+    }
+
+    let orderId = skusResult.message
     if orderId.isEmpty {
       Logger.module.info("[BraveSkusSDK] - No OrderID")
       throw SkusError.cannotCreateOrder
@@ -242,11 +260,20 @@ public class BraveSkusSDK {
     }
 
     let receipt = try BraveSkusSDK.receipt(for: product)
-    return await skusService.submitReceipt(
+    let skusResult = await skusService.submitReceipt(
       domain: product.group.skusDomain,
       orderId: orderId,
       receipt: receipt
     )
+
+    if skusResult.code != Skus.SkusResultCode.ok {
+      Logger.module.info(
+        "[BraveSkusSDK] - Failed to Submit Receipt - \(skusResult.message, privacy: .public)"
+      )
+      throw SkusError.cannotSubmitReceipt
+    }
+
+    return skusResult.message
   }
 
   /// Retrieves and refreshes the local cached order for the given Order-ID
@@ -280,7 +307,16 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return try await decode(skusService.refreshOrder(domain: group.skusDomain, orderId: orderId))
+    let skusResult = await skusService.refreshOrder(domain: group.skusDomain, orderId: orderId)
+
+    if skusResult.code != Skus.SkusResultCode.ok {
+      Logger.module.info(
+        "[BraveSkusSDK] - Failed Refreshing Order - \(skusResult.message, privacy: .public)"
+      )
+      throw SkusError.cannotRefreshOrder
+    }
+
+    return try decode(skusResult.message)
   }
 
   /// Retrieves the Customer's Credentials Summary
@@ -307,7 +343,15 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return try await decode(skusService.credentialSummary(domain: group.skusDomain))
+    let skusResult = await skusService.credentialSummary(domain: group.skusDomain)
+    if skusResult.code != Skus.SkusResultCode.ok {
+      Logger.module.info(
+        "[BraveSkusSDK] - Failed Fetching CredentialSummary - \(skusResult.message, privacy: .public)"
+      )
+      throw SkusError.cannotFetchCredentialSummary
+    }
+
+    return try decode(skusResult.message)
   }
 
   /// Retrieves the Customer's Credentials for a specified Order
@@ -321,10 +365,21 @@ public class BraveSkusSDK {
     }
 
     Logger.module.info("[BraveSkusSDK] - Fetching Order Credentials")
-    let result = await skusService.fetchOrderCredentials(domain: group.skusDomain, orderId: orderId)
-    if !result.isEmpty {
+    let skusResult = await skusService.fetchOrderCredentials(
+      domain: group.skusDomain,
+      orderId: orderId
+    )
+
+    if skusResult.code != Skus.SkusResultCode.ok {
+      Logger.module.info(
+        "[BraveSkusSDK] - Failed Fetching Credentials - \(skusResult.message, privacy: .public)"
+      )
+      throw SkusError.cannotFetchCredentials
+    }
+
+    if !skusResult.message.isEmpty {
       Logger.module.error(
-        "[BraveSkusSDK] - Failed to Fetch Credentials: \(result, privacy: .public)"
+        "[BraveSkusSDK] - Failed to Fetch Credentials: \(skusResult.message, privacy: .public)"
       )
       throw SkusError.cannotFetchCredentials
     }
@@ -344,7 +399,19 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return await skusService.prepareCredentialsPresentation(domain: group.skusDomain, path: path)
+    let skusResult = await skusService.prepareCredentialsPresentation(
+      domain: group.skusDomain,
+      path: path
+    )
+
+    if skusResult.code != Skus.SkusResultCode.ok {
+      Logger.module.info(
+        "[BraveSkusSDK] - Failed Preparing Credentials - \(skusResult.message, privacy: .public)"
+      )
+      throw SkusError.cannotPrepareCredentials
+    }
+
+    return skusResult.message
   }
 
   @MainActor

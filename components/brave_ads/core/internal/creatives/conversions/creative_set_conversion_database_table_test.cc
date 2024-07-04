@@ -33,7 +33,8 @@ TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
   const database::table::CreativeSetConversions database_table;
 
   // Act & Assert
-  base::MockCallback<database::table::GetConversionsCallback> callback;
+  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
+      callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*creative_set_conversions=*/::testing::SizeIs(2)));
   database_table.GetUnexpired(callback.Get());

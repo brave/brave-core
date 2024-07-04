@@ -155,7 +155,7 @@ std::string FilecoinKeyring::ImportFilecoinAccount(
   } else if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
     return ImportAccount(private_key);
   }
-  NOTREACHED() << protocol;
+  NOTREACHED_IN_MIGRATION() << protocol;
   return std::string();
 }
 

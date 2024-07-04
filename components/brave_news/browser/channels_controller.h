@@ -18,6 +18,8 @@
 
 namespace brave_news {
 
+class SubscriptionsSnapshot;
+
 namespace p3a {
 class NewsMetrics;
 }  // namespace p3a
@@ -45,9 +47,9 @@ class ChannelsController {
 
   static Channels GetChannelsFromPublishers(
       const Publishers& publishers,
-      const BraveNewsSubscriptions& subscriptions);
+      const SubscriptionsSnapshot& subscriptions);
 
-  void GetAllChannels(const BraveNewsSubscriptions& subscriptions,
+  void GetAllChannels(const SubscriptionsSnapshot& subscriptions,
                       ChannelsCallback callback);
 
  private:

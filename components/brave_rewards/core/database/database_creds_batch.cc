@@ -10,8 +10,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -122,14 +121,13 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
   auto info = mojom::CredsBatch::New();
   info->creds_id = GetStringColumn(record, 0);
   info->trigger_id = GetStringColumn(record, 1);
-  info->trigger_type =
-      static_cast<mojom::CredsBatchType>(GetIntColumn(record, 2));
+  info->trigger_type = CredsBatchTypeFromInt(GetIntColumn(record, 2));
   info->creds = GetStringColumn(record, 3);
   info->blinded_creds = GetStringColumn(record, 4);
   info->signed_creds = GetStringColumn(record, 5);
   info->public_key = GetStringColumn(record, 6);
   info->batch_proof = GetStringColumn(record, 7);
-  info->status = static_cast<mojom::CredsBatchStatus>(GetIntColumn(record, 8));
+  info->status = CredsBatchStatusFromInt(GetIntColumn(record, 8));
 
   std::move(callback).Run(std::move(info));
 }
@@ -214,15 +212,13 @@ void DatabaseCredsBatch::OnGetRecords(GetCredsBatchListCallback callback,
 
     info->creds_id = GetStringColumn(record_pointer, 0);
     info->trigger_id = GetStringColumn(record_pointer, 1);
-    info->trigger_type =
-        static_cast<mojom::CredsBatchType>(GetIntColumn(record_pointer, 2));
+    info->trigger_type = CredsBatchTypeFromInt(GetIntColumn(record_pointer, 2));
     info->creds = GetStringColumn(record_pointer, 3);
     info->blinded_creds = GetStringColumn(record_pointer, 4);
     info->signed_creds = GetStringColumn(record_pointer, 5);
     info->public_key = GetStringColumn(record_pointer, 6);
     info->batch_proof = GetStringColumn(record_pointer, 7);
-    info->status =
-        static_cast<mojom::CredsBatchStatus>(GetIntColumn(record_pointer, 8));
+    info->status = CredsBatchStatusFromInt(GetIntColumn(record_pointer, 8));
     list.push_back(std::move(info));
   }
 
@@ -324,5 +320,4 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
                      std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

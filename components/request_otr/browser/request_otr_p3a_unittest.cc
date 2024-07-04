@@ -13,8 +13,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace request_otr {
-namespace p3a {
+namespace request_otr::p3a {
 
 class RequestOTRP3AUnitTest : public testing::Test {
  public:
@@ -102,5 +101,4 @@ TEST_F(RequestOTRP3AUnitTest, SessionCount) {
   histogram_tester_.ExpectTotalCount(kSessionCountHistogramName, 5);
 }
 
-}  // namespace p3a
-}  // namespace request_otr
+}  // namespace request_otr::p3a

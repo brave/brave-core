@@ -443,8 +443,7 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
 
   const auto is_tab_tiled = brave::IsTabsTiled(base::to_address(browser_));
   for (auto command_enabled_when_tab_is_tiled :
-       {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW,
-        IDC_TOGGLE_SPLIT_VIEW_ORIENTATION}) {
+       {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
     UpdateCommandEnabled(command_enabled_when_tab_is_tiled, is_tab_tiled);
   }
 }
@@ -576,7 +575,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       brave::ShowPlaylistBubble(&*browser_);
 #else
-      NOTREACHED() << " This command shouldn't be enabled";
+      NOTREACHED_IN_MIGRATION() << " This command shouldn't be enabled";
 #endif
       break;
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
@@ -672,9 +671,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SWAP_SPLIT_VIEW:
       brave::SwapTabsInTile(&*browser_);
-      break;
-    case IDC_TOGGLE_SPLIT_VIEW_ORIENTATION:
-      brave::ToggleSplitViewOrientation(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

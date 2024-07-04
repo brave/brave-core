@@ -7,8 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace brave_shields {
-namespace features {
+namespace brave_shields::features {
 
 BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,
              "AdBlockDefaultResourceUpdateInterval",
@@ -146,5 +145,4 @@ constexpr base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec{
         &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
 
-}  // namespace features
-}  // namespace brave_shields
+}  // namespace brave_shields::features

@@ -12,7 +12,7 @@ struct CreativeAdInfo;
 
 namespace test {
 
-CreativeAdInfo BuildCreativeAd(bool should_use_random_uuids);
+CreativeAdInfo BuildCreativeAd(bool should_generate_random_uuids);
 
 }  // namespace test
 

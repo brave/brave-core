@@ -8,8 +8,7 @@
 #include <algorithm>
 #include "brave_base/random.h"
 
-namespace brave_rewards::internal {
-namespace util {
+namespace brave_rewards::internal::util {
 
 mojom::ActivityMonth GetCurrentMonth() {
   base::Time now = base::Time::Now();
@@ -49,5 +48,4 @@ base::TimeDelta GetRandomizedDelayWithBackoff(base::TimeDelta delay,
   return GetRandomizedDelay(std::min(delay, max_delay));
 }
 
-}  // namespace util
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::util

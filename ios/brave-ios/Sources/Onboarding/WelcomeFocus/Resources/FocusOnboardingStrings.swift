@@ -68,7 +68,7 @@ extension Strings {
       "focusOnboarding.p3aToggleTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Share Completely Private & Anonymous Product Insights.",
+      value: "Share Private & Anonymous Product Insights.",
       comment: "The title of the toggle for enable / disable the privacy preserving analytics."
     )
 

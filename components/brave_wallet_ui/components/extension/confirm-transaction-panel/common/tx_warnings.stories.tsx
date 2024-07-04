@@ -11,111 +11,119 @@ import { BraveWallet } from '../../../../constants/types'
 const warnings: Array<
   Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
 > = [
-  {
-    message: 'An example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Additional example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  },
-  {
-    message: 'Yet another example warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kWarning
-  }
-]
+    {
+      message: 'An example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Additional example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Yet another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Yet another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Yet another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Yet another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Yet another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    },
+    {
+      message: 'Yet another example warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kWarning
+    }
+  ]
 
 const criticalWarnings: Array<
   Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
 > = [
-  {
-    message: 'An example critical warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kCritical
-  },
-  {
-    message: 'Another example critical warning',
-    severity: BraveWallet.BlowfishWarningSeverity.kCritical
+    {
+      message: 'An example critical warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kCritical
+    },
+    {
+      message: 'Another example critical warning',
+      severity: BraveWallet.BlowfishWarningSeverity.kCritical
+    }
+  ]
+
+export const _TxWarning = {
+  render: () => {
+    // state
+    const [isCollapsed, setIsCollapsed] = React.useState(false)
+    return (
+      <TransactionWarnings
+        classifyAs='issues'
+        isWarningCollapsed={isCollapsed}
+        setIsWarningCollapsed={setIsCollapsed}
+        warnings={[warnings[0]]}
+        onDismiss={() => alert('dismiss')}
+      />
+    )
   }
-]
-
-export const _TxWarning = () => {
-  // state
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
-  return (
-    <TransactionWarnings
-      classifyAs='issues'
-      isWarningCollapsed={isCollapsed}
-      setIsWarningCollapsed={setIsCollapsed}
-      warnings={[warnings[0]]}
-      onDismiss={() => alert('dismiss')}
-    />
-  )
 }
 
-export const _TxWarnings = () => {
-  // state
-  const [isCollapsed, setIsCollapsed] = React.useState(true)
-  return (
-    <TransactionWarnings
-      classifyAs='issues'
-      isWarningCollapsed={isCollapsed}
-      setIsWarningCollapsed={setIsCollapsed}
-      warnings={warnings}
-      onDismiss={() => alert('dismiss')}
-    />
-  )
+export const _TxWarnings = {
+  render: () => {
+    // state
+    const [isCollapsed, setIsCollapsed] = React.useState(true)
+    return (
+      <TransactionWarnings
+        classifyAs='issues'
+        isWarningCollapsed={isCollapsed}
+        setIsWarningCollapsed={setIsCollapsed}
+        warnings={warnings}
+        onDismiss={() => alert('dismiss')}
+      />
+    )
+  }
 }
 
-export const _CriticalTxWarning = () => {
-  // state
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
-  return (
-    <TransactionWarnings
-      classifyAs='risks'
-      isWarningCollapsed={isCollapsed}
-      setIsWarningCollapsed={setIsCollapsed}
-      warnings={[criticalWarnings[0]]}
-      onDismiss={() => alert('dismiss')}
-    />
-  )
+export const _CriticalTxWarning = {
+  render: () => {
+    // state
+    const [isCollapsed, setIsCollapsed] = React.useState(false)
+    return (
+      <TransactionWarnings
+        classifyAs='risks'
+        isWarningCollapsed={isCollapsed}
+        setIsWarningCollapsed={setIsCollapsed}
+        warnings={[criticalWarnings[0]]}
+        onDismiss={() => alert('dismiss')}
+      />
+    )
+  }
 }
 
-export const _CriticalTxWarnings = () => {
-  // state
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
-  return (
-    <TransactionWarnings
-      classifyAs='risks'
-      isWarningCollapsed={isCollapsed}
-      setIsWarningCollapsed={setIsCollapsed}
-      warnings={criticalWarnings}
-      onDismiss={() => alert('dismiss')}
-    />
-  )
+export const _CriticalTxWarnings = {
+  render: () => {
+    // state
+    const [isCollapsed, setIsCollapsed] = React.useState(false)
+    return (
+      <TransactionWarnings
+        classifyAs='risks'
+        isWarningCollapsed={isCollapsed}
+        setIsWarningCollapsed={setIsCollapsed}
+        warnings={criticalWarnings}
+        onDismiss={() => alert('dismiss')}
+      />
+    )
+  }
 }
 
-export default _TxWarnings
+export default { component: TransactionWarnings }

@@ -6,6 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_API_AI_CHAT_CONVERSATION_DRIVER_IOS_H_
 #define BRAVE_IOS_BROWSER_API_AI_CHAT_CONVERSATION_DRIVER_IOS_H_
 
+#include <memory>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -30,9 +31,19 @@ class ConversationDriverIOS : public ConversationDriver,
   ConversationDriverIOS(
       PrefService* profile_prefs,
       PrefService* local_state_prefs,
+      ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::string_view channel_string,
+      id<AIChatDelegate> delegate);
+  ConversationDriverIOS(
+      PrefService* profile_prefs,
+      PrefService* local_state_prefs,
+      ModelService* model_service,
+      AIChatMetrics* ai_chat_metrics,
+      std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string,
       id<AIChatDelegate> delegate);
@@ -50,7 +61,9 @@ class ConversationDriverIOS : public ConversationDriver,
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
   void OnAPIResponseError(ai_chat::mojom::APIError error) override;
-  void OnModelChanged(const std::string& model_key) override;
+  void OnModelDataChanged(
+      const std::string& model_key,
+      const std::vector<ai_chat::mojom::ModelPtr>& model_list) override;
   void OnSuggestedQuestionsChanged(
       std::vector<std::string> questions,
       ai_chat::mojom::SuggestionGenerationStatus status) override;

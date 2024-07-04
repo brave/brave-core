@@ -7,8 +7,17 @@
 
 window.__firefox__.execute(function($) {
   const messageHandler = '$<message_handler>';
-
+  const blockingCache = new Map();
   const sendMessage = $((resourceURL) => {
+    if (blockingCache.has(resourceURL.href)) {
+      return Promise.resolve(blockingCache.get(resourceURL.href)).then(blocked => {
+        if (blocked) {
+          console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href} (cached)`)
+        }
+        return blocked
+      })
+    }
+
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
@@ -17,6 +26,8 @@ window.__firefox__.execute(function($) {
         resourceType: 'xmlhttprequest'
       }
     }).then(blocked => {
+      blockingCache.set(resourceURL.href, blocked)
+
       if (blocked) {
         console.info(`Brave prevented frame displaying ${window.location.href} from loading a resource from ${resourceURL.href}`)
       }

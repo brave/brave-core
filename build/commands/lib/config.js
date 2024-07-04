@@ -460,7 +460,7 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.shouldSign()) {
-    if (process.platform === 'darwin') {
+    if (this.getTargetOS() === 'mac') {
       args.mac_signing_identifier = this.mac_signing_identifier
       args.mac_installer_signing_identifier = this.mac_installer_signing_identifier
       args.mac_signing_keychain = this.mac_signing_keychain
@@ -512,7 +512,7 @@ Config.prototype.buildArgs = function () {
 
   if (this.useRemoteExec) {
     args.rbe_exec_root = this.rbeExecRoot
-    args.rbe_bin_dir = path.join(this.nativeRedirectCCDir)
+    args.reclient_bin_dir = path.join(this.nativeRedirectCCDir)
   } else {
     args.cc_wrapper = path.join(this.nativeRedirectCCDir, 'redirect_cc')
   }
@@ -746,7 +746,7 @@ Config.prototype.shouldSign = function () {
     return this.braveAndroidKeystorePath !== undefined
   }
 
-  if (process.platform === 'darwin') {
+  if (this.getTargetOS() === 'mac') {
     return this.mac_signing_identifier !== undefined
   }
 

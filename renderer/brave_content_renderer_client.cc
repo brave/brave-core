@@ -181,8 +181,11 @@ void BraveContentRendererClient::RenderFrameCreated(
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       !ChromeRenderThreadObserver::is_incognito_process()) {
-    new playlist::PlaylistRenderFrameObserver(render_frame,
-                                              ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    new playlist::PlaylistRenderFrameObserver(
+        render_frame, base::BindRepeating([] {
+          return BraveRenderThreadObserver::GetDynamicParams().playlist_enabled;
+        }),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 }

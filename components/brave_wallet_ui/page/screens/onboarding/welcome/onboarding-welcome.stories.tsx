@@ -8,8 +8,9 @@ import * as React from 'react'
 // components
 import { WalletPageStory } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingWelcome } from './onboarding-welcome'
+import { Meta } from '@storybook/react'
 
-export const _OnboardingWelcome = () => {
+export const OnboardingWelcomeStory = () => {
   return (
     <WalletPageStory>
       <OnboardingWelcome />
@@ -17,8 +18,7 @@ export const _OnboardingWelcome = () => {
   )
 }
 
-_OnboardingWelcome.story = {
-  name: 'Welcome'
-}
-
-export default _OnboardingWelcome
+export default {
+  title: 'Welcome',
+  component: OnboardingWelcomeStory
+} as Meta<typeof OnboardingWelcomeStory>

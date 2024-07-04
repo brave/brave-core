@@ -12,18 +12,19 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 class PrefService;
 
 namespace skus {
 
-enum class SkusResult : uint8_t;
 enum class TracingLevel : uint8_t;
 struct HttpRequest;
 struct HttpResponse;
 struct HttpRoundtripContext;
 struct WakeupContext;
+struct SkusResult;
 struct StoragePurgeContext;
 struct StorageSetContext;
 struct StorageGetContext;
@@ -31,7 +32,7 @@ struct StorageGetContext;
 class RustBoundPostTask {
  public:
   explicit RustBoundPostTask(
-      base::OnceCallback<void(const std::string&)> callback);
+      base::OnceCallback<void(skus::mojom::SkusResultPtr)> callback);
   RustBoundPostTask(const RustBoundPostTask&) = delete;
   ~RustBoundPostTask();
 
@@ -41,7 +42,7 @@ class RustBoundPostTask {
   void RunWithResponse(SkusResult result, rust::cxxbridge1::Str response);
 
  private:
-  base::OnceCallback<void(const std::string&)> callback_;
+  base::OnceCallback<void(skus::mojom::SkusResultPtr)> callback_;
 };
 
 class SkusUrlLoader {

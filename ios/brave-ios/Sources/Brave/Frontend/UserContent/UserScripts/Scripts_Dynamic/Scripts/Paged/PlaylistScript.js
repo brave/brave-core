@@ -66,7 +66,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   }
 
   let sendMessage = $(function(name, node, target, type, detected) {
-    $(function() {
+    let post = $(function() {
       var location = "";
       var pageTitle = "";
 
@@ -90,7 +90,16 @@ window.__firefox__.includeOnce("Playlist", function($) {
         "tagId": target.$<tagUUID>,
         "invisible": !target.parentNode
       });
-    })();
+    });
+    
+    if (node.$<sendMessageTimeout>) {
+      clearTimeout(node.$<sendMessageTimeout>);
+    }
+    
+    node.$<sendMessageTimeout> = setTimeout(function(){
+      node.$<sendMessageTimeout> = null;
+      post();
+    }, 2000);
   });
 
   function isVideoNode(node) {
@@ -228,21 +237,14 @@ window.__firefox__.includeOnce("Playlist", function($) {
   // MARK: ---------------------------------------
 
   function setupDetector() {
-    function requestWhenIdleShim(fn) {
-      var start = Date.now()
-      return setTimeout(function () {
-        fn({
-          didTimeout: false,
-          timeRemaining: function () {
-            return Math.max(0, 50 - (Date.now() - start))
-          },
-        })
-      }, 2000);  // Resolution of 1000ms is fine for us.
-    }
-
+    var readyTimeout = null;
     function onReady(fn) {
       if (document.readyState === "complete" || document.readyState === "ready") {
-        fn();
+        if (readyTimeout) {
+          clearTimeout(readyTimeout);
+        }
+        
+        readyTimeout = setTimeout(fn, 2000);
       } else {
         document.addEventListener("DOMContentLoaded", fn);
       }
@@ -345,7 +347,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
       };*/
 
       function checkPageForVideos(ignoreSource) {
-        onReady(function() {
+        function fetchMedia() {
           let videos = getAllVideoElements();
           let audios = getAllAudioElements();
 
@@ -372,6 +374,10 @@ window.__firefox__.includeOnce("Playlist", function($) {
             }
             notifyNode(node, 'audio', true, ignoreSource);
           });
+        }
+        
+        onReady(function() {
+          fetchMedia();
 
           $(function() {
             $.postNativeMessage('$<message_handler>', {
@@ -381,26 +387,9 @@ window.__firefox__.includeOnce("Playlist", function($) {
           })();
         });
 
-        // Timeinterval is needed for DailyMotion as their DOM is bad
-        let interval = setInterval(function() {
-          getAllVideoElements().forEach(function(node) {
-            if (useObservers) {
-              observeNode(node);
-            }
-            notifyNode(node, 'video', true, ignoreSource);
-          });
-
-          getAllAudioElements().forEach(function(node) {
-            if (useObservers) {
-              observeNode(node);
-            }
-            notifyNode(node, 'audio', true, ignoreSource);
-          });
-        }, 1000);
-
-        let timeout = setTimeout(function() {
-          clearInterval(interval);
-        }, 10000);
+        setTimeout(function() {
+          fetchMedia();
+        }, 5000);
       }
 
       // Needed for Japanese videos like tver.jp which literally never loads automatically
@@ -414,21 +403,25 @@ window.__firefox__.includeOnce("Playlist", function($) {
         }
       });
 
-      // Needed for pages like Bichute and Soundcloud and Youtube that do NOT reload the page
-      // They instead alter the history or document and update the href that way
-      window.addEventListener("load", () => {
-        let lastLocation = document.location.href;
-        const body = document.querySelector("body");
-        const observer = new MutationObserver(mutations => {
-          if (lastLocation !== document.location.href) {
-            lastLocation = document.location.href;
-            checkPageForVideos(false);
-          }
+      if (useObservers) {
+        // Needed for pages like Bichute and Soundcloud and Youtube that do NOT reload the page
+        // They instead alter the history or document and update the href that way
+        window.addEventListener("load", () => {
+          let lastLocation = document.location.href;
+          const body = document.querySelector("body");
+          const observer = new MutationObserver(mutations => {
+            if (lastLocation !== document.location.href) {
+              lastLocation = document.location.href;
+              checkPageForVideos(false);
+            }
+          });
+          observer.observe(body, { childList: true, subtree: true });
         });
-        observer.observe(body, { childList: true, subtree: true });
-      });
+      }
 
-      checkPageForVideos(false);
+      setTimeout(function() {
+        checkPageForVideos(false);
+      }, 2000);
     }
 
     observePage();

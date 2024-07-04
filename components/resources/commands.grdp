@@ -509,9 +509,6 @@
     <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
       Swap Tab Positions
     </message>
-    <message name="IDS_IDC_TOGGLE_SPLIT_VIEW_ORIENTATION" desc="The label of 'Toggle split view orientation' tab context menu item">
-      Toggle Split View Orientation
-    </message>
   </if>
   <if expr="not use_titlecase">
     <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
@@ -525,9 +522,6 @@
     </message>
     <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
       Swap tab positions
-    </message>
-    <message name="IDS_IDC_TOGGLE_SPLIT_VIEW_ORIENTATION" desc="The label of 'Toggle split view orientation' tab context menu item">
-      Toggle split view orientation
     </message>
   </if>
 </grit-part>

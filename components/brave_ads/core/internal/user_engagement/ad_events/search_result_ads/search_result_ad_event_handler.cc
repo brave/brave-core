@@ -14,12 +14,12 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_builder.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_factory.h"
@@ -34,13 +34,12 @@ SearchResultAdEventHandler::~SearchResultAdEventHandler() {
 }
 
 void SearchResultAdEventHandler::FireEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(ad_mojom);
+  CHECK(mojom_creative_ad);
 
-  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
-
+  const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   if (!ad.IsValid()) {
     // TODO(https://github.com/brave/brave-browser/issues/32066):
     // Detect potential defects using `DumpWithoutCrashing`.
@@ -67,7 +66,7 @@ void SearchResultAdEventHandler::FireEvent(
     }
 
     case mojom::SearchResultAdEventType::kViewedImpression: {
-      FireViewedEvent(std::move(ad_mojom), std::move(callback));
+      FireViewedEvent(std::move(mojom_creative_ad), std::move(callback));
       break;
     }
 
@@ -104,31 +103,32 @@ void SearchResultAdEventHandler::FireEventCallback(
 }
 
 void SearchResultAdEventHandler::FireViewedEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(ad_mojom);
+  CHECK(mojom_creative_ad);
 
-  SaveDeposit(std::move(ad_mojom), std::move(callback));
+  SaveDeposit(std::move(mojom_creative_ad), std::move(callback));
 }
 
 void SearchResultAdEventHandler::SaveDeposit(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(ad_mojom);
+  CHECK(mojom_creative_ad);
 
-  const DepositInfo deposit = BuildDeposit(ad_mojom);
+  const DepositInfo deposit = FromMojomBuildDeposit(mojom_creative_ad);
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(
-      deposit, base::BindOnce(&SearchResultAdEventHandler::SaveDepositCallback,
-                              weak_factory_.GetWeakPtr(), std::move(ad_mojom),
-                              std::move(callback)));
+      deposit,
+      base::BindOnce(&SearchResultAdEventHandler::SaveDepositCallback,
+                     weak_factory_.GetWeakPtr(), std::move(mojom_creative_ad),
+                     std::move(callback)));
 }
 
 void SearchResultAdEventHandler::SaveDepositCallback(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
-  CHECK(ad_mojom);
+  CHECK(mojom_creative_ad);
 
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066):
@@ -139,24 +139,24 @@ void SearchResultAdEventHandler::SaveDepositCallback(
 
     BLOG(0, "Failed to save search result ad deposit");
 
-    return FailedToFireEvent(BuildSearchResultAd(ad_mojom),
+    return FailedToFireEvent(FromMojomBuildSearchResultAd(mojom_creative_ad),
                              mojom::SearchResultAdEventType::kViewedImpression,
                              std::move(callback));
   }
 
   BLOG(3, "Successfully saved search result ad deposit");
 
-  SaveCreativeSetConversion(std::move(ad_mojom), std::move(callback));
+  SaveCreativeSetConversion(std::move(mojom_creative_ad), std::move(callback));
 }
 
 void SearchResultAdEventHandler::SaveCreativeSetConversion(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     FireSearchResultAdEventHandlerCallback callback) const {
-  CHECK(ad_mojom);
+  CHECK(mojom_creative_ad);
 
   CreativeSetConversionList creative_set_conversions;
   if (const std::optional<CreativeSetConversionInfo> creative_set_conversion =
-          BuildCreativeSetConversion(ad_mojom)) {
+          FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad)) {
     creative_set_conversions.push_back(*creative_set_conversion);
   }
 
@@ -165,15 +165,15 @@ void SearchResultAdEventHandler::SaveCreativeSetConversion(
       creative_set_conversions,
       base::BindOnce(
           &SearchResultAdEventHandler::SaveCreativeSetConversionCallback,
-          weak_factory_.GetWeakPtr(), std::move(ad_mojom),
+          weak_factory_.GetWeakPtr(), std::move(mojom_creative_ad),
           std::move(callback)));
 }
 
 void SearchResultAdEventHandler::SaveCreativeSetConversionCallback(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     FireSearchResultAdEventHandlerCallback callback,
     const bool success) const {
-  const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
+  const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   if (!success) {
     BLOG(0, "Failed to save search result ad creative set conversion");

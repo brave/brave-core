@@ -15,9 +15,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace bitflyer {
+namespace brave_rewards::internal::endpoint::bitflyer {
 
 GetBalance::GetBalance(RewardsEngine& engine) : engine_(engine) {}
 
@@ -119,6 +117,4 @@ void GetBalance::OnRequest(GetBalanceCallback callback,
   std::move(callback).Run(result, available);
 }
 
-}  // namespace bitflyer
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::bitflyer

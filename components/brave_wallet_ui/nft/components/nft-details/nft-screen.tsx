@@ -21,17 +21,6 @@ import {
   stripERC20TokenImageURL
 } from '../../../utils/string-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
-import {
-  CommandMessage,
-  NftUiCommand,
-  UpdateLoadingMessage,
-  UpdateNFtMetadataErrorMessage,
-  UpdateNFtMetadataMessage,
-  UpdateNftImageLoadingMessage,
-  braveNftDisplayOrigin,
-  braveWalletPanelOrigin,
-  sendMessageToNftUiFrame
-} from '../../nft-ui-messages'
 import { getLocale } from '../../../../common/locale'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 
@@ -113,8 +102,6 @@ export const NftScreen = (props: Props) => {
   // state
   const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
-  const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
-  const [nftImageLoading, setNftImageLoading] = React.useState<boolean>(false)
 
   // queries
   const {
@@ -183,28 +170,16 @@ export const NftScreen = (props: Props) => {
     [selectedAsset.tokenId]
   )
 
+  const nftIFrameUrl = React.useMemo(() => {
+    const params = new URLSearchParams({
+      displayMode: 'details',
+      nftMetadata: nftMetadata ? JSON.stringify(nftMetadata) : '',
+      error: nftMetadataError as string
+    })
+    return `chrome-untrusted://nft-display?${params}`
+  }, [nftMetadata, nftMetadataError])
+
   // methods
-  const onNftDetailsLoad = React.useCallback(() => {
-    setNftIframeLoaded(true)
-  }, [])
-
-  const onMessageEventListener = React.useCallback(
-    (event: MessageEvent<CommandMessage>) => {
-      // validate message origin
-      if (
-        event.origin === braveNftDisplayOrigin ||
-        event.origin === braveWalletPanelOrigin
-      ) {
-        const message = event.data
-        if (message.command === NftUiCommand.UpdateNftImageLoading) {
-          const { payload } = message as UpdateNftImageLoadingMessage
-          setNftImageLoading(payload)
-        }
-      }
-    },
-    []
-  )
-
   const onClickContractAddress = React.useCallback(() => {
     onClickViewOnBlockExplorer(
       selectedAsset.coin === BraveWallet.CoinType.ETH ? 'nft' : 'token',
@@ -227,51 +202,6 @@ export const NftScreen = (props: Props) => {
 
   // effects
   React.useEffect(() => {
-    if (!nftIframeLoaded) return
-
-    if (nftDetailsRef?.current) {
-      const command: UpdateLoadingMessage = {
-        command: NftUiCommand.UpdateLoading,
-        payload: isFetchingNFTMetadata
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-  }, [nftIframeLoaded, nftDetailsRef, isFetchingNFTMetadata])
-
-  React.useEffect(() => {
-    if (!nftIframeLoaded) return
-
-    if (nftMetadata && nftDetailsRef?.current) {
-      const command: UpdateNFtMetadataMessage = {
-        command: NftUiCommand.UpdateNFTMetadata,
-        payload: {
-          displayMode: 'details',
-          nftMetadata
-        }
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-
-    if (nftMetadataError && nftDetailsRef?.current) {
-      const command: UpdateNFtMetadataErrorMessage = {
-        command: NftUiCommand.UpdateNFTMetadataError,
-        payload: {
-          displayMode: 'details',
-          error: nftMetadataError as string
-        }
-      }
-      sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
-    }
-  }, [
-    nftDetailsRef,
-    nftIframeLoaded,
-    nftMetadata,
-    nftMetadataError,
-    selectedAsset,
-    tokenNetwork
-  ])
-
-  React.useEffect(() => {
     // update the asset logo if it doesn't currently have one + one was found
     // in the metadata
     if (
@@ -286,12 +216,7 @@ export const NftScreen = (props: Props) => {
     }
   }, [selectedAsset, nftMetadata?.imageURL, updateUserToken])
 
-  // Receive postMessage from chrome-untrusted://nft-display
-  React.useEffect(() => {
-    window.addEventListener('message', onMessageEventListener)
-    return () => window.removeEventListener('message', onMessageEventListener)
-  }, [onMessageEventListener])
-
+  // render
   if (nftMetadataError)
     return (
       <StyledWrapper>
@@ -315,20 +240,19 @@ export const NftScreen = (props: Props) => {
           ) : isStorybook ? (
             <NftMultimedia
               as='img'
-              visible={!nftImageLoading && !isFetchingNFTMetadata}
+              visible={!isFetchingNFTMetadata}
               src={nftMetadata?.imageURL}
             />
           ) : (
             <NftMultimedia
-              onLoad={onNftDetailsLoad}
-              visible={!nftImageLoading && !isFetchingNFTMetadata}
+              visible={!isFetchingNFTMetadata}
               ref={nftDetailsRef}
               sandbox='allow-scripts allow-popups allow-same-origin'
-              src='chrome-untrusted://nft-display'
+              src={nftIFrameUrl}
               allowFullScreen
             />
           )}
-          {tokenNetwork && !isFetchingNFTMetadata && !nftImageLoading && (
+          {tokenNetwork && !isFetchingNFTMetadata && (
             <IconWrapper>
               <NetworkIconWrapper>
                 <CreateNetworkIcon

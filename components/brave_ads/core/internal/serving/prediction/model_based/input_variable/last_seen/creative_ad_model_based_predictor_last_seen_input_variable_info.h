@@ -18,7 +18,7 @@ struct CreativeAdModelBasedPredictorLastSeenInputVariableInfo final {
 
   // The time delta since the last time the user saw an ad.
   std::optional<base::TimeDelta> value;
-  double weight = 1.0;
+  double weight = 0.0;
 };
 
 }  // namespace brave_ads

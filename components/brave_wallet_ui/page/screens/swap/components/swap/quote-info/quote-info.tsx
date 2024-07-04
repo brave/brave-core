@@ -600,22 +600,25 @@ export const QuoteInfo = (props: Props) => {
           </Row>
         </Section>
       )}
+      {isPanel && (
+        <BottomSheet
+          onClose={() => setShowAccountSelector(false)}
+          isOpen={showAccountSelector}
+        >
+          {AccountSelector}
+        </BottomSheet>
+      )}
 
-      {showAccountSelector &&
-        (isPanel ? (
-          <BottomSheet onClose={() => setShowAccountSelector(false)}>
-            {AccountSelector}
-          </BottomSheet>
-        ) : (
-          <PopupModal
-            title=''
-            onClose={() => setShowAccountSelector(false)}
-            width='560px'
-            showDivider={false}
-          >
-            {AccountSelector}
-          </PopupModal>
-        ))}
+      {!isPanel && showAccountSelector && (
+        <PopupModal
+          title=''
+          onClose={() => setShowAccountSelector(false)}
+          width='560px'
+          showDivider={false}
+        >
+          {AccountSelector}
+        </PopupModal>
+      )}
     </Column>
   )
 }

@@ -20,6 +20,9 @@ bool IsValidBase10String(const std::string& input);
 bool Base10ValueToUint256(const std::string& input, uint256_t* out);
 bool Base10ValueToInt256(const std::string& input, int256_t* out);
 
+// Takes a uint256_t as input and converts it to a base-10 string
+std::string Uint256ValueToBase10(uint256_t input);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_STRING_UTILS_H_

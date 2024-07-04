@@ -36,6 +36,8 @@ inline constexpr char kInvalidAdvertiserId[] = "";
 
 inline constexpr char kSegment[] = "untargeted";
 
+inline constexpr char kTargetUrl[] = "https://brave.com";
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_UNITTEST_CONSTANTS_H_

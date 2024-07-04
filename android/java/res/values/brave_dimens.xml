@@ -35,9 +35,6 @@
 
     <dimen name="zero_margin"> 0dp </dimen>
 
-    <!-- NTP dimens override -->
-    <dimen name="tile_grid_layout_min_horizontal_spacing">0dp</dimen>
-
     <dimen name="custom_tabs_control_container_leo_height">0dp</dimen>
 
     <dimen name="vpn_plan_margin">32dp</dimen>

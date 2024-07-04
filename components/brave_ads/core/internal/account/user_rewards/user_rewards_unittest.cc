@@ -45,8 +45,8 @@ class BraveAdsUserRewardsTest : public AdsClientMock, public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    user_rewards_ = std::make_unique<UserRewards>(&token_generator_mock_,
-                                                  test::GetWallet());
+    user_rewards_ =
+        std::make_unique<UserRewards>(&token_generator_mock_, test::Wallet());
     user_rewards_->SetDelegate(&delegate_mock_);
   }
 

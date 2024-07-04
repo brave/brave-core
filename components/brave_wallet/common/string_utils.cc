@@ -83,4 +83,20 @@ bool Base10ValueToInt256(const std::string& input, int256_t* out) {
   return true;
 }
 
+std::string Uint256ValueToBase10(uint256_t input) {
+  if (input == 0) {
+    return "0";
+  }
+
+  std::string result;
+  result.reserve(78);  // 78 is the max length of a uint256_t in base 10
+
+  while (input > 0) {
+    result += '0' + static_cast<uint8_t>(input % 10);
+    input /= 10;
+  }
+  std::reverse(result.begin(), result.end());
+  return result;
+}
+
 }  // namespace brave_wallet

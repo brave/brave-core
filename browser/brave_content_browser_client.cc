@@ -17,6 +17,7 @@
 #include "base/strings/strcat.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -35,6 +36,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
@@ -80,6 +82,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
+#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
@@ -517,7 +520,12 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 void BraveContentBrowserClient::RenderProcessWillLaunch(
     content::RenderProcessHost* host) {
   Profile* profile = Profile::FromBrowserContext(host->GetBrowserContext());
-  BraveRendererUpdaterFactory::GetForProfile(profile)->InitializeRenderer(host);
+  // The BraveRendererUpdater might be null for some irregular profiles, e.g.
+  // the System Profile.
+  if (BraveRendererUpdater* service =
+          BraveRendererUpdaterFactory::GetForProfile(profile)) {
+    service->InitializeRenderer(host);
+  }
 
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
 }
@@ -1350,4 +1358,23 @@ blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
   metadata.full_version =
       base::StrCat({base::NumberToString(version.components()[0]), ".0.0.0"});
   return metadata;
+}
+
+GURL BraveContentBrowserClient::SanitizeURL(
+    content::RenderFrameHost* render_frame_host,
+    const GURL& url) {
+  if (!base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkFromJs)) {
+    return url;
+  }
+  CHECK(render_frame_host);
+  CHECK(render_frame_host->GetBrowserContext());
+  auto* url_sanitizer_service =
+      brave::URLSanitizerServiceFactory::GetForBrowserContext(
+          render_frame_host->GetBrowserContext());
+  CHECK(url_sanitizer_service);
+  if (!url_sanitizer_service->CheckJsPermission(
+          render_frame_host->GetLastCommittedURL())) {
+    return url;
+  }
+  return url_sanitizer_service->SanitizeURL(url);
 }

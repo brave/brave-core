@@ -73,7 +73,7 @@ void ShowBraveWalletAccountCreation(Browser* browser,
         browser,
         GURL(base::StrCat({kBraveUIWalletAccountCreationURL, "Solana"})));
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

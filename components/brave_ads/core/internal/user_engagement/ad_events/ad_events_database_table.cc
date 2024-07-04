@@ -205,7 +205,8 @@ void MigrateToV13(mojom::DBTransactionInfo* const transaction) {
 void MigrateToV17(mojom::DBTransactionInfo* const transaction) {
   CHECK(transaction);
 
-  CreateTableIndex(transaction, "ad_events", /*columns=*/{"timestamp"});
+  CreateTableIndex(transaction, /*table_name=*/"ad_events",
+                   /*columns=*/{"timestamp"});
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* const transaction) {
@@ -255,7 +256,8 @@ void MigrateToV28(mojom::DBTransactionInfo* const transaction) {
 
   RenameTable(transaction, "ad_events_temp", "ad_events");
 
-  CreateTableIndex(transaction, "ad_events", /*columns=*/{"created_at"});
+  CreateTableIndex(transaction, /*table_name=*/"ad_events",
+                   /*columns=*/{"created_at"});
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* const transaction) {
@@ -299,11 +301,11 @@ void MigrateToV35(mojom::DBTransactionInfo* const transaction) {
   DropTableIndex(transaction, "ad_events_created_at_index");
 
   // Optimize database query for `GetUnexpired`.
-  CreateTableIndex(transaction, "ad_events",
+  CreateTableIndex(transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"created_at"});
 
   // Optimize database query for `GetUnexpiredForType`.
-  CreateTableIndex(transaction, "ad_events",
+  CreateTableIndex(transaction, /*table_name=*/"ad_events",
                    /*columns=*/{"type", "created_at"});
 }
 

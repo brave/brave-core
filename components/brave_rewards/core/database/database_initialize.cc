@@ -10,8 +10,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 DatabaseInitialize::DatabaseInitialize(RewardsEngine& engine)
     : engine_(engine), migration_(engine) {}
@@ -50,5 +49,4 @@ void DatabaseInitialize::OnInitialize(ResultCallback callback,
   migration_.Start(current_table_version, std::move(callback));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

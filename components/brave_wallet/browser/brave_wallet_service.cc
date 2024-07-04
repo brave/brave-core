@@ -1122,7 +1122,7 @@ void BraveWalletService::OnGetImportInfo(
         break;
       case ImportError::kNone:
       default:
-        NOTREACHED();
+        NOTREACHED_IN_MIGRATION();
     }
     return;
   }
@@ -1569,7 +1569,7 @@ void BraveWalletService::GenerateReceiveAddress(
     return;
   }
 
-  NOTREACHED() << account_id->coin;
+  NOTREACHED_IN_MIGRATION() << account_id->coin;
   std::move(callback).Run("", WalletInternalErrorMessage());
 }
 

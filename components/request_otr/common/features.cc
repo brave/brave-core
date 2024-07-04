@@ -7,8 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace request_otr {
-namespace features {
+namespace request_otr::features {
 
 // When enabled, Brave will block domains listed in the Brave-maintained
 // request-OTR ('off-the-record') list, or any server that responds with a
@@ -18,5 +17,4 @@ BASE_FEATURE(kBraveRequestOTRTab,
              "BraveRequestOTRTab",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace request_otr
+}  // namespace request_otr::features

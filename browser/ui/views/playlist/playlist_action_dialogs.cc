@@ -15,9 +15,9 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/label_button.h"
@@ -434,7 +434,7 @@ void PlaylistMoveDialog::OnSavedItemsChanged(
   } else if (mode_ == Mode::kCreate) {
     EnterCreatePlaylistMode();
   } else {
-    NOTREACHED() << "If new mode was added, please revisit this.";
+    NOTREACHED_IN_MIGRATION() << "If new mode was added, please revisit this.";
   }
 }
 

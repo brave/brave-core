@@ -120,44 +120,48 @@ TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
-      /*should_use_random_uuids=*/true);
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020"));
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
-      /*should_use_random_uuids=*/true);
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
-      /*should_use_random_uuids=*/true);
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*should_use_random_uuids=*/true);
+      ConfirmationType::kViewedImpression,
+      /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_7);
 
   test::SaveTransactions(transactions);
@@ -209,7 +213,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -238,7 +242,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -285,7 +289,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -302,7 +306,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -318,7 +322,8 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
@@ -326,7 +331,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -342,7 +347,8 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::SizeIs(1)));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest,
@@ -351,7 +357,7 @@ TEST_F(BraveAdsAccountTest,
   test::DisableBraveRewards();
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -367,7 +373,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::IsEmpty()));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 TEST_F(BraveAdsAccountTest,
@@ -376,7 +383,7 @@ TEST_F(BraveAdsAccountTest,
   test::DisableBraveRewards();
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/false);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
@@ -392,7 +399,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(callback,
               Run(/*success=*/true, /*transactions=*/::testing::IsEmpty()));
   const database::table::Transactions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetForDateRange(/*from_time=*/DistantPast(),
+                                 /*to_time=*/DistantFuture(), callback.Get());
 }
 
 }  // namespace brave_ads

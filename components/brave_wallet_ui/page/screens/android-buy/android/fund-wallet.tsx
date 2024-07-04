@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -56,7 +56,8 @@ export function AndroidFundWalletApp() {
 function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize({}))
-  render(AndroidFundWalletApp(), document.getElementById('root'))
+  const root = createRoot(document.getElementById('root')!)
+  root.render(<AndroidFundWalletApp />)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

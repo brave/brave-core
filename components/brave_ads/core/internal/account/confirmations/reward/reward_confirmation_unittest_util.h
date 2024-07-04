@@ -19,7 +19,7 @@ namespace test {
 
 std::optional<ConfirmationInfo> BuildRewardConfirmation(
     TokenGeneratorInterface* token_generator,
-    bool should_use_random_uuids);
+    bool should_generate_random_uuids);
 
 RewardInfo BuildReward(const ConfirmationInfo& confirmation);
 

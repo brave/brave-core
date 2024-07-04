@@ -23,12 +23,12 @@ The recommended update interval is once a month.
 ## Step 2: Upload to GCS
 
 * Download `artifacts.zip` (the URL in the Console Output) from all the builds and extract them.
-* Each unpacked artifact contains a zip archive with a new profile (e.g. `brave-typical-win.zip`). Copy these to `./profiles/`.
+* Each unpacked artifact contains a zip archive with the updated profile (e.g. `brave-typical-win.zip`) and `.size` file (e.g. `brave-typical-win.zip.sizes`). Copy these files to `./profiles/`.
 * Upload the new archives to GCS: `cd profiles; upload_to_google_storage.py --bucket=brave-telemetry *.zip`;
 
 ## Step 3: Commit changes and make a PR
 
-* The `./profiles/*.sha1` should be updated during the upload. Stage and commit these changes.
+* The `./profiles/*.sha1` should be updated during the upload. Stage and commit changes in `.sha1` and `.size` files.
 * DO NOT commit zip files.
 * Make a PR to to `brave-core`.
 * Note: If you run a perf CI build on the resulting branch, the old profiles will still be used (because of versioning).

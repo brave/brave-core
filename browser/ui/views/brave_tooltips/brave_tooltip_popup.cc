@@ -350,9 +350,9 @@ gfx::Insets BraveTooltipPopup::GetShadowMargin() const {
 void BraveTooltipPopup::CreateWidgetView() {
   // The widget instance is owned by its NativeWidget. For more details see
   // ui/views/widget/widget.h
-  views::Widget::InitParams params;
+  views::Widget::InitParams params(
+      views::Widget::InitParams::TYPE_WINDOW_FRAMELESS);
   params.delegate = this;
-  params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   params.opacity = views::Widget::InitParams::WindowOpacity::kTranslucent;
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;

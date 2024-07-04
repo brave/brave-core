@@ -7,8 +7,7 @@
 
 #include "base/feature_list.h"
 
-namespace debounce {
-namespace features {
+namespace debounce::features {
 
 // When enabled, Brave will try to parse tracking URLs of the form
 // https://tracker.example.com/?url=http://final.example.com/
@@ -16,5 +15,4 @@ namespace features {
 // network requests to the tracker.
 BASE_FEATURE(kBraveDebounce, "BraveDebounce", base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace debounce
+}  // namespace debounce::features

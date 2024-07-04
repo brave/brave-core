@@ -33,6 +33,7 @@ bool BraveBookmarkBarView::UpdateOtherAndManagedButtonsVisibility() {
   if (all_bookmarks_button_ && all_bookmarks_button_->GetVisible() &&
       !show_all_bookmarks_button_pref_.GetValue()) {
     all_bookmarks_button_->SetVisible(false);
+    UpdateBookmarksSeparatorVisibility();
     return true;
   }
   return result;

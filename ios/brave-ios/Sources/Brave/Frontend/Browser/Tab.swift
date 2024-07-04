@@ -790,11 +790,8 @@ class Tab: NSObject {
     if let webView = webView {
       lastRequest = request
       sslPinningError = nil
-      if let url = request.url {
-        if url.isFileURL, request.isPrivileged {
-          return webView.loadFileURL(url, allowingReadAccessTo: url)
-        }
 
+      if let url = request.url {
         // Donate Custom Intent Open Website
         if url.isSecureWebPage(), !isPrivate {
           ActivityShortcutManager.shared.donateCustomIntent(

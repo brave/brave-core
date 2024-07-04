@@ -70,7 +70,7 @@ export const DropDown = styled.div<{
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
   }
   position: absolute;
-  top: 38px;
+  top: 48px;
   z-index: 9;
   overflow-y: scroll;
   overflow-x: hidden;

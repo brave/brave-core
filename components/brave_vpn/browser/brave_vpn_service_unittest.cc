@@ -308,9 +308,14 @@ class BraveVPNServiceTest : public testing::Test {
     return mojom::Region();
   }
 
+  skus::mojom::SkusResultPtr MakeSkusResult(const std::string& result) {
+    return skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::Ok,
+                                        result);
+  }
+
   void OnCredentialSummary(const std::string& domain,
                            const std::string& summary) {
-    service_->OnCredentialSummary(domain, summary);
+    service_->OnCredentialSummary(domain, MakeSkusResult(summary));
   }
 
   const std::vector<mojom::Region>& regions() const {
@@ -344,7 +349,8 @@ class BraveVPNServiceTest : public testing::Test {
   void OnPrepareCredentialsPresentation(
       const std::string& domain,
       const std::string& credential_as_cookie) {
-    service_->OnPrepareCredentialsPresentation(domain, credential_as_cookie);
+    service_->OnPrepareCredentialsPresentation(
+        domain, MakeSkusResult(credential_as_cookie));
   }
 
   void SetDeviceRegion(const std::string& name) {

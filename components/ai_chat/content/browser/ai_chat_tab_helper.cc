@@ -17,6 +17,7 @@
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
+#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -112,6 +113,8 @@ AIChatTabHelper::AIChatTabHelper(
       ConversationDriver(
           user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()),
           local_state_prefs,
+          ModelServiceFactory::GetForBrowserContext(
+              web_contents->GetBrowserContext()),
           ai_chat_metrics,
           skus_service_getter,
           web_contents->GetBrowserContext()
@@ -308,7 +311,12 @@ uint32_t AIChatTabHelper::GetMaxPageContentLength() {
   if (g_max_page_content_length_for_testing) {
     return *g_max_page_content_length_for_testing;
   }
-  return GetCurrentModel().max_page_content_length;
+  auto& model = GetCurrentModel();
+  if (model.options->is_leo_model_options()) {
+    return model.options->get_leo_model_options()->max_page_content_length;
+  } else {
+    return kCustomModelMaxPageContentLength;
+  }
 }
 
 void AIChatTabHelper::CheckPDFA11yTree(content::RenderFrameHost* primary_rfh) {

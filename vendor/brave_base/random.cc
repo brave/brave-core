@@ -11,8 +11,7 @@
 #include "base/bits.h"
 #include "crypto/random.h"
 
-namespace brave_base {
-namespace random {
+namespace brave_base::random {
 
 uint64_t Uniform64() {
   uint64_t x;
@@ -120,5 +119,4 @@ double Uniform_01(uint64_t e, uint64_t u) {
 
 }  // namespace deterministic
 
-}  // namespace random
-}  // namespace brave_base
+}  // namespace brave_base::random

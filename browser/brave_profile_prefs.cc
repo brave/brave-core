@@ -115,6 +115,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
@@ -472,6 +473,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefs(registry);
+  ai_chat::ModelService::RegisterProfilePrefs(registry);
 #endif
 
   brave_search_conversion::RegisterPrefs(registry);

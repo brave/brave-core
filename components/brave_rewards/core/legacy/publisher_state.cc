@@ -9,8 +9,7 @@
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace publisher {
+namespace brave_rewards::internal::publisher {
 
 LegacyPublisherState::LegacyPublisherState(RewardsEngine& engine)
     : engine_(engine) {}
@@ -75,5 +74,4 @@ void LegacyPublisherState::GetAllBalanceReports(
   }
 }
 
-}  // namespace publisher
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::publisher

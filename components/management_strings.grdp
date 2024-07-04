@@ -115,6 +115,31 @@
     <message name="IDS_MANAGEMENT_TRUST_ROOTS_CONFIGURED" desc="Message describing that the administrators have installed their own certificates">
       Administrators of this device have set up security certificates that may allow them to see the content of websites you visit.
     </message>
+    <!-- Strings related to Files upload to cloud -->
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD" desc="Title of the types of files upload to cloud section of the page">
+      Files upload
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_CONFIGURATION" desc="Message telling users that their administrator has configured files to be uploaded to cloud storage">
+      Your administrator has configured to save <ph name="FILES">$1<ex>downloads and screenshots</ex></ph> in your enterprise-managed <ph name="CLOUD_STORAGE">$2<ex>Google Drive or OneDrive</ex></ph> storage. These files may be monitored, audited, and retained when you delete them.
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_DOWNLOADS" desc="This string will appear in a sentence such as 'administrator has configured to save downloads'" meaning="Part of files upload enterprise disclosure">
+      downloads
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_SCREENSHOTS" desc="This string will appear in a sentence such as 'administrator has configured to save screenshots'" meaning="Part of files upload enterprise disclosure">
+      screenshots
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_DOWNLOADS_AND_SCREENSHOTS" desc="This string will appear in a sentence such as 'administrator has configured to save downloads and screenshots'" meaning="Part of files upload enterprise disclosure">
+      downloads and screenshots
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_GOOGLE_DRIVE" desc="This string will appear in a sentence such as 'configured to save downloads in Google Drive'" meaning="Part of files upload enterprise disclosure">
+      Google Drive
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_ONEDRIVE" desc="This string will appear in a sentence such as 'configured to save downloads in OneDrive'" meaning="Part of files upload enterprise disclosure">
+      OneDrive
+    </message>
+    <message name="IDS_MANAGEMENT_FILES_CLOUD_UPLOAD_GOOGLE_DRIVE_AND_ONEDRIVE" desc="This string will appear in a sentence such as 'configured to save downloads in Google Drive and OneDrive'" meaning="Part of files upload enterprise disclosure">
+      Google Drive and OneDrive
+    </message>
     <!-- Strings related to device reporting section of the management page -->
     <message name="IDS_MANAGEMENT_DEVICE_REPORTING" desc="Title of the types of device reporting section of the page">
       Device
@@ -122,8 +147,8 @@
     <message name="IDS_MANAGEMENT_PROXY_SERVER_PRIVACY_DISCLOSURE" desc="Message stating that administrators can see user's traffic when connected to a proxy server.">
       Administrators of this device have configured your network connection, which may allow them to see your network traffic, including which websites you visit.
     </message>
-    <message name="IDS_MANAGEMENT_DEVICE_CONFIGURATION" desc="Message telling users that their administrator has set some specific policies on their device">
-      Your administrator can see:
+    <message name="IDS_MANAGEMENT_DEVICE_CONFIGURATION" desc="Message explaining to users what device policies their administrator has set to monitor the device">
+      Your administrator may be able to view:
     </message>
     <message name="IDS_MANAGEMENT_REPORT_DEVICE_USERS" desc="Message stating that administrators see all users that have used the device recently.">
       Who has used the device recently
@@ -259,8 +284,8 @@
     <message name="IDS_MANAGEMENT_BROWSER_REPORTING" desc="Title of the types of browser reporting section of the page" formatter_data="android_java">
       Browser
     </message>
-    <message name="IDS_MANAGEMENT_BROWSER_REPORTING_EXPLANATION" desc="Message explaining browser reporting" formatter_data="android_java">
-      Your administrator can see:
+    <message name="IDS_MANAGEMENT_BROWSER_REPORTING_EXPLANATION" desc="Message explaining to users what browser information is being reported that admins can access" formatter_data="android_java">
+      Your administrator may be able to view:
     </message>
     <message name="IDS_MANAGEMENT_EXTENSION_REPORT_MACHINE_NAME" desc="Message explaining that an extension currently reports the user's machine name">
       Your device name
@@ -288,26 +313,24 @@
     </message>
 
     <!--Profile reporting management message-->
-    <if expr="not is_android">
-      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_EXPLANATION" desc="Message explaining browser reporting" formatter_data="android_java" translateable="false">
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_EXPLANATION" desc="Message explaining browser reporting" formatter_data="android_java">
         Managed profile, browser, and some device information is accessible to your administrator. They can see information such as the following:
       </message>
-      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_OVERVIEW" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view the user's work profile overview." formatter_data="android_java" translateable="false">
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_OVERVIEW" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view the user's work profile overview." formatter_data="android_java">
         Work profile overview
       </message>
-      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_USERNAME" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view the user's work profile username." formatter_data="android_java" translateable="false">
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_USERNAME" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view the user's work profile username." formatter_data="android_java">
         Work profile information (such as your work profile username)
       </message>
-      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_BROWSER" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view the device information that user's work profile belong to" formatter_data="android_java" translateable="false">
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_BROWSER" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view the device information that user's work profile belong to" formatter_data="android_java">
         Browser and device OS information (such as the browser &amp; OS versions)
       </message>
-      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_EXTENSION" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view user's work profile extensions" formatter_data="android_java" translateable="false">
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_EXTENSION" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can view user's work profile extensions">
         Installed apps &amp; extensions in your work profile
       </message>
-      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_POLICY" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can viewuser's work profile policies" formatter_data="android_java" translateable="false">
+      <message name="IDS_MANAGEMENT_PROFILE_REPORTING_POLICY" desc="Item in a list of information viewable by the enterprise admin, indicating that the admin can viewuser's work profile policies" formatter_data="android_java">
         Applied browser policies in your work profile
       </message>
-    </if>
 
     <!-- Strings related to Brave Enterprise Connectors -->
     <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise Connectors section of the page">

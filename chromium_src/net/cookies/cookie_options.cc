@@ -37,9 +37,8 @@ void FillEphemeralStorageParams(
     return;
   }
   cookie_options->set_should_use_ephemeral_storage(
-      cookie_access_delegate->ShouldUseEphemeralStorage(
-          url, site_for_cookies, net::CookieSettingOverrides(),
-          top_frame_origin));
+      cookie_access_delegate->ShouldUseEphemeralStorage(url, site_for_cookies,
+                                                        top_frame_origin));
   if (cookie_options->should_use_ephemeral_storage()) {
     cookie_options->set_site_for_cookies(site_for_cookies);
     cookie_options->set_top_frame_origin(top_frame_origin);

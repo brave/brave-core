@@ -26,6 +26,8 @@ source_set("ai_chat") {
     "ai_chat_delegate.h",
     "conversation_driver_ios.h",
     "conversation_driver_ios.mm",
+    "model_service_factory.h",
+    "model_service_factory.mm",
   ]
 
   deps = [
@@ -40,6 +42,7 @@ source_set("ai_chat") {
     "//brave/components/l10n/common",
     "//brave/components/resources:strings_grit",
     "//brave/ios/browser/skus",
+    "//components/keyed_service/ios",
     "//components/prefs",
     "//components/user_prefs",
     "//components/version_info",

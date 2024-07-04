@@ -1829,9 +1829,10 @@ public class BraveRewardsPanel
             String actionText = mActivity.getString(R.string.retry_text);
             if (errorMessage.equals(WALLET_GENERATION_DISABLED_ERROR)) {
                 title = mActivity.getString(R.string.wallet_generation_disabled_error_title);
-                text = String.format(
-                        mActivity.getString(R.string.wallet_generation_disabled_error_text),
-                        mActivity.getResources().getString(R.string.learn_more));
+                text =
+                        String.format(
+                                mActivity.getString(R.string.wallet_generation_disabled_error_text),
+                                mActivity.getResources().getString(R.string.learn_more));
                 SpannableString spannableWithLearnMore = learnMoreSpannableString(text);
                 responseModalText.setMovementMethod(LinkMovementMethod.getInstance());
                 responseModalText.setText(spannableWithLearnMore);
@@ -2158,8 +2159,8 @@ public class BraveRewardsPanel
                 0,
                 0,
                 0);
-        btnSendTip.setEnabled(isVerified ? true : false);
-        btnSendTip.setClickable(isVerified ? true : false);
+        btnSendTip.setEnabled(isVerified);
+        btnSendTip.setClickable(isVerified);
         btnSendTip.setBackgroundDrawable(
                 ResourcesCompat.getDrawable(
                         ContextUtils.getApplicationContext().getResources(),

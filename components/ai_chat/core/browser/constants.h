@@ -24,6 +24,13 @@ extern const base::fixed_flat_set<std::string_view, 1>
 inline constexpr uint8_t kMaxPreviewPages = 20;
 extern const char kLeoModelSupportUrl[];
 
+// Llama 3 has a max context length of 8k tokens. Phi 3 Mini and Llama 2 have 4k
+// tokens max. Using Phi 3 Mini as the upper bound, 1 token ≈ 4 characters, so
+// the max context length is ~16k characters. To allow for follow-ups, set max
+// page content length to 60% of this, i.e., 9.6k characters.
+inline constexpr int kCustomModelMaxPageContentLength = 9600;
+inline constexpr int kCustomModelLongConversationCharLimit = 10000;
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_

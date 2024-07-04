@@ -12,10 +12,12 @@ import { BraveWallet } from '../../../constants/types'
 import {
   reduceNetworkDisplayName //
 } from '../../../utils/network-utils'
+import { getNetworkId } from '../../../common/slices/entities/network.entity'
 
 // Options
 import {
-  AllNetworksOption //
+  AllNetworksOption, //
+  AllNetworksOptionNetworkId
 } from '../../../options/network-filter-options'
 
 // Components
@@ -29,10 +31,12 @@ import { Row } from '../style'
 
 interface Props {
   networks: BraveWallet.NetworkInfo[]
-  selectedNetwork: BraveWallet.NetworkInfo
+  selectedNetwork?: BraveWallet.NetworkInfo
   showAllNetworksOption?: boolean
-  onSelectNetwork: (chainId: string) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   checkIsNetworkOptionDisabled?: (network: BraveWallet.NetworkInfo) => boolean
+  placeholder?: string
+  label?: React.ReactNode
 }
 
 export const NetworksDropdown = (props: Props) => {
@@ -41,68 +45,84 @@ export const NetworksDropdown = (props: Props) => {
     selectedNetwork,
     showAllNetworksOption,
     onSelectNetwork,
-    checkIsNetworkOptionDisabled
+    checkIsNetworkOptionDisabled,
+    placeholder,
+    label
   } = props
 
+  // computed
+  const selectedNetworkId = selectedNetwork
+    ? getNetworkId(selectedNetwork)
+    : undefined
+
+  // render
   return (
     <DropdownFilter
-      onChange={(e) => onSelectNetwork(e.value ?? '')}
-      value={selectedNetwork.chainId}
+      placeholder={placeholder}
+      onChange={(e) => {
+        const network = networks.find((n) => getNetworkId(n) === e.value)
+        onSelectNetwork(network || AllNetworksOption)
+      }}
+      value={selectedNetworkId}
     >
+      {label && <div slot='label'>{label}</div>}
       <Row
         slot='value'
         justifyContent='flex-start'
       >
-        {selectedNetwork.chainId !== AllNetworksOption.chainId && (
+        {selectedNetworkId !== AllNetworksOptionNetworkId && (
           <CreateNetworkIcon
             network={selectedNetwork}
             marginRight={8}
             size='medium'
           />
         )}
-        {selectedNetwork.chainId === AllNetworksOption.chainId
-          ? selectedNetwork.chainName
-          : reduceNetworkDisplayName(selectedNetwork.chainName)}
+        {selectedNetworkId === AllNetworksOptionNetworkId
+          ? AllNetworksOption?.chainName
+          : selectedNetwork
+          ? reduceNetworkDisplayName(selectedNetwork.chainName)
+          : placeholder ?? ''}
       </Row>
       {showAllNetworksOption && (
-        <leo-option value={AllNetworksOption.chainId}>
+        <leo-option value={AllNetworksOptionNetworkId}>
           <DropdownOption justifyContent='space-between'>
             <Row width='unset'>{AllNetworksOption.chainName}</Row>
-            {selectedNetwork.chainId === AllNetworksOption.chainId && (
+            {selectedNetworkId === AllNetworksOptionNetworkId && (
               <Icon name='check-normal' />
             )}
           </DropdownOption>
         </leo-option>
       )}
-      {networks.map((network) => (
-        <leo-option
-          value={network.chainId}
-          key={network.chainId}
-        >
-          <DropdownOption
-            justifyContent='space-between'
-            isDisabled={
-              checkIsNetworkOptionDisabled
-                ? checkIsNetworkOptionDisabled(network)
-                : false
-            }
+      {networks.map((network) => {
+        const networkId = getNetworkId(network)
+        return (
+          <leo-option
+            value={networkId}
+            key={networkId}
           >
-            <Row width='unset'>
-              {network.chainId !== AllNetworksOption.chainId && (
-                <CreateNetworkIcon
-                  network={network}
-                  marginRight={8}
-                  size='medium'
-                />
-              )}
-              {network.chainName}
-            </Row>
-            {selectedNetwork.chainId === network.chainId && (
-              <Icon name='check-normal' />
-            )}
-          </DropdownOption>
-        </leo-option>
-      ))}
+            <DropdownOption
+              justifyContent='space-between'
+              isDisabled={
+                checkIsNetworkOptionDisabled
+                  ? checkIsNetworkOptionDisabled(network)
+                  : false
+              }
+            >
+              <Row width='unset'>
+                {networkId !== AllNetworksOptionNetworkId && (
+                  <CreateNetworkIcon
+                    network={network}
+                    marginRight={8}
+                    size='medium'
+                  />
+                )}
+                {network.chainName}
+              </Row>
+              {selectedNetworkId === networkId && <Icon name='check-normal' />}
+            </DropdownOption>
+          </leo-option>
+        )
+      })}
     </DropdownFilter>
   )
 }

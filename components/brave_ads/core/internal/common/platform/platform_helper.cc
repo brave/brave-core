@@ -36,6 +36,8 @@ PlatformHelper::~PlatformHelper() = default;
 // static
 void PlatformHelper::SetForTesting(
     const PlatformHelper* const platform_helper) {
+  CHECK_IS_TEST();
+
   g_platform_helper_for_testing = platform_helper;
 }
 
@@ -55,6 +57,7 @@ PlatformType PlatformHelper::GetType() const {
 const PlatformHelper& PlatformHelper::GetInstance() {
   if (g_platform_helper_for_testing) {
     CHECK_IS_TEST();
+
     return *g_platform_helper_for_testing;
   }
 

@@ -8,16 +8,15 @@ import * as React from 'react'
 import WalletPageStory from '../../../stories/wrappers/wallet-page-story-wrapper'
 import { DepositFundsScreen } from './deposit-funds'
 
-export const _DepositFundsScreen = () => {
-  return (
-    <WalletPageStory>
-      <DepositFundsScreen />
-    </WalletPageStory>
-  )
-}
-
-_DepositFundsScreen.story = {
+export const _DepositFundsScreen = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <DepositFundsScreen />
+      </WalletPageStory>
+    )
+  },
   name: 'Deposit Funds Screen'
 }
 
-export default _DepositFundsScreen
+export default { component: DepositFundsScreen }

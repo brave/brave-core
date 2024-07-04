@@ -15,6 +15,7 @@ struct DynamicParams {
   bool de_amp_enabled = true;
   bool onion_only_in_tor_windows = true;
   bool widevine_enabled = false;
+  bool playlist_enabled = false;
 };
 
 // Configures the renderer.

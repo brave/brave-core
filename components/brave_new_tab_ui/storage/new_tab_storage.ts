@@ -28,6 +28,8 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   showBraveTalk: false,
   showSearchBox: true,
+  promptEnableSearchSuggestions: true,
+  searchSuggestionsEnabled: false,
   showBitcoinDotCom: false,
   hideAllWidgets: false,
   brandedWallpaperOptIn: false,
@@ -43,7 +45,6 @@ export const defaultState: NewTab.State = {
   torCircuitEstablished: false,
   torInitProgress: '',
   isTor: false,
-  isQwant: false,
   stats: {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
@@ -90,7 +91,6 @@ export const defaultState: NewTab.State = {
 
 if (chrome.extension.inIncognitoContext) {
   defaultState.isTor = loadTimeData.getBoolean('isTor')
-  defaultState.isQwant = loadTimeData.getBoolean('isQwant')
 }
 
 // Ensure any new stack widgets introduced are put behind
@@ -99,7 +99,7 @@ if (chrome.extension.inIncognitoContext) {
 export const addNewStackWidget = (state: NewTab.State) => {
   defaultState.widgetStackOrder.map((widget: NewTab.StackWidget) => {
     if (!state.widgetStackOrder.includes(widget) &&
-        !state.removedStackWidgets.includes(widget)) {
+      !state.removedStackWidgets.includes(widget)) {
       state.widgetStackOrder.unshift(widget)
     }
   })
@@ -126,7 +126,7 @@ export const replaceStackWidgets = (state: NewTab.State) => {
   for (const key in displayLookup) {
     const widget = key as NewTab.StackWidget
     if (!state.widgetStackOrder.includes(widget) &&
-        displayLookup[widget].display) {
+      displayLookup[widget].display) {
       state.widgetStackOrder.unshift(widget)
     }
   }

@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -181,7 +180,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     publisher->url = GetStringColumn(record_pointer, 4);
     publisher->favicon_url = GetStringColumn(record_pointer, 5);
     publisher->status =
-        static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 6));
+        PublisherStatusFromInt(GetInt64Column(record_pointer, 6));
     publisher->status_updated_at = GetInt64Column(record_pointer, 7);
     publisher->provider = GetStringColumn(record_pointer, 8);
 
@@ -227,5 +226,4 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

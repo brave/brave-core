@@ -128,12 +128,9 @@ void PromotedContentAdEventHandler::FireEventCallback(
     const mojom::PromotedContentAdEventType event_type,
     FirePromotedContentAdEventHandlerCallback callback,
     const bool success) const {
-  if (!success) {
-    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                             event_type, std::move(callback));
-  }
-
-  SuccessfullyFiredEvent(ad, event_type, std::move(callback));
+  success ? SuccessfullyFiredEvent(ad, event_type, std::move(callback))
+          : FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                              event_type, std::move(callback));
 }
 
 void PromotedContentAdEventHandler::SuccessfullyFiredEvent(

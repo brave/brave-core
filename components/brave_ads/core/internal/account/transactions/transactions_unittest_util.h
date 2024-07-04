@@ -21,11 +21,11 @@ TransactionInfo BuildTransaction(double value,
                                  AdType ad_type,
                                  ConfirmationType confirmation_type,
                                  base::Time reconciled_at,
-                                 bool should_use_random_uuids);
+                                 bool should_generate_random_uuids);
 TransactionInfo BuildUnreconciledTransaction(double value,
                                              AdType ad_type,
                                              ConfirmationType confirmation_type,
-                                             bool should_use_random_uuids);
+                                             bool should_generate_random_uuids);
 
 }  // namespace brave_ads::test
 

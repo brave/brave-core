@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
-
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -28,8 +30,12 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   test::SetMaximumNotificationAdsPerHour(5);
 
-  test::RecordAdEvent(AdType::kNotificationAd,
-                      ConfirmationType::kServedImpression);
+  const CreativeNotificationAdInfo creative_ad =
+      test::BuildCreativeNotificationAd(
+          /*should_generate_random_uuids=*/false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
+  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(base::Minutes(12));
 
@@ -42,8 +48,12 @@ TEST_F(BraveAdsNotificationAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   test::SetMaximumNotificationAdsPerHour(5);
 
-  test::RecordAdEvent(AdType::kNotificationAd,
-                      ConfirmationType::kServedImpression);
+  const CreativeNotificationAdInfo creative_ad =
+      test::BuildCreativeNotificationAd(
+          /*should_generate_random_uuids=*/false);
+  const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
+
+  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(base::Minutes(12) - base::Milliseconds(1));
 

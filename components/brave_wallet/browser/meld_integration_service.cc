@@ -107,6 +107,10 @@ GURL AppendFilterParams(
     url = net::AppendQueryParameter(url, "cryptoCurrencies",
                                     *filter->crypto_currencies);
   }
+  if (filter->crypto_chains) {
+    url =
+        net::AppendQueryParameter(url, "cryptoChains", *filter->crypto_chains);
+  }
   if (filter->service_providers) {
     url = net::AppendQueryParameter(url, "serviceProviders",
                                     *filter->service_providers);

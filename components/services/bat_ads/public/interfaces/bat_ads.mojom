@@ -184,7 +184,7 @@ interface BatAds {
       brave_ads.mojom.PromotedContentAdEventType event_type) => (bool success);
 
   TriggerSearchResultAdEvent(
-      brave_ads.mojom.SearchResultAdInfo ad_mojom,
+      brave_ads.mojom.CreativeSearchResultAdInfo mojom_creative_ad,
       brave_ads.mojom.SearchResultAdEventType event_type) => (bool success);
 
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>

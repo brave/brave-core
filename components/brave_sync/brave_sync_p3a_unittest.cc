@@ -9,8 +9,7 @@
 #include "components/sync/base/user_selectable_type.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_sync {
-namespace p3a {
+namespace brave_sync::p3a {
 
 TEST(BraveSyncP3ATest, TestEnabledTypes) {
   using syncer::UserSelectableType;
@@ -76,5 +75,4 @@ TEST(BraveSyncP3ATest, TestSyncedObjectsCount) {
   histogram_tester.ExpectBucketCount(kSyncedObjectsCountHistogramNameV2, 3, 1);
 }
 
-}  // namespace p3a
-}  // namespace brave_sync
+}  // namespace brave_sync::p3a

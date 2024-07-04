@@ -257,6 +257,9 @@ inline constexpr char kLearnMoreReportingURL[] =
 // The URL for the Help Center page about managing third-party cookies.
 inline constexpr char kManage3pcHelpCenterURL[] = "https://support.brave.com/";
 
+// The URL for the tab group sync help center page.
+inline constexpr char kTabGroupsLearnMoreURL[] = "https://support.brave.com/";
+
 // The URL for the Learn More page about policies and enterprise enrollment.
 inline constexpr char16_t kManagedUiLearnMoreUrl[] =
     u"https://support.brave.com/";

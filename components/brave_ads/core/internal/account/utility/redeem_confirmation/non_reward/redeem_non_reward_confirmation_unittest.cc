@@ -47,7 +47,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -69,7 +69,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -92,7 +92,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -115,7 +115,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -138,7 +138,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   MockUrlResponses(ads_client_mock_, url_responses);
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert

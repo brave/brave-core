@@ -5,67 +5,48 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 
-#include <string>
-
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/instance_id.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_ads::test {
 
-AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
-                         const AdType ad_type,
-                         const ConfirmationType confirmation_type,
-                         const base::Time created_at,
-                         const bool should_use_random_uuids) {
-  AdEventInfo ad_event;
+namespace {
 
-  ad_event.type = ad_type;
-  ad_event.confirmation_type = confirmation_type;
-  ad_event.placement_id = GetConstantId(should_use_random_uuids, kPlacementId);
-  ad_event.campaign_id = creative_ad.campaign_id;
-  ad_event.creative_set_id = creative_ad.creative_set_id;
-  ad_event.creative_instance_id = creative_ad.creative_instance_id;
-  ad_event.advertiser_id = creative_ad.advertiser_id;
-  ad_event.segment = creative_ad.segment;
-  ad_event.created_at = created_at;
-
-  return ad_event;
+void RecordAdEvent(const AdEventInfo& ad_event) {
+  RecordAdEvent(ad_event, base::BindOnce([](const bool success) {
+                  ASSERT_TRUE(success);
+                }));
 }
 
-void RecordAdEvent(const AdType ad_type,
-                   const ConfirmationType confirmation_type) {
-  RecordAdEvents(ad_type, confirmation_type, /*count=*/1);
+}  // namespace
+
+void RecordAdEvent(const AdInfo& ad, const ConfirmationType confirmation_type) {
+  const AdEventInfo ad_event = BuildAdEvent(ad, confirmation_type, Now());
+  RecordAdEvent(ad_event);
 }
 
-void RecordAdEvents(const AdType ad_type,
+void RecordAdEvents(const AdInfo& ad,
+                    const std::vector<ConfirmationType>& confirmation_types) {
+  for (const auto confirmation_type : confirmation_types) {
+    RecordAdEvent(ad, confirmation_type);
+  }
+}
+
+void RecordAdEvents(const AdInfo& ad,
                     const ConfirmationType confirmation_type,
                     const int count) {
   CHECK_GT(count, 0);
 
-  const std::string& id = GetInstanceId();
-
   for (int i = 0; i < count; ++i) {
-    CacheAdEventForInstanceId(id, ad_type, confirmation_type, /*time=*/Now());
-  }
-}
-
-void RecordAdEvent(const AdEventInfo& ad_event) {
-  RecordAdEvent(ad_event,
-                base::BindOnce([](const bool success) { CHECK(success); }));
-}
-
-void RecordAdEvents(const AdEventInfo& ad_event, const int count) {
-  for (int i = 0; i < count; ++i) {
-    RecordAdEvent(ad_event);
+    RecordAdEvent(ad, confirmation_type);
   }
 }
 

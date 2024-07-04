@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopiera länk";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Kopiera flikinformation till Urklipp.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Kopiera till urklipp";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Din anslutning till den här webbplatsen är inte säker.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Anslutningen till webbplatsen ej verifierad.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Din anslutning till den här webbplatsen kunde inte verifieras helt. Du kan fortsätta eller prova att ladda om sidan för att upprätta en säker anslutning.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Visa certifikat";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Ta bort Sync-konto";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Om du tar bort ditt konto kommer dina krypterade data att tas bort från Brave-servrar och synkronisering inaktiveras på alla dina anslutna enheter.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Data som lagras lokalt på dessa enheter kommer dock inte att tas bort.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Denna borttagning är permanent och det finns inget sätt att återställa data. Om du bestämmer dig för att börja använda Sync igen måste du skapa ett nytt konto och lägga till varje enhet på nytt.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Något gick fel när enheter hämtades i synkroniseringskedjan.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Ta bort Sync-konto";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Det ser ut som att den här koden skapades på en enhet som kör en äldre version av Brave. Uppdatera till den senaste versionen av Brave på din andra enhet och skapa sedan en ny synkroniseringskod.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheter och inställningar";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem med anslutningstillförlitlighet";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Välj den kategori som beskriver problemet.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Inget internet när jag är ansluten";

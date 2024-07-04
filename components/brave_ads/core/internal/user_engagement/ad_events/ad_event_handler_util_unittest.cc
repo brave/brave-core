@@ -24,7 +24,7 @@ class BraveAdsAdEventHandlerUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -40,7 +40,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
@@ -55,7 +55,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEventWithinTimeWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -72,7 +72,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEventWithinTimeWindow) {
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEventWithinTimeWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
@@ -90,7 +90,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEventWithinTimeWindow) {
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
@@ -105,7 +105,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServedIfNoPreviousEvents) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_TRUE(WasAdServed(ad, /*ad_events*/ {},
@@ -115,7 +115,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServedIfNoPreviousEvents) {
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(WasAdServed(ad, /*ad_events*/ {},
@@ -130,7 +130,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -155,7 +155,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -179,7 +179,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateViewedAdEvent) {
       kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "0s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -204,7 +204,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       kAdEventFeature, {{"deduplicate_viewed_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
@@ -224,7 +224,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -252,7 +252,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -279,7 +279,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateClickedAdEvent) {
       kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "0s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
@@ -307,7 +307,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
       kAdEventFeature, {{"deduplicate_clicked_ad_event_for", "5s"}});
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(

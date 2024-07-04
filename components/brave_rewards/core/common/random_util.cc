@@ -27,8 +27,7 @@ std::string EncodeStringForPKCE(const std::string& data) {
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace util {
+namespace brave_rewards::internal::util {
 
 std::string GenerateRandomHexString() {
   const size_t kLength = 32;
@@ -45,5 +44,4 @@ std::string GeneratePKCECodeChallenge(const std::string& code_verifier) {
   return EncodeStringForPKCE(crypto::SHA256HashString(code_verifier));
 }
 
-}  // namespace util
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::util

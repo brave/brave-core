@@ -58,22 +58,18 @@ std::unique_ptr<rust::Vec<constellation::VecU8>> DecodeBase64List(
 
 StarRandomnessPoints::StarRandomnessPoints(
     scoped_refptr<network::SharedURLLoaderFactory> url_loaders_factory,
-    RandomnessDataCallback data_callback,
     const P3AConfig* config)
     : url_loader_factory_(url_loaders_factory),
-      data_callback_(data_callback),
       config_(config) {}
 
 StarRandomnessPoints::~StarRandomnessPoints() = default;
 
 void StarRandomnessPoints::SendRandomnessRequest(
-    std::string metric_name,
     MetricLogType log_type,
     uint8_t epoch,
     StarRandomnessMeta* randomness_meta,
-    rust::Box<constellation::RandomnessRequestStateWrapper>
-        randomness_request_state,
-    const rust::Vec<constellation::VecU8>& rand_req_points) {
+    const rust::Vec<constellation::VecU8>& rand_req_points,
+    RandomnessDataCallback callback) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url =
       GURL(base::StrCat({config_->star_randomness_host, "/instances/",
@@ -95,8 +91,7 @@ void StarRandomnessPoints::SendRandomnessRequest(
   if (!base::JSONWriter::Write(payload_dict, &payload_str)) {
     LOG(ERROR) << "StarRandomnessPoints: failed to serialize "
                   "randomness req payload";
-    data_callback_.Run(metric_name, log_type, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    std::move(callback).Run(nullptr, nullptr);
     return;
   }
 
@@ -108,18 +103,15 @@ void StarRandomnessPoints::SendRandomnessRequest(
   url_loaders_[log_type]->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&StarRandomnessPoints::HandleRandomnessResponse,
-                     base::Unretained(this), metric_name, log_type, epoch,
-                     randomness_meta, std::move(randomness_request_state)),
+                     base::Unretained(this), log_type, randomness_meta,
+                     std::move(callback)),
       kMaxRandomnessResponseSize);
 }
 
 void StarRandomnessPoints::HandleRandomnessResponse(
-    std::string metric_name,
     MetricLogType log_type,
-    uint8_t epoch,
     StarRandomnessMeta* randomness_meta,
-    rust::Box<constellation::RandomnessRequestStateWrapper>
-        randomness_request_state,
+    RandomnessDataCallback callback,
     std::unique_ptr<std::string> response_body) {
   if (!response_body || response_body->empty()) {
     std::string error_str =
@@ -128,13 +120,11 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     LOG(ERROR) << "StarRandomnessPoints: no response body for "
                   "randomness request, "
                << "net error: " << error_str;
-    data_callback_.Run(metric_name, log_type, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    std::move(callback).Run(nullptr, nullptr);
     return;
   }
   if (!randomness_meta->VerifyRandomnessCert(url_loaders_[log_type].get())) {
-    data_callback_.Run(metric_name, log_type, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    std::move(callback).Run(nullptr, nullptr);
     url_loaders_[log_type] = nullptr;
     return;
   }
@@ -145,8 +135,7 @@ void StarRandomnessPoints::HandleRandomnessResponse(
     LOG(ERROR) << "StarRandomnessPoints: failed to parse randomness "
                   "response json: "
                << parsed_body.error().message;
-    data_callback_.Run(metric_name, log_type, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    std::move(callback).Run(nullptr, nullptr);
     return;
   }
   const base::Value::Dict& root = parsed_body->GetDict();
@@ -155,31 +144,26 @@ void StarRandomnessPoints::HandleRandomnessResponse(
   if (points == nullptr) {
     LOG(ERROR) << "StarRandomnessPoints: failed to find points list in "
                   "randomness response";
-    data_callback_.Run(metric_name, log_type, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    std::move(callback).Run(nullptr, nullptr);
     return;
   }
   std::unique_ptr<rust::Vec<constellation::VecU8>> points_vec =
       DecodeBase64List(*points);
   if (points_vec == nullptr) {
-    data_callback_.Run(metric_name, log_type, epoch,
-                       std::move(randomness_request_state), nullptr, nullptr);
+    std::move(callback).Run(nullptr, nullptr);
     return;
   }
   std::unique_ptr<rust::Vec<constellation::VecU8>> proofs_vec;
   if (proofs != nullptr) {
     proofs_vec = DecodeBase64List(*proofs);
     if (!proofs_vec) {
-      data_callback_.Run(metric_name, log_type, epoch,
-                         std::move(randomness_request_state), nullptr, nullptr);
+      std::move(callback).Run(nullptr, nullptr);
       return;
     }
   } else {
     proofs_vec = std::make_unique<rust::Vec<constellation::VecU8>>();
   }
-  data_callback_.Run(metric_name, log_type, epoch,
-                     std::move(randomness_request_state), std::move(points_vec),
-                     std::move(proofs_vec));
+  std::move(callback).Run(std::move(points_vec), std::move(proofs_vec));
 }
 
 }  // namespace p3a

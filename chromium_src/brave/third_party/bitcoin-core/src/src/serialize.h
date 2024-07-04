@@ -13,11 +13,9 @@
 
 #include "base/check.h"
 
-namespace std {
-namespace brave {
+namespace std::brave {
 using string = ::std::string;
 }
-}  // namespace std
 
 #define throw CHECK(false) <<
 #define ios_base brave

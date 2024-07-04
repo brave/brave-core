@@ -46,7 +46,7 @@ inline constexpr int kHorizontalTabInset =
     (kHorizontalTabGap + kHorizontalTabOverlap) / 2;
 
 // The content padding within a tab.
-inline constexpr int kHorizontalTabPadding = 6;
+inline constexpr int kHorizontalTabPadding = 8;
 
 // The horizontal difference between the visual edge of a tab group and the
 // bounds of the group underline.
@@ -64,6 +64,9 @@ inline constexpr int kTabGroupLineHeight = 24;
 // The amount of padding at the top and bottom of tab group header "chips"
 // (i.e. the rectangle enclosing the tab group title).
 inline constexpr int kTabGroupTitleVerticalInset = 4;
+
+// The amount of padding at sides of tab group header "chips".
+inline constexpr int kTabGroupTitleHorizontalInset = 10;
 
 }  // namespace brave_tabs
 

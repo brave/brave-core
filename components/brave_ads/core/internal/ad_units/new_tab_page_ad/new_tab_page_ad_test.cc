@@ -36,25 +36,15 @@ class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  void TriggerNewTabPageAdEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                const mojom::NewTabPageAdEventType event_type,
-                                const bool should_fire_event) {
+  void TriggerNewTabPageAdEventAndVerifiyExpectations(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const mojom::NewTabPageAdEventType event_type,
+      const bool should_fire_event) {
     base::MockCallback<TriggerAdEventCallback> callback;
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event));
     GetAds().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                       event_type, callback.Get());
-  }
-
-  void TriggerNewTabPageAdEvents(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      const std::vector<mojom::NewTabPageAdEventType>& event_types,
-      const bool should_fire_event) {
-    for (const auto& event_type : event_types) {
-      TriggerNewTabPageAdEvent(placement_id, creative_instance_id, event_type,
-                               should_fire_event);
-    }
   }
 };
 
@@ -136,7 +126,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerNewTabPageAdEvent(
+        TriggerNewTabPageAdEventAndVerifiyExpectations(
             ad->placement_id, ad->creative_instance_id,
             mojom::NewTabPageAdEventType::kViewedImpression,
             /*should_fire_event=*/true);
@@ -154,9 +144,10 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewedImpression,
-                           /*should_fire_event=*/true);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kViewedImpression,
+      /*should_fire_event=*/true);
 }
 
 TEST_F(
@@ -166,9 +157,10 @@ TEST_F(
   test::DisableBraveRewards();
 
   // Act & Assert
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewedImpression,
-                           /*should_fire_event=*/false);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kViewedImpression,
+      /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
@@ -184,15 +176,16 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
         ASSERT_TRUE(ad);
         ASSERT_TRUE(ad->IsValid());
 
-        TriggerNewTabPageAdEvent(
+        TriggerNewTabPageAdEventAndVerifiyExpectations(
             ad->placement_id, ad->creative_instance_id,
             mojom::NewTabPageAdEventType::kViewedImpression,
             /*should_fire_event=*/true);
 
         // Act & Assert
-        TriggerNewTabPageAdEvent(ad->placement_id, ad->creative_instance_id,
-                                 mojom::NewTabPageAdEventType::kClicked,
-                                 /*should_fire_event=*/true);
+        TriggerNewTabPageAdEventAndVerifiyExpectations(
+            ad->placement_id, ad->creative_instance_id,
+            mojom::NewTabPageAdEventType::kClicked,
+            /*should_fire_event=*/true);
       });
 
   GetAds().MaybeServeNewTabPageAd(callback.Get());
@@ -206,14 +199,15 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   test::DisableBraveRewards();
 
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewedImpression,
-                           /*should_fire_event=*/true);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kViewedImpression,
+      /*should_fire_event=*/true);
 
   // Act & Assert
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kClicked,
-                           /*should_fire_event=*/true);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId, mojom::NewTabPageAdEventType::kClicked,
+      /*should_fire_event=*/true);
 }
 
 TEST_F(
@@ -222,17 +216,19 @@ TEST_F(
   // Arrange
   test::DisableBraveRewards();
 
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kServedImpression,
-                           /*should_fire_event=*/false);
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kViewedImpression,
-                           /*should_fire_event=*/false);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kServedImpression,
+      /*should_fire_event=*/false);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kViewedImpression,
+      /*should_fire_event=*/false);
 
   // Act & Assert
-  TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                           mojom::NewTabPageAdEventType::kClicked,
-                           /*should_fire_event=*/false);
+  TriggerNewTabPageAdEventAndVerifiyExpectations(
+      kPlacementId, kCreativeInstanceId, mojom::NewTabPageAdEventType::kClicked,
+      /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsNewTabPageAdIntegrationTest,
@@ -250,7 +246,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
         ASSERT_TRUE(ad->IsValid());
 
         // Act & Assert
-        TriggerNewTabPageAdEvent(
+        TriggerNewTabPageAdEventAndVerifiyExpectations(
             ad->placement_id, kInvalidCreativeInstanceId,
             mojom::NewTabPageAdEventType::kViewedImpression,
             /*should_fire_event=*/false);

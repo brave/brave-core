@@ -23,31 +23,32 @@ class Account;
 class SiteVisit;
 struct SearchResultAdInfo;
 
-class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
+class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
  public:
-  SearchResultAd(Account& account, SiteVisit& site_visit);
+  SearchResultAdHandler(Account& account, SiteVisit& site_visit);
 
-  SearchResultAd(const SearchResultAd&) = delete;
-  SearchResultAd& operator=(const SearchResultAd&) = delete;
+  SearchResultAdHandler(const SearchResultAdHandler&) = delete;
+  SearchResultAdHandler& operator=(const SearchResultAdHandler&) = delete;
 
-  SearchResultAd(SearchResultAd&&) noexcept = delete;
-  SearchResultAd& operator=(SearchResultAd&&) noexcept = delete;
+  SearchResultAdHandler(SearchResultAdHandler&&) noexcept = delete;
+  SearchResultAdHandler& operator=(SearchResultAdHandler&&) noexcept = delete;
 
-  ~SearchResultAd() override;
+  ~SearchResultAdHandler() override;
 
-  void TriggerEvent(mojom::SearchResultAdInfoPtr ad_mojom,
+  static void DeferTriggeringOfAdViewedEventForTesting();
+  static void TriggerDeferredAdViewedEventForTesting();
+
+  void TriggerEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType event_type,
                     TriggerAdEventCallback callback);
 
-  static void DeferTriggeringOfAdViewedEvent();
-  static void TriggerDeferredAdViewedEvent();
-
  private:
-  void FireServedEventCallback(mojom::SearchResultAdInfoPtr ad_mojom,
-                               TriggerAdEventCallback callback,
-                               bool success,
-                               const std::string& placement_id,
-                               mojom::SearchResultAdEventType event_type);
+  void FireServedEventCallback(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      TriggerAdEventCallback callback,
+      bool success,
+      const std::string& placement_id,
+      mojom::SearchResultAdEventType event_type);
 
   void MaybeTriggerAdViewedEventFromQueue(TriggerAdEventCallback callback);
   void FireAdViewedEventCallback(TriggerAdEventCallback callback,
@@ -69,11 +70,12 @@ class SearchResultAd final : public SearchResultAdEventHandlerDelegate {
 
   SearchResultAdEventHandler event_handler_;
 
-  base::circular_deque<mojom::SearchResultAdInfoPtr> ad_viewed_event_queue_;
+  base::circular_deque<mojom::CreativeSearchResultAdInfoPtr>
+      ad_viewed_event_queue_;
 
   bool trigger_ad_viewed_event_in_progress_ = false;
 
-  base::WeakPtrFactory<SearchResultAd> weak_factory_{this};
+  base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};
 };
 
 }  // namespace brave_ads

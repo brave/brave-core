@@ -116,8 +116,10 @@ bool StatusTrayRunner::IsVPNConnected() const {
 void StatusTrayRunner::ConnectVPN() {
   if (IsWireguardActive()) {
     wireguard::EnableBraveVpnWireguardService(
-        "", base::BindOnce(&StatusTrayRunner::OnConnected,
-                           weak_factory_.GetWeakPtr()));
+        // passing empty params will reconnect using last known good config.
+        "", "", "", "",
+        base::BindOnce(&StatusTrayRunner::OnConnected,
+                       weak_factory_.GetWeakPtr()));
   } else {
     OnConnected(ras::ConnectRasEntry());
   }

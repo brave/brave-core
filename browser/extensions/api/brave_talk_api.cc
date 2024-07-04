@@ -11,8 +11,7 @@
 #include "base/environment.h"
 #include "chrome/browser/profiles/profile.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -24,5 +23,4 @@ ExtensionFunction::ResponseAction BraveTalkIsSupportedFunction::Run() {
   return RespondNow(WithArguments(true));
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "复制链接";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "将选项卡信息复制到剪贴板。";
+
 /* Copy codewords title */
 "CopyToClipboard" = "复制到剪切板";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "您与此网站之间建立的连接不安全。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "站点连接未验证。";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "无法充分验证至该站点的连接。您可以选择继续，也可以重新加载页面，建立安全连接。";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "查看认证";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "删除 Sync 帐户";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "若删除您的账户将删除 Brave 服务器上的加密数据，并禁用您的所有连接设备上的同步功能。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "但是，将不会删除本地存储在这些设备上的数据。";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "一旦删除即永久删除，资料将无法复原。如果您决定再次使用 Sync，您将需要建立新帐户，并逐一重新新增每台设备。";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "摘取同步链中的装置时发生错误。";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "删除 Sync 帐户";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "代码可能创建于使用较低版本 Brave 的设备。请在您的设备上将 Brave 更新至最新版本，再创建同步代码。";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "设备&设置";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "连接可靠性问题";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "请选择问题类型。";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "连接后没有互联网";

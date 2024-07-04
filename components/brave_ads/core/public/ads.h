@@ -142,12 +142,12 @@ class ADS_EXPORT Ads {
       TriggerAdEventCallback callback) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
-  // `event_type` event for the ad specified in `ad_mojom`. The callback takes
-  // one argument - `bool` is set to `true` if successful otherwise `false`.
-  // Must be called before the `mojom::SearchResultAdInfo::target_url` landing
-  // page is opened.
+  // `event_type` event for the ad specified in `mojom_creative_ad`. The
+  // callback takes one argument - `bool` is set to `true` if successful
+  // otherwise `false`. Must be called before the
+  // `mojom::CreativeSearchResultAdInfo::target_url` landing page is opened.
   virtual void TriggerSearchResultAdEvent(
-      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType event_type,
       TriggerAdEventCallback callback) = 0;
 

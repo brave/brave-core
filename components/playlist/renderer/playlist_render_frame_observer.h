@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -39,8 +40,12 @@ class PlaylistRenderFrameObserver final
       public content::RenderFrameObserverTracker<PlaylistRenderFrameObserver>,
       public mojom::PlaylistRenderFrameObserverConfigurator {
  public:
-  PlaylistRenderFrameObserver(content::RenderFrame* frame,
-                              int32_t isolated_world_id);
+  using IsPlaylistEnabledCallback = base::RepeatingCallback<bool()>;
+
+  PlaylistRenderFrameObserver(
+      content::RenderFrame* frame,
+      IsPlaylistEnabledCallback is_playlist_enabled_callback,
+      int32_t isolated_world_id);
 
   PlaylistRenderFrameObserver(const PlaylistRenderFrameObserver&) = delete;
   PlaylistRenderFrameObserver& operator=(const PlaylistRenderFrameObserver&) =
@@ -72,6 +77,7 @@ class PlaylistRenderFrameObserver final
               std::vector<v8::Local<v8::Value>> args = {}) const;
   void OnMediaDetected(base::Value::List media);
 
+  IsPlaylistEnabledCallback is_playlist_enabled_callback_;
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::PlaylistRenderFrameObserverConfigurator>
       configurator_receiver_{this};

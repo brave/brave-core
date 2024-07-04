@@ -29,10 +29,9 @@ bool CookieSettings::ShouldUseEphemeralStorage(
     const url::Origin& origin,
     const net::SiteForCookies& site_for_cookies,
     const std::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides,
     url::Origin& storage_origin) {
   const bool should_use = CookieSettingsBase::ShouldUseEphemeralStorage(
-      origin.GetURL(), site_for_cookies, overrides, top_frame_origin);
+      origin.GetURL(), site_for_cookies, top_frame_origin);
   if (!should_use) {
     return false;
   }

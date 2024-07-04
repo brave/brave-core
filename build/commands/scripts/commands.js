@@ -162,6 +162,7 @@ program
   .option('--target <target>', 'Comma-separated list of targets to build, instead of the default browser target')
   .option('--build_sparkle', 'Build the Sparkle macOS update framework from source')
   .option('--no_gn_gen', 'Build without running gn gen')
+  .option('--prepare_only', 'Do not build targets, but prepare everything (build redirect_cc, update branding, etc.)')
   .arguments('[build_config]')
   .action(build)
 

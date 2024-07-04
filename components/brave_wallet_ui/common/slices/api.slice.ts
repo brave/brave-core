@@ -211,6 +211,7 @@ export const {
   useGetIsImagePinnableQuery,
   useGetIsMetaMaskInstalledQuery,
   useGetIsPrivateWindowQuery,
+  useGetIsTokenOwnedByUserQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,
   useGetLocalIpfsNodeStatusQuery,

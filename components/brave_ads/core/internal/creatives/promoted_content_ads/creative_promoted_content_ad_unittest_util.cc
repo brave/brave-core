@@ -19,7 +19,7 @@ CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
 
   for (int i = 0; i < count; ++i) {
     CreativePromotedContentAdInfo creative_ad = BuildCreativePromotedContentAd(
-        /*should_use_random_uuids=*/true);
+        /*should_generate_random_uuids=*/true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];
 
     creative_ads.push_back(creative_ad);
@@ -29,8 +29,9 @@ CreativePromotedContentAdList BuildCreativePromotedContentAds(const int count) {
 }
 
 CreativePromotedContentAdInfo BuildCreativePromotedContentAd(
-    const bool should_use_random_uuids) {
-  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_uuids);
+    const bool should_generate_random_uuids) {
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(should_generate_random_uuids);
   CreativePromotedContentAdInfo creative_promoted_content_ad(creative_ad);
 
   creative_promoted_content_ad.title = "Test Ad Title";

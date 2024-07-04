@@ -7,10 +7,8 @@
 
 #include "base/feature_list.h"
 
-namespace brave_sync {
-namespace features {
+namespace brave_sync::features {
 
 BASE_FEATURE(kBraveSync, "BraveSync", base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace brave_sync
+}  // namespace brave_sync::features

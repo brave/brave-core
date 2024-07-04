@@ -60,6 +60,10 @@ void GeneralBrowserUsage::ReportWeeklyUse() {
   usage_storage_->ReplaceTodaysValueIfGreater(1);
   UMA_HISTOGRAM_EXACT_LINEAR(kWeeklyUseHistogramName,
                              usage_storage_->GetLastISOWeekSum(), 8);
+
+  // TODO(djandries): remove the following report when Nebula experiment is over
+  UMA_HISTOGRAM_EXACT_LINEAR(kWeeklyUseNebulaHistogramName,
+                             usage_storage_->GetLastISOWeekSum(), 8);
 }
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)

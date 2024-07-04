@@ -1,0 +1,48 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Συνέχεια";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Ανοίξτε κάθε σύνδεσμο που πατάτε με προστασίες απορρήτου του Brave";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Ορισμός του Brave ως προεπιλεγμένο πρόγραμμα περιήγησης";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "Ταχύτερη περιήγηση, με χρήση λιγότερων δεδομένων.";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "Λιγότερες διαφημίσεις και ιχνηλάτες";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Αλήθεια, τα ξεφορτωθήκαμε όλα.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Πάνε οι διαφημίσεις βίντεο.";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "Μάθετε περισσότερα για τα αναλυτικά στοιχεία προϊόντων με προστασία απορρήτου (P3A)";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Πείτε μας ποιες λειτουργίες απολαμβάνετε περισσότερο";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Κάντε το Brave καλύτερο.";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Μπορείτε να το αλλάξετε όποτε θέλετε, από τις Ρυθμίσεις Brave, στην επιλογή «Ασπίδες Brave και απόρρητο».";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Κοινοποιήστε απολύτως ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Ξεκινήστε την περιήγηση";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Μεταβείτε στις ρυθμίσεις συστήματος";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "Εισαγάγετε μια διεύθυνση URL για να απολαύσετε λιγότερες διαφημίσεις και ιχνηλάτες";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Δείτε τη διαφορά του Brave";
+

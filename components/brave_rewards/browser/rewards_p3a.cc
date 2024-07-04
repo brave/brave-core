@@ -14,8 +14,7 @@
 #include "brave/components/time_period_storage/monthly_storage.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave_rewards {
-namespace p3a {
+namespace brave_rewards::p3a {
 
 namespace {
 
@@ -177,5 +176,4 @@ void ConversionMonitor::ReportPanelTriggerCount() {
                                      kPanelCountBuckets, total);
 }
 
-}  // namespace p3a
-}  // namespace brave_rewards
+}  // namespace brave_rewards::p3a

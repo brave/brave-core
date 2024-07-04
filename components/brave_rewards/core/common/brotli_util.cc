@@ -74,8 +74,7 @@ class BrotliStreamDecoder {
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace util {
+namespace brave_rewards::internal::util {
 
 bool DecodeBrotliString(std::string_view input,
                         size_t uncompressed_size,
@@ -113,5 +112,4 @@ bool DecodeBrotliStringWithBuffer(std::string_view input,
   return result == BrotliStreamDecoder::Result::Done;
 }
 
-}  // namespace util
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::util

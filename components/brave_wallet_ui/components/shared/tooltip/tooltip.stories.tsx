@@ -7,10 +7,11 @@ import * as React from 'react'
 
 import { Tooltip } from '.'
 
-export const _ToolTip = () => {
-  return <Tooltip text='tip text'>Hover</Tooltip>
+export const _ToolTip = {
+  render: () => {
+    return <Tooltip text='tip text'>Hover</Tooltip>
+  }
 }
 
-_ToolTip.storyName = 'Tooltip'
 
-export default _ToolTip
+export default { component: Tooltip }

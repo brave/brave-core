@@ -54,19 +54,11 @@ void WireguardConnectionAPIImplWin::CheckConnection() {
 void WireguardConnectionAPIImplWin::PlatformConnectImpl(
     const wireguard::WireguardProfileCredentials& credentials) {
   auto vpn_server_hostname = GetHostname();
-  auto config = brave_vpn::wireguard::CreateWireguardConfig(
-      credentials.client_private_key, credentials.server_public_key,
-      vpn_server_hostname, credentials.mapped_ip4_address);
-  if (!config.has_value()) {
-    VLOG(1) << __func__ << " : failed to get correct credentials";
-    UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
-    return;
-  }
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
-      config.value(),
-      base::BindOnce(
-          &WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
-          weak_factory_.GetWeakPtr()));
+      credentials.server_public_key, credentials.client_private_key,
+      credentials.mapped_ip4_address, vpn_server_hostname,
+      base::BindOnce(&WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void WireguardConnectionAPIImplWin::OnServiceStopped(int mask) {

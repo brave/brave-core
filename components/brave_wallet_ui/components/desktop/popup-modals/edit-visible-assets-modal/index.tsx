@@ -358,6 +358,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
               onSelectNetwork={onSelectAssetsNetwork}
               selectedNetwork={selectedNetworkFilter}
               isV2={true}
+              dropdownPosition='right'
             />
           </PaddedRow>
         </>

@@ -5,12 +5,10 @@
 
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 MockDatabase::MockDatabase(RewardsEngine& engine) : Database(engine) {}
 
 MockDatabase::~MockDatabase() = default;
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

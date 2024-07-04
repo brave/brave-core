@@ -54,6 +54,9 @@ enum class ConfirmationType {
 
   // When played 100% of a new tab page video ad.
   kMedia100,
+
+  kMinValue = 0,
+  kMaxValue = kMedia100
 };
 
 // Returns a `ConfirmationType` value based on the string input.

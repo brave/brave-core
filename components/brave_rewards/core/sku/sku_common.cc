@@ -10,8 +10,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku_common.h"
 
-namespace brave_rewards::internal {
-namespace sku {
+namespace brave_rewards::internal::sku {
 
 SKUCommon::SKUCommon(RewardsEngine& engine)
     : engine_(engine), order_(engine), transaction_(engine) {}
@@ -85,5 +84,4 @@ void SKUCommon::GetSKUTransactionByOrderId(
       mojom::Result::OK);
 }
 
-}  // namespace sku
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::sku

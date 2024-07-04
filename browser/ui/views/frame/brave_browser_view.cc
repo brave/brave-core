@@ -248,15 +248,12 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
-  if (!WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(
-          browser_.get())) {
-    pref_change_registrar_.Add(
-        kTabsSearchShow,
-        base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                            base::Unretained(this)));
-    // Show the correct value in settings on initial start
-    UpdateSearchTabsButtonState();
-  }
+  pref_change_registrar_.Add(
+      kTabsSearchShow,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+  // Show the correct value in settings on initial start
+  UpdateSearchTabsButtonState();
 
   auto* rewards_service =
       brave_rewards::RewardsServiceFactory::GetForProfile(browser_->profile());
@@ -441,26 +438,6 @@ void BraveBrowserView::UpdateSplitViewSizeDelta(
   }
 }
 
-void BraveBrowserView::UpdateSplitViewOrientation() {
-  auto* split_view_browser_data =
-      SplitViewBrowserData::FromBrowser(browser_.get());
-  if (!split_view_browser_data) {
-    return;
-  }
-
-  auto* model = browser()->tab_strip_model();
-  auto active_tab_handle = model->GetActiveTab()->GetHandle();
-  auto active_tile = split_view_browser_data->GetTile(active_tab_handle);
-  if (!active_tile) {
-    return;
-  }
-
-  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
-      contents_container()->GetLayoutManager());
-  contents_layout_manager->SetSplitViewOrientation(
-      split_view_browser_data->GetOrientation(active_tab_handle));
-}
-
 void BraveBrowserView::UpdateContentsWebViewVisual() {
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(browser_.get());
@@ -491,22 +468,22 @@ void BraveBrowserView::UpdateContentsWebViewBorder() {
   DCHECK(split_view_browser_data);
 
   if (split_view_browser_data->GetTile(GetActiveTabHandle())) {
-    auto create_border = [this](SkColor color) {
-      constexpr auto kFocusRingThickness = 2;
+    auto create_border = [this](SkColor color, int border_thickness) {
       return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())
                  ? views::CreateRoundedRectBorder(
-                       kFocusRingThickness,
+                       border_thickness,
                        BraveContentsViewUtil::kBorderRadius +
-                           kFocusRingThickness / 2,
+                           border_thickness / 2,
                        color)
-                 : views::CreateSolidBorder(kFocusRingThickness, color);
+                 : views::CreateSolidBorder(border_thickness, color);
     };
 
-    contents_web_view_->SetBorder(create_border(leo::kColorPrimitivePrimary40));
-
     if (auto* cp = GetColorProvider()) {
+      contents_web_view_->SetBorder(
+          create_border(leo::kColorPrimitivePrimary40, 2));
+
       secondary_contents_web_view_->SetBorder(create_border(
-          cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder)));
+          cp->GetColor(kColorBraveSplitViewInactiveWebViewBorder), 1));
     }
   } else {
     contents_web_view_->SetBorder(nullptr);
@@ -849,7 +826,6 @@ void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
     return;
   }
 
-  UpdateSplitViewOrientation();
   UpdateContentsWebViewVisual();
 }
 
@@ -870,23 +846,6 @@ void BraveBrowserView::OnSwapTabsInTile(
   }
 
   UpdateSecondaryContentsWebViewVisibility();
-}
-
-void BraveBrowserView::OnOrientationChanged(
-    const SplitViewBrowserData::Tile& tile) {
-  if (!IsActiveWebContentsTiled(tile)) {
-    return;
-  }
-
-  UpdateSplitViewOrientation();
-
-  contents_web_view_->SetFastResize(true);
-  secondary_contents_web_view_->SetFastResize(true);
-
-  contents_container()->DeprecatedLayoutImmediately();
-
-  contents_web_view_->SetFastResize(false);
-  secondary_contents_web_view_->SetFastResize(false);
 }
 
 void BraveBrowserView::CreateWalletBubble() {
@@ -1115,8 +1074,7 @@ void BraveBrowserView::OnThemeChanged() {
 }
 
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
-  if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
-      WindowFrameUtil::IsWindowsTabSearchCaptionButtonEnabled(browser())) {
+  if (!tabs::utils::ShouldShowVerticalTabs(browser())) {
     return BrowserView::GetTabSearchBubbleHost();
   }
 
@@ -1177,8 +1135,6 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
   if (supports_split_view) {
     UpdateSplitViewSizeDelta(old_contents, new_contents);
-
-    UpdateSplitViewOrientation();
 
     // Setting nullptr doesn't detach the previous contents.
     UpdateContentsWebViewVisual();

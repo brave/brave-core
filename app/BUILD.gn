@@ -86,7 +86,6 @@ source_set("browser_tests") {
 
     sources = [
       "brave_main_delegate_browsertest.cc",
-      "brave_main_delegate_runtime_flags_browsertest.cc",
       "command_utils_browsertest.cc",
     ]
 
@@ -111,7 +110,10 @@ source_set("browser_tests") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "feature_defaults_unittest.cc" ]
+  sources = [
+    "brave_main_delegate_unittest.cc",
+    "feature_defaults_unittest.cc",
+  ]
   if (!is_android) {
     sources += [ "command_utils_unittest.cc" ]
   }
@@ -119,7 +121,6 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//chrome/browser",
-    "//chrome/browser/companion/core",
     "//chrome/browser/enterprise/connectors/analysis:features",
     "//chrome/browser/ui",
     "//chrome/common/companion/visual_query:flags",
@@ -131,10 +132,12 @@ source_set("unit_tests") {
     "//components/compose/core/browser:features",
     "//components/content_settings/core/common:features",
     "//components/device_signals/core/common:features",
+    "//components/embedder_support",
     "//components/heap_profiling/in_process",
     "//components/history_clusters/core",
     "//components/language/core/common",
     "//components/lens",
+    "//components/manta",
     "//components/metrics/structured:structured_metrics_features",
     "//components/network_time",
     "//components/omnibox/browser",
@@ -150,6 +153,7 @@ source_set("unit_tests") {
     "//components/shared_highlighting/core/common",
     "//components/signin/public/base:signin_buildflags",
     "//components/subresource_filter/core/common",
+    "//components/sync/base:features",
     "//gpu/config",
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
@@ -167,8 +171,8 @@ source_set("unit_tests") {
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
       "//chrome/browser/apps/link_capturing:link_capturing",
+      "//chrome/browser/companion/core",
       "//chrome/common:chrome_features",
-      "//components/manta",
       "//components/translate/core/common",
       "//extensions/common",
       "//ui/accessibility:ax_base",

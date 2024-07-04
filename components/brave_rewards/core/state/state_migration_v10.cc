@@ -95,7 +95,7 @@ void StateMigrationV10::Migrate(ResultCallback callback) {
       uphold_wallet->address = "";
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 
   std::move(callback).Run(engine_->uphold()->SetWallet(std::move(uphold_wallet))

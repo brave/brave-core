@@ -26,7 +26,7 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
     $0.spacing = 16
   }
 
-  public let graphicAnimationView = AnimationView(
+  public let graphicAnimationView = LottieAnimationView(
     name: "brave-today-welcome-graphic",
     bundle: .module
   ).then {

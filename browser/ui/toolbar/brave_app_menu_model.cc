@@ -457,6 +457,12 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     }
   }
 
+  // Remove upstream's `Reading Mode` item as we have our own `Speed reader`.
+  if (const auto index = more_tools_model->GetIndexOfCommandId(
+          IDC_SHOW_READING_MODE_SIDE_PANEL)) {
+    more_tools_model->RemoveItemAt(*index);
+  }
+
   // Remove upstream's about menu. It's moved into help sub menu.
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
     RemoveItemAt(*index);
@@ -656,7 +662,8 @@ std::optional<size_t> BraveAppMenuModel::GetProperItemIndex(
     }
   }
 
-  NOTREACHED() << "At least, a menu item for this command should exist: "
-               << commands_to_check[commands_size - 1];
+  NOTREACHED_IN_MIGRATION()
+      << "At least, a menu item for this command should exist: "
+      << commands_to_check[commands_size - 1];
   return std::nullopt;
 }

@@ -14,20 +14,11 @@
 
 namespace ai_chat::prefs {
 
-namespace {
-
-inline constexpr char kObseleteBraveChatAutoGenerateQuestions[] =
-    "brave.ai_chat.auto_generate_questions";
-
-}  // namespace
-
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterTimePref(kLastAcceptedDisclaimer, {});
     registry->RegisterBooleanPref(kBraveChatAutocompleteProviderEnabled, true);
     registry->RegisterBooleanPref(kUserDismissedPremiumPrompt, false);
-    registry->RegisterStringPref(kDefaultModelKey,
-                                 features::kAIModelsDefaultKey.Get());
 #if BUILDFLAG(IS_ANDROID)
     registry->RegisterBooleanPref(kBraveChatSubscriptionActiveAndroid, false);
     registry->RegisterStringPref(kBraveChatPurchaseTokenAndroid, "");
@@ -44,23 +35,6 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
   if (ai_chat::features::IsAIChatEnabled()) {
     registry->RegisterBooleanPref(kObseleteBraveChatAutoGenerateQuestions,
                                   false);
-  }
-}
-
-void MigrateProfilePrefs(PrefService* profile_prefs) {
-  if (ai_chat::features::IsAIChatEnabled()) {
-    profile_prefs->ClearPref(kObseleteBraveChatAutoGenerateQuestions);
-
-    // migrate model key from "chat-default" to "chat-basic"
-    static const std::string kDefaultModelBasicFrom = "chat-default";
-    static const std::string kDefaultModelBasicTo = "chat-basic";
-    if (auto* default_model_value =
-            profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
-      if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
-                                           kDefaultModelBasicFrom)) {
-        profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
-      }
-    }
   }
 }
 

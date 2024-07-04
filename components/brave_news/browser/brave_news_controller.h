@@ -25,7 +25,6 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -176,7 +175,7 @@ class BraveNewsController
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   BraveNewsPrefManager pref_manager_;
-  BraveNewsSubscriptions last_subscriptions_;
+  SubscriptionsSnapshot last_subscriptions_;
 
   p3a::NewsMetrics news_metrics_;
 

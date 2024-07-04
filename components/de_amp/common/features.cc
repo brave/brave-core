@@ -8,12 +8,10 @@
 #include "base/feature_list.h"
 #include "build/build_config.h"
 
-namespace de_amp {
-namespace features {
+namespace de_amp::features {
 
 // When enabled, Brave will try to de-AMP a page i.e. load the canonical,
 // non-AMP version if the page is an AMP page.
 BASE_FEATURE(kBraveDeAMP, "BraveDeAMP", base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace de_amp
+}  // namespace de_amp::features

@@ -49,7 +49,7 @@ TEST_F(BraveAdsGetSignedTokensUrlRequestUtilTest,
        BuildAndAddConfirmationTokens) {
   // Act
   BuildAndAddConfirmationTokens(cbr::test::GetUnblindedTokens(),
-                                cbr::test::GetPublicKey(), test::GetWallet());
+                                cbr::test::GetPublicKey(), test::Wallet());
 
   // Assert
   EXPECT_FALSE(GetConfirmationTokens().IsEmpty());

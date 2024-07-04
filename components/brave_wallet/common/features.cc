@@ -9,8 +9,7 @@
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "build/build_config.h"
 
-namespace brave_wallet {
-namespace features {
+namespace brave_wallet::features {
 
 BASE_FEATURE(kNativeBraveWalletFeature,
              "NativeBraveWallet",
@@ -61,5 +60,4 @@ BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
 BASE_FEATURE(kBraveWalletTransactionSimulationsFeature,
              "BraveWalletTransactionSimulations",
              base::FEATURE_DISABLED_BY_DEFAULT);
-}  // namespace features
-}  // namespace brave_wallet
+}  // namespace brave_wallet::features

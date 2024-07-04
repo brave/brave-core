@@ -21,6 +21,7 @@ IN_PROC_BROWSER_TEST_F(BraveSharingHubTest, SharingHubIconVisibility) {
       BrowserView::GetBrowserViewForBrowser(browser())
           ->toolbar_button_provider()
           ->GetPageActionIconView(PageActionIconType::kSharingHub);
+  ASSERT_TRUE(sharing_hub_icon);
 
   // No icon.
   ASSERT_TRUE(

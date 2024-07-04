@@ -15,9 +15,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 namespace system_program {
 
@@ -161,6 +159,4 @@ TEST(SolanaInstructionBuilderUnitTest, SetComputeUnitPrice) {
 
 }  // namespace compute_budget_program
 
-}  // namespace solana
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::solana

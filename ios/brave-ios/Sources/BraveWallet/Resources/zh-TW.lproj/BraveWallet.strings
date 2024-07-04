@@ -238,6 +238,27 @@
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "比特幣";
 
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "可供您使用的資金。";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "可用";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "錢包餘額尚待更新。";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "部分餘額可能無法使用";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "等待中";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "可動用的資金加上任何尚未確認的交易。";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "總計";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "購買";
 
@@ -1263,6 +1284,9 @@
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "重新輸入密碼";
+
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "從舊版 Brave 加密錢包匯入？";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "還原帳戶";

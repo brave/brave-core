@@ -579,7 +579,7 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_ERROR),
         std::move(result));
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
   sign_and_send_tx_callbacks_.erase(tx_meta_id);
 }
@@ -808,7 +808,7 @@ void SolanaProviderImpl::OnConnect(
           l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST), "");
     }
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 }
 

@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopiér link";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Kopiér faneoplysninger til udklipsholder.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Kopier til udklipsholder";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Din forbindelse til dette websted er ikke sikker.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Sideforbindelse ikke verificeret.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Din forbindelse til siden kunne ikke verificeres fuldt ud. Du kan fortsætte eller prøve at genindlæse siden for at etablere en sikker forbindelse.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Vis certifikat";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Slet synkroniseringskonto";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Hvis du sletter din konto, bliver dine krypterede data fra Brave-servere fjernet, og Sync bliver deaktiveret på alle dine forbundne enheder.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Det sletter dog ikke data, der blev gemt lokalt på de enheder.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Denne sletning er permanent, og dataene kan på ingen måde gendannes. Hvis du beslutter dig for at begynde at bruge Sync igen, skal du oprette en ny konto og tilføje hver enhed igen en efter en.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Noget gik galt under hentning af enheder i synkroniseringskæde.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Slet synkroniseringskonto";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Denne kode ser ud til at være oprettet på en enhed med en ældre version af Brave. Opdatér til den nyeste version af Brave på din anden enhed, og opret en ny synkroniseringskode.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Enheder og indstillinger";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problem med forbindelsens pålidelighed";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Vælg den kategori, der beskriver problemet.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Intet internet, når der er forbindelse";

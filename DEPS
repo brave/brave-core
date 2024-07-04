@@ -144,6 +144,12 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3', 'build/util/generate_clang_format.py', '../.clang-format', '.clang-format']
   },
+  {
+    'name': 'update_midl_files',
+    'pattern': '.',
+    'condition': 'checkout_win',
+    'action': ['python3', 'build/util/update_midl_files.py']
+  },
 ]
 
 include_rules = [

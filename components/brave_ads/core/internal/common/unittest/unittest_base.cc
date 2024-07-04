@@ -254,7 +254,7 @@ void UnitTestBase::SetUpIntegrationTest() {
   // Must be called after `AdsImpl` is instantiated but prior to `Initialize`.
   Mock();
 
-  ads_->Initialize(test::GetWalletPtr(),
+  ads_->Initialize(test::WalletPtr(),
                    base::BindOnce(&UnitTestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 }

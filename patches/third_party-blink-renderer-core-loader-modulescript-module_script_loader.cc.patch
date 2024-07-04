@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
-index b3d861555d8ecb4295c8f57414784a9b7f8e1745..f2f344ca00a96f8ea31e796bbf7cc59bae707d6a 100644
+index f32bdc144f26a1ea5da2dad9ac0c8a782b0b2ff9..89596359bb955507d80f0b5860adb840552e05f8 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
 @@ -181,6 +181,7 @@ void ModuleScriptLoader::FetchInternal(

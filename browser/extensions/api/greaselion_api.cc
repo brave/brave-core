@@ -14,8 +14,7 @@
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/profiles/profile.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction
 GreaselionIsGreaselionExtensionFunction::Run() {
@@ -34,5 +33,4 @@ GreaselionIsGreaselionExtensionFunction::Run() {
   return RespondNow(WithArguments(result));
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

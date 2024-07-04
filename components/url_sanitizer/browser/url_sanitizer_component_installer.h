@@ -22,9 +22,6 @@
 
 namespace brave {
 
-inline constexpr char kCleanURLsConfigFile[] = "clean-urls.json";
-inline constexpr char kCleanURLsConfigFileVersion[] = "1";
-
 class URLSanitizerComponentInstaller
     : public brave_component_updater::LocalDataFilesObserver {
  public:
@@ -36,9 +33,19 @@ class URLSanitizerComponentInstaller
       const URLSanitizerComponentInstaller&) = delete;
   ~URLSanitizerComponentInstaller() override;
 
+  struct RawConfig {
+    RawConfig();
+    RawConfig(const RawConfig&);
+    RawConfig(RawConfig&&);
+    ~RawConfig();
+
+    std::string matchers;
+    std::string permissions;
+  };
+
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnRulesReady(const std::string& json_content) = 0;
+    virtual void OnConfigReady(const RawConfig& config) = 0;
   };
 
   // Implementation of brave_component_updater::LocalDataFilesObserver
@@ -50,8 +57,7 @@ class URLSanitizerComponentInstaller
   void RemoveObserver(Observer* observer);
 
  private:
-  void OnDATFileDataReady(const std::string& contents);
-  void LoadOnTaskRunner();
+  void OnRawConfigReady(const RawConfig& config);
   void LoadDirectlyFromResourcePath();
 
   base::ObserverList<Observer> observers_;

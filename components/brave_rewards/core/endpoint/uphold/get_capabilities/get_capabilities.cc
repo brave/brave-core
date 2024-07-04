@@ -17,8 +17,7 @@ namespace brave_rewards::internal {
 
 using uphold::Capabilities;
 
-namespace endpoint {
-namespace uphold {
+namespace endpoint::uphold {
 
 GetCapabilities::GetCapabilities(RewardsEngine& engine) : engine_(engine) {}
 
@@ -110,6 +109,6 @@ GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
   return capability_map;
 }
 
-}  // namespace uphold
-}  // namespace endpoint
+}  // namespace endpoint::uphold
+
 }  // namespace brave_rewards::internal

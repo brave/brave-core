@@ -12,10 +12,10 @@
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 
 namespace brave_news {
 
@@ -42,7 +42,7 @@ ChannelsController::~ChannelsController() = default;
 
 Channels ChannelsController::GetChannelsFromPublishers(
     const Publishers& publishers,
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   Channels channels;
   for (const auto& it : publishers) {
     // Collect all channels from all locales first...
@@ -82,11 +82,11 @@ Channels ChannelsController::GetChannelsFromPublishers(
 }
 
 void ChannelsController::GetAllChannels(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     ChannelsCallback callback) {
   publishers_controller_->GetOrFetchPublishers(
       subscriptions, base::BindOnce(
-                         [](const BraveNewsSubscriptions& subscriptions,
+                         [](const SubscriptionsSnapshot& subscriptions,
                             ChannelsCallback callback, Publishers publishers) {
                            std::move(callback).Run(GetChannelsFromPublishers(
                                publishers, subscriptions));

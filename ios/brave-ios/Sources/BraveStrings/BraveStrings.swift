@@ -795,7 +795,7 @@ extension Strings {
         "callout.p3aCalloutToggleTitle",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Share Completely Private and Anonymous Product Insights.",
+        value: "Share Private and Anonymous Product Insights.",
         comment:
           "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout"
       )
@@ -1904,7 +1904,7 @@ extension Strings {
       "braveSearchPromotion.bannerDescription",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Brave Search doesn't track you, your queries, or your clicks.",
+      value: "Brave Search doesn't profile you.",
       comment: "Brave Search Banner Promotion description content in Search Suggestions"
     )
     public static let braveSearchPromotionBannerTryButtonTitle = NSLocalizedString(

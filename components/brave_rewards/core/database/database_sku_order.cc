@@ -11,8 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 namespace {
 
@@ -149,7 +148,7 @@ void DatabaseSKUOrder::OnGetRecord(GetSKUOrderCallback callback,
   info->total_amount = GetDoubleColumn(record, 1);
   info->merchant_id = GetStringColumn(record, 2);
   info->location = GetStringColumn(record, 3);
-  info->status = static_cast<mojom::SKUOrderStatus>(GetIntColumn(record, 4));
+  info->status = SKUOrderStatusFromInt(GetIntColumn(record, 4));
   info->contribution_id = GetStringColumn(record, 5);
   info->created_at = GetInt64Column(record, 6);
 
@@ -240,5 +239,4 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

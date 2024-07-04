@@ -124,7 +124,6 @@ void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
 bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
 void SwapTabsInTile(Browser* browser);
-void ToggleSplitViewOrientation(Browser* browser);
 
 }  // namespace brave
 

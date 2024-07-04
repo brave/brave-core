@@ -24,7 +24,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest, SampleCreativeAd) {
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor;
   creative_ad_predictor.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor.score = 1.0;
   creative_ad_predictors.push_back(creative_ad_predictor);
 
@@ -42,21 +42,21 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor_1;
   creative_ad_predictor_1.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor_1.score = 0.0;
   creative_ad_predictors.push_back(creative_ad_predictor_1);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor_2;
   creative_ad_predictor_2.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor_2.score = 1.0;
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor_3;
   creative_ad_predictor_3.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor_3.score = 0.0;
   creative_ad_predictors.push_back(creative_ad_predictor_3);
 
@@ -76,14 +76,14 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor_1;
   creative_ad_predictor_1.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor_1.score = 3.0;
   creative_ad_predictors.push_back(creative_ad_predictor_1);
 
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor_2;
   creative_ad_predictor_2.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor_2.score = 3.0;
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
@@ -120,7 +120,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
   CreativeAdModelBasedPredictorInfo<CreativeNotificationAdInfo>
       creative_ad_predictor;
   creative_ad_predictor.creative_ad =
-      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
   creative_ad_predictor.score = 0.0;
   creative_ad_predictors.push_back(creative_ad_predictor);
 

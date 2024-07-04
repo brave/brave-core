@@ -18,9 +18,7 @@
 
 using base::test::ParseJson;
 
-namespace brave_wallet {
-
-namespace eth {
+namespace brave_wallet::eth {
 
 TEST(EthResponseParserUnitTest, ParseEthGetBalance) {
   std::string json(
@@ -768,6 +766,4 @@ TEST(EthResponseParserUnitTest, DecodeGetERC20TokenBalancesEthCallResponse) {
       "0x0000000000000000000000000000000000000000000000000000000000000000");
 }
 
-}  // namespace eth
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth

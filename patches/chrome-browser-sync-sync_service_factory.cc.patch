@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/sync_service_factory.cc b/chrome/browser/sync/sync_service_factory.cc
-index 1aac94a8049e5c9e040dc4c5bc5a1361a8c136f7..b05843e4b357cf89051fb04a476a1bb5e430f705 100644
+index 40630d08d518d695e97ef721f5f293728f61e69b..a8745e54a0b832c0b3916b964093bd10b75f0c8f 100644
 --- a/chrome/browser/sync/sync_service_factory.cc
 +++ b/chrome/browser/sync/sync_service_factory.cc
-@@ -169,7 +169,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
+@@ -171,7 +171,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
    }
  
    auto sync_service =

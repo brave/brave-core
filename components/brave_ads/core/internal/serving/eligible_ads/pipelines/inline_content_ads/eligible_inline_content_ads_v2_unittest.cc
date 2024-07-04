@@ -41,64 +41,73 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 =
+  const CreativeInlineContentAdInfo creative_ad_1 =
       test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
       test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_2.segment = "foo-bar3";
+  creative_ad_2.segment = "parent";
   creative_ads.push_back(creative_ad_2);
+
+  CreativeInlineContentAdInfo creative_ad_3 =
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+  creative_ad_3.segment = "parent-child";
+  creative_ads.push_back(creative_ad_3);
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
+  EXPECT_CALL(callback, Run(CreativeInlineContentAdList{creative_ad_1}));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
-          IntentUserModelInfo{SegmentList{"foo-bar1", "foo-bar2"}},
+          IntentUserModelInfo{},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"foo-bar3"}},
+          InterestUserModelInfo{SegmentList{"untargeted"}},
       },
       /*dimensions=*/"200x100", callback.Get());
 }
 
-TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoSegments) {
+TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoMatchingSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
       test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_1.segment = "foo";
+  creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
       test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
-  creative_ad_2.segment = "foo-bar";
+  creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);
 
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
-  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::SizeIs(1)));
+  EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(/*user_model=*/{}, /*dimensions=*/"200x100",
                                  callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
        DoNotGetAdsForNonExistentDimensions) {
+  // Arrange
+  CreativeInlineContentAdList creative_ads;
+
+  const CreativeInlineContentAdInfo creative_ad =
+      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+  creative_ads.push_back(creative_ad);
+
+  database::SaveCreativeInlineContentAds(creative_ads);
+
   // Act & Assert
   base::MockCallback<EligibleAdsCallback<CreativeInlineContentAdList>> callback;
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
-  eligible_ads_->GetForUserModel(
-      UserModelInfo{
-          IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
-          LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"}}},
-      /*dimensions=*/"?x?", callback.Get());
+  eligible_ads_->GetForUserModel(UserModelInfo{},
+                                 /*dimensions=*/"?x?", callback.Get());
 }
 
 TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
@@ -107,9 +116,9 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
   EXPECT_CALL(callback, Run(/*creative_ads=*/::testing::IsEmpty()));
   eligible_ads_->GetForUserModel(
       UserModelInfo{
-          IntentUserModelInfo{SegmentList{"intent-foo", "intent-bar"}},
+          IntentUserModelInfo{SegmentList{"parent-child", "parent"}},
           LatentInterestUserModelInfo{},
-          InterestUserModelInfo{SegmentList{"interest-foo", "interest-bar"}}},
+          InterestUserModelInfo{SegmentList{"parent-child", "parent"}}},
       /*dimensions=*/"200x100", callback.Get());
 }
 

@@ -11,6 +11,8 @@ import '@brave/leo/web-components/checkbox'
 import '@brave/leo/web-components/label'
 import '@brave/leo/web-components/progressRing'
 import '@brave/leo/web-components/toggle'
+import '@brave/leo/web-components/tooltip'
+import '@brave/leo/web-components/alert'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 import iconsMeta from '@brave/leo/icons/meta'
 

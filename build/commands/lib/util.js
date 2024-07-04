@@ -607,41 +607,6 @@ const util = {
     }
   },
 
-  // Chromium compares pre-installed midl files and generated midl files from IDL during the build to check integrity.
-  // Generated files during the build time and upstream pre-installed files are different because we use different IDL file.
-  // So, we should copy our pre-installed files to overwrite upstream pre-installed files.
-  // After checking, pre-installed files are copied to gen dir and they are used to compile.
-  // So, this copying in every build doesn't affect compile performance.
-  updateMidlFiles: () => {
-    Log.progressScope('update midl files', () => {
-      const files = fs.readdirSync(path.join(
-          config.braveCoreDir,
-          'win_build_output', 'midl'))
-      for (const file of files) {
-        const srcFile = path.join(config.braveCoreDir,
-            'win_build_output',
-            'midl', file)
-        const dstFile = path.join(config.srcDir,
-            'third_party',
-            'win_build_output', 'midl', file)
-        try {
-          const stat = fs.lstatSync(srcFile);
-          // only copy the directories here
-          // they each have a structure with x86/x64/arm64 versions of the files
-          if (stat.isDirectory()) {
-            fs.copySync(srcFile, dstFile)
-          }
-        } catch (e) {
-          throw new Error('error copying file \"' +
-              srcFile + "\"  to \"" +
-              dstFile + "\"", {
-                cause: e
-              })
-        }
-      }
-    })
-  },
-
   buildNativeRedirectCC: async () => {
     // Expected path to redirect_cc.
     const redirectCC = path.join(config.nativeRedirectCCDir, util.appendExeIfWin32('redirect_cc'))
@@ -658,7 +623,7 @@ const util = {
       'import("//brave/tools/redirect_cc/args.gni")': null,
       use_remoteexec: config.useRemoteExec,
       rbe_exec_root: config.rbeExecRoot,
-      rbe_bin_dir: config.realRewrapperDir,
+      reclient_bin_dir: config.realRewrapperDir,
       real_rewrapper: path.join(config.realRewrapperDir, 'rewrapper'),
     }
 
@@ -753,9 +718,6 @@ const util = {
     await Log.progressScopeAsync('generate ninja files', async () => {
       await util.buildNativeRedirectCC()
 
-      if (config.getTargetOS() === 'win') {
-        util.updateMidlFiles()
-      }
       const extraGnGenOpts = config.extraGnGenOpts ? [config.extraGnGenOpts] : []
       util.runGnGen(config.outputDir, config.buildArgs(), extraGnGenOpts, options)
     })

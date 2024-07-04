@@ -104,4 +104,32 @@ TEST(StringUtilsUnitTest, Base10ValueToInt256) {
   EXPECT_EQ(out, int256_t(10));
 }
 
+TEST(StringUtilsUnitTest, Uint256ValueToBase10) {
+  uint256_t input = 0;
+  EXPECT_EQ(Uint256ValueToBase10(input), "0");
+
+  input = 1;
+  EXPECT_EQ(Uint256ValueToBase10(input), "1");
+
+  input = 10;
+  EXPECT_EQ(Uint256ValueToBase10(input), "10");
+
+  input = 12345678910;
+  EXPECT_EQ(Uint256ValueToBase10(input), "12345678910");
+
+  input = std::numeric_limits<uint256_t>::max();
+  EXPECT_EQ(Uint256ValueToBase10(input),
+            "115792089237316195423570985008687907853269984665640564039457584007"
+            "913129639935");
+
+  input = uint256_t(1) << 255;
+  EXPECT_EQ(Uint256ValueToBase10(input),
+            "578960446186580977117854925043439539266349923328202820197287920039"
+            "56564819968");
+
+  input = uint256_t(1) << 128;
+  EXPECT_EQ(Uint256ValueToBase10(input),
+            "340282366920938463463374607431768211456");
+}
+
 }  // namespace brave_wallet

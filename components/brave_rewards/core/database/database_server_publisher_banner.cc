@@ -16,8 +16,7 @@ const char kTableName[] = "server_publisher_banner";
 
 }  // namespace
 
-namespace brave_rewards::internal {
-namespace database {
+namespace brave_rewards::internal::database {
 
 DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
     RewardsEngine& engine)
@@ -166,5 +165,4 @@ void DatabaseServerPublisherBanner::OnGetRecordLinks(
   std::move(callback).Run(std::move(banner_pointer));
 }
 
-}  // namespace database
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::database

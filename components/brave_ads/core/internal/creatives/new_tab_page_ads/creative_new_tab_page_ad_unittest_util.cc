@@ -23,7 +23,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
 
   for (int i = 0; i < count; ++i) {
     CreativeNewTabPageAdInfo creative_ad =
-        BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+        BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];
 
     creative_ads.push_back(creative_ad);
@@ -33,8 +33,9 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(const int count) {
 }
 
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
-    const bool should_use_random_uuids) {
-  const CreativeAdInfo creative_ad = BuildCreativeAd(should_use_random_uuids);
+    const bool should_generate_random_uuids) {
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(should_generate_random_uuids);
   CreativeNewTabPageAdInfo creative_new_tab_page_ad(creative_ad);
 
   creative_new_tab_page_ad.company_name = "Test Ad Company Name";

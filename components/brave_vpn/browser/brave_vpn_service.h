@@ -206,10 +206,10 @@ class BraveVpnService :
   void OnMojoConnectionError();
   void RequestCredentialSummary(const std::string& domain);
   void OnCredentialSummary(const std::string& domain,
-                           const std::string& summary_string);
+                           skus::mojom::SkusResultPtr summary);
   void OnPrepareCredentialsPresentation(
       const std::string& domain,
-      const std::string& credential_as_cookie);
+      skus::mojom::SkusResultPtr credential_as_cookie);
   void OnGetSubscriberCredentialV12(const base::Time& expiration_time,
                                     const std::string& subscriber_credential,
                                     bool success);

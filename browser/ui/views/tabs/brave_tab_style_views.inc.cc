@@ -88,6 +88,8 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
 
  private:
   bool ShouldShowVerticalTabs() const;
+  bool IsTabTiled(const Tab* tab) const;
+
   SkColor GetTargetTabBackgroundColor(
       TabStyle::TabSelectionState selection_state,
       bool hovered) const override;
@@ -167,14 +169,7 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
-  bool is_tab_tiled = false;
-  if (auto* browser = tab()->controller()->GetBrowser()) {
-    // browser can be null during tests.
-    if (auto* data = SplitViewBrowserData::FromBrowser(browser);
-        data && tab()->controller()->IsTabTiled(tab())) {
-      is_tab_tiled = true;
-    }
-  }
+  const bool is_tab_tiled = IsTabTiled(tab());
 
   if (is_tab_tiled && !tab()->IsActive() &&
       (path_type == TabStyle::PathType::kBorder ||
@@ -268,10 +263,6 @@ gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
     float scale) const {
-  if (ShouldShowVerticalTabs()) {
-    return {};
-  }
-
   if (!HorizontalTabsUpdateEnabled()) {
     return BraveGM2TabStyle::GetSeparatorBounds(scale);
   }
@@ -293,13 +284,26 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
   gfx::PointF origin(tab()->bounds().origin());
   origin.Scale(scale);
   bounds.trailing.Offset(-origin.x(), -origin.y());
-
   return bounds;
 }
 
 float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
                                                  bool leading) const {
-  if (ShouldShowVerticalTabs() || !HorizontalTabsUpdateEnabled()) {
+  if (ShouldShowVerticalTabs()) {
+    return 0;
+  }
+
+  if (IsTabTiled(tab())) {
+    return 0;
+  }
+
+  const Tab* const next_tab = tab()->controller()->GetAdjacentTab(tab(), 1);
+  const auto is_next_tab_tiled = IsTabTiled(next_tab);
+  if (is_next_tab_tiled) {
+    return 0;
+  }
+
+  if (!HorizontalTabsUpdateEnabled()) {
     return BraveGM2TabStyle::GetSeparatorOpacity(for_layout, leading);
   }
 
@@ -318,8 +322,6 @@ float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
   if (has_visible_background(tab())) {
     return 0;
   }
-
-  const Tab* const next_tab = tab()->controller()->GetAdjacentTab(tab(), 1);
 
   const float visible_opacity =
       GetHoverInterpolatedSeparatorOpacity(for_layout, next_tab);
@@ -418,6 +420,22 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(tab()->controller()->GetBrowser());
+}
+
+bool BraveVerticalTabStyle::IsTabTiled(const Tab* tab) const {
+  if (!tab) {
+    return false;
+  }
+
+  auto is_tab_tiled = false;
+  if (auto* browser = tab->controller()->GetBrowser()) {
+    // browser can be null during tests.
+    if (auto* data = SplitViewBrowserData::FromBrowser(browser);
+        data && tab->controller()->IsTabTiled(tab)) {
+      is_tab_tiled = true;
+    }
+  }
+  return is_tab_tiled;
 }
 
 }  // namespace

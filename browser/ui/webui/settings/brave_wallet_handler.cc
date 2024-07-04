@@ -63,7 +63,7 @@ std::optional<brave_wallet::mojom::CoinType> ToCoinType(
       result != brave_wallet::mojom::CoinType::SOL &&
       result != brave_wallet::mojom::CoinType::BTC &&
       result != brave_wallet::mojom::CoinType::ZEC) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return std::nullopt;
   }
   return result;

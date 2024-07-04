@@ -12,7 +12,7 @@
 #define SetTextColor SetTextColorId
 #define SetMenuItemBackground(...)                        \
   SetMenuItemBackground(MenuItemView::MenuItemBackground( \
-      background_color, kBackgroundCornerRadius - 6))
+      background_color_id, kBackgroundCornerRadius - 6))
 
 #define set_vertical_margin(...) set_vertical_margin(8)
 #include "src/chrome/browser/ui/views/toolbar/app_menu.cc"

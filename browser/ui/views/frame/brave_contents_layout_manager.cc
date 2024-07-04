@@ -11,19 +11,15 @@
 
 namespace {
 
-int ClampSplitViewSizeDelta(views::View* contents_view,
-                            int size_delta,
-                            SplitViewBrowserData::Orientation orientation) {
-  constexpr int kMinSize = 144;  // From 144p resolution.
+int ClampSplitViewSizeDelta(views::View* contents_view, int size_delta) {
+  constexpr int kMinWidth = 144;  // From 144p resolution.
   const auto half_size =
-      (orientation == SplitViewBrowserData::Orientation::kVertical
-           ? contents_view->width()
-           : contents_view->height() -
-                 BraveContentsLayoutManager::kSpacingBetweenContentsWebViews) /
+      (contents_view->width() -
+       BraveContentsLayoutManager::kSpacingBetweenContentsWebViews) /
       2;
 
-  return std::clamp(size_delta, /*min*/ kMinSize - half_size,
-                    /*max*/ half_size - kMinSize);
+  return std::clamp(size_delta, /*min*/ kMinWidth - half_size,
+                    /*max*/ half_size - kMinWidth);
 }
 
 }  // namespace
@@ -34,18 +30,6 @@ void BraveContentsLayoutManager::SetSplitViewSeparator(
     SplitViewSeparator* split_view_separator) {
   split_view_separator_ = split_view_separator;
   split_view_separator_->set_delegate(this);
-}
-
-void BraveContentsLayoutManager::SetSplitViewOrientation(
-    SplitViewBrowserData::Orientation orientation) {
-  if (orientation_ == orientation) {
-    return;
-  }
-
-  orientation_ = orientation;
-  if (split_view_separator_) {
-    split_view_separator_->SetOrientation(orientation_);
-  }
 }
 
 void BraveContentsLayoutManager::SetSecondaryContentsResizingStrategy(
@@ -70,8 +54,8 @@ void BraveContentsLayoutManager::OnResize(int resize_amount,
   ongoing_split_view_size_delta_ = resize_amount;
   if (done_resizing) {
     split_view_size_delta_ += ongoing_split_view_size_delta_;
-    split_view_size_delta_ = ClampSplitViewSizeDelta(
-        host_view(), split_view_size_delta_, orientation_);
+    split_view_size_delta_ =
+        ClampSplitViewSizeDelta(host_view(), split_view_size_delta_);
     ongoing_split_view_size_delta_ = 0;
   }
 
@@ -86,23 +70,23 @@ void BraveContentsLayoutManager::LayoutImpl() {
     return;
   }
 
+  const bool is_host_empty = !host_view()->width();
+  if (is_host_empty) {
+    // When minimizing window, this can happen
+    return;
+  }
+
   auto layout_web_contents_and_devtools =
       [](gfx::Rect bounds, views::View* contents_view,
          views::View* devtools_view,
-         const DevToolsContentsResizingStrategy& strategy,
-         SplitViewBrowserData::Orientation orientation) {
+         const DevToolsContentsResizingStrategy& strategy) {
         gfx::Rect new_contents_bounds;
         gfx::Rect new_devtools_bounds;
         ApplyDevToolsContentsResizingStrategy(strategy, bounds.size(),
                                               &new_devtools_bounds,
                                               &new_contents_bounds);
-        if (orientation == SplitViewBrowserData::Orientation::kVertical) {
-          new_contents_bounds.set_x(bounds.x() + new_contents_bounds.x());
-          new_devtools_bounds.set_x(bounds.x() + new_devtools_bounds.x());
-        } else {
-          new_contents_bounds.set_y(bounds.y() + new_contents_bounds.y());
-          new_devtools_bounds.set_y(bounds.y() + new_devtools_bounds.y());
-        }
+        new_contents_bounds.set_x(bounds.x() + new_contents_bounds.x());
+        new_devtools_bounds.set_x(bounds.x() + new_devtools_bounds.x());
 
         // TODO(sko) We're ignoring dev tools specific position. Maybe we need
         // to revisit this. On the other hand, I think we shouldn't let devtools
@@ -113,47 +97,30 @@ void BraveContentsLayoutManager::LayoutImpl() {
 
   gfx::Rect bounds = host_view()->GetLocalBounds();
   const auto size_delta = ClampSplitViewSizeDelta(
-      host_view(), split_view_size_delta_ + ongoing_split_view_size_delta_,
-      orientation_);
-
-  if (orientation_ == SplitViewBrowserData::Orientation::kVertical) {
-    bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
-                     size_delta);
-  } else {
-    bounds.set_height((bounds.height() - kSpacingBetweenContentsWebViews) / 2 +
-                      size_delta);
-  }
+      host_view(), split_view_size_delta_ + ongoing_split_view_size_delta_);
+  bounds.set_width((bounds.width() - kSpacingBetweenContentsWebViews) / 2 +
+                   size_delta);
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
-                                     secondary_strategy_, orientation_);
+                                     secondary_strategy_);
   } else {
     layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
-                                     strategy_, orientation_);
+                                     strategy_);
   }
 
-  if (orientation_ == SplitViewBrowserData::Orientation::kVertical) {
-    bounds.set_x(bounds.right());
-    bounds.set_width(kSpacingBetweenContentsWebViews);
-  } else {
-    bounds.set_y(bounds.bottom());
-    bounds.set_height(kSpacingBetweenContentsWebViews);
-  }
+  bounds.set_x(bounds.right());
+  bounds.set_width(kSpacingBetweenContentsWebViews);
   split_view_separator_->SetBoundsRect(bounds);
 
-  if (orientation_ == SplitViewBrowserData::Orientation::kVertical) {
-    bounds.set_x(bounds.right());
-    bounds.set_width(host_view()->width() - bounds.x());
-  } else {
-    bounds.set_y(bounds.bottom());
-    bounds.set_height(host_view()->height() - bounds.y());
-  }
+  bounds.set_x(bounds.right());
+  bounds.set_width(host_view()->width() - bounds.x());
   if (show_main_web_contents_at_tail_) {
     layout_web_contents_and_devtools(bounds, contents_view_, devtools_view_,
-                                     strategy_, orientation_);
+                                     strategy_);
   } else {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
-                                     secondary_strategy_, orientation_);
+                                     secondary_strategy_);
   }
 }

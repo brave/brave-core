@@ -157,12 +157,12 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 
   // Should not be called
   void OnTextResults(const std::vector<std::string>& text_results) override {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 
   // Should not be called
   void OnHostnameResults(const std::vector<net::HostPortPair>& hosts) override {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
 };
 

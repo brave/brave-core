@@ -48,7 +48,9 @@ void PlaylistBubblesController::ShowBubble(
         bubble_ = new PlaylistAddBubbleView(anchor_view.get(),
                                             tab_helper->GetWeakPtr());
       } else {
-        NOTREACHED() << "The action icon shouldn't be visible then.";
+        // This is possible if the command was triggered via quick commands on a
+        // page with no media detected.
+        return;
       }
       break;
     case BubbleType::kAdd:

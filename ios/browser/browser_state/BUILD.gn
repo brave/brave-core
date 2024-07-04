@@ -13,6 +13,7 @@ source_set("browser_state") {
   ]
   deps = [
     "//base",
+    "//brave/ios/browser/api/ai_chat",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/component_updater",
     "//brave/ios/browser/debounce",

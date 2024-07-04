@@ -62,7 +62,9 @@ class URLSanitizerServiceUnitTest : public testing::Test,
   void WaitInitialization(const std::string& json) {
     base::RunLoop loop;
     SetInitializationCallbackForTesting(loop.QuitClosure());
-    Initialize(json);
+    brave::URLSanitizerComponentInstaller::RawConfig config;
+    config.matchers = json;
+    OnConfigReady(config);
     loop.Run();
   }
 

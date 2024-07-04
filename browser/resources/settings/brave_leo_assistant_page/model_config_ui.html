@@ -1,0 +1,218 @@
+<style include="cr-shared-style settings-shared iron-flex">
+  cr-input {
+    --cr-input-border-bottom: none;
+    --cr-input-border-radius: var(--leo-radius-m);
+    --cr-input-error-color: var(--leo-color-systemfeedback-error-icon);
+  }
+
+  .primary-title {
+    font: var(--leo-font-heading-h3);
+    color: var(--leo-color-text-primary);
+    margin-bottom: var(--leo-spacing-2xl);
+  }
+
+  .container {
+    width: 100%;
+    padding: 16px 0;
+  }
+
+  small {
+    color: var(--leo-color-text-secondary);
+  }
+
+  .input-container {
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .custom-label {
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-primary);
+    margin-bottom: var(--leo-spacing-s);
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+  }
+
+  .label-text {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .required::after {
+    content: '*';
+    margin: 0 2px;
+    color: var(--leo-color-systemfeedback-error-icon);
+  }
+
+  .tooltip-content {
+    width: 340px;
+  }
+
+  .note {
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+    margin-bottom: 5px;
+  }
+
+  .actions-container leo-button:first-of-type {
+    margin-right: 5px;
+  }
+</style>
+
+<div class="settings-box">
+  <div class="container">
+    <div>
+      <template
+        is="dom-if"
+        if="[[!isEditing_]]"
+      >
+        <div class="primary-title">$i18n{braveLeoAssistantAddModelLabel}</div>
+      </template>
+      <template
+        is="dom-if"
+        if="[[isEditing_]]"
+      >
+        <div class="primary-title">$i18n{braveLeoAssistantEditModelLabel}</div>
+      </template>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span class="required">$i18n{braveLeoAssistantInputModelLabel}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelLabelTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon icon="brave_settings18:info"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <cr-input
+        required
+        auto-validate
+        type="text"
+        value="[[label]]"
+        on-change="onModelLabelChange_"
+      ></cr-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span class="required"
+            >$i18n{braveLeoAssistantInputModelRequestName}</span
+          >
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelRequestNameTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon icon="brave_settings18:info"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <cr-input
+        required
+        auto-validate
+        type="text"
+        value="[[modelRequestName]]"
+        on-change="onModelRequestNameChange_"
+      ></cr-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span class="required"
+            >$i18n{braveLeoAssistantInputModelServerEndpoint}</span
+          >
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelServerEndpointTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon icon="brave_settings18:info"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <div class="note">$i18n{braveLeoAssistantProxyNote}</div>
+      <cr-input
+        id="endpointInput"
+        required
+        type="url"
+        value="[[endpointUrl]]"
+        on-change="onModelServerEndpointChange_"
+        invalid="[[isUrlInvalid]]"
+        error-message="[[invalidUrlErrorMessage]]"
+      ></cr-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelApiKey}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelApiKeyTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <cr-icon icon="brave_settings18:info"></cr-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <cr-input
+        auto-validate
+        type="text"
+        value="[[apiKey]]"
+        on-change="onModelApiKeyChange_"
+      >
+      </cr-input>
+    </div>
+    <div class="actions-container">
+      <leo-button
+        disabled="[[!saveEnabled_(label,
+    modelRequestName, endpointUrl)]]"
+        on-click="handleClick_"
+      >
+        [[buttonLabel_]]
+      </leo-button>
+      <leo-button
+        kind="plain-faint"
+        on-click="handleCloseClick_"
+      >
+        $i18n{braveLeoAssistantCloseButtonLabel}
+      </leo-button>
+    </div>
+  </div>
+</div>

@@ -66,7 +66,7 @@ const char* GetContextMenuActionKey(ContextMenuAction action) {
     case ContextMenuAction::kChangeLength:
       return kChangeLengthActionKey;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return nullptr;
   }
 }
@@ -313,6 +313,10 @@ void AIChatMetrics::ReportChatCounts() {
   p3a_utils::RecordToHistogramBucket(kAvgPromptCountHistogramName,
                                      kAvgPromptCountBuckets,
                                      average_prompts_per_chat);
+
+  // TODO(djandries): remove the following report when Nebula experiment is over
+  p3a_utils::RecordToHistogramBucket(kChatCountNebulaHistogramName,
+                                     kChatCountBuckets, chat_count);
 }
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)

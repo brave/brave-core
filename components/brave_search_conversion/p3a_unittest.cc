@@ -10,8 +10,7 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_search_conversion {
-namespace p3a {
+namespace brave_search_conversion::p3a {
 
 struct ConversionTypeInfo {
   ConversionType type;
@@ -153,5 +152,4 @@ TEST_F(BraveSearchConversionP3ATest, TestQueriesBeforeChurn) {
                                       1);
 }
 
-}  // namespace p3a
-}  // namespace brave_search_conversion
+}  // namespace brave_search_conversion::p3a

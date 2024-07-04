@@ -21,19 +21,21 @@
 namespace brave {
 
 namespace {
-bool CreateURLPatternSetFromList(const base::Value::List* value,
-                                 extensions::URLPatternSet* result) {
+std::optional<extensions::URLPatternSet> CreateURLPatternSetFromList(
+    const base::Value::List* value) {
   if (!value) {
-    return false;
+    return std::nullopt;
   }
+  extensions::URLPatternSet result;
   std::string error;
-  bool valid = result->Populate(
+  bool valid = result.Populate(
       *value, URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, false,
       &error);
   if (!valid) {
     VLOG(1) << "Unable to create url pattern:" << error;
+    return std::nullopt;
   }
-  return valid;
+  return result;
 }
 
 std::optional<base::flat_set<std::string>> CreateParamsList(
@@ -49,56 +51,91 @@ std::optional<base::flat_set<std::string>> CreateParamsList(
   return result;
 }
 
-base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> ParseFromJson(
-    const std::string& json) {
-  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
+URLSanitizerService::Config ParseConfig(
+    const URLSanitizerComponentInstaller::RawConfig& raw_config) {
+  auto parsed_json =
+      base::JSONReader::ReadAndReturnValueWithError(raw_config.matchers);
   if (!parsed_json.has_value()) {
-    VLOG(1) << "Error parsing feature JSON: " << parsed_json.error().message;
+    VLOG(1) << "Error parsing feature JSON [matchers]: "
+            << parsed_json.error().message;
     return {};
   }
   const base::Value::List* list = parsed_json->GetIfList();
   if (!list) {
     return {};
   }
-  base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> matchers;
+
+  URLSanitizerService::Config config;
+  config.matchers.reserve(list->size());
   for (const auto& it : *list) {
     const base::Value::Dict* items = it.GetIfDict();
-    if (!items)
-      continue;
-    auto* include_list = items->FindList("include");
-    if (!include_list)
-      continue;
-    extensions::URLPatternSet include_matcher;
-    if (!CreateURLPatternSetFromList(include_list, &include_matcher)) {
+    if (!items) {
       continue;
     }
-    auto* params_list = items->FindList("params");
-    std::optional<base::flat_set<std::string>> params =
-        CreateParamsList(params_list);
+    auto include_matcher =
+        CreateURLPatternSetFromList(items->FindList("include"));
+    if (!include_matcher) {
+      continue;
+    }
+    auto params = CreateParamsList(items->FindList("params"));
     if (!params) {
       continue;
     }
 
-    extensions::URLPatternSet exclude_matcher;
-    CreateURLPatternSetFromList(items->FindList("exclude"), &exclude_matcher);
-    auto item = std::make_unique<URLSanitizerService::MatchItem>(
-        std::move(include_matcher), std::move(exclude_matcher),
-        std::move(*params));
+    auto exclude_matcher =
+        CreateURLPatternSetFromList(items->FindList("exclude"))
+            .value_or(extensions::URLPatternSet());
 
-    matchers.insert(std::move(item));
+    config.matchers.emplace_back(std::move(*include_matcher),
+                                 std::move(exclude_matcher),
+                                 std::move(*params));
   }
 
-  return matchers;
+  parsed_json =
+      base::JSONReader::ReadAndReturnValueWithError(raw_config.permissions);
+  if (!parsed_json.has_value()) {
+    VLOG(1) << "Error parsing feature JSON [permission]: "
+            << parsed_json.error().message;
+    return config;
+  }
+
+  const auto* permissions = parsed_json->GetIfDict();
+  if (!permissions) {
+    return config;
+  }
+
+  config.permissions.js_api =
+      CreateURLPatternSetFromList(parsed_json->GetDict().FindList("js_api"))
+          .value_or(extensions::URLPatternSet());
+
+  return config;
 }
 
 }  // namespace
 
+URLSanitizerService::MatchItem::MatchItem() = default;
+URLSanitizerService::MatchItem::MatchItem(MatchItem&&) = default;
+URLSanitizerService::MatchItem::MatchItem(extensions::URLPatternSet in,
+                                          extensions::URLPatternSet ex,
+                                          base::flat_set<std::string> prm)
+    : include(std::move(in)), exclude(std::move(ex)), params(std::move(prm)) {}
+URLSanitizerService::MatchItem::~MatchItem() = default;
+
+URLSanitizerService::Permissions::Permissions() = default;
+URLSanitizerService::Permissions::Permissions(Permissions&&) = default;
+URLSanitizerService::Permissions::~Permissions() = default;
+URLSanitizerService::Permissions& URLSanitizerService::Permissions::operator=(
+    Permissions&&) = default;
+
+URLSanitizerService::Config::Config() = default;
+URLSanitizerService::Config::Config(Config&&) = default;
+URLSanitizerService::Config::~Config() = default;
+URLSanitizerService::Config& URLSanitizerService::Config::operator=(Config&&) =
+    default;
+
 URLSanitizerService::URLSanitizerService() = default;
 
 URLSanitizerService::~URLSanitizerService() = default;
-
-URLSanitizerService::MatchItem::MatchItem() = default;
-URLSanitizerService::MatchItem::~MatchItem() = default;
 
 #if BUILDFLAG(IS_ANDROID)
 mojo::PendingRemote<url_sanitizer::mojom::UrlSanitizerService>
@@ -115,34 +152,23 @@ void URLSanitizerService::SanitizeURL(const std::string& url,
   std::move(callback).Run(sanitized_url.spec());
 }
 
-URLSanitizerService::MatchItem::MatchItem(extensions::URLPatternSet in,
-                                          extensions::URLPatternSet ex,
-                                          base::flat_set<std::string> prm)
-    : include(std::move(in)), exclude(std::move(ex)), params(std::move(prm)) {}
-
-void URLSanitizerService::Initialize(const std::string& json) {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(&ParseFromJson, json),
-      base::BindOnce(&URLSanitizerService::UpdateMatchers,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void URLSanitizerService::UpdateMatchers(
-    base::flat_set<std::unique_ptr<URLSanitizerService::MatchItem>> mappings) {
-  matchers_ = std::move(mappings);
-  if (initialization_callback_for_testing_)
+void URLSanitizerService::UpdateConfig(Config config) {
+  config_ = std::move(config);
+  if (initialization_callback_for_testing_) {
     std::move(initialization_callback_for_testing_).Run();
+  }
 }
 
 GURL URLSanitizerService::SanitizeURL(const GURL& initial_url) {
-  if (matchers_.empty() || !initial_url.SchemeIsHTTPOrHTTPS()) {
+  if (config_.matchers.empty() || !initial_url.SchemeIsHTTPOrHTTPS()) {
     return initial_url;
   }
   GURL url = initial_url;
-  for (const auto& it : matchers_) {
-    if (!it->include.MatchesURL(url) || it->exclude.MatchesURL(url))
+  for (const auto& it : config_.matchers) {
+    if (!it.include.MatchesURL(url) || it.exclude.MatchesURL(url)) {
       continue;
-    auto sanitized_query = StripQueryParameter(url.query(), it->params);
+    }
+    const auto sanitized_query = StripQueryParameter(url.query(), it.params);
     GURL::Replacements replacements;
     if (!sanitized_query.empty()) {
       replacements.SetQueryStr(sanitized_query);
@@ -154,8 +180,21 @@ GURL URLSanitizerService::SanitizeURL(const GURL& initial_url) {
   return url;
 }
 
-void URLSanitizerService::OnRulesReady(const std::string& json_content) {
-  Initialize(json_content);
+bool URLSanitizerService::CheckJsPermission(const GURL& page_url) {
+  for (const auto& p : config_.permissions.js_api) {
+    if (p.MatchesURL(page_url)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void URLSanitizerService::OnConfigReady(
+    const URLSanitizerComponentInstaller::RawConfig& config) {
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(&ParseConfig, config),
+      base::BindOnce(&URLSanitizerService::UpdateConfig,
+                     weak_factory_.GetWeakPtr()));
 }
 
 // FIXME: merge with

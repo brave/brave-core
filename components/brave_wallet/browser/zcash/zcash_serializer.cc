@@ -49,7 +49,7 @@ std::array<uint8_t, 32> blake2b256(const std::vector<uint8_t>& payload,
   blake2b_param params = {};
 
   if (personalizer.length() != sizeof(params.personal)) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return {};
   }
 
@@ -58,16 +58,16 @@ std::array<uint8_t, 32> blake2b256(const std::vector<uint8_t>& payload,
   params.depth = 1;
   memcpy(params.personal, personalizer.data(), sizeof(params.personal));
   if (blake2b_init_param(&blake_state, &params) != 0) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return {};
   }
   if (blake2b_update(&blake_state, payload.data(), payload.size()) != 0) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return {};
   }
   std::array<uint8_t, 32> result;
   if (blake2b_final(&blake_state, result.data(), 32) != 0) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return {};
   }
 

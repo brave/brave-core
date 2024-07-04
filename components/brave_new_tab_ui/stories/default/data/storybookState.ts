@@ -4,7 +4,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { CHANGE, boolean, number, select } from '@storybook/addon-knobs'
-import { addons } from '@storybook/addons'
+import { addons } from '@storybook/manager-api'
 import { useEffect } from 'react'
 import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'
@@ -96,6 +96,8 @@ export const useNewTabData = (state: NewTab.State = defaultState) => {
     showRewards: boolean('Show rewards?', true),
     showBraveTalk: boolean('Show Brave Talk?', true),
     showSearchBox: boolean('Show search box', true),
+    promptEnableSearchSuggestions: boolean('Prompt to enable search suggestions', true),
+    searchSuggestionsEnabled: boolean('Search suggestions enabled', false),
     braveTalkSupported: boolean('Brave Talk supported?', true),
     hideAllWidgets: boolean('Hide all widgets?', false),
     isBraveNewsOptedIn: boolean('Brave News opted-in?', false),

@@ -29,7 +29,7 @@ TEST_F(BraveAdsRedeemPaymentTokensUrlRequestBuilderTest, BuildUrl) {
   const PaymentTokenList payment_tokens = test::BuildPaymentTokens(/*count=*/7);
 
   RedeemPaymentTokensUrlRequestBuilder url_request_builder(
-      test::GetWallet(), payment_tokens,
+      test::Wallet(), payment_tokens,
       BuildRedeemPaymentTokensUserData(payment_tokens));
 
   // Act

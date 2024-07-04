@@ -35,11 +35,14 @@ export default {
       </div>
     ),
     withKnobs
-  ]
+  ],
+  component: App
 }
 
-export const AppV1 = () => {
-  return <App />
+export const AppV1 = {
+  render: () => {
+    return <App />
+  }
 }
 
 getPlaylistActions().playlistLoaded(mockData)

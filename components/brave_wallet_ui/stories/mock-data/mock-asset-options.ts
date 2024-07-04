@@ -475,6 +475,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     chainId: '0x1'
   },
   mockMoonCatNFT,
+  { ...mockMoonCatNFT, contractAddress: 'moon', tokenId: '0x1' },
   { ...mockMoonCatNFT, tokenId: '0x52a5' },
   { ...mockMoonCatNFT, tokenId: '0x62a5' }
 ]

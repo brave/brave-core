@@ -238,6 +238,27 @@
 /* A description of an Bitcoin account, displayed in Accounts tab. */
 "wallet.btcAccountDescription" = "Bitcoin";
 
+/* Description displayed in row beside users available balance. */
+"wallet.btcAvailableBalanceDesc" = "Fonds disponibles que vous pouvez utiliser.";
+
+/* Title displayed in row beside users available BTC balance. */
+"wallet.btcAvailableBalanceTitle" = "Disponible";
+
+/* Description displayed in row beside users pending balance. */
+"wallet.btcPendingBalanceDesc" = "Un changement est en attente dans le solde de votre portefeuille.";
+
+/* Banner description displayed below BTC rows displaying balance when there is a pending BTC balance. */
+"wallet.btcPendingBalancesBannerDesc" = "Certains soldes peuvent être indisponibles";
+
+/* Title displayed in row beside users pending BTC balance. */
+"wallet.btcPendingBalanceTitle" = "En attente";
+
+/* Description displayed in row beside users total balance. */
+"wallet.btcTotalBalanceDesc" = "Vos fonds disponibles ainsi que toutes les transactions qui n'ont pas encore été confirmées.";
+
+/* Title displayed in row beside users total BTC balance. */
+"wallet.btcTotalBalanceTitle" = "Total";
+
 /* As in buying cryptocurrency */
 "wallet.buy" = "Acheter";
 
@@ -1263,6 +1284,9 @@
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Confirmer le mot de passe";
+
+/* A label for toggle for user to use to indicate importing a legacy brave wallet or not */
+"wallet.restoreLegacyBraveWalletToggleTitle" = "Importer depuis les portefeuilles de cryptomonnaie Brave existants ?";
 
 /* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
 "wallet.restoreWalletBackButtonTitle" = "Restaurer le portefeuille";

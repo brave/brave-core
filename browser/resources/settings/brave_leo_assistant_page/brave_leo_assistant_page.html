@@ -20,26 +20,26 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   }
 
   .model-subtitle {
-    font: var(--leo-font-primary-small-regular);
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-tertiary);
     padding: 0;
     margin: 0;
   }
 
-  .menu-subtitle {
-    --leo-icon-size: 16px;
-    margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
-    margin-bottom: 2px;
+  .menu-section-title {
+    background-color: var(--leo-color-page-background);
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
     color: var(--leo-color-text-tertiary);
-    font: var(--leo-font-primary-small-regular);
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    gap: 6px;
+    font: var(--leo-font-components-label);
+    text-transform: uppercase;
   }
 
   leo-dropdown {
     min-width: 240px;
+  }
+
+  leo-option {
+    padding: var(--leo-spacing-m);
   }
 </style>
 <settings-toggle-button class="cr-row hr"
@@ -62,23 +62,50 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     on-change="onModelSelectionChange_"
   >
     <div slot="value">[[selectedModelDisplayName_]]</div>
-    <div class="menu-subtitle">
-      <leo-icon name="message-bubble-comments"></leo-icon>
-      <span>$i18n{braveLeoModelCategory-chat}</span>
+    <div class="menu-section-title">
+      <span>$i18n{braveLeoModelSectionTitle}</span>
     </div>
-    <template is="dom-repeat" items="[[models_]]">
-        <leo-option value$="[[item.model.key]]">
-          <div class="menu-item-with-icon">
-            <div>
-              <div>[[item.model.displayName]]</div>
+    <template
+      is="dom-repeat"
+      items="[[models_]]"
+    >
+      <leo-option value$="[[item.model.key]]">
+        <div class="menu-item-with-icon">
+          <div>
+            <div>[[item.model.displayName]]</div>
+            <template
+              is="dom-if"
+              if="[[isLeoModel_(item.model)]]"
+            >
               <p class="model-subtitle">[[item.subtitle]]</p>
-            </div>
-            <template is="dom-if" if="[[shouldShowModelPremiumLabel_(item.model.access)]]">
-              <leo-label mode="outline" color="blue">$i18n{braveLeoPremiumLabelNonPremium}</leo-label>
+            </template>
+            <template
+              is="dom-if"
+              if="[[!isLeoModel_(item.model)]]"
+            >
+              <p class="model-subtitle">
+                [[item.model.options.customModelOptions.modelRequestName]]
+              </p>
             </template>
           </div>
-        </leo-option>
-      </template>
+          <template
+            is="dom-if"
+            if="[[isLeoModel_(item.model)]]"
+          >
+            <template
+              is="dom-if"
+              if="[[shouldShowModelPremiumLabel_(item.model.options.leoModelOptions.access)]]"
+            >
+              <leo-label
+                mode="outline"
+                color="blue"
+                >$i18n{braveLeoPremiumLabelNonPremium}</leo-label
+              >
+            </template>
+          </template>
+        </div>
+      </leo-option>
+    </template>
   </leo-dropdown>
 </div>
 <cr-link-row class="hr"

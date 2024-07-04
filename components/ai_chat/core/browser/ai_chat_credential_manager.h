@@ -70,7 +70,7 @@ class AIChatCredentialManager {
       mojom::PageHandler::GetPremiumStatusCallback callback,
       const std::string& domain,
       const bool credential_in_cache,
-      const std::string& summary_string);
+      skus::mojom::SkusResultPtr summary_result);
 
   void OnGetPremiumStatus(
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
@@ -82,7 +82,7 @@ class AIChatCredentialManager {
       base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
           callback,
       const std::string& domain,
-      const std::string& credential_as_cookie);
+      skus::mojom::SkusResultPtr credential_as_cookie);
 
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;

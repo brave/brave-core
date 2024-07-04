@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/strings/strcat.h"
+#include "brave/components/p3a/constellation_helper.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/network_annotations.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -23,6 +24,8 @@ namespace {
 
 constexpr char kBraveP3AHeader[] = "X-Brave-P3A";
 constexpr char kBraveP3AVersionHeader[] = "Brave-P3A-Version";
+constexpr char kBraveP3AConstellationThresholdHeader[] =
+    "Brave-P3A-Constellation-Threshold";
 
 constexpr size_t kCurrentP3AVersionValue = 3;
 
@@ -53,6 +56,7 @@ Uploader::~Uploader() = default;
 void Uploader::UploadLog(const std::string& compressed_log_data,
                          const std::string& upload_type,
                          bool is_constellation,
+                         bool is_nebula,
                          MetricLogType log_type) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   if (upload_type == kP2AUploadType) {
@@ -63,7 +67,13 @@ void Uploader::UploadLog(const std::string& compressed_log_data,
       resource_request->url =
           GetConstellationUploadURL(config_, log_type, upload_type);
       resource_request->headers.SetHeader(
-          kBraveP3AVersionHeader, std::to_string(kCurrentP3AVersionValue));
+          kBraveP3AVersionHeader,
+          base::NumberToString(kCurrentP3AVersionValue));
+
+      const size_t threshold =
+          is_nebula ? kNebulaThreshold : kConstellationDefaultThreshold;
+      resource_request->headers.SetHeader(kBraveP3AConstellationThresholdHeader,
+                                          base::NumberToString(threshold));
     } else {
       resource_request->url = upload_type == kP3ACreativeUploadType
                                   ? config_->p3a_creative_upload_url

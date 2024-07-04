@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Kopírovat odkaz";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Zkopírovat informace o kartách do schránky.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Zkopírovat do schránky";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Vaše připojení k této stránce není bezpečné.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Připojení ke stránce nebylo ověřeno. ";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Vaše připojení k této stránce se nepodařilo plně ověřit. Můžete pokračovat nebo zkusit načíst stránku znova a navázat zabezpečené připojení. ";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Zobrazit certifikát";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Odstranit synchronizační účet";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Odstranění účtu odebere vaše šifrovaná data ze serverů Brave a deaktivuje synchronizaci na všech vašich připojených zařízeních.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Neodstraní však data, která jsou v těchto zařízeních uložena lokálně.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Toto vymazání je trvalé a neexistuje žádný způsob, jak data obnovit. Pokud se rozhodnete znovu začít používat synchronizaci, budete si muset vytvořit nový účet a každé zařízení znovu postupně přidat.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Při načítání zařízení v synchronizačním řetězci se něco pokazilo.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Odstranit synchronizační účet";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Zdá se, že tento kód byl vytvořen na zařízení, které má starší verzi Brave. Aktualizujte prosím na nejnovější verzi Brave na svém druhém zařízení a poté vytvořte nový synchronizační kód.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Zařízení a nastavení";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problém se spolehlivostí připojení";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Vyberte prosím kategorii, která problém popisuje.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Po připojení není k dispozici internet";

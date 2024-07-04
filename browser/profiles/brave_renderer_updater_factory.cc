@@ -10,14 +10,15 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 BraveRendererUpdaterFactory::BraveRendererUpdaterFactory()
-    : BrowserContextKeyedServiceFactory(
+    : ProfileKeyedServiceFactory(
           "BraveRendererUpdater",
-          BrowserContextDependencyManager::GetInstance()) {
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              .WithGuest(ProfileSelection::kOwnInstance)
+              .Build()) {
   DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 }
 
@@ -36,23 +37,19 @@ BraveRendererUpdater* BraveRendererUpdaterFactory::GetForProfile(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
-KeyedService* BraveRendererUpdaterFactory::BuildServiceInstanceFor(
+std::unique_ptr<KeyedService>
+BraveRendererUpdaterFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
 
   auto* keyring_service =
       brave_wallet_service ? brave_wallet_service->keyring_service() : 0;
-  return new BraveRendererUpdater(static_cast<Profile*>(context),
-                                  keyring_service,
-                                  g_browser_process->local_state());
+  return std::make_unique<BraveRendererUpdater>(
+      static_cast<Profile*>(context), keyring_service,
+      g_browser_process->local_state());
 }
 
 bool BraveRendererUpdaterFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
-}
-
-content::BrowserContext* BraveRendererUpdaterFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

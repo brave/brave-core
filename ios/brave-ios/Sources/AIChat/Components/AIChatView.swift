@@ -99,7 +99,10 @@ public struct AIChatView: View {
                         },
                         dismissAction: {
                           if model.apiError == .rateLimitReached {
-                            if let basicModel = model.models.first(where: { $0.access == .basic }) {
+                            if let basicModel = model.models.first(where: {
+                              $0.options.tag == .leoModelOptions
+                                && $0.options.leoModelOptions?.access == .basic
+                            }) {
                               model.changeModel(modelKey: basicModel.key)
                               model.retryLastRequest()
                             } else {
@@ -447,10 +450,34 @@ public struct AIChatView: View {
 
   @ViewBuilder
   private func apiErrorViews(for model: AIChatViewModel) -> some View {
-    let isPremiumAccess = model.currentModel.access == .premium
-    let isPremium = model.premiumStatus == .active || model.premiumStatus == .activeDisconnected
+    let isPremiumAccess =
+      model.currentModel.options.tag == .leoModelOptions
+      && model.currentModel.options.leoModelOptions?.access == .premium
+    let isPremium = model.premiumStatus == .active
+    let isPremiumDisconnected = model.premiumStatus == .activeDisconnected
 
-    if isPremiumAccess && !isPremium {
+    if isPremiumAccess && isPremiumDisconnected {
+      if let subscriptionState = BraveStoreSDK.shared.leoSubscriptionStatus?.state,
+        subscriptionState != .expired && subscriptionState != .revoked
+      {
+        // Purchased via AppStore
+        AIChatBusyErrorView {
+          Task { @MainActor in
+            if let orderId = Preferences.AIChat.subscriptionOrderId.value {
+              try? await BraveSkusSDK.shared.fetchCredentials(orderId: orderId, for: .leo)
+            }
+
+            model.retryLastRequest()
+          }
+        }
+      } else {
+        // Purchased via Desktop
+        AIChatSessionExpiredErrorView {
+          openURL(URL.Brave.braveLeoRefreshCredentials)
+          dismiss()
+        }
+      }
+    } else if isPremiumAccess && !isPremium {
       AIChatPremiumUpsellView(
         upsellType: .premium,
         upgradeAction: {
@@ -460,7 +487,9 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
 
-            if let basicModel = model.models.first(where: { $0.access == .basic }) {
+            if let basicModel = model.models.first(where: {
+              $0.options.tag == .leoModelOptions && $0.options.leoModelOptions?.access == .basic
+            }) {
               model.changeModel(modelKey: basicModel.key)
               model.retryLastRequest()
             } else {
@@ -489,7 +518,9 @@ public struct AIChatView: View {
             Task { @MainActor in
               await model.refreshPremiumStatus()
 
-              if let basicModel = model.models.first(where: { $0.access == .basic }) {
+              if let basicModel = model.models.first(where: {
+                $0.options.tag == .leoModelOptions && $0.options.leoModelOptions?.access == .basic
+              }) {
                 model.changeModel(modelKey: basicModel.key)
                 model.retryLastRequest()
               } else {

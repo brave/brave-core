@@ -19,9 +19,7 @@
 #include "net/base/data_url.h"
 #include "tools/json_schema_compiler/util.h"
 
-namespace brave_wallet {
-
-namespace eth {
+namespace brave_wallet::eth {
 
 bool ParseStringResult(const base::Value& json_value, std::string* value) {
   DCHECK(value);
@@ -393,6 +391,4 @@ bool ParseDataURIAndExtractJSON(const GURL url, std::string* json) {
   return true;
 }
 
-}  // namespace eth
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth

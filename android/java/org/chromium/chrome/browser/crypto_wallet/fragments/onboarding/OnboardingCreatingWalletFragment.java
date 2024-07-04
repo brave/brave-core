@@ -96,10 +96,10 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
             if (mAddTransitionDelay) {
                 PostTask.postDelayedTask(
                         TaskTraits.USER_BLOCKING,
-                        () -> mOnNextPage.gotoNextPage(),
+                        () -> mOnNextPage.incrementPages(1),
                         NEXT_PAGE_DELAY_MS);
             } else {
-                mOnNextPage.gotoNextPage();
+                mOnNextPage.incrementPages(1);
             }
         }
     }

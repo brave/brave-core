@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_LAYOUT_MANAGER_H_
 
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
 #include "brave/browser/ui/views/split_view/split_view_separator_delegate.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
@@ -40,8 +39,6 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
   int split_view_size_delta() const { return split_view_size_delta_; }
   void set_split_view_size_delta(int delta) { split_view_size_delta_ = delta; }
 
-  void SetSplitViewOrientation(SplitViewBrowserData::Orientation orientation);
-
   // When tile's second tab is the active web contents, we need to show the
   // tab after the first tab.
   void show_main_web_contents_at_tail(bool tail) {
@@ -72,8 +69,6 @@ class BraveContentsLayoutManager : public ContentsLayoutManager,
 
   int split_view_size_delta_ = 0;
   int ongoing_split_view_size_delta_ = 0;
-  SplitViewBrowserData::Orientation orientation_ =
-      SplitViewBrowserData::Orientation::kVertical;
 
   bool show_main_web_contents_at_tail_ = false;
 };

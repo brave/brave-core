@@ -281,9 +281,6 @@
     These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Brave shields Defaults sub-section in settings.">
-    This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards is disabled.">
     This will block most ads on websites.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
@@ -1191,7 +1188,7 @@
     Yes
   </message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC" desc="The description for the user's opt-in status of the transaction simulations service">
-    See the results of transactions before you sign. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK">&lt;/a&gt;</ph> 
+    See the results of transactions before you sign. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings / Wallet / Networks -->
@@ -1516,6 +1513,75 @@ Leo. This action cannot be undone.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL" desc="Label for managing accounts url">
     Manage premium subscription
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_BYOM_LABEL" desc="A generic title to use for headings">
+    Bring your own model
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DELETE_MODEL_CONFIRMATION" desc="Confirmation message for deleting a model">
+    Are you sure you want to delete this model? If this model is being used in any active conversation then that conversation will change to use Leo's default model.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_LABEL" desc="A title for adding a custom model">
+    Add model
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_EDIT_MODEL_LABEL" desc="A title for adding a custom model">
+    Edit model
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL" desc="An input title for adding a custom model">
+    Label
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME" desc="An input title for models request name. This is gets sent to the remote server.">
+    Model request name
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT" desc="An input title for server url.">
+    Server endpoint
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY" desc="An input title for server API key.">
+    API Key
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_LABEL_TOOLTIP_INFO" desc="A brief description for the input title for adding a custom model">
+    The name of the model as it will appear in the model selection menu
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME_TOOLTIP_INFO" desc="A brief description for the input title for adding model request name">
+    The name of the model as it should appear in the request to the serving framework, i.e. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework the integration will not work)
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT_TOOLTIP_INFO" desc="A brief description for the input title for adding server endpoint url">
+    The url where your serving framework is listening for requests. If you are not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY_TOOLTIP_INFO" desc="A brief description for the input title for adding API key">
+    Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_CLOSE_BUTTON_LABEL" desc="A label for a button that closes configuration UI">
+    Close
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_PROXY_NOTE" desc="A note for users when adding model server info">
+    Brave does not proxy these requests, please read privacy terms of the chosen provider.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_ERROR" desc="An error note for users when url is invalidated">
+    Non-local endpoints should employ the HTTPS protocol for secure data transmission.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_INVALID_ERROR" desc="An error message when the url is invalid">
+    You have entered an invalid URL. Please enter a valid URL.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ADD_NEW_BUTTON_LABEL" desc="A label for a button that opens a panel with input forms for a user to add model">
+    Add new model
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_LIST_EMPTY_LABEL" desc="A label an alert when the model list is empty.">
+    You haven't connected a model yet.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_TITLE" desc="A header title for model list section">
+    Your models
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_1" desc="A description explaning to connect models within the browser">
+    Connect your self-hosted or third-party hosted LLM to Leo and use them within the browser.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2" desc="A description explaning what protocols are accepted">
+    Use any OpenAI Chat Protocol compatible framework such as Ollama.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_BUTTON_LABEL" desc="A button label for user to click when they want to add a new model">
+    Add model
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_SAVE_MODEL_BUTTON_LABEL" desc="A button label for user to click when they want to save a new model">
+    Save model
   </message>
 
   <!-- Settings / Playlist -->

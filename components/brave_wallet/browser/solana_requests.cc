@@ -13,9 +13,7 @@
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 std::string getBalance(const std::string& pubkey) {
   return GetJsonRpcString("getBalance", pubkey);
@@ -176,6 +174,4 @@ std::string getRecentPrioritizationFees() {
   return GetJsonRpcString("getRecentPrioritizationFees");
 }
 
-}  // namespace solana
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::solana

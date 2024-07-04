@@ -13,7 +13,7 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import Main from '../components/main'
 import * as mojom from '../api/page_handler'
-import { useArgs } from '@storybook/addons'
+import { useArgs } from '@storybook/manager-api'
 import FeedbackForm from '../components/feedback_form'
 import DataContextProvider from '../state/data-context-provider'
 import { setPageHandlerAPIForTesting } from '../api/page_handler'
@@ -24,7 +24,7 @@ setPageHandlerAPIForTesting(mockAPIHandler as any)
 
 function getCompletionEvent(text: string): mojom.ConversationEntryEvent {
   return {
-    completionEvent: { completion:  text },
+    completionEvent: { completion: text },
     searchQueriesEvent: undefined,
     searchStatusEvent: undefined
   }
@@ -164,37 +164,64 @@ const HISTORY: mojom.ConversationTurn[] = [
 const MODELS: mojom.Model[] = [
   {
     key: '1',
-    name: 'model-one',
     displayName: 'Model One',
-    displayMaker: 'Company',
-    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-    category: mojom.ModelCategory.CHAT,
-    access: mojom.ModelAccess.BASIC,
-    maxPageContentLength: 10000,
-    longConversationWarningCharacterLimit: 9700
+    options: {
+      leoModelOptions: {
+        name: 'model-one',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.BASIC,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModelOptions: undefined,
+    }
   },
   {
     key: '2',
-    name: 'model-two-premium',
     displayName: 'Model Two',
-    displayMaker: 'Company',
-    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-    category: mojom.ModelCategory.CHAT,
-    access: mojom.ModelAccess.PREMIUM,
-    maxPageContentLength: 10000,
-    longConversationWarningCharacterLimit: 9700
+    options: {
+      leoModelOptions: {
+        name: 'model-two-premium',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.PREMIUM,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModelOptions: undefined,
+    }
   },
   {
     key: '3',
-    name: 'model-three-freemium',
     displayName: 'Model Three',
-    displayMaker: 'Company',
-    engineType: mojom.ModelEngineType.LLAMA_REMOTE,
-    category: mojom.ModelCategory.CHAT,
-    access: mojom.ModelAccess.BASIC_AND_PREMIUM,
-    maxPageContentLength: 10000,
-    longConversationWarningCharacterLimit: 9700
-  }
+    options: {
+      leoModelOptions: {
+        name: 'model-three-freemium',
+        displayMaker: 'Company',
+        engineType: mojom.ModelEngineType.LLAMA_REMOTE,
+        category: mojom.ModelCategory.CHAT,
+        access: mojom.ModelAccess.BASIC_AND_PREMIUM,
+        maxPageContentLength: 10000,
+        longConversationWarningCharacterLimit: 9700
+      },
+      customModelOptions: undefined,
+    }
+  },
+  {
+    key: '4',
+    displayName: 'Microsoft Phi-3',
+    options: {
+      leoModelOptions: undefined,
+      customModelOptions: {
+        modelRequestName: 'phi3',
+        endpoint: { url: 'https://example.com' },
+        apiKey: '123456',
+      },
+    }
+  },
 ]
 
 const SAMPLE_QUESTIONS = [
@@ -226,7 +253,7 @@ export default {
       control: { type: 'select' }
     },
     model: {
-      options: MODELS.map(m => m.name),
+      options: MODELS.map(model => model.displayName),
       control: { type: 'select' }
     }
   },
@@ -241,7 +268,7 @@ export default {
     isPremiumUserDisconnected: false,
     currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
-    model: MODELS[0].name,
+    model: MODELS[0].key,
     showAgreementModal: false,
     isMobile: false,
     shouldShowLongConversationInfo: false,
@@ -254,15 +281,15 @@ export default {
       const suggestedQuestions = options.args.hasSuggestedQuestions
         ? SAMPLE_QUESTIONS
         : siteInfo
-        ? [SAMPLE_QUESTIONS[0]]
-        : []
+          ? [SAMPLE_QUESTIONS[0]]
+          : []
 
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
-      const currentModel = MODELS.find(m => m.name === options.args.model)
+      const currentModel = MODELS.find(m => m.displayName === options.args.model)
 
       const switchToBasicModel = () => {
-        const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
+        const nonPremiumModel = MODELS.find(model => model.options.leoModelOptions?.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
       }
 
@@ -300,18 +327,22 @@ export default {
   ]
 }
 
-export const _Panel = (props: {}) => {
-  return (
-    <div className={styles.container}>
-      <Main />
-    </div>
-  )
+export const _Panel = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <Main />
+      </div>
+    )
+  }
 }
 
-export const _FeedbackForm = (props: {}) => {
-  return (
-    <div className={styles.container}>
-      <FeedbackForm />
-    </div>
-  )
+export const _FeedbackForm = {
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <FeedbackForm />
+      </div>
+    )
+  }
 }

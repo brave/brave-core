@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/sync/key_storage_linux.cc b/components/os_crypt/sync/key_storage_linux.cc
-index 680fa13fb15ea1e48fb19b83d069c9aa9b077159..f511a9d75b50c3d8cfeb12051f071ff26abcbe2d 100644
+index 2773d9faa792f5d8e4b42e4650ffe95222d31ac0..ef041f505c213c904b6bb5845ead23f2b735d883 100644
 --- a/components/os_crypt/sync/key_storage_linux.cc
 +++ b/components/os_crypt/sync/key_storage_linux.cc
 @@ -29,8 +29,7 @@

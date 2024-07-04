@@ -597,13 +597,13 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Enabled
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_TITLE" desc="Text for opt in card title">
-        Today’s top stories in a completely private feed, just for you.
+        Today’s top stories in a private feed, just for you.
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_OPTIN_TITLE" desc="Text for opt in card title in settings">
         Turn on Brave News, and never miss a story
       </message>
       <message name="IDS_BRAVE_NEWS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle">
-        Brave News is ad-supported with completely private and anonymized ads matched on your device.
+        Brave News is ad-supported with private and anonymized ads matched on your device.
       </message>
       <message name="IDS_BRAVE_NEWS_SETTINGS_OPTIN_SUBTITLE" desc="Text for opt in card subtitle in settings">
         Follow your favorite sources, in a single feed. Just open a tab in Brave, scroll down, and... voila!\nBrave News is ad-supported with private, anonymized ads.
@@ -882,7 +882,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Send diagnostic reports if you experience a crash or freeze.
       </message>
       <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
-        Share completely private and anonymous product insights about what features are being used by Brave's users.
+        Share private and anonymous product insights about what features are being used by Brave's users.
       </message>
       <message name="IDS_TYPE_WEBSITE" desc="Text for searhbox tooltip title onboarding">
         Type a website name or URL
@@ -1014,7 +1014,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Independent search with better privacy
       </message>
       <message name="IDS_BRAVE_OMNIBOX_SEARCH_PROMO_DESC" desc="Omnibox brave search banner promo description">
-        Brave Search doesn't track you, your queries, or your clicks.
+        Brave Search doesn't profile you.
       </message>
       <message name="IDS_TRY_BRAVE_SEARCH" desc="Omnibox brave search promo button text">
         Try Brave Search
@@ -3171,6 +3171,18 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System program">
       System Program
+    </message>
+    <message name="IDS_BRAVE_WALLET_FINGERPRINT_UNLOCK_TITLE" desc="Title for Fingerprint unlock onboarding screen">
+      Unlock Brave Wallet with biometric authentication
+    </message>
+    <message name="IDS_BRAVE_WALLET_FINGERPRINT_UNLOCK_CONTENT" desc="Content for Fingerprint unlock onboarding screen">
+      Would you like to use biometric authentication to unlock your Brave Wallet?
+    </message>
+    <message name="IDS_BRAVE_WALLET_USE_FINGERPRINT_UNLOCK" desc="Text of Fingerprint unlock onboarding button">
+      Use Fingerprint Unlock
+    </message>
+    <message name="IDS_BRAVE_WALLET_SKIP" desc="Text to skip something">
+      Skip this for now
     </message>
     <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config program">
       Config Program

@@ -89,7 +89,7 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
                     mContinueButtonClicked = true;
 
                     if (mOnNextPage != null) {
-                        mOnNextPage.gotoNextPage();
+                        mOnNextPage.incrementPages(1);
                     }
                 });
     }

@@ -70,11 +70,13 @@ struct FocusSystemSettingsView: View {
 
       Spacer()
 
-      LottieAnimationView(
-        name: colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
-        bundle: .module
+      LottieView(
+        animation: .named(
+          colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
+          bundle: .module
+        )
       )
-      .loopMode(.loop)
+      .playing(loopMode: .loop)
       .resizable()
       .aspectRatio(contentMode: .fit)
       .background(Color(braveSystemName: .pageBackground))

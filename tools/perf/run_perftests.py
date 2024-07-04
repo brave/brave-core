@@ -27,7 +27,7 @@ import components.perf_config as perf_config
 import components.perf_test_runner as perf_test_runner
 import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
-import components.profile_updater as profile_updater
+import components.profile_tools as profile_tools
 
 from components.common_options import CommonOptions, PerfMode
 
@@ -84,12 +84,12 @@ def _RunUpdateProfile(config: perf_config.PerfConfig,
   configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
       options.targets, config.runners[0])
   assert len(configurations) == 1
-  profile_updater.CleanupBeforeRun(configurations[0], options)
+  profile_tools.CleanupBrowserComponents(configurations[0], options)
   if not perf_test_runner.RunConfigurations(configurations, config.benchmarks,
                                             options):
     return 1
 
-  profile_updater.MakeUpdatedProfileArchive(configurations[0], options)
+  profile_tools.MakeUpdatedProfileArchive(configurations[0], options)
   return 0
 
 

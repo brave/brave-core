@@ -17,12 +17,28 @@ extension Strings {
       comment:
         "The title shown on limit reached error view, which is suggesting user to change default model"
     )
+    public static let accountSessionExpiredDescription = NSLocalizedString(
+      "aichat.accountSessionExpiredDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.",
+      comment:
+        "The description for the error message when the user's session has expired"
+    )
     public static let newChatActionTitle = NSLocalizedString(
       "aichat.newChatActionTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "New Chat",
       comment: "The title for button that starts a new chat"
+    )
+    public static let refreshCredentialsActionTitle = NSLocalizedString(
+      "aichat.refreshCredentialsActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Refresh",
+      comment: "The title for button that refreshes user credentials"
     )
     public static let networkErrorViewTitle = NSLocalizedString(
       "aichat.networkErrorViewTitle",
@@ -38,6 +54,14 @@ extension Strings {
       bundle: .module,
       value: "Retry",
       comment: "The title for button for re-try"
+    )
+    public static let busyErrorDescription = NSLocalizedString(
+      "aichat.busyErrorDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Leo is too busy right now. Please try again in a few minutes.",
+      comment:
+        "The title for view that shows when leo is too busy (active disconnected) and the user is premium"
     )
     public static let feedbackSuccessAnswerLikedTitle = NSLocalizedString(
       "aichat.feedbackSuccessAnswerLikedTitle",
@@ -625,6 +649,13 @@ extension Strings {
       value: "Chat",
       comment: "The title of the section where chat models are displayed as a list."
     )
+    public static let customModelChatSectionTitle = NSLocalizedString(
+      "aichat.customModelChatSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Custom Models",
+      comment: "The title of the section where custom models are displayed as a list."
+    )
     public static let unlimitedModelStatusTitle = NSLocalizedString(
       "aichat.unlimitedModelStatusTitle",
       tableName: "BraveLeo",
@@ -806,6 +837,13 @@ extension Strings {
       bundle: .module,
       value: "Chat",
       comment: "The title for the chat section in the menu"
+    )
+    public static let customModelsMenuSectionTitle = NSLocalizedString(
+      "aichat.customModelsMenuSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Custom Models",
+      comment: "The title for the custom models section in the menu"
     )
     public static let askLeoSearchSuggestionTitle = NSLocalizedString(
       "aichat.askLeoSearchSuggestionTitle",

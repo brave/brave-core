@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/ui/views/brave_news/brave_news_bubble_controller.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -76,6 +77,11 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                       views::BubbleBorder::STANDARD_SHADOW),
       contents_(contents) {
   DCHECK(contents);
+
+  auto* controller =
+      brave_news::BraveNewsBubbleController::FromWebContents(contents);
+  CHECK(controller);
+  controller_ = controller->AsWeakPtr();
 
   SetButtons(ui::DIALOG_BUTTON_NONE);
   SetAccessibleWindowRole(ax::mojom::Role::kDialog);
@@ -144,6 +150,14 @@ void BraveNewsBubbleView::OpenManageFeeds() {
        WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
        false},
       /*navigation_handle_callback=*/{});
+}
+
+void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {
+  if (!controller_) {
+    return;
+  }
+
+  controller_->OnBubbleClosed();
 }
 
 void BraveNewsBubbleView::OnThemeChanged() {

@@ -37,20 +37,19 @@ const PortfolioWrapper = styled.div`
   margin-bottom: 20px;
 `
 
-export const _PortfolioTransactionItem: React.FC = () => {
-  return (
-    <WalletPageStory>
-      <WalletPageLayout>
-        <WalletSubViewLayout>
-          <CryptoViewWrapper>
-            <PortfolioWrapper>
-              <PortfolioTransactionItem transaction={mockTransactionInfo} />
-            </PortfolioWrapper>
-          </CryptoViewWrapper>
-        </WalletSubViewLayout>
-      </WalletPageLayout>
-    </WalletPageStory>
-  )
-}
+export const _PortfolioTransactionItem = {}
 
-export default _PortfolioTransactionItem
+export default {
+  title: 'Portfolio Transaction Item',
+  render: () => <WalletPageStory>
+    <WalletPageLayout>
+      <WalletSubViewLayout>
+        <CryptoViewWrapper>
+          <PortfolioWrapper>
+            <PortfolioTransactionItem transaction={mockTransactionInfo} />
+          </PortfolioWrapper>
+        </CryptoViewWrapper>
+      </WalletSubViewLayout>
+    </WalletPageLayout>
+  </WalletPageStory>
+}

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 
+import org.chromium.ai_chat.mojom.ModelWithSubtitle;
 import org.chromium.ai_chat.mojom.PremiumStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
@@ -66,12 +67,20 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         BraveLeoMojomHelper.getInstance(getProfile())
                 .getModels(
                         (models -> {
+                            setDefaultModelName(models);
+                        }));
+    }
+
+    private void setDefaultModelName(ModelWithSubtitle[] models) {
+        BraveLeoMojomHelper.getInstance(getProfile())
+                .getDefaultModelKey(
+                        (model -> {
                             Preference pref = findPreference(PREF_DEFAULT_MODEL);
                             if (pref == null) {
                                 Log.e(TAG, "Default model pref is null");
                                 return;
                             }
-                            pref.setSummary(BraveLeoUtils.getDefaultModelName(models));
+                            pref.setSummary(BraveLeoUtils.getDefaultModelName(models, model));
                         }));
     }
 

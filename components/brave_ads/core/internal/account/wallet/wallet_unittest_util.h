@@ -14,8 +14,8 @@ struct WalletInfo;
 
 namespace test {
 
-WalletInfo GetWallet();
-mojom::WalletInfoPtr GetWalletPtr();
+WalletInfo Wallet();
+mojom::WalletInfoPtr WalletPtr();
 
 }  // namespace test
 

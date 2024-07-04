@@ -12,8 +12,7 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
 class RewardsPromotionUtilTest : public testing::Test {
  public:
@@ -116,5 +115,4 @@ TEST_F(RewardsPromotionUtilTest, UnBlindCredsCredsNotCorrect) {
             "Failed to verify and unblind batch DLEQ proof");
 }
 
-}  // namespace credential
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::credential

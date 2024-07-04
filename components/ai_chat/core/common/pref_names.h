@@ -10,7 +10,6 @@
 #include "build/build_config.h"
 
 class PrefRegistrySimple;
-class PrefService;
 
 namespace ai_chat::prefs {
 
@@ -28,7 +27,6 @@ inline constexpr char kBraveChatPremiumCredentialCache[] =
     "brave.ai_chat.premium_credential_cache";
 inline constexpr char kUserDismissedPremiumPrompt[] =
     "brave.ai_chat.user_dismissed_premium_prompt";
-inline constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 inline constexpr char kBraveChatP3AOmniboxOpenWeeklyStorage[] =
     "brave.ai_chat.p3a_omnibox_open";
 inline constexpr char kBraveChatP3AOmniboxAutocompleteWeeklyStorage[] =
@@ -63,14 +61,14 @@ inline constexpr char kBraveAIChatContextMenuEnabled[] =
     "brave.ai_chat.context_menu_enabled";
 // Used to indicate whether the feature is enabled by group policy.
 inline constexpr char kEnabledByPolicy[] = "brave.ai_chat.enabled_by_policy";
+inline constexpr char kObseleteBraveChatAutoGenerateQuestions[] =
+    "brave.ai_chat.auto_generate_questions";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-void MigrateProfilePrefs(PrefService* profile_prefs);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);

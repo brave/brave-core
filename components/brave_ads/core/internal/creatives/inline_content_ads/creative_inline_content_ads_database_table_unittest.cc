@@ -95,19 +95,19 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "food & drink";
   creative_ad_1.dimensions = "200x100";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "technology & computing";
   creative_ad_2.dimensions = "300x200";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.dimensions = "150x150";
   creative_ads.push_back(creative_ad_3);
@@ -162,17 +162,17 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "automotive";
   creative_ads.push_back(creative_ad_3);
 
@@ -197,11 +197,11 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   const CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   const CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeInlineContentAds(creative_ads);
@@ -221,7 +221,7 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest,
   CreativeInlineContentAdList creative_ads;
 
   const CreativeInlineContentAdInfo creative_ad =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad);
 
   database::SaveCreativeInlineContentAds(creative_ads);
@@ -240,13 +240,13 @@ TEST_F(BraveAdsCreativeInlineContentAdsDatabaseTableTest, GetNonExpired) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.start_at = DistantPast();
   creative_ad_1.end_at = Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.start_at = DistantPast();
   creative_ad_2.end_at = DistantFuture();
   creative_ads.push_back(creative_ad_2);

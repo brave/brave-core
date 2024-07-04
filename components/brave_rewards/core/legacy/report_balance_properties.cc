@@ -93,7 +93,7 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
   bool result = GetPropertyFromDict(dict, kGrantsKey, &grants);
 
   if (!result) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -101,7 +101,7 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
   result = GetPropertyFromDict(dict, kAdEarningsKey, &ad_earnings);
 
   if (!result) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -110,7 +110,7 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
       GetPropertyFromDict(dict, kAutoContributionsKey, &auto_contributions);
 
   if (!result) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -119,7 +119,7 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
       GetPropertyFromDict(dict, kRecurringDonationsKey, &recurring_donations);
 
   if (!result) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 
@@ -127,7 +127,7 @@ bool ReportBalanceProperties::FromValue(const base::Value::Dict& dict) {
   result = GetPropertyFromDict(dict, kOneTimeDonationsKey, &one_time_donations);
 
   if (!result) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return false;
   }
 

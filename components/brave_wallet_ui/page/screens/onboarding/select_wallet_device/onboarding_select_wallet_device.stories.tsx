@@ -9,17 +9,18 @@ import {
   WalletPageStory //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { OnboardingSelectWalletDevice } from './onboarding_select_wallet_device'
+import { Meta } from '@storybook/react'
 
-export const _OnboardingSelectWalletDevice = () => {
-  return (
-    <WalletPageStory>
-      <OnboardingSelectWalletDevice />
-    </WalletPageStory>
-  )
+export const OnboardingSelectWalletDeviceStory = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <OnboardingSelectWalletDevice />
+      </WalletPageStory>
+    )
+  }
 }
 
-_OnboardingSelectWalletDevice.story = {
-  name: 'OnboardingSelectWalletDevice'
-}
-
-export default {}
+export default {
+  component: OnboardingSelectWalletDevice
+} as Meta<typeof OnboardingSelectWalletDevice>

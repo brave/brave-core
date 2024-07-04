@@ -26,6 +26,7 @@ import {
 import { ApiProxyContext } from '../../common/context/api-proxy.context'
 import { WalletApiDataOverrides } from '../../constants/testing_types'
 import getAPIProxy from '../../common/async/bridge' // aut-mocked by complier
+import '../locale'
 
 export interface WalletPageStoryProps {
   walletStateOverride?: Partial<WalletState>

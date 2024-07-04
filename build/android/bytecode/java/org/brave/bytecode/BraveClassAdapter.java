@@ -42,6 +42,7 @@ public class BraveClassAdapter {
         chain = new BraveDropdownItemViewInfoListBuilderClassAdapter(chain);
         chain = new BraveDropdownItemViewInfoListManagerClassAdapter(chain);
         chain = new BraveDynamicColorsClassAdapter(chain);
+        chain = new BraveEditUrlSuggestionProcessorBaseClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
         chain = new BraveExportFlowClassAdapter(chain);
         chain = new BraveExternalNavigationHandlerClassAdapter(chain);
@@ -67,6 +68,7 @@ public class BraveClassAdapter {
         chain = new BraveTranslateCompactInfoBarBaseClassAdapter(chain);
         chain = new BraveMenuButtonCoordinatorClassAdapter(chain);
         chain = new BraveMimeUtilsClassAdapter(chain);
+        chain = new BraveMostVisitedTilesLayoutBaseClassAdapter(chain);
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
         chain = new BraveMultiWindowUtilsClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);

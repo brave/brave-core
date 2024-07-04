@@ -13,9 +13,7 @@
 #include "base/logging.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
-namespace brave_wallet {
-
-namespace eth {
+namespace brave_wallet::eth {
 
 // Scale the base fee by 33% to get a suggested value. This is done to account
 // for sufficient fluctionations in the base fee, so that the transaction will
@@ -155,6 +153,4 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
   return true;
 }
 
-}  // namespace eth
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::eth

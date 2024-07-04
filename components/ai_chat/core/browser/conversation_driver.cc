@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_driver.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -31,7 +30,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_claude.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_llama.h"
-#include "brave/components/ai_chat/core/browser/models.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -112,6 +111,7 @@ const std::string& GetActionTypeQuestion(mojom::ActionType action_type) {
 ConversationDriver::ConversationDriver(
     PrefService* profile_prefs,
     PrefService* local_state_prefs,
+    ModelService* model_service,
     AIChatMetrics* ai_chat_metrics,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter,
@@ -119,6 +119,7 @@ ConversationDriver::ConversationDriver(
     std::string_view channel_string)
     : ConversationDriver(profile_prefs,
                          local_state_prefs,
+                         model_service,
                          ai_chat_metrics,
                          std::make_unique<AIChatCredentialManager>(
                              std::move(skus_service_getter),
@@ -129,6 +130,7 @@ ConversationDriver::ConversationDriver(
 ConversationDriver::ConversationDriver(
     PrefService* profile_prefs,
     PrefService* local_state_prefs,
+    ModelService* model_service,
     AIChatMetrics* ai_chat_metrics,
     std::unique_ptr<AIChatCredentialManager> credential_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -140,8 +142,11 @@ ConversationDriver::ConversationDriver(
           url_loader_factory,
           std::string(channel_string))),
       url_loader_factory_(url_loader_factory),
+      model_service_(model_service),
       on_page_text_fetch_complete_(new base::OneShotEvent()) {
   DCHECK(pref_service_);
+
+  models_observer_.Observe(model_service_.get());
 
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
@@ -158,9 +163,9 @@ ConversationDriver::ConversationDriver(
   // |pref_service_->SetDefaultPrefValue| when the user becomes premium. With
   // that, we'll be able to simply call GetString(prefs::kDefaultModelKey) and
   // not have to fetch premium status.
-  const base::Value* default_model_user_pref_value =
-      pref_service_->GetUserPrefValue(prefs::kDefaultModelKey);
-  if (!default_model_user_pref_value &&
+  const std::string& default_model_user_pref =
+      model_service_->GetDefaultModelKey();
+  if (!default_model_user_pref.empty() &&
       features::kAIModelsPremiumDefaultKey.Get() !=
           features::kAIModelsDefaultKey.Get()) {
     credential_manager_->GetPremiumStatus(base::BindOnce(
@@ -174,25 +179,19 @@ ConversationDriver::ConversationDriver(
           // Use default premium model for this instance
           instance->ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
           // Make sure default model reflects premium status
-          const auto* current_default =
-              instance->pref_service_
-                  ->GetDefaultPrefValue(prefs::kDefaultModelKey)
-                  ->GetIfString();
+          const auto& current_default =
+              instance->model_service_->GetDefaultModelKey();
 
-          if (current_default &&
-              *current_default != features::kAIModelsPremiumDefaultKey.Get()) {
-            instance->pref_service_->SetDefaultPrefValue(
-                prefs::kDefaultModelKey,
-                base::Value(features::kAIModelsPremiumDefaultKey.Get()));
+          if (current_default != features::kAIModelsPremiumDefaultKey.Get()) {
+            instance->model_service_->SetDefaultModelKey(
+                features::kAIModelsPremiumDefaultKey.Get());
           }
         },
         // Unretained is ok as credential manager is owned by this class,
         // and it owns the mojo binding that is used to make async call in
         // |GetPremiumStatus|.
         base::Unretained(this)));
-  } else if (default_model_user_pref_value &&
-             default_model_user_pref_value->GetString() ==
-                 "chat-claude-instant") {
+  } else if (default_model_user_pref == "chat-claude-instant") {
     // 2024-05 Migration for old "claude instant" model
     // The migration is performed here instead of
     // ai_chat::prefs::MigrateProfilePrefs because the migration requires
@@ -204,8 +203,7 @@ ConversationDriver::ConversationDriver(
           const std::string model_key = IsPremiumStatus(status)
                                             ? "chat-claude-sonnet"
                                             : "chat-claude-haiku";
-          instance->pref_service_->SetString(prefs::kDefaultModelKey,
-                                             model_key);
+          instance->model_service_->SetDefaultModelKey(model_key);
           instance->ChangeModel(model_key);
         },
         // Unretained is ok as credential manager is owned by this class,
@@ -221,7 +219,7 @@ ConversationDriver::ConversationDriver(
   // Worst-case is that this will get double initialized for premium users
   // once whenever all credentials are expired.
   if (model_key_.empty()) {
-    model_key_ = pref_service_->GetString(prefs::kDefaultModelKey);
+    model_key_ = model_service_->GetDefaultModelKey();
   }
   InitEngine();
   DCHECK(engine_);
@@ -234,14 +232,17 @@ ConversationDriver::ConversationDriver(
   }
 }
 
-ConversationDriver::~ConversationDriver() = default;
+ConversationDriver::~ConversationDriver() {
+  models_observer_.Reset();
+}
 
 void ConversationDriver::ChangeModel(const std::string& model_key) {
   DCHECK(!model_key.empty());
   // Check that the key exists
-  auto* new_model = GetModel(model_key);
+  auto* new_model = model_service_->GetModel(model_key);
   if (!new_model) {
-    NOTREACHED() << "No matching model found for key: " << model_key;
+    NOTREACHED_IN_MIGRATION()
+        << "No matching model found for key: " << model_key;
     return;
   }
   model_key_ = new_model->key;
@@ -249,36 +250,30 @@ void ConversationDriver::ChangeModel(const std::string& model_key) {
 }
 
 std::string ConversationDriver::GetDefaultModel() {
-  return pref_service_->GetString(prefs::kDefaultModelKey);
+  return model_service_->GetDefaultModelKey();
 }
 
 void ConversationDriver::SetDefaultModel(const std::string& model_key) {
   DCHECK(!model_key.empty());
   // Check that the key exists
-  auto* new_model = GetModel(model_key);
+  auto* new_model = model_service_->GetModel(model_key);
   if (!new_model) {
-    NOTREACHED() << "No matching model found for key: " << model_key;
+    NOTREACHED_IN_MIGRATION()
+        << "No matching model found for key: " << model_key;
     return;
   }
 
-  pref_service_->SetString(prefs::kDefaultModelKey, model_key);
+  model_service_->SetDefaultModelKey(model_key);
 }
 
 const mojom::Model& ConversationDriver::GetCurrentModel() {
-  auto* model = GetModel(model_key_);
+  const mojom::Model* model = model_service_->GetModel(model_key_);
   DCHECK(model);
   return *model;
 }
 
-std::vector<mojom::ModelPtr> ConversationDriver::GetModels() {
-  // TODO(petemill): This is not needed. Frontends should call |GetAllModels|
-  // directly.
-  auto all_models = GetAllModels();
-  std::vector<mojom::ModelPtr> models(all_models.size());
-  // Ensure we return only in intended display order
-  std::transform(all_models.cbegin(), all_models.cend(), models.begin(),
-                 [](auto& model) { return model.Clone(); });
-  return models;
+const std::vector<mojom::ModelPtr>& ConversationDriver::GetModels() {
+  return model_service_->GetModels();
 }
 
 const std::vector<mojom::ConversationTurnPtr>&
@@ -312,7 +307,7 @@ void ConversationDriver::OnConversationActiveChanged(
 
 void ConversationDriver::InitEngine() {
   DCHECK(!model_key_.empty());
-  auto* model = GetModel(model_key_);
+  const mojom::Model* model = model_service_->GetModel(model_key_);
   // Make sure we get a valid model, defaulting to static default or first.
   if (!model) {
     // It is unexpected that we get here. Dump a call stack
@@ -320,11 +315,12 @@ void ConversationDriver::InitEngine() {
     SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", model_key_);
     base::debug::DumpWithoutCrashing();
     // Use default
-    model = GetModel(features::kAIModelsDefaultKey.Get());
+    model = model_service_->GetModel(features::kAIModelsDefaultKey.Get());
     DCHECK(model);
     if (!model) {
+      const auto& all_models = GetModels();
       // Use first if given bad default value
-      model = &GetAllModels().at(0);
+      model = all_models.at(0).get();
     }
   }
 
@@ -332,25 +328,39 @@ void ConversationDriver::InitEngine() {
   // no longer exists).
   model_key_ = model->key;
 
-  // Engine enum on model to decide which one
-  if (model->engine_type == mojom::ModelEngineType::BRAVE_CONVERSATION_API) {
-    DVLOG(1) << "Started AI engine: conversation api";
-    engine_ = std::make_unique<EngineConsumerConversationAPI>(
-        *model, url_loader_factory_, credential_manager_.get());
-  } else if (model->engine_type == mojom::ModelEngineType::LLAMA_REMOTE) {
-    DVLOG(1) << "Started AI engine: llama";
-    engine_ = std::make_unique<EngineConsumerLlamaRemote>(
-        *model, url_loader_factory_, credential_manager_.get());
-  } else {
-    DVLOG(1) << "Started AI engine: claude";
-    engine_ = std::make_unique<EngineConsumerClaudeRemote>(
-        *model, url_loader_factory_, credential_manager_.get());
+  // Only LeoModels are passed to the following engines.
+  if (model->options->is_leo_model_options()) {
+    auto& leo_model_opts = model->options->get_leo_model_options();
+
+    // Engine enum on model to decide which one
+    if (leo_model_opts->engine_type ==
+        mojom::ModelEngineType::BRAVE_CONVERSATION_API) {
+      DVLOG(1) << "Started AI engine: conversation api";
+      engine_ = std::make_unique<EngineConsumerConversationAPI>(
+          *leo_model_opts, url_loader_factory_, credential_manager_.get());
+    } else if (leo_model_opts->engine_type ==
+               mojom::ModelEngineType::LLAMA_REMOTE) {
+      DVLOG(1) << "Started AI engine: llama";
+      engine_ = std::make_unique<EngineConsumerLlamaRemote>(
+          *leo_model_opts, url_loader_factory_, credential_manager_.get());
+    } else {
+      DVLOG(1) << "Started AI engine: claude";
+      engine_ = std::make_unique<EngineConsumerClaudeRemote>(
+          *leo_model_opts, url_loader_factory_, credential_manager_.get());
+    }
+  }
+
+  if (model->options->is_custom_model_options()) {
+    auto& custom_model_opts = model->options->get_custom_model_options();
+    DVLOG(1) << "Started AI engine: custom";
+    engine_ = std::make_unique<EngineConsumerOAIRemote>(*custom_model_opts,
+                                                        url_loader_factory_);
   }
 
   // Pending requests have been deleted along with the model engine
   is_request_in_progress_ = false;
   for (auto& obs : observers_) {
-    obs.OnModelChanged(model_key_);
+    obs.OnModelDataChanged(model_key_, GetModels());
     obs.OnAPIRequestInProgress(false);
   }
 
@@ -690,6 +700,30 @@ void ConversationDriver::CleanUp() {
   }
 }
 
+void ConversationDriver::OnModelListUpdated() {
+  for (auto& obs : observers_) {
+    obs.OnModelDataChanged(model_key_, GetModels());
+  }
+
+  const mojom::Model* model = model_service_->GetModel(model_key_);
+
+  if (model && engine_) {
+    engine_->UpdateModelOptions(*model->options);
+  }
+}
+
+void ConversationDriver::OnModelRemoved(const std::string& removed_key) {
+  // Any current model is removed, switch to default
+  if (model_key_ == removed_key) {
+    // TODO(nullhook): Inform the UI that the model has been removed, so it can
+    // show a message
+    model_key_ = features::kAIModelsDefaultKey.Get();
+  }
+
+  // Update the engine and fetch the new models
+  InitEngine();
+}
+
 std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
     mojom::SuggestionGenerationStatus& suggestion_status) {
   // Can we get suggested questions
@@ -745,8 +779,9 @@ void ConversationDriver::GenerateQuestions() {
   // This function should not be presented in the UI if the user has not
   // opted-in yet.
   if (!HasUserOptedIn()) {
-    NOTREACHED() << "GenerateQuestions should not be called before user is "
-                 << "opted in to AI Chat";
+    NOTREACHED_IN_MIGRATION()
+        << "GenerateQuestions should not be called before user is "
+        << "opted in to AI Chat";
     return;
   }
   DCHECK(should_send_page_contents_)
@@ -763,8 +798,9 @@ void ConversationDriver::GenerateQuestions() {
           mojom::SuggestionGenerationStatus::IsGenerating ||
       suggestion_generation_status_ ==
           mojom::SuggestionGenerationStatus::HasGenerated) {
-    NOTREACHED() << "UI should not allow GenerateQuestions to be called more "
-                 << "than once";
+    NOTREACHED_IN_MIGRATION()
+        << "UI should not allow GenerateQuestions to be called more "
+        << "than once";
     return;
   }
 
@@ -1101,14 +1137,19 @@ bool ConversationDriver::HasPendingConversationEntry() {
 }
 
 int ConversationDriver::GetContentUsedPercentage() {
-  if (GetCurrentModel().max_page_content_length >
-      static_cast<uint32_t>(article_text_.length())) {
+  auto& model = GetCurrentModel();
+  uint32_t max_page_content_length =
+      model.options->is_custom_model_options()
+          ? kCustomModelMaxPageContentLength
+          : model.options->get_leo_model_options()->max_page_content_length;
+
+  if (max_page_content_length > static_cast<uint32_t>(article_text_.length())) {
     return 100;
   }
 
   // Convert to float to avoid integer division, which truncates towards zero
   // and could lead to inaccurate results before multiplication.
-  float pct = static_cast<float>(GetCurrentModel().max_page_content_length) /
+  float pct = static_cast<float>(max_page_content_length) /
               static_cast<float>(article_text_.length()) * 100;
 
   return base::ClampRound(pct);
@@ -1165,16 +1206,22 @@ void ConversationDriver::OnPremiumStatusReceived(
     mojom::PremiumInfoPtr premium_info) {
   // Maybe switch to premium model when user is newly premium and on a basic
   // model
+  const auto& model = GetCurrentModel();
+
   const bool should_switch_model =
+      model.options->is_leo_model_options() &&
       features::kFreemiumAvailable.Get() &&
       // This isn't the first retrieval (that's handled in the constructor)
       last_premium_status_ != mojom::PremiumStatus::Unknown &&
       last_premium_status_ != premium_status &&
       premium_status == mojom::PremiumStatus::Active &&
-      GetCurrentModel().access == mojom::ModelAccess::BASIC;
+      model.options->get_leo_model_options()->access ==
+          mojom::ModelAccess::BASIC;
+
   if (should_switch_model) {
     ChangeModel(features::kAIModelsPremiumDefaultKey.Get());
   }
+
   last_premium_status_ = premium_status;
   if (HasUserOptedIn()) {
     ai_chat_metrics_->OnPremiumStatusUpdated(false, premium_status,
@@ -1218,6 +1265,14 @@ void ConversationDriver::RateMessage(
     bool is_liked,
     uint32_t turn_id,
     mojom::PageHandler::RateMessageCallback callback) {
+  auto& model = GetCurrentModel();
+
+  // We only allow Leo models to be rated.
+  CHECK(model.options->is_leo_model_options());
+
+  const std::vector<mojom::ConversationTurnPtr>& history =
+      GetConversationHistory();
+
   auto on_complete = base::BindOnce(
       [](mojom::PageHandler::RateMessageCallback callback,
          APIRequestResult result) {
@@ -1230,9 +1285,6 @@ void ConversationDriver::RateMessage(
       },
       std::move(callback));
 
-  const std::vector<mojom::ConversationTurnPtr>& history =
-      GetConversationHistory();
-
   // TODO(petemill): Something more robust than relying on message index,
   // and probably a message uuid.
   uint32_t current_turn_id = turn_id + 1;
@@ -1241,10 +1293,9 @@ void ConversationDriver::RateMessage(
     base::span<const mojom::ConversationTurnPtr> history_slice =
         base::make_span(history).first(current_turn_id);
 
-    bool is_premium = IsPremiumStatus(last_premium_status_);
-
-    feedback_api_->SendRating(is_liked, is_premium, history_slice,
-                              GetCurrentModel().name, std::move(on_complete));
+    feedback_api_->SendRating(
+        is_liked, IsPremiumStatus(last_premium_status_), history_slice,
+        model.options->get_leo_model_options()->name, std::move(on_complete));
 
     return;
   }
@@ -1278,5 +1329,4 @@ void ConversationDriver::SendFeedback(
                                   : std::nullopt,
                               std::move(on_complete));
 }
-
 }  // namespace ai_chat

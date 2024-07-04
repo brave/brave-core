@@ -204,7 +204,7 @@ brave_wallet::mojom::ResolveMethod ToMojomResolveMethod(
       break;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return ResolveMethod::kDisabled;
 }
 
@@ -219,7 +219,7 @@ decentralized_dns::ResolveMethodTypes FromMojomResolveMethod(
       return ResolveMethodTypes::ENABLED;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return ResolveMethodTypes::DISABLED;
 }
 
@@ -234,7 +234,7 @@ brave_wallet::mojom::ResolveMethod ToMojomEnsOffchainResolveMethod(
       return ResolveMethod::kEnabled;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return ResolveMethod::kDisabled;
 }
 
@@ -249,7 +249,7 @@ decentralized_dns::EnsOffchainResolveMethod FromMojomEnsOffchainResolveMethod(
       return EnsOffchainResolveMethod::kEnabled;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return EnsOffchainResolveMethod::kDisabled;
 }
 
@@ -890,7 +890,7 @@ void JsonRpcService::GetBalance(const std::string& address,
                     std::move(internal_callback));
     return;
   } else {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
   }
   std::move(callback).Run("", mojom::ProviderError::kInternalError,
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));

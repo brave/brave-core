@@ -79,7 +79,9 @@
   if ((self = [super init])) {
     self.cancelled = false;
 
-    import_thread_ = web::GetIOThreadTaskRunner({});
+    import_thread_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   }
   return self;
 }

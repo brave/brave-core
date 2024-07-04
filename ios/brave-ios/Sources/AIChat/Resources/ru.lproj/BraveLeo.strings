@@ -61,6 +61,15 @@
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Вы превысили лимит сообщений, поэтому не можете продолжить диалог.\nЧтобы помощник Leo поддерживал более длинные беседы, не упуская информацию, используйте другую модель.";
 
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Чат";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "ЯЗЫКОВЫЕ МОДЕЛИ";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Модель по умолчанию";
+
 /* The title for view which user type feedback */
 "aichat.feedbackInputViewTitle" = "Поделитесь впечатлениями здесь.";
 
@@ -118,8 +127,8 @@
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageLlamaMessageDescription" = "Здравствуйте! Я Leo — облачный ИИ-помощник Brave. Чтобы выполнять различные задачи, я использую языковую модель LLaMA-13B от Meta.";
 
-/* The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator */
-"aichat.introMessageLlamaModelDescription" = "Llama 2 13b от Meta";
+/* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
+"aichat.introMessageLlamaModelDescription" = "Llama 3 8b от Meta";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Привет, я Leo. Я являюсь полностью интегрированным ИИ-помощником от Brave и работаю при поддержке модели Mixtral 8x7B, созданной Mistral AI для решения сложных задач.";
@@ -229,6 +238,9 @@
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "Один год";
 
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Премиум-подписка";
+
 /* Title shown next to Leo in navigation bar when user has premium subcription */
 "aichat.premiumNavigationBarBadgeTitle" = "Премиум-подписка";
 
@@ -238,11 +250,26 @@
 /* The text for placeholder on textfield for entering questions for AI */
 "aichat.promptPlaceHolderDescription" = "Введите запрос";
 
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Дополнительные настройки";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Премиум-подписка";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Управление подписками";
+
+/* The title of action for quick menu which starts a new chat */
+"aichat.quickMenuNewChatActionTitle" = "Новый чат";
+
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Ошибка оценки ответа";
 
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Сбросить чат с Leo и удалить данные";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Сбросить";
 
 /* The description for the error whre leo data reset */
 "aichat.resetLeoDataErrorDescription" = "Действительно сбросить чат с Leo и удалить данные?";
@@ -286,39 +313,12 @@
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Общайтесь с Brave Leo в приватном чате";
 
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Без ограничений";
+
 /* The accessibility description when pressing the microphone button to access voice entry. */
 "aichat.voiceInputButtonTitle" = "Голосовой ввод";
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Ежегодная подписка";
-
-/* The title of the section where chat models are displayed as a list. */
-"wallet.defaultModelChatSectionTitle" = "Чат";
-
-/* The title of the section where language models are displayed as a list. */
-"wallet.defaultModelLanguageSectionTitle" = "ЯЗЫКОВЫЕ МОДЕЛИ";
-
-/* The title of the menu where user can change the default model */
-"wallet.defaultModelViewTitle" = "Модель по умолчанию";
-
-/* The title of the badge where a model which can be used limited */
-"wallet.limitedModelStatusTitle" = "Есть ограничения";
-
-/* The title of action for quick menu which displaying advanced settings */
-"wallet.quickMenuAdvancedSettingsActionTitle" = "Дополнительные настройки";
-
-/* The title of action for quick menu which presents payment screen for premium */
-"wallet.quickMenuGoPremiumActionTitle" = "Премиум-подписка";
-
-/* The title of action for quick menu which display subscription management view */
-"wallet.quickMenuManageSubscriptionActionTitle" = "Управление подписками";
-
-/* The title of action for quick menu which starts a new chat */
-"wallet.quickMenuNewChatActionTitle" = "Новый чат";
-
-/* The title of a button that will reset data for leo */
-"wallet.resetLeoDataAlertButtonTitle" = "Сбросить";
-
-/* The title of the badge where a model which can be used unlimited */
-"wallet.unlimitedModelStatusTitle" = "Без ограничений";
 

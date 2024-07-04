@@ -5,8 +5,10 @@
 
 #include "chrome/browser/notifications/notification_platform_bridge_android.h"
 
+#include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/BraveNotificationPlatformBridge_jni.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/gfx/android/java_bitmap.h"
 
 // Must be at the end because it uses SkBitmap.
 #include "chrome/android/chrome_jni_headers/NotificationPlatformBridge_jni.h"

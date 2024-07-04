@@ -8,10 +8,8 @@
 #include "base/feature_list.h"
 #include "build/build_config.h"
 
-namespace skus {
-namespace features {
+namespace skus::features {
 
 BASE_FEATURE(kSkusFeature, "SkusFeature", base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace features
-}  // namespace skus
+}  // namespace skus::features

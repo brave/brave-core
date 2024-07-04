@@ -5568,7 +5568,7 @@ class EnsGetRecordHandler : public EthCallHandler {
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddBytes(contenthash));
     }
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return std::nullopt;
   }
 
@@ -5678,7 +5678,7 @@ class OffchainGatewayHandler {
     auto* data = payload->GetDict().FindString("data");
     auto bytes = PrefixedHexStringToBytes(*data);
     if (!bytes) {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return std::nullopt;
     }
 
@@ -5732,7 +5732,7 @@ class OffchainGatewayHandler {
         }
       }
     } else {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return std::nullopt;
     }
 
@@ -8053,14 +8053,14 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   eth_nft_identifier1->chain_id = mojom::kMainnetChainId;
   eth_nft_identifier1->contract_address =
       "0xed5af388653567af2f388e6224dc7c4b3241c544";
-  eth_nft_identifier1->token_id = "2767";
+  eth_nft_identifier1->token_id = "0xacf";  // "2767";
   nft_identifiers.push_back(std::move(eth_nft_identifier1));
 
   auto eth_nft_identifier2 = mojom::NftIdentifier::New();
   eth_nft_identifier2->chain_id = mojom::kMainnetChainId;
   eth_nft_identifier2->contract_address =
       "0xabc1230000000000000000000000000000000000";
-  eth_nft_identifier2->token_id = "1234";
+  eth_nft_identifier2->token_id = "0x4d2";  // "1234";
   nft_identifiers.push_back(std::move(eth_nft_identifier2));
 
   // Expected Ethereum metadata

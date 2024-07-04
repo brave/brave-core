@@ -25,7 +25,7 @@ class BraveAdsAdEventCacheUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,
                    /*created_at=*/Now());
@@ -49,7 +49,7 @@ TEST_F(BraveAdsAdEventCacheUtilTest, RebuildAdEventCache) {
 TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,
                    /*created_at=*/Now());
@@ -67,7 +67,7 @@ TEST_F(BraveAdsAdEventCacheUtilTest, CacheAdEvent) {
 TEST_F(BraveAdsAdEventCacheUtilTest, GetCachedAdEvents) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/true);
+                                  /*should_generate_random_uuids=*/true);
 
   const AdEventInfo ad_event_1 =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,

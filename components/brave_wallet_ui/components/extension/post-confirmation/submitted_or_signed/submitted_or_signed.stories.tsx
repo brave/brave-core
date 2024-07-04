@@ -14,26 +14,24 @@ import { StyledExtensionWrapper } from '../../../../stories/style'
 import { PanelWrapper } from '../../../../panel/style'
 import { TransactionSubmittedOrSigned } from './submitted_or_signed'
 
-export const _TransactionSubmitted = () => {
-  const onClose = () => alert('Close panel screen')
+export const _TransactionSubmittedOrSigned = {
+  render: () => {
+    const onClose = () => alert('Close panel screen')
 
-  return (
-    <WalletPanelStory>
-      <PanelWrapper isLonger={false}>
-        <StyledExtensionWrapper>
-          <TransactionSubmittedOrSigned
-            onClose={onClose}
-            transaction={mockTransactionInfo}
-            headerTitle='Swap 0.01 ETH to 32.2583 USDC'
-          />
-        </StyledExtensionWrapper>
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+    return (
+      <WalletPanelStory>
+        <PanelWrapper isLonger={false}>
+          <StyledExtensionWrapper>
+            <TransactionSubmittedOrSigned
+              onClose={onClose}
+              transaction={mockTransactionInfo}
+              headerTitle='Swap 0.01 ETH to 32.2583 USDC'
+            />
+          </StyledExtensionWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_TransactionSubmitted.story = {
-  name: 'Transaction Submitted/Signed'
-}
-
-export default _TransactionSubmitted
+export default { component: TransactionSubmittedOrSigned }

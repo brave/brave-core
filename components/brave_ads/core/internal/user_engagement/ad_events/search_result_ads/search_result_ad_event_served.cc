@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 

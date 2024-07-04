@@ -17,12 +17,12 @@ bool CookieAccessDelegateImpl::NotUsed() const {
 bool CookieAccessDelegateImpl::ShouldUseEphemeralStorage(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
-    net::CookieSettingOverrides overrides,
     const std::optional<url::Origin>& top_frame_origin) const {
-  if (!cookie_settings_)
+  if (!cookie_settings_) {
     return false;
-  return cookie_settings_->ShouldUseEphemeralStorage(
-      url, site_for_cookies, overrides, top_frame_origin);
+  }
+  return cookie_settings_->ShouldUseEphemeralStorage(url, site_for_cookies,
+                                                     top_frame_origin);
 }
 
 }  // namespace network

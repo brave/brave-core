@@ -22,8 +22,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/common/webui_url_constants.h"
@@ -141,15 +141,16 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
     case BuiltInItemType::kHistory:
       [[fallthrough]];
     case BuiltInItemType::kNone:
-      // Add a new case for any new types which we want to support.
-      NOTREACHED() << "Asked for a panel Id from a sidebar item which should "
-                      "not have a panel Id, sending Reading List instead.";
-      return SidePanelEntryId::kReadingList;
+      break;
   }
+
+  NOTREACHED_NORETURN()
+      << "Asked for a panel Id from a sidebar item which could "
+         "not have a panel Id.";
 }
 
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
-  DCHECK(item.open_in_panel);
+  CHECK(item.open_in_panel) << static_cast<int>(item.built_in_item_type);
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
 }
 
@@ -162,7 +163,8 @@ std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
   }
 
   for (const auto& item : hidden_default_items) {
-    if (id == sidebar::SidePanelIdFromSideBarItem(item)) {
+    // Only panel item could have panel id.
+    if (item.open_in_panel && id == sidebar::SidePanelIdFromSideBarItem(item)) {
       GetSidebarService(browser)->AddItem(item);
       return item;
     }

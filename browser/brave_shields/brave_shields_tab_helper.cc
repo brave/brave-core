@@ -249,7 +249,7 @@ CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
     case ControlType::DEFAULT:
       break;
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   return CookieBlockMode::BLOCKED;
 }
 

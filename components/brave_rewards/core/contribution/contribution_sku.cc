@@ -208,7 +208,7 @@ void ContributionSKU::OnOrder(mojom::ContributionInfoPtr contribution,
     case mojom::ContributionStep::STEP_COMPLETED:
     case mojom::ContributionStep::STEP_NO: {
       engine_->LogError(FROM_HERE) << "Step not correct " << contribution->step;
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
     }
   }

@@ -186,11 +186,9 @@ bool BraveTabContextMenuContents::IsBraveCommandIdEnabled(
     case BraveTabMenuModel::CommandBreakTile:
       [[fallthrough]];
     case BraveTabMenuModel::CommandSwapTabsInTile:
-      [[fallthrough]];
-    case BraveTabMenuModel::CommandToggleSplitViewOrientation:
       return true;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       break;
   }
 
@@ -247,11 +245,8 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
     case BraveTabMenuModel::CommandSwapTabsInTile:
       SwapTabsInTile();
       return;
-    case BraveTabMenuModel::CommandToggleSplitViewOrientation:
-      brave::ToggleSplitViewOrientation(browser_);
-      return;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 }

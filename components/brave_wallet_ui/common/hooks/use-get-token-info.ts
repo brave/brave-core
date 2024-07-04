@@ -6,13 +6,19 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+// constants
 import { BraveWallet } from '../../constants/types'
 
+// utils
+import Amount from '../../utils/amount'
+
+// queries
 import { useGetTokenInfoQuery } from '../slices/api.slice'
 import { useGetCombinedTokensListQuery } from '../slices/api.slice.extra'
 
 interface Arg {
   contractAddress: string
+  tokenId?: string
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
 }
 
@@ -28,7 +34,8 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
       (t) =>
         t.contractAddress.toLowerCase() === arg.contractAddress.toLowerCase() &&
         t.chainId === arg.network.chainId &&
-        t.coin === arg.network.coin
+        t.coin === arg.network.coin &&
+        (!arg.tokenId || arg.tokenId === t.tokenId)
     )
   }, [combinedTokensList, arg])
 
@@ -45,9 +52,16 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
       : skipToken
   )
 
+  const nftFromRpc = React.useMemo(() => {
+    return arg !== skipToken && tokenInfoFromRpc && arg?.tokenId
+      ? { ...tokenInfoFromRpc, tokenId: new Amount(arg.tokenId).toHex() }
+      : undefined
+  }, [arg, tokenInfoFromRpc])
+
   return {
     isVisible: tokenInfoFromTokensList?.visible ?? false,
-    tokenInfo: tokenInfoFromTokensList ?? tokenInfoFromRpc ?? undefined,
+    tokenInfo:
+      tokenInfoFromTokensList ?? nftFromRpc ?? tokenInfoFromRpc ?? undefined,
     isLoading: combinedTokensList.length === 0 || isFetching
   }
 }

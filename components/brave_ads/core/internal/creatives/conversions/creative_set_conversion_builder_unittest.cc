@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_unittest_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
@@ -19,15 +19,16 @@ namespace brave_ads {
 
 class BraveAdsCreativeSetConversionBuilderTest : public UnitTestBase {};
 
-TEST_F(BraveAdsCreativeSetConversionBuilderTest, BuildCreativeSetConversion) {
+TEST_F(BraveAdsCreativeSetConversionBuilderTest,
+       FromMojomMaybeBuildCreativeSetConversion) {
   // Arrange
-  const mojom::SearchResultAdInfoPtr search_result_ad =
-      test::BuildSearchResultAdWithConversion(
-          /*should_use_random_uuids=*/false);
+  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
+      test::BuildCreativeSearchResultAdWithConversion(
+          /*should_generate_random_uuids=*/false);
 
   // Act
   const std::optional<CreativeSetConversionInfo> creative_set_conversion =
-      BuildCreativeSetConversion(search_result_ad);
+      FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad);
   ASSERT_TRUE(creative_set_conversion);
 
   // Assert
@@ -42,11 +43,11 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest, BuildCreativeSetConversion) {
 TEST_F(BraveAdsCreativeSetConversionBuilderTest,
        DoNotBuildCreativeSetConversionIfAdDoesNotSupportConversions) {
   // Arrange
-  const mojom::SearchResultAdInfoPtr search_result_ad =
-      test::BuildSearchResultAd(/*should_use_random_uuids=*/false);
+  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
+      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/false);
 
   // Act & Assert
-  EXPECT_FALSE(BuildCreativeSetConversion(search_result_ad));
+  EXPECT_FALSE(FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad));
 }
 
 }  // namespace brave_ads

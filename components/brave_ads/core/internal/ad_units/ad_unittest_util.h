@@ -16,10 +16,10 @@ struct AdInfo;
 
 namespace test {
 
-std::string GetConstantId(bool should_use_random_uuids,
-                          const std::string& constant_id);
+std::string RandomUuidOr(bool should_generate_random_uuid,
+                         const std::string& or_uuid);
 
-AdInfo BuildAd(AdType ad_type, bool should_use_random_uuids);
+AdInfo BuildAd(AdType ad_type, bool should_generate_random_uuids);
 
 }  // namespace test
 

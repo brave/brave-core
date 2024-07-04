@@ -26,15 +26,12 @@ namespace {
 
 std::string ConvertItemTypeToString(const std::string& type) {
   int type_int;
-  base::StringToInt(type, &type_int);
-  switch (static_cast<mojom::SKUOrderItemType>(type_int)) {
-    case mojom::SKUOrderItemType::SINGLE_USE: {
+  if (base::StringToInt(type, &type_int)) {
+    if (type_int == static_cast<int>(mojom::SKUOrderItemType::SINGLE_USE)) {
       return "single-use";
     }
-    case mojom::SKUOrderItemType::NONE: {
-      return "";
-    }
   }
+  return "";
 }
 
 }  // namespace

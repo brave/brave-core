@@ -22,7 +22,6 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/pref_names.h"
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -40,6 +39,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/common/chrome_features.h"
+#include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -95,6 +95,11 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
   pref_data.Set(
       "showSearchBox",
       prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
+  pref_data.Set("promptEnableSearchSuggestions",
+                prefs->GetBoolean(
+                    brave_search_conversion::prefs::kPromptEnableSuggestions));
+  pref_data.Set("searchSuggestionsEnabled",
+                prefs->GetBoolean(prefs::kSearchSuggestEnabled));
   return pref_data;
 }
 
@@ -162,7 +167,6 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean("isTor", profile->IsTor());
-    source->AddBoolean("isQwant", brave::IsRegionForQwant(profile));
   }
   return new BraveNewTabMessageHandler(profile, was_restored);
 }
@@ -288,6 +292,14 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kPromptEnableSuggestions,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kSearchSuggestEnabled,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       kNewTabPageShowClock,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -369,7 +381,7 @@ void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
   // Cleanup "toggleAlternativePrivateSearchEngine" message handler when it's
   // deleted from NTP Webui.
   // https://github.com/brave/brave-browser/issues/23493
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
@@ -438,6 +450,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowBraveTalk;
   } else if (settingsKeyInput == "showSearchBox") {
     settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
+  } else if (settingsKeyInput == "promptEnableSearchSuggestions") {
+    settingsKey = brave_search_conversion::prefs::kPromptEnableSuggestions;
+  } else if (settingsKeyInput == "searchSuggestionsEnabled") {
+    settingsKey = prefs::kSearchSuggestEnabled;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

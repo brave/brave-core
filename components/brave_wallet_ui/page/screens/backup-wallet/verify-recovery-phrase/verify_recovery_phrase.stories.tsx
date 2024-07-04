@@ -10,12 +10,14 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { VerifyRecoveryPhrase } from './verify_recovery_phrase'
 
-export const _VerifyRecoveryPhrase = () => {
-  return (
-    <WalletPageStory>
-      <VerifyRecoveryPhrase />
-    </WalletPageStory>
-  )
+export const _VerifyRecoveryPhrase = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <VerifyRecoveryPhrase />
+      </WalletPageStory>
+    )
+  }
 }
 
-export default _VerifyRecoveryPhrase
+export default { component: VerifyRecoveryPhrase }

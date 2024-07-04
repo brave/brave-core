@@ -17,6 +17,8 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/playlist/browser/pref_names.h"
+#include "brave/components/playlist/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -86,6 +88,11 @@ BraveRendererUpdater::BraveRendererUpdater(
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
 #endif
+
+  pref_change_registrar_.Add(
+      playlist::kPlaylistEnabledPref,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -215,6 +222,10 @@ void BraveRendererUpdater::UpdateRenderer(
   widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
 #endif
 
+  const bool playlist_enabled =
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+      pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
+
   (*renderer_configuration)
       ->SetConfiguration(brave::mojom::DynamicParams::New(
           install_window_brave_ethereum_provider,
@@ -222,5 +233,5 @@ void BraveRendererUpdater::UpdateRenderer(
           allow_overwrite_window_ethereum_provider,
           brave_use_native_solana_wallet,
           allow_overwrite_window_solana_provider, de_amp_enabled,
-          onion_only_in_tor_windows, widevine_enabled));
+          onion_only_in_tor_windows, widevine_enabled, playlist_enabled));
 }

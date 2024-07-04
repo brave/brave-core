@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/update_dist_package_versions.py b/chrome/installer/linux/debian/update_dist_package_versions.py
-index 76aa431abe4a3d26981a4e074491b43a6becadb8..d193baaf44c2dc9fa4d65f7d5190c881de6f9b82 100755
+index 099b8f1b838654c7f837b251caae5c0cc0233893..8ede64a1ebf34f9f5a028c3352f9252f5ad3e932 100755
 --- a/chrome/installer/linux/debian/update_dist_package_versions.py
 +++ b/chrome/installer/linux/debian/update_dist_package_versions.py
-@@ -39,6 +39,7 @@ PACKAGE_FILTER = {
+@@ -38,6 +38,7 @@ PACKAGE_FILTER = {
      "libatspi2.0-0",
      "libc6",
      "libcairo2",
@@ -10,7 +10,7 @@ index 76aa431abe4a3d26981a4e074491b43a6becadb8..d193baaf44c2dc9fa4d65f7d5190c881
      "libcups2",
      "libdbus-1-3",
      "libdrm2",
-@@ -71,6 +72,7 @@ PACKAGE_FILTER = {
+@@ -70,6 +71,7 @@ PACKAGE_FILTER = {
      "libxshmfence1",
      "libxss1",
      "libxtst6",

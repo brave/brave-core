@@ -593,13 +593,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Don't Google it. Can't Bing it. Just Brave it.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_B_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent.
+          Brave Search doesn't profile you. And it's 100% independent.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_TITLE" desc="The text for the banner type title">
           Search and you will find. Privately.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_C_DESC" desc="The text for the banner type description">
-          Brave doesn't track you, your queries, or your clicks. And it's 100% independent of Big Tech.
+          Brave Search doesn't profile you. And it's 100% independent of Big Tech.
         </message>
         <message name="IDS_BRAVE_SEARCH_CONVERSION_PROMOTION_BANNER_TYPE_D_TITLE" desc="The text for the banner type title">
           AI-infused search with a unique index.
@@ -1420,26 +1420,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Brave Player
         </message>
       </if> <!-- enable_brave_player -->
-
-      <!-- Split View -->
-      <if expr="toolkit_views">
-        <if expr="use_titlecase">
-          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Spliti' menu item">
-            Vertical Split
-          </message>
-          <message name="IDS_SPLIT_VIEW_SPLIT_HORIZONTAL" desc="The label of the 'Horizontal Split' menu item">
-            Horizontal Split
-          </message>
-        </if>
-        <if expr="not use_titlecase">
-          <message name="IDS_SPLIT_VIEW_SPLIT_VERTICAL" desc="The label of the 'Vertical Spliti' menu item">
-            Vertical split
-          </message>
-          <message name="IDS_SPLIT_VIEW_SPLIT_HORIZONTAL" desc="The label of the 'Horizontal Split' menu item">
-            Horizontal split
-          </message>
-        </if>
-      </if>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

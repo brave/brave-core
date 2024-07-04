@@ -134,7 +134,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       // The reason p3a user consent is necesserray to call search ad install attribution API methods
       if !Preferences.AppState.dailyUserPingAwaitingUserConsent.value {
         // If P3A is not enabled, send the organic install code at daily pings which is BRV001
-        // User has not opted in to share completely private and anonymous product insights
+        // User has not opted in to share private and anonymous product insights
         if AppState.shared.braveCore.p3aUtils.isP3AEnabled {
           Task { @MainActor in
             do {
@@ -305,20 +305,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       return
     }
 
-    contexts.forEach({
+    for context in contexts {
       guard
         let routerpath = NavigationPath(
-          url: $0.url,
+          url: context.url,
           isPrivateBrowsing: scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing
             == true
         )
       else {
-        Logger.module.error("[SCENE] - Invalid Navigation Path: \($0.url)")
+        Logger.module.error("[SCENE] - Invalid Navigation Path: \(context.url)")
         return
       }
 
+      if case .url(let navigationPathURL, _) = routerpath, let pathURL = navigationPathURL,
+        pathURL.isFileURL
+      {
+        defer {
+          pathURL.stopAccessingSecurityScopedResource()
+        }
+
+        let canAccessFileURL = pathURL.startAccessingSecurityScopedResource()
+
+        if !canAccessFileURL {
+          //File can not be accessed pass the url text to search engine
+          scene.browserViewController?.submitSearchText(pathURL.absoluteString)
+          continue
+        }
+      }
+
       scene.browserViewController?.handleNavigationPath(path: routerpath)
-    })
+    }
   }
 
   func scene(_ scene: UIScene, didUpdate userActivity: NSUserActivity) {

@@ -16,9 +16,7 @@
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
-namespace payment {
+namespace brave_rewards::internal::endpoint::payment {
 
 GetCredentials::GetCredentials(RewardsEngine& engine) : engine_(engine) {}
 
@@ -124,6 +122,4 @@ void GetCredentials::OnRequest(GetCredentialsCallback callback,
   std::move(callback).Run(result, std::move(batch));
 }
 
-}  // namespace payment
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint::payment

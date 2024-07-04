@@ -172,7 +172,7 @@ import WebKit
     guard
       let folderURL = FileManager.default.getOrCreateFolder(
         name: "custom_rules",
-        location: .applicationDirectory
+        location: .applicationSupportDirectory
       )
     else {
       throw ResourceFileError.failedToCreateCacheFolder
@@ -205,14 +205,20 @@ import WebKit
 extension CustomFilterListStorage {
   /// Gives us source representations of all the enabled custom filter lists
   @MainActor var enabledSources: [GroupedAdBlockEngine.Source] {
-    return
+    var sources =
       filterListsURLs
       .filter(\.setting.isEnabled)
       .map(\.setting.engineSource)
+    if (try? self.savedCustomRulesFileURL()) == nil { return sources }
+    sources.append(.filterListText)
+    return sources
   }
 
   /// Gives us source representations of all the custom filter lists
   @MainActor var allSources: [GroupedAdBlockEngine.Source] {
-    return filterListsURLs.map(\.setting.engineSource)
+    var sources = filterListsURLs.map(\.setting.engineSource)
+    if (try? self.savedCustomRulesFileURL()) == nil { return sources }
+    sources.append(.filterListText)
+    return sources
   }
 }

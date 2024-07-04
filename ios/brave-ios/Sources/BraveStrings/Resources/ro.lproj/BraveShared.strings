@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Copiază link";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Copiați informațiile filelor în clipboard.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Copiază în Clipboard";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Conexiunea la acest site nu este sigură.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Conexiune către site neverificată.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Conexiunea dvs. către acest site nu a putut fi verificată complet. Puteți continua sau încercați să reîncărcați pagina pentru a stabili o conexiune securizată.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Afișează certificatul";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Șterge contul de sincronizare";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Ștergerea contului va elimina datele dvs. criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele dvs. conectate.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Această ștergere este permanentă și nu există nicio modalitate de a recupera date. În cazul în care te decizi să utilizezi din nou sincronizarea, va trebui să creezi un cont nou și să adaugi fiecare dispozitiv, unul câte unul.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Ceva nu a mers bine în timpul recuperării dispozitivelor din lanțul de sincronizare.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Șterge contul de sincronizare";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune Brave mai veche. Actualizați la cea mai recentă versiune Brave pe alt dispozitiv al dvs., apoi creați un cod nou de sincronizare.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispozitive și setări";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Problemă de stabilitate a conexiunii";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Alegeți categoria care descrie problema.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Fără internet în momentul conectării";

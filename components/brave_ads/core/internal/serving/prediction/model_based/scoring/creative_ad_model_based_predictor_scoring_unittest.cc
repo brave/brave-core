@@ -12,8 +12,8 @@
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/input_variable/creative_ad_model_based_predictor_input_variable.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/segment/creative_ad_model_based_predictor_segment_weight_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -25,7 +25,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorScoringTest,
        ComputeCreativeAdModelBasedPredictorScoreForDefaultWeights) {
   // Arrange
   CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeAd(/*should_generate_random_uuids=*/true);
   creative_ad.segment = "parent-child";
 
   const UserModelInfo user_model{
@@ -37,7 +37,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorScoringTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       Now() - base::Hours(7),
-      /*should_use_random_uuids=*/true);
+      /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdModelBasedPredictorInputVariableInfo input_variable =
@@ -46,7 +46,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorScoringTest,
           test::BuildCreativeAdModelBasedPredictorWeights());
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(3.2916666666666665,
+  EXPECT_DOUBLE_EQ(3.0,
                    ComputeCreativeAdModelBasedPredictorScore(input_variable));
 }
 
@@ -54,7 +54,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorScoringTest,
        ComputeCreativeAdModelBasedPredictorScoreForZeroDefaultWeights) {
   // Arrange
   CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeAd(/*should_generate_random_uuids=*/true);
   creative_ad.segment = "parent-child";
 
   const UserModelInfo user_model{
@@ -66,7 +66,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorScoringTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       Now() - base::Hours(7),
-      /*should_use_random_uuids=*/true);
+      /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const CreativeAdModelBasedPredictorInputVariableInfo input_variable =

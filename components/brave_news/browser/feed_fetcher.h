@@ -14,7 +14,6 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 
@@ -25,6 +24,8 @@ using ETags = base::flat_map<std::string, std::string>;
 using FetchFeedCallback = base::OnceCallback<void(FeedItems items, ETags tags)>;
 using UpdateAvailableCallback = base::OnceCallback<void(bool)>;
 
+class SubscriptionsSnapshot;
+
 class FeedFetcher {
  public:
   FeedFetcher(
@@ -34,10 +35,10 @@ class FeedFetcher {
   FeedFetcher(const FeedFetcher&) = delete;
   FeedFetcher& operator=(const FeedFetcher&) = delete;
 
-  void FetchFeed(const BraveNewsSubscriptions& subscriptions,
+  void FetchFeed(const SubscriptionsSnapshot& subscriptions,
                  FetchFeedCallback callback);
 
-  void IsUpdateAvailable(const BraveNewsSubscriptions& subscriptions,
+  void IsUpdateAvailable(const SubscriptionsSnapshot& subscriptions,
                          ETags etags,
                          UpdateAvailableCallback callback);
 
@@ -60,7 +61,7 @@ class FeedFetcher {
       std::vector<FeedSourceResult> results);
 
   // Steps for |FetchFeed|
-  void OnFetchFeedFetchedPublishers(const BraveNewsSubscriptions& subscriptions,
+  void OnFetchFeedFetchedPublishers(const SubscriptionsSnapshot& subscriptions,
                                     FetchFeedCallback callback,
                                     Publishers publishers);
   void OnFetchFeedFetchedFeed(std::string locale,
@@ -72,7 +73,7 @@ class FeedFetcher {
 
   // Steps for |IsUpdateAvailable|
   void OnIsUpdateAvailableFetchedPublishers(
-      const BraveNewsSubscriptions& subscriptions,
+      const SubscriptionsSnapshot& subscriptions,
       ETags etags,
       UpdateAvailableCallback callback,
       Publishers publishers);

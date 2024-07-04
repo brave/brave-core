@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
-
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,8 +28,10 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  test::RecordAdEvent(AdType::kNewTabPageAd,
-                      ConfirmationType::kServedImpression);
+  const NewTabPageAdInfo ad =
+      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
+
+  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get());
 
@@ -38,8 +42,10 @@ TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
 TEST_F(BraveAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
        ShouldNotAllowIfExceedsCap) {
   // Arrange
-  test::RecordAdEvent(AdType::kNewTabPageAd,
-                      ConfirmationType::kServedImpression);
+  const NewTabPageAdInfo ad =
+      test::BuildNewTabPageAd(/*should_generate_random_uuids=*/false);
+
+  test::RecordAdEvent(ad, ConfirmationType::kServedImpression);
 
   AdvanceClockBy(kNewTabPageAdMinimumWaitTime.Get() - base::Milliseconds(1));
 

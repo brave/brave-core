@@ -47,7 +47,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,
-                                    /*should_use_random_uuids=*/false);
+                                    /*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -91,7 +91,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   test::DisableBraveRewards();
 
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act

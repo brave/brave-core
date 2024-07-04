@@ -16,7 +16,7 @@
 
 namespace brave_ads::database::table {
 
-using GetConversionsCallback = base::OnceCallback<void(
+using GetCreativeSetConversionsCallback = base::OnceCallback<void(
     bool success,
     const CreativeSetConversionList& creative_set_conversions)>;
 
@@ -25,7 +25,7 @@ class CreativeSetConversions final : public TableInterface {
   void Save(const CreativeSetConversionList& creative_set_conversions,
             ResultCallback callback);
 
-  void GetUnexpired(GetConversionsCallback callback) const;
+  void GetUnexpired(GetCreativeSetConversionsCallback callback) const;
 
   void PurgeExpired(ResultCallback callback) const;
 

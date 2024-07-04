@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -32,6 +31,8 @@ using GetFeedCallback = mojom::BraveNewsController::GetFeedCallback;
 using FeedItems = std::vector<mojom::FeedItemPtr>;
 using GetFeedItemsCallback = base::OnceCallback<void(FeedItems)>;
 
+class SubscriptionsSnapshot;
+
 class FeedController {
  public:
   FeedController(
@@ -44,26 +45,26 @@ class FeedController {
 
   // Checks if latest cached (or in-progress fetched) feed matches incoming hash
   void DoesFeedVersionDiffer(
-      const BraveNewsSubscriptions& subscriptions,
+      const SubscriptionsSnapshot& subscriptions,
       const std::string& matching_hash,
       mojom::BraveNewsController::IsFeedUpdateAvailableCallback callback);
   // Adds a listener which will be notified of feed updates.
   void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
   // Provides a clone of data so that caller can take ownership or dispose
-  void GetOrFetchFeed(const BraveNewsSubscriptions& subscriptions,
+  void GetOrFetchFeed(const SubscriptionsSnapshot& subscriptions,
                       GetFeedCallback callback);
   // Perform an update to the feed from source, but not more than once
   // if a fetch is already in-progress.
-  void EnsureFeedIsUpdating(const BraveNewsSubscriptions& subscriptions);
+  void EnsureFeedIsUpdating(const SubscriptionsSnapshot& subscriptions);
   // Same as GetOrFetchFeed with no callback - ensures that a fetch has
   // occured and that we have data (if there was no problem fetching or
   // parsing).
-  void EnsureFeedIsCached(const BraveNewsSubscriptions& subscriptions);
-  void UpdateIfRemoteChanged(const BraveNewsSubscriptions& subscriptions);
+  void EnsureFeedIsCached(const SubscriptionsSnapshot& subscriptions);
+  void UpdateIfRemoteChanged(const SubscriptionsSnapshot& subscriptions);
   void ClearCache();
 
  private:
-  void GetOrFetchFeed(const BraveNewsSubscriptions& subscriptions,
+  void GetOrFetchFeed(const SubscriptionsSnapshot& subscriptions,
                       base::OnceClosure callback);
   void ResetFeed();
   void NotifyUpdateDone();

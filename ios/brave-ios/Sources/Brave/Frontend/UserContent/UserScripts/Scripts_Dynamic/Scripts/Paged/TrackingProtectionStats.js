@@ -39,7 +39,7 @@ window.__firefox__.execute(function($) {
       return;
     }
 
-    // Send the URLs in batches every 200ms to avoid perf issues
+    // Send the URLs in batches every 500ms to avoid perf issues
     // from calling js-to-native too frequently.
     sendInfoTimeout = setTimeout($(() => {
       sendInfoTimeout = null;
@@ -53,7 +53,7 @@ window.__firefox__.execute(function($) {
       });
 
       sendInfo = [];
-    }), 200);
+    }), 500);
   });
 
   let onLoadNativeCallback = $(function() {

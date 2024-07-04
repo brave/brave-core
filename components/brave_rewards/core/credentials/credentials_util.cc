@@ -19,8 +19,7 @@
 #include "brave/components/challenge_bypass_ristretto/verification_key.h"
 #include "brave/components/challenge_bypass_ristretto/verification_signature.h"
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
 using challenge_bypass_ristretto::BatchDLEQProof;
 using challenge_bypass_ristretto::PublicKey;
@@ -248,5 +247,4 @@ base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
   return dict;
 }
 
-}  // namespace credential
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::credential

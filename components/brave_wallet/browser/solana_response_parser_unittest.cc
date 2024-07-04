@@ -16,9 +16,7 @@
 
 using base::test::ParseJson;
 
-namespace brave_wallet {
-
-namespace solana {
+namespace brave_wallet::solana {
 
 TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   std::string json =
@@ -897,6 +895,4 @@ TEST(SolanaResponseParserUnitTest, ParseGetSolanaPrioritizationFees) {
   EXPECT_FALSE(fees.has_value());
 }
 
-}  // namespace solana
-
-}  // namespace brave_wallet
+}  // namespace brave_wallet::solana

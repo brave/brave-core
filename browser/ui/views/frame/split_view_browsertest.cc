@@ -12,7 +12,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 
@@ -165,37 +164,4 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
 
   tab_strip_model().ActivateTabAt(3);
   EXPECT_EQ(kSizeDelta, contents_layout_manager->split_view_size_delta());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewOrientation) {
-  // Given that we have a split view
-  brave::NewSplitViewForTab(browser());
-  browser()->tab_strip_model()->ActivateTabAt(0);
-  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
-
-  // Then they should be laid out horizontally by default.
-  EXPECT_LT(browser_view->contents_web_view()->bounds().right(),
-            browser_view->secondary_contents_web_view()->x());
-  EXPECT_EQ(browser_view->contents_web_view()->y(),
-            browser_view->secondary_contents_web_view()->y());
-
-  // When toggle the orientation
-  brave::ToggleSplitViewOrientation(browser());
-
-  // Then they should be laid out vertically.
-  EXPECT_EQ(browser_view->contents_web_view()->x(),
-            browser_view->secondary_contents_web_view()->x());
-  EXPECT_LT(browser_view->contents_web_view()->bounds().bottom(),
-            browser_view->secondary_contents_web_view()->y());
-
-  // When creating new split view,
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  brave::NewSplitViewForTab(browser());
-  browser()->tab_strip_model()->ActivateTabAt(2);
-
-  // they should be laid out horizontally.
-  EXPECT_LT(browser_view->contents_web_view()->bounds().right(),
-            browser_view->secondary_contents_web_view()->x());
-  EXPECT_EQ(browser_view->contents_web_view()->y(),
-            browser_view->secondary_contents_web_view()->y());
 }

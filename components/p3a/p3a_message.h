@@ -18,6 +18,7 @@ class PrefService;
 
 namespace p3a {
 
+inline constexpr char kP3AMessageNebulaNameValueSeparator[] = "=";
 inline constexpr char kP3AMessageConstellationKeyValueSeparator[] = "|";
 inline constexpr char kP3AMessageConstellationLayerSeparator[] = ";";
 
@@ -71,7 +72,8 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
                                             const MessageMetainfo& meta,
                                             const std::string& upload_type,
-                                            bool include_refcode);
+                                            bool include_refcode,
+                                            bool is_nebula);
 
 }  // namespace p3a
 

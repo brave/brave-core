@@ -10,7 +10,7 @@
 
 #include "base/command_line.h"
 #include "base/feature_list.h"
-#include "brave/browser/brave_ads/ad_units/search_result_ad/search_result_ad_tab_helper.h"
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
@@ -167,7 +167,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
-  brave_ads::SearchResultAdTabHelper::MaybeCreateForWebContents(web_contents);
+  brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
+      web_contents);
   psst::PsstTabHelper::MaybeCreateForWebContents(
       web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #if BUILDFLAG(ENABLE_EXTENSIONS)

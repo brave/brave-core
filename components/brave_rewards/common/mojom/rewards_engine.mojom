@@ -70,7 +70,7 @@ interface RewardsEngine {
   SetAutoContributeEnabled(bool enabled);
 
   GetBalanceReport(ActivityMonth month, int32 year)
-      => (Result result, BalanceReportInfo report);
+      => (Result result, BalanceReportInfo? report);
 
   GetPublisherActivityFromUrl(uint64 window_id,
                               VisitData visit_data,

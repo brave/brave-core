@@ -72,9 +72,10 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::PromotedContentAdEventType event_type,
       TriggerAdEventCallback callback);
 
-  void TriggerSearchResultAdEvent(mojom::SearchResultAdInfoPtr ad_mojom,
-                                  mojom::SearchResultAdEventType event_type,
-                                  TriggerAdEventCallback callback);
+  void TriggerSearchResultAdEvent(
+      mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+      mojom::SearchResultAdEventType event_type,
+      TriggerAdEventCallback callback);
 
  private:
   // ConversionsObserver:
@@ -114,7 +115,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   NewTabPageAdHandler new_tab_page_ad_handler_;
   NotificationAdHandler notification_ad_handler_;
   PromotedContentAdHandler promoted_content_ad_handler_;
-  SearchResultAd search_result_ad_handler_;
+  SearchResultAdHandler search_result_ad_handler_;
 };
 
 }  // namespace brave_ads

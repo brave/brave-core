@@ -17,8 +17,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace contribution {
+namespace brave_rewards::internal::contribution {
 
 ContributionMonthly::ContributionMonthly(RewardsEngine& engine)
     : engine_(engine) {}
@@ -104,5 +103,4 @@ void ContributionMonthly::OnNextContributionDateAdvanced(
   std::move(callback).Run(mojom::Result::OK);
 }
 
-}  // namespace contribution
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::contribution

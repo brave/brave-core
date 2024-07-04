@@ -30,13 +30,13 @@ import {
 } from '../../../common/slices/api.slice'
 
 // Styled components
-import { IconWrapper, PlaceholderText } from './style'
+import { AssetIconSizes, IconWrapper, PlaceholderText } from './style'
 
 // Options
 import { makeNativeAssetLogo } from '../../../options/asset-options'
 
 interface Config {
-  size: 'big' | 'medium' | 'small' | 'tiny'
+  size: AssetIconSizes
   marginLeft?: number
   marginRight?: number
 }

@@ -11,10 +11,13 @@
 
 namespace brave_ads {
 
-DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom) {
+DepositInfo FromMojomBuildDeposit(
+    const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad) {
+  CHECK(mojom_creative_ad);
+
   return DepositInfo{
-      .creative_instance_id = ad_mojom->creative_instance_id,
-      .value = ad_mojom->value,
+      .creative_instance_id = mojom_creative_ad->creative_instance_id,
+      .value = mojom_creative_ad->value,
       .expire_at = base::Time::Now() + base::Hours(1),
   };
 }

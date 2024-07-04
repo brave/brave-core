@@ -1266,14 +1266,14 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
-    mojom::SearchResultAdInfoPtr ad_mojom,
+    mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
   CHECK(mojom::IsKnownEnumValue(event_type));
 
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->TriggerSearchResultAdEvent(
-        std::move(ad_mojom), event_type, std::move(callback));
+        std::move(mojom_creative_ad), event_type, std::move(callback));
   }
 }
 

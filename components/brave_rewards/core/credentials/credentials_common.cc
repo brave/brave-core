@@ -14,8 +14,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace credential {
+namespace brave_rewards::internal::credential {
 
 CredentialsCommon::CredentialsCommon(RewardsEngine& engine) : engine_(engine) {}
 
@@ -107,5 +106,4 @@ void CredentialsCommon::OnSaveUnblindedCreds(ResultCallback callback,
                                               std::move(callback));
 }
 
-}  // namespace credential
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::credential

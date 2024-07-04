@@ -29,6 +29,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
@@ -42,10 +44,9 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/toolbar/side_panel_toolbar_button.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -95,10 +96,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return brave_browser()->sidebar_controller();
   }
 
-  SidePanelToolbarButton* GetSidePanelToolbarButton() const {
-    BrowserView* browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser());
-    return browser_view->toolbar_button_provider()->GetSidePanelButton();
+  SidePanelButton* GetSidePanelToolbarButton() const {
+    return static_cast<BraveToolbarView*>(
+               BrowserView::GetBrowserViewForBrowser(browser())->toolbar())
+        ->side_panel_button();
   }
 
   views::View* GetVerticalTabsContainer() const {
@@ -518,7 +519,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Open panel w/o entry id.
-  panel_ui->Show();
+  panel_ui->Toggle();
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
   // Check bookmark panel is not opened again as it's deleted item.
@@ -807,6 +808,27 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       OpenUnManagedPanelAfterDeletingDefaultWebTypeItem) {
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  const auto items = model()->GetAllSidebarItems();
+  const auto wallet_item_iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                         &SidebarItem::built_in_item_type);
+  ASSERT_NE(wallet_item_iter, items.cend());
+  const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
+  SidebarServiceFactory::GetForProfile(browser()->profile())
+      ->RemoveItemAt(wallet_item_index);
+  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet));
+
+  // Test with upstream's side panel that runs only with chrome://new-tab-page.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return GetSidePanel()->GetVisible(); }));
+}
+
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   auto* guest_browser = static_cast<BraveBrowser*>(CreateGuestBrowser());
   auto* controller = guest_browser->sidebar_controller();
@@ -959,14 +981,13 @@ class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
 
   void SetUp() override {
     SidebarBrowserTest::SetUp();
-
-    feature_list_.InitAndEnableFeature(::features::kChromeRefresh2023);
   }
 
   base::test::ScopedFeatureList feature_list_;
 };
 
-// To check enabling kChromeRefresh2023 doesn't make crash with sidebar opening.
+// Test originally introduced before the chrome-refresh-2023 cleanup, to check
+// if sidebar crashes when opening.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithChromeRefresh2023,
                        SidebarOpeningTest) {
   // Open side panel to check it doesn't make crash.

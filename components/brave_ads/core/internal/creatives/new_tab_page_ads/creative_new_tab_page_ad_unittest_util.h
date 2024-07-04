@@ -12,7 +12,7 @@ namespace brave_ads::test {
 
 CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count);
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
-    bool should_use_random_uuids);
+    bool should_generate_random_uuids);
 
 }  // namespace brave_ads::test
 

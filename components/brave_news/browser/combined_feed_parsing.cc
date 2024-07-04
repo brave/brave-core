@@ -137,7 +137,7 @@ base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
 std::vector<mojom::FeedItemPtr> ParseFeedItems(const base::Value& value) {
   std::vector<mojom::FeedItemPtr> items;
   if (!value.is_list()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return items;
   }
   for (const base::Value& feed_item : value.GetList()) {

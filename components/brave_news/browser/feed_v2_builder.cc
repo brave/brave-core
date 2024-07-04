@@ -29,7 +29,6 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
@@ -39,6 +38,7 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -445,10 +445,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
 
 }  // namespace
 
-FeedV2Builder::UpdateRequest::UpdateRequest(
-    BraveNewsSubscriptions subscriptions,
-    UpdateSettings settings,
-    UpdateCallback callback)
+FeedV2Builder::UpdateRequest::UpdateRequest(SubscriptionsSnapshot subscriptions,
+                                            UpdateSettings settings,
+                                            UpdateCallback callback)
     : settings(std::move(settings)), subscriptions(std::move(subscriptions)) {
   callbacks.push_back(std::move(callback));
 }
@@ -589,7 +588,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
         DVLOG(1) << "Step 6: None (approximately half the time)";
       }
     } else {
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
     }
 
     // If we couldn't generate a normal block, break.
@@ -635,7 +634,7 @@ void FeedV2Builder::AddListener(
 }
 
 void FeedV2Builder::BuildFollowingFeed(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     BuildFeedCallback callback) {
   FeedItems raw_feed_items;
   base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
@@ -651,10 +650,9 @@ void FeedV2Builder::BuildFollowingFeed(
       std::move(callback));
 }
 
-void FeedV2Builder::BuildChannelFeed(
-    const BraveNewsSubscriptions& subscriptions,
-    const std::string& channel,
-    BuildFeedCallback callback) {
+void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
+                                     const std::string& channel,
+                                     BuildFeedCallback callback) {
   FeedItems raw_feed_items;
   base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
                           [](const auto& item) { return item->Clone(); });
@@ -704,7 +702,7 @@ void FeedV2Builder::BuildChannelFeed(
 }
 
 void FeedV2Builder::BuildPublisherFeed(
-    const BraveNewsSubscriptions& subscriptions,
+    const SubscriptionsSnapshot& subscriptions,
     const std::string& publisher_id,
     BuildFeedCallback callback) {
   GenerateFeed(
@@ -743,7 +741,7 @@ void FeedV2Builder::BuildPublisherFeed(
       std::move(callback));
 }
 
-void FeedV2Builder::BuildAllFeed(const BraveNewsSubscriptions& subscriptions,
+void FeedV2Builder::BuildAllFeed(const SubscriptionsSnapshot& subscriptions,
                                  BuildFeedCallback callback) {
   GenerateFeed(subscriptions, {.signals = true, .suggested_publishers = true},
                mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New()),
@@ -751,7 +749,7 @@ void FeedV2Builder::BuildAllFeed(const BraveNewsSubscriptions& subscriptions,
 }
 
 void FeedV2Builder::EnsureFeedIsUpdating(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   UpdateData(subscriptions,
              {.signals = true,
               .suggested_publishers = true,
@@ -760,7 +758,7 @@ void FeedV2Builder::EnsureFeedIsUpdating(
              base::DoNothing());
 }
 
-void FeedV2Builder::GetSignals(const BraveNewsSubscriptions& subscriptions,
+void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                                GetSignalsCallback callback) {
   UpdateData(subscriptions, {.signals = true},
              base::BindOnce(
@@ -779,7 +777,7 @@ void FeedV2Builder::GetSignals(const BraveNewsSubscriptions& subscriptions,
 }
 
 void FeedV2Builder::RecheckFeedHash(
-    const BraveNewsSubscriptions& subscriptions) {
+    const SubscriptionsSnapshot& subscriptions) {
   const auto& publishers = publishers_controller_->GetLastPublishers();
   auto channels = channels_controller_->GetChannelsFromPublishers(
       publishers, subscriptions);
@@ -790,7 +788,7 @@ void FeedV2Builder::RecheckFeedHash(
   }
 }
 
-void FeedV2Builder::UpdateData(const BraveNewsSubscriptions& subscriptions,
+void FeedV2Builder::UpdateData(const SubscriptionsSnapshot& subscriptions,
                                UpdateSettings settings,
                                UpdateCallback callback) {
   if (current_update_) {
@@ -970,7 +968,7 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   }
 }
 
-void FeedV2Builder::GenerateFeed(const BraveNewsSubscriptions& subscriptions,
+void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
                                  UpdateSettings settings,
                                  mojom::FeedV2TypePtr type,
                                  FeedGenerator generator,

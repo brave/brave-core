@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.xsurface.feed.FeedLaunchReliabilityLogger.Sur
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 public class BraveNewTabPage extends NewTabPage {
     private JankTracker mJankTracker;
@@ -54,6 +55,7 @@ public class BraveNewTabPage extends NewTabPage {
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<Tab> activityTabProvider,
+            ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
@@ -76,6 +78,7 @@ public class BraveNewTabPage extends NewTabPage {
                 activity,
                 browserControlsStateProvider,
                 activityTabProvider,
+                modalDialogManager,
                 snackbarManager,
                 lifecycleDispatcher,
                 tabModelSelector,

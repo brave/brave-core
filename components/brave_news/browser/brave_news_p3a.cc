@@ -14,6 +14,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
@@ -132,7 +133,7 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
       pref_name = prefs::kBraveNewsTotalSidebarFilterUsages;
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 
@@ -165,7 +166,7 @@ void NewsMetrics::RecordTotalActionCount(ActionType action,
                                          kSidebarFilterUsageBuckets, total);
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
   }
 }
 
@@ -213,7 +214,7 @@ void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
       histogram_name = kPublisherCountHistogramName;
       break;
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return;
   }
 

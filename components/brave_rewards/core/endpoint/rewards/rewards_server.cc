@@ -6,13 +6,11 @@
 
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 
-namespace brave_rewards::internal {
-namespace endpoint {
+namespace brave_rewards::internal::endpoint {
 
 RewardsServer::RewardsServer(RewardsEngine& engine)
     : get_prefix_list_(engine) {}
 
 RewardsServer::~RewardsServer() = default;
 
-}  // namespace endpoint
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::endpoint

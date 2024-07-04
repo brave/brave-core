@@ -39,7 +39,7 @@ class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
 TEST_F(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
   const std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   CreateNonRewardConfirmationUrlRequestBuilder url_request_builder(

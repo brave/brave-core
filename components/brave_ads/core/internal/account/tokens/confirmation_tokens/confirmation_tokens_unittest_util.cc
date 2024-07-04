@@ -64,7 +64,7 @@ ConfirmationTokenInfo BuildConfirmationToken() {
 ConfirmationTokenList BuildConfirmationTokens(const int count) {
   CHECK_GT(count, 0);
 
-  const WalletInfo wallet = GetWallet();
+  const WalletInfo wallet = Wallet();
 
   const std::vector<std::string> unblinded_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",

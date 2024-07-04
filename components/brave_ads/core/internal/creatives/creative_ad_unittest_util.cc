@@ -13,16 +13,17 @@
 
 namespace brave_ads::test {
 
-CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
+CreativeAdInfo BuildCreativeAd(const bool should_generate_random_uuids) {
   CreativeAdInfo creative_ad;
 
   creative_ad.creative_instance_id =
-      GetConstantId(should_use_random_uuids, kCreativeInstanceId);
+      RandomUuidOr(should_generate_random_uuids, kCreativeInstanceId);
   creative_ad.creative_set_id =
-      GetConstantId(should_use_random_uuids, kCreativeSetId);
-  creative_ad.campaign_id = GetConstantId(should_use_random_uuids, kCampaignId);
+      RandomUuidOr(should_generate_random_uuids, kCreativeSetId);
+  creative_ad.campaign_id =
+      RandomUuidOr(should_generate_random_uuids, kCampaignId);
   creative_ad.advertiser_id =
-      GetConstantId(should_use_random_uuids, kAdvertiserId);
+      RandomUuidOr(should_generate_random_uuids, kAdvertiserId);
 
   creative_ad.start_at = DistantPast();
   creative_ad.end_at = DistantFuture();
@@ -50,7 +51,7 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_uuids) {
 
   creative_ad.geo_targets = {"US"};
 
-  creative_ad.target_url = GURL("https://brave.com");
+  creative_ad.target_url = GURL(kTargetUrl);
 
   return creative_ad;
 }

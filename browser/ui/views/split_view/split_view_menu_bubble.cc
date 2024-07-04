@@ -10,9 +10,7 @@
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "components/grit/brave_components_strings.h"
@@ -32,19 +30,11 @@ namespace {
 
 SplitViewMenuBubble* g_bubble = nullptr;
 
-constexpr auto kItemIconSize = 16;
-
 class ItemView : public views::LabelButton {
   METADATA_HEADER(ItemView, LabelButton)
  public:
   ItemView() {
-    auto* ink_drop = views::InkDrop::Get(this);
-    ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-    ink_drop->SetBaseColorId(ui::kColorSysOnSurfaceSubtle);
     SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(0, 13)));
-
-    image_container_view()->SetPreferredSize(
-        gfx::Size(kItemIconSize, kItemIconSize));
     SetImageLabelSpacing(12);
   }
   ~ItemView() override = default;
@@ -80,7 +70,7 @@ void SplitViewMenuBubble::Show(Browser* browser, views::View* anchor) {
 
 SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
     : BubbleDialogDelegateView(anchor, views::BubbleBorder::TOP_LEFT) {
-  set_margins(gfx::Insets());
+  set_margins(gfx::Insets::VH(4, 0));
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   SetButtons(ui::DIALOG_BUTTON_NONE);
@@ -91,28 +81,14 @@ SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
     return base::BindRepeating(
         [](Browser* browser, int command_id, const ui::Event& event) {
           chrome::ExecuteCommand(browser, command_id);
-          if (!g_bubble) {
-            return;
-          }
-
-          if (auto* widget = g_bubble->GetWidget();
-              widget && !widget->IsClosed()) {
-            widget->Close();
-          }
         },
         browser, command_id);
   };
 
   auto get_image_model = [](const gfx::VectorIcon& icon) {
-    return ui::ImageModel::FromVectorIcon(
-        icon, kColorBraveSplitViewMenuItemIcon, kItemIconSize);
+    return ui::ImageModel::FromVectorIcon(icon,
+                                          kColorBraveSplitViewMenuItemIcon, 16);
   };
-
-  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
-  const auto is_vertical_split =
-      split_view_data->GetOrientation(
-          browser->tab_strip_model()->GetActiveTab()->GetHandle()) ==
-      SplitViewBrowserData::Orientation::kVertical;
 
   views::Builder<SplitViewMenuBubble>(this)
       .AddChild(views::Builder<ItemView>()
@@ -126,15 +102,6 @@ SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
               .SetImageModel(views::Button::STATE_NORMAL,
                              get_image_model(kLeoBrowserSplitViewUnsplitIcon))
               .SetCallback(browser_command_callback(IDC_BREAK_TILE)))
-      .AddChild(views::Builder<ItemView>()
-                    .SetText(l10n_util::GetStringUTF16(
-                        is_vertical_split ? IDS_SPLIT_VIEW_SPLIT_HORIZONTAL
-                                          : IDS_SPLIT_VIEW_SPLIT_VERTICAL))
-                    // TODO(sko) Need Nala update
-                    // .SetImageModel(views::Button::STATE_NORMAL,
-                    //                get_image_model())
-                    .SetCallback(browser_command_callback(
-                        IDC_TOGGLE_SPLIT_VIEW_ORIENTATION)))
       .BuildChildren();
 }
 

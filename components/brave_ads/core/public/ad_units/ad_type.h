@@ -18,7 +18,10 @@ enum class AdType {
   kNewTabPageAd,
   kPromotedContentAd,
   kInlineContentAd,
-  kSearchResultAd
+  kSearchResultAd,
+
+  kMinValue = 0,
+  kMaxValue = kSearchResultAd
 };
 
 // Returns an `AdType` value based on the string input.

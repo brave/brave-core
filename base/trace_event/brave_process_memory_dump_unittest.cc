@@ -6,8 +6,7 @@
 #include "base/trace_event/memory_infra_background_allowlist.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace base {
-namespace trace_event {
+namespace base::trace_event {
 
 TEST(BraveProcessMemoryDumpTest, IsMemoryAllocatorDumpNameInAllowlist) {
   // reset the test allow list leftover from other suites
@@ -32,5 +31,4 @@ TEST(BraveProcessMemoryDumpTest, IsMemoryAllocatorDumpNameInAllowlist) {
       "extensions/value_store/Extensions.Database.Open.BraveWallet/0x1234"));
 }
 
-}  // namespace trace_event
-}  // namespace base
+}  // namespace base::trace_event

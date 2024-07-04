@@ -11,28 +11,27 @@ import { LongWrapper } from '../../../stories/style'
 import { PanelWrapper } from '../../../panel/style'
 import { ConfirmSwapTransaction } from './swap'
 
-export const _ConfirmSwapTransaction = () => {
-  return (
-    <WalletPanelStory
-      walletStateOverride={{
-        hasInitialized: true,
-        isWalletCreated: true
-      }}
-      panelStateOverride={{
-        hasInitialized: true
-      }}
-    >
-      <PanelWrapper isLonger={true}>
-        <LongWrapper>
-          <ConfirmSwapTransaction />
-        </LongWrapper>
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _ConfirmSwapTransaction = {
+  render: () => {
+    return (
+      <WalletPanelStory
+        walletStateOverride={{
+          hasInitialized: true,
+          isWalletCreated: true
+        }}
+        panelStateOverride={{
+          hasInitialized: true
+        }}
+      >
+        <PanelWrapper isLonger={true}>
+          <LongWrapper>
+            <ConfirmSwapTransaction />
+          </LongWrapper>
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_ConfirmSwapTransaction.story = {
-  name: 'Confirm Swap'
-}
 
-export default _ConfirmSwapTransaction
+export default { component: ConfirmSwapTransaction }

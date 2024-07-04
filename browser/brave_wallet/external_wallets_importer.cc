@@ -174,8 +174,8 @@ void ExternalWalletsImporter::Initialize(InitCallback callback) {
       return;
     }
   } else {
-    NOTREACHED() << "Unsupported ExternalWalletType type. value="
-                 << base::to_underlying(type_);
+    NOTREACHED_IN_MIGRATION() << "Unsupported ExternalWalletType type. value="
+                              << base::to_underlying(type_);
     std::move(callback).Run(false);
     return;
   }

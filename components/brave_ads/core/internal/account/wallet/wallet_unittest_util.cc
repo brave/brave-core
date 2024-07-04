@@ -12,11 +12,11 @@
 
 namespace brave_ads::test {
 
-WalletInfo GetWallet() {
+WalletInfo Wallet() {
   return ToWallet(kWalletPaymentId, kWalletRecoverySeed).value_or(WalletInfo{});
 }
 
-mojom::WalletInfoPtr GetWalletPtr() {
+mojom::WalletInfoPtr WalletPtr() {
   mojom::WalletInfoPtr wallet = mojom::WalletInfo::New();
   wallet->payment_id = kWalletPaymentId;
   wallet->recovery_seed = kWalletRecoverySeed;

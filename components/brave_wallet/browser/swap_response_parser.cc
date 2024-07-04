@@ -22,19 +22,15 @@
 #include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 
-namespace {
-
-constexpr char kSwapValidationErrorCode[] = "100";
-constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
-constexpr char kJupiterNoRoutesMessage[] =
-    "No routes found for the input and output mints";
-
-}  // namespace
-
 namespace brave_wallet {
 
 namespace zeroex {
 namespace {
+constexpr char kSwapValidationErrorCode[] = "100";
+constexpr char kInsufficientAssetLiquidity[] = "INSUFFICIENT_ASSET_LIQUIDITY";
+constexpr char kTransferAmountExceedsAllowanceMessage[] =
+    "ERC20: transfer amount exceeds allowance";
+
 mojom::ZeroExFeePtr ParseZeroExFee(const base::Value& value) {
   if (value.is_none()) {
     return nullptr;
@@ -192,7 +188,7 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
   // }
 
   auto swap_error_response_value =
-      swap_responses::SwapErrorResponse0x::FromValue(json_value);
+      swap_responses::ZeroExErrorResponse::FromValue(json_value);
   if (!swap_error_response_value) {
     return nullptr;
   }
@@ -203,7 +199,7 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
 
   if (swap_error_response_value->validation_errors) {
     for (auto& error_item : *swap_error_response_value->validation_errors) {
-      result->validation_errors.emplace_back(mojom::ZeroExErrorItem::New(
+      result->validation_errors.emplace_back(mojom::ZeroExValidationError::New(
           error_item.field, error_item.code, error_item.reason));
     }
   }
@@ -216,12 +212,22 @@ mojom::ZeroExErrorPtr ParseErrorResponse(const base::Value& json_value) {
     }
   }
 
+  // This covers the case when an insufficient allowance can only be detected
+  // by the 0x Quote API, for example when swapping in ExactOut mode.
+  if (swap_error_response_value->values &&
+      base::Contains(swap_error_response_value->values->message,
+                     kTransferAmountExceedsAllowanceMessage)) {
+    result->is_insufficient_allowance = true;
+  }
+
   return result;
 }
 
 }  // namespace zeroex
 
 namespace jupiter {
+constexpr char kNoRoutesMessage[] =
+    "No routes found for the input and output mints";
 mojom::JupiterQuotePtr ParseQuoteResponse(const base::Value& json_value) {
   // {
   //   "inputMint": "So11111111111111111111111111111111111111112",
@@ -348,7 +354,7 @@ mojom::JupiterErrorPtr ParseErrorResponse(const base::Value& json_value) {
   result->message = jupiter_error_response_value->message;
 
   result->is_insufficient_liquidity =
-      base::Contains(result->message, kJupiterNoRoutesMessage);
+      base::Contains(result->message, kNoRoutesMessage);
 
   return result;
 }

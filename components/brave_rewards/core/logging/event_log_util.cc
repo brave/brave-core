@@ -6,8 +6,7 @@
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 
-namespace brave_rewards::internal {
-namespace log {
+namespace brave_rewards::internal::log {
 std::string GetEventLogKeyForLinkingResult(
     mojom::ConnectExternalWalletResult result) {
   switch (result) {
@@ -35,5 +34,4 @@ std::string GetEventLogKeyForLinkingResult(
       return "";
   }
 }
-}  // namespace log
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::log

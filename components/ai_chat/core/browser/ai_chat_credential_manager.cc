@@ -87,7 +87,7 @@ void AIChatCredentialManager::OnCredentialSummary(
     mojom::PageHandler::GetPremiumStatusCallback callback,
     const std::string& domain,
     const bool credential_in_cache,
-    const std::string& summary_string) {
+    skus::mojom::SkusResultPtr summary) {
   mojom::PremiumInfoPtr premium_info = mojom::PremiumInfo::New();
   if (credential_in_cache) {
     premium_info->remaining_credential_count = 1;
@@ -95,7 +95,7 @@ void AIChatCredentialManager::OnCredentialSummary(
   premium_info->next_active_at = std::nullopt;
 
   std::string summary_string_trimmed;
-  base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
+  base::TrimWhitespaceASCII(summary->message, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
   if (summary_string_trimmed.empty()) {
     if (credential_in_cache) {
@@ -109,7 +109,7 @@ void AIChatCredentialManager::OnCredentialSummary(
   }
 
   std::optional<base::Value> records_v = base::JSONReader::Read(
-      summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+      summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
   if (!records_v || !records_v->is_dict()) {
     if (credential_in_cache) {
@@ -246,11 +246,10 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
     base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
         callback,
     const std::string& domain,
-    const std::string& credential_as_cookie) {
+    skus::mojom::SkusResultPtr credential_as_cookie) {
   // Credential is returned in cookie format.
   net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie,
-                                      /*block_truncated=*/true, &status);
+  net::ParsedCookie credential_cookie(credential_as_cookie->message, &status);
   if (!credential_cookie.IsValid()) {
     std::move(callback).Run(std::nullopt);
     return;
@@ -309,7 +308,9 @@ void AIChatCredentialManager::CreateOrderFromReceipt(
     const std::string& subscription_id,
     skus::mojom::SkusService::CreateOrderFromReceiptCallback callback) {
   if (!EnsureMojoConnected()) {
-    std::move(callback).Run("");
+    std::move(callback).Run(
+        skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::InvalidCall,
+                                     "EnsureMojoConnected Failed"));
     return;
   }
   const std::string leo_sku_domain = brave_domains::GetServicesDomain(
@@ -333,7 +334,9 @@ void AIChatCredentialManager::FetchOrderCredentials(
     const std::string& order_id,
     skus::mojom::SkusService::FetchOrderCredentialsCallback callback) {
   if (!EnsureMojoConnected()) {
-    std::move(callback).Run("");
+    std::move(callback).Run(
+        skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::InvalidCall,
+                                     "EnsureMojoConnected Failed"));
     return;
   }
 
@@ -348,7 +351,9 @@ void AIChatCredentialManager::RefreshOrder(
     const std::string& order_id,
     skus::mojom::SkusService::RefreshOrderCallback callback) {
   if (!EnsureMojoConnected()) {
-    std::move(callback).Run("");
+    std::move(callback).Run(
+        skus::mojom::SkusResult::New(skus::mojom::SkusResultCode::InvalidCall,
+                                     "EnsureMojoConnected Failed"));
     return;
   }
 

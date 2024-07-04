@@ -211,15 +211,20 @@ void MessageManager::OnNewConstellationMessage(
     std::string histogram_name,
     MetricLogType log_type,
     uint8_t epoch,
+    bool is_success,
     std::unique_ptr<std::string> serialized_message) {
-  VLOG(2) << "MessageManager::OnNewConstellationMessage: has val? "
-          << (serialized_message != nullptr);
-  if (!serialized_message) {
+  VLOG(2) << "MessageManager::OnNewConstellationMessage: is_success = "
+          << is_success << ", has msg = " << (serialized_message != nullptr);
+  if (!is_success) {
     constellation_prep_schedulers_[log_type]->UploadFinished(false);
     return;
   }
-  constellation_send_log_stores_[log_type]->UpdateMessage(histogram_name, epoch,
-                                                          *serialized_message);
+  // Message may not exist if client did not meet Nebula threshold,
+  // check accordingly
+  if (serialized_message) {
+    constellation_send_log_stores_[log_type]->UpdateMessage(
+        histogram_name, epoch, *serialized_message);
+  }
   constellation_prep_log_stores_[log_type]->DiscardStagedLog();
   constellation_prep_schedulers_[log_type]->UploadFinished(true);
   delegate_->OnMetricCycled(histogram_name, true);
@@ -259,6 +264,7 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
       base::StrCat({"MessageManager::StartScheduledUpload (",
                     is_constellation ? "Constellation" : "JSON", ", ",
                     MetricLogTypeToString(log_type), ")"});
+
   if (is_constellation) {
     CHECK(features::IsConstellationEnabled());
     log_store = constellation_send_log_stores_[log_type].get();
@@ -299,8 +305,14 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
       is_constellation
           ? constellation_send_log_stores_[log_type]->staged_log_type()
           : json_log_stores_[log_type]->staged_log_type();
+  const bool is_nebula = is_constellation
+                             ? p3a::kNebulaOnlyHistograms.contains(
+                                   constellation_send_log_stores_[log_type]
+                                       ->staged_log_histogram_name())
+                             : false;
+
   VLOG(2) << logging_prefix << " - Uploading " << log.size() << " bytes";
-  uploader_->UploadLog(log, upload_type, is_constellation, log_type);
+  uploader_->UploadLog(log, upload_type, is_constellation, is_nebula, log_type);
 }
 
 void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
@@ -338,8 +350,19 @@ void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
   VLOG(2) << "MessageManager::StartScheduledConstellationPrep - Requesting "
              "randomness for histogram: "
           << log_key;
+
+  const bool is_nebula = p3a::kNebulaOnlyHistograms.contains(log_key);
+  if (is_nebula && !features::IsNebulaEnabled()) {
+    // Do not report if Nebula feature is not enabled,
+    // mark request as successful to avoid transmission.
+    constellation_prep_log_stores_[log_type]->DiscardStagedLog();
+    constellation_prep_schedulers_[log_type]->UploadFinished(true);
+    delegate_->OnMetricCycled(log_key, true);
+    return;
+  }
+
   if (!constellation_helper_->StartMessagePreparation(log_key.c_str(), log_type,
-                                                      log)) {
+                                                      log, is_nebula)) {
     constellation_upload_schedulers_[log_type]->UploadFinished(false);
   }
 }
@@ -368,10 +391,12 @@ std::string MessageManager::SerializeLog(std::string_view histogram_name,
   message_meta_.Update();
 
   if (is_constellation) {
-    bool include_refcode =
+    const bool include_refcode =
         p3a::kHistogramsWithRefcodeIncluded.contains(histogram_name);
+    const bool is_nebula = p3a::kNebulaOnlyHistograms.contains(histogram_name);
     return GenerateP3AConstellationMessage(histogram_name, value, message_meta_,
-                                           upload_type, include_refcode);
+                                           upload_type, include_refcode,
+                                           is_nebula);
   } else {
     base::Value::Dict p3a_json_value = GenerateP3AMessageDict(
         histogram_name, value, log_type, message_meta_, upload_type);

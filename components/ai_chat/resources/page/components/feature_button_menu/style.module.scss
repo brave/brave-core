@@ -5,23 +5,25 @@
 
 .menuSectionTitle {
   background-color: var(--leo-color-page-background);
-  padding: var(--leo-menu-item-padding) calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-small-regular);
-
+  font: var(--leo-font-components-label);
+  text-transform: uppercase;
 }
 
-.menuSubtitle {
-  --leo-icon-size: 16px;
-  margin: 14px calc(var(--leo-menu-item-margin) + var(--leo-menu-item-padding));
-  margin-bottom: 2px;
+.menuSectionCustomModel {
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
   color: var(--leo-color-text-tertiary);
-  font: var(--leo-font-small-regular);
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  gap: 6px;
+  font: var(--leo-font-components-label);
+  text-transform: uppercase;
+}
+
+.buttonMenu {
+  line-height: 0;
+
+  leo-menu-item {
+    padding: var(--leo-spacing-m);
+  }
 }
 
 .menuSeparator {
@@ -46,6 +48,7 @@
 
 .menuText {
   flex-grow: 2;
+  font: var(--leo-font-default-regular);
 }
 
 .menuIconSpace {
@@ -54,6 +57,7 @@
 
 .modelSubtitle {
   font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
   padding: 0;
   margin: 0;
 }
@@ -64,8 +68,4 @@
 
 .lockOpen {
   --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
-}
-
-.settingsButton {
-  margin-top: 8px;
 }

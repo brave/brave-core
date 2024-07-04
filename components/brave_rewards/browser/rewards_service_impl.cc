@@ -121,7 +121,7 @@ std::string URLMethodToRequestType(mojom::UrlMethod method) {
     case mojom::UrlMethod::DEL:
       return "DELETE";
     default:
-      NOTREACHED();
+      NOTREACHED_IN_MIGRATION();
       return "GET";
   }
 }
@@ -1490,8 +1490,8 @@ void RewardsServiceImpl::GetBalanceReport(
     const uint32_t month,
     const uint32_t year,
     GetBalanceReportCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), mojom::Result::OK,
+  if (!Connected() || month < 1 || month > 12) {
+    return DeferCallback(FROM_HERE, std::move(callback), mojom::Result::FAILED,
                          nullptr);
   }
 

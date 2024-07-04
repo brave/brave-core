@@ -7,8 +7,7 @@
 
 #include <utility>
 
-namespace brave_rewards::internal {
-namespace state {
+namespace brave_rewards::internal::state {
 
 StateMigrationV9::StateMigrationV9() = default;
 
@@ -22,5 +21,4 @@ void StateMigrationV9::Migrate(ResultCallback callback) {
   std::move(callback).Run(mojom::Result::OK);
 }
 
-}  // namespace state
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards::internal::state

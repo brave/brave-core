@@ -16,43 +16,39 @@ export default {
   }
 }
 
-export const _DesktopWalletConcept = () => {
-  return (
-    <WalletPageStory
-      walletStateOverride={{
-        isWalletCreated: true
-      }}
-      pageStateOverride={{
-        hasInitialized: true
-      }}
-      uiStateOverride={{
-        isPanel: true
-      }}
-    >
-      <Container />
-    </WalletPageStory>
-  )
+export const _DesktopWalletConcept = {
+  render: () => {
+    return (
+      <WalletPageStory
+        walletStateOverride={{
+          isWalletCreated: true
+        }}
+        pageStateOverride={{
+          hasInitialized: true
+        }}
+        uiStateOverride={{
+          isPanel: true
+        }}
+      >
+        <Container />
+      </WalletPageStory>
+    )
+  }
 }
 
-_DesktopWalletConcept.story = {
-  name: 'Concept'
-}
-
-export const _WalletOnboardingConcept = () => {
-  return (
-    <WalletPageStory
-      walletStateOverride={{
-        isWalletCreated: false
-      }}
-      pageStateOverride={{
-        setupStillInProgress: true
-      }}
-    >
-      <Container />
-    </WalletPageStory>
-  )
-}
-
-_WalletOnboardingConcept.story = {
-  name: 'Onboarding Concept'
+export const _WalletOnboardingConcept = {
+  render: () => {
+    return (
+      <WalletPageStory
+        walletStateOverride={{
+          isWalletCreated: false
+        }}
+        pageStateOverride={{
+          setupStillInProgress: true
+        }}
+      >
+        <Container />
+      </WalletPageStory>
+    )
+  }
 }

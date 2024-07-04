@@ -5,6 +5,8 @@
 
 module skus.mojom;
 
+import "brave/components/skus/common/skus_sdk.mojom";
+
 interface SkusInternals {
   GetEventLog() => (string response);
   GetSkusState() => (string response);
@@ -13,5 +15,5 @@ interface SkusInternals {
   CopySkusStateToClipboard();
   DownloadSkusState();
   ResetSkusState();
-  CreateOrderFromReceipt(string domain, string receipt) => (string response);
+  CreateOrderFromReceipt(string domain, string receipt) => (SkusResult response);
 };

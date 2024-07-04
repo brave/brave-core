@@ -256,7 +256,7 @@ TEST(BraveAdsCreativeNewTabPageAdModelBasedPredictorFeatureTest,
 TEST(BraveAdsCreativeNewTabPageAdModelBasedPredictorFeatureTest,
      DefaultLastSeenAdPredictorWeight) {
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, kNewTabPageAdLastSeenPredictorWeight.Get());
+  EXPECT_DOUBLE_EQ(0.0, kNewTabPageAdLastSeenPredictorWeight.Get());
 }
 
 TEST(BraveAdsCreativeNewTabPageAdModelBasedPredictorFeatureTest,
@@ -267,7 +267,7 @@ TEST(BraveAdsCreativeNewTabPageAdModelBasedPredictorFeatureTest,
       kCreativeNewTabPageAdModelBasedPredictorFeature);
 
   // Act & Assert
-  EXPECT_DOUBLE_EQ(1.0, kNewTabPageAdLastSeenPredictorWeight.Get());
+  EXPECT_DOUBLE_EQ(0.0, kNewTabPageAdLastSeenPredictorWeight.Get());
 }
 
 }  // namespace brave_ads

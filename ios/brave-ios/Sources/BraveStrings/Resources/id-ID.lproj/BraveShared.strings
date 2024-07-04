@@ -514,6 +514,9 @@
 /* Context menu item for copying a link URL to the clipboard */
 "CopyLinkActionTitle" = "Salin Tautan";
 
+/* Copy Tabs info to clipboard action sheet action. */
+"copyTabsDebugToClipboard" = "Salin info Tab ke papan klip.";
+
 /* Copy codewords title */
 "CopyToClipboard" = "Salin ke Clipboard";
 
@@ -1467,6 +1470,12 @@
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotSecureTitle" = "Koneksi Anda ke situs ini tidak aman.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusTitle" = "Koneksi situs tidak terverifikasi.";
+
+/* No comment provided by engineer. */
+"pageSecurityView.pageUnknownStatusWarning" = "Koneksi Anda ke situs ini tidak dapat sepenuhnya terverifikasi. Anda dapat melanjutkan, atau cobalah memuat ulang halaman untuk mendapatkan koneksi yang aman.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Lihat Sertifikat";
@@ -3016,6 +3025,15 @@
 /* Title for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccount" = "Hapus Sinkronisasi Akun";
 
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Namun hal ini tidak akan menghapus data yang disimpan secara lokal pada perangkat-perangkat tersebut.";
+
+/* Part 3 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.";
+
 /* The message displayed in alert when a there is a problem with fetching devices */
 "sync.syncDeviceFetchErrorAlertDescription" = "Telah terjadi kesalahan saat mendeteksi perangkat dalam rantai sinkronisasi.";
 
@@ -3078,6 +3096,9 @@
 
 /* Delete Sync Account cell title for button. */
 "SyncDeleteAccount" = "Hapus Sinkronisasi Akun";
+
+/* Sync Error Description */
+"syncDeprecatedVersionError" = "Sepertinya kode ini dibuat dalam perangkat yang menjalankan Brave versi lebih lama. Silakan perbarui ke versi terbaru Brave pada perangkat Anda yang lain dan kemudian buatlah kode sinkronisasi yang baru.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Perangkat & Pengaturan";
@@ -3618,6 +3639,9 @@
 
 /* Connection problems for contact form issue field. */
 "vpn.contactFormIssueConnectionReliability" = "Masalah keandalan koneksi";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Silakan pilih kategori yang menggambarkan masalah tersebut.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Tidak ada internet saat terkoneksi";

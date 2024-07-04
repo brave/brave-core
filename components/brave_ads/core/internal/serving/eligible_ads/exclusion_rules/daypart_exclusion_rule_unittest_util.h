@@ -8,7 +8,7 @@
 
 namespace brave_ads::test {
 
-int GetMinutes(int hours, int minutes);
+int ConvertHoursAndMinutesToTotalMinutes(int hours, int minutes);
 
 }  // namespace brave_ads::test
 

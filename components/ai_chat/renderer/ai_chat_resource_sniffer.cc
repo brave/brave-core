@@ -82,7 +82,7 @@ bool AIChatResourceSniffer::IsTransformer() const {
 void AIChatResourceSniffer::Transform(
     std::string body,
     base::OnceCallback<void(std::string)> on_complete) {
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
 }
 
 void AIChatResourceSniffer::UpdateResponseHead(

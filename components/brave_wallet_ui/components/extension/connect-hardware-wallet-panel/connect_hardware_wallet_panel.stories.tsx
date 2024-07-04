@@ -13,19 +13,19 @@ import { PanelWrapper } from '../../../panel/style'
 
 import { mockAccounts } from '../../../stories/mock-data/mock-wallet-accounts'
 
-export const _ConnectHardwareWalletPanel = () => {
-  return (
-    <WalletPanelStory>
-      <PanelWrapper>
-        <ConnectHardwareWalletPanel
-          account={{ ...mockAccounts[0], name: 'Ledger 1' }}
-          hardwareWalletCode={undefined}
-        />
-      </PanelWrapper>
-    </WalletPanelStory>
-  )
+export const _ConnectHardwareWalletPanel = {
+  render: () => {
+    return (
+      <WalletPanelStory>
+        <PanelWrapper>
+          <ConnectHardwareWalletPanel
+            account={{ ...mockAccounts[0], name: 'Ledger 1' }}
+            hardwareWalletCode={undefined}
+          />
+        </PanelWrapper>
+      </WalletPanelStory>
+    )
+  }
 }
 
-_ConnectHardwareWalletPanel.storyName = 'Connect Hardware Wallet Panel'
-
-export default _ConnectHardwareWalletPanel
+export default { component: ConnectHardwareWalletPanel }

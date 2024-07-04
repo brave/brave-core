@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "brave/gin/converter_specializations.h"
@@ -24,9 +25,11 @@ namespace playlist {
 
 PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     content::RenderFrame* frame,
+    IsPlaylistEnabledCallback is_playlist_enabled_callback,
     int32_t isolated_world_id)
     : RenderFrameObserver(frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(frame),
+      is_playlist_enabled_callback_(std::move(is_playlist_enabled_callback)),
       isolated_world_id_(isolated_world_id) {
   render_frame()
       ->GetAssociatedInterfaceRegistry()
@@ -76,6 +79,10 @@ PlaylistRenderFrameObserver::GetMediaResponder() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
+  if (!is_playlist_enabled_callback_.Run()) {
+    return;
+  }
+
   if (media_source_api_suppressor_) {
     v8::Isolate* isolate =
         render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
@@ -88,6 +95,10 @@ void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentEnd() {
+  if (!is_playlist_enabled_callback_.Run()) {
+    return;
+  }
+
   if (media_detector_) {
     v8::Isolate* isolate =
         render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();

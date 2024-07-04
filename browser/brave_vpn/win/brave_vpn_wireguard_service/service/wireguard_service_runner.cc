@@ -188,6 +188,11 @@ HRESULT WireguardServiceRunner::InitializeComSecurity() {
     return E_ACCESSDENIED;
   }
 
+  // Don't allow guest account to instantiate.
+  if (!dacl.AddDeniedAce(Sids::Guests(), com_rights_execute_local)) {
+    return E_ACCESSDENIED;
+  }
+
   CSecurityDesc sd;
   sd.SetDacl(dacl);
   sd.MakeAbsolute();

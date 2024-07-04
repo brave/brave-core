@@ -52,8 +52,7 @@ base::Value::Dict MakeSelectValue(const std::u16string& name,
 
 }  // namespace
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction BraveWalletReadyFunction::Run() {
   if (browser_context()->IsTor()) {
@@ -195,5 +194,4 @@ BraveWalletIsNativeWalletEnabledFunction::Run() {
   return RespondNow(WithArguments(::brave_wallet::IsNativeWalletEnabled()));
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api

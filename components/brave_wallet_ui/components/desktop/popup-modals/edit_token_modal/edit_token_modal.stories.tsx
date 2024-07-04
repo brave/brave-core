@@ -16,17 +16,14 @@ import {
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
 import { EditTokenModal } from './edit_token_modal'
 
-export const _EditTokenModal = () => {
-  return (
-    <WalletPageStory>
-      <EditTokenModal
-        onClose={() => {}}
-        token={mockBasicAttentionToken}
-      />
-    </WalletPageStory>
-  )
+export const _EditTokenModal = {}
+
+export default {
+  component: EditTokenModal,
+  render: () => <WalletPageStory>
+    <EditTokenModal
+      onClose={() => { }}
+      token={mockBasicAttentionToken}
+    />
+  </WalletPageStory>
 }
-
-_EditTokenModal.storyName = 'Edit Token Modal'
-
-export default _EditTokenModal

@@ -1,8 +1,8 @@
 diff --git a/content/browser/webui/web_ui_impl.cc b/content/browser/webui/web_ui_impl.cc
-index bdf694ef95914c0f95ffdcabcc9e131aec601a8c..093b95523dca4d342492eb83bc20831b4cb67329 100644
+index 5437bfe1866cddce348e02a12e9c75003f50f871..c372571845a604f53c5e44c10c06f5769151e742 100644
 --- a/content/browser/webui/web_ui_impl.cc
 +++ b/content/browser/webui/web_ui_impl.cc
-@@ -83,6 +83,7 @@ WebUIImpl::WebUIImpl(WebContents* web_contents)
+@@ -82,6 +82,7 @@ WebUIImpl::WebUIImpl(WebContents* web_contents)
        web_contents_observer_(
            std::make_unique<WebUIMainFrameObserver>(this, web_contents_)) {
    DCHECK(web_contents_);

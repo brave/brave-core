@@ -122,6 +122,8 @@ declare namespace NewTab {
     showRewards: boolean
     showBraveTalk: boolean
     showSearchBox: boolean
+    promptEnableSearchSuggestions: boolean
+    searchSuggestionsEnabled: boolean
     hideAllWidgets: boolean
     isBraveNewsOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
@@ -141,7 +143,6 @@ declare namespace NewTab {
     torCircuitEstablished: boolean,
     torInitProgress: string,
     isTor: boolean
-    isQwant: boolean
     gridLayoutSize?: 'small'
     showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean

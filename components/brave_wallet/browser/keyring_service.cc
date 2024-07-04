@@ -970,7 +970,7 @@ void KeyringService::ImportAccount(const std::string& account_name,
   base::TrimString(private_key, " \n\t", &private_key_trimmed);
 
   if (coin != mojom::CoinType::ETH && coin != mojom::CoinType::SOL) {
-    NOTREACHED() << "Invalid coin " << coin;
+    NOTREACHED_IN_MIGRATION() << "Invalid coin " << coin;
     std::move(callback).Run({});
     return;
   }
@@ -1164,7 +1164,7 @@ void KeyringService::RemoveAccount(mojom::AccountIdPtr account_id,
     return;
   }
 
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   std::move(callback).Run(false);
 }
 
@@ -1526,7 +1526,7 @@ void KeyringService::AddAccountsWithDefaultName(
     size_t number) {
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 
@@ -1753,7 +1753,7 @@ void KeyringService::SetAccountName(mojom::AccountIdPtr account_id,
           SetHardwareAccountNameInternal(*account_id, name));
       return;
   }
-  NOTREACHED();
+  NOTREACHED_IN_MIGRATION();
   std::move(callback).Run(false);
 }
 
@@ -2044,7 +2044,7 @@ void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(
       }
     }
   } else {
-    NOTREACHED() << keyring_id;
+    NOTREACHED_IN_MIGRATION() << keyring_id;
   }
 }
 
@@ -2361,7 +2361,7 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
 void KeyringService::MaybeFixAccountSelection() {
   const auto& account_infos = GetAllAccountInfos();
   if (account_infos.empty()) {
-    NOTREACHED();
+    NOTREACHED_IN_MIGRATION();
     return;
   }
 

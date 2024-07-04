@@ -13,8 +13,7 @@
 #include "crypto/random.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_sync {
-namespace crypto {
+namespace brave_sync::crypto {
 
 TEST(CryptoTest, GetSeed) {
   std::vector<uint8_t> seed = GetSeed();
@@ -251,5 +250,4 @@ TEST(CryptoTest, Passphrase) {
   EXPECT_FALSE(IsPassphraseValid(bip_invalid_passphrase));
 }
 
-}  // namespace crypto
-}  // namespace brave_sync
+}  // namespace brave_sync::crypto
