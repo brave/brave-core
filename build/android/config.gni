@@ -93,6 +93,7 @@ playcore_target =
     "//brave/third_party/android_deps:com_google_android_play_core_java"
 
 brave_jni_headers_sources = [
+  "//brave/android/java/org/chromium/chrome/browser/BackgroundVideoPlaybackTabHelper.java",
   "//brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
   "//brave/android/java/org/chromium/chrome/browser/BraveLocalState.java",
   "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
