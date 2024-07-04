@@ -254,3 +254,40 @@ impl Signature {
         result
     }
 }
+
+impl Default for CredentialBIG {
+    fn default() -> Self {
+        Self(BIG::new())
+    }
+}
+
+impl Default for ECPProof {
+    fn default() -> Self {
+        Self { c: BIG::new(), s: BIG::new() }
+    }
+}
+
+impl Default for JoinResponse {
+    fn default() -> Self {
+        Self { cred: UserCredentials::default(), proof: ECPProof::default() }
+    }
+}
+
+impl Default for UserCredentials {
+    fn default() -> Self {
+        UserCredentials { a: ECP::new(), b: ECP::new(), c: ECP::new(), d: ECP::new() }
+    }
+}
+
+impl Default for GroupPublicKey {
+    fn default() -> Self {
+        GroupPublicKey {
+            x: ECP2::new(),
+            y: ECP2::new(),
+            cx: BIG::new(),
+            sx: BIG::new(),
+            cy: BIG::new(),
+            sy: BIG::new(),
+        }
+    }
+}
