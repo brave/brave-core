@@ -226,39 +226,45 @@ public class KeyringModel implements KeyringServiceObserver {
             }
         }
 
-        removeHiddenNetworksLiveData.observeForever(
-                new Observer<>() {
-                    int countRemovedHiddenNetworks;
+        // Subscribe observer only if are present hidden networks to remove.
+        if (!removeHiddenNetworks.isEmpty()) {
+            removeHiddenNetworksLiveData.observeForever(
+                    new Observer<>() {
+                        int countRemovedHiddenNetworks;
 
-                    @Override
-                    public void onChanged(Boolean success) {
-                        countRemovedHiddenNetworks++;
-                        if (countRemovedHiddenNetworks == removeHiddenNetworks.size()) {
-                            removeHiddenNetworksLiveData.removeObserver(this);
+                        @Override
+                        public void onChanged(Boolean success) {
+                            countRemovedHiddenNetworks++;
+                            if (countRemovedHiddenNetworks == removeHiddenNetworks.size()) {
+                                removeHiddenNetworksLiveData.removeObserver(this);
 
-                            if (!addHiddenNetworksLiveData.hasActiveObservers()) {
-                                finalizeWalletCreation(password, selectedNetworks, callback);
+                                if (!addHiddenNetworksLiveData.hasActiveObservers()) {
+                                    finalizeWalletCreation(password, selectedNetworks, callback);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
 
-        addHiddenNetworksLiveData.observeForever(
-                new Observer<>() {
-                    int countAddedHiddenNetworks;
+        // Subscribe observer only if are present hidden networks to add.
+        if (!addHiddenNetworks.isEmpty()) {
+            addHiddenNetworksLiveData.observeForever(
+                    new Observer<>() {
+                        int countAddedHiddenNetworks;
 
-                    @Override
-                    public void onChanged(Boolean success) {
-                        countAddedHiddenNetworks++;
-                        if (countAddedHiddenNetworks == addHiddenNetworks.size()) {
-                            addHiddenNetworksLiveData.removeObserver(this);
+                        @Override
+                        public void onChanged(Boolean success) {
+                            countAddedHiddenNetworks++;
+                            if (countAddedHiddenNetworks == addHiddenNetworks.size()) {
+                                addHiddenNetworksLiveData.removeObserver(this);
 
-                            if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
-                                finalizeWalletCreation(password, selectedNetworks, callback);
+                                if (!removeHiddenNetworksLiveData.hasActiveObservers()) {
+                                    finalizeWalletCreation(password, selectedNetworks, callback);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
 
         for (NetworkInfo networkInfo : removeHiddenNetworks) {
             jsonRpcService.removeHiddenNetwork(
