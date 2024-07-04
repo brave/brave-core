@@ -56,7 +56,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #endif
@@ -125,7 +125,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #else
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
-  brave_shields::BraveShieldsDataController::CreateForWebContents(web_contents);
+  brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
   ThumbnailTabHelper::CreateForWebContents(web_contents);
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
@@ -133,20 +133,20 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    content::BrowserContext* context = web_contents->GetBrowserContext();
-    if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
-        IsRegularProfile(context)) {
-      auto skus_service_getter = base::BindRepeating(
-          [](content::BrowserContext* context) {
-            return skus::SkusServiceFactory::GetForContext(context);
-          },
-          context);
-      ai_chat::AIChatTabHelper::CreateForWebContents(
-          web_contents,
-          g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
-          skus_service_getter, g_browser_process->local_state(),
-          std::string(version_info::GetChannelString(chrome::GetChannel())));
-    }
+  content::BrowserContext* context = web_contents->GetBrowserContext();
+  if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
+      IsRegularProfile(context)) {
+    auto skus_service_getter = base::BindRepeating(
+        [](content::BrowserContext* context) {
+          return skus::SkusServiceFactory::GetForContext(context);
+        },
+        context);
+    ai_chat::AIChatTabHelper::CreateForWebContents(
+        web_contents,
+        g_brave_browser_process->process_misc_metrics()->ai_chat_metrics(),
+        skus_service_getter, g_browser_process->local_state(),
+        std::string(version_info::GetChannelString(chrome::GetChannel())));
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

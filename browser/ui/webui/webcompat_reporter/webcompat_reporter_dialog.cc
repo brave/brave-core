@@ -12,7 +12,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-shared.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
@@ -57,6 +57,7 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   void OnDialogClosed(const std::string& json_retval) override;
   void OnCloseContents(WebContents* source, bool* out_close_dialog) override;
   bool ShouldShowDialogTitle() const override;
+
  private:
   base::Value::Dict params_;
 };
@@ -116,8 +117,8 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
       brave_shields::mojom::FingerprintMode::STANDARD_MODE;
   brave_shields::mojom::AdBlockMode ad_block_mode =
       brave_shields::mojom::AdBlockMode::STANDARD;
-  brave_shields::BraveShieldsDataController* shields_data_controller =
-      brave_shields::BraveShieldsDataController::FromWebContents(initiator);
+  brave_shields::BraveShieldsTabHelper* shields_data_controller =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(initiator);
   if (shields_data_controller != nullptr) {
     shields_enabled = shields_data_controller->GetBraveShieldsEnabled();
     fp_block_mode = shields_data_controller->GetFingerprintMode();

@@ -32,7 +32,7 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #endif
 
 using content::RenderFrameHost;
@@ -108,13 +108,15 @@ void BraveShieldsWebContentsObserver::BindBraveShieldsHost(
   }
 
   auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
 
   auto* shields_host =
       BraveShieldsWebContentsObserver::FromWebContents(web_contents);
-  if (!shields_host)
+  if (!shields_host) {
     return;
+  }
   shields_host->BindReceiver(std::move(receiver), rfh);
 }
 
@@ -163,14 +165,16 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     const std::string& block_type,
     const std::string& subresource,
     WebContents* web_contents) {
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
   auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsDataController::FromWebContents(web_contents);
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
-  if (!shields_data_ctrlr)
+  if (!shields_data_ctrlr) {
     return;
+  }
   shields_data_ctrlr->HandleItemBlocked(block_type, subresource);
 }
 // static
@@ -182,7 +186,7 @@ void BraveShieldsWebContentsObserver::DispatchAllowedOnceEventForWebContents(
     return;
   }
   auto* shields_data_ctrlr =
-      brave_shields::BraveShieldsDataController::FromWebContents(web_contents);
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
   // |shields_data_ctrlr| can be null if the |web_contents| is generated in
   // component layer - We don't attach any tab helpers in this case.
   if (!shields_data_ctrlr) {
@@ -197,8 +201,9 @@ void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
       WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
   DispatchAllowedOnceEventForWebContents(
       brave_shields::kJavaScript, base::UTF16ToUTF8(details), web_contents);
 #endif

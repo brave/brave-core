@@ -74,7 +74,7 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
       tab_strip_model_(tab_strip_model) {
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
   if (web_contents) {
-    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
         ->AddObserver(this);
   }
 
@@ -98,7 +98,7 @@ BraveShieldsActionView::BraveShieldsActionView(Profile& profile,
 BraveShieldsActionView::~BraveShieldsActionView() {
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
   if (web_contents) {
-    brave_shields::BraveShieldsDataController::FromWebContents(web_contents)
+    brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
         ->RemoveObserver(this);
   }
 }
@@ -153,8 +153,7 @@ BraveShieldsActionView::GetImageSource() {
 
   if (web_contents) {
     auto* shields_data_controller =
-        brave_shields::BraveShieldsDataController::FromWebContents(
-            web_contents);
+        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
 
     int count = shields_data_controller->GetTotalBlockedCount();
     if (count > 0) {
@@ -171,8 +170,10 @@ BraveShieldsActionView::GetImageSource() {
 
   image_source->SetIcon(gfx::Image(GetIconImage(is_enabled)));
 
-  if (is_enabled && profile_->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible))
+  if (is_enabled &&
+      profile_->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible)) {
     image_source->SetBadge(std::move(badge));
+  }
 
   return image_source;
 }
@@ -237,8 +238,7 @@ std::u16string BraveShieldsActionView::GetTooltipText(
 
   if (web_contents) {
     auto* shields_data_controller =
-        brave_shields::BraveShieldsDataController::FromWebContents(
-            web_contents);
+        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
 
     int count = shields_data_controller->GetTotalBlockedCount();
 
@@ -286,13 +286,13 @@ void BraveShieldsActionView::OnTabStripModelChanged(
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
     if (selection.new_contents) {
-      brave_shields::BraveShieldsDataController::FromWebContents(
+      brave_shields::BraveShieldsTabHelper::FromWebContents(
           selection.new_contents)
           ->AddObserver(this);
     }
 
     if (selection.old_contents) {
-      brave_shields::BraveShieldsDataController::FromWebContents(
+      brave_shields::BraveShieldsTabHelper::FromWebContents(
           selection.old_contents)
           ->RemoveObserver(this);
     }

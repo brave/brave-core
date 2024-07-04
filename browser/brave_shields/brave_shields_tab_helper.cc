@@ -1,15 +1,15 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_shields_data_controller.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 
 #include <string>
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -42,18 +42,17 @@ constexpr char kShieldsAllowScriptOnceHistogramName[] =
 
 namespace brave_shields {
 
-BraveShieldsDataController::~BraveShieldsDataController() = default;
+BraveShieldsTabHelper::~BraveShieldsTabHelper() = default;
 
-BraveShieldsDataController::BraveShieldsDataController(
-    content::WebContents* web_contents)
+BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<BraveShieldsDataController>(*web_contents) {
+      content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(GetHostContentSettingsMap(web_contents));
 }
 
-void BraveShieldsDataController::DidFinishNavigation(
+void BraveShieldsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted() &&
       !navigation_handle->IsSameDocument()) {
@@ -61,95 +60,98 @@ void BraveShieldsDataController::DidFinishNavigation(
   }
 }
 
-void BraveShieldsDataController::WebContentsDestroyed() {
+void BraveShieldsTabHelper::WebContentsDestroyed() {
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
   observation_.Reset();
 }
 
-void BraveShieldsDataController::OnContentSettingChanged(
+void BraveShieldsTabHelper::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsTypeSet content_type_set) {
   if ((content_type_set.ContainsAllTypes() ||
        content_type_set.GetType() == ContentSettingsType::BRAVE_SHIELDS) &&
       primary_pattern.Matches(GetCurrentSiteURL())) {
-    for (Observer& obs : observer_list_)
+    for (Observer& obs : observer_list_) {
       obs.OnShieldsEnabledChanged();
+    }
   }
 }
 
-void BraveShieldsDataController::OnFaviconUpdated(
+void BraveShieldsTabHelper::OnFaviconUpdated(
     favicon::FaviconDriver* favicon_driver,
     NotificationIconType notification_icon_type,
     const GURL& icon_url,
     bool icon_url_changed,
     const gfx::Image& image) {
-  for (Observer& obs : observer_list_)
+  for (Observer& obs : observer_list_) {
     obs.OnFaviconUpdated();
+  }
 }
 
-void BraveShieldsDataController::ReloadWebContents() {
+void BraveShieldsTabHelper::ReloadWebContents() {
   web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
-void BraveShieldsDataController::ClearAllResourcesList() {
+void BraveShieldsTabHelper::ClearAllResourcesList() {
   resource_list_blocked_ads_.clear();
   resource_list_http_redirects_.clear();
   resource_list_blocked_js_.clear();
   resource_list_blocked_fingerprints_.clear();
   resource_list_allowed_once_js_.clear();
 
-  for (Observer& obs : observer_list_)
+  for (Observer& obs : observer_list_) {
     obs.OnResourcesChanged();
+  }
 }
 
-void BraveShieldsDataController::AddObserver(Observer* obs) {
+void BraveShieldsTabHelper::AddObserver(Observer* obs) {
   observer_list_.AddObserver(obs);
 }
 
-void BraveShieldsDataController::RemoveObserver(Observer* obs) {
+void BraveShieldsTabHelper::RemoveObserver(Observer* obs) {
   observer_list_.RemoveObserver(obs);
 }
 
-bool BraveShieldsDataController::HasObserver(Observer* observer) {
+bool BraveShieldsTabHelper::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
-int BraveShieldsDataController::GetTotalBlockedCount() {
+int BraveShieldsTabHelper::GetTotalBlockedCount() {
   return (resource_list_blocked_ads_.size() +
           resource_list_http_redirects_.size() +
           resource_list_blocked_js_.size() +
           resource_list_blocked_fingerprints_.size());
 }
 
-std::vector<GURL> BraveShieldsDataController::GetBlockedAdsList() {
+std::vector<GURL> BraveShieldsTabHelper::GetBlockedAdsList() {
   std::vector<GURL> blocked_ads(resource_list_blocked_ads_.begin(),
                                 resource_list_blocked_ads_.end());
 
   return blocked_ads;
 }
 
-std::vector<GURL> BraveShieldsDataController::GetHttpRedirectsList() {
+std::vector<GURL> BraveShieldsTabHelper::GetHttpRedirectsList() {
   std::vector<GURL> http_redirects(resource_list_http_redirects_.begin(),
                                    resource_list_http_redirects_.end());
 
   return http_redirects;
 }
 
-std::vector<GURL> BraveShieldsDataController::GetBlockedJsList() {
+std::vector<GURL> BraveShieldsTabHelper::GetBlockedJsList() {
   std::vector<GURL> js_list(resource_list_blocked_js_.begin(),
                             resource_list_blocked_js_.end());
   return js_list;
 }
 
-std::vector<GURL> BraveShieldsDataController::GetAllowedJsList() {
+std::vector<GURL> BraveShieldsTabHelper::GetAllowedJsList() {
   std::vector<GURL> js_list(resource_list_allowed_once_js_.begin(),
                             resource_list_allowed_once_js_.end());
   return js_list;
 }
 
-std::vector<GURL> BraveShieldsDataController::GetFingerprintsList() {
+std::vector<GURL> BraveShieldsTabHelper::GetFingerprintsList() {
   std::vector<GURL> fingerprints_list(
       resource_list_blocked_fingerprints_.begin(),
       resource_list_blocked_fingerprints_.end());
@@ -157,12 +159,12 @@ std::vector<GURL> BraveShieldsDataController::GetFingerprintsList() {
   return fingerprints_list;
 }
 
-bool BraveShieldsDataController::GetBraveShieldsEnabled() {
+bool BraveShieldsTabHelper::GetBraveShieldsEnabled() {
   return brave_shields::GetBraveShieldsEnabled(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
-void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
+void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
   auto* map = GetHostContentSettingsMap(web_contents());
   if (map->GetDefaultContentSetting(ContentSettingsType::BRAVE_SHIELDS,
                                     nullptr) == is_enabled) {
@@ -174,11 +176,11 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
   ReloadWebContents();
 }
 
-GURL BraveShieldsDataController::GetCurrentSiteURL() {
+GURL BraveShieldsTabHelper::GetCurrentSiteURL() {
   return web_contents()->GetLastCommittedURL();
 }
 
-GURL BraveShieldsDataController::GetFaviconURL(bool refresh) {
+GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {
   auto url = GURL("chrome://favicon2/");
   url = AppendQueryParameter(url, "size", "16");
   url = AppendQueryParameter(url, "scaleFactor", "2x");
@@ -189,13 +191,14 @@ GURL BraveShieldsDataController::GetFaviconURL(bool refresh) {
   if (refresh) {
     url = AppendQueryParameter(
         url, "v",
-        std::to_string(base::Time::Now().InMillisecondsFSinceUnixEpoch()));
+        base::UTF16ToUTF8(base::FormatNumber(
+            base::Time::Now().InMillisecondsFSinceUnixEpoch())));
   }
 
   return url;
 }
 
-AdBlockMode BraveShieldsDataController::GetAdBlockMode() {
+AdBlockMode BraveShieldsTabHelper::GetAdBlockMode() {
   auto* map = GetHostContentSettingsMap(web_contents());
 
   ControlType control_type_ad =
@@ -215,7 +218,7 @@ AdBlockMode BraveShieldsDataController::GetAdBlockMode() {
   }
 }
 
-FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
+FingerprintMode BraveShieldsTabHelper::GetFingerprintMode() {
   ControlType control_type = brave_shields::GetFingerprintingControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 
@@ -228,7 +231,7 @@ FingerprintMode BraveShieldsDataController::GetFingerprintMode() {
   }
 }
 
-CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
+CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   auto cookie_settings = CookieSettingsFactory::GetForProfile(
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
@@ -250,7 +253,7 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
   return CookieBlockMode::BLOCKED;
 }
 
-HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
+HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
   ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
   if (control_type == ControlType::ALLOW) {
@@ -264,7 +267,7 @@ HttpsUpgradeMode BraveShieldsDataController::GetHttpsUpgradeMode() {
   }
 }
 
-bool BraveShieldsDataController::GetNoScriptEnabled() {
+bool BraveShieldsTabHelper::GetNoScriptEnabled() {
   ControlType control_type = brave_shields::GetNoScriptControlType(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 
@@ -275,12 +278,12 @@ bool BraveShieldsDataController::GetNoScriptEnabled() {
   return true;
 }
 
-bool BraveShieldsDataController::GetForgetFirstPartyStorageEnabled() {
+bool BraveShieldsTabHelper::GetForgetFirstPartyStorageEnabled() {
   return brave_shields::GetForgetFirstPartyStorageEnabled(
       GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
-void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
+void BraveShieldsTabHelper::SetAdBlockMode(AdBlockMode mode) {
   auto* map = GetHostContentSettingsMap(web_contents());
 
   ControlType control_type_ad;
@@ -313,7 +316,7 @@ void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
   ReloadWebContents();
 }
 
-void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
+void BraveShieldsTabHelper::SetFingerprintMode(FingerprintMode mode) {
   ControlType control_type;
 
   if (mode == FingerprintMode::ALLOW_MODE) {
@@ -334,7 +337,7 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
   ReloadWebContents();
 }
 
-void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
+void BraveShieldsTabHelper::SetCookieBlockMode(CookieBlockMode mode) {
   auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
                     ->GetPrefs();
   ControlType control_type = ControlType::BLOCK;
@@ -358,7 +361,7 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
   ReloadWebContents();
 }
 
-void BraveShieldsDataController::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
+void BraveShieldsTabHelper::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
   ControlType control_type;
   if (mode == HttpsUpgradeMode::DISABLED_MODE) {
     control_type = ControlType::ALLOW;
@@ -376,7 +379,7 @@ void BraveShieldsDataController::SetHttpsUpgradeMode(HttpsUpgradeMode mode) {
   ReloadWebContents();
 }
 
-void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
+void BraveShieldsTabHelper::SetIsNoScriptEnabled(bool is_enabled) {
   ControlType control_type;
 
   if (!is_enabled) {
@@ -392,14 +395,13 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
   ReloadWebContents();
 }
 
-void BraveShieldsDataController::SetForgetFirstPartyStorageEnabled(
-    bool is_enabled) {
+void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
   brave_shields::SetForgetFirstPartyStorageEnabled(
       GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
 }
 
-void BraveShieldsDataController::BlockAllowedScripts(
+void BraveShieldsTabHelper::BlockAllowedScripts(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
       BraveShieldsWebContentsObserver::FromWebContents(web_contents());
@@ -410,7 +412,7 @@ void BraveShieldsDataController::BlockAllowedScripts(
   ReloadWebContents();
 }
 
-void BraveShieldsDataController::AllowScriptsOnce(
+void BraveShieldsTabHelper::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
       BraveShieldsWebContentsObserver::FromWebContents(web_contents());
@@ -422,7 +424,7 @@ void BraveShieldsDataController::AllowScriptsOnce(
   ReloadWebContents();
 }
 
-bool BraveShieldsDataController::IsBraveShieldsManaged() {
+bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
   PrefService* profile_prefs =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext())
           ->GetPrefs();
@@ -432,15 +434,13 @@ bool BraveShieldsDataController::IsBraveShieldsManaged() {
       GetCurrentSiteURL());
 }
 
-bool BraveShieldsDataController::IsForgetFirstPartyStorageFeatureEnabled()
-    const {
+bool BraveShieldsTabHelper::IsForgetFirstPartyStorageFeatureEnabled() const {
   return base::FeatureList::IsEnabled(
       net::features::kBraveForgetFirstPartyStorage);
 }
 
-void BraveShieldsDataController::HandleItemBlocked(
-    const std::string& block_type,
-    const std::string& subresource) {
+void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,
+                                              const std::string& subresource) {
   auto subres = GURL(subresource);
 
   if (block_type == kAds) {
@@ -453,11 +453,12 @@ void BraveShieldsDataController::HandleItemBlocked(
     resource_list_blocked_fingerprints_.insert(subres);
   }
 
-  for (Observer& obs : observer_list_)
+  for (Observer& obs : observer_list_) {
     obs.OnResourcesChanged();
+  }
 }
 
-void BraveShieldsDataController::HandleItemAllowedOnce(
+void BraveShieldsTabHelper::HandleItemAllowedOnce(
     const std::string& allowed_once_type,
     const std::string& subresource) {
   GURL subres(subresource);
@@ -474,6 +475,6 @@ void BraveShieldsDataController::HandleItemAllowedOnce(
   }
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsDataController);
+WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsTabHelper);
 
 }  // namespace brave_shields
