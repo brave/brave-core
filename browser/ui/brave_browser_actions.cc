@@ -63,7 +63,7 @@ void BraveBrowserActions::InitializeBraveBrowserActions() {
         SidePanelAction(
             SidePanelEntryId::kPlaylist, IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,
             IDS_SIDEBAR_PLAYLIST_ITEM_TITLE, kLeoProductPlaylistIcon,
-            kPlaylistSidePanelShowAssistant, browser, true)
+            kActionSidePanelShowPlaylist, browser, true)
             .Build());
   }
 #endif
@@ -74,7 +74,7 @@ void BraveBrowserActions::InitializeBraveBrowserActions() {
     root_action_item_->AddChild(
         SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
                         IDS_CHAT_UI_TITLE, kLeoProductBraveLeoIcon,
-                        kChatUISidePanelShowAssistant, browser, false)
+                        kActionSidePanelShowChatUI, browser, false)
             .Build());
   }
 #endif
