@@ -29,21 +29,24 @@ class VPNCityRegionDetail: ObservableObject {
   ]
 
   var countryName: String = ""
-  var countryISOCode: String = ""
 
   @Published var selectedRegion: BraveVPNCityRegion? = nil
   
   func assignSelectedRegion(
-    isAutoSelectEnabled: Bool = true, 
     countryName: String,
-    countryISOCode: String,
     cityRegions: [BraveVPNCityRegion])
   {
+    self.countryName = countryName
     self.cityRegions.append(contentsOf: cityRegions)
-
-    if isAutoSelectEnabled {
+    
+    let selectedCity = cityRegions.first (where: { $0.regionName ==  BraveVPN.selectedRegion?.regionName })
+    
+    guard let selectedCity = selectedCity else {
       selectedRegion = self.cityRegions.first
+      return
     }
+    
+    selectedRegion = selectedCity
   }
 }
 
