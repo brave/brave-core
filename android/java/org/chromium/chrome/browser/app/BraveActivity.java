@@ -148,6 +148,7 @@ import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefChangeRegistrar;
 import org.chromium.chrome.browser.preferences.PrefChangeRegistrar.PrefObserver;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
@@ -263,6 +264,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
+
+    public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -1051,6 +1054,7 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (isFirstInstall && appOpenCount == 0) {
             checkForYandexSE();
+            enableSearchSuggestions();
         }
 
         migrateBgPlaybackToFeature();
@@ -1252,6 +1256,16 @@ public abstract class BraveActivity extends ChromeActivity
                         > ChromeSharedPreferences.getInstance()
                                 .readLong(BravePreferenceKeys.BRAVE_IN_APP_UPDATE_TIMING, 0)) {
             checkAppUpdate();
+        }
+    }
+
+    private void enableSearchSuggestions() {
+        TemplateUrl defaultSearchEngineTemplateUrl =
+                BraveSearchEngineUtils.getTemplateUrlByShortName(
+                        getCurrentProfile(),
+                        BraveSearchEngineUtils.getDSEShortName(getCurrentProfile(), false));
+        if (BRAVE_SEARCH_ENGINE_KEYWORD.equals(defaultSearchEngineTemplateUrl.getKeyword())) {
+            UserPrefs.get(getCurrentProfile()).setBoolean(Pref.SEARCH_SUGGEST_ENABLED, true);
         }
     }
 
