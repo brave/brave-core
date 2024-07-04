@@ -465,21 +465,12 @@ extension BrowserViewController: TopToolbarDelegate {
       // BRAVE TODO: Port over proper tab reloading with Shields
     }
 
-    shields.showShredSettings = { [unowned self] vc in
-      guard let tab = tabManager.selectedTab else { return }
+    shields.shredTab = { [weak self] viewController, tab in
       guard let url = tab.url else { return }
 
-      vc.dismiss(animated: true) {
-        let viewController = ShredSettingsHostingController(
-          url: url,
-          isPersistent: !tab.isPrivate,
-          presentingView: self.topToolbar.shieldsButton
-        ) { [weak self] in
-          self?.shredData(for: url, in: tab)
-          self?.dismiss(animated: true)
-        }
-
-        self.present(viewController, animated: true)
+      viewController.dismiss(animated: true) {
+        self?.shredData(for: url, in: tab)
+        self?.dismiss(animated: true)
       }
     }
 
@@ -497,7 +488,8 @@ extension BrowserViewController: TopToolbarDelegate {
               deAmpPrefs: self.braveCore.deAmpPrefs,
               debounceService: DebounceServiceFactory.get(privateMode: false),
               clearDataCallback: { [weak self] isLoading, isHistoryCleared in
-                guard let view = self?.navigationController?.view, view.window != nil else {
+                guard let self else { return }
+                guard let view = self.navigationController?.view, view.window != nil else {
                   assertionFailure()
                   return
                 }
@@ -515,7 +507,7 @@ extension BrowserViewController: TopToolbarDelegate {
                   // Donate Clear Browser History for suggestions
                   let clearBrowserHistoryActivity = ActivityShortcutManager.shared
                     .createShortcutActivity(type: .clearBrowsingHistory)
-                  self?.userActivity = clearBrowserHistoryActivity
+                  self.userActivity = clearBrowserHistoryActivity
                   clearBrowserHistoryActivity.becomeCurrent()
                 }
               }
