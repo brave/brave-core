@@ -30,6 +30,10 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
               SidePanelUtil::SidePanelOpenTrigger open_trigger) override;
   void OnViewVisibilityChanged(views::View* observed_view,
                                views::View* starting_from) override;
+  void PopulateSidePanel(
+      bool supress_animations,
+      SidePanelEntry* entry,
+      std::optional<std::unique_ptr<views::View>> content_view) override;
 
  private:
   // Returns the last active entry or the default entry if no last active
