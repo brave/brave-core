@@ -488,7 +488,8 @@ extension BrowserViewController: TopToolbarDelegate {
               deAmpPrefs: self.braveCore.deAmpPrefs,
               debounceService: DebounceServiceFactory.get(privateMode: false),
               clearDataCallback: { [weak self] isLoading, isHistoryCleared in
-                guard let view = self?.navigationController?.view, view.window != nil else {
+                guard let self else { return }
+                guard let view = self.navigationController?.view, view.window != nil else {
                   assertionFailure()
                   return
                 }
@@ -506,7 +507,7 @@ extension BrowserViewController: TopToolbarDelegate {
                   // Donate Clear Browser History for suggestions
                   let clearBrowserHistoryActivity = ActivityShortcutManager.shared
                     .createShortcutActivity(type: .clearBrowsingHistory)
-                  self?.userActivity = clearBrowserHistoryActivity
+                  self.userActivity = clearBrowserHistoryActivity
                   clearBrowserHistoryActivity.becomeCurrent()
                 }
               }
