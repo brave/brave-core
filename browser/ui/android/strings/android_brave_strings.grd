@@ -491,6 +491,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_PRIVATE_SEARCH_ENGINE" desc="Title for private tab search engine option">
         Private Tab
       </message>
+      <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="Title for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
+        Show browser suggestions
+      </message>
+      <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR_SUMMARY" desc="Summary for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
+              Displays website suggestions based on your bookmarks and browsing history.
+      </message>
+      <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
+        Show top sites suggestions
+      </message>
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
@@ -1630,9 +1639,6 @@ Are you sure you want to do this?
       <message name="IDS_ADVANCED_CONTROLS" desc="Title for toggle section.">
         Advanced controls
       </message>
-      <message name="IDS_AUTOCOMPLETE_TOP_SITES_TITLE" desc="The label for settings switch controlling whether or not top sites show up in autocomplete">
-        Show top sites in autocomplete
-      </message>
       <message name="IDS_UPDATE_NOTIFICATION_TITLE" desc="Title of notification on application update.">
         Save Data Online
       </message>
@@ -2736,12 +2742,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_REWARDS_BAT_VALUE_TEXT" desc="BAT value text">
       <ph name="VALUE">%1$s<ex>0</ex></ph> BAT
-    </message>
-    <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="Title for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
-        Show autocomplete in address bar
-    </message>
-    <message name="IDS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR_SUMMARY" desc="Summary for a checkbox in Settings that controls whether to show autocompletion in the address bar.">
-            Displays website suggestions based on your bookmarks and browsing history.
     </message>
     <message name="IDS_BRAVE_WALLET_NETWORKS_TITLE" desc="Brave wallet networks pref title text">
       Networks
@@ -3988,19 +3988,19 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ALWAYS_ON_VPN" desc="Vpn setting title for always on">
       Always-on VPN
     </message>
-    <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_HOW_TO_TURN_ON" desc="Vpn kill switch tutorial text">
       How to turn on:
     </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_1" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_1" desc="Vpn kill switch tutorial text">
       1. Open your device's settings from your app drawer or tapping the button below.
     </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_2" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_2" desc="Vpn kill switch tutorial text">
       2. Find Brave VPN and tap on the settings icon to the right.
     </message>
-    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill swicth tutorial text">
+    <message name="IDS_KILL_SWITCH_TUTORIAL_TEXT_3" desc="Vpn kill switch tutorial text">
       3. Toggle <ph name="ALWAYS_ON_TUTORIAL_START">&lt;always_on_tutorial&gt;</ph>Always-on VPN<ph name="ALWAYS_ON_TUTORIAL_END">&lt;/always_on_tutorial&gt;</ph> to enable it.
     </message>
-    <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill swicth tutorial action text">
+    <message name="IDS_KILL_SWITCH_ACTION_TEXT" desc="Vpn kill switch tutorial action text">
       Open Android settings
     </message>
     <message name="IDS_IN_APP_UPDATE_TEXT" desc="Text for in app update snackbar">
