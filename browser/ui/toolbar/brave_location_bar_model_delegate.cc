@@ -38,7 +38,7 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(
     const GURL& url,
     std::u16string* new_formatted_url) {
   // Replace chrome:// with brave://
-  brave_utils::ReplaceChromeToBraveScheme(new_formatted_url);
+  brave_utils::ReplaceChromeToBraveScheme(*new_formatted_url);
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   if (url.SchemeIs(kChromeExtensionScheme) &&

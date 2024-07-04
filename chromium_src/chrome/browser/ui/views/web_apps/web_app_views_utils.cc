@@ -17,8 +17,9 @@ std::unique_ptr<views::Label> CreateOriginLabelFromStartUrl(
     bool is_primary_text) {
   std::unique_ptr<views::Label> origin_label =
       CreateOriginLabelFromStartUrl_ChromiumImpl(start_url, is_primary_text);
+  CHECK(origin_label);
   std::u16string label_text = origin_label->GetText();
-  brave_utils::ReplaceChromeToBraveScheme(&label_text);
+  brave_utils::ReplaceChromeToBraveScheme(label_text);
   origin_label->SetText(label_text);
 
   return origin_label;

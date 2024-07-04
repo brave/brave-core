@@ -9,7 +9,8 @@
 #include <string>
 
 namespace brave_utils {
-void ReplaceChromeToBraveScheme(std::u16string* url_string);
+// Replaces the chrome:// scheme with brave:// scheme in the given |url_string|.
+bool ReplaceChromeToBraveScheme(std::u16string& url_string);
 }  // namespace brave_utils
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_SCHEME_UTILS_H_

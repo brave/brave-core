@@ -18,7 +18,7 @@ std::u16string AppBrowserController::FormatUrlOrigin(
     const GURL& url,
     url_formatter::FormatUrlTypes format_types) {
   std::u16string url_string = FormatUrlOrigin_ChromiumImpl(url, format_types);
-  brave_utils::ReplaceChromeToBraveScheme(&url_string);
+  brave_utils::ReplaceChromeToBraveScheme(url_string);
 
   return url_string;
 }

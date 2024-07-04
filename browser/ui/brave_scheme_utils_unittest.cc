@@ -9,14 +9,14 @@
 
 TEST(BraveSchemeUtilsTest, ReplaceChromeToBraveScheme) {
   std::u16string url_string = u"chrome://settings";
-  brave_utils::ReplaceChromeToBraveScheme(&url_string);
+  brave_utils::ReplaceChromeToBraveScheme(url_string);
   EXPECT_EQ(url_string, u"brave://settings");
 
   url_string = u"chrome://flags";
-  brave_utils::ReplaceChromeToBraveScheme(&url_string);
+  brave_utils::ReplaceChromeToBraveScheme(url_string);
   EXPECT_EQ(url_string, u"brave://flags");
 
   url_string = u"https://search.brave.com";
-  brave_utils::ReplaceChromeToBraveScheme(&url_string);
+  brave_utils::ReplaceChromeToBraveScheme(url_string);
   EXPECT_EQ(url_string, u"https://search.brave.com");
 }

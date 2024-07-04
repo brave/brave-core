@@ -11,14 +11,15 @@ namespace brave_utils {
 constexpr char16_t kChromeSchema16[] = u"chrome://";
 constexpr char16_t kBraveSchema16[] = u"brave://";
 
-void ReplaceChromeToBraveScheme(std::u16string* url_string) {
-  if (base::StartsWith(*url_string, kChromeSchema16,
+bool ReplaceChromeToBraveScheme(std::u16string& url_string) {
+  if (base::StartsWith(url_string, kChromeSchema16,
                        base::CompareCase::INSENSITIVE_ASCII)) {
-    base::ReplaceFirstSubstringAfterOffset(url_string, 0, kChromeSchema16,
+    base::ReplaceFirstSubstringAfterOffset(&url_string, 0, kChromeSchema16,
                                            kBraveSchema16);
+    return true;
   }
 
-  return;
+  return false;
 }
 
 }  // namespace brave_utils

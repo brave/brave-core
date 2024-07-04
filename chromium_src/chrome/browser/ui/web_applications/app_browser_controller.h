@@ -6,16 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEB_APPLICATIONS_APP_BROWSER_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEB_APPLICATIONS_APP_BROWSER_CONTROLLER_H_
 
-#define FormatUrlOrigin                                              \
-  FormatUrlOrigin_ChromiumImpl(                                      \
-      const GURL& url,                                               \
-      url_formatter::FormatUrlTypes format_types =                   \
-          url_formatter::kFormatUrlOmitUsernamePassword |            \
-          url_formatter::kFormatUrlOmitHTTPS |                       \
-          url_formatter::kFormatUrlOmitHTTP |                        \
-          url_formatter::kFormatUrlOmitTrailingSlashOnBareHostname | \
-          url_formatter::kFormatUrlOmitTrivialSubdomains);           \
-  static std::u16string FormatUrlOrigin
+#define FormatUrlOrigin(...)                 \
+  FormatUrlOrigin_ChromiumImpl(__VA_ARGS__); \
+  static std::u16string FormatUrlOrigin(__VA_ARGS__)
 
 #include "src/chrome/browser/ui/web_applications/app_browser_controller.h"  // IWYU pragma: export
 #undef FormatUrlOrigin
