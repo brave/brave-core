@@ -82,6 +82,8 @@ class P3AServiceTest : public testing::Test {
     config_.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
   }
 
+  void TearDown() override { p3a_service_ = nullptr; }
+
   void SetUpP3AService() {
     p3a_service_ = scoped_refptr(new P3AService(
         local_state_, "release", "2049-01-01", P3AConfig(config_)));
