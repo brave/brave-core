@@ -25,6 +25,7 @@ private class URLTextField: UITextField {
 
     self.addTarget(self, action: #selector(didBeginEditing), for: .editingDidBegin)
     self.addTarget(self, action: #selector(didEndEditing), for: .editingDidEnd)
+    self.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
   }
 
   required init?(coder: NSCoder) {
@@ -32,11 +33,15 @@ private class URLTextField: UITextField {
   }
 
   override var text: String? {
-    didSet {
-      if oldValue != text {
-        oldText = text
+    get {
+      return oldText
+    }
 
-        let urlText = text ?? ""
+    set {
+      if oldText != newValue {
+        oldText = newValue
+
+        let urlText = newValue ?? ""
         let suggestedText = URLFormatter.formatURLOrigin(
           forDisplayOmitSchemePathAndTrivialSubdomains: urlText
         )
@@ -72,6 +77,16 @@ private class URLTextField: UITextField {
     if !suggestedText.isEmpty {
       super.text = suggestedText
     }
+  }
+
+  @objc
+  private func editingChanged() {
+    // The current design of the bookmarks screen allows the user to save a bookmark without this
+    // textField ending editing (losing first responder)
+    // So the internal text tracking will not match what the user entered unless we track their typed characters.
+    // It is much easier to keep this logic here (incapsulated) than to add it to the navigation bar button.
+    // Once we rewrite bookmarks screen to SwiftUI, we can get rid of all this stuff.
+    oldText = super.text
   }
 }
 
