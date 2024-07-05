@@ -1,3 +1,5 @@
+-keep class org.chromium.components.media_router.caf.CastOptionsProvider { *; }
+
 -keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
 
 -keep class com.google.android.material.behavior.HideBottomViewOnScrollBehavior { *; }
