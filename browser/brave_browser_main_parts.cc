@@ -69,9 +69,7 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
-#if BUILDFLAG(IS_WIN)
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
-#endif
 
 BraveBrowserMainParts::BraveBrowserMainParts(bool is_integration_test,
                                              StartupData* startup_data)

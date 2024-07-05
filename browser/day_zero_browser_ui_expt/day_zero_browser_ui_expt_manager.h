@@ -33,6 +33,8 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
   void OnProfileAdded(Profile* profile) override;
   void OnProfileManagerDestroying() override;
 
+  // bool IsDayZeroExpt();
+
  private:
   friend class DayZeroBrowserUIExptTest;
 

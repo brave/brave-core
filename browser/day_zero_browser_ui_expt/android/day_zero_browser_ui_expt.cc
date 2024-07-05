@@ -9,6 +9,9 @@
 #include <vector>
 
 #include "base/strings/strcat.h"
+#include "brave/browser/brave_browser_features.h"
+#include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 #include "brave/build/android/jni_headers/DayZeroMojomHelper_jni.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,18 +19,13 @@
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
+namespace {
+constexpr int kDayZeroFeatureDurationInDays = 1;
+}  // namespace
+
 namespace day_zero {
 
-DayZeroBrowserUiExpt::DayZeroBrowserUiExpt(content::BrowserContext* context) {
-  // auto skus_service_getter = base::BindRepeating(
-  //     [](content::BrowserContext* context) {
-  //       return skus::SkusServiceFactory::GetForContext(context);
-  //     },
-  //     context);
-  // pref_service_ = Profile::FromBrowserContext(context)->GetPrefs();
-  // credential_manager_ = std::make_unique<ai_chat::AIChatCredentialManager>(
-  //     skus_service_getter, g_browser_process->local_state());
-}
+DayZeroBrowserUiExpt::DayZeroBrowserUiExpt(content::BrowserContext* context) {}
 
 DayZeroBrowserUiExpt::~DayZeroBrowserUiExpt() = default;
 
@@ -41,9 +39,9 @@ static jlong JNI_DayZeroMojomHelper_Init(
     const base::android::JavaParamRef<jobject>& jbrowser_context_handle) {
   content::BrowserContext* browser_context =
       content::BrowserContextFromJavaHandle(jbrowser_context_handle);
-  DayZeroBrowserUiExpt* settings_helper =
+  DayZeroBrowserUiExpt* day_zero_browser_ui_expt =
       new DayZeroBrowserUiExpt(browser_context);
-  return reinterpret_cast<intptr_t>(settings_helper);
+  return reinterpret_cast<intptr_t>(day_zero_browser_ui_expt);
 }
 
 void DayZeroBrowserUiExpt::Destroy(JNIEnv* env) {
@@ -58,7 +56,44 @@ jlong DayZeroBrowserUiExpt::GetInterfaceToAndroidHelper(JNIEnv* env) {
 }
 
 void DayZeroBrowserUiExpt::IsDayZeroExpt(IsDayZeroExptCallback callback) {
-  std::move(callback).Run(true);
+  if (!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    LOG(ERROR)
+        << "NTP : "
+        << "!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)";
+    return std::move(callback).Run(false);
+  }
+
+  LOG(ERROR) << "NTP : " << "IsDayZeroExpt 2";
+
+  std::optional<std::string> day_zero_variant;
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  }
+
+  LOG(ERROR) << "NTP : " << "IsDayZeroExpt 3";
+
+  if (!day_zero_variant) {
+    LOG(ERROR) << "NTP : " << "!day_zero_variant";
+    return std::move(callback).Run(false);
+  }
+  LOG(ERROR) << "NTP : " << "IsDayZeroExpt 4";
+
+  LOG(ERROR) << "NTP : " << "day_zero_variant : "
+             << features::kBraveDayZeroExperimentVariant.Get();
+  LOG(ERROR) << "NTP : " << "base::Time::Now() : " << base::Time::Now();
+  LOG(ERROR) << "NTP : " << "brave_stats::GetFirstRunTime(pref_service_) : "
+             << brave_stats::GetFirstRunTime(g_browser_process->local_state());
+  LOG(ERROR) << "NTP : "
+             << "base::Time::Now() - brave_stats::GetFirstRunTime(nullptr) : "
+             << base::Time::Now() - brave_stats::GetFirstRunTime(
+                                        g_browser_process->local_state());
+  if (day_zero_variant == "a" &&
+      (base::Time::Now() -
+           brave_stats::GetFirstRunTime(g_browser_process->local_state()) >=
+       base::Days(kDayZeroFeatureDurationInDays))) {
+    return std::move(callback).Run(true);
+  }
+  return std::move(callback).Run(false);
 }
 
 }  // namespace day_zero

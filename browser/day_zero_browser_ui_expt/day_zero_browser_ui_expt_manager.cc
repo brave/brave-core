@@ -52,6 +52,28 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
   return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager));
 }
 
+// bool DayZeroBrowserUIExptManager::IsDayZeroExpt() {
+//   if (!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+//     return false;
+//   }
+
+//   std::optional<std::string> day_zero_variant;
+//   if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+//     day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+//   }
+
+//   if (day_zero_variant == nullptr) {
+//     return false;
+//   }
+
+
+//   if (day_zero_variant == "A" && brave_stats::GetFirstRunTime(nullptr) >=
+//       base::Days(kDayZeroFeatureDurationInDays)) {
+//     return true;
+//   }
+//   return false;
+// }
+
 DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
     ProfileManager* profile_manager,
     std::optional<base::Time> mock_first_run_time)

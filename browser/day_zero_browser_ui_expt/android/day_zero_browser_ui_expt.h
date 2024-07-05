@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_DAY_ZERO_BROWSER_UI_EXPT_H_
-#define BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_DAY_ZERO_BROWSER_UI_EXPT_H_
+#ifndef BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_ANDROID_DAY_ZERO_BROWSER_UI_EXPT_H_
+#define BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_ANDROID_DAY_ZERO_BROWSER_UI_EXPT_H_
 
 #include <memory>
 #include <string>
@@ -18,6 +18,8 @@
 namespace content {
 class BrowserContext;
 }  // namespace content
+
+class PrefService;
 
 namespace day_zero {
 
@@ -36,10 +38,11 @@ class DayZeroBrowserUiExpt : public mojom::DayZeroBrowserUiExpt {
   jlong GetInterfaceToAndroidHelper(JNIEnv* env);
 
  private:
+  raw_ptr<PrefService> pref_service_ = nullptr;
   mojo::ReceiverSet<mojom::DayZeroBrowserUiExpt> receivers_;
   base::WeakPtrFactory<DayZeroBrowserUiExpt> weak_ptr_factory_{this};
 };
 
 }  // namespace day_zero
 
-#endif  // BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_DAY_ZERO_BROWSER_UI_EXPT_H_
+#endif  // BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_ANDROID_DAY_ZERO_BROWSER_UI_EXPT_H_

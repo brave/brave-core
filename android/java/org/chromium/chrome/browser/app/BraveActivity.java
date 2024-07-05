@@ -123,6 +123,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.CryptoAccountTypeInfo;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.day_zero.DayZeroMojomHelper;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
@@ -994,6 +995,12 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        DayZeroMojomHelper.getInstance(getCurrentProfile())
+                .isDayZeroExpt(
+                        (status) -> {
+                            Log.e("NTP", "DayZeroMojomHelper : DayZeroMojomHelper : " + status);
+                        });
 
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
