@@ -13,6 +13,7 @@ import ThemeProvider from '$web-common/BraveCoreThemeProvider'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import Main from '../components/main'
 import * as mojom from '../api/'
+import FullScreen from '../components/full_screen'
 import FeedbackForm from '../components/feedback_form'
 import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
@@ -497,6 +498,16 @@ export const _FeedbackForm = {
     return (
       <div className={styles.container}>
         <FeedbackForm />
+      </div>
+    )
+  }
+}
+
+export const _Fullscreen = {
+  render: () => {
+    return (
+      <div className={styles.containerFull}>
+        <FullScreen />
       </div>
     )
   }
