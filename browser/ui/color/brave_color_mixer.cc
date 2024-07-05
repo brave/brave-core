@@ -443,6 +443,8 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   AddMaterialSidePanelColorMixer(provider, key);
 
   // TODO(simonhong): Use leo color when it's ready.
+  // TODO(simonhong): Move these overriding to
+  // AddChromeColorMixerForAllThemes().
   ui::ColorMixer& mixer = provider->AddMixer();
   mixer[kColorAppMenuHighlightSeverityLow] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x00, 0x46, 0x07),
@@ -453,6 +455,7 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorAppMenuHighlightSeverityHigh] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x7D, 0x00, 0x1A),
                                     SkColorSetRGB(0xFF, 0xB3, 0xB2))};
+  mixer[kColorInfoBarBackground] = {kColorToolbar};
 
   if (key.custom_theme) {
     return;
