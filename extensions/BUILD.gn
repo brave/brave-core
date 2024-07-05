@@ -29,10 +29,7 @@ if (is_android || is_ios) {
     ]
 
     if (is_ios) {
-      sources += [
-        "//content/public/common/url_constants.cc",
-        "//content/public/common/url_constants.h",
-      ]
+      sources += [ "//content/public/common/url_constants.h" ]
       deps += [
         "//build:chromecast_buildflags",
         "//build:chromeos_buildflags",
