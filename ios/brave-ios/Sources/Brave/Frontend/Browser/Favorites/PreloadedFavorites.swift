@@ -27,8 +27,8 @@ struct PreloadedFavorites {
         list.append(FavoriteSite(url: url, title: "Wikipedia"))
       }
 
-      if let url = URL(string: "https://mobile.twitter.com/") {
-        list.append(FavoriteSite(url: url, title: "Twitter"))
+      if let url = URL(string: "https://x.com/") {
+        list.append(FavoriteSite(url: url, title: "X"))
       }
 
       if let url = URL(string: "https://reddit.com/") {
@@ -57,8 +57,8 @@ struct PreloadedFavorites {
         list.append(FavoriteSite(url: url, title: "Braveガイド"))
       }
 
-      if let url = URL(string: "https://mobile.twitter.com/") {
-        list.append(FavoriteSite(url: url, title: "Twitter"))
+      if let url = URL(string: "https://x.com/") {
+        list.append(FavoriteSite(url: url, title: "X"))
       }
 
       return list
