@@ -788,8 +788,7 @@ void BraveAddAboutStrings(content::WebUIDataSource* html_source,
                           Profile* profile) {
   std::u16string license = l10n_util::GetStringFUTF16(
       IDS_BRAVE_VERSION_UI_LICENSE, kBraveLicenseUrl,
-      base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
-      kBraveBuildInstructionsUrl,
+      chrome::kChromeUICreditsURL16, kBraveBuildInstructionsUrl,
       kBraveReleaseTagPrefix +
           base::UTF8ToUTF16(
               version_info::GetBraveVersionWithoutChromiumMajorVersion()));

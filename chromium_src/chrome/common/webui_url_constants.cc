@@ -10,15 +10,8 @@
   kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost,     \
       kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost, kWalletPageHost, \
       kTorInternalsHost, kSkusInternalsHost
-#define kPerformanceSubPage kPerformanceSubPage_UnUsed
 
 #include "src/chrome/common/webui_url_constants.cc"
 
-#undef kPerformanceSubPage
 #undef kChromeUIAttributionInternalsHost
 
-namespace chrome {
-
-const char kPerformanceSubPage[] = "system";
-
-}  // namespace chrome
