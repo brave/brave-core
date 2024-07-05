@@ -23,7 +23,6 @@ program
   .option('--force', 'force reset all projects to origin/ref')
   .option('--fetch_all', 'fetch all tags and branch heads')
   .option('--sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
-  .option('--ignore_chromium', 'do not update chromium version even if it is stale [deprecated, use --sync_chromium=false]')
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
 
@@ -59,13 +58,6 @@ async function RunCommand() {
   }
 
   config.update(program)
-
-  if (program.ignore_chromium) {
-    Log.warn(
-        '--ignore_chromium is deprecated, please replace with ' +
-        '--sync_chromium=false')
-    program.sync_chromium = false
-  }
 
   depotTools.installDepotTools()
 
