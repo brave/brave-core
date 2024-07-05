@@ -102,8 +102,11 @@ public class TokenUtils {
         return tokenStream.toArray(BlockchainToken[] ::new);
     }
 
-    public static void getVisibleUserAssetsFiltered(BraveWalletService braveWalletService,
-            NetworkInfo selectedNetwork, int coinType, TokenType tokenType,
+    public static void getVisibleUserAssetsFiltered(
+            BraveWalletService braveWalletService,
+            NetworkInfo selectedNetwork,
+            int coinType,
+            TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         braveWalletService.getUserAssets(
                 selectedNetwork.chainId,
