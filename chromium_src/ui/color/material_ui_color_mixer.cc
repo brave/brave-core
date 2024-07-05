@@ -47,7 +47,8 @@ void AddMaterialUiColorMixer(ColorProvider* provider,
   mixer[ui::kColorToolbarSearchFieldBackground] = {
       ui::kColorSysBaseContainerElevated};
   mixer[ui::kColorToolbarSearchFieldBackgroundHover] = {
-      ui::kColorSysStateHoverCutout};
+      is_dark ? SetAlpha({ui::kColorRefNeutral10}, 0x0F)
+              : SetAlpha({ui::kColorRefNeutral20}, 0x1F)};
   mixer[ui::kColorToolbarSearchFieldBackgroundPressed] = {
       ui::kColorSysStateRippleNeutralOnSubtle};
   mixer[ui::kColorToolbarSearchFieldForeground] = {ui::kColorSysOnSurface};
