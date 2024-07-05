@@ -14,12 +14,18 @@ if [[ $RUN_CLANG_STATIC_ANALYZER = "NO" ]]; then
     if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
       . "$HOME/.nvm/nvm.sh"
     else
-      if [[ -x "$(command -v brew)" ]]; then
-        if [[ -s "$(brew --prefix nvm)/nvm.sh" ]]; then
-          . "$(brew --prefix nvm)/nvm.sh"
+        BREW='brew'
+        if [[ $(uname -p) == 'arm' ]]; then
+            # On Apple Silicon (M1, M2, M3) Brew is not part
+            # of the PATH.
+            BREW='/opt/homebrew/bin/brew'
+        fi
+      if [[ -x "$(command -v $BREW)" ]]; then
+        if [[ -s "$($BREW --prefix nvm)/nvm.sh" ]]; then
+          . "$($BREW --prefix nvm)/nvm.sh"
         else
           # Fixup PATH for brew users
-          export PATH="$PATH:$(brew --prefix)/bin"
+          eval "$($BREW shellenv)"
         fi
       fi
     fi
