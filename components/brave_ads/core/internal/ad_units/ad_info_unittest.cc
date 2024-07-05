@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

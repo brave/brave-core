@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"

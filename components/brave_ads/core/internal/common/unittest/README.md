@@ -121,7 +121,7 @@ You can add one or more responses per request, which will be returned in the giv
 
 ## Mocking Settings
 
-See [settings_unittest_util.h](../../settings/settings_unittest_util.h).
+See [settings_test_util.h](../../settings/settings_test_util.h).
 
 ## Mocking Client
 

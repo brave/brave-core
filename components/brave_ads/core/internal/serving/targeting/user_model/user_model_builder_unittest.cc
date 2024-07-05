@@ -10,13 +10,13 @@
 
 #include "base/metrics/field_trial_params.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
+#include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

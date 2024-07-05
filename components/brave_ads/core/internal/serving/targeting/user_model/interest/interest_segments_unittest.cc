@@ -8,11 +8,11 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/targeting_unittest_helper.h"
+#include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

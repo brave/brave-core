@@ -37,12 +37,12 @@ source_set("unit_tests") {
 
   sources = [
     "creatives/search_result_ad/creative_search_result_ad_handler_unittest.cc",
-    "creatives/search_result_ad/creative_search_result_ad_mojom_unittest_util.cc",
-    "creatives/search_result_ad/creative_search_result_ad_mojom_unittest_util.h",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_test_util.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_test_util.h",
     "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor_unittest.cc",
     "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.cc",
     "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h",
-    "creatives/search_result_ad/creative_search_result_ad_unittest_constants.h",
+    "creatives/search_result_ad/creative_search_result_ad_test_constants.h",
     "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor_unittest.cc",
   ]
 
