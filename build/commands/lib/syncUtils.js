@@ -71,7 +71,7 @@ function buildDefaultGClientConfig(
     out += toGClientConfigItem('target_cpu', targetArchList, false)
   }
 
-  fs.writeFileSync(config.defaultGClientFile, out)
+  util.writeFileIfModified(config.defaultGClientFile, out)
 }
 
 function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {

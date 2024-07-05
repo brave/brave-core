@@ -69,16 +69,13 @@ async function RunCommand() {
 
   depotTools.installDepotTools()
 
-  if (program.init || !fs.existsSync(config.defaultGClientFile)) {
+  if (
+    program.init ||
+    program.target_os ||
+    program.target_arch ||
+    !fs.existsSync(config.defaultGClientFile)
+  ) {
     syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
-  } else if (program.target_os) {
-    Log.warn(
-        '--target_os is ignored. If you are attempting to sync with ' +
-        'a different target_os argument from that used originally via init ' +
-        '(and specified in the .gclient file), then you will likely not end ' +
-        'up with the correct dependency projects. Specify new target_os ' +
-        'values with --init, or edit .gclient manually before running sync ' +
-        'again.')
   }
 
   if (config.isCI) {
