@@ -26,6 +26,7 @@ import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
 import ToolsButtonMenu from '../tools_button_menu'
+import SidebarNav from '../sidebar_nav'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -106,6 +107,11 @@ function Main() {
 
   return (
     <main className={styles.main}>
+      {context.isConversationListOpen && (
+        <div className={styles.conversationList}>
+          <SidebarNav enableBackButton={true} />
+        </div>
+      )}
       {context.showAgreementModal && <PrivacyMessage />}
       <div className={styles.header}>
         <div className={styles.logo}>

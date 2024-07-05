@@ -92,6 +92,7 @@ function DataContextProvider(props: DataContextProviderProps) {
   const [selectedActionType, setSelectedActionType] = React.useState<mojom.ActionType | undefined>()
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
   const actionList = useActionMenu(inputText, () => getPageHandlerInstance().pageHandler.getActionMenuList().then(({ actionList }) => actionList))
+  const [isConversationListOpen, setIsConversationListOpen] = React.useState(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -412,6 +413,8 @@ function DataContextProvider(props: DataContextProviderProps) {
     isToolsMenuOpen,
     actionList,
     isCurrentModelLeo,
+    isConversationListOpen,
+    setIsConversationListOpen,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
