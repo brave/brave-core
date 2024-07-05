@@ -150,7 +150,7 @@ function Main() {
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        <div className={styles.conversationContainer}>
+        <div className={styles.conversationContent}>
           {context.hasAcceptedAgreement && <>
             <ModelIntro />
             <ConversationList
