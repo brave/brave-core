@@ -93,7 +93,7 @@ struct AIChatNavigationView<Content>: View where Content: View {
           Button {
             showSettingsMenu = true
           } label: {
-            Image(braveSystemName: "leo.settings")
+            Image(braveSystemName: "leo.more.horizontal")
               .tint(Color(braveSystemName: .textInteractive))
               .padding([.trailing, .top, .bottom])
               .padding(.leading, 8.0)

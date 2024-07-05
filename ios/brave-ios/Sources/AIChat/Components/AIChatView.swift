@@ -70,6 +70,10 @@ public struct AIChatView: View {
         isMenusAvailable: hasSeenIntro.value && model.isAgreementAccepted,
         premiumStatus: model.premiumStatus,
         onClose: {
+          if !model.isAgreementAccepted {
+            hasSeenIntro.value = false
+          }
+
           dismiss()
         },
         onErase: {
@@ -84,11 +88,15 @@ public struct AIChatView: View {
         .frame(height: 1.0)
 
       VStack(spacing: 0.0) {
-        GeometryReader { geometry in
-          ScrollViewReader { scrollViewReader in
-            ScrollView {
-              if hasSeenIntro.value {
-                if model.isAgreementAccepted {
+        if hasSeenIntro.value && !model.isAgreementAccepted {
+          AIChatTermsAndConditionsView(
+            termsAndConditionsAccepted: $model.isAgreementAccepted
+          )
+        } else {
+          GeometryReader { geometry in
+            ScrollViewReader { scrollViewReader in
+              ScrollView {
+                if hasSeenIntro.value {
                   VStack(spacing: 0.0) {
                     if model.shouldShowPremiumPrompt {
                       AIChatPremiumUpsellView(
@@ -214,22 +222,16 @@ public struct AIChatView: View {
                     }
                   }
                 } else {
-                  AIChatTermsAndConditionsView(
-                    termsAndConditionsAccepted: $model.isAgreementAccepted
+                  AIChatIntroView(
+                    onSummarizePage: model.isContentAssociationPossible
+                      && model.shouldSendPageContents
+                      ? {
+                        hasSeenIntro.value = true
+                        model.summarizePage()
+                      } : nil
                   )
-                  .padding()
-                  .frame(minHeight: geometry.size.height)
+                  .frame(minHeight: geometry.size.height, alignment: .bottom)
                 }
-              } else {
-                AIChatIntroView(
-                  onSummarizePage: model.isContentAssociationPossible
-                    && model.shouldSendPageContents
-                    ? {
-                      hasSeenIntro.value = true
-                      model.summarizePage()
-                    } : nil
-                )
-                .frame(minHeight: geometry.size.height, alignment: .bottom)
               }
             }
           }
