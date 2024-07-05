@@ -43,7 +43,7 @@ void NewTabPageAdEventHandler::FireEvent(
                              std::move(callback));
   }
 
-  database_table_.GetForCreativeInstanceId(
+  creative_ads_database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           &NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback,
@@ -117,9 +117,12 @@ void NewTabPageAdEventHandler::FireEventCallback(
     const mojom::NewTabPageAdEventType event_type,
     FireNewTabPageAdEventHandlerCallback callback,
     const bool success) const {
-  success ? SuccessfullyFiredEvent(ad, event_type, std::move(callback))
-          : FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
-                              event_type, std::move(callback));
+  if (!success) {
+    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                             event_type, std::move(callback));
+  }
+
+  SuccessfullyFiredEvent(ad, event_type, std::move(callback));
 }
 
 void NewTabPageAdEventHandler::SuccessfullyFiredEvent(

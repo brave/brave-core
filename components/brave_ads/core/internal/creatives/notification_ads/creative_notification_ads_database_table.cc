@@ -294,7 +294,8 @@ void CreativeNotificationAds::GetForSegments(
           WHERE
             segments.segment IN $2
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at;)",
-      {GetTableName(), BuildBindingParameterPlaceholder(segments.size()),
+      {GetTableName(),
+       BuildBindingParameterPlaceholder(/*parameters_count=*/segments.size()),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
   BindRecords(&*command);

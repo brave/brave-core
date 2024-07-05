@@ -47,10 +47,10 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
                         << base::to_underlying(ad_event.type);
 }
 
-bool HasObservationWindowForAdEventExpired(
-    const base::TimeDelta observation_window,
-    const AdEventInfo& ad_event) {
-  return ad_event.created_at < base::Time::Now() - observation_window;
+bool DidAdEventOccurWithinObservationWindow(
+    const AdEventInfo& ad_event,
+    const base::TimeDelta observation_window) {
+  return ad_event.created_at >= base::Time::Now() - observation_window;
 }
 
 }  // namespace brave_ads

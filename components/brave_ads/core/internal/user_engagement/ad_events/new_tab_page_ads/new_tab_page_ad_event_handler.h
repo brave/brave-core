@@ -87,7 +87,7 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
 
   raw_ptr<NewTabPageAdEventHandlerDelegate> delegate_ = nullptr;
 
-  const database::table::CreativeNewTabPageAds database_table_;
+  const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 

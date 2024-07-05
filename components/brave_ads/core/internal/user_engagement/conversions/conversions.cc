@@ -197,7 +197,7 @@ void Conversions::CheckForConversions(
         continue;
       }
 
-      creative_set_conversion_counts[creative_set_id]++;
+      ++creative_set_conversion_counts[creative_set_id];
       if (creative_set_conversion_counts[creative_set_id] >=
           creative_set_conversion_cap) {
         // Yes, so stop converting.
@@ -213,7 +213,7 @@ void Conversions::CheckForConversions(
   }
 
   if (!did_convert) {
-    BLOG(1, "There are no conversions");
+    BLOG(1, "There were no conversion matches");
   }
 }
 

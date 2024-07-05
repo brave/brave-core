@@ -69,7 +69,7 @@ std::string FindBSDNameOfSystemDisk() {
 }
 
 // Return the Volume UUID property of a BSD disk name (e.g. '/dev/disk1').
-// Returns an empty string if an error occured.
+// Returns an empty string if an error occurred.
 std::string GetVolumeUUIDFromBSDName(const std::string& bsd_name) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::MAY_BLOCK);

@@ -83,9 +83,9 @@ void MockPlatformHelper(const PlatformHelperMock& mock,
     }
   }
 
-  ON_CALL(mock, IsMobile()).WillByDefault(::testing::Return(is_mobile));
-  ON_CALL(mock, GetName()).WillByDefault(::testing::Return(name));
-  ON_CALL(mock, GetType()).WillByDefault(::testing::Return(type));
+  ON_CALL(mock, IsMobile).WillByDefault(::testing::Return(is_mobile));
+  ON_CALL(mock, GetName).WillByDefault(::testing::Return(name));
+  ON_CALL(mock, GetType).WillByDefault(::testing::Return(type));
 }
 
 void MockBuildChannel(const BuildChannelType type) {
@@ -123,7 +123,7 @@ void MockIsNetworkConnectionAvailable(const AdsClientMock& mock,
 }
 
 void MockIsBrowserActive(const AdsClientMock& mock, const bool is_active) {
-  ON_CALL(mock, IsBrowserActive()).WillByDefault(::testing::Return(is_active));
+  ON_CALL(mock, IsBrowserActive).WillByDefault(::testing::Return(is_active));
 }
 
 void MockIsBrowserInFullScreenMode(const AdsClientMock& mock,

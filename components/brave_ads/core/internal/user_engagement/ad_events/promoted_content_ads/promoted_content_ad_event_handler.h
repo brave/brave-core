@@ -91,7 +91,8 @@ class PromotedContentAdEventHandler final
 
   raw_ptr<PromotedContentAdEventHandlerDelegate> delegate_ = nullptr;
 
-  const database::table::CreativePromotedContentAds database_table_;
+  const database::table::CreativePromotedContentAds
+      creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 
