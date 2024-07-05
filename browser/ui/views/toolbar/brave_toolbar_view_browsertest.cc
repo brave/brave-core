@@ -153,6 +153,11 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, VPNButtonVisibility) {
 }
 #endif
 
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
+  // As we don't use divider in toolbar, it should be null always.
+  EXPECT_TRUE(!toolbar_view_->toolbar_divider_for_testing());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        AvatarButtonNotShownSingleProfile) {
   EXPECT_EQ(false, is_avatar_button_shown());
