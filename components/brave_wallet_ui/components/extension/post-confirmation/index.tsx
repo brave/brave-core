@@ -14,12 +14,10 @@ import { BraveWallet, TransactionInfoLookup } from '../../../constants/types'
 import { getLocale } from '$web-common/locale'
 import {
   findTransactionToken,
-  getETHSwapTransactionBuyAndSellTokens,
   getFormattedTransactionTransferredValue,
   getTransactionErc721TokenId,
   getTransactionIntent
 } from '../../../utils/tx-utils'
-import { makeNetworkAsset } from '../../../options/asset-options'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { makeTransactionDetailsRoute } from '../../../utils/routes-utils'
 
@@ -32,6 +30,7 @@ import {
   useAccountQuery,
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
+import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 
 // Actions
 import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions'
@@ -69,10 +68,8 @@ export function TransactionStatus({ transactionLookup }: Props) {
   const transactionNetwork = useTransactionsNetwork(tx || undefined)
   const { transactionsQueueLength } = usePendingTransactions()
 
-  // memos
-  const networkAsset = React.useMemo(() => {
-    return makeNetworkAsset(transactionNetwork)
-  }, [transactionNetwork])
+  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+    useSwapTransactionParser(tx ?? undefined)
 
   const transactionIntent = React.useMemo(() => {
     if (!tx) {
@@ -80,13 +77,6 @@ export function TransactionStatus({ transactionLookup }: Props) {
     }
 
     const token = findTransactionToken(tx, combinedTokensList)
-
-    const { buyAmount, sellAmount, buyToken, sellToken } =
-      getETHSwapTransactionBuyAndSellTokens({
-        tokensList: combinedTokensList,
-        tx,
-        nativeAsset: networkAsset
-      })
 
     const { normalizedTransferredValue } =
       getFormattedTransactionTransferredValue({
@@ -96,6 +86,13 @@ export function TransactionStatus({ transactionLookup }: Props) {
         token,
         sellToken
       })
+
+    const buyAmount = buyToken
+      ? buyAmountWei.divideByDecimals(buyToken.decimals)
+      : undefined
+    const sellAmount = sellToken
+      ? sellAmountWei.divideByDecimals(sellToken.decimals)
+      : undefined
 
     return getTransactionIntent({
       tx,
@@ -108,7 +105,16 @@ export function TransactionStatus({ transactionLookup }: Props) {
       token,
       transactionNetwork
     })
-  }, [tx, combinedTokensList, networkAsset, txAccount, transactionNetwork])
+  }, [
+    tx,
+    combinedTokensList,
+    txAccount,
+    transactionNetwork,
+    buyToken,
+    sellToken,
+    buyAmountWei,
+    sellAmountWei
+  ])
 
   // methods
   const viewTransactionDetail = React.useCallback(() => {

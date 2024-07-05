@@ -89,7 +89,8 @@ export const getMockedTransactionInfo =
         eTldPlusOne: 'brave.com'
       },
       effectiveRecipient: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     }
   }
 
@@ -563,7 +564,8 @@ SerializableTransactionInfo = {
     eTldPlusOne: 'csb.app'
   },
   effectiveRecipient: undefined,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockSolDappSignAllTransactionsRequest: //

@@ -422,6 +422,11 @@ export const findTransactionToken = <
   )
 }
 
+// Use this function to synchronously extract swap/bridge details from a
+// transaction.
+//
+// Prefer using useSwapTransactionParser() hook in React components, which
+// can asynchronously extract details from the blockchain.
 export const getETHSwapTransactionBuyAndSellTokens = ({
   nativeAsset,
   tokensList,
@@ -438,67 +443,77 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
   sellAmount: Amount
   sellAmountWei: Amount
 } => {
-  if (!tx || tx.txType !== BraveWallet.TransactionType.ETHSwap) {
+  if (
+    !tx ||
+    !tx.swapInfo ||
+    tx.txType !== BraveWallet.TransactionType.ETHSwap
+  ) {
     return {
       buyToken: undefined,
       sellToken: undefined,
-      buyAmount: new Amount(''),
-      sellAmount: new Amount(''),
-      sellAmountWei: new Amount(''),
-      buyAmountWei: new Amount('')
+      buyAmount: Amount.empty(),
+      sellAmount: Amount.empty(),
+      sellAmountWei: Amount.empty(),
+      buyAmountWei: Amount.empty()
     }
   }
 
-  // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-  const [fillPath, sellAmountArg, minBuyAmountArg] = tx.txArgs
+  const sellToken =
+    tx.swapInfo.fromAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+      ? nativeAsset
+      : findTokenByContractAddress(tx.swapInfo.fromAsset, tokensList) ||
+        // token not found
+        // return a "faked" coin (will need to "discover" it later)
+        ({
+          chainId: tx.swapInfo.fromChainId,
+          coin: tx.swapInfo.fromCoin,
+          contractAddress: tx.swapInfo.fromAsset,
+          symbol: '???',
+          isErc20: true,
+          coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
+          name: tx.swapInfo.fromAsset,
+          logo: 'chrome://erc-token-images/',
+          tokenId: '',
+          isErc1155: false,
+          isErc721: false,
+          isNft: false,
+          isSpam: false,
+          visible: true
+        } as BraveWallet.BlockchainToken)
 
-  const fillContracts = fillPath.slice(2).match(/.{1,40}/g)
-
-  const fillTokens: BraveWallet.BlockchainToken[] = (fillContracts || [])
-    .map((path) => '0x' + path)
-    .map((address) =>
-      address === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-        ? nativeAsset
-        : findTokenByContractAddress(address, tokensList) ||
-          // token not found
-          // return a "faked" coin (will need to "discover" it later)
-          ({
-            chainId: tx.chainId,
-            coin: getCoinFromTxDataUnion(tx.txDataUnion),
-            contractAddress: address,
-            symbol: '???',
-            isErc20: true,
-            coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
-            name: address,
-            logo: 'chrome://erc-token-images/',
-            tokenId: '',
-            isErc1155: false,
-            isErc721: false,
-            isNft: false,
-            isSpam: false,
-            visible: true
-          } as BraveWallet.BlockchainToken)
-    )
-    .filter((t): t is BraveWallet.BlockchainToken => Boolean(t))
-
-  const sellToken = fillTokens.length === 1 ? nativeAsset : fillTokens[0]
-
-  const sellAmountRaw =
-    sellToken?.contractAddress === ''
-      ? tx.txDataUnion.ethTxData1559?.baseData.value ||
-        tx.txDataUnion.ethTxData?.value ||
-        sellAmountArg ||
-        ''
-      : sellAmountArg || ''
-
-  const sellAmountWei = new Amount(sellAmountRaw)
-
+  const sellAmountWei = new Amount(tx.swapInfo.fromAmount)
   const sellAmount = sellToken
     ? sellAmountWei.divideByDecimals(sellToken.decimals)
     : Amount.empty()
 
-  const buyToken = fillTokens[fillTokens.length - 1]
-  const buyAmountWei = new Amount(minBuyAmountArg)
+  const buyToken =
+    tx.swapInfo.toAsset === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+      ? nativeAsset
+      : tx.swapInfo.toAsset
+      ? findTokenByContractAddress(tx.swapInfo.toAsset, tokensList) ||
+        // token not found
+        // return a "faked" coin (will need to "discover" it later)
+        ({
+          chainId: tx.swapInfo.toChainId,
+          coin: tx.swapInfo.toCoin,
+          contractAddress: tx.swapInfo.toAsset,
+          symbol: '???',
+          isErc20: true,
+          coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
+          name: tx.swapInfo.toAsset,
+          logo: 'chrome://erc-token-images/',
+          tokenId: '',
+          isErc1155: false,
+          isErc721: false,
+          isNft: false,
+          isSpam: false,
+          visible: true
+        } as BraveWallet.BlockchainToken)
+      : undefined
+
+  const buyAmountWei = tx.swapInfo.toAmount
+    ? new Amount(tx.swapInfo.toAmount)
+    : Amount.empty()
   const buyAmount = buyToken
     ? buyAmountWei.divideByDecimals(buyToken.decimals)
     : Amount.empty()
@@ -608,7 +623,7 @@ export function getTransactionTransferredValue(
   wei: Amount
   normalized: Amount
 } {
-  const { tx, txAccount, txNetwork, token, sellToken } = args
+  const { tx, txAccount, txNetwork, token } = args
 
   // Can't compute value with network decimals if no network or no account was
   // provided
@@ -647,13 +662,15 @@ export function getTransactionTransferredValue(
 
   // ETH Swap
   if (tx.txType === BraveWallet.TransactionType.ETHSwap) {
-    // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-    const [, sellAmountArg] = tx.txArgs
-    const wei = new Amount(sellAmountArg || getTransactionBaseValue(tx))
+    const { sellAmountWei, sellToken } = getETHSwapTransactionBuyAndSellTokens({
+      tx,
+      tokensList: []
+    })
+    const wei = sellAmountWei
     return {
-      wei,
+      wei: sellAmountWei,
       normalized: sellToken
-        ? wei.divideByDecimals(sellToken.decimals ?? txNetwork.decimals)
+        ? wei.divideByDecimals(sellToken.decimals)
         : Amount.empty()
     }
   }
@@ -1670,7 +1687,6 @@ export const parseTransactionWithoutPrices = ({
   return {
     approvalTarget,
     approvalTargetLabel,
-    buyToken,
     chainId: transactionNetwork?.chainId || '',
     coinType,
     contractAddressError,

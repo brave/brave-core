@@ -127,11 +127,11 @@ GURL AppendZeroExSwapParams(const GURL& swap_url,
 
   url = net::AppendQueryParameter(url, "buyToken",
                                   params.to_token.empty()
-                                      ? kZeroExNativeAssetContractAddress
+                                      ? kNativeEVMAssetContractAddress
                                       : params.to_token);
   url = net::AppendQueryParameter(url, "sellToken",
                                   params.from_token.empty()
-                                      ? kZeroExNativeAssetContractAddress
+                                      ? kNativeEVMAssetContractAddress
                                       : params.from_token);
 
   if (fee_param.has_value() && !fee_param->empty()) {

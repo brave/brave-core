@@ -1479,8 +1479,6 @@ inline constexpr char kEVMFeeRecipient[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 inline constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
-inline constexpr char kZeroExNativeAssetContractAddress[] =
-    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 // Jupiter swap constants
 inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
@@ -1505,6 +1503,10 @@ inline constexpr char kLiFiNativeEVMAssetContractAddress[] =
     "0x0000000000000000000000000000000000000000";
 inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
     "So11111111111111111111111111111111111111112";
+
+// LiFi // 0x common constants
+constexpr char kNativeEVMAssetContractAddress[] =
+    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;

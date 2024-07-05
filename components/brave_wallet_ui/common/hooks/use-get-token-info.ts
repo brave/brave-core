@@ -34,7 +34,7 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
       (t) =>
         t.contractAddress.toLowerCase() === arg.contractAddress.toLowerCase() &&
         t.chainId === arg.network.chainId &&
-        t.coin === arg.network.coin &&
+        t.coin === arg.network.coin &&  
         (!arg.tokenId || arg.tokenId === t.tokenId)
     )
   }, [combinedTokensList, arg])
@@ -49,7 +49,7 @@ export default function useGetTokenInfo(arg: Arg | typeof skipToken) {
       arg.contractAddress &&
       !tokenInfoFromTokensList
       ? {
-          coin: arg.network.coin,
+          coin: arg.network.coin, 
           chainId: arg.network.chainId,
           contractAddress: arg.contractAddress
         }
