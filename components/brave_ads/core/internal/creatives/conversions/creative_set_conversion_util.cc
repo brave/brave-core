@@ -40,7 +40,7 @@ CreativeSetConversionCountMap GetCreativeSetConversionCounts(
 
   for (const auto& ad_event : ad_events) {
     if (ad_event.confirmation_type == ConfirmationType::kConversion) {
-      creative_set_conversion_counts[ad_event.creative_set_id]++;
+      ++creative_set_conversion_counts[ad_event.creative_set_id];
     }
   }
 
@@ -84,8 +84,8 @@ CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
       creative_set_conversions,
       std::back_inserter(unexpired_creative_set_conversions),
       [&ad_event](const CreativeSetConversionInfo& creative_set_conversion) {
-        return !HasObservationWindowForAdEventExpired(
-            creative_set_conversion.observation_window, ad_event);
+        return DidAdEventOccurWithinObservationWindow(
+            ad_event, creative_set_conversion.observation_window);
       });
 
   return unexpired_creative_set_conversions;

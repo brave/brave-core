@@ -51,8 +51,11 @@ void NotificationAdEventHandler::FireEventCallback(
     const mojom::NotificationAdEventType event_type,
     FireNotificationAdEventHandlerCallback callback,
     const bool success) const {
-  success ? SuccessfullyFiredEvent(ad, event_type, std::move(callback))
-          : FailedToFireEvent(ad.placement_id, event_type, std::move(callback));
+  if (!success) {
+    return FailedToFireEvent(ad.placement_id, event_type, std::move(callback));
+  }
+
+  SuccessfullyFiredEvent(ad, event_type, std::move(callback));
 }
 
 void NotificationAdEventHandler::SuccessfullyFiredEvent(

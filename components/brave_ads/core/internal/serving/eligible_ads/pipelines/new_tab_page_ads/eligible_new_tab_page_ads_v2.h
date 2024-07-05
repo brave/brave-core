@@ -61,7 +61,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
                                    const AdEventList& ad_events,
                                    const BrowsingHistoryList& browsing_history);
 
-  const database::table::CreativeNewTabPageAds database_table_;
+  const database::table::CreativeNewTabPageAds creative_ads_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 

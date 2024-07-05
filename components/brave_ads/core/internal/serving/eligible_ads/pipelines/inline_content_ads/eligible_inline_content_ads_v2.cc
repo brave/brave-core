@@ -80,7 +80,7 @@ void EligibleInlineContentAdsV2::GetEligibleAds(
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  database_table_.GetForDimensions(
+  creative_ads_database_table_.GetForDimensions(
       dimensions,
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),

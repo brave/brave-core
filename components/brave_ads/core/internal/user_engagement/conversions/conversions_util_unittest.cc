@@ -257,7 +257,7 @@ TEST_F(BraveAdsConversionsUtilTest,
   EXPECT_FALSE(CanConvertAdEvent(ad_event));
 }
 
-TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventExpired) {
+TEST_F(BraveAdsConversionsUtilTest, DidAdEventOccurOutsideObservationWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -267,11 +267,11 @@ TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventExpired) {
   AdvanceClockBy(base::Days(1) + base::Milliseconds(1));
 
   // Act & Assert
-  EXPECT_TRUE(HasObservationWindowForAdEventExpired(
-      /*observation_window=*/base::Days(1), ad_event));
+  EXPECT_FALSE(DidAdEventOccurWithinObservationWindow(
+      ad_event, /*observation_window=*/base::Days(1)));
 }
 
-TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventNotExpired) {
+TEST_F(BraveAdsConversionsUtilTest, DidAdEventOccurWithinObservationWindow) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -281,8 +281,8 @@ TEST_F(BraveAdsConversionsUtilTest, HasObservationWindowForAdEventNotExpired) {
   AdvanceClockBy(base::Days(1));
 
   // Act & Assert
-  EXPECT_FALSE(HasObservationWindowForAdEventExpired(
-      /*observation_window=*/base::Days(1), ad_event));
+  EXPECT_TRUE(DidAdEventOccurWithinObservationWindow(
+      ad_event, /*observation_window=*/base::Days(1)));
 }
 
 }  // namespace brave_ads

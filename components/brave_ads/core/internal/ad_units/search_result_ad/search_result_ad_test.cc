@@ -28,7 +28,7 @@ class BraveAdsSearchResultAdIntegrationTest : public UnitTestBase {
     EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
   }
 
-  void TriggerSearchResultAdEventAndVerifiyExpectations(
+  void TriggerSearchResultAdEventAndVerifyExpectations(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       const mojom::SearchResultAdEventType event_type,
       const bool should_fire_event) {
@@ -45,12 +45,12 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
@@ -63,14 +63,14 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
   SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting();
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       // This viewed impression ad event triggering will be deferred.
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       // This viewed impression ad event will be queued as the previous ad
       // viewed impression event has not completed.
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
@@ -88,19 +88,19 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
       /*should_fire_event=*/true);
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerViewedEventsForNonRewardsUser) {
+       DoNotTriggerViewedEventForNonRewardsUser) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
@@ -108,12 +108,12 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
@@ -126,14 +126,14 @@ TEST_F(
   test::DisableBraveRewards();
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 }
 
 TEST_F(BraveAdsSearchResultAdIntegrationTest,
-       TriggerQueuedViewedEventsForNonRewardsUser) {
+       DoNotTriggerQueuedViewedEventsForNonRewardsUser) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
@@ -142,14 +142,14 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
 
   SearchResultAdHandler::DeferTriggeringOfAdViewedEventForTesting();
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       // This ad viewe impressiond event triggering will be deferred.
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       // This viewed impression ad event will be queued as the previous ad
       // viewed impression event has not completed.
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true),
@@ -170,13 +170,13 @@ TEST_F(BraveAdsSearchResultAdIntegrationTest,
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
       /*should_fire_event=*/true);
 }
@@ -190,13 +190,13 @@ TEST_F(
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
 
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(),
       mojom::SearchResultAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 
   // Act & Assert
-  TriggerSearchResultAdEventAndVerifiyExpectations(
+  TriggerSearchResultAdEventAndVerifyExpectations(
       mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
       /*should_fire_event=*/false);
 }
