@@ -9,6 +9,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
@@ -28,6 +29,12 @@ base::Value::Dict BuildConversionActionTypeUserData(
 
 std::optional<base::Value::Dict> MaybeBuildVerifiableConversionUserData(
     const ConversionInfo& conversion) {
+  if (!UserHasJoinedBraveRewards()) {
+    // Do not support verifiable conversions for users who have not joined Brave
+    // Rewards.
+    return std::nullopt;
+  }
+
   if (!conversion.verifiable) {
     return std::nullopt;
   }

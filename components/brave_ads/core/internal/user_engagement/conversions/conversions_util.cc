@@ -10,13 +10,13 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util_internal.h"
+#include "brave/components/brave_ads/core/public/ads_feature.h"
 
 namespace brave_ads {
 
-bool CanConvertAdEvent(const AdEventInfo& ad_event) {
-  // Only convert view-through and click-through ad events.
-  if (ad_event.confirmation_type != ConfirmationType::kViewedImpression &&
-      ad_event.confirmation_type != ConfirmationType::kClicked) {
+bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
+  if (!CanConvertAdEvent(ad_event)) {
     return false;
   }
 
@@ -27,7 +27,12 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kNewTabPageAd: {
-      return UserHasOptedInToNewTabPageAds();
+      // Only if:
+      // - The user has opted into new tab page ads and has either joined Brave
+      //   Rewards or new tab page ad events should always be triggered.
+      return UserHasOptedInToNewTabPageAds() &&
+             (UserHasJoinedBraveRewards() ||
+              ShouldAlwaysTriggerNewTabPageAdEvents());
     }
 
     case AdType::kNotificationAd: {
@@ -35,7 +40,12 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
     }
 
     case AdType::kSearchResultAd: {
-      return UserHasOptedInToSearchResultAds();
+      // Only if:
+      // - The user has opted into search result ads and has either joined Brave
+      //   Rewards or search result ad events should always be triggered.
+      return UserHasOptedInToSearchResultAds() &&
+             (UserHasJoinedBraveRewards() ||
+              ShouldAlwaysTriggerSearchResultAdEvents());
     }
 
     case AdType::kUndefined: {

@@ -1115,6 +1115,8 @@ static_library("internal") {
     "user_engagement/conversions/conversions_observer.h",
     "user_engagement/conversions/conversions_util.cc",
     "user_engagement/conversions/conversions_util.h",
+    "user_engagement/conversions/conversions_util_internal.cc",
+    "user_engagement/conversions/conversions_util_internal.h",
     "user_engagement/conversions/resource/conversion_resource.cc",
     "user_engagement/conversions/resource/conversion_resource.h",
     "user_engagement/conversions/resource/conversion_resource_constants.h",
