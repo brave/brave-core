@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"

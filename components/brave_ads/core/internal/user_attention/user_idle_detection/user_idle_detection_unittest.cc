@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

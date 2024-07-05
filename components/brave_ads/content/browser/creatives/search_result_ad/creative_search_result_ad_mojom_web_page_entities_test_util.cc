@@ -11,8 +11,8 @@
 
 #include "base/containers/contains.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_unittest_util.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_unittest_constants.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_test_util.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_test_constants.h"
 #include "components/schema_org/common/metadata.mojom.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
 

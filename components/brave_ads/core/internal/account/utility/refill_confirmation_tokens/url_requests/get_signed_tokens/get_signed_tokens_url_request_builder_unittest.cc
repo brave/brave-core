@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder.h"
 
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "url/gurl.h"
 

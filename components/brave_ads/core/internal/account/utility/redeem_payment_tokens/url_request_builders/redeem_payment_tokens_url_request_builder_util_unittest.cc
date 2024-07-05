@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/url_request_builders/redeem_payment_tokens_url_request_builder_util.h"
 
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

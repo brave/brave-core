@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule_util.h"
 
-#include "brave/components/brave_ads/core/internal/history/browsing_history_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/history/browsing_history_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

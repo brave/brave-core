@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_builder.h"
 
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
