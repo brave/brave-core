@@ -128,23 +128,24 @@ public class TokenUtils {
             String chainId,
             int coinType,
             BlockchainRegistry.GetAllTokens_Response callback) {
-        blockchainRegistry.getAllTokens(
-                chainId,
-                coinType,
-                tokens -> callback.call(tokens));
+        blockchainRegistry.getAllTokens(chainId, coinType, tokens -> callback.call(tokens));
     }
 
     /**
      * Gets all tokens from a given single network, includes user assets and filters out tokens
      * different from a given type.
+     *
      * @param braveWalletService BraveWalletService to retrieve user asset from core.
      * @param blockchainRegistry BraveChainRegistry to retrieve all tokens from core.
      * @param selectedNetwork Selected network whose tokens will be retrieved.
      * @param tokenType Token type used for filtering.
      * @param callback Callback containing a filtered array of tokens for the given network.
      */
-    public static void getAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, TokenType tokenType,
+    public static void getAllTokensFiltered(
+            BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry,
+            NetworkInfo selectedNetwork,
+            TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin,
                 tokens

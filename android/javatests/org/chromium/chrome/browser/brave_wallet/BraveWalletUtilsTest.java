@@ -19,7 +19,6 @@ import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.Batch;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
