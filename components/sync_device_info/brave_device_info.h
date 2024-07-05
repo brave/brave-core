@@ -21,24 +21,27 @@ namespace syncer {
 
 class BraveDeviceInfo : public DeviceInfo {
  public:
-  BraveDeviceInfo(const std::string& guid,
-                  const std::string& client_name,
-                  const std::string& chrome_version,
-                  const std::string& sync_user_agent,
-                  const sync_pb::SyncEnums::DeviceType device_type,
-                  const OsType os_type,
-                  const FormFactor form_factor,
-                  const std::string& signin_scoped_device_id,
-                  const std::string& manufacturer_name,
-                  const std::string& model_name,
-                  base::Time last_updated_timestamp,
-                  base::TimeDelta pulse_interval,
-                  bool send_tab_to_self_receiving_enabled,
-                  const std::optional<DeviceInfo::SharingInfo>& sharing_info,
-                  const std::optional<PhoneAsASecurityKeyInfo>& paask_info,
-                  const std::string& fcm_registration_token,
-                  const ModelTypeSet& interested_data_types,
-                  bool is_self_delete_supported);
+  BraveDeviceInfo(
+      const std::string& guid,
+      const std::string& client_name,
+      const std::string& chrome_version,
+      const std::string& sync_user_agent,
+      const sync_pb::SyncEnums::DeviceType device_type,
+      const OsType os_type,
+      const FormFactor form_factor,
+      const std::string& signin_scoped_device_id,
+      const std::string& manufacturer_name,
+      const std::string& model_name,
+      const std::string& full_hardware_class,
+      base::Time last_updated_timestamp,
+      base::TimeDelta pulse_interval,
+      bool send_tab_to_self_receiving_enabled,
+      sync_pb::SyncEnums_SendTabReceivingType send_tab_to_self_receiving_type,
+      const std::optional<DeviceInfo::SharingInfo>& sharing_info,
+      const std::optional<PhoneAsASecurityKeyInfo>& paask_info,
+      const std::string& fcm_registration_token,
+      const ModelTypeSet& interested_data_types,
+      bool is_self_delete_supported);
   BraveDeviceInfo(const BraveDeviceInfo&) = delete;
   BraveDeviceInfo& operator=(const BraveDeviceInfo&) = delete;
   ~BraveDeviceInfo() override {}
