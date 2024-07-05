@@ -106,10 +106,17 @@ public class PlaylistMediaStreamer {
       self.webLoader = webLoader
 
       guard let url = URL(string: item.pageSrc) else {
+        // Destroy the web loader.
+        webLoader.stop()
+        webLoader.removeFromSuperview()
+        self.webLoader = nil
         throw PlaybackError.cannotLoadMedia
       }
 
       let newItem = await webLoader.load(url: url)
+
+      // Destroy the web loader.
+      webLoader.stop()
       webLoader.removeFromSuperview()
       self.webLoader = nil
 

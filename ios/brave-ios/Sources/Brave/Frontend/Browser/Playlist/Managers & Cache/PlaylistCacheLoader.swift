@@ -17,6 +17,7 @@ import WebKit
 import os.log
 
 class LivePlaylistWebLoaderFactory: PlaylistWebLoaderFactory {
+  @MainActor
   func makeWebLoader() -> PlaylistWebLoader {
     LivePlaylistWebLoader()
   }
@@ -59,10 +60,6 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  deinit {
-    self.removeFromSuperview()
   }
 
   @MainActor
@@ -116,16 +113,18 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     webView.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
   }
 
+  @MainActor
   private class PlaylistWebLoaderContentHelper: TabContentScript {
     private weak var webLoader: LivePlaylistWebLoader?
     private var playlistItems = Set<String>()
     private var isPageLoaded = false
-    private var timeout: DispatchWorkItem?
+    private var timeout: Task<Void, Error>?
 
     init(_ webLoader: LivePlaylistWebLoader) {
       self.webLoader = webLoader
 
-      timeout = DispatchWorkItem(block: { [weak self] in
+      timeout = Task.delayed(bySeconds: LivePlaylistWebLoader.pageLoadTimeout) {
+        @MainActor [weak self] in
         guard let self = self else { return }
         self.webLoader?.handler?(nil)
         self.webLoader?.tab.webView?.loadHTMLString(
@@ -133,13 +132,6 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
           baseURL: nil
         )
         self.webLoader = nil
-      })
-
-      if let timeout = timeout {
-        DispatchQueue.main.asyncAfter(
-          deadline: .now() + LivePlaylistWebLoader.pageLoadTimeout,
-          execute: timeout
-        )
       }
     }
 
@@ -152,15 +144,12 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 
     func userContentController(
       _ userContentController: WKUserContentController,
-      didReceiveScriptMessage message: WKScriptMessage,
-      replyHandler: (Any?, String?) -> Void
-    ) {
+      didReceive message: WKScriptMessage
+    ) async -> (Any?, String?) {
       if !verifyMessage(message: message) {
         assertionFailure("Missing required security token.")
-        return
+        return (nil, nil)
       }
-
-      replyHandler(nil, nil)
 
       let cancelRequest = {
         self.timeout?.cancel()
@@ -178,12 +167,13 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 
         if readyState.state == "cancel" {
           cancelRequest()
-          return
+          return (nil, nil)
         }
 
         if isPageLoaded {
           timeout?.cancel()
-          timeout = DispatchWorkItem(block: { [weak self] in
+          timeout = Task.delayed(bySeconds: LivePlaylistWebLoader.pageLoadTimeout) {
+            @MainActor [weak self] in
             guard let self = self else { return }
             self.webLoader?.handler?(nil)
             self.webLoader?.tab.webView?.loadHTMLString(
@@ -191,28 +181,22 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
               baseURL: nil
             )
             self.webLoader = nil
-          })
-
-          if let timeout = timeout {
-            DispatchQueue.main.asyncAfter(
-              deadline: .now() + LivePlaylistWebLoader.pageLoadTimeout,
-              execute: timeout
-            )
           }
         }
-        return
+        return (nil, nil)
       }
 
       guard let item = PlaylistInfo.from(message: message),
         item.detected
       else {
         cancelRequest()
-        return
+        return (nil, nil)
       }
 
       if item.isInvisible {
         timeout?.cancel()
-        timeout = DispatchWorkItem(block: { [weak self] in
+        timeout = Task.delayed(bySeconds: LivePlaylistWebLoader.pageLoadTimeout) {
+          @MainActor [weak self] in
           guard let self = self else { return }
           self.webLoader?.handler?(nil)
           self.webLoader?.tab.webView?.loadHTMLString(
@@ -220,15 +204,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
             baseURL: nil
           )
           self.webLoader = nil
-        })
-
-        if let timeout = timeout {
-          DispatchQueue.main.asyncAfter(
-            deadline: .now() + LivePlaylistWebLoader.pageLoadTimeout,
-            execute: timeout
-          )
         }
-        return
+        return (nil, nil)
       }
 
       // For now, we ignore base64 video mime-types loaded via the `data:` scheme.
@@ -236,10 +213,10 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         || item.src.hasPrefix("blob:")
       {
         cancelRequest()
-        return
+        return (nil, nil)
       }
 
-      DispatchQueue.main.async {
+      Task { @MainActor in
         if !self.playlistItems.contains(item.src) {
           self.playlistItems.insert(item.src)
 
@@ -260,6 +237,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         )
         self.webLoader = nil
       }
+
+      return (nil, nil)
     }
   }
 }
@@ -497,7 +476,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
           host: host,
           port: port
         )
-        let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
 
         // Cert is valid and should be pinned
         if result == 0 {

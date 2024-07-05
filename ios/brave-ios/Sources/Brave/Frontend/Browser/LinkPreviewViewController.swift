@@ -64,7 +64,9 @@ class LinkPreviewViewController: UIViewController {
     webView.load(URLRequest(url: url))
   }
 
-  deinit {
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
     self.currentTab?.navigationDelegate = nil
     self.currentTab = nil
   }

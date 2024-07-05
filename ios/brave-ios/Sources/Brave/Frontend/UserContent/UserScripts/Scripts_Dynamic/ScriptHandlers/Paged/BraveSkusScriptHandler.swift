@@ -49,40 +49,38 @@ class BraveSkusScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     // Validate that we can handle this message
     guard let requestHost = try? RequestHost.from(message: message) else {
-      return
+      return (nil, nil)
     }
 
     guard let response = message.body as? [String: Any] else {
       Logger.module.error("Brave skus request with no message")
-      return
+      return (nil, nil)
     }
 
     guard let requestedMethod = response["method_id"] as? Int,
       let method = Method(rawValue: requestedMethod)
     else {
       Logger.module.error("Brave skus request with invalid method-id")
-      return
+      return (nil, nil)
     }
 
-    Task { @MainActor in
-      do {
-        let result = try await processRequest(message: message, method: method, for: requestHost)
-        replyHandler(result, nil)
-      } catch {
-        Logger.module.error("Brave skus error processing request: \(error)")
-        replyHandler(nil, nil)
-      }
+    do {
+      let result = try await processRequest(message: message, method: method, for: requestHost)
+      return (result, nil)
+    } catch {
+      Logger.module.error("Brave skus error processing request: \(error)")
     }
+
+    return (nil, nil)
   }
 
   @MainActor

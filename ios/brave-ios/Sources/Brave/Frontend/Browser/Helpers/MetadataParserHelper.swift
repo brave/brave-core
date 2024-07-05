@@ -22,6 +22,7 @@ class MetadataParserHelper: TabEventHandler {
     unregister(tabObservers)
   }
 
+  @MainActor
   func tab(_ tab: Tab, didChangeURL url: URL) {
     // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
     // as possible.

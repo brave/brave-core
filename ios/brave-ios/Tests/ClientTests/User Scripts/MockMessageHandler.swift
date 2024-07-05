@@ -31,12 +31,11 @@ class MockMessageHandler: NSObject, WKScriptMessageHandlerWithReply, AsyncSequen
   // MARK: - WKScriptMessageHandlerWithReply
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceive message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     let reply = callback(message)
-    replyHandler(reply, nil)
     messages.append(message)
+    return (reply, nil)
   }
 
   func next() async throws -> Element? {

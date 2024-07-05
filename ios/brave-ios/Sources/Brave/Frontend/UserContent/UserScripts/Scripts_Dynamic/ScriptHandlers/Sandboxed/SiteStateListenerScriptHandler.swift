@@ -9,14 +9,15 @@ import Shared
 import WebKit
 import os.log
 
-class SiteStateListenerScriptHandler: TabContentScript {
-  struct MessageDTO: Decodable {
-    struct MessageDTOData: Decodable, Hashable {
-      let windowURL: String
-    }
-
-    let data: MessageDTOData
+private struct SiteStateMessage: Decodable {
+  struct State: Decodable, Hashable {
+    let windowURL: String
   }
+
+  let data: State
+}
+
+class SiteStateListenerScriptHandler: TabContentScript {
 
   private weak var tab: Tab?
 
@@ -47,44 +48,44 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
 
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let tab = tab, let webView = tab.webView else {
       assertionFailure("Should have a tab set")
-      return
+      return (nil, nil)
     }
 
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
-      let dto = try JSONDecoder().decode(MessageDTO.self, from: data)
+      let windowURL = try JSONDecoder().decode(SiteStateMessage.self, from: data).data.windowURL
 
-      guard let frameURL = URL(string: dto.data.windowURL) else {
-        return
+      guard let frameURL = URL(string: windowURL) else {
+        return (nil, nil)
       }
 
-      Task { @MainActor in
+      do {
         if let pageData = tab.currentPageData {
           let domain = pageData.domain(persistent: !tab.isPrivate)
           guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
-            return
+            return (nil, nil)
           }
 
           let models = await AdBlockGroupsManager.shared.cosmeticFilterModels(
             forFrameURL: frameURL,
             domain: domain
           )
+
           let setup = try self.makeSetup(
             from: models,
             isAggressive: domain.blockAdsAndTrackingLevel.isAggressive
           )
+
           let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
 
           try await webView.evaluateSafeJavaScriptThrowing(
@@ -94,11 +95,15 @@ class SiteStateListenerScriptHandler: TabContentScript {
             asFunction: false
           )
         }
+      } catch {
+        Logger.module.error("SiteStateListenerScript: \(error)")
       }
     } catch {
       assertionFailure("Invalid type of message. Fix the `SiteStateListenerScript.js` script")
       Logger.module.error("\(error.localizedDescription)")
     }
+
+    return (nil, nil)
   }
 
   @MainActor private func makeSetup(

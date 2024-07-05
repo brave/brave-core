@@ -56,21 +56,19 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
 
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let tab = tab,
       let braveSearchResultAdManager = tab.braveSearchResultAdManager
     else {
       Logger.module.error("Failed to get brave search result ad handler")
-      return
+      return (nil, nil)
     }
 
     guard JSONSerialization.isValidJSONObject(message.body),
@@ -81,16 +79,20 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
       )
     else {
       Logger.module.error("Failed to parse search result ads response")
-      return
+      return (nil, nil)
     }
 
-    processSearchResultAds(searchResultAds, braveSearchResultAdManager: braveSearchResultAdManager)
+    await processSearchResultAds(
+      searchResultAds,
+      braveSearchResultAdManager: braveSearchResultAdManager
+    )
+    return (nil, nil)
   }
 
   private func processSearchResultAds(
     _ searchResultAds: SearchResultAdResponse,
     braveSearchResultAdManager: BraveSearchResultAdManager
-  ) {
+  ) async {
     for ad in searchResultAds.creatives {
       guard let rewardsValue = Double(ad.rewardsValue)
       else {

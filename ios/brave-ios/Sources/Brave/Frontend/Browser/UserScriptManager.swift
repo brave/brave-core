@@ -284,6 +284,7 @@ class UserScriptManager {
     }
   }
 
+  @MainActor
   public func loadScripts(into webView: WKWebView, scripts: Set<ScriptType>) {
     if Preferences.UserScript.blockAllScripts.value {
       return
@@ -333,6 +334,7 @@ class UserScriptManager {
   }
 
   // TODO: Get rid of this OR refactor wallet and domain scripts
+  @MainActor
   func loadCustomScripts(
     into tab: Tab,
     userScripts: Set<ScriptType>,

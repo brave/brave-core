@@ -40,22 +40,21 @@ class SessionRestoreScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
-
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     if let tab = tab, let params = message.body as? [String: AnyObject] {
       if params["name"] as? String == "didRestoreSession" {
-        DispatchQueue.main.async {
+        Task { @MainActor in
           self.delegate?.sessionRestore(self, didRestoreSessionForTab: tab)
         }
       }
     }
+
+    return (nil, nil)
   }
 }

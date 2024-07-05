@@ -22,12 +22,12 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     urlObserver = tab.webView?.observe(
       \.url,
       options: [.new],
-      changeHandler: { [weak self] object, change in
+      changeHandler: { [weak self] webView, change in
         guard let self = self, let url = change.newValue else { return }
         if self.url?.withoutFragment != url?.withoutFragment {
           self.url = url
 
-          object.evaluateSafeJavaScript(
+          webView.evaluateSafeJavaScript(
             functionName: "window.__firefox__.\(Self.refreshQuality)",
             contentWorld: Self.scriptSandbox,
             asFunction: true
@@ -80,15 +80,14 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
-    replyHandler(
+    return (
       Self.canEnableHighQuality(option: Preferences.General.youtubeHighQuality)
         ? Self.highestQuality : "",
       nil

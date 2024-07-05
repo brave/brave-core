@@ -12,6 +12,7 @@ import UIKit
 
 /// Handles displaying controllers such as settings, bookmarks, etc. on top of
 /// the browser.
+@MainActor
 class BrowserNavigationHelper {
   private weak var bvc: BrowserViewController?
 

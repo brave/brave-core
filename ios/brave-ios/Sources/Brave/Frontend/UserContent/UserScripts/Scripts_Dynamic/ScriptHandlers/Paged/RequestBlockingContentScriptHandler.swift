@@ -11,17 +11,18 @@ import Preferences
 import Shared
 import WebKit
 
-class RequestBlockingContentScriptHandler: TabContentScript {
-  struct RequestBlockingDTO: Decodable {
-    struct RequestBlockingDTOData: Decodable, Hashable {
-      let resourceType: AdblockEngine.ResourceType
-      let resourceURL: String
-      let sourceURL: String
-    }
-
-    let securityToken: String
-    let data: RequestBlockingDTOData
+private struct RequestBlockingMessage: Decodable {
+  struct Resource: Decodable, Hashable {
+    let resourceType: AdblockEngine.ResourceType
+    let resourceURL: String
+    let sourceURL: String
   }
+
+  let securityToken: String
+  let data: Resource
+}
+
+class RequestBlockingContentScriptHandler: TabContentScript {
 
   static let scriptName = "RequestBlockingScript"
   static let scriptId = UUID().uuidString
@@ -52,75 +53,90 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     guard let tab = tab, let currentTabURL = tab.webView?.url else {
       assertionFailure("Should have a tab set")
-      return
+      return (nil, nil)
     }
 
     if !verifyMessage(message: message) {
       assertionFailure("Invalid security token. Fix the `RequestBlocking.js` script")
-      replyHandler(false, nil)
-      return
+      return (false, nil)
     }
 
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
-      let dto = try JSONDecoder().decode(RequestBlockingDTO.self, from: data)
+      let message = try JSONDecoder().decode(RequestBlockingMessage.self, from: data)
 
       // Because javascript urls allow some characters that `URL` does not,
       // we use `NSURL(idnString: String)` to parse them
-      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
-      guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
-      let isPrivateBrowsing = tab.isPrivate
-
-      Task { @MainActor in
-        let domain = Domain.getOrCreate(forUrl: currentTabURL, persistent: !isPrivateBrowsing)
-        guard let domainURLString = domain.url else { return }
-        let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
-          requestURL: requestURL,
-          sourceURL: sourceURL,
-          resourceType: dto.data.resourceType,
-          domain: domain
-        )
-
-        // Ensure we check that the stats we're tracking is still for the same page
-        // Some web pages (like youtube) like to rewrite their main frame urls
-        // so we check the source etld+1 agains the tab url etld+1
-        // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
-        // We simply check the known subframeURLs on this page.
-        guard
-          tab.url?.baseDomain == sourceURL.baseDomain
-            || self.tab?.currentPageData?.allSubframeURLs.contains(sourceURL) == true
-        else {
-          replyHandler(shouldBlock, nil)
-          return
-        }
-
-        if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
-          let domainURL = URL(string: domainURLString),
-          let blockedResourceHost = requestURL.baseDomain,
-          !isPrivateBrowsing
-        {
-          PrivacyReportsManager.pendingBlockedRequests.append(
-            (blockedResourceHost, domainURL, Date())
-          )
-        }
-
-        if shouldBlock && !tab.contentBlocker.blockedRequests.contains(requestURL) {
-          BraveGlobalShieldStats.shared.adblock += 1
-          let stats = tab.contentBlocker.stats
-          tab.contentBlocker.stats = stats.adding(adCount: 1)
-          tab.contentBlocker.blockedRequests.insert(requestURL)
-        }
-
-        replyHandler(shouldBlock, nil)
+      guard let requestURL = NSURL(idnString: message.data.resourceURL) as URL? else {
+        return (nil, nil)
       }
+      guard let sourceURL = NSURL(idnString: message.data.sourceURL) as URL? else {
+        return (nil, nil)
+      }
+
+      return await processResource(
+        message.data,
+        tab: tab,
+        tabURL: currentTabURL,
+        requestURL: requestURL,
+        sourceURL: sourceURL
+      )
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
-      replyHandler(false, nil)
+      return (false, nil)
     }
+  }
+
+  @MainActor
+  private func processResource(
+    _ resource: RequestBlockingMessage.Resource,
+    tab: Tab,
+    tabURL: URL,
+    requestURL: URL,
+    sourceURL: URL
+  ) async -> (Any?, String?) {
+    let domain = Domain.getOrCreate(forUrl: tabURL, persistent: !tab.isPrivate)
+    guard let domainURLString = domain.url else { return (nil, nil) }
+    let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
+      requestURL: requestURL,
+      sourceURL: sourceURL,
+      resourceType: resource.resourceType,
+      domain: domain
+    )
+
+    // Ensure we check that the stats we're tracking is still for the same page
+    // Some web pages (like youtube) like to rewrite their main frame urls
+    // so we check the source etld+1 agains the tab url etld+1
+    // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
+    // We simply check the known subframeURLs on this page.
+    guard
+      tab.url?.baseDomain == sourceURL.baseDomain
+        || tab.currentPageData?.allSubframeURLs.contains(sourceURL) == true
+    else {
+      return (shouldBlock, nil)
+    }
+
+    if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
+      let domainURL = URL(string: domainURLString),
+      let blockedResourceHost = requestURL.baseDomain,
+      !tab.isPrivate
+    {
+      PrivacyReportsManager.pendingBlockedRequests.append(
+        (blockedResourceHost, domainURL, Date())
+      )
+    }
+
+    if shouldBlock && !tab.contentBlocker.blockedRequests.contains(requestURL) {
+      BraveGlobalShieldStats.shared.adblock += 1
+      let stats = tab.contentBlocker.stats
+      tab.contentBlocker.stats = stats.adding(adCount: 1)
+      tab.contentBlocker.blockedRequests.insert(requestURL)
+    }
+
+    return (shouldBlock, nil)
   }
 }

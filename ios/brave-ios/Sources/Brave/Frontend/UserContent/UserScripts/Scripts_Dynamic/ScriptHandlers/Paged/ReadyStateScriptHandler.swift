@@ -74,22 +74,20 @@ class ReadyStateScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
 
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let readyState = ReadyState.from(message: message) else {
       Logger.module.error("Invalid Ready State")
-      return
+      return (nil, nil)
     }
 
     tab?.onPageReadyStateChanged?(readyState.state)
+    return (nil, nil)
   }
 }

@@ -34,10 +34,10 @@ class CustomSearchScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    replyHandler(nil, nil)
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+
     // We don't listen to messages because the BVC calls the searchHelper script by itself.
+    return (nil, nil)
   }
 }

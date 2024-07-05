@@ -38,10 +38,10 @@ class NightModeScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     // Do nothing.
+    return (nil, nil)
   }
 
   static func setNightMode(tabManager: TabManager, enabled: Bool) {

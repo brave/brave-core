@@ -192,6 +192,8 @@ extension BrowserViewController: TabManagerDelegate {
     if !privateBrowsingManager.isPrivateBrowsing {
       rewards.reportTabClosed(tabId: Int(tab.rewardsId))
     }
+
+    tab.destroy()
   }
 
   func tabManagerDidAddTabs(_ tabManager: TabManager) {

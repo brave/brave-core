@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 
+@MainActor
 class TabEventHandlers {
   static func create(with prefs: Prefs) -> [TabEventHandler] {
     return [

@@ -255,15 +255,6 @@ class TabTrayController: AuthenticationController {
   @available(*, unavailable)
   required init?(coder: NSCoder) { fatalError() }
 
-  deinit {
-    tabManager.removeDelegate(self)
-
-    // Remove the open tabs service observer
-    if let observer = openTabsSessionServiceListener {
-      braveCore.openTabsAPI.removeObserver(observer)
-    }
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -363,6 +354,17 @@ class TabTrayController: AuthenticationController {
 
     shredButton.addTarget(self, action: #selector(shredButtonPressed), for: .touchUpInside)
     becomeFirstResponder()
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    tabManager.removeDelegate(self)
+
+    // Remove the open tabs service observer
+    if let observer = openTabsSessionServiceListener {
+      braveCore.openTabsAPI.removeObserver(observer)
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {

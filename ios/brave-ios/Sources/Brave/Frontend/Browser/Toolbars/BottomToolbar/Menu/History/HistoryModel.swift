@@ -49,6 +49,7 @@ enum HistorySection: Int, CaseIterable {
   }
 }
 
+@MainActor
 class HistoryModel: NSObject, ObservableObject {
   private let api: BraveHistoryAPI?
   private weak var tabManager: TabManager?

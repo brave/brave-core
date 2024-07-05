@@ -39,6 +39,7 @@ public class PlaylistCoordinator: NSObject {
   // ----
 
   // When Picture-In-Picture is enabled, we need to store a reference to the controller to keep it alive, otherwise if it deallocates, the system automatically kills Picture-In-Picture.
+  @MainActor
   var playlistController: PlaylistViewController? {
     didSet {
       // TODO: REFACTOR and Decide what happens to Playlist in multiple windows in the future
@@ -66,6 +67,7 @@ public class PlaylistCoordinator: NSObject {
     }
   }
 
+  @MainActor
   public func destroyPiP() {
     // This is the only way to have the system kill picture in picture as the restoration controller is deallocated
     // And that means the video is deallocated, its AudioSession is stopped, and the Picture-In-Picture controller is deallocated.
@@ -81,6 +83,7 @@ public class PlaylistCoordinator: NSObject {
   // in use at any given moment
   public static let shared = PlaylistCoordinator()
 
+  @MainActor
   func getCarPlayController() -> Any? {
     // On iOS 14, we use CPTemplate (Custom UI)
     // We control what gets displayed
@@ -134,6 +137,7 @@ public class PlaylistCoordinator: NSObject {
     return carPlayController
   }
 
+  @MainActor
   func getPlaylistController(
     tab: Tab?,
     initialItem: PlaylistInfo?,
@@ -199,6 +203,7 @@ public class PlaylistCoordinator: NSObject {
     return playlistController
   }
 
+  @MainActor
   func getPlaylistController(tab: Tab?, completion: @escaping (UIViewController) -> Void) {
     if let playlistController = self.playlistController {
       return completion(playlistController)
@@ -242,6 +247,7 @@ public class PlaylistCoordinator: NSObject {
     }
   }
 
+  @MainActor
   private func attemptInterfaceConnection(isCarPlayAvailable: Bool) {
     self.isCarPlayAvailable = isCarPlayAvailable
 

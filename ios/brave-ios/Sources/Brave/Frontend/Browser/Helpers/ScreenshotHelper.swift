@@ -9,6 +9,7 @@ import WebKit
 import os.log
 
 /// Handles screenshots for a given tab, including pages with non-webview content.
+@MainActor
 class ScreenshotHelper {
   var viewIsVisible = false
 
@@ -55,8 +56,7 @@ class ScreenshotHelper {
   /// Trying to take a screenshot immediately after didFinishNavigation results in a screenshot
   /// of the previous page, presumably due to an iOS bug. Adding a brief delay fixes this.
   func takeDelayedScreenshot(_ tab: Tab) {
-    let time = DispatchTime.now() + Double(Int64(100 * NSEC_PER_MSEC)) / Double(NSEC_PER_SEC)
-    DispatchQueue.main.asyncAfter(deadline: time) {
+    Task.delayed(bySeconds: 100) { @MainActor in
       // If the view controller isn't visible, the screenshot will be blank.
       // Wait until the view controller is visible again to take the screenshot.
       guard self.viewIsVisible else {

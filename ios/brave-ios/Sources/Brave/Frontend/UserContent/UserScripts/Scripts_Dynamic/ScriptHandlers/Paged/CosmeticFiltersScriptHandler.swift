@@ -9,20 +9,21 @@ import Shared
 import WebKit
 import os.log
 
+private struct CosmeticFiltersResource: Decodable {
+  struct Info: Decodable, Hashable {
+    let sourceURL: String
+    let ids: [String]
+    let classes: [String]
+  }
+
+  let securityToken: String
+  let data: Info
+}
+
 /// This handler receives a list of ids and selectors for a given frame for which it is then able to inject scripts and css rules in order to hide certain elements
 ///
 /// The ids and classes are collected in the `SelectorsPollerScript.js` file.
 class CosmeticFiltersScriptHandler: TabContentScript {
-  struct CosmeticFiltersDTO: Decodable {
-    struct CosmeticFiltersDTOData: Decodable, Hashable {
-      let sourceURL: String
-      let ids: [String]
-      let classes: [String]
-    }
-
-    let securityToken: String
-    let data: CosmeticFiltersDTOData
-  }
 
   static let scriptName = "SelectorsPollerScript"
   static let scriptId = UUID().uuidString
@@ -38,72 +39,77 @@ class CosmeticFiltersScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+
     if !verifyMessage(message: message) {
       assertionFailure("Invalid security token. Fix the `RequestBlocking.js` script")
-      replyHandler(nil, nil)
-      return
+      return (nil, nil)
     }
 
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
-      let dto = try JSONDecoder().decode(CosmeticFiltersDTO.self, from: data)
+      let resource = try JSONDecoder().decode(CosmeticFiltersResource.self, from: data)
 
-      guard let frameURL = URL(string: dto.data.sourceURL) else {
-        replyHandler(nil, nil)
-        return
+      guard let frameURL = URL(string: resource.data.sourceURL) else {
+        return (nil, nil)
       }
 
-      Task { @MainActor in
-        let domain = Domain.getOrCreate(
-          forUrl: frameURL,
-          persistent: self.tab?.isPrivate == true ? false : true
-        )
-        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(for: domain)
-
-        let selectorArrays = await cachedEngines.asyncCompactMap {
-          cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
-          do {
-            guard
-              let selectors = try await cachedEngine.selectorsForCosmeticRules(
-                frameURL: frameURL,
-                ids: dto.data.ids,
-                classes: dto.data.classes
-              )
-            else {
-              return nil
-            }
-
-            return (selectors, cachedEngine.type.isAlwaysAggressive)
-          } catch {
-            Logger.module.error("\(error.localizedDescription)")
-            return nil
-          }
-        }
-
-        var standardSelectors: Set<String> = []
-        var aggressiveSelectors: Set<String> = []
-        for tuple in selectorArrays {
-          if tuple.isAlwaysAggressive {
-            aggressiveSelectors = aggressiveSelectors.union(tuple.selectors)
-          } else {
-            standardSelectors = standardSelectors.union(tuple.selectors)
-          }
-        }
-
-        replyHandler(
-          [
-            "aggressiveSelectors": Array(aggressiveSelectors),
-            "standardSelectors": Array(standardSelectors),
-          ],
-          nil
-        )
-      }
+      return await processMessage(frameURL: frameURL, resource: resource)
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
-      replyHandler(nil, nil)
     }
+
+    return (nil, nil)
+  }
+
+  @MainActor
+  private func processMessage(
+    frameURL: URL,
+    resource: CosmeticFiltersResource
+  ) async -> (Any?, String?) {
+    let domain = Domain.getOrCreate(
+      forUrl: frameURL,
+      persistent: self.tab?.isPrivate == true ? false : true
+    )
+    let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(for: domain)
+
+    let selectorArrays = await cachedEngines.asyncCompactMap {
+      cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
+      do {
+        guard
+          let selectors = try await cachedEngine.selectorsForCosmeticRules(
+            frameURL: frameURL,
+            ids: resource.data.ids,
+            classes: resource.data.classes
+          )
+        else {
+          return nil
+        }
+
+        return (selectors, cachedEngine.type.isAlwaysAggressive)
+      } catch {
+        Logger.module.error("\(error.localizedDescription)")
+        return nil
+      }
+    }
+
+    var standardSelectors: Set<String> = []
+    var aggressiveSelectors: Set<String> = []
+    for tuple in selectorArrays {
+      if tuple.isAlwaysAggressive {
+        aggressiveSelectors = aggressiveSelectors.union(tuple.selectors)
+      } else {
+        standardSelectors = standardSelectors.union(tuple.selectors)
+      }
+    }
+
+    return (
+      [
+        "aggressiveSelectors": Array(aggressiveSelectors),
+        "standardSelectors": Array(standardSelectors),
+      ],
+      nil
+    )
   }
 }

@@ -22,7 +22,7 @@ struct AppDebugComposer {
   }
 
   /// This function prepares data to help us identify any app storage problems users may have.
-  static func composeAppSize() -> String {
+  static func composeAppSize() async -> String {
     var printFolderTreeStructure: String {
       let fm = FileManager.default
       guard
@@ -76,6 +76,7 @@ struct AppDebugComposer {
     return result
   }
 
+  @MainActor
   static func composeTabDebug(_ tabManager: TabManager) -> String {
     let storageTabs = SessionTab.all()
     let windows = SessionWindow.all()

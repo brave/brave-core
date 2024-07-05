@@ -37,11 +37,11 @@ class WindowRenderScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     // Do nothing with the messages received.
     // For now.. It's useful for debugging though.
+    return (nil, nil)
   }
 
   static func executeScript(for tab: Tab) {

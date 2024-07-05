@@ -11,8 +11,9 @@ import WebKit
 
 private let browsingActivityType: String = "com.brave.ios.browsing"
 
-private let searchableIndex = CSSearchableIndex(name: "firefox")
+private let searchableIndex = CSSearchableIndex(name: "brave")
 
+@MainActor
 class UserActivityHandler {
   private var tabObservers: TabObservers!
 
@@ -36,6 +37,7 @@ class UserActivityHandler {
     searchableIndex.deleteAllSearchableItems(completionHandler: completionHandler)
   }
 
+  @MainActor
   fileprivate func setUserActivityForTab(_ tab: Tab, url: URL) {
     guard !tab.isPrivate, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
     else {

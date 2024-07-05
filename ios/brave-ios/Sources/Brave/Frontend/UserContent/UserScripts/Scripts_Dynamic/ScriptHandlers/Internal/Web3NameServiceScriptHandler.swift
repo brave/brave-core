@@ -40,13 +40,10 @@ class Web3NameServiceScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
-
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     guard let params = message.body as? [String: String], let originalURL = originalURL else {
-      return
+      return (nil, nil)
     }
 
     if params[ParamKey.buttonType.rawValue] == ParamValue.disable.rawValue,
@@ -66,5 +63,7 @@ class Web3NameServiceScriptHandler: TabContentScript {
     } else {
       assertionFailure("Invalid message: \(message.body)")
     }
+
+    return (nil, nil)
   }
 }

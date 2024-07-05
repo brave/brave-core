@@ -25,27 +25,27 @@ class AdsMediaReportingScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
 
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let body = message.body as? [String: AnyObject] else {
-      return
+      return (nil, nil)
     }
 
     if let isPlaying = body["data"] as? Bool {
-      guard let tab = tab else { return }
+      guard let tab = tab else { return (nil, nil) }
       if isPlaying {
         rewards.reportMediaStarted(tabId: Int(tab.rewardsId))
       } else {
         rewards.reportMediaStopped(tabId: Int(tab.rewardsId))
       }
     }
+
+    return (nil, nil)
   }
 }

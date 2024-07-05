@@ -29,13 +29,10 @@ class Web3IPFSScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
-
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     guard let params = message.body as? [String: String], let originalURL = originalURL else {
-      return
+      return (nil, nil)
     }
 
     if params["type"] == "IPFSDisable" {
@@ -45,5 +42,7 @@ class Web3IPFSScriptHandler: TabContentScript {
     } else {
       assertionFailure("Invalid message: \(message.body)")
     }
+
+    return (nil, nil)
   }
 }

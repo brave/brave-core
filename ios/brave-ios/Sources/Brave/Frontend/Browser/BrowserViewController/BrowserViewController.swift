@@ -2490,9 +2490,13 @@ public class BrowserViewController: UIViewController {
     {
       switch readerMode.state {
       case .available:
-        enableReaderMode()
+        Task { @MainActor in
+          await enableReaderMode()
+        }
       case .active:
-        disableReaderMode()
+        Task { @MainActor in
+          await disableReaderMode()
+        }
       case .unavailable:
         break
       }

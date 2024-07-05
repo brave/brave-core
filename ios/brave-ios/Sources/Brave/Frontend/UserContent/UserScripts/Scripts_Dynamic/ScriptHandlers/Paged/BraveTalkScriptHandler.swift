@@ -16,7 +16,7 @@ import BraveTalk
 class BraveTalkScriptHandler: TabContentScript {
   private weak var tab: Tab?
   private weak var rewards: BraveRewards?
-  private var rewardsEnabledReplyHandler: ((Any?, String?) -> Void)?
+  private var rewardsEnabledReplyHandler: CheckedContinuation<(Any?, String?), Never>?
   private let launchNativeBraveTalk: (_ tab: Tab?, _ room: String, _ token: String) -> Void
 
   required init(
@@ -29,7 +29,7 @@ class BraveTalkScriptHandler: TabContentScript {
     self.launchNativeBraveTalk = launchNativeBraveTalk
 
     tab.rewardsEnabledCallback = { [weak self] success in
-      self?.rewardsEnabledReplyHandler?(success, nil)
+      self?.rewardsEnabledReplyHandler?.resume(returning: (success, nil))
     }
   }
 
@@ -87,12 +87,11 @@ class BraveTalkScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     let allowedHosts = DomainUserScript.braveTalkHelper.associatedDomains
@@ -102,46 +101,54 @@ class BraveTalkScriptHandler: TabContentScript {
       message.frameInfo.isMainFrame
     else {
       Logger.module.error("Backup search request called from disallowed host")
-      replyHandler(nil, nil)
-      return
+      return (nil, nil)
     }
 
     guard let json = try? JSONSerialization.data(withJSONObject: message.body, options: []),
       let payload = try? JSONDecoder().decode(Payload.self, from: json)
     else {
-      return
+      return (nil, nil)
     }
 
     switch payload.kind {
     case .braveRequestAdsEnabled:
-      handleBraveRequestAdsEnabled(replyHandler)
+      return await withCheckedContinuation { [weak self] continuation in
+        guard let self = self else {
+          continuation.resume(returning: (nil, nil))
+          return
+        }
+
+        handleBraveRequestAdsEnabled(continuation)
+      }
     case .launchNativeBraveTalk(let url):
       guard let components = URLComponents(string: url),
         case let room = String(components.path.dropFirst(1)),
         let jwt = components.queryItems?.first(where: { $0.name == "jwt" })?.value
       else {
-        return
+        return (nil, nil)
       }
       launchNativeBraveTalk(tab, room, jwt)
-      replyHandler(nil, nil)
+      return (nil, nil)
     }
   }
 
-  private func handleBraveRequestAdsEnabled(_ replyHandler: @escaping (Any?, String?) -> Void) {
+  private func handleBraveRequestAdsEnabled(
+    _ continuation: CheckedContinuation<(Any?, String?), Never>
+  ) {
     guard let rewards = rewards, tab?.isPrivate != true else {
-      replyHandler(false, nil)
+      continuation.resume(returning: (false, nil))
       return
     }
 
     if rewards.isEnabled {
-      replyHandler(true, nil)
+      continuation.resume(returning: (true, nil))
       return
     }
 
     // If rewards are disabled we show a Rewards panel,
     // The `rewardsEnabledReplyHandler` will be called from other place.
     if let tab = tab {
-      rewardsEnabledReplyHandler = replyHandler
+      rewardsEnabledReplyHandler = continuation
       tab.tabDelegate?.showRequestRewardsPanel(tab)
     }
   }

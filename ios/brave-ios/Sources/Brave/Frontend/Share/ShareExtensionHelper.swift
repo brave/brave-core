@@ -24,6 +24,7 @@ class ShareExtensionHelper {
   ///   - applicationActivities: The application activities to include in this share sheet.
   ///   - completionHandler: This will be triggered once the share sheet is dismissed and can be used to cleanup any lingering data
   /// - Returns: An `UIActivityViewController` prepped and ready to present.
+  @MainActor
   func createActivityViewController(
     applicationActivities: [UIActivity] = []
   ) -> UIActivityViewController {

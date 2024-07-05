@@ -8,6 +8,7 @@ import Foundation
 import Preferences
 import Shared
 
+@MainActor
 class PageZoomHandler: ObservableObject {
 
   enum ChangeStatus {

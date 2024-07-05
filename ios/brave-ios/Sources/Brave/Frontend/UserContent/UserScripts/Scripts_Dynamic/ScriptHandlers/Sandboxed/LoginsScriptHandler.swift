@@ -32,21 +32,20 @@ class LoginsScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let body = message.body as? [String: AnyObject] else {
-      return
+      return (nil, nil)
     }
 
-    guard let res = body["data"] as? [String: AnyObject] else { return }
-    guard let type = res["type"] as? String else { return }
+    guard let res = body["data"] as? [String: AnyObject] else { return (nil, nil) }
+    guard let type = res["type"] as? String else { return (nil, nil) }
 
     // Check to see that we're in the foreground before trying to check the logins. We want to
     // make sure we don't try accessing the logins database while we're backgrounded to avoid
@@ -54,7 +53,7 @@ class LoginsScriptHandler: TabContentScript {
     //
     // See https://bugzilla.mozilla.org/show_bug.cgi?id=1307822 for details.
     guard UIApplication.shared.applicationState == .active && !profile.isShutdown else {
-      return
+      return (nil, nil)
     }
 
     // We don't use the WKWebView's URL since the page can spoof the URL by using document.location
@@ -63,27 +62,26 @@ class LoginsScriptHandler: TabContentScript {
       // Since responses go to the main frame, make sure we only listen for main frame requests
       // to avoid XSS attacks.
       if type == "request" {
-        passwordAPI.getSavedLogins(for: url, formScheme: .typeHtml) { [weak self] logins in
-          guard let self = self else { return }
-
-          if let requestId = res["requestId"] as? String {
-            self.autoFillRequestedCredentials(
-              formSubmitURL: res["formSubmitURL"] as? String ?? "",
-              logins: logins,
-              requestId: requestId,
-              frameInfo: message.frameInfo
-            )
-          }
+        let logins = await passwordAPI.savedLogins(for: url, formScheme: .typeHtml)
+        if let requestId = res["requestId"] as? String {
+          self.autoFillRequestedCredentials(
+            formSubmitURL: res["formSubmitURL"] as? String ?? "",
+            logins: logins,
+            requestId: requestId,
+            frameInfo: message.frameInfo
+          )
         }
       } else if type == "submit" {
         if Preferences.General.saveLogins.value {
-          updateORSaveCredentials(for: url, script: res)
+          await updateORSaveCredentials(for: url, script: res)
         }
       }
     }
+
+    return (nil, nil)
   }
 
-  private func updateORSaveCredentials(for url: URL, script: [String: Any]) {
+  private func updateORSaveCredentials(for url: URL, script: [String: Any]) async {
     guard let scriptCredentials = passwordAPI.fetchFromScript(url, script: script),
       let username = scriptCredentials.usernameValue,
       scriptCredentials.usernameElement != nil,
@@ -99,41 +97,35 @@ class LoginsScriptHandler: TabContentScript {
       return
     }
 
-    passwordAPI.getSavedLogins(for: url, formScheme: .typeHtml) { [weak self] logins in
-      guard let self = self else { return }
+    let logins = await passwordAPI.savedLogins(for: url, formScheme: .typeHtml)
 
-      for login in logins {
-        guard let usernameLogin = login.usernameValue else {
-          continue
-        }
-
-        if usernameLogin.caseInsensitivelyEqual(to: username) {
-          if password == login.passwordValue {
-            return
-          }
-
-          self.showUpdatePrompt(from: login, to: scriptCredentials)
-          return
-        } else {
-          self.showAddPrompt(for: scriptCredentials)
-          return
-        }
+    for login in logins {
+      guard let usernameLogin = login.usernameValue else {
+        continue
       }
 
-      self.showAddPrompt(for: scriptCredentials)
+      if usernameLogin.caseInsensitivelyEqual(to: username) {
+        if password == login.passwordValue {
+          return
+        }
+
+        self.showUpdatePrompt(from: login, to: scriptCredentials)
+        return
+      }
     }
+
+    self.showAddPrompt(for: scriptCredentials)
   }
 
+  @MainActor
   private func showAddPrompt(for login: PasswordForm) {
     addSnackBarForPrompt(for: login, isUpdating: false) { [weak self] in
       guard let self = self else { return }
-
-      DispatchQueue.main.async {
-        self.passwordAPI.addLogin(login)
-      }
+      self.passwordAPI.addLogin(login)
     }
   }
 
+  @MainActor
   private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm) {
     addSnackBarForPrompt(for: new, isUpdating: true) { [weak self] in
       guard let self = self else { return }
@@ -142,6 +134,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
+  @MainActor
   private func addSnackBarForPrompt(
     for login: PasswordForm,
     isUpdating: Bool,
@@ -198,6 +191,7 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
+  @MainActor
   private func autoFillRequestedCredentials(
     formSubmitURL: String,
     logins: [PasswordForm],

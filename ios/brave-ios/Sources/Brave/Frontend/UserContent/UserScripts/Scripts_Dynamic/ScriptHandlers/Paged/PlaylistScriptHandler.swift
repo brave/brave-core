@@ -102,49 +102,47 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
 
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     // If this URL is blocked from Playlist support, do nothing
     if url?.isPlaylistBlockedSiteURL == true {
-      return
+      return (nil, nil)
     }
 
     if ReadyState.from(message: message) != nil {
-      return
+      return (nil, nil)
     }
 
-    Self.processPlaylistInfo(
+    await Self.processPlaylistInfo(
       handler: self,
       item: PlaylistInfo.from(message: message)
     )
+
+    return (nil, nil)
   }
 
-  private class func processPlaylistInfo(handler: PlaylistScriptHandler, item: PlaylistInfo?) {
+  @MainActor
+  private class func processPlaylistInfo(handler: PlaylistScriptHandler, item: PlaylistInfo?) async
+  {
     guard var item = item, !item.src.isEmpty else {
-      DispatchQueue.main.async {
-        handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
-      }
+      handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
       return
     }
 
     if handler.url?.baseDomain != "soundcloud.com", item.isInvisible {
-      DispatchQueue.main.async {
-        handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
-      }
+      handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
       return
     }
 
     // Copy the item but use the web-view's title and location instead, if available
     // This is due to a iFrames security
-    item = PlaylistInfo(
+    let newItem = PlaylistInfo(
       name: item.name,
       src: item.src,
       pageSrc: handler.tab?.webView?.url?.absoluteString ?? item.pageSrc,
@@ -162,29 +160,29 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
 
-      if item.duration <= 0.0 && !item.detected || item.src.isEmpty {
-        DispatchQueue.main.async {
+      if newItem.duration <= 0.0 && !newItem.detected || newItem.src.isEmpty {
+        Task { @MainActor in
           handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
         }
         return
       }
 
-      if URL(string: item.src) != nil {
-        DispatchQueue.main.async { [weak handler] in
+      if URL(string: newItem.src) != nil {
+        Task { @MainActor [weak handler] in
           guard let handler = handler,
             let delegate = handler.delegate
           else { return }
 
-          if PlaylistItem.itemExists(pageSrc: item.pageSrc) {
+          if PlaylistItem.itemExists(pageSrc: newItem.pageSrc) {
             // Item already exists, so just update the database with new token or URL.
-            handler.updateItem(item, detected: item.detected)
-          } else if item.detected {
+            handler.updateItem(newItem, detected: newItem.detected)
+          } else if newItem.detected {
             // Automatic Detection
-            delegate.updatePlaylistURLBar(tab: handler.tab, state: .newItem, item: item)
+            delegate.updatePlaylistURLBar(tab: handler.tab, state: .newItem, item: newItem)
             delegate.showPlaylistOnboarding(tab: handler.tab)
           } else {
             // Long-Press
-            delegate.showPlaylistAlert(tab: handler.tab, state: .newItem, item: item)
+            delegate.showPlaylistAlert(tab: handler.tab, state: .newItem, item: newItem)
           }
         }
       }
@@ -214,8 +212,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
     PlaylistItem.updateItem(item) { [weak self] in
       guard let self = self else { return }
-
-      Logger.module.debug("Playlist Item Updated")
 
       if let delegate = self.delegate {
         if detected {
@@ -330,7 +326,9 @@ extension PlaylistScriptHandler {
 extension PlaylistScriptHandler {
   static func updatePlaylistTab(tab: Tab, item: PlaylistInfo?) {
     if let handler = tab.getContentScript(name: Self.scriptName) as? PlaylistScriptHandler {
-      Self.processPlaylistInfo(handler: handler, item: item)
+      Task { @MainActor in
+        await Self.processPlaylistInfo(handler: handler, item: item)
+      }
     }
   }
 }

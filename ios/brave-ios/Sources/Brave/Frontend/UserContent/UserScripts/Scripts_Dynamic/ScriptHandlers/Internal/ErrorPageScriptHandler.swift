@@ -19,14 +19,11 @@ extension ErrorPageHelper: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
-
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let errorURL = message.frameInfo.request.url,
@@ -35,11 +32,11 @@ extension ErrorPageHelper: TabContentScript {
       let originalURL = internalUrl.originalURLFromErrorPage,
       let res = message.body as? [String: String],
       let type = res["type"]
-    else { return }
+    else { return (nil, nil) }
 
     switch type {
     case messageOpenInSafari:
-      UIApplication.shared.open(originalURL, options: [:])
+      await UIApplication.shared.open(originalURL, options: [:])
     case messageCertVisitOnce:
       if let cert = CertificateErrorPageHandler.certsFromErrorURL(errorURL)?.first,
         let host = originalURL.host
@@ -52,5 +49,7 @@ extension ErrorPageHelper: TabContentScript {
     default:
       assertionFailure("Unknown error message")
     }
+
+    return (nil, nil)
   }
 }

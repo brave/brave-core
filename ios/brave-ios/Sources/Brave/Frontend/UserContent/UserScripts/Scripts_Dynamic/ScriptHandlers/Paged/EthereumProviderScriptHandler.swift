@@ -64,14 +64,13 @@ class EthereumProviderScriptHandler: TabContentScript {
     }
   }
 
-  @MainActor func userContentController(
+  func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let tab = tab,
@@ -85,56 +84,34 @@ class EthereumProviderScriptHandler: TabContentScript {
       let body = try? JSONDecoder().decode(MessageBody.self, from: messageData)
     else {
       Logger.module.error("Failed to handle ethereum provider communication")
-      return
+      return (nil, nil)
     }
 
     if message.webView?.url?.isLocal == false,
       message.webView?.hasOnlySecureContent == false
     {  // prevent communication in mixed-content scenarios
       Logger.module.error("Failed ethereum provider communication security test")
-      return
+      return (nil, nil)
     }
 
     // The web page has communicated with `window.ethereum`, so we should show the wallet icon
     tab.isWalletIconVisible = true
 
-    func handleResponse(
-      id: MojoBase.Value,
-      formedResponse: MojoBase.Value,
-      reject: Bool,
-      firstAllowedAccount: String,
-      updateJSProperties: Bool
-    ) {
-      Task { @MainActor in
-        if updateJSProperties {
-          await tab.updateEthereumProperties()
-        }
-
-        if reject {
-          replyHandler(nil, formedResponse.jsonString)
-        } else {
-          replyHandler(formedResponse.jsonObject, nil)
-        }
-      }
-    }
-
     switch body.method {
     case .request:
       guard let requestPayload = MojoBase.Value(jsonString: body.args) else {
-        replyHandler(nil, "Invalid args")
-        return
+        return (nil, "Invalid args")
       }
-      provider.request(input: requestPayload, completion: handleResponse)
+      return await handleResponse(provider.request(input: requestPayload))
     case .isConnected:
-      replyHandler(nil, nil)
+      return (nil, nil)
     case .enable:
-      provider.enable(completion: handleResponse)
+      return await handleResponse(provider.enable())
     case .sendAsync:
       guard let requestPayload = MojoBase.Value(jsonString: body.args) else {
-        replyHandler(nil, "Invalid args")
-        return
+        return (nil, "Invalid args")
       }
-      provider.sendAsync(input: requestPayload, completion: handleResponse)
+      return await handleResponse(provider.sendAsync(input: requestPayload))
     case .send:
       struct SendPayload {
         var method: String
@@ -148,18 +125,16 @@ class EthereumProviderScriptHandler: TabContentScript {
         }
       }
       guard let sendPayload = SendPayload(payload: body.args) else {
-        replyHandler(nil, "Invalid args")
-        return
+        return (nil, "Invalid args")
       }
 
       if sendPayload.method.isEmpty {
         if let params = sendPayload.params, params.tag != .null {
-          provider.sendAsync(input: params, completion: handleResponse)
-        } else {
-          // Empty method with no params is not valid
-          replyHandler(nil, "Invalid args")
+          return await handleResponse(provider.sendAsync(input: params))
         }
-        return
+
+        // Empty method with no params is not valid
+        return (nil, "Invalid args")
       }
 
       if !Self.supportedSingleArgMethods.contains(sendPayload.method),
@@ -167,19 +142,37 @@ class EthereumProviderScriptHandler: TabContentScript {
       {
         // If its not a single arg supported method and there are no parameters then its not a valid
         // call
-        replyHandler(nil, "Invalid args")
-        return
+        return (nil, "Invalid args")
       }
 
-      provider.send(
-        method: sendPayload.method,
-        params: sendPayload.params ?? .init(listValue: []),
-        completion: handleResponse
+      return await handleResponse(
+        provider.send(
+          method: sendPayload.method,
+          params: sendPayload.params ?? .init(listValue: [])
+        )
       )
     case .isUnlocked:
-      provider.isLocked { isLocked in
-        replyHandler(!isLocked, nil)
-      }
+      let isLocked = await provider.isLocked()
+      return (!isLocked, nil)
     }
+  }
+
+  @MainActor
+  private func handleResponse(
+    _ response: (
+      id: MojoBase.Value, formedResponse: MojoBase.Value,
+      reject: Bool,
+      firstAllowedAccount: String, updateJSProperties: Bool
+    )
+  ) async -> (Any?, String?) {
+    if response.updateJSProperties {
+      await tab?.updateEthereumProperties()
+    }
+
+    if response.reject {
+      return (nil, response.formedResponse.jsonString)
+    }
+
+    return (response.formedResponse.jsonObject, nil)
   }
 }

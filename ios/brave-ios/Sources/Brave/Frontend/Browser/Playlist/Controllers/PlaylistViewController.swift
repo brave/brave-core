@@ -130,7 +130,10 @@ class PlaylistViewController: UIViewController {
     // Cancel all loading.
     listController.stopLoadingSharedPlaylist()
     PlaylistManager.shared.playbackTask = nil
-    PlaylistCoordinator.shared.playlistController = nil
+
+    Task { @MainActor in
+      PlaylistCoordinator.shared.playlistController = nil
+    }
   }
 
   override func viewDidLoad() {

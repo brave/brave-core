@@ -27,6 +27,7 @@ protocol TabContentScriptLoader {
   ) -> String
 }
 
+@MainActor
 protocol TabContentScript: TabContentScriptLoader {
   static var scriptName: String { get }
   static var scriptId: String { get }
@@ -37,11 +38,11 @@ protocol TabContentScript: TabContentScriptLoader {
   func verifyMessage(message: WKScriptMessage) -> Bool
   func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
 
+  @MainActor
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  )
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?)
 }
 
 protocol TabDelegate {
@@ -96,6 +97,7 @@ enum TabSecureContentState: String {
   }
 }
 
+@MainActor
 class Tab: NSObject {
   let id: UUID
   let rewardsId: UInt32
@@ -620,7 +622,7 @@ class Tab: NSObject {
     webView = nil
   }
 
-  deinit {
+  func destroy() {
     deleteWebView()
     deleteNewTabPageController()
     contentScriptManager.helpers.removeAll()
@@ -635,11 +637,9 @@ class Tab: NSObject {
       _walletKeyringService,
     ]
 
-    DispatchQueue.main.async {
-      // Reference inside to retain it, supress warnings by reading/writing
-      _ = mojoObjects
-      mojoObjects = []
-    }
+    // Reference inside to retain it, supress warnings by reading/writing
+    _ = mojoObjects
+    mojoObjects = []
   }
 
   var loading: Bool {
@@ -1064,6 +1064,7 @@ extension Tab: TabWebViewDelegate {
   }
 }
 
+@MainActor
 private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
   fileprivate var helpers = [String: TabContentScript]()
 
@@ -1074,22 +1075,20 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     }
   }
 
-  @objc func userContentController(
+  func userContentController(
     _ userContentController: WKUserContentController,
-    didReceive message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     for helper in helpers.values {
       let scriptMessageHandlerName = type(of: helper).messageHandlerName
       if scriptMessageHandlerName == message.name {
-        helper.userContentController(
-          userContentController,
-          didReceiveScriptMessage: message,
-          replyHandler: replyHandler
-        )
-        return
+        return await helper.userContentController(userContentController, didReceive: message)
       }
     }
+
+    Logger.module.error("Received Script Message for Unregistered Handler: \(message.name)")
+
+    return (nil, nil)
   }
 
   func addContentScript(

@@ -9,20 +9,19 @@ import Shared
 import Storage
 import UIKit
 
+@MainActor
 class FaviconHandler {
-  static let maximumFaviconSize = 1 * 1024 * 1024  // 1 MiB file size limit
-
   private var tabObservers: TabObservers!
-  private let backgroundQueue = OperationQueue()
 
   init() {
-    self.tabObservers = registerFor(.didLoadPageMetadata, queue: backgroundQueue)
+    self.tabObservers = registerFor(.didLoadPageMetadata, queue: .main)
   }
 
   deinit {
     unregister(tabObservers)
   }
 
+  @MainActor
   func loadFaviconURL(
     _ url: URL,
     forTab tab: Tab

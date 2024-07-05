@@ -74,6 +74,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   static func handle(nav: NavigationPath, with bvc: BrowserViewController) {
     switch nav {
     case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
@@ -84,6 +85,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   private static func handleDeepLink(_ link: DeepLink, with bvc: BrowserViewController) {
     switch link {
     case .vpnCrossPlatformPromo:
@@ -96,6 +98,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
     if let newURL = url {
       bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
@@ -104,6 +107,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   private static func handleText(text: String, with bvc: BrowserViewController) {
     bvc.openBlankNewTab(
       attemptLocationFieldFocus: true,
@@ -112,6 +116,7 @@ public enum NavigationPath: Equatable {
     )
   }
 
+  @MainActor
   private static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController)
   {
     switch path {

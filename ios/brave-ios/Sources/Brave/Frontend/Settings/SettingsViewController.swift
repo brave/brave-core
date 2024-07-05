@@ -961,10 +961,16 @@ class SettingsViewController: TableViewController {
               title: Strings.copyAppSizeInfoToClipboard,
               style: .default
             ) { _ in
-              UIPasteboard.general.setSecureString(
-                AppDebugComposer.composeAppSize(),
-                expirationDate: Date().addingTimeInterval(2.minutes)
-              )
+              Task.detached {
+                let appSize = await AppDebugComposer.composeAppSize()
+
+                await MainActor.run {
+                  UIPasteboard.general.setSecureString(
+                    appSize,
+                    expirationDate: Date().addingTimeInterval(2.minutes)
+                  )
+                }
+              }
             }
 
             actionSheet.addAction(copyDebugInfoAction)

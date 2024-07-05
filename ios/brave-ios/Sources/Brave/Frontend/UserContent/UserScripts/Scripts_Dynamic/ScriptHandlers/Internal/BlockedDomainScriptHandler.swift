@@ -22,21 +22,19 @@ class BlockedDomainScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
 
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let params = message.body as? [String: AnyObject],
       let action = params["action"] as? String
     else {
       assertionFailure("Missing required params.")
-      return
+      return (nil, nil)
     }
 
     switch action {
@@ -47,6 +45,8 @@ class BlockedDomainScriptHandler: TabContentScript {
     default:
       assertionFailure("Unhandled action `\(action)`")
     }
+
+    return (nil, nil)
   }
 
   private func blockedDomainDidProceed() {

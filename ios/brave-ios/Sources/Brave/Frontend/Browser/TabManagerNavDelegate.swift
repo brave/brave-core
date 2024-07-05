@@ -3,6 +3,7 @@ import Shared
 import WebKit
 
 // WKNavigationDelegates must implement NSObjectProtocol
+@MainActor
 class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
   private var delegates = WeakList<WKNavigationDelegate>()
   weak var tabManager: TabManager?

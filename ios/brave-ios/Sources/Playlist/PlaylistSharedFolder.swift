@@ -183,9 +183,7 @@ public struct PlaylistSharedFolderNetwork {
       }
 
       let webLoader = webLoaderFactory.makeWebLoader()
-      //      let webLoader = PlaylistWebLoader().then {
       viewForInvisibleWebView.insertSubview(webLoader, at: 0)
-      //      }
 
       guard let newItem = await webLoader.load(url: url) else {
         // Destroy the web loader.
@@ -193,6 +191,10 @@ public struct PlaylistSharedFolderNetwork {
         webLoader.removeFromSuperview()
         throw PlaylistMediaStreamer.PlaybackError.cannotLoadMedia
       }
+
+      // Destroy the web loader.
+      webLoader.stop()
+      webLoader.removeFromSuperview()
 
       return await withCheckedContinuation { continuation in
         PlaylistManager.shared.getAssetDuration(item: newItem) { duration in
@@ -211,9 +213,6 @@ public struct PlaylistSharedFolderNetwork {
             isInvisible: newItem.isInvisible
           )
 
-          // Destroy the web loader when the callback is complete.
-          webLoader.stop()
-          webLoader.removeFromSuperview()
           continuation.resume(returning: item)
         }
       }

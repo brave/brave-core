@@ -143,7 +143,8 @@ extension BrowserViewController {
   /// navigated away from it. So we look to the left and right in the BackForwardList to see if a readerized version
   /// of the current page is there. And if so, we go there.
 
-  func enableReaderMode() {
+  @MainActor
+  func enableReaderMode() async {
     guard let tab = tabManager.selectedTab, let webView = tab.webView else { return }
 
     let backList = webView.backForwardList.backList
@@ -160,23 +161,23 @@ extension BrowserViewController {
     if backList.count > 1 && backList.last?.url == readerModeURL {
       let playlistItem = tab.playlistItem
       webView.go(to: backList.last!)
-      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+      await PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
     } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
       let playlistItem = tab.playlistItem
       webView.go(to: forwardList.first!)
-      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+      await PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
     } else {
       // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-      webView.evaluateSafeJavaScript(
+      let (object, error) = await webView.evaluateSafeJavaScript(
         functionName: "\(readerModeNamespace).readerize",
         contentWorld: ReaderModeScriptHandler.scriptSandbox
-      ) { (object, error) -> Void in
-        if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
-          let playlistItem = tab.playlistItem
-          try? self.readerModeCache.put(currentURL, readabilityResult)
-          if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-          }
+      )
+
+      if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
+        let playlistItem = tab.playlistItem
+        try? self.readerModeCache.put(currentURL, readabilityResult)
+        if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
+          await PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
         }
       }
     }
@@ -187,7 +188,8 @@ extension BrowserViewController {
   /// case we simply open a new page with the original url. In the more complicated page, the non-readerized version
   /// of the page is either to the left or right in the BackForwardList. If that is the case, we navigate there.
 
-  func disableReaderMode() {
+  @MainActor
+  func disableReaderMode() async {
     if let tab = tabManager.selectedTab,
       let webView = tab.webView
     {
@@ -199,15 +201,15 @@ extension BrowserViewController {
           if backList.count > 1 && backList.last?.url == originalURL {
             let playlistItem = tab.playlistItem
             webView.go(to: backList.last!)
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+            await PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
             let playlistItem = tab.playlistItem
             webView.go(to: forwardList.first!)
-            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+            await PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           } else {
             let playlistItem = tab.playlistItem
             if webView.load(URLRequest(url: originalURL)) != nil {
-              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
+              await PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             }
           }
         }

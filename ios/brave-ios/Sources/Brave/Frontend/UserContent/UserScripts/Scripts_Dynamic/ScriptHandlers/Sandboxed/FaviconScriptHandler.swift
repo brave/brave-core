@@ -41,45 +41,43 @@ class FaviconScriptHandler: NSObject, TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
-    guard let tab = tab else { return }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+    guard let tab = tab else { return (nil, nil) }
 
-    Task { @MainActor in
-      // Assign default favicon
-      tab.favicon = Favicon.default
+    // Assign default favicon
+    tab.favicon = Favicon.default
 
-      guard let webView = message.webView,
-        let url = webView.url
-      else {
-        return
-      }
-
-      // The WebView has a valid URL
-      // Attempt to fetch the favicon from cache
-      let isPrivate = tab.isPrivate
-      tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
-
-      // If this is an internal page, we don't fetch favicons for such pages from Brave-Core
-      guard !InternalURL.isValid(url: url),
-        !(InternalURL(url)?.isSessionRestore ?? false)
-      else {
-        return
-      }
-
-      // Update the favicon for this tab, from Brave-Core
-      tab.faviconDriver?.webView(webView, scriptMessage: message) { [weak tab] iconUrl, icon in
-        FaviconScriptHandler.updateFavicon(
-          tab: tab,
-          url: url,
-          isPrivate: isPrivate,
-          icon: icon,
-          iconUrl: iconUrl
-        )
-      }
+    guard let webView = message.webView,
+      let url = webView.url
+    else {
+      return (nil, nil)
     }
+
+    // The WebView has a valid URL
+    // Attempt to fetch the favicon from cache
+    let isPrivate = tab.isPrivate
+    tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
+
+    // If this is an internal page, we don't fetch favicons for such pages from Brave-Core
+    guard !InternalURL.isValid(url: url),
+      !(InternalURL(url)?.isSessionRestore ?? false)
+    else {
+      return (nil, nil)
+    }
+
+    // Update the favicon for this tab, from Brave-Core
+    tab.faviconDriver?.webView(webView, scriptMessage: message) { [weak tab] iconUrl, icon in
+      FaviconScriptHandler.updateFavicon(
+        tab: tab,
+        url: url,
+        isPrivate: isPrivate,
+        icon: icon,
+        iconUrl: iconUrl
+      )
+    }
+
+    return (nil, nil)
   }
 
   private static func updateFavicon(

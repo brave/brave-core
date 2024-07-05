@@ -79,12 +79,12 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: @escaping (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     guard let tab = tab,
@@ -98,58 +98,67 @@ class SolanaProviderScriptHandler: TabContentScript {
       let body = try? JSONDecoder().decode(MessageBody.self, from: messageData)
     else {
       Logger.module.error("Failed to handle solana provider communication")
-      return
+      return (nil, nil)
     }
 
     if message.webView?.url?.isLocal == false,
       message.webView?.hasOnlySecureContent == false
     {  // prevent communication in mixed-content scenarios
       Logger.module.error("Failed solana provider communication security test")
-      return
+      return (nil, nil)
     }
 
     // The web page has communicated with `window.solana`, so we should show the wallet icon
     tab.isWalletIconVisible = true
 
-    Task { @MainActor in
-      switch body.method {
-      case .connect:
-        let (publicKey, error) = await connect(args: body.args)
-        replyHandler(publicKey, error)
+    switch body.method {
+    case .connect:
+      let (publicKey, error) = await connect(args: body.args)
+      return await withCheckedContinuation { continuation in
+        continuation.resume(returning: (publicKey, error))
+
+        // These are fired after returning a result
         if let publicKey = publicKey as? String {
-          await emitConnectEvent(publicKey: publicKey)
+          Task { @MainActor in
+            await emitConnectEvent(publicKey: publicKey)
+          }
         }
-      case .disconnect:
-        provider.disconnect()
-        replyHandler("{:}", nil)
-      case .signAndSendTransaction:
-        let (result, error) = await signAndSendTransaction(args: body.args)
-        replyHandler(result, error)
-      case .signMessage:
-        let (result, error) = await signMessage(args: body.args)
-        replyHandler(result, error)
-      case .request:
-        guard let args = body.args,
-          let argDict = MojoBase.Value(jsonString: args)?.dictionaryValue,
-          let method = argDict[Keys.method.rawValue]?.stringValue
-        else {
-          replyHandler(nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
-          return
-        }
-        let (result, error) = await request(args: body.args)
-        replyHandler(result, error)
+      }
+    case .disconnect:
+      provider.disconnect()
+      return ("{:}", nil)
+    case .signAndSendTransaction:
+      let (result, error) = await signAndSendTransaction(args: body.args)
+      return (result, error)
+    case .signMessage:
+      let (result, error) = await signMessage(args: body.args)
+      return (result, error)
+    case .request:
+      guard let args = body.args,
+        let argDict = MojoBase.Value(jsonString: args)?.dictionaryValue,
+        let method = argDict[Keys.method.rawValue]?.stringValue
+      else {
+        return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
+      }
+      let (result, error) = await request(args: body.args)
+      return await withCheckedContinuation { continuation in
+        continuation.resume(returning: (result, error))
+
+        // These are fired after returning a result
         if method == Keys.connect.rawValue, let publicKey = result as? String {
-          await emitConnectEvent(publicKey: publicKey)
+          Task { @MainActor in
+            await emitConnectEvent(publicKey: publicKey)
+          }
         } else if method == Keys.disconnect.rawValue {
           tab.emitSolanaEvent(.disconnect)
         }
-      case .signTransaction:
-        let (result, error) = await signTransaction(args: body.args)
-        replyHandler(result, error)
-      case .signAllTransactions:
-        let (result, error) = await signAllTransactions(args: body.args)
-        replyHandler(result, error)
       }
+    case .signTransaction:
+      let (result, error) = await signTransaction(args: body.args)
+      return (result, error)
+    case .signAllTransactions:
+      let (result, error) = await signAllTransactions(args: body.args)
+      return (result, error)
     }
   }
 

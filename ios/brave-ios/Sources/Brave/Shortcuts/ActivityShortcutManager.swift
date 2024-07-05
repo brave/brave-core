@@ -108,6 +108,7 @@ public enum ActivityType: String {
 }
 
 /// Singleton Manager handles creation and action for Activities
+@MainActor
 public class ActivityShortcutManager: NSObject {
 
   /// Custom Intent Types

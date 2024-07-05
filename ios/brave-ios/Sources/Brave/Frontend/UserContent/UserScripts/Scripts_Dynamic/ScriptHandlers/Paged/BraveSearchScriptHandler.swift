@@ -64,12 +64,12 @@ class BraveSearchScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     let allowedHosts = DomainUserScript.braveSearchHelper.associatedDomains
@@ -79,33 +79,30 @@ class BraveSearchScriptHandler: TabContentScript {
       message.frameInfo.isMainFrame
     else {
       Logger.module.error("Backup search request called from disallowed host")
-      replyHandler(nil, nil)
-      return
+      return (nil, nil)
     }
 
     guard let data = try? JSONSerialization.data(withJSONObject: message.body, options: []),
       let method = try? JSONDecoder().decode(MethodModel.self, from: data).methodId
     else {
       Logger.module.error("Failed to retrieve method id")
-      replyHandler(nil, nil)
-      return
+      return (nil, nil)
     }
 
     switch method {
     case Method.canSetBraveSearchAsDefault.rawValue:
-      handleCanSetBraveSearchAsDefault(replyHandler: replyHandler)
+      return await handleCanSetBraveSearchAsDefault()
     case Method.setBraveSearchDefault.rawValue:
-      handleSetBraveSearchDefault(replyHandler: replyHandler)
+      return await handleSetBraveSearchDefault()
     default:
-      break
+      return (nil, nil)
     }
   }
 
-  private func handleCanSetBraveSearchAsDefault(replyHandler: (Any?, String?) -> Void) {
+  private func handleCanSetBraveSearchAsDefault() async -> (Any?, String?) {
     if tab?.isPrivate == true {
       Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
-      replyHandler(false, nil)
-      return
+      return (false, nil)
     }
 
     let maximumPromptCount = Preferences.Search.braveSearchDefaultBrowserPromptCount
@@ -113,8 +110,7 @@ class BraveSearchScriptHandler: TabContentScript {
       || maximumPromptCount.value >= maxCountOfDefaultBrowserPromptsTotal
     {
       Logger.module.debug("Maximum number of tries of Brave Search website prompts reached")
-      replyHandler(false, nil)
-      return
+      return (false, nil)
     }
 
     Self.canSetAsDefaultCounter += 1
@@ -122,14 +118,14 @@ class BraveSearchScriptHandler: TabContentScript {
 
     let defaultEngine = profile.searchEngines.defaultEngine(forType: .standard).shortName
     let canSetAsDefault = defaultEngine != OpenSearchEngine.EngineNames.brave
-    replyHandler(canSetAsDefault, nil)
+    return (canSetAsDefault, nil)
   }
 
-  private func handleSetBraveSearchDefault(replyHandler: (Any?, String?) -> Void) {
+  private func handleSetBraveSearchDefault() async -> (Any?, String?) {
     profile.searchEngines.updateDefaultEngine(
       OpenSearchEngine.EngineNames.brave,
       forType: .standard
     )
-    replyHandler(nil, nil)
+    return (nil, nil)
   }
 }

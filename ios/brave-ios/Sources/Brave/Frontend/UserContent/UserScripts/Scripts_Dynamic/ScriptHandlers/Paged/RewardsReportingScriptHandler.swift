@@ -40,10 +40,9 @@ class RewardsReportingScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
+
     struct Content: Decodable {
       var method: String
       var url: String
@@ -52,30 +51,30 @@ class RewardsReportingScriptHandler: TabContentScript {
     }
 
     if tab?.isPrivate == true || !rewards.isEnabled {
-      return
+      return (nil, nil)
     }
 
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     do {
       guard let body = message.body as? [String: AnyObject] else {
-        return
+        return (nil, nil)
       }
 
       if let body = body["data"] as? [String: AnyObject] {
         let json = try JSONSerialization.data(withJSONObject: body, options: [])
         var content = try JSONDecoder().decode(Content.self, from: json)
 
-        guard let tab = tab, let tabURL = tab.url else { return }
+        guard let tab = tab, let tabURL = tab.url else { return (nil, nil) }
 
         if content.url.hasPrefix("//") {
           content.url = "\(tabURL.scheme ?? "http"):\(content.url)"
         }
 
-        guard let url = URL(string: content.url) else { return }
+        guard let url = URL(string: content.url) else { return (nil, nil) }
         let refURL = URL(string: content.referrerUrl ?? "")
         rewards.reportXHRLoad(
           url: url,
@@ -89,5 +88,6 @@ class RewardsReportingScriptHandler: TabContentScript {
         "Failed to parse message from rewards reporting JS: \(error.localizedDescription)"
       )
     }
+    return (nil, nil)
   }
 }

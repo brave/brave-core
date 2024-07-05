@@ -42,14 +42,11 @@ class PrintScriptHandler: TabContentScript {
 
   func userContentController(
     _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    defer { replyHandler(nil, nil) }
-
+    didReceive message: WKScriptMessage
+  ) async -> (Any?, String?) {
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
-      return
+      return (nil, nil)
     }
 
     if let tab = tab, let webView = tab.webView, let url = webView.url {
@@ -62,7 +59,7 @@ class PrintScriptHandler: TabContentScript {
       currentDomain = url.baseDomain
 
       if isPresentingController || isBlocking {
-        return
+        return (nil, nil)
       }
 
       let showPrintSheet = { [weak self] in
@@ -129,5 +126,7 @@ class PrintScriptHandler: TabContentScript {
         showPrintSheet()
       }
     }
+
+    return (nil, nil)
   }
 }
