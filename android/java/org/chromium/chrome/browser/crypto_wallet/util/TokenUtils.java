@@ -115,22 +115,6 @@ public class TokenUtils {
                 });
     }
 
-    @SuppressLint("WrongCommentType")
-    /*
-     * Wrapper for {@link BlockchainRegistry#getAllTokens} with Goerli contract address
-     * modifications.
-     *
-     * <b>Note:</b>: all calls to {@link BlockchainRegistry#getAllTokens} should be intercepted by
-     * this method.
-     */
-    public static void getAllTokens(
-            @NonNull BlockchainRegistry blockchainRegistry,
-            String chainId,
-            int coinType,
-            BlockchainRegistry.GetAllTokens_Response callback) {
-        blockchainRegistry.getAllTokens(chainId, coinType, tokens -> callback.call(tokens));
-    }
-
     /**
      * Gets all tokens from a given single network, includes user assets and filters out tokens
      * different from a given type.
@@ -147,8 +131,7 @@ public class TokenUtils {
             NetworkInfo selectedNetwork,
             TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        getAllTokens(
-                blockchainRegistry,
+        blockchainRegistry.getAllTokens(
                 selectedNetwork.chainId,
                 selectedNetwork.coin,
                 tokens ->
