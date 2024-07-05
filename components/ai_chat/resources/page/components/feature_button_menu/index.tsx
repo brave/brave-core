@@ -25,6 +25,10 @@ export default function FeatureMenu() {
 
   const customModels = conversationContext.allModels.filter(model => model.options.customModelOptions !== undefined)
   const leoModels = conversationContext.allModels.filter(model => model.options.leoModelOptions !== undefined)
+  const handleSearchAndHistoryClick = () => {
+    aiChatContext.setIsConversationListOpen(true)
+  }
+
 
   return (
     <ButtonMenu
@@ -115,6 +119,20 @@ export default function FeatureMenu() {
         </div>
       </leo-menu-item>
       }
+
+      <leo-menu-item onClick={handleSearchAndHistoryClick}>
+        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
+          <Icon name='history' />
+          <span className={styles.menuText}>Search and history</span>
+        </div>
+      </leo-menu-item>
+
+      <leo-menu-item onClick={() => {}}>
+        <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>
+          <Icon name='launch' />
+          <span className={styles.menuText}>Open full page</span>
+        </div>
+      </leo-menu-item>
 
       <leo-menu-item onClick={handleSettingsClick}>
         <div className={classnames(styles.menuItemWithIcon, styles.menuItemMainItem)}>

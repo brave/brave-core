@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
 import AlertCenter from '@brave/leo/react/alertCenter'
@@ -18,7 +17,6 @@ import PrivacyMessage from '../privacy_message'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorRateLimit from '../alerts/error_rate_limit'
 import InputBox from '../input_box'
-import FeatureButtonMenu from '../feature_button_menu'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
@@ -27,6 +25,8 @@ import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import ToolsButtonMenu from '../tools_button_menu'
+import SidebarNav from '../sidebar_nav'
+import { PageTitleHeader } from '../header'
 import styles from './style.module.scss'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
@@ -35,7 +35,6 @@ const SCROLL_BOTTOM_THRESHOLD = 10.0
 function Main() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
-
   const shouldShowPremiumSuggestionForModel =
     aiChatContext.hasAcceptedAgreement &&
     !aiChatContext.isPremiumStatusFetching && // Avoid flash of content
@@ -51,7 +50,6 @@ function Main() {
     conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
-  const shouldDisplayNewChatIcon = conversationContext.conversationHistory.length >= 1
 
     const isLastTurnBraveSearchSERPSummary =
     conversationContext.conversationHistory.at(-1)?.fromBraveSearchSERP ?? false
@@ -159,44 +157,13 @@ function Main() {
 
   return (
     <main className={styles.main}>
-      {showAgreementModal && <PrivacyMessage />}
-      <div className={styles.header}
-        ref={headerElement}>
-        <div className={styles.logo}>
-          <Icon name='product-brave-leo' />
-          <div className={styles.logoTitle}>Leo AI</div>
-          {aiChatContext.isPremiumUser && <div className={styles.badgePremium}>PREMIUM</div>}
+      {aiChatContext.isConversationListOpen && (
+        <div className={styles.conversationList}>
+          <SidebarNav enableBackButton={true} />
         </div>
-        <div className={styles.actions}>
-          {aiChatContext.hasAcceptedAgreement && (
-            <>
-            {shouldDisplayNewChatIcon && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label={getLocale('startConversationLabel')}
-                title={getLocale('startConversationLabel')}
-                onClick={aiChatContext.onNewConversation}
-              >
-                <Icon name='edit-box' />
-              </Button>
-            )}
-            <FeatureButtonMenu />
-            <div className={styles.divider} />
-            <Button
-              fab
-              kind='plain-faint'
-              aria-label='Close'
-              title='Close'
-              className={styles.closeButton}
-              onClick={() => aiChatContext.uiHandler?.closeUI()}
-            >
-              <Icon name='close' />
-            </Button>
-            </>
-          )}
-        </div>
-      </div>
+      )}
+      {context.showAgreementModal && <PrivacyMessage />}
+      <PageTitleHeader ref={headerElement} />
       <div className={classnames({
         [styles.scroller]: true,
         [styles.flushBottom]: !aiChatContext.hasAcceptedAgreement
