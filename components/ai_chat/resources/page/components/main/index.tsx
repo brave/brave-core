@@ -150,59 +150,61 @@ function Main() {
         onScroll={handleScroll}
       >
         <AlertCenter position='top-left' className={styles.alertCenter} />
-        {context.hasAcceptedAgreement && <>
-          <ModelIntro />
-          <ConversationList
-            onLastElementHeightChange={handleLastElementHeightChange}
-          />
-        </>}
-        {currentErrorElement && (
-          <div className={styles.promptContainer}>{currentErrorElement}</div>
-        )}
-        {
-          shouldShowPremiumSuggestionForModel && (
-            <div className={styles.promptContainer}>
-              <PremiumSuggestion
-                title={getLocale('unlockPremiumTitle')}
-                secondaryActionButton={
-                  <Button
-                    kind='plain-faint'
-                    onClick={() => context.switchToBasicModel()}
-                  >
-                    {getLocale('switchToBasicModelButtonLabel')}
-                  </Button>
-                }
-              />
-            </div>
-          )
-        }
-        {
-          shouldShowPremiumSuggestionStandalone && (
-            <div className={styles.promptContainer}>
-              <PremiumSuggestion
-                title={getLocale('unlockPremiumTitle')}
-                secondaryActionButton={
-                  <Button
-                    kind='plain-faint'
-                    onClick={() => context.dismissPremiumPrompt()}
-                  >
-                    {getLocale('dismissButtonLabel')}
-                  </Button>
-                }
-              />
-            </div>
-          )
-        }
-        {context.isPremiumUserDisconnected &&
-        <div className={styles.promptContainer}>
-          <WarningPremiumDisconnected />
+        <div className={styles.conversationContainer}>
+          {context.hasAcceptedAgreement && <>
+            <ModelIntro />
+            <ConversationList
+              onLastElementHeightChange={handleLastElementHeightChange}
+            />
+          </>}
+          {currentErrorElement && (
+            <div className={styles.promptContainer}>{currentErrorElement}</div>
+          )}
+          {
+            shouldShowPremiumSuggestionForModel && (
+              <div className={styles.promptContainer}>
+                <PremiumSuggestion
+                  title={getLocale('unlockPremiumTitle')}
+                  secondaryActionButton={
+                    <Button
+                      kind='plain-faint'
+                      onClick={() => context.switchToBasicModel()}
+                    >
+                      {getLocale('switchToBasicModelButtonLabel')}
+                    </Button>
+                  }
+                />
+              </div>
+            )
+          }
+          {
+            shouldShowPremiumSuggestionStandalone && (
+              <div className={styles.promptContainer}>
+                <PremiumSuggestion
+                  title={getLocale('unlockPremiumTitle')}
+                  secondaryActionButton={
+                    <Button
+                      kind='plain-faint'
+                      onClick={() => context.dismissPremiumPrompt()}
+                    >
+                      {getLocale('dismissButtonLabel')}
+                    </Button>
+                  }
+                />
+              </div>
+            )
+          }
+          {context.isPremiumUserDisconnected &&
+          <div className={styles.promptContainer}>
+            <WarningPremiumDisconnected />
+          </div>
+          }
+          {context.shouldShowLongConversationInfo &&
+          <div className={styles.promptContainer}>
+              <LongConversationInfo />
+          </div>}
+          {!hasAcceptedAgreement && <WelcomeGuide />}
         </div>
-        }
-        {context.shouldShowLongConversationInfo &&
-        <div className={styles.promptContainer}>
-            <LongConversationInfo />
-        </div>}
-        {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
       <div className={styles.input}>
         {showContextToggle && (
