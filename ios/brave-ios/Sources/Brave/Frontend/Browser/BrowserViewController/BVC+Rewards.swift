@@ -59,7 +59,7 @@ extension BrowserViewController {
     guard let tab = tabManager.selectedTab else { return }
 
     // System components sit on top so we want to dismiss it
-    tab.webView?.findInteraction?.dismissFindNavigator()
+    tab.webView?.findInPageController.stopFindInPage()
 
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
@@ -176,7 +176,7 @@ extension Tab {
 
     if rewards.isEnabled {
       group.enter()
-      webView.evaluateSafeJavaScript(
+      webView.underlyingWebView?.evaluateSafeJavaScript(
         functionName: "new XMLSerializer().serializeToString",
         args: ["document"],
         contentWorld: WKContentWorld.defaultClient,
@@ -187,7 +187,7 @@ extension Tab {
       }
 
       group.enter()
-      webView.evaluateSafeJavaScript(
+      webView.underlyingWebView?.evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
         contentWorld: .defaultClient,
         asFunction: false

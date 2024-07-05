@@ -78,7 +78,7 @@ class ResourceDownloadScriptHandler: TabContentScript {
   }
 
   static func downloadResource(for tab: Tab, url: URL) {
-    tab.webView?.evaluateSafeJavaScript(
+    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.downloadManager.download",
       args: [url.absoluteString],
       contentWorld: self.scriptSandbox

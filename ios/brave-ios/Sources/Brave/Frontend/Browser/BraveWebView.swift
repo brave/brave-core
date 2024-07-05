@@ -2,15 +2,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Foundation
 import Shared
 import UserAgent
 import WebKit
 
-class BraveWebView: WKWebView {
+class BraveWebView: CWVWebView {
   /// Stores last position when the webview was touched on.
   private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
+
+  var underlyingWebView: WKWebView?
 
   private static var nonPersistentDataStore: WKWebsiteDataStore?
   static func sharedNonPersistentStore() -> WKWebsiteDataStore {
@@ -33,15 +36,19 @@ class BraveWebView: WKWebView {
     } else {
       configuration.websiteDataStore = WKWebsiteDataStore.default()
     }
+    CWVWebView.webInspectorEnabled = true
+    CWVWebView.customUserAgent = UserAgent.userAgentForDesktopMode
+    CWVWebView.chromeContextMenuEnabled = false
+    CWVWebView.skipAccountStorageCheckEnabled = true
 
-    super.init(frame: frame, configuration: configuration)
+    super.init(
+      frame: frame,
+      configuration: isPrivate ? .incognito() : .default(),
+      wkConfiguration: configuration,
+      createdWKWebView: &underlyingWebView
+    )
 
-    isFindInteractionEnabled = true
-
-    customUserAgent = UserAgent.userAgentForDesktopMode
-    if #available(iOS 16.4, *) {
-      isInspectable = true
-    }
+    underlyingWebView?.isFindInteractionEnabled = true
   }
 
   static func removeNonPersistentStore() {

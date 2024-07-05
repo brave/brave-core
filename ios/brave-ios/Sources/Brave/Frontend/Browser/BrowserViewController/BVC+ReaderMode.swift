@@ -144,7 +144,7 @@ extension BrowserViewController {
   /// of the current page is there. And if so, we go there.
 
   func enableReaderMode() {
-    guard let tab = tabManager.selectedTab, let webView = tab.webView else { return }
+    guard let tab = tabManager.selectedTab, let webView = tab.webView?.underlyingWebView else { return }
 
     let backList = webView.backForwardList.backList
     let forwardList = webView.backForwardList.forwardList
@@ -191,7 +191,7 @@ extension BrowserViewController {
 
   func disableReaderMode() {
     if let tab = tabManager.selectedTab,
-      let webView = tab.webView
+       let webView = tab.webView?.underlyingWebView
     {
       let backList = webView.backForwardList.backList
       let forwardList = webView.backForwardList.forwardList

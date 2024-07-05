@@ -43,6 +43,7 @@ import("//brave/ios/browser/url_sanitizer/headers.gni")
 import("//build/apple/tweak_info_plist.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
+import("//brave/ios/web_view/web_view_sources.gni")
 
 # lld is required when building arm64 with optimization in order to avoid
 # runtime crashes
@@ -137,6 +138,7 @@ action("brave_core_umbrella_header") {
   ]
 
   args += rebase_path(brave_core_public_headers, root_build_dir)
+  args += rebase_path(ios_web_view_public_headers, root_build_dir)
 }
 
 tweak_info_plist("info_plist") {
@@ -167,6 +169,7 @@ ios_framework_bundle("brave_core_ios_framework") {
     ":brave_core_plist",
     ":brave_core_umbrella_header",
     "//brave/ios/app",
+    "//brave/ios/web_view",
   ]
 
   deps += ads_public_deps
@@ -177,9 +180,11 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps += credential_provider_public_deps
 
   sources = brave_core_public_headers
+  sources += ios_web_view_public_headers
 
   public_headers = get_target_outputs(":brave_core_umbrella_header")
   public_headers += brave_core_public_headers
+  public_headers += ios_web_view_public_headers
 }
 
 ios_create_xcframework("brave_core_xcframework") {

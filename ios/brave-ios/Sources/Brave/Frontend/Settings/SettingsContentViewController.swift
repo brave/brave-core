@@ -123,8 +123,9 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
       $0.setURLSchemeHandler(InternalSchemeHandler(tab: nil), forURLScheme: InternalURL.scheme)
     }
     let webView = BraveWebView(frame: frame, configuration: configuration)
-    webView.allowsLinkPreview = false
-    webView.navigationDelegate = self
+    webView.underlyingWebView?.allowsLinkPreview = false
+    // FIXME: Nav Delegate
+//    webView.navigationDelegate = self
     return webView
   }
 

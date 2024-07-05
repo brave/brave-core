@@ -84,8 +84,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       self.certStore = browserViewController.profile.certStore
       let kvos: [KVOConstants] = [
         .estimatedProgress, .loading, .canGoBack,
-        .canGoForward, .url, .title,
-        .hasOnlySecureContent, .serverTrust,
+        .canGoForward, .url, .title, .visibleURL, .visibleSSLStatus,
       ]
 
       browserViewController.tab(tab, didCreateWebView: webView)
@@ -93,8 +92,9 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 
       // When creating a tab, TabManager automatically adds a uiDelegate
       // This webView is invisible and we don't want any UI being handled.
-      webView.uiDelegate = nil
-      webView.navigationDelegate = self
+      // FIXME: Nav Delegate
+//      webView.uiDelegate = nil
+//      webView.navigationDelegate = self
 
       tab.replaceContentScript(
         PlaylistWebLoaderContentHelper(self),
@@ -113,7 +113,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     guard let webView = tab.webView else { return }
     webView.stopLoading()
     self.handler?(nil)
-    webView.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+    webView.underlyingWebView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
   }
 
   private class PlaylistWebLoaderContentHelper: TabContentScript {
@@ -128,7 +128,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       timeout = DispatchWorkItem(block: { [weak self] in
         guard let self = self else { return }
         self.webLoader?.handler?(nil)
-        self.webLoader?.tab.webView?.loadHTMLString(
+        self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
           "<html><body>PlayList</body></html>",
           baseURL: nil
         )
@@ -166,7 +166,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         self.timeout?.cancel()
         self.timeout = nil
         self.webLoader?.handler?(nil)
-        self.webLoader?.tab.webView?.loadHTMLString(
+        self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
           "<html><body>PlayList</body></html>",
           baseURL: nil
         )
@@ -186,7 +186,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
           timeout = DispatchWorkItem(block: { [weak self] in
             guard let self = self else { return }
             self.webLoader?.handler?(nil)
-            self.webLoader?.tab.webView?.loadHTMLString(
+            self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
               "<html><body>PlayList</body></html>",
               baseURL: nil
             )
@@ -215,7 +215,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         timeout = DispatchWorkItem(block: { [weak self] in
           guard let self = self else { return }
           self.webLoader?.handler?(nil)
-          self.webLoader?.tab.webView?.loadHTMLString(
+          self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
             "<html><body>PlayList</body></html>",
             baseURL: nil
           )
@@ -254,7 +254,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         // It may not have received all info necessary to play the item such as MetadataInfo
         // For now it works 100% of the time and it is safe to do it. If we come across such a website, that causes problems,
         // we'll need to find a different way of forcing the WebView to STOP loading metadata in the background
-        self.webLoader?.tab.webView?.loadHTMLString(
+        self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
           "<html><body>PlayList</body></html>",
           baseURL: nil
         )
@@ -330,7 +330,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       return (.cancel, preferences)
     }
 
-    if navigationAction.isInternalUnprivileged && navigationAction.navigationType != .backForward {
+    if navigationAction.request.isInternalUnprivileged && navigationAction.navigationType != .backForward {
       return (.cancel, preferences)
     }
 

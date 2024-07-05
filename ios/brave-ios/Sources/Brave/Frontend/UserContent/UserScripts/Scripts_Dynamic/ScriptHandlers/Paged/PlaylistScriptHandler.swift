@@ -40,7 +40,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     super.init()
 
     urlObserver = tab.webView?.observe(
-      \.url,
+      \.visibleURL,
       options: [.new],
       changeHandler: { [weak self] _, change in
         guard let self = self, let url = change.newValue else { return }
@@ -147,7 +147,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     item = PlaylistInfo(
       name: item.name,
       src: item.src,
-      pageSrc: handler.tab?.webView?.url?.absoluteString ?? item.pageSrc,
+      pageSrc: handler.tab?.webView?.lastCommittedURL?.absoluteString ?? item.pageSrc,
       pageTitle: handler.tab?.webView?.title ?? item.pageTitle,
       mimeType: item.mimeType,
       duration: item.duration,
@@ -243,7 +243,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
 
       let touchPoint = gestureRecognizer.location(in: webView)
 
-      webView.evaluateSafeJavaScript(
+      webView.underlyingWebView?.evaluateSafeJavaScript(
         functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
         args: [touchPoint.x, touchPoint.y, Self.scriptId],
         contentWorld: Self.scriptSandbox,
@@ -277,7 +277,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
 
 extension PlaylistScriptHandler {
   static func getCurrentTime(
-    webView: WKWebView,
+    webView: BraveWebView,
     nodeTag: String,
     completion: @escaping (Double) -> Void
   ) {
@@ -286,7 +286,7 @@ extension PlaylistScriptHandler {
       return
     }
 
-    webView.evaluateSafeJavaScript(
+    webView.underlyingWebView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(mediaCurrentTimeFromTag)",
       args: [nodeTag, Self.scriptId],
       contentWorld: Self.scriptSandbox,
@@ -312,7 +312,7 @@ extension PlaylistScriptHandler {
   static func stopPlayback(tab: Tab?) {
     guard let tab = tab else { return }
 
-    tab.webView?.evaluateSafeJavaScript(
+    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(stopMediaPlayback)",
       args: [Self.scriptId],
       contentWorld: Self.scriptSandbox,

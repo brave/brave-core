@@ -103,10 +103,7 @@ extension BrowserViewController {
         callback: { [weak self] in
           guard let self = self else { return }
 
-          if let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
-            findInteraction.searchText = ""
-            findInteraction.presentFindNavigator(showingReplace: false)
-          }
+          self.tabManager.selectedTab?.webView?.findInPageController.findString(inPage: "")
         }
       )
     )
@@ -190,7 +187,7 @@ extension BrowserViewController {
           BasicMenuActivity(
             activityType: .createPDF,
             callback: {
-              webView.createPDF { [weak self] result in
+              webView.underlyingWebView?.createPDF { [weak self] result in
                 dispatchPrecondition(condition: .onQueue(.main))
                 guard let self = self else {
                   return
@@ -288,8 +285,9 @@ extension BrowserViewController {
     }
 
     // Display Certificate Activity
-    if let tabURL = tabManager.selectedTab?.webView?.url,
-      tabManager.selectedTab?.webView?.serverTrust != nil
+    if let tabURL = tabManager.selectedTab?.webView?.lastCommittedURL,
+       // FIXME: Certificate
+       tabManager.selectedTab?.webView?.underlyingWebView?.serverTrust != nil
         || ErrorPageHelper.hasCertificates(for: tabURL)
     {
       activities.append(

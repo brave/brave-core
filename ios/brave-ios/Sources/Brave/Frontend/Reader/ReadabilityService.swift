@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import WebKit
 
@@ -79,23 +80,14 @@ class ReadabilityOperation: Operation {
   }
 }
 
-extension ReadabilityOperation: WKNavigationDelegate {
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+extension ReadabilityOperation: CWVNavigationDelegate {
+  func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
-  func webView(
-    _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
-    withError error: Error
-  ) {
-    result = ReadabilityOperationResult.error(error as NSError)
-    semaphore.signal()
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    webView.evaluateSafeJavaScript(
+  func webViewDidFinishNavigation(_ webView: CWVWebView) {
+    tab.webView?.underlyingWebView?.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )

@@ -26,7 +26,7 @@ class LinkPreviewViewController: UIViewController {
 
   override func viewDidLoad() {
     guard let parentTab = parentTab,
-      let tabWebView = parentTab.webView
+          let tabWebView = parentTab.webView?.underlyingWebView
     else {
       return
     }
@@ -54,7 +54,7 @@ class LinkPreviewViewController: UIViewController {
     Task(priority: .userInitiated) {
       let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
       for ruleList in ruleLists {
-        webView.configuration.userContentController.add(ruleList)
+        webView.underlyingWebView?.configuration.userContentController.add(ruleList)
       }
     }
 

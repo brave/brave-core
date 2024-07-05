@@ -410,7 +410,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     if let webView = tab?.webView {
       let script =
         "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
-      await webView.evaluateSafeJavaScript(
+      await webView.underlyingWebView?.evaluateSafeJavaScript(
         functionName: script,
         contentWorld: .page,
         asFunction: false

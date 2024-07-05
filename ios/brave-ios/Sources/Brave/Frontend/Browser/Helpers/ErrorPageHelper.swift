@@ -81,7 +81,7 @@ class ErrorPageHelper {
     self.certStore = certStore
   }
 
-  func loadPage(_ error: NSError, forUrl url: URL, inWebView webView: WKWebView) {
+  func loadPage(_ error: NSError, forUrl url: URL, inWebView webView: BraveWebView) {
     guard var components = URLComponents(string: "\(InternalURL.baseUrl)/\(ErrorPageHandler.path)")
     else {
       return
@@ -89,7 +89,7 @@ class ErrorPageHelper {
 
     // In rare cases the web view's url might be nil, like when opening a non existing website via share menu.
     // In this case we fall back to the failing url.
-    let webViewUrl = webView.url ?? url
+    let webViewUrl = webView.lastCommittedURL ?? url
 
     // Page has failed to load again, just return and keep showing the existing error page.
     if let internalUrl = InternalURL(webViewUrl), internalUrl.originalURLFromErrorPage == url {
@@ -127,7 +127,7 @@ class ErrorPageHelper {
         let page = InternalURL.authorize(url: urlWithQuery)
       {
         // A session restore page is already on the history stack, so don't load another page on the history stack.
-        webView.replaceLocation(with: page)
+        webView.underlyingWebView?.replaceLocation(with: page)
       } else {
         // A new page needs to be added to the history stack (i.e. the simple case of trying to navigate to an url for the first time and it fails, without pushing a page on the history stack, the webview will just show the current page).
         webView.load(PrivilegedRequest(url: urlWithQuery) as URLRequest)

@@ -346,7 +346,7 @@ class ReaderModeScriptHandler: TabContentScript {
   var style: ReaderModeStyle = defaultReaderModeStyle {
     didSet {
       if state == ReaderModeState.active {
-        tab?.webView?.evaluateSafeJavaScript(
+        tab?.webView?.underlyingWebView?.evaluateSafeJavaScript(
           functionName: "\(readerModeNamespace).setStyle",
           args: [style.encode()],
           contentWorld: Self.scriptSandbox,

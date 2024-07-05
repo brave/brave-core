@@ -97,7 +97,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
             for: .selectorsPoller(setup, proceduralActions: proceduralActions)
           )
 
-          try await webView.evaluateSafeJavaScriptThrowing(
+          try await webView.underlyingWebView?.evaluateSafeJavaScriptThrowing(
             functionName: script.source,
             frame: message.frameInfo,
             contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
