@@ -455,7 +455,6 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorAppMenuHighlightSeverityHigh] = {
       PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x7D, 0x00, 0x1A),
                                     SkColorSetRGB(0xFF, 0xB3, 0xB2))};
-  mixer[kColorInfoBarBackground] = {kColorToolbar};
 
   if (key.custom_theme) {
     return;
