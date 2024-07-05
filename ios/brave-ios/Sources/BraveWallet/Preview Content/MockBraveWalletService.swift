@@ -402,5 +402,10 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
 
   func setTransactionSimulationOptInStatus(_ status: BraveWallet.BlowfishOptInStatus) {
   }
+
+  func countryCode(
+    completion: @escaping (String) -> Void
+  ) {
+  }
 }
 #endif

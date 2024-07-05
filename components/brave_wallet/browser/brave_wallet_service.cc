@@ -36,6 +36,7 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
+#include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -1757,6 +1758,11 @@ void BraveWalletService::GetTransactionSimulationOptInStatus(
 void BraveWalletService::SetTransactionSimulationOptInStatus(
     mojom::BlowfishOptInStatus status) {
   ::brave_wallet::SetTransactionSimulationOptInStatus(profile_prefs_, status);
+}
+
+void BraveWalletService::GetCountryCode(GetCountryCodeCallback callback) {
+  std::move(callback).Run(country_codes::CountryIDToCountryString(
+      country_codes::GetCountryIDFromPrefs(profile_prefs_)));
 }
 
 }  // namespace brave_wallet
