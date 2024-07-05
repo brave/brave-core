@@ -431,6 +431,7 @@ leo_icons = [
   "xmark-color.svg",
   "yahoo-color.svg",
   "yandex-color.svg",
+  "window-tabs-vertical-expanded.svg",
 ]
 
 if (enable_brave_vpn_panel) {
