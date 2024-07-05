@@ -872,6 +872,8 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessorBase
+
 -keep class org.chromium.chrome.browser.password_manager.settings.ExportFlow {
     public <init>(...);
     *** runSharePasswordsIntent(...);
