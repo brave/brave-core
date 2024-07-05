@@ -21,7 +21,7 @@ program
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--fetch_all', 'fetch all tags and branch heads')
-  .option('--sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
+  .option('-C, --sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
 
