@@ -147,15 +147,24 @@ public class TokenUtils {
             NetworkInfo selectedNetwork,
             TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        getAllTokens(blockchainRegistry, selectedNetwork.chainId, selectedNetwork.coin,
-                tokens
-                -> braveWalletService.getUserAssets(
-                        selectedNetwork.chainId, selectedNetwork.coin, userTokens -> {
-                            BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                                    distinctiveConcatenatedArrays(tokens, userTokens), tokenType,
-                                    false);
-                            callback.call(filteredTokens);
-                        }));
+        getAllTokens(
+                blockchainRegistry,
+                selectedNetwork.chainId,
+                selectedNetwork.coin,
+                tokens ->
+                        braveWalletService.getUserAssets(
+                                selectedNetwork.chainId,
+                                selectedNetwork.coin,
+                                userTokens -> {
+                                    BlockchainToken[] filteredTokens =
+                                            filterTokens(
+                                                    selectedNetwork,
+                                                    distinctiveConcatenatedArrays(
+                                                            tokens, userTokens),
+                                                    tokenType,
+                                                    false);
+                                    callback.call(filteredTokens);
+                                }));
     }
 
     public static void getUserOrAllTokensFiltered(BraveWalletService braveWalletService,
