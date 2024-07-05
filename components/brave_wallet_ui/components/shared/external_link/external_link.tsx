@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ButtonProps } from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 // utils
@@ -13,19 +12,18 @@ import { openTab } from '../../../utils/routes-utils'
 // styles
 import { LinkButton } from './external_link.style'
 
-interface Props extends ButtonProps<undefined, boolean> {
+interface Props {
+  text: string
+  href: string
   width?: string
   children?: React.ReactNode
 }
 
 export const ExternalLink = (props: Props) => {
-  const { text, href, ...rest } = props
+  const { text, href } = props
 
   return (
-    <LinkButton
-      {...rest}
-      onClick={() => openTab(href)}
-    >
+    <LinkButton onClick={() => openTab(href)}>
       {text}
       <div slot='icon-after'>
         <Icon name='launch' />
