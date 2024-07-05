@@ -469,11 +469,19 @@ class SettingsViewController: TableViewController {
     )
 
     if UIDevice.isIpad {
+      let defaultHostContentSettings = braveCore.defaultHostContentSettings
+      let defaultPageModeSwitch = SwitchAccessoryView(
+        initialValue: defaultHostContentSettings.defaultPageMode == .desktop,
+        valueChange: { value in
+          defaultHostContentSettings.defaultPageMode = value ? .desktop : .mobile
+        }
+      )
       general.rows.append(
-        .boolRow(
-          title: Strings.alwaysRequestDesktopSite,
-          option: Preferences.UserAgent.alwaysRequestDesktopSite,
-          image: UIImage(braveSystemNamed: "leo.window.cursor")
+        Row(
+          text: Strings.alwaysRequestDesktopSite,
+          image: UIImage(braveSystemNamed: "leo.window.cursor"),
+          accessory: .view(defaultPageModeSwitch),
+          cellClass: MultilineSubtitleCell.self
         )
       )
     }

@@ -18,13 +18,11 @@ private struct BlobDownloadInfo: Codable {
 }
 
 class DownloadContentScriptHandler: TabContentScript {
-  private weak var tab: Tab?
   private weak var browserViewController: BrowserViewController?
   private static var blobUrlForDownload: URL?
 
-  init(browserController: BrowserViewController, tab: Tab) {
+  init(browserController: BrowserViewController) {
     self.browserViewController = browserController
-    self.tab = tab
   }
 
   static let scriptName = "DownloadContentScript"
@@ -47,9 +45,9 @@ class DownloadContentScriptHandler: TabContentScript {
     return true
   }
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
@@ -73,7 +71,6 @@ class DownloadContentScriptHandler: TabContentScript {
       }
 
       defer {
-        browserViewController?.pendingDownloadWebView = nil
         Self.blobUrlForDownload = nil
       }
 

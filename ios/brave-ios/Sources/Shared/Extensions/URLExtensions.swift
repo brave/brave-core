@@ -252,7 +252,7 @@ extension URL {
       return false
     }
     let utilityURLs = [
-      "/\(InternalURL.Path.errorpage.rawValue)", "/\(InternalURL.Path.sessionrestore.rawValue)",
+      "/\(InternalURL.Path.sessionrestore.rawValue)",
       "/about/home", "/\(InternalURL.Path.readermode.rawValue)",
     ]
     return utilityURLs.contains { self.path.hasPrefix($0) }
@@ -431,11 +431,9 @@ public struct InternalURL {
   public static let baseUrl = "\(scheme)://\(host)"
 
   public enum Path: String {
-    case errorpage
     case sessionrestore
     case readermode = "reader-mode"
     case blocked
-    case httpBlocked = "http-blocked"
     case basicAuth = "basic-auth"
 
     func matches(_ string: String) -> Bool {
@@ -505,20 +503,8 @@ public struct InternalURL {
     return url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl)
   }
 
-  public var isErrorPage: Bool {
-    // Error pages can be nested in session restore URLs, and session restore handler will forward them to the error page handler
-    let path =
-      url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl)
-      ? extractedUrlParam?.path : url.path
-    return InternalURL.Path.errorpage.matches(path ?? "")
-  }
-
   public var isBlockedPage: Bool {
     return InternalURL.Path.blocked.matches(url.path)
-  }
-
-  public var isHTTPBlockedPage: Bool {
-    return InternalURL.Path.httpBlocked.matches(url.path)
   }
 
   public var isReaderModePage: Bool {
@@ -527,16 +513,6 @@ public struct InternalURL {
 
   public var isBasicAuthURL: Bool {
     return InternalURL.Path.basicAuth.matches(url.path)
-  }
-
-  public var originalURLFromErrorPage: URL? {
-    if !url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl) {
-      return isErrorPage ? extractedUrlParam : nil
-    }
-    if let urlParam = extractedUrlParam, let nested = InternalURL(urlParam), nested.isErrorPage {
-      return nested.extractedUrlParam
-    }
-    return nil
   }
 
   public var extractedUrlParam: URL? {
@@ -588,9 +564,7 @@ public struct InternalURL {
   }
 
   public var displayURL: URL? {
-    if isErrorPage {
-      return originalURLFromErrorPage
-    } else if isReaderModePage {
+    if isReaderModePage {
       return extractedUrlParam
     }
     return nil

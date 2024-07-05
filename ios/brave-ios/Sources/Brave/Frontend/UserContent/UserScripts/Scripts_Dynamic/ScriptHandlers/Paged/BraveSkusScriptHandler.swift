@@ -13,18 +13,6 @@ import WebKit
 import os.log
 
 class BraveSkusScriptHandler: TabContentScript {
-  private weak var tab: Tab?
-  private let skusManager: BraveSkusManager
-
-  required init?(tab: Tab) {
-    self.tab = tab
-    guard let skusManager = BraveSkusManager(isPrivateMode: tab.isPrivate) else {
-      return nil
-    }
-
-    self.skusManager = skusManager
-  }
-
   static let scriptName = "BraveSkusScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -47,9 +35,9 @@ class BraveSkusScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
@@ -76,7 +64,12 @@ class BraveSkusScriptHandler: TabContentScript {
 
     Task { @MainActor in
       do {
-        let result = try await processRequest(message: message, method: method, for: requestHost)
+        let result = try await processRequest(
+          tab: tab,
+          message: message,
+          method: method,
+          for: requestHost
+        )
         replyHandler(result, nil)
       } catch {
         Logger.module.error("Brave skus error processing request: \(error)")
@@ -87,10 +80,15 @@ class BraveSkusScriptHandler: TabContentScript {
 
   @MainActor
   private func processRequest(
+    tab: Tab,
     message: WKScriptMessage,
     method: Method,
     for skusDomain: String
   ) async throws -> Any? {
+    guard let skusManager = BraveSkusManager(isPrivateMode: tab.isPrivate) else {
+      return nil
+    }
+
     switch method {
     case .refreshOrder:
       let order = try OrderMessage.from(message: message)

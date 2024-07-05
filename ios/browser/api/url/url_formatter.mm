@@ -31,6 +31,26 @@ BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitCryptographic =
 
 // MARK: - Implementation
 
+namespace {
+constexpr char16_t kChromeSchema16[] = u"chrome://";
+constexpr char16_t kBraveSchema16[] = u"brave://";
+}  // namespace
+
+namespace brave_utils {
+
+bool ReplaceChromeToBraveScheme(std::u16string& url_string) {
+  if (base::StartsWith(url_string, kChromeSchema16,
+                       base::CompareCase::INSENSITIVE_ASCII)) {
+    base::ReplaceFirstSubstringAfterOffset(&url_string, 0, kChromeSchema16,
+                                           kBraveSchema16);
+    return true;
+  }
+
+  return false;
+}
+
+}  // namespace brave_utils
+
 @implementation BraveURLFormatter
 + (NSString*)formatURLOriginForSecurityDisplay:(NSString*)origin
                                  schemeDisplay:
@@ -38,6 +58,7 @@ BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitCryptographic =
   std::u16string result = url_formatter::FormatUrlForSecurityDisplay(
       GURL(base::SysNSStringToUTF8(origin)),
       static_cast<url_formatter::SchemeDisplay>(schemeDisplay));
+  brave_utils::ReplaceChromeToBraveScheme(result);
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 
@@ -46,6 +67,7 @@ BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitCryptographic =
   std::u16string result =
       url_formatter::FormatUrlForDisplayOmitSchemePathAndTrivialSubdomains(
           GURL(base::SysNSStringToUTF8(origin)));
+  brave_utils::ReplaceChromeToBraveScheme(result);
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 
@@ -57,6 +79,7 @@ BraveURLSchemeDisplay const BraveURLSchemeDisplayOmitCryptographic =
       static_cast<url_formatter::FormatUrlType>(formatTypes),
       static_cast<base::UnescapeRule::Type>(unescapeOptions), nullptr, nullptr,
       nullptr);
+  brave_utils::ReplaceChromeToBraveScheme(result);
   return base::SysUTF16ToNSString(result) ?: @"";
 }
 @end

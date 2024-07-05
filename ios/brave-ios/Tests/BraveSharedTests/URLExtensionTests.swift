@@ -55,10 +55,6 @@ class URLExtensionTests: XCTestCase {
       embeddedURL.encodeEmbeddedInternalURL(for: .blocked)?.strippedInternalURL,
       embeddedURL
     )
-    XCTAssertEqual(
-      embeddedURL.encodeEmbeddedInternalURL(for: .httpBlocked)?.strippedInternalURL,
-      embeddedURL
-    )
     XCTAssertNil(embeddedURL.strippedInternalURL)
   }
 
@@ -124,10 +120,6 @@ class URLExtensionTests: XCTestCase {
     )
     XCTAssertEqual(
       embeddedURL.encodeEmbeddedInternalURL(for: .blocked)?.displayURL,
-      embeddedURL
-    )
-    XCTAssertEqual(
-      embeddedURL.encodeEmbeddedInternalURL(for: .httpBlocked)?.displayURL,
       embeddedURL
     )
     XCTAssertEqual(

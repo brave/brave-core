@@ -11,7 +11,7 @@ import XCTest
 
 class NavigationRouterTests: XCTestCase {
 
-  private let privateBrowsingManager = PrivateBrowsingManager()
+  private let privateBrowsingManager = PrivateBrowsingManager(braveCore: nil)
 
   override func setUp() {
     super.setUp()

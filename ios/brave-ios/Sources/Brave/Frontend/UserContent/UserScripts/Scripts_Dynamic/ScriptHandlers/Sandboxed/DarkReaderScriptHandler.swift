@@ -3,15 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Preferences
 import Shared
 import WebKit
 
 public class DarkReaderScriptHandler: TabContentScript {
-
-  private weak var tab: Tab?
-
   #if USE_NIGHTMODE_COLOURS
   private static let configuration = [
     "brightness": 100,
@@ -22,14 +20,10 @@ public class DarkReaderScriptHandler: TabContentScript {
   private static let configuration: [String: Int] = [:]
   #endif
 
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "DarkReaderScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
-  static let scriptSandbox: WKContentWorld = .world(name: "DarkReaderContentWorld")
+  static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
@@ -46,16 +40,16 @@ public class DarkReaderScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     // Do nothing. There's no message handling for Dark-Reader
   }
 
   /// Enables DarkReader
-  static func enable(for webView: WKWebView) {
+  static func enable(for webView: CWVWebView) {
     // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
     // "Embedded Dark Reader cannot access a cross-origin resource"
     webView.evaluateSafeJavaScript(
@@ -71,7 +65,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// Disables DarkReader
-  static func disable(for webView: WKWebView) {
+  static func disable(for webView: CWVWebView) {
     webView.evaluateSafeJavaScript(
       functionName: "DarkReader.disable",
       args: [],
@@ -80,7 +74,7 @@ public class DarkReaderScriptHandler: TabContentScript {
   }
 
   /// - Parameter enabled - If true, automatically listens for system's dark-mode vs. light-mode. If false, disables listening.
-  static func auto(enabled: Bool = true, for webView: WKWebView) {
+  static func auto(enabled: Bool = true, for webView: CWVWebView) {
     if enabled {
       // This is needed to ensure that CORS fetches work correctly, otherwise you get this error:
       // "Embedded Dark Reader cannot access a cross-origin resource"

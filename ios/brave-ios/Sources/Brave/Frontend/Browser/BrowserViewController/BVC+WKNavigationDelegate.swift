@@ -21,11 +21,44 @@ import UniformTypeIdentifiers
 import WebKit
 import os.log
 
-extension WKNavigationAction {
+/// Observes a single change from the private API `_sampledPageTopColor`
+///
+/// This should only be installed at the start of a navigation as that will guarantee that the
+/// underlying `WKWebView` has already been created by `CRWWebController`
+class SampledTopPageColorNotifier: NSObject {
+  private let keyPath = "_sampl\("edPageTopC")olor"
+  private weak var webView: CWVWebView?
+  private let handler: (UIColor?) -> Void
+  private var notified: Bool = false
+  init(webView: CWVWebView, handler: @escaping (UIColor?) -> Void) {
+    self.webView = webView
+    self.handler = handler
+    super.init()
+    webView.underlyingWebView?.addObserver(self, forKeyPath: keyPath, context: nil)
+  }
+  deinit {
+    if !notified {
+      webView?.underlyingWebView?.removeObserver(self, forKeyPath: keyPath)
+    }
+  }
+  override func observeValue(
+    forKeyPath keyPath: String?,
+    of object: Any?,
+    change: [NSKeyValueChangeKey: Any]?,
+    context: UnsafeMutableRawPointer?
+  ) {
+    defer { notified = true }
+    guard let webView, keyPath == self.keyPath else { return }
+    handler(webView.underlyingWebView?.sampledPageTopColor)
+    webView.underlyingWebView?.removeObserver(self, forKeyPath: self.keyPath)
+  }
+}
+
+extension URLRequest {
   /// Allow local requests only if the request is privileged.
   /// If the request is internal or unprivileged, we should deny it.
   var isInternalUnprivileged: Bool {
-    guard let url = request.url else {
+    guard let url = url else {
       return true
     }
 
@@ -57,920 +90,12 @@ extension UTType {
   static let mobileConfiguration = UTType(mimeType: "application/x-apple-aspen-config")!
 }
 
-// MARK: WKNavigationDelegate
-extension BrowserViewController: WKNavigationDelegate {
-  private static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "navigation")
-
-  public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!)
-  {
-    if tabManager.selectedTab?.webView !== webView {
-      return
-    }
-    toolbarVisibilityViewModel.toolbarState = .expanded
-
-    // check if web view is loading a different origin than the one currently loaded
-    if let selectedTab = tabManager.selectedTab,
-      selectedTab.url?.origin != webView.url?.origin
-    {
-
-      // new site has a different origin, hide wallet icon.
-      tabManager.selectedTab?.isWalletIconVisible = false
-      // new site, reset connected addresses
-      tabManager.selectedTab?.clearSolanaConnectedAccounts()
-      // close wallet panel if it's open
-      if let popoverController = self.presentedViewController as? PopoverController,
-        popoverController.contentController is WalletPanelHostingController
-      {
-        self.dismiss(animated: true)
-      }
-    }
-
-    displayPageZoom(visible: false)
-
-    // If we are going to navigate to a new page, hide the reader mode button. Unless we
-    // are going to a about:reader page. Then we keep it on screen: it will change status
-    // (orange color) as soon as the page has loaded.
-    if let url = webView.url {
-      if !url.isInternalURL(for: .readermode) {
-        topToolbar.updateReaderModeState(ReaderModeState.unavailable)
-        hideReaderModeBar(animated: false)
-      }
-    }
-
-    resetRedirectChain(webView)
-
-    // Append source URL to redirect chain
-    appendUrlToRedirectChain(webView)
-  }
-
-  fileprivate func resetRedirectChain(_ webView: WKWebView) {
-    if let tab = tab(for: webView) {
-      tab.redirectChain = []
-    }
-  }
-
-  fileprivate func appendUrlToRedirectChain(_ webView: WKWebView) {
-    // The redirect chain MUST be sorted by the order of redirects with the
-    // first URL being the source URL.
-    if let tab = tab(for: webView), let url = webView.url {
-      tab.redirectChain.append(url)
-    }
-  }
-
-  // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present.
-  // Otherwise it could just be a visit to a regular page on maps.apple.com.
-  // Exchaging https/https scheme with maps in order to open URLS properly on Apple Maps
-  fileprivate func isAppleMapsURL(_ url: URL) -> (enabled: Bool, url: URL)? {
-    if url.scheme == "http" || url.scheme == "https" {
-      if url.host == "maps.apple.com" && url.query != nil {
-        guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-          return nil
-        }
-        urlComponents.scheme = "maps"
-
-        if let url = urlComponents.url {
-          return (true, url)
-        }
-        return nil
-      }
-    }
-    return (false, url)
-  }
-
-  // Recognize a iTunes Store URL. These all trigger the native apps. Note that appstore.com and phobos.apple.com
-  // used to be in this list. I have removed them because they now redirect to itunes.apple.com. If we special case
-  // them then iOS will actually first open Safari, which then redirects to the app store. This works but it will
-  // leave a 'Back to Safari' button in the status bar, which we do not want.
-  fileprivate func isStoreURL(_ url: URL) -> Bool {
-    let isStoreScheme = ["itms-apps", "itms-appss", "itmss"].contains(url.scheme)
-    if isStoreScheme {
-      return true
-    }
-
-    let isHttpScheme = ["http", "https"].contains(url.scheme)
-    let isAppStoreHost = ["itunes.apple.com", "apps.apple.com", "appsto.re"].contains(url.host)
-    return isHttpScheme && isAppStoreHost
-  }
-
-  // This is the place where we decide what to do with a new navigation action. There are a number of special schemes
-  // and http(s) urls that need to be handled in a different way. All the logic for that is inside this delegate
-  // method.
-
-  fileprivate func isUpholdOAuthAuthorization(_ url: URL) -> Bool {
-    return url.scheme == "rewards" && url.host == "uphold"
-  }
-
-  @MainActor
-  public func webView(
-    _ webView: WKWebView,
-    decidePolicyFor navigationAction: WKNavigationAction,
-    preferences: WKWebpagePreferences
-  ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
-    guard var requestURL = navigationAction.request.url else {
-      return (.cancel, preferences)
-    }
-    if InternalURL.isValid(url: requestURL) {
-      if navigationAction.navigationType != .backForward, navigationAction.isInternalUnprivileged,
-        navigationAction.sourceFrame != nil || navigationAction.targetFrame?.isMainFrame == false
-          || navigationAction.request.cachePolicy == .useProtocolCachePolicy
-      {
-        Logger.module.warning("Denying unprivileged request: \(navigationAction.request)")
-        return (.cancel, preferences)
-      }
-
-      return (.allow, preferences)
-    }
-
-    if requestURL.scheme == "about" {
-      return (.allow, preferences)
-    }
-
-    if requestURL.isBookmarklet {
-      return (.cancel, preferences)
-    }
-
-    // Universal links do not work if the request originates from the app, manual handling is required.
-    if let mainDocURL = navigationAction.request.mainDocumentURL,
-      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true)
-    {
-      switch universalLink {
-      case .buyVPN:
-        presentCorrespondingVPNViewController()
-        return (.cancel, preferences)
-      }
-    }
-
-    // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
-    // gives us the exact same behaviour as Safari.
-    let tab = tab(for: webView)
-
-    if ["sms", "tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
-    // instead of being loaded in the webview.
-    // In addition we are exchaging actual scheme with "maps" scheme
-    // So the Apple maps URLs will open properly
-    if let mapsURL = isAppleMapsURL(requestURL), mapsURL.enabled {
-      let shouldOpen = await handleExternalURL(
-        mapsURL.url,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    if #available(iOS 17.4, *), !ProcessInfo.processInfo.isiOSAppOnVisionOS {
-      // Accessing `MarketplaceKitURIScheme` on Vision OS results in a crash
-      if requestURL.scheme == MarketplaceKitURIScheme {
-        if let queryItems = URLComponents(url: requestURL, resolvingAgainstBaseURL: false)?
-          .queryItems,
-          let adpURL = queryItems.first(where: {
-            $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
-          })?.value?.asURL,
-          navigationAction.sourceFrame.isMainFrame,
-          adpURL.baseDomain == navigationAction.sourceFrame.request.url?.baseDomain
-        {
-          return (.allow, preferences)
-        }
-        return (.cancel, preferences)
-      }
-    }
-
-    if isStoreURL(requestURL) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    // Handles custom mailto URL schemes.
-    if requestURL.scheme == "mailto" {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    // handles Decentralized DNS
-    if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
-      navigationAction.targetFrame?.isMainFrame == true
-    {
-      topToolbar.locationView.loading = true
-      let result = await decentralizedDNSHelper.lookup(
-        domain: requestURL.schemelessAbsoluteDisplayString
-      )
-      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
-      guard !Task.isCancelled else {  // user pressed stop, or typed new url
-        return (.cancel, preferences)
-      }
-      switch result {
-      case .loadInterstitial(let service):
-        showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
-        return (.cancel, preferences)
-      case .load(let resolvedURL):
-        if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
-        {
-          requestURL = resolvedIPFSURL
-        } else {
-          requestURL = resolvedURL
-        }
-      case .none:
-        break
-      }
-    }
-
-    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    tab?.rewardsReportingState.isNewNavigation =
-      navigationAction.navigationType != WKNavigationType.backForward
-      && navigationAction.navigationType != WKNavigationType.reload
-    tab?.currentRequestURL = requestURL
-
-    // Website redirection logic
-    if requestURL.isWebPage(includeDataURIs: false),
-      navigationAction.targetFrame?.isMainFrame == true,
-      let redirectURL = WebsiteRedirects.redirect(for: requestURL)
-    {
-
-      tab?.loadRequest(URLRequest(url: redirectURL))
-      return (.cancel, preferences)
-    }
-
-    let signpostID = ContentBlockerManager.signpost.makeSignpostID()
-    let state = ContentBlockerManager.signpost.beginInterval("decidePolicyFor", id: signpostID)
-
-    // before loading any ad-block scripts
-    // await the preparation of the ad-block services
-    await LaunchHelper.shared.prepareAdBlockServices(
-      adBlockService: self.braveCore.adblockService
-    )
-
-    if let mainDocumentURL = navigationAction.request.mainDocumentURL {
-      if mainDocumentURL != tab?.currentPageData?.mainFrameURL {
-        // Clear the current page data if the page changes.
-        // Do this before anything else so that we have a clean slate.
-        tab?.currentPageData = PageData(mainFrameURL: mainDocumentURL)
-      }
-
-      // Handle the "forget me" feature on navigation
-      if let tab = tab, navigationAction.targetFrame?.isMainFrame == true {
-        // Cancel any forget data requests
-        tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
-
-        // Forget any websites that have "forget me" enabled
-        // if we navigated away from the previous domain
-        if let currentURL = tab.url,
-          !InternalURL.isValid(url: currentURL),
-          let currentETLDP1 = currentURL.baseDomain,
-          mainDocumentURL.baseDomain != currentETLDP1
-        {
-          tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
-        }
-      }
-
-      let domainForMainFrame = Domain.getOrCreate(
-        forUrl: mainDocumentURL,
-        persistent: !isPrivateBrowsing
-      )
-
-      if let tab = tab,
-        let modifiedRequest = getInternalRedirect(
-          from: navigationAction,
-          in: tab,
-          domainForMainFrame: domainForMainFrame
-        )
-      {
-        tab.isInternalRedirect = true
-        tab.loadRequest(modifiedRequest)
-
-        if let url = modifiedRequest.url {
-          Self.log.debug(
-            "Redirected to `\(url.absoluteString, privacy: .private)`"
-          )
-        }
-
-        ContentBlockerManager.signpost.endInterval(
-          "decidePolicyFor",
-          state,
-          "Redirected navigation"
-        )
-        return (.cancel, preferences)
-      } else {
-        tab?.isInternalRedirect = false
-      }
-
-      // Set some additional user scripts
-      if navigationAction.targetFrame?.isMainFrame == true {
-        tab?.setScripts(scripts: [
-          // Add de-amp script
-          // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,
-
-          // Add request blocking script
-          // This script will block certian `xhr` and `window.fetch()` requests
-          .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
-
-          // The tracker protection script
-          // This script will track what is blocked and increase stats
-          .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
-
-          // Add Brave search result ads processing script
-          // This script will process search result ads on the Brave search page.
-          .searchResultAd: BraveAds.shouldSupportSearchResultAds()
-            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
-        ])
-      }
-
-      // Check if custom user scripts must be added to or removed from the web view.
-      if let targetFrame = navigationAction.targetFrame {
-        tab?.currentPageData?.addSubframeURL(
-          forRequestURL: requestURL,
-          isForMainFrame: targetFrame.isMainFrame
-        )
-        let scriptTypes =
-          await tab?.currentPageData?.makeUserScriptTypes(
-            domain: domainForMainFrame,
-            isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
-          ) ?? []
-        tab?.setCustomUserScript(scripts: scriptTypes)
-      }
-    }
-
-    // Brave Search logic.
-
-    if navigationAction.targetFrame?.isMainFrame == true,
-      BraveSearchManager.isValidURL(requestURL)
-    {
-      let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-      let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
-      let isAggressiveAdsBlocking =
-        domain.globalBlockAdsAndTrackingLevel.isAggressive
-        && adsBlockingShieldUp
-
-      if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
-        requestURL,
-        isPrivateBrowsing: isPrivateBrowsing,
-        isAggressiveAdsBlocking: isAggressiveAdsBlocking
-      ) {
-        // Ensure the webView is not a link preview popup.
-        if self.presentedViewController == nil {
-          BraveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(
-            requestURL,
-            rewards: rewards
-          )
-        }
-      } else {
-        // The Brave-Search-Ads header should be added with a negative value when all
-        // of the following conditions are met:
-        //   - The current tab is not a Private tab
-        //   - Brave Rewards is enabled.
-        //   - The "Search Ads" is opted-out.
-        //   - The requested URL host is one of the Brave Search domains.
-        if !isPrivateBrowsing && rewards.isEnabled
-          && !rewards.ads.isOptedInToSearchResultAds()
-          && navigationAction.request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
-        {
-          var modifiedRequest = URLRequest(url: requestURL)
-          modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
-          tab?.loadRequest(modifiedRequest)
-          ContentBlockerManager.signpost.endInterval(
-            "decidePolicyFor",
-            state,
-            "Redirected to search"
-          )
-          return (.cancel, preferences)
-        }
-
-        tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
-          url: requestURL,
-          rewards: rewards,
-          isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: isAggressiveAdsBlocking
-        )
-      }
-
-      // We fetch cookies to determine if backup search was enabled on the website.
-      let profile = self.profile
-      let cookies = await webView.configuration.websiteDataStore.httpCookieStore.allCookies()
-      tab?.braveSearchManager = BraveSearchManager(
-        profile: profile,
-        url: requestURL,
-        cookies: cookies
-      )
-      if let braveSearchManager = tab?.braveSearchManager {
-        braveSearchManager.fallbackQueryResultsPending = true
-        braveSearchManager.shouldUseFallback { backupQuery in
-          guard let query = backupQuery else {
-            braveSearchManager.fallbackQueryResultsPending = false
-            return
-          }
-
-          if query.found {
-            braveSearchManager.fallbackQueryResultsPending = false
-          } else {
-            braveSearchManager.backupSearch(with: query) { completion in
-              braveSearchManager.fallbackQueryResultsPending = false
-              tab?.injectResults()
-            }
-          }
-        }
-      }
-    } else {
-      tab?.braveSearchResultAdManager = nil
-      tab?.braveSearchManager = nil
-    }
-
-    // This is the normal case, opening a http or https url, which we handle by loading them in this WKWebView. We
-    // always allow this. Additionally, data URIs are also handled just like normal web pages.
-
-    if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
-      if navigationAction.targetFrame?.isMainFrame == true {
-        tab?.updateUserAgent(webView, newURL: requestURL)
-
-        if let etldP1 = requestURL.baseDomain,
-          tab?.proceedAnywaysDomainList.contains(etldP1) == false
-        {
-          let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-
-          let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
-            requestURL: requestURL,
-            sourceURL: requestURL,
-            resourceType: .document,
-            domain: domain
-          )
-
-          if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
-            let request = PrivilegedRequest(url: url) as URLRequest
-            tab?.loadRequest(request)
-            ContentBlockerManager.signpost.endInterval(
-              "decidePolicyFor",
-              state,
-              "Blocked navigation"
-            )
-            return (.cancel, preferences)
-          }
-        }
-      }
-
-      pendingRequests[requestURL.absoluteString] = navigationAction.request
-
-      // Adblock logic,
-      // Only use main document URL, not the request URL
-      // If an iFrame is loaded, shields depending on the main frame, not the iFrame request
-
-      // Weird behavior here with `targetFram` and `sourceFrame`, on refreshing page `sourceFrame` is not nil (it is non-optional)
-      //  however, it is still an uninitialized object, making it an unreliable source to compare `isMainFrame` against.
-      //  Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
-      // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
-      // request then the page is reloaded with a proper url and adblocking rules are applied.
-      if let mainDocumentURL = navigationAction.request.mainDocumentURL,
-        mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
-        !(InternalURL(requestURL)?.isSessionRestore ?? false),
-        navigationAction.sourceFrame.isMainFrame
-          || navigationAction.targetFrame?.isMainFrame == true
-      {
-        // Identify specific block lists that need to be applied to the requesting domain
-        let domainForShields = Domain.getOrCreate(
-          forUrl: mainDocumentURL,
-          persistent: !isPrivateBrowsing
-        )
-
-        // Load rule lists
-        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
-        tab?.contentBlocker.set(ruleLists: ruleLists)
-      }
-
-      let documentTargetURL: URL? =
-        navigationAction.request.mainDocumentURL ?? navigationAction.targetFrame?.request
-        .mainDocumentURL ?? requestURL  // Should be the same as the sourceFrame URL
-      if let documentTargetURL = documentTargetURL {
-        let domainForShields = Domain.getOrCreate(
-          forUrl: documentTargetURL,
-          persistent: !isPrivateBrowsing
-        )
-        let isScriptsEnabled = !domainForShields.isShieldExpected(
-          .noScript,
-          considerAllShieldsOption: true
-        )
-
-        // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
-        // https://github.com/brave/brave-ios/issues/8585
-        //
-        // However, the deprecated API WKWebViewConfiguration.preferences.javaScriptEnabled DOES work!
-        // Even though `configuration` is @NSCopying, somehow this actually updates the preferences LIVE!!
-        // This follows the same behaviour as Safari
-        //
-        // - Brandon T.
-        //
-        preferences.allowsContentJavaScript = isScriptsEnabled
-        webView.configuration.preferences.javaScriptEnabled = isScriptsEnabled
-      }
-
-      // Cookie Blocking code below
-      if let tab = tab {
-        tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
-      }
-
-      // Reset the block alert bool on new host.
-      if let newHost: String = requestURL.host, let oldHost: String = webView.url?.host,
-        newHost != oldHost
-      {
-        self.tabManager.selectedTab?.alertShownCount = 0
-        self.tabManager.selectedTab?.blockAllAlerts = false
-      }
-
-      self.shouldDownloadNavigationResponse = navigationAction.shouldPerformDownload
-      ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
-      return (.allow, preferences)
-    }
-
-    // Standard schemes are handled in previous if-case.
-    // This check handles custom app schemes to open external apps.
-    // Our own 'brave' scheme does not require the switch-app prompt.
-    if requestURL.scheme?.contains("brave") == false {
-      // Do not allow opening external URLs from child tabs
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      let isSyntheticClick =
-        navigationAction.responds(to: Selector(("_syntheticClickType")))
-        && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
-
-      // Do not show error message for JS navigated links or redirect
-      // as it's not the result of a user action.
-      if !shouldOpen, navigationAction.navigationType == .linkActivated && !isSyntheticClick {
-        if self.presentedViewController == nil && self.presentingViewController == nil
-          && tab?.isExternalAppAlertPresented == false && tab?.isExternalAppAlertSuppressed == false
-        {
-
-          return await withCheckedContinuation { continuation in
-            // This alert does not need to be a BrowserAlertController because we return a policy
-            // without waiting for user action
-            let alert = UIAlertController(
-              title: Strings.unableToOpenURLErrorTitle,
-              message: Strings.unableToOpenURLError,
-              preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
-            self.present(alert, animated: true) {
-              continuation.resume(returning: (shouldOpen ? .allow : .cancel, preferences))
-            }
-          }
-        }
-      }
-
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    return (.cancel, preferences)
-  }
-
-  /// Handles a link by opening it in an SFSafariViewController and presenting it on the BVC.
-  ///
-  /// This is unfortunately neccessary to handle certain downloads natively such as ics/calendar invites and
-  /// mobileconfiguration files.
-  ///
-  /// The user unfortunately has to  dismiss it manually after they have handled the file.
-  /// Chrome iOS does the same
-  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab) {
-    let vc = SFSafariViewController(url: url, configuration: .init())
-    vc.modalPresentationStyle = .formSheet
-    self.present(vc, animated: true)
-
-    // If the website opened this URL in a separate tab, remove the empty tab
-    if tab.url == nil || tab.url?.absoluteString == "about:blank" {
-      tabManager.removeTab(tab)
-    }
-  }
-
-  @MainActor
-  public func webView(
-    _ webView: WKWebView,
-    decidePolicyFor navigationResponse: WKNavigationResponse
-  ) async -> WKNavigationResponsePolicy {
-    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let response = navigationResponse.response
-    let responseURL = response.url
-    let tab = tab(for: webView)
-
-    // Store the response in the tab
-    if let responseURL = responseURL {
-      tab?.responses[responseURL] = response
-    }
-
-    // Check if we upgraded to https and if so we need to update the url of frame evaluations
-    if let responseURL = responseURL,
-      let domain = tab?.currentPageData?.domain(persistent: !isPrivateBrowsing),
-      tab?.currentPageData?.upgradeFrameURL(
-        forResponseURL: responseURL,
-        isForMainFrame: navigationResponse.isForMainFrame
-      ) == true
-    {
-      let scriptTypes =
-        await tab?.currentPageData?.makeUserScriptTypes(
-          domain: domain,
-          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
-        ) ?? []
-      tab?.setCustomUserScript(scripts: scriptTypes)
-    }
-
-    if let tab = tab, let responseURL = responseURL,
-      let response = response as? HTTPURLResponse
-    {
-      let internalUrl = InternalURL(responseURL)
-
-      tab.rewardsReportingState.httpStatusCode = response.statusCode
-
-      if !tab.rewardsReportingState.wasRestored {
-        tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
-      }
-    }
-
-    var request: URLRequest?
-    if let url = responseURL {
-      request = pendingRequests.removeValue(forKey: url.absoluteString)
-    }
-
-    // We can only show this content in the web view if this web view is not pending
-    // download via the context menu.
-    let canShowInWebView = navigationResponse.canShowMIMEType && (webView != pendingDownloadWebView)
-    let forceDownload = webView == pendingDownloadWebView
-
-    let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
-      .textCalendar,
-      .mobileConfiguration,
-    ]
-
-    // SFSafariViewController only supports http/https links
-    if navigationResponse.isForMainFrame, let url = responseURL,
-      url.isWebPage(includeDataURIs: false),
-      let tab, tab === tabManager.selectedTab,
-      let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
-      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
-    {
-      handleLinkWithSafariViewController(url, tab: tab)
-      return .cancel
-    }
-
-    // If the response has the attachment content-disposition, download it
-    let mimeType = response.mimeType ?? MIMEType.octetStream
-    let isAttachment =
-      (response as? HTTPURLResponse)?.value(
-        forHTTPHeaderField: "Content-Disposition"
-      )?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
-
-    if isAttachment {
-      return .download
-    }
-
-    if response.mimeType == MIMEType.passbook {
-      return .download
-    }
-
-    // Check if this response should be handed off to Passbook.
-    if shouldDownloadNavigationResponse {
-      shouldDownloadNavigationResponse = false
-      return .download
-    }
-
-    // If the content type is not HTML, create a temporary document so it can be downloaded and
-    // shared to external applications later. Otherwise, clear the old temporary document.
-    if let tab = tab, navigationResponse.isForMainFrame {
-      if response.mimeType?.isKindOfHTML == false, let request = request {
-        tab.temporaryDocument = TemporaryDocument(
-          preflightResponse: response,
-          request: request,
-          tab: tab
-        )
-      } else {
-        tab.temporaryDocument = nil
-      }
-
-      tab.mimeType = response.mimeType
-    }
-
-    if canShowInWebView {
-      return .allow
-    }
-
-    // Check if this response should be downloaded.
-    let cookieStore = webView.configuration.websiteDataStore.httpCookieStore
-    if let downloadHelper = DownloadHelper(
-      request: request,
-      response: response,
-      cookieStore: cookieStore,
-      canShowInWebView: canShowInWebView,
-      forceDownload: forceDownload
-    ) {
-      // Clear the pending download web view so that subsequent navigations from the same
-      // web view don't invoke another download.
-      pendingDownloadWebView = nil
-
-      let downloadAlertAction: (HTTPDownload) -> Void = { [weak self] download in
-        self?.downloadQueue.enqueue(download)
-      }
-
-      // Open our helper and cancel this response from the webview.
-      if tab === tabManager.selectedTab,
-        let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
-      {
-        present(downloadAlert, animated: true, completion: nil)
-      }
-
-      return .cancel
-    }
-
-    // If none of our helpers are responsible for handling this response,
-    // just let the webview handle it as normal.
-    return .download
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    navigationAction: WKNavigationAction,
-    didBecome download: WKDownload
-  ) {
-    Logger.module.error(
-      "ERROR: Should Never download NavigationAction since we never return .download from decidePolicyForAction."
-    )
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    navigationResponse: WKNavigationResponse,
-    didBecome download: WKDownload
-  ) {
-    download.delegate = self
-  }
-
-  @MainActor
-  public func webView(
-    _ webView: WKWebView,
-    respondTo challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-
-    // If this is a certificate challenge, see if the certificate has previously been
-    // accepted by the user.
-    let host = challenge.protectionSpace.host
-    let origin = "\(host):\(challenge.protectionSpace.port)"
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-      let trust = challenge.protectionSpace.serverTrust
-    {
-
-      let cert = await Task<SecCertificate?, Never>.detached {
-        return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first
-      }.value
-
-      if let cert = cert, profile.certStore.containsCertificate(cert, forOrigin: origin) {
-        return (.useCredential, URLCredential(trust: trust))
-      }
-    }
-
-    // Certificate Pinning
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-      if let serverTrust = challenge.protectionSpace.serverTrust {
-        let host = challenge.protectionSpace.host
-        let port = challenge.protectionSpace.port
-
-        let result = await BraveCertificateUtils.verifyTrust(serverTrust, host: host, port: port)
-        let certificateChain = await Task<[SecCertificate], Never>.detached {
-          return SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
-        }.value
-
-        // Cert is valid and should be pinned
-        if result == 0 {
-          return (.useCredential, URLCredential(trust: serverTrust))
-        }
-
-        // Cert is valid and should not be pinned
-        // Let the system handle it and we'll show an error if the system cannot validate it
-        if result == Int32.min {
-          // Cert is POTENTIALLY invalid and cannot be pinned
-
-          // Let WebKit handle the request and validate the cert
-          // This is the same as calling `BraveCertificateUtils.evaluateTrust` but with more error info provided by WebKit
-          return (.performDefaultHandling, nil)
-        }
-
-        // Cert is invalid and cannot be pinned
-        Logger.module.error("CERTIFICATE_INVALID")
-        let errorCode = CFNetworkErrors.braveCertificatePinningFailed.rawValue
-
-        let underlyingError = NSError(
-          domain: kCFErrorDomainCFNetwork as String,
-          code: Int(errorCode),
-          userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)]
-        )
-
-        let error = NSError(
-          domain: kCFErrorDomainCFNetwork as String,
-          code: Int(errorCode),
-          userInfo: [
-            NSURLErrorFailingURLErrorKey: webView.url as Any,
-            "NSErrorPeerCertificateChainKey": certificateChain,
-            NSUnderlyingErrorKey: underlyingError,
-          ]
-        )
-
-        // Handle the error later in `didFailProvisionalNavigation`
-        self.tab(for: webView)?.sslPinningError = error
-
-        return (.cancelAuthenticationChallenge, nil)
-      }
-    }
-
-    // URLAuthenticationChallenge isn't Sendable atm
-    let protectionSpace = challenge.protectionSpace
-    let credential = challenge.proposedCredential
-    let previousFailureCount = challenge.previousFailureCount
-
-    guard
-      protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
-        || protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest
-        || protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-      let tab = tab(for: webView)
-    else {
-      return (.performDefaultHandling, nil)
-    }
-
-    // The challenge may come from a background tab, so ensure it's the one visible.
-    tabManager.selectTab(tab)
-    tab.isDisplayingBasicAuthPrompt = true
-    defer { tab.isDisplayingBasicAuthPrompt = false }
-
-    let isHidden = webView.isHidden
-    defer { webView.isHidden = isHidden }
-
-    // Manually trigger a `url` change notification
-    if host != tab.url?.host {
-      webView.isHidden = true
-
-      observeValue(
-        forKeyPath: KVOConstants.url.keyPath,
-        of: webView,
-        change: [.newKey: webView.url as Any, .kindKey: 1],
-        context: nil
-      )
-    }
-
-    do {
-      let credentials = try await Authenticator.handleAuthRequest(
-        self,
-        credential: credential,
-        protectionSpace: protectionSpace,
-        previousFailureCount: previousFailureCount
-      )
-
-      if BasicAuthCredentialsManager.validDomains.contains(host) {
-        BasicAuthCredentialsManager.setCredential(
-          origin: origin,
-          credential: credentials.credentials
-        )
-      }
-
-      return (.useCredential, credentials.credentials)
-    } catch {
-      return (.rejectProtectionSpace, nil)
-    }
-  }
-
-  public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+extension BrowserViewController: CWVNavigationDelegate {
+  public func webViewDidCommitNavigation(_ webView: CWVWebView) {
     guard let tab = tab(for: webView) else { return }
 
-    // Reset the stored http request now that load has committed.
-    tab.upgradedHTTPSRequest = nil
-    tab.upgradeHTTPSTimeoutTimer?.invalidate()
-    tab.upgradeHTTPSTimeoutTimer = nil
-
     // Set the committed url which will also set tab.url
-    tab.committedURL = webView.url
-
-    // Server Trust and URL is also updated in didCommit
-    // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
-    // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
-    // So manually trigger it with the current trust.
-
-    observeValue(
-      forKeyPath: KVOConstants.serverTrust.keyPath,
-      of: webView,
-      change: [.newKey: webView.serverTrust as Any, .kindKey: 1],
-      context: nil
-    )
+    tab.committedURL = webView.lastCommittedURL
 
     // Need to evaluate Night mode script injection after url is set inside the Tab
     tab.nightMode = Preferences.General.nightModeEnabled.value
@@ -1016,61 +141,692 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     updateUIForReaderHomeStateForTab(tab)
-    updateBackForwardActionStatus(for: webView)
+    updateBackForwardActionStatus(for: tab.webView)
   }
 
-  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  public func webViewDidStartProvisionalNavigation(_ webView: CWVWebView) {
+    if tabManager.selectedTab?.webView !== webView {
+      return
+    }
+    toolbarVisibilityViewModel.toolbarState = .expanded
+
     if let tab = tabManager[webView] {
-      // Inject app's IAP receipt for Brave SKUs if necessary
-      if !tab.isPrivate {
-        Task { @MainActor in
-          await BraveSkusAccountLink.injectLocalStorage(webView: webView)
+      tab.sampledTopPageColorNotifier = SampledTopPageColorNotifier(webView: webView) {
+        [weak self] color in
+        self?.updateStatusBarOverlayColor()
+      }
+    }
+
+    // check if web view is loading a different origin than the one currently loaded
+    if let selectedTab = tabManager.selectedTab,
+      selectedTab.url?.origin != webView.visibleURL?.origin
+    {
+
+      // new site has a different origin, hide wallet icon.
+      tabManager.selectedTab?.isWalletIconVisible = false
+      // new site, reset connected addresses
+      tabManager.selectedTab?.clearSolanaConnectedAccounts()
+      // close wallet panel if it's open
+      if let popoverController = self.presentedViewController as? PopoverController,
+        popoverController.contentController is WalletPanelHostingController
+      {
+        self.dismiss(animated: true)
+      }
+    }
+
+    displayPageZoom(visible: false)
+
+    // If we are going to navigate to a new page, hide the reader mode button. Unless we
+    // are going to a about:reader page. Then we keep it on screen: it will change status
+    // (orange color) as soon as the page has loaded.
+    if let url = webView.visibleURL, !url.isInternalURL(for: .readermode) {
+      topToolbar.updateReaderModeState(ReaderModeState.unavailable)
+      hideReaderModeBar(animated: false)
+    }
+
+    resetRedirectChain(webView)
+
+    // Append source URL to redirect chain
+    appendUrlToRedirectChain(webView)
+  }
+
+  fileprivate func resetRedirectChain(_ webView: CWVWebView) {
+    if let tab = tab(for: webView) {
+      tab.redirectChain = []
+    }
+  }
+
+  fileprivate func appendUrlToRedirectChain(_ webView: CWVWebView) {
+    // The redirect chain MUST be sorted by the order of redirects with the
+    // first URL being the source URL.
+    if let tab = tab(for: webView), let url = webView.visibleURL {
+      tab.redirectChain.append(url)
+    }
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    decidePolicyFor navigationAction: CWVNavigationAction,
+    decisionHandler: @escaping (CWVNavigationActionPolicy) -> Void
+  ) {
+    Task { @MainActor in
+      let policy = await self.webView(webView, decidePolicyFor: navigationAction)
+      decisionHandler(policy)
+    }
+  }
+
+  @MainActor public func webView(
+    _ webView: CWVWebView,
+    decidePolicyFor navigationAction: CWVNavigationAction
+  ) async -> CWVNavigationActionPolicy {
+    guard var requestURL = navigationAction.request.url else {
+      return .cancel
+    }
+    if InternalURL.isValid(url: requestURL) {
+      if navigationAction.navigationType.contains(.forwardBack),
+        navigationAction.request.isInternalUnprivileged,
+        !navigationAction.navigationType.isMainFrame  // FIXME: Test
+          //         navigationAction.targetFrame?.isMainFrame == false
+          || navigationAction.request.cachePolicy == .useProtocolCachePolicy
+      {
+        Logger.module.warning("Denying unprivileged request: \(navigationAction.request)")
+        return .cancel
+      }
+
+      return .allow
+    }
+
+    if requestURL.scheme == "about" {
+      return .allow
+    }
+
+    if requestURL.isBookmarklet {
+      return .cancel
+    }
+
+    // Universal links do not work if the request originates from the app, manual handling is required.
+    if let mainDocURL = navigationAction.request.mainDocumentURL,
+      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true)
+    {
+      switch universalLink {
+      case .buyVPN:
+        presentCorrespondingVPNViewController()
+        return .cancel
+      }
+    }
+
+    // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
+    // gives us the exact same behaviour as Safari.
+    let tab = tab(for: webView)
+
+    if ["sms", "tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
+      let shouldOpen = await handleExternalURL(
+        requestURL,
+        tab: tab,
+        navigationAction: navigationAction
+      )
+      return shouldOpen ? .allow : .cancel
+    }
+
+    // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
+    // instead of being loaded in the webview.
+    // In addition we are exchaging actual scheme with "maps" scheme
+    // So the Apple maps URLs will open properly
+    if let mapsURL = isAppleMapsURL(requestURL), mapsURL.enabled {
+      let shouldOpen = await handleExternalURL(
+        mapsURL.url,
+        tab: tab,
+        navigationAction: navigationAction
+      )
+      return shouldOpen ? .allow : .cancel
+    }
+
+    if #available(iOS 17.4, *), !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+      // Accessing `MarketplaceKitURIScheme` on Vision OS results in a crash
+      if requestURL.scheme == MarketplaceKitURIScheme {
+        if let queryItems = URLComponents(url: requestURL, resolvingAgainstBaseURL: false)?
+          .queryItems,
+          let adpURL = queryItems.first(where: {
+            $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
+          })?.value?.asURL,
+          navigationAction.navigationType.isMainFrame,
+          adpURL.baseDomain == webView.lastCommittedURL?.baseDomain
+        {
+          return .allow
+        }
+        return .cancel
+      }
+    }
+
+    if isStoreURL(requestURL) {
+      let shouldOpen = await handleExternalURL(
+        requestURL,
+        tab: tab,
+        navigationAction: navigationAction
+      )
+      return shouldOpen ? .allow : .cancel
+    }
+
+    // Handles custom mailto URL schemes.
+    if requestURL.scheme == "mailto" {
+      let shouldOpen = await handleExternalURL(
+        requestURL,
+        tab: tab,
+        navigationAction: navigationAction
+      )
+      return shouldOpen ? .allow : .cancel
+    }
+
+    // handles Decentralized DNS
+    if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
+      navigationAction.navigationType.isMainFrame
+    {
+      topToolbar.locationView.loading = true
+      let result = await decentralizedDNSHelper.lookup(
+        domain: requestURL.schemelessAbsoluteDisplayString
+      )
+      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+      guard !Task.isCancelled else {  // user pressed stop, or typed new url
+        return .cancel
+      }
+      switch result {
+      case .loadInterstitial(let service):
+        showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
+        return .cancel
+      case .load(let resolvedURL):
+        if resolvedURL.isIPFSScheme,
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+        {
+          requestURL = resolvedIPFSURL
+        } else {
+          requestURL = resolvedURL
+        }
+      case .none:
+        break
+      }
+    }
+
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    // FIXME: Test
+    tab?.rewardsReportingState.isNewNavigation = navigationAction.navigationType.isNewNavigation
+    tab?.currentRequestURL = requestURL
+
+    // Website redirection logic
+    if requestURL.isWebPage(includeDataURIs: false),
+      navigationAction.navigationType.isMainFrame,  // FIXME: Test?
+      let redirectURL = WebsiteRedirects.redirect(for: requestURL)
+    {
+      tab?.loadRequest(URLRequest(url: redirectURL))
+      return .cancel
+    }
+
+    let signpostID = ContentBlockerManager.signpost.makeSignpostID()
+    let state = ContentBlockerManager.signpost.beginInterval("decidePolicyFor", id: signpostID)
+
+    // before loading any ad-block scripts
+    // await the preparation of the ad-block services
+    await LaunchHelper.shared.prepareAdBlockServices(
+      adBlockService: self.braveCore.adblockService
+    )
+
+    if let mainDocumentURL = navigationAction.request.mainDocumentURL {
+      if mainDocumentURL != tab?.currentPageData?.mainFrameURL {
+        // Clear the current page data if the page changes.
+        // Do this before anything else so that we have a clean slate.
+        tab?.currentPageData = PageData(mainFrameURL: mainDocumentURL)
+      }
+
+      // Handle the "forget me" feature on navigation
+      if let tab = tab,  //navigationAction.targetFrame?.isMainFrame == true {
+        navigationAction.navigationType.isMainFrame
+      {  // FIXME: Test
+        // Cancel any forget data requests
+        tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
+
+        // Forget any websites that have "forget me" enabled
+        // if we navigated away from the previous domain
+        if let currentURL = tab.url,
+          !InternalURL.isValid(url: currentURL),
+          let currentETLDP1 = currentURL.baseDomain,
+          mainDocumentURL.baseDomain != currentETLDP1
+        {
+          tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
         }
       }
 
-      // Second attempt to inject results to the BraveSearch.
-      // This will be called if we got fallback results faster than
-      // the page navigation.
-      if let braveSearchManager = tab.braveSearchManager {
-        // Fallback results are ready before navigation finished,
-        // they must be injected here.
-        if !braveSearchManager.fallbackQueryResultsPending {
-          tab.injectResults()
+      let domainForMainFrame = Domain.getOrCreate(
+        forUrl: mainDocumentURL,
+        persistent: !isPrivateBrowsing
+      )
+
+      if let tab = tab,
+        let modifiedRequest = getInternalRedirect(
+          from: navigationAction,
+          in: tab,
+          domainForMainFrame: domainForMainFrame
+        )
+      {
+        tab.isInternalRedirect = true
+        if let url = modifiedRequest.url {
+          Self.log.debug(
+            "Redirected to `\(url.absoluteString, privacy: .private)`"
+          )
+        }
+
+        ContentBlockerManager.signpost.endInterval(
+          "decidePolicyFor",
+          state,
+          "Redirected navigation"
+        )
+        DispatchQueue.main.async {
+          tab.loadRequest(modifiedRequest)
+        }
+        return .cancel
+      } else {
+        tab?.isInternalRedirect = false
+      }
+
+      // Set some additional user scripts
+      //      if navigationAction.targetFrame?.isMainFrame == true {
+      if navigationAction.navigationType.isMainFrame {  // FIXME: Test
+        tab?.setScripts(scripts: [
+          // Add de-amp script
+          // The user script manager will take care to not reload scripts if this value doesn't change
+          .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,
+
+          // Add request blocking script
+          // This script will block certian `xhr` and `window.fetch()` requests
+          .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
+            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+
+          // The tracker protection script
+          // This script will track what is blocked and increase stats
+          .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
+            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
+
+          // Add Brave search result ads processing script
+          // This script will process search result ads on the Brave search page.
+          .searchResultAd: BraveAds.shouldSupportSearchResultAds()
+            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
+        ])
+      }
+
+      // Check if custom user scripts must be added to or removed from the web view.
+      tab?.currentPageData?.addSubframeURL(
+        forRequestURL: requestURL,
+        isForMainFrame: navigationAction.navigationType.isMainFrame
+      )
+      let scriptTypes =
+        await tab?.currentPageData?.makeUserScriptTypes(
+          domain: domainForMainFrame,
+          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+        ) ?? []
+      tab?.setCustomUserScript(scripts: scriptTypes)
+    }
+
+    // Brave Search logic.
+
+    if navigationAction.navigationType.isMainFrame,
+      BraveSearchManager.isValidURL(requestURL),
+      let webView = tabManager[webView]?.webView
+    {
+      let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+      let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
+      let isAggressiveAdsBlocking =
+        domain.globalBlockAdsAndTrackingLevel.isAggressive
+        && adsBlockingShieldUp
+
+      if BraveSearchResultAdManager.shouldTriggerSearchResultAdClickedEvent(
+        requestURL,
+        isPrivateBrowsing: isPrivateBrowsing,
+        isAggressiveAdsBlocking: isAggressiveAdsBlocking
+      ) {
+        // Ensure the webView is not a link preview popup.
+        if self.presentedViewController == nil {
+          BraveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(
+            requestURL,
+            rewards: rewards
+          )
         }
       } else {
-        // If not applicable, null results must be injected regardless.
-        // The website waits on us until this is called with either results or null.
+        // The Brave-Search-Ads header should be added with a negative value when all
+        // of the following conditions are met:
+        //   - The current tab is not a Private tab
+        //   - Brave Rewards is enabled.
+        //   - The "Search Ads" is opted-out.
+        //   - The requested URL host is one of the Brave Search domains.
+        if !isPrivateBrowsing && rewards.isEnabled
+          && !rewards.ads.isOptedInToSearchResultAds()
+          && navigationAction.request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
+        {
+          var modifiedRequest = URLRequest(url: requestURL)
+          modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
+          tab?.loadRequest(modifiedRequest)
+          ContentBlockerManager.signpost.endInterval(
+            "decidePolicyFor",
+            state,
+            "Redirected to search"
+          )
+          return .cancel
+        }
+
+        tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
+          url: requestURL,
+          rewards: rewards,
+          isPrivateBrowsing: isPrivateBrowsing,
+          isAggressiveAdsBlocking: isAggressiveAdsBlocking
+        )
+      }
+
+      // We fetch cookies to determine if backup search was enabled on the website.
+      let profile = self.profile
+      // FIXME: Find a way to get this out of CWVWebView
+      let cookies =
+        await webView.wkConfiguration.websiteDataStore.httpCookieStore.allCookies()
+        ?? []
+      tab?.braveSearchManager = BraveSearchManager(
+        profile: profile,
+        url: requestURL,
+        cookies: cookies
+      )
+      if let braveSearchManager = tab?.braveSearchManager {
+        braveSearchManager.fallbackQueryResultsPending = true
+        braveSearchManager.shouldUseFallback { backupQuery in
+          guard let query = backupQuery else {
+            braveSearchManager.fallbackQueryResultsPending = false
+            return
+          }
+
+          if query.found {
+            braveSearchManager.fallbackQueryResultsPending = false
+          } else {
+            braveSearchManager.backupSearch(with: query) { completion in
+              braveSearchManager.fallbackQueryResultsPending = false
+              tab?.injectResults()
+            }
+          }
+        }
+      }
+    } else {
+      tab?.braveSearchResultAdManager = nil
+      tab?.braveSearchManager = nil
+    }
+
+    // This is the normal case, opening a http or https url, which we handle by loading them in this WKWebView. We
+    // always allow this. Additionally, data URIs are also handled just like normal web pages.
+
+    if ["http", "https", "data", "blob", "file", "brave", "chrome"].contains(requestURL.scheme) {
+      // FIXME: Test
+      if navigationAction.navigationType.isMainFrame {
+        if let etldP1 = requestURL.baseDomain,
+          tab?.proceedAnywaysDomainList.contains(etldP1) == false
+        {
+          let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
+
+          let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
+            requestURL: requestURL,
+            sourceURL: requestURL,
+            resourceType: .document,
+            domain: domain
+          )
+
+          if shouldBlock, let url = requestURL.encodeEmbeddedInternalURL(for: .blocked) {
+            let request = PrivilegedRequest(url: url) as URLRequest
+            tab?.loadRequest(request)
+            ContentBlockerManager.signpost.endInterval(
+              "decidePolicyFor",
+              state,
+              "Blocked navigation"
+            )
+            return .cancel
+          }
+        }
+      }
+
+      pendingRequests[requestURL.absoluteString] = navigationAction.request
+
+      // Adblock logic,
+      // Only use main document URL, not the request URL
+      // If an iFrame is loaded, shields depending on the main frame, not the iFrame request
+
+      // Weird behavior here with `targetFram` and `sourceFrame`, on refreshing page `sourceFrame` is not nil (it is non-optional)
+      //  however, it is still an uninitialized object, making it an unreliable source to compare `isMainFrame` against.
+      //  Rather than using `sourceFrame.isMainFrame` or even comparing `sourceFrame == targetFrame`, a simple URL check is used.
+      // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
+      // request then the page is reloaded with a proper url and adblocking rules are applied.
+      if let mainDocumentURL = navigationAction.request.mainDocumentURL,
+        mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
+        !(InternalURL(requestURL)?.isSessionRestore ?? false),
+        navigationAction.navigationType.isMainFrame  // FIXME: Test
+      //         navigationAction.sourceFrame.isMainFrame
+      //          || navigationAction.targetFrame?.isMainFrame == true
+      {
+        // Identify specific block lists that need to be applied to the requesting domain
+        let domainForShields = Domain.getOrCreate(
+          forUrl: mainDocumentURL,
+          persistent: !isPrivateBrowsing
+        )
+
+        // Load rule lists
+        let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domainForShields)
+        tab?.contentBlocker.set(ruleLists: ruleLists)
+      }
+
+      let documentTargetURL: URL? =
+        // FIXME: Test
+        navigationAction.request.mainDocumentURL
+        ?? requestURL  // Should be the same as the sourceFrame URL
+      // Cookie Blocking code below
+      if let tab = tab {
+        tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
+      }
+
+      // Reset the block alert bool on new host.
+      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL?.host,
+        newHost != oldHost
+      {
+        self.tabManager.selectedTab?.alertShownCount = 0
+        self.tabManager.selectedTab?.blockAllAlerts = false
+      }
+
+      ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
+      return .allow
+    }
+
+    // Standard schemes are handled in previous if-case.
+    // This check handles custom app schemes to open external apps.
+    // Our own 'brave' scheme does not require the switch-app prompt.
+    if requestURL.scheme?.contains("brave") == false
+      && requestURL.scheme?.contains("chrome") == false
+    {
+      // Do not allow opening external URLs from child tabs
+      let shouldOpen = await handleExternalURL(
+        requestURL,
+        tab: tab,
+        navigationAction: navigationAction
+      )
+      let isSyntheticClick =
+        navigationAction.responds(to: Selector(("_syntheticClickType")))
+        && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
+
+      // Do not show error message for JS navigated links or redirect
+      // as it's not the result of a user action.
+      // FIXME: Test
+      if !shouldOpen, navigationAction.navigationType == .link && !isSyntheticClick {
+        if self.presentedViewController == nil && self.presentingViewController == nil
+          && tab?.isExternalAppAlertPresented == false && tab?.isExternalAppAlertSuppressed == false
+        {
+
+          return await withCheckedContinuation { continuation in
+            // This alert does not need to be a BrowserAlertController because we return a policy
+            // without waiting for user action
+            let alert = UIAlertController(
+              title: Strings.unableToOpenURLErrorTitle,
+              message: Strings.unableToOpenURLError,
+              preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+            self.present(alert, animated: true) {
+              continuation.resume(returning: shouldOpen ? .allow : .cancel)
+            }
+          }
+        }
+      }
+
+      return shouldOpen ? .allow : .cancel
+    }
+
+    return .cancel
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    decidePolicyFor navigationResponse: CWVNavigationResponse,
+    decisionHandler: @escaping (CWVNavigationResponsePolicy) -> Void
+  ) {
+    Task { @MainActor in
+      let policy = await self.webView(webView, decidePolicyFor: navigationResponse)
+      decisionHandler(policy)
+    }
+  }
+
+  @MainActor public func webView(
+    _ webView: CWVWebView,
+    decidePolicyFor navigationResponse: CWVNavigationResponse
+  ) async -> CWVNavigationResponsePolicy {
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    let response = navigationResponse.response
+    let responseURL = response.url
+    let tab = tab(for: webView)
+
+    // Store the response in the tab
+    if let responseURL = responseURL {
+      tab?.responses[responseURL] = response
+    }
+
+    // Check if we upgraded to https and if so we need to update the url of frame evaluations
+    if let responseURL = responseURL,
+      let domain = tab?.currentPageData?.domain(persistent: !isPrivateBrowsing),
+      tab?.currentPageData?.upgradeFrameURL(
+        forResponseURL: responseURL,
+        isForMainFrame: navigationResponse.isForMainFrame
+      ) == true
+    {
+      let scriptTypes =
+        await tab?.currentPageData?.makeUserScriptTypes(
+          domain: domain,
+          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+        ) ?? []
+      tab?.setCustomUserScript(scripts: scriptTypes)
+    }
+
+    if let tab = tab, let responseURL = responseURL,
+      let response = response as? HTTPURLResponse
+    {
+      let internalUrl = InternalURL(responseURL)
+
+      tab.rewardsReportingState.httpStatusCode = response.statusCode
+
+      if !tab.rewardsReportingState.wasRestored {
+        tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
+      }
+    }
+
+    var request: URLRequest?
+    if let url = responseURL {
+      request = pendingRequests.removeValue(forKey: url.absoluteString)
+    }
+
+    let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
+      .textCalendar,
+      .mobileConfiguration,
+    ]
+
+    // SFSafariViewController only supports http/https links
+    if navigationResponse.isForMainFrame, let url = responseURL,
+      url.isWebPage(includeDataURIs: false),
+      let tab, tab === tabManager.selectedTab,
+      let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
+      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
+    {
+      handleLinkWithSafariViewController(url, tab: tab)
+      return .cancel
+    }
+
+    // If the content type is not HTML, create a temporary document so it can be downloaded and
+    // shared to external applications later. Otherwise, clear the old temporary document.
+    if let tab = tab, navigationResponse.isForMainFrame {
+      if response.mimeType?.isKindOfHTML == false, let request = request {
+        tab.temporaryDocument = TemporaryDocument(
+          preflightResponse: response,
+          request: request,
+          tab: tab
+        )
+      } else {
+        tab.temporaryDocument = nil
+      }
+
+      tab.mimeType = response.mimeType
+    }
+
+    // If none of our helpers are responsible for handling this response,
+    // just let the webview handle it as normal.
+    return .allow
+  }
+
+  public func webViewDidFinishNavigation(_ webView: CWVWebView) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    // Inject app's IAP receipt for Brave SKUs if necessary
+    if !tab.isPrivate {
+      Task { @MainActor in
+        await BraveSkusAccountLink.injectLocalStorage(webView: webView)
+      }
+    }
+
+    tab.sampledTopPageColorNotifier = nil
+
+    // Second attempt to inject results to the BraveSearch.
+    // This will be called if we got fallback results faster than
+    // the page navigation.
+    if let braveSearchManager = tab.braveSearchManager {
+      // Fallback results are ready before navigation finished,
+      // they must be injected here.
+      if !braveSearchManager.fallbackQueryResultsPending {
         tab.injectResults()
       }
+    } else {
+      // If not applicable, null results must be injected regardless.
+      // The website waits on us until this is called with either results or null.
+      tab.injectResults()
+    }
 
-      navigateInTab(tab: tab, to: navigation)
-      rewards.reportTabUpdated(
-        tab: tab,
-        isSelected: tabManager.selectedTab == tab,
-        isPrivate: privateBrowsingManager.isPrivateBrowsing
-      )
-      tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-      // Reset `rewardsReportingState` tab property so that listeners
-      // can be notified of tab changes when a new navigation happens.
-      tab.rewardsReportingState = RewardsTabChangeReportingState()
+    navigateInTab(tab: tab)
+    rewards.reportTabUpdated(
+      tab: tab,
+      isSelected: tabManager.selectedTab == tab,
+      isPrivate: privateBrowsingManager.isPrivateBrowsing
+    )
+    tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    // Reset `rewardsReportingState` tab property so that listeners
+    // can be notified of tab changes when a new navigation happens.
+    tab.rewardsReportingState = RewardsTabChangeReportingState()
 
-      Task {
-        await tab.updateEthereumProperties()
-        await tab.updateSolanaProperties()
-      }
+    Task {
+      await tab.updateEthereumProperties()
+      await tab.updateSolanaProperties()
+    }
 
-      if webView.url?.isLocal == false {
-        // Set rewards inter site url as new page load url.
-        tab.rewardsXHRLoadURL = webView.url
-      }
+    if webView.visibleURL?.isLocal == false {
+      // Set rewards inter site url as new page load url.
+      tab.rewardsXHRLoadURL = webView.visibleURL
+    }
 
-      if tab.walletEthProvider != nil {
-        tab.emitEthereumEvent(.connect)
-      }
+    if tab.walletEthProvider != nil {
+      tab.emitEthereumEvent(.connect)
+    }
 
-      if let lastCommittedURL = tab.committedURL {
-        maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
-      }
+    if let lastCommittedURL = webView.lastCommittedURL {
+      maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
     }
 
     // Added this method to determine long press menu actions better
@@ -1080,20 +836,8 @@ extension BrowserViewController: WKNavigationDelegate {
     recordFinishedPageLoadP3A()
   }
 
-  public func webView(
-    _ webView: WKWebView,
-    didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
-  ) {
-    appendUrlToRedirectChain(webView)
-  }
-
-  /// Invoked when an error occurs while starting to load data for the main frame.
-  public func webView(
-    _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
-    withError error: Error
-  ) {
-    guard let tab = tab(for: webView) else { return }
+  public func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
+    guard let tab = tab(for: webView), let webView = tab.webView else { return }
 
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
@@ -1108,51 +852,262 @@ extension BrowserViewController: WKNavigationDelegate {
       return
     }
 
-    if let sslPinningError = tab.sslPinningError {
-      error = sslPinningError as NSError
-    }
-
     if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
-      // load cancelled / user stopped load. Cancel https upgrade fallback timer.
-      tab.upgradedHTTPSRequest = nil
-      tab.upgradeHTTPSTimeoutTimer?.invalidate()
-      tab.upgradeHTTPSTimeoutTimer = nil
-
       if tab === tabManager.selectedTab {
         updateToolbarCurrentURL(tab.url?.displayURL)
         updateWebViewPageZoom(tab: tab)
       }
       return
     }
+  }
 
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      // Check for invalid upgrade to https
-      if url.scheme == "https",  // verify failing url was https
-        let response = handleInvalidHTTPSUpgrade(
-          tab: tab,
-          responseURL: url
+  public func webView(_ webView: CWVWebView, didRequestDownloadWith task: CWVDownloadTask) {
+    guard let tab = tabManager[webView] else { return }
+
+    let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
+      .textCalendar,
+      .mobileConfiguration,
+    ]
+
+    if case let url = task.originalURL, url.isWebPage(includeDataURIs: false),
+      tab === tabManager.selectedTab,
+      let mimeType = UTType(mimeType: task.mimeType),
+      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
+    {
+      handleLinkWithSafariViewController(task.originalURL, tab: tab)
+      task.cancel()
+      return
+    }
+
+    task.delegate = self
+
+    let downloadHelper = DownloadHelper(task: task)
+
+    let downloadAlertAction: () -> Void = { [weak self] in
+      guard let self else { return }
+      let downloadPath = FileManager.default.temporaryDirectory.appending(
+        path: task.suggestedFileName
+      )
+      task.startDownloadToLocalFile(atPath: downloadPath.path())
+
+      // If no other download toast is shown, create a new download toast and show it.
+      // FIXME: We need new UI here to handle multiple downloads at once
+      guard let downloadToast = self.downloadToast else {
+        let downloadToast = DownloadToast(
+          download: task,
+          completion: { buttonPressed in
+            // When this toast is dismissed, be sure to clear this so that any
+            // subsequent downloads cause a new toast to be created.
+            self.downloadToast = nil
+
+            // Handle download cancellation
+            if buttonPressed {
+              task.cancel()
+
+              let downloadCancelledToast = ButtonToast(
+                labelText: Strings.downloadCancelledToastLabelText,
+                backgroundColor: UIColor.braveLabel,
+                textAlignment: .center
+              )
+
+              self.show(toast: downloadCancelledToast)
+            }
+          }
         )
-      {
-        // load original or strict mode interstitial
-        tab.loadRequest(response)
+
+        self.show(toast: downloadToast, duration: nil)
         return
       }
 
-      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
+      // Otherwise, just add this download to the existing download toast.
+      downloadToast.addDownload(task)
+    }
 
-      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
-      // Reseting the progress bar in case there is an error is necessary
-      if tab == self.tabManager.selectedTab {
-        self.topToolbar.hideProgressBar()
-      }
+    // Open our helper and cancel this response from the webview.
+    if tab === tabManager.selectedTab,
+      let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
+    {
+      present(downloadAlert, animated: true, completion: nil)
+    }
+  }
 
-      // If the local web server isn't working for some reason (Brave cellular data is
-      // disabled in settings, for example), we'll fail to load the session restore URL.
-      // We rely on loading that page to get the restore callback to reset the restoring
-      // flag, so if we fail to load that page, reset it here.
-      if InternalURL(url)?.aboutComponent == "sessionrestore" {
-        tab.restoring = false
+  public func webView(
+    _ webView: CWVWebView,
+    shouldBlockUniversalLinksFor request: URLRequest
+  ) -> Bool {
+    let isPrivateBrowsing = tabManager.privateBrowsingManager.isPrivateBrowsing == true
+    func isYouTubeLoad() -> Bool {
+      guard let domain = request.mainDocumentURL?.baseDomain else {
+        return false
       }
+      let domainsWithUniversalLinks: Set<String> = ["youtube.com", "youtu.be"]
+      return domainsWithUniversalLinks.contains(domain)
+    }
+    if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value
+      || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad())
+    {
+      // Stop Brave from opening universal links by using the private enum value
+      // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
+      // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
+      return true
+    }
+    return false
+  }
+
+  public func webView(_ webView: CWVWebView, shouldBlockJavaScriptFor request: URLRequest) -> Bool {
+    guard let url = request.mainDocumentURL else { return false }
+    let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
+    let domainForShields = Domain.getOrCreate(
+      forUrl: url,
+      persistent: !isPrivateBrowsing
+    )
+    let isScriptsEnabled = !domainForShields.isShieldExpected(
+      .noScript,
+      considerAllShieldsOption: true
+    )
+    // Due to a bug in iOS WKWebpagePreferences.allowsContentJavaScript does NOT work!
+    // https://github.com/brave/brave-ios/issues/8585
+    //
+    // However, the deprecated API WKWebViewConfiguration.preferences.javaScriptEnabled DOES work!
+    // Even though `configuration` is @NSCopying, somehow this actually updates the preferences LIVE!!
+    // This follows the same behaviour as Safari
+    //
+    // - Brandon T.
+    // FIXME: Test if this is still needed.
+    webView.wkConfiguration.preferences.javaScriptEnabled = isScriptsEnabled
+    return !isScriptsEnabled
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential: URLCredential,
+    completionHandler handler: @escaping (String?, String?) -> Void
+  ) {
+    Task { @MainActor in
+      do {
+        guard let tab = tabManager[webView] else { return }
+        let credential = try await credentialForHTTPAuthRequest(
+          webView: webView,
+          tab: tab,
+          protectionSpace: protectionSpace,
+          proposedCredential: proposedCredential
+        )
+        handler(credential.user, credential.password)
+      } catch {
+        handler(nil, nil)
+      }
+    }
+  }
+
+  @MainActor private func credentialForHTTPAuthRequest(
+    webView: CWVWebView,
+    tab: Tab,
+    protectionSpace: URLProtectionSpace,
+    proposedCredential: URLCredential
+  ) async throws -> URLCredential {
+    let host = protectionSpace.host
+    let origin = "\(host):\(protectionSpace.port)"
+
+    // The challenge may come from a background tab, so ensure it's the one visible.
+    tabManager.selectTab(tab)
+    tab.isDisplayingBasicAuthPrompt = true
+    defer { tab.isDisplayingBasicAuthPrompt = false }
+
+    let isHidden = webView.isHidden
+    defer { webView.isHidden = isHidden }
+
+    // Manually trigger a `url` change notification
+    if host != tab.url?.host {
+      webView.isHidden = true
+
+      observeValue(
+        forKeyPath: KVOConstants.visibleURL.keyPath,
+        of: webView,
+        change: [.newKey: webView.visibleURL as Any, .kindKey: 1],
+        context: nil
+      )
+    }
+
+    let credentials = try await Authenticator.handleAuthRequest(
+      self,
+      credential: proposedCredential,
+      protectionSpace: protectionSpace
+    )
+
+    if BasicAuthCredentialsManager.validDomains.contains(host) {
+      BasicAuthCredentialsManager.setCredential(
+        origin: origin,
+        credential: credentials.credentials
+      )
+    }
+
+    return credentials.credentials
+  }
+}
+
+// MARK: WKNavigationDelegate
+extension BrowserViewController {
+  private static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "navigation")
+
+  // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present.
+  // Otherwise it could just be a visit to a regular page on maps.apple.com.
+  // Exchaging https/https scheme with maps in order to open URLS properly on Apple Maps
+  fileprivate func isAppleMapsURL(_ url: URL) -> (enabled: Bool, url: URL)? {
+    if url.scheme == "http" || url.scheme == "https" {
+      if url.host == "maps.apple.com" && url.query != nil {
+        guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+          return nil
+        }
+        urlComponents.scheme = "maps"
+
+        if let url = urlComponents.url {
+          return (true, url)
+        }
+        return nil
+      }
+    }
+    return (false, url)
+  }
+
+  // Recognize a iTunes Store URL. These all trigger the native apps. Note that appstore.com and phobos.apple.com
+  // used to be in this list. I have removed them because they now redirect to itunes.apple.com. If we special case
+  // them then iOS will actually first open Safari, which then redirects to the app store. This works but it will
+  // leave a 'Back to Safari' button in the status bar, which we do not want.
+  fileprivate func isStoreURL(_ url: URL) -> Bool {
+    let isStoreScheme = ["itms-apps", "itms-appss", "itmss"].contains(url.scheme)
+    if isStoreScheme {
+      return true
+    }
+
+    let isHttpScheme = ["http", "https"].contains(url.scheme)
+    let isAppStoreHost = ["itunes.apple.com", "apps.apple.com", "appsto.re"].contains(url.host)
+    return isHttpScheme && isAppStoreHost
+  }
+
+  // This is the place where we decide what to do with a new navigation action. There are a number of special schemes
+  // and http(s) urls that need to be handled in a different way. All the logic for that is inside this delegate
+  // method.
+
+  fileprivate func isUpholdOAuthAuthorization(_ url: URL) -> Bool {
+    return url.scheme == "rewards" && url.host == "uphold"
+  }
+
+  /// Handles a link by opening it in an SFSafariViewController and presenting it on the BVC.
+  ///
+  /// This is unfortunately neccessary to handle certain downloads natively such as ics/calendar invites and
+  /// mobileconfiguration files.
+  ///
+  /// The user unfortunately has to  dismiss it manually after they have handled the file.
+  /// Chrome iOS does the same
+  private func handleLinkWithSafariViewController(_ url: URL, tab: Tab) {
+    let vc = SFSafariViewController(url: url, configuration: .init())
+    vc.modalPresentationStyle = .formSheet
+    self.present(vc, animated: true)
+
+    // If the website opened this URL in a separate tab, remove the empty tab
+    if tab.url == nil || tab.url?.absoluteString == "about:blank" {
+      tabManager.removeTab(tab)
     }
   }
 }
@@ -1178,18 +1133,23 @@ extension BrowserViewController {
     )
   }
 
-  private func tab(for webView: WKWebView) -> Tab? {
-    tabManager[webView] ?? (webView as? TabWebView)?.tab
+  private func tab(for webView: BraveWebView) -> Tab? {
+    tabManager[webView]
+  }
+
+  private func tab(for webView: CWVWebView) -> Tab? {
+    tabManager[webView]
   }
 
   private func handleExternalURL(
     _ url: URL,
     tab: Tab?,
-    navigationAction: WKNavigationAction
+    navigationAction: CWVNavigationAction
   ) async -> Bool {
     // Do not open external links for child tabs automatically
     // The user must tap on the link to open it.
-    if tab?.parent != nil && navigationAction.navigationType != .linkActivated {
+    // FIXME: Test
+    if tab?.parent != nil && navigationAction.navigationType != .link {
       return false
     }
 
@@ -1319,20 +1279,18 @@ extension BrowserViewController {
 
 // MARK: WKUIDelegate
 
-extension BrowserViewController: WKUIDelegate {
+extension BrowserViewController: CWVUIDelegate {
   public func webView(
-    _ webView: WKWebView,
-    createWebViewWith configuration: WKWebViewConfiguration,
-    for navigationAction: WKNavigationAction,
-    windowFeatures: WKWindowFeatures
-  ) -> WKWebView? {
+    _ webView: CWVWebView,
+    createWebViewWith configuration: CWVWebViewConfiguration,
+    for action: CWVNavigationAction
+  ) -> CWVWebView? {
     guard let parentTab = tabManager[webView] else { return nil }
-
-    guard !navigationAction.isInternalUnprivileged,
-      let navigationURL = navigationAction.request.url,
+    guard !action.request.isInternalUnprivileged,
+      let navigationURL = action.request.url,
       navigationURL.shouldRequestBeOpenedAsPopup()
     else {
-      print("Denying popup from request: \(navigationAction.request)")
+      print("Denying popup from request: \(action.request)")
       return nil
     }
 
@@ -1344,7 +1302,6 @@ extension BrowserViewController: WKUIDelegate {
     // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
     // the request here manually leads to incorrect results!!
     let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
-
     newTab.url = URL(string: "about:blank")
 
     toolbarVisibilityViewModel.toolbarState = .expanded
@@ -1353,7 +1310,7 @@ extension BrowserViewController: WKUIDelegate {
     // restore it as if it was a dead tab.
     var observation: NSKeyValueObservation?
     observation = newTab.webView?.observe(
-      \.url,
+      \.visibleURL,
       changeHandler: { [weak self] webView, _ in
         _ = observation  // Silence write but not read warning
         observation = nil
@@ -1365,18 +1322,16 @@ extension BrowserViewController: WKUIDelegate {
     return newTab.webView
   }
 
-  public func webViewDidClose(_ webView: WKWebView) {
+  public func webViewDidClose(_ webView: CWVWebView) {
     guard let tab = tabManager[webView] else { return }
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
   }
 
   public func webView(
-    _ webView: WKWebView,
-    requestMediaCapturePermissionFor origin: WKSecurityOrigin,
-    initiatedByFrame frame: WKFrameInfo,
-    type: WKMediaCaptureType,
-    decisionHandler: @escaping (WKPermissionDecision) -> Void
+    _ webView: CWVWebView,
+    requestMediaCapturePermissionFor type: CWVMediaCaptureType,
+    decisionHandler: @escaping (CWVPermissionDecision) -> Void
   ) {
     let presentAlert = { [weak self] in
       guard let self = self else { return }
@@ -1393,7 +1348,9 @@ extension BrowserViewController: WKUIDelegate {
           return Strings.requestCaptureDevicePermissionPrompt
         }
       }()
-      let title = String.localizedStringWithFormat(titleFormat, origin.host)
+      // FIXME: Test
+      guard let host = webView.visibleURL?.host else { return }
+      let title = String.localizedStringWithFormat(titleFormat, host)
       let alertController = BrowserAlertController(
         title: title,
         message: nil,
@@ -1420,13 +1377,6 @@ extension BrowserViewController: WKUIDelegate {
       alertController.dismissedWithoutAction = {
         decisionHandler(.prompt)
       }
-      if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
-      {
-        webView.closeAllMediaPresentations {
-          self.present(alertController, animated: true)
-        }
-        return
-      }
       self.present(alertController, animated: true)
     }
 
@@ -1439,166 +1389,18 @@ extension BrowserViewController: WKUIDelegate {
     }
   }
 
-  fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {
-    // Only display a JS Alert if we are selected and there isn't anything being shown
-    return ((tabManager.selectedTab == nil ? false : tabManager.selectedTab!.webView == webView))
-      && (self.presentedViewController == nil)
-  }
-
   public func webView(
-    _ webView: WKWebView,
-    runJavaScriptAlertPanelWithMessage message: String,
-    initiatedByFrame frame: WKFrameInfo,
-    completionHandler: @escaping () -> Void
+    _ webView: CWVWebView,
+    contextMenuConfigurationFor element: CWVHTMLElement,
+    completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
   ) {
-    var messageAlert = MessageAlert(
-      message: message,
-      frame: frame,
-      completionHandler: completionHandler,
-      suppressHandler: nil
-    )
-    handleAlert(webView: webView, alert: &messageAlert) {
-      completionHandler()
-    }
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    runJavaScriptConfirmPanelWithMessage message: String,
-    initiatedByFrame frame: WKFrameInfo,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
-    var confirmAlert = ConfirmPanelAlert(
-      message: message,
-      frame: frame,
-      completionHandler: completionHandler,
-      suppressHandler: nil
-    )
-    handleAlert(webView: webView, alert: &confirmAlert) {
-      completionHandler(false)
-    }
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    runJavaScriptTextInputPanelWithPrompt prompt: String,
-    defaultText: String?,
-    initiatedByFrame frame: WKFrameInfo,
-    completionHandler: @escaping (String?) -> Void
-  ) {
-    var textInputAlert = TextInputAlert(
-      message: prompt,
-      frame: frame,
-      completionHandler: completionHandler,
-      defaultText: defaultText,
-      suppressHandler: nil
-    )
-    handleAlert(webView: webView, alert: &textInputAlert) {
-      completionHandler(nil)
-    }
-  }
-
-  func suppressJSAlerts(webView: WKWebView) {
-    let script = """
-      window.alert=window.confirm=window.prompt=function(n){},
-      [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
-      """
-    webView.evaluateSafeJavaScript(
-      functionName: script,
-      contentWorld: .defaultClient,
-      asFunction: false
-    )
-  }
-
-  func handleAlert<T: JSAlertInfo>(
-    webView: WKWebView,
-    alert: inout T,
-    completionHandler: @escaping () -> Void
-  ) {
-    guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
-      suppressJSAlerts(webView: webView)
-      tabManager[webView]?.cancelQueuedAlerts()
-      completionHandler()
-      return
-    }
-    promptingTab.alertShownCount += 1
-    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
-      if suppress {
-        func suppressDialogues(_: UIAlertAction) {
-          self.suppressJSAlerts(webView: webView)
-          promptingTab.blockAllAlerts = true
-          self.tabManager[webView]?.cancelQueuedAlerts()
-          completionHandler()
-        }
-        // Show confirm alert here.
-        let suppressSheet = UIAlertController(
-          title: nil,
-          message: Strings.suppressAlertsActionMessage,
-          preferredStyle: .actionSheet
-        )
-        suppressSheet.addAction(
-          UIAlertAction(
-            title: Strings.suppressAlertsActionTitle,
-            style: .destructive,
-            handler: suppressDialogues
-          )
-        )
-        suppressSheet.addAction(
-          UIAlertAction(
-            title: Strings.cancelButtonTitle,
-            style: .cancel,
-            handler: { _ in
-              completionHandler()
-            }
-          )
-        )
-        if UIDevice.current.userInterfaceIdiom == .pad,
-          let popoverController = suppressSheet.popoverPresentationController
-        {
-          popoverController.sourceView = self.view
-          popoverController.sourceRect = CGRect(
-            x: self.view.bounds.midX,
-            y: self.view.bounds.midY,
-            width: 0,
-            height: 0
-          )
-          popoverController.permittedArrowDirections = []
-        }
-        self.present(suppressSheet, animated: true)
-      } else {
-        completionHandler()
-      }
-    }
-    alert.suppressHandler = promptingTab.alertShownCount > 1 ? suppressBlock : nil
-    if shouldDisplayJSAlertForWebView(webView) {
-      let controller = alert.alertController()
-      controller.delegate = self
-      present(controller, animated: true)
-    } else {
-      promptingTab.queueJavascriptAlertPrompt(alert)
-    }
-  }
-
-  func checkIfWebContentProcessHasCrashed(_ webView: WKWebView, error: NSError) -> Bool {
-    if error.code == WKError.webContentProcessTerminated.rawValue
-      && error.domain == "WebKitErrorDomain"
-    {
-      print("WebContent process has crashed. Trying to reload to restart it.")
-      webView.reload()
-      return true
-    }
-
-    return false
-  }
-
-  @MainActor public func webView(
-    _ webView: WKWebView,
-    contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
-  ) async -> UIContextMenuConfiguration? {
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
     // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
-    guard let url = elementInfo.linkURL, url.isWebPage() else {
-      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
+    guard let url = element.hyperlink, url.isWebPage() else {
+      completionHandler(
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
+      )
+      return
     }
 
     let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
@@ -1741,27 +1543,182 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
-      if let tab = tabManager.tabForWebView(webView) {
+      if let tab = tabManager[webView] {
         return LinkPreviewViewController(url: url, for: tab, browserController: self)
       }
       return nil
     }
 
     let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
-    return UIContextMenuConfiguration(
-      identifier: nil,
-      previewProvider: linkPreviewProvider,
-      actionProvider: actionProvider
+    completionHandler(
+      UIContextMenuConfiguration(
+        identifier: nil,
+        previewProvider: linkPreviewProvider,
+        actionProvider: actionProvider
+      )
     )
   }
 
+  public func webView(_ webView: CWVWebView, didLoad favIcons: [CWVFavicon]) {
+    print("loaded favicons: \(favIcons)")
+    // FIXME: Gotta run this through to download them and update the favicons on disk?
+  }
+
   public func webView(
-    _ webView: WKWebView,
-    contextMenuForElement elementInfo: WKContextMenuElementInfo,
-    willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating
+    _ webView: CWVWebView,
+    runJavaScriptAlertPanelWithMessage message: String,
+    pageURL url: URL,
+    completionHandler: @escaping () -> Void
   ) {
-    guard let url = elementInfo.linkURL else { return }
-    webView.load(URLRequest(url: url))
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    var messageAlert = MessageAlert(
+      message: message,
+      pageURL: url,
+      completionHandler: completionHandler,
+      suppressHandler: nil
+    )
+    handleAlert(webView: webView, alert: &messageAlert) {
+      completionHandler()
+    }
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    runJavaScriptConfirmPanelWithMessage message: String,
+    pageURL url: URL,
+    completionHandler: @escaping (Bool) -> Void
+  ) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    var confirmAlert = ConfirmPanelAlert(
+      message: message,
+      pageURL: url,
+      completionHandler: completionHandler,
+      suppressHandler: nil
+    )
+    handleAlert(webView: webView, alert: &confirmAlert) {
+      completionHandler(false)
+    }
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    runJavaScriptTextInputPanelWithPrompt prompt: String,
+    defaultText: String,
+    pageURL url: URL,
+    completionHandler: @escaping (String?) -> Void
+  ) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    var textInputAlert = TextInputAlert(
+      message: prompt,
+      pageURL: url,
+      completionHandler: completionHandler,
+      defaultText: defaultText,
+      suppressHandler: nil
+    )
+    handleAlert(webView: webView, alert: &textInputAlert) {
+      completionHandler(nil)
+    }
+  }
+}
+
+extension BrowserViewController {
+  fileprivate func shouldDisplayJSAlertForWebView(_ webView: BraveWebView) -> Bool {
+    // Only display a JS Alert if we are selected and there isn't anything being shown
+    return ((tabManager.selectedTab == nil ? false : tabManager.selectedTab!.webView == webView))
+      && (self.presentedViewController == nil)
+  }
+
+  func suppressJSAlerts(webView: BraveWebView) {
+    let script = """
+      window.alert=window.confirm=window.prompt=function(n){},
+      [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
+      """
+    webView.evaluateSafeJavaScript(
+      functionName: script,
+      contentWorld: .defaultClient,
+      asFunction: false
+    )
+  }
+
+  func handleAlert<T: JSAlertInfo>(
+    webView: BraveWebView,
+    alert: inout T,
+    completionHandler: @escaping () -> Void
+  ) {
+    guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
+      suppressJSAlerts(webView: webView)
+      tabManager[webView]?.cancelQueuedAlerts()
+      completionHandler()
+      return
+    }
+    promptingTab.alertShownCount += 1
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
+      if suppress {
+        func suppressDialogues(_: UIAlertAction) {
+          self.suppressJSAlerts(webView: webView)
+          promptingTab.blockAllAlerts = true
+          self.tabManager[webView]?.cancelQueuedAlerts()
+          completionHandler()
+        }
+        // Show confirm alert here.
+        let suppressSheet = UIAlertController(
+          title: nil,
+          message: Strings.suppressAlertsActionMessage,
+          preferredStyle: .actionSheet
+        )
+        suppressSheet.addAction(
+          UIAlertAction(
+            title: Strings.suppressAlertsActionTitle,
+            style: .destructive,
+            handler: suppressDialogues
+          )
+        )
+        suppressSheet.addAction(
+          UIAlertAction(
+            title: Strings.cancelButtonTitle,
+            style: .cancel,
+            handler: { _ in
+              completionHandler()
+            }
+          )
+        )
+        if UIDevice.current.userInterfaceIdiom == .pad,
+          let popoverController = suppressSheet.popoverPresentationController
+        {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(
+            x: self.view.bounds.midX,
+            y: self.view.bounds.midY,
+            width: 0,
+            height: 0
+          )
+          popoverController.permittedArrowDirections = []
+        }
+        self.present(suppressSheet, animated: true)
+      } else {
+        completionHandler()
+      }
+    }
+    alert.suppressHandler = promptingTab.alertShownCount > 1 ? suppressBlock : nil
+    if shouldDisplayJSAlertForWebView(webView) {
+      let controller = alert.alertController()
+      controller.delegate = self
+      present(controller, animated: true)
+    } else {
+      promptingTab.queueJavascriptAlertPrompt(alert)
+    }
+  }
+
+  func checkIfWebContentProcessHasCrashed(_ webView: CWVWebView, error: NSError) -> Bool {
+    if error.code == WKError.webContentProcessTerminated.rawValue
+      && error.domain == "WebKitErrorDomain"
+    {
+      print("WebContent process has crashed. Trying to reload to restart it.")
+      webView.reload()
+      return true
+    }
+
+    return false
   }
 
   fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
@@ -1790,7 +1747,7 @@ extension BrowserViewController: WKUIDelegate {
 
   /// Get a possible redirect request from debouncing or query param stripping
   private func getInternalRedirect(
-    from navigationAction: WKNavigationAction,
+    from navigationAction: CWVNavigationAction,
     in tab: Tab,
     domainForMainFrame: Domain
   ) -> URLRequest? {
@@ -1799,7 +1756,7 @@ extension BrowserViewController: WKUIDelegate {
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
       domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
-      navigationAction.targetFrame?.isMainFrame == true
+      navigationAction.navigationType.isMainFrame
     else { return nil }
 
     // Handle Debounce
@@ -1810,7 +1767,7 @@ extension BrowserViewController: WKUIDelegate {
     // (i.e. appropriate settings are enabled for that redirect rule)
     if let debounceService = DebounceServiceFactory.get(privateMode: tab.isPrivate),
       debounceService.isEnabled,
-      let currentURL = tab.webView?.url,
+      let currentURL = tab.webView?.lastCommittedURL,
       currentURL.baseDomain != requestURL.baseDomain
     {
       if let redirectURL = debounceService.debounce(requestURL) {
@@ -1850,110 +1807,7 @@ extension BrowserViewController: WKUIDelegate {
       return request
     }
 
-    // HTTPS by Default
-    if shouldUpgradeToHttps(url: requestURL, isPrivate: tab.isPrivate),
-      var urlComponents = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
-    {
-      if let existingUpgradeRequestURL = tab.upgradedHTTPSRequest?.url,
-        existingUpgradeRequestURL == requestURL
-      {
-        // if server redirected https -> http, https load never fails.
-        // `webView(_:decidePolicyFor:preferences:)` will be called before
-        // `webView(_:didReceiveServerRedirectForProvisionalNavigation:)`
-        // so we must prevent upgrade loop.
-        return handleInvalidHTTPSUpgrade(tab: tab, responseURL: requestURL)
-      }
-      // Attempt to upgrade to HTTPS
-      urlComponents.scheme = "https"
-      if let upgradedURL = urlComponents.url {
-        Self.log.debug(
-          "Upgrading `\(requestURL.absoluteString)` to HTTPS"
-        )
-        tab.upgradedHTTPSRequest = navigationAction.request
-        tab.upgradeHTTPSTimeoutTimer?.invalidate()
-        var request = navigationAction.request
-        request.url = upgradedURL
-
-        tab.upgradeHTTPSTimeoutTimer = Timer.scheduledTimer(
-          withTimeInterval: 3.seconds,
-          repeats: false,
-          block: { [weak tab, weak self] timer in
-            guard let self, let tab else { return }
-            if let url = request.url,
-              let request = handleInvalidHTTPSUpgrade(tab: tab, responseURL: url)
-            {
-              tab.webView?.stopLoading()
-              tab.webView?.load(request)
-            }
-          }
-        )
-        return request
-      }
-    }
-
     return nil
-  }
-
-  /// Determines if the given url should be upgraded from http to https.
-  private func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
-    guard FeatureList.kBraveHttpsByDefault.enabled,
-      let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
-      url.scheme == "http", let host = url.host
-    else {
-      return false
-    }
-    let isInUserAllowList = httpUpgradeService.isHttpAllowed(forHost: host)
-    let shouldUpgrade: Bool
-    switch ShieldPreferences.httpsUpgradeLevel {
-    case .strict:
-      // Always upgrade for Strict HTTPS upgrade unless previously allowed by user.
-      shouldUpgrade = !isInUserAllowList
-    case .standard:
-      // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list and not previously allowed by user.
-      shouldUpgrade =
-        braveCore.httpsUpgradeExceptionsService.canUpgradeToHTTPS(for: url)
-        && !isInUserAllowList
-    case .disabled:
-      shouldUpgrade = false
-    }
-    return shouldUpgrade
-  }
-
-  /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
-  /// or show the interstitial page
-  private func handleInvalidHTTPSUpgrade(tab: Tab, responseURL: URL) -> URLRequest? {
-    // Handle invalid upgrade to https
-    guard let originalRequest = tab.upgradedHTTPSRequest,
-      let originalURL = originalRequest.url,
-      responseURL.baseDomain == originalURL.baseDomain
-    else {
-      return nil
-    }
-
-    if FeatureList.kHttpsOnlyMode.enabled, ShieldPreferences.httpsUpgradeLevel.isStrict,
-      let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
-    {
-      Self.log.debug(
-        "Show http blocked interstitial for `\(originalURL.absoluteString)`"
-      )
-
-      let request = PrivilegedRequest(url: url) as URLRequest
-      return request
-    } else {
-      Self.log.debug(
-        "Revert HTTPS upgrade for `\(originalURL.absoluteString)`"
-      )
-
-      tab.upgradedHTTPSRequest = nil
-      tab.upgradeHTTPSTimeoutTimer?.invalidate()
-      tab.upgradeHTTPSTimeoutTimer = nil
-      if let httpsUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: tab.isPrivate),
-        let host = originalURL.host
-      {
-        httpsUpgradeService.allowHttp(forHost: host)
-      }
-      return originalRequest
-    }
   }
 }
 

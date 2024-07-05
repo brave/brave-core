@@ -7,12 +7,6 @@ import Shared
 import WebKit
 
 class WindowRenderScriptHandler: TabContentScript {
-  private weak var tab: Tab?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "WindowRenderScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -35,10 +29,10 @@ class WindowRenderScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     // Do nothing with the messages received.
     // For now.. It's useful for debugging though.

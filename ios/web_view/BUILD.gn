@@ -1,0 +1,51 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/ios/web_view/headers.gni")
+
+config("config") {
+  # TODO(crbug.com/40120082): This will only guarantee ios/web_view source files
+  # are extension safe. We also need to pass this flag to all all dependencies.
+  common_flags = [ "-fapplication-extension" ]
+  cflags_objc = common_flags
+  cflags_objcc = common_flags
+  defines = [ "CWV_IMPLEMENTATION" ]
+  frameworks = [
+    "CoreGraphics.framework",
+    "Foundation.framework",
+    "MobileCoreServices.framework",
+    "UIKit.framework",
+  ]
+
+  # For our own public headers to be able to import the official public headers
+  include_dirs = [ "//ios/web_view/public" ]
+}
+
+source_set("web_view") {
+  # sources = ios_web_view_public_headers
+  sources = [
+    "internal/cwv_ssl_status_extras.mm",
+    "internal/cwv_web_view_extras.mm",
+    "internal/cwv_x509_certificate_extras.mm",
+    "internal/web_view_global_state_util_stub.mm",
+    "public/cwv_ssl_status_extras.h",
+    "public/cwv_web_view_extras.h",
+    "public/cwv_x509_certificate_extras.h",
+  ]
+  deps = [
+    "//base",
+    "//components/ssl_errors",
+    "//ios/web/js_messaging",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
+    "//ios/web/js_messaging:web_view_js_utils",
+    "//ios/web/web_state",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/web_state/ui",
+    "//ios/web_view:web_view_sources",
+    "//net",
+    "//url",
+  ]
+  configs += [ ":config" ]
+}

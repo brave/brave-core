@@ -25,7 +25,6 @@ public class Migration {
     Preferences.migratePreferences(keyPrefix: keyPrefix)
     Preferences.migrateWalletPreferences()
     Preferences.migrateAdAndTrackingProtection()
-    Preferences.migrateHTTPSUpgradeLevel()
     Preferences.migrateBackgroundSponsoredImages()
     Preferences.migrateBookmarksButtonInToolbar()
 
@@ -39,8 +38,11 @@ public class Migration {
       Preferences.Playlist.firstLoadAutoPlay.value = true
     }
 
+    migrateHTTPSUpgradeLevel()
     migrateDeAmpPreferences()
     migrateDebouncePreferences()
+    migrateHTTPSUpgradePreferences()
+    migrateChromiumWebViewsPreferencesAndData()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -67,6 +69,14 @@ public class Migration {
     let debounceService = DebounceServiceFactory.get(privateMode: false)
     debounceService?.isEnabled = isDebounceEnabled
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
+  }
+
+  private func migrateHTTPSUpgradePreferences() {
+    if ShieldPreferences.httpsUpgradeLevelRawDeprecated.value.isEmpty { return }
+    let httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevelDeprecated
+    braveCore.browserPrefs.httpsOnlyModeEnabled = httpsUpgradeLevel.isStrict
+    braveCore.browserPrefs.httpsUpgradesEnabled = httpsUpgradeLevel.isEnabled
+    ShieldPreferences.httpsUpgradeLevelRawDeprecated.value = ""
   }
 
   @objc private func enableUserSelectedTypesForSync() {
@@ -160,6 +170,40 @@ public class Migration {
       )
     }
   }
+
+  /// Migrates preferences and data to support Chromium web views
+  func migrateChromiumWebViewsPreferencesAndData() {
+    // FIXME: Product change: Chromium loads mobile on iPad by default, may need to switch this to just migrate always and not based on saved value
+    Preferences.UserAgent.alwaysRequestDesktopSite.migrate { value in
+      // We only want to set the default content setting if explicitly set
+      if value {
+        self.braveCore.defaultHostContentSettings.defaultPageMode = .desktop
+      }
+    }
+  }
+
+  func migrateHTTPSUpgradeLevel() {
+    let browserPrefs = braveCore.browserPrefs
+    // If the feature flag for https by default is off but we've already stored a user pref for it
+    // then assign that enabled level a preference so that if a user toggles HTTPS Everywhere off
+    // and on it will correctly set the underlying upgarde level to the level they had set when
+    // the feature flag was on.
+    if !FeatureList.kBraveHttpsByDefault.enabled || !FeatureList.kHttpsOnlyMode.enabled,
+      browserPrefs.httpsUpgradesEnabled || browserPrefs.httpsOnlyModeEnabled
+    {
+      ShieldPreferences.httpsUpgradePriorEnabledLevel =
+        browserPrefs.httpsOnlyModeEnabled
+        ? .strict : browserPrefs.httpsUpgradesEnabled ? .standard : .disabled
+    }
+    guard !Preferences.Migration.httpsUpgradesLivelCompleted.value else { return }
+
+    // Migrate old tracking protection setting to new BraveShields setting
+    Preferences.DeprecatedPreferences.httpsEverywhere.migrate { isEnabled in
+      browserPrefs.httpsUpgradesEnabled = isEnabled
+    }
+
+    Preferences.Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
+  }
 }
 
 extension Migration {
@@ -186,7 +230,7 @@ extension Migration {
 }
 
 extension Preferences {
-  private final class DeprecatedPreferences {
+  fileprivate final class DeprecatedPreferences {
     static let blockAdsAndTracking = Option<Bool>(
       key: "shields.block-ads-and-tracking",
       default: true
@@ -366,26 +410,6 @@ extension Preferences {
         // We only need to migrate `disabled`. `standard` is the default.
         ShieldPreferences.blockAdsAndTrackingLevel = .disabled
       }
-    }
-
-    Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
-  }
-
-  fileprivate class func migrateHTTPSUpgradeLevel() {
-    // If the feature flag for https by default is off but we've already stored a user pref for it
-    // then assign that enabled level a preference so that if a user toggles HTTPS Everywhere off
-    // and on it will correctly set the underlying upgarde level to the level they had set when
-    // the feature flag was on.
-    if !FeatureList.kBraveHttpsByDefault.enabled || !FeatureList.kHttpsOnlyMode.enabled,
-      ShieldPreferences.httpsUpgradeLevel.isEnabled
-    {
-      ShieldPreferences.httpsUpgradePriorEnabledLevel = ShieldPreferences.httpsUpgradeLevel
-    }
-    guard !Migration.httpsUpgradesLivelCompleted.value else { return }
-
-    // Migrate old tracking protection setting to new BraveShields setting
-    DeprecatedPreferences.httpsEverywhere.migrate { isEnabled in
-      ShieldPreferences.httpsUpgradeLevel = isEnabled ? .standard : .disabled
     }
 
     Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true

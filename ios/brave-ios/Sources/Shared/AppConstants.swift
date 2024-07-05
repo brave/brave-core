@@ -43,15 +43,14 @@ public struct KVOConstants: Equatable {
     self.keyPath = keyPath
   }
 
+  // Safe for CWVWebView
   public static let loading: Self = .init(keyPath: "loading")
-  public static let estimatedProgress: Self = .init(keyPath: "estimatedProgress")
-  public static let url: Self = .init(keyPath: "URL")
-  public static let title: Self = .init(keyPath: "title")
   public static let canGoBack: Self = .init(keyPath: "canGoBack")
   public static let canGoForward: Self = .init(keyPath: "canGoForward")
-  public static let hasOnlySecureContent: Self = .init(keyPath: "hasOnlySecureContent")
-  public static let serverTrust: Self = .init(keyPath: "serverTrust")
-  public static let _sampledPageTopColor: Self = .init(keyPath: "_sampl\("edPageTopC")olor")
+  public static let estimatedProgress: Self = .init(keyPath: "estimatedProgress")
+  public static let visibleSSLStatus: Self = .init(keyPath: "visibleSSLStatus")
+  public static let visibleURL: Self = .init(keyPath: "visibleURL")
+  public static let title: Self = .init(keyPath: "title")
 }
 
 public struct AppConstants {

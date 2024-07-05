@@ -133,13 +133,6 @@
     {
       "target" : {
         "containerPath" : "container:..",
-        "identifier" : "UserAgentTests",
-        "name" : "UserAgentTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..",
         "identifier" : "AIChatTests",
         "name" : "AIChatTests"
       }

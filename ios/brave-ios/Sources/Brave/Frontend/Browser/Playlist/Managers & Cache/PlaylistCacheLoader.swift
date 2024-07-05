@@ -5,6 +5,7 @@
 
 import AVFoundation
 import BraveCore
+import BraveShared
 import BraveShields
 import Data
 import Foundation
@@ -17,24 +18,33 @@ import WebKit
 import os.log
 
 class LivePlaylistWebLoaderFactory: PlaylistWebLoaderFactory {
+  let braveCore: BraveCoreMain?
+
+  init(braveCore: BraveCoreMain?) {
+    self.braveCore = braveCore
+  }
+
   func makeWebLoader() -> PlaylistWebLoader {
-    LivePlaylistWebLoader()
+    LivePlaylistWebLoader(braveCore: braveCore)
   }
 }
 
 class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   fileprivate static var pageLoadTimeout = 300.0
   private var pendingRequests = [String: URLRequest]()
+  private let braveCore: BraveCoreMain?
 
-  private let tab = Tab(
-    configuration: WKWebViewConfiguration().then {
+  private lazy var tab: Tab = Tab(
+    wkConfiguration: WKWebViewConfiguration().then {
       $0.processPool = WKProcessPool()
       $0.preferences = WKPreferences()
       $0.preferences.javaScriptCanOpenWindowsAutomatically = false
       $0.allowsInlineMediaPlayback = true
       $0.ignoresViewportScaleLimits = true
     },
-    type: .private
+    configuration: braveCore?.nonPersistentWebViewConfiguration ?? .nonPersistent(),
+    type: .private,
+    contentScriptManager: .init(tabForWebView: { [weak self] _ in self?.tab })
   ).then {
     $0.createWebview()
     $0.setScript(
@@ -47,7 +57,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   private weak var certStore: CertStore?
   private var handler: ((PlaylistInfo?) -> Void)?
 
-  init() {
+  init(braveCore: BraveCoreMain?) {
+    self.braveCore = braveCore
     super.init(frame: .zero)
 
     guard let webView = tab.webView else {
@@ -87,8 +98,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       self.certStore = browserViewController.profile.certStore
       let kvos: [KVOConstants] = [
         .estimatedProgress, .loading, .canGoBack,
-        .canGoForward, .url, .title,
-        .hasOnlySecureContent, .serverTrust,
+        .canGoForward, .title, .visibleURL, .visibleSSLStatus,
       ]
 
       browserViewController.tab(tab, didCreateWebView: webView)
@@ -116,7 +126,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     guard let webView = tab.webView else { return }
     webView.stopLoading()
     self.handler?(nil)
-    webView.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
+    webView.underlyingWebView?.loadHTMLString("<html><body>PlayList</body></html>", baseURL: nil)
   }
 
   private class PlaylistWebLoaderContentHelper: TabContentScript {
@@ -131,7 +141,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       timeout = DispatchWorkItem(block: { [weak self] in
         guard let self = self else { return }
         self.webLoader?.handler?(nil)
-        self.webLoader?.tab.webView?.loadHTMLString(
+        self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
           "<html><body>PlayList</body></html>",
           baseURL: nil
         )
@@ -153,9 +163,9 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     static let userScript: WKUserScript? = nil
     static let playlistProcessDocumentLoad = PlaylistScriptHandler.playlistProcessDocumentLoad
 
-    func userContentController(
-      _ userContentController: WKUserContentController,
-      didReceiveScriptMessage message: WKScriptMessage,
+    func tab(
+      _ tab: Tab,
+      receivedScriptMessage message: WKScriptMessage,
       replyHandler: (Any?, String?) -> Void
     ) {
       if !verifyMessage(message: message) {
@@ -169,7 +179,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         self.timeout?.cancel()
         self.timeout = nil
         self.webLoader?.handler?(nil)
-        self.webLoader?.tab.webView?.loadHTMLString(
+        self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
           "<html><body>PlayList</body></html>",
           baseURL: nil
         )
@@ -189,7 +199,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
           timeout = DispatchWorkItem(block: { [weak self] in
             guard let self = self else { return }
             self.webLoader?.handler?(nil)
-            self.webLoader?.tab.webView?.loadHTMLString(
+            self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
               "<html><body>PlayList</body></html>",
               baseURL: nil
             )
@@ -218,7 +228,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         timeout = DispatchWorkItem(block: { [weak self] in
           guard let self = self else { return }
           self.webLoader?.handler?(nil)
-          self.webLoader?.tab.webView?.loadHTMLString(
+          self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
             "<html><body>PlayList</body></html>",
             baseURL: nil
           )
@@ -257,7 +267,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         // It may not have received all info necessary to play the item such as MetadataInfo
         // For now it works 100% of the time and it is safe to do it. If we come across such a website, that causes problems,
         // we'll need to find a different way of forcing the WebView to STOP loading metadata in the background
-        self.webLoader?.tab.webView?.loadHTMLString(
+        self.webLoader?.tab.webView?.underlyingWebView?.loadHTMLString(
           "<html><body>PlayList</body></html>",
           baseURL: nil
         )
@@ -267,7 +277,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
   }
 }
 
-extension LivePlaylistWebLoader: WKNavigationDelegate {
+extension LivePlaylistWebLoader: CWVNavigationDelegate {
   // Recognize an Apple Maps URL. This will trigger the native app. But only if a search query is present. Otherwise
   // it could just be a visit to a regular page on maps.apple.com.
   fileprivate func isAppleMapsURL(_ url: URL) -> Bool {
@@ -294,7 +304,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     return isHttpScheme && isAppStoreHost
   }
 
-  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+  func webViewDidCommitNavigation(_ webView: CWVWebView) {
     webView.evaluateSafeJavaScript(
       functionName:
         "window.__firefox__.\(PlaylistWebLoaderContentHelper.playlistProcessDocumentLoad)()",
@@ -304,37 +314,37 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     )
   }
 
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-    // There is a bug on some sites or something where the page may load TWICE OR there is a bug in WebKit where the page fails to load
-    // Either way, WebKit returns _WKRecoveryAttempterErrorKey with a WKReloadFrameErrorRecoveryAttempter
-    // Then it automatically reloads the page. In this case, we don't want to error and cancel loading and show the user an alert
-    // We want to continue waiting for the page to load and a proper response to come to us.
-    // If there is a real error, then we handle it and display an alert to the user.
-    if let error = error as? NSError {
-      if error.userInfo["_WKRecoveryAttempterErrorKey"] == nil {
-        self.handler?(nil)
-      }
-      return
-    }
-
+  func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
     self.handler?(nil)
   }
 
   func webView(
-    _ webView: WKWebView,
-    decidePolicyFor navigationAction: WKNavigationAction,
-    preferences: WKWebpagePreferences
-  ) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
+    _ webView: CWVWebView,
+    decidePolicyFor navigationAction: CWVNavigationAction,
+    decisionHandler: @escaping (CWVNavigationActionPolicy) -> Void
+  ) {
+    Task {
+      let policy = await self.webView(webView, decidePolicyFor: navigationAction)
+      decisionHandler(policy)
+    }
+  }
+
+  func webView(
+    _ webView: CWVWebView,
+    decidePolicyFor navigationAction: CWVNavigationAction
+  ) async -> CWVNavigationActionPolicy {
     guard let url = navigationAction.request.url else {
-      return (.cancel, preferences)
+      return .cancel
     }
 
     if url.scheme == "about" || url.isBookmarklet {
-      return (.cancel, preferences)
+      return .cancel
     }
 
-    if navigationAction.isInternalUnprivileged && navigationAction.navigationType != .backForward {
-      return (.cancel, preferences)
+    if navigationAction.request.isInternalUnprivileged
+      && navigationAction.navigationType != .forwardBack
+    {
+      return .cancel
     }
 
     // Universal links do not work if the request originates from the app, manual handling is required.
@@ -343,7 +353,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     {
       switch universalLink {
       case .buyVPN:
-        return (.cancel, preferences)
+        return .cancel
       }
     }
 
@@ -352,7 +362,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio"
       || url.scheme == "mailto" || isAppleMapsURL(url) || isStoreURL(url)
     {
-      return (.cancel, preferences)
+      return .cancel
     }
 
     // Ad-blocking checks
@@ -365,12 +375,11 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
 
       let domainForMainFrame = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: false)
 
-      if let requestURL = navigationAction.request.url,
-        let targetFrame = navigationAction.targetFrame
-      {
+      if let requestURL = navigationAction.request.url {
+        // Check if custom user scripts must be added to or removed from the web view.
         tab.currentPageData?.addSubframeURL(
           forRequestURL: requestURL,
-          isForMainFrame: targetFrame.isMainFrame
+          isForMainFrame: navigationAction.navigationType.isMainFrame
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
@@ -382,17 +391,12 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     }
 
     if ["http", "https", "data", "blob", "file"].contains(url.scheme) {
-      if navigationAction.targetFrame?.isMainFrame == true {
-        tab.updateUserAgent(webView, newURL: url)
-      }
-
       pendingRequests[url.absoluteString] = navigationAction.request
 
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
         mainDocumentURL.schemelessAbsoluteString == url.schemelessAbsoluteString,
         !(InternalURL(url)?.isSessionRestore ?? false),
-        navigationAction.sourceFrame.isMainFrame
-          || navigationAction.targetFrame?.isMainFrame == true
+        navigationAction.navigationType.isMainFrame
       {
 
         // Identify specific block lists that need to be applied to the requesting domain
@@ -410,22 +414,34 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
           .noScript,
           considerAllShieldsOption: true
         )
-        preferences.allowsContentJavaScript = isScriptsEnabled
+        // FIXME: Find a way to do this with CWVWebView
+        //        preferences.allowsContentJavaScript = isScriptsEnabled
       }
 
       // Cookie Blocking code below
       tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
 
-      return (.allow, preferences)
+      return .allow
     }
 
-    return (.cancel, preferences)
+    return .cancel
   }
 
   func webView(
-    _ webView: WKWebView,
-    decidePolicyFor navigationResponse: WKNavigationResponse
-  ) async -> WKNavigationResponsePolicy {
+    _ webView: CWVWebView,
+    decidePolicyFor navigationResponse: CWVNavigationResponse,
+    decisionHandler: @escaping (CWVNavigationResponsePolicy) -> Void
+  ) {
+    Task {
+      let policy = await self.webView(webView, decidePolicyFor: navigationResponse)
+      decisionHandler(policy)
+    }
+  }
+
+  func webView(
+    _ webView: CWVWebView,
+    decidePolicyFor navigationResponse: CWVNavigationResponse
+  ) async -> CWVNavigationResponsePolicy {
     let response = navigationResponse.response
     let responseURL = response.url
 
@@ -447,20 +463,6 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       request = pendingRequests.removeValue(forKey: url.absoluteString)
     }
 
-    // TODO: REFACTOR to support Multiple Windows Better
-    if let browserController = webView.currentScene?.browserViewController {
-      // Check if this response should be handed off to Passbook.
-      if OpenPassBookHelper(
-        request: request,
-        response: response,
-        canShowInWebView: false,
-        forceDownload: false,
-        browserViewController: browserController
-      ) != nil {
-        return .cancel
-      }
-    }
-
     if navigationResponse.isForMainFrame {
       if response.mimeType?.isKindOfHTML == false, request != nil {
         return .cancel
@@ -474,57 +476,12 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     return .allow
   }
 
-  nonisolated func webView(
-    _ webView: WKWebView,
-    respondTo challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-    // If this is a certificate challenge, see if the certificate has previously been
-    // accepted by the user.
-    let origin = "\(challenge.protectionSpace.host):\(challenge.protectionSpace.port)"
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-      let trust = challenge.protectionSpace.serverTrust,
-      let cert = (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first,
-      await certStore?.containsCertificate(cert, forOrigin: origin) == true
-    {
-      return (.useCredential, URLCredential(trust: trust))
-    }
-
-    // Certificate Pinning
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-      if let serverTrust = challenge.protectionSpace.serverTrust {
-        let host = challenge.protectionSpace.host
-        let port = challenge.protectionSpace.port
-
-        let result = BraveCertificateUtility.verifyTrust(
-          serverTrust,
-          host: host,
-          port: port
-        )
-        let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
-
-        // Cert is valid and should be pinned
-        if result == 0 {
-          return (.useCredential, URLCredential(trust: serverTrust))
-        }
-
-        // Cert is valid and should not be pinned
-        // Let the system handle it and we'll show an error if the system cannot validate it
-        if result == Int32.min {
-          return (.performDefaultHandling, nil)
-        }
-
-        return (.cancelAuthenticationChallenge, nil)
-      }
-    }
-
-    guard
-      challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
-        || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest
-        || challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM
-    else {
-      return (.performDefaultHandling, nil)
-    }
-
-    return (.cancelAuthenticationChallenge, nil)
+  func webView(
+    _ webView: CWVWebView,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential: URLCredential,
+    completionHandler handler: @escaping (String?, String?) -> Void
+  ) {
+    handler(nil, nil)
   }
 }

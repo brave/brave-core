@@ -26,7 +26,9 @@
 @class NTPBackgroundImagesService;
 @class DeAmpPrefs;
 @class AIChat;
-@class HTTPSUpgradeExceptionsService;
+@class DefaultHostContentSettings;
+@class BrowserPrefs;
+@class CWVWebViewConfiguration;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -66,9 +68,6 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
 
-@property(nonatomic, readonly)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
-
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
 /// When a custom log handler is set, it is the responsibility of the client
@@ -101,7 +100,12 @@ OBJC_EXPORT
 
 @property(readonly) DeAmpPrefs* deAmpPrefs;
 
+@property(readonly) BrowserPrefs* browserPrefs;
+
 @property(readonly) NTPBackgroundImagesService* backgroundImagesService;
+
+/// The default content settings for regular browsing windows
+@property(readonly) DefaultHostContentSettings* defaultHostContentSettings;
 
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 
@@ -110,6 +114,10 @@ OBJC_EXPORT
 ///
 /// Should only be called in unit tests
 + (bool)initializeICUForTesting;
+
+@property(readonly) CWVWebViewConfiguration* defaultWebViewConfiguration;
+@property(readonly) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
+- (void)notifyLastPrivateTabClosed;
 
 @end
 

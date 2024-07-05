@@ -69,7 +69,8 @@ import os
   }
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
-      ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
+      browserPrefs.httpsOnlyModeEnabled = httpsUpgradeLevel.isStrict
+      browserPrefs.httpsUpgradesEnabled = httpsUpgradeLevel.isEnabled
       HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
         fromStart: Date.distantPast,
         end: Date.distantFuture
@@ -99,6 +100,7 @@ import os
   private var subscriptions: [AnyCancellable] = []
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
+  private let browserPrefs: BrowserPrefs
   private let debounceService: DebounceService?
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
@@ -117,13 +119,16 @@ import os
   ) {
     self.p3aUtilities = braveCore.p3aUtils
     self.deAmpPrefs = braveCore.deAmpPrefs
+    self.browserPrefs = braveCore.browserPrefs
     self.debounceService = debounceService
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback
     self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
-    self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
+    self.httpsUpgradeLevel =
+      browserPrefs.httpsOnlyModeEnabled
+      ? .strict : browserPrefs.httpsUpgradesEnabled ? .standard : .disabled
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredLevel = ShieldPreferences.shredLevel

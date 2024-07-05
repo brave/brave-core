@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import WebKit
 
@@ -16,12 +17,14 @@ class ReadabilityOperation: Operation {
   private var semaphore: DispatchSemaphore
   private var tab: Tab!
   private var readerModeCache: ReaderModeCache
+  private var braveCore: BraveCoreMain
   var result: ReadabilityOperationResult?
 
-  init(url: URL, readerModeCache: ReaderModeCache) {
+  init(url: URL, readerModeCache: ReaderModeCache, braveCore: BraveCoreMain) {
     self.url = url
     self.semaphore = DispatchSemaphore(value: 0)
     self.readerModeCache = readerModeCache
+    self.braveCore = braveCore
   }
 
   override func main() {
@@ -34,11 +37,15 @@ class ReadabilityOperation: Operation {
 
     DispatchQueue.main.async {
       let configuration = WKWebViewConfiguration()
-      self.tab = Tab(configuration: configuration)
+      self.tab = Tab(
+        wkConfiguration: configuration,
+        configuration: self.braveCore.defaultWebViewConfiguration,
+        contentScriptManager: TabContentScriptManager(tabForWebView: { [weak self] _ in self?.tab })
+      )
       self.tab.createWebview()
       self.tab.navigationDelegate = self
 
-      let readerMode = ReaderModeScriptHandler(tab: self.tab)
+      let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self
       self.tab.addContentScript(
         readerMode,
@@ -79,23 +86,14 @@ class ReadabilityOperation: Operation {
   }
 }
 
-extension ReadabilityOperation: WKNavigationDelegate {
-  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+extension ReadabilityOperation: CWVNavigationDelegate {
+  func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
-  func webView(
-    _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
-    withError error: Error
-  ) {
-    result = ReadabilityOperationResult.error(error as NSError)
-    semaphore.signal()
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    webView.evaluateSafeJavaScript(
+  func webViewDidFinishNavigation(_ webView: CWVWebView) {
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )
@@ -139,7 +137,7 @@ class ReadabilityService {
     queue.maxConcurrentOperationCount = readabilityServiceDefaultConcurrency
   }
 
-  func process(_ url: URL, cache: ReaderModeCache) {
-    queue.addOperation(ReadabilityOperation(url: url, readerModeCache: cache))
+  func process(_ url: URL, cache: ReaderModeCache, braveCore: BraveCoreMain) {
+    queue.addOperation(ReadabilityOperation(url: url, readerModeCache: cache, braveCore: braveCore))
   }
 }

@@ -109,7 +109,7 @@ extension BrowserViewController: TabManagerDelegate {
       webView.accessibilityIdentifier = "contentView"
       webView.accessibilityElementsHidden = false
 
-      if webView.url == nil {
+      if webView.lastCommittedURL == nil {
         // The web view can go gray if it was zombified due to memory pressure.
         // When this happens, the URL is nil, so try restoring the page upon selection.
         tab.reload()

@@ -26,11 +26,6 @@ class Web3NameServiceScriptHandler: TabContentScript {
 
   weak var delegate: Web3NameServiceScriptHandlerDelegate?
   var originalURL: URL?
-  fileprivate weak var tab: Tab?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
 
   static let scriptName = "Web3NameServiceScript"
   static let scriptId = UUID().uuidString
@@ -38,9 +33,9 @@ class Web3NameServiceScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }

@@ -16,19 +16,20 @@ import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
+import("//brave/ios/browser/api/content_settings/headers.gni")
 import("//brave/ios/browser/api/credential_provider/headers.gni")
 import("//brave/ios/browser/api/de_amp/headers.gni")
 import("//brave/ios/browser/api/debounce/headers.gni")
 import("//brave/ios/browser/api/developer_options_code/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/features/headers.gni")
-import("//brave/ios/browser/api/https_upgrade_exceptions/headers.gni")
 import("//brave/ios/browser/api/https_upgrades/headers.gni")
 import("//brave/ios/browser/api/ipfs/headers.gni")
 import("//brave/ios/browser/api/ntp_background_images/headers.gni")
 import("//brave/ios/browser/api/omnibox/headers.gni")
 import("//brave/ios/browser/api/opentabs/headers.gni")
 import("//brave/ios/browser/api/p3a/headers.gni")
+import("//brave/ios/browser/api/prefs/headers.gni")
 import("//brave/ios/browser/api/qr_code/headers.gni")
 import("//brave/ios/browser/api/query_filter/headers.gni")
 import("//brave/ios/browser/api/session_restore/headers.gni")
@@ -42,6 +43,7 @@ import("//brave/ios/browser/api/web/web_state/headers.gni")
 import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
 import("//brave/ios/browser/debounce/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
+import("//brave/ios/web_view/headers.gni")
 import("//build/apple/tweak_info_plist.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
@@ -101,8 +103,6 @@ brave_core_public_headers += browser_api_url_sanitizer_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
 brave_core_public_headers += browser_api_de_amp_public_headers
 brave_core_public_headers += browser_api_debounce_public_headers
-brave_core_public_headers +=
-    browser_api_https_upgrade_exceptions_service_public_headers
 brave_core_public_headers += browser_api_https_upgrades_public_headers
 brave_core_public_headers += browser_debounce_public_headers
 brave_core_public_headers += brave_stats_public_headers
@@ -127,6 +127,8 @@ brave_core_public_headers += browser_api_features_public_headers
 brave_core_public_headers += credential_provider_public_headers
 brave_core_public_headers += developer_options_code_public_headers
 brave_core_public_headers += browser_api_storekit_receipt_public_headers
+brave_core_public_headers += content_settings_public_headers
+brave_core_public_headers += prefs_public_headers
 brave_core_public_headers += webcompat_reporter_public_headers
 brave_core_public_headers += browser_api_unicode_public_headers
 
@@ -142,6 +144,7 @@ action("brave_core_umbrella_header") {
   ]
 
   args += rebase_path(brave_core_public_headers, root_build_dir)
+  args += rebase_path(ios_web_view_public_headers, root_build_dir)
 }
 
 tweak_info_plist("info_plist") {
@@ -172,6 +175,7 @@ ios_framework_bundle("brave_core_ios_framework") {
     ":brave_core_plist",
     ":brave_core_umbrella_header",
     "//brave/ios/app",
+    "//brave/ios/web_view",
   ]
 
   deps += ads_public_deps
@@ -183,9 +187,11 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps += webcompat_reporter_public_deps
 
   sources = brave_core_public_headers
+  sources += ios_web_view_public_headers
 
   public_headers = get_target_outputs(":brave_core_umbrella_header")
   public_headers += brave_core_public_headers
+  public_headers += ios_web_view_public_headers
 }
 
 ios_create_xcframework("brave_core_xcframework") {

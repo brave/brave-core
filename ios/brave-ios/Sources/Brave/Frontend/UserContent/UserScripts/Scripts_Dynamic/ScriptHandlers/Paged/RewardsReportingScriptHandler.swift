@@ -10,11 +10,9 @@ import os.log
 
 class RewardsReportingScriptHandler: TabContentScript {
   let rewards: BraveRewards
-  weak var tab: Tab?
 
-  init(rewards: BraveRewards, tab: Tab) {
+  init(rewards: BraveRewards) {
     self.rewards = rewards
-    self.tab = tab
   }
 
   static let scriptName = "RewardsReportingScript"
@@ -38,10 +36,10 @@ class RewardsReportingScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
     struct Content: Decodable {
@@ -51,7 +49,7 @@ class RewardsReportingScriptHandler: TabContentScript {
       var referrerUrl: String?
     }
 
-    if tab?.isPrivate == true || !rewards.isEnabled {
+    if tab.isPrivate || !rewards.isEnabled {
       return
     }
 
@@ -69,7 +67,7 @@ class RewardsReportingScriptHandler: TabContentScript {
         let json = try JSONSerialization.data(withJSONObject: body, options: [])
         var content = try JSONDecoder().decode(Content.self, from: json)
 
-        guard let tab = tab, let tabURL = tab.url else { return }
+        guard let tabURL = tab.url else { return }
 
         if content.url.hasPrefix("//") {
           content.url = "\(tabURL.scheme ?? "http"):\(content.url)"

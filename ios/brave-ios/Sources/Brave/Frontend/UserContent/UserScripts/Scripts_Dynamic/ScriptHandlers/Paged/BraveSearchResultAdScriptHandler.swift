@@ -28,12 +28,6 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
     let creatives: [SearchResultAd]
   }
 
-  fileprivate weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
   static let scriptName = "BraveSearchResultAdScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -54,9 +48,9 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
@@ -66,9 +60,7 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
       return
     }
 
-    guard let tab = tab,
-      let braveSearchResultAdManager = tab.braveSearchResultAdManager
-    else {
+    guard let braveSearchResultAdManager = tab.braveSearchResultAdManager else {
       Logger.module.error("Failed to get brave search result ad handler")
       return
     }

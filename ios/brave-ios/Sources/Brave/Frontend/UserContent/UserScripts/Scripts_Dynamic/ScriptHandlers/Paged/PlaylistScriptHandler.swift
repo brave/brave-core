@@ -27,7 +27,6 @@ protocol PlaylistScriptHandlerDelegate: NSObject {
 }
 
 class PlaylistScriptHandler: NSObject, TabContentScript {
-  fileprivate weak var tab: Tab?
   public weak var delegate: PlaylistScriptHandlerDelegate?
   private var url: URL?
   private var urlObserver: NSObjectProtocol?
@@ -35,21 +34,20 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
   private static let queue = DispatchQueue(label: "com.playlisthelper.queue", qos: .userInitiated)
 
   init(tab: Tab) {
-    self.tab = tab
     self.url = tab.url
     super.init()
 
     urlObserver = tab.webView?.observe(
-      \.url,
+      \.visibleURL,
       options: [.new],
-      changeHandler: { [weak self] _, change in
+      changeHandler: { [weak self, weak tab] _, change in
         guard let self = self, let url = change.newValue else { return }
         if self.url != url {
           self.url = url
           self.asset?.cancelLoading()
           self.asset = nil
 
-          self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
+          self.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
         }
       }
     )
@@ -63,7 +61,6 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
   deinit {
     asset?.cancelLoading()
-    delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
 
   static let playlistLongPressed = "playlistLongPressed_\(uniqueID)"
@@ -100,10 +97,10 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
@@ -122,22 +119,27 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     }
 
     Self.processPlaylistInfo(
+      tab: tab,
       handler: self,
       item: PlaylistInfo.from(message: message)
     )
   }
 
-  private class func processPlaylistInfo(handler: PlaylistScriptHandler, item: PlaylistInfo?) {
+  private class func processPlaylistInfo(
+    tab: Tab,
+    handler: PlaylistScriptHandler,
+    item: PlaylistInfo?
+  ) {
     guard var item = item, !item.src.isEmpty else {
       DispatchQueue.main.async {
-        handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
+        handler.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
       }
       return
     }
 
     if handler.url?.baseDomain != "soundcloud.com", item.isInvisible {
       DispatchQueue.main.async {
-        handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
+        handler.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
       }
       return
     }
@@ -147,8 +149,8 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     item = PlaylistInfo(
       name: item.name,
       src: item.src,
-      pageSrc: handler.tab?.webView?.url?.absoluteString ?? item.pageSrc,
-      pageTitle: handler.tab?.webView?.title ?? item.pageTitle,
+      pageSrc: tab.webView?.lastCommittedURL?.absoluteString ?? item.pageSrc,
+      pageTitle: tab.webView?.title ?? item.pageTitle,
       mimeType: item.mimeType,
       duration: item.duration,
       lastPlayedOffset: 0.0,
@@ -164,7 +166,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
       if item.duration <= 0.0 && !item.detected || item.src.isEmpty {
         DispatchQueue.main.async {
-          handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
+          handler.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
         }
         return
       }
@@ -177,14 +179,14 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
           if PlaylistItem.itemExists(pageSrc: item.pageSrc) {
             // Item already exists, so just update the database with new token or URL.
-            handler.updateItem(item, detected: item.detected)
+            handler.updateItem(item, detected: item.detected, tab: tab)
           } else if item.detected {
             // Automatic Detection
-            delegate.updatePlaylistURLBar(tab: handler.tab, state: .newItem, item: item)
-            delegate.showPlaylistOnboarding(tab: handler.tab)
+            delegate.updatePlaylistURLBar(tab: tab, state: .newItem, item: item)
+            delegate.showPlaylistOnboarding(tab: tab)
           } else {
             // Long-Press
-            delegate.showPlaylistAlert(tab: handler.tab, state: .newItem, item: item)
+            delegate.showPlaylistAlert(tab: tab, state: .newItem, item: item)
           }
         }
       }
@@ -207,9 +209,9 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     return await PlaylistMediaStreamer.loadAssetPlayability(asset: asset)
   }
 
-  private func updateItem(_ item: PlaylistInfo, detected: Bool) {
+  private func updateItem(_ item: PlaylistInfo, detected: Bool, tab: Tab) {
     if detected {
-      self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .existingItem, item: item)
+      self.delegate?.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
     }
 
     PlaylistItem.updateItem(item) { [weak self] in
@@ -219,9 +221,9 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
       if let delegate = self.delegate {
         if detected {
-          delegate.updatePlaylistURLBar(tab: self.tab, state: .existingItem, item: item)
+          delegate.updatePlaylistURLBar(tab: tab, state: .existingItem, item: item)
         } else {
-          delegate.showPlaylistToast(tab: self.tab, state: .existingItem, item: item)
+          delegate.showPlaylistToast(tab: tab, state: .existingItem, item: item)
         }
       }
     }
@@ -232,7 +234,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
   @objc
   func onLongPressedWebView(_ gestureRecognizer: UILongPressGestureRecognizer) {
     if gestureRecognizer.state == .began,
-      let webView = tab?.webView,
+      let webView = gestureRecognizer.view as? BraveWebView,
       Preferences.Playlist.enableLongPressAddToPlaylist.value
     {
 
@@ -277,7 +279,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
 
 extension PlaylistScriptHandler {
   static func getCurrentTime(
-    webView: WKWebView,
+    webView: BraveWebView,
     nodeTag: String,
     completion: @escaping (Double) -> Void
   ) {
@@ -330,7 +332,7 @@ extension PlaylistScriptHandler {
 extension PlaylistScriptHandler {
   static func updatePlaylistTab(tab: Tab, item: PlaylistInfo?) {
     if let handler = tab.getContentScript(name: Self.scriptName) as? PlaylistScriptHandler {
-      Self.processPlaylistInfo(handler: handler, item: item)
+      Self.processPlaylistInfo(tab: tab, handler: handler, item: item)
     }
   }
 }

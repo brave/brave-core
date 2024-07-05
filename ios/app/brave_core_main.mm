@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#include <memory>
+
 #include "base/apple/bundle_locations.h"
 #include "base/apple/foundation_util.h"
 #include "base/compiler_specific.h"
@@ -30,9 +32,10 @@
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
+#include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
+#include "brave/ios/browser/api/content_settings/default_host_content_settings_internal.h"
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
-#include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
 #include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_images_service_ios+private.h"
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api+private.h"
@@ -40,12 +43,14 @@
 #include "brave/ios/browser/api/opentabs/brave_tabgenerator_api+private.h"
 #include "brave/ios/browser/api/p3a/brave_p3a_utils+private.h"
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
+#include "brave/ios/browser/api/prefs/browser_prefs+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
-#include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
+#include "brave/ios/browser/web/brave_web_client.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store/password_store.h"
@@ -56,6 +61,9 @@
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
+#include "ios/chrome/browser/browsing_data/model/browsing_data_remover.h"
+#include "ios/chrome/browser/browsing_data/model/browsing_data_remover_factory.h"
+#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_buildflags.h"
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/history/model/web_history_service_factory.h"
@@ -76,6 +84,11 @@
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
+#include "ios/web_view/internal/web_view_browser_state.h"
+#include "ios/web_view/internal/web_view_download_manager.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
@@ -104,6 +117,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   std::unique_ptr<web::WebMain> _webMain;
   std::unique_ptr<Browser> _browser;
   std::unique_ptr<Browser> _otr_browser;
+  std::unique_ptr<ios_web_view::WebViewDownloadManager> _downloadManager;
+  std::unique_ptr<ios_web_view::WebViewDownloadManager> _otrDownloadManager;
   raw_ptr<BrowserList> _browserList;
   raw_ptr<BrowserList> _otr_browserList;
   raw_ptr<ProfileIOS> _main_profile;
@@ -124,8 +139,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveP3AUtils* p3aUtils;
 @property(nonatomic) DeAmpPrefs* deAmpPrefs;
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
-@property(nonatomic)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
+@property(nonatomic) DefaultHostContentSettings* defaultHostContentSettings;
+@property(nonatomic) CWVWebViewConfiguration* defaultWebViewConfiguration;
+@property(nonatomic) CWVWebViewConfiguration* nonPersistentWebViewConfiguration;
 @end
 
 @implementation BraveCoreMain
@@ -172,7 +188,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebClient ([ClientRegistration registerClients])
     _webClient.reset(new BraveWebClient());
-    _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
@@ -230,6 +245,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _otr_browser = Browser::Create(otr_last_used_profile, {});
     _otr_browserList->AddBrowser(_otr_browser.get());
 
+    // Setup download managers for CWVWebView
+    _downloadManager = std::make_unique<ios_web_view::WebViewDownloadManager>(
+        _mainBrowserState);
+    _otrDownloadManager =
+        std::make_unique<ios_web_view::WebViewDownloadManager>(
+            otrChromeBrowserState);
+
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
 
@@ -271,6 +293,15 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _syncAPI = nil;
   _tabGeneratorAPI = nil;
   _webImageDownloader = nil;
+
+  [_nonPersistentWebViewConfiguration shutDown];
+  [_defaultWebViewConfiguration shutDown];
+
+  _nonPersistentWebViewConfiguration = nil;
+  _defaultWebViewConfiguration = nil;
+
+  _downloadManager.reset();
+  _otrDownloadManager.reset();
 
   _otr_browserList =
       BrowserListFactory::GetForProfile(_otr_browser->GetProfile());
@@ -456,14 +487,6 @@ static bool CustomLogHandler(int severity,
   return _braveWalletAPI;
 }
 
-- (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
-  if (!_httpsUpgradeExceptionsService) {
-    _httpsUpgradeExceptionsService =
-        [[HTTPSUpgradeExceptionsService alloc] init];
-  }
-  return _httpsUpgradeExceptionsService;
-}
-
 - (BraveStats*)braveStats {
   return [[BraveStats alloc] initWithBrowserState:_main_profile];
 }
@@ -505,6 +528,11 @@ static bool CustomLogHandler(int severity,
   return _deAmpPrefs;
 }
 
+- (BrowserPrefs*)browserPrefs {
+  return
+      [[BrowserPrefs alloc] initWithPrefService:_mainBrowserState->GetPrefs()];
+}
+
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate {
   return [[AIChat alloc] initWithProfileIOS:_main_profile delegate:delegate];
 }
@@ -528,5 +556,86 @@ static bool CustomLogHandler(int severity,
                                 /*fallback_to_google_server=*/false));
 }
 #endif
+
+- (DefaultHostContentSettings*)defaultHostContentSettings {
+  if (!_defaultHostContentSettings) {
+    HostContentSettingsMap* map =
+        ios::HostContentSettingsMapFactory::GetForBrowserState(
+            _mainBrowserState);
+    _defaultHostContentSettings =
+        [[DefaultHostContentSettings alloc] initWithSettingsMap:map];
+  }
+  return _defaultHostContentSettings;
+}
+
+- (CWVWebViewConfiguration*)defaultWebViewConfiguration {
+  if (!_defaultWebViewConfiguration) {
+    _defaultWebViewConfiguration = [[CWVWebViewConfiguration alloc]
+        initWithBrowserState:ios_web_view::WebViewBrowserState::
+                                 FromBrowserState(_mainBrowserState)];
+  }
+  return _defaultWebViewConfiguration;
+}
+
+- (CWVWebViewConfiguration*)nonPersistentWebViewConfiguration {
+  if (!_nonPersistentWebViewConfiguration) {
+    _nonPersistentWebViewConfiguration = [[CWVWebViewConfiguration alloc]
+        initWithBrowserState:
+            ios_web_view::WebViewBrowserState::FromBrowserState(
+                _mainBrowserState->GetOffTheRecordChromeBrowserState())];
+  }
+  return _nonPersistentWebViewConfiguration;
+}
+
+#pragma mark - Handling of destroying the incognito BrowserState
+
+// The incognito BrowserState should be closed when the last incognito tab is
+// closed (i.e. if there are other incognito tabs open in another Scene, the
+// BrowserState must not be destroyed).
+- (BOOL)shouldDestroyAndRebuildIncognitoBrowserState {
+  return _mainBrowserState->HasOffTheRecordChromeBrowserState();
+}
+
+// Matches lastIncognitoTabClosed from Chrome's SceneController
+- (void)notifyLastPrivateTabClosed {
+  // If no other window has incognito tab, then destroy and rebuild the
+  // BrowserState. Otherwise, just do the state transition animation.
+  if ([self shouldDestroyAndRebuildIncognitoBrowserState]) {
+    // Incognito browser state cannot be deleted before all the requests are
+    // deleted. Queue empty task on IO thread and destroy the BrowserState
+    // when the task has executed, again verifying that no incognito tabs are
+    // present. When an incognito tab is moved between browsers, there is
+    // a point where the tab isn't attached to any web state list. However, when
+    // this queued cleanup step executes, the moved tab will be attached, so
+    // the cleanup shouldn't proceed.
+
+    auto cleanup = ^{
+      if ([self shouldDestroyAndRebuildIncognitoBrowserState]) {
+        [self destroyAndRebuildIncognitoBrowserState];
+      }
+    };
+
+    web::GetIOThreadTaskRunner({})->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), base::BindRepeating(cleanup));
+  }
+}
+
+- (void)destroyAndRebuildIncognitoBrowserState {
+  DCHECK(_mainBrowserState->HasOffTheRecordChromeBrowserState());
+  _nonPersistentWebViewConfiguration = nil;
+
+  ChromeBrowserState* otrBrowserState =
+      _mainBrowserState->GetOffTheRecordChromeBrowserState();
+
+  BrowsingDataRemover* browsingDataRemover =
+      BrowsingDataRemoverFactory::GetForBrowserState(otrBrowserState);
+  browsingDataRemover->Remove(browsing_data::TimePeriod::ALL_TIME,
+                              BrowsingDataRemoveMask::REMOVE_ALL,
+                              base::DoNothing());
+
+  // Destroy and recreate the off-the-record BrowserState.
+  _mainBrowserState->DestroyOffTheRecordChromeBrowserState();
+  _mainBrowserState->GetOffTheRecordChromeBrowserState();
+}
 
 @end

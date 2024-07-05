@@ -6,14 +6,7 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("browser") {
-  sources = [
-    "brave_web_client.h",
-    "brave_web_client.mm",
-    "brave_web_main_parts.h",
-    "brave_web_main_parts.mm",
-  ]
-
+group("browser") {
   deps = [
     "api/ai_chat",
     "api/bookmarks",
@@ -24,6 +17,7 @@ source_set("browser") {
     "api/brave_shields",
     "api/brave_wallet:wallet_mojom_wrappers",
     "api/certificate",
+    "api/content_settings",
     "api/credential_provider",
     "api/developer_options_code",
     "api/favicon",
@@ -37,6 +31,7 @@ source_set("browser") {
     "api/opentabs",
     "api/p3a",
     "api/password",
+    "api/prefs",
     "api/session_restore",
     "api/storekit_receipt",
     "api/sync",
@@ -46,40 +41,13 @@ source_set("browser") {
     "api/web",
     "api/web_image",
     "brave_wallet",
-    "//base",
     "//brave/browser/sync",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_wallet/browser",
     "//brave/components/constants",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/brave_wallet",
     "//brave/ios/browser/profile/model",
     "//brave/ios/browser/ui/webui",
-    "//components/component_updater/installer_policies",
-    "//components/flags_ui",
-    "//components/metrics",
-    "//components/metrics_services_manager",
-    "//components/variations",
-    "//components/variations/service",
-    "//ios/chrome/browser/application_context/model",
-    "//ios/chrome/browser/flags",
-    "//ios/chrome/browser/flags:client_side",
-    "//ios/chrome/browser/profile/model:keyed_service_factories",
-    "//ios/chrome/browser/providers/raccoon:chromium_raccoon",
-    "//ios/chrome/browser/shared/model/browser_state",
-    "//ios/chrome/browser/shared/model/paths",
+    "//brave/ios/browser/web",
     "//ios/chrome/browser/shared/model/prefs",
-    "//ios/chrome/browser/shared/model/profile",
-    "//ios/chrome/browser/shared/model/url:constants",
-    "//ios/chrome/browser/web/model:web_internal",
-    "//ios/components/webui:url_constants",
-    "//ios/public/provider/chrome/browser/url_rewriters:url_rewriters_api",
-    "//ios/web/public",
-    "//ios/web/public/init",
-    "//ios/web/public/navigation",
-    "//ios/web/public/thread",
-    "//ui/base",
-    "//url",
   ]
 }
