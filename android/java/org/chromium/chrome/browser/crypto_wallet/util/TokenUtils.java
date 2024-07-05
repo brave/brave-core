@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import android.annotation.SuppressLint;
-
 import androidx.annotation.NonNull;
 
 import org.chromium.base.Callbacks;
@@ -108,7 +106,9 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, int coinType, TokenType tokenType,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         braveWalletService.getUserAssets(
-                selectedNetwork.chainId, coinType, (BlockchainToken[] tokens) -> {
+                selectedNetwork.chainId,
+                coinType,
+                (BlockchainToken[] tokens) -> {
                     BlockchainToken[] filteredTokens =
                             filterTokens(selectedNetwork, tokens, tokenType, true);
                     callback.call(filteredTokens);
