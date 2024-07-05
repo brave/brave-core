@@ -167,9 +167,13 @@ public class TokenUtils {
                                 }));
     }
 
-    public static void getUserOrAllTokensFiltered(BraveWalletService braveWalletService,
-            BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
-            TokenType tokenType, boolean userAssetsOnly,
+    public static void getUserOrAllTokensFiltered(
+            BraveWalletService braveWalletService,
+            BlockchainRegistry blockchainRegistry,
+            NetworkInfo selectedNetwork,
+            int coinType,
+            TokenType tokenType,
+            boolean userAssetsOnly,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
         if (userAssetsOnly)
