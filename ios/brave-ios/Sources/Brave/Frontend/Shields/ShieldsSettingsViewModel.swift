@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShields
 import Data
 import Foundation
 
@@ -17,9 +18,9 @@ class ShieldsSettingsViewModel: ObservableObject {
       domain.shield_allOff = NSNumber(booleanLiteral: !shieldsEnabled)
     }
   }
-  @Published var adBlockingAndTrackingProtection: Bool {
+  @Published var blockAdsAndTrackingLevel: ShieldLevel {
     didSet {
-      domain.shield_adblockAndTp = NSNumber(booleanLiteral: adBlockingAndTrackingProtection)
+      domain.domainBlockAdsAndTrackingLevel = blockAdsAndTrackingLevel
     }
   }
   @Published var blockScripts: Bool {
@@ -41,10 +42,7 @@ class ShieldsSettingsViewModel: ObservableObject {
     self.domain = domain
     self.tab = tab
     self.shieldsEnabled = !domain.areAllShieldsOff
-    self.adBlockingAndTrackingProtection = domain.isShieldExpected(
-      .adblockAndTp,
-      considerAllShieldsOption: true
-    )
+    self.blockAdsAndTrackingLevel = domain.domainBlockAdsAndTrackingLevel
     self.blockScripts = domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
     self.fingerprintProtection = domain.isShieldExpected(
       .fpProtection,

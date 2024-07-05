@@ -22,7 +22,7 @@ public final class Domain: NSManagedObject, CRUD {
   // swift-format-ignore
   @NSManaged public var shield_allOff: NSNumber?
   // swift-format-ignore
-  @NSManaged public var shield_adblockAndTp: NSNumber?
+  @NSManaged private var shield_adblockAndTp: NSNumber?
 
   // swift-format-ignore
   @available(*, deprecated, message: "Per domain HTTPSE shield is currently unused.")
@@ -47,6 +47,10 @@ public final class Domain: NSManagedObject, CRUD {
   /// A string version of the shield shred level
   // swift-format-ignore
   @NSManaged private var shield_shredLevel: String?
+
+  /// A string version of the shield ad-block and tracking protection
+  // swift-format-ignore
+  @NSManaged private var shield_blockAdsAndTrackingLevel: String?
 
   /// The shred level for this current domain
   ///
@@ -73,13 +77,33 @@ public final class Domain: NSManagedObject, CRUD {
   /// A list of etld+1s that are always aggressive
   private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
 
+  /// The shred level for this current domain
+  @MainActor public var domainBlockAdsAndTrackingLevel: ShieldLevel {
+    get {
+      guard let level = self.shield_blockAdsAndTrackingLevel else {
+        return ShieldPreferences.blockAdsAndTrackingLevel
+      }
+      return ShieldLevel(rawValue: level) ?? ShieldPreferences.blockAdsAndTrackingLevel
+    }
+
+    set {
+      shield_blockAdsAndTrackingLevel = newValue.rawValue
+    }
+  }
+
+  /// Moves data from the old `shield_adblockAndTp` to the new `shield_blockAdsAndTrackingLevel`
+  @MainActor public func migrateShieldLevel() {
+    guard let isEnabled = shield_adblockAndTp?.boolValue else { return }
+    domainBlockAdsAndTrackingLevel = isEnabled ? .standard : .disabled
+  }
+
   /// Return the shield level for this domain.
   ///
   /// - Warning: This does not consider the "all off" setting
   /// This also takes into consideration certain domains that are always aggressive.
-  @MainActor public var blockAdsAndTrackingLevel: ShieldLevel {
-    guard isShieldExpected(.adblockAndTp, considerAllShieldsOption: false) else { return .disabled }
-    let globalLevel = ShieldPreferences.blockAdsAndTrackingLevel
+  @MainActor public var globalBlockAdsAndTrackingLevel: ShieldLevel {
+    guard !areAllShieldsOff else { return .disabled }
+    let globalLevel = domainBlockAdsAndTrackingLevel
 
     switch globalLevel {
     case .standard:
@@ -187,9 +211,6 @@ public final class Domain: NSManagedObject, CRUD {
       switch shield {
       case .allOff:
         return self.shield_allOff?.boolValue ?? false
-      case .adblockAndTp:
-        return self.shield_adblockAndTp?.boolValue
-          ?? ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
       case .fpProtection:
         return self.shield_fpProtection?.boolValue
           ?? Preferences.Shields.fingerprintingProtection.value
@@ -207,22 +228,41 @@ public final class Domain: NSManagedObject, CRUD {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }
 
-  public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
-    guard ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
-      let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil"))
-    else {
-      return 0  // Can't be lower than off
-    }
-    return domains.filter({ $0.shield_adblockAndTp?.boolValue == false }).count
+  @MainActor public class func allDomainsWithMigratableShieldLevel() -> [Domain]? {
+    return Domain.all(
+      where: NSPredicate(
+        format: "shield_adblockAndTp != nil AND shield_blockAdsAndTrackingLevel == nil"
+      )
+    )
   }
 
-  public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
-    guard !ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
-      let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil"))
+  @MainActor public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
+    guard ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
+      let domains = Domain.all(
+        where: NSPredicate(format: "shield_blockAdsAndTrackingLevel != nil")
+      )
     else {
-      return 0  // Can't be higher than on
+      return 0  // Can't be lower than disabled
     }
-    return domains.filter({ $0.shield_adblockAndTp?.boolValue == true }).count
+
+    return domains.filter({
+      $0.domainBlockAdsAndTrackingLevel.strength
+        < ShieldPreferences.blockAdsAndTrackingLevel.strength
+    }).count
+  }
+
+  @MainActor public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
+    guard ShieldPreferences.blockAdsAndTrackingLevel != .aggressive,
+      let domains = Domain.all(
+        where: NSPredicate(format: "shield_blockAdsAndTrackingLevel != nil")
+      )
+    else {
+      return 0  // Can't be higher than aggressive
+    }
+    return domains.filter({
+      $0.domainBlockAdsAndTrackingLevel.strength
+        > ShieldPreferences.blockAdsAndTrackingLevel.strength
+    }).count
   }
 
   public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
@@ -436,7 +476,7 @@ extension Domain {
             // Clear visit count and clear the shield settings
             $0.visits = 0
             $0.shield_allOff = nil
-            $0.shield_adblockAndTp = nil
+            $0.shield_blockAdsAndTrackingLevel = nil
             $0.shield_noScript = nil
             $0.shield_fpProtection = nil
             $0.shield_safeBrowsing = nil
@@ -489,7 +529,6 @@ extension Domain {
     let setting = (isOn == shield.globalPreference ? nil : isOn) as NSNumber?
     switch shield {
     case .allOff: shield_allOff = setting
-    case .adblockAndTp: shield_adblockAndTp = setting
     case .fpProtection: shield_fpProtection = setting
     case .noScript: shield_noScript = setting
     }

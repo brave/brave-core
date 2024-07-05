@@ -197,12 +197,25 @@ struct ShieldsPanelView: View {
   @ViewBuilder private var shieldSettingsSectionView: some View {
     ShieldSettingSectionHeader(title: displayHost)
     ShieldSettingRow {
-      ToggleView(
-        title: Strings.Shields.trackersAndAdsBlocking,
-        subtitle: nil,
-        toggle: $viewModel.adBlockingAndTrackingProtection
-      ) { _ in
-        actionCallback(.changedShieldSettings)
+      HStack {
+        Text(Strings.Shields.trackersAndAdsBlocking)
+          .foregroundStyle(Color(.bravePrimary))
+          .frame(maxWidth: .infinity, alignment: .leading)
+
+        Picker(selection: $viewModel.blockAdsAndTrackingLevel) {
+          ForEach(ShieldLevel.allCases) { level in
+            Text(level.localizedTitle).tag(level)
+          }
+        } label: {
+          // The label will not show outside of a form or list
+          Text(Strings.Shields.trackersAndAdsBlocking)
+        }
+        .tint(Color(.secondaryBraveLabel))
+        .buttonStyle(.plain)
+        .padding(.horizontal, -10)
+        .onChange(of: viewModel.blockAdsAndTrackingLevel) { newValue in
+          actionCallback(.changedShieldSettings)
+        }
       }
     }
     ShieldSettingRow {

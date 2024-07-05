@@ -114,7 +114,7 @@ struct SubmitReportView: View {
       additionalDetails: additionalDetails,
       contactInfo: contactDetails,
       areShieldsEnabled: !domain.areAllShieldsOff,
-      adBlockLevel: domain.blockAdsAndTrackingLevel,
+      adBlockLevel: domain.globalBlockAdsAndTrackingLevel,
       fingerprintProtectionLevel: domain.finterprintProtectionLevel,
       adBlockListTitles: FilterListStorage.shared.filterLists.compactMap({
         return $0.isEnabled ? $0.entry.title : nil

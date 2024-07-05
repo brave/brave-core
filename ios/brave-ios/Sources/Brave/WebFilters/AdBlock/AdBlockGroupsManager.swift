@@ -334,7 +334,7 @@ import os
   /// Get all required rule lists for the given domain
   public func ruleLists(for domain: Domain) async -> Set<WKContentRuleList> {
     let validBlocklistTypes = self.validBlocklistTypes(for: domain)
-    let level = domain.blockAdsAndTrackingLevel
+    let level = domain.globalBlockAdsAndTrackingLevel
 
     return await Set(
       validBlocklistTypes.asyncConcurrentCompactMap({ blocklistType -> WKContentRuleList? in
@@ -363,7 +363,7 @@ import os
       return .generic(genericType)
     }
 
-    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
+    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else {
       return Set(genericRuleLists)
     }
 
@@ -486,7 +486,7 @@ import os
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType,
-        isAggressiveMode: domain.blockAdsAndTrackingLevel.isAggressive
+        isAggressiveMode: domain.globalBlockAdsAndTrackingLevel.isAggressive
       )
     }).contains(where: { $0 })
   }
@@ -523,7 +523,7 @@ import os
 
   /// Returns all appropriate engines for the given domain
   func cachedEngines(for domain: Domain) -> [GroupedAdBlockEngine] {
-    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else { return [] }
+    guard domain.globalBlockAdsAndTrackingLevel.isEnabled else { return [] }
     return GroupedAdBlockEngine.EngineType.allCases.compactMap({ getManager(for: $0).engine })
   }
 

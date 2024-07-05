@@ -14,6 +14,14 @@ public enum ShieldLevel: String, CaseIterable, Hashable {
   /// Mode indicating this setting is disabled
   case disabled
 
+  public var strength: Int {
+    switch self {
+    case .aggressive: 2
+    case .standard: 1
+    case .disabled: 0
+    }
+  }
+
   /// Wether this setting indicates that the shields are enabled or not
   public var isEnabled: Bool {
     switch self {
