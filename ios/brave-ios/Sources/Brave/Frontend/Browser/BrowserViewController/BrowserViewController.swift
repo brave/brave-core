@@ -1021,9 +1021,9 @@ public class BrowserViewController: UIViewController {
           domain: customCredentialDomain
         )
       {
-        BraveVPN.initialize(customCredential: vpnCredential)
+        await BraveVPN.initialize(customCredential: vpnCredential)
       } else {
-        BraveVPN.initialize(customCredential: nil)
+        await BraveVPN.initialize(customCredential: nil)
       }
     }
 

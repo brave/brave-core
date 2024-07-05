@@ -332,11 +332,13 @@ public class BraveVPNSettingsViewController: TableViewController {
         self.isLoading = true
         Logger.module.debug("Reconfiguring the vpn")
 
-        BraveVPN.reconfigureVPN { success in
+        Task {
+          let success = await BraveVPN.reconfigureVPN()
+
           Logger.module.debug("Reconfiguration suceedeed: \(success)")
           // Small delay before unlocking UI because enabling vpn
           // takes a moment after we call to connect to the vpn.
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          Task.delayed(bySeconds: 1) { @MainActor in
             self.isLoading = false
             self.vpnReconfigurationPending = false
             self.updateServerInfo()
@@ -379,7 +381,10 @@ public class BraveVPNSettingsViewController: TableViewController {
       alert.addAction(.init(title: Strings.OKString, style: .default))
       // Failed to fetch regions at app init or first vpn configuration.
       // Let's try again here.
-      BraveVPN.populateRegionDataIfNecessary()
+
+      Task {
+        await BraveVPN.populateRegionDataIfNecessary()
+      }
       present(alert, animated: true)
       return
     }
@@ -444,12 +449,12 @@ public class BraveVPNSettingsViewController: TableViewController {
 
 extension BraveVPNSettingsViewController: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
-    DispatchQueue.main.async {
+    Task { @MainActor in
       self.isLoading = false
-    }
 
-    if validateReceipt {
-      BraveVPN.validateReceiptData()
+      if validateReceipt {
+        await BraveVPN.validateReceiptData()
+      }
     }
   }
 

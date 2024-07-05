@@ -12,7 +12,7 @@ import UIKit
 import os.log
 
 /// A static class to handle all things related to the Brave VPN service.
-public class BraveVPN {
+public actor BraveVPN {
   private static let housekeepingApi = GRDHousekeepingAPI()
   private static let helper = GRDVPNHelper.sharedInstance()
   private static let serverManager = GRDServerManager()
@@ -39,10 +39,10 @@ public class BraveVPN {
 
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
-  public static func initialize(customCredential: SkusVPNCredential?) {
-    func clearConfiguration() {
+  public static func initialize(customCredential: SkusVPNCredential?) async {
+    func clearConfiguration() async {
       GRDVPNHelper.clearVpnConfiguration()
-      clearCredentials()
+      await clearCredentials()
 
       NEVPNManager.shared().removeFromPreferences { error in
         if let error = error {
@@ -53,19 +53,19 @@ public class BraveVPN {
 
     if let customCredential = customCredential {
       if hasExpired == true {
-        clearConfiguration()
+        await clearConfiguration()
         logAndStoreError("Skus credential expired, resetting configuration")
         return
       }
 
-      setCustomVPNCredential(customCredential)
+      await setCustomVPNCredential(customCredential)
     }
 
-    helper.verifyMainCredentials { valid, error in
-      logAndStoreError("Initialize credentials valid: \(valid)")
-      if let error = error {
-        logAndStoreError("Initialize credentials error: \(error)")
-      }
+    let (valid, error) = await helper.verifyMainCredentials()
+
+    logAndStoreError("Initialize credentials valid: \(valid)")
+    if let error = error {
+      logAndStoreError("Initialize credentials error: \(error)")
     }
 
     helper.dummyDataForDebugging = !AppConstants.isOfficialBuild
@@ -76,17 +76,16 @@ public class BraveVPN {
 
     if case .notPurchased = vpnState {
       // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
-      clearConfiguration()
+      await clearConfiguration()
       return
     }
 
-    BraveVPN.validateReceiptData { receiptResponse in
-      // Clear configuration if only if the receipt response is expired (not retryPeriod)
-      if receiptResponse?.status == .expired {
-        clearConfiguration()
-        logAndStoreError("Receipt expired")
-        return
-      }
+    let receiptResponse = await validateReceiptData()
+
+    // Clear configuration if only if the receipt response is expired (not retryPeriod)
+    if receiptResponse?.status == .expired {
+      await clearConfiguration()
+      logAndStoreError("Receipt expired")
     }
   }
 
@@ -106,9 +105,9 @@ public class BraveVPN {
     Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
   }
 
-  public static func setCustomVPNCredential(_ credential: SkusVPNCredential) {
+  public static func setCustomVPNCredential(_ credential: SkusVPNCredential) async {
     GRDSubscriptionManager.setIsPayingUser(true)
-    populateRegionDataIfNecessary()
+    await populateRegionDataIfNecessary()
 
     let dict: NSMutableDictionary =
       [
@@ -121,36 +120,21 @@ public class BraveVPN {
 
   /// Connects to Guardian's server to validate locally stored receipt.
   /// Returns ReceiptResponse whoich hold information about status of receipt expiration etc
-  public static func validateReceiptData(receiptResponse: ((ReceiptResponse?) -> Void)? = nil) {
+  public static func validateReceiptData() async -> ReceiptResponse? {
     guard let receipt = receipt,
       let bundleId = Bundle.main.bundleIdentifier
     else {
-      receiptResponse?(nil)
-      return
+      return nil
     }
 
     if Preferences.VPN.skusCredential.value != nil {
       // Receipt verification applies to Apple's IAP only,
       // if we detect Brave's SKU token we should not look at Apple's receipt.
-      return
+      return nil
     }
 
-    housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId) { response, error in
-      if let error = error {
-        // Error while fetching receipt response, the variations of error can be listed
-        // No App Store receipt data present
-        // Failed to retrieve receipt data from server
-        // Failed to decode JSON response data
-        receiptResponse?(nil)
-        logAndStoreError("Call for receipt verification failed: \(error.localizedDescription)")
-        return
-      }
-
-      guard let response = response else {
-        receiptResponse?(nil)
-        logAndStoreError("Receipt verification response is empty")
-        return
-      }
+    do {
+      let response = try await housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId)
 
       let receiptResponseItem = GRDIAPReceiptResponse(withReceiptResponse: response)
       let processedReceiptDetail = BraveVPN.processReceiptResponse(
@@ -176,13 +160,19 @@ public class BraveVPN {
 
         Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
 
-        populateRegionDataIfNecessary()
+        await populateRegionDataIfNecessary()
         GRDSubscriptionManager.setIsPayingUser(true)
       }
 
       Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
-
-      receiptResponse?(processedReceiptDetail)
+      return processedReceiptDetail
+    } catch {
+      // Error while fetching receipt response, the variations of error can be listed
+      // No App Store receipt data present
+      // Failed to retrieve receipt data from server
+      // Failed to decode JSON response data
+      logAndStoreError("Call for receipt verification failed: \(error.localizedDescription)")
+      return nil
     }
   }
 
@@ -259,6 +249,7 @@ public class BraveVPN {
     case expired
 
     /// What view controller to show once user taps on `Enable VPN` button at one of places in the app.
+    @MainActor
     public var enableVPNDestinationVC: BuyVPNViewController? {
       switch self {
       case .notPurchased, .expired: return BuyVPNViewController(iapObserver: iapObserver)
@@ -426,10 +417,9 @@ public class BraveVPN {
         reconnectPending = false
 
         // Re-connected user should update last used region - detail is pulled
-        fetchLastUsedRegionDetail { _, _ in
-          DispatchQueue.main.async {
-            completion?(status == .success)
-          }
+        Task { @MainActor in
+          _ = await fetchLastUsedRegionDetail()
+          completion?(status == .success)
         }
       }
     } else {
@@ -451,12 +441,10 @@ public class BraveVPN {
         reconnectPending = false
 
         // First time user will connect automatic region - detail is pulled
-        fetchLastUsedRegionDetail { _, _ in
-          DispatchQueue.main.async {
-            completion?(success)
-          }
+        Task { @MainActor in
+          _ = await fetchLastUsedRegionDetail()
+          completion?(success)
         }
-
       }
     }
   }
@@ -466,35 +454,38 @@ public class BraveVPN {
   /// Automatic server is always used after the reset.
   /// This method disconnects from the vpn before reconfiguration is happening
   /// and reconnects automatically after reconfiguration is done.
-  public static func reconfigureVPN(completion: ((Bool) -> Void)? = nil) {
+  public static func reconfigureVPN() async -> Bool {
     helper.forceDisconnectVPNIfNecessary()
     GRDVPNHelper.clearVpnConfiguration()
 
-    connectToVPN { status in
-      completion?(status)
+    return await withCheckedContinuation { continuation in
+      connectToVPN { status in
+        continuation.resume(returning: status)
+      }
     }
   }
 
   public static func changePreferredTransportProtocol(
-    with transportProtocol: TransportProtocol,
-    completion: ((Bool) -> Void)? = nil
-  ) {
+    with transportProtocol: TransportProtocol
+  ) async -> Bool {
     helper.forceDisconnectVPNIfNecessary()
     GRDVPNHelper.clearVpnConfiguration()
 
     GRDTransportProtocol.setUserPreferred(transportProtocol)
 
     // New user or no credentials and have to remake them.
-    helper.configureFirstTimeUser(for: transportProtocol, postCredential: nil) { success, error in
-      if let error = error {
-        logAndStoreError("Change Preferred transport FirstTimeUserPostCredential \(error)")
-      } else {
-        removeConfigurationFromPreferences(for: transportProtocol)
-      }
-
-      reconnectPending = false
-      completion?(success)
+    let (success, error) = await helper.configureFirstTimeUser(
+      for: transportProtocol,
+      postCredential: nil
+    )
+    if let error = error {
+      logAndStoreError("Change Preferred transport FirstTimeUserPostCredential \(error)")
+    } else {
+      removeConfigurationFromPreferences(for: transportProtocol)
     }
+
+    reconnectPending = false
+    return success
 
     func removeConfigurationFromPreferences(for transportProtocol: TransportProtocol) {
       switch transportProtocol {
@@ -508,7 +499,7 @@ public class BraveVPN {
     }
   }
 
-  public static func clearCredentials() {
+  public static func clearCredentials() async {
     GRDKeychain.removeGuardianKeychainItems()
     GRDKeychain.removeSubscriberCredential(withRetries: 3)
 
@@ -550,34 +541,40 @@ public class BraveVPN {
 
   public static func changeVPNRegion(to region: GRDRegion?, completion: @escaping ((Bool) -> Void))
   {
-    if isConnected {
-      helper.disconnectVPN()
-    }
+    Task {
+      if isConnected {
+        helper.disconnectVPN()
+      }
 
-    helper.select(region)
+      helper.select(region)
 
-    // The preferred tunnel has to be used for configuration
-    // Otherwise faulty configuration will be added while connecting
-    let activeTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
+      // The preferred tunnel has to be used for configuration
+      // Otherwise faulty configuration will be added while connecting
+      let activeTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
 
-    helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { success, error in
-      let subcredentials =
-        "Credentials \(GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) ?? "Empty")"
+      helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { success, error in
+        let subcredentials =
+          "Credentials \(GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) ?? "Empty")"
 
-      if success {
-        Logger.module.debug("Changed VPN region to \(region?.regionName ?? "default selection")")
-        completion(true)
-      } else {
-        Logger.module.debug("Connection failed: \(error ?? "nil")")
-        Logger.module.debug("Region change connection failed for subcredentials \(subcredentials)")
-        completion(false)
+        if success {
+          Logger.module.debug("Changed VPN region to \(region?.regionName ?? "default selection")")
+          completion(true)
+        } else {
+          Logger.module.debug("Connection failed: \(error ?? "nil")")
+          Logger.module.debug(
+            "Region change connection failed for subcredentials \(subcredentials)"
+          )
+          completion(false)
+        }
       }
     }
   }
 
-  public static func populateRegionDataIfNecessary() {
-    serverManager.regions { regions, _ in
-      self.regions = regions ?? []
+  public static func populateRegionDataIfNecessary() async {
+    do {
+      self.regions = try await serverManager.regions()
+    } catch {
+      self.regions = []
     }
   }
 
@@ -591,37 +588,36 @@ public class BraveVPN {
     }
   }
 
-  public static func processVPNAlerts() {
+  public static func processVPNAlerts() async {
     if !shouldProcessVPNAlerts() { return }
 
-    Task {
-      let (data, success, error) = await GRDGatewayAPI().events()
-      if !success {
-        Logger.module.error("VPN getEvents call failed")
-        if let error = error {
-          Logger.module.warning("\(error)")
-        }
-
-        return
+    let (data, success, error) = await GRDGatewayAPI().events()
+    if !success {
+      Logger.module.error("VPN getEvents call failed")
+      if let error = error {
+        Logger.module.warning("\(error)")
       }
 
-      guard let alertsData = data["alerts"] else {
-        Logger.module.error("Failed to unwrap json for vpn alerts")
-        return
-      }
+      return
+    }
 
-      do {
-        let dataAsJSON =
-          try JSONSerialization.data(withJSONObject: alertsData, options: [.fragmentsAllowed])
-        let decoded = try JSONDecoder().decode([BraveVPNAlertJSONModel].self, from: dataAsJSON)
+    guard let alertsData = data["alerts"] else {
+      Logger.module.error("Failed to unwrap json for vpn alerts")
+      return
+    }
 
-        BraveVPNAlert.batchInsertIfNotExists(alerts: decoded)
-      } catch {
-        Logger.module.error("Failed parsing vpn alerts data")
-      }
+    do {
+      let dataAsJSON =
+        try JSONSerialization.data(withJSONObject: alertsData, options: [.fragmentsAllowed])
+      let decoded = try JSONDecoder().decode([BraveVPNAlertJSONModel].self, from: dataAsJSON)
+
+      BraveVPNAlert.batchInsertIfNotExists(alerts: decoded)
+    } catch {
+      Logger.module.error("Failed parsing vpn alerts data")
     }
   }
 
+  @MainActor
   public static func sendVPNWorksInBackgroundNotification() {
     switch vpnState {
     case .expired, .notPurchased:
@@ -683,28 +679,28 @@ public class BraveVPN {
   /// The function that fetched the last used region details from timezones
   /// It used to get details of Region when Automatic Region is used
   /// Otherwise the region detail items will be empty
-  /// - Parameter completion: completion block that returns region with details or error
-  public static func fetchLastUsedRegionDetail(_ completion: ((GRDRegion?, Bool) -> Void)? = nil) {
+  /// - returns: completion block that returns region with details or error
+  public static func fetchLastUsedRegionDetail() async -> (GRDRegion?, Bool) {
     switch vpnState {
     case .expired, .notPurchased:
       break
     case .purchased(_):
-      housekeepingApi.requestTimeZonesForRegions { timeZones, success, responseStatusCode in
-        guard success, let timeZones = timeZones else {
-          logAndStoreError(
-            "Failed to get timezones while fetching region: \(responseStatusCode)",
-            printToConsole: true
-          )
-          completion?(nil, false)
-
-          return
-        }
-
-        let region = GRDServerManager.localRegion(fromTimezones: timeZones)
-        completion?(region, true)
-        lastKnownRegion = region
+      let (timeZones, success, responseStatusCode) =
+        await housekeepingApi.requestTimeZonesForRegions()
+      guard success, let timeZones = timeZones else {
+        logAndStoreError(
+          "Failed to get timezones while fetching region: \(responseStatusCode)",
+          printToConsole: true
+        )
+        return (nil, false)
       }
+
+      let region = GRDServerManager.localRegion(fromTimezones: timeZones)
+      lastKnownRegion = region
+      return (region, true)
     }
+
+    return (nil, false)
   }
 
   // MARK: - Promotion
@@ -760,6 +756,7 @@ public class BraveVPN {
       break
     }
 
+    @MainActor
     func hideSubscriptionType(_ product: SKProduct) async {
       do {
         try await storePromotionController.update(promotionVisibility: .hide, for: product)

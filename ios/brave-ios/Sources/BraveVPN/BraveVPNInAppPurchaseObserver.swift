@@ -63,9 +63,9 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
 
           if callPurchaseDelegateOnce {
             Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
-
-            BraveVPN.validateReceiptData { [weak self] response in
+            Task { [weak self] in
               guard let self = self else { return }
+              let response = await BraveVPN.validateReceiptData()
 
               if response?.status == .expired {
                 // Receipt either expired or receipt validation returned some error.

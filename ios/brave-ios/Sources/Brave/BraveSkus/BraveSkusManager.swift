@@ -71,7 +71,9 @@ public class BraveSkusManager {
           Preferences.VPN.skusCredentialDomain.value = domain
           Preferences.VPN.expirationDate.value = vpnCredential.expirationDate
 
-          BraveVPN.setCustomVPNCredential(vpnCredential)
+          Task {
+            await BraveVPN.setCustomVPNCredential(vpnCredential)
+          }
         }
       case .leo:
         if let cookie = CredentialCookie.from(credential: credential, domain: domain) {

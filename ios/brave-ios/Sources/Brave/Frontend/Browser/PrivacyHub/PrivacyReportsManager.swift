@@ -54,7 +54,9 @@ public struct PrivacyReportsManager {
     let timeInterval = AppConstants.isOfficialBuild ? 5.minutes : 1.minutes
     vpnAlertsTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { _ in
       if Preferences.PrivacyReports.captureVPNAlerts.value {
-        BraveVPN.processVPNAlerts()
+        Task {
+          await BraveVPN.processVPNAlerts()
+        }
       }
     }
   }

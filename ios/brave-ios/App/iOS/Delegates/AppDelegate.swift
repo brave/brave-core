@@ -75,7 +75,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     setUserAgent()
 
     // Fetching details of GRDRegion for Automatic Region selection
-    BraveVPN.fetchLastUsedRegionDetail()
+    Task {
+      await BraveVPN.fetchLastUsedRegionDetail()
+    }
 
     // Start the keyboard helper to monitor and cache keyboard state.
     KeyboardHelper.defaultHelper.startObserving()
@@ -237,7 +239,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       // VPN credentials are kept in keychain and persist between app reinstalls.
       // To avoid unexpected problems we clear all vpn keychain items.
       // New set of keychain items will be created on purchase or iap restoration.
-      BraveVPN.clearCredentials()
+      Task {
+        await BraveVPN.clearCredentials()
+      }
 
       // Always load YouTube in Brave for new users
       Preferences.General.keepYouTubeInBrave.value = true

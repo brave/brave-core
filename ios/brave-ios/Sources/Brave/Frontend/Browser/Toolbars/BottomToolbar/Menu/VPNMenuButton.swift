@@ -66,11 +66,13 @@ struct VPNMenuButton: View {
       // Disconnect VPN before showing Purchase
       BraveVPN.disconnect(skipChecks: true)
 
-      guard let vc = vpnState.enableVPNDestinationVC else { return }
-      vc.openAuthenticationVPNInNewTab = {
-        openURL(.brave.braveVPNRefreshCredentials)
+      Task { @MainActor in
+        guard let vc = vpnState.enableVPNDestinationVC else { return }
+        vc.openAuthenticationVPNInNewTab = {
+          openURL(.brave.braveVPNRefreshCredentials)
+        }
+        displayVPNDestination(vc)
       }
-      displayVPNDestination(vc)
     case .purchased:
       isVPNStatusChanging = true
       // Do not modify UISwitch state here, update it based on vpn status observer.
