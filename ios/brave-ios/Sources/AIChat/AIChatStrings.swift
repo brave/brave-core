@@ -556,7 +556,7 @@ extension Strings {
       "aichat.advancedSettingsDefaultModelTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Default model for new conversations",
+      value: "Default Model",
       comment: "The title for the settings to change default model for conversations"
     )
     public static let advancedSettingsHeaderTitle = NSLocalizedString(
