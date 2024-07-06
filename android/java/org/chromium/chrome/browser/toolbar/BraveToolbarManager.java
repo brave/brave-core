@@ -62,7 +62,8 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
 import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
-import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
+// TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
+// import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
@@ -329,24 +330,25 @@ public class BraveToolbarManager extends ToolbarManager {
         }
     }
 
+    // The 3rd parameter at ToolbarManager.initializeWithNativ is
+    // OnClickListener newTabClickHandler, but at
+    // ChromeTabbedActivity.initializeToolbarManager
+    // `v -> onTabSwitcherClicked()` is passed.
+    // Also ToolbarManager.initializeWithNative calls
+    // TopToolbarCoordinator.initializeWithNative where 3rd parameter is
+    // `OnClickListener tabSwitcherClickHandler`. So it is a tabSwitcherClickHandler.
     @Override
     public void initializeWithNative(
             @NonNull LayoutManagerImpl layoutManager,
             @Nullable StripLayoutHelperManager stripLayoutHelperManager,
             OnClickListener tabSwitcherClickHandler,
-            OnClickListener newTabClickHandler,
             OnClickListener bookmarkClickHandler,
             OnClickListener customTabsBackClickHandler) {
-        OnClickListener wrappedNewTabClickHandler =
-                v -> {
-                    recordNewTabClick();
-                    newTabClickHandler.onClick(v);
-                };
+
         super.initializeWithNative(
                 layoutManager,
                 stripLayoutHelperManager,
                 tabSwitcherClickHandler,
-                wrappedNewTabClickHandler,
                 bookmarkClickHandler,
                 customTabsBackClickHandler);
 
@@ -358,6 +360,16 @@ public class BraveToolbarManager extends ToolbarManager {
                                 .getModel(mIncognitoStateProvider.isIncognitoSelected())
                                 .closeAllTabs();
                     };
+
+            assert (mActivity instanceof ChromeActivity);
+            OnClickListener wrappedNewTabClickHandler =
+                    v -> {
+                        recordNewTabClick();
+                        ((ChromeActivity) mActivity)
+                                .getMenuOrKeyboardActionController()
+                                .onMenuOrKeyboardAction(R.id.new_tab_menu_id, false);
+                    };
+
             assert (mBottomControlsCoordinatorSupplier.get()
                     instanceof BraveBottomControlsCoordinator);
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
@@ -365,8 +377,8 @@ public class BraveToolbarManager extends ToolbarManager {
                             mActivity,
                             mCompositorViewHolder.getResourceManager(),
                             mCompositorViewHolder.getLayoutManager(),
-                            tabSwitcherClickHandler,
-                            wrappedNewTabClickHandler,
+                            /*tabSwitcherListener*/ tabSwitcherClickHandler,
+                            /*newTabClickListener*/ wrappedNewTabClickHandler,
                             mWindowAndroid,
                             mTabModelSelector,
                             mIncognitoStateProvider,
@@ -453,9 +465,10 @@ public class BraveToolbarManager extends ToolbarManager {
         boolean isMenuFromBottom =
                 mIsBottomToolbarVisible && BottomToolbarConfiguration.isBottomToolbarEnabled();
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuFromBottom);
-        if (mToolbar instanceof BraveTopToolbarCoordinator) {
-            ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
-        }
+        // TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
+        // if (mToolbar instanceof BraveTopToolbarCoordinator) {
+        //     ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
+        // }
         if (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator) {
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .setBottomToolbarVisible(visible);
@@ -469,17 +482,27 @@ public class BraveToolbarManager extends ToolbarManager {
         setBottomToolbarVisible(isBottomToolbarVisible);
     }
 
+    // TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
+    // isToolbarPhone method was removed along with BraveTopToolbarCoordinator class
+    // private boolean isToolbarPhone() {
+    //     assert (mToolbar instanceof BraveTopToolbarCoordinator);
+    //     return mToolbar instanceof BraveTopToolbarCoordinator
+    //             && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
+    // }
     private boolean isToolbarPhone() {
-        assert (mToolbar instanceof BraveTopToolbarCoordinator);
-        return mToolbar instanceof BraveTopToolbarCoordinator
-                && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
+        return true;
     }
 
-    private ObservableSupplier<Integer> getConstraintsProxy() {
-        if (mToolbar instanceof BraveTopToolbarCoordinator) {
-            return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
-        }
+    // TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
+    // private ObservableSupplier<Integer> getConstraintsProxy() {
+    //     if (mToolbar instanceof BraveTopToolbarCoordinator) {
+    //         return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
+    //     }
 
+    //     assert false : "Wrong top toolbar type!";
+    //     return null;
+    // }
+    private ObservableSupplier<Integer> getConstraintsProxy() {
         assert false : "Wrong top toolbar type!";
         return null;
     }

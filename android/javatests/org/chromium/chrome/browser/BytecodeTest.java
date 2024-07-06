@@ -103,15 +103,10 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
-import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
-import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
-import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
-import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
-import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
@@ -119,7 +114,6 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
-import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -212,11 +206,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar"));
-        Assert.assertTrue(
-                classExists(
                         "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
@@ -244,8 +233,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/customtabs/CustomTabAppMenuPropertiesDelegate")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator"));
@@ -470,27 +457,6 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "updateReloadState",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "updateNewTabButtonVisibility",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "getToolbarColorForCurrentState",
-                        MethodModifier.REGULAR,
-                        false,
-                        null));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "shouldShowIncognitoToggle",
                         MethodModifier.REGULAR,
                         false,
                         null));
@@ -1196,37 +1162,6 @@ public class BytecodeTest {
                         OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                        ToolbarControlContainer.class,
-                        ViewStub.class,
-                        ToolbarLayout.class,
-                        ToolbarDataProvider.class,
-                        ToolbarTabController.class,
-                        UserEducationHelper.class,
-                        List.class,
-                        OneshotSupplier.class,
-                        ThemeColorProvider.class,
-                        MenuButtonCoordinator.class,
-                        MenuButtonCoordinator.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        Supplier.class,
-                        BooleanSupplier.class,
-                        HistoryDelegate.class,
-                        BooleanSupplier.class,
-                        OfflineDownloader.class,
-                        boolean.class,
-                        ObservableSupplier.class,
-                        ObservableSupplier.class,
-                        BrowserStateBrowserControlsVisibilityDelegate.class,
-                        FullscreenManager.class,
-                        TabObscuringHandler.class,
-                        DesktopWindowStateProvider.class,
-                        OneshotSupplier.class));
-        Assert.assertTrue(
-                constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                         "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator", // presubmit: ignore-long-line
                         OneshotSupplier.class,
@@ -1816,35 +1751,11 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "mTabSwitcherModeCoordinator"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mToolbarColorObserverManager"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
-                        "mActiveTabSwitcherToolbar"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mNewTabViewButton"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mNewTabImageButton"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mShouldShowNewTabVariation"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
-                        "mIsIncognito"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/app/ChromeActivity",
@@ -1861,10 +1772,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                         "mBottomControlsStacker"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/IncognitoToggleTabLayout",
-                        "mIncognitoButtonIcon"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
