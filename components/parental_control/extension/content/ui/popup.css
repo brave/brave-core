@@ -126,8 +126,9 @@ form {
 }
 
 input {
-  width: 208px;
+  width: 200px;
   height: 36px;
+  padding-left: 8px;
   border: none;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.10);
@@ -140,7 +141,6 @@ input::placeholder {
   color: #fff;
   opacity: 0.4;
   font-size: 14px;
-  padding: 2px;
 }
 
 #centerContainer {
