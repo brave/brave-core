@@ -1,11 +1,18 @@
 body {
-  width: 260px;
-  height: 200px;
+  margin: 20px;
+  width: 273px;
+  height: 340px;
   padding-bottom: 10%;
+  background:  url("../../assets/background.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 #container {
-  min-height: 335px;
+  min-height: 330px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #signUpContainer {
@@ -24,51 +31,66 @@ body {
   flex-direction: column;
 }
 
-#container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#headingText {
+  margin-top: 40px;
+  color: #FFF;
+  text-align: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.16px;
 }
 
-#successStatus {
-  display: block;
-  height: 10px;
-  color: rgb(2, 168, 2);
+#resetPasswordLink{
+  color: #FFF;
+  font-family: Roboto;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.13px;
+  text-decoration-line: underline;
+  opacity: 0.5;
 }
 
-#errorStatus {
+#successStatus, #errorStatus {
   display: block;
   height: 10px;
-  color: red;
+  color: #fff;
 }
 
 .session-time-container {
   display: flex;
-  justify-content: center;
-  margin-top: 10px;
+  justify-content: start;
+  margin-top: 28px;
+  margin-left: 34px;
 }
 
 #sessionTime {
   background-color: #dddfdd;
-  /* color: white; */
+  color: #000;
   padding: 4px;
   font-size: 14px;
   border: none;
   cursor: pointer;
+  height: 18px;
   width: 32px;
 }
 
 .timerLabel {
-  font-weight: bold;
   font-size: 14px;
   margin-right: 10px;
-  color: #df8a1d;
+  color: #fff;
   display: flex;
   align-items: center;
 }
 #timerDisplay {
   font-size: 18px;
-  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
 form {
@@ -76,45 +98,129 @@ form {
   flex-direction: column;
 }
 
-input {
-  padding: 8px;
-  border-radius: 5px;
-  border: 2px solid #ece2d4;
+#timeText {
+  margin-top: 23px;
+  margin-bottom: 3px;
+  color: white;
+  font-size: 15px;
+}
+
+#timeHours, #timeMinutes {
+  padding: 5px;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10.5px;
+  border: 0.75px solid #FFF; 
+  width: 41px;
+  height: 45px;
+  flex-shrink: 0; 
+  color: #FFF;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 31.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.315px; 
+}
+
+input {
+  width: 208px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.10);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(5px); 
+  color: #fff;
+}
+
+input::placeholder {
+  color: #fff;
+  opacity: 0.4;
+  font-size: 14px;
+  padding: 2px;
+}
+
+#centerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 input:focus {
   outline: none;
-  border-color: rgb(255, 190, 51);
-  box-shadow: 0 0 3px rgb(255, 190, 51);
-  -moz-box-shadow: 0 0 3px rgb(255, 190, 51);
-  -webkit-box-shadow: 0 0 3px rgb(255, 190, 51);
+  border-color: #fff;
+  box-shadow: 0 0 3px #fff;
+  -moz-box-shadow: 0 0 3px #fff;
+  -webkit-box-shadow: 0 0 3px #fff;
 }
 
 input[type="checkbox"]:checked {
-  background-color: #ffd000;
+  width: 20px;
+  /* background-color: #ffd000; */
 }
 
 .checkbox-container input[type="checkbox"],
 .checkbox-container label {
+  width: 18px;
+  border-radius: 10px;
   display: inline;
   vertical-align: middle;
-  font-weight: bold;
   font-size: 14px;
+  color: #fff;
+  box-shadow: none;
 }
 
 .checkbox-container {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  margin-left: 26px;
+  height: 28px;
 }
 
 button {
-  margin-top: 25px;
-  padding: 0.6rem;
-  padding-left: .8rem;
-  padding-right: .8rem;
-  background-color: rgb(252, 181, 88);
-  border-radius: 10px;
+  width: 208px;
+  height: 42px;
+  flex-shrink: 0;
+  font-size: 15px;
+  border-radius: 6px;
+  background: #0E4D87;
+  color: #fff;
+  border: none;
+  margin-top: 8px;
   cursor: pointer;
-  border-style: none;
-  width: 100%;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  width: 195px;
+  height: 56px;
+  min-height: fit-content;
+  flex-shrink: 0; 
+  visibility: hidden;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.20);
+  backdrop-filter: blur(25px); 
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 115%; /* Position the tooltip above the element */
+  left: 35%;
+  margin-left: -50px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

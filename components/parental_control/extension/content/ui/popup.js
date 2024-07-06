@@ -184,7 +184,9 @@ const updatePopupDetails = async () => {
 
 // Function to fetch timeLeft from local storage and update UI
 const updateTimeLeftUI = async () => {
-  const timerDisplay = document.getElementById("timerDisplay");
+  const timeHours = document.getElementById("timeHours");
+  const timeMinutes = document.getElementById("timeMinutes");
+  const timeText = document.getElementById("timeText")
 
   let intervalId;
   const updateTimer = async () => {
@@ -193,14 +195,15 @@ const updateTimeLeftUI = async () => {
     if (timeLeft !== undefined) {
       let hours = Math.floor(timeLeft / (1000 * 60 * 60));
       let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-      timerDisplay.textContent = "Time left : " + hours + "h " + minutes + "m ";
+      timeHours.textContent = hours < 10 ? '0' + hours : hours;
+      timeMinutes.textContent = minutes < 10 ? '0' + minutes : minutes;
       if (timeLeft <= 0) {
         clearInterval(intervalId);
-        timerDisplay.textContent = "Time's up";
+        timeText.textContent = "Time's up";
       }
     } else {
       clearInterval(intervalId);
-      timerDisplay.textContent = "Time's up";
+      timeText.textContent = "Time's up";
     }
   };
   await updateTimer();
