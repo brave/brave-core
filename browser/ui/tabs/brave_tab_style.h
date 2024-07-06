@@ -64,7 +64,7 @@ class BraveTabStyle : public TabStyleBase {
     // The "drag handle extension" is the amount of space in DIP at the top of
     // inactive tabs where mouse clicks are treated as clicks in the "caption"
     // area, i.e. the draggable part of the window frame.
-    return 4;
+    return 0;
   }
 
   gfx::Size GetSeparatorSize() const override {
