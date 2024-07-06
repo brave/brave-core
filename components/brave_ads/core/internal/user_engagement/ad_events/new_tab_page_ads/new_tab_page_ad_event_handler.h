@@ -20,7 +20,7 @@
 namespace brave_ads {
 
 using FireNewTabPageAdEventHandlerCallback =
-    base::OnceCallback<void(bool success,
+    base::OnceCallback<void(const bool success,
                             const std::string& placement_id,
                             const mojom::NewTabPageAdEventType event_type)>;
 
@@ -51,18 +51,21 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
                  FireNewTabPageAdEventHandlerCallback callback);
 
  private:
-  void GetForCreativeInstanceIdCallback(
-      const std::string& placement_id,
-      mojom::NewTabPageAdEventType event_type,
-      FireNewTabPageAdEventHandlerCallback callback,
-      bool success,
-      const std::string& creative_instance_id,
-      const CreativeNewTabPageAdInfo& creative_ad);
-  void GetForTypeCallback(const NewTabPageAdInfo& ad,
-                          mojom::NewTabPageAdEventType event_type,
-                          FireNewTabPageAdEventHandlerCallback callback,
-                          bool success,
-                          const AdEventList& ad_events);
+  void GetCreativeAdCallback(const std::string& placement_id,
+                             mojom::NewTabPageAdEventType event_type,
+                             FireNewTabPageAdEventHandlerCallback callback,
+                             bool success,
+                             const std::string& creative_instance_id,
+                             const CreativeNewTabPageAdInfo& creative_ad);
+  void GetAdEventsCallback(const NewTabPageAdInfo& ad,
+                           mojom::NewTabPageAdEventType event_type,
+                           FireNewTabPageAdEventHandlerCallback callback,
+                           bool success,
+                           const AdEventList& ad_events);
+
+  void FireEvent(const NewTabPageAdInfo& ad,
+                 mojom::NewTabPageAdEventType event_type,
+                 FireNewTabPageAdEventHandlerCallback callback) const;
   void FireEventCallback(const NewTabPageAdInfo& ad,
                          mojom::NewTabPageAdEventType event_type,
                          FireNewTabPageAdEventHandlerCallback callback,
