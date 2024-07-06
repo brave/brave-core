@@ -10,7 +10,7 @@ import Shared
 ///
 /// Query callbacks that must run even if they are cancelled should wrap their contents in `withExtendendLifetime`.
 class SearchSuggestClient {
-  static let errorDomain = "com.brave.ios.SearchSuggestClient"
+  static let errorDomain = "com.ping.ios.SearchSuggestClient"
   static let invalidEngineErrorCode = 0
   static let invalidResponseErrorCode = 1
 

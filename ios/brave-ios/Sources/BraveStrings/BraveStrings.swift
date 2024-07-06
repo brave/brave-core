@@ -3697,7 +3697,7 @@ extension Strings {
     "ReportABug",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Report a Bug",
+    value: "Need help?",
     comment: "Providers the user an email page where they can submit a but report."
   )
   public static let privacyPolicy = NSLocalizedString(

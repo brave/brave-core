@@ -9,7 +9,7 @@ import Shared
 import Storage
 import WebKit
 
-private let browsingActivityType: String = "com.brave.ios.browsing"
+private let browsingActivityType: String = "com.ping.ios.browsing"
 
 private let searchableIndex = CSSearchableIndex(name: "firefox")
 

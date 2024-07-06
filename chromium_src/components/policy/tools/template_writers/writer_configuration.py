@@ -42,7 +42,7 @@ _BRAVE_VALUES = {
     'Brave': 'BraveSoftware.Policies'  # prefix: namespace
   },
   'linux_policy_path': '/etc/brave/policies/',
-  'bundle_id': 'com.brave.ios.core',
+  'bundle_id': 'com.ping.ios.core',
 }
 
 def _merge_dicts(src, dst):

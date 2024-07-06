@@ -495,7 +495,7 @@ var braveTarget: PackageDescription.Target = .target(
     .copy("Frontend/Reader/Reader.css"),
     .copy("Frontend/Reader/Reader.html"),
     .copy("Frontend/Reader/ReaderViewLoading.html"),
-    .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/corwin-prescott-3.jpg"),
+    .copy("Frontend/Browser/New Tab Page/Backgrounds/Assets/NTP_Images/ping-background.jpg"),
     .copy(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSearchResultAdScript.js"
     ),

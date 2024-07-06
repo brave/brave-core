@@ -1014,7 +1014,7 @@ public class FeedDataSource: ObservableObject {
       )
       // Move to OSSignposter when we're 15+
       let log = OSLog(
-        subsystem: Bundle.main.bundleIdentifier ?? "com.brave.ios",
+        subsystem: Bundle.main.bundleIdentifier ?? "com.ping.ios",
         category: "Brave News"
       )
       let signpostID = OSSignpostID(log: log)

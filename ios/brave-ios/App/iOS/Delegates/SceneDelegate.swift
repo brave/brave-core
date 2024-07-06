@@ -23,7 +23,7 @@ import os.log
 extension Logger {
   fileprivate static var module: Logger {
     .init(
-      subsystem: "\(Bundle.main.bundleIdentifier ?? "com.brave.ios")",
+      subsystem: "\(Bundle.main.bundleIdentifier ?? "com.ping.ios")",
       category: "SceneDelegate"
     )
   }
