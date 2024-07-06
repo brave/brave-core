@@ -21,11 +21,7 @@ ChromePermissionMessageRule::GetAllRules() {
   rules.push_back({IDS_EXTENSION_PROMPT_WARNING_IPFS_PRIVATE,
                    {APIPermissionID::kIpfsPrivate},
                    {}});
-
-  rules.push_back({IDS_EXTENSION_PROMPT_WARNING_PKCS11,
-                  {APIPermissionID::kPkcs11},
-                  {}});
-return rules;
+  return rules;
 }
 
 }  // namespace extensions

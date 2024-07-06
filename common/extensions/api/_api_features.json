@@ -92,9 +92,5 @@
     "matches": [
       "chrome://newtab/*"
     ]
-  }],
-  "pkcs11": {
-    "dependencies": ["permission:pkcs11"],
-    "contexts": ["blessed_extension"]
-  }
+  }]
 }
