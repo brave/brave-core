@@ -153,29 +153,9 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
-    *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
     *** mToolbarColorObserverManager;
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator {
-    public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinator {
-    *** mActiveTabSwitcherToolbar;
-}
-
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
-    *** mNewTabViewButton;
-    *** mNewTabImageButton;
-    *** mMenuButton;
-    *** mShouldShowNewTabVariation;
-    *** mIsIncognito;
-    *** updateNewTabButtonVisibility(...);
-    *** shouldShowIncognitoToggle(...);
-    *** getToolbarColorForCurrentState(...);
 }
 
 -keep class org.chromium.chrome.browser.download.MimeUtils {
@@ -324,10 +304,6 @@
 
 -keep class org.chromium.chrome.browser.settings.BraveSettingsLauncherImpl {
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.toolbar.IncognitoToggleTabLayout {
-    *** mIncognitoButtonIcon;
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabGroupUiCoordinator {
