@@ -1,0 +1,53 @@
+import("//build/config/c++/c++.gni")
+import("//build/config/sanitizers/sanitizers.gni")
+import("//build/toolchain/toolchain.gni")
+import("//build/config/arm.gni")
+import("//build/config/compiler/compiler.gni")
+import("//build/config/linux/pkg_config.gni")
+
+# Determine the library directory based on the operating system
+if (is_mac) {
+  botan_lib_dir = "//brave/third_party/botan/libs/mac"
+  botan_lib = "libbotan.dylib"
+} else if (is_win) {
+  botan_lib_dir = "//brave/third_party/botan/libs/win"
+  botan_lib = "botan.dll"
+} else if (is_linux) {
+  botan_lib_dir = "//brave/third_party/botan/libs/linux"
+  botan_lib = "libbotan.so"
+} else {
+  assert(false, "Unsupported operating system")
+}
+
+# Generate build files with CMake and compile the library
+action("build_botan") {
+  script = "//brave/third_party/botan/setup.py"
+  outputs = [ "$root_build_dir/botan/$botan_lib" ]
+  args = [
+    rebase_path("//brave/third_party/botan", root_build_dir),  # Source directory
+    rebase_path("//brave/third_party/botan", root_build_dir),            # Build directory
+  ]
+}
+
+copy("copy_policy") {
+  sources = [ "//brave/third_party/botan/$botan_lib" ]
+  outputs = [ "$root_out_dir/$botan_lib" ]
+}
+
+config("my_class_import") {
+  include_dirs = [
+    "//brave/third_party/botan/src", 
+    "src",
+    "//brave/third_party/botan/botan-3"
+  ]
+  configs = [ "//build/config/compiler:no_chromium_code" ]
+
+  libs = [ "$root_out_dir/$botan_lib", "botan-3" ]
+  lib_dirs = [ botan_lib_dir ]
+}
+
+group("botan") {
+  deps = [ ":build_botan" ]
+  deps += [ ":copy_policy" ]
+  public_configs = [ ":my_class_import" ]
+}
