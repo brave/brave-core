@@ -19,7 +19,6 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
@@ -75,7 +74,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull OneshotSupplier<HubManager> hubManagerSupplier,
             @NonNull OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderOneshotSupplier,
-            @NonNull Supplier<Tab> startSurfaceParentTabSupplier,
             @NonNull Supplier<Long> lastUserInteractionTimeSupplier,
             @NonNull BrowserControlsManager browserControlsManager,
             @NonNull ActivityWindowAndroid windowAndroid,
@@ -102,7 +100,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull IntentRequestTracker intentRequestTracker,
             @NonNull InsetObserver insetObserver,
             @NonNull Function<Tab, Boolean> backButtonShouldCloseTabFn,
-            OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             boolean initializeUiWithIncognitoColors,
             @NonNull BackPressManager backPressManager,
             @Nullable Bundle savedInstanceState,
@@ -125,7 +122,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 hubManagerSupplier,
                 intentMetadataOneshotSupplier,
                 layoutStateProviderOneshotSupplier,
-                startSurfaceParentTabSupplier,
                 lastUserInteractionTimeSupplier,
                 browserControlsManager,
                 windowAndroid,
@@ -151,7 +147,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 intentRequestTracker,
                 insetObserver,
                 backButtonShouldCloseTabFn,
-                tabReparentingControllerSupplier,
                 initializeUiWithIncognitoColors,
                 backPressManager,
                 savedInstanceState,
