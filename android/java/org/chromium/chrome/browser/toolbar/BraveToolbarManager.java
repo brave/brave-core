@@ -24,7 +24,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
-import org.chromium.chrome.browser.app.tab_activity_glue.TabReparentingController;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
@@ -37,7 +36,6 @@ import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperMa
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.homepage.HomepageManager;
-import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
@@ -143,7 +141,6 @@ public class BraveToolbarManager extends ToolbarManager {
             TopUiThemeColorProvider topUiThemeColorProvider,
             TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
-            IdentityDiscController identityDiscController,
             List<ButtonDataProvider> buttonDataProviders,
             ActivityTabProvider tabProvider,
             ScrimCoordinator scrimCoordinator,
@@ -164,7 +161,6 @@ public class BraveToolbarManager extends ToolbarManager {
             StatusBarColorController statusBarColorController,
             AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
-            @NonNull Supplier<Tab> startSurfaceParentTabSupplier,
             @NonNull BottomSheetController bottomSheetController,
             @NonNull TabContentManager tabContentManager,
             @NonNull TabCreatorManager tabCreatorManager,
@@ -172,7 +168,6 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull
                     Supplier<MerchantTrustSignalsCoordinator>
                             merchantTrustSignalsCoordinatorSupplier,
-            OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             @NonNull OmniboxActionDelegate omniboxActionDelegate,
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
@@ -193,7 +188,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 topUiThemeColorProvider,
                 tabObscuringHandler,
                 shareDelegateSupplier,
-                identityDiscController,
                 buttonDataProviders,
                 tabProvider,
                 scrimCoordinator,
@@ -214,13 +208,11 @@ public class BraveToolbarManager extends ToolbarManager {
                 statusBarColorController,
                 appMenuDelegate,
                 activityLifecycleDispatcher,
-                startSurfaceParentTabSupplier,
                 bottomSheetController,
                 tabContentManager,
                 tabCreatorManager,
                 snackbarManager,
                 merchantTrustSignalsCoordinatorSupplier,
-                tabReparentingControllerSupplier,
                 omniboxActionDelegate,
                 ephemeralTabCoordinatorSupplier,
                 initializeWithIncognitoColors,

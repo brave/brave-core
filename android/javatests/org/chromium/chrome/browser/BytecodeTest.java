@@ -64,7 +64,6 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponentSupplier;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -1022,7 +1021,6 @@ public class BytecodeTest {
                         TopUiThemeColorProvider.class,
                         TabObscuringHandler.class,
                         ObservableSupplier.class,
-                        IdentityDiscController.class,
                         List.class,
                         ActivityTabProvider.class,
                         ScrimCoordinator.class,
@@ -1043,13 +1041,11 @@ public class BytecodeTest {
                         StatusBarColorController.class,
                         AppMenuDelegate.class,
                         ActivityLifecycleDispatcher.class,
-                        Supplier.class,
                         BottomSheetController.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
                         SnackbarManager.class,
                         Supplier.class,
-                        OneshotSupplier.class,
                         OmniboxActionDelegate.class,
                         Supplier.class,
                         boolean.class,
