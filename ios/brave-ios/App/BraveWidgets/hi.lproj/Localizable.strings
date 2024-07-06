@@ -1,0 +1,75 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "बुकमार्क्स";
+
+/* The name of the feature */
+"widgets.braveNews" = "पिंग समाचार";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "डाउनलोड";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "अपनी पसंदीदा वेबसाइट्स तक त्वरित पहुँच प्राप्त करें।";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "पसंदीदा";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "इतिहास";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "कृपया बाद में पुनः प्रयास करें";
+
+/* Displayed on a news widget that links into the app to read more Ping News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "अधिक जानें";
+
+/* Description for Ping News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "ताज़ा समाचार प्राप्त करें";
+
+/* Title for Ping News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "महत्वपूर्ण समाचार";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "अपने पसंदीदा यहाँ देखने के लिए पिंग खोलें";
+
+/* QR Code section title */
+"widgets.QRCode" = "क्यूआर कोड";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "खोजें";
+
+/* Description for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "कैसे पिंग आपको ऑनलाइन सुरक्षित और समय की बचत करता है इसका एक सारांश।";
+
+/* Title for Ping Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "गोपनीयता आँकड़े";
+
+/* Title of Ping Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "गोपनीयता आँकड़े";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "खोजें या यूआरएल दर्ज करें";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "नया टैब";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "प्लेलिस्ट";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "निजी टैब";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "वेब पर खोज करने या पिंग में वेब पेज खोलने के लिए त्वरित पहुँच।";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "शॉर्टकट";
+
+/* Description for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "कैसे पिंग ने आपको ऑनलाइन सुरक्षित किया है इसका एक सारांश।";
+
+/* Title for Ping Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "गोपनीयता आँकड़ा";
+
+/* Description for the Ping Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "पिंग वॉलेट";
+
