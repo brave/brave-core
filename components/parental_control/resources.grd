@@ -12,10 +12,12 @@
     <includes>
       <include name="IDR_PARENTAL_CONTROL" file="extension/manifest.json" resource_path="parental_control/extension/manifest.json" type="BINDATA" />
       <include name="IDR_BRAVE_PARENTAL_CONTROL_HTML" file="extension/content/ui/popup.html" resource_path="parental_control/extension/content/ui/popup.html" type="BINDATA" />
+      <include name="IDR_BRAVE_PARENTAL_CONTROL_SESSION_TIMEOUT_HTML" file="extension/content/ui/sessionTimeout.html" resource_path="parental_control/extension/content/ui/sessionTimeout.html" type="BINDATA" />
       <include name="IDR_BRAVE_PARENTAL_CONTROL_CSS" file="extension/content/ui/popup.css" resource_path="parental_control/extension/content/ui/popup.css" type="BINDATA" />
       <include name="IDR_BRAVE_PARENTAL_CONTROL_LOGO_ACTIVE" file="extension/assets/Logo_active.png" resource_path="parental_control/extension/assets/Logo_active.png" type="BINDATA" />
       <include name="IDR_BRAVE_PARENTAL_CONTROL_LOGO_INACTIVE" file="extension/assets/Logo_inactive.png" resource_path="parental_control/extension/assets/Logo_inactive.png" type="BINDATA" />
       <include name="IDR_BRAVE_PARENTAL_CONTROL_POPUP_BACKGROUND" file="extension/assets/background.svg" resource_path="parental_control/extension/assets/background.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_PARENTAL_CONTROL_TIMEOUT" file="extension/assets/timeout.jpg" resource_path="parental_control/extension/assets/timeout.jpg" type="BINDATA" />
     </includes>
   </release>
 </grit>
