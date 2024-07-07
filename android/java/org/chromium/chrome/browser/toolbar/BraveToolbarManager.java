@@ -91,7 +91,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private ActivityTabProvider mActivityTabProvider;
     private AppThemeColorProvider mAppThemeColorProvider;
     private ScrimCoordinator mScrimCoordinator;
-    private Supplier<Boolean> mShowStartSurfaceSupplier;
     private MenuButtonCoordinator mMenuButtonCoordinator;
     private ToolbarTabControllerImpl mToolbarTabController;
     private LocationBar mLocationBar;
