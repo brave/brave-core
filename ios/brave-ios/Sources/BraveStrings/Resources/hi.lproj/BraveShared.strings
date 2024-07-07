@@ -278,7 +278,7 @@
 "callout.defaultBrowserTitle" = "गोपनीयता। सरल।";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "यह जानकारी हमें सबसे अधिक उपयोग की जाने वाली पिंग विशेषताओं को पहचानने में मदद करती है। आप इसे ब्रेव की सेटिंग में कभी भी बदल सकते हैं, "पिंग शिल्ड और अन्य गोपनीयता सेटिंग्स" में।";
+"callout.p3aCalloutDescription" = "यह जानकारी हमें पिंग फ़ंक्शन की सबसे अधिक उपयोगिता को पहचानने में मदद करती है। आप इसे Brave की सेटिंग्स में कभी भी बदल सकते हैं, << पिंग और अन्य गोपनीयता सेटिंग्स' सेक्शन में। >>";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "हमारे गोपनीयता-संरक्षण विश्लेषण के बारे में अधिक जानें (P3A)।";
@@ -1775,7 +1775,7 @@
 "playList.undoRemoveButtonTitle" = "पूर्ववत लें";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "ब्रेव ब्राउज़र में पता पंक्ति के बगल में एक प्लेलिस्ट बटन (जिसमें एक "जोड़ें" चिह्न होता है) जोड़ता है। यह बटन आपको त्वरित रूप से प्लेलिस्ट खोलने, मल्टीमीडिया सामग्री जोड़ने या हटाने का एक्सेस प्रदान करता है।";
+"playlist.urlBarButtonOptionFooter" = "ब्रेव ब्राउज़र में पता पंक्ति के बगल में एक प्लेलिस्ट बटन (जिसमें एक जोड़ें चिह्न होता है) जोड़ता है। यह बटन आपको त्वरित रूप से प्लेलिस्ट खोलने, मल्टीमीडिया सामग्री जोड़ने या हटाने का एक्सेस प्रदान करता है।";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "त्वरित पहुँच बटन सक्षम करें";
