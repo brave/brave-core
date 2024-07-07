@@ -25,7 +25,7 @@ struct LoggerPlugin: BuildToolPlugin {
 
       extension Logger {
         static var module: Logger {
-          .init(subsystem: "\\(Bundle.main.bundleIdentifier ?? "com.brave.ios")", category: "\(target.moduleName)")
+          .init(subsystem: "\\(Bundle.main.bundleIdentifier ?? "com.ping.ios")", category: "\(target.moduleName)")
         }
       }
       """

@@ -1,0 +1,2100 @@
+/* A button title that shows a screen that allows the user to backup their recovery phrase */
+"wallet.accountBackup" = "बैकअप";
+
+/* The placeholder of the text field which allows the user to edit the account's name */
+"wallet.accountDetailsNamePlaceholder" = "खाता का नाम दर्ज करें";
+
+/* The title displayed above a text field that contains the account's name */
+"wallet.accountDetailsNameTitle" = "खाते का नाम";
+
+/* The title displayed on the account details screen */
+"wallet.accountDetailsTitle" = "खाता विवरण";
+
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
+"wallet.accountNameLengthError" = "खाते का नाम 30 अक्षरों से अधिक नहीं होना चाहिए";
+
+/* A button title for displaying their accounts private key */
+"wallet.accountPrivateKey" = "निजी कुंजी";
+
+/* A warning message displayed at the top of the Private Key screen */
+"wallet.accountPrivateKeyDisplayWarning" = "चेतावनी: कृपया अपनी निजी कुंजी कभी भी साझा न करें। इस कुंजी के धारक आपके धन को चोरी कर सकते हैं और आपका कोई भी विवाद नहीं होगा।";
+
+/* The title of a confirmation dialog when attempting to remove an account */
+"wallet.accountRemoveAlertConfirmation" = "क्या आप इस खाते को हटाना चाहते हैं?";
+
+/* A button title to trigger deleting a secondary account */
+"wallet.accountRemoveButtonTitle" = "खाता हटाएं";
+
+/* The description used below Security title in the row opening DApp settings in Account Details. */
+"wallet.accountSecurityDescription" = "साइट्स संबंधित और आवंटन";
+
+/* The title of the accounts page in the Crypto tab */
+"wallet.accountsPageTitle" = "खाते";
+
+/* The title of the button at the bottom of Swap Screen, when the sell token is erc20 and it has not been activated its allowance. %@ will be replaced with the sell token's symbol such as 'DAI' or 'USDC' */
+"wallet.activateToken" = "%@ टोकन सक्रिय करें";
+
+/* The description when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyDescription" = "जब तक आप एक लेनदेन करते हैं, तब तक आप उसे यहाँ देख सकते हैं।";
+
+/* The title when showing no transactions inside Activity tab. */
+"wallet.activityPageEmptyTitle" = "इस समय कोई लेनदेन नहीं";
+
+/* The title of the tab that will display user's transaction activity for all accounts. */
+"wallet.activityPageTitle" = "गतिविधि";
+
+/* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
+"wallet.addAccountAddButton" = "जोड़ें";
+
+/* The title of the add account screen. */
+"wallet.addAccountTitle" = "खाता जोड़ें";
+
+/* The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. */
+"wallet.addAccountWithCoinTypeTitle" = "%@ खाता जोड़ें";
+
+/* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
+"wallet.addCustomAsset" = "कस्टम एसेट जोड़ें";
+
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "कस्टम नेटवर्क जोड़ें";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "नया कस्टम नेटवर्क जोड़ें…";
+
+/* A title of one segment on top of Add Custom Assets screen. Users would need to select this segment if they are willing to add a custom non-fungible token. */
+"wallet.addCustomNFTTitle" = "NFT";
+
+/* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
+"wallet.addCustomTokenAdvanced" = "उन्नत";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
+"wallet.addCustomTokenCoingeckoId" = "कॉइनजेको आईडी";
+
+/* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorMessage" = "कस्टम टोकन जोड़ने में समस्या आई। कृपया पुन: प्रयास करें।";
+
+/* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
+"wallet.addCustomTokenErrorTitle" = "कस्टम टोकन जोड़ने में असमर्थ";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
+"wallet.addCustomTokenIconURL" = "आइकन URL";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's ID. */
+"wallet.addCustomTokenId" = "टोकन ID (केवल ERC721 के लिए)";
+
+/* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
+"wallet.addCustomTokenTitle" = "टोकन";
+
+/* The description of the view shown over a dapps website that describes what adding a new network will do. */
+"wallet.addNetworkDescription" = "इससे पिंग वॉलेट में इस नेटवर्क का उपयोग किया जा सकेगा।";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
+"wallet.addNetworkSubtitle" = "क्या आप इस साइट को नया नेटवर्क जोड़ने की अनुमति देना चाहते हैं?";
+
+/* The title of the view shown over a dapps website that requests the user add a new network. */
+"wallet.addNetworkTitle" = "नया नेटवर्क जोड़ें";
+
+/* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
+"wallet.addSuggestedTokenSubtitle" = "क्या आप इस टोकन को जोड़ना चाहते हैं?";
+
+/* The title of the view shown over a dapps website that requests the user add / approve a new token. */
+"wallet.addSuggestedTokenTitle" = "सुझाए गए टोकन को जोड़ें";
+
+/* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
+"wallet.advancedSettingsTransaction" = "उन्नत सेटिंग्स";
+
+/* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allAccountsLabel" = "सभी खाते";
+
+/* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
+"wallet.allNetworksLabel" = "सभी नेटवर्क";
+
+/* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The \"+\" is a literal plus as the label below will show such as \"0.004 SOL + 0.00064 SOL\" */
+"wallet.amountAndFee" = "राशि + शुल्क";
+
+/* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The \"+\" is a literal plus as the label below will show such as \"0.004 ETH + 0.00064 ETH\" */
+"wallet.amountAndGas" = "राशि + गैस";
+
+/* A placeholder on a text field to describe an amount of some currency. '%@' will be replaced with a currency code such as 'USD' or 'BAT' */
+"wallet.amountInCurrency" = "%@ में राशि";
+
+/* The title of the button to approve adding a new network on an add new network request from a dapps website. */
+"wallet.approveNetworkButtonTitle" = "मंजूर";
+
+/* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
+"wallet.assetDetailSubtitle" = "%1$@ (%2$@) की कीमत";
+
+/* The description of the assets row in Account Details when the user has zero or multiple Assets. */
+"wallet.assetsDescription" = "%d धन्य";
+
+/* The text displayed when a user uses a query to search for assets that yields no results */
+"wallet.assetSearchEmpty" = "कोई धन्य नहीं मिला";
+
+/* The description of the assets row in Account Details when user has 1 Asset. */
+"wallet.assetsSingularDescription" = "%d धन्य";
+
+/* The title which is displayed above a list of assets/tokens */
+"wallet.assetsTitle" = "धन्य";
+
+/* The title of the sort option that sorts alphabetically from A to Z. Used in Portfolio/NFT filters and display settings. */
+"wallet.aToZSortOption" = "ए से जेड तक";
+
+/* The description of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. This will displayed right below `auroraBridgeAlertTitle`. */
+"wallet.auroraBridgeAlertDescription" = "रेनबो ब्रिज एक स्वतंत्र सेवा है जो आपको अन्य नेटवर्क्स के साथ आपकी धन्य कनेक्ट करती है, और आपको विभिन्न डीएप्स के उपयोग के लिए आपकी क्रिप्टोकरेंसी का उपयोग करने की सुविधा प्रदान करती है। इस प्रक्रिया में कुछ जोखिम हो सकते हैं।";
+
+/* The title of the alert that will show up when users click on `Bridge to Aurora` button inside asset details screen for tokens that support briding to `Aurora`. */
+"wallet.auroraBridgeAlertTitle" = "रेनबो ब्रिज एप्लिकेशन खोलें?";
+
+/* The title for the button for users to click inside any asset details screen, whose asset is supported to redirect users to Aurora site. */
+"wallet.auroraBridgeButtonTitle" = "ऑरोरा की ओर पुल";
+
+/* A text link for the user to click inside the custom alert, It will redirect the user to the website explaining using Rainbow Bridge. */
+"wallet.auroraBridgeLearnMore" = "रेनबो ब्रिज का उपयोग करने के बारे में अधिक जानें";
+
+/* A text link for the user to click inside the custom alert, It will redirect the user to the website explaining the risk of using Rainbow Bridge. */
+"wallet.auroraBridgeRisk" = "रेनबो ब्रिज का उपयोग करने के जोखिम कम करने का तरीका सीखें";
+
+/* A text button for the user to click so this pop-up will not show again. */
+"wallet.auroraPopupDontShowAgain" = "अब अनदेखा करें";
+
+/* The footer beneath the auto-lock title and interval duration */
+"wallet.autoLockFooter" = "पिंग वॉलेट को स्वचालित रूप से लॉक होने से पहले कितने मिनट इंतजार करना चाहिए";
+
+/* The title that appears before an auto-lock interval. Example: Automatically lock after 5 minutes */
+"wallet.autoLockTitle" = "स्वचालित रूप से लॉक करें बाद";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet */
+"wallet.backupRecoveryPhraseBackButtonTitle" = "अद्यतन करें वापसी शब्द";
+
+/* The subtitle of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseSubtitle" = "आपकी वापसी वाक्यांश एक कुंजी है जो आपको अपने वॉलेट तक पहुँचने में सहायक होती है यदि आप अपना पासवर्ड भूल जाते हैं या अपनी उपकरण को खो देते हैं।\n\nइसे एक सुरक्षित स्थान पर सहेजें जो दूसरों के लिए अगम्य हो और इसे किसी से भी साझा न करें।";
+
+/* The title of the backup recovery phrase screen */
+"wallet.backupRecoveryPhraseTitle" = "वापसी वाक्यांश सहेजें";
+
+/* The title of the button that the user will tap to skip the verifying recovery phrases step. */
+"wallet.backupSkipButtonTitle" = "बाद में इसे सहेजें";
+
+/* The sub-title on the pop-up when the user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptSubTitle" = "अपने खाते की सुरक्षा सुनिश्चित करने के लिए कृपया अपने वापसी वाक्यांश को सहेजें।";
+
+/* The title on the pop-up when the user decides to skip backup recovery phrases. */
+"wallet.backupSkipPromptTitle" = "आप इस चरण को अब छोड़ सकते हैं, लेकिन अपने खाते की सुरक्षा सुनिश्चित करने के लिए अपने वापसी वाक्यांश को सहेजें।";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar */
+"wallet.backupWalletBackButtonTitle" = "वॉलेट सहेजें";
+
+/* The label next to a toggle which the user must acknowledge */
+"wallet.backupWalletDisclaimer" = "मैं समझता हूँ कि अगर मैं अपने वापसी वाक्यांश को खो देता हूँ, तो मुझे अपने क्रिप्टो वॉलेट तक पहुँच नहीं मिलेगी।";
+
+/* The placeholder for the password entry field when a user tries to backup their wallet. */
+"wallet.backupWalletPasswordPlaceholder" = "वॉलेट सहेजने के लिए पासवर्ड दर्ज करें";
+
+/* The subtitle of the backup wallet screen */
+"wallet.backupWalletSubtitle" = "अगले चरण में, आपको 12 शब्दों का वापसी वाक्यांश दिखाई देगा, जिसका उपयोग आप अपने मुख्य क्रिप्टोकरेंसी खातों को पुनर्प्राप्त करने के लिए कर सकते हैं। इसे एक सुरक्षित स्थान पर सहेजें। आपकी वापसी वाक्यांश वह एकमात्र तरीका है जिससे आप अपने खाते तक पहुँच सकते हैं अगर आप अपना पासवर्ड भूल जाते हैं, अपनी उपकरण खो जाते हैं, या अगर आप वॉलेट बदलना चाहते हैं।";
+
+/* The title of the backup wallet screen */
+"wallet.backupWalletTitle" = "अपने क्रिप्टो वॉलेट की बैकअप बनाएं";
+
+/* The message displayed on the crypto tab if you have not yet completed the backup process */
+"wallet.backupWalletWarningMessage" = "अपने क्रिप्टो-धन्य की सुरक्षा के लिए अब तुरंत अपने वॉलेट की बैकअप बनाएं और सुनिश्चित करें कि आपको कभी भी पहुँच नहीं खो जाएगी।";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.balances" = "शेष";
+
+/* The button title that enables the biometric unlock feature. %@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupEnableButtonTitle" = "%@ का उपयोग करें";
+
+/* The message of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorMessage" = "बायोमेट्रिक अनलॉक सेटअप करते समय एक त्रुटि आई है। कृपया बाद में पुन: प्रयास करें।";
+
+/* The title of an alert when the user has an error setting up biometric unlock */
+"wallet.biometricsSetupErrorTitle" = "बायोमेट्रिक अनलॉक सेटअप असंभव।";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupFaceId" = "फेस आईडी";
+
+/* The sub-title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupSubTitle" = "क्या आप %@ का उपयोग करके पिंग वॉलेट को अनलॉक करना चाहेंगे?";
+
+/* The title shown when a user is asked if they would like to setup biometric unlock. `%@` will be replaced with the biometric type name of the current device. */
+"wallet.biometricsSetupTitle" = "%@ का उपयोग करके पिंग वॉलेट को अनलॉक करें";
+
+/* Type of biometrics. This will be used in Biometric setup screen. */
+"wallet.biometricsSetupTouchId" = "टच आईडी";
+
+/* The title for Ping Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.braveFeeLabel" = "ब्रेव शुल्क: %@";
+
+/* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Ping fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Ping fee' */
+"wallet.braveSwapFeeDisclaimer" = "कोट में %@ का पिंग शुल्क शामिल है।";
+
+/* The text beside the striked-through percentage Ping would normally charge for a swap. */
+"wallet.braveSwapFree" = "मुफ्त";
+
+/* As in buying cryptocurrency */
+"wallet.buy" = "खरीदें";
+
+/* The description of a buy button on the buy/send/swap/deposit modal */
+"wallet.buyDescription" = "Apple Pay या Wyre के माध्यम से क्रिप्टो करेंसी खरीदें।";
+
+/* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
+"wallet.chartAxisDateLabel" = "तारीख";
+
+/* The y-axis label on an asset or portfolio chart describing that y-axis values are based on the price at a given date */
+"wallet.chartAxisPriceLabel" = "मूल्य";
+
+/* The description of one of the 'Coinbase Pay' provider. */
+"wallet.coinbaseNetworkProviderDescription" = "क्रिप्टोकरेंसी के लिए सबसे विश्वसनीय नाम।";
+
+/* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
+"wallet.coinGeckoDisclaimer" = "आर्थिक डेटा, CoinGecko द्वारा प्रदान किया गया है।";
+
+/* The title of the 24h volume of this coin from market. */
+"wallet.coinMarket24HVolume" = "24 घंटे का वॉल्यूम";
+
+/* The message will be displayed when there is no coin market loaded or having an error. */
+"wallet.coinMarketEmptyMsg" = "वर्तमान में कोई बाजार जानकारी उपलब्ध नहीं है";
+
+/* The header title of the section that display coin market information. */
+"wallet.coinMarketInformation" = "जानकारी";
+
+/* The title of the market cap of this coin from market. */
+"wallet.coinMarketMarketCap" = "बाजारीकरण";
+
+/* The title of the rank of this coin from market. */
+"wallet.coinMarketRank" = "रैंक";
+
+/* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
+"wallet.coinTypeEthereum" = "Ethereum";
+
+/* A description for Ethereum coin type. */
+"wallet.coinTypeEthereumDescription" = "EVM परिचित उपकरणों का समर्थन करता है (ERC-20, ERC-721, ERC-1551, ERC-1155)";
+
+/* One of the coin types for users to create an account to store FIL assets */
+"wallet.coinTypeFilecoin" = "Filecoin";
+
+/* A description for Filecoin coin type. */
+"wallet.coinTypeFilecoinDescription" = "FIL एसेट रखने के लिए";
+
+/* A header displayed above coin types selection. */
+"wallet.coinTypeSelectionHeader" = "निम्नलिखित में से एक खाता प्रकार चुनें";
+
+/* One of the coin types for users to create an account with in Solana network */
+"wallet.coinTypeSolana" = "Solana";
+
+/* A description for Solana coin type. */
+"wallet.coinTypeSolanaDescription" = "SPL परिचित उपकरणों का समर्थन करता है";
+
+/* A placeholder for unknown coin type. */
+"wallet.coinTypeUnknown" = "अज्ञात";
+
+/* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
+"wallet.confirm" = "पुष्टि करें";
+
+/* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you.\" */
+"wallet.confirmationViewAllowSpendSubtitle" = "इस अनुमति को प्रदान करके, आप इस एप्लिकेशन को अपने %@ निकालने और आपके लिए स्वचालित लेन-देन करने की अनुमति दे रहे हैं।";
+
+/* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: \"Allow this app to spend your DAI?\" */
+"wallet.confirmationViewAllowSpendTitle" = "क्या इस एप्लिकेशन को आपके %@ खर्च करने की अनुमति देना चाहेंगे?";
+
+/* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, \"Current Allowance  100 DAI\". */
+"wallet.confirmationViewCurrentAllowance" = "वर्तमान अनुमति";
+
+/* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
+"wallet.confirmationViewEditPermissions" = "अनुमतियाँ संपादित करें";
+
+/* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
+"wallet.confirmationViewModeDetails" = "विवरण";
+
+/* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
+"wallet.confirmationViewModeTransaction" = "लेन-देन";
+
+/* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "संबंधित टोकन खाता अभी तक बनाया नहीं गया है। इसे बनाने और इसे वित्तपोषित करने के लिए थोड़ा SOL खर्च होगा।";
+
+/* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
+"wallet.confirmationViewUnlimitedWarning" = "असीमित अनुमति अनुरोधित है";
+
+/* A title of a button which will close this transaction status view. */
+"wallet.confirmedTransactionCloseButtonTitle" = "बंद करें";
+
+/* A description explains confirmed transaction has been included in a block. */
+"wallet.confirmedTransactionDescription" = "लेन-देन को एक ब्लॉक में शामिल किया गया है। डबल खर्च के जोखिम से बचने के लिए हम सुझाव देते हैं कि आप ब्लॉक की पुष्टि कर लें।";
+
+/* A title of a button which can open a confirmed transaction details screen. */
+"wallet.confirmedTransactionReceiptButtonTitle" = "रसीद";
+
+/* A title of transaction confirmed status view indicating this transaction has been included in a block. */
+"wallet.confirmedTransactionTitle" = "लेन-देन सम्पन्न";
+
+/* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
+"wallet.confirmPasswordTitle" = "पासवर्ड की पुष्टि करें";
+
+/* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
+"wallet.confirmTransactionsTitle" = "लेन-देन की पुष्टि करें";
+
+/* The title of the transaction confirmation panel UI. */
+"wallet.confirmTransactionTitle" = "लेन-देन की पुष्टि करें";
+
+/* A button title when a user will continue to the next step of something */
+"wallet.continueButtonTitle" = "आगे बढ़ें";
+
+/* The accessibility label for the contract address of a token / asset. */
+"wallet.contractAddressAccessibilityLabel" = "अनुबंध पता";
+
+/* A button title that user has clicked to copy some data to the users clipboard */
+"wallet.copiedToPasteboard" = "कॉपी किया गया";
+
+/* The button title that appears when long-pressing a wallet address that will copy said address to the users clipboard */
+"wallet.copyAddressButtonTitle" = "पता कॉपी करें";
+
+/* A button title that when tapped will copy some data to the users clipboard */
+"wallet.copyToPasteboard" = "कॉपी करने के लिए टैप करें";
+
+/* The message of the alert shown when a user switches to a network they do not have an account for yet. */
+"wallet.createAccountAlertMessage" = "अब एक बनाएं?";
+
+/* The title of the alert shown when a user switches to a network they do not have an account for yet. '%@' will be replaced with a network name such as 'Solana' or 'Filecoin'. */
+"wallet.createAccountAlertTitle" = "आपके पास अभी तक कोई %@ खाता नहीं है।";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to make up a new password to create a wallet */
+"wallet.createWalletBackButtonTitle" = "पासवर्ड बनाएं";
+
+/* The sub-title of the create wallet screen */
+"wallet.createWalletSubTitle" = "आप इस पासवर्ड का उपयोग अपने वॉलेट तक पहुँच के लिए करेंगे।";
+
+/* The title of the create wallet screen */
+"wallet.createWalletTitle" = "पासवर्ड बनाएं";
+
+/* The title of the creating wallet screen, shown after user enters their password while the wallet is being set up. */
+"wallet.creatingWallet" = "वॉलेट बनाया जा रहा है…";
+
+/* The title of the crypto tab */
+"wallet.cryptoTitle" = "Ping Wallet";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address for NFT. */
+"wallet.customizeIPFSNFTPublicGatewayNavTitle" = "NFT के लिए IPFS सार्वजनिक गेटवे पता कस्टमाइज़ करें";
+
+/* The navigation title of the screen for users to customize ipfs public gateway address. */
+"wallet.customizeIPFSPublicGatewayNavTitle" = "IPFS सार्वजनिक गेटवे पता कस्टमाइज़ करें";
+
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "नेटवर्क ब्लॉक एक्सप्लोरर URL";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "अमान्य प्रारूप। चेन आईडी पॉजिटिव संख्या होनी चाहिए।";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "चेन आईडी दर्ज करें";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "चेन आईडी";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "चेन नाम दर्ज करें";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "चेन नाम";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "अमान्य प्रारूप। मुद्रा के दशमलव संख्या पॉजिटिव संख्या होनी चाहिए।";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "मुद्रा की दशमलव दर्ज करें";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "चेन की मुद्रा की दशमलव";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "नया नेटवर्क जोड़ें";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "इस फ़ील्ड को खाली नहीं छोड़ सकते।";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "आइकन URL";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "अवैध पता।";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPC URL";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "कस्टम नेटवर्क";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "मुद्रा का नाम दर्ज करें";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "चेन का मुद्रा नाम";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "मुद्रा का प्रतीक दर्ज करें";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "चेन का मुद्रा प्रतीक";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "एक या अधिक URL दर्ज करें";
+
+/* A title for the btton that users can click to choose the network they are willing to add custom asset in. */
+"wallet.customTokenNetworkButtonTitle" = "नेटवर्क चुनें";
+
+/* A title that will be displayed on top of the text field for users to choose a network they are willing to add the custom asset in. */
+"wallet.customTokenNetworkHeader" = "नेटवर्क चुनें";
+
+/* The title displayed on the add custom token screen */
+"wallet.customTokenTitle" = "कस्टम एसेट जोड़ें";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. The '%@' will be the site attempting to connect. For example: "app.uniswap.org wants to interact with Ping Wallet" */
+"wallet.dappsConnectionNotificationOriginTitle" = "%@ Ping Wallet के साथ संवाद करना चाहता है";
+
+/* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Ping Wallet. */
+"wallet.dappsConnectionNotificationTitle" = "यह पृष्ठ Ping Wallet के साथ संवाद करना चाहता है";
+
+/* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "यहाँ पर वह सभी DApps प्रदर्शित होते हैं जिन्हें आपने Ping Wallet से कनेक्ट किया है";
+
+/* The title of the section that will list all the permitted dapp connections */
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "कनेक्ट की गई DApps";
+
+/* The title of the section that will display settings for default wallet and dapp provider api access permission */
+"wallet.dappsSettingsGeneralSectionTitle" = "सामान्य";
+
+/* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
+"wallet.dappsSettingsNavTitle" = "%@ सेटिंग्स";
+
+/* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
+"wallet.dappsSettingsRemoveAllWarning" = "इससे %1$d %2$@ के लिए वॉलेट कनेक्शन की सभी अनुमतियाँ हटा दी जाएगी।";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsitePlural" = "वेबसाइट";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.dappsSettingsWebsiteSingular" = "वेबसाइट";
+
+/* Describes what range of data to show on the graph (all data available) */
+"wallet.dateIntervalAll" = "सभी";
+
+/* An abbreivated form of "1 Day" used to describe what range of data to show on the graph (past day) */
+"wallet.dateIntervalDay" = "1 दिन";
+
+/* Describes what range of data to show on the graph (past day) */
+"wallet.dateIntervalDayAccessibilityLabel" = "1 दिन";
+
+/* An abbreivated form of "1 Hour" used to describe what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHour" = "1 घंटा";
+
+/* Describes what range of data to show on the graph (past hour) */
+"wallet.dateIntervalHourAccessibilityLabel" = "1 घंटा";
+
+/* An abbreivated form of "1 Month" used to describe what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonth" = "1 महीना";
+
+/* Describes what range of data to show on the graph (past month) */
+"wallet.dateIntervalMonthAccessibilityLabel" = "1 महीना";
+
+/* An abbreivated form of "3 Months" used to describe what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonths" = "3 महीने";
+
+/* Describes what range of data to show on the graph (past 3 months) */
+"wallet.dateIntervalThreeMonthsAccessibilityLabel" = "3 महीने";
+
+/* An abbreivated form of "1 Week" used to describe what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeek" = "1 सप्ताह";
+
+/* Describes what range of data to show on the graph (past week) */
+"wallet.dateIntervalWeekAccessibilityLabel" = "1 सप्ताह";
+
+/* An abbreivated form of "1 Year" used to describe what range of data to show on the graph (past year) */
+"wallet.dateIntervalYear" = "1 वर्ष";
+
+/* Describes what range of data to show on the graph (past year) */
+"wallet.dateIntervalYearAccessibilityLabel" = "1 वर्ष";
+
+/* A title that will be displayed on top of the text field for users to input the custom token's decimals of precision */
+"wallet.decimalsPrecision" = "दशमलव स्पष्टता";
+
+/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
+"wallet.decryptMessageScreenshotDetectedMessage" = "चेतावनी: आपके संदेश की स्क्रीनशॉट को क्लाउड स्टोरेज सेवा में सहेजा जा सकता है और इसे तस्वीर के रूप में किसी भी ऐप्लिकेशन द्वारा पढ़ा जा सकता है। Ping आपको सलाह देता है कि आप इस स्क्रीनशॉट को सहेजने से बचें और जल्द से जल्द इसे हटा दें।";
+
+/* The title of the button to approve a decrypt request from a dapps website. */
+"wallet.decryptRequestApprove" = "मंजूरी दें";
+
+/* The title of the button to show the message of a decrypt request from a dapps website. */
+"wallet.decryptRequestReveal" = "प्रकट करें";
+
+/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestSubtitle" = "यह DApp आपके अनुरोध को प्रसंस्कृत करने के लिए इस संदेश को पढ़ना चाहती है";
+
+/* A title of the view shown over a dapps website that requests the user decrypt a message. */
+"wallet.decryptRequestTitle" = "संदेश को डिक्रिप्ट करें";
+
+/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example "Ethereum Account 3") */
+"wallet.defaultEthAccountName" = "इथेरियम खाता %lld";
+
+/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example "Filecoin Account 3") */
+"wallet.defaultFilAccountName" = "फ़ाइलकॉइन खाता %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example "Secondary Ethereum Account 3") */
+"wallet.defaultSecondaryEthAccountName" = "द्वितीयक इथेरियम खाता %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example "Secondary Filecoin Account 3") */
+"wallet.defaultSecondaryFilAccountName" = "द्वितीयक फ़ाइलकॉइन खाता %lld";
+
+/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example "Secondary Solana Account 3") */
+"wallet.defaultSecondarySolAccountName" = "द्वितीयक सोलाना खाता %lld";
+
+/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example "Solana Account 3") */
+"wallet.defaultSolAccountName" = "सोलाना खाता %lld";
+
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "हटाएं";
+
+/* As in depsit some crypto coins to a specific wallet address. */
+"wallet.deposit" = "जमा करें";
+
+/* The button title for user to click to copy the account address for deposit. */
+"wallet.depositAddressCopy" = "कॉपी करें";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.deselectAllButtonTitle" = "सभी को अचयनित करें";
+
+/* A button title which when pressed displays a new screen with additional details/information */
+"wallet.detailsButtonTitle" = "विवरण";
+
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
+"wallet.editButtonTitle" = "संपादित करें";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "नेटवर्क संपादित करें";
+
+/* A title of the edit gas screen for standard transactions */
+"wallet.editGasTitle" = "गैस संपादित करें";
+
+/* The footer title for edit nonce section in advanced settings screen. */
+"wallet.editNonceFooter" = "यदि कस्टम नॉन्स अनुक्रमिक नहीं है या अन्य त्रुटियाँ हैं, तो लेनदेन नेटवर्क पर फैलाया नहीं जा सकता।";
+
+/* The header title for edit nonce section in advanced settings screen. */
+"wallet.editNonceHeader" = "नॉन्स";
+
+/* The placeholder for custom nonce textfield. */
+"wallet.editNoncePlaceholder" = "कस्टम नॉन्स दर्ज करें";
+
+/* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: "Spend limit permission allows Account 1 to withdraw and spend up to the following amount:" */
+"wallet.editPermissionsAllowanceHeader" = "खर्च सीमा अनुमति %@ को निम्नलिखित राशि निकालने और खर्च करने की अनुमति देती है:";
+
+/* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
+"wallet.editPermissionsApproveUnlimited" = "असीमित";
+
+/* The header text above the field to input a custom allowance value. */
+"wallet.editPermissionsCustomAllowanceHeader" = "कस्टम राशि निर्धारित करें";
+
+/* The header text shown in the row that displays the proposed allowance value. */
+"wallet.editPermissionsProposedAllowanceHeader" = "प्रस्तावित राशि";
+
+/* The title of the button shown beside the custom allowance input field to make the custom allowance value "Unlimited". */
+"wallet.editPermissionsSetUnlimited" = "असीमित करें";
+
+/* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
+"wallet.editPermissionsTitle" = "अनुमतियाँ संपादित करें";
+
+/* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionConnect" = "कनेक्ट करें";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionDisconnect" = "डिस्कनेक्ट करें";
+
+/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
+"wallet.editSiteConnectionAccountActionRevoke" = "रद्द करें";
+
+/* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionSwitch" = "स्विच करें";
+
+/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
+"wallet.editSiteConnectionAccountActionTrust" = "विश्वास करें";
+
+/* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountPlural" = "खाते";
+
+/* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
+"wallet.editSiteConnectionAccountSingular" = "खाता";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account connected" or "2 accounts connected") */
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ कनेक्ट किए गए";
+
+/* The navigation title of the screen for users to edit dapps site connection with users' Ping Wallet accounts. */
+"wallet.editSiteConnectionScreenTitle" = "कनेक्शन्स";
+
+/* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
+"wallet.editTransactionError" = "दर्ज की गई मानों की जांच करें और पुनः प्रयास करें।";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.editTransactionErrorCTA" = "वापस";
+
+/* The button title for showing the screen to change what assets are visible */
+"wallet.editVisibleAssetsButtonTitle" = "दिखाई दे रहे धन को संपादित करें";
+
+/* Title on the button that users can click to enable Ping to resolve the ENS domain they entered. */
+"wallet.ensDomainInterstitialPageButtonProceed" = "इनफ्यूरा सर्वर के साथ जारी करें";
+
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Ping ENS के नाम को Infura का उपयोग करेगा। Ping आपका IP पता छिपाएगा। यदि आप इसे सक्षम करते हैं, तो Infura को आपके .eth नाम देखने का पता चलेगा, लेकिन कोई अन्य जानकारी नहीं मिलेगी। <a href=%1$@>%2$@</a> और <a href=%3$@>%4$@</a> Infura की शर्तें और गोपनीयता नीति देखें।";
+
+/* Title displayed when users chose Ping to ask them if they want the ENS domain to be resolved every time they enter one. */
+"wallet.ensDomainInterstitialPageTitle" = "Brave में Ethereum Name Service (ENS) डोमेन समर्थन सक्रिय करें?";
+
+/* Title on the button that users can click to enable Ping to resolve the ENS offchain lookup for the domain they entered. */
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "ऑफ़लाइन रिज़ोल्व के साथ जारी करें";
+
+/* Description displayed when users chose Ping to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Ping Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
+"wallet.ensOffchainDomainInterstitialPageDescription" = "यह .eth डोमेन ऑफ़लाइन संदर्भ में संग्रहीत है और एक तीसरे पार्टी गेटवे द्वारा निर्धारित होगा। यदि आप ENS की ऑफ़लाइन रिज़ोल्व सक्रिय करते हैं, तो तीसरे पार्टी गेटवे को पता चलेगा कि आप .eth डोमेन को देखने का प्रयास कर रहे हैं। <a href=%@>%@</a> की जानकारी के लिए।";
+
+/* Title displayed when users chose Ping to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Brave में Ethereum Name Service (ENS) ऑफ़लाइन डोमेन समर्थन सक्रिय करें?";
+
+/* Button title when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayButton" = "ENS डोमेन का उपयोग करें";
+
+/* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayDesc" = "लगता है कि आपने एक ENS पता दर्ज किया है। हमें इस अनुरोध को संदर्भित करने के लिए एक तीसरे पार्टी रिज़ोल्व सेवा का उपयोग करना होगा। आपका .eth डोमेन इस प्रक्रिया में सुरक्षित रहेगा, और आपका लेनदेन सुरक्षित रहेगा।";
+
+/* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayTitle" = "Ping .eth डोमेन के लिए ऑफ़लाइन गेटवे समर्थन करता है।";
+
+/* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
+"wallet.ensOffchainResolveMethodDescription" = "[अधिक जानें](%@) ENS ऑफ़लाइन रिज़ोल्व समर्थन के गोपनीयता संबंधी सिद्धांत।";
+
+/* The title for the options to allow Ethereum Name service domain names offchain. */
+"wallet.ensOffchainResolveMethodTitle" = "ENS ऑफ़लाइन रिज़ोल्व समर्थन";
+
+/* The title for the options to resolve Ethereum Name service domain names. */
+"wallet.ensResolveMethodTitle" = "Ethereum Name Service (ENS) नामों को रिज़ोल्व करें";
+
+/* A placeholder for the text field that users will input the custom token address */
+"wallet.enterAddress" = "पता दर्ज करें";
+
+/* The header title for the textField users will input the dollar value of the crypto they want to buy */
+"wallet.enterAmount" = "राशि दर्ज करें";
+
+/* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsNavTitle" = "बायोमेट्रिक्स सक्रिय करें";
+
+/* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
+"wallet.enterPasswordForBiometricsTitle" = "अपने वॉलेट का पासवर्ड दर्ज करें बायोमेट्रिक्स को सक्रिय करने के लिए (आपको यह केवल एक बार करना होगा)";
+
+/* A placeholder for the text field that users will input the custom token Coingecko ID. */
+"wallet.enterTokenCoingeckoId" = "टोकन का CoinGecko आईडी दर्ज करें";
+
+/* A placeholder for the text field that users will input the custom token icon URL */
+"wallet.enterTokenIconURL" = "आइकन URL दर्ज करें";
+
+/* A placeholder for the text field that users will input the custom token's ID. */
+"wallet.enterTokenId" = "टोकन का आईडी दर्ज करें";
+
+/* A placeholder for the text field that users will input the custom token name */
+"wallet.enterTokenName" = "टोकन का नाम दर्ज करें";
+
+/* A placeholder for the text field that users will input the custom token symbol */
+"wallet.enterTokenSymbol" = "टोकन का प्रतीक दर्ज करें";
+
+/* A description of an Ethereum account, displayed in Accounts tab. */
+"wallet.ethAccountDescription" = "Ethereum अकाउंट";
+
+/* A button title displayed in a menu to export an account's private key. */
+"wallet.exportButtonTitle" = "निर्यात";
+
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "इस नेटवर्क को जोड़ने में असमर्थ।";
+
+/* The message of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorMessage" = "कृपया पुन: प्रयास करें।";
+
+/* The title of an alert when the account the user attempted to import fails for some reason */
+"wallet.failedToImportAccountErrorTitle" = "अकाउंट आयात करने में असमर्थ।";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "नेटवर्क हटाने में असमर्थ।\nकृपया पुन: प्रयास करें।";
+
+/* A description explains transaction is failed. */
+"wallet.failedTransactionDescription" = "लेन-देन विफल हो गई है क्योंकि मूल्य विकास के कारण। मूल्य विकास के साथ लेन-देन करने के लिए स्लिपेज टॉलरेंस बढ़ाएं।";
+
+/* A description of the view that will display the error message. */
+"wallet.failedTransactionErrorViewDescription" = "भविष्य में इसे देखने के लिए त्रुटि संदेश को सहेजें।";
+
+/* A title of the view that will display the error message. */
+"wallet.failedTransactionErrorViewTitle" = "त्रुटि संदेश";
+
+/* A title of transaction failed status view indicating this transaction has not been included in a block. */
+"wallet.failedTransactionTitle" = "लेन-देन विफल";
+
+/* A title of a button which will a new view to display the error. */
+"wallet.failedTransactionViewErrorButtonTitle" = "त्रुटि दिखाएं";
+
+/* A description of an Filecoin account, displayed in Accounts tab. */
+"wallet.filAccountDescription" = "Filecoin अकाउंट";
+
+/* The title of the modal for filtering Portfolio and NFT views. */
+"wallet.filtersAndDisplaySettings" = "फ़िल्टर और प्रदर्शन सेटिंग्स";
+
+/* A title above a text field for inputting the gas amount limit */
+"wallet.gasAmountLimit" = "गैस लिमिट";
+
+/* The base cost of the gas fee before adjustments by the user. It will be shown next to a Gwei amount */
+"wallet.gasCurrentBaseFee" = "वर्तमान बेस फ़ीस";
+
+/* A title displayed beside a number describing the cost of the transaction in ETH which is called Gas */
+"wallet.gasFee" = "गैस शुल्क";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom. This option allows the user to specify gas fee details themselves */
+"wallet.gasFeeCustomOption" = "कस्टम";
+
+/* A disclaimer shown above the UI to select a gas fee */
+"wallet.gasFeeDisclaimer" = "हालांकि यह गारंटी नहीं है, लेकिन अगर आप अधिक शुल्क भुगतान करते हैं तो उपयोगकर्ता संलग्न कर सकते हैं कि उनकी लेन-देन में प्राथमिकता दी जाएगी।";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitHigh" = "उच्च";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitLow" = "निम्न";
+
+/* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
+"wallet.gasFeePredefinedLimitOptimal" = "आदर्श";
+
+/* The title of the button to approve a encryption public key request from a dapps website. */
+"wallet.getEncryptionPublicKeyRequestApprove" = "प्रदान करें";
+
+/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
+"wallet.getEncryptionPublicKeyRequestMessage" = "आपके वॉलेट की सार्वजनिक एन्क्रिप्शन कुंजी का अनुरोध कर रहा है। यदि आप इसे प्रदान करने के लिए सहमत हैं, तो साइट आपको एन्क्रिप्टेड संदेश लिख सकेगी।";
+
+/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestSubtitle" = "एक DApp आपकी सार्वजनिक एन्क्रिप्शन कुंजी का अनुरोध कर रहा है";
+
+/* A title of the view shown over a dapps website that requests the users public encryption key. */
+"wallet.getEncryptionPublicKeyRequestTitle" = "सार्वजनिक एन्क्रिप्शन कुंजी का अनुरोध";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.graph" = "ग्राफ़";
+
+/* The title of the sort option that groups assets by each account. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByAccountsOptionTitle" = "अकाउंट्स";
+
+/* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByDescription" = "इस द्वारा संपत्तियाँ समूहित करें";
+
+/* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNetworksOptionTitle" = "नेटवर्क्स";
+
+/* The title of the sort option that does not group assets. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByNoneOptionTitle" = "कोई नहीं";
+
+/* The label of the sort option that groups assets by the selected filter value. Used in Portfolio/NFT filters and display settings. */
+"wallet.groupByTitle" = "इस द्वारा समूहित करें";
+
+/* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
+"wallet.helpCenter" = "सहायता केंद्र";
+
+/* A button title which when pressed hides the details screen. */
+"wallet.hideDetailsButtonTitle" = "विवरण छुपाएं";
+
+/* A button title that will redact a private key on the screen */
+"wallet.hidePrivateKeyButtonTitle" = "निजी कुंजी छिपाएं";
+
+/* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesDescription" = "$0.05 से कम कीमत वाले एसेट्स छुपाएं";
+
+/* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideSmallBalancesTitle" = "छोटे राशियों वाले संतुलन छिपाएं";
+
+/* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsDescription" = "उपयोगकर्ता के पास न होने पर NFTs छिपाएं";
+
+/* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
+"wallet.hideUnownedNFTsTitle" = "अस्वीकृत NFTs छिपाएं";
+
+/* The title of a button that updates the filter to hide tokens with zero balances. */
+"wallet.hideZeroBalances" = "शून्य संतुलन छिपाएं";
+
+/* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.highToLowSortOption" = "सबसे अधिक से कम मूल्य तक";
+
+/* A title above a text field that is used to enter a password */
+"wallet.importAccountOriginPasswordTitle" = "मूल कुंजीशब्द";
+
+/* A placeholder on a text box for entering the users private key/json data to import accounts */
+"wallet.importAccountPlaceholder" = "अपनी निजी कुंजी दर्ज करें, पेस्ट करें या इम्पोर्ट करें।";
+
+/* A title above a text field that will be used to import a users secondary accounts */
+"wallet.importAccountSectionTitle" = "अपनी निजी कुंजी इम्पोर्ट करके आप एक सेकेंडरी खाता बना सकते हैं।";
+
+/* A button title that when tapped will display a file import dialog */
+"wallet.importButtonTitle" = "आयात...";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.importedCryptoAccountsTitle" = "आयात किए गए क्रिप्टो खाते";
+
+/* A placeholder on a text box for entering the users private key to import accounts */
+"wallet.importNonEthAccountPlaceholder" = "अपनी निजी कुंजी दर्ज करें या पेस्ट करें।";
+
+/* The error message displayed when the user enters the wrong password while unlocking the wallet */
+"wallet.incorrectPasswordErrorMessage" = "गलत पासवर्ड";
+
+/* A title above additional information about an asset */
+"wallet.infoTitle" = "जानकारी";
+
+/* A label shown inside of a box when there is no input data for a given transaction */
+"wallet.inputDataPlaceholder" = "कोई डेटा नहीं।";
+
+/* A label shown inside of a box when there is no input data for a given Solana transaction */
+"wallet.inputDataPlaceholderSolana" = "कार्य प्रकार: %d";
+
+/* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientBalance" = "अपर्याप्त शेष";
+
+/* An error message displayed when the user does not have enough funds to make or confirm a transaction */
+"wallet.insufficientFunds" = "अपर्याप्त फंड्स";
+
+/* An error message when there is no insufficient funds for gas fee. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
+"wallet.insufficientFundsForGas" = "गैस शुल्क के लिए अपर्याप्त फंड्स";
+
+/* An error message displayed when the user doesn't have enough liquidity to proceed with a transaction. */
+"wallet.insufficientLiquidity" = "अपर्याप्त लिक्विडिटी";
+
+/* The title of a button that Deselects all visible options. */
+"wallet.internalErrorMessage" = "आंतरिक त्रुटि हुई है";
+
+/* A title will displayed in the IPFS error page when IPFS is disabled. */
+"wallet.ipfsErrorTitle" = "इस साइट से कनेक्ट करने में असमर्थ";
+
+/* The navigation title of the screen for users to customize NFT gateway. */
+"wallet.ipfsPublicGatewayAddressNFTTitle" = "NFT गेटवे के लिए आईपीएफएस सार्वजनिक गेटवे पता";
+
+/* The navigation title of the screen for users to customize IPFS public gateway. */
+"wallet.ipfsPublicGatewayAddressTitle" = "आईपीएफएस सार्वजनिक गेटवे पता";
+
+/* The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy. */
+"wallet.ipfsResolveMethodDescription" = "गोपनीयता संरक्षण के संदर्भ में IPFS गेटवे के विचारों के बारे में [और अधिक जानें](%@)";
+
+/* The title of the section under Web3 settings for users to pick an option to resolve IPFS Resources. */
+"wallet.ipfsResourcesOptionsTitle" = "IPFS संसाधनों को हल करें";
+
+/* The header of the section under Web3 settings for IPFS NFT gateway setting. */
+"wallet.ipfsSettingsHeader" = "IPFS";
+
+/* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
+"wallet.learnMoreButton" = "और अधिक जानें";
+
+/* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalDescription" = "कृपया निम्नलिखित विवरणों को ध्यान से पढ़ें";
+
+/* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
+"wallet.legalTermOfUse" = "मैंने [उपयोग की शर्तें](%@) पढ़ी और स्वीकार की हैं";
+
+/* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
+"wallet.legalTitle" = "शुरुआत से पहले";
+
+/* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
+"wallet.legalUserResponsibility" = "मुझे यह समझने के लिए कि यह एक वॉलेट है जिसे मैं रखता हूं, और मैं फंड, संपत्ति या संबंधित खातों के लिए एकमात्र जिम्मेदार हूं और मैंने अपने वॉलेट को सुरक्षित रखने, संरक्षित करने और बैकअप करने के लिए उचित कदम उठाने के लिए उचित उपाय लेने की जिम्मेदारी स्वीकार की है। मैं समझता हूँ कि Ping मेरे वॉलेट तक पहुँच नहीं पा सकता या मेरे नाम पर लेनदेन उलटा नहीं सकता है, और मेरे वापसी शब्द केवल मेरे वॉलेट तक पहुँच प्राप्त करने का एकमात्र तरीका है, जब भी पासवर्ड खोने, डिवाइस चोरी होने या इसी तरह की परिस्थितियों के लिए रिकवरी एक्सेस पुनः प्राप्त करने की आवश्यकता हो।";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lock" = "लॉक करें";
+
+/* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.lockWallet" = "वॉलेट लॉक करें";
+
+/* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
+"wallet.lowToHighSortOption" = "सबसे कम से सबसे ज्यादा";
+
+/* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account" or "2 accounts") */
+"wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
+
+/* The plural word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountPlural" = "खाते";
+
+/* The singular word that will be used in `manageSiteConnectionsAccount`. */
+"wallet.manageSiteConnectionsAccountSingular" = "खाता";
+
+/* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "यह सभी वेबसाइटों के लिए वॉलेट की कनेक्शन अनुमतियाँ हटा देगा।";
+
+/* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "हटाएं";
+
+/* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "क्या आप सभी अनुमतियाँ हटाना चाहते हैं?";
+
+/* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "यह इस वेबसाइट के लिए वॉलेट की सभी कनेक्शन अनुमतियाँ हटा देगा।";
+
+/* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
+"wallet.manageSiteConnectionsDetailHeader" = "%@ से कनेक्टेड खाते";
+
+/* The filter in the search bar for the screen to manage web3 sites account connections. */
+"wallet.manageSiteConnectionsFilterPlaceholder" = "कनेक्टेड DApp फ़िल्टर करें";
+
+/* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
+"wallet.manageSiteConnectionsRemoveAll" = "सभी हटाएं";
+
+/* The page title that will display the top 250 tokens from the market via CoinGecko */
+"wallet.marketPageTitle" = "बाजार के बारे में";
+
+/* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
+"wallet.maximumGasFee" = "अधिकतम गैस शुल्क";
+
+/* The title of the edit gas fee screen for EIP-1559 transactions */
+"wallet.maxPriorityFeeTitle" = "अधिकतम प्राथमिक शुल्क";
+
+/* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Ping Wallet in wallet settings. */
+"wallet.module" = "पिंग वॉलेट";
+
+/* A button title for user to open more option in asset details screen other than buy/send/swap. */
+"wallet.more" = "अधिक";
+
+/* The title displayed on the view to filter by a network / all networks. */
+"wallet.networkFilterTitle" = "नेटवर्क चुनें";
+
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "वॉलेट नेटवर्क पर्सनलाइज़ेशन";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "चेन ID पहले से मौजूद है";
+
+/* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkNameTitle" = "नेटवर्क का नाम";
+
+/* A placeholder in Buy Screen, when user switched to a network that Ping currently doesn't support token purchasing. */
+"wallet.networkNotSupportedForBuyToken" = "चयनित नेटवर्क पर खरीद असमर्थ";
+
+/* The title of the section for primary networks in the network selection view. */
+"wallet.networkSelectionPrimaryNetworks" = "प्राथमिक नेटवर्क";
+
+/* The title of the section for secondary networks in the network selection view. */
+"wallet.networkSelectionSecondaryNetworks" = "माध्यमिक नेटवर्क";
+
+/* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. "%@" will be replaced with the network name such as "Solana" or "Ethereum" */
+"wallet.networkSelectionTestnetAccessibilityLabel" = "%@ परीक्षण नेटवर्क दिखाएं";
+
+/* The title of the section for test networks in the network selection view. */
+"wallet.networkSelectionTestNetworks" = "परीक्षण नेटवर्क";
+
+/* The title of the to select a network from the available networks */
+"wallet.networkSelectionTitle" = "नेटवर्क चुनें";
+
+/* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
+"wallet.networkURLTitle" = "नेटवर्क URL";
+
+/* A placeholder string that will be used on password text fields to create a new wallet */
+"wallet.newPasswordPlaceholder" = "नया पासवर्ड डालें";
+
+/* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
+"wallet.newSiteConnectConfirmationMessage" = "अनुमत किए गए अपने खातों के पते दिखाएं (अनिवार्य)";
+
+/* The footer message displayed above the Next button in new site connection screen. */
+"wallet.newSiteConnectFooter" = "केवल उन वेबसाइटों से कनेक्ट करें जिन पर आप भरोसा करते हैं।";
+
+/* The message displayed below the dapp's origin url in new site connection screen. */
+"wallet.newSiteConnectMessage" = "पिंग वॉलेट से कनेक्ट";
+
+/* The transaction edit error alert button which will dismiss the alert. */
+"wallet.newSiteConnectScreenTitle" = "कनेक्ट";
+
+/* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as "1 of 4" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
+"wallet.next" = "अगला";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's visible NFTs. */
+"wallet.nftCollected" = "एकत्रित";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
+"wallet.nftDetailBlockchain" = "ब्लॉकचेन";
+
+/* The title of a section in NFT detail screen that will display NFT's description if there is any. */
+"wallet.nftDetailDescription" = "विवरण";
+
+/* This is one type of token standard. And most likely this does not need to be translated */
+"wallet.nftDetailERC721" = "ERC 721";
+
+/* A placeholder text, indicates this NFT image was not able to be loaded. */
+"wallet.nftDetailImageNotAvailable" = "छवि उपलब्ध नहीं है";
+
+/* The section header that displays the overview information of this NFT. */
+"wallet.nftDetailOverview" = "अवलोकन";
+
+/* The title of the row under `Overview` section in NFT details screen. When this NFT has an owner. */
+"wallet.nftDetailOwnedBy" = "के पास";
+
+/* The section header that displays the all the properties/attributes information of this NFT. */
+"wallet.nftDetailProperties" = "गुण";
+
+/* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
+"wallet.nftDetailSendNFTButtonTitle" = "भेजें";
+
+/* This is one type of NFT standard. And most likely this does not need to be translated */
+"wallet.nftDetailSPL" = "SPL";
+
+/* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
+"wallet.nftDetailSVGImageDisclaimer" = "ऊपर दिखाई गई छवि NFT से बिल्कुल सही नहीं हो सकती";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
+"wallet.nftDetailTokenID" = "टोकन आईडी";
+
+/* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
+"wallet.nftDetailTokenStandard" = "टोकन मानक";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
+"wallet.nftDiscoveryCalloutDescription" = "Ping वॉलेट आपके NFT को स्वचालित रूप से प्रदर्शित करने के लिए तृतीय पक्ष सेवा का उपयोग कर सकता है। इस सेवा को प्रदान करने के लिए, Ping आपके वॉलेट पतों को SimpleHash के साथ साझा करेगा। अधिक जानें।";
+
+/* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "अधिक जानें";
+
+/* The title of the button that user clicks to disable NFT discovery. */
+"wallet.nftDiscoveryCalloutDisable" = "नहीं, मैं इसे मैन्युअली करूंगा";
+
+/* The title of the button that user clicks to enable NFT discovery. */
+"wallet.nftDiscoveryCalloutEnable" = "हां, जारी रखें";
+
+/* The title of the alert that asks users either to enable NFT discovery or import manually. */
+"wallet.nftDiscoveryCalloutTitle" = "क्या आप चाहते हैं कि आपके NFT स्वचालित रूप से प्रदर्शित हों ?";
+
+/* The title of the button that user clicks to add his/her first NFT */
+"wallet.nftEmptyImportNFT" = "NFT आयात करें";
+
+/* Description of the NFT Gateway setting */
+"wallet.nftGatewayLongDescription" = "आपको एक मान्य IPFS गेटवे प्रदान करना होगा। दी गई गेटवे पर जाँच की जाएगी कि क्या IPFS संसाधनों को लोड किया जा सकता है।";
+
+/* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
+"wallet.nftHidden" = "छुपा हुआ";
+
+/* The title of the empty state inside NFT tab under Hidden group. */
+"wallet.nftInvisiblePageEmptyTitle" = "अभी तक कोई छिपे हुए NFT नहीं हैं।";
+
+/* The description of the empty state inside NFT tab. */
+"wallet.nftPageEmptyDescription" = "क्या आपके पास अन्य आइटम हैं जो जोड़ने के लिए हैं ? नीचे दिए गए बटन पर क्लिक करें ताकि आप इन्टरनेट कर सकें।";
+
+/* The title of the empty state inside NFT tab. */
+"wallet.nftPageEmptyTitle" = "अभी तक कोई NFT नहीं।";
+
+/* The title of the tab that will display user's visible NFT assets. */
+"wallet.nftPageTitle" = "NFT";
+
+/* The title of context button for user to do not show a NFT in wallet at all. */
+"wallet.nftRemoveFromWallet" = "वॉलेट में दिखाना न चाहें";
+
+/* The description of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT Ping वॉलेट से हटा दिया जाएगा, लेकिन ब्लॉकचेन पर रहेगा। यदि आप इसे हटा देते हैं, और फिर बाद में बदलते हैं, तो आपको इसे मैन्युअली पुनः आयात करना होगा।";
+
+/* The title of the alert when user attempts to remove an NFT from wallet. */
+"wallet.nftRemoveFromWalletAlertTitle" = "वॉलेट से हटाएं ?";
+
+/* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
+"wallet.nftsDescription" = "%d NFT";
+
+/* The title of an overlay on top left of the junk NFT grid. */
+"wallet.nftSpam" = "स्पैम";
+
+/* The description of the NFTs row in Account Details when user has 1 NFT. */
+"wallet.nftsSingularDescription" = "%d NFT";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
+"wallet.nftsTab" = "NFT टैब";
+
+/* The title which is displayed above a list of NFTs. 'NFT' is an acronym for Non-Fungible Token. */
+"wallet.nftsTitle" = "NFT";
+
+/* The title of context button for user to unhide visible NFT. */
+"wallet.nftUnhide" = "दिखाएँ";
+
+/* The title of context button for user to unspam a NFT. */
+"wallet.nftUnspam" = "अस्पष्ट नहीं";
+
+/* The empty state description displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccountDescription" = "यहाँ पर उपयोगकर्ताओं के खातों का संतुलन है।";
+
+/* The empty state displayed when the user has no accounts associated with a transaction or asset */
+"wallet.noAccounts" = "कोई खाता नहीं";
+
+/* The empty state displayed when the user has no assets associated with an account */
+"wallet.noAssets" = "कोई संपत्ति नहीं";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "कोई नेटवर्क नहीं जोड़ा गया";
+
+/* The empty state shown when you have no imported accounts */
+"wallet.noSecondaryAccounts" = "कोई द्वितीयक खाता नहीं।";
+
+/* The empty state displayed when the user has no transactions associated with an account */
+"wallet.noTransactions" = "कोई लेन-देन नहीं";
+
+/* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
+"wallet.onboardingCompletedButtonTitle" = "मेरे वॉलेट में जाएं";
+
+/* The subtitle of the last step of creating a new wallet. */
+"wallet.onbordingCompletedSubTitle" = "आपका Ping वॉलेट उपयोग के लिए तैयार है।";
+
+/* The title of the last step of creating a new wallet. */
+"wallet.onbordingCompletedTitle" = "आप तैयार हैं !";
+
+/* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
+"wallet.otherWalletActionsAccessibilityTitle" = "अन्य वॉलेट क्रियाएँ";
+
+/* The error message displayed when a user enters a password that does not meet the requirements */
+"wallet.passwordDoesNotMeetRequirementsError" = "पासवर्ड में कम से कम 8 अक्षर होने चाहिए।";
+
+/* A placeholder string that will be used on password text fields */
+"wallet.passwordPlaceholder" = "अपना पासवर्ड दर्ज करें";
+
+/* The error displayed when entering two passwords that do not match that are expected to match */
+"wallet.passwordsDontMatchError" = "पासवर्ड मेल नहीं खा रहा है";
+
+/* A label will be displayed beside input password when it is considered as a medium password */
+"wallet.passwordStatusMedium" = "मध्यम";
+
+/* A label will be displayed beside input password when it is considered as a strong password */
+"wallet.passwordStatusStrong" = "बहुत मजबूत";
+
+/* A label will be displayed beside input password when it is considered as a weak password */
+"wallet.passwordStatusWeak" = "कमजोर";
+
+/* A button title that when tapped will paste some data from the users clipboard to a text field */
+"wallet.pasteFromPasteboard" = "पेस्ट करें";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceLimit" = "प्रति गैस मूल्य सीमा (Gwei)";
+
+/* A title above a text field for inputting the per-gas price limit in Gwei */
+"wallet.perGasPriceTitle" = "प्रति गैस मूल्य (Gwei)";
+
+/* A title above a text field for inputting the per-gas tip limit in Gwei */
+"wallet.perGasTipLimit" = "प्रति गैस युक्ति सीमा (Gwei)";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateDescription" = "शुरू करने के लिए टोकन जमा या खरीदें। यदि आप आयातित खाते के टोकन नहीं देख रहे हैं, तो फ़िल्टर और प्रदर्शन सेटिंग्स की जांच करें। यह संभावित है कि अज्ञात टोकन को व्यक्तिगत संपत्तियों के रूप में जोड़ना चाहिए।";
+
+/* The title of the empty state in Portfolio when no assets are shown. */
+"wallet.portfolioEmptyStateTitle" = "कोई उपलब्ध संपत्ति नहीं";
+
+/* The title of the portfolio page in the Crypto tab */
+"wallet.portfolioPageTitle" = "वॉलेट";
+
+/* The message displayed when the user takes a screenshot of their private key */
+"wallet.privateKeyScreenshotDetectedMessage" = "चेतावनी: आपकी निजी कुंजी की एक स्क्रीनशॉट क्लाउड संग्रह की जा सकती है। इसे फ़ोटोज़ तक पहुँच वाली किसी भी ऐप्लिकेशन द्वारा पढ़ा जा सकता है। Ping आपको इस स्क्रीनशॉट को सहेजने की सलाह नहीं देता और आपको जल्द से जल्द इसे हटाने की सलाह देता है।";
+
+/* The title for Protocol Fee label in Swap. The fee percentage is displayed beside the label. */
+"wallet.protocolFeeLabel" = "प्रोटोकॉल शुल्क: %@";
+
+/* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
+"wallet.providerSelectionButtonTitle" = "%@ के साथ खरीदें";
+
+/* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
+"wallet.providerSelectionScreenTitle" = "खरीदने का एक तरीका चुनें";
+
+/* The section header for the list of available purchse methods. */
+"wallet.providerSelectionSectionHeader" = "निम्नलिखित विकल्पों में से एक चुनें";
+
+/* The title of the button for users to click to select a purchase method. */
+"wallet.purchaseMethodButtonTitle" = "एक खरीदने का तरीका चुनें";
+
+/* The description of one of the 'Ramp.Network' provider. */
+"wallet.rampNetworkProviderDescription" = "एक Visa या Mastercard कार्ड के साथ क्रिप्टो को खरीदें।";
+
+/* The name of one of the on ramp provider. */
+"wallet.rampNetworkProviderName" = "रैंप.नेटवर्क";
+
+/* The short name of one of the on ramp provider. */
+"wallet.rampNetworkProviderShortName" = "रैंप";
+
+/* The message displayed when the user takes a screenshot of their recovery phrase */
+"wallet.recoveryPhraseScreenshotDetectedMessage" = "चेतावनी: आपके पुनर्प्राप्ति वाक्य की एक स्क्रीनशॉट क्लाउड संग्रह की जा सकती है। इसे फ़ोटोज़ तक पहुँच वाली किसी भी ऐप्लिकेशन द्वारा पढ़ा जा सकता है। Ping आपको इस स्क्रीनशॉट को सहेजने की सलाह नहीं देता और आपको जल्द से जल्द इसे हटाने की सलाह देता है।";
+
+/* A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets */
+"wallet.refreshMarketPriceLabel" = "बाजार कीमत को ताज़ा करें";
+
+/* A button title that allows the user to reject all unapproved transactions at once. %d will be replaced with a number, example: Reject 4 Transactions */
+"wallet.rejectAllTransactions" = "%d लेन-देनों को अस्वीकार करें";
+
+/* A button title to reject a transaction. It is shown below details about a given transaction */
+"wallet.rejectTransactionButtonTitle" = "अस्वीकार करें";
+
+/* A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name */
+"wallet.removeAccountConfirmationMessage" = "क्या आप वाकई %@ को हटाना चाहते हैं?";
+
+/* A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed. */
+"wallet.removeAccountErrorMessage" = "गलत पासवर्ड";
+
+/* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorMessage" = "नई कस्टम एसेट की जांच करें, अपना इंटरनेट कनेक्शन जांचें, और पुनः प्रयास करें।";
+
+/* The title of the error pop up when there is an error occurs during the process of removing a custom token. */
+"wallet.removeCustomTokenErrorTitle" = "कस्टम टोकन को हटाने में असमर्थ";
+
+/* A button on an account screen which when pressed presents a new screen to  rename the account */
+"wallet.renameButtonTitle" = "नाम बदलें";
+
+/* A label will be displayed when the repeat password field input is matched with the password field. */
+"wallet.repeatedPasswordMatch" = "मिलता जुलता!";
+
+/* A placeholder string that will be used on repeat password text fields */
+"wallet.repeatedPasswordPlaceholder" = "पासवर्ड की पुष्टि करें";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As to gain access to your assets from a different device */
+"wallet.restoreWalletBackButtonTitle" = "पुनर्स्थापित करें";
+
+/* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Ping */
+"wallet.restoreWalletButtonTitle" = "पुनर्स्थापित करें";
+
+/* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
+"wallet.restoreWalletImportFromLegacyBraveWallet" = "मेरे पास 24 शब्दों का पुनर्स्थापन वाक्य है";
+
+/* A button title when 24 recovery-word grids are displayed for users to restore legacy wallet. Users can click this button to display the 12 recovery-word grids to restore regular wallet. */
+"wallet.restoreWalletImportFromRegularBraveWallet" = "मेरे पास 12 शब्दों का पुनर्स्थापन वाक्य है";
+
+/* A title displayed above 2 text fields for entering a new wallet password */
+"wallet.restoreWalletNewPasswordTitle" = "नया पासवर्ड";
+
+/* The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic' */
+"wallet.restoreWalletPhraseInvalidError" = "अमान्य पुनर्स्थापन वाक्य";
+
+/* The placeholder on the mneomic/recovery phrase text field of each grid. */
+"wallet.restoreWalletPhrasePlaceholder" = "शब्दों की संख्या %d";
+
+/* A toggle label that will enable or disable visibility of the contents in the recovery phrase text field */
+"wallet.restoreWalletShowRecoveryPhrase" = "पुनर्स्थापन वाक्य दिखाएं";
+
+/* The subtitle on the restore wallet screen. */
+"wallet.restoreWalletSubtitle" = "आप अपने पुनर्स्थापन वाक्य को किसी भी फ़ील्ड में पेस्ट कर सकते हैं।";
+
+/* The title on the restore wallet screen. */
+"wallet.restoreWalletTitle" = "मौजूदा वॉलेट आयात करें";
+
+/* The description of one of the 'Sardine' provider. */
+"wallet.sardineProviderDescription" = "अपने बैंक खाते के साथ तुरंत खरीदारी करें। कम शुल्क।";
+
+/* The name of one of the on ramp provider. */
+"wallet.sardineProviderName" = "सार्डिन";
+
+/* The short name of one of the on ramp provider. */
+"wallet.sardineProviderShortName" = "सार्डिन";
+
+/* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
+"wallet.saveButtonTitle" = "सहेजें";
+
+/* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
+"wallet.saveChangesButtonTitle" = "सभी परिवर्तनों को सहेजें";
+
+/* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
+"wallet.scanQRCodeAccessibilityLabel" = "क्यूआर कोड स्कैन करें";
+
+/* A title of an alert when the user takes a screenshot of their device */
+"wallet.screenshotDetectedTitle" = "स्क्रीनशॉट पकड़ा गया";
+
+/* The label as a placeholder in search fields. */
+"wallet.search" = "खोजें";
+
+/* The title of the asset search page */
+"wallet.searchTitle" = "संपत्तियाँ खोजें";
+
+/* A subtitle above a list of crypto accounts that are imported */
+"wallet.secondaryCryptoAccountsSubtitle" = "एक अलग बीटीसी वॉलेट से जुड़े खाते को सहेजें वाले शब्दों के साथ।";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.securityRiskDetectedTitle" = "सुरक्षा खतरा पकड़ा गया";
+
+/* The title used in the row opening DApp settings in Account Details. */
+"wallet.securityTitle" = "सुरक्षा";
+
+/* The title of the button to show details. */
+"wallet.seeDetailsButtonTitle" = "विवरण देखें";
+
+/* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsDescription" = "फ़िल्टर करने के लिए खाते चुनें";
+
+/* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectAccountsTitle" = "खाते चुनें";
+
+/* The title of the account selection screen. Will show above a list of accounts the user may pick from */
+"wallet.selectAccountTitle" = "खाता चुनें";
+
+/* The title of a button that Selects all visible options. */
+"wallet.selectAllButtonTitle" = "सभी चुनें";
+
+/* The accessibility label for the selected account picker */
+"wallet.selectedAccount" = "चयनित खाता";
+
+/* The accessibility label for the ethereum network picker */
+"wallet.selectedNetwork" = "चयनित नेटवर्क";
+
+/* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksDescription" = "फ़िल्टर करने के लिए नेटवर्क चुनें";
+
+/* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
+"wallet.selectNetworksTitle" = "नेटवर्क चुनें";
+
+/* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
+"wallet.selectTokenToSendNoTokens" = "कोई टोकन उपलब्ध नहीं है";
+
+/* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
+"wallet.selectTokenToSendTitle" = "भेजने के लिए टोकन चुनें";
+
+/* As in sending cryptocurrency to another account */
+"wallet.send" = "भेजें";
+
+/* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.sendCryptoAmountTitle" = "%@ भेजने के लिए राशि दर्ज करें";
+
+/* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.sendCryptoFromTitle" = "से";
+
+/* The title of the button for users to click when they want to send the sending-transaction */
+"wallet.sendCryptoSendButtonTitle" = "भेजें";
+
+/* The error message will appear when there is any error occurs during unpproved transaction */
+"wallet.sendCryptoSendError" = "हम आपकी लेन-देन को वर्तमान में प्रसंस्कृत नहीं कर सकते हैं";
+
+/* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
+"wallet.sendCryptoToTitle" = "को";
+
+/* The description of a send button on the buy/send/swap/deposit modal */
+"wallet.sendDescription" = "क्रिप्टो भेजें या एक खाते से दूसरे खाते में स्थानांतरित करें।";
+
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
+"wallet.sendErrorDomainNotRegistered" = "डोमेन में कोई %@ संबंधित एथरीयम पता नहीं है";
+
+/* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
+"wallet.sendErrorInvalidRecipientAddress" = "अमान्य प्राप्तकर्ता पता";
+
+/* A placeholder of the address text field. */
+"wallet.sendToCryptoAddressPlaceholder" = "पता दर्ज करें";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
+"wallet.sendWarningAddressInvalidChecksum" = "पता सत्यापन विफल (अमान्य checksum)। कृपया पुनः प्रयास करें, छोटे अक्षरों को बड़े अक्षरों में बदलें।";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
+"wallet.sendWarningAddressIsContract" = "प्राप्तकर्ता का पता टोकन का ठेका है";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
+"wallet.sendWarningAddressIsOwn" = "प्राप्तकर्ता का पता आपका अपना पता है";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
+"wallet.sendWarningAddressMissingChecksumInfo" = "पता सत्यापन नहीं किया जा सकता (checksum गायब)। आगे बढ़ें?";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
+"wallet.sendWarningAddressNotValid" = "यह एक वैध ETH पता नहीं है।";
+
+/* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
+"wallet.sendWarningSolAddressNotValid" = "अमान्य SOL पता";
+
+/* As in sent cryptocurrency from one asset to another */
+"wallet.sent" = "भेजा गया";
+
+/* Title of the set IPFS gateway button */
+"wallet.setGatewayButtonTitle" = "सेट करें";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.settings" = "सेटिंग्स";
+
+/* The title that appears before the current default base currency code. Example: \"Default base currency: USD\" */
+"wallet.settingsDefaultBaseCurrencyTitle" = "डिफ़ॉल्ट बेस मुद्रा";
+
+/* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsFooter" = "इस विकल्प को सक्षम करें अगर आप बायोमेट्रिक्स (फेस आईडी / टच आईडी) का उपयोग करके अपना वॉलेट खोलना चाहते हैं";
+
+/* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
+"wallet.settingsEnableBiometricsTitle" = "बायोमेट्रिक लॉक खोलने की अनुमति दें";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "नेटवर्क";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetButtonTitle" = "वॉलेट रीसेट करें और डेटा साफ़ करें";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertButtonTitle" = "रीसेट करें";
+
+/* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertMessage" = "यह विकल्प सामान्यत: उन विकसकों द्वारा प्रयोग किया जाता है जिनके पास स्थानीय परीक्षण सर्वर है";
+
+/* The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionAlertTitle" = "क्या आप वाकई लेन-देन और नॉन्स जानकारी को रीसेट करना चाहते हैं?";
+
+/* The footer message below the button to reset transaction */
+"wallet.settingsResetTransactionFooter" = "लेन-देन को हटाना उन विकसकों के लिए उपयुक्त हो सकता है जो स्थानीय सर्वर पर से शुरू करना चाहते हैं";
+
+/* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
+"wallet.settingsResetTransactionTitle" = "लेन-देन और नॉन्स जानकारी हटाएं";
+
+/* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertButtonTitle" = "वॉलेट रीसेट करें";
+
+/* The message the confirmation dialog when resetting the wallet. */
+"wallet.settingsResetWalletAlertMessage" = "यह कार्रवाई अनपढ़नीय है। आपका पुनर्प्राप्तिकरण वाक्य आपके क्रिप्टो-संपत्ति से संबंधित खाते तक पहुंच प्राप्त करने का एकमात्र तरीका है।";
+
+/* The title the confirmation dialog when resetting the wallet. As in to erase the users wallet from the device */
+"wallet.settingsResetWalletAlertTitle" = "क्या आप वाकई वॉलेट रीसेट करना चाहते हैं?";
+
+/* The title that will be displayed when long-pressing the back button in the navigation bar. As in the first step of an onboarding process is to welcome a user. */
+"wallet.setupCryptoButtonBackButtonTitle" = "स्वागत";
+
+/* The button title to continue to the next step on the 'setup crypto' screen. As in to begin the process of creating a wallet/setting up the cryptocurrency feature */
+"wallet.setupCryptoButtonTitle" = "शुरू करें";
+
+/* The subtitle displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewSubTitle" = "कुछ मिनटों में Ping वॉलेट के साथ शुरू करें।";
+
+/* The title displayed in the section for user that need to create a brand new wallet */
+"wallet.setupCryptoCreateNewTitle" = "नया वॉलेट चाहिए?";
+
+/* The disclaimer text at the bottom of the first step of onboarding flow. */
+"wallet.setupCryptoDisclaimer" = "©2023 Ping Software Inc. Ping और Ping लोगो ब्रेव के पंजीकृत चिन्ह हैं। अन्य उत्पाद नाम और लोगो उनके संबंधित कंपनियों के पंजीकृत चिन्ह हो सकते हैं। सभी अधिकार सुरक्षित हैं।";
+
+/* The subtitle displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreSubTitle" = "अपना मौजूदा वॉलेट आयात करें।";
+
+/* The title displayed in the section for user that need to restore an existed wallet */
+"wallet.setupCryptoRestoreTitle" = "क्या आपके पास पहले से वॉलेट है?";
+
+/* The subtitle displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoSubtitle" = "अपने क्रिप्टोकरेंसी और NFT पर नियंत्रण लें। Ping वॉलेट Ethereum, EVM श्रृंखलाओं, Solana और अधिक का समर्थन करता है।";
+
+/* The title displayed on the 'setup crypto' onboarding screen */
+"wallet.setupCryptoTitle" = "ब्राउज़र में जन्मित।\nस्वतंत्र भंडार।\nऔर बहु-श्रृंखला।";
+
+/* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoDescription" = "ग्रिड में प्रदर्शित NFT पर नेटवर्क लोगो छुपाएँ";
+
+/* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
+"wallet.showNFTNetworkLogoTitle" = "नेटवर्क लोगो";
+
+/* A button title that will make a private key visible on the screen */
+"wallet.showPrivateKeyButtonTitle" = "निजी कुंजी दिखाएं";
+
+/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
+"wallet.showTestNetworksTitle" = "परीक्षण नेटवर्क दिखाएँ";
+
+/* The title of a button that updates the filter to show tokens with zero balances. */
+"wallet.showZeroBalances" = "शून्य शेष देखें";
+
+/* The title of the button used to sign a message request on the signature request view. */
+"wallet.sign" = "हस्ताक्षर करें";
+
+/* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
+"wallet.signAllTransactionsTitle" = "सभी लेन-देन हस्ताक्षर करें";
+
+/* A title displayed inside the text view in Signature Request View above the request's domain information. */
+"wallet.signatureRequestDomainTitle" = "डोमेन:";
+
+/* A title displayed inside the text view in Signature Request View above the request's message. */
+"wallet.signatureRequestMessageTitle" = "संदेश:";
+
+/* A subtitle of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestSubtitle" = "आपका हस्ताक्षर अनुरोधित है";
+
+/* A title of the view shown over a dapps website that requests the user sign a message. */
+"wallet.signatureRequestTitle" = "हस्ताक्षर अनुरोध";
+
+/* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
+"wallet.signedTransactionDescription" = "लेन-देन हस्ताक्षरित हो चुकी है और द्वारा dapps द्वारा नेटवर्क में भेजी जाएगी, पुष्टि की प्रतीक्षा में।";
+
+/* A title of transaction signed status view indicating this transaction has been signed. */
+"wallet.signedTransactionTitle" = "लेन-देन हस्ताक्षरित";
+
+/* The title of the view shown above a Sign In With Ethereum request. */
+"wallet.signInWithBraveWallet" = "Ping वॉलेट के साथ साइन इन करें";
+
+/* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
+"wallet.signInWithBraveWalletMessage" = "%1$@ से आप जुड़ रहे हैं। Ping वॉलेट आपके वॉलेट का पता %2$@ के साथ साझा करेगा।";
+
+/* A warning message to tell users that the sign request message contains consecutive new-line characters. */
+"wallet.signMessageConsecutiveNewlineWarning" = "लगातार नए-लाइन वर्णों की पहचान हुई!";
+
+/* A warning message to tell users that the sign request message contains non-ascii characters. */
+"wallet.signMessageRequestUnknownUnicodeWarning" = "ASCII वर्णों की पहचान हुई!";
+
+/* The title of the button that users can click to display the sign request message as its original content. */
+"wallet.signMessageShowOriginalMessage" = "मूल संदेश दिखाएं";
+
+/* The title of the button that users can click to display the sign request message in ASCII encoding. */
+"wallet.signMessageShowUnknownUnicode" = "एनकोडिंग संदेश दिखाएं";
+
+/* A title of a warning message that warns users the risk of signing a transaction. */
+"wallet.signTransactionSignRisk" = "अपने जोखिम पर साइन करें";
+
+/* The title of the view shown over a dapps website that requests the user sign a transaction. */
+"wallet.signTransactionTitle" = "लेन-देन साइन करें";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
+"wallet.siweAddressLabel" = "पता";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
+"wallet.siweChainIDLabel" = "श्रृंखला आईडी";
+
+/* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweDetailsTitle" = "विवरण";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
+"wallet.siweExpirationTimeLabel" = "समाप्ति समय";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
+"wallet.siweIssuedAtLabel" = "जारी किया गया";
+
+/* The label displayed above the Sign In With Ethereum message. */
+"wallet.siweMessageLabel" = "संदेश";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
+"wallet.siweNonceLabel" = "नॉन्स";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
+"wallet.siweOriginLabel" = "उत्पत्ति";
+
+/* The label displayed above the Sign In With Ethereum resources. */
+"wallet.siweResourcesLabel" = "संसाधन";
+
+/* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
+"wallet.siweSignInButtonTitle" = "साइन इन";
+
+/* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
+"wallet.siweStatementLabel" = "बयान";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
+"wallet.siweURILabel" = "यूआरआई";
+
+/* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the version. */
+"wallet.siweVersionLabel" = "संस्करण";
+
+/* The button title to skip recovery phrase backup */
+"wallet.skipButtonTitle" = "छोड़ें";
+
+/* Title on the button that users can click to enable Ping to resolve the SNS domain they entered. */
+"wallet.snsDomainInterstitialPageButtonProceed" = "एक SNS सर्वर के साथ जारी रखें";
+
+/* Description displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"wallet.snsDomainInterstitialPageDescription" = "पिंग एक तीसरा व्यक्ति उपयोग करेगा साल नामों को हल करने के लिए। पिंग आपके आईपी पते को छिपाएगा। इस विकल्प को सक्षम करने पर तीसरे व्यक्ति को यह दिखेगा कि किसी को .sol नाम के डोमेन का पता लगाने का प्रयास किया गया है, लेकिन किसी अन्य जानकारी का उपयोग नहीं किया गया। अधिक जानकारी के लिए और जानें कि हम इस्तेमाल करते हैं, हमारी प्राइवेसी नीति के बारे में कृपया हमारे <a href=%@>मदद पृष्ठ</a> को देखें।";
+
+/* Title displayed when users chose Ping to ask them if they want the SNS to be resolved every time they enter one. */
+"wallet.snsDomainInterstitialPageTitle" = "ब्रेव में सोलाना नेम सर्विस (SNS) समर्थन सक्रिय करें?";
+
+/* A description of a Solana account, displayed in Accounts tab. */
+"wallet.solAccountDescription" = "सोलाना श्रृंखला + SVM";
+
+/* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAdvanceNonceAccountInstructionName" = "उन्नत नॉन्स अकाउंट";
+
+/* The title displayed above the System Program Allocate instruction type for Solana Instruction details. */
+"wallet.solanaAllocateInstructionName" = "आवंटित करें";
+
+/* The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAllocateWithSeedInstructionName" = "बीज के साथ आवंटित करें";
+
+/* The label displayed beside the formatted amount of an instruction type. Ex. \"Amount: 0.1 SOL\" */
+"wallet.solanaAmount" = "मात्रा";
+
+/* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
+"wallet.solanaApproveCheckedInstructionName" = "मंजूर (सत्यापित)";
+
+/* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
+"wallet.solanaApproveInstructionName" = "मंजूर";
+
+/* The title displayed above the System Program Assign instruction type for Solana Instruction details. */
+"wallet.solanaAssignInstructionName" = "निर्धारित करें";
+
+/* The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaAssignWithSeedInstructionName" = "बीज के साथ निर्धारित करें";
+
+/* The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaAuthorizeNonceAccountInstructionName" = "Nonce खाते को अधिरोपित करें";
+
+/* The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details. */
+"wallet.solanaBurnCheckedInstructionName" = "जलाएँ (सत्यापित)";
+
+/* The title displayed above the Token Program Burn instruction type for Solana Instruction details. */
+"wallet.solanaBurnInstructionName" = "जलाएँ";
+
+/* The title displayed above the Token Program Close Account instruction type for Solana Instruction details. */
+"wallet.solanaCloseAccountInstructionName" = "खाता बंद करें";
+
+/* The title displayed above the System Program CreateAccount instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountInstructionName" = "खाता बनाएं";
+
+/* The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaCreateAccountWithSeedInstructionName" = "बीज के साथ खाता बनाएं";
+
+/* The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaDappTransactionTitle" = "सौंपें लेन-देन";
+
+/* The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details. */
+"wallet.solanaFreezeAccountInstructionName" = "खाता फ्रीज करें";
+
+/* The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount2InstructionName" = "खाता इनिशियलाइज़ करें 2";
+
+/* The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccount3InstructionName" = "खाता इनिशियलाइज़ करें 3";
+
+/* The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeAccountInstructionName" = "खाता इनिशियलाइज़ करें";
+
+/* The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMint2InstructionName" = "मिंट इनिशियलाइज़ करें 2";
+
+/* The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMintInstructionName" = "मिंट इनिशियलाइज़ करें";
+
+/* The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisig2InstructionName" = "मल्टीसिग इनिशियलाइज़ करें 2";
+
+/* The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details. */
+"wallet.solanaInitializeMultisigInstructionName" = "मल्टीसिग इनिशियलाइज़ करें";
+
+/* The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaInitializeNonceAccountInstructionName" = "Nonce खाता इनिशियलाइज़ करें";
+
+/* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. "Accounts: <solana_public_key>" */
+"wallet.solanaInstructionAccounts" = "खाते";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. "Address Lookup Table Account: B1A2..." */
+"wallet.solanaInstructionAddressLookupAcc" = "पता खोज तालिका खाता";
+
+/* The label displayed beside the address for the Address Lookup Table Account. Ex. "Address Lookup Table Index: 1" */
+"wallet.solanaInstructionAddressLookupIndex" = "पता खोज तालिका सूचकांक";
+
+/* The label displayed beside the Data for an instruction type we don't support decoding. Ex. "Data: [1, 20, 3, 5, 50]" */
+"wallet.solanaInstructionData" = "डेटा";
+
+/* The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. "Program Id: 1111223344aabbccd" */
+"wallet.solanaInstructionProgramId" = "कार्यक्रम आईडी";
+
+/* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
+"wallet.solanaMintToCheckedInstructionName" = "मिंट करें (सत्यापित)";
+
+/* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
+"wallet.solanaMintToInstructionName" = "मिंट करें";
+
+/* The title displayed above the Token Program Revoke instruction type for Solana Instruction details. */
+"wallet.solanaRevokeInstructionName" = "मान्यता रद्द करें";
+
+/* The title displayed above the Token Program Set Authority instruction type for Solana Instruction details. */
+"wallet.solanaSetAuthorityInstructionName" = "अधिकार निर्धारित करें";
+
+/* The title on top of a separator, and the transaction details will be displayed below the separator. */
+"wallet.solanaSignTransactionDetails" = "विवरण";
+
+/* The warning message to let users understand the risk of using Ping Wallet to sign any transaction. */
+"wallet.solanaSignTransactionWarning" = "ध्यान दें कि Ping नहीं जांच सकता कि आपके साइन करने से क्या होगा। एक हस्ताक्षर आपके खाते पर या आपके नाम पर लगभग किसी भी कार्रवाई की अधिकारित कर सकता है, इसमें शामिल है (लेकिन इसके सीमित नहीं) आपके खाते और आपकी क्रिप्टो धन संपत्ति पर पूर्ण नियंत्रण देना। केवल तब हस्ताक्षर करें जब आप वाकई इस कार्रवाई को करना चाहते हैं और आप विश्वस्त हैं कि साइन अनुरोधकर्ता पर।";
+
+/* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaSwapTransactionTitle" = "विनिमय लेन-देन";
+
+/* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
+"wallet.solanaSyncNativeInstructionName" = "सिंक्रनाइज़ नेटिव";
+
+/* The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. "System Program - Transfer" */
+"wallet.solanaSystemProgramName" = "सिस्टम प्रोग्राम - %@";
+
+/* The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details. */
+"wallet.solanaThawAccountInstructionName" = "खाता पिघलाएं";
+
+/* The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. "Token Program - Initialize Mint" */
+"wallet.solanaTokenProgramName" = "टोकन प्रोग्राम - %@";
+
+/* The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details. */
+"wallet.solanaTransferCheckedInstructionName" = "स्थानांतरित (सत्यापित)";
+
+/* The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details. */
+"wallet.solanaTransferInstructionName" = "स्थानांतरित करें";
+
+/* The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details. */
+"wallet.solanaTransferWithSeedInstructionName" = "बीज के साथ स्थानांतरित करें";
+
+/* The title displayed above an unknown instruction type for Solana Instruction details. */
+"wallet.solanaUnknownInstructionName" = "अज्ञात प्रकार का निर्देश";
+
+/* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
+"wallet.solanaUpgradeNonceAccountInstructionName" = "Nonce खाता अपग्रेड करें";
+
+/* The description label of the sort option that sorts assets by their fiat value, shown below the title. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsDescription" = "फिएट मूल्य या नाम के आधार पर क्रमबद्ध करें";
+
+/* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
+"wallet.sortAssetsTitle" = "संपत्तियों को क्रमबद्ध करें";
+
+/* The description of one of the 'Stripe' provider. */
+"wallet.stripeNetworkProviderDescription" = "क्रेडिट, डेबिट, बैंक खाते से भुगतान करें।";
+
+/* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
+"wallet.stripeNetworkProviderName" = "%1$@ द्वारा %2$@";
+
+/* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
+"wallet.submittedTransactionDescription" = "यह लेन-देन नेटवर्क में भेज दिया गया है और पुष्टि की प्रतीक्षा में है।";
+
+/* A title of transaction signed status view indicating this transaction has been submitted to the network. */
+"wallet.submittedTransactionTitle" = "लेन-देन भेज दी गई";
+
+/* As in swapping cryptocurrency from one asset to another */
+"wallet.swap" = "विनिमय करें";
+
+/* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
+"wallet.swapConfirmationNetworkDesc" = "%@ पर";
+
+/* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
+"wallet.swapConfirmationNetworkFee" = "नेटवर्क शुल्क";
+
+/* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
+"wallet.swapConfirmationTitle" = "ऑर्डर की पुष्टि करें";
+
+/* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
+"wallet.swapConfirmationYoullReceive" = "आपको मिलेगा";
+
+/* A title displayed in transaction confirmation above the token being swapped from in a Swap transaction. */
+"wallet.swapConfirmationYouSpend" = "आप खर्च कर रहे हैं";
+
+/* A title above the amount of asset you will receive from the swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountReceivingTitle" = "%@ में प्राप्त राशि (अनुमान)";
+
+/* A title above the amount of asset you want to swap. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
+"wallet.swapCryptoAmountTitle" = "%@ की राशि दर्ज करें जो विनिमय करना चाहते हैं";
+
+/* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoFromTitle" = "से";
+
+/* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
+"wallet.swapCryptoMarketPriceTitle" = "%@ में बाजार कीमत";
+
+/* The title for Slippage tolerance field. User will choose the tolerance for slippage as a percentage value */
+"wallet.swapCryptoSlippageTitle" = "स्लिपेज सहिष्णुता";
+
+/* The title of the button for users to click when they want to swap between two cryptos */
+"wallet.swapCryptoSwapButtonTitle" = "विनिमय करें";
+
+/* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
+"wallet.swapCryptoToTitle" = "को";
+
+/* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
+"wallet.swapCryptoUnsupportNetworkBody" = "वर्तमान में, Ping %@ का समर्थन नहीं करता है। कृपया समर्थित चेन में स्विच करें।";
+
+/* The title below account picker when user has selected a test network to swap cryptos */
+"wallet.swapCryptoUnsupportNetworkTitle" = "असमर्थित चेन";
+
+/* The description of a swap button on the buy/send/swap/deposit modal */
+"wallet.swapDescription" = "टोकन और संपत्तियों को विनिमय करें।";
+
+/* A longer disclaimer about the DEX aggrigator used by Ping for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "%1$@ ट्रांजैक्शन पूरा करने के लिए विशेष विशेष डेटा प्राप्त करने के लिए आपके %2$@ और IP पता का प्रसंस्करण करेगा (उदाहरण के लिए प्रभाव लेने के लिए कोट दिखाना भी शामिल है।) केवल इस स्थिति का प्रसंस्करण करने के लिए सामग्री उपयोग करें।";
+
+/* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Ping विनिमय विनिमय के लिए DEX एग्रीगेटर के रूप में %1$@ का उपयोग करता है।";
+
+/* The 'Limit' order type. Limit orders only execute when the price requirements are met */
+"wallet.swapLimitOrderType" = "सीमा";
+
+/* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
+"wallet.swapMarketOrderType" = "बाजार";
+
+/* The type of order you want to place. Options are: 'Market' and 'Limit' */
+"wallet.swapOrderTypeLabel" = "आदेश प्रकार";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "चुने गए दो टोकन्स का विनिमय करें";
+
+/* The title of the button to approve switching the network on a switch network request from a dapps website. */
+"wallet.switchNetworkButtonTitle" = "बदलें";
+
+/* The description of the view shown over a dapps website that describes what switching the network will do. */
+"wallet.switchNetworkDescription" = "नेटवर्क पहले से जोड़े गए नेटवर्क से बदल जाएगा।";
+
+/* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
+"wallet.switchNetworkSubtitle" = "क्या इस साइट को वर्तमान नेटवर्क बदलने की अनुमति दी जाए?";
+
+/* The title of the view shown over a dapps website that requests the user change the current network. */
+"wallet.switchNetworkTitle" = "नेटवर्क बदलें";
+
+/* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
+"wallet.today" = "आज";
+
+/* A title that will be displayed on top of the text field for users to input the custom token address */
+"wallet.tokenAddress" = "टोकन का पता";
+
+/* A title that will be displayed on top of the text field for users to input the custom token mint address */
+"wallet.tokenMintAddress" = "मन का पता";
+
+/* A title that will be displayed on top of the text field for users to input the custom token name */
+"wallet.tokenName" = "टोकन का नाम";
+
+/* A title that will be displayed on top of the text field for users to input the custom token symbol */
+"wallet.tokenSymbol" = "टोकन का प्रतीक";
+
+/* A title displayed beside a number describing the total amount of gas and ETH that will be transferred */
+"wallet.total" = "कुल";
+
+/* A title label that will display total balance of all none-zero balance accounts */
+"wallet.totalBalance" = "कुल शेष";
+
+/* The title shown for ERC20 approvals when the user doesn't have the visible asset added */
+"wallet.transactionApprovalTitle" = "मंजूर";
+
+/* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
+"wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ मंजूर";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "अधूरे और अपूर्ण लेनदेन हटाएं और बदलें";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "आपके पास अभी कुछ भी करने की आवश्यकता नहीं है। बस अपुष्टित लेन-देन की पुष्टि करें कि आपके पास अपुष्टित लेन-देन हैं।";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "आप एक नई लेन-देन शुरू करने का प्रयास कर रहे हैं, लेकिन आपके पिछले लेन-देन अभी तक पुष्टि नहीं की गई हैं। इसलिए नई लेन-देन भेजना संभव नहीं है।";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "लेन-देन पंक्तियाँ";
+
+/* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
+"wallet.transactionCount" = "%1$lld का %2$lld";
+
+/* The label for displaying the date a transaction occurred. Appears next to the formatted date such as '3:00PM - Jan 1 2022' */
+"wallet.transactionDetailsDateTitle" = "तारीख";
+
+/* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
+"wallet.transactionDetailsMarketPriceTitle" = "बाजार कीमत";
+
+/* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
+"wallet.transactionDetailsNetworkTitle" = "नेटवर्क";
+
+/* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
+"wallet.transactionDetailsStatusTitle" = "स्थिति";
+
+/* The title for the view displaying the details of a cryptocurrency transaction. */
+"wallet.transactionDetailsTitle" = "लेन-देन विवरण";
+
+/* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
+"wallet.transactionDetailsTransactionHashTitle" = "लेन-देन हैश";
+
+/* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
+"wallet.transactionDetailsTxFeeTitle" = "लेन-देन शुल्क";
+
+/* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
+"wallet.transactionFee" = "लेन-देन शुल्क";
+
+/* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
+"wallet.transactionFromToAccessibilityLabel" = "से: %1$@. को: %2$@";
+
+/* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
+"wallet.transactionsDescription" = "%d लेन-देन";
+
+/* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
+"wallet.transactionSendTitle" = "%1$@ %2$@ (%3$@) भेजे गए";
+
+/* The description of the transactions row in Account Details when user has 1 Transaction. */
+"wallet.transactionsSingularDescription" = "%d लेन-देन";
+
+/* A status that explains that the transaction has been approved by the user */
+"wallet.transactionStatusApproved" = "मंजूर";
+
+/* A status that explains that the transaction has been completed/confirmed */
+"wallet.transactionStatusConfirmed" = "पुष्टि की गई";
+
+/* A status that explains that the transaction has been dropped due to some error */
+"wallet.transactionStatusDropped" = "छोड़ दिया गया";
+
+/* A status that explains that the transaction failed due to some error */
+"wallet.transactionStatusError" = "त्रुटि";
+
+/* A status that explains that the transaction has been rejected by the user */
+"wallet.transactionStatusRejected" = "अस्वीकृत";
+
+/* A status that explains that the transaction has been signed. */
+"wallet.transactionStatusSigned" = "साइन किया गया";
+
+/* A status that explains that the transaction has been submitted to the blockchain */
+"wallet.transactionStatusSubmitted" = "जमा किया गया";
+
+/* A status that explains that a transaction has not yet been approved */
+"wallet.transactionStatusUnapproved" = "अनुमोदित नहीं";
+
+/* A transaction status that the app currently does not support displaying */
+"wallet.transactionStatusUnknown" = "अज्ञात";
+
+/* The title which is displayed above a list of transactions */
+"wallet.transactionsTitle" = "लेन-देन";
+
+/* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: \"Fee: 0.0054 ETH ($22.44)\" */
+"wallet.transactionSummaryFee" = "शुल्क: %1$@ %2$@ (%3$@)";
+
+/* The label used to describe a transaction type. Used like 'Send from' or 'Approved from'. */
+"wallet.transactionSummaryIntentLabel" = "%@ से";
+
+/* The label to describe an Solana Swap transaction. */
+"wallet.transactionSummarySolanaSwap" = "सोलाना बदला";
+
+/* The label to describe an Swap transaction. */
+"wallet.transactionSummarySwapOn" = "पर विनिमय करें";
+
+/* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: \"Swapped 0.0054 ETH to 1.5 DAI\" */
+"wallet.transactionSwappedTitle" = "%1$@ %2$@ को %3$@ %4$@ बदल दिया गया";
+
+/* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
+"wallet.transactionTypeApprove" = "मंजूरी";
+
+/* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: \"Sent ETH\" */
+"wallet.transactionUnknownSendTitle" = "%@ भेजा गया";
+
+/* The description of one of the 'Transak' provider. */
+"wallet.transakProviderDescription" = "अपने बैंक खाते से तत्काल खरीदारी। कम शुल्क।";
+
+/* The name of one of the on ramp provider. */
+"wallet.transakProviderName" = "Transak";
+
+/* The short name of one of the on ramp provider. */
+"wallet.transakProviderShortName" = "Transak";
+
+/* Description displayed when users chose Ping to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Ping Unstoppable Domains के .crypto (और %1$@ के रूप में) डोमेन को हल करने के लिए Infura का उपयोग करेगा। Ping आपका IP पता मास्क करेगा। इस विकल्प को सक्रिय करने के लिए, Infura को यह दिखाई देगा कि किसी ने इन डोमेनों तक पहुंचने का प्रयास किया है, लेकिन उसे कोई अन्य जानकारी नहीं मिलेगी। <a href=%2$@>%3$@</a> और Infura की <a href=%4$@>%5$@</a> देखें।";
+
+/* Title displayed when users chose Ping to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
+"wallet.udDomainInterstitialPageTitle" = "Brave में Unstoppable Domains डोमेन समर्थन सक्रिय करें?";
+
+/* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
+"wallet.udResolveMethodDescription" = "गोपनीयता संरक्षण के संदर्भ में Unstoppable Domains की विचारधारा के बारे में अधिक जानें। [यहां](%@) पर जाएं।";
+
+/* The title for the options to resolve Unstoppable Domains domain names. */
+"wallet.udResolveMethodTitle" = "Unstoppable Domains डोमेन नामों को हल करें";
+
+/* An error message displayed when an unspecified problem occurs. */
+"wallet.unknownError" = "अज्ञात त्रुटि";
+
+/* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
+"wallet.unlockWallet" = "वॉलेट अनलॉक करें";
+
+/* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
+"wallet.unlockWalletButtonTitle" = "अनलॉक करें";
+
+/* The title displayed on the unlock wallet screen */
+"wallet.unlockWalletDescription" = "वॉलेट को अनलॉक करने के लिए पासवर्ड दर्ज करें";
+
+/* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
+"wallet.userAssetSymbolNetwork" = "%1$@ %2$@ पर";
+
+/* The error message when input phrase does not match the correct one. */
+"wallet.verifyRecoveryPhraseError" = "पुनर्प्राप्ति वाक्य गलत है।";
+
+/* The sub-title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseSubTitle" = "अपने पुनर्प्राप्ति वाक्य के **स्थिति %d** दर्ज करें।";
+
+/* The title of the screen that user will verify his/her recovery phrase. */
+"wallet.verifyRecoveryPhraseTitle" = "सत्यापित करें";
+
+/* The title for the button to view details about the network the dapp site is requesting the user switch to, or the network the dapp website is requesting the user add. */
+"wallet.viewDetails" = "विवरण देखें";
+
+/* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
+"wallet.viewNetworkDetailsTitle" = "नेटवर्क विवरण देखें";
+
+/* A button title to view a given transaction on the block explorer for the current network/chain. */
+"wallet.viewOnBlockExplorer" = "ब्लॉक एक्सप्लोरर पर देखें";
+
+/* A button title when a user will tap to reveal the recovery phrases. */
+"wallet.viewRecoveryPhraseButtonTitle" = "मेरे पुनर्प्राप्ति वाक्य देखें";
+
+/* The title shown on the menu to access Ping Wallet */
+"wallet.wallet" = "वॉलेट";
+
+/* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
+"wallet.walletFullScreenAccessibilityTitle" = "पूर्ण स्क्रीन में वॉलेट खोलें";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
+"wallet.walletPanelBlocked" = "रोका हुआ";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
+"wallet.walletPanelConnect" = "कनेक्ट";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
+"wallet.walletPanelConnected" = "कनेक्ट किया गया";
+
+/* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected his/her current selected Solana account to the Solana Dapp. */
+"wallet.walletPanelDisconnected" = "डिस्कनेक्ट";
+
+/* The description for wallet panel when users haven't set up a wallet yet. */
+"wallet.walletPanelSetupWalletDescription" = "इस पैनल का उपयोग वेब3 डोमेन और आपकी सभी क्रिप्टो संपत्तियों तक सुरक्षित रूप से पहुँच के लिए करें।";
+
+/* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
+"wallet.walletSettings" = "वॉलेट सेटिंग्स";
+
+/* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
+"wallet.walletTypeNone" = "कोई नहीं";
+
+/* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
+"wallet.warningAlertConfirmation" = "क्या आपको यकीन है?";
+
+/* The title shown on the settings menu to Web3 settings. */
+"wallet.web3" = "Web3";
+
+/* Title on the button that users can click to disable Ping to resolve the ENS/SNS domain they entered. */
+"wallet.web3DomainInterstitialPageButtonDisable" = "अक्षम करें";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Ping uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPagePrivacyPolicy" = "गोपनीयता नीति";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Ping uses to resolve SNS domain. */
+"wallet.web3DomainInterstitialPageTAndU" = "उपयोग की शर्तें";
+
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Ask' means Ping will ask user first before enable or disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionAsk" = "पूछें";
+
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Ping will disable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionDisabled" = "अक्षम";
+
+/* One of the options for Ping to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Ping will enable resolving ENS/SNS domain name and IPFS scheme url. */
+"wallet.web3DomainOptionEnabled" = "सक्षम";
+
+/* The header for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsHeader" = "Solana नाम सेवा डोमेन";
+
+/* The title for the options to resolve Solana Name service domain names. */
+"wallet.web3DomainOptionsTitle" = "Solana नाम सेवा (SNS) डोमेन नाम हल करें";
+
+/* A brief explaination of IPFS on privacy. The first '%@' will be replaced with a link to a Ping article that explains how does IPFS impact users' privacy in details. The second '%@' will be replaced with 'web3IPFSInterstitialIPFSPrivacyLearnMore'. */
+"wallet.web3IPFSInterstitialIPFSPrivacy" = "IPFS (InterPlanetary File System) सार्वजनिक डेटा स्टोरेज और पीयर-टू-पीयर डेटा डिस्ट्रिब्यूशन नेटवर्क है। इस प्रोटोकॉल की गोपनीयता संरचनाओं में HTTP(S) से अलग दृष्टिकोण होता है। <a href=%1$@>%2$@</a>";
+
+/* A brief explaination of resolving IPFS scheme url using a public gateway. */
+"wallet.web3IPFSInterstitialIPFSPublicGateway" = "तृतीय पक्ष अवलोकनकर्ताओं को आपका IP पता पता लगाने से रोकता है, लेकिन सार्वजनिक गेटवे के ऑपरेटर को प्रमाणित करना होगा कि वे संदेश को सही रूप से प्राप्त कर रहे हैं। इसके अतिरिक्त, आपकी डिवाइस सार्वजनिक IPFS नेटवर्क में योगदान नहीं देती है।";
+
+/* The title of the IPFS interstitial page for user to set the preference of IPFS scheme url handling. */
+"wallet.web3IPFSInterstitialIPFSTitle" = "IPFS स्कीम URL का चयन करें";
+
+/* The title of the button that user will click to let Ping to resolve IPFS shceme url. */
+"wallet.web3IPFSInterstitialProceedButton" = "सार्वजनिक गेटवे का उपयोग करें";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
+"wallet.web3PreferencesAllowEthProviderAccess" = "साइटों को आपके Ethereum वॉलेट तक पहुँचने की अनुमति देने दें";
+
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
+"wallet.web3PreferencesAllowSolProviderAccess" = "साइटों को आपके Solana वॉलेट तक पहुँचने की अनुमति देने दें";
+
+/* The title for the entry displaying the current preferred default Ethereum wallet is. */
+"wallet.web3PreferencesDefaultEthWallet" = "डिफ़ॉल्ट Ethereum वॉलेट";
+
+/* The title for the entry displaying the current preferred default Solana wallet is. */
+"wallet.web3PreferencesDefaultSolWallet" = "डिफ़ॉल्ट Solana वॉलेट";
+
+/* The title for the entry displaying the preferred option to display web3 site notifications. */
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Web3 साइट सूचनाएँ दिखाएँ";
+
+/* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
+"wallet.web3PreferencesManageSiteConnections" = "साइट कनेक्शन प्रबंधित करें";
+
+/* The section title for users to set up preferences for interation with web3 sites. */
+"wallet.web3PreferencesSectionTitle" = "Web3 प्राथमिकताएँ";
+
+/* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscovery" = "NFT खोज सक्षम करें";
+
+/* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "थर्ड पार्टी API का उपयोग करके अपनी स्वामित्व में रखे गए NFT को स्वचालित रूप से जोड़ें। [और अधिक जानें](%@)";
+
+/* Description of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertDescription" = "दिए गए URL मान्य नहीं है। गेटवे IPFS संसाधनों को हल करने के लिए योग्य होनी चाहिए।";
+
+/* Title of the wrong IPFS gateway alert */
+"wallet.wrongGatewayAlertTitle" = "गेटवे सेटअप में विफलता";
+
+/* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
+"wallet.zToASortOption" = "जेड से ए तक क्रमबद्ध करें";
+

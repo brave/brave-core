@@ -307,7 +307,7 @@ final class AIChatTest: XCTestCase {
     let data = try XCTUnwrap(Data(base64Encoded: receipt))
     let parsedReceipt = try XCTUnwrap(BraveStoreKitReceipt(data: data))
 
-    XCTAssertEqual(parsedReceipt.bundleId, "com.brave.ios.browser")
+    XCTAssertEqual(parsedReceipt.bundleId, "com.ping.ios.browser")
     XCTAssertEqual(parsedReceipt.sha1Hash, "42D750D02D626DD0F8BBBBB55E9FC00DDD47AC26")
     XCTAssertNotNil(parsedReceipt.receiptCreationDate)
     XCTAssertEqual(

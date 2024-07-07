@@ -8,6 +8,6 @@ import UIKit
 
 class FocusOnboardingConstants {
   static let p3aHelpArticle = URL(
-    string: "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-"
+    string: "https://ping-browser.com/faqs-and-help"
   )!
 }

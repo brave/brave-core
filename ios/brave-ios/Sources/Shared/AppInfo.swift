@@ -41,9 +41,9 @@ open class AppInfo {
     var bundleIdentifier = baseBundleIdentifier
 
     // External beta
-    if bundleIdentifier == "com.brave.ios.BrowserBeta" {
-      // com.brave.ios.BrowserBeta is taken and can't be used as an app group.
-      bundleIdentifier = "com.brave.ios.BrowserBeta.unique"
+    if bundleIdentifier == "com.ping.ios.BrowserBeta" {
+      // com.ping.ios.BrowserBeta is taken and can't be used as an app group.
+      bundleIdentifier = "com.ping.ios.BrowserBeta.unique"
     }
     return "group." + bundleIdentifier
   }
@@ -51,10 +51,10 @@ open class AppInfo {
   /// Return the keychain access group.
   public static func keychainAccessGroupWithPrefix(_ prefix: String) -> String {
     var bundleIdentifier = baseBundleIdentifier
-    if bundleIdentifier == "com.brave.ios.FennecEnterprise" {
+    if bundleIdentifier == "com.ping.ios.FennecEnterprise" {
       // Bug 1373726 - Base bundle identifier incorrectly generated for Nightly builds
       // This can be removed when we are able to fix the app group in the developer portal
-      bundleIdentifier = "com.brave.ios.Fennec.enterprise"
+      bundleIdentifier = "com.ping.ios.Fennec.enterprise"
     }
     return prefix + "." + bundleIdentifier
   }

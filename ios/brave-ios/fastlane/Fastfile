@@ -42,13 +42,13 @@ platform :ios do
       export_options: {
         manageAppVersionAndBuildNumber: false,
         provisioningProfiles: {
-          "com.brave.ios.browser.beta" => "Brave iOS Beta",
-          "com.brave.ios.browser.beta.ActionExtension" => "Brave iOS Beta Action Extension",
-          "com.brave.ios.browser.beta.ShareExtension" => "Brave iOS Beta Share Extension",
-          "com.brave.ios.browser.beta.BrowserIntents" => "Brave iOS Beta Intents Extension",
-          "com.brave.ios.browser.beta.BraveWidgetsExtension" => "Brave iOS Beta Widgets Extension",
-          "com.brave.ios.browser.beta.BraveWireGuard" => "Brave iOS Beta Wireguard Extension",
-          "com.brave.ios.browser.beta.AutoFillProvider" => "Brave iOS Beta AutoFill Provider",
+          "com.ping.ios.browser.beta" => "Brave iOS Beta",
+          "com.ping.ios.browser.beta.ActionExtension" => "Brave iOS Beta Action Extension",
+          "com.ping.ios.browser.beta.ShareExtension" => "Brave iOS Beta Share Extension",
+          "com.ping.ios.browser.beta.BrowserIntents" => "Brave iOS Beta Intents Extension",
+          "com.ping.ios.browser.beta.BraveWidgetsExtension" => "Brave iOS Beta Widgets Extension",
+          "com.ping.ios.browser.beta.BraveWireGuard" => "Brave iOS Beta Wireguard Extension",
+          "com.ping.ios.browser.beta.AutoFillProvider" => "Brave iOS Beta AutoFill Provider",
         },
       }
     }
@@ -63,13 +63,13 @@ platform :ios do
       export_options: {
         manageAppVersionAndBuildNumber: false,
         provisioningProfiles: {
-          "com.brave.ios.BrowserBeta" => "Brave iOS Nightly",
-          "com.brave.ios.BrowserBeta.ActionExtension" => "Brave iOS Nightly Action Extension",
-          "com.brave.ios.BrowserBeta.ShareExtension" => "Brave iOS Nightly Share Extension",
-          "com.brave.ios.BrowserBeta.BrowserIntents" => "Brave iOS Nightly Intents Extension",
-          "com.brave.ios.BrowserBeta.BraveWidgetsExtension" => "Brave iOS Nightly Widgets Extension",
-          "com.brave.ios.BrowserBeta.BraveWireGuard" => "Brave iOS Nightly Wireguard Extension",
-          "com.brave.ios.BrowserBeta.AutoFillProvider" => "Brave iOS Nightly AutoFill Provider",
+          "com.ping.ios.BrowserBeta" => "Brave iOS Nightly",
+          "com.ping.ios.BrowserBeta.ActionExtension" => "Brave iOS Nightly Action Extension",
+          "com.ping.ios.BrowserBeta.ShareExtension" => "Brave iOS Nightly Share Extension",
+          "com.ping.ios.BrowserBeta.BrowserIntents" => "Brave iOS Nightly Intents Extension",
+          "com.ping.ios.BrowserBeta.BraveWidgetsExtension" => "Brave iOS Nightly Widgets Extension",
+          "com.ping.ios.BrowserBeta.BraveWireGuard" => "Brave iOS Nightly Wireguard Extension",
+          "com.ping.ios.BrowserBeta.AutoFillProvider" => "Brave iOS Nightly AutoFill Provider",
         },
       }
     }
@@ -84,13 +84,13 @@ platform :ios do
       export_options: {
         method: "app-store",
         provisioningProfiles: {
-          "com.brave.ios.browser" => "Brave iOS Release",
-          "com.brave.ios.browser.ActionExtension" => "Brave iOS Release Action Extension",
-          "com.brave.ios.browser.ShareExtension" => "Brave iOS Release Share Extension",
-          "com.brave.ios.browser.BrowserIntents" => "Brave iOS Release Intents Extension",
-          "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Release Widgets Extension",
-          "com.brave.ios.browser.BraveWireGuard" => "Brave iOS Release WireGuard Extension",
-          "com.brave.ios.browser.AutoFillProvider" => "Brave iOS Release AutoFill Provider",
+          "com.ping.ios.browser" => "Brave iOS Release",
+          "com.ping.ios.browser.ActionExtension" => "Brave iOS Release Action Extension",
+          "com.ping.ios.browser.ShareExtension" => "Brave iOS Release Share Extension",
+          "com.ping.ios.browser.BrowserIntents" => "Brave iOS Release Intents Extension",
+          "com.ping.ios.browser.BraveWidgetsExtension" => "Brave iOS Release Widgets Extension",
+          "com.ping.ios.browser.BraveWireGuard" => "Brave iOS Release WireGuard Extension",
+          "com.ping.ios.browser.AutoFillProvider" => "Brave iOS Release AutoFill Provider",
         },
         manageAppVersionAndBuildNumber: false
       },

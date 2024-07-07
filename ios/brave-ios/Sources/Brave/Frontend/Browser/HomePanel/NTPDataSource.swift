@@ -242,9 +242,9 @@ extension NTPSponsoredImageTopSite {
 
 extension NTPBackgroundImage {
   static let fallback: NTPBackgroundImage = .init(
-    imagePath: Bundle.module.url(forResource: "corwin-prescott-3", withExtension: "jpg")!,
-    author: "Corwin Prescott",
-    link: URL(string: "https://www.brave.com")!
+    imagePath: Bundle.module.url(forResource: "ping-background", withExtension: "jpg")!,
+    author: "Toshit",
+    link: URL(string: "https://www.ping-browser.com")!
   )
 }
 

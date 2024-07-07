@@ -6,7 +6,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>$(BRAVE_GROUP_ID)</string>
+		<string>group.com.ping.ios.browser</string>
 	</array>
 </dict>
 </plist>

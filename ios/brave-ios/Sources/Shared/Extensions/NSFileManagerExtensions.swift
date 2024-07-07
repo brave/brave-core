@@ -109,7 +109,7 @@ extension FileManager {
     }
 
     return NSError(
-      domain: "com.brave.ios.fileManagerExtensions",
+      domain: "com.ping.ios.fileManagerExtensions",
       code: code.rawValue,
       userInfo: userInfo
     )

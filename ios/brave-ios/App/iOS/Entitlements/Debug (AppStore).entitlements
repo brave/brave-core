@@ -10,10 +10,6 @@
 	</array>
 	<key>com.apple.developer.authentication-services.autofill-credential-provider</key>
 	<true/>
-	<key>com.apple.developer.browser.app-installation</key>
-	<true/>
-	<key>com.apple.developer.carplay-audio</key>
-	<true/>
 	<key>com.apple.developer.networking.networkextension</key>
 	<array>
 		<string>packet-tunnel-provider</string>
@@ -26,15 +22,11 @@
 	<array>
 		<string>TAG</string>
 	</array>
-	<key>com.apple.developer.playable-content</key>
-	<true/>
 	<key>com.apple.developer.siri</key>
-	<true/>
-	<key>com.apple.developer.web-browser</key>
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.$(MOZ_BUNDLE_ID)</string>
+		<string>group.com.ping.ios.browser</string>
 	</array>
 </dict>
 </plist>

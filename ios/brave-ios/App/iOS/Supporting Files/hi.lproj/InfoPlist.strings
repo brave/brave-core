@@ -1,0 +1,27 @@
+/* (No Comment) */
+"1Password Fill Browser Action" = "1Password से पासवर्ड भरें";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "ऐप को आपके YubiKey के साथ संचार करने के लिए NFC सुविधा तक पहुंच की आवश्यकता है।";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "यह विकल्प आपको फ़ोटो लेने और उन्हें आयात करने की अनुमति देता है।";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "पिंग तक आपकी पहुंच प्रमाणित करता है";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "आपके द्वारा देखी जाने वाली वेबसाइटें आपका स्थान पूछ सकती हैं।";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "यह सेटिंग आपके माइक्रोफ़ोन को पिंग का उपयोग करते समय उपयोग करने की अनुमति देती है।";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "यह विकल्प आपको फ़ोटो सहेजने की अनुमति देता है।";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "इस अनुमति का उपयोग Apple की उन्नत ध्वनि पहचान को सक्षम करने के लिए किया जाता है। यदि इनकार कर दिया जाता है, तो इन-डिवाइस पहचान का उपयोग किया जाएगा और खोजें पूरी तरह से निजी होंगी। पिंग आपकी ध्वनि खोजों को रिकॉर्ड या साझा नहीं करता है।";
+
+/* (No Comment) */
+"OPML File" = "ओपीएमएल फ़ाइल";
+
