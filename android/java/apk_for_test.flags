@@ -127,7 +127,6 @@
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
     *** mScrimCoordinator;
-    *** mShowStartSurfaceSupplier;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
     *** mLocationBar;
