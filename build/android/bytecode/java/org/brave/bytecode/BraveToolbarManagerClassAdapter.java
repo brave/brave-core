@@ -38,9 +38,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mScrimCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mScrimCoordinator");
 
-        deleteField(sBraveToolbarManagerClassName, "mShowStartSurfaceSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mShowStartSurfaceSupplier");
-
         deleteField(sBraveToolbarManagerClassName, "mMenuButtonCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mMenuButtonCoordinator");
 
