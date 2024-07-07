@@ -125,7 +125,7 @@ declare namespace RewardsExtension {
 
   export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
 
-  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/content/common/mojom/rewards.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 

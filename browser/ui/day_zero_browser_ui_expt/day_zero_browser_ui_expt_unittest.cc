@@ -8,7 +8,7 @@
 #include "brave/browser/ui/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/content/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"

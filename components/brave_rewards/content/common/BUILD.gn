@@ -11,7 +11,7 @@ source_set("features") {
 
   deps = [
     "//base",
-    "//brave/components/brave_rewards/common/buildflags:buildflags",
+    "//brave/components/brave_rewards/content/common/buildflags:buildflags",
   ]
 }
 

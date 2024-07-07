@@ -10,7 +10,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/content/common/rewards_flags.h"
 
 namespace brave_ads {
 

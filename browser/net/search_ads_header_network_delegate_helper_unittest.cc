@@ -13,8 +13,8 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_registry.h"
+#include "brave/components/brave_rewards/content/common/pref_names.h"
+#include "brave/components/brave_rewards/content/common/pref_registry.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
@@ -30,7 +30,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/content/common/features.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 using testing::Return;

@@ -7,8 +7,8 @@
 
 #include <iomanip>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_array.h"
@@ -28,9 +28,9 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/common/rewards_util.h"
+#include "brave/components/brave_rewards/content/common/features.h"
+#include "brave/components/brave_rewards/content/common/pref_names.h"
+#include "brave/components/brave_rewards/content/common/rewards_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"

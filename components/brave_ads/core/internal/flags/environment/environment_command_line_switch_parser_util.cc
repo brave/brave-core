@@ -7,7 +7,7 @@
 
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/content/common/rewards_flags.h"
 
 namespace brave_ads {
 
