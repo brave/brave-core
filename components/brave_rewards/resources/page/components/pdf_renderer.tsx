@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
-//@ts-nocheck
+// @ts-nocheck
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -11,329 +11,253 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-interface Props {
-  onEnable?: () => void;
-}
+const ws = new WebSocket('ws://localhost:5000');
 
-export function PdfRenderer(props: Props) {
+export function PdfRenderer() {
   const [pdfFile, setPdfFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [isSelecting, setIsSelecting] = useState(false);
-  const [isSelectionEnabled, setIsSelectionEnabled] = useState(false);
-  const [isSigned, setIsSigned] = useState(false);
-  const [selectionCoords, setSelectionCoords] = useState({ startX: 0, startY: 0, endX: 0, endY: 0 });
+  const [pdfBuff, setPdfBuff] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [verificationResult, setVerificationResult] = useState(null);
   const [hsmPath, setHsmPath] = useState('');
-  const [signingPin, setSigningPin] = useState();
-  const [isSignatureValid, setIsSignatureValid] = useState(true)
-  const [currentPageIndex, setCurrentPageIndex] = useState(null);
+  const [selectedSignature, setSelectedSignature] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const overlayCanvasRefs = useRef([]);
-  const pdfCanvasRefs = useRef([]);
-  const pdfContainerRef = useRef(null);
-  const pageRefs = useRef([]);
-  const fixedText = "Signed by user";
-
-  const handlePinInput = () => {
-    if (!isSigned) {
-      const pin = prompt("Please enter the pin to sign the document:");
-      if (pin) 
-        setSigningPin(pin); 
-    }
-  }
-
-  useEffect(() => {
-    if (signingPin && currentPageIndex !== null) {
-      embedSignature(currentPageIndex);
-    }
-  }, [signingPin]);
-
-  const checkHsmPath = () => {
-    const storedHsmPath = localStorage.getItem('hsmPath');
-    if (!storedHsmPath) {
-      const path = prompt("Please enter the path of the HSM module:");
-      if (path) {
-        localStorage.setItem('hsmPath', path);
-        setHsmPath(path);
-        setIsSelectionEnabled(true); 
-      }
-    } else {
-      setHsmPath(storedHsmPath);
-      setIsSelectionEnabled(true); 
-    }
-  }
-
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setPageNumber(1);
-  };
-
-  const onPageLoadSuccess = useCallback((pageIndex) => {
-    const pageCanvas = pdfCanvasRefs.current[pageIndex];
-    const overlayCanvas = overlayCanvasRefs.current[pageIndex];
-    if (pageCanvas && overlayCanvas) {
-      overlayCanvas.width = pageCanvas.width;
-      overlayCanvas.height = pageCanvas.height;
-    }
-    // Set the max width of the pdfContainerRef to the width of the page
-    if (pageCanvas && pdfContainerRef.current) {
-      pdfContainerRef.current.style.maxWidth = `${pageCanvas.width}px`;
-    }
+  const showToast = useCallback((message, type) => {
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('fade-out');
+      toast.addEventListener('transitionend', () => toast.remove());
+    }, 3000);
   }, []);
 
-  const handleFileInput = (event) => {
+  useEffect(() => {
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.action === 'signed') {
+        const signedPdfBuffer = new Uint8Array(
+          Buffer.from(data.data, 'base64')
+        );
+        setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
+        setPdfBuff(signedPdfBuffer);
+        showToast('Document signed successfully!', 'success');
+        setIsLoading(false);
+      } else if (data.action === 'verified') {
+        setVerificationResult(data.verified);
+        setIsLoading(false);
+        if (data.verified) {
+          showToast('Document verification successful!', 'success');
+        } else {
+          showToast('Document verification failed.', 'error');
+        }
+      } else if (data.action === 'error') {
+        console.error('Server error:', data.message);
+        showToast(`Error: ${data.message}`, 'error');
+        setIsLoading(false);
+      }
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      showToast('Connection error. Please try again later.', 'error');
+    };
+  }, [showToast]);
+
+  const handleFileInput = useCallback(async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPdfFile(reader.result);
-      };
-      reader.readAsArrayBuffer(file);
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        setPdfBuff(arrayBuffer);
+        setPdfFile(new Blob([arrayBuffer], { type: 'application/pdf' }));
+        setVerificationResult(null);
+      } catch (error) {
+        console.error('Error reading PDF file:', error);
+        showToast('Error reading PDF file. Please try again.', 'error');
+      }
     }
+  }, [showToast]);
+
+  const promptHsmPath = () => {
+    const path = prompt("Enter HSM path:");
+    if (path) setHsmPath(path);
+    return path;
   };
 
-  const getMousePos = (canvas, event) => {
-    const rect = canvas.getBoundingClientRect();
-    return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    };
+  const selectSignature = () => {
+    // Mock function for now. In reality, this would involve fetching signatures from the HSM
+    setSelectedSignature("mock_signature");
   };
 
-  const handleMouseDown = (event, pageIndex) => {
-    if (!isSelectionEnabled) return;
-    setIsSelecting(true);
-    const pos = getMousePos(overlayCanvasRefs.current[pageIndex], event);
-    setSelectionCoords({ startX: pos.x, startY: pos.y, endX: pos.x, endY: pos.y });
+  const showConfirmationPreview = () => {
+    setShowConfirmation(true);
   };
 
-  const handleMouseMove = (event, pageIndex) => {
-    if (!isSelecting || !isSelectionEnabled) return;
-    const pos = getMousePos(overlayCanvasRefs.current[pageIndex], event);
-    setSelectionCoords({ ...selectionCoords, endX: pos.x, endY: pos.y });
-    drawSelection(pos.x, pos.y, pageIndex);
-  };
-
-  const handleMouseUp = (pageIndex) => {
-    if (!isSelectionEnabled) return;
-    setIsSelecting(false);
-    showEmbedSignConfirmation(pageIndex);
-  };
-
-  const drawSelection = (endX, endY, pageIndex) => {
-    const { startX, startY } = selectionCoords;
-    const overlayCtx = overlayCanvasRefs.current[pageIndex].getContext('2d');
-    clearOverlay(pageIndex);
-    overlayCtx.strokeStyle = 'blue';
-    overlayCtx.lineWidth = 2;
-    overlayCtx.strokeRect(startX, startY, endX - startX, endY - startY);
-  };
-
-  const clearOverlay = (pageIndex) => {
-    const overlayCtx = overlayCanvasRefs.current[pageIndex].getContext('2d');
-    overlayCtx.clearRect(0, 0, overlayCanvasRefs.current[pageIndex].width, overlayCanvasRefs.current[pageIndex].height);
-  };
-
-  const showEmbedSignConfirmation = (pageIndex) => {
-    const confirmation = window.confirm("Do you want to embed text in the selected area?");
-    if (confirmation) {
-      setCurrentPageIndex(pageIndex); 
-      handlePinInput();
-    } else {
-      clearSelection(pageIndex);
+  const handleConfirmation = (confirmed) => {
+    if (confirmed) {
+      sendSignRequest();
     }
+    setShowConfirmation(false);
   };
 
-  const embedSignature = (pageIndex) => {
-    const { startX, startY, endX, endY } = selectionCoords;
-    const overlayCtx = overlayCanvasRefs.current[pageIndex].getContext('2d');
-    overlayCtx.fillStyle = 'rgba(255, 255, 0, 0.5)';
-    overlayCtx.fillRect(startX, startY, endX - startX, endY - startY);
-
-    overlayCtx.font = '14px Arial';
-    overlayCtx.fillStyle = 'black';
-    overlayCtx.textAlign = 'left';
-    overlayCtx.textBaseline = 'top';
-    overlayCtx.fillText(fixedText, startX + 5, startY + 5);
-
-    setIsSelectionEnabled(false);
-    setIsSigned(true);
-    console.log(`Page number: ${pageIndex + 1}, Selected area coordinates: Start(${startX}, ${startY}) - End(${endX}, ${endY})`);
-    document.getElementById('signButton').disabled = true;
-    handleSignatureValidation();
-  };
-
-  const clearSelection = (pageIndex) => {
-    setSelectionCoords({ startX: 0, startY: 0, endX: 0, endY: 0 });
-    clearOverlay(pageIndex);
-  };
-
-  const handleSignatureValidation = () => {
-    if(!isSignatureValid){
-      const error = window.confirm("Invalid signature");
-    }
-    else {
-      const success = window.confirm("Valid Signature");
-    }
-  }
-
-  const handlePreviousPage = () => {
-    if (pageNumber > 1) {
-      setPageNumber(pageNumber - 1);
-      scrollToPage(pageNumber - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (pageNumber < numPages) {
-      setPageNumber(pageNumber + 1);
-      scrollToPage(pageNumber + 1);
-    }
-  };
-
-  const handlePageInputChange = (event) => {
-    const newPageNumber = parseInt(event.target.value, 10);
-    if (newPageNumber >= 1 && newPageNumber <= numPages) {
-      setPageNumber(newPageNumber);
-      scrollToPage(newPageNumber);
-    }
-  };
-
-  const scrollToPage = (pageNum) => {
-    const pageElement = pageRefs.current[pageNum - 1];
-    if (pageElement) {
-      pageElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const pageIndex = pageRefs.current.indexOf(entry.target) + 1;
-            setPageNumber(pageIndex);
-          }
-        });
+  const sendSignRequest = () => {
+    setIsLoading(true);
+    const hardcodedCoords = { startX: 100, startY: 100, endX: 200, endY: 200 };
+    ws.send(JSON.stringify({
+      action: 'sign',
+      data: {
+        pdfBuffer: Array.from(new Uint8Array(pdfBuff)),
+        pageIndex: 0,
+        selectionCoords: hardcodedCoords,
+        hsmPath,
+        signatureId: selectedSignature,
       },
-      { root: pdfContainerRef.current, rootMargin: '0px', threshold: 0.7 }
-    );
+    }));
+  };
 
-    pageRefs.current.forEach((page) => {
-      if (page) observer.observe(page);
-    });
+  const handleSignButtonClick = useCallback(() => {
+    if (!pdfBuff) {
+      showToast('Please upload a PDF first', 'error');
+      return;
+    }
 
-    return () => {
-      pageRefs.current.forEach((page) => {
-        if (page) observer.unobserve(page);
-      });
-    };
-  }, [numPages]);
+    const path = promptHsmPath();
+    if (!path) return;
+
+    selectSignature();
+    showConfirmationPreview();
+  }, [pdfBuff, showToast]);
+
+  const handleVerifyButtonClick = useCallback(() => {
+    if (!pdfBuff) {
+      showToast('Please upload a PDF first', 'error');
+      return;
+    }
+    setIsLoading(true);
+    ws.send(JSON.stringify({
+      action: 'verify',
+      data: {
+        Buff: Array.from(new Uint8Array(pdfBuff)),
+      },
+    }));
+  }, [pdfBuff, showToast]);
+
+  const onDocumentLoadSuccess = useCallback(({ numPages }) => {
+    setNumPages(numPages);
+  }, []);
+
+  const ConfirmationDialog = ({ onConfirm }) => (
+    <div className="confirmation-dialog">
+      <h3>Confirm Signature</h3>
+      <p>Are you sure you want to sign the document?</p>
+      <button onClick={() => onConfirm(true)}>Confirm</button>
+      <button onClick={() => onConfirm(false)}>Cancel</button>
+    </div>
+  );
 
   return (
-    <>
-      <div className="App" style={{ background: "gray", padding: '20px' }}>
-        <div id="controls" style={{ 
-            display: 'flex', 
-            justifyContent: "center", 
-            marginBottom: '20px',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            background: 'white',
-            zIndex: 1000,
-            padding: '10px 0',
-            boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)'
-          }}>
-          <input 
-            type="file" 
-            id="pdfInput" 
-            accept="application/pdf" 
-            onChange={handleFileInput} 
-            style={{ padding: '10px', marginRight: '10px' }} 
-          />
-          <button 
-            id="signButton" 
-            onClick={checkHsmPath} 
-            disabled={isSigned} 
-            style={{ padding: '10px', marginRight: '10px', borderRadius: '5px' }}
-          >
-            Sign
-          </button>
-          <button 
-            onClick={handlePreviousPage} 
-            disabled={pageNumber === 1} 
-            style={{ padding: '10px', marginRight: '10px', borderRadius: '10px' }}
-          >
-            Previous Page
-          </button>
-          <button 
-            onClick={handleNextPage} 
-            disabled={pageNumber === numPages} 
-            style={{ padding: '10px', marginRight: '10px', borderRadius: '10px' }}
-          >
-            Next Page
-          </button>
-          <input
-            type="number"
-            value={pageNumber}
-            onChange={handlePageInputChange}
-            min={1}
-            max={numPages}
-            style={{ width: '60px', padding: '10px', textAlign: 'center' }}
-          />
-        </div>
-        <div
-          id="pdfContainer"
-          ref={pdfContainerRef}
-          style={{
-            overflowX: 'hidden',
-            overflowY: 'auto',
-            height: '100vh',
-            backgroundColor: 'white',
-            margin: '55px auto',
-            width: '65vw',
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '20px',
-            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)'
-          }}
+    <div className="App" style={{ padding: '20px' }}>
+      <div id="controls" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+        <input
+          type="file"
+          id="pdfInput"
+          accept="application/pdf"
+          onChange={handleFileInput}
+          style={{ padding: '10px', marginRight: '10px' }}
+        />
+        <button
+          id="signButton"
+          onClick={handleSignButtonClick}
+          style={{ padding: '10px', marginRight: '10px' }}
+          disabled={isLoading}
         >
-          <Document
-            file={pdfFile}
-            onLoadSuccess={onDocumentLoadSuccess}
-            loading={<div>Loading PDF...</div>}
-          >
-            {numPages &&
-              Array.from({ length: numPages }, (_, index) => (
-                <div key={`page_${index + 1}`} style={{ position: 'relative', marginBottom: '20px' }} ref={(el) => (pageRefs.current[index] = el)}>
-                  <Page
-                    pageNumber={index + 1}
-                    renderTextLayer={false}
-                    renderMode="canvas"
-                    onLoadSuccess={() => onPageLoadSuccess(index)}
-                    canvasRef={(el) => (pdfCanvasRefs.current[index] = el)}
-                    loading={<div>Loading page...</div>}
-                  />
-                  <canvas
-                    id={`overlayCanvas_${index}`}
-                    ref={(el) => (overlayCanvasRefs.current[index] = el)}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      pointerEvents: isSelectionEnabled ? 'auto' : 'none',
-                    }}
-                    onMouseDown={(e) => handleMouseDown(e, index)}
-                    onMouseMove={(e) => handleMouseMove(e, index)}
-                    onMouseUp={() => handleMouseUp(index)}
-                  />
-                </div>
-              ))}
-          </Document>
-        </div>
+          Sign
+        </button>
+        <button
+          id="verifyButton"
+          onClick={handleVerifyButtonClick}
+          style={{ padding: '10px' }}
+          disabled={isLoading}
+        >
+          Verify
+        </button>
       </div>
-    </>
+      {verificationResult !== null && (
+        <div id="verificationResult" style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <h3>Verification Result:</h3>
+          <p>{verificationResult ? 'Document is verified' : 'Document verification failed'}</p>
+        </div>
+      )}
+      {showConfirmation && (
+        <ConfirmationDialog onConfirm={handleConfirmation} />
+      )}
+      <div id="pdfContainer" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+        <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+          {Array.from(new Array(numPages), (el, index) => (
+            <Page key={`page_${index + 1}`} pageNumber={index + 1} width={600} />
+          ))}
+        </Document>
+      </div>
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner"></div>
+        </div>
+      )}
+      <style jsx>{`
+        .loading-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1001;
+        }
+        .loading-spinner {
+          border: 5px solid #f3f3f3;
+          border-top: 5px solid #3498db;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .toast {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 10px 20px;
+          border-radius: 4px;
+          color: white;
+          opacity: 0.9;
+          transition: opacity 0.3s ease;
+          z-index: 1002;
+        }
+        .toast.success { background-color: #4CAF50; }
+        .toast.error { background-color: #F44336; }
+        .toast.info { background-color: #2196F3; }
+        .toast.fade-out { opacity: 0; }
+        .confirmation-dialog {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          z-index: 1003;
+        }
+      `}</style>
+    </div>
   );
 }
