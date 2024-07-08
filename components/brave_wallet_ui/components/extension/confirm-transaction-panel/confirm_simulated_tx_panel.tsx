@@ -5,17 +5,22 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Alert from '@brave/leo/react/alert'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
+import { getLocale } from '../../../../common/locale'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { WalletSelectors } from '../../../common/selectors'
 import {
   isUrlWarning,
   translateSimulationResultError
 } from '../../../utils/tx-simulation-utils'
+import {
+  openAssociatedTokenAccountSupportArticleTab //
+} from '../../../utils/routes-utils'
 
 // Hooks
 import {
@@ -66,6 +71,7 @@ import {
   StyledWrapper,
   SimulatedTxMessageBox
 } from './confirm_simulated_tx_panel.styles'
+import { LearnMoreButton } from '../shared-panel-styles'
 
 type confirmPanelTabs = 'transaction' | 'details'
 
@@ -154,6 +160,25 @@ export const ConfirmSimulatedTransactionPanel = ({
       ? BraveWallet.CoinType.ETH
       : BraveWallet.CoinType.SOL
   )
+
+  console.log({ txSimulation })
+
+  const simulationHasOutgoingSPLandSOLTransfers =
+    simulationType === 'SVM' &&
+    txSimulation.expectedStateChanges.some(
+      (sim) =>
+        sim.rawInfo.kind ===
+          BraveWallet.BlowfishSolanaRawInfoKind.kSplTransfer &&
+        sim.rawInfo.data.splTransferData?.diff.sign ===
+          BraveWallet.BlowfishDiffSign.kMinus
+    ) &&
+    txSimulation.expectedStateChanges.some(
+      (sim) =>
+        sim.rawInfo.kind ===
+          BraveWallet.BlowfishSolanaRawInfoKind.kSolTransfer &&
+        sim.rawInfo.data.solTransferData?.diff.sign ===
+          BraveWallet.BlowfishDiffSign.kMinus
+    )
 
   // methods
   const onSelectTab = React.useCallback(
@@ -327,6 +352,25 @@ export const ConfirmSimulatedTransactionPanel = ({
                 feeDisplayMode='fiat'
               />
             </NetworkFeeRow>
+
+            {/* 
+              Show a warning about a possible token account creation fee
+              when SPL tokens are sent
+            */}
+            {simulationHasOutgoingSPLandSOLTransfers && (
+              <Alert type='warning'>
+                <>
+                  {getLocale(
+                    'braveWalletTransactionMayIncludeAccountCreationFee'
+                  )}{' '}
+                  <LearnMoreButton
+                    onClick={openAssociatedTokenAccountSupportArticleTab}
+                  >
+                    {getLocale('braveWalletAllowAddNetworkLearnMoreButton')}
+                  </LearnMoreButton>
+                </>
+              </Alert>
+            )}
           </SimulationInfoColumn>
         </TabsAndContent>
       </Column>

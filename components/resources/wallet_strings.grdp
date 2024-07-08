@@ -1142,4 +1142,5 @@
   <message name="IDS_BRAVE_WALLET_EVM_MESSAGE_SCANNING_FEATURE_SAFETY_EXPLANATION" desc="Explains the purpose of the EVM message scanning feature">It ensures safety and accuracy by examining the messages sent from the Ethereum Virtual Machine that interact with your smart contract or any actions.</message>
   <message name="IDS_BRAVE_WALLET_EVM_MESSAGE_SCANNING_FEATURE_ACCURACY_EXPLANATION" desc="Exaplins that the message scanning feature ensures accuracy of expected results">It's like double-checking a letter to make sure it's just right before signing it.</message>
   <message name="IDS_BRAVE_WALLET_DO_NOT_SHOW_THIS_MESSAGE_AGAIN" desc="Checkbox text for preventing the display of a given message again">Do not show this message again.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_MAY_INCLUDE_ACCOUNT_CREATION_FEE" desc="A warning that the transaction might include an associated token account creation fee">This transaction may include an additional account creation fee</message>
 </grit-part>
