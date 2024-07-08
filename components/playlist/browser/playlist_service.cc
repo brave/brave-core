@@ -317,19 +317,6 @@ void PlaylistService::AddMediaFileFromItem(const std::string& playlist_id,
     return std::move(callback).Run({});
   }
 
-  base::flat_set<GURL> already_added_media;
-  base::ranges::transform(
-      GetAllPlaylistItems(),
-      std::inserter(already_added_media, already_added_media.end()),
-      [](const auto& item) { return item->media_source; });
-
-  if (already_added_media.contains(item->media_source)) {
-    DVLOG(2) << "Skipping creating item: [id] " << item->id
-             << " [media url]:" << item->media_source
-             << " - The media source is already added";
-    return std::move(callback).Run({});
-  }
-
   CreatePlaylistItem(item, cache);
   auto target_playlist_id =
       playlist_id.empty() ? GetDefaultSaveTargetListID() : playlist_id;
