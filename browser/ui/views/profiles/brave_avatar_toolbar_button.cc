@@ -17,6 +17,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -70,7 +71,19 @@ class BraveAvatarButtonHighlightPathGenerator
 }  // namespace
 
 BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
-    : AvatarToolbarButton(browser_view) {}
+    : AvatarToolbarButton(browser_view) {
+  // Our toolbar button height is 28.
+  // Icon image size 18 + vertical insets 10(5x2).
+  // However, avatar button's icon image size is 16.
+  // So, set delta insets to make its height to 28.
+#if BUILDFLAG(IS_LINUX)
+  // On linux, only add horizontal delta as its size is 26x28.
+  // TODO(simonhong): check why it's different from other platforms.
+  SetLayoutInsetDelta(gfx::Insets::VH(0, 1));
+#else
+  SetLayoutInsetDelta(gfx::Insets(1));
+#endif
+}
 
 BraveAvatarToolbarButton::~BraveAvatarToolbarButton() = default;
 
