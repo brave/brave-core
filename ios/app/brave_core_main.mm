@@ -233,7 +233,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     _otr_browserList =
         BrowserListFactory::GetForBrowserState(otrChromeBrowserState);
     _otr_browser = Browser::Create(otrChromeBrowserState, {});
-    _otr_browserList->AddIncognitoBrowser(_otr_browser.get());
+    _otr_browserList->AddBrowser(_otr_browser.get());
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
