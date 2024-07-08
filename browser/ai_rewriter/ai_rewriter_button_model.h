@@ -16,6 +16,7 @@ class AIRewriterButtonModel {
  public:
   virtual void Show(const gfx::Rect& rect) = 0;
   virtual void Hide() = 0;
+  virtual void Close() = 0;
 };
 
 base::WeakPtr<AIRewriterButtonModel> CreateRewriterButton(
