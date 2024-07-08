@@ -54,9 +54,9 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 
-// Deprecated 05/2024
+// Deprecated 07/2024
 constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
-// Deprecated 05/2024
+// Deprecated 07/2024
 constexpr char kAutoPinEnabledMigrated[] = "brave.wallet.auto_pin_enabled";
 
 base::Value::Dict GetDefaultSelectedNetworks() {

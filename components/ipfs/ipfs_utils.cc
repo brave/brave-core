@@ -12,7 +12,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
-#include "build/build_config.h"
 #include "components/base32/base32.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"

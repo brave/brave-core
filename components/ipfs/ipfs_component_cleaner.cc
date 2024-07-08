@@ -31,10 +31,6 @@ static const base::FilePath::StringPieceType kIpfsClientComponentId =
 static const base::FilePath::StringPieceType kIpfsClientComponentId =
     FILE_PATH_LITERAL("oecghfpdmkjlhnfpmmjegjacfimiafjp");
 #endif
-#else
-// Not used yet for Android/iOS
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
-    FILE_PATH_LITERAL("");
 #endif
 }  // namespace
 

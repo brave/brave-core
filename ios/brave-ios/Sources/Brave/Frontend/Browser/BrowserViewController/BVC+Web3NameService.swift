@@ -49,9 +49,9 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
       switch result {
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPRSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
-          finishEditingAndSubmit(resolvedIPRSURL)
+          finishEditingAndSubmit(resolvedIPFSURL)
         } else {
           finishEditingAndSubmit(resolvedURL)
         }

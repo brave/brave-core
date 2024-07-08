@@ -279,9 +279,9 @@ extension BrowserViewController: WKNavigationDelegate {
         return (.cancel, preferences)
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPRSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
-          requestURL = resolvedIPRSURL
+          requestURL = resolvedIPFSURL
         } else {
           requestURL = resolvedURL
         }
