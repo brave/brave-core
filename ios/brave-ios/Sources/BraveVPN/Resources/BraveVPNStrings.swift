@@ -213,6 +213,15 @@ extension Strings {
         comment: "Header title for vpn settings server section."
       )
 
+    public static let settingsSupportSection =
+      NSLocalizedString(
+        "vpn.settingsSupportSection",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Support",
+        comment: "Header title for vpn support server section."
+      )
+
     public static let settingsSubscriptionStatus =
       NSLocalizedString(
         "vpn.settingsSubscriptionStatus",
@@ -837,15 +846,6 @@ extension Strings {
         value:
           "Please select your preferred transport protocol. Once switched your existing VPN credentials will be cleared and you will be reconnected if a VPN connection is currently established.",
         comment: "Description of vpn tunnel protocol"
-      )
-
-    public static let regionSwitchSuccessPopupText =
-      NSLocalizedString(
-        "vpn.regionSwitchSuccessPopupText",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "VPN region changed.",
-        comment: "Message that we show after successfully changing vpn region."
       )
 
     public static let protocolPickerErrorTitle =
