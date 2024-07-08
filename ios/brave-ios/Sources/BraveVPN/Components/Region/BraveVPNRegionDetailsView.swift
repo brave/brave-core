@@ -46,14 +46,12 @@ struct BraveRegionDetailsView: View {
       .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
     }
     .opacity(isLoading ? 0.5 : 1.0)
-    .overlay(
-      Group {
-        if isLoading {
-          BraveVPNRegionLoadingIndicatorView()
-            .transition(.opacity)
-        }
+    .overlay {
+      if isLoading {
+        BraveVPNRegionLoadingIndicatorView()
+          .transition(.opacity)
       }
-    )
+    }
     .navigationBarTitle(
       String(format: Strings.VPN.serverNameTitle, cityRegionDetail.countryName),
       displayMode: .inline
