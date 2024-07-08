@@ -11,6 +11,7 @@
 
 #include "base/json/json_writer.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "content/public/browser/browser_thread.h"
@@ -58,6 +59,9 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   report_details_dict.Set(kContactField, report.contact.Clone());
 
   report_details_dict.Set(kChannelField, report.channel);
+  report_details_dict.Set(
+      kVersionField,
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
   report_details_dict.Set(kShieldsEnabledField, report.shields_enabled);
   report_details_dict.Set(kAdBlockSettingField, report.ad_block_setting);
   report_details_dict.Set(kFPBlockSettingField, report.fp_block_setting);
