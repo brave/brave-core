@@ -28,9 +28,6 @@ import { FromAsset } from '../composer_ui/from_asset/from_asset'
 import { ToAsset } from '../composer_ui/to_asset/to_asset'
 import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token_modal'
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
-import {
-  AdvancedSettingsModal //
-} from '../composer_ui/advanced_settings_modal.style.ts/advanced_settings_modal'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
 import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
@@ -69,9 +66,7 @@ export const Swap = () => {
     quoteOptions,
     selectedQuoteOptionIndex,
     selectingFromOrTo,
-    selectedGasFeeOption,
     slippageTolerance,
-    gasEstimates,
     onSelectFromToken,
     onSelectToToken,
     onClickFlipSwapTokens,
@@ -79,8 +74,7 @@ export const Swap = () => {
     handleOnSetFromAmount,
     handleOnSetToAmount,
     handleQuoteRefresh,
-    setSelectedGasFeeOption,
-    setSlippageTolerance,
+    onChangeSlippageTolerance,
     onSubmit,
     onChangeRecipient,
     onChangeSwapProvider,
@@ -98,7 +92,6 @@ export const Swap = () => {
   } = swap
 
   // State
-  const [showSwapSettings, setShowSwapSettings] = React.useState<boolean>(false)
   const [showSwapProviders, setShowSwapProviders] =
     React.useState<boolean>(false)
   const [showPrivacyModal, setShowPrivacyModal] = React.useState<boolean>(false)
@@ -108,15 +101,7 @@ export const Swap = () => {
 
   // Refs
   const selectTokenModalRef = React.useRef<HTMLDivElement>(null)
-  const swapSettingsModalRef = React.useRef<HTMLDivElement>(null)
   const privacyModalRef = React.useRef<HTMLDivElement>(null)
-
-  const onToggleShowSwapSettings = React.useCallback(() => {
-    setShowSwapSettings((prev) => !prev)
-    if (slippageTolerance === '') {
-      setSlippageTolerance('0.5')
-    }
-  }, [slippageTolerance, setSlippageTolerance])
 
   // Methods
   const handleOnChangeSwapProvider = React.useCallback(
@@ -132,11 +117,6 @@ export const Swap = () => {
     selectTokenModalRef,
     () => setSelectingFromOrTo(undefined),
     selectingFromOrTo !== undefined
-  )
-  useOnClickOutside(
-    swapSettingsModalRef,
-    onToggleShowSwapSettings,
-    showSwapSettings
   )
   useOnClickOutside(
     privacyModalRef,
@@ -225,6 +205,8 @@ export const Swap = () => {
                   isBridge={isBridge}
                   toAccount={toAccount}
                   onChangeRecipient={onChangeRecipient}
+                  slippageTolerance={slippageTolerance}
+                  onChangeSlippageTolerance={onChangeSlippageTolerance}
                 />
                 <VerticalSpace space='12px' />
                 {/* TODO: Swap and Send is currently unavailable
@@ -281,18 +263,6 @@ export const Swap = () => {
             </Column>
           </Column>
         </ToAsset>
-        {showSwapSettings && (
-          <AdvancedSettingsModal
-            selectedGasFeeOption={selectedGasFeeOption}
-            slippageTolerance={slippageTolerance}
-            setSelectedGasFeeOption={setSelectedGasFeeOption}
-            setSlippageTolerance={setSlippageTolerance}
-            gasEstimates={gasEstimates}
-            onClose={() => setShowSwapSettings(false)}
-            selectedNetwork={fromNetwork}
-            ref={swapSettingsModalRef}
-          />
-        )}
       </WalletPageWrapper>
       {selectingFromOrTo && (
         <SelectTokenModal

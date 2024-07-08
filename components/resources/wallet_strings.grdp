@@ -115,17 +115,23 @@
   <message name="IDS_BRAVE_WALLET_NOT_OWNED" desc="Token list not owned label">Not owned</message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_24H" desc="Token list amount and 24h change">Amount/24h</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_BRIDGE" desc="Bridge asset modal title">Choose asset to bridge</message>
-  <message name="IDS_BRAVE_WALLET_BRIDGING_VIA" desc="Bridging via provider label">Bridging via</message>
-  <message name="IDS_BRAVE_WALLET_SWAPPING_VIA" desc="Bridging via provider label">Swapping via</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_SWAP" desc="Review swap button">Review swap</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_QUOTE_PROVIDER" desc="Choose quote provider modal title">Choose quote provider</message>
   <message name="IDS_BRAVE_WALLET_QUOTE_PROVIDER_INFO" desc="Choose quote provider informational tooltip">Each aggregator provides quotes by using liquidity from its API. They gather price information from various exchanges and offer the prices based on this data.</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_NOT_AVAILABLE" desc="Quote provider option not availble label">Not available</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_UPDATE" desc="Choose provider update button">Update</message>
   <message name="IDS_BRAVE_WALLET_PROVIDER_NOT_SUPPORTED" desc="Quote provider is not supported error message">This pair is not supported by <ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>  
+  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>
+  <message name="IDS_BRAVE_WALLET_ROUTE" desc="Swap route label">Route</message>
+  <message name="IDS_BRAVE_WALLET_MAX_SLIPPAGE" desc="Swap max slippage label">Max slippage</message>
+  <message name="IDS_BRAVE_WALLET_SLIPPAGE_DESCRIPTION" desc="Swap max slippage description">When the deviation between the price of the transaction you submitted and the price at the time of the transaction on chain is greater than this set value, the transaction will fail.</message>
+  <message name="IDS_BRAVE_WALLET_SUGGESTED_VALUES" desc="Swap max slippage suggested values label">Suggested Values:</message>
+  <message name="IDS_BRAVE_WALLET_MAINSTREAM_ASSET_PAIRS" desc="Swap max slippage mainstream asset pairs label">Mainstream Asset Pairs: <ph name="SLIPPAGE_PERCENT"><ex>0.5</ex>$1</ph>%</message>
+  <message name="IDS_BRAVE_WALLET_STABLECOIN_PAIRS" desc="Swap max slippage stablecoin pairs label">Stablecoin Pairs: <ph name="SLIPPAGE_PERCENT"><ex>0.5</ex>$1</ph>%</message>
+  <message name="IDS_BRAVE_WALLET_OTHERS" desc="Swap max slippage others label">Others: <ph name="SLIPPAGE_PERCENT"><ex>1</ex>$1</ph>%</message>
+  <message name="IDS_BRAVE_WALLET_SUGGESTED" desc="Swap max slippage suggested option">Suggested</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM" desc="Swap max slippage custom option">Custom</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
-  <message name="IDS_BRAVE_WALLET_EST_FEES" desc="Bridge and Swap estimated fees label">Est fees</message>
   <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE" desc="Bridge and Swap exchange rate label">Exchange rate</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_FOR" desc="Bridge and Swap exchange rate value for value label"><ph name="ONE_TOKEN_VALUE"><ex>1 BAT</ex>$1</ph> for <ph name="EXCHANGE_VALUE"><ex>5 USDC</ex>$2</ph></message>
@@ -136,9 +142,6 @@
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_DESCRIPTION" desc="Message description shown when requesting to do an ENS off chain lookup.">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON" desc="ENS off chain lookup button text.">Use ENS domain</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
-  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_EXPLANATION" desc="Slippage Tolerance tooltip explanation">Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.</message>
-  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
-  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_DESCRIPTION" desc="Custom slippage tolerance input description">Enter a value between 0.5% and 99%</message>
   <message name="IDS_BRAVE_WALLET_EXPIRES_IN_TITLE" desc="BuySendSwap expires in title">Expires in</message>
   <message name="IDS_BRAVE_WALLET_SEND_PLACEHOLDER" desc="BuySendSwap send placeholder">Wallet address or URL</message>
   <message name="IDS_BRAVE_WALLET_SEND_NO_URL_PLACEHOLDER" desc="BuySendSwap send placeholder without URL">Wallet address</message>
