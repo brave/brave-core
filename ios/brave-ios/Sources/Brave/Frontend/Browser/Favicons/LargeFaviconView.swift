@@ -118,9 +118,7 @@ class LargeFaviconView: UIView {
     }
 
     imageView.snp.makeConstraints {
-      $0.center.equalTo(self)
-      $0.leading.top.greaterThanOrEqualTo(layoutMarginsGuide)
-      $0.trailing.bottom.lessThanOrEqualTo(layoutMarginsGuide)
+      $0.edges.equalToSuperview()
     }
     monogramFallbackLabel.snp.makeConstraints {
       $0.center.equalTo(self)
