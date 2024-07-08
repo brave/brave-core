@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     private List<String> mRecoveryPhrases;
     private boolean mIsOnboarding;
     private TextView mCopyButton;
+    private TextView mRecoveryPhraseSkip;
+    private AppCompatButton mRecoveryPhraseButton;
     private RecyclerView mRecoveryPhraseRecyclerView;
     private RecoveryPhraseAdapter mRecoveryPhraseAdapter;
 
@@ -49,9 +52,19 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     }
 
     @Override
+    protected boolean canNavigateBack() {
+        return false;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
+    }
+
+    @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_recovery_phrase, container, false);
     }
 
@@ -59,16 +72,15 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecoveryPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        mRecoveryPhraseRecyclerView.addItemDecoration(
-                new ItemOffsetDecoration(requireContext(), R.dimen.zero_margin));
+        mRecoveryPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_recycler_view);
+        mCopyButton = view.findViewById(R.id.copy);
+        mRecoveryPhraseButton = view.findViewById(R.id.button_recovery_phrase_continue);
 
         GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 3);
         mRecoveryPhraseRecyclerView.setLayoutManager(layoutManager);
 
         mRecoveryPhraseAdapter = new RecoveryPhraseAdapter();
 
-        mCopyButton = view.findViewById(R.id.btn_copy);
         mCopyButton.setEnabled(false);
         mCopyButton.setOnClickListener(
                 v ->
@@ -78,8 +90,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                                 R.string.text_has_been_copied,
                                 true));
 
-        Button recoveryPhraseButton = view.findViewById(R.id.btn_recovery_phrase_continue);
-        recoveryPhraseButton.setOnClickListener(
+        mRecoveryPhraseButton.setOnClickListener(
                 v -> {
                     BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
                     if (braveWalletP3A != null && mIsOnboarding) {
@@ -89,19 +100,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                         mOnNextPage.incrementPages(1);
                     }
                 });
-        CheckBox recoveryPhraseCheckbox = view.findViewById(R.id.recovery_phrase_checkbox);
-        recoveryPhraseCheckbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> {
-                    if (isChecked) {
-                        recoveryPhraseButton.setEnabled(true);
-                        recoveryPhraseButton.setAlpha(1.0f);
-                    } else {
-                        recoveryPhraseButton.setEnabled(false);
-                        recoveryPhraseButton.setAlpha(0.5f);
-                    }
-                });
-        TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(
+        mRecoveryPhraseSkip = view.findViewById(R.id.skip);
+        mRecoveryPhraseSkip.setOnClickListener(
                 v -> {
                     BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
                     if (braveWalletP3A != null && mIsOnboarding) {

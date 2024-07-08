@@ -1969,20 +1969,14 @@ Are you sure you want to do this?
     <message name="IDS_ACCEPT_TERMS_OF_USE" desc="Brave Wallet terms of use text">
       I have read and agree to the <ph name="CLICK_START">%1$s</ph>Terms of Use<ph name="CLICK_END">%2$s</ph>.
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
-      Your recovery phrase
+    <message name="IDS_RECOVERY_PHRASE_TITLE" desc="Brave Wallet onboarding title for recovery phrase screen">
+      Save your recovery phrase
     </message>
-    <message name="IDS_YOUR_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
-      Write down or copy these words in the exact order shown below, and save them somewhere safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.
+    <message name="IDS_RECOVERY_PHRASE_CONTENT" desc="Brave Wallet onboarding text content for recovery phrase screen">
+      Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.
     </message>
     <message name="IDS_YOUR_RECOVERY_PHRASE_WARNING_TEXT" desc="Brave Wallet onboarding text">
-      WARNING: Never share your recovery phrase. Anyone with this phrase can take your assets forever.
-    </message>
-    <message name="IDS_RECOVERY_PHRASE_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
-      I have backed up my phrase somewhere safe.
-    </message>
-    <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
-      Copy
+      Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.
     </message>
     <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
@@ -2009,7 +2003,7 @@ Are you sure you want to do this?
       Update account
     </message>
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
-      <ph name="NUMBER">%1$s</ph>. <ph name="RECOVERY_PHRASE">%2$s</ph>
+      #<ph name="NUMBER">%1$s</ph> <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?
@@ -3153,6 +3147,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_WALLET_SKIP" desc="Text to skip something">
       Skip this for now
+    </message>
+    <message name="IDS_BRAVE_WALLET_CLICK_TO_COPY" desc="Click to copy something to the clipboard">
+      Click to copy
     </message>
     <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Text to navigate to portfolio section">
       Go to my portfolio

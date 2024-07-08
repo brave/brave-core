@@ -128,13 +128,12 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                     return new OnboardingFingerprintUnlockFragment();
                 } else if (position == 5) {
                     return new OnboardingCreatingWalletFragment();
-                } else if (position == 6) {
-                    return OnboardingBackupWalletFragment.newInstance(isOnboarding);
-                } else if (position == 7) {
+                }
+                else if (position == 6) {
                     return OnboardingRecoveryPhraseFragment.newInstance(isOnboarding);
-                } else if (position == 8) {
+                } else if (position == 7) {
                     return OnboardingVerifyRecoveryPhraseFragment.newInstance(isOnboarding);
-                } else if (position == 9) {
+                } else if (position == 8) {
                     return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
@@ -214,7 +213,7 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         if (mWalletAction == WalletAction.ONBOARDING) {
             return 1;
         } else if (mWalletAction == WalletAction.PASSWORD_CREATION) {
-            return 10;
+            return 9;
         } else if (mWalletAction == WalletAction.ONBOARDING_RESTORE) {
             return 7;
         } else if (mWalletAction == WalletAction.UNLOCK) {

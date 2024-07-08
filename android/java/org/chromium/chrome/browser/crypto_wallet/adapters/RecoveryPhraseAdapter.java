@@ -29,7 +29,7 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem = layoutInflater.inflate(R.layout.recovery_phrase_item_layout, parent, false);
         return new ViewHolder(listItem);

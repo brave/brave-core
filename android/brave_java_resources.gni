@@ -626,7 +626,6 @@ brave_java_resources = [
   "java/res/drawable/ic_warning_circle.xml",
   "java/res/drawable/ic_warning_circle_filled.xml",
   "java/res/drawable/ic_warning_circle_filled2.xml",
-  "java/res/drawable/ic_warning_red.xml",
   "java/res/drawable/ic_warning_triangle_outline.xml",
   "java/res/drawable/ic_web.xml",
   "java/res/drawable/image_credit_rounded_shape.xml",
