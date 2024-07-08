@@ -146,6 +146,7 @@
     *** mModalDialogManagerSupplier;
     *** mTabObscuringHandler;
     *** mReadAloudControllerSupplier;
+    *** mConstraintsProxy;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);

@@ -112,6 +112,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private LayoutStateProvider.LayoutStateObserver mLayoutStateObserver;
     private LayoutStateProvider mLayoutStateProvider;
     private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
+    private ToolbarManager.ConstraintsProxy mConstraintsProxy;
 
     // Own members.
     private boolean mIsBottomToolbarVisible;
@@ -307,7 +308,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             mTabGroupUi,
                             mTabObscuringHandler,
                             mOverlayPanelVisibilitySupplier,
-                            getConstraintsProxy(),
+                            mConstraintsProxy,
                             /* readAloudRestoringSupplier= */ () -> {
                                 final var readAloud = mReadAloudControllerSupplier.get();
                                 return readAloud != null && readAloud.isRestoringPlayer();
@@ -482,20 +483,6 @@ public class BraveToolbarManager extends ToolbarManager {
     // }
     private boolean isToolbarPhone() {
         return true;
-    }
-
-    // TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
-    // private ObservableSupplier<Integer> getConstraintsProxy() {
-    //     if (mToolbar instanceof BraveTopToolbarCoordinator) {
-    //         return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
-    //     }
-
-    //     assert false : "Wrong top toolbar type!";
-    //     return null;
-    // }
-    private ObservableSupplier<Integer> getConstraintsProxy() {
-        assert false : "Wrong top toolbar type!";
-        return null;
     }
 
     @Override
