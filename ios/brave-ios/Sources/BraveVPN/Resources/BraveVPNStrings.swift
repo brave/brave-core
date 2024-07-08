@@ -191,6 +191,15 @@ extension Strings {
         comment: "Header title for vpn settings server section."
       )
 
+    public static let settingsSupportSection =
+      NSLocalizedString(
+        "vpn.settingsSupportSection",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Support",
+        comment: "Header title for vpn support server section."
+      )
+
     public static let settingsSubscriptionStatus =
       NSLocalizedString(
         "vpn.settingsSubscriptionStatus",
