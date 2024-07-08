@@ -698,6 +698,9 @@
 -ThemeColorPickerHandlerTest.GetChromeColorsExtended
 -ThemeColorPickerHandlerTest.SetSeedColor
 
+# These tests fail because we stub out the MetricsService.
+-ChromeMetricsServiceClientTest.TestRegisterMetricsServiceProviders
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
