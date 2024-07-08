@@ -12,7 +12,6 @@ namespace syncer {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kEnableBookmarkFoldersForAccountStorage,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSyncAccountKeyedTransportPrefs, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace syncer
