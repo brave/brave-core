@@ -2,14 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sr-Latn">
 <translation id="130631256467250065">Promene će stupiti na snagu kada sledeći put ponovo pokrenete uređaj.</translation>
-<translation id="7999989146447764333">Izveštavanje o otkazivanjima nije dostupno u Brave-u.</translation>
-<translation id="1953231710324290369">Gledate bezbednu Brave stranicu.</translation>
-<translation id="907470742420136113">Brave pokušava da izmeni podešavanja za popunjavanje načina plaćanja.</translation>
-<translation id="4847979153841887006">Brave logotip</translation>
-<translation id="336808635693308470">Brave pokušava da izmeni načine plaćanja.</translation>
-<translation id="7932149101545999102">Brave omogućavaju <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
+<translation id="7999989146447764333">Izveštavanje o otkazivanjima nije dostupno u Ping-u.</translation>
+<translation id="1953231710324290369">Gledate bezbednu Ping stranicu.</translation>
+<translation id="907470742420136113">Ping pokušava da izmeni podešavanja za popunjavanje načina plaćanja.</translation>
+<translation id="4847979153841887006">Ping logotip</translation>
+<translation id="336808635693308470">Ping pokušava da izmeni načine plaćanja.</translation>
+<translation id="7932149101545999102">Ping omogućavaju <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Idite u
-          Brave meni &gt;
+          Ping meni &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -18,22 +18,22 @@
           &gt;
           LAN Settings (Podešavanja lokalne mreže)
           i opozovite izbor u polju za potvrdu „Use a proxy server for your LAN“ (Koristi proksi server za lokalnu mrežu).</translation>
-<translation id="303960458633076466">Brave blokira ovu stranicu</translation>
-<translation id="2017237562285586622">Dozvolite Brave-u da pristupa mreži u zaštitnom zidu ili antivirusnim
+<translation id="303960458633076466">Ping blokira ovu stranicu</translation>
+<translation id="2017237562285586622">Dozvolite Ping-u da pristupa mreži u zaštitnom zidu ili antivirusnim
           podešavanjima.</translation>
 <translation id="8619622797841001082">Idite u
-          Brave meni &gt;
+          Ping meni &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
           i proverite da li je konfiguracija podešena na „no proxy“ (bez proksija) ili „direct“ (direktno).</translation>
-<translation id="2765022094254723779">Brave omogućava i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
-<translation id="9156965752763025780">Promene će stupiti na snagu kada sledeći put ponovo pokrenete Brave.</translation>
-<translation id="6477625882876869143">Brave omogućava <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda.</translation>
+<translation id="2765022094254723779">Ping omogućava i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
+<translation id="9156965752763025780">Promene će stupiti na snagu kada sledeći put ponovo pokrenete Ping.</translation>
+<translation id="6477625882876869143">Ping omogućava <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda.</translation>
 <translation id="4068928808254189629">Otvorite
-          Brave meni &gt;
+          Ping meni &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -41,6 +41,6 @@
           Ako vam to ne reši problem, preporučujemo da ponovo izaberete
           ovu opciju radi boljih performansi.</translation>
 <translation id="8187289872471304532">Idite na Applications (Aplikacije) &gt; System Preferences (Podešavanja sistema) &gt; Network (Mreža) &gt; Advanced (Više opcija) &gt; Proxies (Proksiji) i opozovite izbor svih proksija koji su izabrani.</translation>
-<translation id="4159376633403260073">Pregledate bezbednu Brave for Testing stranicu</translation>
-<translation id="88187049159266777">Brave se nije ispravno zatvorio.</translation>
+<translation id="4159376633403260073">Pregledate bezbednu Ping for Testing stranicu</translation>
+<translation id="88187049159266777">Ping se nije ispravno zatvorio.</translation>
 </translationbundle>

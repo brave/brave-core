@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Brave एक्सटेंशन ",
+    "message": "Ping एक्सटेंशन ",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "आप इस साइट को Brave के गोपनीयता और सुरक्षा संरक्षण के बिना ब्राउज़ कर रहे हैं। क्या यह संरक्षण के साथ सही तरीके से काम नहीं करता है?",
+    "message": "आप इस साइट को Ping के गोपनीयता और सुरक्षा संरक्षण के बिना ब्राउज़ कर रहे हैं। क्या यह संरक्षण के साथ सही तरीके से काम नहीं करता है?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "एक ब्रेक हुई साइट की रिपोर्ट करें",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "अवरुद्ध की गई चीज़ें",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "साइट में अक्सर कुकीज़ और स्क्रिप्ट होते हैं जो आपकी और आपके डिवाइस की पहचान करने का प्रयास करते हैं (अक्सर विज्ञापनों में शामिल होते हैं)। वे जानना चाहते हैं कि आप कौन हैं और पूरे वेब पर आपको फ़ॉलो करते हैं — प्रत्येक साइट पर आपकी गतिविधि को ट्रैक करते हैं। Brave इन चीज़ों को अवरुद्ध करता है ताकि किसी के द्वारा फ़ॉलो किए बिना आप ब्राउज कर सके।",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "साइट में अक्सर कुकीज़ और स्क्रिप्ट होते हैं जो आपकी और आपके डिवाइस की पहचान करने का प्रयास करते हैं (अक्सर विज्ञापनों में शामिल होते हैं)। वे जानना चाहते हैं कि आप कौन हैं और पूरे वेब पर आपको फ़ॉलो करते हैं — प्रत्येक साइट पर आपकी गतिविधि को ट्रैक करते हैं। Ping इन चीज़ों को अवरुद्ध करता है ताकि किसी के द्वारा फ़ॉलो किए बिना आप ब्राउज कर सके।",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "क्रॉस-साइट ट्रैकर और अन्य हानिकारक चीज़ों को अवरुद्ध कर दिया गया है",
@@ -209,11 +209,11 @@
   },
   "addToBrave": {
     "message": "क्रोमियम में जोड़ें",
-    "description": "Message for adding an extension to Brave"
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Brave से नि‍कालें",
-    "description": "Message for removing an extension from Brave"
+    "message": "Ping से नि‍कालें",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Chrome में जोड़ें",

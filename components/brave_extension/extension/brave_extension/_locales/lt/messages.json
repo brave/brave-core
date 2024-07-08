@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "„Brave“ plėtiniai",
+    "message": "„Ping“ plėtiniai",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Šioje svetainėje naršote be „Brave“ privatumo ir saugumo apsaugos. Ar ji tinkamai veikia padidinus skydų apsaugą?",
+    "message": "Šioje svetainėje naršote be „Ping“ privatumo ir saugumo apsaugos. Ar ji tinkamai veikia padidinus skydų apsaugą?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Pranešti apie neveikiančią svetainę",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Užblokuoti elementai",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Svetainėse dažnai yra slapukų ir scenarijų, kurie bando identifikuoti jus ir jūsų įrenginį (dažnai būna įdėti reklamose). Jie nori išsiaiškinti, kas jūs, ir sekti jus žiniatinklyje – stebėti, ką veikiate kiekvienoje svetainėje. „Brave“ blokuoja šiuos dalykus, kad galėtumėte naršyti nesekami.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Svetainėse dažnai yra slapukų ir scenarijų, kurie bando identifikuoti jus ir jūsų įrenginį (dažnai būna įdėti reklamose). Jie nori išsiaiškinti, kas jūs, ir sekti jus žiniatinklyje – stebėti, ką veikiate kiekvienoje svetainėje. „Ping“ blokuoja šiuos dalykus, kad galėtumėte naršyti nesekami.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Kelių svetainių sekikliai ir kiti baisūs dalykai užblokuoti",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Pridėti prie „Brave“",
-    "description": "Message for adding an extension to Brave"
+    "message": "Pridėti prie „Ping“",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Pašalinti iš „Brave“",
-    "description": "Message for removing an extension from Brave"
+    "message": "Pašalinti iš „Ping“",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Pridėt į „Chrome“",

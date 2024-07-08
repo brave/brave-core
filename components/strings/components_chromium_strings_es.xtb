@@ -2,14 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="es">
 <translation id="130631256467250065">Los cambios se aplicarán la próxima vez que reinicies el dispositivo.</translation>
-<translation id="7999989146447764333">Los informes de errores no se encuentran disponibles en Brave.</translation>
-<translation id="1953231710324290369">Estás viendo una página de Brave segura</translation>
-<translation id="907470742420136113">Brave está intentando modificar la configuración para completar los métodos de pago.</translation>
-<translation id="4847979153841887006">Logotipo de Brave</translation>
-<translation id="336808635693308470">Brave está intentando editar los métodos de pago.</translation>
-<translation id="7932149101545999102">Brave se ha creado gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> y a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
+<translation id="7999989146447764333">Los informes de errores no se encuentran disponibles en Ping.</translation>
+<translation id="1953231710324290369">Estás viendo una página de Ping segura</translation>
+<translation id="907470742420136113">Ping está intentando modificar la configuración para completar los métodos de pago.</translation>
+<translation id="4847979153841887006">Logotipo de Ping</translation>
+<translation id="336808635693308470">Ping está intentando editar los métodos de pago.</translation>
+<translation id="7932149101545999102">Ping se ha creado gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> y a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Accede al
-          menú de Brave, haz clic en
+          menú de Ping, haz clic en
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -18,22 +18,22 @@
           &gt;
           Configuración de LAN
           y desactiva la casilla de verificación Usar un servidor proxy para la LAN.</translation>
-<translation id="303960458633076466">Brave ha bloqueado esta página</translation>
-<translation id="2017237562285586622">Configura tu cortafuegos o tu antivirus para permitir el acceso de Brave
+<translation id="303960458633076466">Ping ha bloqueado esta página</translation>
+<translation id="2017237562285586622">Configura tu cortafuegos o tu antivirus para permitir el acceso de Ping
           a la red.</translation>
 <translation id="8619622797841001082">Accede al
-          menú de Brave, haz clic en
+          menú de Ping, haz clic en
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
           y asegúrate de que esté seleccionada la opción de configuración sin proxy o directa.</translation>
-<translation id="2765022094254723779">Brave también se ha podido crear gracias a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
-<translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
-<translation id="6477625882876869143">Brave se ha podido crear gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="2765022094254723779">Ping también se ha podido crear gracias a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
+<translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Ping.</translation>
+<translation id="6477625882876869143">Ping se ha podido crear gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Accede al
-          menú de Brave &gt;
+          menú de Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -43,6 +43,6 @@
 <translation id="8187289872471304532">Accede a
           Aplicaciones &gt; Preferencias del Sistema &gt; Red &gt; Configuración avanzada &gt; Proxies
           y desactiva las casillas de verificación de los proxies seleccionados.</translation>
-<translation id="4159376633403260073">Estás viendo una página segura de Brave for Testing</translation>
-<translation id="88187049159266777">Brave no se ha cerrado correctamente.</translation>
+<translation id="4159376633403260073">Estás viendo una página segura de Ping for Testing</translation>
+<translation id="88187049159266777">Ping no se ha cerrado correctamente.</translation>
 </translationbundle>

@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "የ Brave የቀጠለ ",
+    "message": "የ Ping የቀጠለ ",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "ይህን ገፅ ያለ Brave ግላዊነት እና ደህንነት ጥበቃዎች እያሰሱ ነው። ጋሻዎቹ ወደላይ ቢሆኑ በትክክል አይሰራም?",
+    "message": "ይህን ገፅ ያለ Ping ግላዊነት እና ደህንነት ጥበቃዎች እያሰሱ ነው። ጋሻዎቹ ወደላይ ቢሆኑ በትክክል አይሰራም?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "የተሰበረ ገጽን ሪፖርት ያድርጉ",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "ንጥሎች ታግደዋል",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "ድረ ገጾች አብዛኛውን ጊዜ ኩኪዎችና ስክሪፕቶች የሚጠቀሙ ሲሆን እንርሱ ደግሞ የእርስዎንና የመሳሪያዎን ማንነት ለማወቅ ይሞክራሉ (አብዛኛውን ጊዜ ከማስታወቂያ ጋር የተጣመሩ ናቸው)። እርስዎ ማን እንደሆኑ ለማወቅና በድረ ገጹ ባጠቃላይ የእርስዎን እንቅስቃሴ ይከታተላሉ። Brave እነዚህን ነገሮች በማገድ ማንም ሳይከተልዎት ማሰስ አንዲችሉ ያደርግዎታል።",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "ድረ ገጾች አብዛኛውን ጊዜ ኩኪዎችና ስክሪፕቶች የሚጠቀሙ ሲሆን እንርሱ ደግሞ የእርስዎንና የመሳሪያዎን ማንነት ለማወቅ ይሞክራሉ (አብዛኛውን ጊዜ ከማስታወቂያ ጋር የተጣመሩ ናቸው)። እርስዎ ማን እንደሆኑ ለማወቅና በድረ ገጹ ባጠቃላይ የእርስዎን እንቅስቃሴ ይከታተላሉ። Ping እነዚህን ነገሮች በማገድ ማንም ሳይከተልዎት ማሰስ አንዲችሉ ያደርግዎታል።",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "ድረ ገጽ ተሻጋሪ ዱካ ተከታታዮችና ሌሎች አዋኪ ነገሮች ታግደዋል",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "ወደ Brave ያክሉ",
-    "description": "Message for adding an extension to Brave"
+    "message": "ወደ Ping ያክሉ",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "&#4776;Brave &#4768;&#4661;&#4808;&#4877;&#4853;",
-    "description": "Message for removing an extension from Brave"
+    "message": "&#4776;Ping &#4768;&#4661;&#4808;&#4877;&#4853;",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "",

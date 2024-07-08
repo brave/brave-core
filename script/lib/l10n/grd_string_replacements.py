@@ -25,7 +25,7 @@ branding_replacements = [
 # Strings we want to replace but that we need to use Transifex for
 # to translate the XTB files
 default_replacements = [
-    (r'Brave Web Store', r'Web Store'),
+    (r'Ping Web Store', r'Web Store'),
     (r'You\'re incognito', r'This is a private window'),
     (r'an incognito', r'a private'),
     (r'an Incognito', r'a Private'),

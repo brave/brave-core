@@ -2,13 +2,13 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
 <translation id="130631256467250065">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
-<translation id="7999989146447764333">Brave'da kilitlenmeyi raporlama özelliği yoktur.</translation>
-<translation id="1953231710324290369">Güvenli bir Brave sayfasını görüntülüyorsunuz</translation>
-<translation id="907470742420136113">Brave, ödeme yöntemi girmeyle ilgili ayarları değiştirmeye çalışıyor.</translation>
-<translation id="4847979153841887006">Brave logosu</translation>
-<translation id="336808635693308470">Brave ödeme yöntemlerini düzenlemeye çalışıyor.</translation>
-<translation id="7932149101545999102">Brave, <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> açık kaynak projesi ve diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_OSS"/> ile hazırlanmıştır.</translation>
-<translation id="8746410156982274638">Brave menüsü &gt;
+<translation id="7999989146447764333">Ping'da kilitlenmeyi raporlama özelliği yoktur.</translation>
+<translation id="1953231710324290369">Güvenli bir Ping sayfasını görüntülüyorsunuz</translation>
+<translation id="907470742420136113">Ping, ödeme yöntemi girmeyle ilgili ayarları değiştirmeye çalışıyor.</translation>
+<translation id="4847979153841887006">Ping logosu</translation>
+<translation id="336808635693308470">Ping ödeme yöntemlerini düzenlemeye çalışıyor.</translation>
+<translation id="7932149101545999102">Ping, <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> açık kaynak projesi ve diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_OSS"/> ile hazırlanmıştır.</translation>
+<translation id="8746410156982274638">Ping menüsü &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -17,20 +17,20 @@
           &gt;
           LAN Ayarları
           öğesine gidin ve "LAN için proxy sunucusu kullan" onay kutusunun seçimini kaldırın.</translation>
-<translation id="303960458633076466">Bu sayfa Brave tarafından engellendi</translation>
+<translation id="303960458633076466">Bu sayfa Ping tarafından engellendi</translation>
 <translation id="2017237562285586622">Güvenlik duvarınızın veya virüsten korunma programınızın ayarlarından,
-        Brave'un ağa erişmesine izin verin.</translation>
-<translation id="8619622797841001082">Brave menüsü &gt;
+        Ping'un ağa erişmesine izin verin.</translation>
+<translation id="8619622797841001082">Ping menüsü &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
            öğesine gidin ve yapılandırmanızın "proxy yok" veya "doğrudan" olarak ayarlandığından emin olun.</translation>
-<translation id="2765022094254723779">Brave ayrıca diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlardan<ph name="END_LINK_OSS"/> yararlanılarak geliştirilmiştir.</translation>
-<translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
-<translation id="6477625882876869143">Brave, <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> açık kaynak projesiyle hazırlanmıştır.</translation>
-<translation id="4068928808254189629">Brave menüsü &gt;
+<translation id="2765022094254723779">Ping ayrıca diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlardan<ph name="END_LINK_OSS"/> yararlanılarak geliştirilmiştir.</translation>
+<translation id="9156965752763025780">Değişiklikleriniz, Ping tekrar başlatıldığında geçerli olacak.</translation>
+<translation id="6477625882876869143">Ping, <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> açık kaynak projesiyle hazırlanmıştır.</translation>
+<translation id="4068928808254189629">Ping menüsü &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/> öğesine gidin
@@ -38,6 +38,6 @@
           Bu işlem sorunu çözmezse performansın iyileşmesi için bu seçeneği tekrar işaretlemenizi öneririz.</translation>
 <translation id="8187289872471304532">Uygulamalar &gt; Sistem Tercihleri &gt; Ağ &gt; Gelişmiş &gt; Proxy'ler
           öğesine gidin ve seçilmiş olabilecek proxy'lerin seçimini kaldırın.</translation>
-<translation id="4159376633403260073">Güvenli bir Brave for Testing sayfasını görüntülüyorsunuz</translation>
-<translation id="88187049159266777">Brave düzgün bir şekilde kapatılmadı.</translation>
+<translation id="4159376633403260073">Güvenli bir Ping for Testing sayfasını görüntülüyorsunuz</translation>
+<translation id="88187049159266777">Ping düzgün bir şekilde kapatılmadı.</translation>
 </translationbundle>

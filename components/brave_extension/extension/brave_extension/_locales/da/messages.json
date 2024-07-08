@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Brave-udvidelsen",
+    "message": "Ping-udvidelsen",
     "description": "The name of the extension."
   },
   "shields": {
@@ -29,7 +29,7 @@
   },
   "reportBrokenSite": {
     "message": "Rapporter en side der ikke virker",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Emner blokeret",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Websteder inkluderer ofte cookies og scripts, der prøver at identificere dig og din enhed (ofte indlejret i annoncer). De vil regne ud, hvem du er og følge dig på tværs af nettet - spore, hvad du gør på ethvert websted. Brave blokerer disse ting, så du kan browse uden at blive fulgt rundt.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Websteder inkluderer ofte cookies og scripts, der prøver at identificere dig og din enhed (ofte indlejret i annoncer). De vil regne ud, hvem du er og følge dig på tværs af nettet - spore, hvad du gør på ethvert websted. Ping blokerer disse ting, så du kan browse uden at blive fulgt rundt.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Cross-site trackere og andre uhyggelige ting er blokerede",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Føj til Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Føj til Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Fjern fra Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Fjern fra Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Føj til Chrome",

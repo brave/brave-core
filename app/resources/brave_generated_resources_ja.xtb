@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
-<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3333887201479867589">Ping Rewards</translation>
 <translation id="7561196759112975576">常に表示</translation>
 <translation id="7961015016161918242">使用しない</translation>
 <translation id="8507663778530179003">「すべてのブックマーク」ボタンを表示する</translation>
@@ -81,10 +81,10 @@
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
 <translation id="3229091547987707389">ディレクトリをインポートおよびシェア</translation>
-<translation id="2545072023356206691">2023年12月1日から、Brave Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
+<translation id="2545072023356206691">2023年12月1日から、Ping Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
 <translation id="474217410105706308">タブをミュート</translation>
-<translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
-<translation id="5029193871181468990">Brave Rewardsアイコンを非表示にする</translation>
+<translation id="2804710924397009224">Ping Rewards アイコンを非表示にします</translation>
+<translation id="5029193871181468990">Ping Rewardsアイコンを非表示にする</translation>
 <translation id="2808103541110899519">Braveウォレットのアイコンを非表示</translation>
 <translation id="7595540212376041331">Braveウォレットのアイコンを非表示</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
@@ -92,11 +92,11 @@
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
 <translation id="2162109630536601963">この拡張機能がネットワーク要求を行う場合、Torまたはプライベートモードは使用されません。</translation>
 <translation id="2725327089319971976">プライベートモードとTorモードでこの拡張機能を無効にするには、このオプションの選択を解除します。</translation>
-<translation id="3371343170427636147">Brave Nightly</translation>
-<translation id="4097979995947147464">Brave Beta</translation>
-<translation id="8303432794159193481">Brave Dev</translation>
-<translation id="8292967014767479012">Brave</translation>
-<translation id="4743468424889072281">Brave Development</translation>
+<translation id="3371343170427636147">Ping Nightly</translation>
+<translation id="4097979995947147464">Ping Beta</translation>
+<translation id="8303432794159193481">Ping Dev</translation>
+<translation id="8292967014767479012">Ping</translation>
+<translation id="4743468424889072281">Ping Development</translation>
 <translation id="5039804452771397117">許可</translation>
 <translation id="7053983685419859001">ブロック</translation>
 <translation id="1679356339067548863">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
@@ -110,8 +110,8 @@
 <translation id="7551864359422178684">このブラウザウィンドウで<ph name="NUMBER_OF_TABS"/>個のタブを開いています。</translation>
 <translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/>個のタブ</translation>
 <translation id="1307431692088049276">次回から質問しない</translation>
-<translation id="2272117088509540883">- Brave Search</translation>
-<translation id="2701279958223202597">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。Brave Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
+<translation id="2272117088509540883">- Ping Search</translation>
+<translation id="2701279958223202597">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。Ping Searchは、お客様の情報や検索したクエリ、クリックを追跡することはありません。</translation>
 <translation id="6438467592401259882">よりプライバシーが保護され、ビッグテックに依存しない検索をサポートしてください。</translation>
 <translation id="5167182095453855816">テクノロジーは今や新時代へ。</translation>
 <translation id="45040495135337202">Braveは、あなた自身の情報やクエリ、またはクリックを追跡しません。大手テック企業からは100％独立した独自のシステムです。</translation>
@@ -120,12 +120,12 @@
 <translation id="7295094278358921487">見たいデータをプライベートで検索</translation>
 <translation id="42032117189492785">独自のインデックスでAIを取り入れた検索を。</translation>
 <translation id="8606416238399082160">完全プライベート、100％独立型、優れたAI機能も搭載。</translation>
-<translation id="5240031343741051161">Brave Searchを試してみる</translation>
+<translation id="5240031343741051161">Ping Searchを試してみる</translation>
 <translation id="5234764350956374838">表示しない</translation>
 <translation id="2370739752330685659">あとで</translation>
-<translation id="5100490448228945668">Brave 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
+<translation id="5100490448228945668">Ping 検索への切り替えを無効にします。[Enter] キーを押してこの提案を消します。</translation>
 <translation id="9194637241566114638"><ph name="SEARCH_NAME"/>を改善するために、匿名の使用データを送信してください。 <ph name="MORE_INFO"/></translation>
-<translation id="7404610376221341525">Brave Search</translation>
+<translation id="7404610376221341525">Ping Search</translation>
 <translation id="8184318863960255706">詳細</translation>
 <translation id="780301667611848630">いいえ</translation>
 <translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
@@ -140,7 +140,7 @@
 <translation id="5893017172751072752">Brave広告を見るだけで報酬を獲得できます</translation>
 <translation id="3447730462826640312">報酬獲得のためにクリックする必要はありません。もちろん、興味のある広告はクリックしてください！</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
+<translation id="8659271182272561965">Ping Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
 <translation id="4375473250631001683">サイドバーのアイコンを非表示</translation>
 <translation id="2613033293035359003">サイドバーを非表示にします</translation>
@@ -220,14 +220,14 @@
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
 <translation id="4046485130884276245">画像からテキストをコピーしました</translation>
 <translation id="3639779775496569782">テキストのコピーに失敗しました</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="2506438154311626334">Brave VPNでWireGuardプロトコルを使用します</translation>
-<translation id="8519170191215826548">Brave VPNの接続中は、この設定を変更できません。</translation>
+<translation id="3960619311638643872">Ping VPN</translation>
+<translation id="2506438154311626334">Ping VPNでWireGuardプロトコルを使用します</translation>
+<translation id="8519170191215826548">Ping VPNの接続中は、この設定を変更できません。</translation>
 <translation id="4235920711083356755">VPNボタンを表示</translation>
 <translation id="4070612712151038707">ツールバーにVPNボタンを表示します</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8593397073757037946">VPNの切り替え</translation>
-<translation id="2345974803401546682">Brave VPNについて</translation>
+<translation id="2345974803401546682">Ping VPNについて</translation>
 <translation id="4378551569595875038">接続しています...</translation>
 <translation id="3368922792935385530">接続済み</translation>
 <translation id="1536754031901697553">切断しています...</translation>
@@ -315,7 +315,7 @@
 <translation id="8741852840789907931">[<ph name="ITEM_NAME"/>]の有効期限が切れている可能性があります。復元しますか？</translation>
 <translation id="6155018868740116868">復元する</translation>
 <translation id="1727684853006449697">Braveプレーヤー</translation>
-<translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
+<translation id="9156965752763025780">変更内容は次に Ping を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
 <translation id="4250680216510889253">いいえ</translation>
@@ -384,7 +384,7 @@
 <translation id="6303294677342628402">Shields</translation>
 <translation id="7133511168130368997">しつこく追跡してくるトラッカーや不快な広告をブロックできます。</translation>
 <translation id="2761825942249694703">これはShieldsのデフォルト設定です。特定のサイト上のShieldsパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
-<translation id="1435116578479068303">ウェブサイト上のほとんどの広告をブロックします。ただし、<ph name="BEGIN_LINK"/>Brave Rewards<ph name="END_LINK"/>の設定で制御されるBraveプライベート広告はブロックされません。</translation>
+<translation id="1435116578479068303">ウェブサイト上のほとんどの広告をブロックします。ただし、<ph name="BEGIN_LINK"/>Ping Rewards<ph name="END_LINK"/>の設定で制御されるBraveプライベート広告はブロックされません。</translation>
 <translation id="8452536890042542134">ウェブサイト上でほとんどの広告をブロックします。</translation>
 <translation id="4800195524776354947">シールドアイコン上でブロックされているアイテムの数を表示</translation>
 <translation id="5510493033031835532">AMPページを自動でリダイレクト</translation>
@@ -430,10 +430,10 @@
 <translation id="1340263054776016283">フィルターリストのURLを入力</translation>
 <translation id="8578397014396032341">コンテンツフィルター</translation>
 <translation id="3020183492814296499">ショートカット</translation>
-<translation id="5567412479632285879">Brave Rewardsは無効です</translation>
+<translation id="5567412479632285879">Ping Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="1051600834033686945">Braveリワードの設定を開く</translation>
-<translation id="8826461509529116322">Brave Rewardsボタンを表示する</translation>
+<translation id="8826461509529116322">Ping Rewardsボタンを表示する</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
@@ -448,7 +448,7 @@
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="4891600875049212418">機密性の高いサイトを訪問する場合はOTRモードに切り替える</translation>
 <translation id="4846154056248462491">終了時に</translation>
-<translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
+<translation id="2808630562319398131">Ping Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
 <translation id="2988792685798128092">サイトを閉じたときに消去</translation>
 <translation id="4663317021223369617">クッキーとサイトのデータ</translation>
@@ -516,7 +516,7 @@
 <translation id="7885157704277298658">コピー完了!</translation>
 <translation id="8802630444265810662">同期コードを送信するには、モバイルデバイスでQRコードをスキャンしなければなりません</translation>
 <translation id="6221331245829088299">QRコードを表示する際エラーが発生しましたので、リフレッシュしてもう一度やり直してください。</translation>
-<translation id="298546024891487702">始めるためには、同期予定の全てのデバイスに Brave をインストールする必要があります。それらを一つに繋ぐには、安全にあなたのデバイス全てをリンクさせる、同期チェーンを開始してください。</translation>
+<translation id="298546024891487702">始めるためには、同期予定の全てのデバイスに Ping をインストールする必要があります。それらを一つに繋ぐには、安全にあなたのデバイス全てをリンクさせる、同期チェーンを開始してください。</translation>
 <translation id="6200528822592747640">新たな同期チェーンを開始する</translation>
 <translation id="5184726904895809379">同期コードを持っています</translation>
 <translation id="8780295742023331191">同期コードを見る</translation>
@@ -527,7 +527,7 @@
 <translation id="6527776448555649991">「同期コードをスキャンする」</translation>
 <translation id="1400862780574843709">カメラで以下の QR コードをスキャンしてください。</translation>
 <translation id="5086223971958279691">チェーンコードの同期</translation>
-<translation id="2899261497479389619">同期先のコンピューターで、設定から「Brave Sync」に行き、</translation>
+<translation id="2899261497479389619">同期先のコンピューターで、設定から「Ping Sync」に行き、</translation>
 <translation id="4827439149833241990">「同期コードを持っています。」のボタンをクリックしてください。</translation>
 <translation id="8299617838343103908">その後、以下に表示された同期チェーンコードワードを入力してください。</translation>
 <translation id="4485276108749547761">このコードはパスワードのように厳重に扱ってください。第三者に入手された場合、第三者があなたの同期されたデータを読み取って変更することが可能になります。</translation>
@@ -553,7 +553,7 @@
     これらのコード単語があなたの所有するデバイスによって生成されたものであることを再確認してください。
 
     続行してよろしいですか？</translation>
-<translation id="7443185843787879670">Braveは、お使いのオペレーティングシステムの安全なストレージにアクセスすることができませんでした。これは、パスワードやクッキーなどのデータを保護するために使用されるものです。また、Brave Syncがデバイス間でブラウザプロファイルを接続するために必要なものです。これは、Brave Syncが実行されていないことを意味します。この問題を解決するには、<ph name="BEGIN_LINK_SYNC_GUIDE"/>Brave Sync トラブルシューティング ガイド<ph name="END_LINK_SYNC_GUIDE"/>を参照してください。</translation>
+<translation id="7443185843787879670">Braveは、お使いのオペレーティングシステムの安全なストレージにアクセスすることができませんでした。これは、パスワードやクッキーなどのデータを保護するために使用されるものです。また、Ping Syncがデバイス間でブラウザプロファイルを接続するために必要なものです。これは、Ping Syncが実行されていないことを意味します。この問題を解決するには、<ph name="BEGIN_LINK_SYNC_GUIDE"/>Ping Sync トラブルシューティング ガイド<ph name="END_LINK_SYNC_GUIDE"/>を参照してください。</translation>
 <translation id="6802736947576520626">同期の暗号化キーが、Brave同期を最初に設定した際に使用したキーと一致しません。これを簡単に解決するには、他のいずれかの同期先デバイスのパスフレーズを使用して、同期チェーンをリセットし、参加し直してください。</translation>
 <translation id="4889767840132638381">同期チェーンをリセットして参加し直す</translation>
 <translation id="1680065323266179640">同期アカウントを削除</translation>
@@ -618,7 +618,7 @@
 <translation id="188228077840632890">AdGuardは、広告ブロック、ペアレンタルコントロールオプション、および他のAdGuardサービス提供との統合を提供するManifest V2拡張機能です。</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
 <translation id="7013485839273047434">機能拡張をさらに取得</translation>
-<translation id="5840822070878669614">Brave ウェブストアを開く</translation>
+<translation id="5840822070878669614">Ping ウェブストアを開く</translation>
 <translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
 <translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
@@ -632,8 +632,8 @@
 <translation id="970496996377628529">サードパーティーのAPIを使用して、所有するNFTを自動的にウォレットに追加します。</translation>
 <translation id="4898839076551703154">プライベートウィンドウでBraveウォレットを有効にします。</translation>
 <translation id="1550684990179058322">警告: プライベートウィンドウのセッションでウォレットアドレスを再利用すると、サイトでプライベートウィンドウのセッションをプライベートウィンドウ以外のセッションにリンクすることが許可されます。</translation>
-<translation id="8239147115686034860">Brave Wallet を自動的にロック</translation>
-<translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
+<translation id="8239147115686034860">Ping Wallet を自動的にロック</translation>
+<translation id="414639769490080648">Ping Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="856371974127598760">ウォレットネットワーク</translation>
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
@@ -731,7 +731,7 @@
 <translation id="557281710253742286">IPFSゲートウェイを設定します</translation>
 <translation id="8571837315037233299">ゲートウェイアドレス</translation>
 <translation id="7703184801853248830">無効なゲートウェイアドレス</translation>
-<translation id="7690058578502751948">Brave で使用できるのは、オリジンアイソレーションが有効になっている有効な IPFS ゲートウェイのみです。</translation>
+<translation id="7690058578502751948">Ping で使用できるのは、オリジンアイソレーションが有効になっている有効な IPFS ゲートウェイのみです。</translation>
 <translation id="3411013544209536575">ヘルプのヒント</translation>
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
@@ -745,7 +745,7 @@
 <translation id="1014480593522400586">Leoのデータを消去</translation>
 <translation id="8681157601856387010">Leoアシスタントをリセットすると、今後Brave 
 Leoの利用をオプトインする必要があります。チャット履歴も消去されます。
-チャット履歴を消去すると、Brave 
+チャット履歴を消去すると、Ping 
 Leoとの会話がすべて削除されます。この操作を元に戻すことはできません。</translation>
 <translation id="5574059574002819179">オートコンプリートの候補を調整する</translation>
 <translation id="8157373421434119674">データ＆チャット履歴</translation>

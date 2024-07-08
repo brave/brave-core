@@ -322,12 +322,7 @@ function getBackground(p: HasImageProps) {
   if (p.hasImage && p.imageSrc) {
     // Note: We force percent encoding for ( and ) because Chromium seems to be
     // ignoring the fact that the URL is quoted for these.
-    return `linear-gradient(
-      rgba(0, 0, 0, 0.8),
-      rgba(0, 0, 0, 0) 35%,
-      rgba(0, 0, 0, 0) 80%,
-      rgba(0, 0, 0, 0.6) 100%
-    ), url("${p.imageSrc.replaceAll('(', '%28').replaceAll(')', '%29')}")`
+    return `url("${p.imageSrc.replaceAll('(', '%28').replaceAll(')', '%29')}")`
   }
 
   return ''

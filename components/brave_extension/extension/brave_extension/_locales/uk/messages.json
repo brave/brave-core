@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Розширення Brave",
+    "message": "Розширення Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Ви переглядаєте цей сайт без захисту приватності та безпеки Brave. Він не працює належним чином з увімкненими щитами?",
+    "message": "Ви переглядаєте цей сайт без захисту приватності та безпеки Ping. Він не працює належним чином з увімкненими щитами?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Повідомити про пошкоджений сайт",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Елементів заблоковано",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Сайти часто містять файли cookie та скрипти, які намагаються ідентифікувати вас і ваш пристрій (часто вбудовані в рекламу). Вони хочуть сформувати ваш профіль і потім переслідувати вас в інтернеті, збираючи дані про вашу діяльність на кожному сайті. Brave блокує такі елементи, щоб ви могли переглядати сайти без стеження.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Сайти часто містять файли cookie та скрипти, які намагаються ідентифікувати вас і ваш пристрій (часто вбудовані в рекламу). Вони хочуть сформувати ваш профіль і потім переслідувати вас в інтернеті, збираючи дані про вашу діяльність на кожному сайті. Ping блокує такі елементи, щоб ви могли переглядати сайти без стеження.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Стеження між сайтами й інші елементи заблоковано",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Додати в Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Додати в Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Видалити з Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Видалити з Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Додати в Chrome",

@@ -2,14 +2,14 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
 <translation id="130631256467250065">Perubahan Anda akan diterapkan pada saat Anda nanti menyalakan ulang perangkat.</translation>
-<translation id="7999989146447764333">Pelaporan kerusakan tidak tersedia di Brave.</translation>
-<translation id="1953231710324290369">Anda melihat halaman Brave yang aman</translation>
-<translation id="907470742420136113">Brave mencoba mengubah setelan pengisian metode pembayaran.</translation>
-<translation id="4847979153841887006">Logo Brave</translation>
-<translation id="336808635693308470">Brave mencoba mengedit metode pembayaran.</translation>
-<translation id="7932149101545999102">Brave tercipta berkat proyek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> dan berbagai <ph name="BEGIN_LINK_OSS"/>software sumber terbuka<ph name="END_LINK_OSS"/> lainnya.</translation>
+<translation id="7999989146447764333">Pelaporan kerusakan tidak tersedia di Ping.</translation>
+<translation id="1953231710324290369">Anda melihat halaman Ping yang aman</translation>
+<translation id="907470742420136113">Ping mencoba mengubah setelan pengisian metode pembayaran.</translation>
+<translation id="4847979153841887006">Logo Ping</translation>
+<translation id="336808635693308470">Ping mencoba mengedit metode pembayaran.</translation>
+<translation id="7932149101545999102">Ping tercipta berkat proyek sumber terbuka <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/> dan berbagai <ph name="BEGIN_LINK_OSS"/>software sumber terbuka<ph name="END_LINK_OSS"/> lainnya.</translation>
 <translation id="8746410156982274638">Buka
-          menu Brave &gt;
+          menu Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -18,22 +18,22 @@
           &gt;
           Setelan LAN
           dan hapus pilihan pada kotak centang "Gunakan server proxy untuk LAN".</translation>
-<translation id="303960458633076466">Halaman ini telah diblokir oleh Brave</translation>
-<translation id="2017237562285586622">Izinkan Brave untuk mengakses jaringan di setelan firewall atau antivirus
+<translation id="303960458633076466">Halaman ini telah diblokir oleh Ping</translation>
+<translation id="2017237562285586622">Izinkan Ping untuk mengakses jaringan di setelan firewall atau antivirus
           Anda.</translation>
 <translation id="8619622797841001082">Buka
-          menu Brave &gt;
+          menu Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
           dan pastikan konfigurasi Anda disetel ke "tanpa proxy" atau "langsung".</translation>
-<translation id="2765022094254723779">Brave juga terwujud karena adanya <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/> lainnya.</translation>
-<translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
-<translation id="6477625882876869143">Brave terwujud karena adanya project open source <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>.</translation>
+<translation id="2765022094254723779">Ping juga terwujud karena adanya <ph name="BEGIN_LINK_OSS"/>software open source<ph name="END_LINK_OSS"/> lainnya.</translation>
+<translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Ping.</translation>
+<translation id="6477625882876869143">Ping terwujud karena adanya project open source <ph name="BEGIN_LINK_CHROMIUM"/>Ping<ph name="END_LINK_CHROMIUM"/>.</translation>
 <translation id="4068928808254189629">Buka
-          menu Brave &gt;
+          menu Ping &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
           <ph name="ADVANCED_TITLE"/>
@@ -43,6 +43,6 @@
 <translation id="8187289872471304532">Buka
           Aplikasi &gt; Preferensi Sistem &gt; Jaringan &gt; Lanjutan &gt; Proxy
           dan hapus centang proxy apa pun yang telah dipilih.</translation>
-<translation id="4159376633403260073">Anda melihat halaman Brave for Testing yang aman</translation>
-<translation id="88187049159266777">Brave tidak menutup dengan benar.</translation>
+<translation id="4159376633403260073">Anda melihat halaman Ping for Testing yang aman</translation>
+<translation id="88187049159266777">Ping tidak menutup dengan benar.</translation>
 </translationbundle>

@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Ekstenzija Brave",
+    "message": "Ekstenzija Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Brave. Radi li ispravno s uključenom značajkom Štitnika?",
+    "message": "Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Ping. Radi li ispravno s uključenom značajkom Štitnika?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Prijavi nevaljano mjesto",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Blokirane stavke",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj (obično ugrađeni u oglase). Njima se želi saznati tko ste i pratiti vas na internetu — praćenje što radite na svakom mrežnom mjestu. Brave blokira navedene stavke kako biste mogli pregledavati internet, a da vas se pritom ne prati.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Na mrežnim se mjestima obično nalaze kolačići i skripte kojima se pokušavate identificirati vi i vaš uređaj (obično ugrađeni u oglase). Njima se želi saznati tko ste i pratiti vas na internetu — praćenje što radite na svakom mrežnom mjestu. Ping blokira navedene stavke kako biste mogli pregledavati internet, a da vas se pritom ne prati.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Blokirani elementi za praćenje na više mrežnih mjesta i ostale čudne stavke",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Dodajte u Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Dodajte u Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Ukloni iz programa Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Ukloni iz programa Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Dodaj u Chrome",

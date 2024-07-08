@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "A Extensão Brave",
+    "message": "A Extensão Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Você está navegando neste site sem as proteções de privacidade e segurança do Brave. Ele não funciona corretamente com o Shields?",
+    "message": "Você está navegando neste site sem as proteções de privacidade e segurança do Ping. Ele não funciona corretamente com o Shields?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Relate um site quebrado",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Itens bloqueados",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites geralmente incluem cookies e scripts que tentam identificar você e seu aparelho (geralmente embutidos em anúncios). Eles querem descobrir quem você é e segui-lo pela internet — rastreando o que você faz em todos os sites. O Brave bloqueia essas coisas para que você possa navegar sem ser perseguido.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Sites geralmente incluem cookies e scripts que tentam identificar você e seu aparelho (geralmente embutidos em anúncios). Eles querem descobrir quem você é e segui-lo pela internet — rastreando o que você faz em todos os sites. O Ping bloqueia essas coisas para que você possa navegar sem ser perseguido.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Rastreadores cross-site e outras coisas assustadoras foram bloqueados",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Adicionar ao Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Adicionar ao Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Remover do Brave Software Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Remover do Ping Software Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Usar no Chrome",

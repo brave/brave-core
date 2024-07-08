@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "L'Estensione Brave",
+    "message": "L'Estensione Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Stai navigando su questo sito senza le misure di privacy e sicurezza di Brave. Il sito non funziona bene se attivi gli Scudi?",
+    "message": "Stai navigando su questo sito senza le misure di privacy e sicurezza di Ping. Il sito non funziona bene se attivi gli Scudi?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Segnala un sito non funzionante",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Articoli bloccati",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "I siti spesso includono cookie e script che provano a identificare te e il tuo dispositivo (spesso inseriti negli annunci). Vogliono capire chi sei e ti seguono nel web — tracciano ciò che fai su ciascun sito. Brave blocca queste cose in modo che tu possa navigare senza essere inseguito.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "I siti spesso includono cookie e script che provano a identificare te e il tuo dispositivo (spesso inseriti negli annunci). Vogliono capire chi sei e ti seguono nel web — tracciano ciò che fai su ciascun sito. Ping blocca queste cose in modo che tu possa navigare senza essere inseguito.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Tracciamento cross-site e altre cose inquietanti bloccate",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Aggiungi a Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Aggiungi a Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Rimuovi da Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Rimuovi da Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Aggiungi",

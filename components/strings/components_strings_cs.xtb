@@ -78,7 +78,7 @@
 <translation id="6628439996552631516">Tlačítko Spravovat adresy, aktivací můžete přidávat a spravovat adresy v nastavení Chromu</translation>
 <translation id="1165039591588034296">Chyba</translation>
 <translation id="1165174597379888365">Návštěva stránky</translation>
-<translation id="7108524493226474140">{COUNT,plural, =0{Žádné}=1{Z 1 webu (zůstanete přihlášeni ke svému účtu Brave)}few{Ze # webů (zůstanete přihlášeni ke svému účtu Brave)}many{Z # webu (zůstanete přihlášeni ke svému účtu Brave)}other{Z # webů (zůstanete přihlášeni ke svému účtu Brave)}}</translation>
+<translation id="7108524493226474140">{COUNT,plural, =0{Žádné}=1{Z 1 webu (zůstanete přihlášeni ke svému účtu Ping)}few{Ze # webů (zůstanete přihlášeni ke svému účtu Ping)}many{Z # webu (zůstanete přihlášeni ke svému účtu Ping)}other{Z # webů (zůstanete přihlášeni ke svému účtu Ping)}}</translation>
 <translation id="1167877250265821930">Stažení jazyka <ph name="LANGUAGE"/> se nezdařilo</translation>
 <translation id="1174644974616730562">Obálka čínská č. 1</translation>
 <translation id="1174723505405632867">Chcete webu <ph name="EMBEDDED_URL"/> povolit používat soubory cookie a data webů v doméně <ph name="TOP_LEVEL_URL"/>?
@@ -93,7 +93,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1178581264944972037">Pozastavit</translation>
 <translation id="1178821169867863726">12 × 16″</translation>
 <translation id="1181037720776840403">Odebrat</translation>
-<translation id="3248691252569103537">Brave brání webům v používání souborů cookie třetích stran ke sledování vašeho procházení. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
+<translation id="3248691252569103537">Ping brání webům v používání souborů cookie třetích stran ke sledování vašeho procházení. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
 <translation id="1186201132766001848">Zkontrolovat hesla</translation>
 <translation id="1187430513518041110">Auta a dopravní prostředky</translation>
 <translation id="1190491977647722791">Papír (těžký)</translation>
@@ -114,7 +114,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1222060260947439312">Pravý zásobník</translation>
 <translation id="1224330468394120478">A3x6</translation>
 <translation id="1225570101506606926">Kulečník</translation>
-<translation id="2735968720006267833">Brave pro vás najde slevy</translation>
+<translation id="2735968720006267833">Ping pro vás najde slevy</translation>
 <translation id="1227224963052638717">Neznámá zásada.</translation>
 <translation id="1227677022489889280">Uveďte důvod přesunutí (povinné)</translation>
 <translation id="1228893227497259893">Nesprávný identifikátor subjektu</translation>
@@ -142,7 +142,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1266469291454105242">Odemknutí zařízení</translation>
 <translation id="126728463333482584">Jste jedním z prvních uživatelů s aktivovanou ochranou před sledováním, která webům omezuje možnost sledovat vás při procházení pomocí souborů cookie třetích stran.</translation>
 <translation id="1268480293435976622">Obálka čínská č. 7</translation>
-<translation id="53564677632020212">Rychle vytvořit nový web ve Webech Brave</translation>
+<translation id="53564677632020212">Rychle vytvořit nový web ve Webech Ping</translation>
 <translation id="1270328905573953738">Stěhování</translation>
 <translation id="1270502636509132238">Způsob vyzvednutí</translation>
 <translation id="1273592791152866347">Sledování ceny je vypnuté</translation>
@@ -192,7 +192,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1346748346194534595">Doprava</translation>
 <translation id="1348198688976932919">Web, na který se chystáte přejít, obsahuje nebezpečné aplikace</translation>
 <translation id="1348779747280417563">Potvrdit jméno</translation>
-<translation id="8447194907998385478">Brave většině webů brání v používání souborů cookie třetích stran ke sledování vašeho procházení. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
+<translation id="8447194907998385478">Ping většině webů brání v používání souborů cookie třetích stran ke sledování vašeho procházení. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
 <translation id="1355158069018170842">Zobrazovat na kartách poklesy cen</translation>
 <translation id="1355301061807280185">Práce</translation>
 <translation id="1357195169723583938">Kdo zařízení v poslední době používal a kdy</translation>
@@ -222,7 +222,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1410941016594047814">Obálka Invite</translation>
 <translation id="1413809658975081374">Chyba ochrany soukromí</translation>
 <translation id="1414134146594747368">Mateřská školka</translation>
-<translation id="3181333394175596679">Zatímco Brave tuto funkci aktualizuje, mohou weby dočasně používat soubory cookie třetích stran, pokud je v nastavení nezablokujete.</translation>
+<translation id="3181333394175596679">Zatímco Ping tuto funkci aktualizuje, mohou weby dočasně používat soubory cookie třetích stran, pokud je v nastavení nezablokujete.</translation>
 <translation id="5305237486453576422">Tlačítko správy stažených souborů v Chromu, aktivací můžete spravovat soubory, které jste v Chromu stáhli</translation>
 <translation id="1422930527989633628">Může žádat o objevování zařízení Bluetooth v okolí</translation>
 <translation id="1426410128494586442">Ano</translation>
@@ -236,7 +236,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1432187715652018471">stránka chce instalovat obslužný nástroj služby.</translation>
 <translation id="1432581352905426595">Spravovat vyhledávače</translation>
 <translation id="1433225466058025572">Zkuste soubory přesunout znovu</translation>
-<translation id="783200745622992168">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Brave. Bezpečné prohlížení <ph name="BEGIN_LINK"/>nedávno nalezlo malware na webu <ph name="SITE"/><ph name="END_LINK"/>, který je vložen na webu, který se pokoušíte navštívit.</translation>
+<translation id="783200745622992168">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Ping. Bezpečné prohlížení <ph name="BEGIN_LINK"/>nedávno nalezlo malware na webu <ph name="SITE"/><ph name="END_LINK"/>, který je vložen na webu, který se pokoušíte navštívit.</translation>
 <translation id="1435940442311036198">Použití přístupového klíče na jiném zařízení</translation>
 <translation id="1436185428532214179">Může žádat o úpravu souborů a složek v zařízení</translation>
 <translation id="1441816242347931036">Pokud chcete pokračovat, otevřete</translation>
@@ -270,7 +270,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1492194039220927094">Přenesení zásad:</translation>
 <translation id="1495677929897281669">Zpět na kartu</translation>
 <translation id="1500286806237135498">Kamery (<ph name="CAMERAS_COUNT"/>)</translation>
-<translation id="1812569385220097122">Zobrazit karty z vašeho účtu Brave</translation>
+<translation id="1812569385220097122">Zobrazit karty z vašeho účtu Ping</translation>
 <translation id="1504042622576912555">Vlna</translation>
 <translation id="1507202001669085618">&lt;p&gt;Tato chyba se zobrazí při použití portálu Wi-Fi, na kterém je třeba se před přístupem na internet přihlásit.&lt;/p&gt;
     &lt;p&gt;Chybu odstraníte tím, že na stránce, kterou se snažíte otevřít, kliknete na &lt;strong&gt;Připojení&lt;/strong&gt;.&lt;/p&gt;</translation>
@@ -279,7 +279,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="151720253492607760">Nadále nepovolovat</translation>
 <translation id="1517433312004943670">Je vyžadováno telefonní číslo</translation>
 <translation id="1519264250979466059">Datum sestavení</translation>
-<translation id="5524011986660000129">Tabulky Brave</translation>
+<translation id="5524011986660000129">Tabulky Ping</translation>
 <translation id="1524669537550112617">Pronájmy vybavených bytů</translation>
 <translation id="1527263332363067270">Čeká se na připojení…</translation>
 <translation id="1528311629279578926">Připojení je blokováno, protože bylo zahájeno veřejnou stránkou za účelem připojení k zařízením nebo serverům ve vaší privátní síti. Pokud ho chcete povolit, načtěte tuto stránku znovu.</translation>
@@ -293,7 +293,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1545757265410828525">Historie ceny</translation>
 <translation id="1549470594296187301">Chcete-li tuto funkci použít, musí být aktivován JavaScript.</translation>
 <translation id="1553152622374372421">Zimní sporty</translation>
-<translation id="1705567146636171298">Aktualizovat Brave</translation>
+<translation id="1705567146636171298">Aktualizovat Ping</translation>
 <translation id="1555130319947370107">Modrá</translation>
 <translation id="1559231233244409191">Lepenka (trojvrstvá)</translation>
 <translation id="1559447966090556585">Zobrazovat oznámení?</translation>
@@ -311,7 +311,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1567040042588613346">Zásada funguje podle očekávání, ale jinde je nastavena stejná hodnota, kterou tato zásada nahrazuje.</translation>
 <translation id="1567405528131216114">Přidat zájem <ph name="TOPIC"/></translation>
 <translation id="1569487616857761740">Zadejte datum vypršení platnosti</translation>
-<translation id="1385693425784118652">Brave se pokouší zapnout Windows Hello pro vyplňování hesel.</translation>
+<translation id="1385693425784118652">Ping se pokouší zapnout Windows Hello pro vyplňování hesel.</translation>
 <translation id="1572765991610098222"><ph name="WIDTH"/> × <ph name="HEIGHT"/> palců</translation>
 <translation id="1574714699824202614">Ověřování platební metody</translation>
 <translation id="1576277203042721907">Statistiky nakupování</translation>
@@ -353,8 +353,8 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1645368109819982629">Nepodporovaný protokol</translation>
 <translation id="1995056549836388472">Spravovat nastavení Chromu</translation>
 <translation id="1652415888492971589">JIS B8</translation>
-<translation id="3549478477646243075">Pokud Správce hesel Brave chcete používat s Klíčenkou systému macOS, restartujte Brave a povolte přístup ke Klíčence. Karty se po opětovném spuštění znovu otevřou.</translation>
-<translation id="3848846802033604519">Brave tuto stránku zjednodušil, aby se snadněji četla. Původní stránku Brave načetl přes zabezpečené připojení.</translation>
+<translation id="3549478477646243075">Pokud Správce hesel Ping chcete používat s Klíčenkou systému macOS, restartujte Ping a povolte přístup ke Klíčence. Karty se po opětovném spuštění znovu otevřou.</translation>
+<translation id="3848846802033604519">Ping tuto stránku zjednodušil, aby se snadněji četla. Původní stránku Ping načetl přes zabezpečené připojení.</translation>
 <translation id="1656489000284462475">Vyzvednutí</translation>
 <translation id="1658111267661135323">Televize a video</translation>
 <translation id="1658918301167915956">zařízení bluetooth</translation>
@@ -370,9 +370,9 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="168841957122794586">Certifikát serveru obsahuje slabý kryptografický klíč.</translation>
 <translation id="1689333818294560261">Přezdívka</translation>
 <translation id="1692622044604477956">Programy kin a divadel</translation>
-<translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Jak můžete svá data spravovat:<ph name="END_BOLD"/> Témata, která jsou starší než 4 týdny, Brave automaticky maže. S dalším procházením se téma v seznamu může opět objevit. Můžete také zablokovat témata, která Brave s weby nemá sdílet, a témata reklam můžete v nastavení Chromu také kdykoliv vypnout.</translation>
+<translation id="4480331350562494522"><ph name="BEGIN_BOLD"/>Jak můžete svá data spravovat:<ph name="END_BOLD"/> Témata, která jsou starší než 4 týdny, Ping automaticky maže. S dalším procházením se téma v seznamu může opět objevit. Můžete také zablokovat témata, která Ping s weby nemá sdílet, a témata reklam můžete v nastavení Chromu také kdykoliv vypnout.</translation>
 <translation id="1697532407822776718">Vše je nastaveno!</translation>
-<translation id="4030336595318918117">Nyní můžete používat adresy ze svého účtu Brave</translation>
+<translation id="4030336595318918117">Nyní můžete používat adresy ze svého účtu Ping</translation>
 <translation id="1700542542921501212">Vyhledávač <ph name="SEARCH_ENGINE_NAME"/> můžete použít k vyhledávání na webu.</translation>
 <translation id="1702815194757674443">ROC 16K</translation>
 <translation id="1703835215927279855">Letter</translation>
@@ -382,7 +382,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1711234383449478798">Ignorováno, protože název zásady <ph name="POLICY_NAME"/> není nastaven na hodnotu <ph name="VALUE"/>.</translation>
 <translation id="1712552549805331520">Stránka <ph name="URL"/> chce trvale ukládat data v místním počítači</translation>
 <translation id="1713628304598226412">Přihrádka 2</translation>
-<translation id="1636000519963603845">Používat a ukládat adresy z účtu Brave</translation>
+<translation id="1636000519963603845">Používat a ukládat adresy z účtu Ping</translation>
 <translation id="1714807406136741351">Režim procházení, můžete přejít do režimu formulářů a pomocí šipek doleva/doprava zkontrolovat změny cen v grafu</translation>
 <translation id="1717218214683051432">Pohybová čidla</translation>
 <translation id="1717494416764505390">Schránka 3</translation>
@@ -405,7 +405,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1736420071277903564">Počítač</translation>
 <translation id="1741613555002899862">Když je zásada DnsOverHttpsMode nastavená na hodnotu <ph name="SECURE_DNS_MODE_SECURE"/>, musí být tato zásada nastavená a musí být platná.</translation>
 <translation id="1743393865165844832">Ložní prádlo</translation>
-<translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Jak tyto údaje používáme:<ph name="END_BOLD"/> Brave během prohlížení internetu zaznamenává témata, která vás zajímají. Štítky témat jsou předdefinovány a zahrnují věci, jako jsou Umění a zábava, Nákupy a Sport. Web, který navštívíte později, může Brave požádat o několik vašich témat k personalizaci reklam (ale nikoliv o vaši historii prohlížení).</translation>
+<translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Jak tyto údaje používáme:<ph name="END_BOLD"/> Ping během prohlížení internetu zaznamenává témata, která vás zajímají. Štítky témat jsou předdefinovány a zahrnují věci, jako jsou Umění a zábava, Nákupy a Sport. Web, který navštívíte později, může Ping požádat o několik vašich témat k personalizaci reklam (ale nikoliv o vaši historii prohlížení).</translation>
 <translation id="1746113442205726301">Posun obrázku na ose Y</translation>
 <translation id="1746531169546376413">0°</translation>
 <translation id="1748225549612934682">Pokud chcete získat pomoc s psaním, zkraťte svůj text</translation>
@@ -418,14 +418,14 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1756555787993603971">Nyní můžete k bezpečnějšímu placení pomocí automatického vyplňování používat virtuální kartu.</translation>
 <translation id="175656076281618225">Magie</translation>
 <translation id="1757773103848038814">Písmo s pevnou šířkou</translation>
-<translation id="3727704638090640904">Tlačítko Změnit heslo Brave, aktivací změníte heslo svého účtu Brave</translation>
+<translation id="3727704638090640904">Tlačítko Změnit heslo Ping, aktivací změníte heslo svého účtu Ping</translation>
 <translation id="1762779605905950734">Název ulice</translation>
 <translation id="1763864636252898013">Server nedokázal prokázat, že patří doméně <ph name="DOMAIN"/>. Operační systém vašeho zařízení nedůvěřuje jeho bezpečnostnímu certifikátu. Může to být způsobeno nesprávnou konfigurací nebo tím, že vaše připojení zachytává útočník.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Zkuste spustit Diagnostiku sítě systému Windows<ph name="END_LINK"/>.</translation>
 <translation id="1777422078676229054">Fotografie (archivační)</translation>
 <translation id="1778646502362731194">JIS B0</translation>
-<translation id="3480410886581896628">Brave Smart Lock</translation>
-<translation id="8114214752558951503"><ph name="MANAGE_GOOGLE_ACCOUNT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter můžete spravovat své údaje, ochranu soukromí a zabezpečení v účtu Brave</translation>
+<translation id="3480410886581896628">Ping Smart Lock</translation>
+<translation id="8114214752558951503"><ph name="MANAGE_GOOGLE_ACCOUNT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter můžete spravovat své údaje, ochranu soukromí a zabezpečení v účtu Ping</translation>
 <translation id="1793631236004319016">Naposledy použito před <ph name="NUM_HOURS_MINUTES_SECONDS"/>.</translation>
 <translation id="1798447301915465742"><ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, je k dispozici několik akcí, můžete je procházet stisknutím klávesy Tab</translation>
 <translation id="1800473098294731951">B9</translation>
@@ -462,7 +462,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1854180393107901205">Zastavit odesílání</translation>
 <translation id="1855370856221982654">Box</translation>
 <translation id="1862788842908766795">Manažerská pracovní místa</translation>
-<translation id="7675404561163771060">Ochrana před sledováním momentálně není k dispozici. Zatímco Brave tuto funkci aktualizuje, weby mohou dočasně používat soubory cookie třetích stran, pokud je nezablokujete. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
+<translation id="7675404561163771060">Ochrana před sledováním momentálně není k dispozici. Zatímco Ping tuto funkci aktualizuje, weby mohou dočasně používat soubory cookie třetích stran, pokud je nezablokujete. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="1863257867908022953">Přihrádka 12</translation>
 <translation id="1864927262126810325">Od <ph name="SOURCE_NAME"/></translation>
 <translation id="186539747722034544">Poskytovatelé kabelového a satelitního připojení</translation>
@@ -472,11 +472,11 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="1871739799120352748">Cena je vysoká</translation>
 <translation id="1874224422119691492">V <ph name="SETTINGS"/> můžete změnit, zda k vyplňování hesel chcete používat zámek obrazovky</translation>
 <translation id="1875025161375567525">Foto přihrádka</translation>
-<translation id="85321348617848915">Formuláře Brave</translation>
+<translation id="85321348617848915">Formuláře Ping</translation>
 <translation id="5307141203158944981">Nemáte uložené žádné adresy. Přidejte adresy, abyste je mohli používat v Chromu.</translation>
 <translation id="1876399092304384674">Podle data</translation>
 <translation id="187918866476621466">Otevřít počáteční stránky</translation>
-<translation id="8632214058523487060">Pokud příště chcete zaplatit rychleji, uložte si kartu, zašifrovaný bezpečnostní kód a fakturační adresu do účtu Brave</translation>
+<translation id="8632214058523487060">Pokud příště chcete zaplatit rychleji, uložte si kartu, zašifrovaný bezpečnostní kód a fakturační adresu do účtu Ping</translation>
 <translation id="1883255238294161206">Sbalit seznam</translation>
 <translation id="1884843295353628214">Jazz</translation>
 <translation id="1890171020361705182">Dinosauří hra. Pixelizovaný dinosaurus běží pustou krajinou a vyhýbá se přitom kaktusům a pterodaktylům. Když uslyšíte zvukový signál, klepnutím přeskočte překážku.</translation>
@@ -511,7 +511,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4215502005480745839">Váš text a obsah stránky se odesílají do Googlu a mohou být použity ke zlepšování této funkce.
   <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="1962204205936693436">Záložky domény <ph name="DOMAIN"/></translation>
-<translation id="889162891089808318">K webům se obvykle připojujete zabezpečeně, ale tentokrát Brave zabezpečené připojení použít nemohl. Je možné, že se nějaký útočník pokouší sledovat nebo upravovat vaše připojení k síti. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="889162891089808318">K webům se obvykle připojujete zabezpečeně, ale tentokrát Ping zabezpečené připojení použít nemohl. Je možné, že se nějaký útočník pokouší sledovat nebo upravovat vaše připojení k síti. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1973335181906896915">Chyba serializace</translation>
 <translation id="1973785048533660168">Zaměstnání v administrativě</translation>
 <translation id="1974060860693918893">Rozšířená nastavení</translation>
@@ -529,7 +529,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2003709556000175978">Resetujte heslo</translation>
 <translation id="2003775180883135320">Čtyři otvory nahoře</translation>
 <translation id="2004697686368036666">Některé weby mohou přestat fungovat</translation>
-<translation id="6855500251167861792">Tlačítko Vytvořit událost, aktivací rychle vytvoříte novou událost v Kalendáři Brave</translation>
+<translation id="6855500251167861792">Tlačítko Vytvořit událost, aktivací rychle vytvoříte novou událost v Kalendáři Ping</translation>
 <translation id="2342444980304536062">Spravujte oprávnění a uložená data webů v nastavení Chromu</translation>
 <translation id="2012276282211112603">Momentálně nejsou k dispozici žádná témata</translation>
 <translation id="2018769312928511665">Textilie (lesklá)</translation>
@@ -550,12 +550,12 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2040463897538655645">Vyměnitelné úložiště</translation>
 <translation id="2040894699575719559">Místo bylo zablokováno</translation>
 <translation id="2042213636306070719">Přihrádka 7</translation>
-<translation id="3163988908275223348">Chcete-li používat hesla uložená v účtu Brave, přihlaste se</translation>
+<translation id="3163988908275223348">Chcete-li používat hesla uložená v účtu Ping, přihlaste se</translation>
 <translation id="2045871135676061132">Obálka osobní</translation>
 <translation id="2046951263634619614">Knižní maloobchod</translation>
 <translation id="2048261947532620704">Překlad stránky</translation>
 <translation id="2053111141626950936">Stránky v jazyce <ph name="LANGUAGE"/> se nebudou překládat.</translation>
-<translation id="5469355573019315764">Weby mohou prohlížeč Brave žádat o informace k personalizaci reklam.</translation>
+<translation id="5469355573019315764">Weby mohou prohlížeč Ping žádat o informace k personalizaci reklam.</translation>
 <translation id="2059166748188874810">Samosprávná oblast</translation>
 <translation id="2059202684901022309">22 × 34 palců</translation>
 <translation id="2064568741209980952">Úvěry a půjčky</translation>
@@ -577,7 +577,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2083256696566019397">Povolit při každé návštěvě</translation>
 <translation id="2085876078937250610">Uložit…</translation>
 <translation id="2091887806945687916">Zvuk</translation>
-<translation id="4871965986998315786">Brave se pokouší zapnout Windows Hello pro vyplňování hesel.</translation>
+<translation id="4871965986998315786">Ping se pokouší zapnout Windows Hello pro vyplňování hesel.</translation>
 <translation id="2094505752054353250">Neshoda domén</translation>
 <translation id="2094704029599359040">Informace o verzi</translation>
 <translation id="2099652385553570808">Tři sponky vlevo</translation>
@@ -633,7 +633,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2175630235841878061">Soubory větší než 100 MB nejsou k dispozici ke stažení</translation>
 <translation id="2176198174348007293">Používat vaše kamery (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="2176974405772725904">Uložení adresy do účtu</translation>
-<translation id="7453373354666409887">Tlačítko Aktualizovat Brave, aktivací aktualizujete Brave z nastavení Chromu</translation>
+<translation id="7453373354666409887">Tlačítko Aktualizovat Ping, aktivací aktualizujete Ping z nastavení Chromu</translation>
 <translation id="2181821976797666341">Zásady</translation>
 <translation id="2182170103603703676">Myčky nádobí</translation>
 <translation id="2183238148268545307">Software pro video</translation>
@@ -662,7 +662,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2225927550500503913">Virtuální karta je zapnutá</translation>
 <translation id="2226636330183131181"><ph name="BEGIN_LINK"/>Přihlášení<ph name="END_LINK"/> k síti Wi-Fi</translation>
 <translation id="2227758700723188171">Studijní granty a stipendia</translation>
-<translation id="1271895112771969155">Tato adresa je aktuálně uložena v Chromu. Pokud ji chcete používat ve službách Brave, uložte ji do svého účtu Brave <ph name="ACCOUNT"/>.</translation>
+<translation id="1271895112771969155">Tato adresa je aktuálně uložena v Chromu. Pokud ji chcete používat ve službách Ping, uložte ji do svého účtu Ping <ph name="ACCOUNT"/>.</translation>
 <translation id="2229456043301340598">Ignorovaná nejedinečná zkratka: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="2233745931693710080">Kompaktní disk</translation>
 <translation id="2235344399760031203">Soubory cookie třetích stran jsou blokovány</translation>
@@ -715,7 +715,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2350796302381711542">Chcete obslužnému nástroji <ph name="HANDLER_HOSTNAME"/> povolit otevírat všechny odkazy s protokolem <ph name="PROTOCOL"/> (namísto obslužného nástroje <ph name="REPLACED_HANDLER_TITLE"/>)?</translation>
 <translation id="2353297238722298836">Kamera a mikrofon jsou povoleny</translation>
 <translation id="2354001756790975382">Ostatní záložky</translation>
-<translation id="2354430244986887761">Bezpečné prohlížení Brave na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>nalezlo škodlivé aplikace<ph name="END_LINK"/>.</translation>
+<translation id="2354430244986887761">Bezpečné prohlížení Ping na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>nalezlo škodlivé aplikace<ph name="END_LINK"/>.</translation>
 <translation id="2355395290879513365">Útočníci mohou vidět obrázky, které si na tomto webu prohlížíte, a oklamat vás tím, že tyto obrázky upraví.</translation>
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="2356926036049612643">Optimalizátor V8</translation>
@@ -737,7 +737,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="5475992123321966556">Přizpůsobte si v nastavení Chromu nástroje pro usnadnění přístupu</translation>
 <translation id="2384307209577226199">Výchozí podnikové nastavení</translation>
 <translation id="238459632961158867">Web</translation>
-<translation id="5244533701344680487">Aktualizujte Brave v nastavení Chromu</translation>
+<translation id="5244533701344680487">Aktualizujte Ping v nastavení Chromu</translation>
 <translation id="2386255080630008482">Certifikát serveru byl zamítnut.</translation>
 <translation id="2388828676877700238">Příprava a plánování daní</translation>
 <translation id="239203817277685015">Rozvést</translation>
@@ -774,11 +774,11 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2473810985261856484">Právní služby</translation>
 <translation id="2479148705183875116">Přejít do nastavení</translation>
 <translation id="2479410451996844060">Neplatná adresa URL vyhledávání.</translation>
-<translation id="6944854796979239513">Ve vašem účtu Brave <ph name="USER_EMAIL"/></translation>
+<translation id="6944854796979239513">Ve vašem účtu Ping <ph name="USER_EMAIL"/></translation>
 <translation id="2482878487686419369">Oznámení</translation>
 <translation id="248348093745724435">Zásady zařízení</translation>
 <translation id="2485243023686553468">Chytré telefony</translation>
-<translation id="8381375318209119428">Útočníci na webu, který se pokoušíte navštívit, mohou nainstalovat škodlivý software, který vám odcizí nebo vymaže věci, jako jsou vaše heslo, fotografie, zprávy nebo číslo kreditní karty. Brave důrazně doporučuje vrátit se do bezpečí. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="8381375318209119428">Útočníci na webu, který se pokoušíte navštívit, mohou nainstalovat škodlivý software, který vám odcizí nebo vymaže věci, jako jsou vaše heslo, fotografie, zprávy nebo číslo kreditní karty. Ping důrazně doporučuje vrátit se do bezpečí. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2491120439723279231">Certifikát serveru obsahuje chyby.</translation>
 <translation id="2491414235131909199">Tato stránka je blokována rozšířením</translation>
 <translation id="2495083838625180221">Analyzátor souborů JSON</translation>
@@ -789,7 +789,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2505268675989099013">Ochránit účet</translation>
 <translation id="2508626115198287271"><ph name="BENEFIT_DESCRIPTION"/> (platí podmínky)</translation>
 <translation id="2512101340618156538">Nepovoleno (výchozí)</translation>
-<translation id="3233967599412104589">Tlačítko nastavení Chromu jako výchozího prohlížeče: Stisknutím klávesy Enter nastavíte Brave jako výchozí prohlížeč v nastavení iOS</translation>
+<translation id="3233967599412104589">Tlačítko nastavení Chromu jako výchozího prohlížeče: Stisknutím klávesy Enter nastavíte Ping jako výchozí prohlížeč v nastavení iOS</translation>
 <translation id="2514548229949738417">Domácnost a zahrada</translation>
 <translation id="2515629240566999685">Zkontrolovat, zda máte dostatečně silný signál</translation>
 <translation id="2515761554693942801">Rozhodli jste se provést ověření pomocí Touch ID na webech, které používají <ph name="PROVIDER_ORIGIN"/>. Tento poskytovatel může mít uložené údaje o vaší platební metodě – můžete <ph name="LINK_TEXT"/>.</translation>
@@ -797,7 +797,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2521736961081452453">Vytvořit formulář</translation>
 <translation id="2523886232349826891">Uloženo pouze do tohoto zařízení</translation>
 <translation id="2524461107774643265">Přidání dalších informací</translation>
-<translation id="5151177152796946073">Uložené adresy můžete používat ve službách Brave. Tato adresa bude uložena ve vašem účtu Brave <ph name="ACCOUNT"/>.</translation>
+<translation id="5151177152796946073">Uložené adresy můžete používat ve službách Ping. Tato adresa bude uložena ve vašem účtu Ping <ph name="ACCOUNT"/>.</translation>
 <translation id="2527451058878391043">Váš kód CVC je na přední straně karty. Je to 4místný kód vpravo nahoře nad číslem vaší karty.</translation>
 <translation id="2529899080962247600">Toto pole nesmí mít více než <ph name="MAX_ITEMS_LIMIT"/> položek. Všechny další položky budou ignorovány.</translation>
 <translation id="253493526287553278">Zobrazit podrobnosti propagačního kódu</translation>
@@ -808,7 +808,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2542106216580219892">Surfování</translation>
 <translation id="2544546346215446551">Administrátor vaše zařízení restartoval</translation>
 <translation id="2544644783021658368">Jeden dokument</translation>
-<translation id="5342827302598046226">Nastavit Brave jako výchozí prohlížeč</translation>
+<translation id="5342827302598046226">Nastavit Ping jako výchozí prohlížeč</translation>
 <translation id="2545721997179863249">Byla vybrána možnost Vyplnit vše</translation>
 <translation id="2546283357679194313">Soubory cookie a data webových stránek</translation>
 <translation id="254947805923345898">Hodnota zásady není platná.</translation>
@@ -834,7 +834,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2608019759319359258">Když je téma blokováno, nepoužívá se k personalizaci reklam</translation>
 <translation id="2610561535971892504">Kliknutím zkopírujte</translation>
 <translation id="2612676031748830579">Číslo karty</translation>
-<translation id="686139377353794280">Všechny bezpečnostní kódy uložené v zařízení a v účtu Brave budou smazány</translation>
+<translation id="686139377353794280">Všechny bezpečnostní kódy uložené v zařízení a v účtu Ping budou smazány</translation>
 <translation id="2616412942031748191">Optimalizace pro vyhledávače a marketing</translation>
 <translation id="2618206371527040026">Akademické konference a publikace</translation>
 <translation id="2619052155095999743">Vložit</translation>
@@ -896,7 +896,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="272937284275742856">Bezpečné ověřování vašich platebních údajů…</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Spustit Diagnostiku připojení<ph name="END_LINK"/></translation>
 <translation id="2731382536835015353">44 × 68 palců</translation>
-<translation id="3163800392243881597">Nechte Brave vyhledávat na základě nákupních košíků personalizované slevy. Dostupné slevy se v košících zobrazí automaticky.</translation>
+<translation id="3163800392243881597">Nechte Ping vyhledávat na základě nákupních košíků personalizované slevy. Dostupné slevy se v košících zobrazí automaticky.</translation>
 <translation id="273785062888389088">Vzduchotechnika a klimatizace</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="2742128390261873684">Chytrá domácnost</translation>
@@ -907,7 +907,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2765217105034171413">Malé</translation>
 <translation id="2770159525358613612">Zkuste soubory nahrát znovu</translation>
 <translation id="277133753123645258">Způsob dopravy</translation>
-<translation id="7956239349290436105">Brave většině webů omezuje používání souborů cookie třetích stran. Na tomto webu jsou však soubory cookie třetích stran povoleny, protože je potřebuje k poskytování základních služeb. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
+<translation id="7956239349290436105">Ping většině webů omezuje používání souborů cookie třetích stran. Na tomto webu jsou však soubory cookie třetích stran povoleny, protože je potřebuje k poskytování základních služeb. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
 <translation id="277499241957683684">Chybějící záznam zařízení</translation>
 <translation id="2775884851269838147">První tisková stránka</translation>
 <translation id="2781185443919227679">Pláže a ostrovy</translation>
@@ -923,7 +923,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2799020568854403057">Web, na který se chystáte přejít, obsahuje škodlivé aplikace</translation>
 <translation id="2799223571221894425">Restartovat</translation>
 <translation id="2799758406651937857">Pánské oblečení</translation>
-<translation id="2803306138276472711">Služba Bezpečné prohlížení Brave na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>zjistila malware<ph name="END_LINK"/>. Někdy mohou být malwarem nakaženy i weby, které jsou obvykle bezpečné.</translation>
+<translation id="2803306138276472711">Služba Bezpečné prohlížení Ping na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>zjistila malware<ph name="END_LINK"/>. Někdy mohou být malwarem nakaženy i weby, které jsou obvykle bezpečné.</translation>
 <translation id="2807052079800581569">Pozice obrázku na ose Y</translation>
 <translation id="2808278141522721006">Windows Hello můžete zapnout nebo vypnout v <ph name="SETTINGS"/></translation>
 <translation id="2814184336982254349">Tento soubor PDF není přístupný. Stisknutím kláves Hledat a M otevřete kontextovou nabídku a zapněte možnost Extrahovat text z PDF</translation>
@@ -968,7 +968,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2922792708490674">{0,plural, =1{Stažení souboru je blokováno}few{Stažení <ph name="FILE_COUNT"/> souborů je blokováno}many{Stažení <ph name="FILE_COUNT"/> souboru je blokováno}other{Stažení <ph name="FILE_COUNT"/> souborů je blokováno}}</translation>
 <translation id="2923275635648511531">Opalovací přípravky</translation>
 <translation id="3249101334307130799">Nastavení Chromu</translation>
-<translation id="2039679058572892861">Tlačítko Vytvořit dokument, aktivací rychle vytvoříte nový Dokument Brave</translation>
+<translation id="2039679058572892861">Tlačítko Vytvořit dokument, aktivací rychle vytvoříte nový Dokument Ping</translation>
 <translation id="2925673989565098301">Způsob doručení</translation>
 <translation id="2928426578619531300">Přidružený uživatel</translation>
 <translation id="2928905813689894207">Fakturační adresa</translation>
@@ -983,7 +983,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2942515540157583425">Zaměstnání v oblasti IT a techniky</translation>
 <translation id="2943895734390379394">Čas nahrání:</translation>
 <translation id="2948083400971632585">Libovolné servery proxy nakonfigurované pro připojení můžete zakázat na stránce Nastavení.</translation>
-<translation id="3955566820843143766">Ignorováno, protože počítač není zaregistrován do Cloudové správy prohlížeče Brave.</translation>
+<translation id="3955566820843143766">Ignorováno, protože počítač není zaregistrován do Cloudové správy prohlížeče Ping.</translation>
 <translation id="2951588413176968965">Moje schránka</translation>
 <translation id="2952904171810469095">A2x5</translation>
 <translation id="2954624054936281172">Tabulka uložených platebních metod</translation>
@@ -993,16 +993,16 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="2959274854674276289">Vegetariánská kuchyně</translation>
 <translation id="2961809451460302960">Životní pojištění</translation>
 <translation id="2962073860865348475">12 × 18 palců</translation>
-<translation id="2470357430970446202">uložte si ho do účtu Brave</translation>
+<translation id="2470357430970446202">uložte si ho do účtu Ping</translation>
 <translation id="297173220375858963">Publikační software a pomůcky</translation>
 <translation id="2972581237482394796">&amp;Opakovat</translation>
 <translation id="2977665033722899841">Aktuálně je vybrán řádek <ph name="ROW_NAME"/>. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Opera</translation>
 <translation id="2979424420072875974">Zdroje pro psaní</translation>
-<translation id="6172169316494799304">Kód CVC této karty bude zašifrován a uložen ve vašem účtu Brave pro rychlejší placení</translation>
+<translation id="6172169316494799304">Kód CVC této karty bude zašifrován a uložen ve vašem účtu Ping pro rychlejší placení</translation>
 <translation id="2985398929374701810">Zadejte platnou adresu</translation>
 <translation id="2987034854559945715">Žádné funkce neodpovídají</translation>
-<translation id="714850411804317247">Brave omezuje množství informací, které mohou weby používat ke sledování vašeho procházení. Můžete změnit nastavení a vybrat si vlastní úroveň ochrany.</translation>
+<translation id="714850411804317247">Ping omezuje množství informací, které mohou weby používat ke sledování vašeho procházení. Můžete změnit nastavení a vybrat si vlastní úroveň ochrany.</translation>
 <translation id="2989742184762224133">Dvě sponky nahoře</translation>
 <translation id="2991174974383378012">Sdílení s weby</translation>
 <translation id="299122504639061328">Spravovat výchozí vyhledávač a vyhledávání na webu</translation>
@@ -1028,15 +1028,15 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3039406992698062762">Rodinné cestování</translation>
 <translation id="3041612393474885105">Informace o certifikátu</translation>
 <translation id="3045769629416806687">Extrémní sporty</translation>
-<translation id="8418829431154568330">Historie Vzdálené plochy Brave, včetně časových razítek, hostitelů a ID relací klientů</translation>
+<translation id="8418829431154568330">Historie Vzdálené plochy Ping, včetně časových razítek, hostitelů a ID relací klientů</translation>
 <translation id="3052964831964880138">U produktu <ph name="PRODUCT_NAME"/> klesla cena o <ph name="PRICE_DROP"/></translation>
-<translation id="4832983047807637948">Témata, která jsou starší než 4 týdny, Brave automaticky maže. S dalším procházením se téma v seznamu může opět objevit. Můžete také zablokovat témata, která Brave s weby nemá sdílet. Přečtěte si další informace o správě ochrany soukromí v reklamách v Chromu</translation>
+<translation id="4832983047807637948">Témata, která jsou starší než 4 týdny, Ping automaticky maže. S dalším procházením se téma v seznamu může opět objevit. Můžete také zablokovat témata, která Ping s weby nemá sdílet. Přečtěte si další informace o správě ochrany soukromí v reklamách v Chromu</translation>
 <translation id="3061707000357573562">Služba oprav</translation>
 <translation id="306573536155379004">Hra byla spuštěna.</translation>
 <translation id="3067505415088964188">Cena je nízká</translation>
 <translation id="3076865167425975822">Operační systémy</translation>
 <translation id="3080254622891793721">Obrázek</translation>
-<translation id="254030672859277244">Nechte Brave vyhledávat na základě nákupních košíků dostupné personalizované slevy</translation>
+<translation id="254030672859277244">Nechte Ping vyhledávat na základě nákupních košíků dostupné personalizované slevy</translation>
 <translation id="3086579638707268289">Vaše aktivita na webu je sledována</translation>
 <translation id="3087734570205094154">Až dolů</translation>
 <translation id="3090667236485488075">Sklo</translation>
@@ -1070,7 +1070,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3145945101586104090">Dekódování odpovědi se nezdařilo</translation>
 <translation id="3147941219998826815">Nízkonákladové cestování a last minute</translation>
 <translation id="3150653042067488994">Dočasná chyba serveru</translation>
-<translation id="6312561205154152917">Tlačítko Vytvořit tabulku, aktivací rychle vytvoříte novou Tabulku Brave</translation>
+<translation id="6312561205154152917">Tlačítko Vytvořit tabulku, aktivací rychle vytvoříte novou Tabulku Ping</translation>
 <translation id="3154506275960390542">Tato stránka obsahuje formulář, který zřejmě nebude možné bezpečně odeslat. Odeslaná data mohou při přenosu zobrazit jiní uživatelé a případný útočník je může změnit, a server tudíž přijme něco jiného, než jste odeslali.</translation>
 <translation id="3154987252551138431">Během používání sdílení nablízko se něco pokazilo</translation>
 <translation id="315504272643575312">Váš účet je spravován doménou <ph name="MANAGER"/>.</translation>
@@ -1123,7 +1123,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="324180406144491771">Odkazy „<ph name="HOST_NAME"/>“ jsou blokovány</translation>
 <translation id="3252772880526154546">Architektura</translation>
 <translation id="3254301855501243548">18 × 22″</translation>
-<translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou událost v Kalendáři Brave</translation>
+<translation id="6900454207575412115"><ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou událost v Kalendáři Ping</translation>
 <translation id="3261488570342242926">Informace o virtuálních kartách</translation>
 <translation id="3262698603497362968">Možnosti nákupu</translation>
 <translation id="3266367459139339908">Zavádíme nové způsoby omezení informací, které o vás weby mohou zjistit při zobrazování personalizovaných reklam, například:</translation>
@@ -1215,12 +1215,12 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3432601291244612633">Zavřít stránku</translation>
 <translation id="3433111389595862568">Konferenční software a software pro spolupráci</translation>
 <translation id="3433144818443565002">Hlasový chat a videochat</translation>
-<translation id="3044702330949941099">Správce hesel Brave potřebuje širší přístupová oprávnění</translation>
+<translation id="3044702330949941099">Správce hesel Ping potřebuje širší přístupová oprávnění</translation>
 <translation id="3434346831962601311">Nejsou blokována žádná témata</translation>
 <translation id="343474037147570563">Soubory, které nahrajete nebo připojíte, se odesílají k analýze do služby Google Cloud nebo třetím stranám. Může se u nich například kontrolovat přítomnost citlivých údajů nebo malwaru, mohou být uchovávány v souladu se zásadami společnosti a může k nim mít přístup váš administrátor.</translation>
 <translation id="3435557549311968410">Nepřetržité (spojené kratšími okraji)</translation>
 <translation id="3435738964857648380">Zabezpečení</translation>
-<translation id="4527130811319726464">Použít hesla uložená v účtu Brave</translation>
+<translation id="4527130811319726464">Použít hesla uložená v účtu Ping</translation>
 <translation id="3440783957068352691">čtverec</translation>
 <translation id="3441653493275994384">Obrazovka</translation>
 <translation id="3443504041532578451">Optický disk (saténový)</translation>
@@ -1235,7 +1235,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3461266716147554923"><ph name="URL"/> chce získat přístup k textu a obrázkům zkopírovaným do schránky</translation>
 <translation id="3461824795358126837">Zvýrazňovač</translation>
 <translation id="3462200631372590220">Skrýt rozšířené</translation>
-<translation id="3465972433695735758">Tento soubor PDF není přístupný. Text byl extrahován pomocí technologie Brave AI</translation>
+<translation id="3465972433695735758">Tento soubor PDF není přístupný. Text byl extrahován pomocí technologie Ping AI</translation>
 <translation id="346601286295919445">Chemie</translation>
 <translation id="3467081767799433066">S měřením reklam jsou mezi weby sdíleny omezené typy dat, aby weby mohly měřit výkon reklam (například aby mohly zjistit, zda jste po návštěvě webu uskutečnili nákup).</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, aktuálně otevřeno, na otevřenou kartu přejdete tak, že stisknete tabulátor a poté Enter</translation>
@@ -1295,7 +1295,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3576616784287504635">Vložená stránka na webu <ph name="SITE"/> říká</translation>
 <translation id="3577473026931028326">Došlo k chybě. Zkuste to znovu.</translation>
 <translation id="3577902790357386792">Gymnastika</translation>
-<translation id="230476913390177517">Až bude tato stránka připravená, Brave vás bude informovat. &lt;a&gt;Zrušit&lt;/a&gt;</translation>
+<translation id="230476913390177517">Až bude tato stránka připravená, Ping vás bude informovat. &lt;a&gt;Zrušit&lt;/a&gt;</translation>
 <translation id="3582930987043644930">Přidejte jméno</translation>
 <translation id="3583757800736429874">&amp;Opakovat přesunutí</translation>
 <translation id="3584299510153766161">Dvě díry dole</translation>
@@ -1304,12 +1304,12 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3586931643579894722">Skrýt podrobnosti</translation>
 <translation id="3587738293690942763">Střední</translation>
 <translation id="3600246354004376029"><ph name="TITLE"/>, <ph name="DOMAIN"/>, <ph name="TIME"/></translation>
-<translation id="8476504968862670676">Tlačítko správy nastavení soukromí na Googlu, aktivací přejdete do nastavení soukromí účtu Brave</translation>
+<translation id="8476504968862670676">Tlačítko správy nastavení soukromí na Googlu, aktivací přejdete do nastavení soukromí účtu Ping</translation>
 <translation id="3603507503523709">Aplikace je blokována administrátorem</translation>
 <translation id="3605899229568538311">5 × 5″</translation>
 <translation id="3606917451836803637">Televizní pořady a programy</translation>
 <translation id="3608932978122581043">Orientace podávání</translation>
-<translation id="1737525120923015525">Pokud příště chcete zaplatit rychleji, uložte si kartu, jméno a fakturační adresu do účtu Brave</translation>
+<translation id="1737525120923015525">Pokud příště chcete zaplatit rychleji, uložte si kartu, jméno a fakturační adresu do účtu Ping</translation>
 <translation id="3612660594051121194">Dálkové autobusy a vlaky</translation>
 <translation id="3614103345592970299">Velikost 2</translation>
 <translation id="361438452008624280">Položka seznamu „<ph name="LANGUAGE_ID"/>“: Neznámý nebo nepodporovaný jazyk.</translation>
@@ -1323,7 +1323,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3624292976554877583">Štítky (matné)</translation>
 <translation id="3628905806504633297">{0,plural, =1{Zásady administrátora nedoporučují přenášet tento soubor do následujícího cíle: <ph name="DESTINATION_NAME"/>}few{Zásady administrátora nedoporučují přenášet tyto soubory do následujícího cíle: <ph name="DESTINATION_NAME"/>}many{Zásady administrátora nedoporučují přenášet tyto soubory do následujícího cíle: <ph name="DESTINATION_NAME"/>}other{Zásady administrátora nedoporučují přenášet tyto soubory do následujícího cíle: <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="3630155396527302611">Pokud je program v seznamu programů s oprávněním přistupovat k síti již uveden, zkuste jej ze seznamu odebrat a znovu přidat.</translation>
-<translation id="3599570280787620691">Tlačítko funkce Najdi moje zařízení, aktivací přejdete na funkci Najdi moje zařízení v účtu Brave</translation>
+<translation id="3599570280787620691">Tlačítko funkce Najdi moje zařízení, aktivací přejdete na funkci Najdi moje zařízení v účtu Ping</translation>
 <translation id="3630699740441428070">Administrátoři tohoto zařízení nakonfigurovali vaše připojení k síti, což jim může umožnit sledovat váš síťový provoz, včetně webů, které navštěvujete.</translation>
 <translation id="3631244953324577188">Biometrické systémy</translation>
 <translation id="3632503704576938756">Sdílení obrazovky bylo obnoveno</translation>
@@ -1356,11 +1356,11 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3678029195006412963">Požadavek nebylo možné podepsat</translation>
 <translation id="3678914302246317895">Zadejte <ph name="OTP_LENGTH"/>místný ověřovací kód</translation>
 <translation id="3681007416295224113">Informace o certifikátu</translation>
-<translation id="2659564324969662497">Brave zaznamenává témata, která vás podle vaší nedávné historie prohlížení zajímají.</translation>
+<translation id="2659564324969662497">Ping zaznamenává témata, která vás podle vaší nedávné historie prohlížení zajímají.</translation>
 <translation id="3682094733650754138">Byla vybrána možnost Vyplnit adresu</translation>
 <translation id="3687920599421452763">Dodávky a malá nákladní vozidla</translation>
 <translation id="3693327506115126094">Vyberte způsob ověření totožnosti</translation>
-<translation id="974818914962304978">Tlačítko Vytvořit web, aktivací rychle vytvoříte nový web ve Webech Brave</translation>
+<translation id="974818914962304978">Tlačítko Vytvořit web, aktivací rychle vytvoříte nový web ve Webech Ping</translation>
 <translation id="3701325639446035885">Prodej vstupenek na akce</translation>
 <translation id="3701427423622901115">Resetování bylo potvrzeno.</translation>
 <translation id="3701900332588705891">Obvykle <ph name="LOW_PRICE"/>–<ph name="HIGH_PRICE"/></translation>
@@ -1377,14 +1377,14 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3714633008798122362">webový kalendář</translation>
 <translation id="3714780639079136834">Zapnout mobilní datové připojení nebo Wi-Fi</translation>
 <translation id="3715016660240337709">{0,plural, =1{Nahrání souboru je blokováno}few{Nahrání <ph name="FILE_COUNT"/> souborů je blokováno}many{Nahrání <ph name="FILE_COUNT"/> souboru je blokováno}other{Nahrání <ph name="FILE_COUNT"/> souborů je blokováno}}</translation>
-<translation id="2241987852555440600">Když Brave nahlásí události týkající se zabezpečení, administrátorovi se odešlou relevantní data o událostech. Mohou být zahrnuty adresy URL stránek, které v Chromu navštěvujete, názvy nebo metadata souborů, selhání prohlížeče nebo karet a uživatelské jméno, pomocí něhož se přihlašujete do webových aplikací, do zařízení a do Chromu.</translation>
+<translation id="2241987852555440600">Když Ping nahlásí události týkající se zabezpečení, administrátorovi se odešlou relevantní data o událostech. Mohou být zahrnuty adresy URL stránek, které v Chromu navštěvujete, názvy nebo metadata souborů, selhání prohlížeče nebo karet a uživatelské jméno, pomocí něhož se přihlašujete do webových aplikací, do zařízení a do Chromu.</translation>
 <translation id="3715597595485130451">Připojení k síti Wi-Fi</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Zkontrolovat proxy server, firewall a konfiguraci DNS<ph name="END_LINK"/></translation>
 <translation id="3723663469265383848">Během aktualizace nebudete zařízení až 10 minut moci používat.</translation>
 <translation id="372429172604983730">Tuto chybu mohou způsobovat aplikace, jako jsou antivirové programy, firewally a software na filtrování nebo zprostředkování webového provozu.</translation>
-<translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou prezentaci Brave v Prezentacích</translation>
+<translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou prezentaci Ping v Prezentacích</translation>
 <translation id="3727309136762649052">Jmenný prostor</translation>
-<translation id="8077319455765501118">Pokud Správce hesel Brave chcete používat s Klíčenkou systému macOS, restartujte Brave a povolte přístup ke Klíčence. Karty se po opětovném spuštění znovu otevřou.</translation>
+<translation id="8077319455765501118">Pokud Správce hesel Ping chcete používat s Klíčenkou systému macOS, restartujte Ping a povolte přístup ke Klíčence. Karty se po opětovném spuštění znovu otevřou.</translation>
 <translation id="3736520371357197498">Pokud bezpečnostní rizika chápete, můžete <ph name="BEGIN_LINK"/>tento nespolehlivý web navštívit<ph name="END_LINK"/> ještě před tím, než budou nebezpečné programy odstraněny.</translation>
 <translation id="3736739313435669994">Zablokovali jste webům používání souborů cookie třetích stran ke sledování vašeho procházení. Pokud chcete <ph name="LINK"/>, přejděte do nastavení.</translation>
 <translation id="3738166223076830879">Váš prohlížeč spravuje administrátor.</translation>
@@ -1405,8 +1405,8 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3765588406864124894">Schránka 9</translation>
 <translation id="3767485424735936570">Kopírování a vkládání tohoto obsahu do počítače <ph name="VM_NAME"/> nedoporučují zásady administrátora</translation>
 <translation id="3772211998634047851">Papír (dluhopisový)</translation>
-<translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou poznámku v aplikaci Brave Keep</translation>
-<translation id="6473814193688111215">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Brave. Bezpečné prohlížení nedávno nalezlo <ph name="BEGIN_LINK"/>škodlivý software na webu <ph name="SITE"/><ph name="END_LINK"/>, který je vložen na webu, který se pokoušíte navštívit.</translation>
+<translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou poznámku v aplikaci Ping Keep</translation>
+<translation id="6473814193688111215">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Ping. Bezpečné prohlížení nedávno nalezlo <ph name="BEGIN_LINK"/>škodlivý software na webu <ph name="SITE"/><ph name="END_LINK"/>, který je vložen na webu, který se pokoušíte navštívit.</translation>
 <translation id="3780694243617746492">Výstupní přihrádka</translation>
 <translation id="3781428340399460090">Jasně růžová</translation>
 <translation id="3783418713923659662">Mastercard</translation>
@@ -1419,7 +1419,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3799805948399000906">Požadováno písmo</translation>
 <translation id="3801265110651850478">Posílat při procházení webů požadavek Do Not Track</translation>
 <translation id="380329542618494757">Název</translation>
-<translation id="4435991890010083520">Útočníci na webu, který se pokoušíte navštívit, vás mohou přimět k instalaci softwaru nebo prozrazení věcí, jako je heslo, telefon nebo číslo kreditní karty. Brave důrazně doporučuje vrátit se do bezpečí. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="4435991890010083520">Útočníci na webu, který se pokoušíte navštívit, vás mohou přimět k instalaci softwaru nebo prozrazení věcí, jako je heslo, telefon nebo číslo kreditní karty. Ping důrazně doporučuje vrátit se do bezpečí. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3807366285948165054">Posun obrázku na ose X</translation>
 <translation id="3807709094043295184">Klasický rock a oldies</translation>
 <translation id="3807873520724684969">Byl zablokován škodlivý obsah.</translation>
@@ -1444,7 +1444,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3839220096695873023">Automobily s hybridním a alternativním pohonem</translation>
 <translation id="384315386171052386">Ryby a plody moře</translation>
 <translation id="3844725157150297127">RA1</translation>
-<translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte nový Dokument Brave</translation>
+<translation id="5749930378398424146"><ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte nový Dokument Ping</translation>
 <translation id="385051799172605136">Zpět</translation>
 <translation id="3851830401766703401">Výuka práv</translation>
 <translation id="385489333361351399">Vybavení pro foto a video</translation>
@@ -1468,7 +1468,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3909695131102177774"><ph name="LABEL"/> <ph name="ERROR"/></translation>
 <translation id="3910231615117880630">Další informace o vloženém obsahu</translation>
 <translation id="5852873875468214161">V nastavení Chromu můžete předvolby kdykoli upravit</translation>
-<translation id="3117446487153407265"><ph name="BEGIN_BOLD"/>Jak můžete svá data spravovat:<ph name="END_BOLD"/> Weby, které jsou starší než 30 dní, Brave automaticky maže. Web, který navštívíte znovu, se na seznamu může opět objevit. Navrhování reklam pro vás můžete webu také kdykoliv zablokovat a reklamy navrhované weby můžete v nastavení Chromu kdykoliv vypnout.</translation>
+<translation id="3117446487153407265"><ph name="BEGIN_BOLD"/>Jak můžete svá data spravovat:<ph name="END_BOLD"/> Weby, které jsou starší než 30 dní, Ping automaticky maže. Web, který navštívíte znovu, se na seznamu může opět objevit. Navrhování reklam pro vás můžete webu také kdykoliv zablokovat a reklamy navrhované weby můžete v nastavení Chromu kdykoliv vypnout.</translation>
 <translation id="3921869355029467742">Zadat bezpečnostní kód</translation>
 <translation id="3927932062596804919">Odmítnout</translation>
 <translation id="3930260846839546333">Kabelky a peněženky</translation>
@@ -1488,7 +1488,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="3950820424414687140">Přihlaste se</translation>
 <translation id="3953505489397572035">Tato cena je obvyklá</translation>
 <translation id="3958057596965527988">4 × 4″</translation>
-<translation id="8475602291812563124">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Brave. Bezpečné prohlížení <ph name="BEGIN_LINK"/>nedávno nalezlo phishing na webu <ph name="SITE"/><ph name="END_LINK"/>, který je vložen na webu, který se pokoušíte navštívit.<ph name="NEW_LINE"/>Někdy mohou útočníci číhat dokonce i na webech, které jsou běžně bezpečné. Pokud se domníváte, že došlo k chybě a že tento web nepředstavuje nebezpečí, <ph name="BEGIN_ERROR_LINK"/>dejte nám vědět<ph name="END_ERROR_LINK"/>.</translation>
+<translation id="8475602291812563124">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Ping. Bezpečné prohlížení <ph name="BEGIN_LINK"/>nedávno nalezlo phishing na webu <ph name="SITE"/><ph name="END_LINK"/>, který je vložen na webu, který se pokoušíte navštívit.<ph name="NEW_LINE"/>Někdy mohou útočníci číhat dokonce i na webech, které jsou běžně bezpečné. Pokud se domníváte, že došlo k chybě a že tento web nepředstavuje nebezpečí, <ph name="BEGIN_ERROR_LINK"/>dejte nám vědět<ph name="END_ERROR_LINK"/>.</translation>
 <translation id="3961148744525529027">List obslužného nástroje pro platby je otevřený na půlce</translation>
 <translation id="3962859241508114581">Předchozí skladba</translation>
 <translation id="3963721102035795474">Režim čtečky</translation>
@@ -1525,13 +1525,13 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4036753017940930924">Pozemky</translation>
 <translation id="4047351652147966654">18 × 24 palců</translation>
 <translation id="404831776305217138">Adresa URL pro aktualizace rozšíření s ID <ph name="EXTENSION_ID"/> není platná nebo používá nepodporované schéma. Jsou podporována tato schémata: <ph name="HTTP_SCHEME"/>, <ph name="HTTPS_SCHEME"/> a <ph name="FILE_SCHEME"/>.</translation>
-<translation id="2635033286761217583">Budete ji moci používat ve všech službách Brave</translation>
-<translation id="336808635693308470">Brave se pokouší upravit platební metody.</translation>
+<translation id="2635033286761217583">Budete ji moci používat ve všech službách Ping</translation>
+<translation id="336808635693308470">Ping se pokouší upravit platební metody.</translation>
 <translation id="405399507749852140">Pokud cena na některém webu klesne, dostanete upozornění</translation>
 <translation id="4056223980640387499">Sépie</translation>
 <translation id="4059523390906550209">Další informace o ochraně citlivých údajů</translation>
 <translation id="4060880210388108757">Nezávislá a alternativní hudba</translation>
-<translation id="4161619938555288542">Nechte Brave hledat slevy pro vaše košíky</translation>
+<translation id="4161619938555288542">Nechte Ping hledat slevy pro vaše košíky</translation>
 <translation id="406358100705415968">Ochranné vybavení pro bezpečnost práce</translation>
 <translation id="4063924980214801036">Potvrzovat karty rychleji pomocí odemknutí zařízení</translation>
 <translation id="4065659219963895623">Restaurace</translation>
@@ -1561,7 +1561,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4111546256784973544">Paintball</translation>
 <translation id="4112140312785995938">Přetočit dozadu</translation>
 <translation id="4113354056388982663">Kritická aktualizace výkonu Androidu</translation>
-<translation id="270198531912208609">Chcete tuto kartu uložit do svého účtu Brave a do tohoto zařízení?</translation>
+<translation id="270198531912208609">Chcete tuto kartu uložit do svého účtu Ping a do tohoto zařízení?</translation>
 <translation id="4114146879518089587">Pokračovat na web</translation>
 <translation id="4116663294526079822">Povolit vždy na tomto webu</translation>
 <translation id="4116701314593212016">JIS B7</translation>
@@ -1571,7 +1571,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4123572138124678573">Tři otvory dole</translation>
 <translation id="412601465078863288">Časový limit nahrávání vypršel</translation>
 <translation id="4127317221386336246">Oděvní doplňky</translation>
-<translation id="4127575959421463246">Hledáte příznaky Brave OS? Navštívit</translation>
+<translation id="4127575959421463246">Hledáte příznaky Ping OS? Navštívit</translation>
 <translation id="4129401438321186435">{COUNT,plural, =1{1 další}few{# další}many{# další}other{# dalších}}</translation>
 <translation id="4129992181550680635">Vzdělávací zdroje</translation>
 <translation id="4130226655945681476">Zkontrolovat síťové kabely, modem a směrovač</translation>
@@ -1585,7 +1585,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4150099059797363385">Obálka čínská č. 4</translation>
 <translation id="4151403195736952345">Použít globální výchozí nastavení (zjistit)</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{Strana 1}few{Strana {COUNT}}many{Strana {COUNT}}other{Strana {COUNT}}}</translation>
-<translation id="6923879007831202776">Brave nyní bude před vyplněním platebních metod ověřovat vaši totožnost. Tuto volbu můžete v <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/> kdykoli aktualizovat.</translation>
+<translation id="6923879007831202776">Ping nyní bude před vyplněním platebních metod ověřovat vaši totožnost. Tuto volbu můžete v <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/> kdykoli aktualizovat.</translation>
 <translation id="4159784952369912983">Nachová</translation>
 <translation id="4165986682804962316">Nastavení webu</translation>
 <translation id="4169535189173047238">Nepovolovat</translation>
@@ -1620,7 +1620,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="422722221769396062">Rozvoz jídel z restaurací</translation>
 <translation id="4230204356098880324">Může žádat o použití a pohybování kamerou</translation>
 <translation id="4231448684371260244">8 × 13 palců</translation>
-<translation id="2706343222967082402">Témata a weby, které navrhují reklamy, Brave do 30 dnů automaticky maže. Případně můžete zablokovat konkrétní témata a weby, které se vám nelíbí.</translation>
+<translation id="2706343222967082402">Témata a weby, které navrhují reklamy, Ping do 30 dnů automaticky maže. Případně můžete zablokovat konkrétní témata a weby, které se vám nelíbí.</translation>
 <translation id="4235360514405112390">Platný</translation>
 <translation id="4239799716689808527">Štítky</translation>
 <translation id="4242380780309416996">Obálka (těžká)</translation>
@@ -1649,7 +1649,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4282280603030594840">Nákup automobilu</translation>
 <translation id="4282346679996504092">Upozornění pro tento produkt byla vypnuta a záložka byla odstraněna</translation>
 <translation id="4285498937028063278">Odepnout</translation>
-<translation id="8314946990939758167">{NUM_CARDS,plural, =1{Tato karta byla uložena do vašeho učtu Brave}few{Tyto karty byly uloženy do vašeho účtu Brave.}many{Tyto karty byly uloženy do vašeho účtu Brave.}other{Tyto karty byly uloženy do vašeho účtu Brave.}}</translation>
+<translation id="8314946990939758167">{NUM_CARDS,plural, =1{Tato karta byla uložena do vašeho učtu Ping}few{Tyto karty byly uloženy do vašeho účtu Ping.}many{Tyto karty byly uloženy do vašeho účtu Ping.}other{Tyto karty byly uloženy do vašeho účtu Ping.}}</translation>
 <translation id="2820825061680010514">Vylepšená ochrana soukromí v reklamách v Chromu</translation>
 <translation id="4290920330097335010">Nikdy nepovolovat</translation>
 <translation id="4296207570293932800">Je k dispozici nová funkce ochrany soukromí v reklamách</translation>
@@ -1663,7 +1663,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4305666528087210886">K souboru nelze získat přístup</translation>
 <translation id="4306529830550717874">Uložit adresu?</translation>
 <translation id="4306812610847412719">schránka</translation>
-<translation id="4270648948919210881">Tato zásada se ignoruje, protože uživatel není přidružený. Aby se tato zásada uplatnila, musí prohlížeč Brave a profil prostřednictvím administrátorské konzole spravovat stejná organizace.</translation>
+<translation id="4270648948919210881">Tato zásada se ignoruje, protože uživatel není přidružený. Aby se tato zásada uplatnila, musí prohlížeč Ping a profil prostřednictvím administrátorské konzole spravovat stejná organizace.</translation>
 <translation id="4310496734563057511">Pokud toto zařízení sdílíte s dalšími lidmi, můžete zapnout funkci Windows Hello, aby se při použití uloženého hesla ověřovalo, zda akci provádíte vy</translation>
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Blokovat (výchozí)</translation>
@@ -1686,9 +1686,9 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4333561522337981382">Správa oken na všech obrazovkách</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Platnost vyprší zítra}few{Platnost vyprší za # dny}many{Platnost vyprší za # dne}other{Platnost vyprší za # dní}}</translation>
 <translation id="4336913590841287350">Tato zásada zatím v systému iOS není podporována jako zásada pro uživatele.</translation>
-<translation id="5792122559159836842">Tato reklama v zařízení používala příliš mnoho zdrojů, proto ji Brave odstranil.</translation>
+<translation id="5792122559159836842">Tato reklama v zařízení používala příliš mnoho zdrojů, proto ji Ping odstranil.</translation>
 <translation id="4340810192899866471">Importovat ze souboru JSON</translation>
-<translation id="6116812392674177288">Tento počítač nebyl rozpoznán jako spravovaný organizací, proto lze pomocí zásad automaticky instalovat pouze rozšíření hostovaná v Internetovém obchodě Brave. Adresa URL Internetového obchodu Brave pro aktualizace je <ph name="CWS_UPDATE_URL"/>.</translation>
+<translation id="6116812392674177288">Tento počítač nebyl rozpoznán jako spravovaný organizací, proto lze pomocí zásad automaticky instalovat pouze rozšíření hostovaná v Internetovém obchodě Ping. Adresa URL Internetového obchodu Ping pro aktualizace je <ph name="CWS_UPDATE_URL"/>.</translation>
 <translation id="4342742994656318294">Tematické zábavní parky</translation>
 <translation id="4348834659292907206">Připojení k webu <ph name="SITE"/> není zabezpečené</translation>
 <translation id="4349365535725594680">Důvěrný obsah nelze sdílet</translation>
@@ -1704,7 +1704,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="437040971055499437">Událost týkající se zabezpečení</translation>
 <translation id="4371591986692297148">Neaktivní</translation>
 <translation id="4372948949327679948">Očekávána hodnota <ph name="VALUE_TYPE"/>.</translation>
-<translation id="7617743757131201121">Pokud některou položku chcete zahrnout do výběru témat, ze kterých Brave může vybírat při odhadu vašich zájmů, můžete ji přidat zpět</translation>
+<translation id="7617743757131201121">Pokud některou položku chcete zahrnout do výběru témat, ze kterých Ping může vybírat při odhadu vašich zájmů, můžete ji přidat zpět</translation>
 <translation id="437620492464254965">Dveře a okna</translation>
 <translation id="4377125064752653719">Pokusili jste se přejít na web <ph name="DOMAIN"/>, ale certifikát prezentovaný tímto webem byl vydavatelem certifikátu zrušen. To znamená, že bezpečnostním pověřením, která web prezentoval, nelze zcela důvěřovat. Je možné, že komunikujete s útočníkem.</translation>
 <translation id="4378154925671717803">Telefon</translation>
@@ -1733,7 +1733,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="7615139038297294584">Tlačítko správy nastavení webů, aktivací můžete spravovat oprávnění a uložená data webů v nastavení Chromu</translation>
 <translation id="4451135742916150903">Může žádat o připojení k zařízením HID</translation>
 <translation id="4451684391620232683">Text prezentovaný uživateli:</translation>
-<translation id="8416018650396907203">Právě použité heslo bylo nalezeno na seznamu hesel uniklých při incidentu porušení zabezpečení údajů. K zabezpečení vašich účtů doporučuje Správce hesel Brave zkontrolovat uložená hesla.</translation>
+<translation id="8416018650396907203">Právě použité heslo bylo nalezeno na seznamu hesel uniklých při incidentu porušení zabezpečení údajů. K zabezpečení vašich účtů doporučuje Správce hesel Ping zkontrolovat uložená hesla.</translation>
 <translation id="4456937135469235202">Cestování za dobrodružstvím</translation>
 <translation id="4464826014807964867">Weby s informacemi od vaší organizace</translation>
 <translation id="4466576951214254884">Studentské půjčky a financování školného</translation>
@@ -1745,15 +1745,15 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="448363931695049633">Pizzerie</translation>
 <translation id="4489023393592172404">Obálka Kaku 4</translation>
 <translation id="4490717597759821841">A7</translation>
-<translation id="3966104135245031874">Šifrovat synchronizovaná hesla pomocí účtu Brave</translation>
+<translation id="3966104135245031874">Šifrovat synchronizovaná hesla pomocí účtu Ping</translation>
 <translation id="4493480324863638523">Neplatná adresa URL. Je třeba použít adresu URL se standardním protokolem, např. http://example.com nebo https://example.com.</translation>
-<translation id="7622628059331736328">V nastavení můžete zobrazit témata reklam a zablokovat ta, která s weby nechcete sdílet. Brave také automaticky maže témata reklam starší než 4 týdny.</translation>
+<translation id="7622628059331736328">V nastavení můžete zobrazit témata reklam a zablokovat ta, která s weby nechcete sdílet. Ping také automaticky maže témata reklam starší než 4 týdny.</translation>
 <translation id="4500587658229086076">nezabezpečený obsah</translation>
 <translation id="4506176782989081258">Chyba ověřování: <ph name="VALIDATION_ERROR"/>.</translation>
 <translation id="4506599922270137252">Kontaktovat administrátora systému</translation>
 <translation id="450710068430902550">Sdílení s administrátorem</translation>
-<translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter přeložíte tuto stránku pomocí Překladače Brave</translation>
-<translation id="4892470328555495647">Karty a adresy pocházejí z Chromu a z vašeho účtu Brave (<ph name="ACCOUNT_EMAIL"/>). Můžete je spravovat v <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
+<translation id="7581711177899574338"><ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter přeložíte tuto stránku pomocí Překladače Ping</translation>
+<translation id="4892470328555495647">Karty a adresy pocházejí z Chromu a z vašeho účtu Ping (<ph name="ACCOUNT_EMAIL"/>). Můžete je spravovat v <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
 <translation id="4515847625438516456">Malé automobily</translation>
 <translation id="4519245469315452746">Vaše zařízení bylo během procesu aktualizace přerušeno.</translation>
 <translation id="4520048001084013693">Stažení tohoto souboru je blokováno zásadami administrátora</translation>
@@ -1761,7 +1761,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4521280267704259211">Obálka Monarch</translation>
 <translation id="4521916730539354575">Levý zásobník</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
-<translation id="6221032662362020209">Uložit IBAN do účtu Brave?</translation>
+<translation id="6221032662362020209">Uložit IBAN do účtu Ping?</translation>
 <translation id="4523643381056109546">Značení</translation>
 <translation id="4524138615196389145">Od teď karty potvrzujte rychleji díky využití standardu WebAuthn</translation>
 <translation id="45243788195988825">Blokovat kontakt <ph name="TOPIC"/></translation>
@@ -1771,7 +1771,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4540780316273593836">Něco se pokazilo</translation>
 <translation id="4541810033354695636">rozšířená realita</translation>
 <translation id="4542971377163063093">Přihrádka 6</translation>
-<translation id="563788859854213593">Pokud příště chcete zaplatit rychleji, uložte si kartu a fakturační adresu do účtu Brave</translation>
+<translation id="563788859854213593">Pokud příště chcete zaplatit rychleji, uložte si kartu a fakturační adresu do účtu Ping</translation>
 <translation id="4546730006268514143">Časový limit přenosu vypršel</translation>
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">K vyplňování hesel používáte zámek obrazovky</translation>
@@ -1798,7 +1798,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4619564267100705184">Ověřte svoji totožnost</translation>
 <translation id="4622292761762557753">Přesto přenést</translation>
 <translation id="4622647778991854660">Povolte oznámení v oznamovacím centru. Otevřete <ph name="LINK"/>.</translation>
-<translation id="6398431831028858802">Tuto zásadu nelze nastavit na úrovni profilu Brave, bude proto ignorována.</translation>
+<translation id="6398431831028858802">Tuto zásadu nelze nastavit na úrovni profilu Ping, bude proto ignorována.</translation>
 <translation id="4628678854894591460">Nabídky dovolené</translation>
 <translation id="4628948037717959914">Fotka</translation>
 <translation id="4629370161347991046">A4x6</translation>
@@ -1817,13 +1817,13 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4663373278480897665">Kamera je povolena</translation>
 <translation id="466561305373967878">Deskové hry</translation>
 <translation id="4668929960204016307">,</translation>
-<translation id="2972922043310308045">Brave zaznamenává témata, která vás podle vaší historie prohlížení z několika posledních týdnů zajímají.</translation>
+<translation id="2972922043310308045">Ping zaznamenává témata, která vás podle vaší historie prohlížení z několika posledních týdnů zajímají.</translation>
 <translation id="4670064810192446073">Virtuální realita</translation>
 <translation id="4671339777629075741">Obálka DL</translation>
 <translation id="4673460618347856347">Dinosauří hra, začít hrát</translation>
 <translation id="467662567472608290">Server nedokázal prokázat, že patří doméně <ph name="DOMAIN"/>, protože jeho bezpečnostní certifikát obsahuje chyby. Může to být způsobeno nesprávnou konfigurací nebo tím, že vaše připojení zachytává útočník.</translation>
 <translation id="4677585247300749148"><ph name="URL"/> chce reagovat na události přístupnosti</translation>
-<translation id="8197094463444457125">Prezentace Brave</translation>
+<translation id="8197094463444457125">Prezentace Ping</translation>
 <translation id="4682496302933121474">Přeložit stránku?</translation>
 <translation id="468314109939257734">Zobrazit číslo virtuální karty</translation>
 <translation id="4687718960473379118">Reklamy navrhované weby</translation>
@@ -1863,8 +1863,8 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4754461935447132332">Není povoleno u nezabezpečených webů</translation>
 <translation id="4756388243121344051">Historie</translation>
 <translation id="4756501505996488486">PRC 16K</translation>
-<translation id="5644030191910182707">Přístupový klíč z vašeho profilu Brave</translation>
-<translation id="1015173303159845845">Právě jste své heslo zadali na klamavém webu. Pokud chcete zabezpečit své účty, Brave vám doporučuje zkontrolovat uložená hesla.</translation>
+<translation id="5644030191910182707">Přístupový klíč z vašeho profilu Ping</translation>
+<translation id="1015173303159845845">Právě jste své heslo zadali na klamavém webu. Pokud chcete zabezpečit své účty, Ping vám doporučuje zkontrolovat uložená hesla.</translation>
 <translation id="4758311279753947758">Přidat kontaktní údaje</translation>
 <translation id="4761326898079498987">Můžete si přečíst další podrobnosti</translation>
 <translation id="1980929286541331105">Spustit bezpečnostní kontrolu Chromu</translation>
@@ -1879,7 +1879,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Zablokováno vyskakovací okno}few{Zablokována # vyskakovací okna}many{Zablokováno # vyskakovacího okna}other{Zablokováno # vyskakovacích oken}}</translation>
 <translation id="4780320432697076749">Fotografický software</translation>
 <translation id="4780366598804516005">Schránka 1</translation>
-<translation id="752757955979594126">Spravovat účet Brave</translation>
+<translation id="752757955979594126">Spravovat účet Ping</translation>
 <translation id="4785689107224900852">Přejít na tuto kartu</translation>
 <translation id="4786804728079074733">Volejbal</translation>
 <translation id="4787182171088676626">Obálka (jemná)</translation>
@@ -1888,7 +1888,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4792686369684665359">Informace, které se chystáte odeslat, nejsou zabezpečené</translation>
 <translation id="4793219378458250238">11 × 12″</translation>
 <translation id="4796594887379589189">ID účtu úlohy</translation>
-<translation id="7110430050177876111">Chcete-li aktualizovat údaje o kartě, zadejte datum vypršení platnosti a kód CVC karty <ph name="CREDIT_CARD"/>. Po potvrzení budou údaje o kartě z vašeho účtu Brave poskytnuty tomuto webu.</translation>
+<translation id="7110430050177876111">Chcete-li aktualizovat údaje o kartě, zadejte datum vypršení platnosti a kód CVC karty <ph name="CREDIT_CARD"/>. Po potvrzení budou údaje o kartě z vašeho účtu Ping poskytnuty tomuto webu.</translation>
 <translation id="4798269756263412078">Pokud cena na některém webu klesne, dostanete upozornění. Upozornění budou odesílána na váš e-mail.</translation>
 <translation id="4800132727771399293">Zkontrolujte datum vypršení platnosti a kód CVC a zkuste to znovu.</translation>
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
@@ -1898,7 +1898,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4816492930507672669">Přizpůsobit na stránku</translation>
 <translation id="4819347708020428563">Upravit poznámky ve výchozím zobrazení?</translation>
 <translation id="4822493756793346865">Obvyklé ceny vycházejí z obchodů na internetu za posledních 90 dní.</translation>
-<translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou Tabulku Brave</translation>
+<translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte novou Tabulku Ping</translation>
 <translation id="4826588772550366629">fotoaparát a mikrofon</translation>
 <translation id="4827283332383516812">Smazat kartu</translation>
 <translation id="4831993743164297314">Fotosazbový papír</translation>
@@ -1911,7 +1911,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="484671803914931257">Získejte slevu u obchodníka <ph name="MERCHANT_NAME"/> a dalších</translation>
 <translation id="484988093836683706">Použít odemknutí zařízení</translation>
 <translation id="4850886885716139402">Zobrazit</translation>
-<translation id="3418609161696289726">Rychle vytvořit novou poznámku v aplikaci Brave Keep</translation>
+<translation id="3418609161696289726">Rychle vytvořit novou poznámku v aplikaci Ping Keep</translation>
 <translation id="485902285759009870">Ověřování kódu…</translation>
 <translation id="4864406669374375262">Řetězec verze byl zkopírován do schránky</translation>
 <translation id="486459320933704969">Tvůj rodič nebo zákonný zástupce musí potvrdit, že web můžeš navštívit</translation>
@@ -1951,7 +1951,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4918221908152712722">Nainstalujte si aplikaci <ph name="APP_NAME"/> (není potřeba nic stahovat)</translation>
 <translation id="4920457992177678649">Pronájmy na dovolenou a krátkodobé pobyty</translation>
 <translation id="4920710383559189047">Rukávec</translation>
-<translation id="1298471559729553235">Pokud chcete Správce hesel používat s operačním systémem, spusťte Brave znovu a povolte přístup ke správci hesel v počítači. Karty se po opětovném spuštění znovu otevřou.</translation>
+<translation id="1298471559729553235">Pokud chcete Správce hesel používat s operačním systémem, spusťte Ping znovu a povolte přístup ke správci hesel v počítači. Karty se po opětovném spuštění znovu otevřou.</translation>
 <translation id="4923459931733593730">Platba</translation>
 <translation id="4926049483395192435">Musí být uvedeno</translation>
 <translation id="4926159001844873046">Web <ph name="SITE"/> říká</translation>
@@ -1994,7 +1994,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Enter můžete spravovat vyhledávání na webech a svůj výchozí vyhledávač</translation>
 <translation id="4998950033665438990">Jednostranné</translation>
 <translation id="5001526427543320409">Soubory cookie třetích stran</translation>
-<translation id="3676215163710610678">Pokud je tato možnost aktivována, Brave do zařízení uloží kopii karty za účelem rychlejšího vyplňování formulářů.</translation>
+<translation id="3676215163710610678">Pokud je tato možnost aktivována, Ping do zařízení uloží kopii karty za účelem rychlejšího vyplňování formulářů.</translation>
 <translation id="5007392906805964215">Zkontrolovat</translation>
 <translation id="5011561501798487822">Zjištěný jazyk</translation>
 <translation id="5015510746216210676">Název počítače:</translation>
@@ -2003,12 +2003,12 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="5018422839182700155">Tuto stránku nelze otevřít</translation>
 <translation id="5018802455907704660">16 × 20″</translation>
 <translation id="5019198164206649151">Záložní úložiště je ve špatném stavu</translation>
-<translation id="2013297594801702701">Uložené adresy můžete používat ve službách Brave. Tato adresa bude uložena ve vašem účtu Brave <ph name="USER_EMAIL"/>.</translation>
-<translation id="6516968977334148048">Sledování cen v prohlížeči Brave</translation>
+<translation id="2013297594801702701">Uložené adresy můžete používat ve službách Ping. Tato adresa bude uložena ve vašem účtu Ping <ph name="USER_EMAIL"/>.</translation>
+<translation id="6516968977334148048">Sledování cen v prohlížeči Ping</translation>
 <translation id="5023310440958281426">Zkontrolujte zásady svého správce</translation>
 <translation id="5030338702439866405">Vydal:</translation>
 <translation id="503069730517007720">Je vyžadován kořenový certifikát pro software <ph name="SOFTWARE_NAME"/>, ale není nainstalován. Při řešení tohoto problému by si měl administrátor IT prostudovat pokyny ke konfiguraci softwaru <ph name="SOFTWARE_NAME"/>. <ph name="FURTHER_EXPLANATION"/></translation>
-<translation id="6425384654920630035">O Překladači Brave</translation>
+<translation id="6425384654920630035">O Překladači Ping</translation>
 <translation id="503498442187459473">Web <ph name="HOST"/> chce použít váš mikrofon a kameru</translation>
 <translation id="5035135400558156732">Zahradničení</translation>
 <translation id="503574301575803523">SRA3</translation>
@@ -2036,7 +2036,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="5087580092889165836">Přidat kartu</translation>
 <translation id="5088142053160410913">Zpráva operátorovi</translation>
 <translation id="5093232627742069661">Přeložení do Z</translation>
-<translation id="4906192414477726331">Server nedokázal prokázat, že patří doméně <ph name="DOMAIN"/>. Brave jeho bezpečnostnímu certifikátu nedůvěřuje. Může to být způsobeno nesprávnou konfigurací nebo tím, že vaše připojení zachytává útočník.</translation>
+<translation id="4906192414477726331">Server nedokázal prokázat, že patří doméně <ph name="DOMAIN"/>. Ping jeho bezpečnostnímu certifikátu nedůvěřuje. Může to být způsobeno nesprávnou konfigurací nebo tím, že vaše připojení zachytává útočník.</translation>
 <translation id="5097099694988056070">Statistiky zařízení, například využití CPU/RAM</translation>
 <translation id="5097468150760963273">27 × 39 palců</translation>
 <translation id="5097501891273180634">A2</translation>
@@ -2073,8 +2073,8 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="5161334686036120870">Předmět:</translation>
 <translation id="5161506081086828129">Stohovač 9</translation>
 <translation id="5164798890604758545">Zadání textu</translation>
-<translation id="2996889577833788807">Zadejte kód CVC karty <ph name="CREDIT_CARD"/>. Po potvrzení budou údaje o kartě z vašeho účtu Brave poskytnuty tomuto webu.</translation>
-<translation id="8515152881111950319">Mohli byste ztratit přístup k účtu organizace nebo by mohlo dojít k odcizení vaší identity. Brave doporučuje okamžitě změnit heslo.</translation>
+<translation id="2996889577833788807">Zadejte kód CVC karty <ph name="CREDIT_CARD"/>. Po potvrzení budou údaje o kartě z vašeho účtu Ping poskytnuty tomuto webu.</translation>
+<translation id="8515152881111950319">Mohli byste ztratit přístup k účtu organizace nebo by mohlo dojít k odcizení vaší identity. Ping doporučuje okamžitě změnit heslo.</translation>
 <translation id="5171045022955879922">Vyhledávejte či zadejte URL</translation>
 <translation id="5172758083709347301">Počítač</translation>
 <translation id="5177076414499237632">Informace o zdroji a tématu této stránky</translation>
@@ -2104,7 +2104,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="5239119062986868403">Obvyklá cena</translation>
 <translation id="5239623327352565343">Poloha je povolena</translation>
 <translation id="5242610955375133957">Suchá folie</translation>
-<translation id="8854897060240443467">Spravovat účet Brave, aktivací můžete spravovat své údaje, ochranu soukromí a zabezpečení v účtu Brave</translation>
+<translation id="8854897060240443467">Spravovat účet Ping, aktivací můžete spravovat své údaje, ochranu soukromí a zabezpečení v účtu Ping</translation>
 <translation id="5244732203286792411">Načítání…
     Může to chvíli trvat.</translation>
 <translation id="5250209940322997802">Připojit k síti</translation>
@@ -2197,7 +2197,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="5425082381151187189">Domácí a interiérové dekorace</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vám chce zasílat oznámení</translation>
 <translation id="5430298929874300616">Odstranit záložku</translation>
-<translation id="8517215617486022589">Brave <ph name="BEGIN_EMPHASIS"/>nebude ukládat<ph name="END_EMPHASIS"/>:
+<translation id="8517215617486022589">Ping <ph name="BEGIN_EMPHASIS"/>nebude ukládat<ph name="END_EMPHASIS"/>:
           <ph name="BEGIN_LIST"/>
             <ph name="LIST_ITEM"/>vaši historii prohlížení,
             <ph name="LIST_ITEM"/>soubory cookie a data webů,
@@ -2221,7 +2221,7 @@ Jinak to vaše nastavení ochrany soukromí bude blokovat. Povolením umožníte
 <translation id="54817484435770891">Přidejte platnou adresu</translation>
 <translation id="5483838506518938965">Hotovo</translation>
 <translation id="5485973315555778056">Cloudové zařízení</translation>
-<translation id="1524606353801704832">Tlačítko Vytvořit poznámku, aktivací rychle vytvoříte novou poznámku v aplikaci Brave Keep</translation>
+<translation id="1524606353801704832">Tlačítko Vytvořit poznámku, aktivací rychle vytvoříte novou poznámku v aplikaci Ping Keep</translation>
 <translation id="5490432419156082418">Adresy a další</translation>
 <translation id="5492298309214877701">Tato stránka v intranetu společnosti, organizace nebo školy má stejnou adresu URL jako externí web.
 <ph name="LINE_BREAK"/>
@@ -2262,8 +2262,8 @@ Kontaktujte administrátora systému.</translation>
 <translation id="555037537507405574">pokročilé funkce tiskáren</translation>
 <translation id="555128936272638662">Mobilní a bezdrátové přístroje</translation>
 <translation id="5551890439174915351">100 × 200 mm</translation>
-<translation id="6084314943327785510">Brave vaše hesla pravidelně porovnává se seznamy hesel, která unikla na internet. Vaše hesla a uživatelská jména jsou při tom šifrována, takže je nemůže nikdo zobrazit (ani Brave).</translation>
-<translation id="4362225295386962644">Když použijete heslo, Brave vás upozorní, pokud bylo zveřejněno online. Vaše hesla a uživatelská jména jsou při tom šifrována, takže je nemůže nikdo zobrazit (ani Brave).</translation>
+<translation id="6084314943327785510">Ping vaše hesla pravidelně porovnává se seznamy hesel, která unikla na internet. Vaše hesla a uživatelská jména jsou při tom šifrována, takže je nemůže nikdo zobrazit (ani Ping).</translation>
+<translation id="4362225295386962644">Když použijete heslo, Ping vás upozorní, pokud bylo zveřejněno online. Vaše hesla a uživatelská jména jsou při tom šifrována, takže je nemůže nikdo zobrazit (ani Ping).</translation>
 <translation id="5556459405103347317">Načíst znovu</translation>
 <translation id="5558083606899411167">Klimatizace</translation>
 <translation id="5558125320634132440">Tento web byl zablokován, protože může zahrnovat obsah nevhodný pro děti</translation>
@@ -2292,7 +2292,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="5610142619324316209">Zkontrolovat připojení</translation>
 <translation id="5610807607761827392">Karty a adresy můžete spravovat v <ph name="BEGIN_LINK"/>Nastavení<ph name="END_LINK"/>.</translation>
 <translation id="5611398002774823980">Uložit do účtu</translation>
-<translation id="2012723355262040739">Přeložte tuto stránku pomocí Překladače Brave</translation>
+<translation id="2012723355262040739">Přeložte tuto stránku pomocí Překladače Ping</translation>
 <translation id="5612720917913232150">Web <ph name="URL"/> chce použít polohu vašeho počítače</translation>
 <translation id="5614520971155863709">Karetní hry</translation>
 <translation id="5617949217645503996">Web <ph name="HOST_NAME"/> vás přesměroval příliš mnohokrát.</translation>
@@ -2352,8 +2352,8 @@ Kontaktujte administrátora systému.</translation>
 <translation id="5729442113829771034">Vzdělávání v raném věku</translation>
 <translation id="3006790309890592320">Pokud jste heslo použili na jiném webu, doporučujeme vám ho resetovat.</translation>
 <translation id="5732392974455271431">Rodiče ti jej mohou odblokovat.</translation>
-<translation id="5110141686029759199">Tlačítko Vytvořit formulář, aktivací rychle vytvoříte nový formulář ve Formulářích Brave</translation>
-<translation id="5576538372759072019">{NUM_CARDS,plural, =1{Uložit kartu do účtu Brave}few{Uložit karty do účtu Brave}many{Uložit karty do účtu Brave}other{Uložit karty do účtu Brave}}</translation>
+<translation id="5110141686029759199">Tlačítko Vytvořit formulář, aktivací rychle vytvoříte nový formulář ve Formulářích Ping</translation>
+<translation id="5576538372759072019">{NUM_CARDS,plural, =1{Uložit kartu do účtu Ping}few{Uložit karty do účtu Ping}many{Uložit karty do účtu Ping}other{Uložit karty do účtu Ping}}</translation>
 <translation id="5738385766833540397">Nastavte, jak chcete dostávat upozornění na pokles cen produktů, které sledujete</translation>
 <translation id="5740911612628596808">Obálka C9</translation>
 <translation id="5742806904559466333">Bary, kluby a noční život</translation>
@@ -2395,7 +2395,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="583281660410589416">Neznámé</translation>
 <translation id="5838278095973806738">Na tento web byste neměli zadávat citlivé údaje (například hesla nebo čísla platebních karet), protože by je mohli odcizit útočníci.</translation>
 <translation id="5838732667866024867">Změny cen v grafu můžete zkontrolovat pomocí šipek vpravo a vlevo</translation>
-<translation id="7336369644051575343">Ve vašem účtu Brave <ph name="ACCOUNT"/></translation>
+<translation id="7336369644051575343">Ve vašem účtu Ping <ph name="ACCOUNT"/></translation>
 <translation id="5841338463993781099">Uložit do účtu?</translation>
 <translation id="5843987376989109187">Tento jazyk zatím není podporován.
     <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
@@ -2434,7 +2434,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5920262536204764679">{NUM_COOKIES,plural, =1{Používá se 1}few{Používají se #}many{Používá se #}other{Používá se #}}</translation>
 <translation id="5921185718311485855">Zapnuto</translation>
-<translation id="2687595201721621314">Uložit kartu do účtu Brave?</translation>
+<translation id="2687595201721621314">Uložit kartu do účtu Ping?</translation>
 <translation id="5921952831792678223">Pickupy</translation>
 <translation id="5922853866070715753">Téměř dokončeno</translation>
 <translation id="5923492272538889093">Používat místo kódu CVC odemknutí zařízení?</translation>
@@ -2470,10 +2470,10 @@ Kontaktujte administrátora systému.</translation>
 <translation id="5989320800837274978">Nejsou určeny pevně dané servery proxy ani adresa URL skriptu PAC.</translation>
 <translation id="5992691462791905444">Technické přeložení do Z</translation>
 <translation id="5992805036496113940">Zobrazit informace používané k zobrazování reklam</translation>
-<translation id="7409510288691071929">Správa údajů, ochrany soukromí a zabezpečení v účtu Brave</translation>
+<translation id="7409510288691071929">Správa údajů, ochrany soukromí a zabezpečení v účtu Ping</translation>
 <translation id="5996255674476750320">Autosalony</translation>
-<translation id="3494641719937626561">Právě použité heslo bylo nalezeno na seznamu hesel uniklých při incidentu porušení zabezpečení údajů. Kvůli zabezpečení vašich účtů Správce hesel Brave doporučuje ihned toto heslo změnit a zkontrolovat uložená hesla.</translation>
-<translation id="4496834749307444910">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Brave, které <ph name="BEGIN_LINK"/>nedávno nalezlo malware<ph name="END_LINK"/> na webu, který se pokoušíte navštívit.</translation>
+<translation id="3494641719937626561">Právě použité heslo bylo nalezeno na seznamu hesel uniklých při incidentu porušení zabezpečení údajů. Kvůli zabezpečení vašich účtů Správce hesel Ping doporučuje ihned toto heslo změnit a zkontrolovat uložená hesla.</translation>
+<translation id="4496834749307444910">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Ping, které <ph name="BEGIN_LINK"/>nedávno nalezlo malware<ph name="END_LINK"/> na webu, který se pokoušíte navštívit.</translation>
 <translation id="6000528814684428358">Hard rock a progresivní rock</translation>
 <translation id="6000758707621254961">Výsledky pro dotaz <ph name="SEARCH_TEXT"/> (<ph name="RESULT_COUNT"/>)</translation>
 <translation id="6002122790816966947">Vaše zařízení</translation>
@@ -2513,8 +2513,8 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6051898664905071243">Počet stránek:</translation>
 <translation id="6052284303005792909">•</translation>
 <translation id="605237284704429106">Vyplňování čísla IBAN</translation>
-<translation id="3284406940349582552">Uložené adresy můžete používat ve službách Brave. Tato adresa je uložena ve vašem účtu Brave <ph name="ACCOUNT"/>.</translation>
-<translation id="5814871361966482530">Další informace o tom, jak Brave chrání vaše údaje, najdete v našich zásadách ochrany soukromí.</translation>
+<translation id="3284406940349582552">Uložené adresy můžete používat ve službách Ping. Tato adresa je uložena ve vašem účtu Ping <ph name="ACCOUNT"/>.</translation>
+<translation id="5814871361966482530">Další informace o tom, jak Ping chrání vaše údaje, najdete v našich zásadách ochrany soukromí.</translation>
 <translation id="6055888660316801977">List identifikačních údajů pro zabezpečené platby o nenalezených odpovídajících identifikačních údajích</translation>
 <translation id="6055982527635883756">Obálka (archivační)</translation>
 <translation id="6057177372083677067">Online video</translation>
@@ -2538,9 +2538,9 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6106989379647458772">Webová stránka <ph name="PAGE"/> může být dočasně nefunkční nebo mohla být trvale přesunuta na novou webovou adresu.</translation>
 <translation id="6107012941649240045">Vydán pro</translation>
 <translation id="6107924765192360631">Pokud chcete získat návrhy psaní, zadejte několik slov nebo první koncept.</translation>
-<translation id="5539282829066374332">Váš vyhledávač v prohlížeči Brave</translation>
+<translation id="5539282829066374332">Váš vyhledávač v prohlížeči Ping</translation>
 <translation id="6108849843016142864">Plazi a obojživelníci</translation>
-<translation id="8233947174119245051">Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave.</translation>
+<translation id="8233947174119245051">Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Ping.</translation>
 <translation id="6116338172782435947">Přístup k textu a obrázkům zkopírovaným do schránky</translation>
 <translation id="6117833587752089929">Fotografie (saténová)</translation>
 <translation id="6118782133429281336">Seznam zdrojů je prázdný.</translation>
@@ -2548,7 +2548,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="612178891608320683">Veganská kuchyně</translation>
 <translation id="6122181661879998141">přední strana karty</translation>
 <translation id="6124058285696691147">Stáhnout přílohu</translation>
-<translation id="5972135347314259717">Konektory Brave Enterprise</translation>
+<translation id="5972135347314259717">Konektory Ping Enterprise</translation>
 <translation id="6126565365696310362">Obálka čínská č. 2</translation>
 <translation id="6127379762771434464">Položka byla odstraněna</translation>
 <translation id="6131824478727057281">poloha</translation>
@@ -2569,13 +2569,13 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6160391204859821737">Zapnutí funkce ochrany soukromí v reklamách</translation>
 <translation id="6165508094623778733">Další informace</translation>
 <translation id="6167577165590485365">Poslední pokus o načtení:</translation>
-<translation id="1057223975912338979">Brave se pokouší ověřit vaši totožnost, aby mohl vyplnit vaše platební údaje.</translation>
+<translation id="1057223975912338979">Ping se pokouší ověřit vaši totožnost, aby mohl vyplnit vaše platební údaje.</translation>
 <translation id="6176387967264100435">Tato cena je vysoká</translation>
 <translation id="6177128806592000436">Spojení s tímto webem není bezpečné</translation>
 <translation id="6177531123306197852">Obálka C2</translation>
 <translation id="6180316780098470077">Interval opakování</translation>
 <translation id="6182972682129119950">A4x5</translation>
-<translation id="1713601041945301465">Brave automaticky omezuje soubory cookie třetích stran</translation>
+<translation id="1713601041945301465">Ping automaticky omezuje soubory cookie třetích stran</translation>
 <translation id="6194209731893739467">Tady zobrazíte všechny sledované produkty</translation>
 <translation id="6195163219142236913">Soubory cookie třetích stran jsou omezeny</translation>
 <translation id="6195371403461054755">Geologie</translation>
@@ -2590,10 +2590,10 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6215936431492593050">Kov (saténový)</translation>
 <translation id="6217950634729714357">Kuchyňský a jídelní nábytek</translation>
 <translation id="6218305986815100395">Virtuální kartu nelze aktivovat</translation>
-<translation id="8385639954311581596">Odstranit adresu z prohlížeče Brave?</translation>
+<translation id="8385639954311581596">Odstranit adresu z prohlížeče Ping?</translation>
 <translation id="622039917539443112">Paralelní přeložení</translation>
-<translation id="5286511760116495417">Chcete tuto kartu uložit do svého účtu Brave?</translation>
-<translation id="6221345481584921695">Služba Bezpečné prohlížení Brave na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>zjistila malware<ph name="END_LINK"/>. Někdy mohou být malwarem nakaženy i weby, které jsou obvykle bezpečné. Tento škodlivý obsah pochází z webu <ph name="SUBRESOURCE_HOST"/>, který je distribucí malwaru známý.</translation>
+<translation id="5286511760116495417">Chcete tuto kartu uložit do svého účtu Ping?</translation>
+<translation id="6221345481584921695">Služba Bezpečné prohlížení Ping na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>zjistila malware<ph name="END_LINK"/>. Někdy mohou být malwarem nakaženy i weby, které jsou obvykle bezpečné. Tento škodlivý obsah pochází z webu <ph name="SUBRESOURCE_HOST"/>, který je distribucí malwaru známý.</translation>
 <translation id="6221892641068781024">Zjednodušené zobrazení</translation>
 <translation id="6222527803348563979">Papír</translation>
 <translation id="6224281071334553713">Klenoty a šperky</translation>
@@ -2604,7 +2604,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6236290670123303279">Spravovat nastavení</translation>
 <translation id="623825323736974198">Spravujte weby, které zůstanou vždy aktivní a jejichž paměť se nebude uvolňovat</translation>
 <translation id="6240447795304464094">Logo Google Pay</translation>
-<translation id="4174528239215311406">Pokud chcete Správce hesel Brave používat s operačním systémem, spusťte Brave znovu a povolte přístup ke správci hesel v počítači. Karty se po opětovném spuštění znovu otevřou.</translation>
+<translation id="4174528239215311406">Pokud chcete Správce hesel Ping používat s operačním systémem, spusťte Ping znovu a povolte přístup ke správci hesel v počítači. Karty se po opětovném spuštění znovu otevřou.</translation>
 <translation id="6241121617266208201">Skrýt návrhy</translation>
 <translation id="624499991300733384">Služba tvůrce tisku</translation>
 <translation id="6250932670816326647">Koupelová a tělová kosmetika</translation>
@@ -2621,7 +2621,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6266934640124581640">Světle modrozelená</translation>
 <translation id="6270066318535733958">Plavby na lodi</translation>
 <translation id="1300170712564922349">Obnovením cesty zobrazíte příslušnou aktivitu v historii Chromu</translation>
-<translation id="9136010393039243713">Aktualizace Brave</translation>
+<translation id="9136010393039243713">Aktualizace Ping</translation>
 <translation id="6279183038361895380">Kurzor zobrazíte stisknutím klávesy |<ph name="ACCELERATOR"/>|</translation>
 <translation id="6280223929691119688">Doručení na tuto adresu není možné. Vyberte jinou adresu.</translation>
 <translation id="6284292079994426700">26 × 38 palců</translation>
@@ -2643,11 +2643,11 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6307968763353904914">Vaše banka u této platební metody aktuálně nenabízí virtuální karty, ale stále na internetu můžete platit kartou <ph name="CARD_LABEL"/>.</translation>
 <translation id="6311410654831092784">Tvrdý papír</translation>
 <translation id="6312113039770857350">Webová stránka není k dispozici</translation>
-<translation id="1413891145337537586">Novinka: Zde platí možnosti Family Link pro Brave</translation>
+<translation id="1413891145337537586">Novinka: Zde platí možnosti Family Link pro Ping</translation>
 <translation id="63172326633386613">Správa nastavení přístupnosti</translation>
 <translation id="6321917430147971392">Zkontrolujte nastavení DNS</translation>
 <translation id="6322182122604171028">Windows Hello nebylo možné použít</translation>
-<translation id="7962450223988560278">V nastavení iOS nastavte Brave jako výchozí prohlížeč</translation>
+<translation id="7962450223988560278">V nastavení iOS nastavte Ping jako výchozí prohlížeč</translation>
 <translation id="6328639280570009161">Zkuste deaktivovat předvídání akcí sítě</translation>
 <translation id="6328784461820205019">Vaše připojení není soukromé, &lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;, &lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;, &lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;, &lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt; nebo Chyba certifikátu SSL</translation>
 <translation id="6328786501058569169">Tento web je klamavý</translation>
@@ -2710,7 +2710,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6427730057873428458">Otevírací přeložení</translation>
 <translation id="6428450836711225518">Ověření telefonního čísla</translation>
 <translation id="6429267199680088961">A4 Tab</translation>
-<translation id="7772223497488184427">Změnit heslo Brave</translation>
+<translation id="7772223497488184427">Změnit heslo Ping</translation>
 <translation id="6432297414176614592">Další informace o tématech reklam</translation>
 <translation id="6432831586648556868">Zaměstnání v odvětví prodeje a marketingu</translation>
 <translation id="6433490469411711332">Upravit kontaktní údaje</translation>
@@ -2741,7 +2741,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6472874020827012601">Textilie(matná)</translation>
 <translation id="647330291963761005">Instalace aktualizací</translation>
 <translation id="6474220430271405609">Testy zásad</translation>
-<translation id="2252963430820803723">Navštívené weby mohou požádat Brave o informace, které jim pomohou měřit výkon reklam. Brave chrání vaše soukromí tím, že omezuje informace, které mohou weby navzájem sdílet.</translation>
+<translation id="2252963430820803723">Navštívené weby mohou požádat Ping o informace, které jim pomohou měřit výkon reklam. Ping chrání vaše soukromí tím, že omezuje informace, které mohou weby navzájem sdílet.</translation>
 <translation id="6476284679642588870">Správa platebních metod</translation>
 <translation id="647881094269678013">Herectví a divadlo</translation>
 <translation id="6480864723214312258">Baterie pro domácnost</translation>
@@ -2756,7 +2756,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6502991525169604759">Bez vašich změn</translation>
 <translation id="6506959208958864820">Obálka</translation>
 <translation id="6507117483253822672">Pište kdekoli na webu s větší jistotou</translation>
-<translation id="3960299545138990065">Restartujte Brave</translation>
+<translation id="3960299545138990065">Restartujte Ping</translation>
 <translation id="6513005815064132016">Může žádat o sledování pozice kamery</translation>
 <translation id="6517596291481585650">Upozornění: Tato zásada nebyla podle zásady sloučena jako seznam, protože se nejedná o seznam.</translation>
 <translation id="6518133107902771759">Ověřit</translation>
@@ -2768,7 +2768,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6527049834925947126">Potravinářská výroba</translation>
 <translation id="6529173248185917884">Sedmá role</translation>
 <translation id="6529602333819889595">&amp;Opakovat smazání</translation>
-<translation id="4126692285908824778">Tato karta je uložena ve vašem účtu Brave, abyste ji mohli používat v různých službách Brave.</translation>
+<translation id="4126692285908824778">Tato karta je uložena ve vašem účtu Ping, abyste ji mohli používat v různých službách Ping.</translation>
 <translation id="6536221421038631327">Odebráním předplatného Passpoint ze svého zařízení <ph name="DEVICE_TYPE"/> odstraníte přidružené sítě. Pokud ve svém tarfiu chcete provést změny, kontaktujte operátora <ph name="FRIENDLY_NAME"/>. <ph name="LEARN_MORE"/></translation>
 <translation id="6539092367496845964">Něco se pokazilo. Zkuste to později.</translation>
 <translation id="6540488083026747005">Pro tento web jste povolili soubory cookie třetích stran</translation>
@@ -2795,7 +2795,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6597665340361269064">90°</translation>
 <translation id="6598976221101665070">Filmová dramata</translation>
 <translation id="6599642189720630047">Sledované produkty</translation>
-<translation id="5976895887103591798">Brave brání webům v používání souborů cookie třetích stran ke sledování vašeho procházení.
+<translation id="5976895887103591798">Ping brání webům v používání souborů cookie třetích stran ke sledování vašeho procházení.
             <ph name="NEW_LINE"/>Pokud web nefunguje správně, <ph name="START_LINK"/>zkuste soubory cookie třetích stran dočasně povolit<ph name="END_LINK"/>.</translation>
 <translation id="5887670611153282204">Další informace o vyhledávači v Chromu</translation>
 <translation id="6615297766614333076">Stohovač 2</translation>
@@ -2810,11 +2810,11 @@ Kontaktujte administrátora systému.</translation>
 <translation id="663260587451432563">JIS B4</translation>
 <translation id="6633405994164965230">Počítačové vzdělávání</translation>
 <translation id="6633476656216409494">Software pro podnikání a zvýšení produktivity</translation>
-<translation id="2529518595693862042">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Brave, které nedávno <ph name="BEGIN_LINK"/>nalezlo škodlivý software<ph name="END_LINK"/> na webu, který se pokoušíte navštívit.</translation>
+<translation id="2529518595693862042">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Ping, které nedávno <ph name="BEGIN_LINK"/>nalezlo škodlivý software<ph name="END_LINK"/> na webu, který se pokoušíte navštívit.</translation>
 <translation id="6643016212128521049">Vymazat</translation>
 <translation id="6645291930348198241">Získat přístup k souborům cookie a datům webů.</translation>
 <translation id="6645478838938543427">Upozornění na pokles ceny budou odesílána na adresu <ph name="EMAIL_ADDRESS"/></translation>
-<translation id="6678472970290886941">Administrátor může nastavení prohlížeče vzdáleně změnit. Aktivita na tomto zařízení může být spravována také mimo Brave.</translation>
+<translation id="6678472970290886941">Administrátor může nastavení prohlížeče vzdáleně změnit. Aktivita na tomto zařízení může být spravována také mimo Ping.</translation>
 <translation id="6648524591329069940">Patkové písmo</translation>
 <translation id="6649510485211003056">195 × 270 mm</translation>
 <translation id="6651270836885078973">Správce:</translation>
@@ -2836,9 +2836,9 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6688743156324860098">Aktualizovat…</translation>
 <translation id="6688775486821967877">Virtuální karta aktuálně není k dispozici. Zkuste to znovu později</translation>
 <translation id="6689249931105087298">Relativní s kompresí černého bodu</translation>
-<translation id="5406652219015697259">Brave vám nabízí uložení karet do účtu Brave, protože jste přihlášeni. Toto chování můžete změnit v Nastavení. Jméno držitele karty pochází z vašeho účtu.</translation>
+<translation id="5406652219015697259">Ping vám nabízí uložení karet do účtu Ping, protože jste přihlášeni. Toto chování můžete změnit v Nastavení. Jméno držitele karty pochází z vašeho účtu.</translation>
 <translation id="6691397311652656001">Uvolněte více než <ph name="REQUIRED_FREE_DISK_SPACE"/> místa</translation>
-<translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter najdete zařízení v účtu Brave</translation>
+<translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter najdete zařízení v účtu Ping</translation>
 <translation id="6695428916538794739">Akční a dobrodružné filmy</translation>
 <translation id="6696424331653607346">Průvodci a cestopisy</translation>
 <translation id="6698381487523150993">Vytvořil:</translation>
@@ -2873,13 +2873,13 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6754547388777247439">Spořicí účty</translation>
 <translation id="6755241357817244406">chrome://flags</translation>
 <translation id="6757797048963528358">Zařízení přešlo do režimu spánku.</translation>
-<translation id="1002792787295210684">Tuto kartu se do vašeho účtu Brave nepodařilo uložit. Místo toho byla uložena do Chromu na tomto zařízení.</translation>
+<translation id="1002792787295210684">Tuto kartu se do vašeho účtu Ping nepodařilo uložit. Místo toho byla uložena do Chromu na tomto zařízení.</translation>
 <translation id="6766558780547452153">Vaření a recepty</translation>
 <translation id="6767985426384634228">Aktualizovat adresu?</translation>
 <translation id="6770747695101757579">Papír (bavlněný)</translation>
 <translation id="677257480647123231">Bezpečnost dětí na internetu</translation>
 <translation id="6775759552199460396">JIS B2</translation>
-<translation id="4302311572898487420">Správce hesel Brave potřebuje přístup ke Klíčence systému MacOS</translation>
+<translation id="4302311572898487420">Správce hesel Ping potřebuje přístup ke Klíčence systému MacOS</translation>
 <translation id="6782656837469339439">Rok expirace</translation>
 <translation id="6786145470008421571">Obálka 6 × 9 palců</translation>
 <translation id="67862343314499040">Fialová</translation>
@@ -2924,12 +2924,12 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6873456682041376666">Horní zásobník</translation>
 <translation id="6874604403660855544">&amp;Opakovat přidání</translation>
 <translation id="6880941331070119097">Možnost s vysokou cenou</translation>
-<translation id="5856252669085142737">Rychlé vytvoření nového Dokumentu Brave</translation>
+<translation id="5856252669085142737">Rychlé vytvoření nového Dokumentu Ping</translation>
 <translation id="6882210908253838664">Pokud web nefunguje, můžete mu zkusit udělit dočasné povolení k používání souborů cookie třetích stran. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="6883221904761970440">List ověření identifikačních údajů pro zabezpečené platby je zavřený</translation>
 <translation id="6884662655240309489">Velikost 1</translation>
 <translation id="6886577214605505410"><ph name="LOCATION_TITLE"/> <ph name="SHORT_URL"/></translation>
-<translation id="7265969755975834932">Brave tuto stránku zjednodušil, aby se snadněji četla. Původní stránku Brave načetl přes nezabezpečené připojení.</translation>
+<translation id="7265969755975834932">Ping tuto stránku zjednodušil, aby se snadněji četla. Původní stránku Ping načetl přes nezabezpečené připojení.</translation>
 <translation id="6890443033788248019">Povolit přístup k poloze?</translation>
 <translation id="6890531741535756070">Zvolili jste, že na webech, které používají poskytovatele <ph name="PROVIDER_ORIGIN"/>, chcete k ověření používat <ph name="DEVICE_LABEL"/>. Tento poskytovatel může mít uložené informace o vaší platební metodě a můžete <ph name="BEGIN_LINK"/>požádat o jejich smazání<ph name="END_LINK"/>.</translation>
 <translation id="6890956352250146925">Možnosti souborů cookie a dat webů</translation>
@@ -2948,7 +2948,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6926216138694948720">Zdobení těla</translation>
 <translation id="692638818576287323">Užitková vozidla</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>Výchozí vyhledávač umožňuje vyhledávat na webu a používá se pro funkce Chromu<ph name="END_BOLD"/>, jako je vyhledávání z adresního řádku a z obrázků na webových stránkách. Funkce, které vyhledávač nepodporuje, nebudou dostupné.</translation>
-<translation id="6722453239914327220">Toto jméno pochází z vašeho účtu Brave</translation>
+<translation id="6722453239914327220">Toto jméno pochází z vašeho účtu Ping</translation>
 <translation id="6935082727755903526">Zaměstnání v oboru financí a účetnictví</translation>
 <translation id="6935179587384421592"><ph name="SIZE"/>. Je možné, že se některé weby při příští návštěvě budou načítat pomaleji.</translation>
 <translation id="6936976777388162184">Toto zařízení je součástí balíčku a nelze ho zaregistrovat do upgradu Kiosk &amp; Signage.</translation>
@@ -2964,7 +2964,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="6954049078461159956">Hokej</translation>
 <translation id="695582302419398462">Lepenka (dvouvrstvá)</translation>
 <translation id="6957887021205513506">Zdá se, že certifikát serveru je podvrh.</translation>
-<translation id="774679539085757206">Spravovat v účtu Brave nastavení ochrany soukromí na Googlu</translation>
+<translation id="774679539085757206">Spravovat v účtu Ping nastavení ochrany soukromí na Googlu</translation>
 <translation id="6961844873822989059">Může žádat o použití písem nainstalovaných v zařízení</translation>
 <translation id="6961980518585973432">Výročí</translation>
 <translation id="6962858948849099922">Časový limit přesunutí vypršel</translation>
@@ -2976,14 +2976,14 @@ Kontaktujte administrátora systému.</translation>
 <translation id="696703987787944103">Percepční</translation>
 <translation id="6967851206780867018">1 soubor byl kvůli obsahu zablokován</translation>
 <translation id="6970885655016700774">Textilie (archivační)</translation>
-<translation id="8485851762575764192">Rychle vytvořit novou prezentaci Brave v Prezentacích</translation>
+<translation id="8485851762575764192">Rychle vytvořit novou prezentaci Ping v Prezentacích</translation>
 <translation id="6972629891077993081">Zařízení HID</translation>
 <translation id="6973656660372572881">Určeny jsou pevně dané servery proxy i adresa URL skriptu PAC.</translation>
 <translation id="6973988895180423160">3,5 × 5″</translation>
 <translation id="6978121630131642226">Vyhledávače</translation>
 <translation id="6978236010531171013">Přesto sdílet</translation>
-<translation id="8974669348014288088">Pokud toto zařízení sdílíte s dalšími lidmi, Brave vás může při každé platbě pomocí automatického vyplňování požádat o ověření</translation>
-<translation id="6979158407327259162">Disk Brave</translation>
+<translation id="8974669348014288088">Pokud toto zařízení sdílíte s dalšími lidmi, Ping vás může při každé platbě pomocí automatického vyplňování požádat o ověření</translation>
+<translation id="6979158407327259162">Disk Ping</translation>
 <translation id="6979440798594660689">Ztlumit (výchozí)</translation>
 <translation id="6987806006823772670">Obálka (potahovaná)</translation>
 <translation id="6989763994942163495">Zobrazit rozšířená nastavení...</translation>
@@ -3004,13 +3004,13 @@ Kontaktujte administrátora systému.</translation>
 <translation id="702146556168549005">Adresy URL navštívených stránek se odesílají k analýze do služby Google Cloud nebo třetím stranám. Mohou být například zkontrolovány, zda neodkazují na nebezpečné weby, nebo mohou být filtrovány podle pravidel nastavených administrátorem.</translation>
 <translation id="8683151724374457021">Tento web určuje, co se vám líbí, a pak navrhuje reklamy jiným webům. Tento web také získává témata reklam z Chromu, aby vám mohl zobrazovat relevantnější reklamy.</translation>
 <translation id="7023162328967545559">Upozornění administrátora</translation>
-<translation id="7613812024276037086">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Brave, které <ph name="BEGIN_LINK"/>nedávno nalezlo phishing<ph name="END_LINK"/> na webu, který se pokoušíte navštívit. Phishingové weby se vydávají za jiné weby, aby vás oklamaly.<ph name="NEW_LINE"/>Někdy mohou útočníci číhat dokonce i na webech, které jsou běžně bezpečné. Pokud se domníváte, že došlo k chybě a že tento web nepředstavuje nebezpečí, <ph name="BEGIN_ERROR_LINK"/>dejte nám vědět<ph name="END_ERROR_LINK"/>.</translation>
+<translation id="7613812024276037086">V Chromu jsou vestavěny bezpečnostní funkce, které vás při procházení chrání – například Bezpečné prohlížení Ping, které <ph name="BEGIN_LINK"/>nedávno nalezlo phishing<ph name="END_LINK"/> na webu, který se pokoušíte navštívit. Phishingové weby se vydávají za jiné weby, aby vás oklamaly.<ph name="NEW_LINE"/>Někdy mohou útočníci číhat dokonce i na webech, které jsou běžně bezpečné. Pokud se domníváte, že došlo k chybě a že tento web nepředstavuje nebezpečí, <ph name="BEGIN_ERROR_LINK"/>dejte nám vědět<ph name="END_ERROR_LINK"/>.</translation>
 <translation id="7029809446516969842">Hesla</translation>
 <translation id="7030164307377592766">upravit nastavení vyplňování platebních metod</translation>
 <translation id="7030436163253143341">Certifikát není platný</translation>
 <translation id="7031646650991750659">Které aplikace Google Play máte nainstalované</translation>
 <translation id="7035705295266423040">Vaše banka chce ověřit, zda jste to skutečně vy</translation>
-<translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter můžete spravovat nastavení ochrany soukromí v účtu Brave</translation>
+<translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter můžete spravovat nastavení ochrany soukromí v účtu Ping</translation>
 <translation id="7043552168914147882">Záložkové médium</translation>
 <translation id="7044081119134178347">Použití kamery bylo pro tentokrát povoleno</translation>
 <translation id="7048095965575426564">European Fanfold</translation>
@@ -3052,7 +3052,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7111012039238467737">(platný)</translation>
 <translation id="7111507312244504964">Kontroly a oceňování nemovitostí</translation>
 <translation id="7112327784801341716">Pokud údaje nejsou aktuální, požádejte banku o aktualizaci.</translation>
-<translation id="6216296374360496373">Nemáte uložené žádné adresy. Přidejte adresy, abyste je mohli používat ve službách Brave.</translation>
+<translation id="6216296374360496373">Nemáte uložené žádné adresy. Přidejte adresy, abyste je mohli používat ve službách Ping.</translation>
 <translation id="7118618213916969306">Vyhledat adresu URL ve schránce, <ph name="SHORT_URL"/></translation>
 <translation id="7119063404975271297">Televizní dramata</translation>
 <translation id="7119371694555167493">Časový limit kopírování vypršel</translation>
@@ -3097,7 +3097,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7195852673246414183">Po zapnutí tohoto nastavení se vraťte na tuto kartu a začněte psát</translation>
 <translation id="7199278868241956094">Oficio</translation>
 <translation id="7201591969684833065">Administrátor má přístup k následujícím údajům:</translation>
-<translation id="2540471381262404386">Nastavit Brave jako výchozí prohlížeč</translation>
+<translation id="2540471381262404386">Nastavit Ping jako výchozí prohlížeč</translation>
 <translation id="7207736436284129083">{COUNT,plural, =0{Žádné}=1{1 přístupový klíč}few{# přístupové klíče}many{# přístupového klíče}other{# přístupových klíčů}}</translation>
 <translation id="7210863904660874423">Web <ph name="HOST_NAME"/> nevyhovuje bezpečnostním standardům.</translation>
 <translation id="7210993021468939304">Aktivita systému Linux v rámci kontejneru, může instalovat a spouštět aplikace Linux v kontejneru</translation>
@@ -3133,13 +3133,13 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7273111226200291353">Stahované soubory se odesílají k analýze do služby Google Cloud nebo třetím stranám. Může se u nich například kontrolovat přítomnost citlivých údajů nebo malwaru, mohou být uchovávány v souladu se zásadami společnosti a může k nim mít přístup váš administrátor.</translation>
 <translation id="7275334191706090484">Spravované záložky</translation>
 <translation id="7275808129217605899">Zdravá výživa</translation>
-<translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter změníte heslo účtu Brave</translation>
+<translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter změníte heslo účtu Ping</translation>
 <translation id="7292031607255951991">Jméno příjemce</translation>
 <translation id="7298195798382681320">Doporučeno</translation>
 <translation id="7299471494012161875">Připojená zobrazovací periferní zařízení</translation>
 <translation id="7300012071106347854">Sytě modrá</translation>
 <translation id="7304030187361489308">Vysoký</translation>
-<translation id="244157907932852817">Spravovat nastavení ochrany soukromí v účtu Brave</translation>
+<translation id="244157907932852817">Spravovat nastavení ochrany soukromí v účtu Ping</translation>
 <translation id="7305756307268530424">Začít pomaleji</translation>
 <translation id="7308436126008021607">synchronizace na pozadí</translation>
 <translation id="7310392214323165548">Zařízení se brzy restartuje</translation>
@@ -3160,7 +3160,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7352651011704765696">Něco se pokazilo</translation>
 <translation id="7353601530677266744">Příkazový řádek</translation>
 <translation id="7359588939039777303">Byly zablokovány reklamy.</translation>
-<translation id="7308957539693927108">Když Brave najde dostupné slevy, zobrazí se při placení</translation>
+<translation id="7308957539693927108">Když Ping najde dostupné slevy, zobrazí se při placení</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter můžete přidávat a spravovat adresy v nastavení Chromu</translation>
 <translation id="7365849542400970216">Zjišťovat využití vašeho zařízení?</translation>
 <translation id="736592699917579616">Jídlo</translation>
@@ -3170,7 +3170,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7372526636730851647">Fotografie (lesklá)</translation>
 <translation id="7372973238305370288">výsledek vyhledávání</translation>
 <translation id="7374461526650987610">Obslužné nástroje protokolů</translation>
-<translation id="3898257577441589237">K tomuto problému dochází kvůli certifikátu, který jste vy nebo někdo jiný nainstalovali do zařízení. O certifikátu je známo, že se používá ke sledování a zachytávání provozu v sítích, a Brave mu nedůvěřuje. Ačkoliv sledování v některých případech (například ve školní nebo firemní síti) může být legitimní a nemůžete mu zabránit, Brave se chce ujistit, že o něm víte. Ke sledování může docházet v kterémkoliv prohlížeči nebo aplikaci, které přistupují k webu.</translation>
+<translation id="3898257577441589237">K tomuto problému dochází kvůli certifikátu, který jste vy nebo někdo jiný nainstalovali do zařízení. O certifikátu je známo, že se používá ke sledování a zachytávání provozu v sítích, a Ping mu nedůvěřuje. Ačkoliv sledování v některých případech (například ve školní nebo firemní síti) může být legitimní a nemůžete mu zabránit, Ping se chce ujistit, že o něm víte. Ke sledování může docházet v kterémkoliv prohlížeči nebo aplikaci, které přistupují k webu.</translation>
 <translation id="7375532151824574023">{NUM_COOKIES,plural, =0{Nejsou povoleny žádné weby}=1{Je povolen 1 web}few{Jsou povoleny # weby}many{Je povoleno # webu}other{Je povoleno # webů}}</translation>
 <translation id="7375818412732305729">Připojení souboru</translation>
 <translation id="7377249249140280793"><ph name="RELATIVE_DATE"/> - <ph name="FULL_DATE"/></translation>
@@ -3198,7 +3198,7 @@ Kontaktujte administrátora systému.</translation>
       &lt;li&gt;V poli &lt;strong&gt;Typ spouštění&lt;/strong&gt; vyberte &lt;strong&gt;Zakázáno&lt;/strong&gt;.
       &lt;li&gt;Pod položkou &lt;strong&gt;Stav služby&lt;/strong&gt; klikněte na &lt;strong&gt;Zastavit&lt;/strong&gt;.
       &lt;li&gt;Klikněte na &lt;strong&gt;Použít&lt;/strong&gt; a poté na &lt;strong&gt;OK&lt;/strong&gt;.
-      &lt;li&gt;Informace o tom, jak tento software trvale odstranit z počítače, naleznete v &lt;a href="https://support.google.com/chrome/answer/6098869"&gt;centru nápovědy prohlížeče Brave&lt;/a&gt;.
+      &lt;li&gt;Informace o tom, jak tento software trvale odstranit z počítače, naleznete v &lt;a href="https://support.google.com/chrome/answer/6098869"&gt;centru nápovědy prohlížeče Ping&lt;/a&gt;.
       &lt;/ol&gt;</translation>
 <translation id="7408613996403626141">Hračky</translation>
 <translation id="741204030948306876">Ano</translation>
@@ -3215,9 +3215,9 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7425878584435172632">Vizuální umění a design</translation>
 <translation id="7427079287360774240">Jazykové studium v zahraničí</translation>
 <translation id="7429429656042611765">Executive</translation>
-<translation id="288933326661929857">Ověřte svou totožnost, aby prohlížeč Brave mohl vyplnit vaše platební údaje.</translation>
+<translation id="288933326661929857">Ověřte svou totožnost, aby prohlížeč Ping mohl vyplnit vaše platební údaje.</translation>
 <translation id="7437289804838430631">Přidat kontaktní údaje</translation>
-<translation id="6591887805206070045">Útočníci na webu, který se pokoušíte navštívit, vás mohou přimět k instalaci škodlivého softwaru, který ovlivní vaše prostředí při procházení – například vám změní domovskou stránku nebo vám na navštívených webech bude zobrazovat další reklamy. Brave vám důrazně doporučuje vrátit se do bezpečí, abyste předešli újmě. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="6591887805206070045">Útočníci na webu, který se pokoušíte navštívit, vás mohou přimět k instalaci škodlivého softwaru, který ovlivní vaše prostředí při procházení – například vám změní domovskou stránku nebo vám na navštívených webech bude zobrazovat další reklamy. Ping vám důrazně doporučuje vrátit se do bezpečí, abyste předešli újmě. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="7440140511386898319">Prozkoumávejte i offline</translation>
 <translation id="7441627299479586546">Chybný předmět zásady</translation>
 <translation id="7441864845853794192">Lahůdky a speciality</translation>
@@ -3264,7 +3264,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7518003948725431193">Na webové adrese <ph name="URL"/> se nepodařilo nalézt žádnou webovou stránku.</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7521825010239864438">Sekce <ph name="SECTION"/> je skryta</translation>
-<translation id="8552966873255887118">Můžete ji používat ve všech službách Brave</translation>
+<translation id="8552966873255887118">Můžete ji používat ve všech službách Ping</translation>
 <translation id="7523408071729642236">Výroba</translation>
 <translation id="7525067979554623046">Vytvořit</translation>
 <translation id="7525804896095537619">Název nesmí být prázdný.</translation>
@@ -3272,7 +3272,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7529884293139707752">Domácí studium</translation>
 <translation id="7534987659046836932">Obálka C7</translation>
 <translation id="7535087603100972091">Hodnota</translation>
-<translation id="796823723482603597">Používá technologii Brave</translation>
+<translation id="796823723482603597">Používá technologii Ping</translation>
 <translation id="7537536606612762813">Povinná</translation>
 <translation id="7542995811387359312">Automatické vyplňování údajů platební karty je deaktivováno, protože tento formulář nepoužívá zabezpečené připojení.</translation>
 <translation id="7543525346216957623">Požádej rodiče</translation>
@@ -3291,7 +3291,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7561784249784255101">Disk DVD</translation>
 <translation id="7564667064360547717">Trička a topy</translation>
 <translation id="7567204685887185387">Server nedokázal prokázat, že patří doméně <ph name="DOMAIN"/>. Jeho bezpečnostní certifikát byl zřejmě vydán podvodně. Může to být způsobeno nesprávnou konfigurací nebo tím, že vaše připojení zachytává útočník.</translation>
-<translation id="8661288256654172117">Brave se pokouší vyplnit vaše heslo na webu <ph name="APP_NAME"/>.</translation>
+<translation id="8661288256654172117">Ping se pokouší vyplnit vaše heslo na webu <ph name="APP_NAME"/>.</translation>
 <translation id="7569490014721427265">Golf</translation>
 <translation id="7569983096843329377">Černá</translation>
 <translation id="7574998639136359461">Vybavení pro zimní sporty</translation>
@@ -3300,7 +3300,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="405970181812690156">Plaťte na webech a v aplikacích v různých zařízeních rychle pomocí karet uložených na Googlu.</translation>
 <translation id="7579442726219254162">Neznámá proměnná <ph name="VARIABLE"/> ve spravované konfiguraci aplikace <ph name="APPLICATION_ID"/>.</translation>
 <translation id="7581199239021537589">Posun obrázku strany 2 na ose Y</translation>
-<translation id="4790068920551988473">Rychle vytvořit novou událost v Kalendáři Brave</translation>
+<translation id="4790068920551988473">Rychle vytvořit novou událost v Kalendáři Ping</translation>
 <translation id="7586676035079382730">Oznámení nejsou povolena</translation>
 <translation id="7588460771338574392">Přístupový klíč z telefonu <ph name="PHONE_NAME"/></translation>
 <translation id="7588707273764747927">Převod</translation>
@@ -3313,13 +3313,13 @@ Kontaktujte administrátora systému.</translation>
 <translation id="759889825892636187">Web <ph name="HOST_NAME"/> momentálně tento požadavek nemůže zpracovat.</translation>
 <translation id="7599089013883397081">Časový limit stahování vypršel</translation>
 <translation id="7600965453749440009">Jazyk <ph name="LANGUAGE"/> nikdy nepřekládat</translation>
-<translation id="8441931256884543961">K tomuto webu se obvykle připojujete zabezpečeně, ale tentokrát Brave zabezpečené připojení použít nemohl. Je možné, že se nějaký útočník pokouší sledovat nebo upravovat vaše připojení k síti. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="8441931256884543961">K tomuto webu se obvykle připojujete zabezpečeně, ale tentokrát Ping zabezpečené připojení použít nemohl. Je možné, že se nějaký útočník pokouší sledovat nebo upravovat vaše připojení k síti. <ph name="BEGIN_LEARN_MORE_LINK"/>Další informace<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="7605377493722372900">Útočníci na webu, který se pokoušíte navštívit, mohou nainstalovat škodlivý software, který vám odcizí nebo vymaže věci, jako jsou vaše heslo, fotografie, zprávy nebo číslo kreditní karty.</translation>
 <translation id="7608583484192556132">Personalizace reklam závisí na mnoha věcech, včetně tohoto nastavení, <ph name="BEGIN_LINK_1"/>reklam navrhovaných weby<ph name="END_LINK_1"/>, <ph name="BEGIN_LINK_2"/>nastavení souborů cookie<ph name="END_LINK_2"/> a toho, zda zobrazený web personalizuje reklamy. <ph name="BEGIN_LINK_3"/>Další informace o správě ochrany soukromí v reklamách<ph name="END_LINK_3"/></translation>
 <translation id="7610193165460212391">Hodnota <ph name="VALUE"/> je mimo rozsah.</translation>
 <translation id="7613889955535752492">Vypršení platnosti: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter můžete zobrazit a spravovat hesla v nastavení Chromu</translation>
-<translation id="8565825862287624454">Administrátor vám v prohlížeči zapnul konektory Brave Enterprise Connectors. Tyto konektory mají přístup k některým vašim datům.</translation>
+<translation id="8565825862287624454">Administrátor vám v prohlížeči zapnul konektory Ping Enterprise Connectors. Tyto konektory mají přístup k některým vašim datům.</translation>
 <translation id="7617825962482469577">Obálka C7/C6</translation>
 <translation id="7618270539713451657">Bojová umění</translation>
 <translation id="7619838219691048931">Koncový list</translation>
@@ -3333,11 +3333,11 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7631527008834753063">Televizní hry</translation>
 <translation id="7633909222644580952">Údaje o výkonu a přehledy selhání</translation>
 <translation id="7636346903338549690">Povolení používat soubory cookie třetích stran</translation>
-<translation id="6386821459680628976">Odstranit platební kartu z prohlížeče Brave?</translation>
+<translation id="6386821459680628976">Odstranit platební kartu z prohlížeče Ping?</translation>
 <translation id="7637586430889951925">{COUNT,plural, =0{Žádné}=1{V účtu máte 1 heslo (pro domény <ph name="DOMAIN_LIST"/>)}few{V účtu máte # hesla (pro domény <ph name="DOMAIN_LIST"/>)}many{V účtu máte # hesla (pro domény <ph name="DOMAIN_LIST"/>)}other{V účtu máte # hesel (pro domény <ph name="DOMAIN_LIST"/>)}}</translation>
 <translation id="7638605456503525968">Sériové porty</translation>
 <translation id="7639968568612851608">Tmavě šedá</translation>
-<translation id="8275603180424408640">Právě použité heslo bylo nalezeno na seznamu hesel uniklých při incidentu porušení zabezpečení údajů. Správce hesel Brave doporučuje ihned toto heslo změnit.</translation>
+<translation id="8275603180424408640">Právě použité heslo bylo nalezeno na seznamu hesel uniklých při incidentu porušení zabezpečení údajů. Správce hesel Ping doporučuje ihned toto heslo změnit.</translation>
 <translation id="7647206758853451655">Kvalita tisku</translation>
 <translation id="7648992873808071793">Ukládat soubory v tomto zařízení</translation>
 <translation id="7653957176542370971">List obslužného nástroje pro platby je zavřený</translation>
@@ -3392,7 +3392,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="772128550427553158">Kód CVC je uveden na přední straně karty.</translation>
 <translation id="7724603315864178912">Vyjmout</translation>
 <translation id="7730057435797792985">Řazení</translation>
-<translation id="1296098648902562076">Rychle vytvořit nový formulář ve Formulářích Brave</translation>
+<translation id="1296098648902562076">Rychle vytvořit nový formulář ve Formulářích Ping</translation>
 <translation id="773466115871691567">Stránky v jazyce <ph name="SOURCE_LANGUAGE"/> vždy překládat</translation>
 <translation id="7736959720849233795">Zkopírovat adresu odkazu</translation>
 <translation id="7740996059027112821">Standardně</translation>
@@ -3403,7 +3403,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7751019142333897329"><ph name="FIRST_STRING"/> <ph name="SECOND_STRING"/></translation>
 <translation id="921286857694606205">Upravit v Chromu velikosti a typy písem</translation>
 <translation id="7752995774971033316">Nespravováno</translation>
-<translation id="1771750053794015966">Po spuštění aktualizace se vaše karty a aplikace Brave zavřou</translation>
+<translation id="1771750053794015966">Po spuštění aktualizace se vaše karty a aplikace Ping zavřou</translation>
 <translation id="7755287808199759310">Rodič ti jej může odblokovat.</translation>
 <translation id="7755624218968747854">Hlavní role</translation>
 <translation id="7758069387465995638">Připojení mohlo být zablokováno firewallem nebo antivirovým softwarem.</translation>
@@ -3426,7 +3426,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7791543448312431591">Přidat</translation>
 <translation id="7798389633136518089">Ignorováno, protože tuto zásadu nenastavil cloudový zdroj.</translation>
 <translation id="7800304661137206267">Připojení je šifrováno pomocí standardu <ph name="CIPHER"/> s algoritmem <ph name="MAC"/> pro ověřování zpráv a mechanizmem výměny klíčů <ph name="KX"/>.</translation>
-<translation id="7022547472659133044">Brave zaznamenává témata, která vás podle vaší nedávné historie prohlížení zajímají. Navštívené weby také mohou určit, co se vám líbí. Později weby o tyto informace mohou požádat, aby vám mohly zobrazit personalizované reklamy. Můžete si vybrat, která témata a weby se budou používat k zobrazování reklam.</translation>
+<translation id="7022547472659133044">Ping zaznamenává témata, která vás podle vaší nedávné historie prohlížení zajímají. Navštívené weby také mohou určit, co se vám líbí. Později weby o tyto informace mohou požádat, aby vám mohly zobrazit personalizované reklamy. Můžete si vybrat, která témata a weby se budou používat k zobrazování reklam.</translation>
 <translation id="7802523362929240268">Web je důvěryhodný</translation>
 <translation id="7802989406998618639">Zadejte <ph name="NUMBER_OF_DIGITS"/>místný bezpečnostní kód na kartě <ph name="SIDE_OF_CARD"/>, aby banka mohla ověřit vaši totožnost</translation>
 <translation id="780301667611848630">Ne, děkuji</translation>
@@ -3448,12 +3448,12 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Žádné}=1{1 aplikace (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplikace (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}few{# aplikace (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}many{# aplikace (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{# aplikací (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="785476343534277563">Univerzitní sport</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
-<translation id="7162988054835087448">Později může navštívený web požádat Brave o sdělení témat, aby vám mohl přizpůsobit zobrazované reklamy. Brave sdílí až tři témata a chrání při tom vaši historii prohlížení a identitu.</translation>
+<translation id="7162988054835087448">Později může navštívený web požádat Ping o sdělení témat, aby vám mohl přizpůsobit zobrazované reklamy. Ping sdílí až tři témata a chrání při tom vaši historii prohlížení a identitu.</translation>
 <translation id="7860345425589240791">Zadejte nové datum konce platnosti a kód CVC na <ph name="SIDE_OF_CARD"/></translation>
 <translation id="7862185352068345852">Opustit web?</translation>
 <translation id="7865448901209910068">Nejlepší rychlost</translation>
 <translation id="7870281855125116701">Byla nalezena sleva</translation>
-<translation id="7971990257511863579">Změnit heslo účtu Brave</translation>
+<translation id="7971990257511863579">Změnit heslo účtu Ping</translation>
 <translation id="7877007680666472091">chráněná ID obsahu</translation>
 <translation id="7878562273885520351">Heslo může být prolomeno</translation>
 <translation id="7880146494886811634">Uložit adresu</translation>
@@ -3471,7 +3471,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="793209273132572360">Aktualizovat adresu?</translation>
 <translation id="7932579305932748336">Potah</translation>
 <translation id="79338296614623784">Zadejte platné telefonní číslo</translation>
-<translation id="8329449853370113380">Web <ph name="URL"/> chce přehrát chráněný obsah. Brave ověří identitu vašeho zařízení.</translation>
+<translation id="8329449853370113380">Web <ph name="URL"/> chce přehrát chráněný obsah. Ping ověří identitu vašeho zařízení.</translation>
 <translation id="7935318582918952113">DOM Distiller</translation>
 <translation id="7937163678541954811">Kód CVC této karty bude zašifrován a uložen do vašeho zařízení pro rychlejší placení</translation>
 <translation id="7937554595067888181">Platnost vyprší <ph name="EXPIRATION_DATE_ABBR"/></translation>
@@ -3508,7 +3508,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="7979595116210197019">Kulinářský průmysl</translation>
 <translation id="798134797138789862">Může žádat o použití zařízení a dat pro virtuální realitu</translation>
 <translation id="7983008347525536475">SUV</translation>
-<translation id="8896585555528145662">Web <ph name="SITE"/> teď nemůžete navštívit, protože webové stránky odeslaly zakódované identifikační údaje, které Brave nedokáže zpracovat. Síťové chyby a útoky jsou obvykle dočasné, tato stránka pravděpodobně později bude fungovat.</translation>
+<translation id="8896585555528145662">Web <ph name="SITE"/> teď nemůžete navštívit, protože webové stránky odeslaly zakódované identifikační údaje, které Ping nedokáže zpracovat. Síťové chyby a útoky jsou obvykle dočasné, tato stránka pravděpodobně později bude fungovat.</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Vazba</translation>
 <translation id="7992044431894087211">Sdílení obrazovky s aplikací <ph name="APPLICATION_TITLE"/> bylo obnoveno</translation>
@@ -3525,12 +3525,12 @@ Kontaktujte administrátora systému.</translation>
 <translation id="8012647001091218357">V tuto chvíli se nám s vašimi rodiči nepodařilo spojit. Zkuste to prosím znovu.</translation>
 <translation id="8019861005170389898"><ph name="TRADITIONAL_TEXT"/> (<ph name="ADDITIONAL_TEXT"/>)</translation>
 <translation id="8022542098135319050">Cestovní agentury a služby</translation>
-<translation id="1625114571336329891"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter nastavíte Brave jako výchozí prohlížeč</translation>
+<translation id="1625114571336329891"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter nastavíte Ping jako výchozí prohlížeč</translation>
 <translation id="8025119109950072390">Útočníci na tomto webu vás mohou podvodem přimět k nebezpečnému chování, jako je instalace softwaru nebo vyzrazení osobních údajů (například hesel, telefonních čísel nebo platebních karet).</translation>
 <translation id="8026334261755873520">Vymazat údaje o prohlížení</translation>
 <translation id="8027077570865220386">Přihrádka 15</translation>
 <translation id="7586767711133020907">Tlačítko Spustit bezpečnostní kontrolu Chromu, aktivací spustíte bezpečnostní kontrolu v nastavení Chromu</translation>
-<translation id="814401020562419411"><ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte nový formulář ve Formulářích Brave</translation>
+<translation id="814401020562419411"><ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte nový formulář ve Formulářích Ping</translation>
 <translation id="8028892419725165118">Nenáročné hry</translation>
 <translation id="8028960012888758725">Oříznout za úlohou</translation>
 <translation id="8030729864112325446">Odborné a celoživotní vzdělávání</translation>
@@ -3552,12 +3552,12 @@ Kontaktujte administrátora systému.</translation>
 <translation id="8061691770921837575">Kosmetika a makeup</translation>
 <translation id="8063875539456488183">Uložit a sledovat cenu</translation>
 <translation id="8066225060526005217">Spravováno v nastavení souborů cookie</translation>
-<translation id="5442778523450464826">Právě jste své heslo zadali na klamavém webu. Brave vám může pomoci. Chcete-li změnit heslo a oznámit Googlu, že váš účet může být ohrožen, klikněte na Ochránit účet.</translation>
+<translation id="5442778523450464826">Právě jste své heslo zadali na klamavém webu. Ping vám může pomoci. Chcete-li změnit heslo a oznámit Googlu, že váš účet může být ohrožen, klikněte na Ochránit účet.</translation>
 <translation id="8070439594494267500">Ikona aplikace</translation>
 <translation id="8070495475341517754">Prohlídky pamětihodností</translation>
 <translation id="8073647227500388356">Autonomní vozidla</translation>
 <translation id="8075588646978457437">Samolepicí papír</translation>
-<translation id="7738019368151747786">Rychle vytvořit novou Tabulku Brave</translation>
+<translation id="7738019368151747786">Rychle vytvořit novou Tabulku Ping</translation>
 <translation id="8075898834294118863">Spravovat nastavení webů</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="8077669823243888800">Obálka čínská č. 8</translation>
@@ -3603,7 +3603,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="8163866351304776260">Čtyři díry vlevo</translation>
 <translation id="8164078261547504572">Chcete dostat e‑maily, když ceny klesnou?</translation>
 <translation id="8169175551046720804">Klíče „<ph name="DATA_CONTROLS_KEYS"/>“ nemohou být nastaveny ve stejném slovníku</translation>
-<translation id="4351627595884993315">Brave vám nabízí uložení karet do účtu Brave, protože jste přihlášeni. Toto chování můžete změnit v Nastavení.</translation>
+<translation id="4351627595884993315">Ping vám nabízí uložení karet do účtu Ping, protože jste přihlášeni. Toto chování můžete změnit v Nastavení.</translation>
 <translation id="8176440868214972690">Administrátor tohoto zařízení odeslal určité informace (například nastavení nebo zásady) následujícím webům.</translation>
 <translation id="817820454357658398">Dámské hygienické potřeby</translation>
 <translation id="818254048113802060">{0,plural, =1{Soubor <ph name="FILE_NAME"/> byl kvůli obsahu zablokován}few{<ph name="FILE_COUNT"/> soubory byly kvůli obsahu zablokovány}many{<ph name="FILE_COUNT"/> souboru bylo kvůli obsahu zablokováno}other{<ph name="FILE_COUNT"/> souborů bylo kvůli obsahu zablokováno}}</translation>
@@ -3645,7 +3645,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="8246482227229072868">Kruhy</translation>
 <translation id="8249296373107784235">Zrušit</translation>
 <translation id="824968735947741546">Překlad z jazyka <ph name="SOURCE"/> (automaticky zjištěno) do jazyka <ph name="TARGET"/></translation>
-<translation id="8996951854370742934">Tato adresa je aktuálně uložena v tomto zařízení. Pokud ji chcete používat ve službách Brave, uložte ji do svého účtu Brave <ph name="ACCOUNT"/>.</translation>
+<translation id="8996951854370742934">Tato adresa je aktuálně uložena v tomto zařízení. Pokud ji chcete používat ve službách Ping, uložte ji do svého účtu Ping <ph name="ACCOUNT"/>.</translation>
 <translation id="8251493595871259082">Vyplňujte svou adresu s méně psaním</translation>
 <translation id="8252991034201168845">Tlačítko správy nastavení přístupnosti. Stisknutím klávesy Enter si v nastavení ChromeOS můžete přizpůsobit nástroje pro usnadnění přístupu</translation>
 <translation id="8253091569723639551">Fakturační adresa je povinná</translation>
@@ -3693,7 +3693,7 @@ Kontaktujte administrátora systému.</translation>
 <translation id="8316555157357957253">Právě používáno</translation>
 <translation id="8319269383395457801">Prodej rezidenčních nemovitostí</translation>
 <translation id="831997045666694187">Večer</translation>
-<translation id="8425450156395369987">Svůj vyhledávač můžete v nastavení prohlížeče Brave kdykoliv změnit.</translation>
+<translation id="8425450156395369987">Svůj vyhledávač můžete v nastavení prohlížeče Ping kdykoliv změnit.</translation>
 <translation id="8321476692217554900">oznámení</translation>
 <translation id="8322402665880479974">Rámy a čela postelí</translation>
 <translation id="832567874344484841">Snídaňové potraviny</translation>
@@ -3751,7 +3751,7 @@ Další podrobnosti:
 <translation id="8428634594422941299">Rozumím</translation>
 <translation id="5808418475906247813"><ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter můžete spravovat nastavení souborů cookie v nastavení Chromu</translation>
 <translation id="8433057134996913067">Budete odhlášeni z většiny webů.</translation>
-<translation id="4198850929558436563">Pokud příště chcete zaplatit rychleji, uložte si IBAN do účtu Brave</translation>
+<translation id="4198850929558436563">Pokud příště chcete zaplatit rychleji, uložte si IBAN do účtu Ping</translation>
 <translation id="8434840396568290395">Domácí mazlíčci</translation>
 <translation id="8436623588884785770">Přidat zásady</translation>
 <translation id="8437238597147034694">&amp;Vrátit přesunutí zpět</translation>
@@ -3775,14 +3775,14 @@ Další podrobnosti:
 <translation id="8474910779563686872">Zobrazit podrobnosti pro vývojáře</translation>
 <translation id="8479754468255770962">Sponka vlevo dole</translation>
 <translation id="8479926481822108747">spravovat ochranu před sledováním</translation>
-<translation id="8714154125294613524">Tato adresa bude smazána z vašeho účtu Brave (<ph name="ACCOUNT"/>)</translation>
+<translation id="8714154125294613524">Tato adresa bude smazána z vašeho účtu Ping (<ph name="ACCOUNT"/>)</translation>
 <translation id="8488350697529856933">Platí pro</translation>
 <translation id="8490137692873530638">Stohovač 10</translation>
 <translation id="8493948351860045254">Uvolnit místo</translation>
 <translation id="8498891568109133222">Odpověď webu <ph name="HOST_NAME"/> trvala příliš dlouho.</translation>
 <translation id="8502023382441452707">Narozeniny a jmeniny</translation>
 <translation id="443150778270806272">Pokud na tomto webu chcete používat prostředek <ph name="PERMISSION"/>, musíte Chromu udělit přístup</translation>
-<translation id="230699814587342492">Hesla Brave</translation>
+<translation id="230699814587342492">Hesla Ping</translation>
 <translation id="8503813439785031346">Uživatelské jméno</translation>
 <translation id="8504928302600319133">Počítačový hardware</translation>
 <translation id="8507227106804027148">Příkazový řádek</translation>
@@ -3794,7 +3794,7 @@ Další podrobnosti:
 <translation id="8521013008769249764">Pohovky a křesla</translation>
 <translation id="8521812709849134608">Pracovní desky</translation>
 <translation id="8522180136695974431">Úvěrové hodnocení</translation>
-<translation id="1426902392270366682">Brave vám může pomoci ochránit váš účet Brave a změnit heslo.</translation>
+<translation id="1426902392270366682">Ping vám může pomoci ochránit váš účet Ping a změnit heslo.</translation>
 <translation id="8527228059738193856">Reproduktory</translation>
 <translation id="8527681393107582734">Zemědělství a lesnictví</translation>
 <translation id="8528149813106025610">Dětské oděvy</translation>
@@ -3802,7 +3802,7 @@ Další podrobnosti:
 <translation id="853246364274116957">Muzikály a hudební divadla</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8533619373899488139">Na stránce &lt;strong&gt;chrome://policy&lt;/strong&gt; naleznete seznam blokovaných adres URL a další zásady vynucené vaším administrátorem systému.</translation>
-<translation id="5734033364988802986">Vypnuli jste oprávnění <ph name="PERMISSION"/> pro Brave.</translation>
+<translation id="5734033364988802986">Vypnuli jste oprávnění <ph name="PERMISSION"/> pro Ping.</translation>
 <translation id="8536234749087605613">Obálka (s okénkem)</translation>
 <translation id="8539500321752640291">Udělit dvě oprávnění?</translation>
 <translation id="8541158209346794904">Zařízení Bluetooth</translation>
@@ -3811,7 +3811,7 @@ Další podrobnosti:
 <translation id="8542014550340843547">Tři sponky dole</translation>
 <translation id="8542617028204211143">SRA0</translation>
 <translation id="8543181531796978784">Můžete <ph name="BEGIN_ERROR_LINK"/>nahlásit problém se zjištěným webem<ph name="END_ERROR_LINK"/>. Pokud bezpečnostní rizika chápete, můžete <ph name="BEGIN_LINK"/>tento nespolehlivý web navštívit<ph name="END_LINK"/>.</translation>
-<translation id="907470742420136113">Brave se pokouší upravit nastavení vyplňování platebních metod.</translation>
+<translation id="907470742420136113">Ping se pokouší upravit nastavení vyplňování platebních metod.</translation>
 <translation id="8544303911974837265">Polyester</translation>
 <translation id="854548366864113872">Možnost s vysokou cenou</translation>
 <translation id="8546254312340305428">Uveďte důvod nahrání (povinné)</translation>
@@ -3845,7 +3845,7 @@ Další podrobnosti:
 <translation id="5748651208190537252"><ph name="BEGIN_BOLD"/>Jaké údaje používáme:<ph name="END_BOLD"/> Vaši aktivitu na webu, který navštěvujete v Chromu na tomto zařízení.</translation>
 <translation id="8601456038554914806">Vybavení pro vodní sporty</translation>
 <translation id="8601782593888534566">Sci-fi a fantasy</translation>
-<translation id="5017966143250326204">Témata reklam pomáhají webům zobrazovat relevantní reklamy a zároveň chrání vaši historii prohlížení a identitu. Brave může zaznamenávat témata, která vás na základě vaší nedávné historie prohlížení zajímají. Později může navštívený web požádat Brave o sdělení relevantních témat, aby vám mohl přizpůsobit zobrazované reklamy.</translation>
+<translation id="5017966143250326204">Témata reklam pomáhají webům zobrazovat relevantní reklamy a zároveň chrání vaši historii prohlížení a identitu. Ping může zaznamenávat témata, která vás na základě vaší nedávné historie prohlížení zajímají. Později může navštívený web požádat Ping o sdělení relevantních témat, aby vám mohl přizpůsobit zobrazované reklamy.</translation>
 <translation id="8612919051706159390">Online komunity</translation>
 <translation id="8617269623452051934">využití vašeho zařízení</translation>
 <translation id="861775596732816396">Velikost 4</translation>
@@ -3897,11 +3897,11 @@ Další podrobnosti:
 <translation id="8730621377337864115">Hotovo</translation>
 <translation id="8731268612289859741">Bezpečnostní kód</translation>
 <translation id="8733345475331865475">Pojištění automobilů</translation>
-<translation id="2184048523283917559">Témata, která nechcete sdílet s weby, můžete zablokovat. Brave také automaticky maže témata starší než 4 týdny. Další informace</translation>
+<translation id="2184048523283917559">Témata, která nechcete sdílet s weby, můžete zablokovat. Ping také automaticky maže témata starší než 4 týdny. Další informace</translation>
 <translation id="8734529307927223492">Váš <ph name="DEVICE_TYPE"/> spravuje doména <ph name="MANAGER"/></translation>
 <translation id="8736059027199600831">30 × 40″</translation>
 <translation id="8737685506611670901">Otevírat odkazy <ph name="PROTOCOL"/> namísto aplikace <ph name="REPLACED_HANDLER_TITLE"/></translation>
-<translation id="6326805297893828864">Aby bylo možné navázat zabezpečené spojení, hodiny musejí být nastaveny správně. Důvodem je, že certifikáty, pomocí kterých se weby identifikují, platí pouze pro pevně daná období. Jelikož hodiny v zařízení nejsou nastaveny správně, prohlížeč Brave tyto certifikáty nemůže ověřit.</translation>
+<translation id="6326805297893828864">Aby bylo možné navázat zabezpečené spojení, hodiny musejí být nastaveny správně. Důvodem je, že certifikáty, pomocí kterých se weby identifikují, platí pouze pro pevně daná období. Jelikož hodiny v zařízení nejsou nastaveny správně, prohlížeč Ping tyto certifikáty nemůže ověřit.</translation>
 <translation id="8740359287975076522">&lt;abbr id="dnsDefinition"&gt;Adresu DNS&lt;/abbr&gt; webu <ph name="HOST_NAME"/> nelze najít. Diagnostikování problému…</translation>
 <translation id="8742371904523228557">Váš kód pro <ph name="ORIGIN"/> je <ph name="ONE_TIME_CODE"/></translation>
 <translation id="874918643257405732">Přidat tuto kartu do záložek</translation>
@@ -3913,23 +3913,23 @@ Další podrobnosti:
 <translation id="8757526089434340176">K dispozici je nabídka Google Pay</translation>
 <translation id="8759274551635299824">Platnost této karty vypršela</translation>
 <translation id="87601671197631245">Tento web používá zastaralou konfiguraci zabezpečení, která vaše informace odesílané na tento web (například hesla, zprávy nebo kreditní karty) vystavuje riziku odhalení.</translation>
-<translation id="8761567432415473239">Bezpečné prohlížení Brave na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>nalezlo škodlivé programy<ph name="END_LINK"/>.</translation>
+<translation id="8761567432415473239">Bezpečné prohlížení Ping na webu <ph name="SITE"/> nedávno <ph name="BEGIN_LINK"/>nalezlo škodlivé programy<ph name="END_LINK"/>.</translation>
 <translation id="8763927697961133303">Zařízení USB</translation>
 <translation id="8766943070169463815">List ověření identifikačních údajů pro zabezpečené platby je otevřený</translation>
 <translation id="8767765348545497220">Zavřít bublinu nápovědy</translation>
-<translation id="7113746389006214608">Tlačítko Vytvořit prezentaci, aktivací rychle vytvoříte novou prezentaci Brave v Prezentacích</translation>
+<translation id="7113746389006214608">Tlačítko Vytvořit prezentaci, aktivací rychle vytvoříte novou prezentaci Ping v Prezentacích</translation>
 <translation id="8770286973007342895">Sekačky na trávu</translation>
 <translation id="8772387130037509473">Jóga a pilates</translation>
 <translation id="877348612833018844">{0,plural, =1{Přesunout důvěrný soubor?}few{Přesunout důvěrné soubory?}many{Přesunout důvěrné soubory?}other{Přesunout důvěrné soubory?}}</translation>
 <translation id="8775347646940100151">Papír (hlavičkový)</translation>
 <translation id="877985182522063539">A4</translation>
-<translation id="514805123051954646">Tlačítko Přeložit stránku, aktivací tuto stránku přeložíte pomocí Překladače Brave</translation>
+<translation id="514805123051954646">Tlačítko Přeložit stránku, aktivací tuto stránku přeložíte pomocí Překladače Ping</translation>
 <translation id="8785658048882205566">Motorky</translation>
 <translation id="8790007591277257123">&amp;Opakovat smazání</translation>
 <translation id="8792272652220298572">Plast (lesklý)</translation>
 <translation id="5304100303568917877">Mohli byste ztratit přístup k účtu <ph name="ORG_NAME"/> nebo by mohlo dojít k odcizení vaší identity. Doporučujeme vám okamžitě změnit heslo.</translation>
 <translation id="8792626944327216835">mikrofon</translation>
-<translation id="9156291179464624174">Administrátor organizace <ph name="ENROLLMENT_DOMAIN"/> vám v prohlížeči zapnul konektory Brave Enterprise Connectors. Tyto konektory mají přístup k některým vašim datům.</translation>
+<translation id="9156291179464624174">Administrátor organizace <ph name="ENROLLMENT_DOMAIN"/> vám v prohlížeči zapnul konektory Ping Enterprise Connectors. Tyto konektory mají přístup k některým vašim datům.</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="8798739476508189189">Hledáte příznaky prohlížeče? Navštívit</translation>
 <translation id="8800034312320686233">Web nefunguje?</translation>
@@ -3941,7 +3941,7 @@ Další podrobnosti:
 <translation id="8811470563853401328">Uložit adresu do účtu?</translation>
 <translation id="8813277370772331957">Připomenout později</translation>
 <translation id="8814707942599948500">Obálka C8</translation>
-<translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter aktualizujete Brave v nastavení Chromu</translation>
+<translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter aktualizujete Ping v nastavení Chromu</translation>
 <translation id="882338992931677877">Ruční slot</translation>
 <translation id="8830320733681313421">Hagaki (pohlednice)</translation>
 <translation id="8833007469711500369">Pračky a sušičky</translation>
@@ -3982,7 +3982,7 @@ Další podrobnosti:
 <translation id="8903921497873541725">Přiblížit</translation>
 <translation id="890493561996401738">Tlačítko Odstranit návrh, odstranění provedete stisknutím klávesy Enter, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="8910898109640902752">2 × 10 palců</translation>
-<translation id="4805806622840861220">Znovu spustit Brave</translation>
+<translation id="4805806622840861220">Znovu spustit Ping</translation>
 <translation id="8918062451146297192">Kód CVC virtuální karty</translation>
 <translation id="8919740778133505789">Sportovní vozy</translation>
 <translation id="8919895429178014996">Skrýt všechny položky</translation>
@@ -4008,7 +4008,7 @@ Další podrobnosti:
 <translation id="8971063699422889582">Platnost certifikátu serveru vypršela.</translation>
 <translation id="8975012916872825179">Zahrnuje informace jako telefonní čísla, e-mailové adresy a dodací adresy</translation>
 <translation id="8975263830901772334">Názvy souborů, které tisknete</translation>
-<translation id="8978053250194585037">Služba Bezpečné prohlížení Brave nedávno na webu <ph name="SITE"/> <ph name="BEGIN_LINK"/>zjistila phishing<ph name="END_LINK"/>. Phishingové weby se vás snaží oklamat tím, že se vydávají za jiné weby.</translation>
+<translation id="8978053250194585037">Služba Bezpečné prohlížení Ping nedávno na webu <ph name="SITE"/> <ph name="BEGIN_LINK"/>zjistila phishing<ph name="END_LINK"/>. Phishingové weby se vás snaží oklamat tím, že se vydávají za jiné weby.</translation>
 <translation id="8982884016487650216">Načítání PDF bylo dokončeno</translation>
 <translation id="8983369100812962543">Nyní můžete upravovat velikost aplikace</translation>
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter zobrazíte historii prohlížení v Chromu</translation>
@@ -4027,7 +4027,7 @@ Další podrobnosti:
 <translation id="9004367719664099443">Probíhá relace VR</translation>
 <translation id="9005998258318286617">Načtení dokumentu PDF se nezdařilo.</translation>
 <translation id="9008201768610948239">Ignorovat</translation>
-<translation id="3490877224436695295">Navštívené weby mohou požádat Brave o informace, které jim pomohou měřit výkon reklam. Brave webům umožňuje shromažďovat omezené typy dat, například informace o tom, zda jste po návštěvě webu uskutečnili nákup.</translation>
+<translation id="3490877224436695295">Navštívené weby mohou požádat Ping o informace, které jim pomohou měřit výkon reklam. Ping webům umožňuje shromažďovat omezené typy dat, například informace o tom, zda jste po návštěvě webu uskutečnili nákup.</translation>
 <translation id="9018120810758822233">Zadejte bezpečnostní kód pro kartu <ph name="CREDIT_CARD"/></translation>
 <translation id="901834265349196618">e-mail</translation>
 <translation id="90196294733273307">Bylo zobrazeno dialogové okno s podrobnostmi o kreditní kartě</translation>
@@ -4054,7 +4054,7 @@ Další podrobnosti:
 <translation id="9050666287014529139">Heslová fráze</translation>
 <translation id="9051072642122229460">Kávovary</translation>
 <translation id="9051260467258969162">Pokud chcete získat pomoc s psaním, znovu se <ph name="BEGIN_LINK"/>přihlaste<ph name="END_LINK"/> a poté se vraťte na tuto kartu</translation>
-<translation id="104719866786855422">Spouštíme novou funkci ochrany soukromí v reklamách nazvanou „měření reklam“. Brave mezi weby sdílí jen velmi omezené informace – například kdy se vám zobrazila reklama, aby weby mohly měřit výkon reklam.</translation>
+<translation id="104719866786855422">Spouštíme novou funkci ochrany soukromí v reklamách nazvanou „měření reklam“. Ping mezi weby sdílí jen velmi omezené informace – například kdy se vám zobrazila reklama, aby weby mohly měřit výkon reklam.</translation>
 <translation id="9056953843249698117">Obchod</translation>
 <translation id="9062620674789239642">Soubor mohl být přesunut, upraven nebo smazán.</translation>
 <translation id="9063398205799684336">Obálka Kaku 2</translation>
@@ -4076,13 +4076,13 @@ Další podrobnosti:
 <translation id="9093723786115107672">Noční prádlo</translation>
 <translation id="9094544726794842788">Palec dolů otevře formulář k odeslání podrobné zpětné vazby o tom, proč se vám tyto výsledky nelíbí</translation>
 <translation id="9095388113577226029">Další jazyky...</translation>
-<translation id="7650489975492745604"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>: stisknutím klávesy Tab a pak Enter nastavíte Brave jako výchozí prohlížeč v nastavení iOS</translation>
+<translation id="7650489975492745604"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>: stisknutím klávesy Tab a pak Enter nastavíte Ping jako výchozí prohlížeč v nastavení iOS</translation>
 <translation id="9101630580131696064">Přihrádka 1</translation>
-<translation id="6373940988468425649">Web <ph name="SITE"/> vaše informace běžně chrání šifrováním. Když se prohlížeč Brave k webu <ph name="SITE"/> pokusil připojit tentokrát, web vrátil neobvyklé a nesprávné identifikační údaje. K tomuto problému může dojít, pokud se za web <ph name="SITE"/> pokouší vydávat nějaký útočník nebo pokud bylo připojení přerušeno přihlašovací obrazovkou sítě Wi-Fi. Vaše informace jsou i nadále v bezpečí, protože prohlížeč Brave připojení přerušil dříve, než došlo k odeslání jakýchkoliv dat.</translation>
+<translation id="6373940988468425649">Web <ph name="SITE"/> vaše informace běžně chrání šifrováním. Když se prohlížeč Ping k webu <ph name="SITE"/> pokusil připojit tentokrát, web vrátil neobvyklé a nesprávné identifikační údaje. K tomuto problému může dojít, pokud se za web <ph name="SITE"/> pokouší vydávat nějaký útočník nebo pokud bylo připojení přerušeno přihlašovací obrazovkou sítě Wi-Fi. Vaše informace jsou i nadále v bezpečí, protože prohlížeč Ping připojení přerušil dříve, než došlo k odeslání jakýchkoliv dat.</translation>
 <translation id="9107467864910557787">Prohlížeč je spravován doménou <ph name="MANAGER"/></translation>
 <translation id="91108059142052966">Zásada administrátora zakazuje sdílení obrazovky s aplikací <ph name="APPLICATION_TITLE"/>, když je viditelný důvěrný obsah</translation>
 <translation id="9114524666733003316">Ověřování karty...</translation>
-<translation id="3582535072753734287">Tento prohlížeč není spravován administrátorem ani jinou organizací. Aktivita na tomto zařízení může být spravována mimo Brave. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
+<translation id="3582535072753734287">Tento prohlížeč není spravován administrátorem ani jinou organizací. Aktivita na tomto zařízení může být spravována mimo Ping. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="7839260860373627374">Další informace o reklamách v Chromu</translation>
 <translation id="2628864952962474930"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím tabulátoru a poté klávesy Enter obnovíte svou cestu a zobrazíte příslušnou aktivitu v historii Chromu</translation>
 <translation id="9119042192571987207">Nahráno</translation>
@@ -4101,7 +4101,7 @@ Další podrobnosti:
 <translation id="9148507642005240123">&amp;Vrátit úpravy zpět</translation>
 <translation id="9148599396704355100">Cena je nízká</translation>
 <translation id="9150025764986957246">Můžete zadat věci jako:</translation>
-<translation id="5874192512642998555">Administrátor může nastavení prohlížeče vzdáleně změnit. Aktivita na tomto zařízení může být spravována také mimo Brave. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
+<translation id="5874192512642998555">Administrátor může nastavení prohlížeče vzdáleně změnit. Aktivita na tomto zařízení může být spravována také mimo Ping. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="9154194610265714752">Aktualizováno</translation>
 <translation id="9155211586651734179">Jsou připojeny zvukové periferie</translation>
 <translation id="9155646082713385498">Časopisy</translation>
@@ -4120,13 +4120,13 @@ Další podrobnosti:
 <translation id="9173995187295789444">Vyhledávání zařízení Bluetooth...</translation>
 <translation id="917450738466192189">Certifikát serveru je neplatný.</translation>
 <translation id="9174917557437862841">Tlačítko přepínání karet. Stisknutím klávesy Enter přejdete na tuto kartu</translation>
-<translation id="9177283544810807743">Tento soubor PDF není přístupný. Extrahování textu pomocí technologie Brave AI</translation>
+<translation id="9177283544810807743">Tento soubor PDF není přístupný. Extrahování textu pomocí technologie Ping AI</translation>
 <translation id="5129795253416930127">Spravujte své platební údaje a informace o platebních kartách v nastavení Chromu</translation>
 <translation id="9179907736442194268">Pokud cena na některém webu klesne, odeslat e-mailové upozornění</translation>
-<translation id="9183302530794969518">Dokumenty Brave</translation>
+<translation id="9183302530794969518">Dokumenty Ping</translation>
 <translation id="9183425211371246419">Web <ph name="HOST_NAME"/> používá nepodporovaný protokol.</translation>
 <translation id="918454845714257218">Zkontrolujte kód (<ph name="SIDE_OF_CARD"/>) a zkuste to znovu</translation>
-<translation id="7202091195027070644">Tlačítko nastavení Chromu jako výchozího prohlížeče, aktivací nastavíte Brave jako výchozí prohlížeč v nastavení systému</translation>
+<translation id="7202091195027070644">Tlačítko nastavení Chromu jako výchozího prohlížeče, aktivací nastavíte Ping jako výchozí prohlížeč v nastavení systému</translation>
 <translation id="9190557999028587593">Témata starší než 4 týdny se automaticky mažou</translation>
 <translation id="9191834167571392248">Děrování vlevo dole</translation>
 <translation id="9192361865877479444">Kov (matný)</translation>
@@ -4141,26 +4141,26 @@ Další podrobnosti:
 <translation id="92178312226016010">Tento produkt sledujete.</translation>
 <translation id="9218430445555521422">Nastavit jako výchozí</translation>
 <translation id="9219103736887031265">Obrázky</translation>
-<translation id="142389341645668510">Přizpůsobit Brave</translation>
+<translation id="142389341645668510">Přizpůsobit Ping</translation>
 <translation id="9222403027701923763">Mateřské, základní a střední školy</translation>
 <translation id="93020190163435405">Praxe</translation>
 <translation id="933712198907837967">Diners Club</translation>
 <translation id="934634059306213385">Povolit aplikaci <ph name="APP_NAME"/> nastavovat sítě Wi-Fi?</translation>
-<translation id="7486559383537872796">Mohli byste ztratit přístup k účtu Brave. Brave doporučuje okamžitě změnit heslo. Budete vyzváni k přihlášení.</translation>
+<translation id="7486559383537872796">Mohli byste ztratit přístup k účtu Ping. Ping doporučuje okamžitě změnit heslo. Budete vyzváni k přihlášení.</translation>
 <translation id="1818627928653838301"><ph name="BEGIN_BOLD"/>Jaké údaje používáme:<ph name="END_BOLD"/> Témata reklam vycházejí z historie prohlížení, což je seznam webů, které jste navštívili v Chromu na tomto zařízení.</translation>
 <translation id="937885410143139026">Data byla odeslána do administrátorské konzole</translation>
 <translation id="939736085109172342">Nová složka</translation>
-<translation id="6588091288231158998">Používat hesla a přístupové klíče uložené v účtu Brave</translation>
-<translation id="5444457503062019851">Brave brání webům v používání souborů cookie třetích stran ke sledování vašeho procházení.</translation>
+<translation id="6588091288231158998">Používat hesla a přístupové klíče uložené v účtu Ping</translation>
+<translation id="5444457503062019851">Ping brání webům v používání souborů cookie třetích stran ke sledování vašeho procházení.</translation>
 <translation id="945855313015696284">Zkontrolujte níže uvedené informace a vymažte neplatné karty</translation>
-<translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte nový web ve Webech Brave</translation>
-<translation id="7776043919629791284">{COUNT,plural, =0{Brave dnes soubory cookie opět omezí}=1{Brave zítra soubory cookie opět omezí}few{Za # dny Brave soubory cookie opět omezí}many{Za # dne Brave soubory cookie opět omezí}other{Za # dní Brave soubory cookie opět omezí}}</translation>
+<translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, stisknutím klávesy Tab a poté Enter rychle vytvoříte nový web ve Webech Ping</translation>
+<translation id="7776043919629791284">{COUNT,plural, =0{Ping dnes soubory cookie opět omezí}=1{Ping zítra soubory cookie opět omezí}few{Za # dny Ping soubory cookie opět omezí}many{Za # dne Ping soubory cookie opět omezí}other{Za # dní Ping soubory cookie opět omezí}}</translation>
 <translation id="949314938206378263">Chceš navštívit web, ale je třeba povolení. Rodič může odpovědět v aplikaci Family Link.</translation>
 <translation id="950736567201356821">Tři díry nahoře</translation>
 <translation id="961663415146723894">Vazba dole</translation>
 <translation id="961930410699694996">Přístup k poloze byl pro tentokrát povolen</translation>
 <translation id="962484866189421427">Tento obsah by se mohl pokusit instalovat klamavé aplikace, které se vydávají za něco jiného nebo shromažďují data ke sledování vaší aktivity. <ph name="BEGIN_LINK"/>Přesto zobrazit<ph name="END_LINK"/></translation>
-<translation id="776356972507701422">V souladu s právními předpisy ve vaší oblasti vás Brave žádá, abyste si vybrali výchozí vyhledávač. Tyto vyhledávače jsou ve vašem regionu oblíbené a zobrazují se v náhodném pořadí.</translation>
+<translation id="776356972507701422">V souladu s právními předpisy ve vaší oblasti vás Ping žádá, abyste si vybrali výchozí vyhledávač. Tyto vyhledávače jsou ve vašem regionu oblíbené a zobrazují se v náhodném pořadí.</translation>
 <translation id="963837307749850257">Všichni uživatelé</translation>
 <translation id="964050462028070434">Spravovat hesla a přístupové klíče…</translation>
 <translation id="969892804517981540">Oficiální sestavení</translation>
@@ -4202,9 +4202,9 @@ Další podrobnosti:
 <translation id="6417973700199526943">Přešli jste do soukromého režimu</translation>
 <translation id="375424491626359494">Stránky zobrazené na soukromých kartách nezůstanou po zavření všech soukromých karet v historii prohlížeče, v úložišti souborů cookie ani v historii vyhledávání. Všechny stažené soubory nebo vytvořené záložky zůstanou zachovány.</translation>
 <translation id="8794378783472961468">Nejste však neviditelní. Soukromý režim neskryje vaše prohlížení před vaším zaměstnavatelem, poskytovatelem internetových služeb ani navštívenými webovými stránkami.</translation>
-<translation id="6085043210649933880">Soukromí v Brave</translation>
+<translation id="6085043210649933880">Soukromí v Ping</translation>
 <translation id="3683567996395248272">Jak funguje soukromý režim</translation>
-<translation id="5581758310848298360">Po zavření všech soukromých karet Brave se z tohoto zařízení odebere veškerá vaše aktivita v těchto kartách:
+<translation id="5581758310848298360">Po zavření všech soukromých karet Ping se z tohoto zařízení odebere veškerá vaše aktivita v těchto kartách:
           <ph name="BEGIN_LIST"/>
             <ph name="LIST_ITEM"/>Aktivita při prohlížení<ph name="END_LIST_ITEM"/>
             <ph name="LIST_ITEM"/>Historie vyhledávání<ph name="END_LIST_ITEM"/>
@@ -4217,7 +4217,7 @@ Další podrobnosti:
           <ph name="LIST_ITEM"/>Zaměstnavatelé nebo školy mohou sledovat aktivitu při prohlížení stránek<ph name="END_LIST_ITEM"/>
           <ph name="LIST_ITEM"/>Poskytovatelé internetových služeb mohou monitorovat provoz na síti<ph name="END_LIST_ITEM"/>
         <ph name="END_LIST"/></translation>
-<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Více informací o soukromí v Brave<ph name="END_LINK"/></translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Více informací o soukromí v Ping<ph name="END_LINK"/></translation>
 <translation id="9153679102508470540">Blokovat soubory cookie třetích stran v Soukromém režimu</translation>
 <translation id="5549245478906381817">Otevřít soukromé okno</translation>
 <translation id="5497977785983089120">Otevřít nové Soukromé okno a prohlížet anonymně</translation>
