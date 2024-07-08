@@ -36,10 +36,11 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
 
   // Assert
   EXPECT_THAT(conversion,
-              ::testing::FieldsAre(AdType::kNotificationAd, kCreativeInstanceId,
-                                   kCreativeSetId, kCampaignId, kAdvertiserId,
-                                   kSegment, ConversionActionType::kViewThrough,
-                                   /*verifable*/ std::nullopt));
+              ::testing::FieldsAre(
+                  AdType::kNotificationAd, test::kCreativeInstanceId,
+                  test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
+                  test::kSegment, ConversionActionType::kViewThrough,
+                  /*verifable*/ std::nullopt));
 }
 
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
@@ -52,18 +53,19 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
 
   // Act
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
-      VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
+      ad_event, VerifiableConversionInfo{
+                    test::kVerifiableConversionId,
+                    test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Assert
-  EXPECT_THAT(conversion, ::testing::FieldsAre(
-                              AdType::kNotificationAd, kCreativeInstanceId,
-                              kCreativeSetId, kCampaignId, kAdvertiserId,
-                              kSegment, ConversionActionType::kViewThrough,
-                              VerifiableConversionInfo{
-                                  kVerifiableConversionId,
-                                  kVerifiableConversionAdvertiserPublicKey}));
+  EXPECT_THAT(conversion,
+              ::testing::FieldsAre(
+                  AdType::kNotificationAd, test::kCreativeInstanceId,
+                  test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
+                  test::kSegment, ConversionActionType::kViewThrough,
+                  VerifiableConversionInfo{
+                      test::kVerifiableConversionId,
+                      test::kVerifiableConversionAdvertiserPublicKeyBase64}));
 }
 
 }  // namespace brave_ads

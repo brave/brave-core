@@ -40,7 +40,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
       {{"should_exclude_ad_if_dismissed_within_time_window", "0h"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
@@ -59,7 +59,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
 TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const NotificationAdDismissedExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -77,7 +77,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -111,7 +111,7 @@ TEST_F(
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   AdEventList ad_events;
@@ -155,7 +155,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -187,7 +187,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -222,7 +222,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -254,7 +254,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -289,7 +289,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -324,7 +324,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -357,7 +357,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "0s"}});
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_instance_id = kCreativeInstanceId;
+  creative_ad.creative_instance_id = test::kCreativeInstanceId;
   creative_ad.campaign_id = kCampaignIds[0];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -389,11 +389,11 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
       {{"should_exclude_ad_if_dismissed_within_time_window", "2d"}});
 
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.creative_instance_id = kCreativeInstanceId;
+  creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
   creative_ad_1.campaign_id = kCampaignIds[0];
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.creative_instance_id = kCreativeInstanceId;
+  creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   const std::vector<ConfirmationType> confirmation_types = {
@@ -420,11 +420,11 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
        ShouldIncludeWithDifferentCampaignIdAfter2Days) {
   // Arrange
   CreativeAdInfo creative_ad_1;
-  creative_ad_1.creative_instance_id = kCreativeInstanceId;
+  creative_ad_1.creative_instance_id = test::kCreativeInstanceId;
   creative_ad_1.campaign_id = kCampaignIds[0];
 
   CreativeAdInfo creative_ad_2;
-  creative_ad_2.creative_instance_id = kCreativeInstanceId;
+  creative_ad_2.creative_instance_id = test::kCreativeInstanceId;
   creative_ad_2.campaign_id = kCampaignIds[1];
 
   const std::vector<ConfirmationType> confirmation_types = {

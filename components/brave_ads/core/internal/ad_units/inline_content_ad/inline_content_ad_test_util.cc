@@ -14,7 +14,7 @@ namespace brave_ads::test {
 InlineContentAdInfo BuildInlineContentAd(
     const bool should_generate_random_uuids) {
   const CreativeInlineContentAdInfo creative_ad =
-      test::BuildCreativeInlineContentAd(should_generate_random_uuids);
+      BuildCreativeInlineContentAd(should_generate_random_uuids);
   return BuildInlineContentAd(creative_ad);
 }
 

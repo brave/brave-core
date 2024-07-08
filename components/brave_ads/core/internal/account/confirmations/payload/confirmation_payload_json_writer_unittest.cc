@@ -30,7 +30,7 @@ class BraveAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
     AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }

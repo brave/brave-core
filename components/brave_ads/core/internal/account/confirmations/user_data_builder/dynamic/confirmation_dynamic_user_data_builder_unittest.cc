@@ -20,7 +20,7 @@ class BraveAdsConfirmationDynamicUserDataBuilderTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
     AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
   }

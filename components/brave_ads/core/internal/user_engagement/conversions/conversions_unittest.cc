@@ -786,8 +786,8 @@ TEST_F(BraveAdsConversionsTest,
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableAdvertiserPublicKeyIsEmpty) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -795,7 +795,7 @@ TEST_F(BraveAdsConversionsTest,
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kEmptyVerifiableConversionAdvertiserPublicKey);
+      /*verifiable_advertiser_public_key_base64=*/"");
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -816,8 +816,8 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfResourceIdPatternDoesNotMatchRedirectChain) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -826,7 +826,7 @@ TEST_F(
       ad.creative_set_id,
       /*url_pattern=*/"https://www.baz.com/*",
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -849,8 +849,8 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableUrlConversionIdDoesNotExist) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -858,7 +858,7 @@ TEST_F(BraveAdsConversionsTest,
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -877,8 +877,8 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -886,7 +886,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -895,8 +895,9 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now()),
-      VerifiableConversionInfo{/*id=*/"xyzzy",
-                               kVerifiableConversionAdvertiserPublicKey});
+      VerifiableConversionInfo{
+          /*id=*/"xyzzy",
+          test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act & Assert
   EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
@@ -907,8 +908,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableUrlConversionIdExists) {
 TEST_F(BraveAdsConversionsTest,
        FallbackToDefaultConversionIfVerifiableHtmlConversionIdDoesNotExist) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -916,7 +917,7 @@ TEST_F(BraveAdsConversionsTest,
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -935,8 +936,8 @@ TEST_F(BraveAdsConversionsTest,
 
 TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -944,7 +945,7 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -953,8 +954,9 @@ TEST_F(BraveAdsConversionsTest, ConvertAdIfVerifiableHtmlConversionIdExists) {
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now()),
-      VerifiableConversionInfo{/*id=*/"waldo",
-                               kVerifiableConversionAdvertiserPublicKey});
+      VerifiableConversionInfo{
+          /*id=*/"waldo",
+          test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act & Assert
   EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));
@@ -967,8 +969,8 @@ TEST_F(
     BraveAdsConversionsTest,
     FallbackToDefaultConversionIfVerifiableHtmlMetaTagConversionIdDoesNotExist) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -976,7 +978,7 @@ TEST_F(
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kAnotherMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -996,8 +998,8 @@ TEST_F(
 TEST_F(BraveAdsConversionsTest,
        ConvertAdIfVerifiableHtmlMetaTagConversionIdExists) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
@@ -1005,7 +1007,7 @@ TEST_F(BraveAdsConversionsTest,
   test::BuildAndSaveVerifiableCreativeSetConversion(
       ad.creative_set_id, kAnotherMatchingUrlPattern,
       /*observation_window=*/base::Days(3),
-      kVerifiableConversionAdvertiserPublicKey);
+      test::kVerifiableConversionAdvertiserPublicKeyBase64);
 
   RecordAdEventsAdvancingTheClockAfterEach(
       ad, {ConfirmationType::kServedImpression,
@@ -1014,8 +1016,8 @@ TEST_F(BraveAdsConversionsTest,
   const ConversionInfo conversion = BuildConversion(
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now()),
-      VerifiableConversionInfo{/*id=*/"fred",
-                               kVerifiableConversionAdvertiserPublicKey});
+      VerifiableConversionInfo{
+          /*id=*/"fred", test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act & Assert
   EXPECT_CALL(conversions_observer_mock_, OnDidConvertAd(conversion));

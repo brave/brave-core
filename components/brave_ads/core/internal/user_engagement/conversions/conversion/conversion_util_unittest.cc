@@ -24,8 +24,9 @@ TEST(BraveAdsConversionInfoUtilTest, ConversionTypeToString) {
 TEST(BraveAdsConversionInfoUtilTest, VerifiableConversionTypeToString) {
   // Arrange
   ConversionInfo conversion;
-  conversion.verifiable = {kVerifiableConversionId,
-                           kVerifiableConversionAdvertiserPublicKey};
+  conversion.verifiable = {
+      test::kVerifiableConversionId,
+      test::kVerifiableConversionAdvertiserPublicKeyBase64};
 
   // Act & Assert
   EXPECT_EQ("verifiable conversion", ConversionTypeToString(conversion));

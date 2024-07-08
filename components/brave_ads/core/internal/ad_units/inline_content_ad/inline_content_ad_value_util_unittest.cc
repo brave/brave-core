@@ -51,7 +51,7 @@ TEST_F(BraveAdsInlineContentAdValueUtilTest, FromValue) {
   const CreativeInlineContentAdInfo creative_ad =
       test::BuildCreativeInlineContentAd(
           /*should_generate_random_uuids=*/false);
-  EXPECT_EQ(BuildInlineContentAd(creative_ad, kPlacementId), ad);
+  EXPECT_EQ(BuildInlineContentAd(creative_ad, test::kPlacementId), ad);
 }
 
 TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {
@@ -60,7 +60,7 @@ TEST_F(BraveAdsInlineContentAdValueUtilTest, ToValue) {
       test::BuildCreativeInlineContentAd(
           /*should_generate_random_uuids=*/false);
   const InlineContentAdInfo ad =
-      BuildInlineContentAd(creative_ad, kPlacementId);
+      BuildInlineContentAd(creative_ad, test::kPlacementId);
 
   // Act
   const base::Value::Dict dict = InlineContentAdToValue(ad);

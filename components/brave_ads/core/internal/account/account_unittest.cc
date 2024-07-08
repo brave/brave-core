@@ -44,7 +44,7 @@ class BraveAdsAccountTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ads_observer_mock_ = AddAdsObserverMock();
+    ads_observer_mock_ = test::AddAdsObserverMock();
 
     account_ = std::make_unique<Account>(&token_generator_mock_);
     account_->AddObserver(&account_observer_mock_);
@@ -66,7 +66,7 @@ class BraveAdsAccountTest : public UnitTestBase {
 
 TEST_F(BraveAdsAccountTest, SupportUserRewardsForRewardsUser) {
   // Arrange
-  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
+  account_->SetWallet(test::kWalletPaymentId, test::kWalletRecoverySeedBase64);
 
   NotifyDidInitializeAds();
 
@@ -88,28 +88,28 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet).Times(0);
-  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
+  account_->SetWallet(test::kWalletPaymentId, test::kWalletRecoverySeedBase64);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyPaymentId) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  account_->SetWallet(/*payment_id=*/{}, kWalletRecoverySeed);
+  account_->SetWallet(/*payment_id=*/"", test::kWalletRecoverySeedBase64);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithInvalidRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
+  account_->SetWallet(test::kWalletPaymentId, test::kInvalidWalletRecoverySeed);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  account_->SetWallet(kWalletPaymentId, /*recovery_seed=*/"");
+  account_->SetWallet(test::kWalletPaymentId, /*recovery_seed_base64=*/"");
 }
 
 TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {
@@ -204,11 +204,11 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -220,7 +220,8 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
+  account_->Deposit(test::kCreativeInstanceId, test::kSegment,
+                    AdType::kNotificationAd,
                     ConfirmationType::kViewedImpression);
 }
 
@@ -233,11 +234,11 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -249,7 +250,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-  account_->DepositWithUserData(kCreativeInstanceId, kSegment,
+  account_->DepositWithUserData(test::kCreativeInstanceId, test::kSegment,
                                 AdType::kNotificationAd,
                                 ConfirmationType::kViewedImpression,
                                 /*user_data=*/{});
@@ -265,8 +266,8 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
-                    ConfirmationType::kClicked);
+  account_->Deposit(test::kCreativeInstanceId, test::kSegment,
+                    AdType::kNotificationAd, ConfirmationType::kClicked);
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
@@ -279,7 +280,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-  account_->DepositWithUserData(kCreativeInstanceId, kSegment,
+  account_->DepositWithUserData(test::kCreativeInstanceId, test::kSegment,
                                 AdType::kNotificationAd,
                                 ConfirmationType::kClicked, /*user_data=*/{});
 }
@@ -296,7 +297,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
-  account_->Deposit(kMissingCreativeInstanceId, kSegment,
+  account_->Deposit(test::kMissingCreativeInstanceId, test::kSegment,
                     AdType::kNotificationAd,
                     ConfirmationType::kViewedImpression);
 }
@@ -314,7 +315,8 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
-  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
+  account_->Deposit(test::kCreativeInstanceId, test::kSegment,
+                    AdType::kNotificationAd,
                     ConfirmationType::kViewedImpression);
 
   // Assert
@@ -339,8 +341,8 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
-  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
-                    ConfirmationType::kClicked);
+  account_->Deposit(test::kCreativeInstanceId, test::kSegment,
+                    AdType::kNotificationAd, ConfirmationType::kClicked);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;
@@ -365,7 +367,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
-  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
+  account_->Deposit(test::kCreativeInstanceId, test::kSegment,
+                    AdType::kNotificationAd,
                     ConfirmationType::kViewedImpression);
 
   // Assert
@@ -391,8 +394,8 @@ TEST_F(BraveAdsAccountTest,
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
-  account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
-                    ConfirmationType::kClicked);
+  account_->Deposit(test::kCreativeInstanceId, test::kSegment,
+                    AdType::kNotificationAd, ConfirmationType::kClicked);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;

@@ -36,12 +36,13 @@ TEST_F(BraveAdsCategoryContentValueUtilTest, FromValue) {
   const CategoryContentInfo category_content = CategoryContentFromValue(dict);
 
   // Assert
-  EXPECT_EQ(BuildCategoryContent(kSegment), category_content);
+  EXPECT_EQ(BuildCategoryContent(test::kSegment), category_content);
 }
 
 TEST_F(BraveAdsCategoryContentValueUtilTest, ToValue) {
   // Arrange
-  const CategoryContentInfo category_content = BuildCategoryContent(kSegment);
+  const CategoryContentInfo category_content =
+      BuildCategoryContent(test::kSegment);
 
   // Act
   const base::Value::Dict dict = CategoryContentToValue(category_content);

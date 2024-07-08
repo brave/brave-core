@@ -60,7 +60,7 @@ mojom::CreativeSearchResultAdInfoPtr BuildCreativeSearchResultAdWithConversion(
       kConversionUrlPattern;
   mojom_creative_ad->creative_set_conversion
       ->verifiable_advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
+      kVerifiableConversionAdvertiserPublicKeyBase64;
   mojom_creative_ad->creative_set_conversion->observation_window =
       kConversionObservationWindow;
 

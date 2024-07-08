@@ -117,10 +117,11 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFireNotificationAdEvent(
-                  kMissingPlacementId,
+                  test::kMissingPlacementId,
                   mojom::NotificationAdEventType::kViewedImpression));
   FireEventAndVerifyExpectations(
-      kMissingPlacementId, mojom::NotificationAdEventType::kViewedImpression,
+      test::kMissingPlacementId,
+      mojom::NotificationAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 }
 

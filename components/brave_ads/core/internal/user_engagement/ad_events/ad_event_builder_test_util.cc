@@ -23,7 +23,7 @@ AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
   ad_event.type = ad_type;
   ad_event.confirmation_type = confirmation_type;
   ad_event.placement_id =
-      test::RandomUuidOr(should_generate_random_uuids, kPlacementId);
+      RandomUuidOr(should_generate_random_uuids, kPlacementId);
   ad_event.campaign_id = creative_ad.campaign_id;
   ad_event.creative_set_id = creative_ad.creative_set_id;
   ad_event.creative_instance_id = creative_ad.creative_instance_id;

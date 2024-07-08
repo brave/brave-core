@@ -19,7 +19,6 @@ constexpr char kMatchingHtml[] =
     R"(<html><div style="foo" id="xyzzy-id" class="bar">waldo</div></html>)";
 constexpr char kMismatchingHtml[] =
     R"(<html><div style="foo" id="qux" class="bar">waldo</div></html>)";
-constexpr char kEmptyHtml[] = "";
 
 constexpr char kUrlPattern[] = "https://foo.com/bar";
 constexpr ConversionResourceIdPatternSearchInType kSearchInType =
@@ -51,7 +50,7 @@ TEST_F(BraveAdsVerifiableConversionIdHtmlParserUtilTest,
        DoNotParseVerifableConversionIdFromEmptyHtml) {
   // Act & Assert
   EXPECT_FALSE(MaybeParseVerifableConversionIdFromHtml(
-      kEmptyHtml,
+      /*html=*/"",
       ConversionResourceIdPatternInfo{kUrlPattern, kSearchInType, kIdPattern}));
 }
 

@@ -32,8 +32,9 @@ TEST_F(BraveAdsAdEventBuilderTest, BuildAdEvent) {
   EXPECT_THAT(ad_event,
               ::testing::FieldsAre(
                   AdType::kNotificationAd, ConfirmationType::kViewedImpression,
-                  kPlacementId, kCreativeInstanceId, kCreativeSetId,
-                  kCampaignId, kAdvertiserId, kSegment, /*created_at*/ Now()));
+                  test::kPlacementId, test::kCreativeInstanceId,
+                  test::kCreativeSetId, test::kCampaignId, test::kAdvertiserId,
+                  test::kSegment, /*created_at*/ Now()));
 }
 
 TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
@@ -50,12 +51,13 @@ TEST_F(BraveAdsAdEventBuilderTest, RebuildAdEvent) {
                      /*created_at=*/DistantFuture());
 
   // Assert
-  EXPECT_THAT(rebuilt_ad_event,
-              ::testing::FieldsAre(AdType::kNotificationAd,
-                                   ConfirmationType::kConversion, kPlacementId,
-                                   kCreativeInstanceId, kCreativeSetId,
-                                   kCampaignId, kAdvertiserId, kSegment,
-                                   /*created_at*/ DistantFuture()));
+  EXPECT_THAT(
+      rebuilt_ad_event,
+      ::testing::FieldsAre(
+          AdType::kNotificationAd, ConfirmationType::kConversion,
+          test::kPlacementId, test::kCreativeInstanceId, test::kCreativeSetId,
+          test::kCampaignId, test::kAdvertiserId, test::kSegment,
+          /*created_at*/ DistantFuture()));
 }
 
 }  // namespace brave_ads

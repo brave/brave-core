@@ -8,7 +8,7 @@
 #include "base/no_destructor.h"
 #include "url/gurl.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 const std::vector<GURL>& GetSearchEngineResultsPageUrls() {
   // When adding new search engines you should perform a search for `foobar` and
@@ -72,4 +72,4 @@ const std::vector<GURL>& GetSearchEngineResultsPageUrls() {
   return *urls;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

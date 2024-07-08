@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
@@ -13,13 +14,17 @@
 namespace brave_ads::test {
 
 WalletInfo Wallet() {
-  return ToWallet(kWalletPaymentId, kWalletRecoverySeed).value_or(WalletInfo{});
+  const std::optional<WalletInfo> wallet =
+      ToWallet(kWalletPaymentId, kWalletRecoverySeedBase64);
+  CHECK(wallet);
+
+  return *wallet;
 }
 
 mojom::WalletInfoPtr WalletPtr() {
   mojom::WalletInfoPtr wallet = mojom::WalletInfo::New();
   wallet->payment_id = kWalletPaymentId;
-  wallet->recovery_seed = kWalletRecoverySeed;
+  wallet->recovery_seed = kWalletRecoverySeedBase64;
   return wallet;
 }
 

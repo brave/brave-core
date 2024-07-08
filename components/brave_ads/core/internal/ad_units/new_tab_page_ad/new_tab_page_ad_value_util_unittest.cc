@@ -58,14 +58,15 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Assert
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
-  EXPECT_EQ(BuildNewTabPageAd(creative_ad, kPlacementId), ad);
+  EXPECT_EQ(BuildNewTabPageAd(creative_ad, test::kPlacementId), ad);
 }
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
-  const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, kPlacementId);
+  const NewTabPageAdInfo ad =
+      BuildNewTabPageAd(creative_ad, test::kPlacementId);
 
   // Act
   const base::Value::Dict dict = NewTabPageAdToValue(ad);

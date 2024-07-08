@@ -20,7 +20,7 @@ class BraveAdsPerMonthExclusionRuleTest : public UnitTestBase {};
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_month = 2;
 
   const PerMonthExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -32,7 +32,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfZero) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_month = 0;
 
   const PerMonthExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -44,7 +44,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfZero) {
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
@@ -64,7 +64,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
        ShouldIncludeIfDoesNotExceedCapAfter1Month) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
@@ -87,7 +87,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
        ShouldExcludeIfExceedsCapWithin1Month) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_month = 2;
 
   AdEventList ad_events;
@@ -109,7 +109,7 @@ TEST_F(BraveAdsPerMonthExclusionRuleTest,
 TEST_F(BraveAdsPerMonthExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_month = 2;
 
   AdEventList ad_events;

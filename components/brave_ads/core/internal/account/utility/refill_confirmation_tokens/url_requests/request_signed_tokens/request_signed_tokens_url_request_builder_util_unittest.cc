@@ -15,7 +15,7 @@ namespace brave_ads {
 TEST(BraveAdsRequestSignedTokensUrlRequestBuilderUtilTest, GetPath) {
   // Act & Assert
   EXPECT_EQ("/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7",
-            BuildRequestSignedTokensUrlPath(kWalletPaymentId));
+            BuildRequestSignedTokensUrlPath(test::kWalletPaymentId));
 }
 
 }  // namespace brave_ads

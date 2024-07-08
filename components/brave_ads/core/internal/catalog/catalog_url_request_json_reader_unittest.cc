@@ -432,7 +432,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
        ParseCatalogWithSingleCampaign) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToStringAndReplaceTags(kCatalogWithSingleCampaignFilename);
+      MaybeReadFileToStringAndReplaceTags(
+          test::kCatalogWithSingleCampaignFilename);
   ASSERT_TRUE(contents);
 
   // Act
@@ -442,7 +443,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog, ::testing::FieldsAre(
-                            kCatalogId, /*version*/ 9,
+                            test::kCatalogId, /*version*/ 9,
                             /*ping*/ base::Milliseconds(7'200'000),
                             CatalogCampaignList{BuildCatalogCampaign1()}));
 }
@@ -452,7 +453,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
   // Arrange
   const std::optional<std::string> contents =
       MaybeReadFileToStringAndReplaceTags(
-          kCatalogWithMultipleCampaignsFilename);
+          test::kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(contents);
 
   // Act
@@ -462,7 +463,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog, ::testing::FieldsAre(
-                            kCatalogId, /*version*/ 9,
+                            test::kCatalogId, /*version*/ 9,
                             /*ping*/ base::Milliseconds(7'200'000),
                             CatalogCampaignList{BuildCatalogCampaign1(),
                                                 BuildCatalogCampaign2()}));
@@ -471,7 +472,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToStringAndReplaceTags(kEmptyCatalogFilename);
+      MaybeReadFileToStringAndReplaceTags(test::kEmptyCatalogFilename);
   ASSERT_TRUE(contents);
 
   // Act
@@ -481,14 +482,14 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
 
   // Assert
   EXPECT_THAT(*catalog,
-              ::testing::FieldsAre(/*id*/ kCatalogId, /*version*/ 9,
+              ::testing::FieldsAre(test::kCatalogId, /*version*/ 9,
                                    /*ping*/ base::Milliseconds(7'200'000),
                                    /*campaigns*/ ::testing::IsEmpty()));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadCatalog(kInvalidCatalogJson));
+  EXPECT_FALSE(json::reader::ReadCatalog(test::kInvalidCatalogJson));
 }
 
 }  // namespace brave_ads

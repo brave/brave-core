@@ -36,7 +36,7 @@ TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   // Act & Assert
   base::MockCallback<GetDepositCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, /*value=*/1.0));
-  deposit.GetValue(kCreativeInstanceId, callback.Get());
+  deposit.GetValue(test::kCreativeInstanceId, callback.Get());
 }
 
 TEST_F(BraveAdsCashDepositIntegrationTest,
@@ -47,7 +47,7 @@ TEST_F(BraveAdsCashDepositIntegrationTest,
   // Act & Assert
   base::MockCallback<GetDepositCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/false, /*value=*/0.0));
-  deposit.GetValue(kMissingCreativeInstanceId, callback.Get());
+  deposit.GetValue(test::kMissingCreativeInstanceId, callback.Get());
 }
 
 }  // namespace brave_ads

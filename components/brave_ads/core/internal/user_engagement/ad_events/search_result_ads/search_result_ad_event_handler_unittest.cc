@@ -212,7 +212,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
   // Arrange
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
-  mojom_creative_ad->placement_id = kMissingPlacementId;
+  mojom_creative_ad->placement_id = test::kMissingPlacementId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -231,7 +231,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
   // Arrange
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
-  mojom_creative_ad->placement_id = kInvalidPlacementId;
+  mojom_creative_ad->placement_id = test::kInvalidPlacementId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -250,7 +250,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerTest,
   // Arrange
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
-  mojom_creative_ad->creative_instance_id = kInvalidCreativeInstanceId;
+  mojom_creative_ad->creative_instance_id = test::kInvalidCreativeInstanceId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert

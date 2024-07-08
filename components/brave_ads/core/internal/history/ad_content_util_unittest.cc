@@ -37,14 +37,14 @@ TEST_F(BraveAdsAdContentUtilTest, Build) {
       ad, ConfirmationType::kViewedImpression, kTitle, kDescription);
 
   // Assert
-  EXPECT_THAT(
-      ad_content,
-      ::testing::FieldsAre(ad.type, ad.placement_id, ad.creative_instance_id,
-                           ad.creative_set_id, ad.campaign_id, ad.advertiser_id,
-                           kSegment, kTitle, kDescription, ad.target_url.host(),
-                           ad.target_url, mojom::UserReactionType::kNeutral,
-                           ConfirmationType::kViewedImpression,
-                           /*is_saved*/ false, /*is_flagged*/ false));
+  EXPECT_THAT(ad_content,
+              ::testing::FieldsAre(
+                  ad.type, ad.placement_id, ad.creative_instance_id,
+                  ad.creative_set_id, ad.campaign_id, ad.advertiser_id,
+                  test::kSegment, kTitle, kDescription, ad.target_url.host(),
+                  ad.target_url, mojom::UserReactionType::kNeutral,
+                  ConfirmationType::kViewedImpression,
+                  /*is_saved*/ false, /*is_flagged*/ false));
 }
 
 }  // namespace brave_ads

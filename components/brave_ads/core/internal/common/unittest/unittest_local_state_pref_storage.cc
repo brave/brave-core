@@ -23,13 +23,13 @@ base::flat_map</*uuid=*/std::string, PrefInfo>& LocalStatePrefStorage() {
 }  // namespace
 
 PrefInfo& LocalStatePref(const std::string& path) {
-  const std::string uuid = GetUuidForCurrentTestAndValue(path);
+  const std::string uuid = test::GetUuidForCurrentTestAndValue(path);
   return LocalStatePrefStorage()[uuid];
 }
 
 bool HasLocalStatePref(const std::string& path) {
   return base::Contains(LocalStatePrefStorage(),
-                        GetUuidForCurrentTestAndValue(path));
+                        test::GetUuidForCurrentTestAndValue(path));
 }
 
 }  // namespace brave_ads

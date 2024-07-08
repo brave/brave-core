@@ -59,7 +59,7 @@ std::optional<URLResponsePair> GetNextUrlResponseForUrl(
 
   size_t index = 0;
 
-  const std::string uuid = GetUuidForCurrentTestAndValue(request_path);
+  const std::string uuid = test::GetUuidForCurrentTestAndValue(request_path);
 
   const auto iter = UrlResponseIndexes().find(uuid);
   if (iter == UrlResponseIndexes().cend()) {

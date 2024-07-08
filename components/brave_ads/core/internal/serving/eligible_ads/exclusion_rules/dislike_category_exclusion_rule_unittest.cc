@@ -23,7 +23,7 @@ class BraveAdsDislikeCategoryExclusionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldInclude) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.segment = kSegment;
+  creative_ad.segment = test::kSegment;
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -32,7 +32,7 @@ TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldInclude) {
 TEST_F(BraveAdsDislikeCategoryExclusionRuleTest, ShouldExclude) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.segment = kSegment;
+  creative_ad.segment = test::kSegment;
 
   CategoryContentInfo category_content;
   category_content.category = creative_ad.segment;

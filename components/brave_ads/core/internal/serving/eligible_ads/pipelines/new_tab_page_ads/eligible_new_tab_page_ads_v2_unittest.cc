@@ -41,16 +41,16 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAds) {
   CreativeNewTabPageAdList creative_ads;
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "parent";
   creative_ads.push_back(creative_ad_2);
 
   CreativeNewTabPageAdInfo creative_ad_3 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "parent-child";
   creative_ads.push_back(creative_ad_3);
 
@@ -70,12 +70,12 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test, GetAdsForNoMatchingSegments) {
   CreativeNewTabPageAdList creative_ads;
 
   CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 

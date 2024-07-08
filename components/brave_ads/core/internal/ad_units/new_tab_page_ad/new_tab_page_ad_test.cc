@@ -145,7 +145,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   // Act & Assert
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 }
@@ -158,7 +158,7 @@ TEST_F(
 
   // Act & Assert
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 }
@@ -200,13 +200,14 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   test::DisableBraveRewards();
 
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId, mojom::NewTabPageAdEventType::kClicked,
+      test::kPlacementId, test::kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kClicked,
       /*should_fire_event=*/true);
 }
 
@@ -217,17 +218,18 @@ TEST_F(
   test::DisableBraveRewards();
 
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kServedImpression,
       /*should_fire_event=*/false);
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 
   // Act & Assert
   TriggerNewTabPageAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId, mojom::NewTabPageAdEventType::kClicked,
+      test::kPlacementId, test::kCreativeInstanceId,
+      mojom::NewTabPageAdEventType::kClicked,
       /*should_fire_event=*/false);
 }
 
@@ -247,7 +249,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
         // Act & Assert
         TriggerNewTabPageAdEventAndVerifiyExpectations(
-            ad->placement_id, kInvalidCreativeInstanceId,
+            ad->placement_id, test::kInvalidCreativeInstanceId,
             mojom::NewTabPageAdEventType::kViewedImpression,
             /*should_fire_event=*/false);
       });

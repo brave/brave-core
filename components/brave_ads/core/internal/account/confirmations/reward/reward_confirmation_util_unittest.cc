@@ -33,7 +33,7 @@ class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
 
     AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
@@ -110,7 +110,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
 
   EXPECT_THAT(*confirmation,
               ::testing::FieldsAre(
-                  kTransactionId, kCreativeInstanceId,
+                  test::kTransactionId, test::kCreativeInstanceId,
                   ConfirmationType::kViewedImpression, AdType::kNotificationAd,
                   /*created_at*/ Now(), expected_reward, expected_user_data));
 }
