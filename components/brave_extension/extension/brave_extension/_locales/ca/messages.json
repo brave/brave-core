@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "L'extensió de Brave",
+    "message": "L'extensió de Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Estàs navegant en aquesta web sense les proteccions de privacitat i seguretat de Brave. No et funciona bé amb els Escuts activats?",
+    "message": "Estàs navegant en aquesta web sense les proteccions de privacitat i seguretat de Ping. No et funciona bé amb els Escuts activats?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Informa d'una pàgina web inexistent",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Elements bloquejats",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sovint els llocs inclouen galetes i scripts que proven d'identificar-te a tu i al teu dispositiu (sovint incrustats en anuncis). Volen esbrinar qui ets i seguir-te a través de la xarxa, rastrejant el que fas a cada lloc. Brave bloca aquestes coses de manera que puguis navegar sense que et segueixin.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Sovint els llocs inclouen galetes i scripts que proven d'identificar-te a tu i al teu dispositiu (sovint incrustats en anuncis). Volen esbrinar qui ets i seguir-te a través de la xarxa, rastrejant el que fas a cada lloc. Ping bloca aquestes coses de manera que puguis navegar sense que et segueixin.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Rastrejadors entre dominis i altres coses inquietants bloquejades",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Afegeix a Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Afegeix a Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Suprimeix de Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Suprimeix de Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Afegeix a Chrome",

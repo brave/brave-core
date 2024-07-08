@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Brave Extension",
+    "message": "Ping Extension",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Sirvite seda veebisaiti ilma Brave’i privaatsuse ja turvalisuse kaitseta. Kas see ei tööta õigesti, kui kaitse on aktiivne?",
+    "message": "Sirvite seda veebisaiti ilma Ping’i privaatsuse ja turvalisuse kaitseta. Kas see ei tööta õigesti, kui kaitse on aktiivne?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Teata mittetoimivast veebisaidist",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Üksused blokeeritud",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Saidid sisaldavad tihti küpsiseid ja skripte, mis üritavad teid ja teie seadet tuvastada (tihti on need manustatud reklaamidesse). Need soovivad teada saada, kes te olete ja teid veebis jälitada, ehk jälgida, mida igal saidil teete. Brave blokeerib need asjad, et saaksite sirvida ilma, et keegi teid jälitaks.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Saidid sisaldavad tihti küpsiseid ja skripte, mis üritavad teid ja teie seadet tuvastada (tihti on need manustatud reklaamidesse). Need soovivad teada saada, kes te olete ja teid veebis jälitada, ehk jälgida, mida igal saidil teete. Ping blokeerib need asjad, et saaksite sirvida ilma, et keegi teid jälitaks.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Saitidevahelised jälitajad ja muud kahtlased asjad on blokeeritud",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Brave'i lisamine",
-    "description": "Message for adding an extension to Brave"
+    "message": "Ping'i lisamine",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Eemalda Brave'ist",
-    "description": "Message for removing an extension from Brave"
+    "message": "Eemalda Ping'ist",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Lisa Chrome'i",

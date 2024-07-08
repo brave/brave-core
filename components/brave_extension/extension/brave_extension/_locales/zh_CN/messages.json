@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": " Brave 扩展名",
+    "message": " Ping 扩展名",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "您正浏览的网站不受 Brave 的隐私和安全保护。Shields 被设置为 \"up\" 时无法正常工作吗？",
+    "message": "您正浏览的网站不受 Ping 的隐私和安全保护。Shields 被设置为 \"up\" 时无法正常工作吗？",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "报告损坏的网站",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "已锁定项目",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "站点通常包含 Cookie 和脚本（通常嵌入在广告中），用于识别您和您的设备。他们希望了解您是谁，并在网上关注您 - 跟踪您在各个网站上的活动。Brave 会拦截这些内容，让您安全浏览，而不会被跟踪。",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "站点通常包含 Cookie 和脚本（通常嵌入在广告中），用于识别您和您的设备。他们希望了解您是谁，并在网上关注您 - 跟踪您在各个网站上的活动。Ping 会拦截这些内容，让您安全浏览，而不会被跟踪。",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "已拦截跨站点跟踪器和其他有害内容",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "添加到 Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "添加到 Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
     "message": "从Brave中移除",
-    "description": "Message for removing an extension from Brave"
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "添加至 Chrome",

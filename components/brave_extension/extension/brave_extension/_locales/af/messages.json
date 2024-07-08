@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Die Brave-uitbreiding",
+    "message": "Die Ping-uitbreiding",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "U blaai deur hierdie werf sonder Brave se privaatheid- of sekuriteitsbeskerming. Werk dit nie reg wanneer die skild op is nie?",
+    "message": "U blaai deur hierdie werf sonder Ping se privaatheid- of sekuriteitsbeskerming. Werk dit nie reg wanneer die skild op is nie?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Rapporteer ’n stukkende werf",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Items versper",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Werwe sluit dikwels koekies en skripte in wat u en u toestel probeer identifiseer (dikwels by advertensies ingebed). Hulle probeer vasstel wie u is en volg u regoor die web — spoor na wat u op elke werf doen. Brave versper hierdie dinge sodat u kan blaai sonder om agtervolg te word.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Werwe sluit dikwels koekies en skripte in wat u en u toestel probeer identifiseer (dikwels by advertensies ingebed). Hulle probeer vasstel wie u is en volg u regoor die web — spoor na wat u op elke werf doen. Ping versper hierdie dinge sodat u kan blaai sonder om agtervolg te word.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Cross-site trackers and other creepy things blocked",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Voeg toe tot Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Voeg toe tot Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Verwyder uit Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Verwyder uit Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Toev. aan Chrome",

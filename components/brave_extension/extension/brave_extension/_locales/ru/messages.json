@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Расширение Brave",
+    "message": "Расширение Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Не работает правильно с включенной защитой Brave?",
+    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Ping. Не работает правильно с включенной защитой Ping?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Сообщить о неисправности сайта",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "объектов заблокировано",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Сайты используют куки-файлы и скрипты, чтобы идентифицировать вас и ваше устройство (часто они встраиваются в рекламу). Они хотят выяснить, кто вы, а также отслеживать вас и ваши действия на других сайтах по всему интернету. Brave блокирует подобное поведение, чтобы вы могли посещать веб-страницы без постоянной слежки.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Сайты используют куки-файлы и скрипты, чтобы идентифицировать вас и ваше устройство (часто они встраиваются в рекламу). Они хотят выяснить, кто вы, а также отслеживать вас и ваши действия на других сайтах по всему интернету. Ping блокирует подобное поведение, чтобы вы могли посещать веб-страницы без постоянной слежки.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Заблокированы межсайтовый трекинг и другие нежелательные элементы",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Добавить в Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Добавить в Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
     "message": "Удалить",
-    "description": "Message for removing an extension from Brave"
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Установить",

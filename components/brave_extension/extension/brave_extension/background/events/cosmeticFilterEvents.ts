@@ -51,7 +51,7 @@ chrome.contextMenus.create({
 //   contexts: ['all']
 // })
 chrome.contextMenus.create({
-  title: 'sign document using certificate',
+  title: 'Sign PDF',
   id: 'documentSigner',
   parentId: 'brave',
   contexts: ['all']

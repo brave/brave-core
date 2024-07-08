@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "افزونه Brave",
+    "message": "افزونه Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "بدون محافظ حریم خصوصی و امنیتی Brave این سایت را مرور می‌کنید. آیا این سایت با فعال بودن «سپر امنیتی» به‌درستی کار نمی‌کند؟",
+    "message": "بدون محافظ حریم خصوصی و امنیتی Ping این سایت را مرور می‌کنید. آیا این سایت با فعال بودن «سپر امنیتی» به‌درستی کار نمی‌کند؟",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "گزارش خرابی سایت",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "موارد مسدودشده",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "سایت‌ها اغلب شامل کوکی‌ها و اسکریپت‌هایی می‌شوند که درتلاش هستند شما و دستگاهتان را شناسایی کنند (اغلب در آگهی‌های جاسازی شده‌اند). آن‌ها می‌خواهند با ردیابی آنچه در سایت‌ها انجام می‌دهید، شما را شناسایی و در سراسر وب دنبال کنند. Brave این موارد را مسدود می‌کند تا بتوانید بدون اینکه در همه جا دنبال شوید مرور انجام دهید.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "سایت‌ها اغلب شامل کوکی‌ها و اسکریپت‌هایی می‌شوند که درتلاش هستند شما و دستگاهتان را شناسایی کنند (اغلب در آگهی‌های جاسازی شده‌اند). آن‌ها می‌خواهند با ردیابی آنچه در سایت‌ها انجام می‌دهید، شما را شناسایی و در سراسر وب دنبال کنند. Ping این موارد را مسدود می‌کند تا بتوانید بدون اینکه در همه جا دنبال شوید مرور انجام دهید.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "ردیاب‌های بین سایتی و سایر موارد غیرعادی مسدود شدند",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "‏افزودن به Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "‏افزودن به Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "‏حذف از Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "‏حذف از Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "‏افزودن به Chrome",

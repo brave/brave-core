@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "You’re browsing this site without Ping’s privacy and security protections. Does it not work right with Shields up?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "உடைந்த தளத்தைப் புகாரளி",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "உருப்படிகள் தடுக்கப்பட்டன",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Ping blocks these things so that you can browse without being followed around.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Cross-site trackers and other creepy things blocked",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Brave இல் சேர்",
-    "description": "Message for adding an extension to Brave"
+    "message": "Ping இல் சேர்",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Brave இலிருந்து அகற்று",
-    "description": "Message for removing an extension from Brave"
+    "message": "Ping இலிருந்து அகற்று",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Chrome இல் சேர்",

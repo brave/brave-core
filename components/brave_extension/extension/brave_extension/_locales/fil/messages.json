@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Ang Brave na Extension",
+    "message": "Ang Ping na Extension",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Bina-browse mo ang site na ito nang  walang proteksyon sa privacy at seguridad ng Brave. Hindi ba ito gumagana nang tama nang naka-on ang Shields?",
+    "message": "Bina-browse mo ang site na ito nang  walang proteksyon sa privacy at seguridad ng Ping. Hindi ba ito gumagana nang tama nang naka-on ang Shields?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Mag-ulat ng sirang site",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "May mga na-block na item",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Ang mga site ay kadalasang may kasamang cookies at mga script na susubukang tukuyin ka at ang iyong device (kadalasang naka-embed sa mga ad). Gusto ng mga itong makilala at masundan ka sa buong web — kung saan sinusubaybayan ng mga ito kung ano ang ginagawa mo sa bawat site. Bina-block ng Brave ang mga bagay na ito nang sa gayon ay makapag-browse ka nang hindi nasusundan sa kahit saan.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Ang mga site ay kadalasang may kasamang cookies at mga script na susubukang tukuyin ka at ang iyong device (kadalasang naka-embed sa mga ad). Gusto ng mga itong makilala at masundan ka sa buong web — kung saan sinusubaybayan ng mga ito kung ano ang ginagawa mo sa bawat site. Bina-block ng Ping ang mga bagay na ito nang sa gayon ay makapag-browse ka nang hindi nasusundan sa kahit saan.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Naka-block ang mga cross-site na tracker at iba pang hindi kanais-nais na bagay",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Idagdag sa Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Idagdag sa Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Alisin sa Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Alisin sa Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Idagdag sa Chrome",

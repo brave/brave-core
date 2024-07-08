@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Extensia Brave",
+    "message": "Extensia Ping",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Navigați pe acest site fără protecțiile Brave pentru confidențialitate și securitate. Nu funcționează corect cu Scuturile activate?",
+    "message": "Navigați pe acest site fără protecțiile Ping pentru confidențialitate și securitate. Nu funcționează corect cu Scuturile activate?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Raportați un site nefuncțional",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Articole blocate",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Site-urile includ deseori fișiere cookie și scripturi care încearcă să vă identifice pe dumneavoastră și pe dispozitivul dumneavoastră (care sunt de obicei încorporate în reclame). Acestea vor să afle cine sunteți și să vă urmărească pe tot Internetul, urmărind ce faceți pe fiecare site. Brave blochează aceste fișiere și scripturi pentru ca dvs. să navigați fără a fi urmărit.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Site-urile includ deseori fișiere cookie și scripturi care încearcă să vă identifice pe dumneavoastră și pe dispozitivul dumneavoastră (care sunt de obicei încorporate în reclame). Acestea vor să afle cine sunteți și să vă urmărească pe tot Internetul, urmărind ce faceți pe fiecare site. Ping blochează aceste fișiere și scripturi pentru ca dvs. să navigați fără a fi urmărit.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Urmăritori trans-site și alte lucruri sinistre blocate",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Adăugați la Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "Adăugați la Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Eliminați din Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "Eliminați din Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Adaugă în Chrome",

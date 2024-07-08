@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "A Brave bővítmény",
+    "message": "A Ping bővítmény",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "A Brave adatvédelmi és biztonsági beállítási nélkül böngészik ezen az oldalon. Nem működik megfelelően a Shields alatt?",
+    "message": "A Ping adatvédelmi és biztonsági beállítási nélkül böngészik ezen az oldalon. Nem működik megfelelően a Shields alatt?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "Nem működő oldal jelentése",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "Tárgyak letiltva",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Az oldalak gyakran cookie-kat és parancsfájlokat tartalmaznak, amelyekkel megpróbálnak azonosítani téged és készülékedet (gyakran reklámokba ágyazva). Igyekeznek megtudni, hogy ki vagy, és mindenhova követnek az interneten - megfigyelve tevékenységedet minden oldalon. A Brave letiltja ezeket a dolgokat, így kíváncsi tekintetek nélkül böngészhetsz.",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "Az oldalak gyakran cookie-kat és parancsfájlokat tartalmaznak, amelyekkel megpróbálnak azonosítani téged és készülékedet (gyakran reklámokba ágyazva). Igyekeznek megtudni, hogy ki vagy, és mindenhova követnek az interneten - megfigyelve tevékenységedet minden oldalon. A Ping letiltja ezeket a dolgokat, így kíváncsi tekintetek nélkül böngészhetsz.",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "Letiltott webhelyközi követők és egyéb ijesztő dolgok",
@@ -209,11 +209,11 @@
   },
   "addToBrave": {
     "message": "Hozzáadás a Bravehoz",
-    "description": "Message for adding an extension to Brave"
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "Eltávolítás a Brave-ból",
-    "description": "Message for removing an extension from Brave"
+    "message": "Eltávolítás a Ping-ból",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "Hozzáadás",

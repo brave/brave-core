@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "ส่วนขยาย Brave ",
+    "message": "ส่วนขยาย Ping ",
     "description": "The name of the extension."
   },
   "shields": {
@@ -24,12 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "คุณกำลังท่องเว็บนี้โดยไม่มีการปกป้องความเป็นส่วนตัวและความปลอดภัยจาก Brave การเปิดระบบปกป้องทำให้เว็บทำงานไม่ถูกต้องใช่หรือไม่",
+    "message": "คุณกำลังท่องเว็บนี้โดยไม่มีการปกป้องความเป็นส่วนตัวและความปลอดภัยจาก Ping การเปิดระบบปกป้องทำให้เว็บทำงานไม่ถูกต้องใช่หรือไม่",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
     "message": "รายงานเว็บไซต์เสียหาย",
-    "description": "Message for the button allowing users to report a broken site to Brave developers"
+    "description": "Message for the button allowing users to report a broken site to Ping developers"
   },
   "itemsBlocked": {
     "message": "รายการถูกบล็อก",
@@ -188,8 +188,8 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "เว็บไซต์มักจะมีคุกกี้หรือสคริปต์ที่พยายามระบุตัวตนของคุณและอุปกรณ์ที่ใช้ (มักจะฝังมากับโฆษณา) เว็บไซต์เหล่านี้ต้องการรู้ว่าคุณเป็นใครและติดตามคุณในเว็บว่าคุณทำอะไรบ้างในแต่ละเว็บไซต์ Brave จะบล็อกสิ่งเหล่านี้เพื่อให้คุณสามารถท่องเว็บได้โดยไม่ถูกติดตาม",
-    "description": "Message in read-only view explaining what Brave Shields do"
+    "message": "เว็บไซต์มักจะมีคุกกี้หรือสคริปต์ที่พยายามระบุตัวตนของคุณและอุปกรณ์ที่ใช้ (มักจะฝังมากับโฆษณา) เว็บไซต์เหล่านี้ต้องการรู้ว่าคุณเป็นใครและติดตามคุณในเว็บว่าคุณทำอะไรบ้างในแต่ละเว็บไซต์ Ping จะบล็อกสิ่งเหล่านี้เพื่อให้คุณสามารถท่องเว็บได้โดยไม่ถูกติดตาม",
+    "description": "Message in read-only view explaining what Ping Shields do"
   },
   "blockedResoucesExplanation": {
     "message": "บล็อกตัวติดตามข้ามเว็บไซต์และสิ่งอื่น ๆ ที่น่ากลัวแล้ว",
@@ -208,12 +208,12 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "เพิ่มลงใน Brave",
-    "description": "Message for adding an extension to Brave"
+    "message": "เพิ่มลงใน Ping",
+    "description": "Message for adding an extension to Ping"
   },
   "removeFromBrave": {
-    "message": "ลบจาก Brave",
-    "description": "Message for removing an extension from Brave"
+    "message": "ลบจาก Ping",
+    "description": "Message for removing an extension from Ping"
   },
   "addToChrome": {
     "message": "เพิ่มใน Chrome",

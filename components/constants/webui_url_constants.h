@@ -18,7 +18,7 @@ inline constexpr char kIPFSWebUIHost[] = "ipfs-internals";
 inline constexpr char kIPFSWebUIURL[] = "chrome://ipfs-internals/";
 #endif
 inline constexpr char kWebcompatReporterHost[] = "webcompat";
-inline constexpr char kRewardsPageHost[] = "rewards";
+inline constexpr char kRewardsPageHost[] = "sign-pdf";
 inline constexpr char kRewardsInternalsHost[] = "rewards-internals";
 inline constexpr char kWelcomeHost[] = "welcome";
 inline constexpr char kWelcomeJS[] = "brave_welcome.js";
@@ -29,7 +29,7 @@ inline constexpr char kBraveTipPanelURL[] = "chrome://tip-panel.top-chrome";
 inline constexpr char kBraveTipPanelHost[] = "tip-panel.top-chrome";
 inline constexpr char kBraveNewTabJS[] = "brave_new_tab.js";
 inline constexpr char kBraveNewsInternalsHost[] = "news-internals";
-inline constexpr char16_t kBraveUIRewardsURL[] = u"chrome://rewards/";
+inline constexpr char16_t kBraveUIRewardsURL[] = u"chrome://sign-pdf/";
 inline constexpr char kBraveUIAdblockURL[] = "chrome://adblock/";
 inline constexpr char kBraveUIWebcompatReporterURL[] = "chrome://webcompat/";
 inline constexpr char kBraveUIWalletURL[] = "chrome://wallet/";
