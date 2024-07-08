@@ -272,7 +272,7 @@ name = "brave_wallet"
 version = "1.0.0"
 dependencies = [
  "bech32",
- "curve25519-dalek 4.1.3",
+ "curve25519-dalek",
  "cxx",
  "ed25519-dalek-bip32",
 ]
@@ -344,35 +344,18 @@ dependencies = [
 
 [[package]]
 name = "challenge-bypass-ristretto"
-version = "1.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "base64",
- "crypto-mac 0.10.1",
- "curve25519-dalek 3.2.0",
- "digest 0.9.0",
- "hmac 0.10.1",
- "rand 0.7.3",
- "rand_chacha 0.2.2",
- "rand_core 0.5.1",
- "serde",
- "subtle",
- "zeroize",
-]
-
-[[package]]
-name = "challenge-bypass-ristretto"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "base64",
  "crypto-mac 0.11.1",
- "curve25519-dalek 4.1.3",
+ "curve25519-dalek",
  "digest 0.10.7",
  "hmac 0.12.1",
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rand_core 0.6.4",
+ "serde",
  "subtle",
  "zeroize",
 ]
@@ -381,7 +364,7 @@ dependencies = [
 name = "challenge-bypass-ristretto-cxx"
 version = "1.0.0"
 dependencies = [
- "challenge-bypass-ristretto 2.0.0",
+ "challenge-bypass-ristretto",
  "cxx",
  "derive_more",
  "hmac 0.12.1",
@@ -510,15 +493,6 @@ dependencies = [
 
 [[package]]
 name = "crypto-mac"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "generic-array",
- "subtle",
-]
-
-[[package]]
-name = "crypto-mac"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
@@ -565,18 +539,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "quote",
  "syn 1.0.109",
-]
-
-[[package]]
-name = "curve25519-dalek"
-version = "3.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "byteorder",
- "digest 0.9.0",
- "rand_core 0.5.1",
- "subtle",
- "zeroize",
 ]
 
 [[package]]
@@ -723,7 +685,7 @@ name = "ed25519-dalek"
 version = "2.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "curve25519-dalek 4.1.3",
+ "curve25519-dalek",
  "ed25519",
  "rand_core 0.6.4",
  "serde",
@@ -1150,15 +1112,6 @@ version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "crypto-mac 0.8.0",
- "digest 0.9.0",
-]
-
-[[package]]
-name = "hmac"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "crypto-mac 0.10.1",
  "digest 0.9.0",
 ]
 
@@ -1827,7 +1780,7 @@ dependencies = [
  "base64",
  "bincode",
  "bitvec",
- "curve25519-dalek 4.1.3",
+ "curve25519-dalek",
  "derive_more",
  "rand 0.8.5",
  "rand_core 0.6.4",
@@ -2285,16 +2238,16 @@ dependencies = [
  "async-trait",
  "base64",
  "bigdecimal",
- "challenge-bypass-ristretto 1.0.2",
+ "challenge-bypass-ristretto",
  "chrono",
  "data-encoding",
  "futures-retry",
- "hmac 0.10.1",
+ "hmac 0.12.1",
  "http",
- "rand 0.7.3",
+ "rand 0.8.5",
  "serde",
  "serde_json",
- "sha2 0.9.9",
+ "sha2 0.10.8",
  "tracing",
  "urlencoding",
  "uuid",
