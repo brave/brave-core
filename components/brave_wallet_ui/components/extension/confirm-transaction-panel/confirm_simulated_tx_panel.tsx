@@ -353,7 +353,7 @@ export const ConfirmSimulatedTransactionPanel = ({
               />
             </NetworkFeeRow>
 
-            {/* 
+            {/*
               Show a warning about a possible token account creation fee
               when SPL tokens are sent
             */}
