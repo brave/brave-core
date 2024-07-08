@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rect.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
@@ -187,6 +188,11 @@ class BraveBrowserView : public BrowserView,
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   void ShowPlaylistBubble() override;
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  void ShowRewriterButton(const gfx::Rect& rect) override;
+  void HideRewriterButton() override;
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)

@@ -8,6 +8,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ai_rewriter/ai_rewriter_button_model.h"
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -31,7 +32,8 @@ namespace ai_rewriter {
 // 1. The tab is destroyed
 // 2. The tab is reparented
 // 3. The tab navigates
-class AIRewriterButtonView : public views::WidgetDelegateView,
+class AIRewriterButtonView : public AIRewriterButtonModel,
+                             public views::WidgetDelegateView,
                              public content::WebContentsObserver,
                              public TabStripModelObserver {
   METADATA_HEADER(AIRewriterButtonView, views::WidgetDelegateView)
@@ -44,9 +46,6 @@ class AIRewriterButtonView : public views::WidgetDelegateView,
   // Creates the AIRewriterButtonView for |contents| if it exists in a tab.
   static base::WeakPtr<AIRewriterButtonView> MaybeCreateButton(
       content::WebContents* contents);
-
-  void Show(const gfx::Rect& rect);
-  void Hide();
 
   AIRewriterDialogDelegate* OpenDialog();
 

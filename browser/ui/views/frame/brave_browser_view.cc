@@ -764,6 +764,12 @@ void BraveBrowserView::ShowPlaylistBubble() {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+void BraveBrowserView::ShowRewriterButton(const gfx::Rect& rect) {}
+
+void BraveBrowserView::HideRewriterButton() {}
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void BraveBrowserView::ShowWaybackMachineBubble() {
   if (auto* anchor = toolbar_button_provider_->GetPageActionIconView(

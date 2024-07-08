@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -65,6 +66,10 @@ class BraveBrowserWindow : public BrowserWindow {
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   virtual void ShowPlaylistBubble() {}
+#endif
+
+#if BUILDFLAG(ENABLE_AI_REWRITER)
+  virtual void ShowRewriterButton() {}
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
