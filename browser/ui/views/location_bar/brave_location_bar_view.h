@@ -73,7 +73,10 @@ class BraveLocationBarView : public LocationBarView {
   IPFSLocationView* GetIPFSLocationView() { return ipfs_location_view_; }
 #endif
   // LocationBarView:
-  std::vector<views::View*> GetTrailingViews() override;
+  // Views that locates at right side of upstream's trailing views.
+  std::vector<views::View*> GetRightMostTrailingViews() override;
+  // Views that locates at left side of upstream's trailing views.
+  std::vector<views::View*> GetLeftMostTrailingViews() override;
   void RefreshBackground() override;
   ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                      on_icon_fetched) const override;
