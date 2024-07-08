@@ -317,7 +317,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Open Private Window with Tor
       </message>
       <message name="IDS_LOCATION_BAR_OPEN_IN_TOR" desc="Button in location bar to open onion available site in tor window.">
-        Tor
+        Open in Tor
       </message>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">
         Tor

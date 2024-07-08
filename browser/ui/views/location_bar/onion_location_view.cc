@@ -10,10 +10,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -43,10 +43,15 @@
 
 namespace {
 
-constexpr SkColor kOpenInTorBg = SkColorSetRGB(0x6a, 0x37, 0x85);
-constexpr SkColor kIconColor = SkColorSetRGB(0xf0, 0xf2, 0xff);
+constexpr SkColor kOpenInTorBg = SkColorSetRGB(0x8c, 0x30, 0xbb);
+constexpr SkColor kIconColor = SK_ColorWHITE;
 constexpr SkColor kTextColor = SK_ColorWHITE;
-constexpr int kIconSize = 12;
+constexpr int kFontHeight = 18;
+constexpr int kIconSize = 18;
+constexpr int kIconLabelSpacing = 4;
+constexpr int kCornerRadius = 8;
+constexpr auto kButtonInsets = gfx::Insets::TLBR(5, 4, 5, 8);
+constexpr auto kViewInsets = gfx::Insets::VH(1, 3);
 
 // Sets the focus and ink drop highlight path to match the background
 // along with it's corner radius.
@@ -60,8 +65,7 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
   SkPath GetHighlightPath(const views::View* view) override {
     const gfx::Rect highlight_bounds = view->GetLocalBounds();
     const SkRect rect = RectToSkRect(highlight_bounds);
-    const int corner_radius = view->height() / 2;
-    return SkPath().addRoundRect(rect, corner_radius, corner_radius);
+    return SkPath().addRoundRect(rect, kCornerRadius, kCornerRadius);
   }
 };
 
@@ -79,21 +83,25 @@ class OnionLocationButtonView : public views::LabelButton {
       SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT));
     }
-    // Render vector icon
-    const gfx::ImageSkia image =
-        gfx::CreateVectorIcon(kOpenInTorIcon, kIconSize, kIconColor);
-    SetImageModel(views::Button::STATE_NORMAL,
-                  ui::ImageModel::FromImageSkia(image));
-    // Set style specifics
+
+    // Set text style specifics
     SetEnabledTextColors(kTextColor);
     SetTextColor(views::Button::STATE_DISABLED, kTextColor);
-    SetHorizontalAlignment(gfx::ALIGN_RIGHT);
-    SetImageLabelSpacing(6);
+    label()->SetFontList(
+        label()->font_list().DeriveWithHeightUpperBound(kFontHeight));
+
+    // Render vector icon
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(kLeoProductTorIcon, kIconColor,
+                                                 kIconSize));
+
+    // Show icon on the left
+    SetHorizontalAlignment(gfx::ALIGN_LEFT);
+    SetImageLabelSpacing(kIconLabelSpacing);
 
     auto* ink_drop = views::InkDrop::Get(this);
     ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-    SetBorder(views::CreateEmptyBorder(
-        GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING)));
+    SetBorder(views::CreateEmptyBorder(kButtonInsets));
     SetHasInkDropActionOnClick(true);
     ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
@@ -121,7 +129,7 @@ class OnionLocationButtonView : public views::LabelButton {
 
   void UpdateBorder() {
     SetBackground(
-        views::CreateRoundedRectBackground(kOpenInTorBg, height() / 2));
+        views::CreateRoundedRectBackground(kOpenInTorBg, kCornerRadius));
   }
 
   void ButtonPressed() {
@@ -135,7 +143,7 @@ class OnionLocationButtonView : public views::LabelButton {
 }  // namespace
 
 OnionLocationView::OnionLocationView(Profile* profile) {
-  SetBorder(views::CreateEmptyBorder(gfx::Insets::VH(1, 3)));
+  SetBorder(views::CreateEmptyBorder(kViewInsets));
   SetVisible(false);
   // automatic layout
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(
