@@ -6,7 +6,10 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 
 #include <optional>
+#include <string>
+#include <utility>
 
+#include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -115,4 +118,24 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
   }
 
   SidePanelCoordinator::UpdateToolbarButtonHighlight(side_panel_visible);
+}
+
+void BraveSidePanelCoordinator::PopulateSidePanel(
+    bool supress_animations,
+    SidePanelEntry* entry,
+    std::optional<std::unique_ptr<views::View>> content_view) {
+  CHECK(entry);
+  if (!header_combobox_) {
+    actions::ActionItem* const action_item = GetActionItem(entry->key());
+    if (!action_item) {
+      const std::string entry_id = SidePanelEntryIdToString(entry->key().id());
+      LOG(ERROR) << __func__ << " no side panel action item for " << entry_id;
+      SCOPED_CRASH_KEY_STRING64("SidePanel", "entry_id", entry_id);
+      base::debug::DumpWithoutCrashing();
+      return;
+    }
+  }
+
+  SidePanelCoordinator::PopulateSidePanel(supress_animations, entry,
+                                          std::move(content_view));
 }

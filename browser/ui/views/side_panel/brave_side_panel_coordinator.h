@@ -26,6 +26,10 @@ class BraveSidePanelCoordinator : public SidePanelCoordinator {
       const TabStripSelectionChange& selection) override;
   std::unique_ptr<views::View> CreateHeader() override;
   void UpdateToolbarButtonHighlight(bool side_panel_visible) override;
+  void PopulateSidePanel(
+      bool supress_animations,
+      SidePanelEntry* entry,
+      std::optional<std::unique_ptr<views::View>> content_view) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_
