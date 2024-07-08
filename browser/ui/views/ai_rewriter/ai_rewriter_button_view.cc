@@ -45,9 +45,11 @@ AIRewriterButtonView::AIRewriterButtonView(Browser* browser,
     : content::WebContentsObserver(contents) {
   tab_strip_observation_.Observe(browser->tab_strip_model());
 
+  constexpr int kButtonRadius = 12;
   views::Builder<AIRewriterButtonView>(this)
-      .SetBackground(views::CreateRoundedRectBackground(SK_ColorWHITE, 12))
-      .SetBorder(views::CreateRoundedRectBorder(1, 12, SK_ColorGRAY))
+      .SetBackground(
+          views::CreateRoundedRectBackground(SK_ColorWHITE, kButtonRadius))
+      .SetBorder(views::CreateRoundedRectBorder(1, kButtonRadius, SK_ColorGRAY))
       .SetLayoutManager(std::make_unique<views::FillLayout>())
       .AddChild(
           views::Builder<views::LabelButton>()
