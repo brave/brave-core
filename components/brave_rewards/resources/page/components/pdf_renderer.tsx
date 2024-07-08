@@ -2,13 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 // @ts-nocheck
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// @ts-nocheck
+import React, { useState, useCallback, useEffect } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   './pdfjs-dist-worker.js',
-  import.meta.url
+  import.meta.url,
 ).toString();
 
 const ws = new WebSocket('ws://localhost:5000');
@@ -39,7 +43,7 @@ export function PdfRenderer() {
       const data = JSON.parse(event.data);
       if (data.action === 'signed') {
         const signedPdfBuffer = new Uint8Array(
-          Buffer.from(data.data, 'base64')
+          Buffer.from(data.data, 'base64'),
         );
         setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
         setPdfBuff(signedPdfBuffer);
@@ -66,30 +70,33 @@ export function PdfRenderer() {
     };
   }, [showToast]);
 
-  const handleFileInput = useCallback(async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      try {
-        const arrayBuffer = await file.arrayBuffer();
-        setPdfBuff(arrayBuffer);
-        setPdfFile(new Blob([arrayBuffer], { type: 'application/pdf' }));
-        setVerificationResult(null);
-      } catch (error) {
-        console.error('Error reading PDF file:', error);
-        showToast('Error reading PDF file. Please try again.', 'error');
+  const handleFileInput = useCallback(
+    async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          setPdfBuff(arrayBuffer);
+          setPdfFile(new Blob([arrayBuffer], { type: 'application/pdf' }));
+          setVerificationResult(null);
+        } catch (error) {
+          console.error('Error reading PDF file:', error);
+          showToast('Error reading PDF file. Please try again.', 'error');
+        }
       }
-    }
-  }, [showToast]);
+    },
+    [showToast],
+  );
 
   const promptHsmPath = () => {
-    const path = prompt("Enter HSM path:");
+    const path = prompt('Enter HSM path:');
     if (path) setHsmPath(path);
     return path;
   };
 
   const selectSignature = () => {
-    // Mock function for now. In reality, this would involve fetching signatures from the HSM
-    setSelectedSignature("mock_signature");
+    // TODO: To be fetched from extension
+    setSelectedSignature('mock_signature');
   };
 
   const showConfirmationPreview = () => {
@@ -106,16 +113,18 @@ export function PdfRenderer() {
   const sendSignRequest = () => {
     setIsLoading(true);
     const hardcodedCoords = { startX: 100, startY: 100, endX: 200, endY: 200 };
-    ws.send(JSON.stringify({
-      action: 'sign',
-      data: {
-        pdfBuffer: Array.from(new Uint8Array(pdfBuff)),
-        pageIndex: 0,
-        selectionCoords: hardcodedCoords,
-        hsmPath,
-        signatureId: selectedSignature,
-      },
-    }));
+    ws.send(
+      JSON.stringify({
+        action: 'sign',
+        data: {
+          pdfBuffer: Array.from(new Uint8Array(pdfBuff)),
+          pageIndex: 0,
+          selectionCoords: hardcodedCoords,
+          hsmPath,
+          signatureId: selectedSignature,
+        },
+      }),
+    );
   };
 
   const handleSignButtonClick = useCallback(() => {
@@ -137,13 +146,24 @@ export function PdfRenderer() {
       return;
     }
     setIsLoading(true);
-    ws.send(JSON.stringify({
-      action: 'verify',
-      data: {
-        Buff: Array.from(new Uint8Array(pdfBuff)),
-      },
-    }));
+    ws.send(
+      JSON.stringify({
+        action: 'verify',
+        data: {
+          Buff: Array.from(new Uint8Array(pdfBuff)),
+        },
+      }),
+    );
   }, [pdfBuff, showToast]);
+
+  const handleDownloadButtonClick = () => {
+    if (pdfFile) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(pdfFile);
+      link.download = 'signed_document.pdf';
+      link.click();
+    }
+  };
 
   const onDocumentLoadSuccess = useCallback(({ numPages }) => {
     setNumPages(numPages);
@@ -159,8 +179,18 @@ export function PdfRenderer() {
   );
 
   return (
-    <div className="App" style={{ padding: '20px' }}>
-      <div id="controls" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+    <div
+      className="App"
+      style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}
+    >
+      <div
+        id="controls"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      >
         <input
           type="file"
           id="pdfInput"
@@ -171,7 +201,14 @@ export function PdfRenderer() {
         <button
           id="signButton"
           onClick={handleSignButtonClick}
-          style={{ padding: '10px', marginRight: '10px' }}
+          style={{
+            padding: '10px',
+            marginRight: '10px',
+            backgroundColor: '#007BFF',
+            color: '#FFF',
+            border: 'none',
+            borderRadius: '5px',
+          }}
           disabled={isLoading}
         >
           Sign
@@ -179,25 +216,66 @@ export function PdfRenderer() {
         <button
           id="verifyButton"
           onClick={handleVerifyButtonClick}
-          style={{ padding: '10px' }}
+          style={{
+            padding: '10px',
+            marginRight: '10px',
+            backgroundColor: '#28A745',
+            color: '#FFF',
+            border: 'none',
+            borderRadius: '5px',
+          }}
           disabled={isLoading}
         >
           Verify
         </button>
+        <button
+          id="downloadButton"
+          onClick={handleDownloadButtonClick}
+          style={{
+            padding: '10px',
+            backgroundColor: '#FFC107',
+            color: '#FFF',
+            border: 'none',
+            borderRadius: '5px',
+          }}
+          disabled={!pdfFile || isLoading}
+        >
+          Download
+        </button>
       </div>
       {verificationResult !== null && (
-        <div id="verificationResult" style={{ marginBottom: '20px', textAlign: 'center' }}>
+        <div
+          id="verificationResult"
+          style={{ marginBottom: '20px', textAlign: 'center' }}
+        >
           <h3>Verification Result:</h3>
-          <p>{verificationResult ? 'Document is verified' : 'Document verification failed'}</p>
+          <p>
+            {verificationResult
+              ? 'Document is verified'
+              : 'Document verification failed'}
+          </p>
         </div>
       )}
       {showConfirmation && (
         <ConfirmationDialog onConfirm={handleConfirmation} />
       )}
-      <div id="pdfContainer" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+      <div
+        id="pdfContainer"
+        style={{
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          border: '1px solid #ccc',
+          padding: '10px',
+          backgroundColor: '#f9f9f9',
+        }}
+      >
         <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
           {Array.from(new Array(numPages), (el, index) => (
-            <Page key={`page_${index + 1}`} pageNumber={index + 1} width={600} />
+            <Page
+              key={`page_${index + 1}`}
+              pageNumber={index + 1}
+              width={600}
+            />
           ))}
         </Document>
       </div>
@@ -228,8 +306,12 @@ export function PdfRenderer() {
           animation: spin 1s linear infinite;
         }
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
         .toast {
           position: fixed;
@@ -242,10 +324,18 @@ export function PdfRenderer() {
           transition: opacity 0.3s ease;
           z-index: 1002;
         }
-        .toast.success { background-color: #4CAF50; }
-        .toast.error { background-color: #F44336; }
-        .toast.info { background-color: #2196F3; }
-        .toast.fade-out { opacity: 0; }
+        .toast.success {
+          background-color: #4caf50;
+        }
+        .toast.error {
+          background-color: #f44336;
+        }
+        .toast.info {
+          background-color: #2196f3;
+        }
+        .toast.fade-out {
+          opacity: 0;
+        }
         .confirmation-dialog {
           position: fixed;
           top: 50%;
@@ -254,7 +344,7 @@ export function PdfRenderer() {
           background-color: white;
           padding: 20px;
           border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
           z-index: 1003;
         }
       `}</style>
