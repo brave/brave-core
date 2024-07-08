@@ -42,37 +42,33 @@ public struct BraveVPNRegionListView: View {
   }
 
   public var body: some View {
-    VStack {
-      List {
-        Section(
-          footer: Text(Strings.VPN.serverRegionAutoSelectDescription)
-            .font(.footnote)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
-        ) {
-          automaticRegionToggle
-        }
+    List {
+      Section(
+        footer: Text(Strings.VPN.serverRegionAutoSelectDescription)
+          .font(.footnote)
+          .foregroundStyle(Color(braveSystemName: .textSecondary))
+      ) {
+        automaticRegionToggle
+      }
 
-        if !isAutomatic {
-          Section {
-            ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
-              index,
-              region in
-              countryRegionItem(at: index, region: region)
-            }
+      if !isAutomatic {
+        Section {
+          ForEach(Array(BraveVPN.allRegions.enumerated()), id: \.offset) {
+            index,
+            region in
+            countryRegionItem(at: index, region: region)
           }
-          .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
         }
+        .listRowBackground(Color(braveSystemName: .containerBackgroundMobile))
       }
     }
     .opacity(isLoading ? 0.5 : 1.0)
-    .overlay(
-      Group {
-        if isLoading {
-          BraveVPNRegionLoadingIndicatorView()
-            .transition(.opacity)
-        }
+    .overlay {
+      if isLoading {
+        BraveVPNRegionLoadingIndicatorView()
+          .transition(.opacity)
       }
-    )
+    }
     .background {
       NavigationLink("", isActive: $isRegionDetailsPresented) {
         BraveRegionDetailsView(
