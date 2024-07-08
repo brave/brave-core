@@ -107,57 +107,83 @@ struct AIChatPromptInputView: View {
             } icon: {
               Image(braveSystemName: "leo.slash")
                 .foregroundStyle(Color(braveSystemName: .iconDefault))
-                .padding(.horizontal, 1.0)
+                .padding(.horizontal, 8.0)
                 .padding(.vertical, 4.0)
-                .padding([.leading, .trailing, .bottom])
+                .padding(.bottom, 16.0)
             }
             .labelStyle(.iconOnly)
           }
         )
 
+        Button {
+          Task { @MainActor in
+            await activateSpeechRecognition()
+          }
+        } label: {
+          Label {
+            Text(Strings.AIChat.voiceInputButtonTitle)
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+          } icon: {
+            Image(braveSystemName: "leo.microphone")
+              .foregroundStyle(Color(braveSystemName: .iconDefault))
+              .padding(.horizontal, 8.0)
+              .padding(.vertical, 4.0)
+              .padding(.bottom, 16.0)
+          }
+          .labelStyle(.iconOnly)
+        }
+        .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
+        .disabled(!speechRecognizer.isVoiceSearchAvailable)
+        .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
+
         Spacer()
 
-        if prompt.isEmpty {
-          Button {
-            Task { @MainActor in
-              await activateSpeechRecognition()
-            }
-          } label: {
-            Label {
-              Text(Strings.AIChat.voiceInputButtonTitle)
-                .foregroundStyle(Color(braveSystemName: .textPrimary))
-            } icon: {
-              Image(braveSystemName: "leo.microphone")
-                .foregroundStyle(Color(braveSystemName: .iconDefault))
-                .padding([.leading, .trailing, .bottom])
-            }
-            .labelStyle(.iconOnly)
-          }
-          .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
-          .disabled(!speechRecognizer.isVoiceSearchAvailable)
-          .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
-        } else {
-          Button {
-            onSubmit(prompt)
-            prompt = ""
-          } label: {
-            Image(braveSystemName: "leo.send")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .padding([.leading, .trailing, .bottom])
-          }
+        Button {
+          onSubmit(prompt)
+          prompt = ""
+        } label: {
+          Image(braveSystemName: prompt.isEmpty ? "leo.send" : "leo.send.filled")
+            .foregroundStyle(
+              Color(braveSystemName: prompt.isEmpty ? .iconDisabled : .iconInteractive)
+            )
+            .padding(.horizontal, 8.0)
+            .padding(.vertical, 4.0)
+            .padding(.bottom, 16.0)
         }
+        .disabled(prompt.isEmpty)
       }
+      .padding(.horizontal, 8.0)
     }
     .background(
       ContainerRelativeShape()
         .fill(Color(braveSystemName: .containerBackground))
-        .shadow(color: .black.opacity(0.10), radius: 4.0, x: 0.0, y: 1.0)
     )
     .overlay(
       ContainerRelativeShape()
-        .strokeBorder(Color(braveSystemName: .dividerStrong), lineWidth: 1.0)
+        .inset(by: -0.5)
+        .stroke(
+          LinearGradient(
+            stops: [
+              .init(color: Color(braveSystemName: .dividerStrong), location: 0),
+              .init(color: Color(braveSystemName: .dividerStrong), location: 0.5),
+              // avoid stroke at bottom of shape
+              .init(color: Color(braveSystemName: .containerBackground), location: 1),
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+          ),
+          lineWidth: 1.0
+        )
     )
-    .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+    .containerShape(
+      UnevenRoundedRectangle(
+        topLeadingRadius: 8.0,
+        bottomLeadingRadius: 0,
+        bottomTrailingRadius: 0,
+        topTrailingRadius: 8.0,
+        style: .continuous
+      )
+    )
     .background {
       AIChatSpeechRecognitionView(
         speechRecognizer: speechRecognizer,
