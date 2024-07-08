@@ -125,7 +125,10 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
 
   // 1. Check if the tab is in split view mode.
   auto* browser = chrome::FindBrowserWithTab(alerting_web_contents_);
-  CHECK(browser);
+  if (!browser) {
+    // This can happen on shutting down.
+    return bounds.origin();
+  }
 
   auto* tab_strip_model = browser->tab_strip_model();
   auto tab_handle = tab_strip_model->GetTabHandleAt(
@@ -146,12 +149,18 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
       tab_strip_model->GetActiveTab()->GetHandle() == tab_handle
           ? browser_view->contents_web_view()
           : browser_view->secondary_contents_web_view();
-  auto target_web_view_bounds = target_web_view->bounds();
+  auto target_web_view_bounds = target_web_view->GetLocalBounds();
 
   // Adjust X position
-  bounds.set_x(target_web_view_bounds.CenterPoint().x() - bounds.width() / 2);
-  target_web_view_bounds =
-      views::View::ConvertRectToWidget(target_web_view_bounds);
+  gfx::Point origin = target_web_view->bounds().origin();
+  origin.set_x(target_web_view_bounds.CenterPoint().x() - bounds.width() / 2);
+
+  // We should convert point to screen and back, because
+  // View::ConvertPointToWidget doesn't consider offsets of ancestor views.
+  origin = views::View::ConvertPointToScreen(target_web_view, origin);
+  origin = views::View::ConvertPointFromScreen(target_web_view, origin);
+  views::View::ConvertPointToWidget(target_web_view, &origin);
+  bounds.set_x(origin.x());
 
   return bounds.origin();
 }

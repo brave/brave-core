@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_WIDGET_WIDGET_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_WIDGET_WIDGET_DELEGATE_H_
 
+// Adds interfaces for overriding desired bounds' position. These are used by
+// constrained window views. We need separate method from the existing
+// desired_bounds_delegate() so that we can override position in the middle of
+// desired_bounds_delegate() without falling into infinite recursion.
 #define set_desired_bounds_delegate                                 \
   set_desired_bounds_delegate_unused();                             \
   gfx::Point get_desired_position() {                               \
