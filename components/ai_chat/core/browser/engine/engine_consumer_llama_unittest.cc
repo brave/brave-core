@@ -41,7 +41,7 @@ class EngineConsumerLlamaUnitTest : public testing::Test {
   ~EngineConsumerLlamaUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = ModelService::GetModelForTesting("chat-leo-expanded");
+    auto* model = ModelService::GetLeoModel("chat-leo-expanded");
     ASSERT_TRUE(model);
 
     mojom::LeoModelOptionsPtr options =

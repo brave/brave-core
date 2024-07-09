@@ -233,18 +233,23 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
     // migrate model key from "chat-default" to "chat-basic"
     static const std::string kDefaultModelBasicFrom = "chat-default";
     static const std::string kDefaultModelBasicTo = "chat-basic";
-    if (auto* default_model_value =
-            profile_prefs->GetUserPrefValue(kDefaultModelKey)) {
+    auto* default_model_value =
+            profile_prefs->GetUserPrefValue(kDefaultModelKey);
+    if (default_model_value) {
       if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
                                            kDefaultModelBasicFrom)) {
         profile_prefs->SetString(kDefaultModelKey, kDefaultModelBasicTo);
+      }
+
+      if (GetLeoModel(default_model_value->GetString()) == nullptr) {
+        profile_prefs->ClearPref(kDefaultModelKey);
       }
     }
   }
 }
 
 // static
-const mojom::Model* ModelService::GetModelForTesting(std::string_view key) {
+const mojom::Model* ModelService::GetLeoModel(std::string_view key) {
   const std::vector<mojom::ModelPtr>& all_models = GetLeoModels();
 
   auto match_iter = std::find_if(

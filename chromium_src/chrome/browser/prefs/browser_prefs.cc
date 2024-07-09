@@ -72,12 +72,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-<<<<<<< HEAD
 #include "brave/components/ai_chat/core/browser/model_service.h"
-=======
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
->>>>>>> 53f54a95236 (aichat: only reset default model keys if they're bad)
 #endif
 
 // This method should be periodically pruned of year+ old migrations.

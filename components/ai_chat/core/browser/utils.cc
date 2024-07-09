@@ -5,15 +5,11 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 
-#include <utility>
-#include <vector>
-
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -81,20 +77,6 @@ void SetUserOptedIn(PrefService* prefs, bool opted_in) {
     prefs->SetTime(prefs::kLastAcceptedDisclaimer, base::Time::Now());
   } else {
     prefs->ClearPref(prefs::kLastAcceptedDisclaimer);
-  }
-}
-
-void ResetBadModelKeys(PrefService* prefs) {
-  if (!prefs || !IsAIChatEnabled(prefs)) {
-    return;
-  }
-
-  const base::Value* default_model_value =
-      prefs->GetUserPrefValue(prefs::kDefaultModelKey);
-
-  if (default_model_value &&
-      GetModel(default_model_value->GetString()) == nullptr) {
-    prefs->ClearPref(prefs::kDefaultModelKey);
   }
 }
 

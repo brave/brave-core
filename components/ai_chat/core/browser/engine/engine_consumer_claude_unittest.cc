@@ -43,7 +43,7 @@ class EngineConsumerClaudeUnitTest : public testing::Test {
   ~EngineConsumerClaudeUnitTest() override = default;
 
   void SetUp() override {
-    auto* model = ModelService::GetModelForTesting("chat-claude-haiku");
+    auto* model = ModelService::GetLeoModel("chat-claude-haiku");
     ASSERT_TRUE(model);
 
     const mojom::LeoModelOptionsPtr& options =

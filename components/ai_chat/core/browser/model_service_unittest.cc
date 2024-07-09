@@ -41,6 +41,13 @@ TEST_F(ModelServiceTest, ChangeOldDefaultKey) {
   EXPECT_EQ(service_->GetDefaultModelKey(), "chat-basic");
 }
 
+TEST_F(ModelServiceTest, ResetBadkey) {
+  service_->SetDefaultModelKeyWithoutValidationForTesting("this-is-a-bad-key");
+  ModelService::MigrateProfilePrefs(&pref_service_);
+
+  EXPECT_EQ(service_->GetDefaultModelKey(), "chat-leo-expanded");
+}
+
 TEST_F(ModelServiceTest, AddAndModifyCustomModel) {
   static const char kRequestName[] = "request_name";
   static const GURL kEndpoint = GURL("http://brave.com");
