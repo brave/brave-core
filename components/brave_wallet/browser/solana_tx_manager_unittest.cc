@@ -217,6 +217,15 @@ class SolanaTxManagerUnitTest : public testing::Test {
         }));
   }
 
+  void SetHTTPRequestTimeoutInterceptor() {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), "",
+                                          net::HTTP_REQUEST_TIMEOUT);
+        }));
+  }
+
   void SetInterceptor(
       const std::string& latest_blockhash,
       uint64_t last_valid_block_height,
@@ -894,6 +903,82 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta5->status());
   EXPECT_EQ(tx_meta5->signature_status(),
             SolanaSignatureStatus(72u, 0u, "", "finalized"));
+}
+
+TEST_F(SolanaTxManagerUnitTest, CompressedNftTransferSendOptions) {
+  // Create a solana tx data for system transfer tranction type
+  const auto& from_account = sol_account();
+  std::string from_account_address = from_account->address;
+
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  auto account_meta1 =
+      mojom::SolanaAccountMeta::New(from_account_address, nullptr, true, true);
+  auto account_meta2 =
+      mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
+  account_metas.push_back(std::move(account_meta1));
+  account_metas.push_back(std::move(account_meta2));
+
+  auto instruction = mojom::SolanaInstruction::New(
+      mojom::kSolanaSystemProgramId, std::move(account_metas), data, nullptr);
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(std::move(instruction));
+
+  auto solana_tx_data = mojom::SolanaTxData::New(
+      "", 0, from_account_address, to_account, "", 10000000, 0,
+      mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
+      mojom::SolanaMessageVersion::kLegacy,
+      mojom::SolanaMessageHeader::New(1, 0, 1),
+      std::vector<std::string>(
+          {from_account_address, to_account, mojom::kSolanaSystemProgramId}),
+      std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
+      nullptr, nullptr);
+  // Timeout early since the rest of the logic is not relevant to this test.
+  SetHTTPRequestTimeoutInterceptor();
+
+  // Standard solana tx should have empty send options after adding.
+  std::string meta_id1;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet, solana_tx_data.Clone(),
+                           from_account, &meta_id1);
+  auto tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
+  EXPECT_EQ(tx_meta1->tx()->send_options(), std::nullopt);
+
+  // Changing the transaction type to compressed nft transfer should add
+  // send options, and set skip_preflight to true.
+  solana_tx_data->tx_type = mojom::TransactionType::SolanaCompressedNftTransfer;
+  std::string meta_id2;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet, solana_tx_data.Clone(),
+                           from_account, &meta_id2);
+  auto tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
+  ASSERT_TRUE(tx_meta2->tx()->send_options());
+  ASSERT_TRUE(tx_meta2->tx()->send_options()->skip_preflight);
+  EXPECT_TRUE(tx_meta2->tx()->send_options()->skip_preflight.value());
+
+  // If send options are present but skip_preflight is null, it should be set to
+  // true.
+  solana_tx_data->send_options = mojom::SolanaSendTransactionOptions::New();
+  std::string meta_id3;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet, solana_tx_data.Clone(),
+                           from_account, &meta_id3);
+  auto tx_meta3 = solana_tx_manager()->GetTxForTesting(meta_id3);
+  ASSERT_TRUE(tx_meta3->tx()->send_options());
+  ASSERT_TRUE(tx_meta3->tx()->send_options()->skip_preflight);
+  EXPECT_TRUE(tx_meta3->tx()->send_options()->skip_preflight.value());
+
+  // If send options are present and skip_preflight is set to false, it should
+  // remain false.
+  solana_tx_data->send_options = mojom::SolanaSendTransactionOptions::New();
+  solana_tx_data->send_options->skip_preflight =
+      mojom::OptionalSkipPreflight::New(false);
+  std::string meta_id4;
+  AddUnapprovedTransaction(mojom::kSolanaMainnet, solana_tx_data.Clone(),
+                           from_account, &meta_id4);
+  auto tx_meta4 = solana_tx_manager()->GetTxForTesting(meta_id4);
+  ASSERT_TRUE(tx_meta4->tx()->send_options());
+  ASSERT_TRUE(tx_meta4->tx()->send_options()->skip_preflight);
+  EXPECT_FALSE(tx_meta4->tx()->send_options()->skip_preflight.value());
 }
 
 TEST_F(SolanaTxManagerUnitTest, OfacSanctionedToAddress) {

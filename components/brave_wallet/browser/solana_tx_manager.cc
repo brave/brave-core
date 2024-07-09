@@ -231,6 +231,25 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta->set_status(mojom::TransactionStatus::Unapproved);
   meta->set_chain_id(chain_id);
 
+  // Skip preflight checks for compressed NFT transfers to avoid a potential
+  // Solana RPC bug that incorrectly shows compute budget exceeded, causing
+  // simulation failures.
+  if (meta->tx()->tx_type() ==
+      mojom::TransactionType::SolanaCompressedNftTransfer) {
+    auto options = meta->tx()->send_options();
+    if (options) {
+      if (options->skip_preflight == std::nullopt) {
+        // Only set skip_preflight to true if it's not already set because we
+        // want to respect the send options provided by dapps.
+        options->skip_preflight = true;
+        meta->tx()->set_send_options(options);
+      }
+    } else {
+      meta->tx()->set_send_options(
+          SolanaTransaction::SendOptions(std::nullopt, std::nullopt, true));
+    }
+  }
+
   auto internal_callback =
       base::BindOnce(&SolanaTxManager::ContinueAddUnapprovedTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
