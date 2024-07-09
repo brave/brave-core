@@ -302,9 +302,8 @@ public struct AIChatView: View {
             await model.refreshPremiumStatus()
           }
         },
-        openPrivacyReportsUrl: {
+        refreshCredentials: {
           openURL(.brave.braveLeoRefreshCredentials)
-
           dismiss()
         }
       )
