@@ -6,7 +6,7 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_rewards/common/rewards_util.h"
+#include "brave/components/brave_rewards/content/common/rewards_util.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards {

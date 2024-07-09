@@ -7,11 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_CLIENT_PROPERTIES_H_
 
 #include <stdint.h>
+
 #include <map>
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/content/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
 
 namespace brave_rewards::internal {

@@ -10,7 +10,7 @@ declare namespace RewardsInternals {
 
   export interface State {
     balance: import(
-      'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
+      'gen/brave/components/brave_rewards/content/common/mojom/rewards.mojom.m.js'
     ).Balance
     info: {
       isKeyInfoSeedValid: boolean

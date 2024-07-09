@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/common/pref_registry.h"
+#include "brave/components/brave_rewards/content/common/pref_registry.h"
 
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/content/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_rewards {

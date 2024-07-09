@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/content/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_engine_helper.h"
 #include "url/gurl.h"
 

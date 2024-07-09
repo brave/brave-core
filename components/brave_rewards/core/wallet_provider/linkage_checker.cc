@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/content/common/features.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"

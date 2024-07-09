@@ -13,9 +13,9 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
+#include "brave/components/brave_rewards/content/common/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal {
 
