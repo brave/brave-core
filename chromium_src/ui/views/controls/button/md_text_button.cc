@@ -284,7 +284,12 @@ void MdTextButton::UpdateTextColor() {
     return;
   }
 
-  // To prevent set explicitly set color from here.
+  // Don't set MdTextButton's color as explicitly_set_color.
+  // As below LabelButton::SetTextColor() sets its color args as
+  // expliclity_set_color, we cache current explicitly_set_colors here
+  // back to original after calling SetTextColor().
+  // We(also upstream) uses it to check whether the client of MdTextButton
+  // sets another color.
   const auto colors = explicitly_set_colors();
   auto button_colors = GetButtonColors();
   SetTextColor(GetVisualState(), button_colors.text_color);
