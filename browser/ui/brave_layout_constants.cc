@@ -19,6 +19,10 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
       return gfx::Insets::VH(6, 6);
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
       return gfx::Insets::VH(4, 4);
+    case TOOLBAR_BUTTON:
+      // Use 5 inset - (TOOLBAR_BUTTON_HEIGHT(28) - icon size(18)) / 2
+      // icon size - ToolbarButton::kDefaultIconSize
+      return gfx::Insets(touch_ui ? 12 : 5);
     case TOOLBAR_INTERIOR_MARGIN:
       return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 8);
     default:
@@ -30,11 +34,6 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
 // Returns a |nullopt| if the UI color is not handled by Brave.
 std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   const bool touch = ui::TouchUiController::Get()->touch_ui();
-  // const bool hybrid = mode == ui::MaterialDesignController::MATERIAL_HYBRID;
-  // const bool touch_optimized_material =
-  //     ui::MaterialDesignController::touch_ui();
-  // const bool newer_material =
-  //     ui::MaterialDesignController::IsNewerMaterialUi();
   switch (constant) {
     case TAB_HEIGHT: {
       if (HorizontalTabsUpdateEnabled()) {
@@ -62,6 +61,9 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case TAB_SEPARATOR_HEIGHT: {
       return 24;
+    }
+    case TOOLBAR_BUTTON_HEIGHT: {
+      return touch ? 48 : 28;
     }
     case TOOLBAR_CORNER_RADIUS: {
       return 0;

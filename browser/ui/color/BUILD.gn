@@ -18,3 +18,16 @@ source_set("leo_colors") {
     "//ui/gfx",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_color_mixers_unittest.cc" ]
+
+  deps = [
+    "//chrome/browser/ui/color:color_headers",
+    "//chrome/browser/ui/color:mixers",
+    "//testing/gtest",
+    "//ui/color",
+  ]
+}

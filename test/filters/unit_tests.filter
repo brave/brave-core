@@ -242,6 +242,9 @@
 # causes OptimizationGuideKeyedServiceFactory::GetForProfile return a nullptr.
 -WallpaperSearchHandlerTest.*
 
+# These tests fail because we don't use upstream's material colors.
+-MaterialNewTabPageColorMixerTest.*
+
 # These tests fail because we disable kFirstPartySets.
 -RelatedWebsiteSetsSourceTest.RWS
 -RelatedWebsiteSetsSourceTest.RWS_Empty
