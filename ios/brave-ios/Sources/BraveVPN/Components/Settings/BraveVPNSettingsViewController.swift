@@ -271,15 +271,15 @@ public class BraveVPNSettingsViewController: TableViewController {
     )
     
     return Section(
-      header: .title("KILL SWITCH"),
+      header: .title(Strings.VPN.settingsKillSwitchTitle.capitalized),
       rows: [
         Row(
-          text: "Kill Switch",
+          text: Strings.VPN.settingsKillSwitchTitle,
           accessory: .view(killSwitchView),
           uuid: killSwitchSectionCellId
         )
       ],
-      footer: .title("Ensures your data stays protected if the VPN disconnects unexpectedly. When enabled, it blocks all internet traffic if the VPN connection drops, preventing accidental data leaks. Note: Enabling or disabling this feature will briefly reconnect your VPN."),
+      footer: .title(Strings.VPN.settingsKillSwitchDescription),
       uuid: killSwitchSectionCellId
     )
   }
@@ -339,6 +339,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       vpnStatusSection,
       subscriptionSection,
       serverSection,
+      killSwitchSection,
       techSupportSection
     ]
   }
