@@ -1837,7 +1837,7 @@ Are you sure you want to do this?
       <message name="IDS_YOU_ARE_DONE_TEXT" desc="Brave rewards onboarding title">
         By using Brave Rewards, you are protecting your privacy and helping make the web a better place for everyone. And that’s awesome!
       </message>
-      <message name="IDS_GO_BACK" desc="Brave rewards onboarding button text">
+      <message name="IDS_GO_BACK" desc="Go back button text">
         Go Back
       </message>
       <message name="IDS_LETS_TAKE_A_QUICK_TOUR" desc="Brave rewards onboarding button text">
@@ -2005,8 +2005,17 @@ Are you sure you want to do this?
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
       #<ph name="NUMBER">%1$s</ph> <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
-    <message name="IDS_VIEW_RECOVERY_PHRASE" desc="Brave Wallet view recovery phrase button text">
+    <message name="IDS_VIEW_RECOVERY_PHRASE" desc="Brave Wallet backup later dialog button">
       View my recovery phrase
+    </message>
+    <message name="IDS_BACKUP_LATER" desc="Brave Wallet recovery phrase button text">
+      I’ll back up later
+    </message>
+    <message name="IDS_SKIP_RECOVERY_STEP" desc="Brave Wallet skip recovery phrase dialog text">
+    You can skip this step now, but you can still need to back up your recovery phrase to ensure account security.
+    </message>
+    <message name="IDS_SKIP_RECOVERY_STEP_TITLE" desc="Brave Wallet skip recovery phrase dialog title">
+    Skip this step?
     </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?

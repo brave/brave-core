@@ -18,6 +18,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
@@ -113,20 +115,34 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
         mRecoveryPhraseSkip = view.findViewById(R.id.skip);
         mRecoveryPhraseSkip.setOnClickListener(
                 v -> {
-                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                    if (braveWalletP3A != null && mIsOnboarding) {
-                        braveWalletP3A.reportOnboardingAction(
-                                OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-                    }
-                    if (mIsOnboarding) {
-                        if (mOnNextPage != null) {
-                            // Show confirmation screen
-                            // only during onboarding process.
-                            mOnNextPage.incrementPages(2);
-                        }
-                    } else {
-                        requireActivity().finish();
-                    }
+                    MaterialAlertDialogBuilder builder =
+                            new MaterialAlertDialogBuilder(
+                                    requireContext(), R.style.BraveWalletAlertDialogTheme)
+                                    .setTitle(R.string.skip_recovery_step_title)
+                                    .setMessage(getString(
+                                            R.string.skip_recovery_step))
+                                    .setPositiveButton(R.string.backup_later,
+                                            (dialog, which) -> {
+                                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                                        if (braveWalletP3A != null && mIsOnboarding) {
+                                            braveWalletP3A.reportOnboardingAction(
+                                                    OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+                                        }
+                                        if (mIsOnboarding) {
+                                            if (mOnNextPage != null) {
+                                                // Show confirmation screen
+                                                // only during onboarding process.
+                                                mOnNextPage.incrementPages(2);
+                                            }
+                                        } else {
+                                            requireActivity().finish();
+                                        }
+                                    })
+                                    .setNegativeButton(
+                                            R.string.go_back, (dialog, which) -> {
+                                                dialog.dismiss();
+                                            });
+                    builder.show();
                 });
     }
 
