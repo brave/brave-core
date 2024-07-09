@@ -24,6 +24,8 @@ class LargeFaviconView: UIView {
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
       if let favicon = await FaviconFetcher.getIconFromCache(for: siteURL) {
+        try Task.checkCancellation()
+
         self.imageView.image = favicon.image ?? Favicon.defaultImage
         self.backgroundColor = favicon.backgroundColor
         self.imageView.contentMode = .scaleAspectFit
@@ -44,6 +46,8 @@ class LargeFaviconView: UIView {
           kind: .largeIcon,
           persistent: isPersistent
         )
+
+        try Task.checkCancellation()
 
         self.imageView.image = favicon.image
         self.backgroundColor = favicon.backgroundColor

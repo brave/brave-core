@@ -800,6 +800,8 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           siteURL: url,
           isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing
         )
+      } else {
+        cell.imageView.cancelLoading()
       }
       cell.accessibilityLabel = cell.textLabel.text
 
