@@ -11,7 +11,6 @@
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
@@ -823,39 +822,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                 IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE},
            }},
           {
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-              "ipfs-internals",
-              {{"connectedPeersTitle", IDS_IPFS_CONNECTED_PEERS_TITLE},
-               {"addressesConfigTitle", IDS_IPFS_ADDRESSES_CONFIG_TITLE},
-               {"repoStatsTitle", IDS_IPFS_REPO_STATS_TITLE},
-               {"daemonStatusTitle", IDS_IPFS_DAEMON_STATUS_TITLE},
-               {"api", IDS_IPFS_API},
-               {"gateway", IDS_IPFS_GATEWAY},
-               {"swarm", IDS_IPFS_SWARM},
-               {"objects", IDS_IPFS_REPO_OBJECTS},
-               {"size", IDS_IPFS_REPO_SIZE},
-               {"storage", IDS_IPFS_REPO_STORAGE},
-               {"path", IDS_IPFS_REPO_PATH},
-               {"version", IDS_IPFS_REPO_VERSION},
-               {"launched", IDS_IPFS_LAUNCHED},
-               {"notLaunched", IDS_IPFS_NOT_LAUNCHED},
-               {"launch", IDS_IPFS_LAUNCH},
-               {"shutdown", IDS_IPFS_SHUTDOWN},
-               {"notInstalled", IDS_IPFS_NOT_INSTALLED},
-               {"nodeInfoTitle", IDS_IPFS_NODE_INFO_TITLE},
-               {"id", IDS_IPFS_NODE_INFO_ID},
-               {"agentVersion", IDS_IPFS_NODE_INFO_VERSION},
-               {"restart", IDS_IPFS_RESTART},
-               {"learnMore", IDS_IPFS_LEARN_MORE},
-               {"installAndLaunch", IDS_IPFS_INSTALL_AND_LAUNCH},
-               {"openWebUI", IDS_IPFS_OPEN_WEBUI},
-               {"peerDetailsLink", IDS_IPFS_PEERS_DETAILS_LINK},
-               {"installing", IDS_IPFS_INSTALLING},
-               {"runGarbageCollectionTitle", IDS_IPFS_RUN_GC_BUTTON},
-               {"gcError", IDS_IPFS_GC_ERROR},
-               {"rotateIdentity", IDS_IPFS_ROTATE_IDENTITY_TITLE}}},
-          {
-#endif
               "rewards-internals",
               {
                   {"adDiagnosticId",

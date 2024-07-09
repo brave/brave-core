@@ -13,6 +13,7 @@ static_library("core") {
 
   deps = [
     "//base",
+    "//components/base32:base32",
     "//components/prefs",
     "//net",
     "//url",

@@ -36,7 +36,6 @@ const defaultState: WalletState = {
   },
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
-  isNftPinningFeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
   isRefreshingNetworksAndTokens: false
 }
@@ -92,8 +91,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isBitcoinImportEnabled = payload.walletInfo.isBitcoinImportEnabled
         state.isZCashEnabled = payload.walletInfo.isZCashEnabled
         state.isWalletLocked = payload.walletInfo.isWalletLocked
-        state.isNftPinningFeatureEnabled =
-          payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
       },

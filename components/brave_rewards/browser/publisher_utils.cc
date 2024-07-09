@@ -9,13 +9,7 @@
 #include <optional>
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
 
 namespace brave_rewards {
 
@@ -43,16 +37,6 @@ std::optional<std::string> GetPublisherIdFromURL(const GURL& url) {
 }
 
 std::optional<std::string> GetPublisherDomainFromURL(const GURL& url) {
-#if BUILDFLAG(ENABLE_IPFS)
-  if (url.SchemeIs(ipfs::kIPNSScheme)) {
-    std::string domain = ipfs::GetRegistryDomainFromIPNS(url);
-    if (domain.empty()) {
-      return std::nullopt;
-    }
-    return domain;
-  }
-#endif
-
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return std::nullopt;
   }

@@ -13,7 +13,6 @@
 
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -85,10 +84,6 @@ class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
 }  // namespace tor
 
-namespace ipfs {
-class BraveIpfsClientUpdater;
-}
-
 namespace speedreader {
 class SpeedreaderRewriterService;
 }
@@ -126,9 +121,6 @@ class BraveBrowserProcess {
   virtual tor::BraveTorClientUpdater* tor_client_updater() = 0;
   virtual tor::BraveTorPluggableTransportUpdater*
   tor_pluggable_transport_updater() = 0;
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
   virtual p3a::P3AService* p3a_service() = 0;
   virtual brave::BraveReferralsService* brave_referrals_service() = 0;

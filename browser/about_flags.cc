@@ -31,7 +31,6 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/common/features.h"
@@ -65,10 +64,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -206,26 +201,8 @@
           FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),     \
       }))
 
-#define BRAVE_IPFS_FEATURE_ENTRIES                                   \
-  IF_BUILDFLAG(ENABLE_IPFS,                                          \
-               EXPAND_FEATURE_ENTRIES({                              \
-                   "brave-ipfs",                                     \
-                   "Enable IPFS",                                    \
-                   "Enable native support of IPFS.",                 \
-                   kOsDesktop | kOsAndroid,                          \
-                   FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature), \
-               }))
-
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
-      {                                                                       \
-          "enable-nft-pinning",                                               \
-          "Enable NFT pinning",                                               \
-          "Enable NFT pinning for Brave Wallet",                              \
-          kOsDesktop,                                                         \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletNftPinningFeature),         \
-      },                                                                      \
       {                                                                       \
           "native-brave-wallet",                                              \
           "Enable Brave Wallet",                                              \
@@ -1012,7 +989,6 @@
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
       })                                                                       \
-  BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
   CRYPTO_WALLETS_FEATURE_ENTRIES                                               \

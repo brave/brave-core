@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
 import { BraveWallet, AccountPageTabs } from '../../../constants/types'
@@ -15,7 +14,6 @@ import useExplorer from '../../../common/hooks/explorer'
 // utils
 import Amount from '../../../utils/amount'
 import {
-  getCid,
   getNFTTokenStandard,
   isComponentInStorybook,
   stripERC20TokenImageURL
@@ -26,17 +24,12 @@ import { makeAccountRoute } from '../../../utils/routes-utils'
 
 // queries & mutations
 import {
-  useGetAutopinEnabledQuery,
-  useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetNftMetadataQuery,
-  useGetNftPinningStatusQuery,
   useUpdateUserTokenMutation,
-  useGetIsImagePinnableQuery
 } from '../../../common/slices/api.slice'
 
 // components
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
-import { ErrorTooltip } from '../../../components/desktop/nft-pinning-status/components/error-tooltip/error-tooltip'
 import { CopyTooltip } from '../../../components/shared/copy-tooltip/copy-tooltip'
 import CreateNetworkIcon from '../../../components/shared/create-network-icon'
 
@@ -60,16 +53,12 @@ import {
   TraitRarity,
   TraitType,
   TraitValue,
-  PinningStatus,
   HighlightedText,
   AccountAddress,
   AccountName,
   CopyIcon,
   ViewAccount,
-  InfoIcon,
-  ErrorWrapper,
   ErrorMessage,
-  ImageLink,
   NftMultimediaWrapper,
   NftMultimedia,
   IconWrapper,
@@ -100,7 +89,6 @@ export const NftScreen = (props: Props) => {
   const { selectedAsset, tokenNetwork, ownerAccount } = props
 
   // state
-  const [showTooltip, setShowTooltip] = React.useState<boolean>(false)
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
 
   // queries
@@ -111,19 +99,6 @@ export const NftScreen = (props: Props) => {
   } = useGetNftMetadataQuery(selectedAsset, {
     skip: !selectedAsset
   })
-  const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
-  const { data: isNftPinnable } = useGetIsImagePinnableQuery(
-    nftMetadata?.imageURL || skipToken
-  )
-  const { data: currentNftPinningStatus } = useGetNftPinningStatusQuery(
-    selectedAsset,
-    {
-      skip: !selectedAsset || !isAutoPinEnabled || !isNftPinnable
-    }
-  )
-  const { data: ipfsImageUrl } = useGetIPFSUrlFromGatewayLikeUrlQuery(
-    nftMetadata?.imageURL || skipToken
-  )
 
   // mutations
   const [updateUserToken] = useUpdateUserTokenMutation()
@@ -133,36 +108,6 @@ export const NftScreen = (props: Props) => {
   const onClickViewOnBlockExplorer = useExplorer(
     tokenNetwork || new BraveWallet.NetworkInfo()
   )
-
-  // memos
-  const isNftPinned = React.useMemo(() => {
-    return (
-      currentNftPinningStatus?.code ===
-      BraveWallet.TokenPinStatusCode.STATUS_PINNED
-    )
-  }, [currentNftPinningStatus?.code])
-
-  const pinningStatusText = React.useMemo(() => {
-    switch (currentNftPinningStatus?.code) {
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
-        return getLocale('braveWalletNFTDetailsPinningInProgress')
-
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING:
-        return getLocale('braveWalletNFTDetailsPinningInProgress')
-
-      case BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED:
-        return getLocale('braveWalletNFTDetailsNotAvailable')
-
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
-        return getLocale('braveWalletNFTDetailsPinningSuccessful')
-
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
-        return getLocale('braveWalletNFTDetailsPinningFailed')
-
-      default:
-        return getLocale('braveWalletNFTDetailsNotAvailable')
-    }
-  }, [currentNftPinningStatus?.code])
 
   const tokenId = React.useMemo(
     () =>
@@ -341,73 +286,6 @@ export const NftScreen = (props: Props) => {
           </InfoBox>
         )}
       </SectionWrapper>
-      {isAutoPinEnabled && isNftPinnable && (
-        <>
-          <Divider />
-          <SectionTitle>
-            {isFetchingNFTMetadata ? (
-              <Skeleton {...createSkeletonProps(200, 20)} />
-            ) : (
-              <>
-                {getLocale('braveWalletNFTDetailsPinningStatusLabel')}:&nbsp;
-                {currentNftPinningStatus?.code ? (
-                  <PinningStatus pinningStatus={currentNftPinningStatus?.code}>
-                    {pinningStatusText}
-                  </PinningStatus>
-                ) : (
-                  getLocale('braveWalletNFTDetailsNotAvailable')
-                )}
-                {currentNftPinningStatus?.code ===
-                  BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED && (
-                  <ErrorWrapper
-                    onMouseOver={() => setShowTooltip(true)}
-                    onMouseLeave={() => setShowTooltip(false)}
-                  >
-                    <InfoIcon name='help-outline' />
-                    {showTooltip && <ErrorTooltip />}
-                  </ErrorWrapper>
-                )}
-              </>
-            )}
-          </SectionTitle>
-          <SectionWrapper>
-            {isFetchingNFTMetadata ? (
-              <Skeleton {...createSkeletonProps('100%', 55)} />
-            ) : (
-              <InfoBox>
-                <InfoTitle>{getLocale('braveWalletNFTDetailsCid')}</InfoTitle>
-                <InfoText>
-                  {isNftPinned
-                    ? stripERC20TokenImageURL(getCid(ipfsImageUrl || '-'))
-                    : getLocale('braveWalletNFTDetailsNotAvailable')}
-                </InfoText>
-              </InfoBox>
-            )}
-            {isFetchingNFTMetadata ? (
-              <Skeleton />
-            ) : (
-              <InfoBox>
-                <InfoTitle>
-                  {getLocale('braveWalletNFTDetailImageAddress')}
-                </InfoTitle>
-                {isNftPinned && ipfsImageUrl ? (
-                  <ImageLink
-                    href={stripERC20TokenImageURL(ipfsImageUrl)}
-                    target='_blank'
-                  >
-                    <HighlightedText>{nftMetadata?.imageURL}</HighlightedText>
-                    <ButtonIcon name='launch' />
-                  </ImageLink>
-                ) : (
-                  <InfoText>
-                    {getLocale('braveWalletNFTDetailsNotAvailable')}
-                  </InfoText>
-                )}
-              </InfoBox>
-            )}
-          </SectionWrapper>
-        </>
-      )}
       {nftMetadata?.attributes?.length !== 0 && <Divider />}
       {isFetchingNFTMetadata ? (
         <SectionTitle>

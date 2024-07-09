@@ -40,7 +40,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -81,10 +81,6 @@
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/ipfs_service.h"
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
@@ -213,6 +209,9 @@ void RegisterProfilePrefsForMigration(
   ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
 #endif
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
+
+  // Added 2024-05
+  ipfs::RegisterDeprecatedIpfsPrefs(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -262,10 +261,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
                                 false);
-
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsService::RegisterProfilePrefs(registry);
-#endif
 
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -366,9 +361,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Importer: selected data types
   registry->RegisterBooleanPref(kImportDialogExtensions, true);
   registry->RegisterBooleanPref(kImportDialogPayments, true);
-
-  // IPFS companion extension
-  registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
 
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);

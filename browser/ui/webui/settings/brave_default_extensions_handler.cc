@@ -21,7 +21,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/about_flags.h"
 #include "chrome/browser/browser_process.h"
@@ -54,13 +53,6 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#include "brave/components/ipfs/keys/ipns_keys_manager.h"
-#include "brave/components/ipfs/pref_names.h"
 #endif
 
 using decentralized_dns::EnsOffchainResolveMethod;
@@ -123,33 +115,6 @@ BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() = default;
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (service) {
-    ipfs_service_observer_.Observe(service);
-  }
-  web_ui()->RegisterMessageCallback(
-      "notifyIpfsNodeStatus",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::CheckIpfsNodeStatus,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setIPFSStorageMax",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetIPFSStorageMax,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "importIpnsKey",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::ImportIpnsKey,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "launchIPFSService",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::LaunchIPFSService,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "exportIPNSKey",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::ExportIPNSKey,
-                          base::Unretained(this)));
-#endif
   web_ui()->RegisterMessageCallback(
       "resetWallet",
       base::BindRepeating(&BraveDefaultExtensionsHandler::ResetWallet,
@@ -173,11 +138,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setHangoutsEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setIPFSCompanionEnabled",
-      base::BindRepeating(
-          &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
-          base::Unretained(this)));
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
@@ -378,67 +338,6 @@ void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {
   }
 }
 
-void BraveDefaultExtensionsHandler::ExportIPNSKey(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  std::string key_name = args[0].GetString();
-  DCHECK(!key_name.empty());
-  auto* web_contents = web_ui()->GetWebContents();
-  select_file_dialog_ = ui::SelectFileDialog::Create(
-      this, std::make_unique<ChromeSelectFilePolicy>(web_contents));
-  if (!select_file_dialog_) {
-    VLOG(1) << "Export already in progress";
-    return;
-  }
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  const base::FilePath directory = profile->last_selected_directory();
-  gfx::NativeWindow parent_window = web_contents->GetTopLevelNativeWindow();
-  ui::SelectFileDialog::FileTypeInfo file_types;
-  file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
-  dialog_key_ = key_name;
-  auto suggested_directory = directory.AppendASCII(key_name);
-  dialog_type_ = ui::SelectFileDialog::SELECT_SAVEAS_FILE;
-  select_file_dialog_->SelectFile(
-      ui::SelectFileDialog::SELECT_SAVEAS_FILE, base::UTF8ToUTF16(key_name),
-      suggested_directory, &file_types, 0, FILE_PATH_LITERAL("key"),
-      parent_window, nullptr);
-}
-
-void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  bool enabled = args[0].GetBool();
-
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-  if (enabled) {
-    if (!IsExtensionInstalled(ipfs_companion_extension_id)) {
-      // Using FindLastActiveWithProfile() here will be fine. Of course, it can
-      // return NULL but only return NULL when there was no activated window
-      // with |profile_| so far. But, it's impossible at here because user can't
-      // request ipfs install request w/o activating browser.
-      scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
-          new extensions::WebstoreInstallWithPrompt(
-              ipfs_companion_extension_id, profile_,
-              chrome::FindLastActiveWithProfile(profile_)
-                  ->window()
-                  ->GetNativeWindow(),
-              base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             kIPFSCompanionEnabled));
-      installer->BeginInstall();
-    }
-    service->EnableExtension(ipfs_companion_extension_id);
-  } else {
-    service->DisableExtension(
-        ipfs_companion_extension_id,
-        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
-  }
-}
-
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 void BraveDefaultExtensionsHandler::SetBraveWalletEnabled(
     const base::Value::List& args) {
@@ -474,144 +373,3 @@ void BraveDefaultExtensionsHandler::GetEnsOffchainResolveMethodList(
   ResolveJavascriptCallback(args[0],
                             base::Value(::GetEnsOffchainResolveMethodList()));
 }
-
-#if BUILDFLAG(ENABLE_IPFS)
-void BraveDefaultExtensionsHandler::LaunchIPFSService(
-    const base::Value::List& args) {
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service) {
-    return;
-  }
-  if (!service->IsDaemonLaunched()) {
-    service->LaunchDaemon(base::NullCallback());
-  }
-}
-
-void BraveDefaultExtensionsHandler::SetIPFSStorageMax(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(args[0].is_int());
-  CHECK(profile_);
-  int storage_max_gb = args[0].GetInt();
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  prefs->SetInteger(kIpfsStorageMax, storage_max_gb);
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service) {
-    return;
-  }
-  if (service->IsDaemonLaunched()) {
-    service->RestartDaemon();
-  }
-}
-
-void BraveDefaultExtensionsHandler::FileSelected(
-    const ui::SelectedFileInfo& file,
-    int index,
-    void* params) {
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!service) {
-    return;
-  }
-  if (dialog_type_ == ui::SelectFileDialog::SELECT_OPEN_FILE) {
-    service->GetIpnsKeysManager()->ImportKey(
-        file.path(), dialog_key_,
-        base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyImported,
-                       weak_ptr_factory_.GetWeakPtr()));
-  } else if (dialog_type_ == ui::SelectFileDialog::SELECT_SAVEAS_FILE) {
-    service->ExportKey(
-        dialog_key_, file.path(),
-        base::BindOnce(&BraveDefaultExtensionsHandler::OnKeyExported,
-                       weak_ptr_factory_.GetWeakPtr(), dialog_key_));
-  }
-  dialog_type_ = ui::SelectFileDialog::SELECT_NONE;
-  select_file_dialog_.reset();
-  dialog_key_.clear();
-}
-
-void BraveDefaultExtensionsHandler::OnKeyExported(const std::string& key,
-                                                  bool success) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  FireWebUIListener("brave-ipfs-key-exported", base::Value(key),
-                    base::Value(success));
-}
-
-void BraveDefaultExtensionsHandler::OnKeyImported(const std::string& key,
-                                                  const std::string& value,
-                                                  bool success) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  FireWebUIListener("brave-ipfs-key-imported", base::Value(key),
-                    base::Value(value), base::Value(success));
-}
-
-void BraveDefaultExtensionsHandler::FileSelectionCanceled(void* params) {
-  select_file_dialog_.reset();
-  dialog_key_.clear();
-}
-
-void BraveDefaultExtensionsHandler::ImportIpnsKey(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  std::string key_name = args[0].GetString();
-  auto* web_contents = web_ui()->GetWebContents();
-  select_file_dialog_ = ui::SelectFileDialog::Create(
-      this, std::make_unique<ChromeSelectFilePolicy>(web_contents));
-  if (!select_file_dialog_) {
-    VLOG(1) << "Export already in progress";
-    return;
-  }
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  const base::FilePath directory = profile->last_selected_directory();
-  gfx::NativeWindow parent_window = web_contents->GetTopLevelNativeWindow();
-  ui::SelectFileDialog::FileTypeInfo file_types;
-  file_types.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
-  dialog_key_ = key_name;
-  dialog_type_ = ui::SelectFileDialog::SELECT_OPEN_FILE;
-  select_file_dialog_->SelectFile(
-      ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(), directory,
-      &file_types, 0, FILE_PATH_LITERAL("key"), parent_window, nullptr);
-}
-
-void BraveDefaultExtensionsHandler::CheckIpfsNodeStatus(
-    const base::Value::List& args) {
-  NotifyNodeStatus();
-}
-
-void BraveDefaultExtensionsHandler::NotifyNodeStatus() {
-  ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(profile_);
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  bool launched = service && service->IsDaemonLaunched();
-  FireWebUIListener("brave-ipfs-node-status-changed", base::Value(launched));
-}
-
-void BraveDefaultExtensionsHandler::OnIpfsLaunched(bool result, int64_t pid) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  NotifyNodeStatus();
-}
-
-void BraveDefaultExtensionsHandler::OnIpfsShutdown() {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  NotifyNodeStatus();
-}
-void BraveDefaultExtensionsHandler::OnIpnsKeysLoaded(bool success) {
-  if (!IsJavascriptAllowed()) {
-    return;
-  }
-  FireWebUIListener("brave-ipfs-keys-loaded", base::Value(success));
-}
-#endif

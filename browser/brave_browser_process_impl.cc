@@ -72,11 +72,6 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
@@ -147,12 +142,6 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-#if BUILDFLAG(ENABLE_IPFS)
-  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
-      ipfs::kIPFSScheme);
-  content::ChildProcessSecurityPolicy::GetInstance()->RegisterWebSafeScheme(
-      ipfs::kIPNSScheme);
-#endif
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
@@ -485,21 +474,6 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
   return speedreader_rewriter_service_.get();
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
-
-#if BUILDFLAG(ENABLE_IPFS)
-ipfs::BraveIpfsClientUpdater* BraveBrowserProcessImpl::ipfs_client_updater() {
-  if (ipfs_client_updater_) {
-    return ipfs_client_updater_.get();
-  }
-
-  base::FilePath user_data_dir;
-  base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-
-  ipfs_client_updater_ = ipfs::BraveIpfsClientUpdaterFactory(
-      brave_component_updater_delegate(), user_data_dir);
-  return ipfs_client_updater_.get();
-}
-#endif  // BUILDFLAG(ENABLE_IPFS)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 brave_vpn::BraveVPNConnectionManager*

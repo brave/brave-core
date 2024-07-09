@@ -9,7 +9,6 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -17,10 +16,6 @@
 #endif
 namespace tor {
 class BraveTorClientUpdater;
-}
-
-namespace ipfs {
-class BraveIpfsClientUpdater;
 }
 
 // static
@@ -112,12 +107,6 @@ TestingBraveBrowserProcess::tor_pluggable_transport_updater() {
 }
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-ipfs::BraveIpfsClientUpdater*
-TestingBraveBrowserProcess::ipfs_client_updater() {
-  return nullptr;
-}
-#endif
 
 p3a::P3AService* TestingBraveBrowserProcess::p3a_service() {
   return nullptr;

@@ -12,7 +12,6 @@ import("//brave/components/brave_player/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -69,13 +68,6 @@ source_set("ui") {
     sources += [
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
-    ]
-  }
-
-  if (enable_ipfs_internals_webui) {
-    sources += [
-      "webui/ipfs_ui.cc",
-      "webui/ipfs_ui.h",
     ]
   }
 
@@ -752,7 +744,6 @@ source_set("ui") {
     "//brave/components/decentralized_dns/core",
     "//brave/components/google_sign_in_permission",
     "//brave/components/infobars/core",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/common",
     "//brave/components/misc_metrics",
     "//brave/components/ntp_background_images/browser",
@@ -854,8 +845,6 @@ source_set("ui") {
     sources += [
       "views/infobars/brave_confirm_infobar.cc",
       "views/infobars/brave_confirm_infobar.h",
-      "views/infobars/brave_global_infobar_manager.cc",
-      "views/infobars/brave_global_infobar_manager.h",
       "views/infobars/brave_infobar_container_view.cc",
       "views/infobars/brave_infobar_container_view.h",
       "views/infobars/brave_sync_account_deleted_infobar.cc",
@@ -927,17 +916,6 @@ source_set("ui") {
         "views/wayback_machine_bubble_view.cc",
         "views/wayback_machine_bubble_view.h",
       ]
-    }
-  }
-
-  if (enable_ipfs) {
-    deps += [
-      "//brave/components/ipfs",
-      "//components/component_updater",
-    ]
-
-    if (enable_ipfs_internals_webui) {
-      deps += [ "//brave/components/ipfs_ui:generated_resources" ]
     }
   }
 
@@ -1113,13 +1091,6 @@ source_set("ui") {
         "//brave/components/tor",
         "//brave/components/tor:pref_names",
         "//brave/components/tor/resources",
-      ]
-    }
-
-    if (enable_ipfs) {
-      sources += [
-        "views/location_bar/ipfs_location_view.cc",
-        "views/location_bar/ipfs_location_view.h",
       ]
     }
 

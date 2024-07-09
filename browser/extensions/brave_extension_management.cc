@@ -12,7 +12,6 @@
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/extension_management_internal.h"
@@ -29,12 +28,6 @@
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/components/ipfs/brave_ipfs_client_updater.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#include "components/user_prefs/user_prefs.h"
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
@@ -74,21 +67,6 @@ BraveExtensionManagement::~BraveExtensionManagement() {
   local_state_pref_change_registrar_.RemoveAll();
 }
 
-void BraveExtensionManagement::OnExtensionLoaded(
-    content::BrowserContext* browser_context,
-    const Extension* extension) {
-  if (extension->id() == ipfs_companion_extension_id)
-    pref_service_->SetBoolean(kIPFSCompanionEnabled, true);
-}
-
-void BraveExtensionManagement::OnExtensionUnloaded(
-    content::BrowserContext* browser_context,
-    const Extension* extension,
-    UnloadedExtensionReason reason) {
-  if (extension->id() == ipfs_companion_extension_id)
-    pref_service_->SetBoolean(kIPFSCompanionEnabled, false);
-}
-
 void BraveExtensionManagement::OnTorDisabledChanged() {
 #if BUILDFLAG(ENABLE_TOR)
   if (TorProfileServiceFactory::IsTorDisabled(profile_)) {
@@ -121,12 +99,6 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
     OnTorDisabledChanged();
     OnTorPluggableTransportChanged();
   }
-
-#if BUILDFLAG(ENABLE_IPFS)
-  // Remove ipfs executable if it is disabled by GPO.
-  if (ipfs::IsIpfsDisabledByPolicy(user_prefs::UserPrefs::Get(context)))
-    g_brave_browser_process->ipfs_client_updater()->Cleanup();
-#endif
 }
 
 }  // namespace extensions

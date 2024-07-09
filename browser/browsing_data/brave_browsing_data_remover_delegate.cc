@@ -19,19 +19,6 @@
 #include "chrome/common/buildflags.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "base/command_line.h"
-#include "base/files/file_path.h"
-#include "base/process/launch.h"
-#include "base/process/process.h"
-#include "base/task/task_traits.h"
-#include "base/task/thread_pool.h"
-#include "base/threading/thread_restrictions.h"
-#include "base/time/time.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/ipfs_service.h"
-#endif
-
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -66,10 +53,6 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS)
     ClearShieldsSettings(delete_begin, delete_end);
 
-#if BUILDFLAG(ENABLE_IPFS)
-  if (remove_mask & content::BrowsingDataRemover::DATA_TYPE_CACHE)
-    ClearIPFSCache();
-#endif
   // Brave News feed cache
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) {
     brave_news::BraveNewsControllerFactory::GetForContext(profile_)
@@ -120,69 +103,3 @@ void BraveBrowsingDataRemoverDelegate::ClearAiChatHistory(base::Time begin_time,
   // It is prepared for future implementation.
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-#if BUILDFLAG(ENABLE_IPFS)
-void BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC(
-    base::Process process) {
-  bool exited = false;
-
-  {
-    base::ScopedAllowBaseSyncPrimitives scoped_allow_base_sync_primitives;
-
-    // Because we set maximum IPFS storage size as 1GB in Brave, ipfs repo gc
-    // command should be finished in just a few seconds and we do not expect
-    // this child process would hang forever. To be safe, we will wait for 30
-    // seconds max here.
-    exited = process.WaitForExitWithTimeout(base::Seconds(30), nullptr);
-  }
-
-  if (!exited)
-    process.Terminate(0, false /* wait */);
-}
-
-// Run ipfs repo gc command to clear IPFS cache when IPFS executable path is
-// available. Because the command does not support time ranged cleanup, we will
-// always clear the whole cache expect for pinned files when clearing browsing
-// data.
-void BraveBrowsingDataRemoverDelegate::ClearIPFSCache() {
-  auto* service =
-      ipfs::IpfsServiceFactory::GetInstance()->GetForContext(profile_);
-  if (!service)
-    return;
-
-  base::FilePath path = service->GetIpfsExecutablePath();
-  if (path.empty())
-    return;
-
-  base::CommandLine cmdline(path);
-  cmdline.AppendArg("repo");
-  cmdline.AppendArg("gc");
-
-  base::FilePath data_path = service->GetDataPath();
-  base::LaunchOptions options;
-#if BUILDFLAG(IS_WIN)
-  options.environment[L"IPFS_PATH"] = data_path.value();
-#else
-  options.environment["IPFS_PATH"] = data_path.value();
-#endif
-#if BUILDFLAG(IS_LINUX)
-  options.kill_on_parent_death = true;
-#endif
-#if BUILDFLAG(IS_WIN)
-  options.start_hidden = true;
-#endif
-
-  base::Process process = base::LaunchProcess(cmdline, options);
-  if (!process.IsValid()) {
-    return;
-  }
-
-  base::ThreadPool::PostTaskAndReply(
-      FROM_HERE,
-      {base::TaskPriority::USER_VISIBLE, base::MayBlock(),
-       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::BindOnce(&BraveBrowsingDataRemoverDelegate::WaitForIPFSRepoGC,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(process)),
-      CreateTaskCompletionClosure(TracingDataType::kIPFSCache));
-}
-#endif  // BUILDFLAG(ENABLE_IPFS)

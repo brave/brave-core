@@ -41,8 +41,6 @@
 			<array>
 				<string>http</string>
 				<string>https</string>
-				<string>ipfs</string>
-				<string>ipns</string>
 				<string>$(BRAVE_URL_SCHEME)</string>
 			</array>
 		</dict>

@@ -28,7 +28,6 @@
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -81,11 +80,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/tor_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -177,10 +171,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   tor::TorTabHelper::MaybeCreateForWebContents(
       web_contents, web_contents->GetBrowserContext()->IsTor());
   tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);

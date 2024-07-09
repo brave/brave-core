@@ -237,110 +237,6 @@ interface SolanaProvider {
         mojo_base.mojom.DictionaryValue result);
 };
 
-enum WalletPinServiceErrorCode {
-  // Token not supported for pinning
-  ERR_WRONG_TOKEN = 1,
-  // Token metadata has non-ipfs url
-  ERR_NON_IPFS_TOKEN_URL = 2,
-  // Fetching metadata has failed
-  ERR_FETCH_METADATA_FAILED = 3,
-  ERR_WRONG_METADATA_FORMAT = 4,
-  ERR_ALREADY_PINNED = 5,
-  ERR_NOT_PINNED = 6,
-  ERR_PINNING_FAILED = 7,
-  ERR_MEDIA_TYPE_UNSUPPORTED = 8
-};
-
-enum TokenPinStatusCode {
-  STATUS_NOT_PINNED = 1,
-  STATUS_PINNED = 2,
-  STATUS_PINNING_IN_PROGRESS = 3,
-  STATUS_PINNING_FAILED = 4,
-  STATUS_UNPINNING_IN_PROGRESS = 5,
-  STATUS_UNPINNING_FAILED = 6,
-  STATUS_PINNING_PENDING = 7,
-  STATUS_UNPINNING_PENDING = 8
-};
-
-struct PinError {
-  WalletPinServiceErrorCode error_code;
-  string message;
-};
-
-struct TokenPinStatus {
-  // Actual token status
-  TokenPinStatusCode code;
-  // Token error related to the pin status. May be null.
-  PinError? error;
-  // Last time token was validated(checked that data is pinned correctly)
-  mojo_base.mojom.Time validate_time;
-};
-
-struct TokenPinOverview {
-  // Token status for the local pin backend.
-  TokenPinStatus? local;
-  // Token statuses for remote pin backends.
-  map<string, TokenPinStatus> remotes;
-};
-
-// Observers state of the BraveWalletPinService
-interface BraveWalletPinServiceObserver {
-  OnTokenStatusChanged(string? service, BlockchainToken token,
-                       TokenPinStatus status);
-  OnLocalNodeStatusChanged(bool running);
-};
-
-enum TokenValidationResult {
-  // All is ok
-  kValidationPassed,
-  // Token should be repinned
-  kValidationFailed,
-  // Should retry validation later
-  kValidationError,
-  // Token is unsupported
-  kValidationIgnored
-};
-
-// Low-level interface for token pinning.
-// String service argument is used to select on which pinning
-// service operation should be performed.
-// At the moment we have only local pinning, so use null.
-interface WalletPinService {
-  AddObserver(pending_remote<BraveWalletPinServiceObserver> observer);
-
-  // Launches pinning for provided token.
-  // At the moment only local pinning is supported so use null "service" argument.
-  AddPin(BlockchainToken token, string? service) =>(bool result,
-                                                    PinError? error);
-  // Unpins token.
-  RemovePin(BlockchainToken token, string? service) => (bool result,
-                                                        PinError? response);
-  // Returns overview for provided token.
-  GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
-                                            PinError? error);
-  // Checks whether token is pinned correctly.
-  Validate(BlockchainToken token, string? service) => (TokenValidationResult result);
-  // Returns whether IPFS localnode is currently running.
-  IsLocalNodeRunning() => (bool result);
-
-  // Returns whether token is supported for pinning.
-  // Note: You should manually check token metadata url to have ipfs:// url.
-  IsTokenSupported(BlockchainToken token) => (bool result);
-};
-
-interface WalletAutoPinServiceObserver {
-  OnAutoPinStatusChanged(bool enabled);
-};
-
-// Listens for added user tokens and automatically pins them.
-interface WalletAutoPinService {
-  AddObserver(pending_remote<WalletAutoPinServiceObserver> observer);
-
-  // Enables autopinning, so old and new user tokens may be pinned.
-  SetAutoPinEnabled(bool enabled);
-  IsAutoPinEnabled() => (bool enabled);
-};
-
 // Used by the WebUI page to bootstrap bidirectional communication.
 interface PanelHandlerFactory {
   // The WebUI calls this method when the page is first initialized.
@@ -360,10 +256,6 @@ interface PanelHandlerFactory {
                      pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service,
                      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                     pending_receiver<WalletPinService>
-                         brave_wallet_pin_service,
-                     pending_receiver<WalletAutoPinService>
-                         brave_wallet_auto_pin_service,
                      pending_receiver<IpfsService>
                          brave_wallet_ipfs_service_receiver,
                      pending_receiver<MeldIntegrationService>
@@ -387,9 +279,6 @@ interface PageHandlerFactory {
                     pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service,
                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
-                    pending_receiver<WalletPinService> brave_wallet_pin_service,
-                    pending_receiver<WalletAutoPinService>
-                        brave_wallet_auto_pin_service,
                     pending_receiver<IpfsService> brave_wallet_ipfs_service,
                     pending_receiver<MeldIntegrationService>
                         meld_integration_service);
@@ -924,7 +813,6 @@ struct WalletInfo {
   bool is_bitcoin_enabled;
   bool is_bitcoin_import_enabled;
   bool is_z_cash_enabled;
-  bool is_nft_pinning_feature_enabled;
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
 };
@@ -1237,16 +1125,7 @@ interface SwapService {
 };
 
 interface IpfsService {
-  GetNFTGatewayURL() => (string? url);
-  GetGatewayURL() => (string? url);
-
-  SetGateway(string url) => (bool result);
-  SetNFTGateway(string url) => (bool result);
-
   TranslateToGatewayURL(string url) => (string? translated_url);
-  TranslateToNFTGatewayURL(string url) => (string? translated_url);
-  ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
-
   ContentHashToCIDv1URL(array<uint8> content_hash) => (string? url);
 };
 

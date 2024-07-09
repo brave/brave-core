@@ -15,15 +15,6 @@ BASE_FEATURE(kNativeBraveWalletFeature,
              "NativeBraveWallet",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveWalletNftPinningFeature,
-             "BraveWalletNftPinning",
-#if BUILDFLAG(IS_ANDROID)
-             base::FEATURE_DISABLED_BY_DEFAULT
-#else
-             base::FEATURE_ENABLED_BY_DEFAULT
-#endif
-);
-
 BASE_FEATURE(kBraveWalletBitcoinFeature,
              "BraveWalletBitcoin",
              base::FEATURE_ENABLED_BY_DEFAULT

@@ -37,14 +37,16 @@ TEST_F(UnstoppableDomainsResolveUrlTest, IncorrectArraySize) {
 }
 
 TEST_F(UnstoppableDomainsResolveUrlTest, Default) {
-  EXPECT_EQ(GURL("ipfs://QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka"),
+  EXPECT_EQ(GURL("https://ipfs.io/ipfs/"
+                 "QmWrdNJWMbvRxxzLhojVKaBDswS4KNVM7LvjsN7QbDrvka"),
             ResolveUrl(DefaultRpcResult()));
 }
 
 TEST_F(UnstoppableDomainsResolveUrlTest, FallbackToIpfsHtmlValue) {
   auto rpc_result = DefaultRpcResult();
   rpc_result[0] = "";
-  EXPECT_EQ(GURL("ipfs://QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
+  EXPECT_EQ(GURL("https://ipfs.io/ipfs/"
+                 "QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR"),
             ResolveUrl(rpc_result));
 }
 

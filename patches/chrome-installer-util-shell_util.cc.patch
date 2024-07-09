@@ -26,14 +26,3 @@ index 87a2c70b6cb1a0153c1afae935f316a6bb2710f9..40722d7674ea83ce7e3fe7e3431e0145
    entries->push_back(
        std::make_unique<RegistryEntry>(key_name, prog_id, std::wstring()));
  }
-@@ -1524,8 +1527,10 @@ const wchar_t* ShellUtil::kPotentialFileAssociations[] = {
-     L".htm", L".html",  L".pdf",  L".shtml", L".svg",
-     L".xht", L".xhtml", L".webp", nullptr};
- const wchar_t* ShellUtil::kBrowserProtocolAssociations[] = {L"http", L"https",
-+                                                            BRAVE_BROWSER_PROTOCOL_ASSOCIATIONS
-                                                             nullptr};
- const wchar_t* ShellUtil::kPotentialProtocolAssociations[] = {
-+    BRAVE_POTENTIAL_PROTOCOL_ASSOCIATIONS
-     L"http", L"https", L"irc",   L"mailto", L"mms", L"news",   L"nntp",
-     L"sms",  L"smsto", L"snews", L"tel",    L"urn", L"webcal", nullptr};
- const wchar_t* ShellUtil::kRegUrlProtocol = L"URL Protocol";

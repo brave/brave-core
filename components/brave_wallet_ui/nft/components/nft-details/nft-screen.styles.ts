@@ -10,7 +10,6 @@ import {
   layoutSmallWidth
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import { WalletButton } from '../../../components/shared/style'
-import { BraveWallet } from '../../../constants/types'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -316,21 +315,6 @@ export const TraitRarity = styled.span`
 export const InfoIcon = styled(Icon)`
   --leo-icon-size: 20px;
   color: ${leo.color.systemfeedback.errorIcon};
-`
-
-export const PinningStatus = styled.span<{
-  pinningStatus: BraveWallet.TokenPinStatusCode
-}>`
-  color: ${(p) =>
-    p.pinningStatus ===
-      BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS ||
-    p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING ||
-    p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED
-      ? `${leo.color.systemfeedback.warningIcon}`
-      : p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNED
-      ? `${leo.color.systemfeedback.successIcon}`
-      : `${leo.color.systemfeedback.errorIcon}`};
-  margin-right: 6px;
 `
 
 export const ErrorWrapper = styled.div`

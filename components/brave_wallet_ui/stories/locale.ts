@@ -988,9 +988,6 @@ provideStrings({
   braveWalletNFTDetailContractAddress: 'Contract address',
   braveWalletNFTDetailDescription: 'Description',
   braveWalletNFTDetailImageAddress: 'Image URL',
-  braveWalletNFTDetailsPinningInProgress: 'In progress',
-  braveWalletNFTDetailsPinningSuccessful: 'Pinned',
-  braveWalletNFTDetailsPinningFailed: 'Failed',
   braveWalletNFTDetailsNotAvailable: 'Not available yet',
   braveWalletNFTDetailsOverview: 'Overview',
   braveWalletNFTDetailsOwnedBy: 'Owned by',
@@ -1233,55 +1230,6 @@ provideStrings({
   braveWalletTokenMintAddress: 'Mint address',
   braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates',
 
-  // NFT Pinning
-  braveWalletNftPinningWhyNotAvailable: "Why aren't some NFTs eligible?",
-  braveWalletNftPinningTooltip:
-    'Some NFT data is stored on centralized servers like ' +
-    'AWS, Google Cloud, etc. In this case, ' +
-    'it’s not possible to pin your NFT data to the IPFS network.',
-  braveWalletNftPinningBenefitsHeading:
-    'By enabling IPFS in Brave, your NFTs will be pinned automatically. ' +
-    "It's the best way to securely back up your NFTs.",
-  braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
-  braveWalletNftPinningBackButton: 'Back',
-  braveWalletNftPinningCloseButton: 'Close',
-  braveWalletNftPinningHeading: 'The safest way to host NFTs',
-  braveWalletNftPinningRunNodeHeading:
-    'Enable IPFS in Brave to automatically back up your NFTs',
-  braveWalletNftPinningRunNodeDescription:
-    'IPFS is a community-driven storage network, like a hard drive that ' +
-    'everyone can use. But instead of being controlled by one authority, ' +
-    'thousands of individuals work together to host content on IPFS. ' +
-    'When you “pin” something to IPFS, you’re ensuring that at least one ' +
-    'copy of that content is safely stored. And as long as one person ' +
-    'has a copy, a file can never disappear.$1By enabling IPFS in Brave, ' +
-    'your NFTs will be pinned automatically. ' +
-    "It's the best way to securely back up your NFTs.",
-  braveWalletNftPinningCheckNftsButton: 'See which of my NFTs are eligible',
-  braveWalletNftPinningBannerStart:
-    'Enable IPFS in Brave ' +
-    'to automatically back up your NFTs for extra security.',
-  braveWalletNftPinningBannerUploading:
-    'NFTs are being pinned to your local IPFS node.',
-  braveWalletNftPinningBannerSuccess:
-    '$1 supported NFTs are pinned to your local IPFS node.',
-  braveWalletNftPinningBannerLearnMore: 'Learn more',
-  braveWalletNftPinningInspectHeading: '$1 NFT is eligible',
-  braveWalletNftPinningInspectHeadingPlural: '$1 NFTs are eligible',
-  braveWalletNftPinningUnableToPin: 'Unable to pin',
-  braveWalletNftPinningNodeRunningStatus: 'You’re running an IPFS node',
-  braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
-  braveWalletNftPinningStatusPinned: 'Pinned to your local IPFS node.',
-  braveWalletNftPinningStatusPinning:
-    'NFT data is being pinned to your local IPFS node.',
-  braveWalletNftPinningStatusPinningFailed:
-    'Cannot be pinned to your local IPFS node.',
-  braveWalletNftPinningErrorTooltipHeading: 'Most common reasons:',
-  braveWalletNftPinningErrorTooltipReasonOne:
-    'NFT has non-IPFS metadata url problems',
-  braveWalletNftPinningErrorTooltipReasonTwo: 'Internal IPFS node problems',
-  braveWalletNftPinningErrorTooltipReasonThree:
-    'Not enough space on local node',
   braveWalletEditNftModalTitle: 'Edit NFT',
   braveWalletNftMoveToSpam: 'Mark as junk',
   braveWalletNftUnspam: 'Mark as not junk',

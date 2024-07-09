@@ -26,7 +26,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -73,15 +72,6 @@
 #include "brave/browser/ui/webui/ethereum_remote_client/ethereum_remote_client_ui.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/components/ipfs/features.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-#include "brave/browser/ui/webui/ipfs_ui.h"
-#endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-#endif  // BUILDFLAG(ENABLE_IPFS)
-
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif
@@ -125,11 +115,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kWebcompatReporterHost) {
     return new webcompat_reporter::WebcompatReporterUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-  } else if (host == kIPFSWebUIHost &&
-             ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) {
-    return new IPFSUI(web_ui, url.host());
-#endif
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kWalletPageHost &&
              brave_wallet::IsAllowedForContext(profile)) {
@@ -237,10 +222,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kWebcompatReporterHost ||
       (url.host_piece() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
-#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
-      (url.host_piece() == kIPFSWebUIHost &&
-       ipfs::IpfsServiceFactory::IsIpfsEnabled(profile)) ||
-#endif  // BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost) ||
 #else

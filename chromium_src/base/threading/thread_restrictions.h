@@ -7,16 +7,12 @@
 #define BRAVE_CHROMIUM_SRC_BASE_THREADING_THREAD_RESTRICTIONS_H_
 
 class BraveBrowsingDataRemoverDelegate;
-namespace ipfs {
-class IpfsService;
-}
 namespace brave {
 class ProcessLauncher;
 }
 
 #define BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H  \
   friend class ::BraveBrowsingDataRemoverDelegate; \
-  friend class ipfs::IpfsService;                  \
   friend class brave::ProcessLauncher;
 
 #include "src/base/threading/thread_restrictions.h"  // IWYU pragma: export

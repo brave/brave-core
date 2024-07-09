@@ -17,8 +17,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -60,8 +58,6 @@ const char16_t kBraveReleaseTagPrefix[] =
 const char16_t kGoogleLoginLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Allow-Google-login---Third-Parties-and-Extensions";
-const char16_t kDNSLinkLearnMoreURL[] =
-    u"https://docs.ipfs.io/concepts/dnslink/";
 const char16_t kUnstoppableDomainsLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Resolve-Methods-for-Unstoppable-Domains";
@@ -388,7 +384,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveSyncLeaveAndRejoinTheChainButton",
        IDS_BRAVE_SYNC_LEAVE_AND_REJOIN_THE_CHAIN_BUTTON},
       {"braveDataCollection", IDS_BRAVE_DATA_COLLECTION_SETTINGS_SECTION},
-      {"braveIPFS", IDS_BRAVE_IPFS_SETTINGS_SECTION},
       {"braveWeb3", IDS_BRAVE_WEB3_SETTINGS_SECTION},
       {"braveWeb3Domains", IDS_BRAVE_WEB3_DOMAINS_SETTINGS_SECTION},
       {"braveTor", IDS_BRAVE_TOR_SETTINGS_SECTION},
@@ -536,30 +531,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"resolveENSDesc", IDS_SETTINGS_RESOLVE_ENS_DESC},
       {"ensOffchainLookupTitle", IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_TITLE},
       {"resolveSnsDesc", IDS_SETTINGS_RESOLVE_SNS_DESC},
-      {"resolveIPFSURLDesc", IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC},
-      {"ipfsPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC},
-      {"ipfsNftPublicGatewayDesc", IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC},
-      {"ipfsChangeGatewayButtonLabel",
-       IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL},
-      {"changeIpfsGatewayDialogTitle",
-       IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_TITLE},
-      {"changeIpfsGatewayDialogLabel",
-       IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL},
-      {"changeIpfsStorageMaxLabel", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL},
-      {"changeIpfsStorageMaxDesc", IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC},
-      {"ipfsErrorInvalidAddress", IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS},
-      {"ipfsErrorInvalidAddressOrigin",
-       IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION},
-      {"ipfsAutoFallbackToGatewayLabel",
-       IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL},
-      {"ipfsAutoFallbackToGatewayDesc",
-       IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC},
-      {"ipfsAlwaysStartModeLabel", IDS_SETTINGS_IPFS_ALWAYS_START_MODE_LABEL},
-      {"ipfsAutoRedirectToGatewayWhenPossibleLabel",
-       IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL},
-      {"ipfsAutoRedirectToGatewayWhenPossibleDesc",
-       IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_DESC},
-      {"ipfsCompanionEnabledDesc", IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
       {"torEnabledLabel", IDS_SETTINGS_ENABLE_TOR_TITLE},
       {"torEnabledDesc", IDS_SETTINGS_ENABLE_TOR_DESC},
       {"torConnectionSettingsTitle",
@@ -615,53 +586,16 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettings", IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
       {"resetRewardsData", IDS_SETTINGS_RESET_REWARDS_DATA},
       {"showFullUrls", IDS_SETTINGS_ALWAYS_SHOW_FULL_URLS},
-      {"ipfsIpnsKeysLinkTitle", IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK},
-      {"ipfsIpnsKeysLinkTitleDesc", IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC},
-      {"ipfsKeysListTitle", IDS_SETTINGS_IPNS_KEYS_LIST_TITLE},
-      {"ipfsAddKeyDialogTitle", IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE},
-      {"ipfsAddKeyDialogError", IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR},
-      {"ipfsDeleteKeyConfirmation", IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION},
-      {"ipfsNodeNotLaunched", IDS_SETTINGS_IPFS_NODE_NOT_LAUNCHED},
-      {"ipfsStartNode", IDS_SETTINGS_IPFS_START_NODE},
-      {"ipfsNodeLaunchError", IDS_SETTINGS_IPFS_START_NODE_ERROR},
-      {"ipfsKeyImport", IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE},
-      {"ipfsKeyGenerate", IDS_SETTINGS_IPNS_KEYS_GENERATE_BUTTON_TITLE},
-      {"ipfsImporKeysError", IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR},
-      {"ipfsPeersLinkTitle", IDS_SETTINGS_IPFS_PEERS_LINK_TITLE},
-      {"ipfsPeersLinkTitleDesc", IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC},
-      {"ipfsDeletePeerConfirmation",
-       IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION},
-      {"ipfsAddPeerDialogTitle", IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE},
-      {"ipfsAddPeerDialogError", IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR},
-      {"ipfsAddPeerDialogPlacehodler",
-       IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER},
-      {"ipfsPeersNodeRestartText", IDS_SETTINGS_IPFS_PEER_NODE_RESTART},
-      {"ipfsPeersNodeRestartButton",
-       IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON},
-      {"ipfsRotateButtonName", IDS_SETTINGS_IPFS_ROTATE_BUTTON},
-      {"ipfsRotateKeyDialogTitle", IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE},
-      {"ipfsRotationLaunchError", IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR},
-      {"ipfsRotationStopError", IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR},
-      {"ipfsKeyExport", IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM},
-      {"ipfsKeyRemove", IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM},
-      {"ipfsKeyExportError", IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR},
-      {"ipfsLocalNodeWarning", IDS_IPFS_LOCAL_NODE_WARNING},
-      {"clearPinnedNft", IDS_SETTINGS_CLEAR_PINNED_NFT},
-      {"clearPinnedNftDesc", IDS_SETTINGS_CLEAR_PINNED_NFT_DESC},
       {"resetWallet", IDS_SETTINGS_WALLET_RESET},
       {"resetTransactionInfo", IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO},
       {"resetTransactionInfoDesc",
        IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC},
-      {"enableNftPinning", IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING},
-      {"enableNftPinningDesc", IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC},
       {"walletResetConfirmation", IDS_SETTINGS_WALLET_RESET_CONFIRMATION},
       {"walletResetTransactionInfoConfirmation",
        IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION},
       {"walletResetConfirmed", IDS_SETTINGS_WALLET_RESET_CONFIRMED},
       {"walletResetTransactionInfoConfirmed",
        IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED},
-      {"walletClearPinnedNftConfirmed",
-       IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED},
       {"walletNetworksLinkTitle", IDS_SETTINGS_WALLET_NETWORKS_ITEM},
       {"walletAddNetworkDialogTitle", IDS_SETTINGS_WALLET_ADD_NETWORK_TITLE},
       {"walletAddNetworkInvalidURLInput",
@@ -798,7 +732,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("braveShieldsExampleTemplate", "example.com");
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
-  html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",
@@ -814,10 +747,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       confirmation_phrase);
   html_source->AddString("walletResetTransactionInfoConfirmation",
                          reset_tx_confirmation_text);
-  auto clear_pinned_nft_confirmation = l10n_util::GetStringFUTF16(
-      IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION, confirmation_phrase);
-  html_source->AddString("walletClearPinnedNftConfirmation",
-                         clear_pinned_nft_confirmation);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif
@@ -832,13 +761,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("autoLockMinutesValue",
                          std::to_string(profile->GetPrefs()->GetInteger(
                              kBraveWalletAutoLockMinutes)));
-  html_source->AddString(
-      "ipfsStorageMaxValue",
-      std::to_string(profile->GetPrefs()->GetInteger(kIpfsStorageMax)));
-
-  html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
-                                               IDS_SETTINGS_IPFS_METHOD_DESC,
-                                               ipfs::kIPFSLearnMorePrivacyURL));
 
   html_source->AddString(
       "transactionSimulationDesc",

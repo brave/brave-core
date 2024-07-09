@@ -12,7 +12,6 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -47,7 +46,6 @@ static_library("test_support") {
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/tor/buildflags",
   ]
   if (enable_brave_vpn) {
@@ -232,7 +230,6 @@ test("brave_unit_tests") {
     "//brave/components/embedder_support:unit_tests",
     "//brave/components/history/core/browser:unit_tests",
     "//brave/components/history/core/browser/sync:unit_tests",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/ipfs/test:brave_ipfs_unit_tests",
     "//brave/components/json:brave_json_unit_tests",
     "//brave/components/l10n/common",
@@ -255,7 +252,6 @@ test("brave_unit_tests") {
     "//brave/components/script_injector/renderer:unit_tests",
     "//brave/components/search_engines:unit_tests",
     "//brave/components/services/brave_wallet/zcash:zcash_decoder_unit_tests",
-    "//brave/components/services/ipfs/test:ipfs_service_unit_tests",
     "//brave/components/sessions/content:unit_tests",
     "//brave/components/signin/public/identity_manager:unit_tests",
     "//brave/components/skus/browser:unit_tests",
@@ -407,7 +403,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/frame/brave_contents_layout_manager_unittest.cc",
       "//brave/browser/ui/views/wallet_bubble_focus_observer_unittest.cc",
       "//brave/browser/ui/webui/brave_wallet/wallet_common_ui_unittest.cc",
-      "//brave/browser/ui/webui/ipfs_dom_handler_unittest.cc",
       "//brave/browser/ui/webui/settings/brave_wallet_handler_unittest.cc",
       "//brave/chromium_src/chrome/browser/devtools/url_constants_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",
@@ -583,10 +578,6 @@ test("brave_unit_tests") {
     ]
 
     deps += [ "//brave/components/speedreader" ]
-  }
-
-  if (enable_ipfs) {
-    deps += [ "//brave/browser/ipfs/test:unittests" ]
   }
 }
 
@@ -914,7 +905,6 @@ test("brave_browser_tests") {
     "//brave/components/debounce/core/browser",
     "//brave/components/debounce/core/common",
     "//brave/components/https_upgrade_exceptions/browser:browser",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//brave/components/ntp_background_images/buildflags",
@@ -1097,13 +1087,6 @@ test("brave_browser_tests") {
   }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  if (enable_ipfs) {
-    deps += [
-      "//brave/browser/ipfs/test:browsertests",
-      "//brave/components/ipfs:ipfs",
-    ]
-  }
 
   if (toolkit_views) {
     sources += [

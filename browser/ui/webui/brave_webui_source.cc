@@ -11,7 +11,6 @@
 #include "base/containers/flat_map.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/webui/webui_resources.h"
 #include "build/build_config.h"

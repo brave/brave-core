@@ -182,7 +182,6 @@
     "/\\bstd::sto(i|l|ul|ll|ull)\\b": [
       "components/brave_wallet/browser/rlp_encode_unittest\\.cc",
       "components/brave_wallet/common/eth_address\\.cc",
-      "components/ipfs/ipfs_json_parser\\.cc",
       "utility/importer/chrome_importer\\.cc",
     ],
     "/\\busing namespace ": [

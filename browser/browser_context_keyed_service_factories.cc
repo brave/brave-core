@@ -36,7 +36,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -55,7 +54,6 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/infobars/brave_global_infobar_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -69,15 +67,6 @@
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -167,15 +156,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   EthereumRemoteClientServiceFactory::GetInstance();
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs::IpfsServiceFactory::GetInstance();
-#endif
   brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  brave_wallet::BraveWalletAutoPinServiceFactory::GetInstance();
-  brave_wallet::BraveWalletPinServiceFactory::GetInstance();
-#endif
 
   EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();
@@ -208,10 +189,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderServiceFactory::GetInstance();
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-  BraveGlobalInfobarServiceFactory::GetInstance();
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::ModelServiceFactory::GetInstance();

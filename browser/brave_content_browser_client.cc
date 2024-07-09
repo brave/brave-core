@@ -72,7 +72,6 @@
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -176,14 +175,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/content_browser_client_helper.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -508,10 +499,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
                           content::BrowserURLHandler::null_handler());
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                          &ipfs::HandleIPFSURLReverseRewrite);
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
@@ -1204,20 +1191,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               context->IsTor());
   if (onion_location_navigation_throttle) {
     throttles.push_back(std::move(onion_location_navigation_throttle));
-  }
-#endif
-
-#if BUILDFLAG(ENABLE_IPFS)
-  throttles.insert(
-      throttles.begin(),
-      ipfs::IpfsSubframeNavigationThrottle::CreateThrottleFor(handle));
-  std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
-      ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
-          handle, ipfs::IpfsServiceFactory::GetForContext(context),
-          user_prefs::UserPrefs::Get(context),
-          g_browser_process->GetApplicationLocale());
-  if (ipfs_navigation_throttle) {
-    throttles.push_back(std::move(ipfs_navigation_throttle));
   }
 #endif
 

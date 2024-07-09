@@ -23,15 +23,6 @@ class BraveExtensionManagement : public ExtensionManagement,
   ~BraveExtensionManagement() override;
 
  private:
-  // ExtensionRegistryObserver implementation.
-  void OnExtensionLoaded(
-      content::BrowserContext* browser_context,
-      const Extension* extension) override;
-  void OnExtensionUnloaded(
-      content::BrowserContext* browser_context,
-      const Extension* extension,
-      UnloadedExtensionReason reason) override;
-
   void OnTorDisabledChanged();
   void OnTorPluggableTransportChanged();
   void Cleanup(content::BrowserContext* browser_context);
