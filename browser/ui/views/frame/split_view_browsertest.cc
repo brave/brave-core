@@ -194,3 +194,25 @@ IN_PROC_BROWSER_TEST_F(
 
   EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }
+IN_PROC_BROWSER_TEST_F(
+    SplitViewBrowserTest,
+    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
+  brave::ToggleVerticalTabStrip(browser());
+  brave::NewSplitViewForTab(browser());
+  auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
+
+  auto* dialog = new BraveJavaScriptTabModalDialogViewViews(
+      active_contents, active_contents, u"title",
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, u"message", u"default prompt",
+      base::DoNothing(), base::DoNothing());
+  ASSERT_TRUE(dialog);
+  auto* widget = dialog->GetWidget();
+  ASSERT_TRUE(widget);
+
+  const auto dialog_bounds = widget->GetWindowBoundsInScreen();
+
+  auto web_view_bounds = contents_web_view().GetLocalBounds();
+  views::View::ConvertRectToScreen(&contents_web_view(), &web_view_bounds);
+
+  EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
+}
