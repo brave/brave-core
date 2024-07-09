@@ -150,6 +150,14 @@ void BraveToolbarView::Init() {
 
   Profile* profile = browser()->profile();
 
+  // We don't use divider between extensions container and other toolbar
+  // buttons. Upstream conditionally creates |toolbar_divider_|, they check
+  // whether it's null or not. So safe to make remove here.
+  if (toolbar_divider_) {
+    container_view->RemoveChildView(toolbar_divider_.get());
+    toolbar_divider_ = nullptr;
+  }
+
   // Track changes in profile count
   if (IsAvatarButtonHideable(profile)) {
     profile_observer_.Observe(
