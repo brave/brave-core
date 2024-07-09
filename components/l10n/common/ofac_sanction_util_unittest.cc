@@ -118,7 +118,7 @@ struct ParamInfo final {
     // https://en.wikipedia.org/wiki/UN_M49.
 
     // World which includes sanctioned Belarus, Cuba, Iran, Moldova, North
-    // Korea, Russia, Syria and Ukraine.
+    // Korea, Russia, Syria, and Ukraine.
     {"en_001", false, "en", "001", false},
     {"en_001", true, "en", "001", true},
 
@@ -139,7 +139,7 @@ struct ParamInfo final {
     {"en_145", true, "en", "145", true},
 
     // Eastern Europe (including Northern Asia) which includes sanctioned
-    // Belarus, Moldova, Russia and Ukraine.
+    // Belarus, Moldova, Russia, and Ukraine.
     {"en_151", false, "en", "151", false},
     {"en_151", true, "en", "151", true}};
 
