@@ -50,7 +50,8 @@ constexpr int kFontHeight = 18;
 constexpr int kIconSize = 18;
 constexpr int kIconLabelSpacing = 4;
 constexpr int kCornerRadius = 8;
-constexpr auto kButtonInsets = gfx::Insets::TLBR(5, 4, 5, 8);
+constexpr auto kButtonInsets = gfx::Insets::TLBR(5, 4, 5, 4);
+constexpr auto kButtonInsetsTor = gfx::Insets::TLBR(5, 4, 5, 8);
 constexpr auto kViewInsets = gfx::Insets::VH(1, 3);
 
 // Sets the focus and ink drop highlight path to match the background
@@ -73,15 +74,11 @@ class OnionLocationButtonView : public views::LabelButton {
  public:
   explicit OnionLocationButtonView(Profile* profile)
       : LabelButton(base::BindRepeating(&OnionLocationButtonView::ButtonPressed,
-                                        base::Unretained(this)),
-                    brave_l10n::GetLocalizedResourceUTF16String(
-                        IDS_LOCATION_BAR_OPEN_IN_TOR)),
+                                        base::Unretained(this))),
         profile_(profile) {
-    if (profile->IsTor()) {
+    if (profile_->IsTor()) {
       SetText(brave_l10n::GetLocalizedResourceUTF16String(
           IDS_LOCATION_BAR_ONION_AVAILABLE));
-      SetTooltipText(brave_l10n::GetLocalizedResourceUTF16String(
-          IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT));
     }
 
     // Set text style specifics
@@ -101,7 +98,8 @@ class OnionLocationButtonView : public views::LabelButton {
 
     auto* ink_drop = views::InkDrop::Get(this);
     ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
-    SetBorder(views::CreateEmptyBorder(kButtonInsets));
+    SetBorder(views::CreateEmptyBorder(profile_->IsTor() ? kButtonInsetsTor
+                                                         : kButtonInsets));
     SetHasInkDropActionOnClick(true);
     ink_drop->SetVisibleOpacity(kToolbarInkDropVisibleOpacity);
     UpdateBorder();
@@ -117,7 +115,10 @@ class OnionLocationButtonView : public views::LabelButton {
 
   void SetOnionLocation(const GURL& location) {
     onion_location_ = location;
-    SetTooltipText(base::UTF8ToUTF16(onion_location_.spec()));
+    SetTooltipText(l10n_util::GetStringFUTF16(
+        profile_->IsTor() ? IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT
+                          : IDS_LOCATION_BAR_OPEN_IN_TOR_TOOLTIP_TEXT,
+        base::UTF8ToUTF16(onion_location_.spec())));
   }
 
  private:
