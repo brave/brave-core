@@ -33,8 +33,6 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
   void OnProfileAdded(Profile* profile) override;
   void OnProfileManagerDestroying() override;
 
-  // bool IsDayZeroExpt();
-
  private:
   friend class DayZeroBrowserUIExptTest;
 
@@ -48,6 +46,7 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
   void ResetBrowserUIStateForAllProfiles();
   void StartResetTimer();
   base::Time GetFirstRunTime() const;
+  bool IsPartOfDayZeroExpt() const;
 
   // When fire, we'll reset browser UI to original.
   base::OneShotTimer reset_timer_;

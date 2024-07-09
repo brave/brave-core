@@ -5,17 +5,21 @@
 
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/brave_news/common/locales_helper.h"
+#include "brave/build/android/jni_headers/DayZeroMojomHelper_jni.h"
+#include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
@@ -31,8 +35,11 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
     return nullptr;
   }
 
+  LOG(ERROR) << "NTP : " << "DayZeroBrowserUIExptManager 1";
+
   // This class should be instantiated after getting valid first run time;
-  if (brave_stats::GetFirstRunTime(nullptr).is_null()) {
+  if (brave_stats::GetFirstRunTime(g_browser_process->local_state())
+          .is_null()) {
     // This should not be happened in production but not 100% in the wild(ex,
     // corrupted user data). Just early return for safe. If upstream changes the
     // timing of fetching first run time, browser test will catch this.
@@ -40,39 +47,41 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
     return nullptr;
   }
 
+  std::optional<std::string> day_zero_variant;
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  }
+
+  if (!day_zero_variant) {
+    LOG(ERROR) << "NTP : "
+               << "DayZeroBrowserUIExptManager 1 : !day_zero_variant";
+    return nullptr;
+  }
+
+  if (day_zero_variant != "a") {
+    LOG(ERROR) << "NTP : "
+               << "DayZeroBrowserUIExptManager 1 : day_zero_variant != 'a'";
+    return nullptr;
+  } else {
+    LOG(ERROR) << "NTP : "
+               << "DayZeroBrowserUIExptManager 1 : day_zero_variant == 'a'";
+  }
+
   // If one day passed since first run, we don't need to touch original default
   // pref values. Just early return and this class is no-op.
-  if (base::Time::Now() - brave_stats::GetFirstRunTime(nullptr) >=
+  if (base::Time::Now() -
+          brave_stats::GetFirstRunTime(g_browser_process->local_state()) >=
       base::Days(kDayZeroFeatureDurationInDays)) {
     VLOG(2) << __func__ << " Already passed day zero feature duration.";
+    LOG(ERROR) << "NTP : "
+               << "DayZeroBrowserUIExptManager 1 : Already passed day zero "
+                  "feature duration.";
     return nullptr;
   }
 
   // base::WrapUnique for using private ctor.
   return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager));
 }
-
-// bool DayZeroBrowserUIExptManager::IsDayZeroExpt() {
-//   if (!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
-//     return false;
-//   }
-
-//   std::optional<std::string> day_zero_variant;
-//   if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
-//     day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
-//   }
-
-//   if (day_zero_variant == nullptr) {
-//     return false;
-//   }
-
-
-//   if (day_zero_variant == "A" && brave_stats::GetFirstRunTime(nullptr) >=
-//       base::Days(kDayZeroFeatureDurationInDays)) {
-//     return true;
-//   }
-//   return false;
-// }
 
 DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
     ProfileManager* profile_manager,
@@ -108,6 +117,8 @@ void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
 }
 
 void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
+  LOG(ERROR) << "NTP : "
+             << "DayZeroBrowserUIExptManager : SetForDayZeroBrowserUI";
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
 
   auto* prefs = profile->GetPrefs();
@@ -121,9 +132,13 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
                              base::Value(false));
   prefs->SetDefaultPrefValue(brave_news::prefs::kNewTabPageShowToday,
                              base::Value(false));
+  Java_DayZeroMojomHelper_setDayZeroExptAndroid(
+      base::android::AttachCurrentThread(), false);
 }
 
 void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
+  LOG(ERROR) << "NTP : "
+             << "DayZeroBrowserUIExptManager : ResetForDayZeroBrowserUI";
   VLOG(2) << __func__ << " Update prefs for day zero expt.";
 
   auto* prefs = profile->GetPrefs();
@@ -138,9 +153,14 @@ void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
   prefs->SetDefaultPrefValue(
       brave_news::prefs::kNewTabPageShowToday,
       base::Value(brave_news::IsUserInDefaultEnabledLocale()));
+  Java_DayZeroMojomHelper_setDayZeroExptAndroid(
+      base::android::AttachCurrentThread(), true);
 }
 
 void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
+  LOG(ERROR)
+      << "NTP : "
+      << "DayZeroBrowserUIExptManager : ResetBrowserUIStateForAllProfiles";
   CHECK(observation_.IsObserving());
   observation_.Reset();
 
@@ -155,6 +175,7 @@ void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
 }
 
 void DayZeroBrowserUIExptManager::StartResetTimer() {
+  LOG(ERROR) << "NTP : " << "DayZeroBrowserUIExptManager : StartResetTimer";
   auto remained_time_to_expt_duration_since_first_run =
       GetFirstRunTime() - base::Time::Now();
 
@@ -185,5 +206,30 @@ base::Time DayZeroBrowserUIExptManager::GetFirstRunTime() const {
     return *first_run_time_for_testing_;
   }
 
-  return brave_stats::GetFirstRunTime(nullptr);
+  return brave_stats::GetFirstRunTime(g_browser_process->local_state());
+}
+
+bool DayZeroBrowserUIExptManager::IsPartOfDayZeroExpt() const {
+  if (!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    return false;
+  }
+
+  std::optional<std::string> day_zero_variant;
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  }
+
+  if (!day_zero_variant) {
+    return false;
+  }
+
+  if (day_zero_variant == "a" &&
+      (base::Time::Now() -
+           brave_stats::GetFirstRunTime(g_browser_process->local_state()) >=
+       base::Days(kDayZeroFeatureDurationInDays))) {
+    LOG(ERROR) << "NTP : "
+               << "DayZeroBrowserUIExptManager : day_zero_variant == a";
+    return true;
+  }
+  return false;
 }

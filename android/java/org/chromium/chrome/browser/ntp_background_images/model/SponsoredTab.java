@@ -6,7 +6,7 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 
 public class SponsoredTab {
@@ -17,15 +17,15 @@ public class SponsoredTab {
 
     public SponsoredTab(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
-        if (NTPUtil.shouldEnableNTPFeature()) {
-            ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
+        if (NTPImageUtil.shouldEnableNTPFeature()) {
+            ntpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
             tabIndex = SponsoredImageUtil.getTabIndex();
         }
     }
 
     public NTPImage getTabNTPImage(boolean isReset) {
         if (ntpImage == null || isReset) {
-            ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
+            ntpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
         }
         return ntpImage;
     }

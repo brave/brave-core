@@ -96,12 +96,12 @@ void BraveBrowserMainParts::PreBrowserStart() {
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
 
-#if BUILDFLAG(IS_WIN)
+  // #if BUILDFLAG(IS_WIN)
   // As DayZeroBrowserUIExptManager uses first run sentinel time,
   // PreBrowserStart() is good place to initialize.
   day_zero_browser_ui_expt_manager_ =
       DayZeroBrowserUIExptManager::Create(g_browser_process->profile_manager());
-#endif
+  // #endif
 
   ChromeBrowserMainParts::PreBrowserStart();
 }

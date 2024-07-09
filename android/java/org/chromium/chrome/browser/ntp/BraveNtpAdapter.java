@@ -47,7 +47,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -151,19 +151,23 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             layoutParams.setMargins(margin, margin, margin, 0);
             statsViewHolder.ntpStatsLayout.setLayoutParams(layoutParams);
             statsViewHolder.ntpStatsLayout.setOnClickListener(
-                    view -> { mOnBraveNtpListener.checkForBraveStats(); });
+                    view -> {
+                        mOnBraveNtpListener.checkForBraveStats();
+                    });
 
-            mStatsHeight = NTPUtil.getViewHeight(statsViewHolder.itemView) + margin;
+            mStatsHeight = NTPImageUtil.getViewHeight(statsViewHolder.itemView) + margin;
 
         } else if (holder instanceof TopSitesViewHolder) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
             int margin = dpToPx(mActivity, 16);
             layoutParams.setMargins(margin, margin, margin, 0);
 
             mMvTilesContainerLayout.setLayoutParams(layoutParams);
             mMvTilesContainerLayout.setBackgroundResource(R.drawable.rounded_dark_bg_alpha);
-            mTopSitesHeight = NTPUtil.getViewHeight(holder.itemView) + margin;
+            mTopSitesHeight = NTPImageUtil.getViewHeight(holder.itemView) + margin;
 
         } else if (holder instanceof NewContentViewHolder) {
             NewContentViewHolder newContentViewHolder = (NewContentViewHolder) holder;
@@ -181,12 +185,14 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 newContentViewHolder.newContentProgressBar.setVisibility(View.GONE);
             }
             mNewContentHeight =
-                    NTPUtil.getViewHeight(newContentViewHolder.itemView) + dpToPx(mActivity, 10);
+                    NTPImageUtil.getViewHeight(newContentViewHolder.itemView)
+                            + dpToPx(mActivity, 10);
 
         } else if (holder instanceof ImageCreditViewHolder) {
             ImageCreditViewHolder imageCreditViewHolder = (ImageCreditViewHolder) holder;
 
-            if (mNtpImage instanceof Wallpaper && NTPUtil.isReferralEnabled()
+            if (mNtpImage instanceof Wallpaper
+                    && NTPImageUtil.isReferralEnabled()
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 imageCreditViewHolder.superReferralLogo.setVisibility(View.VISIBLE);
                 imageCreditViewHolder.creditTv.setVisibility(View.GONE);
@@ -214,7 +220,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && mSponsoredTab != null
-                    && NTPUtil.shouldEnableNTPFeature()) {
+                    && NTPImageUtil.shouldEnableNTPFeature()) {
                 if (mNtpImage instanceof BackgroundImage) {
                     BackgroundImage backgroundImage = (BackgroundImage) mNtpImage;
                     imageCreditViewHolder.sponsoredLogo.setVisibility(View.GONE);
@@ -245,15 +251,16 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 }
             }
-            if (!NTPUtil.isReferralEnabled() && mSponsoredLogo != null) {
+            if (!NTPImageUtil.isReferralEnabled() && mSponsoredLogo != null) {
                 imageCreditViewHolder.sponsoredLogo.setVisibility(View.VISIBLE);
                 imageCreditViewHolder.sponsoredLogo.setImageBitmap(mSponsoredLogo);
-                imageCreditViewHolder.sponsoredLogo.setOnClickListener(view -> {
-                    if (mWallpaper.getLogoDestinationUrl() != null) {
-                        TabUtils.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
-                        mNTPBackgroundImagesBridge.wallpaperLogoClicked(mWallpaper);
-                    }
-                });
+                imageCreditViewHolder.sponsoredLogo.setOnClickListener(
+                        view -> {
+                            if (mWallpaper.getLogoDestinationUrl() != null) {
+                                TabUtils.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
+                                mNTPBackgroundImagesBridge.wallpaperLogoClicked(mWallpaper);
+                            }
+                        });
             }
 
             if (mRecyclerViewHeight > 0) {
@@ -266,9 +273,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         ? dpToPx(mActivity, 30)
                         : 0;
 
-                mTopMarginImageCredit = mRecyclerViewHeight
-                        - NTPUtil.getViewHeight(imageCreditViewHolder.itemView)
-                        - extraMarginForNews;
+                mTopMarginImageCredit =
+                        mRecyclerViewHeight
+                                - NTPImageUtil.getViewHeight(imageCreditViewHolder.itemView)
+                                - extraMarginForNews;
 
                 if (isStatsEnabled()) {
                     mTopMarginImageCredit -= mStatsHeight;
