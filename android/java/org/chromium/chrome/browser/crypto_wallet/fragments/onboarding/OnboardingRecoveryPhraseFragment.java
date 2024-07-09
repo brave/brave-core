@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +23,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.List;
@@ -39,6 +37,10 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     private AppCompatButton mRecoveryPhraseButton;
     private RecyclerView mRecoveryPhraseRecyclerView;
     private RecoveryPhraseAdapter mRecoveryPhraseAdapter;
+    @StringRes
+    private int mContinueStringRes;
+    @StringRes
+    private int mShowRecoveryPhraseStringRes;
 
     @NonNull
     public static OnboardingRecoveryPhraseFragment newInstance(final boolean isOnboarding) {
@@ -60,6 +62,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
+        mContinueStringRes = R.string.continue_text;
+        mShowRecoveryPhraseStringRes = R.string.show_recovery_phrase;
     }
 
     @Override
@@ -81,7 +85,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
 
         mRecoveryPhraseAdapter = new RecoveryPhraseAdapter();
 
-        mCopyButton.setEnabled(false);
+        mCopyButton.setVisibility(View.INVISIBLE);
         mCopyButton.setOnClickListener(
                 v ->
                         Utils.saveTextToClipboard(
@@ -92,12 +96,18 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
 
         mRecoveryPhraseButton.setOnClickListener(
                 v -> {
-                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                    if (braveWalletP3A != null && mIsOnboarding) {
-                        braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-                    }
-                    if (mOnNextPage != null) {
-                        mOnNextPage.incrementPages(1);
+                    if (mRecoveryPhraseAdapter.isBlurred()) {
+                        mRecoveryPhraseAdapter.blurPhrase(false);
+                        mCopyButton.setVisibility(View.VISIBLE);
+                        mRecoveryPhraseButton.setText(mContinueStringRes);
+                    } else {
+                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                        if (braveWalletP3A != null && mIsOnboarding) {
+                            braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
+                        }
+                        if (mOnNextPage != null) {
+                            mOnNextPage.incrementPages(1);
+                        }
                     }
                 });
         mRecoveryPhraseSkip = view.findViewById(R.id.skip);
@@ -132,7 +142,6 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                         mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                         mRecoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
                         mRecoveryPhraseRecyclerView.setAdapter(mRecoveryPhraseAdapter);
-                        mCopyButton.setEnabled(true);
                     });
         }
     }
@@ -141,6 +150,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     public void onPause() {
         super.onPause();
 
-        mCopyButton.setEnabled(false);
+        mRecoveryPhraseAdapter.blurPhrase(true);
+        mCopyButton.setVisibility(View.INVISIBLE);
+        mRecoveryPhraseButton.setText(mShowRecoveryPhraseStringRes);
     }
 }

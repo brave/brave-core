@@ -2005,6 +2005,9 @@ Are you sure you want to do this?
     <message name="IDS_RECOVERY_PHRASE_ITEM_TEXT" desc="Brave Wallet onboarding text">
       #<ph name="NUMBER">%1$s</ph> <ph name="RECOVERY_PHRASE">%2$s</ph>
     </message>
+    <message name="IDS_VIEW_RECOVERY_PHRASE" desc="Brave Wallet view recovery phrase button text">
+      View my recovery phrase
+    </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?
     </message>

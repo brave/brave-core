@@ -5,6 +5,11 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
+import android.graphics.BlurMaskFilter;
+import android.graphics.MaskFilter;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.MaskFilterSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +31,28 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
     private OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
             mOnRecoveryPhraseSelected;
     private boolean mSelectedRecoveryPhrase;
+    private boolean mBlurPhrase;
+    private final MaskFilterSpan mMaskFilterSpan;
+
+    public RecoveryPhraseAdapter() {
+        mBlurPhrase = true;
+
+        MaskFilter blurMask = new BlurMaskFilter(28f, BlurMaskFilter.Blur.NORMAL);
+        mMaskFilterSpan = new MaskFilterSpan(blurMask);
+    }
+
+    public boolean isBlurred() {
+        return mBlurPhrase;
+    }
+
+    public void blurPhrase(final boolean blur) {
+        if (mBlurPhrase == blur) {
+            return;
+        }
+
+        mBlurPhrase = blur;
+        notifyItemRangeChanged(0, getItemCount());
+    }
 
     @NonNull
     @Override
@@ -37,11 +64,16 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final String recoveryPhrase = mRecoveryPhraseList.get(position);
-        holder.recoveryPhraseText.setText(
-                String.format(holder.recoveryPhraseText.getContext().getResources().getString(
-                                      R.string.recovery_phrase_item_text),
-                        (position + 1), recoveryPhrase));
+        final String recoveryPhrase = String.format(holder.recoveryPhraseText.getContext().getResources().getString(
+                                              R.string.recovery_phrase_item_text),
+                                (position + 1), mRecoveryPhraseList.get(position));
+        final SpannableString recoveryPhraseSpannable = new SpannableString(recoveryPhrase);
+        if (mBlurPhrase) {
+            recoveryPhraseSpannable.setSpan(mMaskFilterSpan, 0, recoveryPhraseSpannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        } else {
+            recoveryPhraseSpannable.removeSpan(mMaskFilterSpan);
+        }
+        holder.recoveryPhraseText.setText(recoveryPhraseSpannable);
         if (mOnRecoveryPhraseSelected != null) {
             holder.itemView.setOnClickListener(
                     v -> {
