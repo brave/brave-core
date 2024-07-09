@@ -284,8 +284,11 @@ void MdTextButton::UpdateTextColor() {
     return;
   }
 
-  auto colors = GetButtonColors();
-  SetTextColor(GetVisualState(), colors.text_color);
+  // To prevent set explicitly set color from here.
+  const auto colors = explicitly_set_colors();
+  auto button_colors = GetButtonColors();
+  SetTextColor(GetVisualState(), button_colors.text_color);
+  set_explicitly_set_colors(colors);
 }
 
 void MdTextButton::UpdateBackgroundColor() {
