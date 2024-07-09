@@ -33,7 +33,7 @@ class BackgroundHelperAndroid final : public BackgroundHelper {
  private:
   void OnApplicationStateChange(base::android::ApplicationState state);
 
-  // BackgroundHelper impl
+  // BackgroundHelper:
   bool IsForeground() const override;
 
   std::unique_ptr<base::android::ApplicationStatusListener>

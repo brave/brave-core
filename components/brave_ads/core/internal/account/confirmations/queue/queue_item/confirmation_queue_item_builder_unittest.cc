@@ -28,7 +28,6 @@ TEST_F(BraveAdsConfirmationQueueItemBuilderTest,
        BuildRewardConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =

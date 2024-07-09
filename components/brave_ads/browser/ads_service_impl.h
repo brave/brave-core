@@ -90,8 +90,6 @@ class AdsServiceImpl final : public AdsService,
 
   ~AdsServiceImpl() override;
 
-  base::WeakPtr<AdsServiceImpl> AsWeakPtr();
-
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
@@ -461,6 +459,8 @@ class AdsServiceImpl final : public AdsService,
       bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
+
+  base::WeakPtr<AdsServiceImpl> AsWeakPtr();
 
   base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };

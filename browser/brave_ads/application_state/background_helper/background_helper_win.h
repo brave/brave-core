@@ -32,7 +32,7 @@ class BackgroundHelperWin : public BackgroundHelper {
  private:
   void OnWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
-  // BackgroundHelper impl
+  // BackgroundHelper:
   bool IsForeground() const override;
 
   std::unique_ptr<gfx::SingletonHwndObserver> singleton_hwnd_observer_;

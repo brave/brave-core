@@ -109,7 +109,7 @@ class BraveAdsSubdivisionTargetingExclusionRuleTest
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     subdivision_ = std::make_unique<Subdivision>();
-    subdivision_->AddObserver(subdivision_targeting_.get());
+    subdivision_->AddObserver(&*subdivision_targeting_);
     exclusion_rule_ = std::make_unique<SubdivisionTargetingExclusionRule>(
         *subdivision_targeting_);
   }

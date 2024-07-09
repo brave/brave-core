@@ -54,7 +54,7 @@ mojom::DBCommandResponseInfoPtr Database::RunTransaction(
   mojom::DBCommandResponseInfoPtr command_response =
       mojom::DBCommandResponseInfo::New();
 
-  RunTransactionImpl(std::move(transaction), command_response.get());
+  RunTransactionImpl(std::move(transaction), &*command_response);
 
   return command_response;
 }

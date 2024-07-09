@@ -38,7 +38,7 @@ base::expected<T, std::string> LoadAndParseResourceComponentOnBackgroundThread(
 
     std::string content;
     const base::ScopedFILE scoped_file(base::FileToFILE(std::move(file), "rb"));
-    if (!base::ReadStreamToString(scoped_file.get(), &content)) {
+    if (!base::ReadStreamToString(&*scoped_file, &content)) {
       return base::unexpected("Failed to read file");
     }
 

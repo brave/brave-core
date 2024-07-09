@@ -102,7 +102,7 @@ constexpr int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
 int GetDataResourceId(const std::string& name) {
-  if (name == data::resource::kCatalogJsonSchemaFilename) {
+  if (name == kCatalogJsonSchemaDataResourceName) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 

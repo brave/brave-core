@@ -16,9 +16,9 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_confirmations_json_reader.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -43,7 +43,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
     return std::move(callback).Run(/*success=*/true);
   }
 
-  Load(kConfirmationStateFilename,
+  Load(kConfirmationsJsonFilename,
        base::BindOnce(
            [](InitializeCallback callback,
               const std::optional<std::string>& json) {
@@ -80,7 +80,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
              BLOG(1, "Migrating confirmation state");
 
-             Save(kConfirmationStateFilename, mutable_json,
+             Save(kConfirmationsJsonFilename, mutable_json,
                   base::BindOnce(
                       [](const std::string& json, InitializeCallback callback,
                          const bool success) {

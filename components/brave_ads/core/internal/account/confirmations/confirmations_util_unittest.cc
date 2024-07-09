@@ -30,13 +30,12 @@ class BraveAdsConfirmationsUtilTest : public test::TestBase {
  protected:
   TokenGeneratorMock token_generator_mock_;
 
-  database::table::ConfirmationQueue queue_database_table_;
+  database::table::ConfirmationQueue confirmation_queue_database_table_;
 };
 
 TEST_F(BraveAdsConfirmationsUtilTest, IsRewardConfirmationValid) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -71,7 +70,6 @@ TEST_F(BraveAdsConfirmationsUtilTest, IsConfirmationNotValid) {
 TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -87,7 +85,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetTokens) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::IsEmpty()));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 
   EXPECT_TRUE(ConfirmationTokensIsEmpty());
 
@@ -102,7 +100,7 @@ TEST_F(BraveAdsConfirmationsUtilTest, ResetIfNoTokens) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::IsEmpty()));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 
   EXPECT_TRUE(ConfirmationTokensIsEmpty());
 

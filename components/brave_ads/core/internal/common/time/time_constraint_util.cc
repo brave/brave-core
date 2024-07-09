@@ -7,6 +7,8 @@
 
 #include "base/containers/adapters.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
 namespace brave_ads {
 
@@ -15,8 +17,8 @@ bool DoesHistoryRespectRollingTimeConstraint(
     const base::TimeDelta time_constraint,
     size_t cap) {
   if (cap == 0) {
-    // If the cap is 0, the limit has been reached.
-    return false;
+    // If the cap is set to 0, then there is no time constraint.
+    return true;
   }
 
   const base::Time threshold = base::Time::Now() - time_constraint;
@@ -35,6 +37,16 @@ bool DoesHistoryRespectRollingTimeConstraint(
   }
 
   return true;
+}
+
+bool DoesHistoryRespectRollingTimeConstraint(
+    const AdType type,
+    const base::TimeDelta time_constraint,
+    const size_t cap) {
+  const std::vector<base::Time> history =
+      GetCachedAdEvents(type, ConfirmationType::kServedImpression);
+
+  return DoesHistoryRespectRollingTimeConstraint(history, time_constraint, cap);
 }
 
 }  // namespace brave_ads

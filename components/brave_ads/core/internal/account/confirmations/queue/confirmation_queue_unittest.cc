@@ -58,7 +58,6 @@ class BraveAdsConfirmationQueueTest : public test::TestBase {
 TEST_F(BraveAdsConfirmationQueueTest, AddConfirmation) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -90,7 +89,6 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {

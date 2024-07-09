@@ -28,7 +28,7 @@ class BackgroundHelperMac : public BackgroundHelper {
   BackgroundHelperMac();
 
  private:
-  // BackgroundHelper impl
+  // BackgroundHelper:
   bool IsForeground() const override;
 
   class BackgroundHelperDelegate;

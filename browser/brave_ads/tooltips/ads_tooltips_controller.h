@@ -40,13 +40,14 @@ class AdsTooltipsController final
       SnoozeScheduledCaptchaCallback snooze_captcha_callback) override;
   void CloseCaptchaTooltip() override;
 
-  base::WeakPtr<brave_tooltips::BraveTooltipDelegate> AsWeakPtr() override;
-
  private:
   // brave_tooltips::BraveTooltipDelegate:
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+
+  base::WeakPtr<brave_tooltips::BraveTooltipDelegate> AsWeakPtr() override;
+
   base::WeakPtrFactory<BraveTooltipDelegate> weak_ptr_factory_{this};
 };
 
