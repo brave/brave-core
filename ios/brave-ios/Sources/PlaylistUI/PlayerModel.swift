@@ -343,6 +343,9 @@ public final class PlayerModel: ObservableObject {
             itemTimeForDisplay: nil
           )
         else {
+          DispatchQueue.main.async {
+            continuation.yield(.init())
+          }
           return
         }
         let ciImage = CIImage(cvPixelBuffer: buffer)
