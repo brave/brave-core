@@ -23,8 +23,6 @@ using syncer::BraveSyncServiceImpl;
 
 BraveSyncAlertsService::BraveSyncAlertsService(Profile* profile)
     : profile_(profile) {
-  DCHECK(SyncServiceFactory::IsSyncAllowed(profile));
-
   if (SyncServiceFactory::IsSyncAllowed(profile)) {
     BraveSyncServiceImpl* service = static_cast<BraveSyncServiceImpl*>(
         SyncServiceFactory::GetForProfile(profile_));
