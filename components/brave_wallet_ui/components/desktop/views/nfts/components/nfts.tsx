@@ -58,6 +58,7 @@ import {
   getTokenCollectionName,
   getTokensWithBalanceForAccounts,
   groupSpamAndNonSpamNfts,
+  isTokenWatchOnly,
   searchNftCollectionsAndGetTotalNftsFound,
   searchNfts
 } from '../../../../../utils/asset-utils'
@@ -192,22 +193,11 @@ export const Nfts = ({
   const userNonSpamNftIds =
     userTokensRegistry?.nonSpamTokenIds ?? emptyTokenIdsList
 
-  const shouldFetchSpamNftBalances =
-    selectedTab === 'hidden' &&
-    !isLoadingSpamNfts &&
-    hideUnownedNfts &&
-    accounts.length > 0 &&
-    networks.length > 0
-
-  const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
-    shouldFetchSpamNftBalances
-      ? {
-          accounts,
-          networks,
-          isSpamRegistry: true
-        }
-      : skipToken
-  )
+  const { data: spamTokenBalancesRegistry } = useBalancesFetcher({
+    accounts,
+    networks,
+    isSpamRegistry: true
+  })
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -412,7 +402,9 @@ export const Nfts = ({
       isFetchingLatestAssetIdsByCollectionNameRegistry) ||
     (selectedTab === 'hidden' &&
       (isLoadingSpamNfts ||
-        (shouldFetchSpamNftBalances && !spamTokenBalancesRegistry)))
+        // (shouldFetchSpamNftBalances &&
+        !spamTokenBalancesRegistry))
+  // )
 
   // methods
   const onSearchValueChange = React.useCallback(
@@ -602,6 +594,12 @@ export const Nfts = ({
                         onSelectAsset={onSelectAsset}
                         isTokenHidden={isHidden}
                         isTokenSpam={isSpam}
+                        isWatchOnly={isTokenWatchOnly(
+                          nft,
+                          allAccounts,
+                          tokenBalancesRegistry,
+                          spamTokenBalancesRegistry
+                        )}
                       />
                     )
                   })}

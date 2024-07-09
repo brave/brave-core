@@ -48,6 +48,7 @@ inline constexpr char kSimpleHashBraveProxyUrl[] =
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"braveWalletWatchOnly", IDS_BRAVE_WALLET_WATCH_ONLY},
     {"braveWalletNftSymbolFieldExplanation",
      IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION},
     {"braveWalletNftNameFieldExplanation",

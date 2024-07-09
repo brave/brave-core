@@ -1239,7 +1239,10 @@ provideStrings({
   braveWalletEditNftModalTitle: 'Edit NFT',
   braveWalletNftMoveToSpam: 'Mark as junk',
   braveWalletNftUnspam: 'Mark as not junk',
+
+  // NFT Labels
   braveWalletNftJunk: 'Junk',
+  braveWalletWatchOnly: 'Watch-only',
 
   // Add NFT modal
   braveWalletAddNftModalTitle: 'Add NFT',

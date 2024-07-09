@@ -46,7 +46,8 @@ import {
   NFTSymbol,
   MoreButton,
   JunkMarker,
-  JunkIcon
+  JunkIcon,
+  WatchOnlyMarker
 } from './style'
 import { Row } from '../../../../../shared/style'
 
@@ -55,10 +56,16 @@ interface Props {
   isTokenHidden: boolean
   isTokenSpam: boolean
   onSelectAsset: (token: BraveWallet.BlockchainToken) => void
+  isWatchOnly?: boolean
 }
 
-export const NFTGridViewItem = (props: Props) => {
-  const { token, isTokenHidden, isTokenSpam, onSelectAsset } = props
+export const NFTGridViewItem = ({
+  token,
+  isTokenHidden,
+  isTokenSpam,
+  onSelectAsset,
+  isWatchOnly
+}: Props) => {
   const tokenImageURL = stripERC20TokenImageURL(token.logo)
   const [showRemoveNftModal, setShowRemoveNftModal] =
     React.useState<boolean>(false)
@@ -164,6 +171,14 @@ export const NFTGridViewItem = (props: Props) => {
             {getLocale('braveWalletNftJunk')}
             <JunkIcon />
           </JunkMarker>
+        )}
+        {isWatchOnly && (
+          <WatchOnlyMarker>
+            {
+              //
+              getLocale('braveWalletWatchOnly')
+            }
+          </WatchOnlyMarker>
         )}
         <IconWrapper>
           <DecoratedNftIcon
