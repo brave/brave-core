@@ -63,6 +63,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool IsErrorPage(content::NavigationHandle* navigation_handle);
 
   void ProcessNavigation();
+  void ProcessSameDocumentNavigation();
   void ResetNavigationState();
 
   void MaybeNotifyBrowserDidBecomeActive();
@@ -73,7 +74,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void MaybeNotifyTabDidChange();
 
-  void MaybeNotifyTabContentDidChange();
+  bool ShouldNotifyTabContentDidChange() const;
   void MaybeNotifyTabHtmlContentDidChange();
   void OnMaybeNotifyTabHtmlContentDidChange(
       const std::vector<GURL>& redirect_chain,
