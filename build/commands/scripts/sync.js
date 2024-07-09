@@ -18,12 +18,10 @@ program
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'comma-separated target OS list')
   .option('--target_arch <target_arch>', 'comma-separated target architecture list')
-  .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
   .option('--init', 'initialize all dependencies')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--fetch_all', 'fetch all tags and branch heads')
-  .option('--sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
-  .option('--ignore_chromium', 'do not update chromium version even if it is stale [deprecated, use --sync_chromium=false]')
+  .option('-C, --sync_chromium [arg]', 'force or skip chromium sync (true/false/1/0)', JSON.parse)
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
 
@@ -60,25 +58,15 @@ async function RunCommand() {
 
   config.update(program)
 
-  if (program.ignore_chromium) {
-    Log.warn(
-        '--ignore_chromium is deprecated, please replace with ' +
-        '--sync_chromium=false')
-    program.sync_chromium = false
-  }
-
   depotTools.installDepotTools()
 
-  if (program.init || !fs.existsSync(config.defaultGClientFile)) {
+  if (
+    program.init ||
+    program.target_os ||
+    program.target_arch ||
+    !fs.existsSync(config.defaultGClientFile)
+  ) {
     syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
-  } else if (program.target_os) {
-    Log.warn(
-        '--target_os is ignored. If you are attempting to sync with ' +
-        'a different target_os argument from that used originally via init ' +
-        '(and specified in the .gclient file), then you will likely not end ' +
-        'up with the correct dependency projects. Specify new target_os ' +
-        'values with --init, or edit .gclient manually before running sync ' +
-        'again.')
   }
 
   if (config.isCI) {
