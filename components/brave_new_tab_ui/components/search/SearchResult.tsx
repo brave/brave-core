@@ -47,9 +47,16 @@ const IconContainer = styled.div`
 
   flex-shrink: 0;
 
-  > span, > img {
+  > * { border-radius: ${radius.s}; }
+
+  > span {
     width: 20px;
     height: 20px;
+  }
+
+  > img {
+    width: 100%;
+    height: 100%;
   }
 `
 
@@ -67,7 +74,7 @@ const FavIcon = styled.span<{ url: string }>`
 const Content = styled.span`
   font: ${font.large.regular};
   line-height: 24px;
-  color: ${color.text.secondary};
+  color: ${color.white};
 `
 
 const Description = styled.span`
@@ -76,12 +83,8 @@ const Description = styled.span`
   color: rgba(255,255,255,0.7);
 `
 
-const Hint = styled.span`
-  color: ${color.text.interactive};
-`
-
 const LeoIcon = styled(Icon)`
-  --leo-icon-size: ${icon.m};
+  --leo-icon-size: ${icon.l};
 
   color: ${color.white};
   background: ${gradient.iconsActive};
@@ -125,10 +128,6 @@ export default function SearchResult({ match, selected, onClick }: Props) {
   const description = mojoString16ToString(match.swapContentsAndDescription ? match.contents : match.description)
   const isAskLeo = description === getLocale('searchAskLeo')
 
-  const hint = description && match.destinationUrl.url
-    ? description
-    : ''
-
   const result = <Container href={match.destinationUrl.url} aria-selected={selected} onClick={e => {
     e.preventDefault()
     onClick(e)
@@ -137,8 +136,8 @@ export default function SearchResult({ match, selected, onClick }: Props) {
       <Image key={match.imageUrl ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />
     </IconContainer>
     <Flex direction='column'>
-      <Content>{contents}<Hint>{hint ? ` - ${hint}` : ''}</Hint></Content>
-      {description && description !== hint && <Description>{description}</Description>}
+      <Content>{contents}</Content>
+      {description && <Description>{description}</Description>}
     </Flex>
   </Container>
 
