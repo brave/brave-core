@@ -40,6 +40,18 @@ import {
 // Style
 import { LongWrapper } from '../../../stories/style'
 
+/**
+ * These are the types of transactions that
+ * we can compute the expected results for locally.
+ *
+ * Skip Blowfish Simulation of these to reduce operating costs
+ */
+const SIMPLE_TRANSACTION_TYPES = [
+  BraveWallet.TransactionType.ETHSend,
+  BraveWallet.TransactionType.SolanaCompressedNftTransfer,
+  BraveWallet.TransactionType.SolanaSystemTransfer
+]
+
 interface Props {
   selectedPendingTransaction: SerializableTransactionInfo
 }
@@ -52,20 +64,32 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     selectedPendingTransaction.txDataUnion
   )
 
+  const shouldSkipSimulation = SIMPLE_TRANSACTION_TYPES.includes(
+    selectedPendingTransaction.txType
+  )
+
   const {
     data: txSimulationOptIn, //
     isLoading: isLoadingSimulationOptInStatus
-  } = useGetIsTxSimulationOptInStatusQuery()
+  } = useGetIsTxSimulationOptInStatusQuery(
+    shouldSkipSimulation ? skipToken : undefined
+  )
+
   const isSimulationPermitted =
+    !shouldSkipSimulation &&
     txSimulationOptIn === BraveWallet.BlowfishOptInStatus.kAllowed
 
   const {
     data: networkHasTxSimulationSupport,
     isLoading: isCheckingSimulationNetworkSupport
-  } = useGetHasTransactionSimulationSupportQuery({
-    chainId: selectedPendingTransaction.chainId,
-    coinType: selectedPendingTxCoinType
-  })
+  } = useGetHasTransactionSimulationSupportQuery(
+    shouldSkipSimulation
+      ? skipToken
+      : {
+          chainId: selectedPendingTransaction.chainId,
+          coinType: selectedPendingTxCoinType
+        }
+  )
 
   const {
     data: evmTxSimulation,
@@ -76,9 +100,7 @@ export const PendingTransactionPanel: React.FC<Props> = ({
   } = useGetEVMTransactionSimulationQuery(
     isSimulationPermitted &&
       networkHasTxSimulationSupport &&
-      selectedPendingTxCoinType === CoinTypes.ETH &&
-      // skip simulating in favor of "safer-sign" UI for Brave and COW Swaps
-      selectedPendingTransaction.txType !== BraveWallet.TransactionType.ETHSwap
+      selectedPendingTxCoinType === CoinTypes.ETH
       ? {
           chainId: selectedPendingTransaction.chainId,
           coinType: selectedPendingTxCoinType,
