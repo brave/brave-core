@@ -50,35 +50,6 @@ std::string GetKnownFilNetworkId(const std::string& chain_id);
 std::string GetKnownBtcNetworkId(const std::string& chain_id);
 std::string GetKnownZecNetworkId(const std::string& chain_id);
 
-namespace {
-
-// void UpdateCustomNetworks(PrefService* prefs,
-//                           const std::vector<base::Value::Dict>& values,
-//                           brave_wallet::mojom::CoinType coin) {
-//   ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-//   base::Value::List* list = update->EnsureList(GetPrefKeyForCoinType(coin));
-//   list->clear();
-//   for (auto& it : values) {
-//     list->Append(it.Clone());
-//   }
-// }
-
-// void UpdateCustomNetworks(PrefService* prefs,
-//                           const base::Value::Dict& value,
-//                           brave_wallet::mojom::CoinType coin) {
-//   std::vector<base::Value::Dict> values;
-//   values.push_back(value.Clone());
-//   UpdateCustomNetworks(prefs, values, coin);
-// }
-
-// std::vector<brave_wallet::mojom::NetworkInfoPtr> GetAllEthCustomChains(
-//     NetworkManager* network_manager) {
-//   return network_manager->GetAllCustomChains(
-//       brave_wallet::mojom::CoinType::ETH);
-// }
-
-}  // namespace
-
 class NetworkManagerUnitTest : public testing::Test {
  public:
   NetworkManagerUnitTest() = default;
@@ -103,15 +74,6 @@ TEST_F(NetworkManagerUnitTest, GetAllCustomChainsTest) {
     mojom::NetworkInfo chain2 = GetTestNetworkInfo2("chain2", coin);
     network_manager()->AddCustomNetwork(chain1);
     network_manager()->AddCustomNetwork(chain2);
-
-    // std::vector<base::Value::Dict> values;
-
-    // mojom::NetworkInfo chain1 = GetTestNetworkInfo1("chain1", coin);
-    // values.push_back(NetworkInfoToValue(chain1));
-
-    // mojom::NetworkInfo chain2 = GetTestNetworkInfo2("chain2", coin);
-    // values.push_back(NetworkInfoToValue(chain2));
-    // UpdateCustomNetworks(prefs(), std::move(values), coin);
 
     ASSERT_EQ(2u, network_manager()->GetAllCustomChains(coin).size());
     EXPECT_EQ(chain1, *network_manager()->GetAllCustomChains(coin)[0]);

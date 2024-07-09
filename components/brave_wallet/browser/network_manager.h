@@ -63,8 +63,7 @@ class NetworkManager {
   void RemoveHiddenNetwork(mojom::CoinType coin, const std::string& chain_id);
 
   // Get/Set the current chain ID for coin from kBraveWalletSelectedNetworks
-  // pref
-  // when origin is not presented. If origin is presented,
+  // pref when origin is not presented. If origin is presented,
   // kBraveWalletSelectedNetworksPerOrigin will be used. In addition, if origin
   // is opaque, we will also fallback to kBraveWalletSelectedNetworks but it
   // will be read only, other non http/https scheme will fallback to r/w

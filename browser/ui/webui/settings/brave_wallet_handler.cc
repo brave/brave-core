@@ -341,6 +341,7 @@ void BraveWalletHandler::AddHiddenNetwork(const base::Value::List& args) {
     return;
   }
 
+  AllowJavascript();
   GetNetworkManager()->AddHiddenNetwork(*coin, *chain_id);
   ResolveJavascriptCallback(args[0], base::Value(true));
 }
