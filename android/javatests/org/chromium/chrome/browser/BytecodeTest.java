@@ -1397,7 +1397,6 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
-                        OneshotSupplier.class,
                         Supplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,

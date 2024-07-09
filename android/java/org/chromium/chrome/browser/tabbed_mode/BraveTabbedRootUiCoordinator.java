@@ -46,7 +46,6 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
-import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.InsetObserver;
 import org.chromium.ui.base.ActivityWindowAndroid;
@@ -68,7 +67,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @NonNull ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            @NonNull OneshotSupplier<StartSurface> startSurfaceSupplier,
             @NonNull OneshotSupplier<TabSwitcher> tabSwitcherSupplier,
             @NonNull OneshotSupplier<TabSwitcher> incognitoTabSwitcherSupplier,
             @NonNull OneshotSupplier<HubManager> hubManagerSupplier,
@@ -116,7 +114,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 bookmarkModelSupplier,
                 tabBookmarkerSupplier,
                 tabModelSelectorSupplier,
-                startSurfaceSupplier,
                 tabSwitcherSupplier,
                 incognitoTabSwitcherSupplier,
                 hubManagerSupplier,
