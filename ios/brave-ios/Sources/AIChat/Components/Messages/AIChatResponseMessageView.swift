@@ -122,17 +122,7 @@ struct AIChatResponseMessageView: View {
       ForEach(textBlocks, id: \.self) { block in
         // Render Code Block
         if let codeBlock = block.codeBlock {
-          Text(block.string)
-            .font(.subheadline)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-            .multilineTextAlignment(.leading)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding()
-            .background(
-              RoundedRectangle(cornerRadius: 8.0, style: .continuous)
-                .fill(codeBlock.backgroundColor)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+          CodeBlockView(block: block, codeBlock: codeBlock)
         } else {
           // Render Text Block
           Text(block.string)
@@ -205,6 +195,58 @@ struct AIChatResponseMessageView: View {
     learnMoreLink.underlineStyle = .single
 
     return Text(text + period + space + learnMoreLink)
+  }
+
+  /// View for displaying a code block with a header displaying language hint & copy button,
+  /// and the syntax highlighted code.
+  struct CodeBlockView: View {
+
+    let block: MarkdownParser.StringBlock
+    let codeBlock: MarkdownParser.CodeBlock
+
+    var body: some View {
+      VStack(spacing: 0) {
+        HStack {
+          Text(
+            codeBlock.languageHint?.capitalizeFirstLetter
+              ?? Strings.AIChat.leoCodeExampleDefaultTitle
+          )
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          Spacer()
+          Button(
+            action: {
+              UIPasteboard.general.setValue(
+                String(block.string.characters),
+                forPasteboardType: "public.plain-text"
+              )
+            },
+            label: {
+              HStack(spacing: 8) {
+                Image(braveSystemName: "leo.copy")
+                Text(Strings.AIChat.responseContextMenuCopyTitle)
+                  .fontWeight(.semibold)
+              }
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+            }
+          )
+        }
+        .padding(16)
+        .background(Color(braveSystemName: .pageBackground))
+        Text(block.string)
+          .font(.subheadline)
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+          .multilineTextAlignment(.leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(16)
+          .background(codeBlock.backgroundColor)
+      }
+      .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: 8)
+          .inset(by: 0.5)
+          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
+      )
+    }
   }
 }
 
