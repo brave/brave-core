@@ -305,7 +305,17 @@ void MdTextButton::UpdateColors() {
 
   // Update the icon color.
   if (icon_) {
+    // Usually, only set for normal state if we want to use same image for all
+    // state. However, upstream MdTextButton updates left-padding when it has
+    // image. As it uses HasImage(GetVisualState()) for checking image,
+    // different padding could be used if we don't set image for all state.
     SetImageModel(ButtonState::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
+                                                 icon_size_));
+    SetImageModel(ButtonState::STATE_HOVERED,
+                  ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
+                                                 icon_size_));
+    SetImageModel(ButtonState::STATE_PRESSED,
                   ui::ImageModel::FromVectorIcon(*icon_, GetCurrentTextColor(),
                                                  icon_size_));
   }
