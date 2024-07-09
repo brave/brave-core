@@ -1,9 +1,0 @@
-Name: hmac
-URL: https://crates.io/crates/hmac
-Description: Generic implementation of Hash-based Message Authentication Code (HMAC)
-Version: 0.10.1
-Security Critical: yes
-Shipped: yes
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/hmac-0.10.1/LICENSE-APACHE
-Revision: b03defa3b338b7a45538bca6c492f75dcb4f0216
