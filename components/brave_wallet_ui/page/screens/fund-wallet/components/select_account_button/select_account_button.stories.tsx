@@ -13,15 +13,14 @@ export const _SelectAccountButton = () => {
     <WalletPageStory>
       <SelectAccountButton
         labelText='Account'
-        selectedAccount={{...mockAccount, name: 'My ethereum account'}}
+        selectedAccount={{ ...mockAccount, name: 'My ethereum account' }}
         onClick={() => console.log('Open account selection modal')}
       />
     </WalletPageStory>
   )
 }
 
-_SelectAccountButton.story = {
-  name: 'Fund Wallet - Select Account Button'
+export default {
+  component: _SelectAccountButton,
+  title: 'Fund Wallet - Select Account Button'
 }
-
-export default _SelectAccountButton

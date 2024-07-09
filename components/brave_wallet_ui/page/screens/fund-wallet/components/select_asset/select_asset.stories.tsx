@@ -31,8 +31,7 @@ export const _SelectAsset = () => {
   )
 }
 
-_SelectAsset.story = {
-  name: 'Fund Wallet - Select Asset'
+export default {
+  component: _SelectAsset,
+  title: 'Fund Wallet - Select Asset'
 }
-
-export default _SelectAsset

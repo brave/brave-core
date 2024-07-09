@@ -204,11 +204,10 @@ export const useBuy = () => {
     [
       amount,
       defaultCountryCode,
-      defaultFiatCurrency,
       generateQuotes,
       reset,
       selectedAccount?.address,
-      selectedAsset?.currencyCode,
+      selectedAsset,
       selectedCurrency?.currencyCode
     ]
   )
@@ -229,7 +228,7 @@ export const useBuy = () => {
       }
 
       await handleQuoteRefresh({
-        amount: value,
+        amount: value
       })
     },
     [handleQuoteRefresh]

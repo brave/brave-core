@@ -25,8 +25,7 @@ export const _SelectCurrency = () => {
   )
 }
 
-_SelectCurrency.story = {
-  name: 'Fund Wallet - Select Currency'
-}
-
-export default _SelectCurrency
+export default {
+  component: _SelectCurrency,
+  title: 'Fund Wallet - Select Currency'
+} 

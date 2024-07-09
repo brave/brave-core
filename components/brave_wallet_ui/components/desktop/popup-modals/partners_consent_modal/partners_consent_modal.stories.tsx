@@ -22,8 +22,7 @@ export const _PartnersConsentModal = () => {
   )
 }
 
-_PartnersConsentModal.story = {
-  name: 'Partners Consent Modal'
+export default {
+  component: _PartnersConsentModal,
+  title: 'Partners Consent Modal'
 }
-
-export default _PartnersConsentModal

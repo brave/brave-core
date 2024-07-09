@@ -19,4 +19,7 @@ _FundWalletScreen.story = {
   name: 'Fund Wallet Screen v1'
 }
 
-export default _FundWalletScreen
+export default {
+  component: _FundWalletScreen,
+  title: 'Fund Wallet Screen v1'
+}
