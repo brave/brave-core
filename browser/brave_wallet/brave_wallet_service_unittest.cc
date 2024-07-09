@@ -171,11 +171,6 @@ const char interface_not_supported_response[] = R"({
 
 constexpr char kBraveUrl[] = "https://brave.com";
 
-const struct {
-  const int country_code;
-  const std::string expected_country;
-} kCountryCodeCases[] = {{21843, "US"}, {17217, "CA"}, {16725, "AU"}};
-
 class MockDataRemovalObserver : public StoragePartition::DataRemovalObserver {
  public:
   explicit MockDataRemovalObserver(StoragePartition* partition) {
@@ -3074,6 +3069,11 @@ TEST_F(BraveWalletServiceUnitTest, MaybeMigrateCompressedNfts) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetCountryCode) {
+  const struct {
+    const int country_code;
+    const std::string expected_country;
+  } kCountryCodeCases[] = {{21843, "US"}, {17217, "CA"}, {16725, "AU"}};
+
   for (const auto& [country_code, expected_country] : kCountryCodeCases) {
     GetPrefs()->SetInteger(country_codes::kCountryIDAtInstall, country_code);
     service_->GetCountryCode(base::BindLambdaForTesting(
