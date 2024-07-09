@@ -158,6 +158,7 @@ import WebKit
       try await AsyncFileManager.default.removeItem(at: fileURL)
     }
 
+    _ = try await getOrCreateCustomRulesFolder()
     try customRules.write(to: fileURL, atomically: true, encoding: .utf8)
     Self.customRuleListVersion.value += 1
     guard let fileInfo = try await savedCustomRulesFileInfo() else { return }
