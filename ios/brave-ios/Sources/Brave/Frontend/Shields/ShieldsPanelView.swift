@@ -27,7 +27,6 @@ struct ShieldsPanelView: View {
 
   private let url: URL
   private let displayHost: String
-  @State private var favicon = Image(uiImage: Favicon.defaultImage)
   @AppStorage("advancedShieldsExpanded") private var advancedShieldsExpanded = false
   @ObservedObject private var viewModel: ShieldsSettingsViewModel
   private var actionCallback: (Action) -> Void
@@ -73,23 +72,16 @@ struct ShieldsPanelView: View {
     }
     .background(Color(.braveBackground))
     .frame(idealWidth: 360, alignment: .center)
-    .task {
-      if let faviconImage = FaviconFetcher.getIconFromCache(for: url)?.image {
-        self.favicon = Image(uiImage: faviconImage)
-      }
-      await loadFavicon(for: url, isPrivateBrowsing: viewModel.isPrivateBrowsing)
-    }
     .toolbar(.hidden)
   }
 
   @ViewBuilder @MainActor private var headerView: some View {
     VStack(alignment: .center, spacing: 8) {
       HStack(alignment: .center, spacing: 8) {
-        favicon
-          .resizable()
-          .aspectRatio(contentMode: .fit)
-          .cornerRadius(4)
-          .frame(width: 24, height: 24, alignment: .center)
+        FaviconImage(
+          url: url.absoluteString,
+          isPrivateBrowsing: viewModel.isPrivateBrowsing
+        )
         Text(displayHost)
           .font(.title2)
           .foregroundStyle(Color(.bravePrimary))
@@ -278,26 +270,6 @@ struct ShieldsPanelView: View {
       }
       .buttonStyle(.plain)
       .frame(maxWidth: .infinity, alignment: .leading)
-    }
-  }
-
-  /// Load the favicon from a site URL directly into a `Image`
-  private func loadFavicon(
-    for siteURL: URL,
-    isPrivateBrowsing: Bool
-  ) async {
-    do {
-      guard
-        let faviconImage = try await FaviconFetcher.loadIcon(
-          url: siteURL,
-          persistent: !isPrivateBrowsing
-        ).image
-      else { return }
-      self.favicon = Image(uiImage: faviconImage)
-    } catch {
-      ContentBlockerManager.log.error(
-        "Failed to load favicon: \(String(describing: error))"
-      )
     }
   }
 }

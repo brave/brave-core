@@ -95,14 +95,12 @@ import os
     profile: Profile,
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
-    historyAPI: BraveHistoryAPI,
-    p3aUtilities: BraveP3AUtils,
-    deAmpPrefs: DeAmpPrefs,
     debounceService: DebounceService?,
+    braveCore: BraveCoreMain,
     clearDataCallback: @escaping ClearDataCallback
   ) {
-    self.p3aUtilities = p3aUtilities
-    self.deAmpPrefs = deAmpPrefs
+    self.p3aUtilities = braveCore.p3aUtils
+    self.deAmpPrefs = braveCore.deAmpPrefs
     self.debounceService = debounceService
     self.tabManager = tabManager
     self.isP3AEnabled = p3aUtilities.isP3AEnabled
@@ -124,7 +122,7 @@ import os
     var clearableSettings = [
       ClearableSetting(
         id: .history,
-        clearable: HistoryClearable(historyAPI: historyAPI),
+        clearable: HistoryClearable(historyAPI: braveCore.historyAPI),
         isEnabled: true
       ),
       ClearableSetting(id: .cache, clearable: CacheClearable(), isEnabled: true),

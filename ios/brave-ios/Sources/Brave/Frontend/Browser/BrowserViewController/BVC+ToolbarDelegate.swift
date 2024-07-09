@@ -383,8 +383,7 @@ extension BrowserViewController: TopToolbarDelegate {
         ) { [weak self, weak selectedTab] action in
           switch action {
           case .navigate(let target, let dismiss):
-            guard let self else { return }
-            guard let selectedTab else { return }
+            guard let self, let selectedTab else { return }
             if dismiss {
               weakPopover?.dismiss(animated: true) {
                 self.navigate(to: target, tab: selectedTab, url: url, on: nil)
@@ -461,10 +460,8 @@ extension BrowserViewController: TopToolbarDelegate {
           profile: self.profile,
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
-          historyAPI: self.braveCore.historyAPI,
-          p3aUtilities: self.braveCore.p3aUtils,
-          deAmpPrefs: self.braveCore.deAmpPrefs,
           debounceService: DebounceServiceFactory.get(privateMode: false),
+          braveCore: braveCore,
           clearDataCallback: { [weak self] isLoading, isHistoryCleared in
             guard let self else { return }
             guard let view = self.navigationController?.view, view.window != nil else {

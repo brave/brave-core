@@ -277,10 +277,8 @@ class SettingsViewController: TableViewController {
                   profile: self.profile,
                   tabManager: self.tabManager,
                   feedDataSource: self.feedDataSource,
-                  historyAPI: self.historyAPI,
-                  p3aUtilities: self.p3aUtilities,
-                  deAmpPrefs: deAmpPrefs,
                   debounceService: DebounceServiceFactory.get(privateMode: false),
+                  braveCore: braveCore,
                   clearDataCallback: { [weak self] isLoading, isHistoryCleared in
                     guard let view = self?.navigationController?.view, view.window != nil else {
                       assertionFailure()
