@@ -15,7 +15,6 @@ struct NFTDetailView: View {
   @Binding var walletActionDestination: WalletActionDestination?
 
   var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
-  var onNFTStatusUpdated: (() -> Void)?
 
   @Environment(\.openURL) private var openWalletURL
   @Environment(\.presentationMode) @Binding private var presentationMode
@@ -247,23 +246,21 @@ struct NFTDetailView: View {
           }
           Button {
             if nftDetailStore.nft.visible {  // a collected visible NFT, mark as hidden
-              nftDetailStore.updateNFTStatus(
-                visible: false,
-                isSpam: false,
-                isDeletedByUser: false,
-                completion: {
-                  onNFTStatusUpdated?()
-                }
-              )
+              Task { @MainActor in
+                await nftDetailStore.updateNFTStatus(
+                  visible: false,
+                  isSpam: false,
+                  isDeletedByUser: false
+                )
+              }
             } else {  // either a hidden NFT or a junk NFT, mark as visible
-              nftDetailStore.updateNFTStatus(
-                visible: true,
-                isSpam: false,
-                isDeletedByUser: false,
-                completion: {
-                  onNFTStatusUpdated?()
-                }
-              )
+              Task { @MainActor in
+                await nftDetailStore.updateNFTStatus(
+                  visible: true,
+                  isSpam: false,
+                  isDeletedByUser: false
+                )
+              }
             }
           } label: {
             if nftDetailStore.nft.visible {  // a collected visible NFT
@@ -295,16 +292,15 @@ struct NFTDetailView: View {
         primaryButton: .init(
           title: Strings.Wallet.manageSiteConnectionsConfirmAlertRemove,
           action: { _ in
-            nftDetailStore.updateNFTStatus(
-              visible: false,
-              isSpam: nftDetailStore.nft.isSpam,
-              isDeletedByUser: true,
-              completion: {
-                onNFTStatusUpdated?()
-                presentationMode.dismiss()
-              }
-            )
-            isPresentingRemoveAlert = false
+            Task { @MainActor in
+              isPresentingRemoveAlert = false
+              await nftDetailStore.updateNFTStatus(
+                visible: false,
+                isSpam: nftDetailStore.nft.isSpam,
+                isDeletedByUser: true
+              )
+              presentationMode.dismiss()
+            }
           }
         ),
         secondaryButton: .init(

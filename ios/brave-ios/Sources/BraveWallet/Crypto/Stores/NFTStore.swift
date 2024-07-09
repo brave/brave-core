@@ -726,28 +726,14 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     isSpam: Bool,
     isDeletedByUser: Bool
   ) {
-    assetManager.updateUserAsset(
-      for: token,
-      visible: visible,
-      isSpam: isSpam,
-      isDeletedByUser: isDeletedByUser
-    ) { [weak self] in
-      guard let self else { return }
-      let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
-      let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
-
-      let unionedSpamNFTs = computeSpamNFTs(
-        selectedNetworks: selectedNetworks,
-        selectedAccounts: selectedAccounts,
-        simpleHashSpamNFTs: simpleHashSpamNFTs
+    Task { @MainActor in
+      await assetManager.updateUserAsset(
+        for: token,
+        visible: visible,
+        isSpam: isSpam,
+        isDeletedByUser: isDeletedByUser
       )
-
-      (userNFTGroups, _) = buildNFTGroupModels(
-        groupBy: filters.groupBy,
-        spams: unionedSpamNFTs,
-        selectedAccounts: selectedAccounts,
-        selectedNetworks: selectedNetworks
-      )
+      update()
     }
   }
 

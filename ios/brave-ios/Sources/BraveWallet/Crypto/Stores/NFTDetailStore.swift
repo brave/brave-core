@@ -154,23 +154,19 @@ class NFTDetailStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func updateNFTStatus(
+  @MainActor func updateNFTStatus(
     visible: Bool,
     isSpam: Bool,
-    isDeletedByUser: Bool,
-    completion: @escaping () -> Void
-  ) {
-    assetManager.updateUserAsset(
+    isDeletedByUser: Bool
+  ) async {
+    await assetManager.updateUserAsset(
       for: nft,
       visible: visible,
       isSpam: isSpam,
       isDeletedByUser: isDeletedByUser
-    ) { [weak self] in
-      guard let self else { return }
-      if let newNFT = self.assetManager.getUserAsset(self.nft)?.blockchainToken {
-        self.nft = newNFT
-      }
-      completion()
+    )
+    if let newNFT = assetManager.getUserAsset(nft)?.blockchainToken {
+      nft = newNFT
     }
   }
 

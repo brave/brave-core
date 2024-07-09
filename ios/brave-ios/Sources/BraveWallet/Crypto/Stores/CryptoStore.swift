@@ -230,10 +230,11 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
     Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.observe(from: self)
 
-    isUpdatingUserAssets = true
-    userAssetManager.migrateUserAssets { [weak self] in
-      self?.isUpdatingUserAssets = false
-      self?.updateAssets()
+    Task { @MainActor in
+      isUpdatingUserAssets = true
+      await userAssetManager.migrateUserAssets()
+      isUpdatingUserAssets = false
+      updateAssets()
     }
   }
 
@@ -257,22 +258,22 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // supported coin type / keyring will be migrated inside `CryptoStore`'s init()
       },
       _walletRestored: { [weak self] in
-        // This observer method will only get called when user restore a wallet
-        // from the lock screen
-        // We will need to
-        // 1. reset wallet user asset migration flag
-        // 2. wipe user assets local storage
-        // 3. migrate user assets with new keyring
-        guard let isUpdatingUserAssets = self?.isUpdatingUserAssets, !isUpdatingUserAssets else {
-          return
-        }
-        self?.isUpdatingUserAssets = true
-        Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
-        self?.userAssetManager.removeUserAssetsAndBalance(for: nil) {
-          self?.userAssetManager.migrateUserAssets(completion: {
-            self?.updateAssets()
-            self?.isUpdatingUserAssets = false
-          })
+        Task { @MainActor [self] in
+          // This observer method will only get called when user restore a wallet
+          // from the lock screen
+          // We will need to
+          // 1. reset wallet user asset migration flag
+          // 2. wipe user assets local storage
+          // 3. migrate user assets with new keyring
+          guard let isUpdatingUserAssets = self?.isUpdatingUserAssets, !isUpdatingUserAssets else {
+            return
+          }
+          self?.isUpdatingUserAssets = true
+          Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()
+          await self?.userAssetManager.removeUserAssetsAndBalance(for: nil)
+          await self?.userAssetManager.migrateUserAssets()
+          self?.updateAssets()
+          self?.isUpdatingUserAssets = false
         }
       },
       _locked: { [weak self] in
@@ -288,20 +289,21 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // Failsafe incase two CryptoStore's are initialized (see brave-ios #7804) and asset
         // migration is slow. Makes sure auto-discovered assets during asset migration to
         // CoreData are added after.
-        guard let self else { return }
-        if !self.isUpdatingUserAssets {
-          let dispatchGroup = DispatchGroup()
-          for asset in discoveredAssets {
-            dispatchGroup.enter()
-            self.userAssetManager.addUserAsset(asset) {
+        Task { @MainActor [self] in
+        
+          if let updatingUserAssets = self?.isUpdatingUserAssets, !updatingUserAssets {
+            let dispatchGroup = DispatchGroup()
+            for asset in discoveredAssets {
+              dispatchGroup.enter()
+              await self?.userAssetManager.addUserAsset(asset)
               dispatchGroup.leave()
             }
+            dispatchGroup.notify(queue: .main) {
+              self?.updateAutoDiscoveredAssets()
+            }
+          } else {
+            self?.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
           }
-          dispatchGroup.notify(queue: .main) {
-            self.updateAutoDiscoveredAssets()
-          }
-        } else {
-          self.autoDiscoveredAssets.append(contentsOf: discoveredAssets)
         }
       }
     )
@@ -338,9 +340,8 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
               if let network = allNetworks?.first(where: {
                 $0.coin == .eth && $0.chainId == chainId
               }) {
-                self?.userAssetManager.addUserAsset(network.nativeToken) {
-                  self?.updateAssets()
-                }
+                await self?.userAssetManager.addUserAsset(network.nativeToken)
+                self?.updateAssets()
               }
             }
             addNetworkDappRequestCompletion(error.isEmpty ? nil : error)
@@ -822,15 +823,16 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
       return
     case .addSuggestedToken(let approved, let token):
-      if approved {
-        userAssetManager.addUserAsset(token) { [weak self] in
-          self?.updateAssets()
+      Task { @MainActor in
+        if approved {
+          await userAssetManager.addUserAsset(token)
+          updateAssets()
         }
+        walletService.notifyAddSuggestTokenRequestsProcessed(
+          approved: approved,
+          contractAddresses: [token.contractAddress]
+        )
       }
-      walletService.notifyAddSuggestTokenRequestsProcessed(
-        approved: approved,
-        contractAddresses: [token.contractAddress]
-      )
     case .signMessage(let approved, let id):
       walletService.notifySignMessageRequestProcessed(
         approved: approved,
@@ -937,14 +939,16 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
 extension CryptoStore: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
-    // we are only observing `Preferences.Wallet.migrateCoreToWalletUserAssetCompleted`
-    if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value, !autoDiscoveredAssets.isEmpty
-    {
-      for asset in autoDiscoveredAssets {
-        userAssetManager.addUserAsset(asset, completion: nil)
+    Task { @MainActor in
+      // we are only observing `Preferences.Wallet.migrateCoreToWalletUserAssetCompleted`
+      if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value, !autoDiscoveredAssets.isEmpty
+      {
+        for asset in autoDiscoveredAssets {
+          await userAssetManager.addUserAsset(asset)
+        }
+        autoDiscoveredAssets.removeAll()
+        updateAssets()
       }
-      autoDiscoveredAssets.removeAll()
-      updateAssets()
     }
   }
 }

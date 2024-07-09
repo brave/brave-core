@@ -23,7 +23,7 @@ class WalletUserAssetGroupTests: CoreDataTestCase {
     let group = createAndWait(groupId: "60.0x1")
     let getGroup = WalletUserAssetGroup.getGroup(groupId: "60.0x1", context: nil)
     XCTAssertNotNil(getGroup)
-    XCTAssertEqual(getGroup!.groupId, "60.0x1")
+    XCTAssertEqual(getGroup!.groupId, group.groupId)
   }
 
   func testGetAllGroups() {
@@ -63,7 +63,7 @@ class WalletUserAssetGroupTests: CoreDataTestCase {
   private func createAndWait(groupId: String) -> WalletUserAssetGroup {
     backgroundSaveAndWaitForExpectation {
       DataController.perform(context: .new(inMemory: false), save: true) { context in
-        let group = WalletUserAssetGroup(context: context, groupId: groupId)
+        _ = WalletUserAssetGroup(context: context, groupId: groupId)
       }
     }
     let userAssetGroup = try! DataController.viewContext.fetch(fetchRequest).first!
