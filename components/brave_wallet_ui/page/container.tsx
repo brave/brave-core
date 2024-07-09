@@ -179,7 +179,7 @@ export const Container = () => {
         redirectRoute={defaultRedirect}
         exact={true}
       >
-        <Swap />
+        <Swap key='swap' />
       </ProtectedRoute>
 
       <ProtectedRoute
@@ -188,7 +188,7 @@ export const Container = () => {
         redirectRoute={defaultRedirect}
         exact={true}
       >
-        <Swap />
+        <Swap key='bridge' />
       </ProtectedRoute>
 
       <ProtectedRoute
