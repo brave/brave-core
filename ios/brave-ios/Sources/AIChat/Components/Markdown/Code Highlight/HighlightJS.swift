@@ -13,7 +13,6 @@ import os.log
 
 class HighlightJS {
   private var isDarkTheme: Bool
-  private(set) var isHighlighterPrepared: Bool = false
   private var context: JSContext?
   private var theme: [BasicCSSParser.CSSStyle]?
   private var script: String?
@@ -31,7 +30,7 @@ class HighlightJS {
     }
     let scriptName = "atom-one-\(isDarkTheme ? "dark" : "light").min"
     guard let stylesheetPath = Bundle.module.url(forResource: scriptName, withExtension: "css"),
-      let scriptPath = Bundle.module.url(forResource: "highlight", withExtension: "js"),
+      let scriptPath = Bundle.module.url(forResource: "highlight.min", withExtension: "js"),
       let stylesheet = await AsyncFileManager.default.utf8Contents(at: stylesheetPath),
       let script = await AsyncFileManager.default.utf8Contents(at: scriptPath)
     else {
