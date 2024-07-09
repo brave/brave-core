@@ -199,8 +199,6 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   std::string human_input = "Which show is this catchphrase from?";
   std::string selected_text = "This is the way.";
   std::string assistant_input = "This is mandalorian.";
-  std::string page_content = "This is a page.";
-  bool is_video = false;
 
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
@@ -218,17 +216,6 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
                             IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
                         {selected_text}, nullptr),
                     "\n\n", human_input});
-
-  const std::string prompt_segment_article =
-      page_content.empty()
-          ? ""
-          : base::StrCat(
-                {base::ReplaceStringPlaceholders(
-                     l10n_util::GetStringUTF8(
-                         is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
-                                  : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
-                     {page_content}, nullptr),
-                 "\n\n"});
 
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
@@ -253,17 +240,13 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      prompt_segment_article);
-
-            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[2].GetDict().Find("content"),
                       expected_human_input);
 
-            EXPECT_EQ(*messages[3].GetDict().Find("role"), "assistant");
-            EXPECT_EQ(*messages[3].GetDict().Find("content"), assistant_input);
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "assistant");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"), assistant_input);
 
-            EXPECT_EQ(*messages[4].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[4].GetDict().Find("content"),
+            EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[3].GetDict().Find("content"),
                       "What's his name?");
 
             std::move(completed_callback)
@@ -278,12 +261,63 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   }
 
   engine_->GenerateAssistantResponse(
-      is_video, page_content, history, "What's his name?", base::DoNothing(),
+      /* is_video */ false, "", history, "What's his name?", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_STREQ(result.value().c_str(), "I dont know");
             run_loop.Quit();
           }));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
+  EngineConsumer::ConversationHistory history;
+
+  std::string page_content = "This is a page.";
+  bool is_video = false;
+
+  const std::string prompt_segment_article =
+      page_content.empty()
+          ? ""
+          : base::StrCat(
+                {base::ReplaceStringPlaceholders(
+                     l10n_util::GetStringUTF8(
+                         is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
+                                  : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
+                     {page_content}, nullptr),
+                 "\n\n", "Summarize this page"});
+
+  auto* client = GetClient();
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions& model_options,
+              base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                      prompt_segment_article);
+
+            std::move(completed_callback)
+                .Run(EngineConsumer::GenerationResult(""));
+          });
+
+  {
+    mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->text = l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE);
+    history.push_back(std::move(entry));
+  }
+
+  engine_->GenerateAssistantResponse(
+      is_video, page_content, history,
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(client);

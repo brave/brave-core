@@ -74,10 +74,17 @@ base::Value::List BuildMessages(
              {page_content}, nullptr),
          "\n\n"});
 
-    base::Value::Dict message;
-    message.Set("role", "user");
-    message.Set("content", prompt_segment_article);
-    messages.Append(std::move(message));
+    auto summarize_turn_iter = base::ranges::find_if(
+        conversation_history, [&](const mojom::ConversationTurnPtr& turn) {
+          return (turn->text == l10n_util::GetStringUTF8(
+                                    is_video ? IDS_CHAT_UI_SUMMARIZE_VIDEO
+                                             : IDS_CHAT_UI_SUMMARIZE_PAGE));
+        });
+
+    if (summarize_turn_iter != conversation_history.end()) {
+      summarize_turn_iter->get()->text = base::StrCat(
+          {prompt_segment_article, summarize_turn_iter->get()->text});
+    }
   }
 
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
