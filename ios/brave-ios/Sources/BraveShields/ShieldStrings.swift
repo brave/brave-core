@@ -345,14 +345,27 @@ extension Strings.Shields {
     comment: "A title for a confirmation window that appears when a user clicks on 'Shred Data'"
   )
 
-  /// An option setting for shredding only when the app is closed
-  public static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
+  /// A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+  /// The placeholder should be replaced with a website domain.
+  private static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
     "ShredThisSitesDataConfirmationMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Are you sure you want to delete this website's data? This action cannot be undone.",
-    comment: "A message for a confirmation window that appears when a user clicks on 'Shred Data'"
+    value: "Are you sure you want to delete '%@' data? This action cannot be undone.",
+    comment: """
+      A message for a confirmation window that appears when a user clicks on 'Shred Data'. 
+      The placeholder will be replaced with a website domain.
+      """
   )
+
+  /// A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+  /// The provided URL will be used to extract the domain or host.
+  public static func shredThisSitesDataConfirmationMessage(for url: URL) -> String {
+    return String(
+      format: Strings.Shields.shredThisSitesDataConfirmationMessage,
+      url.baseDomain ?? url.host ?? url.absoluteString
+    )
+  }
 
   /// A list row label for accessing the shred settings screen
   public static let shredDataButtonTitle = NSLocalizedString(

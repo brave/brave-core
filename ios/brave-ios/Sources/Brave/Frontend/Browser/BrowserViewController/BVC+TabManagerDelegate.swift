@@ -438,9 +438,9 @@ extension BrowserViewController: TabManagerDelegate {
         image: UIImage(braveSystemNamed: "leo.shred.data"),
         attributes: .destructive,
         handler: UIAction.deferredActionHandler { [weak self] _ in
-          let alert = UIAlertController.shredDataAlert { _ in
-            guard let tab = self?.tabManager.selectedTab else { return }
-            guard let url = tab.url else { return }
+          guard let tab = self?.tabManager.selectedTab else { return }
+          guard let url = tab.url else { return }
+          let alert = UIAlertController.shredDataAlert(url: url) { _ in
             self?.shredData(for: url, in: tab)
           }
 
