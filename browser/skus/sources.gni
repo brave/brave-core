@@ -9,7 +9,6 @@ brave_browser_skus_sources = [
 ]
 brave_browser_skus_deps = [
   "//base",
-  "//brave/browser/profiles:util",
   "//brave/components/skus/browser",
   "//brave/components/skus/common",
   "//brave/components/skus/common:mojom",

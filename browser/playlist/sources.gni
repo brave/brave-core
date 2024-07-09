@@ -16,9 +16,9 @@ if (enable_playlist) {
 
   brave_browser_playlist_deps += [
     "//base",
-    "//brave/browser/profiles:util",
     "//brave/components/playlist/browser",
     "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/keyed_service/content",
     "//components/pref_registry:pref_registry",

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/profiles/profile_util.h"
+
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,7 +24,7 @@ bool IsAllowedForContext(content::BrowserContext* context) {
     return false;
   }
 
-  if (brave::IsRegularProfile(context)) {
+  if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return true;
   }
 

@@ -28,7 +28,6 @@
 #include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
@@ -61,6 +60,7 @@
 #include "build/build_config.h"  // IWYU pragma: keep
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "net/base/network_change_notifier.h"
@@ -236,7 +236,7 @@ AdsServiceImpl::AdsServiceImpl(
   CHECK(device_id_);
   CHECK(history_service_);
   CHECK(rewards_service_);
-  CHECK(brave::IsRegularProfile(profile));
+  CHECK(profile->IsRegularProfile());
 
   if (CanStartBatAdsService()) {
     bat_ads_client_notifier_pending_receiver_ =

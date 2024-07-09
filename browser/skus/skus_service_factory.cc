@@ -9,7 +9,6 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -65,7 +64,7 @@ KeyedService* SkusServiceFactory::BuildServiceInstanceFor(
   }
 
   // Skus functionality not supported in private / Tor / guest windows
-  if (!brave::IsRegularProfile(context)) {
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return nullptr;
   }
   skus::MigrateSkusSettings(user_prefs::UserPrefs::Get(context),

@@ -5,10 +5,10 @@
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_browser_process.h"
@@ -47,7 +47,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   // so active browser is unlikely to be changed
   // * Even if the active browser is changed, it'd be better to open the Leo in
   // the new active browser.
-  CHECK(brave::IsRegularProfile(profile_));
+  CHECK(profile_->IsRegularProfile());
   Browser* browser =
       chrome::FindTabbedBrowser(profile_,
                                 /*match_original_profiles=*/true);
@@ -92,7 +92,7 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
 #if BUILDFLAG(IS_ANDROID)
   return false;
 #else
-  return brave::IsRegularProfile(profile_) &&
+  return profile_->IsRegularProfile() &&
          GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
 #endif

@@ -15,7 +15,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -25,6 +24,7 @@
 #include "brave/components/playlist/common/features.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -230,7 +230,7 @@ PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
 bool PlaylistServiceFactory::IsPlaylistEnabled(
     content::BrowserContext* context) {
   return base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-         brave::IsRegularProfile(context);
+         Profile::FromBrowserContext(context)->IsRegularProfile();
 }
 
 // static

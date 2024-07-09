@@ -6,11 +6,11 @@
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
@@ -53,7 +53,7 @@ void SidebarTabHelper::MaybeCreateForWebContents(
 
   // For now, we only support Leo panel for regular profile.
   auto* context = contents->GetBrowserContext();
-  if (!brave::IsRegularProfile(context)) {
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return;
   }
 
