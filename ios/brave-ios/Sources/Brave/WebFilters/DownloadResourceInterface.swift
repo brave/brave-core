@@ -134,7 +134,11 @@ extension DownloadResourceInterface {
   ///
   /// - Note: This technically can't really return nil as the location and folder are hard coded
   nonisolated func getOrCreateCacheFolder() async throws -> URL {
-    try await AsyncFileManager.default.url(for: .cachesDirectory, appending: cacheFolderName)
+    try await AsyncFileManager.default.url(
+      for: .cachesDirectory,
+      appending: cacheFolderName,
+      create: true
+    )
   }
 
   /// Get an object representing the cached download result.

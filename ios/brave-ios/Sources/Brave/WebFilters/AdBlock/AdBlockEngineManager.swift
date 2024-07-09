@@ -317,7 +317,8 @@ import os
   private func getOrCreateCacheFolder() async throws -> URL {
     try await AsyncFileManager.default.url(
       for: .cachesDirectory,
-      appending: [Self.parentCacheFolderName, cacheFolderName].joined(separator: "/")
+      appending: [Self.parentCacheFolderName, cacheFolderName].joined(separator: "/"),
+      create: true
     )
   }
 

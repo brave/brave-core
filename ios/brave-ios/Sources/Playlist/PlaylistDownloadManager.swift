@@ -63,7 +63,8 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
     get async {
       try? await AsyncFileManager.default.url(
         for: .applicationSupportDirectory,
-        appending: "Playlist"
+        appending: "Playlist",
+        create: true
       )
     }
   }
@@ -528,7 +529,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
           // HLS streams can be in two spots, we need to delete from both
           // just in case the download process was in the middle of transferring the asset
           // to its proper location
-          if let cacheLocation = await delegate?.localAsset(for: asset.id)?.url {
+          if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
             do {
               try await AsyncFileManager.default.removeItem(at: cacheLocation)
             } catch {
@@ -731,7 +732,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
       if let error = error as NSError? {
         switch (error.domain, error.code) {
         case (NSURLErrorDomain, NSURLErrorCancelled):
-          if let cacheLocation = await delegate?.localAsset(for: asset.id)?.url {
+          if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
             do {
               try await AsyncFileManager.default.removeItem(at: cacheLocation)
               PlaylistItem.updateCache(uuid: asset.id, pageSrc: asset.pageSrc, cachedData: nil)
@@ -1046,7 +1047,7 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
       if let error = error as NSError? {
         switch (error.domain, error.code) {
         case (NSURLErrorDomain, NSURLErrorCancelled):
-          if let cacheLocation = await delegate?.localAsset(for: asset.id)?.url {
+          if let cacheLocation = delegate?.localAsset(for: asset.id)?.url {
             Task {
               do {
                 try await AsyncFileManager.default.removeItem(at: cacheLocation)

@@ -257,7 +257,7 @@ extension AsyncFileManager {
   public func url(
     for directory: FileManager.SearchPathDirectory,
     appending pathComponent: String,
-    create: Bool = true,
+    create: Bool,
     excludeFromBackups: Bool = true
   ) async throws -> URL {
     assert(directory != .itemReplacementDirectory, "This method does not support item replacement")
@@ -330,6 +330,6 @@ extension AsyncFileManager {
   /// URL where files downloaded by user are stored.
   /// If the download folder doesn't exists it creates a new one
   public func downloadsPath() async throws -> URL {
-    try await url(for: .documentDirectory, appending: "Downloads")
+    try await url(for: .documentDirectory, appending: "Downloads", create: true)
   }
 }

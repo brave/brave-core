@@ -49,7 +49,8 @@ public class BundledFaviconRenderer {
     guard
       let folder = try? await AsyncFileManager.default.url(
         for: .applicationSupportDirectory,
-        appending: Self.faviconOverridesDirectory
+        appending: Self.faviconOverridesDirectory,
+        create: true
       )
     else {
       return nil

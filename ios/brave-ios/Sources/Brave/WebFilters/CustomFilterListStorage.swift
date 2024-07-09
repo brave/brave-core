@@ -178,7 +178,8 @@ import WebKit
   private func getOrCreateCustomRulesFolder() async throws -> URL {
     try await AsyncFileManager.default.url(
       for: .applicationSupportDirectory,
-      appending: "custom_rules"
+      appending: "custom_rules",
+      create: true
     )
   }
 

@@ -335,7 +335,8 @@ public class FeedDataSource: ObservableObject {
     let fileManager = AsyncFileManager.default
     let cachedPath = try? await fileManager.url(
       for: .applicationSupportDirectory,
-      appending: Self.cacheFolderName
+      appending: Self.cacheFolderName,
+      create: true
     ).appending(path: name).path()
     if loadExpiredData || !isResourceExpired(resource, localeIdentifier: localeIdentifier),
       let cachedPath = cachedPath,
@@ -386,7 +387,8 @@ public class FeedDataSource: ObservableObject {
     if !data.isEmpty {
       let cachePath = try await AsyncFileManager.default.url(
         for: .applicationSupportDirectory,
-        appending: Self.cacheFolderName
+        appending: Self.cacheFolderName,
+        create: true
       )
       let createdFile = await AsyncFileManager.default.createFile(
         atPath: cachePath.appending(path: filename).path(),
