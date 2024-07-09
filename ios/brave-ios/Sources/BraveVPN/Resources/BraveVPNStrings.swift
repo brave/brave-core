@@ -281,6 +281,24 @@ extension Strings {
         comment:
           "Table cell title for vpn's transport protocol and which open opens protocol select"
       )
+    
+    public static let settingsKillSwitchTitle =
+      NSLocalizedString(
+        "vpn.settingsKillSwitch",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Kill Switch",
+        comment: "Title for the row when clicked it enables 'Kill Switch' on VPN connection"
+      )
+    
+    public static let settingsKillSwitchDescription =
+      NSLocalizedString(
+        "vpn.settingsKillSwitchDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Ensures your data stays protected if the VPN disconnects unexpectedly. When enabled, it blocks all internet traffic if the VPN connection drops, preventing accidental data leaks. Note: Enabling or disabling this feature will briefly reconnect your VPN.",
+        comment: "Description for the row when clicked it enables 'Kill Switch' on VPN connection"
+      )
 
     public static let settingsContactSupport =
       NSLocalizedString(
