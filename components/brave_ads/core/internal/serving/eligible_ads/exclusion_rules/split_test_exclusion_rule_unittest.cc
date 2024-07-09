@@ -39,7 +39,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldIncludeIfNoFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -49,7 +49,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldExcludeIfNoFieldTrialAndAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
   // Act & Assert
@@ -60,7 +60,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldIncludeIfFieldTrialAndNoAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   const scoped_refptr<base::FieldTrial> field_trial =
       CreateFieldTrial(kTrialName);
@@ -74,7 +74,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldIncludeIfFieldTrialMatchesAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
   const scoped_refptr<base::FieldTrial> field_trial =
@@ -89,7 +89,7 @@ TEST_F(BraveAdsSplitTestExclusionRuleTest,
        ShouldExcludeIfFieldTrialDoesNotMatchAdGroup) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.split_test_group = "GroupB";
 
   const scoped_refptr<base::FieldTrial> field_trial =

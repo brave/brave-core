@@ -161,7 +161,7 @@ TEST_F(BraveAdsInlineContentAdIntegrationTest,
 
         // Act & Assert
         TriggerInlineContentAdEventAndVerifiyExpectations(
-            ad->placement_id, kInvalidCreativeInstanceId,
+            ad->placement_id, test::kInvalidCreativeInstanceId,
             mojom::InlineContentAdEventType::kViewedImpression,
             /*should_fire_event=*/false);
       });

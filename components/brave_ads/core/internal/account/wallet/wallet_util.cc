@@ -15,9 +15,9 @@
 namespace brave_ads {
 
 std::optional<WalletInfo> ToWallet(const std::string& payment_id,
-                                   const std::string& recovery_seed) {
+                                   const std::string& recovery_seed_base64) {
   const std::optional<std::vector<uint8_t>> raw_recovery_seed =
-      base::Base64Decode(recovery_seed);
+      base::Base64Decode(recovery_seed_base64);
   if (!raw_recovery_seed) {
     return std::nullopt;
   }

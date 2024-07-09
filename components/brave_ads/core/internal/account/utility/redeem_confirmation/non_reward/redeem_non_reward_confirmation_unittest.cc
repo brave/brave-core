@@ -41,7 +41,7 @@ class BraveAdsRedeemNonRewardConfirmationTest : public UnitTestBase {
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
        {{net::kHttpImATeapot,
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -63,7 +63,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
        DoNotRetryRedeemingForHttpBadRequestResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
        {{net::HTTP_BAD_REQUEST,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -86,7 +86,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
        DoNotRetryRedeemingForHttpConflictResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
        {{net::HTTP_CONFLICT,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_CONFLICT)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -109,7 +109,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
        DoNotRetryReemingForHttpCreatedResponse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
        {{net::HTTP_CREATED,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_CREATED)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -131,7 +131,7 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
 TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)}}}};

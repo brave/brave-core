@@ -28,8 +28,9 @@ TEST_F(BraveAdsTransactionsTest, Add) {
 
   // Act
   const TransactionInfo transaction = AddTransaction(
-      kCreativeInstanceId, kSegment, /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, add_transaction_callback.Get());
+      test::kCreativeInstanceId, test::kSegment, /*value=*/0.01,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      add_transaction_callback.Get());
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;

@@ -16,7 +16,7 @@ std::optional<ConfirmationInfo> BuildNonRewardConfirmation(
     const bool should_generate_random_uuids) {
   CHECK(!UserHasJoinedBraveRewards());
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+  const TransactionInfo transaction = BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
       ConfirmationType::kViewedImpression, should_generate_random_uuids);
   return BuildNonRewardConfirmation(transaction, /*user_data=*/{});

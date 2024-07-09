@@ -14,7 +14,7 @@ namespace brave_ads {
 struct WalletInfo;
 
 std::optional<WalletInfo> ToWallet(const std::string& payment_id,
-                                   const std::string& recovery_seed);
+                                   const std::string& recovery_seed_base64);
 
 }  // namespace brave_ads
 

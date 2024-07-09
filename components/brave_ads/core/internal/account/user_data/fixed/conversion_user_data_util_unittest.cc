@@ -33,9 +33,9 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   const AdEventInfo ad_event = BuildAdEvent(
       ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
-      VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
+      ad_event, VerifiableConversionInfo{
+                    test::kVerifiableConversionId,
+                    test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act
   const std::optional<base::Value::Dict> verifiable_conversion_user_data =

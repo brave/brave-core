@@ -210,9 +210,9 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 
   // Act & Assert
   base::MockCallback<database::table::GetCreativeNewTabPageAdCallback> callback;
-  EXPECT_CALL(callback, Run(/*success=*/false, kMissingCreativeInstanceId,
+  EXPECT_CALL(callback, Run(/*success=*/false, test::kMissingCreativeInstanceId,
                             CreativeNewTabPageAdInfo{}));
-  database_table_.GetForCreativeInstanceId(kMissingCreativeInstanceId,
+  database_table_.GetForCreativeInstanceId(test::kMissingCreativeInstanceId,
                                            callback.Get());
 }
 

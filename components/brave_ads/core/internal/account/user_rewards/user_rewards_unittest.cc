@@ -189,9 +189,10 @@ TEST_F(BraveAdsUserRewardsTest, RefillConfirmationTokens) {
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
-      {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
+      {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
-      {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
+      {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
+                                   test::kRequestSignedTokensNonce),
        {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -205,7 +206,7 @@ TEST_F(BraveAdsUserRewardsTest, RefillConfirmationTokens) {
 TEST_F(BraveAdsUserRewardsTest, RedeemPaymentTokens) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildRedeemPaymentTokensUrlPath(/*payment_id=*/kWalletPaymentId),
+      {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -269,9 +270,10 @@ TEST_F(BraveAdsUserRewardsTest,
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
-      {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
+      {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
-      {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
+      {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
+                                   test::kRequestSignedTokensNonce),
        {{net::HTTP_UNAUTHORIZED, /*response_body=*/R"(
             {
               "captcha_id": "daf85dc8-164e-4eb9-a4d4-1836055004b3"
@@ -281,7 +283,7 @@ TEST_F(BraveAdsUserRewardsTest,
 
   EXPECT_CALL(ads_client_mock_,
               ShowScheduledCaptcha(
-                  kWalletPaymentId,
+                  test::kWalletPaymentId,
                   /*captcha_id=*/"daf85dc8-164e-4eb9-a4d4-1836055004b3"));
 
   // Act & Assert
@@ -296,9 +298,10 @@ TEST_F(BraveAdsUserRewardsTest,
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
-      {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
+      {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
-      {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
+      {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
+                                   test::kRequestSignedTokensNonce),
        {{net::HTTP_UNAUTHORIZED, /*response_body=*/R"(
             {
               "captcha_id": ""
@@ -320,9 +323,10 @@ TEST_F(BraveAdsUserRewardsTest,
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
   const URLResponseMap url_responses = {
-      {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
+      {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
-      {BuildGetSignedTokensUrlPath(kWalletPaymentId, kGetSignedTokensNonce),
+      {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
+                                   test::kRequestSignedTokensNonce),
        {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

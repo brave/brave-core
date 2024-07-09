@@ -15,11 +15,12 @@ NewTabPageAdInfo BuildNewTabPageAd(
     const CreativeNewTabPageAdInfo& creative_ad) {
   const std::string placement_id =
       base::Uuid::GenerateRandomV4().AsLowercaseString();
-  return BuildNewTabPageAd(creative_ad, placement_id);
+  return BuildNewTabPageAd(placement_id, creative_ad);
 }
 
-NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad,
-                                   const std::string& placement_id) {
+NewTabPageAdInfo BuildNewTabPageAd(
+    const std::string& placement_id,
+    const CreativeNewTabPageAdInfo& creative_ad) {
   NewTabPageAdInfo ad;
 
   ad.type = AdType::kNewTabPageAd;

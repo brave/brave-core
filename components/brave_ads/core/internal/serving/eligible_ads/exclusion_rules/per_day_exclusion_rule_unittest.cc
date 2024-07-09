@@ -20,7 +20,7 @@ class BraveAdsPerDayExclusionRuleTest : public UnitTestBase {};
 TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_day = 2;
 
   const PerDayExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -32,7 +32,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
 TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldIncludeIfZero) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_day = 0;
 
   const PerDayExclusionRule exclusion_rule(/*ad_events=*/{});
@@ -44,7 +44,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldIncludeIfZero) {
 TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
@@ -64,7 +64,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest,
        ShouldIncludeIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
@@ -86,7 +86,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest,
 TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Day) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_day = 2;
 
   AdEventList ad_events;
@@ -108,7 +108,7 @@ TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldExcludeIfExceedsCapWithin1Day) {
 TEST_F(BraveAdsPerDayExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.per_day = 2;
 
   AdEventList ad_events;

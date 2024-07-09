@@ -43,8 +43,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -63,8 +63,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act
@@ -77,8 +77,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -93,8 +93,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -114,8 +114,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeyphrases) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
@@ -136,8 +136,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);

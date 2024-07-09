@@ -18,14 +18,14 @@ class BraveAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, CatalogId) {
   // Arrange
-  SetCatalogId(kCatalogId);
+  SetCatalogId(test::kCatalogId);
 
   const CatalogIdDiagnosticEntry diagnostic_entry;
 
   // Act & Assert
   EXPECT_EQ(DiagnosticEntryType::kCatalogId, diagnostic_entry.GetType());
   EXPECT_EQ("Catalog ID", diagnostic_entry.GetName());
-  EXPECT_EQ(kCatalogId, diagnostic_entry.GetValue());
+  EXPECT_EQ(test::kCatalogId, diagnostic_entry.GetValue());
 }
 
 TEST_F(BraveAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {

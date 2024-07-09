@@ -161,7 +161,7 @@ TEST_P(
     ShouldExcludeIfSubdivisionTargetingIsNotAllowedForGeoTargetWithSubdivisionCode) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
@@ -175,7 +175,7 @@ TEST_P(
   SetProfileBooleanPrefValue(prefs::kShouldAllowSubdivisionTargeting, false);
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
@@ -192,7 +192,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
@@ -210,7 +210,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
                              BuildOtherSubdivisionForTestParam()};
 
@@ -229,7 +229,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
@@ -250,7 +250,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
@@ -271,7 +271,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam(),
                              BuildOtherSubdivisionForTestParam()};
 
@@ -293,7 +293,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {GetParam().country_code};
 
   // Act & Assert
@@ -310,7 +310,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {test::BuildSubdivision(
       /*country_code=*/"US", /*subdivision_code=*/"XX")};
 
@@ -329,7 +329,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {test::BuildSubdivision(
       /*country_code=*/"GB", /*subdivision_code=*/"DEV")};
 
@@ -353,7 +353,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {"XX"};
 
   // Act & Assert
@@ -373,7 +373,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {BuildSubdivisionForTestParam()};
 
   // Act & Assert
@@ -394,7 +394,7 @@ TEST_P(
   NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
   creative_ad.geo_targets = {"XX"};
 
   // Act & Assert

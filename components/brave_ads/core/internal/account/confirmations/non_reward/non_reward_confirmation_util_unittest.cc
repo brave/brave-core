@@ -26,7 +26,7 @@ class BraveAdsNonRewardConfirmationUtilTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    MockConfirmationUserData();
+    test::MockConfirmationUserData();
   }
 };
 
@@ -46,11 +46,11 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
 
   // Assert
   EXPECT_THAT(*confirmation,
-              ::testing::FieldsAre(kTransactionId, kCreativeInstanceId,
-                                   ConfirmationType::kViewedImpression,
-                                   AdType::kNotificationAd,
-                                   /*created_at*/ Now(),
-                                   /*reward*/ std::nullopt, UserDataInfo{}));
+              ::testing::FieldsAre(
+                  test::kTransactionId, test::kCreativeInstanceId,
+                  ConfirmationType::kViewedImpression, AdType::kNotificationAd,
+                  /*created_at*/ Now(),
+                  /*reward*/ std::nullopt, UserDataInfo{}));
 }
 
 TEST_F(BraveAdsNonRewardConfirmationUtilTest,

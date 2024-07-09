@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_TEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_TEST_CONSTANTS_H_
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 inline constexpr char kCatalogFilename[] = "catalog.json";
 inline constexpr char kEmptyCatalogFilename[] = "empty_catalog.json";
@@ -19,6 +19,6 @@ inline constexpr char kInvalidCatalogJson[] = "INVALID_JSON";
 
 inline constexpr char kCatalogId[] = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_TEST_CONSTANTS_H_

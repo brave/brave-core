@@ -17,8 +17,8 @@ namespace brave_ads::test {
 
 std::optional<std::string> OpenVerifiableConversionEnvelope(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
-    const std::string& advertiser_secret_key_base64) {
-  CHECK(!advertiser_secret_key_base64.empty());
+    const std::string& verifiable_conversion_advertiser_secret_key_base64) {
+  CHECK(!verifiable_conversion_advertiser_secret_key_base64.empty());
 
   if (!verifiable_conversion_envelope.IsValid()) {
     return std::nullopt;
@@ -45,14 +45,16 @@ std::optional<std::string> OpenVerifiableConversionEnvelope(
     return std::nullopt;
   }
 
-  const std::optional<std::vector<uint8_t>> advertiser_secret_key =
-      base::Base64Decode(advertiser_secret_key_base64);
-  if (!advertiser_secret_key) {
+  const std::optional<std::vector<uint8_t>>
+      verifiable_conversion_advertiser_secret_key = base::Base64Decode(
+          verifiable_conversion_advertiser_secret_key_base64);
+  if (!verifiable_conversion_advertiser_secret_key) {
     return std::nullopt;
   }
 
-  const std::vector<uint8_t> plaintext = crypto::Decrypt(
-      *ciphertext, *nonce, *ephemeral_public_key, *advertiser_secret_key);
+  const std::vector<uint8_t> plaintext =
+      crypto::Decrypt(*ciphertext, *nonce, *ephemeral_public_key,
+                      *verifiable_conversion_advertiser_secret_key);
 
   return std::string(reinterpret_cast<const char*>(plaintext.data()));
 }

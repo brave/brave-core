@@ -19,7 +19,7 @@ class BraveAdsCatalogUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Arrange
-  SetCatalogId(kCatalogId);
+  SetCatalogId(test::kCatalogId);
   SetCatalogVersion(1);
   SetCatalogPing(base::Hours(1));
   SetCatalogLastUpdated(Now());
@@ -52,7 +52,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogDoesNotExist) {
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogHasChanged) {
   // Arrange
-  SetCatalogId(kCatalogId);
+  SetCatalogId(test::kCatalogId);
 
   // Act & Assert
   EXPECT_TRUE(HasCatalogChanged(
@@ -61,10 +61,10 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasChanged) {
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotChanged) {
   // Arrange
-  SetCatalogId(kCatalogId);
+  SetCatalogId(test::kCatalogId);
 
   // Act & Assert
-  EXPECT_FALSE(HasCatalogChanged(kCatalogId));
+  EXPECT_FALSE(HasCatalogChanged(test::kCatalogId));
 }
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogHasExpired) {

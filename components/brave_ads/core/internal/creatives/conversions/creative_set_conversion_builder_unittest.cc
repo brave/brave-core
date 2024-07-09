@@ -32,12 +32,13 @@ TEST_F(BraveAdsCreativeSetConversionBuilderTest,
   ASSERT_TRUE(creative_set_conversion);
 
   // Assert
-  EXPECT_THAT(*creative_set_conversion,
-              ::testing::FieldsAre(kCreativeSetId,
-                                   /*url_pattern*/ "https://brave.com/*",
-                                   kVerifiableConversionAdvertiserPublicKey,
-                                   /*observation_window*/ base::Days(3),
-                                   /*expire_at*/ Now() + base::Days(3)));
+  EXPECT_THAT(
+      *creative_set_conversion,
+      ::testing::FieldsAre(test::kCreativeSetId,
+                           /*url_pattern*/ "https://brave.com/*",
+                           test::kVerifiableConversionAdvertiserPublicKeyBase64,
+                           /*observation_window*/ base::Days(3),
+                           /*expire_at*/ Now() + base::Days(3)));
 }
 
 TEST_F(BraveAdsCreativeSetConversionBuilderTest,

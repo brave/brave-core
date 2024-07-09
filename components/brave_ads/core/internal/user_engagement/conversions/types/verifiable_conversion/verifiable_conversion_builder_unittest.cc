@@ -35,7 +35,7 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
 
   CreativeSetConversionInfo creative_set_conversion;
   creative_set_conversion.verifiable_advertiser_public_key_base64 =
-      kVerifiableConversionAdvertiserPublicKey;
+      test::kVerifiableConversionAdvertiserPublicKeyBase64;
 
   // Act
   const std::optional<VerifiableConversionInfo> verifiable_conversion =
@@ -45,9 +45,10 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
   ASSERT_TRUE(verifiable_conversion);
 
   // Assert
-  EXPECT_THAT(*verifiable_conversion,
-              testing::FieldsAre(/*id*/ "waldo",
-                                 kVerifiableConversionAdvertiserPublicKey));
+  EXPECT_THAT(
+      *verifiable_conversion,
+      testing::FieldsAre(/*id*/ "waldo",
+                         test::kVerifiableConversionAdvertiserPublicKeyBase64));
 }
 
 TEST_F(BraveAdsVerifiableConversionBuilderTest,

@@ -163,10 +163,10 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFirePromotedContentAdEvent(
-                  kInvalidPlacementId, kCreativeInstanceId,
+                  test::kInvalidPlacementId, test::kCreativeInstanceId,
                   mojom::PromotedContentAdEventType::kServedImpression));
   FireEventAndVerifyExpectations(
-      kInvalidPlacementId, kCreativeInstanceId,
+      test::kInvalidPlacementId, test::kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServedImpression,
       /*should_fire_event=*/false);
 }
@@ -176,10 +176,10 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFirePromotedContentAdEvent(
-                  kPlacementId, kInvalidCreativeInstanceId,
+                  test::kPlacementId, test::kInvalidCreativeInstanceId,
                   mojom::PromotedContentAdEventType::kServedImpression));
   FireEventAndVerifyExpectations(
-      kPlacementId, kInvalidCreativeInstanceId,
+      test::kPlacementId, test::kInvalidCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServedImpression,
       /*should_fire_event=*/false);
 }
@@ -192,10 +192,10 @@ TEST_F(BraveAdsPromotedContentAdEventHandlerTest,
   // Act & Assert
   EXPECT_CALL(delegate_mock_,
               OnFailedToFirePromotedContentAdEvent(
-                  ad.placement_id, kMissingCreativeInstanceId,
+                  ad.placement_id, test::kMissingCreativeInstanceId,
                   mojom::PromotedContentAdEventType::kServedImpression));
   FireEventAndVerifyExpectations(
-      ad.placement_id, kMissingCreativeInstanceId,
+      ad.placement_id, test::kMissingCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServedImpression,
       /*should_fire_event=*/false);
 }

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 namespace {
 
@@ -30,4 +30,4 @@ void MockConfirmationUserData() {
   SetCatalogId(kCatalogId);
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

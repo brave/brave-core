@@ -32,7 +32,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
 
   AdvanceClockTo(TimeFromString("Wed, 18 Nov 1970 12:34:56"));
 
-  SetCatalogId(kCatalogId);
+  SetCatalogId(test::kCatalogId);
   SetCatalogLastUpdated(Now());
 
   AdvanceClockTo(
