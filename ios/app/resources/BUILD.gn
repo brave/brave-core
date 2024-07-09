@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//ios/build/config.gni")
 import("//tools/grit/repack.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+import("//brave/ui/webui/resources/sources.gni") 
 
 group("resources") {
   public_deps = [ ":repack_unscaled_resources" ]
@@ -13,6 +16,40 @@ repack("repack_unscaled_resources") {
   visibility = [ ":resources" ]
   output = "$target_gen_dir/brave_resources.pak"
   sources = [ "$root_gen_dir/components/brave_components_resources.pak" ]
-  deps = [ "//brave/components/resources" ]
+  deps = [ "//brave/components/resources", ":node_modules_grdp", ]
   copy_data_to_bundle = true
+}
+
+source_set("resource_bundle") {
+  sources = [
+    "resource_bundle.h",
+    "resource_bundle.mm",
+  ]
+
+  deps = [ "//base", "//ui/base" ]
+}
+
+node_modules_files = [
+  "darkreader/darkreader.js"
+]
+
+brave_resources_node_modules_path = "$root_gen_dir/brave/scripts"
+
+generate_grd("node_modules_grdp") {
+  grd_prefix = "node_modules_resources"
+  resource_path_prefix = "brave-node-modules-resources"
+  out_grd = "$brave_resources_node_modules_path/brave_node_modules_resources.grdp"
+
+  input_files = node_modules_files
+  input_files_base_dir =
+      rebase_path("$brave_resources_node_modules_path/node_modules/", root_build_dir)
+
+  deps = [ ":node_modules_copy" ]
+}
+
+copy("node_modules_copy") {
+  sources = rebase_path(node_modules_files,
+                        ".",
+                        "../../../node_modules")
+  outputs = [ "$brave_resources_node_modules_path/node_modules/{{source_file_part}}" ]
 }

@@ -37,6 +37,7 @@ source_set("app") {
     "//brave/components/update_client:buildflags",
     "//brave/components/variations:constants",
     "//brave/ios/app/resources",
+    "//brave/ios/app/resources:resource_bundle",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/api/ai_chat",
