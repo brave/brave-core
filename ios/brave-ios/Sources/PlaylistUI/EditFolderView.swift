@@ -47,7 +47,7 @@ struct EditFolderView: View {
         ForEach(items) { item in
           PlaylistItemView(
             title: item.name,
-            assetURL: item.assetURL,
+            assetURL: URL(string: item.mediaSrc),
             pageURL: URL(string: item.pageSrc),
             duration: .init(item.duration),
             isSelected: false,

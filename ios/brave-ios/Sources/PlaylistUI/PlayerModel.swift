@@ -57,7 +57,7 @@ public final class PlayerModel: ObservableObject {
   deinit {
     if isPlaying {
       log.warning("PlayerModel deallocated without first stopping the underlying media.")
-      stop()
+      player.replaceCurrentItem(with: nil)
     }
     DispatchQueue.global().async {
       try? AVAudioSession.sharedInstance().setActive(false)
@@ -177,7 +177,9 @@ public final class PlayerModel: ObservableObject {
       return
     }
     player.pause()
-    currentItem = nil
+    Task {
+      await updateCurrentItem(nil)
+    }
   }
 
   private let seekInterval: TimeInterval = 15.0
@@ -632,16 +634,18 @@ public final class PlayerModel: ObservableObject {
   ) async {
     guard let item = selectedItem else { return }
     var playerItemToReplace: AVPlayerItem?
-    if let cachedDataURL = item.cachedDataURL {
-      playerItemToReplace = await Task.detached {
-        .init(url: cachedDataURL)
-      }.value
+    if let cachedData = item.cachedData {
+      if let cachedDataURL = await PlaylistItem.resolvingCachedData(cachedData) {
+        playerItemToReplace = await Task.detached {
+          .init(asset: .init(url: cachedDataURL))
+        }.value
+      }
     }
     if playerItemToReplace == nil, let mediaStreamer {
       if !isPictureInPictureActive {
         // Stop the current video and start loading the streaming video, but only if we're not
         // in pip, since setting the item to nil during pip will cause it to close.
-        currentItem = nil
+        await updateCurrentItem(nil)
       }
       isLoadingStreamingURL = true
       do {
@@ -676,7 +680,7 @@ public final class PlayerModel: ObservableObject {
     }
     let resumeFromLastTimePlayed = Preferences.Playlist.playbackLeftOff.value
     if let playerItem = playerItemToReplace {
-      self.currentItem = playerItem
+      await updateCurrentItem(playerItem)
       if let initialOffset {
         await seek(to: initialOffset, accurately: true)
       } else if resumeFromLastTimePlayed {
@@ -695,16 +699,14 @@ public final class PlayerModel: ObservableObject {
     kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
   ])
   private var currentItem: AVPlayerItem? {
-    get {
-      player.currentItem
-    }
-    set {
-      player.replaceCurrentItem(with: newValue)
+    player.currentItem
+  }
+  nonisolated private func updateCurrentItem(_ item: AVPlayerItem?) async {
+    player.replaceCurrentItem(with: item)
+    item?.add(videoDecorationOutput)
+    await MainActor.run {
       setupPlayerItemKeyPathObservation()
-      newValue?.add(videoDecorationOutput)
-      Task { @MainActor [weak self] in
-        self?.updateSystemPlayer()
-      }
+      updateSystemPlayer()
     }
   }
   private(set) var playerLayer: AVPlayerLayer = .init()
@@ -842,14 +844,12 @@ public final class PlayerModel: ObservableObject {
     on object: Object,
     for keyPath: KeyPath<Object, Value>
   ) -> AnyCancellable {
-    let observation = object.observe(keyPath, options: [.prior]) { [weak self] _, change in
-      if change.isPrior {
+    let observation = object.publisher(for: keyPath, options: [.prior])
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
         self?.objectWillChange.send()
       }
-    }
-    return .init {
-      observation.invalidate()
-    }
+    return observation
   }
 
   private var systemPlayerArtworkFetchTask: Task<Void, Error>?
@@ -869,16 +869,6 @@ extension AVPlayer {
     return .init {
       self.removeTimeObserver(observer)
     }
-  }
-}
-
-// MARK: -
-
-extension PlaylistItem {
-  /// The URL you would attempt to load in an AVAsset or fetch metadata from. This URL may be
-  /// the cached file url or the video url found on the webpage
-  var assetURL: URL? {
-    cachedDataURL ?? URL(string: mediaSrc)
   }
 }
 
@@ -926,7 +916,7 @@ extension PlayerModel {
     }
 
     // We only need to load artwork when the selected item changes
-    if loadArtwork, let assetURL = selectedItem.assetURL,
+    if loadArtwork, let assetURL = URL(string: selectedItem.mediaSrc),
       let pageURL = URL(string: selectedItem.pageSrc)
     {
       MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = nil

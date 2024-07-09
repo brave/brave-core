@@ -110,7 +110,7 @@ private struct ItemToggle: View {
         Color.clear
           .aspectRatio(1.333, contentMode: .fit)
           .overlay {
-            if let assetURL = item.assetURL, let pageURL = URL(string: item.pageSrc) {
+            if let assetURL = URL(string: item.mediaSrc), let pageURL = URL(string: item.pageSrc) {
               MediaThumbnail(assetURL: assetURL, pageURL: pageURL)
             }
           }
