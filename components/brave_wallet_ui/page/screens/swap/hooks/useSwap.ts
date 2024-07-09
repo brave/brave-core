@@ -9,7 +9,6 @@ import { useHistory, useLocation } from 'react-router'
 
 // Options
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
-import { gasFeeOptions } from '../../../../options/gas-fee-options'
 
 // Hooks
 import { useJupiter } from './useJupiter'
@@ -26,16 +25,11 @@ import {
 
 // Types and constants
 import {
-  GasEstimate,
   SwapValidationErrorType,
   SwapParamsOverrides,
   SwapParams
 } from '../constants/types'
-import {
-  BraveWallet,
-  GasFeeOption,
-  WalletRoutes
-} from '../../../../constants/types'
+import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -190,8 +184,6 @@ export const useSwap = () => {
     useState<boolean>(false)
   const [useDirectRoute, setUseDirectRoute] = useState<boolean>(false)
   const [slippageTolerance, setSlippageTolerance] = useState<string>('0.5')
-  const [selectedGasFeeOption, setSelectedGasFeeOption] =
-    useState<GasFeeOption>(gasFeeOptions[1])
   const [quoteUnion, setQuoteUnion] = useState<
     BraveWallet.SwapQuoteUnion | undefined
   >(undefined)
@@ -434,7 +426,8 @@ export const useSwap = () => {
         provider:
           overrides.provider === undefined
             ? selectedProvider
-            : overrides.provider
+            : overrides.provider,
+        slippage: overrides.slippage ?? slippageTolerance
       }
 
       if (params.fromAmount && !params.toAmount) {
@@ -490,7 +483,7 @@ export const useSwap = () => {
                   .format()
               : '',
           toToken: params.toToken.contractAddress,
-          slippagePercentage: slippageTolerance,
+          slippagePercentage: params.slippage,
           routePriority:
             params.fromToken.chainId === params.toToken.chainId
               ? BraveWallet.RoutePriority.kCheapest
@@ -858,16 +851,6 @@ export const useSwap = () => {
     return new Amount(fromAmount).times(price).formatAsFiat(defaultFiatCurrency)
   }, [fromAmount, fromToken, spotPriceRegistry, defaultFiatCurrency])
 
-  const gasEstimates: GasEstimate = useMemo(() => {
-    // TODO(onyb): Setup getGasEstimate Methods
-    return {
-      gasFee: '0.0034',
-      gasFeeGwei: '36',
-      gasFeeFiat: '17.59',
-      time: '1 min'
-    }
-  }, [])
-
   const feesWrapped = useMemo(() => {
     if (quoteOptions.length) {
       return quoteOptions[0].networkFee
@@ -1119,6 +1102,16 @@ export const useSwap = () => {
     [handleQuoteRefresh]
   )
 
+  const onChangeSlippageTolerance = useCallback(
+    async (slippage: string) => {
+      setSlippageTolerance(slippage)
+      await handleQuoteRefresh({
+        slippage
+      })
+    },
+    [handleQuoteRefresh]
+  )
+
   const submitButtonText = useMemo(() => {
     if (isFetchingQuote) {
       return getLocale('braveWalletFetchingQuote')
@@ -1248,10 +1241,8 @@ export const useSwap = () => {
     selectedSwapSendAccount,
     toAnotherAddress,
     userConfirmedAddress,
-    selectedGasFeeOption,
     slippageTolerance,
     useDirectRoute,
-    gasEstimates,
     swapFees,
     onSelectFromToken,
     onSelectToToken,
@@ -1266,8 +1257,7 @@ export const useSwap = () => {
     onCheckUserConfirmedAddress,
     onSetSelectedSwapAndSendOption,
     setSelectedSwapSendAccount,
-    setSelectedGasFeeOption,
-    setSlippageTolerance,
+    onChangeSlippageTolerance,
     setUseDirectRoute,
     onSubmit,
     onChangeRecipient,

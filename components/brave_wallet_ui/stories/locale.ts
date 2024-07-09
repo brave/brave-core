@@ -72,10 +72,6 @@ provideStrings({
   braveWalletSell: 'Sell',
   braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
-  braveWalletSlippageToleranceTitle: 'Slippage tolerance',
-  braveWalletSlippageToleranceExplanation:
-    'Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.',
-  braveWalletSlippageToleranceDescription: 'Enter a value between 0.5% and 99%',
   braveWalletExpiresInTitle: 'Expires in',
   braveWalletSendPlaceholder: 'Wallet address or URL',
   braveWalletSendNoURLPlaceholder: 'Wallet address',
@@ -141,8 +137,6 @@ provideStrings({
 
   // Bridge
   braveWalletChooseAssetToBridge: 'Choose asset to bridge',
-  braveWalletBridgingVia: 'Bridging via',
-  braveWalletEstFees: 'Est fees',
   braveWalletEstTime: 'Est time',
   braveWalletExchangeRate: 'Exchange rate',
   braveWalletExchangeFor: '$1 for $2',
@@ -599,7 +593,6 @@ provideStrings({
   braveWalletSwapReviewHeader: 'Confirm order',
   braveWalletSolanaSwap: 'Solana Swap',
   braveWalletNoRoutesFound: 'No routes found',
-  braveWalletSwappingVia: 'Swapping via',
   braveWalletReviewSwap: 'Review swap',
   braveWalletChooseQuoteProvider: 'Choose quote provider',
   braveWalletQuoteProviderInfo:
@@ -610,6 +603,19 @@ provideStrings({
   braveWalletUpdate: 'Update',
   braveWalletProviderNotSupported: 'This pair is not supported by $1',
   braveWalletChangeProvider: 'Change provider',
+  braveWalletRoute: 'Route',
+  braveWalletMaxSlippage: 'Max slippage',
+
+  braveWalletMaxSlippageDescription:
+    'When the deviation between the price of the transaction you ' +
+    'submitted and the price at the time of the transaction on chain is ' +
+    'greater than this set value, the transaction will fail.',
+  braveWalletSuggestedValues: 'Suggested Values:',
+  braveWalletMainstreamAssetPairs: 'Mainstream Asset Pairs: $1%',
+  braveWalletStablecoinPairs: 'Stablecoin Pairs: $1%',
+  braveWalletOthers: 'Others: $1%',
+  braveWalletSuggested: 'Suggested',
+  braveWalletCustom: 'Custom',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
