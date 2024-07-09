@@ -39,6 +39,8 @@ BraveJavaScriptTabModalDialogViewViews::BraveJavaScriptTabModalDialogViewViews(
   auto* widget = GetWidget();
   CHECK(widget);
 
+  widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+
   widget->widget_delegate()->set_desired_position_delegate(base::BindRepeating(
       [](base::WeakPtr<BraveJavaScriptTabModalDialogViewViews> dialog_view) {
         if (!dialog_view) {
