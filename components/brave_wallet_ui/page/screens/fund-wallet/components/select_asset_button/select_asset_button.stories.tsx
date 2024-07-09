@@ -20,8 +20,7 @@ export const _SelectAssetButton = () => {
   )
 }
 
-_SelectAssetButton.story = {
-  name: 'Fund Wallet - Select Asset Button'
+export default {
+  component: _SelectAssetButton,
+  title: 'Fund Wallet - Select Asset Button'
 }
-
-export default _SelectAssetButton

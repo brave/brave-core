@@ -29,4 +29,6 @@ _AmountButton.story = {
   name: 'Fund Wallet - Amount Button'
 }
 
-export default _AmountButton
+export default {
+  component: _AmountButton
+}
