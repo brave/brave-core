@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h"
+#include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "components/web_modal/web_contents_modal_dialog_host.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -39,7 +40,7 @@ BraveJavaScriptTabModalDialogViewViews::BraveJavaScriptTabModalDialogViewViews(
   auto* widget = GetWidget();
   CHECK(widget);
 
-  widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
+  widget->SetZOrderSublevel(kSublevelSecurity);
 
   widget->widget_delegate()->set_desired_position_delegate(base::BindRepeating(
       [](base::WeakPtr<BraveJavaScriptTabModalDialogViewViews> dialog_view) {
