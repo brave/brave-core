@@ -38,18 +38,17 @@ UnsortedDefaultStateOverrides& GetUnsortedDefaultStateOverrides() {
 }
 
 const DefaultStateOverrides& GetDefaultStateOverrides() {
-  static const NoDestructor<DefaultStateOverrides> default_state_overrides([] {
+  static const NoDestructor<DefaultStateOverrides> kDefaultStateOverrides([] {
     DefaultStateOverrides sorted_overrides =
         std::move(GetUnsortedDefaultStateOverrides());
     DCHECK_EQ(GetUnsortedDefaultStateOverrides().capacity(), 0u);
-    DLOG_IF(ERROR, sorted_overrides.size() > kDefaultStateOverridesReserve)
-        << "Please increase kDefaultStateOverridesReserve. Feature overrides "
-           "count: "
-        << sorted_overrides.size()
-        << ", reserve size: " << kDefaultStateOverridesReserve;
+#if !defined(COMPONENT_BUILD)
+    CHECK_GE(kDefaultStateOverridesReserve, sorted_overrides.size())
+        << "kDefaultStateOverridesReserve should be increased";
+#endif
     return sorted_overrides;
   }());
-  return *default_state_overrides;
+  return *kDefaultStateOverrides;
 }
 
 }  // namespace
