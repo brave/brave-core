@@ -305,6 +305,8 @@ class BraveWalletService : public KeyedService,
   // Might return nullptr.
   ZCashWalletService* GetZcashWalletService();
 
+  void GetCountryCode(GetCountryCodeCallback callback) override;
+
  protected:
   // For tests
   BraveWalletService();
