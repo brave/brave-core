@@ -240,6 +240,22 @@ class DomainTests: CoreDataTestCase {
 }
 
 extension Domain {
+  fileprivate class func setBraveShield(
+    forUrl url: URL,
+    shield: BraveShield,
+    isOn: Bool?,
+    isPrivateBrowsing: Bool
+  ) {
+    performChangesOnDomain(for: url, isPrivateBrowsing: isPrivateBrowsing) { domain in
+      let setting = (isOn == shield.globalPreference ? nil : isOn) as NSNumber?
+      switch shield {
+      case .allOff: domain.shield_allOff = setting
+      case .fpProtection: domain.shield_fpProtection = setting
+      case .noScript: domain.shield_noScript = setting
+      }
+    }
+  }
+
   fileprivate class func performChangesOnDomain(
     for url: URL,
     isPrivateBrowsing: Bool,

@@ -192,16 +192,6 @@ public final class Domain: NSManagedObject, CRUD {
 
   // MARK: Shields
 
-  public class func setBraveShield(
-    forUrl url: URL,
-    shield: BraveShield,
-    isOn: Bool?,
-    isPrivateBrowsing: Bool
-  ) {
-    let _context: WriteContext = isPrivateBrowsing ? .new(inMemory: true) : .new(inMemory: false)
-    setBraveShieldInternal(forUrl: url, shield: shield, isOn: isOn, context: _context)
-  }
-
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
   @MainActor public func isShieldExpected(
     _ shield: BraveShield,
@@ -502,37 +492,6 @@ extension Domain {
   }
 
   // MARK: Shields
-
-  class func setBraveShieldInternal(
-    forUrl url: URL,
-    shield: BraveShield,
-    isOn: Bool?,
-    context: WriteContext = .new(inMemory: false)
-  ) {
-    DataController.perform(context: context) { context in
-      // Not saving here, save happens in `perform` method.
-      let domain = Domain.getOrCreateInternal(
-        url,
-        context: context,
-        saveStrategy: .delayedPersistentStore
-      )
-      domain.setBraveShield(shield: shield, isOn: isOn, context: context)
-    }
-  }
-
-  private func setBraveShield(
-    shield: BraveShield,
-    isOn: Bool?,
-    context: NSManagedObjectContext
-  ) {
-
-    let setting = (isOn == shield.globalPreference ? nil : isOn) as NSNumber?
-    switch shield {
-    case .allOff: shield_allOff = setting
-    case .fpProtection: shield_fpProtection = setting
-    case .noScript: shield_noScript = setting
-    }
-  }
 
   /// Returns `url` but switches the scheme from `http` <-> `https`
   private func domainForInverseHttpScheme(context: NSManagedObjectContext) -> Domain? {
