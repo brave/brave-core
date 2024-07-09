@@ -270,8 +270,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 int extraMarginForNews =
                         (mIsDisplayNewsOptin || shouldDisplayNewsLoading() || mIsDisplayNewsFeed)
-                        ? dpToPx(mActivity, 30)
-                        : 0;
+                                ? dpToPx(mActivity, 30)
+                                : 0;
 
                 mTopMarginImageCredit =
                         mRecyclerViewHeight

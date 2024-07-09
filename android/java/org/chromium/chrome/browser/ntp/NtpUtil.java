@@ -13,9 +13,7 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 public class NtpUtil {
     public static boolean shouldDisplayTopSites() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_TOP_SITES,
-                        DayZeroMojomHelper.getDayZeroExptFlag());
+                .readBoolean(BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true);
     }
 
     public static void setDisplayTopSites(boolean shouldDisplayTopSites) {
@@ -26,9 +24,7 @@ public class NtpUtil {
 
     public static boolean shouldDisplayBraveStats() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS,
-                        DayZeroMojomHelper.getDayZeroExptFlag());
+                .readBoolean(BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, true);
     }
 
     public static void setDisplayBraveStats(boolean shouldDisplayBraveStats) {
