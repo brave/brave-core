@@ -59,7 +59,7 @@ public class BlockingSummaryDataSource {
 
   public init(with filePath: String? = nil) {
     self.filePath =
-      filePath ?? Bundle.module.path(forResource: "blocking-summary-test", ofType: "json")!
+      filePath ?? Bundle.module.path(forResource: "blocking-summary", ofType: "json")
   }
 
   public func fetchDomainFetchedSiteSavings(_ url: URL) async -> String? {
@@ -73,14 +73,15 @@ public class BlockingSummaryDataSource {
 
   // MARK: Private
 
-  private let filePath: String
+  private let filePath: String?
   private var isSummaryListLoaded: Bool = false
 
   /// The list containing details related with blocking values of sites fetched from the JSON file
   private var blockingSummaryList = [BlockingSummary]()
 
   /// The function which uses the Data from Local JSON file to fetch list of objects
-  private func fetchBlockingSummaryObjects(with filePath: String) async {
+  private func fetchBlockingSummaryObjects(with filePath: String?) async {
+    guard let filePath else { return }
     defer { isSummaryListLoaded = true }
     guard let blockSummaryData = await AsyncFileManager.default.contents(atPath: filePath) else {
       Logger.module.error("Failed to get bundle path for \(filePath)")
