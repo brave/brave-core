@@ -401,10 +401,7 @@ export const Nfts = ({
     (groupNftsByCollection &&
       isFetchingLatestAssetIdsByCollectionNameRegistry) ||
     (selectedTab === 'hidden' &&
-      (isLoadingSpamNfts ||
-        // (shouldFetchSpamNftBalances &&
-        !spamTokenBalancesRegistry))
-  // )
+      (isLoadingSpamNfts || !spamTokenBalancesRegistry))
 
   // methods
   const onSearchValueChange = React.useCallback(

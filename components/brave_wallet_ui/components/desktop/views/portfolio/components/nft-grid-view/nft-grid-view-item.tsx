@@ -175,8 +175,7 @@ export const NFTGridViewItem = ({
         {isWatchOnly && (
           <WatchOnlyMarker>
             {
-              //
-              getLocale('braveWalletWatchOnly')
+              getLocale('braveWalletWatchOnly') //
             }
           </WatchOnlyMarker>
         )}
