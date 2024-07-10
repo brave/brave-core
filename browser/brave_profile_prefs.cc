@@ -305,10 +305,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
 #endif
 
-  // Disable the Google Hangouts extension (included by Chromium) by default.
-  // See https://github.com/brave/brave-browser/issues/39660 for more info.
-  registry->RegisterBooleanPref(kHangoutsEnabled, false);
-
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
       prefs::kRestoreOnStartup,

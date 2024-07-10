@@ -67,9 +67,6 @@
       </cr-button>
     </template>
   </settings-toggle-button>
-  <settings-toggle-button id="hangoutsEnabled" class="cr-row" pref="{{prefs.brave.hangouts_enabled}}" label="Hangouts"
-    sub-label="$i18n{hangoutsEnabledDesc}" on-settings-boolean-control-change="onHangoutsEnabledChange_">
-  </settings-toggle-button>
   <settings-toggle-button id="mediaRouterEnabled" class="cr-row" pref="{{prefs.brave.enable_media_router_on_restart}}"
     label="Media Router" sub-label="$i18n{mediaRouterEnabledDesc}">
     <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
