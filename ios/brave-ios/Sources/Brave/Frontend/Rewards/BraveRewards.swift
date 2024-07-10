@@ -11,7 +11,7 @@ import Growth
 import Preferences
 import Shared
 
-public class BraveRewards: NSObject {
+public class BraveRewards: PreferencesObserver {
 
   /// Whether or not Brave Rewards is available/can be enabled
   public static var isAvailable: Bool {
@@ -33,8 +33,6 @@ public class BraveRewards: NSObject {
 
     ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
 
-    super.init()
-
     braveNewsObservation = Preferences.BraveNews.isEnabled.$value
       .receive(on: DispatchQueue.main)
       .sink { [weak self] value in
@@ -46,6 +44,13 @@ public class BraveRewards: NSObject {
     if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
     }
+
+    ads.notifyBraveNewsIsEnabledPreferenceDidChange(Preferences.BraveNews.isEnabled.value)
+    Preferences.BraveNews.isEnabled.observe(from: self)
+  }
+
+  public func preferencesDidChange(for key: String) {
+    ads.notifyBraveNewsIsEnabledPreferenceDidChange(Preferences.BraveNews.isEnabled.value)
   }
 
   func startRewardsService(_ completion: (() -> Void)?) {

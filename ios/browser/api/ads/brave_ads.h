@@ -66,6 +66,10 @@ OBJC_EXPORT
 /// Returns `true` if the user opted-in to search result ads.
 - (BOOL)isOptedInToSearchResultAds;
 
+/// Used to notify the ads service that the user has opted-in/opted-out to
+/// Brave News.
+- (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled;
+
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it
 @property(nonatomic, assign, getter=isEnabled)
