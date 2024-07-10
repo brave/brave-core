@@ -131,7 +131,6 @@
   <message name="IDS_BRAVE_WALLET_OTHERS" desc="Swap max slippage others label">Others: <ph name="SLIPPAGE_PERCENT"><ex>1</ex>$1</ph>%</message>
   <message name="IDS_BRAVE_WALLET_SUGGESTED" desc="Swap max slippage suggested option">Suggested</message>
   <message name="IDS_BRAVE_WALLET_CUSTOM" desc="Swap max slippage custom option">Custom</message>
-  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
   <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE" desc="Bridge and Swap exchange rate label">Exchange rate</message>

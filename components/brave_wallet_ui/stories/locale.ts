@@ -1342,7 +1342,6 @@ provideStrings({
 
   // Misc. placeholders
   braveWalletExempliGratia: 'e.g $1',
-  braveWalletUnavailableBalances: 'Some balances may be unavailable',
 
   // Explore
   braveWalletWeb3: 'Web3',
