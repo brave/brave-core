@@ -7,6 +7,7 @@
   "//chrome/app/vector_icons/download_in_progress_chrome_refresh.icon": "leo_download",
   "//chrome/app/vector_icons/download_toolbar_button.icon": "leo_download",
   "//chrome/app/vector_icons/download_toolbar_button_chrome_refresh.icon": "leo_download",
+  "//chrome/app/vector_icons/download_warning.icon": "leo_warning_triangle_filled",
   "//chrome/app/vector_icons/install_desktop_chrome_refresh.icon": "leo_pwa_install",
   "//chrome/app/vector_icons/media_toolbar_button.icon": "leo_music_tones",
   "//chrome/app/vector_icons/media_toolbar_button_chrome_refresh.icon": "leo_music_tones",
