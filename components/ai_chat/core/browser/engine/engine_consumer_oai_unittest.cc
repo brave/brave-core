@@ -210,13 +210,6 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
       mojom::ConversationTurnVisibility::VISIBLE, assistant_input, std::nullopt,
       std::nullopt));
 
-  std::string expected_human_input =
-      base::StrCat({base::ReplaceStringPlaceholders(
-                        l10n_util::GetStringUTF8(
-                            IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
-                        {selected_text}, nullptr),
-                    "\n\n", human_input});
-
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
   std::string expected_system_message =
@@ -239,8 +232,10 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
                       expected_system_message);
 
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
-            EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      expected_human_input);
+            EXPECT_EQ(
+                *messages[1].GetDict().Find("content"),
+                "This is an excerpt of the page content:\n<excerpt>\nThis is "
+                "the way.\n</excerpt>\n\nWhich show is this catchphrase from?");
 
             EXPECT_EQ(*messages[2].GetDict().Find("role"), "assistant");
             EXPECT_EQ(*messages[2].GetDict().Find("content"), assistant_input);
@@ -275,20 +270,6 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   EngineConsumer::ConversationHistory history;
 
-  std::string page_content = "This is a page.";
-  bool is_video = false;
-
-  const std::string prompt_segment_article =
-      page_content.empty()
-          ? ""
-          : base::StrCat(
-                {base::ReplaceStringPlaceholders(
-                     l10n_util::GetStringUTF8(
-                         is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
-                                  : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
-                     {page_content}, nullptr),
-                 "\n\n", "Summarize this page"});
-
   auto* client = GetClient();
   base::RunLoop run_loop;
 
@@ -300,7 +281,8 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
               EngineConsumer::GenerationCompletedCallback completed_callback) {
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
-                      prompt_segment_article);
+                      "This is the text of a web page:\n<page>\nThis is a "
+                      "page.\n</page>\n\nSummarize this page");
 
             std::move(completed_callback)
                 .Run(EngineConsumer::GenerationResult(""));
@@ -314,7 +296,8 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   }
 
   engine_->GenerateAssistantResponse(
-      is_video, page_content, history,
+      /* is_video */ false,
+      /* page_content */ "This is a page.", history,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));

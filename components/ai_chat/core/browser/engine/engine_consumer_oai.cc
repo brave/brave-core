@@ -66,13 +66,11 @@ base::Value::List BuildMessages(
 
   // Append page content, if exists
   if (!page_content.empty()) {
-    const std::string prompt_segment_article = base::StrCat(
-        {base::ReplaceStringPlaceholders(
-             l10n_util::GetStringUTF8(
-                 is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
-                          : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
-             {page_content}, nullptr),
-         "\n\n"});
+    const std::string prompt_segment_article = base::ReplaceStringPlaceholders(
+        l10n_util::GetStringUTF8(
+            is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
+                     : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
+        {page_content}, nullptr);
 
     auto summarize_turn_iter = base::ranges::find_if(
         conversation_history, [&](const mojom::ConversationTurnPtr& turn) {
@@ -258,7 +256,6 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
 
   base::Value::List messages = BuildMessages(
       truncated_page_content, selected_text, is_video, conversation_history);
-
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
