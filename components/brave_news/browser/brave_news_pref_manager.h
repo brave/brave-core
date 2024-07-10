@@ -16,7 +16,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_observer.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -90,8 +89,6 @@ class BraveNewsPrefManager {
     virtual void OnPublishersChanged() {}
     virtual void OnChannelsChanged() {}
   };
-
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   explicit BraveNewsPrefManager(PrefService& prefs);
   ~BraveNewsPrefManager();

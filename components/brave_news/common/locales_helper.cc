@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_news/browser/locales_helper.h"
+#include "brave/components/brave_news/common/locales_helper.h"
 
 #include <optional>
 #include <string>
@@ -14,16 +14,10 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
-#include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/urls.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_news {

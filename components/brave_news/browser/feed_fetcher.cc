@@ -26,12 +26,12 @@
 #include "brave/components/brave_news/browser/combined_feed_parsing.h"
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
-#include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 

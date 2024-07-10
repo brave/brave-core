@@ -40,8 +40,6 @@ static_library("browser") {
     "html_parsing.h",
     "initialization_promise.cc",
     "initialization_promise.h",
-    "locales_helper.cc",
-    "locales_helper.h",
     "network.cc",
     "network.h",
     "publishers_controller.cc",

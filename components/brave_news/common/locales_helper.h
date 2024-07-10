@@ -3,16 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_LOCALES_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_LOCALES_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_LOCALES_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_LOCALES_HELPER_H_
 
 #include <string>
-#include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 
 namespace brave_news {
+
+using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
 // Gets a list of all available locales from the publishers.
 base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers);
@@ -34,4 +36,4 @@ base::flat_set<std::string> GetMinimalLocalesSet(
 bool IsUserInDefaultEnabledLocale();
 }  // namespace brave_news
 
-#endif  // BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_LOCALES_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_NEWS_COMMON_LOCALES_HELPER_H_

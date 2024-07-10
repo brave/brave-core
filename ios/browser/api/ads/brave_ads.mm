@@ -217,6 +217,13 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       brave_ads::prefs::kOptedInToSearchResultAds);
 }
 
+- (void)notifyBraveNewsIsEnabledPreferenceDidChange:(BOOL)isEnabled {
+  [self setProfilePref:brave_news::prefs::kBraveNewsOptedIn
+                 value:base::Value(isEnabled)];
+  [self setProfilePref:brave_news::prefs::kNewTabPageShowToday
+                 value:base::Value(isEnabled)];
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
@@ -1535,9 +1542,7 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
 }
 
 - (std::optional<base::Value>)getProfilePref:(const std::string&)path {
-  if (path == brave_news::prefs::kBraveNewsOptedIn ||
-      path == brave_news::prefs::kNewTabPageShowToday ||
-      path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
+  if (path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
       path == ntp_background_images::prefs::
                   kNewTabPageShowSponsoredImagesBackgroundImage) {
     // TODO(https://github.com/brave/brave-browser/issues/33745): Decouple Brave

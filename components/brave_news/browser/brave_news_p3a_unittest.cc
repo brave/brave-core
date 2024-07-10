@@ -10,9 +10,11 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -29,7 +31,7 @@ class BraveNewsP3ATest : public testing::Test {
   void SetUp() override {
     task_environment_.AdvanceClock(base::Days(2));
     PrefRegistrySimple* registry = pref_service_.registry();
-    BraveNewsPrefManager::RegisterProfilePrefs(registry);
+    ::brave_news::prefs::RegisterProfilePrefs(registry);
     registry->RegisterBooleanPref(brave_rewards::prefs::kEnabled, false);
 
     pref_manager_ = std::make_unique<BraveNewsPrefManager>(pref_service_);
@@ -343,14 +345,14 @@ TEST_F(BraveNewsP3ATest, TestIsEnabled) {
   PrefService* prefs = GetPrefs();
 
   // should not record "disabled" if never opted in
-  prefs->SetBoolean(prefs::kNewTabPageShowToday, false);
+  prefs->SetBoolean(::brave_news::prefs::kNewTabPageShowToday, false);
   histogram_tester_.ExpectTotalCount(kIsEnabledHistogramName, 0);
 
-  prefs->SetBoolean(prefs::kBraveNewsOptedIn, true);
-  prefs->SetBoolean(prefs::kNewTabPageShowToday, true);
+  prefs->SetBoolean(::brave_news::prefs::kBraveNewsOptedIn, true);
+  prefs->SetBoolean(::brave_news::prefs::kNewTabPageShowToday, true);
   histogram_tester_.ExpectUniqueSample(kIsEnabledHistogramName, 1, 1);
 
-  prefs->SetBoolean(prefs::kNewTabPageShowToday, false);
+  prefs->SetBoolean(::brave_news::prefs::kNewTabPageShowToday, false);
   histogram_tester_.ExpectBucketCount(kIsEnabledHistogramName, 0, 1);
 }
 

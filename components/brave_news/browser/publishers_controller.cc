@@ -21,7 +21,6 @@
 #include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
-#include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
