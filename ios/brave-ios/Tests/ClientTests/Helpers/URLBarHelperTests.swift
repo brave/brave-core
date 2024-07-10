@@ -23,16 +23,12 @@ class URLBarHelperTests: XCTestCase {
     clearTestQueryList()
   }
 
-  func testSafeQueryList() {
-    Task {
-      await testQuery(list: validQueryList, isSuspicious: false)
-    }
+  func testSafeQueryList() async {
+    await testQuery(list: validQueryList, isSuspicious: false)
   }
 
-  func testSuspiciousQueryList() {
-    Task {
-      await testQuery(list: suspiciousQueryList, isSuspicious: true)
-    }
+  func testSuspiciousQueryList() async {
+    await testQuery(list: suspiciousQueryList, isSuspicious: true)
   }
 
   private func testQuery(list: [String], isSuspicious: Bool) async {
