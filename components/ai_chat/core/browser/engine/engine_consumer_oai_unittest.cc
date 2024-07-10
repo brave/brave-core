@@ -222,8 +222,7 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions& model_options,
-              base::Value::List messages,
+          [&](const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback) {
             // system role is added by the engine
@@ -268,22 +267,21 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
 }
 
 TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
-  EngineConsumer::ConversationHistory history;
-
   auto* client = GetClient();
   base::RunLoop run_loop;
 
+  EngineConsumer::ConversationHistory history;
+
   EXPECT_CALL(*client, PerformRequest(_, _, _, _))
       .WillOnce(
-          [&](const mojom::CustomModelOptions& model_options,
-              base::Value::List messages,
+          [&](const mojom::CustomModelOptions, base::Value::List messages,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback) {
+            // Page content should always be attached to the first message
             EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
             EXPECT_EQ(*messages[1].GetDict().Find("content"),
                       "This is the text of a web page:\n<page>\nThis is a "
-                      "page.\n</page>\n\nSummarize this page");
-
+                      "page.\n</page>\n\nTell me more about this page");
             std::move(completed_callback)
                 .Run(EngineConsumer::GenerationResult(""));
           });
@@ -291,14 +289,13 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
   {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
     entry->character_type = mojom::CharacterType::HUMAN;
-    entry->text = l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE);
+    entry->text = "Tell me more about this page";
     history.push_back(std::move(entry));
   }
 
   engine_->GenerateAssistantResponse(
       /* is_video */ false,
-      /* page_content */ "This is a page.", history,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), base::DoNothing(),
+      /* page_content */ "This is a page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 
