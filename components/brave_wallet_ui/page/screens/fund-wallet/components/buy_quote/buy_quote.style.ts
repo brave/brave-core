@@ -6,6 +6,9 @@
 import styled from 'styled-components'
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
+import Label from '@brave/leo/react/label'
+import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div<{ isOpen?: boolean }>`
   display: flex;
@@ -27,6 +30,8 @@ export const ProviderName = styled.p`
 export const Estimate = styled.p`
   color: ${color.text.secondary};
   font: ${font.xSmall.regular};
+  padding: 0;
+  margin: 0;
 `
 
 export const ProviderImage = styled.img`
@@ -37,6 +42,9 @@ export const ProviderImage = styled.img`
 
 export const PaymentMethodsWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+
   gap: ${spacing.l};
   padding: 4px 8px;
   border-radius: 4px;
@@ -44,15 +52,78 @@ export const PaymentMethodsWrapper = styled.div`
 `
 
 export const PaymentMethodIcon = styled(Icon)`
-    --leo-icon-size: 12px;
+  --leo-icon-size: 20px;
+  --leo-icon-color: ${color.icon.default};
 `
 
 export const CaratIcon = styled(Icon)<{
-    isOpen?: boolean
+  isOpen?: boolean
 }>`
-    --leo-icon-size: 24px;
-    transform: rotate(${(p) => (p.isOpen ? '180deg' : '0deg')});
-    transition: transform 0.5s;
-    margin-left: 8px;
+  --leo-icon-size: 24px;
+  --leo-icon-color: ${color.button.background};
+  transform: rotate(${(p) => (p.isOpen ? '180deg' : '0deg')});
+  transition: transform 0.5s;
+  margin-left: 8px;
 `
 
+export const QuoteDetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: ${spacing.xl} ${spacing['2Xl']};
+  border-radius: 12px;
+  gap: 8px;
+  background-color: ${color.page.background};
+  margin-top: ${spacing.xl};
+`
+
+export const QuoteDetailsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+`
+
+export const QuoteDetailsLabel = styled.p`
+  color: ${color.text.secondary};
+  font: ${font.small.regular};
+  color: ${color.text.primary};
+  margin: 0;
+  padding: 0;
+`
+
+export const QuoteDetailsValue = styled.p`
+  color: ${color.text.primary};
+  font: ${font.small.regular};
+  color: ${color.text.primary};
+  margin: 0;
+  padding: 0;
+`
+
+export const Divider = styled.div`
+  height: 1px;
+  background-color: ${color.divider.subtle};
+`
+
+export const QuoteTotal = styled.p`
+  color: ${color.text.primary};
+  font: ${font.small.semibold};
+  margin: 0;
+  padding: 0;
+`
+
+export const BuyButton = styled(Button).attrs({
+  kind: 'filled'
+})`
+  @media (max-width: ${layoutPanelWidth}px) {
+    width: 100%;
+  }
+`
+
+export const BestOptionLabel = styled(Label).attrs({
+  mode: 'default',
+  color: 'green'
+})`
+  --leo-label-padding: 12px;
+  color: ${color.text.primary};
+`
