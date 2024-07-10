@@ -41,12 +41,13 @@ public class BraveVPNSettingsViewController: TableViewController {
   private var vpnReconfigurationPending = false {
     didSet {
       DispatchQueue.main.async {
-        self.vpnConnectionStatusSwitch?.isEnabled = !self.vpnReconfigurationPending
+        self.vpnConnectionStatusToggle?.isEnabled = !self.vpnReconfigurationPending
       }
     }
   }
   
-  private var vpnConnectionStatusSwitch: SwitchAccessoryView?
+  private var vpnConnectionStatusToggle: SwitchAccessoryView?
+  
 
   /// Loading view with an transparent overlay
   private var overlayView: UIView?
@@ -55,6 +56,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     didSet {
       overlayView?.removeFromSuperview()
       overlayView = nil
+      tableView.isScrollEnabled = true
 
       if !isLoading { return }
       
@@ -64,19 +66,17 @@ public class BraveVPNSettingsViewController: TableViewController {
 
       let overlay = UIView().then {
         $0.backgroundColor = UIColor.white.withAlphaComponent(0.4)
-        $0.addSubview(loaderView)
       }
 
       view.addSubview(overlay)
+      overlay.addSubview(loaderView)
+
       overlay.frame = CGRect(size: tableView.contentSize)
-      
-      loaderView.snp.makeConstraints {
-        $0.centerX.equalToSuperview()
-        $0.centerY.equalToSuperview().offset(-150)
-      }
+      loaderView.frame.origin = CGPoint(x: tableView.bounds.midX - (loaderView.bounds.width / 2), y: tableView.bounds.midY - 100)
       
       loaderView.start()
       overlayView = overlay
+      tableView.isScrollEnabled = false
     }
   }
   
@@ -110,7 +110,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       statusSwitchView.onTintColor = .braveErrorLabel
     }
 
-    vpnConnectionStatusSwitch = statusSwitchView
+    vpnConnectionStatusToggle = statusSwitchView
 
     return Section(
       rows: [
@@ -263,10 +263,21 @@ public class BraveVPNSettingsViewController: TableViewController {
   private var killSwitchSection: Static.Section {
     let killSwitchView = SwitchAccessoryView(
       initialValue: true,
-      valueChange: { killSwitchON in
+      valueChange: { [weak self] killSwitchON in
+        guard let self = self else { return }
+        
+        self.vpnReconfigurationPending = true
         self.isLoading = true
         
-        // TODO Value
+//        BraveVPN.reconnectVPN { success in
+//
+//          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//            self.isLoading = false
+//            self.vpnReconfigurationPending = false
+//            
+//            self.updateServerSectionInfo()
+//          }
+//        }
       }
     )
     
@@ -474,6 +485,42 @@ extension BraveVPNSettingsViewController {
 
     present(alert, animated: true)
   }
+  
+  private func showEnableKillSwitchError() {
+    let alert = UIAlertController(
+      title: "Couldnt Enable Kill Switch",
+      message: "Description of the error goes here. TO BE CONFIRMED",
+      preferredStyle: .alert
+    )
+
+    let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
+    
+    let retry = UIAlertAction(
+      title: "Retry",
+      style: .default,
+      handler: { [weak self] _ in
+        guard let self = self else { return }
+        
+        self.vpnReconfigurationPending = true
+        self.isLoading = true
+        
+        BraveVPN.reconnectVPN { success in
+
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.isLoading = false
+            self.vpnReconfigurationPending = false
+            
+            self.updateServerSectionInfo()
+          }
+        }
+      }
+    )
+
+    alert.addAction(cancel)
+    alert.addAction(retry)
+
+    present(alert, animated: true)
+  }
 }
 
 // MARK: - VPNConnection Observer
@@ -488,10 +535,10 @@ extension BraveVPNSettingsViewController {
     case .connecting, .disconnecting, .reasserting:
       isLoading = true
     case .invalid:
-      vpnConnectionStatusSwitch?.isOn = false
+      vpnConnectionStatusToggle?.isOn = false
       isLoading = false
     case .connected, .disconnected:
-      vpnConnectionStatusSwitch?.isOn = BraveVPN.isConnected
+      vpnConnectionStatusToggle?.isOn = BraveVPN.isConnected
       isLoading = false
     @unknown default:
       assertionFailure()
