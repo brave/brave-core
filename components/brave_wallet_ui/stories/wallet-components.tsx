@@ -23,7 +23,6 @@ import {
   ContainerCard,
   LayoutCardWrapper
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-import { NFTGridViewItem } from '../components/desktop/views/portfolio/components/nft-grid-view/nft-grid-view-item'
 import { TabOption, Tabs } from '../components/shared/tabs/tabs'
 import { AutoDiscoveryEmptyState } from '../components/desktop/views/nfts/components/auto-discovery-empty-state/auto-discovery-empty-state'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
@@ -114,8 +113,6 @@ _BuySendSwapDeposit.story = {
   name: 'Buy/Send/Swap/Deposit'
 }
 
-
-
 export const _NftsEmptyState = () => {
   return <NftsEmptyState onImportNft={() => console.log('On import NFT')} />
 }
@@ -167,19 +164,6 @@ export const _AutoDiscoveryEmptyState = () => {
 
 _AutoDiscoveryEmptyState.story = {
   title: 'NFT Auto Discovery Empty State'
-}
-
-export const _NFTGridViewItem = () => {
-  return (
-    <WalletPageStory>
-      <NFTGridViewItem
-        isTokenHidden={false}
-        isTokenSpam={false}
-        token={mockErc721Token}
-        onSelectAsset={() => {}}
-      />
-    </WalletPageStory>
-  )
 }
 
 export const _Tabs = () => {

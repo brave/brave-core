@@ -387,6 +387,23 @@ export const compareTokensByName = (
   b: Pick<BraveWallet.BlockchainToken, 'name'>
 ) => a.name.localeCompare(b.name)
 
+export function isTokenWatchOnly(
+  token: BraveWallet.BlockchainToken,
+  allAccounts: BraveWallet.AccountInfo[],
+  tokenBalancesRegistry: TokenBalancesRegistry | null | undefined,
+  spamTokenBalancesRegistry: TokenBalancesRegistry | null | undefined
+) {
+  return !allAccounts.some((account) => {
+    const balance = getBalance(account.accountId, token, tokenBalancesRegistry)
+    const spamBalance = getBalance(
+      account.accountId,
+      token,
+      spamTokenBalancesRegistry
+    )
+    return (balance && balance !== '0') || (spamBalance && spamBalance !== '0')
+  })
+}
+
 export function getTokensWithBalanceForAccounts(
   tokens: BraveWallet.BlockchainToken[],
   filteredAccounts: BraveWallet.AccountInfo[],

@@ -4,12 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
+import Alert from '@brave/leo/react/alert'
 
 // types
 import { BraveWallet, AccountPageTabs } from '../../../constants/types'
 
 // hooks
 import useExplorer from '../../../common/hooks/explorer'
+import useBalancesFetcher from '../../../common/hooks/use-balances-fetcher'
 
 // utils
 import Amount from '../../../utils/amount'
@@ -21,12 +24,14 @@ import {
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
 import { makeAccountRoute } from '../../../utils/routes-utils'
+import { isTokenWatchOnly } from '../../../utils/asset-utils'
 
 // queries & mutations
 import {
   useGetNftMetadataQuery,
-  useUpdateUserTokenMutation,
+  useUpdateUserTokenMutation
 } from '../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
 
 // components
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
@@ -64,7 +69,7 @@ import {
   IconWrapper,
   NetworkIconWrapper
 } from './nft-screen.styles'
-import { Row } from '../../../components/shared/style'
+import { Row, VerticalSpace } from '../../../components/shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
@@ -99,6 +104,28 @@ export const NftScreen = (props: Props) => {
   } = useGetNftMetadataQuery(selectedAsset, {
     skip: !selectedAsset
   })
+
+  const { accounts } = useAccountsQuery()
+
+  const { data: tokenBalancesRegistry } = useBalancesFetcher(
+    tokenNetwork
+      ? {
+          accounts,
+          networks: [tokenNetwork],
+          isSpamRegistry: false
+        }
+      : skipToken
+  )
+
+  const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
+    tokenNetwork
+      ? {
+          accounts,
+          networks: [tokenNetwork],
+          isSpamRegistry: true
+        }
+      : skipToken
+  )
 
   // mutations
   const [updateUserToken] = useUpdateUserTokenMutation()
@@ -178,6 +205,22 @@ export const NftScreen = (props: Props) => {
 
   return (
     <StyledWrapper>
+      {isTokenWatchOnly(
+        selectedAsset,
+        accounts,
+        tokenBalancesRegistry,
+        spamTokenBalancesRegistry
+      ) && (
+        <>
+          <Alert
+            mode='simple'
+            type='info'
+          >
+            {getLocale('braveWalletUnownedNftAlert')}
+          </Alert>
+          <VerticalSpace space='24px' />
+        </>
+      )}
       <TopWrapper>
         <NftMultimediaWrapper>
           {isFetchingNFTMetadata ? (
