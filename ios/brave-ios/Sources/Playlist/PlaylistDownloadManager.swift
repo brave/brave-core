@@ -495,11 +495,18 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
     }
 
     let asset = activeDownloadTasks.removeValue(forKey: task)
-    let assetUrl = pendingDownloadTasks.removeValue(forKey: task)
+    let temporaryUrl = pendingDownloadTasks.removeValue(forKey: task)
 
     guard let asset = asset,
-      let assetUrl = assetUrl
+      let temporaryUrl = temporaryUrl
     else { return }
+
+    // This method will delete the downloaded file immediately after this delegate method returns
+    // so we must synchonously move the file to a temporary directory first before processing it
+    // on a different thread since the Task will execute after this method returns
+    let assetUrl = FileManager.default.temporaryDirectory
+      .appending(component: temporaryUrl.lastPathComponent)
+    try? FileManager.default.moveItem(at: temporaryUrl, to: assetUrl)
 
     @Sendable func cleanupAndFailDownload(location: URL?, error: Error) async {
       if let location = location {
@@ -886,13 +893,19 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     if let response = downloadTask.response as? HTTPURLResponse,
       response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299
     {
+      // This method will delete the downloaded file immediately after this delegate method returns
+      // so we must synchonously move the file to a temporary directory first before processing it
+      // on a different thread since the Task will execute after this method returns
+      let temporaryLocation = FileManager.default.temporaryDirectory
+        .appending(component: location.lastPathComponent)
+      try? FileManager.default.moveItem(at: location, to: temporaryLocation)
       Task {
         // Couldn't determine file type so we assume mp4 which is the most widely used container.
         // If it doesn't work, the video/audio just won't play anyway.
         var fileExtension = "mp4"
         if let detectedFileExtension = await detectedFileExtension(
           for: downloadTask,
-          location: location
+          location: temporaryLocation
         ) {
           fileExtension = detectedFileExtension
         }
@@ -907,7 +920,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
             throw PlaylistDownloadError.uniquePathNotCreated
           }
 
-          try await AsyncFileManager.default.moveItem(at: location, to: path)
+          try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: path)
           do {
             let cachedData = try path.bookmarkData()
 
@@ -933,7 +946,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
           Logger.module.error(
             "An error occurred attempting to download a playlist item: \(error.localizedDescription)"
           )
-          await cleanupAndFailDownload(location: location, error: error)
+          await cleanupAndFailDownload(location: temporaryLocation, error: error)
         }
       }
     } else {

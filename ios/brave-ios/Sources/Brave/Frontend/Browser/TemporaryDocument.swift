@@ -139,6 +139,12 @@ extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate 
     downloadTask: URLSessionDownloadTask,
     didFinishDownloadingTo location: URL
   ) {
+    // This method will delete the downloaded file immediately after this delegate method returns
+    // so we must synchonously move the file to a temporary directory first before processing it
+    // on a different thread since the Task will execute after this method returns
+    let temporaryLocation = FileManager.default.temporaryDirectory
+      .appending(component: location.lastPathComponent)
+    try? FileManager.default.moveItem(at: location, to: temporaryLocation)
     Task {
       let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appending(path: "TempDocs")
       let url = tempDirectory.appending(path: filename)
@@ -151,7 +157,7 @@ extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate 
       try? await AsyncFileManager.default.removeItem(at: url)
 
       do {
-        try await AsyncFileManager.default.moveItem(at: location, to: url)
+        try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: url)
         localFileURL = url
         pendingContinuation?.resume(returning: url)
         pendingContinuation = nil

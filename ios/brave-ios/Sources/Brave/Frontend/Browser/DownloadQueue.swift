@@ -167,10 +167,16 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     downloadTask: URLSessionDownloadTask,
     didFinishDownloadingTo location: URL
   ) {
+    // This method will delete the downloaded file immediately after this delegate method returns
+    // so we must synchonously move the file to a temporary directory first before processing it
+    // on a different thread since the Task will execute after this method returns
+    let temporaryLocation = FileManager.default.temporaryDirectory
+      .appending(component: location.lastPathComponent)
+    try? FileManager.default.moveItem(at: location, to: temporaryLocation)
     Task {
       do {
         let destination = try await uniqueDownloadPathForFilename(filename)
-        try await AsyncFileManager.default.moveItem(at: location, to: destination)
+        try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: destination)
         isComplete = true
         delegate?.download(self, didFinishDownloadingTo: destination)
       } catch {
