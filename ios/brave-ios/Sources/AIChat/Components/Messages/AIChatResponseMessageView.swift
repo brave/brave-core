@@ -197,8 +197,8 @@ struct AIChatResponseMessageView: View {
     return Text(text + period + space + learnMoreLink)
   }
 
-  /// View for displaying a code block with a header displaying language hint & copy button,
-  /// and the syntax highlighted code.
+  /// View for displaying a Code Block with a header displaying language hint & copy button,
+  /// line numbers and the highlighted code.
   struct CodeBlockView: View {
 
     let block: MarkdownParser.StringBlock
@@ -206,38 +206,9 @@ struct AIChatResponseMessageView: View {
 
     var body: some View {
       VStack(spacing: 0) {
-        HStack {
-          Text(
-            codeBlock.languageHint?.capitalizeFirstLetter
-              ?? Strings.AIChat.leoCodeExampleDefaultTitle
-          )
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-          Spacer()
-          Button(
-            action: {
-              UIPasteboard.general.setValue(
-                String(block.string.characters),
-                forPasteboardType: "public.plain-text"
-              )
-            },
-            label: {
-              HStack(spacing: 8) {
-                Image(braveSystemName: "leo.copy")
-                Text(Strings.AIChat.responseContextMenuCopyTitle)
-                  .fontWeight(.semibold)
-              }
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-            }
-          )
-        }
-        .padding(16)
-        .background(Color(braveSystemName: .pageBackground))
-        Text(block.string)
-          .font(.subheadline)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-          .multilineTextAlignment(.leading)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .padding(16)
+        headerSection
+          .background(Color(braveSystemName: .pageBackground))
+        codeBlockSection
           .background(codeBlock.backgroundColor)
       }
       .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
@@ -246,6 +217,53 @@ struct AIChatResponseMessageView: View {
           .inset(by: 0.5)
           .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
       )
+    }
+
+    private var headerSection: some View {
+      HStack {
+        Text(
+          codeBlock.languageHint?.capitalizeFirstLetter ?? Strings.AIChat.leoCodeExampleDefaultTitle
+        )
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
+        Spacer()
+        Button(
+          action: {
+            UIPasteboard.general.setValue(
+              String(block.string.characters),
+              forPasteboardType: "public.plain-text"
+            )
+          },
+          label: {
+            HStack(spacing: 8) {
+              Image(braveSystemName: "leo.copy")
+              Text(Strings.AIChat.responseContextMenuCopyTitle)
+                .fontWeight(.semibold)
+            }
+            .foregroundStyle(Color(braveSystemName: .textSecondary))
+          }
+        )
+      }
+      .padding(16)
+    }
+
+    private var codeBlockSection: some View {
+      Grid(alignment: .leading, horizontalSpacing: nil, verticalSpacing: nil) {
+        ForEach(Array(block.string.split(separator: "\n").enumerated()), id: \.offset) {
+          index,
+          line in
+          GridRow(alignment: .firstTextBaseline) {
+            Text("\(index + 1).")
+              .font(.caption)
+              .monospaced()
+            Text(line)
+              .font(.subheadline)
+              .multilineTextAlignment(.leading)
+          }
+        }
+      }
+      .foregroundStyle(Color(braveSystemName: .textTertiary))
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(16)
     }
   }
 }
