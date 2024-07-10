@@ -396,9 +396,7 @@ void BraveTabStrip::UpdateTabContainer() {
     }
 
     for (int i = 0; i < model->count(); i++) {
-      for (auto& observer : observers_) {
-        observer.OnTabAdded(i);
-      }
+      observer_->OnTabAdded(i);
     }
 
     // During drag-and-drop session, the active value could be invalid.
