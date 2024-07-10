@@ -4,6 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+
+// types
+import {
+  MeldCryptoQuote,
+  MeldServiceProvider
+} from '../../../../../constants/types'
+
+// utils
+import Amount from '../../../../../utils/amount'
+import { toProperCase } from '../../../../../utils/string-utils'
 
 // styles
 import {
@@ -24,12 +35,62 @@ import {
   BestOptionLabel
 } from './buy_quote.style'
 import { Column, Row } from '../../../../../components/shared/style'
-import Icon from '@brave/leo/react/icon'
 
-interface BuyQuoteProps {}
+interface BuyQuoteProps {
+  quote: MeldCryptoQuote
+  serviceProviders: MeldServiceProvider[]
+  isBestOption?: boolean
+}
 
-export const BuyQuote = (props: BuyQuoteProps) => {
+export const BuyQuote = ({
+  quote,
+  serviceProviders,
+  isBestOption
+}: BuyQuoteProps) => {
+  const {
+    serviceProvider,
+    sourceCurrencyCode,
+    sourceAmount,
+    destinationAmount,
+    destinationCurrencyCode,
+    exchangeRate,
+    sourceAmountWithoutFee,
+    totalFee,
+    paymentMethod
+  } = quote
+
+  // state
   const [isOpen, setIsOpen] = React.useState(true)
+
+  // computed
+  const formattedSourceAmount = new Amount(sourceAmount ?? '').formatAsFiat(
+    '',
+    2
+  )
+  const formattedCryptoAmount = new Amount(
+    destinationAmount ?? ''
+  ).formatAsAsset(5, destinationCurrencyCode)
+
+  const formattedExchangeRate = new Amount(exchangeRate ?? '').formatAsFiat(
+    '',
+    2
+  )
+  const amountWithoutFees = new Amount(
+    sourceAmountWithoutFee ?? ''
+  ).formatAsFiat('', 2)
+  const formattedTotalFee = new Amount(totalFee ?? '').formatAsFiat('', 2)
+  const [isCreditCardSupported, isDeditCardSupported] = [
+    paymentMethod?.includes('CREDIT'),
+    paymentMethod?.includes('DEBIT')
+  ]
+  const formattedProviderName = toProperCase(serviceProvider ?? '')
+  const quoteServiceProvider = serviceProviders.find(
+    (provider) => provider.serviceProvider === serviceProvider
+  )
+  const providerImageUrl = window.matchMedia('(prefers-color-scheme: dark)')
+    .matches
+    ? quoteServiceProvider?.logoImages?.darkShortUrl
+    : quoteServiceProvider?.logoImages?.lightShortUrl
 
   return (
     <StyledWrapper isOpen={isOpen}>
@@ -43,26 +104,32 @@ export const BuyQuote = (props: BuyQuoteProps) => {
           justifyContent='flex-start'
           alignItems='center'
         >
-          <ProviderImage src='https://via.placeholder.com/40' />
+          {providerImageUrl ? <ProviderImage src={providerImageUrl} /> : null}
 
           <Column alignItems='flex-start'>
-            <ProviderName>Transak</ProviderName>
-            <Estimate>€100.00 = ~0.0609 ETH</Estimate>
+            <ProviderName>{formattedProviderName}</ProviderName>
+            <Estimate>
+              {formattedSourceAmount} = ~{formattedCryptoAmount}
+            </Estimate>
           </Column>
         </Row>
         <Row
           gap='8px'
           justifyContent='flex-end'
         >
-          <BestOptionLabel>
-            <div slot='icon-before'>
-              <Icon name='thumb-up' />
-            </div>
-            BEST OPEN
-          </BestOptionLabel>
+          {isBestOption ? (
+            <BestOptionLabel>
+              <div slot='icon-before'>
+                <Icon name='thumb-up' />
+              </div>
+              BEST OPTION
+            </BestOptionLabel>
+          ) : null}
           <PaymentMethodsWrapper>
-            <PaymentMethodIcon name='bank' />
-            <PaymentMethodIcon name='credit-card' />
+            {isDeditCardSupported ? <PaymentMethodIcon name='bank' /> : null}
+            {isCreditCardSupported ? (
+              <PaymentMethodIcon name='credit-card' />
+            ) : null}
           </PaymentMethodsWrapper>
           <CaratIcon
             isOpen={isOpen}
@@ -78,24 +145,33 @@ export const BuyQuote = (props: BuyQuoteProps) => {
           <QuoteDetailsWrapper>
             <QuoteDetailsRow>
               <QuoteDetailsLabel>Exchange rate with fees</QuoteDetailsLabel>
-              <QuoteDetailsValue>≈ 1,601.78 EUR / ETH</QuoteDetailsValue>
+              <QuoteDetailsValue>
+                ≈ {formattedExchangeRate} {sourceCurrencyCode} /{' '}
+                {destinationCurrencyCode}
+              </QuoteDetailsValue>
             </QuoteDetailsRow>
             <QuoteDetailsRow>
-              <QuoteDetailsLabel>Price EUR</QuoteDetailsLabel>
-              <QuoteDetailsValue>≈ 95.00 EUR</QuoteDetailsValue>
+              <QuoteDetailsLabel>Price {sourceCurrencyCode}</QuoteDetailsLabel>
+              <QuoteDetailsValue>
+                ≈ {amountWithoutFees} {sourceCurrencyCode}
+              </QuoteDetailsValue>
             </QuoteDetailsRow>
             <QuoteDetailsRow>
               <QuoteDetailsLabel>Fees</QuoteDetailsLabel>
-              <QuoteDetailsValue>≈ 5.00 EUR</QuoteDetailsValue>
+              <QuoteDetailsValue>
+                {formattedTotalFee} {sourceCurrencyCode}
+              </QuoteDetailsValue>
             </QuoteDetailsRow>
             <Divider />
             <QuoteDetailsRow>
               <QuoteTotal>Total</QuoteTotal>
-              <QuoteTotal>100.00EUR</QuoteTotal>
+              <QuoteTotal>
+                {formattedSourceAmount} {sourceCurrencyCode}
+              </QuoteTotal>
             </QuoteDetailsRow>
           </QuoteDetailsWrapper>
           <BuyButton>
-            Buy with Transak
+            Buy with {formattedProviderName}
             <div slot='icon-after'>
               <Icon name='launch' />
             </div>

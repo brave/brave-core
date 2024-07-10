@@ -28,7 +28,8 @@ import {
   useGetDefaultCountryQuery,
   useGenerateMeldCryptoQuotesMutation,
   useGetTokenSpotPricesQuery,
-  walletApi
+  walletApi,
+  useGetMeldServiceProvidersQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -58,6 +59,8 @@ export const useBuy = () => {
   const { data: countries } = useGetMeldCountriesQuery()
   const { data: defaultCountryCode } = useGetDefaultCountryQuery()
   const [generateQuotes] = useGenerateMeldCryptoQuotesMutation()
+  const { data: serviceProviders, isLoading: isLoadingServiceProvider } =
+    useGetMeldServiceProvidersQuery()
 
   // state
   const [selectedAsset, setSelectedAsset] = React.useState<
@@ -325,6 +328,8 @@ export const useBuy = () => {
     onSelectToken,
     onSelectAccount,
     onSelectCurrency,
-    onSetAmount
+    onSetAmount,
+    serviceProviders,
+    isLoadingServiceProvider
   }
 }
