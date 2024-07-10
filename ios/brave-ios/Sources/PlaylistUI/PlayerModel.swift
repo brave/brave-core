@@ -553,6 +553,11 @@ public final class PlayerModel: ObservableObject {
     )
   }
 
+  /// Whether or not calling `playNextItem` will result in playing anything
+  @MainActor var canPlayNextItem: Bool {
+    nextItemID != nil
+  }
+
   @MainActor private var nextItemID: PlaylistItem.ID? {
     guard let selectedItemID, let currentItemIndex = itemQueue.firstIndex(of: selectedItemID) else {
       return nil

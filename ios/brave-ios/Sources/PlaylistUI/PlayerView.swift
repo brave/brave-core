@@ -160,6 +160,14 @@ extension PlayerView {
           .toggleStyle(.button)
           RepeatModePicker(repeatMode: $model.repeatMode)
             .disabled(model.duration.isIndefinite)
+          Button {
+            Task {
+              await model.playNextItem()
+            }
+          } label: {
+            Label("Next Item", braveSystemImage: "leo.next.outline")
+          }
+          .disabled(!model.canPlayNextItem)
         }
         Spacer()
         VStack {
