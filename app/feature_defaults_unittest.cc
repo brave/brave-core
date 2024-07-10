@@ -103,7 +103,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kInterestGroupStorage,
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
-      &blink::features::kPrivacySandboxAdsAPIs,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
