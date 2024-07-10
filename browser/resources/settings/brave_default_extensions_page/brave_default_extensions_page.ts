@@ -98,10 +98,6 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
     this.browserProxy_.setWebTorrentEnabled(this.$.webTorrentEnabled.checked)
   }
 
-  onHangoutsEnabledChange_() {
-    this.browserProxy_.setHangoutsEnabled(this.$.hangoutsEnabled.checked)
-  }
-
   restartBrowser_(e: Event) {
     e.stopPropagation()
     window.open("chrome://restart", "_self")
