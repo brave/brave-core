@@ -308,9 +308,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
 #endif
 
-  // Hangouts
-  registry->RegisterBooleanPref(kHangoutsEnabled, true);
-
   // Restore last profile on restart
   registry->SetDefaultPrefValue(
       prefs::kRestoreOnStartup,

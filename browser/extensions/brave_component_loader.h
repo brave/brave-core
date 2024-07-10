@@ -41,20 +41,14 @@ class BraveComponentLoader : public ComponentLoader {
 #endif
   void AddWebTorrentExtension();
   void OnComponentReady(std::string extension_id,
-    bool allow_file_access,
-    const base::FilePath& install_dir,
-    const std::string& manifest);
+                        bool allow_file_access,
+                        const base::FilePath& install_dir,
+                        const std::string& manifest);
   void AddExtension(const std::string& id,
-      const std::string& name, const std::string& public_key);
-  // ForceAddHangoutServicesExtension ignores whether or not a preference for
-  // hangouts is set.  If the buildflag is not set, it won't add though.
-  void ForceAddHangoutServicesExtension();
+                    const std::string& name,
+                    const std::string& public_key);
 
  private:
-#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
-  void AddHangoutServicesExtension() override;
-#endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
-
   void ReinstallAsNonComponent(std::string extension_id);
 
   raw_ptr<Profile> profile_ = nullptr;

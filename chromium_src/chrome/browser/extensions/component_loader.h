@@ -7,7 +7,6 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_COMPONENT_LOADER_H_
 
 #define AddDefaultComponentExtensions virtual AddDefaultComponentExtensions
-#define AddHangoutServicesExtension virtual AddHangoutServicesExtension
 #define AddNetworkSpeechSynthesisExtension    \
   AddNetworkSpeechSynthesisExtensionUnused(); \
   friend class BraveComponentLoader;          \
@@ -15,7 +14,6 @@
 
 #include "src/chrome/browser/extensions/component_loader.h"  // IWYU pragma: export
 #undef AddDefaultComponentExtensions
-#undef AddHangoutServicesExtension
 #undef AddNetworkSpeechSynthesisExtension
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_COMPONENT_LOADER_H_

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_content_browser_client.h"
+
 #include <memory>
 #include <vector>
 
@@ -11,7 +13,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
@@ -623,29 +624,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
     ASSERT_TRUE(console_observer.Wait());
   }
-}
-#endif
-
-#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       HangoutsEnabledByDefault) {
-  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->enabled_extensions().Contains(hangouts_extension_id));
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       PRE_HangoutsDisabledDoesNotLoadComponent) {
-  browser()->profile()->GetPrefs()->SetBoolean(kHangoutsEnabled, false);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       HangoutsDisabledDoesNotLoadComponent) {
-  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_FALSE(registry->enabled_extensions().Contains(hangouts_extension_id));
 }
 #endif
 

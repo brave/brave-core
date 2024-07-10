@@ -170,10 +170,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
                           base::Unretained(this)));
 #endif
   web_ui()->RegisterMessageCallback(
-      "setHangoutsEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::SetHangoutsEnabled,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "setIPFSCompanionEnabled",
       base::BindRepeating(
           &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
@@ -280,29 +276,6 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
   } else {
     service->DisableExtension(
         brave_webtorrent_extension_id,
-        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
-  }
-}
-
-void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(profile_);
-  bool enabled = args[0].GetBool();
-
-  extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile_)->extension_service();
-
-  if (enabled) {
-    extensions::ComponentLoader* loader = service->component_loader();
-    if (!loader->Exists(hangouts_extension_id)) {
-      static_cast<extensions::BraveComponentLoader*>(loader)
-          ->ForceAddHangoutServicesExtension();
-    }
-    service->EnableExtension(hangouts_extension_id);
-  } else {
-    service->DisableExtension(
-        hangouts_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }

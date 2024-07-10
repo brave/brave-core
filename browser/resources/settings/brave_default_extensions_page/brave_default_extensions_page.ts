@@ -24,8 +24,7 @@ const SettingBraveDefaultExtensionsPageElementBase =
 export interface SettingBraveDefaultExtensionsPageElement {
   $: {
     widevineEnabled: SettingsCheckboxElement,
-    webTorrentEnabled: SettingsCheckboxElement,
-    hangoutsEnabled: SettingsCheckboxElement
+    webTorrentEnabled: SettingsCheckboxElement
   }
 }
 

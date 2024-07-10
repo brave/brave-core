@@ -11,8 +11,6 @@
 inline constexpr int kBraveActionLeftMarginExtra = -2;
 
 inline constexpr char brave_extension_id[] = "mnojpmjdmbbfmejpflffifhffcmidifd";
-inline constexpr char hangouts_extension_id[] =
-    "nkeimhogjdpnpccoofpliimaahmaaome";
 inline constexpr char crl_set_extension_id[] =
     "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
