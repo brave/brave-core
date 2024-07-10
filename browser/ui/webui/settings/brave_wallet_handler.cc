@@ -364,13 +364,10 @@ PrefService* BraveWalletHandler::GetPrefs() {
   return Profile::FromWebUI(web_ui())->GetPrefs();
 }
 
-brave_wallet::BraveWalletService* BraveWalletHandler::GetBraveWalletService() {
-  return brave_wallet::BraveWalletServiceFactory::GetInstance()
-      ->GetServiceForContext(Profile::FromWebUI(web_ui()));
-}
-
 brave_wallet::NetworkManager* BraveWalletHandler::GetNetworkManager() {
-  return GetBraveWalletService()->network_manager();
+  return brave_wallet::BraveWalletServiceFactory::GetInstance()
+      ->GetServiceForContext(Profile::FromWebUI(web_ui()))
+      ->network_manager();
 }
 
 void BraveWalletHandler::IsBitcoinEnabled(const base::Value::List& args) {

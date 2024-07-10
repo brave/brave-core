@@ -56,7 +56,6 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void GetWalletInPrivateWindowsEnabled(const base::Value::List& args);
 
   PrefService* GetPrefs();
-  brave_wallet::BraveWalletService* GetBraveWalletService();
   brave_wallet::NetworkManager* GetNetworkManager();
 
   void OnAddChain(base::Value javascript_callback,
