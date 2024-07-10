@@ -14,10 +14,6 @@ export const root = styled.div.attrs({ 'data-theme': 'dark' })`
   font: ${font.default.regular};
   color: ${color.white};
 
-  button {
-    font: ${font.components.buttonDefault};
-  }
-
   --self-info-gradient-background:
       linear-gradient(96.98deg, #4641EE 0%, #6261FF 100%);
 `
@@ -340,6 +336,17 @@ export const selfCustodyInvite = styled.div.attrs({ 'data-theme': 'light' })`
 
   color: ${color.container.background};
   text-align: center;
+`
+
+export const selfCustodyInviteClose = styled.div`
+  --leo-icon-size: 18px;
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
+  button {
+    ${buttonReset}
+    cursor: pointer;
+  }
 `
 
 export const selfCustodyInviteHeader = styled.div`

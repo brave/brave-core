@@ -30,62 +30,16 @@ void BraveWalletIpfsService::Bind(
   receivers_.Add(this, std::move(receiver));
 }
 
-void BraveWalletIpfsService::TranslateToNFTGatewayURL(
-    const std::string& url,
-    TranslateToNFTGatewayURLCallback callback) {
-  GURL new_url;
-  if (ipfs::TranslateIPFSURI(GURL(url), &new_url,
-                             ipfs::GetDefaultNFTIPFSGateway(pref_service_),
-                             false)) {
-    std::move(callback).Run(new_url.spec());
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
-}
-
 void BraveWalletIpfsService::TranslateToGatewayURL(
     const std::string& url,
     TranslateToGatewayURLCallback callback) {
   GURL new_url;
   if (ipfs::TranslateIPFSURI(GURL(url), &new_url,
-                             ipfs::GetDefaultIPFSGateway(pref_service_),
                              false)) {
     std::move(callback).Run(new_url.spec());
   } else {
     std::move(callback).Run(std::nullopt);
   }
-}
-
-void BraveWalletIpfsService::ExtractIPFSUrlFromGatewayLikeUrl(
-    const std::string& url,
-    ExtractIPFSUrlFromGatewayLikeUrlCallback callback) {
-  auto result = ipfs::ExtractSourceFromGateway(GURL(url));
-  if (result.has_value()) {
-    std::move(callback).Run(result.value().spec());
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
-}
-
-void BraveWalletIpfsService::GetNFTGatewayURL(
-    GetNFTGatewayURLCallback callback) {
-  std::move(callback).Run(ipfs::GetDefaultNFTIPFSGateway(pref_service_).spec());
-}
-
-void BraveWalletIpfsService::GetGatewayURL(GetGatewayURLCallback callback) {
-  std::move(callback).Run(ipfs::GetDefaultIPFSGateway(pref_service_).spec());
-}
-
-void BraveWalletIpfsService::SetGateway(const std::string& url,
-                                        SetGatewayCallback callback) {
-  std::move(callback).Run(
-      ipfs::SetDefaultIPFSGateway(pref_service_, GURL(url)));
-}
-
-void BraveWalletIpfsService::SetNFTGateway(const std::string& url,
-                                           SetNFTGatewayCallback callback) {
-  std::move(callback).Run(
-      ipfs::SetDefaultNFTIPFSGateway(pref_service_, GURL(url)));
 }
 
 void BraveWalletIpfsService::ContentHashToCIDv1URL(

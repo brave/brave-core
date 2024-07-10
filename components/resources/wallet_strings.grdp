@@ -115,17 +115,23 @@
   <message name="IDS_BRAVE_WALLET_NOT_OWNED" desc="Token list not owned label">Not owned</message>
   <message name="IDS_BRAVE_WALLET_AMOUNT_24H" desc="Token list amount and 24h change">Amount/24h</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET_TO_BRIDGE" desc="Bridge asset modal title">Choose asset to bridge</message>
-  <message name="IDS_BRAVE_WALLET_BRIDGING_VIA" desc="Bridging via provider label">Bridging via</message>
-  <message name="IDS_BRAVE_WALLET_SWAPPING_VIA" desc="Bridging via provider label">Swapping via</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_SWAP" desc="Review swap button">Review swap</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_QUOTE_PROVIDER" desc="Choose quote provider modal title">Choose quote provider</message>
   <message name="IDS_BRAVE_WALLET_QUOTE_PROVIDER_INFO" desc="Choose quote provider informational tooltip">Each aggregator provides quotes by using liquidity from its API. They gather price information from various exchanges and offer the prices based on this data.</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_NOT_AVAILABLE" desc="Quote provider option not availble label">Not available</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_UPDATE" desc="Choose provider update button">Update</message>
   <message name="IDS_BRAVE_WALLET_PROVIDER_NOT_SUPPORTED" desc="Quote provider is not supported error message">This pair is not supported by <ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$1</ph></message>
-  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>  
+  <message name="IDS_BRAVE_WALLET_CHANGE_PROVIDER" desc="Change provider button">Change provider</message>
+  <message name="IDS_BRAVE_WALLET_ROUTE" desc="Swap route label">Route</message>
+  <message name="IDS_BRAVE_WALLET_MAX_SLIPPAGE" desc="Swap max slippage label">Max slippage</message>
+  <message name="IDS_BRAVE_WALLET_SLIPPAGE_DESCRIPTION" desc="Swap max slippage description">When the deviation between the price of the transaction you submitted and the price at the time of the transaction on chain is greater than this set value, the transaction will fail.</message>
+  <message name="IDS_BRAVE_WALLET_SUGGESTED_VALUES" desc="Swap max slippage suggested values label">Suggested Values:</message>
+  <message name="IDS_BRAVE_WALLET_MAINSTREAM_ASSET_PAIRS" desc="Swap max slippage mainstream asset pairs label">Mainstream Asset Pairs: <ph name="SLIPPAGE_PERCENT"><ex>0.5</ex>$1</ph>%</message>
+  <message name="IDS_BRAVE_WALLET_STABLECOIN_PAIRS" desc="Swap max slippage stablecoin pairs label">Stablecoin Pairs: <ph name="SLIPPAGE_PERCENT"><ex>0.5</ex>$1</ph>%</message>
+  <message name="IDS_BRAVE_WALLET_OTHERS" desc="Swap max slippage others label">Others: <ph name="SLIPPAGE_PERCENT"><ex>1</ex>$1</ph>%</message>
+  <message name="IDS_BRAVE_WALLET_SUGGESTED" desc="Swap max slippage suggested option">Suggested</message>
+  <message name="IDS_BRAVE_WALLET_CUSTOM" desc="Swap max slippage custom option">Custom</message>
   <message name="IDS_BRAVE_WALLET_REVIEW_BRIDGE" desc="Review bridge button">Review bridge</message>
-  <message name="IDS_BRAVE_WALLET_EST_FEES" desc="Bridge and Swap estimated fees label">Est fees</message>
   <message name="IDS_BRAVE_WALLET_EST_TIME" desc="Bridge and Swap estimated time label">Est time</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_RATE" desc="Bridge and Swap exchange rate label">Exchange rate</message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_FOR" desc="Bridge and Swap exchange rate value for value label"><ph name="ONE_TOKEN_VALUE"><ex>1 BAT</ex>$1</ph> for <ph name="EXCHANGE_VALUE"><ex>5 USDC</ex>$2</ph></message>
@@ -136,9 +142,6 @@
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_DESCRIPTION" desc="Message description shown when requesting to do an ENS off chain lookup.">It looks like you've entered an ENS address. We'll need to use a third-party resolver to resolve this request, which may be able to see your IP address and domain.</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_BUTTON" desc="ENS off chain lookup button text.">Use ENS domain</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_WARNING" desc="Warning if slippage tolerance is to high">Transaction may be frontrun</message>
-  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_EXPLANATION" desc="Slippage Tolerance tooltip explanation">Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.</message>
-  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_TITLE" desc="BuySendSwapo slippage tolerance title">Slippage tolerance</message>
-  <message name="IDS_BRAVE_WALLET_SLIPPAGE_TOLERANCE_DESCRIPTION" desc="Custom slippage tolerance input description">Enter a value between 0.5% and 99%</message>
   <message name="IDS_BRAVE_WALLET_EXPIRES_IN_TITLE" desc="BuySendSwap expires in title">Expires in</message>
   <message name="IDS_BRAVE_WALLET_SEND_PLACEHOLDER" desc="BuySendSwap send placeholder">Wallet address or URL</message>
   <message name="IDS_BRAVE_WALLET_SEND_NO_URL_PLACEHOLDER" desc="BuySendSwap send placeholder without URL">Wallet address</message>
@@ -563,9 +566,6 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION" desc="NFT detail description category">Description</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image URL</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_IN_PROGRESS" desc="NFT detail pinning in progress">In progress</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_SUCCESSFUL" desc="NFT detail pinning successful">Pinned</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAILS_PINNING_FAILED" desc="NFT detail pinning failed">Failed</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAILS_OVERVIEW" desc="NFT detail overview">Overview</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAILS_OWNED_BY" desc="NFT detail owned by">Owned by</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAILS_VIEW_ACCOUNT" desc="NFT detail view account">View account</message>
@@ -988,32 +988,6 @@
   <message name="IDS_BRAVE_WALLET_GAS_FEE_LIMIT_LOWER_THAN_BASE_FEE_WARNING" desc="Warning to indicate that a transaction may fail or take a long time if submitted with the current per-gas price limit value">Fee limit is set lower than the base fee. Your transaction may take a long time or fail.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_HAS_FEE_ESTIMATES_ERROR" desc="Error message explaining that fee estimates are unavailable for the current pending transaction">Unable to fetch fee estimates</message>
 
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why aren't some NFTs eligible?</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP" desc="Inspect NFTs page tooltip text">Some NFT data is stored on centralized servers like AWS, Google Cloud, etc. In this case, it’s not possible to pin your NFT data to the IPFS network.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Benefit description">By enabling IPFS in Brave, your NFTs will be pinned automatically. It's the best way to securely back up your NFTs.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Get started with IPFS</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">The safest way to host NFTs</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Enable IPFS in Brave to automatically back up your NFTs</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">IPFS is a community-driven storage network, like a hard drive that everyone can use. But instead of being controlled by one authority, thousands of individuals work together to host content on IPFS. When you “pin” something to IPFS, you’re ensuring that at least one copy of that content is safely stored. And as long as one person has a copy, a file can never disappear.<ph name="NEWLINE">$1</ph>By enabling IPFS in Brave, your NFTs will be pinned automatically. It's the best way to securely back up your NFTs.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">See which of my NFTs are eligible</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Enable IPFS in Brave to automatically back up your NFTs for extra security.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">NFTs are being pinned to your local IPFS node.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> supported NFTs are pinned to your local IPFS node.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE" desc="NFT IPFS banner learn more text">Learn more</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING" desc="Inspect page heading"><ph name="PINNABLE">$1<ex>1</ex></ph> NFT is eligible</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING_PLURAL" desc="Inspect page heading in plural"><ph name="PINNABLE">$1<ex>1</ex></ph> NFTs are eligible</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN" desc="Inspect page unable to pin text">Unable to pin</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_RUNNING_STATUS" desc="Local IPFS node running status text">You're running an IPFS node</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_NODE_NOT_RUNNING_STATUS" desc="Local IPFS node not running status text">Local IPFS node is not running</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED" desc="IPFS pinning status description when an NFT is pinned">Pinned to your local IPFS node</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING" desc="IPFS pinning status description when pinning is in progress">NFT data is being pinned to your local IPFS node</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_FAILED" desc="IPFS pinning status description when pinning failed">Cannot be pinned to your local IPFS node</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_HEADING" desc="Heading shown in the tooltip when IPFS pinning fails">Most common reasons:</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_REASON_ONE" desc="Message shown in the tooltip when IPFS pinning fails">NFT has non-IPFS metadata url problems</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_REASON_TWO" desc="Message shown in the tooltip when IPFS pinning fails">Internal IPFS node problems</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_REASON_THREE" desc="Message shown in the tooltip when IPFS pinning fails">Not enough space on local node</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_IMPORT_NFT" desc="NFT tab import NFT dropdown item">Import NFT</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_HEADING" desc="NFT tab empty state heading">No NFTs here yet.</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING" desc="NFT tab empty state subheading">Ready to add some? Just click the button below to import.</message>
@@ -1108,4 +1082,5 @@
   <message name="IDS_BRAVE_WALLET_EXEMPLI_GRATIA" desc="Placeholder text for an example value">e.g <ph name="VALUE">$1<ex>0xDEADBEEF</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT name field">The token name for an NFT refers to the specific name given to a non-fungible token within a particular collection or project. This name distinguishes one NFT from another within the same collection.</message>
   <message name="IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT symbol field">The NFT symbol refers to the unique identifier used to distinguish the NFT collection or project.</message>
+  <message name="IDS_BRAVE_WALLET_WATCH_ONLY" desc="Label to indicate that an asset is watch-only. This means that the asset is not owned by the user or it cannot be transferred">Watch-only</message>
 </grit-part>

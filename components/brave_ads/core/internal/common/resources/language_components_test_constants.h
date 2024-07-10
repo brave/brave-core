@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_LANGUAGE_COMPONENTS_TEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_LANGUAGE_COMPONENTS_TEST_CONSTANTS_H_
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 inline constexpr char kLanguageComponentManifestVersion[] = "1.0.0";
 inline constexpr char kLanguageComponentManifestVersionUpdate[] = "9.9.9";
@@ -16,6 +16,6 @@ inline constexpr char kLanguageComponentId[] =
 inline constexpr char kInvalidLanguageComponentId[] =
     "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_RESOURCES_LANGUAGE_COMPONENTS_TEST_CONSTANTS_H_

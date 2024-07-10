@@ -95,11 +95,11 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

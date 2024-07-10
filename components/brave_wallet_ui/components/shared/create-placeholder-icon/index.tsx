@@ -7,7 +7,6 @@
 
 import * as React from 'react'
 import { background } from 'ethereum-blockies'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 // Constants
 import { BraveWallet } from '../../../constants/types'
@@ -18,16 +17,10 @@ import {
   isRemoteImageURL,
   isValidIconExtension,
   isDataURL,
-  isIpfs,
   isComponentInStorybook,
   stripChromeImageURL
 } from '../../../utils/string-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
-
-// Hooks
-import {
-  useGetIpfsGatewayTranslatedNftUrlQuery //
-} from '../../../common/slices/api.slice'
 
 // Styled components
 import { AssetIconSizes, IconWrapper, PlaceholderText } from './style'
@@ -87,14 +80,6 @@ export function withPlaceholderIcon<
 
     const isNonFungibleToken = asset?.isNft || asset?.isErc721
 
-    const isIpfsTokenImageURL = isIpfs(tokenImageURL)
-
-    // queries
-    const { data: gatewayURL } = useGetIpfsGatewayTranslatedNftUrlQuery(
-      isIpfsTokenImageURL ? tokenImageURL : skipToken
-    )
-    const imgSrc = gatewayURL ?? tokenImageURL
-
     // memos + computed
     const isValidIcon = React.useMemo(() => {
       if (isStorybook) {
@@ -105,7 +90,6 @@ export function withPlaceholderIcon<
 
       if (isRemoteURL || isDataUri) {
         return tokenImageURL?.includes('data:image/') ||
-          isIpfsTokenImageURL ||
           isNonFungibleToken
           ? true
           : isValidIconExtension(new URL(asset?.logo || '').pathname)
@@ -115,7 +99,6 @@ export function withPlaceholderIcon<
       asset?.logo,
       isRemoteURL,
       tokenImageURL,
-      isIpfsTokenImageURL,
       isNonFungibleToken
     ])
 
@@ -134,10 +117,10 @@ export function withPlaceholderIcon<
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return isStorybook ? imgSrc || '' : `chrome://image?${imgSrc}`
+        return isStorybook ? tokenImageURL || '' : `chrome://image?${tokenImageURL}`
       }
       return ''
-    }, [isRemoteURL, imgSrc])
+    }, [isRemoteURL, tokenImageURL])
 
     // render
     if (!asset) {

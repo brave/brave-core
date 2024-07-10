@@ -14,7 +14,7 @@ namespace brave_ads::test {
 NotificationAdInfo BuildNotificationAd(
     const bool should_generate_random_uuids) {
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(should_generate_random_uuids);
+      BuildCreativeNotificationAd(should_generate_random_uuids);
   return BuildNotificationAd(creative_ad);
 }
 

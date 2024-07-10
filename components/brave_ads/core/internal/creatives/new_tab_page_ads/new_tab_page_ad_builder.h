@@ -15,8 +15,8 @@ struct NewTabPageAdInfo;
 
 NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad);
 
-NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad,
-                                   const std::string& placement_id);
+NewTabPageAdInfo BuildNewTabPageAd(const std::string& placement_id,
+                                   const CreativeNewTabPageAdInfo& creative_ad);
 
 }  // namespace brave_ads
 

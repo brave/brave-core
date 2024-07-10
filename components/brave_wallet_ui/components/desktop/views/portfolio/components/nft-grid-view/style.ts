@@ -121,7 +121,7 @@ export const MoreIcon = styled(Icon).attrs({
 
 export const JunkMarker = styled.div`
   display: inline-flex;
-  height: 20px;
+  min-height: 20px;
   padding: 0px ${leo.spacing.s};
   align-items: center;
   gap: ${leo.spacing.s};
@@ -139,6 +139,13 @@ export const JunkMarker = styled.div`
   line-height: normal;
   text-transform: uppercase;
   z-index: 2;
+`
+
+export const WatchOnlyMarker = styled(JunkMarker)`
+  background-color: ${leo.color.gray[20]};
+  color: ${leo.color.gray[60]};
+  left: unset;
+  right: 12px;
 `
 
 export const JunkIcon = styled(Icon).attrs({

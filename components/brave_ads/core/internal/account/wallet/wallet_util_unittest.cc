@@ -17,17 +17,19 @@ namespace brave_ads {
 TEST(BraveAdsWalletUtilTest, ToWallet) {
   // Act
   const std::optional<WalletInfo> wallet =
-      ToWallet(kWalletPaymentId, kWalletRecoverySeed);
+      ToWallet(test::kWalletPaymentId, test::kWalletRecoverySeedBase64);
   ASSERT_TRUE(wallet);
 
   // Assert
-  EXPECT_THAT(*wallet, ::testing::FieldsAre(kWalletPaymentId, kWalletPublicKey,
-                                            kWalletSecretKey));
+  EXPECT_THAT(*wallet, ::testing::FieldsAre(test::kWalletPaymentId,
+                                            test::kWalletPublicKey,
+                                            test::kWalletSecretKey));
 }
 
 TEST(BraveAdsWalletUtilTest, ToInvalidWallet) {
   // Act & Assert
-  EXPECT_FALSE(ToWallet(kWalletPaymentId, kInvalidWalletRecoverySeed));
+  EXPECT_FALSE(
+      ToWallet(test::kWalletPaymentId, test::kInvalidWalletRecoverySeed));
 }
 
 }  // namespace brave_ads

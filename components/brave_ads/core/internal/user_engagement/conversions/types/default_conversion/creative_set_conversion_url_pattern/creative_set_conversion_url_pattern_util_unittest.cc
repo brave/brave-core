@@ -19,7 +19,7 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(kCreativeSetId,
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
                                        /*url_pattern=*/"https://foo.com/*",
                                        /*observation_window=*/base::Days(3));
 
@@ -33,7 +33,7 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
        DoesCreativeSetConversionUrlPatternNotMatchRedirectChain) {
   // Arrange
   const CreativeSetConversionInfo creative_set_conversion =
-      test::BuildCreativeSetConversion(kCreativeSetId,
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
                                        /*url_pattern=*/"https://foo.com/*",
                                        /*observation_window=*/base::Days(3));
 

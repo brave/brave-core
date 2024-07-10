@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
@@ -68,7 +69,14 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
         MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
                       mojom::AccountKind::kDerived,
                       "0x2f015c60e0be116b1f0cd534704db9c92118fb6b"));
+
+    network_manager_ = std::make_unique<NetworkManager>(GetPrefs());
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        shared_url_loader_factory(), network_manager_.get(), GetPrefs(),
+        nullptr);
   }
+
+  JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
 
@@ -86,6 +94,8 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<NetworkManager> network_manager_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
   base::ScopedTempDir temp_dir_;
   scoped_refptr<value_store::TestValueStoreFactory> factory_;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
@@ -101,10 +111,9 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
 };
 
 TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), &service);
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(), &service,
-                                         &nonce_tracker);
+  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
+  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
+                                         json_rpc_service(), &nonce_tracker);
 
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id(TxMeta::GenerateMetaID());
@@ -128,10 +137,9 @@ TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
 
 TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   std::string addr = eth_account_id_->address;
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), &service);
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(), &service,
-                                         &nonce_tracker);
+  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
+  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
+                                         json_rpc_service(), &nonce_tracker);
   pending_tx_tracker.network_nonce_map_[addr][mojom::kMainnetChainId] =
       uint256_t(3);
 
@@ -156,10 +164,9 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), &service);
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(), &service,
-                                         &nonce_tracker);
+  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
+  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
+                                         json_rpc_service(), &nonce_tracker);
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
   meta.set_chain_id(mojom::kMainnetChainId);
@@ -171,10 +178,9 @@ TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {
-  JsonRpcService service(shared_url_loader_factory(), GetPrefs());
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), &service);
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(), &service,
-                                         &nonce_tracker);
+  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
+  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
+                                         json_rpc_service(), &nonce_tracker);
   base::RunLoop().RunUntilIdle();
 
   for (const std::string& chain_id :

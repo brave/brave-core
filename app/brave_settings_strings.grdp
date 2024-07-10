@@ -1134,22 +1134,8 @@
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
     Clearing transactions may be useful for developers or when clearing state on a local server
   </message>
-  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING" desc="Enable NFT pinning">
-    Automatically pin NFTs
-  </message>
-  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC" desc="Enable NFT pinning description">
-    NFTs which are added to the Brave Wallet may be automatically pinned to the local IPFS node.
-    Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
-  </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset and clear wallet data
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT" desc="Clear pinned NFTs item text">
-    Clear pinned NFTs
-  </message>
-  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT_DESC" desc="CL item text">
-    Pinned NFTs are hosted to the IPFS network when local IPFS node is launched.
-    You have <ph name="NFT_COUNT">$1<ex>2</ex></ph> pinned NFTs at the moment.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
     Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
@@ -1157,17 +1143,11 @@
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
     Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
   </message>
-  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION" desc="Clear pinned NFTs confirmation message text">
-    Are you sure you want to clear your pinned NFTs? Some of NFTs may be lost forever if there is no other hosters in the IPFS network. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
-  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet was reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet transaction information was reset.
-  </message>
-  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED" desc="Clear pinned NFTs confirmed message text">
-    Your pinned NFTs were reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
     Yes
@@ -1286,158 +1266,6 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_REPLACE" desc="The message for the wallet networks page to replace existing network">
     Do you want to update the existing network?
-  </message>
-
-  <!-- Settings / IPFS -->
-  <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
-    Method to resolve IPFS resources
-  </message>
-  <message name="IDS_IPFS_RESOLVE_OPTION_ASK" desc="Select control value for which IPFS resolve method to use">
-    Ask
-  </message>
-  <message name="IDS_IPFS_RESOLVE_OPTION_GATEWAY" desc="Select control value for which IPFS resolve method to use">
-    Gateway
-  </message>
-  <message name="IDS_IPFS_RESOLVE_OPTION_LOCAL" desc="Select control value for which IPFS resolve method to use">
-    Brave local IPFS node
-  </message>
-  <message name="IDS_IPFS_RESOLVE_OPTION_DISABLED" desc="Select control value for which IPFS resolve method to use">
-    Disabled
-  </message>
-  <message name="IDS_SETTINGS_IPFS_METHOD_DESC" desc="The description of IPFS protocol on settings page">
-    <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_MPL">&lt;/a&gt;</ph> about Brave local IPFS node and gateway privacy considerations.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_PUBLIC_GATEWAY_DESC" desc="The description of changing IPFS public gateway">
-    IPFS public gateway address
-  </message>
-  <message name="IDS_SETTINGS_IPFS_PUBLIC_NFT_GATEWAY_DESC" desc="The description of changing NFT IPFS public gateway">
-    IPFS public gateway address for NFT
-  </message>
-  <message name="IDS_SETTINGS_IPFS_CHANGE_GATEWAY_BUTTON_LABEL" desc="The label of the button for changing IPFS gateway address">
-    Change
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_LABEL" desc="The text label for IPFS public gateway fallback switch">
-    IPFS public gateway fallback
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_FALLBACK_TO_GATEWAY_DESC" desc="The description for the switch of automatically fallback to IPFS public gateway">
-    Automatically fall back to public IPFS gateway if your Brave local IPFS node cannot be reached.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ALWAYS_START_MODE_LABEL" desc="The text label for IPFS always start mode switch">
-    Always start an IPFS node on browser startup?
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_LABEL">
-    Automatically redirect requests for IPFS network resources to the configured gateway.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_AUTO_REDIRECT_TO_GATEWAY_WHEN_POSSIBLE_DESC">
-    Requests for IPFS resources hosted on third-party IPFS gateways or DNSLINK resources will be routed via the selected local or remote gateway.
-    Note: If local node is selected, resource will be requested directly from your computer and cached data may be provided to the IPFS network for some time.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
-    Uses the IPFS Companion extension for enhanced IPFS support in Brave, including access to common IPFS tasks from your browser bar.
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_LABEL" desc="The text label for Maximum IPFS cache size field">
-    Maximum IPFS cache size (GB)
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_IPFS_STORAGE_MAX_DESC" desc="The text label for Maximum IPFS cache size field">
-    A soft upper limit for the size of the IPFS repository's datastore.
-  </message>
-  <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE" desc="The ipfs peers page link title on IPFS settings page">
-    Modify the peers list
-  </message>
-  <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_TITLE" desc="The title of the dialog to add new peer on IPFS Settings page">
-    Add new peer connection string
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK" desc="The title of the link to open keys management block in IPFS settings">
-    Set up your IPNS keys
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_EDITOR_LINK_DESC" desc="The description for the link to open keys management block in IPFS settings">
-    Sign content by the corresponding private key and publish it to IPNS
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_LIST_TITLE" desc="The title of the keys management list in IPFS settings">
-    Keys available for publishing
-  </message>
-  <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_TITLE" desc="The title of the dialog to add new key on IPFS Settings page">
-    Enter a name for the new key
-  </message>
-  <message name="IDS_SETTINGS_IPNS_ADD_KEY_DIALOG_ERROR" desc="The error message for the add key dialog on IPFS Settings page if key name is invalid">
-    This name cannot be used
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ROTATE_KEY_DIALOG_TITLE" desc="The title of the dialog to rotate key on IPFS Settings page">
-    Rotate key
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ROTATION_STOP_ERROR" desc="The error message of the dialog when unable to stop ipfs node">
-    Unable to stop Brave local IPFS node
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ROTATION_LAUNCH_ERROR" desc="The error message of the dialog when unable to launch ipfs node">
-    Unable to launch Brave local IPFS node
-  </message>
-  <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART" desc="The message to restart node if peers were chagned on IPFS Settings page">
-    Restart node to apply changes
-  </message>
-  <message name="IDS_SETTINGS_IPFS_PEER_NODE_RESTART_BUTTON" desc="The button title to restart node if peers were chagned on IPFS Settings page">
-    Restart node
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ROTATE_BUTTON" desc="The button title to rotate key on IPFS Settings page">
-    Rotate
-  </message>
-  <message name="IDS_SETTINGS_ADD_PEER_DIALOG_PLACEHOLDER" desc="The placholder of the dialog to add new peer on IPFS Settings page">
-    /ip4/46.21.210.45/udp/14406/quic/p2p/12D3KooWBdmLJjhpgJ9KZgLM3f894ff9xyBfPvPjFNn7MKJpyrC2
-  </message>
-  <message name="IDS_SETTINGS_IPNS_ADD_PEER_DIALOG_ERROR" desc="The error message for the add peer dialog on IPFS Settings page if the peer name is not valid">
-    This name is not valid
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEY_EXPORT_ITEM" desc="The text for ipfs key export item">
-    Export key
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEY_REMOVE_ITEM" desc="The text for ipfs key remove item">
-    Remove key
-  </message>
-  <message name="IDS_SETTINGS_IPFS_PEERS_LINK_TITLE_DESC" desc="The ipfs peers page link description on IPFS settings page">
-    Set up ipfs peers description
-  </message>
-  <message name="IDS_SETTINGS_IPFS_DELETE_PEER_CONFIRMATION" desc="Confirmation text for deleting a peer from IPFS peers manager page">
-    Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomPeerId</ex></ph>?
-  </message>
-  <message name="IDS_SETTINGS_IPNS_DELETE_KEY_CONFIRMATION" desc="Confirmation text for deleting a key from IPFS keys manager page">
-    Do you really want to delete <ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>?
-  </message>
-  <message name="IDS_SETTINGS_IPFS_NODE_NOT_LAUNCHED" desc="The message when node is not running on IPFS keys manager page">
-    Node is not launched
-  </message>
-  <message name="IDS_SETTINGS_IPFS_START_NODE_ERROR" desc="The error message when node was unable to start on IPFS keys manager page">
-    IPFS service launch error, more information is available on the <ph name="BEGIN_LINK">&lt;a target="_blank" style="text-decoration: underline;" href="chrome://ipfs-internals/"&gt;</ph>diagnostic page<ph name="END_LINK">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_ERROR" desc="The error text if ipns keys import failed">
-    '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key import failed
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_EXPORT_ERROR" desc="The error text if ipns keys export failed">
-    '<ph name="KEY_NAME">$1<ex>MyCustomKey</ex></ph>' key export failed
-  </message>
-  <message name="IDS_IPFS_LOCAL_NODE_WARNING" desc="The warning about possible dns\proxy leak when use ipfs">
-    Note: Network requests may not use browser proxy and DNS settings.
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_IMPORT_BUTTON_TITLE" desc="The title of the button to import ipns keys">
-    Import
-  </message>
-  <message name="IDS_SETTINGS_IPNS_KEYS_GENERATE_BUTTON_TITLE" desc="The title of the button to generate ipns keys">
-    Generate
-  </message>
-  <message name="IDS_SETTINGS_IPFS_START_NODE" desc="The button text to start node on IPFS keys manager page">
-    Start node
-  </message>
-
-  <!-- Settings / IPFS / IPFS public gateway address dialog -->
-  <message name="IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_TITLE" desc="The title of dialog for changing IPFS gateway">
-    Set IPFS gateway
-  </message>
-  <message name="IDS_SETTINGS_CHANGE_IPFS_GATEWAY_DIALOG_LABEL" desc="The text label for IPFS gateway input field">
-    Gateway address
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS" desc="The error message used when user input an invalid gateway address">
-    Invalid gateway address
-  </message>
-  <message name="IDS_SETTINGS_IPFS_ERROR_INVALID_ADDRESS_ORIGIN_ISOLATION" desc="The error message used when user input an invalid gateway address without origin isolation">
-    Only a valid IPFS gateway with Origin isolation enabled can be used in Brave
   </message>
 
   <!-- Settings / Content -->

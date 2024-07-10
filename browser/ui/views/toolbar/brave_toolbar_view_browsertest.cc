@@ -153,6 +153,11 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, VPNButtonVisibility) {
 }
 #endif
 
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
+  // As we don't use divider in toolbar, it should be null always.
+  EXPECT_TRUE(!toolbar_view_->toolbar_divider_for_testing());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        AvatarButtonNotShownSingleProfile) {
   EXPECT_EQ(false, is_avatar_button_shown());
@@ -222,6 +227,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ASSERT_TRUE(!!app_menu);
   EXPECT_EQ(container->GetIndexOf(avatar).value(),
             container->GetIndexOf(app_menu).value() - 1ul);
+
+  // Check avatar button's size.
+  const int avatar_size = GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT);
+  EXPECT_EQ(gfx::Size(avatar_size, avatar_size), avatar->size());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,

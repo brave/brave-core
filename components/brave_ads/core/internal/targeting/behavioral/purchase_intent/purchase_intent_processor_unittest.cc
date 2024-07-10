@@ -47,8 +47,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        DoNotProcessForUnsupportedUrlScheme) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -64,8 +64,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -81,8 +81,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act & Assert
@@ -93,8 +93,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
 
 TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSignalForUrl) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -119,8 +119,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSignalForUrl) {
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        ProcessMultipleSignalsForMatchingUrls) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
@@ -150,8 +150,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        ProcessMultipleSignalsForUniqueUrls) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   const base::Time at_before_advancing_clock = Now();
@@ -185,8 +185,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        ProcessMultipleSearchQuerySignalsForMatchingKeywords) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -220,8 +220,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        ProcessMultipleSearchQuerySignalsForUniqueKeywords) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);
@@ -253,8 +253,8 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
 TEST_F(BraveAdsPurchaseIntentProcessorTest,
        ProcessSearchQuerySignalForSegmentAndFunnelKeywords) {
   // Arrange
-  NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                   kCountryComponentId);
+  NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                   test::kCountryComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   PurchaseIntentProcessor processor(*resource_);

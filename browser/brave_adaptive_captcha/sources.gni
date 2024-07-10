@@ -10,7 +10,6 @@ brave_browser_brave_adaptive_captcha_sources = [
 
 brave_browser_brave_adaptive_captcha_deps = [
   "//base",
-  "//brave/browser/profiles:util",
   "//brave/components/brave_adaptive_captcha",
   "//brave/components/brave_rewards/browser",
   "//chrome/browser/profiles:profile",

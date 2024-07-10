@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
@@ -239,14 +238,6 @@ static_library("browser") {
     "zcash/zcash_wallet_service_tasks.cc",
     "zcash/zcash_wallet_service_tasks.h",
   ]
-  if (enable_ipfs_local_node) {
-    sources += [
-      "brave_wallet_auto_pin_service.cc",
-      "brave_wallet_auto_pin_service.h",
-      "brave_wallet_pin_service.cc",
-      "brave_wallet_pin_service.h",
-    ]
-  }
   deps = [
     ":constants",
     ":generated_bitcoin_rpc_responses",
@@ -271,7 +262,7 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/decentralized_dns/core",
     "//brave/components/filecoin/rs:rust_lib",
-    "//brave/components/ipfs/buildflags",
+    "//brave/components/ipfs",
     "//brave/components/json/rs:rust_lib",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
@@ -283,6 +274,7 @@ static_library("browser") {
     "//brave/third_party/argon2",
     "//components/component_updater",
     "//components/content_settings/core/browser",
+    "//components/country_codes",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/sync_preferences",
@@ -300,10 +292,6 @@ static_library("browser") {
   ]
 
   public_deps = [ "//brave/components/api_request_helper" ]
-
-  if (enable_ipfs) {
-    deps += [ "//brave/components/ipfs" ]
-  }
 
   configs += [ ":sardine_config" ]
 }
@@ -351,6 +339,8 @@ source_set("utils") {
   sources = [
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
+    "network_manager.cc",
+    "network_manager.h",
   ]
 
   deps = [

@@ -50,7 +50,7 @@ class BraveAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Act & Assert
   TriggerPromotedContentAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 }
@@ -58,13 +58,13 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 TEST_F(BraveAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   TriggerPromotedContentAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/true);
 
   // Act & Assert
   TriggerPromotedContentAdEventAndVerifiyExpectations(
-      kPlacementId, kCreativeInstanceId,
+      test::kPlacementId, test::kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kClicked,
       /*should_fire_event=*/true);
 }
@@ -73,7 +73,7 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest,
        DoNotTriggerEventForInvalidCreativeInstanceId) {
   // Act & Assert
   TriggerPromotedContentAdEventAndVerifiyExpectations(
-      kPlacementId, kInvalidCreativeInstanceId,
+      test::kPlacementId, test::kInvalidCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 }
@@ -85,7 +85,7 @@ TEST_F(BraveAdsPromotedContentAdIntegrationTest,
 
   // Act & Assert
   TriggerPromotedContentAdEventAndVerifiyExpectations(
-      kPlacementId, kInvalidCreativeInstanceId,
+      test::kPlacementId, test::kInvalidCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewedImpression,
       /*should_fire_event=*/false);
 }

@@ -57,7 +57,7 @@ class BraveAdsClickedSameAdMultipleTimesReminderUtilTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ads_observer_mock_ = AddAdsObserverMock();
+    ads_observer_mock_ = test::AddAdsObserverMock();
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;

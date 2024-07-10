@@ -11,7 +11,6 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -50,12 +49,6 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ui/views/location_bar/ipfs_location_view.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/browser/ui/commander/commander_service_factory.h"
@@ -82,7 +75,7 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
 };
 
 std::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
-  if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
+  if (profile->IsRegularProfile() || profile->IsGuestSession()) {
     // Don't update color.
     return std::nullopt;
   }
@@ -131,10 +124,6 @@ void BraveLocationBarView::Init() {
   onion_location_view_ =
       AddChildView(std::make_unique<OnionLocationView>(browser_->profile()));
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  ipfs_location_view_ =
-      AddChildView(std::make_unique<IPFSLocationView>(browser_->profile()));
-#endif
 
   // brave action buttons
   brave_actions_ = AddChildView(
@@ -147,21 +136,6 @@ void BraveLocationBarView::Init() {
   for (ContentSettingImageView* content_setting_view : content_setting_views_) {
     content_setting_view->disable_animation();
   }
-}
-
-bool BraveLocationBarView::ShouldShowIPFSLocationView() const {
-#if BUILDFLAG(ENABLE_IPFS)
-  const GURL& url = GetLocationBarModel()->GetURL();
-  if (!ipfs::IpfsServiceFactory::IsIpfsEnabled(profile_) ||
-      !ipfs::IsIPFSScheme(url) ||
-      !ipfs::IsLocalGatewayConfigured(profile_->GetPrefs())) {
-    return false;
-  }
-
-  return true;
-#else
-  return false;
-#endif
 }
 
 void BraveLocationBarView::ShowPlaylistBubble() {
@@ -193,41 +167,12 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
     onion_location_view_->Update(contents, show_page_actions);
   }
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_) {
-    ipfs_location_view_->Update(contents, show_page_actions);
-  }
-#endif
 
   if (brave_news_action_icon_view_) {
     brave_news_action_icon_view_->Update();
   }
 
   LocationBarView::Update(contents);
-
-  if (!ShouldShowIPFSLocationView()) {
-    return;
-  }
-  // Secure display text for a page was set by chromium.
-  // We do not want to override this.
-  if (!GetLocationBarModel()->GetSecureDisplayText().empty()) {
-    return;
-  }
-  auto badge_text =
-      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_BADGE_TITLE);
-  location_icon_view()->SetLabel(badge_text);
-}
-
-ui::ImageModel BraveLocationBarView::GetLocationIcon(
-    LocationIconView::Delegate::IconFetchedCallback on_icon_fetched) const {
-  if (!ShouldShowIPFSLocationView() ||
-      !omnibox_view_->model()->ShouldShowCurrentPageIcon()) {
-    return LocationBarView::GetLocationIcon(std::move(on_icon_fetched));
-  }
-
-  auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  const auto& ipfs_logo = *bundle.GetImageSkiaNamed(IDR_BRAVE_IPFS_LOGO);
-  return ui::ImageModel::FromImageSkia(ipfs_logo);
 }
 
 void BraveLocationBarView::OnOmniboxBlurred() {
@@ -255,13 +200,6 @@ void BraveLocationBarView::OnChanged() {
         !hide_page_actions);
   }
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_) {
-    ipfs_location_view_->Update(
-        browser_->tab_strip_model()->GetActiveWebContents(),
-        !hide_page_actions);
-  }
-#endif
 
   if (brave_news_action_icon_view_) {
     brave_news_action_icon_view_->Update();
@@ -271,26 +209,27 @@ void BraveLocationBarView::OnChanged() {
   LocationBarView::OnChanged();
 }
 
-std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
+std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
   std::vector<views::View*> views;
   if (brave_news_action_icon_view_) {
     views.push_back(brave_news_action_icon_view_);
   }
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_) {
-    views.push_back(onion_location_view_);
-  }
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_) {
-    views.push_back(ipfs_location_view_);
-  }
-#endif
+
 
   if (brave_actions_) {
     views.push_back(brave_actions_);
   }
 
+  return views;
+}
+
+std::vector<views::View*> BraveLocationBarView::GetLeftMostTrailingViews() {
+  std::vector<views::View*> views;
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_) {
+    views.push_back(onion_location_view_);
+  }
+#endif
   return views;
 }
 
@@ -328,13 +267,6 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize(
     min_size.Enlarge(extra_width, 0);
   }
 #endif
-#if BUILDFLAG(ENABLE_IPFS)
-  if (ipfs_location_view_ && ipfs_location_view_->GetVisible()) {
-    const int extra_width = GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING) +
-                            ipfs_location_view_->GetMinimumSize().width();
-    min_size.Enlarge(extra_width, 0);
-  }
-#endif
 
   return min_size;
 }
@@ -360,7 +292,8 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
   // the size changes when an icon is shown or hidden. The LocationBarView
   // does not listen to ChildVisibilityChanged events so we must make we Layout
   // and re-caculate trailing decorator positions when a child changes.
-  if (base::Contains(GetTrailingViews(), child)) {
+  if (base::Contains(GetLeftMostTrailingViews(), child) ||
+      base::Contains(GetRightMostTrailingViews(), child)) {
     DeprecatedLayoutImmediately();
     SchedulePaint();
   }

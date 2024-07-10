@@ -8,11 +8,11 @@
 
 #include <string>
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 std::string GetUuidForCurrentTest();
 std::string GetUuidForCurrentTestAndValue(const std::string& value);
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_CURRENT_TEST_UTIL_H_

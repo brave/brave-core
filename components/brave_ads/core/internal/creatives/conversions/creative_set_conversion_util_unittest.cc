@@ -27,25 +27,25 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   CreativeSetConversionList creative_set_conversions;
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
-      test::BuildCreativeSetConversion(kCreativeSetId,
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
                                        /*url_pattern=*/"https://foo.com/*",
                                        /*observation_window=*/base::Days(3));
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =
-      test::BuildCreativeSetConversion(kCreativeSetId,
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
                                        /*url_pattern=*/"https://*.qux.com/fred",
                                        /*observation_window=*/base::Days(7));
   creative_set_conversions.push_back(creative_set_conversion_2);
 
   const CreativeSetConversionInfo creative_set_conversion_3 =
-      test::BuildCreativeSetConversion(kCreativeSetId,
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
                                        /*url_pattern=*/"https://bar.com/foo",
                                        /*observation_window=*/base::Days(30));
   creative_set_conversions.push_back(creative_set_conversion_3);
 
   const CreativeSetConversionInfo creative_set_conversion_4 =
-      test::BuildCreativeSetConversion(kCreativeSetId,
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
                                        /*url_pattern=*/"https://baz.com/",
                                        /*observation_window=*/base::Days(1));
   creative_set_conversions.push_back(creative_set_conversion_4);
@@ -112,7 +112,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(
-          kCreativeSetId,
+          test::kCreativeSetId,
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
@@ -126,7 +126,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_3 =
       test::BuildCreativeSetConversion(
-          kCreativeSetId,
+          test::kCreativeSetId,
           /*url_pattern=*/"https://baz.com/",
           /*observation_window=*/base::Days(30));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_3);
@@ -138,7 +138,8 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   // Assert
   CreativeSetConversionBucketMap expected_creative_set_conversion_buckets;
   expected_creative_set_conversion_buckets.insert(  // Bucket #1
-      {kCreativeSetId, {creative_set_conversion_1, creative_set_conversion_3}});
+      {test::kCreativeSetId,
+       {creative_set_conversion_1, creative_set_conversion_3}});
   expected_creative_set_conversion_buckets.insert(  // Bucket #2
       {creative_set_conversion_2.id, {creative_set_conversion_2}});
   EXPECT_EQ(expected_creative_set_conversion_buckets,
@@ -160,7 +161,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(
-          kCreativeSetId,
+          test::kCreativeSetId,
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
@@ -199,7 +200,7 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildCreativeSetConversion(
-          kCreativeSetId,
+          test::kCreativeSetId,
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(3));  // Bucket #1
   creative_set_conversions.push_back(creative_set_conversion_1);
@@ -247,10 +248,10 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
 
   const CreativeSetConversionInfo creative_set_conversion_1 =
       test::BuildVerifiableCreativeSetConversion(
-          kCreativeSetId,
+          test::kCreativeSetId,
           /*url_pattern=*/"https://foo.com/*",
           /*observation_window=*/base::Days(7),
-          kVerifiableConversionAdvertiserPublicKey);
+          test::kVerifiableConversionAdvertiserPublicKeyBase64);
   creative_set_conversions.push_back(creative_set_conversion_1);
 
   const CreativeSetConversionInfo creative_set_conversion_2 =

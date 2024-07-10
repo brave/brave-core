@@ -27,8 +27,8 @@ class BraveAdsIntentSegmentsTest : public UnitTestBase {
     targeting_helper_ =
         std::make_unique<test::TargetingHelper>(task_environment_);
 
-    NotifyDidUpdateResourceComponent(kCountryComponentManifestVersion,
-                                     kCountryComponentId);
+    NotifyDidUpdateResourceComponent(test::kCountryComponentManifestVersion,
+                                     test::kCountryComponentId);
   }
 
   std::unique_ptr<test::TargetingHelper> targeting_helper_;

@@ -32,9 +32,9 @@
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -72,7 +72,6 @@
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -178,14 +177,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_webtorrent/browser/magnet_protocol_handler.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-#include "brave/browser/ipfs/content_browser_client_helper.h"
-#include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_navigation_throttle.h"
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
@@ -229,6 +220,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/tip_panel_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
@@ -436,7 +428,7 @@ void BindBraveSearchDefaultHost(
     mojo::PendingReceiver<brave_search::mojom::BraveSearchDefault> receiver) {
   auto* context = frame_host->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
-  if (brave::IsRegularProfile(profile)) {
+  if (profile->IsRegularProfile()) {
     auto* template_url_service =
         TemplateURLServiceFactory::GetForProfile(profile);
     const std::string host = frame_host->GetLastCommittedURL().host();
@@ -508,10 +500,6 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
                           content::BrowserURLHandler::null_handler());
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
-#endif
-#if BUILDFLAG(ENABLE_IPFS)
-  handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                          &ipfs::HandleIPFSURLReverseRewrite);
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
@@ -636,6 +624,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
   }
+
+  registry.ForWebUI<brave_rewards::RewardsPageUI>()
+      .Add<brave_rewards::mojom::RewardsPageHandlerFactory>();
 
 #if !BUILDFLAG(IS_ANDROID)
   auto ntp_registration =
@@ -818,6 +809,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         CookieListOptInUI>(map);
   }
   content::RegisterWebUIControllerInterfaceBinder<
+      brave_rewards::mojom::RewardsPageHandlerFactory,
+      brave_rewards::RewardsPageTopUI>(map);
+  content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::PanelHandlerFactory, brave_rewards::RewardsPanelUI>(
       map);
   content::RegisterWebUIControllerInterfaceBinder<
@@ -833,7 +827,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   auto* prefs =
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
-      brave::IsRegularProfile(render_frame_host->GetBrowserContext())) {
+      Profile::FromBrowserContext(render_frame_host->GetBrowserContext())
+          ->IsRegularProfile()) {
     // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
@@ -1207,20 +1202,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
-  throttles.insert(
-      throttles.begin(),
-      ipfs::IpfsSubframeNavigationThrottle::CreateThrottleFor(handle));
-  std::unique_ptr<content::NavigationThrottle> ipfs_navigation_throttle =
-      ipfs::IpfsNavigationThrottle::MaybeCreateThrottleFor(
-          handle, ipfs::IpfsServiceFactory::GetForContext(context),
-          user_prefs::UserPrefs::Get(context),
-          g_browser_process->GetApplicationLocale());
-  if (ipfs_navigation_throttle) {
-    throttles.push_back(std::move(ipfs_navigation_throttle));
-  }
-#endif
-
   std::unique_ptr<content::NavigationThrottle>
       decentralized_dns_navigation_throttle =
           decentralized_dns::DecentralizedDnsNavigationThrottle::
@@ -1271,7 +1252,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (brave::IsRegularProfile(context)) {
+  if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     if (auto ai_chat_throttle =
             ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
       throttles.push_back(std::move(ai_chat_throttle));

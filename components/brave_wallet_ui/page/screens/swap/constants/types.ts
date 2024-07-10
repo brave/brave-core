@@ -93,4 +93,5 @@ export type SwapParamsOverrides = {
   fromToken?: BraveWallet.BlockchainToken
   toToken?: BraveWallet.BlockchainToken
   provider?: BraveWallet.SwapProvider
+  slippage?: string
 }

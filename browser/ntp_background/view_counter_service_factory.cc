@@ -12,7 +12,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/constants/pref_names.h"
@@ -63,8 +62,9 @@ ViewCounterServiceFactory::~ViewCounterServiceFactory() = default;
 KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* browser_context) const {
   // Only NTP in normal profile uses sponsored services.
-  if (!brave::IsRegularProfile(browser_context))
+  if (!Profile::FromBrowserContext(browser_context)->IsRegularProfile()) {
     return nullptr;
+  }
 
   if (auto* service =
           g_brave_browser_process->ntp_background_images_service()) {

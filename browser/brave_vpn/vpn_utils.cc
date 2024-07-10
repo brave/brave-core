@@ -6,11 +6,11 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 
 #include "base/functional/bind.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -83,7 +83,7 @@ std::unique_ptr<BraveVPNConnectionManager> CreateBraveVPNConnectionManager(
 }
 
 bool IsAllowedForContext(content::BrowserContext* context) {
-  return brave::IsRegularProfile(context) &&
+  return Profile::FromBrowserContext(context)->IsRegularProfile() &&
          brave_vpn::IsBraveVPNFeatureEnabled();
 }
 
@@ -95,7 +95,7 @@ bool IsBraveVPNEnabled(content::BrowserContext* context) {
   return brave_vpn::IsBraveVPNEnabled(user_prefs::UserPrefs::Get(context)) &&
          IsAllowedForContext(context);
 #else
-  return brave::IsRegularProfile(context);
+  return Profile::FromBrowserContext(context)->IsRegularProfile();
 #endif
 }
 

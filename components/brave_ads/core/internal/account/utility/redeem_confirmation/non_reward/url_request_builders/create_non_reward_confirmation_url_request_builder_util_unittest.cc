@@ -15,7 +15,7 @@ namespace brave_ads {
 TEST(BraveAdsCreateNonRewardConfirmationUrlRequestBuilderUtilTest, GetPath) {
   // Act & Assert
   EXPECT_EQ("/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a",
-            BuildCreateNonRewardConfirmationUrlPath(kTransactionId));
+            BuildCreateNonRewardConfirmationUrlPath(test::kTransactionId));
 }
 
 }  // namespace brave_ads

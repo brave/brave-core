@@ -242,17 +242,17 @@ std::unique_ptr<network::SimpleURLLoader> MakeGRPCLoader(
 }  // namespace
 
 ZCashRpc::ZCashRpc(
-    PrefService* prefs,
+    NetworkManager* network_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : prefs_(prefs), url_loader_factory_(url_loader_factory) {}
+    : network_manager_(network_manager),
+      url_loader_factory_(url_loader_factory) {}
 
 ZCashRpc::~ZCashRpc() = default;
 
 void ZCashRpc::GetUtxoList(const std::string& chain_id,
                            const std::string& address,
                            ZCashRpc::GetUtxoListCallback callback) {
-  GURL request_url = MakeGetAddressUtxosURL(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeGetAddressUtxosURL(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
@@ -275,8 +275,7 @@ void ZCashRpc::GetUtxoList(const std::string& chain_id,
 
 void ZCashRpc::GetLatestBlock(const std::string& chain_id,
                               GetLatestBlockCallback callback) {
-  GURL request_url = MakeGetLatestBlockHeightURL(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeGetLatestBlockHeightURL(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
@@ -300,8 +299,7 @@ void ZCashRpc::GetLatestBlock(const std::string& chain_id,
 void ZCashRpc::GetTransaction(const std::string& chain_id,
                               const std::string& tx_hash,
                               GetTransactionCallback callback) {
-  GURL request_url = MakeGetTransactionURL(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeGetTransactionURL(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
@@ -410,8 +408,7 @@ void ZCashRpc::OnGetTransactionResponse(
 void ZCashRpc::SendTransaction(const std::string& chain_id,
                                const std::string& data,
                                SendTransactionCallback callback) {
-  GURL request_url = MakeSendTransactionURL(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeSendTransactionURL(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
@@ -437,8 +434,7 @@ void ZCashRpc::IsKnownAddress(const std::string& chain_id,
                               uint64_t block_start,
                               uint64_t block_end,
                               IsKnownAddressCallback callback) {
-  GURL request_url = MakeGetTaddressTxURL(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeGetTaddressTxURL(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
@@ -515,6 +511,10 @@ mojo::AssociatedRemote<mojom::ZCashDecoder>& ZCashRpc::GetDecoder() {
       zcash_decoder_.BindNewEndpointAndPassReceiver());
   zcash_decoder_.reset_on_disconnect();
   return zcash_decoder_;
+}
+
+GURL ZCashRpc::GetNetworkURL(const std::string& chain_id) {
+  return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::ZEC);
 }
 
 }  // namespace brave_wallet

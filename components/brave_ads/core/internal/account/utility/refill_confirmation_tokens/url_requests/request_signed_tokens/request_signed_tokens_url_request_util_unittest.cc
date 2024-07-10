@@ -18,7 +18,7 @@ class BraveAdsRequestSignedTokensUrlRequestUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestUtilTest, ParseNonce) {
   // Act & Assert
-  EXPECT_EQ(kGetSignedTokensNonce,
+  EXPECT_EQ(test::kRequestSignedTokensNonce,
             ParseNonce(base::test::ParseJsonDict(
                 test::BuildRequestSignedTokensUrlResponseBody())));
 }

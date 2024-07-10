@@ -203,10 +203,4 @@ public struct WalletConstants {
   static let signTransactionRiskLink: URL = URL(
     string: "https://support.brave.com/hc/en-us/articles/4409513799693"
   )!
-
-  /// The link for for users to learn more about IPFS
-  public static let ipfsLearnMoreLink: URL = URL(
-    string:
-      "https://support.brave.com/hc/en-us/articles/360051406452-How-does-IPFS-Impact-my-Privacy-"
-  )!
 }

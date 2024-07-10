@@ -26,8 +26,8 @@ class BraveAdsTopSegmentUserDataTest : public UnitTestBase {
     targeting_helper_ =
         std::make_unique<test::TargetingHelper>(task_environment_);
 
-    NotifyDidUpdateResourceComponent(kLanguageComponentManifestVersion,
-                                     kLanguageComponentId);
+    NotifyDidUpdateResourceComponent(test::kLanguageComponentManifestVersion,
+                                     test::kLanguageComponentId);
   }
 
   std::unique_ptr<test::TargetingHelper> targeting_helper_;

@@ -186,10 +186,6 @@ a[href] {
   max-width: 100%;
 }
 
-#article>main:first-of-type {
-  overflow: hidden;
-}
-
 #article img {
   /* By default, images are centered on their own line. */
   display: block;

@@ -31,7 +31,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
        ShouldIncludeIfThereIsNoConversionHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
+  creative_ad.creative_set_id = test::kCreativeSetId;
 
   const ConversionExclusionRule exclusion_rule(/*ad_events=*/{});
 

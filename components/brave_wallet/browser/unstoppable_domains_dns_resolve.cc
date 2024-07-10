@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve.h"
 
 #include "base/no_destructor.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 
 namespace brave_wallet::unstoppable_domains {
 
@@ -44,8 +45,12 @@ GURL ResolveUrl(const std::vector<std::string>& response) {
   if (ipfs_uri.empty()) {  // Try legacy value.
     ipfs_uri = response[RecordKeys::kIpfsHtmlValue];
   }
+  GURL resolved_url;
   if (!ipfs_uri.empty()) {
-    return GURL("ipfs://" + ipfs_uri);
+    return ipfs::TranslateIPFSURI(GURL("ipfs://" + ipfs_uri), &resolved_url,
+                                  false)
+               ? resolved_url
+               : GURL();
   }
 
   std::string fallback_url = response[RecordKeys::kBrowserRedirectUrl];

@@ -20,7 +20,7 @@ class BraveAdsCatalogUserDataTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    SetCatalogId(kCatalogId);
+    SetCatalogId(test::kCatalogId);
   }
 };
 

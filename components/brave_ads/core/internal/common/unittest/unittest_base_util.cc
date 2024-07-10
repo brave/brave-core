@@ -107,7 +107,7 @@ void MockCacheAdEventForInstanceId(const AdsClientMock& mock) {
             CHECK(!ad_type.empty());
             CHECK(!confirmation_type.empty());
 
-            const std::string uuid = GetUuidForCurrentTestAndValue(id);
+            const std::string uuid = test::GetUuidForCurrentTestAndValue(id);
             const std::string type_id =
                 base::StrCat({ad_type, confirmation_type});
             AdEventCache()[uuid][type_id].push_back(time);
@@ -122,7 +122,8 @@ void MockGetCachedAdEvents(const AdsClientMock& mock) {
             CHECK(!ad_type.empty());
             CHECK(!confirmation_type.empty());
 
-            const std::string uuid_for_current_test = GetUuidForCurrentTest();
+            const std::string uuid_for_current_test =
+                test::GetUuidForCurrentTest();
 
             const std::string type_id =
                 base::StrCat({ad_type, confirmation_type});
@@ -154,7 +155,7 @@ void MockResetAdEventCacheForInstanceId(const AdsClientMock& mock) {
       .WillByDefault(::testing::Invoke([](const std::string& id) {
         CHECK(!id.empty());
 
-        const std::string uuid = GetUuidForCurrentTestAndValue(id);
+        const std::string uuid = test::GetUuidForCurrentTestAndValue(id);
         AdEventCache()[uuid].clear();
       }));
 }

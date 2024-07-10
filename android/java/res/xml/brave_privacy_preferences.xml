@@ -136,12 +136,6 @@
             app:dialog_entries="@array/requestOTRTexts"
             app:dialog_default_index="1" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-            android:key="ipfs_gateway"
-            android:order="25"
-            android:title="@string/ipfs_gateway_title"
-            android:summary="@string/ipfs_gateway_summary"
-            android:defaultValue="true" />
-        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="block_cookie_consent_notices"
             android:order="25"
             android:title="@string/block_cookie_consent_notices_title"

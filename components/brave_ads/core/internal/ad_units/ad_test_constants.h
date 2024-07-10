@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 inline constexpr char kPlacementId[] = "9bac9ae4-693c-4569-9b3e-300e357780cf";
 inline constexpr char kMissingPlacementId[] =
@@ -38,6 +38,6 @@ inline constexpr char kSegment[] = "untargeted";
 
 inline constexpr char kTargetUrl[] = "https://brave.com";
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_

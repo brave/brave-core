@@ -53,6 +53,8 @@ class BraveToolbarView : public ToolbarView,
       const views::ViewHierarchyChangedDetails& details) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
+
   void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetButtonBounds();
@@ -67,6 +69,8 @@ class BraveToolbarView : public ToolbarView,
                            const std::u16string& profile_name) override;
 
   void UpdateWalletButtonVisibility();
+
+  views::View* toolbar_divider_for_testing() { return toolbar_divider_; }
 
   raw_ptr<BraveBookmarkButton> bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.

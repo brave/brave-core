@@ -42,16 +42,16 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAds) {
   CreativeInlineContentAdList creative_ads;
 
   const CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "parent";
   creative_ads.push_back(creative_ad_2);
 
   CreativeInlineContentAdInfo creative_ad_3 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_3.segment = "parent-child";
   creative_ads.push_back(creative_ad_3);
 
@@ -74,12 +74,12 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test, GetAdsForNoMatchingSegments) {
   CreativeInlineContentAdList creative_ads;
 
   CreativeInlineContentAdInfo creative_ad_1 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_1.segment = "parent";
   creative_ads.push_back(creative_ad_1);
 
   CreativeInlineContentAdInfo creative_ad_2 =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ad_2.segment = "parent-child";
   creative_ads.push_back(creative_ad_2);
 
@@ -98,7 +98,7 @@ TEST_F(BraveAdsEligibleInlineContentAdsV2Test,
   CreativeInlineContentAdList creative_ads;
 
   const CreativeInlineContentAdInfo creative_ad =
-      test::BuildCreativeInlineContentAd(/*should_use_random_uuids=*/true);
+      test::BuildCreativeInlineContentAd(/*should_generate_random_uuids=*/true);
   creative_ads.push_back(creative_ad);
 
   database::SaveCreativeInlineContentAds(creative_ads);

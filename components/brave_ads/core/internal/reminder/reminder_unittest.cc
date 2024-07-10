@@ -43,7 +43,7 @@ class BraveAdsReminderTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    ads_observer_mock_ = AddAdsObserverMock();
+    ads_observer_mock_ = test::AddAdsObserverMock();
 
     reminder_ = std::make_unique<Reminder>();
   }

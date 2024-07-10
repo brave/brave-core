@@ -97,8 +97,8 @@ struct AIChatResponseMessageView: View {
       }
 
       if let searchQueriesEvent = searchQueriesEvent, !isEntryInProgress {
-        HStack {
-          Image(braveSystemName: "leo.search")
+        HStack(alignment: .top) {
+          Image("brave-icon-search", bundle: .module)
 
           generateSearchQueriesView(queries: searchQueriesEvent.searchQueries)
             .tint(Color(braveSystemName: .textPrimary))

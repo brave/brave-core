@@ -45,11 +45,6 @@
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/browser/brave_wallet/brave_wallet_auto_pin_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_pin_service_factory.h"
-#endif
-
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui,
                                true /* Needed for webui browser tests */) {
@@ -139,10 +134,6 @@ void WalletPanelUI::CreatePanelHandler(
         brave_wallet_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
         brave_wallet_p3a_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
-        brave_wallet_pin_service_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
         brave_wallet_ipfs_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
@@ -179,15 +170,6 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::MeldIntegrationServiceFactory::BindForContext(
       profile, std::move(meld_integration_service));
-  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_ipfs_service_receiver));
-
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-  brave_wallet::BraveWalletPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_pin_service_receiver));
-  brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_auto_pin_service_receiver));
-#endif
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

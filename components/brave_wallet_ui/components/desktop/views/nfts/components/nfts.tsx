@@ -17,7 +17,6 @@ import {
 } from '../../../../../common/slices/entities/token-balance.entity'
 
 // hooks
-import { useNftPin } from '../../../../../common/hooks/nft-pin'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher //
@@ -59,6 +58,7 @@ import {
   getTokenCollectionName,
   getTokensWithBalanceForAccounts,
   groupSpamAndNonSpamNfts,
+  isTokenWatchOnly,
   searchNftCollectionsAndGetTotalNftsFound,
   searchNfts
 } from '../../../../../utils/asset-utils'
@@ -82,7 +82,6 @@ import SearchBar from '../../../../shared/search-bar'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
 import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 import { AutoDiscoveryEmptyState } from './auto-discovery-empty-state/auto-discovery-empty-state'
-import { NftIpfsBanner } from '../../../nft-ipfs-banner/nft-ipfs-banner'
 import {
   NftGridViewItemSkeleton //
 } from '../../portfolio/components/nft-grid-view/nft-grid-view-item-skeleton'
@@ -96,7 +95,7 @@ import {
 } from '../../portfolio/components/nft-grid-view/nft-collection-grid-view-item'
 
 // styles
-import { BannerWrapper, NFTListWrapper, NftGrid } from './nfts.styles'
+import { NFTListWrapper, NftGrid } from './nfts.styles'
 import { Column, Row } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
@@ -140,9 +139,7 @@ export const Nfts = ({
 
   // redux
   const dispatch = useDispatch()
-  const isNftPinningFeatureEnabled = useSafeWalletSelector(
-    WalletSelectors.isNftPinningFeatureEnabled
-  )
+
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
   )
@@ -174,7 +171,6 @@ export const Nfts = ({
 
   // custom hooks
   const { braveWalletP3A } = useApiProxy()
-  const { isIpfsBannerVisible, onToggleShowIpfsBanner } = useNftPin()
 
   // queries
   const { data: isNftAutoDiscoveryEnabled } =
@@ -197,22 +193,11 @@ export const Nfts = ({
   const userNonSpamNftIds =
     userTokensRegistry?.nonSpamTokenIds ?? emptyTokenIdsList
 
-  const shouldFetchSpamNftBalances =
-    selectedTab === 'hidden' &&
-    !isLoadingSpamNfts &&
-    hideUnownedNfts &&
-    accounts.length > 0 &&
-    networks.length > 0
-
-  const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
-    shouldFetchSpamNftBalances
-      ? {
-          accounts,
-          networks,
-          isSpamRegistry: true
-        }
-      : skipToken
-  )
+  const { data: spamTokenBalancesRegistry } = useBalancesFetcher({
+    accounts,
+    networks,
+    isSpamRegistry: true
+  })
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -416,8 +401,7 @@ export const Nfts = ({
     (groupNftsByCollection &&
       isFetchingLatestAssetIdsByCollectionNameRegistry) ||
     (selectedTab === 'hidden' &&
-      (isLoadingSpamNfts ||
-        (shouldFetchSpamNftBalances && !spamTokenBalancesRegistry)))
+      (isLoadingSpamNfts || !spamTokenBalancesRegistry))
 
   // methods
   const onSearchValueChange = React.useCallback(
@@ -452,10 +436,6 @@ export const Nfts = ({
     },
     [assetIdsByCollectionNameRegistry, collectionNames, history]
   )
-
-  const onClickIpfsButton = React.useCallback(() => {
-    onToggleShowIpfsBanner()
-  }, [onToggleShowIpfsBanner])
 
   const toggleShowAddNftModal = React.useCallback(() => {
     setShowAddNftModal((value) => !value)
@@ -513,18 +493,6 @@ export const Nfts = ({
       justifyContent='flex-start'
       isPanel={isPanel}
     >
-      {isNftPinningFeatureEnabled &&
-      isIpfsBannerVisible &&
-      visibleNfts.length > 0 ? (
-        <BannerWrapper
-          justifyContent='center'
-          alignItems='center'
-          marginBottom={16}
-        >
-          <NftIpfsBanner onDismiss={onToggleShowIpfsBanner} />
-        </BannerWrapper>
-      ) : null}
-
       <ControlBarWrapper
         justifyContent='space-between'
         alignItems='center'
@@ -565,11 +533,6 @@ export const Nfts = ({
               <PortfolioActionButton onClick={() => setShowSearchBar(true)}>
                 <ButtonIcon name='search' />
               </PortfolioActionButton>
-              {isNftPinningFeatureEnabled && visibleNfts.length > 0 ? (
-                <PortfolioActionButton onClick={onClickIpfsButton}>
-                  <ButtonIcon name='product-ipfs-outline' />
-                </PortfolioActionButton>
-              ) : null}
               <PortfolioActionButton onClick={toggleShowAddNftModal}>
                 <ButtonIcon name='plus-add' />
               </PortfolioActionButton>
@@ -628,6 +591,12 @@ export const Nfts = ({
                         onSelectAsset={onSelectAsset}
                         isTokenHidden={isHidden}
                         isTokenSpam={isSpam}
+                        isWatchOnly={isTokenWatchOnly(
+                          nft,
+                          allAccounts,
+                          tokenBalancesRegistry,
+                          spamTokenBalancesRegistry
+                        )}
                       />
                     )
                   })}

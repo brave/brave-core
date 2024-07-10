@@ -6,7 +6,6 @@
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
-import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -61,7 +60,6 @@ source_set("extensions") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
-    "//brave/browser/profiles",
     "//brave/common",
     "//brave/common/extensions/api",
     "//brave/components/brave_adaptive_captcha",
@@ -80,7 +78,6 @@ source_set("extensions") {
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/decentralized_dns/content",
-    "//brave/components/ipfs/buildflags",
     "//brave/components/ntp_widget_utils/browser",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
@@ -124,14 +121,6 @@ source_set("extensions") {
       "//components/infobars/content",
       "//components/prefs",
     ]
-  }
-
-  if (enable_ipfs) {
-    sources += [
-      "api/ipfs_api.cc",
-      "api/ipfs_api.h",
-    ]
-    deps += [ "//brave/components/ipfs" ]
   }
 
   if (enable_brave_webtorrent) {

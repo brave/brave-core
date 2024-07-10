@@ -45,11 +45,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   if (pageVisibility.braveWeb3) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
   }
-  if (pageVisibility.braveIPFS) {
-    r.BRAVE_IPFS = r.BRAVE_WEB3.createSection('/ipfs', 'ipfs')
-    r.BRAVE_IPFS_KEYS = r.BRAVE_IPFS.createChild('/ipfs/keys')
-    r.BRAVE_IPFS_PEERS = r.BRAVE_IPFS.createChild('/ipfs/peers')
-  }
   if (pageVisibility.braveWallet) {
     r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
     r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')

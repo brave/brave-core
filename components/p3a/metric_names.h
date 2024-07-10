@@ -65,13 +65,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Extensions.AdBlock",
     "Brave.IOS.IsLikelyDefault",
 
-    // IPFS
-    "Brave.IPFS.DaemonRunTime",
-    "Brave.IPFS.DetectionPromptCount",
-    "Brave.IPFS.GatewaySetting",
-    "Brave.IPFS.IPFSCompanionInstalled",
-    "Brave.IPFS.LocalNodeRetention",
-
     "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus.2",
     "Brave.NTP.NewTabsCreated.3",

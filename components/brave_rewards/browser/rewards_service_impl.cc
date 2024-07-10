@@ -108,24 +108,6 @@ const std::set<std::string> kBitflyerCountries = {
     "JP"  // ID: 19024
 };
 
-std::string URLMethodToRequestType(mojom::UrlMethod method) {
-  switch (method) {
-    case mojom::UrlMethod::GET:
-      return "GET";
-    case mojom::UrlMethod::POST:
-      return "POST";
-    case mojom::UrlMethod::PUT:
-      return "PUT";
-    case mojom::UrlMethod::PATCH:
-      return "PATCH";
-    case mojom::UrlMethod::DEL:
-      return "DELETE";
-    default:
-      NOTREACHED_IN_MIGRATION();
-      return "GET";
-  }
-}
-
 bool DeleteFilesOnFileTaskRunner(
     const std::vector<base::FilePath>& file_paths) {
   bool result = true;
@@ -828,6 +810,25 @@ void RewardsServiceImpl::RestorePublishers() {
       base::BindOnce(&RewardsServiceImpl::OnRestorePublishers, AsWeakPtr()));
 }
 
+std::string RewardsServiceImpl::UrlMethodToRequestType(
+    mojom::UrlMethod method) {
+  switch (method) {
+    case mojom::UrlMethod::GET:
+      return "GET";
+    case mojom::UrlMethod::POST:
+      return "POST";
+    case mojom::UrlMethod::PUT:
+      return "PUT";
+    case mojom::UrlMethod::PATCH:
+      return "PATCH";
+    case mojom::UrlMethod::DEL:
+      return "DELETE";
+    default:
+      NOTREACHED_IN_MIGRATION();
+      return "GET";
+  }
+}
+
 void RewardsServiceImpl::Shutdown() {
   engine_.reset();
   receiver_.reset();
@@ -989,7 +990,7 @@ void RewardsServiceImpl::LoadURL(mojom::UrlRequestPtr request,
 
   auto net_request = std::make_unique<network::ResourceRequest>();
   net_request->url = parsed_url;
-  net_request->method = URLMethodToRequestType(request->method);
+  net_request->method = UrlMethodToRequestType(request->method);
   net_request->load_flags = request->load_flags;
 
   // Loading Twitter requires credentials

@@ -224,9 +224,9 @@ TEST_F(BraveAdsCreativePromotedContentAdsDatabaseTableTest,
   // Act & Assert
   base::MockCallback<database::table::GetCreativePromotedContentAdCallback>
       callback;
-  EXPECT_CALL(callback, Run(/*success=*/false, kMissingCreativeInstanceId,
+  EXPECT_CALL(callback, Run(/*success=*/false, test::kMissingCreativeInstanceId,
                             CreativePromotedContentAdInfo{}));
-  database_table_.GetForCreativeInstanceId(kMissingCreativeInstanceId,
+  database_table_.GetForCreativeInstanceId(test::kMissingCreativeInstanceId,
                                            callback.Get());
 }
 

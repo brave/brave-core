@@ -58,9 +58,9 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
-      VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
+      ad_event, VerifiableConversionInfo{
+                    test::kVerifiableConversionId,
+                    test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act
   const base::Value::Dict user_data = BuildConversionUserData(conversion);
@@ -113,9 +113,9 @@ TEST_F(BraveAdsConversionUserDataBuilderTest,
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
   const ConversionInfo conversion = BuildConversion(
-      ad_event,
-      VerifiableConversionInfo{kVerifiableConversionId,
-                               kVerifiableConversionAdvertiserPublicKey});
+      ad_event, VerifiableConversionInfo{
+                    test::kVerifiableConversionId,
+                    test::kVerifiableConversionAdvertiserPublicKeyBase64});
 
   // Act
   const base::Value::Dict user_data = BuildConversionUserData(conversion);

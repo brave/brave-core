@@ -9,7 +9,7 @@
 #include "base/strings/string_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 std::string GetUuidForCurrentTest() {
   const ::testing::TestInfo* const test_info =
@@ -25,4 +25,4 @@ std::string GetUuidForCurrentTestAndValue(const std::string& value) {
       "$1:$2", {value, GetUuidForCurrentTest()}, nullptr);
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test

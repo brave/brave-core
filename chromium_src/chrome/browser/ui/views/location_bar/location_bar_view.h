@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_
 
-#define BRAVE_LOCATION_BAR_VIEW_H_   \
- private:                            \
-  friend class BraveLocationBarView; \
-                                     \
- public:                             \
-  virtual std::vector<views::View*> GetTrailingViews();
+#define BRAVE_LOCATION_BAR_VIEW_H_                               \
+ private:                                                        \
+  friend class BraveLocationBarView;                             \
+                                                                 \
+ public:                                                         \
+  virtual std::vector<views::View*> GetRightMostTrailingViews(); \
+  virtual std::vector<views::View*> GetLeftMostTrailingViews();
 
 #define OnOmniboxBlurred virtual OnOmniboxBlurred
 #define GetBorderRadius virtual GetBorderRadius

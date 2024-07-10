@@ -261,14 +261,6 @@ extension BrowserViewController: WKNavigationDelegate {
       return (shouldOpen ? .allow : .cancel, preferences)
     }
 
-    // handles IPFS URL schemes
-    if requestURL.isIPFSScheme {
-      if navigationAction.targetFrame?.isMainFrame == true {
-        handleIPFSSchemeURL(requestURL)
-      }
-      return (.cancel, preferences)
-    }
-
     // handles Decentralized DNS
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
       navigationAction.targetFrame?.isMainFrame == true
@@ -286,10 +278,11 @@ extension BrowserViewController: WKNavigationDelegate {
         showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
         return (.cancel, preferences)
       case .load(let resolvedURL):
-        if resolvedURL.isIPFSScheme {
-          handleIPFSSchemeURL(resolvedURL)
-          return (.cancel, preferences)
-        } else {  // non-ipfs, treat as normal url / link tapped
+        if resolvedURL.isIPFSScheme,
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+        {
+          requestURL = resolvedIPFSURL
+        } else {
           requestURL = resolvedURL
         }
       case .none:

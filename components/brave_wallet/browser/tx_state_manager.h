@@ -42,10 +42,6 @@ class TxStateManager {
   std::unique_ptr<TxMeta> GetTx(const std::string& meta_id);
   bool DeleteTx(const std::string& meta_id);
 
-  static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
-  static void MigrateSolanaTransactionsForV0TransactionsSupport(
-      PrefService* prefs);
-
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       const std::optional<std::string>& chain_id,
       const std::optional<mojom::TransactionStatus>& status,

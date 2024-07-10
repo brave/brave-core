@@ -17,7 +17,7 @@ namespace test {
 
 std::optional<std::string> OpenVerifiableConversionEnvelope(
     const VerifiableConversionEnvelopeInfo& verifiable_conversion_envelope,
-    const std::string& advertiser_secret_key_base64);
+    const std::string& verifiable_conversion_advertiser_secret_key_base64);
 
 }  // namespace test
 

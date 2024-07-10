@@ -18,8 +18,9 @@ namespace brave_ads::crypto {
 namespace {
 
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
-constexpr char kPublicKey[] = "5LmgyD6OG0qcVeRgTzk3IWbzSWjemE4KpjTRtRW4eRk=";
-constexpr char kSecretKey[] =
+constexpr char kPublicKeyBase64[] =
+    "5LmgyD6OG0qcVeRgTzk3IWbzSWjemE4KpjTRtRW4eRk=";
+constexpr char kSecretKeyBase64[] =
     R"(oyd1rHNB5xHU6TzPSO/MUUfUJNHiol1ExFHMMKV/7dvkuaDIPo4bSpxV5GBPOTchZvNJaN6YTgqmNNG1Fbh5GQ==)";
 
 }  // namespace
@@ -35,7 +36,7 @@ TEST(BraveAdsCryptoUtilTest, Sha256) {
 
 TEST(BraveAdsCryptoUtilTest, Sha256WithEmptyString) {
   // Act
-  const std::vector<uint8_t> sha256 = Sha256(/*value=*/{});
+  const std::vector<uint8_t> sha256 = Sha256(/*value=*/"");
 
   // Assert
   EXPECT_EQ("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=",
@@ -80,7 +81,7 @@ TEST(BraveAdsCryptoUtilTest, GenerateRandomNonce) {
 
 TEST(BraveAdsCryptoUtilTest, Sign) {
   // Act
-  const std::optional<std::string> signature = Sign(kMessage, kSecretKey);
+  const std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
 
   // Assert
   EXPECT_TRUE(signature);
@@ -88,11 +89,11 @@ TEST(BraveAdsCryptoUtilTest, Sign) {
 
 TEST(BraveAdsCryptoUtilTest, Verify) {
   // Act
-  const std::optional<std::string> signature = Sign(kMessage, kSecretKey);
+  const std::optional<std::string> signature = Sign(kMessage, kSecretKeyBase64);
   ASSERT_TRUE(signature);
 
   // Assert
-  EXPECT_TRUE(Verify(kMessage, kPublicKey, *signature));
+  EXPECT_TRUE(Verify(kMessage, kPublicKeyBase64, *signature));
 }
 
 TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {

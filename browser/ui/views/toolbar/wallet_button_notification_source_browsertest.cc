@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +38,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
     auto* wallet_service =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             browser()->profile());
+    network_manager_ = wallet_service->network_manager();
     json_rpc_service_ = wallet_service->json_rpc_service();
     json_rpc_service_->SetGasPriceForTesting("0x123");
     keyring_service_ = wallet_service->keyring_service();
@@ -50,8 +52,8 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
 
   ~WalletButtonNotificationSourceTest() override = default;
 
+  brave_wallet::NetworkManager* network_manager() { return network_manager_; }
   brave_wallet::TxService* tx_service() { return tx_service_; }
-
   brave_wallet::KeyringService* keyring_service() { return keyring_service_; }
 
   brave_wallet::AccountUtils GetAccountUtils() {
@@ -205,6 +207,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
   }
 
  private:
+  raw_ptr<brave_wallet::NetworkManager> network_manager_;
   raw_ptr<brave_wallet::KeyringService> keyring_service_;
   raw_ptr<brave_wallet::TxService> tx_service_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_ = nullptr;
@@ -332,9 +335,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::FilTxData::New(
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
             "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
-    auto chain_id = brave_wallet::GetCurrentChainId(
-        browser()->profile()->GetPrefs(), brave_wallet::mojom::CoinType::FIL,
-        std::nullopt);
+    auto chain_id = network_manager()->GetCurrentChainId(
+        brave_wallet::mojom::CoinType::FIL, std::nullopt);
     EXPECT_EQ(chain_id, "t");
     EXPECT_EQ(from_account->account_id->unique_key,
               "461_3_0_t17otcil7bookogjy3ywoslq5gf5tbisdkcfui2iq");
@@ -430,9 +432,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
 
     tx_service()->AddUnapprovedTransaction(
         brave_wallet::mojom::TxDataUnion::NewSolanaTxData(std::move(tx_data)),
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::SOL,
-                                        std::nullopt),
+        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::SOL,
+                                             std::nullopt),
         from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
@@ -455,9 +456,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
         brave_wallet::mojom::CoinType::FIL,
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::FIL,
-                                        std::nullopt),
+        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::FIL,
+                                             std::nullopt),
         first_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
@@ -476,9 +476,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
         brave_wallet::mojom::CoinType::ETH,
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::ETH,
-                                        std::nullopt),
+        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::ETH,
+                                             std::nullopt),
         second_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
@@ -497,9 +496,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     base::RunLoop run_loop;
     tx_service()->RejectTransaction(
         brave_wallet::mojom::CoinType::SOL,
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::SOL,
-                                        std::nullopt),
+        network_manager()->GetCurrentChainId(brave_wallet::mojom::CoinType::SOL,
+                                             std::nullopt),
         third_tx_meta_id, base::BindLambdaForTesting([&](bool result) {
           EXPECT_TRUE(result);
           run_loop.Quit();
@@ -529,9 +527,8 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::FilTxData::New(
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
             "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
-    auto chain_id = brave_wallet::GetCurrentChainId(
-        browser()->profile()->GetPrefs(), brave_wallet::mojom::CoinType::FIL,
-        std::nullopt);
+    auto chain_id = network_manager()->GetCurrentChainId(
+        brave_wallet::mojom::CoinType::FIL, std::nullopt);
     EXPECT_EQ(chain_id, "t");
     tx_service()->AddUnapprovedTransaction(
         std::move(tx_data), chain_id, from_account->account_id.Clone(),

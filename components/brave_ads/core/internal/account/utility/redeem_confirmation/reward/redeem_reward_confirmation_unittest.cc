@@ -48,11 +48,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, Redeem) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -106,7 +106,7 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -136,11 +136,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_NOT_FOUND, net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -172,11 +172,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_BAD_REQUEST,
          net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -209,11 +209,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_ACCEPTED, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -245,11 +245,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          net::GetHttpReasonPhrase(net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
@@ -282,11 +282,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
@@ -318,11 +318,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "createdAt" : "2020-04-20T10:27:11.717Z",
@@ -367,11 +367,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "393abadc-e9ae-4aac-a321-3307e0d527c6",
@@ -417,11 +417,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -460,11 +460,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -509,11 +509,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -559,11 +559,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -608,11 +608,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -657,11 +657,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -707,11 +707,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -754,11 +754,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -801,11 +801,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
               "id" : "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -850,11 +850,11 @@ TEST_F(BraveAdsRedeemRewardConfirmationTest, FetchPaymentTokenAfter) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
+      {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
+                                            test::kCredentialBase64Url),
        {{net::HTTP_CREATED,
          test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+      {BuildFetchPaymentTokenUrlPath(test::kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 

@@ -56,8 +56,9 @@ void Account::RemoveObserver(AccountObserver* const observer) {
 }
 
 void Account::SetWallet(const std::string& payment_id,
-                        const std::string& recovery_seed) {
-  const std::optional<WalletInfo> wallet = ToWallet(payment_id, recovery_seed);
+                        const std::string& recovery_seed_base64) {
+  const std::optional<WalletInfo> wallet =
+      ToWallet(payment_id, recovery_seed_base64);
   if (!wallet) {
     // TODO(https://github.com/brave/brave-browser/issues/32066):
     // Detect potential defects using `DumpWithoutCrashing`.

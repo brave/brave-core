@@ -295,7 +295,6 @@ public struct AIChatView: View {
           model.requestInProgress || model.suggestionsStatus == .isGenerating
             || model.apiError == .contextLimitReached
         )
-        .padding([.horizontal, .bottom], 8.0)
       }
     }
     .background(Color(braveSystemName: .containerBackground))

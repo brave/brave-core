@@ -15,9 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 class ChromeBrowserState;
 
 @interface IpfsAPIImpl : NSObject <IpfsAPI>
-@property(nonatomic, nullable) NSURL* nftIpfsGateway;
-@property(nonatomic, nullable) NSURL* ipfsGateway;
-
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
 - (nullable NSURL*)resolveGatewayUrlForNft:(NSURL*)input;
 - (instancetype)initWithBrowserState:(ChromeBrowserState*)mainBrowserState;

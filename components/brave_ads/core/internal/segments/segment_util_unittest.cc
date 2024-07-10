@@ -25,7 +25,7 @@ class BraveAdsSegmentUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToString(kCatalogWithMultipleCampaignsFilename);
+      MaybeReadFileToString(test::kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(contents);
 
   const std::optional<CatalogInfo> catalog =

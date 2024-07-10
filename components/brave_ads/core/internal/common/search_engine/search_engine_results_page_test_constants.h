@@ -10,10 +10,10 @@
 
 class GURL;
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 const std::vector<GURL>& GetSearchEngineResultsPageUrls();
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_RESULTS_PAGE_TEST_CONSTANTS_H_

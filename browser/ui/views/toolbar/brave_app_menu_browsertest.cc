@@ -98,6 +98,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
        AppMenuIconController::Severity::HIGH});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
             SkColorSetRGB(0x7D, 0x00, 0x1A));
+
+  EXPECT_EQ(GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT),
+            brave_menu_button->height());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

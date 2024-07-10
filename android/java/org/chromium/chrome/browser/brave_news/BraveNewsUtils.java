@@ -219,11 +219,13 @@ public class BraveNewsUtils {
 
     public static void setFollowingPublisherList() {
         List<Publisher> publisherList = new ArrayList<>();
-        for (Publisher publisher : mGlobalPublisherList) {
-            if (publisher.userEnabledStatus == UserEnabled.ENABLED
-                    || (publisher.type == PublisherType.DIRECT_SOURCE
-                            && publisher.userEnabledStatus != UserEnabled.DISABLED)) {
-                publisherList.add(publisher);
+        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : mGlobalPublisherList) {
+                if (publisher.userEnabledStatus == UserEnabled.ENABLED
+                        || (publisher.type == PublisherType.DIRECT_SOURCE
+                                && publisher.userEnabledStatus != UserEnabled.DISABLED)) {
+                    publisherList.add(publisher);
+                }
             }
         }
         mFollowingPublisherList = publisherList;
@@ -244,11 +246,13 @@ public class BraveNewsUtils {
 
     public static void setFollowingChannelList() {
         List<Channel> channelList = new ArrayList<>();
-        for (Channel channel : mChannelList) {
-            List<String> subscribedLocalesList =
-                    new ArrayList<>(Arrays.asList(channel.subscribedLocales));
-            if (subscribedLocalesList.contains(mLocale)) {
-                channelList.add(channel);
+        if (mChannelList != null && mChannelList.size() > 0) {
+            for (Channel channel : mChannelList) {
+                List<String> subscribedLocalesList =
+                        new ArrayList<>(Arrays.asList(channel.subscribedLocales));
+                if (subscribedLocalesList.contains(mLocale)) {
+                    channelList.add(channel);
+                }
             }
         }
         mFollowingChannelList = channelList;
@@ -260,9 +264,11 @@ public class BraveNewsUtils {
 
     public static List<Channel> searchChannel(String search) {
         List<Channel> channelList = new ArrayList<>();
-        for (Channel channel : mChannelList) {
-            if (channel.channelName.toLowerCase(Locale.ROOT).contains(search)) {
-                channelList.add(channel);
+        if (mChannelList != null && mChannelList.size() > 0) {
+            for (Channel channel : mChannelList) {
+                if (channel.channelName.toLowerCase(Locale.ROOT).contains(search)) {
+                    channelList.add(channel);
+                }
             }
         }
         return channelList;
@@ -270,12 +276,14 @@ public class BraveNewsUtils {
 
     public static List<Publisher> searchPublisher(String search) {
         List<Publisher> publisherList = new ArrayList<>();
-        for (Publisher publisher : mGlobalPublisherList) {
-            if (publisher.publisherName.toLowerCase(Locale.ROOT).contains(search)
-                    || publisher.categoryName.toLowerCase(Locale.ROOT).contains(search)
-                    || publisher.feedSource.url.toLowerCase(Locale.ROOT).contains(search)
-                    || publisher.siteUrl.url.toLowerCase(Locale.ROOT).contains(search)) {
-                publisherList.add(publisher);
+        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : mGlobalPublisherList) {
+                if (publisher.publisherName.toLowerCase(Locale.ROOT).contains(search)
+                        || publisher.categoryName.toLowerCase(Locale.ROOT).contains(search)
+                        || publisher.feedSource.url.toLowerCase(Locale.ROOT).contains(search)
+                        || publisher.siteUrl.url.toLowerCase(Locale.ROOT).contains(search)) {
+                    publisherList.add(publisher);
+                }
             }
         }
 

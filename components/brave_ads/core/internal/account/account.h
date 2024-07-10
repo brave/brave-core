@@ -50,7 +50,7 @@ class Account final : public AdsClientNotifierObserver,
   bool IsUserRewardsSupported() const { return !!user_rewards_; }
 
   void SetWallet(const std::string& payment_id,
-                 const std::string& recovery_seed);
+                 const std::string& recovery_seed_base64);
 
   static void GetStatement(GetStatementOfAccountsCallback callback);
 

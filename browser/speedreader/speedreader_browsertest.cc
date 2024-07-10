@@ -331,9 +331,14 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   const std::string kCheckReferrer =
       R"js(document.querySelector('meta[name="referrer"]')
              .getAttribute('content') === 'no-referrer')js";
+  const std::string kCheckResources =
+      "JSON.stringify(speedreaderData) == '{\"minutesText\":\"min. "
+      "read\",\"playButtonTitle\":\"Play/"
+      "Pause\",\"showOriginalLinkText\":\"View "
+      "original\",\"ttsEnabled\":true}'";
 
-  // Check that the document became much smaller and that non-empty speedreader
-  // style is injected.
+  // Check that the document became much smaller and that non-empty
+  // speedreader style is injected.
   EXPECT_LT(0, content::EvalJs(ActiveWebContents(), kGetStyleLength,
                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                                ISOLATED_WORLD_ID_BRAVE_INTERNAL)
@@ -343,6 +348,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());
   EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckReferrer,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractBool());
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckResources,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL)
                   .ExtractBool());

@@ -72,10 +72,6 @@ provideStrings({
   braveWalletSell: 'Sell',
   braveWalletNotEnoughBalance: 'You don’t have enough $1 in this account.',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',
-  braveWalletSlippageToleranceTitle: 'Slippage tolerance',
-  braveWalletSlippageToleranceExplanation:
-    'Your swap will execute within the maximum amount of slippage you define here. For example, 1% slippage means you’re willing to accept up to 1% less due to market conditions.',
-  braveWalletSlippageToleranceDescription: 'Enter a value between 0.5% and 99%',
   braveWalletExpiresInTitle: 'Expires in',
   braveWalletSendPlaceholder: 'Wallet address or URL',
   braveWalletSendNoURLPlaceholder: 'Wallet address',
@@ -141,8 +137,6 @@ provideStrings({
 
   // Bridge
   braveWalletChooseAssetToBridge: 'Choose asset to bridge',
-  braveWalletBridgingVia: 'Bridging via',
-  braveWalletEstFees: 'Est fees',
   braveWalletEstTime: 'Est time',
   braveWalletExchangeRate: 'Exchange rate',
   braveWalletExchangeFor: '$1 for $2',
@@ -599,7 +593,6 @@ provideStrings({
   braveWalletSwapReviewHeader: 'Confirm order',
   braveWalletSolanaSwap: 'Solana Swap',
   braveWalletNoRoutesFound: 'No routes found',
-  braveWalletSwappingVia: 'Swapping via',
   braveWalletReviewSwap: 'Review swap',
   braveWalletChooseQuoteProvider: 'Choose quote provider',
   braveWalletQuoteProviderInfo:
@@ -610,6 +603,19 @@ provideStrings({
   braveWalletUpdate: 'Update',
   braveWalletProviderNotSupported: 'This pair is not supported by $1',
   braveWalletChangeProvider: 'Change provider',
+  braveWalletRoute: 'Route',
+  braveWalletMaxSlippage: 'Max slippage',
+
+  braveWalletMaxSlippageDescription:
+    'When the deviation between the price of the transaction you ' +
+    'submitted and the price at the time of the transaction on chain is ' +
+    'greater than this set value, the transaction will fail.',
+  braveWalletSuggestedValues: 'Suggested Values:',
+  braveWalletMainstreamAssetPairs: 'Mainstream Asset Pairs: $1%',
+  braveWalletStablecoinPairs: 'Stablecoin Pairs: $1%',
+  braveWalletOthers: 'Others: $1%',
+  braveWalletSuggested: 'Suggested',
+  braveWalletCustom: 'Custom',
 
   // Buy
   braveWalletBuyTitle: 'Test faucet',
@@ -988,9 +994,6 @@ provideStrings({
   braveWalletNFTDetailContractAddress: 'Contract address',
   braveWalletNFTDetailDescription: 'Description',
   braveWalletNFTDetailImageAddress: 'Image URL',
-  braveWalletNFTDetailsPinningInProgress: 'In progress',
-  braveWalletNFTDetailsPinningSuccessful: 'Pinned',
-  braveWalletNFTDetailsPinningFailed: 'Failed',
   braveWalletNFTDetailsNotAvailable: 'Not available yet',
   braveWalletNFTDetailsOverview: 'Overview',
   braveWalletNFTDetailsOwnedBy: 'Owned by',
@@ -1233,59 +1236,13 @@ provideStrings({
   braveWalletTokenMintAddress: 'Mint address',
   braveWalletTransactionHasFeeEstimatesError: 'Unable to fetch fee estimates',
 
-  // NFT Pinning
-  braveWalletNftPinningWhyNotAvailable: "Why aren't some NFTs eligible?",
-  braveWalletNftPinningTooltip:
-    'Some NFT data is stored on centralized servers like ' +
-    'AWS, Google Cloud, etc. In this case, ' +
-    'it’s not possible to pin your NFT data to the IPFS network.',
-  braveWalletNftPinningBenefitsHeading:
-    'By enabling IPFS in Brave, your NFTs will be pinned automatically. ' +
-    "It's the best way to securely back up your NFTs.",
-  braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
-  braveWalletNftPinningBackButton: 'Back',
-  braveWalletNftPinningCloseButton: 'Close',
-  braveWalletNftPinningHeading: 'The safest way to host NFTs',
-  braveWalletNftPinningRunNodeHeading:
-    'Enable IPFS in Brave to automatically back up your NFTs',
-  braveWalletNftPinningRunNodeDescription:
-    'IPFS is a community-driven storage network, like a hard drive that ' +
-    'everyone can use. But instead of being controlled by one authority, ' +
-    'thousands of individuals work together to host content on IPFS. ' +
-    'When you “pin” something to IPFS, you’re ensuring that at least one ' +
-    'copy of that content is safely stored. And as long as one person ' +
-    'has a copy, a file can never disappear.$1By enabling IPFS in Brave, ' +
-    'your NFTs will be pinned automatically. ' +
-    "It's the best way to securely back up your NFTs.",
-  braveWalletNftPinningCheckNftsButton: 'See which of my NFTs are eligible',
-  braveWalletNftPinningBannerStart:
-    'Enable IPFS in Brave ' +
-    'to automatically back up your NFTs for extra security.',
-  braveWalletNftPinningBannerUploading:
-    'NFTs are being pinned to your local IPFS node.',
-  braveWalletNftPinningBannerSuccess:
-    '$1 supported NFTs are pinned to your local IPFS node.',
-  braveWalletNftPinningBannerLearnMore: 'Learn more',
-  braveWalletNftPinningInspectHeading: '$1 NFT is eligible',
-  braveWalletNftPinningInspectHeadingPlural: '$1 NFTs are eligible',
-  braveWalletNftPinningUnableToPin: 'Unable to pin',
-  braveWalletNftPinningNodeRunningStatus: 'You’re running an IPFS node',
-  braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
-  braveWalletNftPinningStatusPinned: 'Pinned to your local IPFS node.',
-  braveWalletNftPinningStatusPinning:
-    'NFT data is being pinned to your local IPFS node.',
-  braveWalletNftPinningStatusPinningFailed:
-    'Cannot be pinned to your local IPFS node.',
-  braveWalletNftPinningErrorTooltipHeading: 'Most common reasons:',
-  braveWalletNftPinningErrorTooltipReasonOne:
-    'NFT has non-IPFS metadata url problems',
-  braveWalletNftPinningErrorTooltipReasonTwo: 'Internal IPFS node problems',
-  braveWalletNftPinningErrorTooltipReasonThree:
-    'Not enough space on local node',
   braveWalletEditNftModalTitle: 'Edit NFT',
   braveWalletNftMoveToSpam: 'Mark as junk',
   braveWalletNftUnspam: 'Mark as not junk',
+
+  // NFT Labels
   braveWalletNftJunk: 'Junk',
+  braveWalletWatchOnly: 'Watch-only',
 
   // Add NFT modal
   braveWalletAddNftModalTitle: 'Add NFT',

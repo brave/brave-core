@@ -9,7 +9,6 @@
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -21,7 +20,7 @@
 namespace brave {
 
 void ShowBraveRewards(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIRewardsURL));
+  ShowSingletonTabOverwritingNTP(browser, GURL(kRewardsPageURL));
 }
 
 void ShowBraveAdblock(Browser* browser) {
@@ -83,10 +82,6 @@ void ShowExtensionSettings(Browser* browser) {
 
 void ShowWalletSettings(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kWalletSettingsURL));
-}
-
-void ShowIPFS(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kIPFSWebUIURL));
 }
 
 }  // namespace brave

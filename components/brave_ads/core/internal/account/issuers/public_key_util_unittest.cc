@@ -15,8 +15,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kPublicKey[] = "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=";
-constexpr char kMissingPublicKey[] =
+constexpr char kPublicKeyBase64[] =
+    "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=";
+constexpr char kMissingPublicKeyBase64[] =
     "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g==";
 
 }  // namespace
@@ -26,24 +27,26 @@ class BraveAdsPublicKeyUtilTest : public UnitTestBase {};
 TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyExists) {
   // Arrange
   IssuerInfo issuer;
-  issuer.public_keys.insert({kPublicKey, /*associated_value=*/0.1});
+  issuer.public_keys.insert({kPublicKeyBase64, /*associated_value=*/0.1});
 
   // Act & Assert
-  EXPECT_TRUE(PublicKeyExists(issuer, cbr::PublicKey(kPublicKey)));
+  EXPECT_TRUE(PublicKeyExists(issuer, cbr::PublicKey(kPublicKeyBase64)));
 }
 
 TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyDoesNotExist) {
   // Arrange
   IssuerInfo issuer;
-  issuer.public_keys.insert({kPublicKey, /*associated_value=*/0.1});
+  issuer.public_keys.insert({kPublicKeyBase64, /*associated_value=*/0.1});
 
   // Act & Assert
-  EXPECT_FALSE(PublicKeyExists(issuer, cbr::PublicKey(kMissingPublicKey)));
+  EXPECT_FALSE(
+      PublicKeyExists(issuer, cbr::PublicKey(kMissingPublicKeyBase64)));
 }
 
 TEST_F(BraveAdsPublicKeyUtilTest, NoPublicKeys) {
   // Act & Assert
-  EXPECT_FALSE(PublicKeyExists(/*issuer*/ {}, cbr::PublicKey(kPublicKey)));
+  EXPECT_FALSE(
+      PublicKeyExists(/*issuer*/ {}, cbr::PublicKey(kPublicKeyBase64)));
 }
 
 }  // namespace brave_ads

@@ -73,7 +73,6 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_product_brave_leo.icon",
     "leo_product_brave_talk.icon",
     "leo_product_brave_wallet.icon",
-    "leo_product_ipfs_outline.icon",
     "leo_product_speedreader.icon",
     "leo_product_sync.icon",
     "leo_product_tor.icon",

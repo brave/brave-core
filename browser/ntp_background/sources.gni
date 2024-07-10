@@ -17,7 +17,6 @@ brave_browser_ntp_background_sources = [
 brave_browser_ntp_background_deps = [
   "//base",
   "//brave/browser:browser_process",
-  "//brave/browser/profiles:util",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_rewards/common",

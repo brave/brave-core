@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame.h"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
@@ -37,7 +36,7 @@ BraveBrowserFrame::~BraveBrowserFrame() = default;
 const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
   if ((view_->browser()->profile()->IsIncognitoProfile() ||
        view_->browser()->profile()->IsTor() ||
-       brave::IsGuestProfile(view_->browser()->profile())) &&
+       view_->browser()->profile()->IsGuestSession()) &&
       ThemeServiceFactory::GetForProfile(view_->browser()->profile())
           ->UsingDefaultTheme()) {
     return ui::NativeTheme::GetInstanceForDarkUI();

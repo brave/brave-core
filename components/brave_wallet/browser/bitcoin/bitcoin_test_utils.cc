@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -31,14 +32,14 @@ namespace {
 std::string ExtractApiRequestPath(const GURL& request_url) {
   std::string spec = request_url.spec();
 
-  auto mainnet_url_spec =
-      GetKnownChain(mojom::kBitcoinMainnet, mojom::CoinType::BTC)
-          ->rpc_endpoints[0]
-          .spec();
-  auto testnet_url_spec =
-      GetKnownChain(mojom::kBitcoinTestnet, mojom::CoinType::BTC)
-          ->rpc_endpoints[0]
-          .spec();
+  auto mainnet_url_spec = NetworkManager::GetKnownChain(mojom::kBitcoinMainnet,
+                                                        mojom::CoinType::BTC)
+                              ->rpc_endpoints[0]
+                              .spec();
+  auto testnet_url_spec = NetworkManager::GetKnownChain(mojom::kBitcoinTestnet,
+                                                        mojom::CoinType::BTC)
+                              ->rpc_endpoints[0]
+                              .spec();
 
   if (base::StartsWith(spec, mainnet_url_spec)) {
     return spec.substr(mainnet_url_spec.size());

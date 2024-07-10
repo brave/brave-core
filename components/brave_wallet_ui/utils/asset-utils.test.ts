@@ -3,13 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// types
+import {
+  TokenBalancesRegistry //
+} from '../common/slices/entities/token-balance.entity'
+
+// utils
 import {
   checkIfTokensMatch,
   checkIfTokenNeedsNetworkIcon,
   searchNftCollectionsAndGetTotalNftsFound,
   getTokenCollectionName,
-  getAssetIdKey
+  getAssetIdKey,
+  isTokenWatchOnly
 } from './asset-utils'
+import { getAccountBalancesKey } from './balance-utils'
+
+// mocks
 import { mockEthMainnet } from '../stories/mock-data/mock-networks'
 import {
   mockEthToken,
@@ -17,6 +27,7 @@ import {
   mockMoonCatNFT,
   mockErc721Token
 } from '../stories/mock-data/mock-asset-options'
+import { mockAccounts } from '../stories/mock-data/mock-wallet-accounts'
 
 const ethToken = mockEthToken
 const batToken = mockBasicAttentionToken
@@ -34,6 +45,34 @@ const mockCollectionAssetIdsRegistry = {
     getAssetIdKey({ ...nftTokenTwo, tokenId: '' })
   ],
   'Invisible Friends': [getAssetIdKey({ ...mockErc721Token, tokenId: '' })]
+}
+
+const mockUserTokenBalancesRegistry: TokenBalancesRegistry = {
+  accounts: {
+    [getAccountBalancesKey(mockAccounts[0].accountId)]: {
+      chains: {
+        [mockMoonCatNFT.chainId]: {
+          tokenBalances: {
+            [mockMoonCatNFT.contractAddress.toLowerCase()]: '1'
+          }
+        }
+      }
+    }
+  }
+}
+
+const mockEmptyUserTokenBalancesRegistry: TokenBalancesRegistry = {
+  accounts: {
+    [getAccountBalancesKey(mockAccounts[0].accountId)]: {
+      chains: {
+        [mockMoonCatNFT.chainId]: {
+          tokenBalances: {
+            [mockMoonCatNFT.contractAddress.toLowerCase()]: '0'
+          }
+        }
+      }
+    }
+  }
 }
 
 describe('Check if tokens match', () => {
@@ -124,5 +163,26 @@ describe('getTokenCollectionName', () => {
     )
     expect(moonCatCollectionName).toBe('MoonCatsRescue')
     expect(invisibleFriendCollectionName).toBe('Invisible Friends')
+  })
+})
+
+describe('isTokenWatchOnly', () => {
+  it('should check if the token has a balance', () => {
+    expect(
+      isTokenWatchOnly(
+        mockMoonCatNFT,
+        mockAccounts,
+        mockUserTokenBalancesRegistry,
+        mockUserTokenBalancesRegistry
+      )
+    ).toBe(false)
+    expect(
+      isTokenWatchOnly(
+        mockMoonCatNFT,
+        mockAccounts,
+        mockEmptyUserTokenBalancesRegistry,
+        mockEmptyUserTokenBalancesRegistry
+      )
+    ).toBe(true)
   })
 })

@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
+#include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
 #include "crypto/sha2.h"
 #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
@@ -951,7 +952,12 @@ void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
         cur_item, base::make_span(record_name_registry_state->data),
         domain_owner);
     if (registry_string) {
-      GURL url(*registry_string);
+      GURL ipfs_resolved_url;
+      GURL url = (cur_item.record == kSnsIpfsRecord &&
+                  ipfs::TranslateIPFSURI(GURL(*registry_string),
+                                         &ipfs_resolved_url, false))
+                     ? ipfs_resolved_url
+                     : GURL(*registry_string);
       if (url.is_valid()) {
         SetUrlResult(std::move(url));
         return;

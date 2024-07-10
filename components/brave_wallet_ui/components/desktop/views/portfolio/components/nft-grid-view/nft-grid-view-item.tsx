@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -15,7 +14,6 @@ import {
 
 // hooks
 import {
-  useGetIpfsGatewayTranslatedNftUrlQuery,
   useRemoveUserTokenMutation,
   useUpdateNftSpamStatusMutation,
   useUpdateUserAssetVisibleMutation
@@ -48,7 +46,8 @@ import {
   NFTSymbol,
   MoreButton,
   JunkMarker,
-  JunkIcon
+  JunkIcon,
+  WatchOnlyMarker
 } from './style'
 import { Row } from '../../../../../shared/style'
 
@@ -57,10 +56,16 @@ interface Props {
   isTokenHidden: boolean
   isTokenSpam: boolean
   onSelectAsset: (token: BraveWallet.BlockchainToken) => void
+  isWatchOnly?: boolean
 }
 
-export const NFTGridViewItem = (props: Props) => {
-  const { token, isTokenHidden, isTokenSpam, onSelectAsset } = props
+export const NFTGridViewItem = ({
+  token,
+  isTokenHidden,
+  isTokenSpam,
+  onSelectAsset,
+  isWatchOnly
+}: Props) => {
   const tokenImageURL = stripERC20TokenImageURL(token.logo)
   const [showRemoveNftModal, setShowRemoveNftModal] =
     React.useState<boolean>(false)
@@ -74,11 +79,6 @@ export const NFTGridViewItem = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
-
-  // queries
-  const { data: remoteImage } = useGetIpfsGatewayTranslatedNftUrlQuery(
-    tokenImageURL || skipToken
-  )
 
   // hooks
   const dispatch = useDispatch()
@@ -172,9 +172,16 @@ export const NFTGridViewItem = (props: Props) => {
             <JunkIcon />
           </JunkMarker>
         )}
+        {isWatchOnly && (
+          <WatchOnlyMarker>
+            {
+              getLocale('braveWalletWatchOnly') //
+            }
+          </WatchOnlyMarker>
+        )}
         <IconWrapper>
           <DecoratedNftIcon
-            icon={remoteImage}
+            icon={tokenImageURL}
             responsive={true}
             chainId={token?.chainId}
             coinType={token?.coin}
