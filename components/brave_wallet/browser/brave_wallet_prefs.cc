@@ -53,6 +53,9 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 // Deprecated 12/2023.
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
+// Deprecated 06/2024.
+constexpr char kBraveWalletTransactionsChainIdMigrated[] =
+    "brave.wallet.transactions.chain_id_migrated";
 
 // Deprecated 07/2024
 constexpr char kPinnedNFTAssetsMigrated[] = "brave.wallet.user_pin_data";
@@ -134,6 +137,8 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   // Deprecated 12/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
                                 false);
+  // Deprecated 06/2024.
+  registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
 }
 
 void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -158,6 +163,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssetsAddIsSpamMigrated);
   // Deprecated 12/2023
   prefs->ClearPref(kBraveWalletUserAssetsAddIsERC1155Migrated);
+  // Deprecated 06/2024.
+  prefs->ClearPref(kBraveWalletTransactionsChainIdMigrated);
 }
 
 void ClearDeprecatedIpfsPrefs(PrefService* prefs) {
@@ -256,15 +263,8 @@ void RegisterProfilePrefsForMigration(
                              base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorageDeprecated);
 
-  // Added 02/2023
-  registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
-
   // Added 03/2023
   registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
-
-  // Added 04/2023
-  registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
-                                false);
 
   // Added 06/2023
   registry->RegisterIntegerPref(
@@ -339,9 +339,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 08/2023 to add Fantom as a custom network if selected for the default
   // or custom origins.
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(prefs);
-
-  // Added 02/2023
-  TxStateManager::MigrateAddChainIdToTransactionInfo(prefs);
 
   // Added 07/2023
   MigrateDerivedAccountIndex(prefs);

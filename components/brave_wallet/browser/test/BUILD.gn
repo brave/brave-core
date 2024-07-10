@@ -63,6 +63,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/keyring_service_migrations_unittest.cc",
     "//brave/components/brave_wallet/browser/meld_integration_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/meld_integration_service_unittest.cc",
+    "//brave/components/brave_wallet/browser/network_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/nft_metadata_fetcher_unittest.cc",
     "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
     "//brave/components/brave_wallet/browser/permission_utils_unittest.cc",

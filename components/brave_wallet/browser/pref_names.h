@@ -89,13 +89,6 @@ inline constexpr char kBraveWalletLegacyEthSeedFormat[] =
 inline constexpr char kBraveWalletMnemonicBackedUp[] =
     "brave.wallet.mnemonic_backed_up";
 
-// Added 02/2023 to migrate transactions to contain the
-// chain_id for each one.
-inline constexpr char kBraveWalletTransactionsChainIdMigrated[] =
-    "brave.wallet.transactions.chain_id_migrated";
-// Added 04/2023 to migrate solana transactions for v0 transaction support.
-inline constexpr char kBraveWalletSolanaTransactionsV0SupportMigrated[] =
-    "brave.wallet.solana_transactions.v0_support_migrated";
 // Added 07/2023 to migrate transactions from prefs to DB.
 inline constexpr char kBraveWalletTransactionsFromPrefsToDBMigrated[] =
     "brave.wallet.transactions.from_prefs_to_db_migrated";

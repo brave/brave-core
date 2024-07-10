@@ -72,7 +72,8 @@ class BraveWalletP3AUnitTest : public testing::Test {
         ->SetUrlLoaderFactoryForTesting(
             bitcoin_test_rpc_server_->GetURLLoaderFactory());
     brave_wallet_service_->GetZcashWalletService()->SetZCashRpcForTesting(
-        std::make_unique<ZCashRpc>(&prefs_, shared_url_loader_factory_));
+        std::make_unique<ZCashRpc>(brave_wallet_service_->network_manager(),
+                                   shared_url_loader_factory_));
     tx_service_ = brave_wallet_service_->tx_service();
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     wallet_p3a_ = brave_wallet_service_->GetBraveWalletP3A();

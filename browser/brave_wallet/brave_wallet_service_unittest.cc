@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -328,6 +329,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
         local_state_->Get());
+    network_manager_ = service_->network_manager();
     json_rpc_service_ = service_->json_rpc_service();
     keyring_service_ = service_->keyring_service();
     bitcoin_wallet_service_ = service_->GetBitcoinWalletService();
@@ -442,7 +444,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
   PrefService* GetPrefs() { return profile_->GetPrefs(); }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
-    return brave_wallet::GetNetworkURL(GetPrefs(), chain_id, coin);
+    return network_manager_->GetNetworkURL(chain_id, coin);
   }
 
   TestingPrefServiceSimple* GetLocalState() { return local_state_->Get(); }
@@ -843,6 +845,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
   std::unique_ptr<BraveWalletService> service_;
+  raw_ptr<NetworkManager> network_manager_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<TxService> tx_service_;
@@ -996,7 +999,8 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   mojom::BlockchainTokenPtr eth_token = GetEthToken();
   mojom::BlockchainTokenPtr bat_token = GetBatToken();
 
-  for (const auto& chain : GetAllKnownChains(mojom::CoinType::ETH)) {
+  for (const auto& chain :
+       network_manager_->GetAllKnownChains(mojom::CoinType::ETH)) {
     auto native_asset = mojom::BlockchainToken::New(
         "", chain->symbol_name, "", false, false, false, false,
         mojom::SPLTokenProgram::kUnsupported, false, false, chain->symbol,
@@ -1015,7 +1019,8 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   }
 
   mojom::BlockchainTokenPtr sol_token = sol_token_->Clone();
-  for (const auto& chain : GetAllKnownChains(mojom::CoinType::SOL)) {
+  for (const auto& chain :
+       network_manager_->GetAllKnownChains(mojom::CoinType::SOL)) {
     SCOPED_TRACE(testing::PrintToString(chain->chain_id));
     std::vector<mojom::BlockchainTokenPtr> tokens;
     sol_token->chain_id = chain->chain_id;
@@ -1025,7 +1030,8 @@ TEST_F(BraveWalletServiceUnitTest, DefaultAssets) {
   }
 
   mojom::BlockchainTokenPtr fil_token = fil_token_->Clone();
-  for (const auto& chain : GetAllKnownChains(mojom::CoinType::FIL)) {
+  for (const auto& chain :
+       network_manager_->GetAllKnownChains(mojom::CoinType::FIL)) {
     SCOPED_TRACE(testing::PrintToString(chain->chain_id));
     std::vector<mojom::BlockchainTokenPtr> tokens;
     fil_token->chain_id = chain->chain_id;
@@ -1507,7 +1513,7 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
 TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
 
-  AddCustomNetwork(GetPrefs(), chain);
+  network_manager_->AddCustomNetwork(chain);
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(observer_->OnNetworkListChangedFired());
 
@@ -1530,8 +1536,11 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
 
 TEST_F(BraveWalletServiceUnitTest,
        CustomChainNativeAssetAddRemoveSetUserAssetVisible) {
+  json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
+
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
-  AddCustomNetwork(GetPrefs(), chain);
+
+  json_rpc_service_->AddChain(chain.Clone(), base::DoNothing());
 
   auto native_asset = mojom::BlockchainToken::New(
       "", "symbol_name", "https://url1.com", false, false, false, false,
@@ -1566,6 +1575,137 @@ TEST_F(BraveWalletServiceUnitTest,
   GetUserAssets("0x5566", mojom::CoinType::ETH, &tokens);
   EXPECT_EQ(tokens.size(), 1u);
   EXPECT_EQ(native_asset.Clone(), tokens[0]);
+}
+
+TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
+  json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
+
+  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+  mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
+  chain2.icon_urls.clear();
+
+  json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
+  json_rpc_service_->AddChain(chain2.Clone(), base::DoNothing());
+
+  // kBraveWalletCustomNetworks should be updated with new chains.
+  ASSERT_EQ(2u,
+            network_manager_->GetAllCustomChains(mojom::CoinType::ETH).size());
+  EXPECT_EQ(chain1,
+            *network_manager_->GetAllCustomChains(mojom::CoinType::ETH)[0]);
+  EXPECT_EQ(chain2,
+            *network_manager_->GetAllCustomChains(mojom::CoinType::ETH)[1]);
+
+  // Asset list of new custom chains should have native asset in
+  // kBraveWalletUserAssets.
+  const auto& asset_list = GetPrefs()->GetList(kBraveWalletUserAssetsList);
+  ASSERT_EQ(asset_list.size(), 2u);
+
+  EXPECT_EQ(*asset_list[0].GetDict().FindInt("coin"),
+            static_cast<int>(mojom::CoinType::ETH));
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("chain_id"), "chain_id");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("name"), "symbol_name");
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("symbol"), "symbol");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("is_erc1155"), false);
+  EXPECT_EQ(*asset_list[0].GetDict().FindInt("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].GetDict().FindString("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].GetDict().FindBool("visible"), true);
+
+  EXPECT_EQ(*asset_list[1].GetDict().FindInt("coin"),
+            static_cast<int>(mojom::CoinType::ETH));
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("chain_id"), "chain_id2");
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("address"), "");
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("name"), "symbol_name2");
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("symbol"), "symbol2");
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("is_erc20"), false);
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("is_erc1155"), false);
+  EXPECT_EQ(*asset_list[1].GetDict().FindInt("decimals"), 22);
+  EXPECT_EQ(*asset_list[1].GetDict().FindString("logo"), "");
+  EXPECT_EQ(*asset_list[1].GetDict().FindBool("visible"), true);
+
+  {
+    mojom::NetworkInfo chain_fil =
+        GetTestNetworkInfo1(mojom::kFilecoinMainnet, mojom::CoinType::FIL);
+    json_rpc_service_->AddChain(chain_fil.Clone(), base::DoNothing());
+    ASSERT_EQ(
+        1u, network_manager_->GetAllCustomChains(mojom::CoinType::FIL).size());
+    EXPECT_EQ(chain_fil,
+              *network_manager_->GetAllCustomChains(mojom::CoinType::FIL)[0]);
+  }
+
+  {
+    mojom::NetworkInfo chain_sol =
+        GetTestNetworkInfo1(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+    json_rpc_service_->AddChain(chain_sol.Clone(), base::DoNothing());
+    ASSERT_EQ(
+        1u, network_manager_->GetAllCustomChains(mojom::CoinType::SOL).size());
+    EXPECT_EQ(chain_sol,
+              *network_manager_->GetAllCustomChains(mojom::CoinType::SOL)[0]);
+  }
+
+  {
+    mojom::NetworkInfo chain_btc =
+        GetTestNetworkInfo1(mojom::kBitcoinMainnet, mojom::CoinType::BTC);
+    json_rpc_service_->AddChain(chain_btc.Clone(), base::DoNothing());
+    ASSERT_EQ(
+        1u, network_manager_->GetAllCustomChains(mojom::CoinType::BTC).size());
+    EXPECT_EQ(chain_btc,
+              *network_manager_->GetAllCustomChains(mojom::CoinType::BTC)[0]);
+  }
+
+  {
+    mojom::NetworkInfo chain_zec =
+        GetTestNetworkInfo1(mojom::kZCashMainnet, mojom::CoinType::ZEC);
+    json_rpc_service_->AddChain(chain_zec.Clone(), base::DoNothing());
+    ASSERT_EQ(
+        1u, network_manager_->GetAllCustomChains(mojom::CoinType::ZEC).size());
+    EXPECT_EQ(chain_zec,
+              *network_manager_->GetAllCustomChains(mojom::CoinType::ZEC)[0]);
+  }
+
+  EXPECT_TRUE(AllCoinsTested());
+}
+
+TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
+  json_rpc_service_->SetSkipEthChainIdValidationForTesting(true);
+
+  mojom::NetworkInfo chain1 = GetTestNetworkInfo1();
+
+  auto assets = GetAllUserAssets(GetPrefs());
+  EXPECT_EQ(24u, assets.size());
+
+  json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
+
+  assets = GetAllUserAssets(GetPrefs());
+  EXPECT_EQ(25u, assets.size());
+
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_TRUE(assets.back()->visible);
+
+  SetUserAssetVisible(assets.back().Clone(), false);
+  assets = GetAllUserAssets(GetPrefs());
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_FALSE(assets.back()->visible);
+
+  json_rpc_service_->RemoveChain(chain1.chain_id, chain1.coin,
+                                 base::DoNothing());
+  // TODO(apaymyshev): Maybe we should remove such assets.
+  assets = GetAllUserAssets(GetPrefs());
+  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_FALSE(assets.back()->visible);
+
+  // Network added again. No duplicate assets.
+  json_rpc_service_->AddChain(chain1.Clone(), base::DoNothing());
+  assets = GetAllUserAssets(GetPrefs());
+  EXPECT_EQ(25u, assets.size());
+  EXPECT_EQ(assets.back()->name, chain1.symbol_name);
+  EXPECT_TRUE(assets.back()->visible);
 }
 
 TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
@@ -1777,13 +1917,13 @@ TEST_F(BraveWalletServiceUnitTest, MigrateEip1559ForCustomNetworks) {
               "0xe708": true
             })"));
 
-  EXPECT_FALSE(*IsEip1559Chain(GetPrefs(), "0x4e454152"));
-  EXPECT_TRUE(*IsEip1559Chain(GetPrefs(), "0x1"));
-  EXPECT_TRUE(*IsEip1559Chain(GetPrefs(), "0xe708"));
-  EXPECT_FALSE(*IsEip1559Chain(GetPrefs(), mojom::kLocalhostChainId));
+  EXPECT_FALSE(*network_manager_->IsEip1559Chain("0x4e454152"));
+  EXPECT_TRUE(*network_manager_->IsEip1559Chain("0x1"));
+  EXPECT_TRUE(*network_manager_->IsEip1559Chain("0xe708"));
+  EXPECT_FALSE(*network_manager_->IsEip1559Chain(mojom::kLocalhostChainId));
 
   // solana does not get into this list.
-  EXPECT_FALSE(IsEip1559Chain(GetPrefs(), "0x66").has_value());
+  EXPECT_FALSE(network_manager_->IsEip1559Chain("0x66").has_value());
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated));
@@ -1806,7 +1946,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateDefaultHiddenNetworks) {
   }
   ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
             1);
-  RemoveHiddenNetwork(GetPrefs(), mojom::CoinType::ETH, "0x4cb2f");
+  network_manager_->RemoveHiddenNetwork(mojom::CoinType::ETH, "0x4cb2f");
   BraveWalletService::MigrateHiddenNetworks(GetPrefs());
   {
     auto* list =
@@ -1859,12 +1999,14 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
 
-  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // OK: Fantom should be added to custom networks
-  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  EXPECT_TRUE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletCustomNetworksFantomMainnetMigrated));
@@ -1880,12 +2022,14 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
 
-  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // OK: Fantom should be added to custom networks
-  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  EXPECT_TRUE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   // OK: default ETH network should be retained as Fantom
   EXPECT_EQ(
@@ -1913,12 +2057,14 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
   })");
   GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
 
-  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
   // KO: Fantom should NOT be added to custom networks
-  EXPECT_FALSE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   // KO: Default ETH network does not change
   EXPECT_EQ(
@@ -1936,8 +2082,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
 
   // Add Fantom to custom networks
   mojom::NetworkInfo fantom = GetTestNetworkInfo1("0xfa");
-  AddCustomNetwork(GetPrefs(), fantom);
-  EXPECT_TRUE(CustomChainExists(GetPrefs(), "0xfa", mojom::CoinType::ETH));
+  network_manager_->AddCustomNetwork(fantom);
+  EXPECT_TRUE(
+      network_manager_->CustomChainExists("0xfa", mojom::CoinType::ETH));
 
   BraveWalletService::MigrateFantomMainnetAsCustomNetwork(GetPrefs());
 
@@ -1956,7 +2103,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateFantomMainnetAsCustomNetwork) {
 TEST_F(BraveWalletServiceUnitTest, MigrateAssetsPrefToList) {
   ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
 
-  AddCustomNetwork(GetPrefs(), GetTestNetworkInfo1("0x123"));
+  network_manager_->AddCustomNetwork(GetTestNetworkInfo1("0x123"));
 
   auto strip_coin_and_chain = [&](base::Value::Dict dict) -> base::Value::Dict {
     dict.Remove("chain_id");
