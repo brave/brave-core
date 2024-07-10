@@ -1851,3 +1851,47 @@ export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
       'https://images-currency.meld.io/crypto/1INCH_BSC/symbol.png'
   }
 ]
+
+export const mockMeldCryptoQuotes = [
+  {
+    'transactionType': 'CRYPTO_PURCHASE',
+    'exchangeRate': '3355.431',
+    'transactionFee': '4.99',
+    'sourceCurrencyCode': 'USD',
+    'sourceAmount': '100',
+    'sourceAmountWithoutFee': '93.23',
+    'fiatAmountWithoutFees': '93.23',
+    'totalFee': '6.77',
+    'networkFee': '0.78',
+    'paymentMethod': 'CREDIT_DEBIT_CARD',
+    'destinationCurrencyCode': 'ETH',
+    'destinationAmount': '0.02980243',
+    'destinationAmountWithoutFees': undefined,
+    'customerScore': '20.0',
+    'serviceProvider': 'TRANSAK',
+    'countryCode': 'US'
+  }
+]
+
+export const mockServiceProviders = [
+  {
+    'name': 'Transak',
+    'serviceProvider': 'TRANSAK',
+    'status': 'LIVE',
+    'webSiteUrl': 'https://transak.com',
+    'categories': ['CRYPTO_OFFRAMP', 'CRYPTO_ONRAMP'],
+    'categoryStatuses': {
+      'CRYPTO_OFFRAMP': 'LIVE',
+      'CRYPTO_ONRAMP': 'LIVE'
+    },
+    'logoImages': {
+      'darkUrl': 'https://images-serviceprovider.meld.io/TRANSAK/logo_dark.png',
+      'darkShortUrl':
+        'https://images-serviceprovider.meld.io/TRANSAK/short_logo_dark.png',
+      'lightUrl':
+        'https://images-serviceprovider.meld.io/TRANSAK/logo_light.png',
+      'lightShortUrl':
+        'https://images-serviceprovider.meld.io/TRANSAK/short_logo_light.png'
+    }
+  }
+]

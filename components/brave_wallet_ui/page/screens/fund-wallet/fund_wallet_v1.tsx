@@ -52,12 +52,14 @@ export const FundWalletScreen = () => {
     onSelectToken,
     onSelectAccount,
     onSelectCurrency,
-    onSetAmount
+    onSetAmount,
+    serviceProviders
   } = useBuy()
 
   console.log('Buy Errors', buyErrors)
   console.log('Is fetching quotes:', isFetchingQuotes)
   console.log('Quotes:', quotes)
+  console.log(serviceProviders)
 
   // computed
   const pageTitle = selectedAsset
