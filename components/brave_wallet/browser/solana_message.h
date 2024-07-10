@@ -94,6 +94,10 @@ class SolanaMessage {
   // https://docs.rs/solana-sdk/1.18.9/src/solana_sdk/transaction/versioned/mod.rs.html#192
   bool UsesDurableNonce() const;
 
+  // Returns true if the message contains a compressed NFT transfer
+  // instruction.
+  bool ContainsCompressedNftTransfer() const;
+
   // Returns whether the priority fee was added.
   bool AddPriorityFee(uint32_t compute_units, uint64_t fee_per_compute_unit);
 

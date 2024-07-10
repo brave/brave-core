@@ -14,6 +14,7 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/sys_byteorder.h"
+#include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -936,6 +937,23 @@ GetComputeBudgetInstructionType(const std::vector<uint8_t>& data,
   }
 
   return mojo_ins_type;
+}
+
+bool IsCompressedNftTransferInstruction(const std::vector<uint8_t>& data,
+                                        const std::string& program_id) {
+  if (program_id != mojom::kSolanaBubbleGumProgramId) {
+    return false;
+  }
+
+  if (data.size() <
+      solana::bubblegum_program::kTransferInstructionDiscriminator.size()) {
+    return false;
+  }
+
+  return std::equal(
+      solana::bubblegum_program::kTransferInstructionDiscriminator.begin(),
+      solana::bubblegum_program::kTransferInstructionDiscriminator.end(),
+      data.begin());
 }
 
 }  // namespace brave_wallet::solana_ins_data_decoder

@@ -234,8 +234,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
   // Skip preflight checks for compressed NFT transfers to avoid a potential
   // Solana RPC bug that incorrectly shows compute budget exceeded, causing
   // simulation failures.
-  if (meta->tx()->tx_type() ==
-      mojom::TransactionType::SolanaCompressedNftTransfer) {
+  if (meta->tx()->message()->ContainsCompressedNftTransfer()) {
     auto options = meta->tx()->send_options();
     if (options) {
       if (options->skip_preflight == std::nullopt) {
