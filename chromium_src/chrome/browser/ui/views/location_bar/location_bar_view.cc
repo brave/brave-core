@@ -24,13 +24,16 @@
     text_left = 5;                                                 \
   }
 
-#define BRAVE_LAYOUT_TRAILING_DECORATIONS                                    \
-  auto right_most = GetTrailingViews();                                      \
-  for (auto* item : base::Reversed(right_most)) {                            \
-    if (item->GetVisible())                                                  \
-      trailing_decorations.AddDecoration(vertical_padding, location_height,  \
-                                         false, 0, /*intra_item_padding=*/0, \
-                                         0, item);                           \
+#define BRAVE_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS             \
+  auto right_most_trailing_views = GetRightMostTrailingViews();  \
+  for (auto* item : base::Reversed(right_most_trailing_views)) { \
+    add_trailing_decoration(item, /*intra_item_padding=*/0);     \
+  }
+
+#define BRAVE_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS             \
+  auto left_most_trailing_views = GetLeftMostTrailingViews();   \
+  for (auto* item : base::Reversed(left_most_trailing_views)) { \
+    add_trailing_decoration(item, /*intra_item_padding=*/0);    \
   }
 
 #define OmniboxViewViews BraveOmniboxViewViews
@@ -47,9 +50,14 @@
 #undef PageActionIconContainerView
 #undef ChromeOmniboxClient
 #undef OmniboxViewViews
-#undef BRAVE_LAYOUT_TRAILING_DECORATIONS
+#undef BRAVE_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
+#undef BRAVE_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
 #undef BRAVE_LAYOUT_LEADING_DECORATIONS
 
-std::vector<views::View*> LocationBarView::GetTrailingViews() {
+std::vector<views::View*> LocationBarView::GetRightMostTrailingViews() {
+  return std::vector<views::View*>();
+}
+
+std::vector<views::View*> LocationBarView::GetLeftMostTrailingViews() {
   return std::vector<views::View*>();
 }

@@ -271,16 +271,12 @@ void BraveLocationBarView::OnChanged() {
   LocationBarView::OnChanged();
 }
 
-std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
+std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {
   std::vector<views::View*> views;
   if (brave_news_location_view_) {
     views.push_back(brave_news_location_view_);
   }
-#if BUILDFLAG(ENABLE_TOR)
-  if (onion_location_view_) {
-    views.push_back(onion_location_view_);
-  }
-#endif
+
 #if BUILDFLAG(ENABLE_IPFS)
   if (ipfs_location_view_) {
     views.push_back(ipfs_location_view_);
@@ -291,6 +287,16 @@ std::vector<views::View*> BraveLocationBarView::GetTrailingViews() {
     views.push_back(brave_actions_);
   }
 
+  return views;
+}
+
+std::vector<views::View*> BraveLocationBarView::GetLeftMostTrailingViews() {
+  std::vector<views::View*> views;
+#if BUILDFLAG(ENABLE_TOR)
+  if (onion_location_view_) {
+    views.push_back(onion_location_view_);
+  }
+#endif
   return views;
 }
 
@@ -358,7 +364,8 @@ void BraveLocationBarView::ChildVisibilityChanged(views::View* child) {
   // the size changes when an icon is shown or hidden. The LocationBarView
   // does not listen to ChildVisibilityChanged events so we must make we Layout
   // and re-caculate trailing decorator positions when a child changes.
-  if (base::Contains(GetTrailingViews(), child)) {
+  if (base::Contains(GetLeftMostTrailingViews(), child) ||
+      base::Contains(GetRightMostTrailingViews(), child)) {
     DeprecatedLayoutImmediately();
     SchedulePaint();
   }
