@@ -21,7 +21,8 @@ export {
   MeldFilter,
   MeldCryptoCurrency,
   MeldCountry,
-  MeldCryptoQuote
+  MeldCryptoQuote,
+  MeldServiceProvider
 } from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export type NftDropdownOptionId = 'collected' | 'hidden'
 

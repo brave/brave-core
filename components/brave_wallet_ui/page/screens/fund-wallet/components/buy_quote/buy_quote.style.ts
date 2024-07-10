@@ -23,6 +23,7 @@ export const StyledWrapper = styled.div<{ isOpen?: boolean }>`
 export const ProviderName = styled.p`
   color: ${color.text.primary};
   font: ${font.default.semibold};
+  text-transform: capitalize;
   margin: 0;
   padding: 0;
 `

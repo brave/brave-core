@@ -8,7 +8,8 @@ import {
   MeldCryptoCurrency,
   MeldFiatCurrency,
   MeldFilter,
-  MeldCryptoQuote
+  MeldCryptoQuote,
+  MeldServiceProvider
 } from '../../../constants/types'
 import { handleEndpointError } from '../../../utils/api-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
@@ -166,7 +167,47 @@ export const meldIntegrationEndpoints = ({
             error
           )
         }
-      }
+      },
+      providesTags: ['MeldCountries']
+    }),
+    getMeldServiceProviders: query<MeldServiceProvider[], void>({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { meldIntegrationService } = baseQuery(undefined).data
+
+          // get all countries
+          const filter: MeldFilter = {
+            countries: undefined,
+            fiatCurrencies: undefined,
+            cryptoCurrencies: undefined,
+            serviceProviders: undefined,
+            paymentMethodTypes: undefined,
+            statuses: undefined,
+            cryptoChains: undefined
+          }
+          const { serviceProviders, error } =
+            await meldIntegrationService.getServiceProviders(filter)
+
+          if (error) {
+            return handleEndpointError(
+              endpoint,
+              'Error getting countries: ',
+              error
+            )
+          }
+
+          return {
+            data: serviceProviders || []
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error getting service providers: ',
+            error
+          )
+        }
+      },
+      providesTags: ['MeldServiceProviders']
     }),
     generateMeldCryptoQuotes: mutation<
       {
@@ -178,8 +219,6 @@ export const meldIntegrationEndpoints = ({
       queryFn: async (params, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
-
-          console.log('params', params)
 
           const {
             country,
@@ -207,7 +246,8 @@ export const meldIntegrationEndpoints = ({
             error
           )
         }
-      }
+      },
+      invalidatesTags: ['MeldCryptoQuotes']
     })
   }
 }
