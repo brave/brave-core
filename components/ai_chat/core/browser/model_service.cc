@@ -234,7 +234,7 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
     static const std::string kDefaultModelBasicFrom = "chat-default";
     static const std::string kDefaultModelBasicTo = "chat-basic";
     auto* default_model_value =
-            profile_prefs->GetUserPrefValue(kDefaultModelKey);
+        profile_prefs->GetUserPrefValue(kDefaultModelKey);
     if (default_model_value) {
       if (base::EqualsCaseInsensitiveASCII(default_model_value->GetString(),
                                            kDefaultModelBasicFrom)) {
