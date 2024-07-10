@@ -136,7 +136,7 @@ bool PlaylistUI::ShouldBlockPlaylistWebUI(
     return false;
   }
 
-  return !PlaylistServiceFactory::IsPlaylistEnabled(browser_context) ||
+  return !PlaylistServiceFactory::GetForBrowserContext(browser_context) ||
          !user_prefs::UserPrefs::Get(browser_context)
               ->GetBoolean(playlist::kPlaylistEnabledPref);
 }
