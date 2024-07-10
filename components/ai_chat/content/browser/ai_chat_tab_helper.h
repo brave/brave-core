@@ -14,6 +14,7 @@
 #include "base/observer_list.h"
 #include "brave/components/ai_chat/core/browser/conversation_driver.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"
@@ -36,6 +37,7 @@ class ScopedAccessibilityMode;
 class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatMetrics;
+class LeoLocalModelsUpdater;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
@@ -91,6 +93,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   AIChatTabHelper(
       content::WebContents* web_contents,
       AIChatMetrics* ai_chat_metrics,
+      LeoLocalModelsUpdater* leo_local_models_updater,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
       PrefService* local_state_prefs,

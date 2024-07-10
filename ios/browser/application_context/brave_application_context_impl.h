@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
@@ -45,6 +46,7 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
   debounce::DebounceComponentInstaller* debounce_component_installer();
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service();
+  ai_chat::LeoLocalModelsUpdater* leo_local_models_updater();
 
   // Start any services that we may need later
   void StartBraveServices();
@@ -58,6 +60,7 @@ class BraveApplicationContextImpl : public ApplicationContextImpl {
       brave_component_updater_delegate_;
   std::unique_ptr<brave_component_updater::LocalDataFilesService>
       local_data_files_service_;
+  std::unique_ptr<ai_chat::LeoLocalModelsUpdater> leo_local_models_updater_;
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
   std::unique_ptr<debounce::DebounceComponentInstaller>

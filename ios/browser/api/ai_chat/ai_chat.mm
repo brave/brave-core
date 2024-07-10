@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/ios/browser/api/ai_chat/conversation_driver_ios.h"
 #include "brave/ios/browser/api/ai_chat/model_service_factory.h"
+#include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -59,9 +60,13 @@
     ai_chat_metrics_ =
         std::make_unique<ai_chat::AIChatMetrics>(local_state_prefs);
 
+    BraveApplicationContextImpl* braveContext =
+        static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
+
     driver_ = std::make_unique<ai_chat::ConversationDriverIOS>(
         user_prefs::UserPrefs::Get(browser_state_), local_state_prefs,
-        model_service, ai_chat_metrics_.get(), skus_service_getter,
+        model_service, ai_chat_metrics_.get(),
+        braveContext->leo_local_models_updater(), skus_service_getter,
         browser_state_->GetSharedURLLoaderFactory(),
         version_info::GetChannelString(::GetChannel()), delegate);
   }

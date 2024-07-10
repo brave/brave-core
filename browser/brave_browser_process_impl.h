@@ -10,6 +10,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -20,6 +21,12 @@
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+namespace ai_chat {
+class LeoLocalModelsUpdater;
+}
+#endif
 
 namespace brave {
 class BraveReferralsService;
@@ -145,6 +152,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat::LeoLocalModelsUpdater* leo_local_models_updater() override;
+#endif
 
  private:
   // BrowserProcessImpl overrides:
@@ -216,6 +226,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   std::unique_ptr<brave_vpn::BraveVPNConnectionManager>
       brave_vpn_connection_manager_;
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  std::unique_ptr<ai_chat::LeoLocalModelsUpdater> leo_local_models_updater_;
 #endif
 
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;

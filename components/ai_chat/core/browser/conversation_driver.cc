@@ -116,6 +116,7 @@ ConversationDriver::ConversationDriver(
     PrefService* local_state_prefs,
     ModelService* model_service,
     AIChatMetrics* ai_chat_metrics,
+    LeoLocalModelsUpdater* leo_local_models_updater,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
         skus_service_getter,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -124,6 +125,7 @@ ConversationDriver::ConversationDriver(
                          local_state_prefs,
                          model_service,
                          ai_chat_metrics,
+                         leo_local_models_updater,
                          std::make_unique<AIChatCredentialManager>(
                              std::move(skus_service_getter),
                              local_state_prefs),
@@ -135,11 +137,13 @@ ConversationDriver::ConversationDriver(
     PrefService* local_state_prefs,
     ModelService* model_service,
     AIChatMetrics* ai_chat_metrics,
+    LeoLocalModelsUpdater* leo_local_models_updater,
     std::unique_ptr<AIChatCredentialManager> credential_manager,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::string_view channel_string)
     : pref_service_(profile_prefs),
       ai_chat_metrics_(ai_chat_metrics),
+      leo_local_models_updater_(leo_local_models_updater),
       credential_manager_(std::move(credential_manager)),
       feedback_api_(std::make_unique<ai_chat::AIChatFeedbackAPI>(
           url_loader_factory,
@@ -232,6 +236,10 @@ ConversationDriver::ConversationDriver(
         HasUserOptedIn(), false,
         base::BindOnce(&ConversationDriver::GetPremiumStatus,
                        weak_ptr_factory_.GetWeakPtr()));
+  }
+
+  if (leo_local_models_updater_) {
+    leo_local_models_updater_->Register();
   }
 }
 
@@ -730,6 +738,10 @@ void ConversationDriver::OnModelRemoved(const std::string& removed_key) {
   InitEngine();
 }
 
+void ConversationDriver::OnLeoLocalModelsReady() {
+  universal_qa_model_path_ = leo_local_models_updater_->GetUniversalQAModel();
+}
+
 std::vector<std::string> ConversationDriver::GetSuggestedQuestions(
     mojom::SuggestionGenerationStatus& suggestion_status) {
   // Can we get suggested questions
@@ -1056,16 +1068,20 @@ void ConversationDriver::PerformAssistantGeneration(
   auto data_completed_callback =
       base::BindOnce(&ConversationDriver::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr(), current_navigation_id);
-  if (!text_embedder_) {
-    // TODO(darkdh): Use component updater or bundle the model
-    text_embedder_ = TextEmbedder::Create(base::FilePath(
-        "/tmp/universal_sentence_encoder_qa_with_metadata.tflite"));
-  }
-  if (text_embedder_ &&
+  bool should_refine_page_content =
       page_content.length() > GetCurrentModel()
                                   .options->get_leo_model_options()
                                   ->max_page_content_length &&
-      input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE)) {
+      input != l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+  if (!text_embedder_ && should_refine_page_content) {
+    if (universal_qa_model_path_.empty()) {
+      universal_qa_model_path_ =
+          leo_local_models_updater_->GetUniversalQAModel();
+    }
+    text_embedder_ =
+        TextEmbedder::Create(base::FilePath(universal_qa_model_path_));
+  }
+  if (text_embedder_ && should_refine_page_content) {
     text_embedder_->GetTopSimilarityWithPromptTilContextLimit(
         input, page_content,
         GetCurrentModel()
@@ -1097,7 +1113,7 @@ void ConversationDriver::OnGetRefinedPageContent(
     OnPageHasContentChanged(BuildSiteInfo());
   } else {
     VLOG(1) << "Failed to get refined page content: "
-               << refined_page_content.error();
+            << refined_page_content.error();
   }
   engine_->GenerateAssistantResponse(
       is_video, page_content_to_use, chat_history_, input,

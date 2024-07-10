@@ -138,6 +138,8 @@ class MockConversationDriver : public ConversationDriver {
                            local_state,
                            model_service,
                            ai_chat_metrics,
+                           // TODO(darkdh): Use MockLeoLocalModelsUpdater
+                           nullptr,
                            std::move(credential_manager),
                            url_loader_factory,
                            channel_string) {}
