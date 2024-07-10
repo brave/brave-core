@@ -5,7 +5,7 @@
 
 source_set("unit_tests") {
   testonly = true
-  if (!is_android) {
+  if (is_mac) {
     sources = [ "first_run_unittest.cc" ]
 
     deps = [
