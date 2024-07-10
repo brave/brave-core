@@ -16,6 +16,11 @@ export const localeStrings = {
   countrySelectTitle: 'Select your region',
   countrySelectText: 'Select your region so we can show you the right options and ads for your region.',
   doneButtonLabel: 'Done',
+  helpButtonLabel: 'Help',
+  moreButtonLabel: 'More',
+  navigationCreatorsLabel: 'Creators',
+  navigationExploreLabel: 'Explore',
+  navigationHomeLabel: 'Home',
   onboardingButtonLabel: 'Start using Brave Rewards',
   onboardingErrorCountryDeclaredText: 'Unfortunately, there was an error while trying to set your country. Please try again.',
   onboardingErrorDisabledText: 'New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. $1Learn more$2',
@@ -33,7 +38,8 @@ export const localeStrings = {
   resetButtonLabel: 'Reset',
   resetConsentText: 'I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I\'ve read the $1support article about resetting$2.',
   resetRewardsText: 'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting$2 for more details.',
-  resetRewardsTitle: 'Reset Brave Rewards'
+  resetRewardsTitle: 'Reset Brave Rewards',
+  rewardsPageTitle: 'Rewards'
 }
 
 export type StringKey = keyof typeof localeStrings

@@ -15,7 +15,8 @@ function delay(ms: number) {
 export function createModel(): AppModel {
   const stateManager = createStateManager<AppState>({
     ...defaultState(),
-    loading: false
+    loading: false,
+    paymentId: '123'
   })
 
   return {

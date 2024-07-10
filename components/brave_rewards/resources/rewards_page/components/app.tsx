@@ -7,8 +7,11 @@ import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
 import { AppModelContext, useAppState } from '../lib/app_model_context'
+import { EventHubContext } from '../lib/event_hub'
 import { useRoute } from '../lib/router'
+import { useBreakpoint } from '../lib/breakpoint'
 import { AppErrorBoundary } from './app_error_boundary'
+import { AppFrame } from './app_frame'
 import { Onboarding } from './onboarding/onboarding'
 import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
 import { ResetModal } from './reset_modal'
@@ -17,6 +20,7 @@ import { style } from './app.style'
 
 export function App() {
   const model = React.useContext(AppModelContext)
+  const eventHub = React.useContext(EventHubContext)
 
   const [loading, openTime, embedder, paymentId] = useAppState((state) => [
     state.loading,
@@ -24,6 +28,8 @@ export function App() {
     state.embedder,
     state.paymentId
   ])
+
+  const viewType = useBreakpoint()
 
   React.useEffect(() => { model.onAppRendered() }, [model, openTime])
 
@@ -38,6 +44,14 @@ export function App() {
     }
   })
 
+  React.useEffect(() => {
+    return eventHub.addListener('open-modal', (data) => {
+      if (data === 'reset') {
+        setShowResetModal(true)
+      }
+    })
+  }, [eventHub])
+
   function getComponentKey() {
     // This component key is used to reset the internal view state of the
     // component tree when the app is "reopened".
@@ -48,6 +62,9 @@ export function App() {
     const list: string[] = []
     if (embedder.isBubble) {
       list.push('is-bubble')
+    }
+    if (viewType === 'narrow') {
+      list.push('is-narrow-view')
     }
     if (embedder.animatedBackgroundEnabled) {
       list.push('animated-background')
@@ -91,6 +108,7 @@ export function App() {
 
     return (
       <>
+        <AppFrame />
         {renderModal()}
       </>
     )
@@ -102,7 +120,7 @@ export function App() {
         {renderContent()}
       </AppErrorBoundary>
       <div className='background'>
-        {embedder.isBubble && <div className='panel-background' />}
+        {viewType === 'narrow' && <div className='panel-background' />}
       </div>
     </div>
   )

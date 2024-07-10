@@ -23,12 +23,17 @@ export class Router {
   }
 
   setRoute(route: string) {
+    if (this._source.get() === route) {
+      return
+    }
     this._source.set(route)
-    history.pushState(null, '', route)
     dispatchRouteUpdated()
   }
 
   replaceRoute(route: string) {
+    if (this._source.get() === route) {
+      return
+    }
     this._source.replace(route)
     dispatchRouteUpdated()
   }
@@ -47,7 +52,7 @@ export const RouterContext = React.createContext<Router>(new Router({
 // Returns the current page "route" (basically, a normalized pathname). The
 // provided `onRouteUpdated` callback will be called when the route changes.
 export function useRoute(
-  onRouteUpdated: (route: string, router: Router) => void,
+  onRouteUpdated?: (route: string, router: Router) => void,
   deps?: React.DependencyList
 ) {
   const router = React.useContext(RouterContext)
@@ -66,8 +71,10 @@ export function useRoute(
   }, [router])
 
   React.useEffect(() => {
-    onRouteUpdated(route, router)
-  }, [route, router, ...(deps ?? [])])
+    if (onRouteUpdated) {
+      onRouteUpdated(route, router)
+    }
+  }, [route, router, onRouteUpdated, ...(deps ?? [])])
 
   return route
 }
