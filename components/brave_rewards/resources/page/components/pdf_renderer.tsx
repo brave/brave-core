@@ -9,6 +9,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import styles from './ping-sign-pdf.module.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   './pdfjs-dist-worker.js',
@@ -17,8 +18,71 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const ws = new WebSocket('ws://localhost:5000');
 
+const SignaturePopup = ({ onClose, onConfirm }) => {
+  const [selectedSignature, setSelectedSignature] = useState(null);
+
+  const signatures = [
+    { id: '1', name: 'Presley Abernathy', issueDate: '05/07/2024 15:30' },
+    { id: '2', name: 'Harrison Wilderman', issueDate: '05/07/2024 15:30' },
+    { id: '3', name: 'Rudolf Wolf', issueDate: '05/07/2024 15:30' },
+  ];
+
+  const handleConfirm = () => {
+    if (selectedSignature) {
+      onConfirm(selectedSignature);
+    }
+  };
+
+  return (
+    <div className={styles.popupOverlay}>
+      <div className={styles.popupContent}>
+        <h2>Choose a digital ID to sign with:</h2>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
+        
+        {selectedSignature && (
+          <div className={styles.selectedSignature}>
+            <h3>{signatures.find(sig => sig.id === selectedSignature).name}</h3>
+            <p>Project manager, Apple</p>
+            <p>presleyabernathy@gmail.com</p>
+            <p>05/07/2024, IST 21:35</p>
+            <p className={styles.encKey}>Enc. Key: 87478632758654</p>
+            <div className={styles.browseImage}>Browse for Image</div>
+          </div>
+        )}
+        
+        <div className={styles.signatureList}>
+          {signatures.map(sig => (
+            <label key={sig.id} className={styles.signatureOption}>
+              <input 
+                type="radio"
+                name="signature"
+                value={sig.id}
+                checked={selectedSignature === sig.id}
+                onChange={() => setSelectedSignature(sig.id)}
+              />
+              <span>{sig.name}</span>
+              <span className={styles.issueDate}>Issued: {sig.issueDate}</span>
+            </label>
+          ))}
+        </div>
+        <div className={styles.buttons}>
+          <button className={styles.addButton}>+ Add</button>
+          <button 
+            className={styles.confirmButton}
+            onClick={handleConfirm}
+            disabled={!selectedSignature}
+          >
+            Confirm signature
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export function PdfRenderer() {
   const [pdfFile, setPdfFile] = useState(null);
+  const [pdfFileName, setPdfFileName] = useState('');
   const [numPages, setNumPages] = useState(null);
   const [pdfBuff, setPdfBuff] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,14 +90,19 @@ export function PdfRenderer() {
   const [hsmPath, setHsmPath] = useState('');
   const [selectedSignature, setSelectedSignature] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [isEditingPageNumber, setIsEditingPageNumber] = useState(false);
+  const [tempPageNumber, setTempPageNumber] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
+  const [showSignaturePopup, setShowSignaturePopup] = useState(false);
 
   const showToast = useCallback((message, type) => {
     const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
+    toast.className = `${styles.toast} ${styles[`toast${type.charAt(0).toUpperCase() + type.slice(1)}`]}`;
     toast.innerText = message;
     document.body.appendChild(toast);
     setTimeout(() => {
-      toast.classList.add('fade-out');
+      toast.classList.add(styles.toastFadeOut);
       toast.addEventListener('transitionend', () => toast.remove());
     }, 3000);
   }, []);
@@ -72,42 +141,38 @@ export function PdfRenderer() {
 
   const handleFileInput = useCallback(
     async (event) => {
-      const file = event.target.files[0];
-      if (file) {
+      const file = event.target.files ? event.target.files[0] : event.dataTransfer.files[0];
+      if (file && file.type === 'application/pdf') {
         try {
           const arrayBuffer = await file.arrayBuffer();
           setPdfBuff(arrayBuffer);
           setPdfFile(new Blob([arrayBuffer], { type: 'application/pdf' }));
+          setPdfFileName(file.name);
           setVerificationResult(null);
         } catch (error) {
           console.error('Error reading PDF file:', error);
           showToast('Error reading PDF file. Please try again.', 'error');
         }
+      } else {
+        showToast('Please upload a valid PDF file.', 'error');
       }
     },
-    [showToast],
+    [showToast]
+  );
+
+  const handleDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      setIsDragging(false);
+      handleFileInput(event);
+    },
+    [handleFileInput]
   );
 
   const promptHsmPath = () => {
     const path = prompt('Enter HSM path:');
     if (path) setHsmPath(path);
     return path;
-  };
-
-  const selectSignature = () => {
-    // TODO: To be fetched from extension
-    setSelectedSignature('mock_signature');
-  };
-
-  const showConfirmationPreview = () => {
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmation = (confirmed) => {
-    if (confirmed) {
-      sendSignRequest();
-    }
-    setShowConfirmation(false);
   };
 
   const sendSignRequest = () => {
@@ -132,13 +197,20 @@ export function PdfRenderer() {
       showToast('Please upload a PDF first', 'error');
       return;
     }
+    setShowSignaturePopup(true);
+  }, [pdfBuff, showToast]);
 
+  const handleCloseSignaturePopup = () => {
+    setShowSignaturePopup(false);
+  };
+
+  const handleConfirmation = (signature) => {
+    setSelectedSignature(signature);
+    setShowSignaturePopup(false);
     const path = promptHsmPath();
     if (!path) return;
-
-    selectSignature();
-    showConfirmationPreview();
-  }, [pdfBuff, showToast]);
+    sendSignRequest();
+  };
 
   const handleVerifyButtonClick = useCallback(() => {
     if (!pdfBuff) {
@@ -167,87 +239,148 @@ export function PdfRenderer() {
 
   const onDocumentLoadSuccess = useCallback(({ numPages }) => {
     setNumPages(numPages);
+    setPageNumber(1);
   }, []);
 
-  const ConfirmationDialog = ({ onConfirm }) => (
-    <div className="confirmation-dialog">
-      <h3>Confirm Signature</h3>
-      <p>Are you sure you want to sign the document?</p>
-      <button onClick={() => onConfirm(true)}>Confirm</button>
-      <button onClick={() => onConfirm(false)}>Cancel</button>
+  const handlePreviousPage = useCallback(() => {
+    setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 1));
+  }, []);
+
+  const handleNextPage = useCallback(() => {
+    setPageNumber((prevPageNumber) => 
+      numPages ? Math.min(prevPageNumber + 1, numPages) : prevPageNumber
+    );
+  }, [numPages]);
+
+  const handlePageNumberClick = () => {
+    setIsEditingPageNumber(true);
+    setTempPageNumber(pageNumber.toString());
+  };
+
+  const handlePageNumberChange = (e) => {
+    setTempPageNumber(e.target.value);
+  };
+
+  const handlePageNumberSubmit = (e) => {
+    e.preventDefault();
+    const newPageNumber = parseInt(tempPageNumber, 10);
+    if (!isNaN(newPageNumber) && newPageNumber >= 1 && newPageNumber <= numPages) {
+      setPageNumber(newPageNumber);
+    }
+    setIsEditingPageNumber(false);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        handlePreviousPage();
+      } else if (event.key === 'ArrowRight') {
+        handleNextPage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handlePreviousPage, handleNextPage]);
+
+  const DropZone = ({ onFileInput, isDragging }) => (
+    <div 
+      className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
+      onDragOver={(e) => e.preventDefault()}
+      onDragEnter={() => setIsDragging(true)}
+      onDragLeave={() => setIsDragging(false)}
+      onDrop={handleDrop}
+    >
+      <div className={styles.pdfIcon}>📄</div>
+      <p className={styles.pdfText}>Choose a PDF file to add your digital signature</p>
+      <label htmlFor="fileInput" className={styles.addFileButton}>
+        + Add file
+      </label>
+      <input
+        id="fileInput"
+        type="file"
+        accept=".pdf"
+        onChange={onFileInput}
+        style={{ display: 'none' }}
+      />
     </div>
   );
 
   return (
-    <div
-      className="App"
-      style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}
-    >
-      <div
-        id="controls"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginBottom: '20px',
-        }}
-      >
-        <input
-          type="file"
-          id="pdfInput"
-          accept="application/pdf"
-          onChange={handleFileInput}
-          style={{ padding: '10px', marginRight: '10px' }}
-        />
-        <button
-          id="signButton"
-          onClick={handleSignButtonClick}
-          style={{
-            padding: '10px',
-            marginRight: '10px',
-            backgroundColor: '#007BFF',
-            color: '#FFF',
-            border: 'none',
-            borderRadius: '5px',
-          }}
-          disabled={isLoading}
-        >
-          Sign
-        </button>
-        <button
-          id="verifyButton"
-          onClick={handleVerifyButtonClick}
-          style={{
-            padding: '10px',
-            marginRight: '10px',
-            backgroundColor: '#28A745',
-            color: '#FFF',
-            border: 'none',
-            borderRadius: '5px',
-          }}
-          disabled={isLoading}
-        >
-          Verify
-        </button>
-        <button
-          id="downloadButton"
-          onClick={handleDownloadButtonClick}
-          style={{
-            padding: '10px',
-            backgroundColor: '#FFC107',
-            color: '#FFF',
-            border: 'none',
-            borderRadius: '5px',
-          }}
-          disabled={!pdfFile || isLoading}
-        >
-          Download
-        </button>
+    <div className={styles.app}>
+      <header className={styles.header}>
+        <div className={styles.navBar}>
+          <div className={styles.logo}>📄</div>
+          <div className={styles.pdfFileName}>{pdfFileName}</div>
+          {pdfFile ? (
+            <div className={styles.headerControls}>
+              <button className={styles.headerButton} onClick={handleSignButtonClick}>Add signature</button>
+              <div className={styles.headerControlsBar}></div>
+              <button className={styles.headerButton} onClick={handleVerifyButtonClick}>Verify document</button>
+              <div className={styles.headerControlsBar}></div>
+              <div className={styles.pageChangingControls}>
+                <div className={styles.previousPage} onClick={handlePreviousPage}>&lt;</div>
+                <div className={styles.pageNumber}>
+                  {isEditingPageNumber ? (
+                    <form onSubmit={handlePageNumberSubmit}>
+                      <input
+                        type="text"
+                        value={tempPageNumber}
+                        onChange={handlePageNumberChange}
+                        onBlur={handlePageNumberSubmit}
+                        autoFocus
+                        className={styles.pageNumberInput}
+                      />
+                    </form>
+                  ) : (
+                    <>
+                      <div className={styles.currentPage} onClick={handlePageNumberClick}>{pageNumber}</div>
+                      <div className={styles.separator}>/</div>
+                      <div className={styles.totalPages}>{numPages || '-'}</div>
+                    </>
+                  )}
+                </div>
+                <div className={styles.nextPage} onClick={handleNextPage}>&gt;</div>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.headerControls}>
+              <div className={styles.instructionText}>Start by holding right click and drag</div>
+              <div className={styles.headerControlsBar}></div>
+              <div className={styles.pageChangingControls}>
+                <div className={styles.previousPage} onClick={handlePreviousPage}>&lt;</div>
+                <div className={styles.pageNumber}>
+                  <div className={styles.currentPage}>-</div>
+                  <div className={styles.separator}>/</div>
+                  <div className={styles.totalPages}>-</div>
+                </div>
+                <div className={styles.nextPage} onClick={handleNextPage}>&gt;</div>
+              </div>
+            </div>
+          )}
+          <div className={styles.headerControlsSave}>
+            <button className={`${styles.headerButton} ${styles.saveButton}`} onClick={handleDownloadButtonClick}>Save</button>
+          </div>
+        </div>
+        <button className={`${styles.headerButton} ${styles.helpButton}`}>?</button>
+      </header>
+      <div className={styles.pdfContainer}>
+        {!pdfFile ? (
+          <DropZone onFileInput={handleFileInput} isDragging={isDragging} />
+        ) : (
+          <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+            <Page
+              pageNumber={pageNumber}
+              width={600}
+            />
+          </Document>
+        )}
       </div>
       {verificationResult !== null && (
-        <div
-          id="verificationResult"
-          style={{ marginBottom: '20px', textAlign: 'center' }}
-        >
+        <div className={styles.verificationResult}>
           <h3>Verification Result:</h3>
           <p>
             {verificationResult
@@ -256,98 +389,17 @@ export function PdfRenderer() {
           </p>
         </div>
       )}
-      {showConfirmation && (
-        <ConfirmationDialog onConfirm={handleConfirmation} />
+      {showSignaturePopup && (
+        <SignaturePopup
+          onClose={handleCloseSignaturePopup}
+          onConfirm={handleConfirmation}
+        />
       )}
-      <div
-        id="pdfContainer"
-        style={{
-          maxHeight: '80vh',
-          overflowY: 'auto',
-          border: '1px solid #ccc',
-          padding: '10px',
-          backgroundColor: '#f9f9f9',
-        }}
-      >
-        <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
-          {Array.from(new Array(numPages), (el, index) => (
-            <Page
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-              width={600}
-            />
-          ))}
-        </Document>
-      </div>
       {isLoading && (
-        <div className="loading-overlay">
-          <div className="loading-spinner"></div>
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingSpinner}></div>
         </div>
       )}
-      <style jsx>{`
-        .loading-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1001;
-        }
-        .loading-spinner {
-          border: 5px solid #f3f3f3;
-          border-top: 5px solid #3498db;
-          border-radius: 50%;
-          width: 50px;
-          height: 50px;
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-        .toast {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 10px 20px;
-          border-radius: 4px;
-          color: white;
-          opacity: 0.9;
-          transition: opacity 0.3s ease;
-          z-index: 1002;
-        }
-        .toast.success {
-          background-color: #4caf50;
-        }
-        .toast.error {
-          background-color: #f44336;
-        }
-        .toast.info {
-          background-color: #2196f3;
-        }
-        .toast.fade-out {
-          opacity: 0;
-        }
-        .confirmation-dialog {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background-color: white;
-          padding: 20px;
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          z-index: 1003;
-        }
-      `}</style>
     </div>
   );
 }
