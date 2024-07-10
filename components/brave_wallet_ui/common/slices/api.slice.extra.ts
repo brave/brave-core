@@ -17,7 +17,9 @@ import {
   useGetTokensRegistryQuery,
   useGetTransactionsQuery,
   useGetUserTokensRegistryQuery,
-  useGenerateReceiveAddressMutation
+  useGenerateReceiveAddressMutation,
+  useGetTopDappsQuery,
+  useGetNetworksRegistryQuery
 } from './api.slice'
 
 // entities
@@ -36,6 +38,8 @@ import {
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
+import { getDappNetworkIds } from '../../utils/dapp_utils'
+import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 
 export const useAccountsQuery = () => {
   return useGetAccountInfosRegistryQuery(undefined, {
@@ -308,4 +312,43 @@ export const useGetIsRegistryTokenQuery = (
       }
     }
   })
+}
+
+export const useGetDappRadarNetworks = () => {
+  const { data: networksRegistry, isLoading: isLoadingNetworks } =
+    useGetNetworksRegistryQuery()
+  const { data: dapps, isLoading: isLoadingDapps } = useGetTopDappsQuery(
+    networksRegistry?.visibleIds || skipToken
+  )
+
+  // memos
+  const dappNetworks = React.useMemo(() => {
+    if (!networksRegistry || !dapps) {
+      return []
+    }
+
+    const dappChains = Array.from(
+      new Set(dapps.map((dapp) => dapp.chains).flat())
+    )
+
+    const dappNetworkIds = getDappNetworkIds(
+      dappChains,
+      getEntitiesListFromEntityState(
+        networksRegistry,
+        networksRegistry.visibleIds
+      )
+    )
+
+    const dappNetworks = getEntitiesListFromEntityState(
+      networksRegistry,
+      dappNetworkIds
+    )
+
+    return dappNetworks
+  }, [networksRegistry, dapps])
+
+  return {
+    isLoading: isLoadingNetworks || isLoadingDapps,
+    dappNetworks
+  }
 }

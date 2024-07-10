@@ -24,20 +24,15 @@ import {
   LOCAL_STORAGE_KEYS //
 } from '../../../../common/constants/local-storage-keys'
 import { capitalizeFirstLetter } from '../../../../utils/string-utils'
-import {
-  makeInitialFilteredOutNetworkKeys //
-} from '../../../../utils/local-storage-utils'
-import {
-  getDappNetworkIds, //
-  isDappMapEmpty
-} from '../../../../utils/dapp_utils'
+import { isDappMapEmpty } from '../../../../utils/dapp_utils'
 
 // Hooks
+import { useGetTopDappsQuery } from '../../../../common/slices/api.slice'
 import {
-  useGetNetworksRegistryQuery,
-  useGetTopDappsQuery
-} from '../../../../common/slices/api.slice'
+  useGetDappRadarNetworks //
+} from '../../../../common/slices/api.slice.extra'
 import {
+  getNetworkId,
   networkEntityAdapter //
 } from '../../../../common/slices/entities/network.entity'
 import { useQuery } from '../../../../common/hooks/use-query'
@@ -72,18 +67,29 @@ export const ExploreWeb3View = () => {
   const [showFilters, setShowFilters] = React.useState<boolean>(false)
 
   // local storage
-  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = useLocalStorage(
-    LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
-    makeInitialFilteredOutNetworkKeys
-  )
+  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = useLocalStorage<
+    string[]
+  >(LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS, [])
 
   const [filteredOutCategories, setFilteredOutCategories] = useLocalStorage<
     string[]
   >(LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_CATEGORIES, [])
 
   // queries
-  const { isLoading, data: topDapps } = useGetTopDappsQuery(undefined)
-  const { data: networksRegistry } = useGetNetworksRegistryQuery()
+  const { dappNetworks } = useGetDappRadarNetworks()
+  const [visibleNetworks, visibleNetworkIds] = React.useMemo(() => {
+    const networks =
+      dappNetworks?.filter((network) => {
+        return !filteredOutNetworkKeys.includes(getNetworkId(network))
+      }) ?? []
+
+    return [
+      networks,
+      networks.map((network) => networkEntityAdapter.selectId(network))
+    ]
+  }, [dappNetworks, filteredOutNetworkKeys])
+  const { isFetching: isLoading, data: topDapps } =
+    useGetTopDappsQuery(visibleNetworkIds)
 
   // memos
   const controls = React.useMemo(() => {
@@ -98,7 +104,9 @@ export const ExploreWeb3View = () => {
   // group dapps into categories
   const [dappCategories, categoryDappsMap, visibleCategories] =
     React.useMemo(() => {
-      if (!topDapps) return [[], new Map<string, BraveWallet.Dapp[]>(), []]
+      if (!topDapps) {
+        return [[], new Map<string, BraveWallet.Dapp[]>(), []]
+      }
 
       const categoriesSet = new Set<string>()
       const categoriesMap = new Map<string, BraveWallet.Dapp[]>()
@@ -120,46 +128,6 @@ export const ExploreWeb3View = () => {
       return [categoriesList, categoriesMap, visibleCategories]
     }, [filteredOutCategories, topDapps])
 
-  const [visibleNetworks] = React.useMemo(() => {
-    if (!networksRegistry) {
-      return [[] as BraveWallet.NetworkInfo[], [] as BraveWallet.NetworkInfo[]]
-    }
-
-    const visibleNetworks: BraveWallet.NetworkInfo[] = []
-
-    networksRegistry.visibleIds.forEach((id) => {
-      const network = networksRegistry.entities[id]
-      if (!network) {
-        return
-      }
-
-      if (!filteredOutNetworkKeys.includes(id)) {
-        visibleNetworks.push(network)
-      }
-    })
-
-    return [visibleNetworks, visibleNetworks.map(networkEntityAdapter.selectId)]
-  }, [networksRegistry, filteredOutNetworkKeys])
-
-  const filterVisibleDapps = React.useCallback(
-    (dapps: BraveWallet.Dapp[], searchTerm: string) => {
-      if (!networksRegistry) {
-        return []
-      }
-      return dapps.filter((dapp) => {
-        const dappNetworkIds = getDappNetworkIds(dapp.chains, visibleNetworks)
-        return (
-          dappNetworkIds.some((networkId) =>
-            networksRegistry.visibleIds.includes(networkId.toString())
-          ) &&
-          (dapp.name.toLowerCase().includes(searchTerm) ||
-            dapp.description.toLowerCase().includes(searchTerm))
-        )
-      })
-    },
-    [networksRegistry, visibleNetworks]
-  )
-
   const visibleDappsMap = React.useMemo(() => {
     if (isDappMapEmpty(categoryDappsMap)) {
       return categoryDappsMap
@@ -170,10 +138,12 @@ export const ExploreWeb3View = () => {
     categoryDappsMap.forEach((categoryDapps, category) => {
       if (!filteredOutCategories.includes(category)) {
         // filter items based on network and search term
-        const categoryVisibleDapps = filterVisibleDapps(
-          categoryDapps,
-          searchValueLower
-        )
+        const categoryVisibleDapps = categoryDapps.filter((dapp) => {
+          return (
+            dapp.name.toLowerCase().includes(searchValueLower) ||
+            dapp.description.toLowerCase().includes(searchValueLower)
+          )
+        })
         if (categoryVisibleDapps.length > 0) {
           filterResultsMap.set(category, categoryVisibleDapps)
         }
@@ -181,34 +151,16 @@ export const ExploreWeb3View = () => {
     })
 
     return filterResultsMap
-  }, [
-    categoryDappsMap, //
-    filterVisibleDapps,
-    filteredOutCategories,
-    searchValue
-  ])
+  }, [categoryDappsMap, filteredOutCategories, searchValue])
 
   const selectedCategoryDapps = React.useMemo(() => {
     return selectedCategory ? visibleDappsMap.get(selectedCategory) : []
   }, [selectedCategory, visibleDappsMap])
 
-  const showFiltersRow = React.useMemo(() => {
-    const allCategoriesVisible =
-      visibleCategories.length === dappCategories.length
-    const allNetworksVisible =
-      visibleNetworks.length === networksRegistry?.visibleIds.length
-
-    return (
-      (!allCategoriesVisible || !allNetworksVisible) &&
-      selectedCategory === null
-    )
-  }, [
-    dappCategories.length,
-    networksRegistry?.visibleIds.length,
-    selectedCategory,
-    visibleCategories.length,
-    visibleNetworks.length
-  ])
+  // computed
+  const showFiltersRow =
+    (filteredOutCategories.length > 0 || filteredOutNetworkKeys.length > 0) &&
+    selectedCategory === null
 
   // methods
   const onDappClick = React.useCallback(
@@ -255,47 +207,6 @@ export const ExploreWeb3View = () => {
     setFilteredOutNetworkKeys([])
     setFilteredOutCategories([])
   }, [setFilteredOutCategories, setFilteredOutNetworkKeys])
-
-  const renderedDappsList = React.useMemo(() => {
-    return selectedCategory ? (
-      <VirtualizedDappsList
-        dappsList={selectedCategoryDapps || []}
-        onClickDapp={onDappClick}
-      />
-    ) : (
-      <DappsGrid>
-        {Array.from(visibleDappsMap).map(([category, dapps]) => (
-          <Column
-            key={category}
-            width='100%'
-            margin='0 0 18px 0'
-          >
-            <CategoryHeader>{category}</CategoryHeader>
-            <Column width='100%'>
-              {dapps.slice(0, 3).map((dapp) => (
-                <DappListItem
-                  key={dapp.id}
-                  dapp={dapp}
-                  onClick={() => onDappClick(dapp.id)}
-                />
-              ))}
-            </Column>
-            <Row justifyContent='center'>
-              <PlainButton onClick={() => onSelectCategory(category)}>
-                {getLocale('braveWalletShowMore')}
-              </PlainButton>
-            </Row>
-          </Column>
-        ))}
-      </DappsGrid>
-    )
-  }, [
-    onDappClick,
-    onSelectCategory,
-    selectedCategory,
-    selectedCategoryDapps,
-    visibleDappsMap
-  ])
 
   // render
   if (isLoading || !topDapps) {
@@ -382,7 +293,38 @@ export const ExploreWeb3View = () => {
 
         {!isDappMapEmpty(visibleDappsMap) ||
         selectedCategoryDapps?.length === 0 ? (
-          <>{renderedDappsList}</>
+          selectedCategory ? (
+            <VirtualizedDappsList
+              dappsList={selectedCategoryDapps || []}
+              onClickDapp={onDappClick}
+            />
+          ) : (
+            <DappsGrid>
+              {Array.from(visibleDappsMap).map(([category, dapps]) => (
+                <Column
+                  key={category}
+                  width='100%'
+                  margin='0 0 18px 0'
+                >
+                  <CategoryHeader>{category}</CategoryHeader>
+                  <Column width='100%'>
+                    {dapps.slice(0, 3).map((dapp) => (
+                      <DappListItem
+                        key={dapp.id}
+                        dapp={dapp}
+                        onClick={() => onDappClick(dapp.id)}
+                      />
+                    ))}
+                  </Column>
+                  <Row justifyContent='center'>
+                    <PlainButton onClick={() => onSelectCategory(category)}>
+                      {getLocale('braveWalletShowMore')}
+                    </PlainButton>
+                  </Row>
+                </Column>
+              ))}
+            </DappsGrid>
+          )
         ) : (
           <Row>
             <h2>{getLocale('braveWalletNoDappsFound')}</h2>

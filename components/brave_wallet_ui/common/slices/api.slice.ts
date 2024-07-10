@@ -397,7 +397,7 @@ export const useGetOnRampNetworksQuery = (opts?: { skip?: boolean }) => {
 }
 
 export const useGetVisibleNetworksQuery = (
-  arg?: undefined,
+  arg?: undefined | typeof skipToken,
   opts?: { skip?: boolean }
 ) => {
   const queryResults = useGetNetworksRegistryQuery(arg, {

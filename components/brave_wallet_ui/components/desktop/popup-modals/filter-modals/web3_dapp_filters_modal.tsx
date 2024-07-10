@@ -12,8 +12,8 @@ import {
   LOCAL_STORAGE_KEYS //
 } from '../../../../common/constants/local-storage-keys'
 import {
-  makeInitialFilteredOutNetworkKeys //
-} from '../../../../utils/local-storage-utils'
+  useGetDappRadarNetworks //
+} from '../../../../common/slices/api.slice.extra'
 
 // components
 import PopupModal from '..'
@@ -25,7 +25,6 @@ import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 // styles
 import {
   ScrollableColumn,
-  VerticalSpacer,
   HorizontalSpace,
   LeoSquaredButton
 } from '../../../shared/style'
@@ -39,9 +38,9 @@ interface Props {
 export const Web3DappFilters = ({ categories, onClose }: Props) => {
   // Local storage
   const [filteredOutDappNetworkKeys, setFilteredOutDappNetworkKeys] =
-    useLocalStorage(
+    useLocalStorage<string[]>(
       LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
-      makeInitialFilteredOutNetworkKeys
+      []
     )
 
   const [filteredOutDappCategories, setFilteredOutDappCategories] =
@@ -58,6 +57,9 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
   const [filteredOutCategories, setFilteredOutCategories] = React.useState<
     string[]
   >(filteredOutDappCategories)
+
+  // queries
+  const { dappNetworks } = useGetDappRadarNetworks()
 
   // methods
   const isCategoryFilteredOut = (category: string) =>
@@ -102,6 +104,7 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
         <ContentWrapper
           fullWidth={true}
           alignItems='flex-start'
+          gap={16}
         >
           <CategoryCheckboxes
             title='Categories'
@@ -112,10 +115,10 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
             isSelectAll={showSelectAll}
             onSelectOrDeselectAllCategories={onSelectOrDeselectAllCategories}
           />
-          <VerticalSpacer space={16} />
           <FilterNetworksSection
             filteredOutNetworkKeys={filteredOutNetworkKeys}
             setFilteredOutNetworkKeys={setFilteredOutNetworkKeys}
+            networksSubset={dappNetworks}
           />
         </ContentWrapper>
       </ScrollableColumn>
