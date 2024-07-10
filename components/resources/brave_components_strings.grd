@@ -601,7 +601,6 @@
 
       <message name="IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS" desc="">Oops! Your browser cannot receive Brave Private Ads.</message>
       <message name="IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
-      <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">Something went wrong</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID" desc="Ad diagnostic id">Diagnostic Id</message>
@@ -744,14 +743,10 @@
       <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
-      <message name="IDS_BRAVE_UI_RESET" desc="">Reset</message>
-      <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">Reset Brave Rewards</message>
       <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
       <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph> for more details.</message>
-      <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">$2</ph>.</message>
       <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
       <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>
       <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all [[numItems]] items</message>

@@ -221,4 +221,8 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [63020],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-rewards_page/rewards_page.grd": {
+    "META": {"sizes": {"includes": [50]}},
+    "includes": [63030],
+  },
 }

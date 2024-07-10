@@ -34,6 +34,7 @@ mojom("core") {
 
 mojom("webui") {
   sources = [
+    "rewards_page.mojom",
     "rewards_panel.mojom",
     "rewards_tip_panel.mojom",
   ]

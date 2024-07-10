@@ -766,6 +766,21 @@
               brave_rewards::features::kAllowSelfCustodyProvidersFeature),     \
       },                                                                       \
       {                                                                        \
+          "brave-rewards-new-rewards-ui",                                      \
+          "Show the new Rewards UI",                                           \
+          "Displays the new Rewards UI.",                                      \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(brave_rewards::features::kNewRewardsUIFeature),   \
+      },                                                                       \
+      {                                                                        \
+          "brave-rewards-animated-background",                                 \
+          "Show an animated background on the Rewards UI",                     \
+          "Shows an animated background on the Rewards panel and page.",       \
+          kOsDesktop | kOsAndroid,                                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_rewards::features::kAnimatedBackgroundFeature),            \
+      },                                                                       \
+      {                                                                        \
           "brave-ads-should-launch-brave-ads-as-an-in-process-service",        \
           "Launch Brave Ads as an in-process service",                         \
           "Launch Brave Ads as an in-process service removing the utility "    \

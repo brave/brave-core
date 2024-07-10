@@ -111,6 +111,8 @@ class RewardsServiceImpl : public RewardsService,
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
   ~RewardsServiceImpl() override;
 
+  static std::string UrlMethodToRequestType(mojom::UrlMethod method);
+
   // KeyedService:
   void Shutdown() override;
 
