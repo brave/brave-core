@@ -19,17 +19,16 @@ import panelBackgroundDark from '../assets/panel_background_dark.svg'
 export const style = scopedCSS('app', css`
   & {
     --onboarding-max-width: 360px;
-
     container: app/normal;
-
-    @media (width < 400px) {
-      --is-narrow-view: 1;
-    }
   }
 
   &.is-bubble {
     width: 392px;
     min-height: 550px;
+  }
+
+  &.is-narrow-view {
+    --is-narrow-view: 1;
   }
 
   .background {

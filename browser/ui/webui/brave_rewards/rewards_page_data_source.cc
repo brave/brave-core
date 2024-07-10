@@ -33,6 +33,11 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"countrySelectTitle", IDS_REWARDS_COUNTRY_SELECT_TITLE},
     {"countrySelectText", IDS_REWARDS_COUNTRY_SELECT_TEXT},
     {"doneButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_DONE},
+    {"helpButtonLabel", IDS_REWARDS_HELP_BUTTON_LABEL},
+    {"moreButtonLabel", IDS_REWARDS_MORE_BUTTON_LABEL},
+    {"navigationCreatorsLabel", IDS_REWARDS_NAVIGATION_CREATORS_LABEL},
+    {"navigationExploreLabel", IDS_REWARDS_NAVIGATION_EXPLORE_LABEL},
+    {"navigationHomeLabel", IDS_REWARDS_NAVIGATION_HOME_LABEL},
     {"onboardingButtonLabel", IDS_REWARDS_ONBOARDING_BUTTON_LABEL},
     {"onboardingErrorCountryDeclaredText",
      IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DECLARE_COUNTRY},
@@ -54,7 +59,8 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"resetButtonLabel", IDS_BRAVE_UI_RESET},
     {"resetConsentText", IDS_BRAVE_UI_REWARDS_RESET_CONSENT},
     {"resetRewardsText", IDS_BRAVE_UI_REWARDS_RESET_TEXT},
-    {"resetRewardsTitle", IDS_BRAVE_UI_RESET_WALLET}};
+    {"resetRewardsTitle", IDS_BRAVE_UI_RESET_WALLET},
+    {"rewardsPageTitle", IDS_REWARDS_PAGE_TITLE}};
 
 }  // namespace
 

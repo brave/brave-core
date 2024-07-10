@@ -10,8 +10,8 @@ import {
   createLocaleContextForTesting
 } from '../../shared/lib/locale_context'
 
+import { css, scopedCSS } from '../lib/scoped_css'
 import { AppModelContext } from '../lib/app_model_context'
-import { Router, RouterContext } from '../lib/router'
 import { createModel } from './storybook_model'
 import { localeStrings } from '../lib/locale_strings'
 import { App } from '../components/app'
@@ -20,28 +20,25 @@ export default {
   title: 'Rewards/Page'
 }
 
+const style = scopedCSS('storybook-wrapper', css`
+  & {
+    position: absolute;
+    inset: 0;
+  }
+`)
+
 export function RewardsPage() {
-  const router = React.useMemo(() => {
-    let currentRoute = '/'
-    return new Router({
-      get() { return currentRoute },
-      set(route) { currentRoute = route },
-      replace(route) { currentRoute = route }
-    })
-  }, [])
-
   const model = React.useMemo(() => createModel(), [])
-
   const locale = React.useMemo(
     () => createLocaleContextForTesting(localeStrings), [])
 
   return (
-    <RouterContext.Provider value={router}>
-      <LocaleContext.Provider value={locale}>
-        <AppModelContext.Provider value={model}>
+    <LocaleContext.Provider value={locale}>
+      <AppModelContext.Provider value={model}>
+        <div {...style}>
           <App />
-        </AppModelContext.Provider>
-      </LocaleContext.Provider>
-    </RouterContext.Provider>
+        </div>
+      </AppModelContext.Provider>
+    </LocaleContext.Provider>
   )
 }

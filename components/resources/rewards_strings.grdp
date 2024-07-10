@@ -374,6 +374,24 @@
   <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">
     Something went wrong
   </message>
+  <message name="IDS_REWARDS_PAGE_TITLE" desc="">
+    Rewards
+  </message>
+  <message name="IDS_REWARDS_HELP_BUTTON_LABEL" desc="">
+    Help
+  </message>
+  <message name="IDS_REWARDS_MORE_BUTTON_LABEL" desc="">
+    More
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_CREATORS_LABEL" desc="">
+    Creators
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_EXPLORE_LABEL" desc="">
+    Explore
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_HOME_LABEL" desc="">
+    Home
+  </message>
 
   <!-- Self-custody invitation -->
   <message name="IDS_REWARDS_NOT_NOW" desc="">
