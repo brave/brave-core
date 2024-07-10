@@ -11,7 +11,6 @@ source_set("brave_news") {
 
   deps = [
     "//base",
-    "//brave/browser/profiles:util",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",

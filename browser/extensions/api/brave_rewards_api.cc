@@ -16,7 +16,6 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
@@ -399,7 +398,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
-  if (!brave::IsRegularProfile(browser_context())) {
+  if (!Profile::FromBrowserContext(browser_context())->IsRegularProfile()) {
     return RespondNow(Error("Cannot tip to site in a private context"));
   }
 

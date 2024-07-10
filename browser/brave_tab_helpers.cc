@@ -21,7 +21,6 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -35,6 +34,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/user_prefs/user_prefs.h"
@@ -129,7 +129,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();
   if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
-      IsRegularProfile(context)) {
+      Profile::FromBrowserContext(context)->IsRegularProfile()) {
     auto skus_service_getter = base::BindRepeating(
         [](content::BrowserContext* context) {
           return skus::SkusServiceFactory::GetForContext(context);

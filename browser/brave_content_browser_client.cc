@@ -32,7 +32,6 @@
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
@@ -427,7 +426,7 @@ void BindBraveSearchDefaultHost(
     mojo::PendingReceiver<brave_search::mojom::BraveSearchDefault> receiver) {
   auto* context = frame_host->GetBrowserContext();
   auto* profile = Profile::FromBrowserContext(context);
-  if (brave::IsRegularProfile(profile)) {
+  if (profile->IsRegularProfile()) {
     auto* template_url_service =
         TemplateURLServiceFactory::GetForProfile(profile);
     const std::string host = frame_host->GetLastCommittedURL().host();
@@ -820,7 +819,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   auto* prefs =
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
-      brave::IsRegularProfile(render_frame_host->GetBrowserContext())) {
+      Profile::FromBrowserContext(render_frame_host->GetBrowserContext())
+          ->IsRegularProfile()) {
     // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
@@ -1244,7 +1244,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (brave::IsRegularProfile(context)) {
+  if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     if (auto ai_chat_throttle =
             ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
       throttles.push_back(std::move(ai_chat_throttle));

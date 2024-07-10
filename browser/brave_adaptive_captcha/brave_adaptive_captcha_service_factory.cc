@@ -17,13 +17,11 @@
 #include "chrome/browser/ui/browser_finder.h"
 #endif
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
 
@@ -73,7 +71,7 @@ BraveAdaptiveCaptchaServiceFactory::GetInstance() {
 // static
 BraveAdaptiveCaptchaService* BraveAdaptiveCaptchaServiceFactory::GetForProfile(
     Profile* profile) {
-  if (!brave::IsRegularProfile(profile)) {
+  if (!profile->IsRegularProfile()) {
     return nullptr;
   }
 

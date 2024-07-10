@@ -23,5 +23,4 @@ brave_browser_brave_news_deps += [
   "//chrome/browser/profiles:profile",
   "//components/keyed_service/content",
   "//content/public/browser",
-  "//services/network/public/cpp",
 ]

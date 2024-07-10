@@ -19,6 +19,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
@@ -478,7 +479,7 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
   return !params_.selection_text.empty() &&
          ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
-         brave::IsRegularProfile(GetProfile()) &&
+         GetProfile()->IsRegularProfile() &&
          GetProfile()->GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveAIChatContextMenuEnabled) &&
          !IsInProgressiveWebApp();

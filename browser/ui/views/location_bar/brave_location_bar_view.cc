@@ -11,7 +11,6 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -76,7 +75,7 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
 };
 
 std::optional<BraveColorIds> GetFocusRingColor(Profile* profile) {
-  if (brave::IsRegularProfile(profile) || profile->IsGuestSession()) {
+  if (profile->IsRegularProfile() || profile->IsGuestSession()) {
     // Don't update color.
     return std::nullopt;
   }

@@ -5,16 +5,16 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 BraveBrowserRootView::BraveBrowserRootView(BrowserView* browser_view,
                                            views::Widget* widget)
     : BrowserRootView(browser_view, widget), browser_(browser_view->browser()) {
-  if (!brave::IsRegularProfile(browser_->profile())) {
+  if (!browser_->profile()->IsRegularProfile()) {
     theme_observation_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
   }
 }
@@ -22,7 +22,7 @@ BraveBrowserRootView::BraveBrowserRootView(BrowserView* browser_view,
 BraveBrowserRootView::~BraveBrowserRootView() = default;
 
 bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
-    // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
+  // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
 #if BUILDFLAG(IS_LINUX)
   if (!base::FeatureList::IsEnabled(
           tabs::features::kBraveChangeActiveTabOnScrollEvent)) {

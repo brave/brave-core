@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -203,7 +202,7 @@ SkColor BraveTabStrip::GetTabSeparatorColor() const {
   }
 
   Profile* profile = controller()->GetProfile();
-  if (!brave::IsRegularProfile(profile)) {
+  if (!profile->IsRegularProfile()) {
     if (profile->IsTor()) {
       return SkColorSetRGB(0x5A, 0x53, 0x66);
     }

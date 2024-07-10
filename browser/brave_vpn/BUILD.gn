@@ -14,10 +14,10 @@ source_set("brave_vpn") {
   ]
 
   deps = [
-    "//brave/browser/profiles",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/browser/profiles:profile",
     "//chrome/common:channel_info",
     "//components/prefs",
     "//components/user_prefs",
