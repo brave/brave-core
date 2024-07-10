@@ -11,6 +11,7 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -18,10 +19,16 @@
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_urls.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -99,6 +106,14 @@ void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
     OnTorDisabledChanged();
     OnTorPluggableTransportChanged();
   }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (!ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context))) {
+    if (g_brave_browser_process->leo_local_models_updater()) {
+      g_brave_browser_process->leo_local_models_updater()->Cleanup();
+    }
+  }
+#endif
 }
 
 }  // namespace extensions

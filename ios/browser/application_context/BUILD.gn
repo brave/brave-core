@@ -13,6 +13,8 @@ source_set("application_context") {
   ]
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/browser",
     "//brave/components/debounce/core/browser",
@@ -21,6 +23,7 @@ source_set("application_context") {
     "//brave/ios/browser/brave_wallet",
     "//ios/chrome/browser/application_context/model",
     "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/paths",
     "//net",
   ]
 }

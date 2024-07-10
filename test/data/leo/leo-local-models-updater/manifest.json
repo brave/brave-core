@@ -1,0 +1,7 @@
+{
+  "description": "Leo Local Models Updater extension for test",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2ykOuzPbWcPmZSA085mQW3qRpNI+B58lH9VftHTi1+oXXpbada5UmLI67Pc/QsbHVCi515Q6EaSOUblBUEOMPbps40YxMjj2W5aWLab/xwq0yhKFrk4x5f0GukOlFlaZuN0kfqknPnMuLKqzDHkC/OaednbB4MhQWJ8Rf80OumyQgWeokxzlIeZf/CVW2CXtzpk6gNYvASJBXG3y34W0tR7HwUX9ghAIgAawWIBRPNMeUauBhZU6/nh0COMyJy2WDdvW9RPRdAZF3JR1c99kcEluirw3Ah5znnYjyKV21mgeVVMfg6SLMoO6G2NmqqlNIoM8dx1YGn7IdC6b9LpTcQIDAQAB",
+  "manifest_version": 2,
+  "name": "Leo Local Models Updater(Test)",
+  "version": "1.0.0"
+}

@@ -8,7 +8,10 @@
 #include <string>
 
 #import "base/command_line.h"
+#include "base/path_service.h"
 #import "base/task/sequenced_task_runner.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
@@ -18,6 +21,7 @@
 #include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
 #include "brave/ios/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/paths/paths.h"
 #include "net/base/features.h"
 
 BraveApplicationContextImpl::BraveApplicationContextImpl(
@@ -66,6 +70,17 @@ BraveApplicationContextImpl::local_data_files_service() {
   return local_data_files_service_.get();
 }
 
+ai_chat::LeoLocalModelsUpdater*
+BraveApplicationContextImpl::leo_local_models_updater() {
+  if (!leo_local_models_updater_) {
+    auto user_data_dir = base::PathService::CheckedGet(ios::DIR_USER_DATA);
+    leo_local_models_updater_ =
+        std::make_unique<ai_chat::LeoLocalModelsUpdater>(
+            brave_component_updater_delegate(), user_data_dir);
+  }
+  return leo_local_models_updater_.get();
+}
+
 brave::URLSanitizerComponentInstaller*
 BraveApplicationContextImpl::url_sanitizer_component_installer() {
   if (!url_sanitizer_component_installer_) {
@@ -111,4 +126,10 @@ void BraveApplicationContextImpl::StartBraveServices() {
 
   brave_wallet::WalletDataFilesInstaller::GetInstance().SetDelegate(
       std::make_unique<brave_wallet::WalletDataFilesInstallerDelegateImpl>());
+
+  leo_local_models_updater();
+  if (!ai_chat::features::IsAIChatEnabled() ||
+      !ai_chat::features::IsPageContentRefineEnabled()) {
+    leo_local_models_updater()->Cleanup();
+  }
 }

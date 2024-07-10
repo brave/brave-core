@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/leo_local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -35,8 +36,10 @@ class PrefService;
 FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 namespace ai_chat {
 class AIChatMetrics;
+class LeoLocalModelsUpdater;
 
-class ConversationDriver : public ModelService::Observer {
+class ConversationDriver : public ModelService::Observer,
+                           public LeoLocalModelsUpdater::Observer {
  public:
   using GeneratedTextCallback =
       base::RepeatingCallback<void(const std::string& text)>;
@@ -72,6 +75,7 @@ class ConversationDriver : public ModelService::Observer {
       PrefService* local_state,
       ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
+      LeoLocalModelsUpdater* leo_local_models_updater,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -81,6 +85,7 @@ class ConversationDriver : public ModelService::Observer {
       PrefService* local_state,
       ModelService* model_service,
       AIChatMetrics* ai_chat_metrics,
+      LeoLocalModelsUpdater* leo_local_models_updater,
       std::unique_ptr<AIChatCredentialManager> credential_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::string_view channel_string);
@@ -270,8 +275,13 @@ class ConversationDriver : public ModelService::Observer {
   void OnModelListUpdated() override;
   void OnModelRemoved(const std::string& removed_key) override;
 
+  // LeoLocalModelsUpdater::Observer
+  void OnLeoLocalModelsReady() override;
+
   raw_ptr<PrefService> pref_service_;
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<LeoLocalModelsUpdater> leo_local_models_updater_;
+  base::FilePath universal_qa_model_path_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
   std::unique_ptr<ai_chat::AIChatFeedbackAPI> feedback_api_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
