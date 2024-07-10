@@ -24,16 +24,21 @@ class URLBarHelperTests: XCTestCase {
   }
 
   func testSafeQueryList() {
-    testQuery(list: validQueryList, isSuspicious: false)
+    Task {
+      await testQuery(list: validQueryList, isSuspicious: false)
+    }
   }
 
   func testSuspiciousQueryList() {
-    testQuery(list: suspiciousQueryList, isSuspicious: true)
+    Task {
+      await testQuery(list: suspiciousQueryList, isSuspicious: true)
+    }
   }
 
-  private func testQuery(list: [String], isSuspicious: Bool) {
+  private func testQuery(list: [String], isSuspicious: Bool) async {
     for item in list {
-      XCTAssert(URLBarHelper.shared.isSuspiciousQuery(item) == isSuspicious)
+      let result = await URLBarHelper.shared.isSuspiciousQuery(item) == isSuspicious
+      XCTAssert(result)
     }
   }
 
