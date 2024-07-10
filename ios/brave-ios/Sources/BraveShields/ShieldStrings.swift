@@ -347,7 +347,7 @@ extension Strings.Shields {
 
   /// A message for a confirmation window that appears when a user clicks on 'Shred Data'.
   /// The placeholder should be replaced with a website domain.
-  private static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
+  public static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
     "ShredThisSitesDataConfirmationMessage",
     tableName: "BraveShared",
     bundle: .module,
@@ -357,15 +357,6 @@ extension Strings.Shields {
       The placeholder will be replaced with a website domain.
       """
   )
-
-  /// A message for a confirmation window that appears when a user clicks on 'Shred Data'.
-  /// The provided URL will be used to extract the domain or host.
-  public static func shredThisSitesDataConfirmationMessage(for url: URL) -> String {
-    return String(
-      format: Strings.Shields.shredThisSitesDataConfirmationMessage,
-      url.baseDomain ?? url.host ?? url.absoluteString
-    )
-  }
 
   /// A list row label for accessing the shred settings screen
   public static let shredDataButtonTitle = NSLocalizedString(
