@@ -279,6 +279,13 @@ public class BraveVPN {
       completion?(status)
     }
   }
+  
+  public static func reconnectVPN(completion: ((Bool) -> Void)? = nil) {
+    helper.forceDisconnectVPNIfNecessary()
+    connectToVPN { status in
+      completion?(status)
+    }
+  }
 
   public static func changePreferredTransportProtocol(
     with transportProtocol: TransportProtocol,
