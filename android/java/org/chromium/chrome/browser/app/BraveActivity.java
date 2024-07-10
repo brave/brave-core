@@ -1817,7 +1817,7 @@ public abstract class BraveActivity extends ChromeActivity
             int index = tabIndexes.iterator().next();
             Tab tab = tabModel.getTabAt(tabIndexes.iterator().next());
             // Set active tab
-            tabModel.setIndex(index, TabSelectionType.FROM_USER, false);
+            tabModel.setIndex(index, TabSelectionType.FROM_USER);
             return tab;
         } else {
             return null;
@@ -1859,7 +1859,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (tabIndex != TabModel.INVALID_TAB_INDEX) {
             tab = tabModel.getTabAt(tabIndex);
             // Set active tab
-            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER, false);
+            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER);
             return tab;
         } else {
             return null;
