@@ -351,11 +351,10 @@ public class NFTStore: ObservableObject, WalletObserverStore {
                     )
                     balanceForNFT = Int(balanceInDouble ?? 0)
                     nftBalances.merge(with: [account.id: balanceForNFT ?? 0])
-                    assetManager.updateBalance(
+                    await assetManager.updateBalance(
                       for: nft,
                       account: account.id,
-                      balance: "\(balanceForNFT ?? 0)",
-                      completion: nil
+                      balance: "\(balanceForNFT ?? 0)"
                     )
                   }
                   return [nft.id: nftBalances]

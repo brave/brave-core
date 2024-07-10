@@ -100,34 +100,35 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   public static func updateBalance(
     for asset: BraveWallet.BlockchainToken,
     balance: String,
-    account: String,
-    completion: (() -> Void)? = nil
-  ) {
-    DataController.perform(context: .new(inMemory: false), save: false) { context in
-      let predicate = NSPredicate(
-        format:
-          "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
-        asset.contractAddress,
-        asset.chainId,
-        asset.symbol,
-        asset.tokenId,
-        account
-      )
-      if let asset = WalletUserAssetBalance.first(where: predicate, context: context) {
-        asset.balance = balance
-      } else {
-        _ = WalletUserAssetBalance(
-          context: context,
-          asset: asset,
-          balance: balance,
-          account: account
+    account: String
+  ) async {
+    await withCheckedContinuation { continuation in
+      DataController.perform(context: .new(inMemory: false), save: false) { context in
+        let predicate = NSPredicate(
+          format:
+            "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
+          asset.contractAddress,
+          asset.chainId,
+          asset.symbol,
+          asset.tokenId,
+          account
         )
-      }
+        if let asset = WalletUserAssetBalance.first(where: predicate, context: context) {
+          asset.balance = balance
+        } else {
+          _ = WalletUserAssetBalance(
+            context: context,
+            asset: asset,
+            balance: balance,
+            account: account
+          )
+        }
 
-      WalletUserAssetBalance.saveContext(context)
+        WalletUserAssetBalance.saveContext(context)
 
-      DispatchQueue.main.async {
-        completion?()
+        DispatchQueue.main.async {
+          continuation.resume()
+        }
       }
     }
   }
@@ -138,33 +139,35 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   ///     - completion: An optional completion block
   public static func removeBalances(
     for asset: BraveWallet.BlockchainToken? = nil,
-    account: String? = nil,
-    completion: (() -> Void)? = nil
-  ) {
-    var predicate: NSPredicate?
-    if let asset, let accountAddress = account {
-      predicate = NSPredicate(
-        format:
-          "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
-        asset.contractAddress,
-        asset.chainId,
-        asset.symbol,
-        asset.tokenId,
-        accountAddress
-      )
-    } else if let asset {
-      predicate = NSPredicate(
-        format: "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@",
-        asset.contractAddress,
-        asset.chainId,
-        asset.symbol,
-        asset.tokenId
-      )
+    account: String? = nil
+  ) async {
+    await withCheckedContinuation { continuation in
+      var predicate: NSPredicate?
+      if let asset, let accountAddress = account {
+        predicate = NSPredicate(
+          format:
+            "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
+          asset.contractAddress,
+          asset.chainId,
+          asset.symbol,
+          asset.tokenId,
+          accountAddress
+        )
+      } else if let asset {
+        predicate = NSPredicate(
+          format: "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@",
+          asset.contractAddress,
+          asset.chainId,
+          asset.symbol,
+          asset.tokenId
+        )
+      }
+      WalletUserAssetBalance.deleteAll(
+        predicate: predicate
+      ) {
+        continuation.resume()
+      }
     }
-    WalletUserAssetBalance.deleteAll(
-      predicate: predicate,
-      completion: completion
-    )
   }
 
   /// - Parameters:
@@ -172,14 +175,16 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   ///     will be removed
   ///     - completion: An optional completion block
   public static func removeBalances(
-    for network: BraveWallet.NetworkInfo,
-    completion: (() -> Void)? = nil
-  ) {
-    let predict = NSPredicate(format: "chainId == %@", network.chainId)
-    WalletUserAssetBalance.deleteAll(
-      predicate: predict,
-      completion: completion
-    )
+    for network: BraveWallet.NetworkInfo
+  ) async {
+    await withCheckedContinuation { continuation in
+      let predict = NSPredicate(format: "chainId == %@", network.chainId)
+      WalletUserAssetBalance.deleteAll(
+        predicate: predict
+      ) {
+        continuation.resume()
+      }
+    }
   }
 
   /// - Parameters:

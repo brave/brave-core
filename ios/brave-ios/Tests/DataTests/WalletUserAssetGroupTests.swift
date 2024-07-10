@@ -41,7 +41,9 @@ class WalletUserAssetGroupTests: CoreDataTestCase {
     createAndWait(groupId: "60.0x1")
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 1)
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetGroup.removeGroup("60.0x1")
+      Task {
+        await WalletUserAssetGroup.removeGroup("60.0x1")
+      }
     }
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
   }
@@ -52,7 +54,9 @@ class WalletUserAssetGroupTests: CoreDataTestCase {
     createAndWait(groupId: "60.0x3")
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 3)
     backgroundSaveAndWaitForExpectation {
-      WalletUserAssetGroup.removeAllGroup()
+      Task {
+        await WalletUserAssetGroup.removeAllGroup()
+      }
     }
     XCTAssertEqual(try! DataController.viewContext.count(for: self.fetchRequest), 0)
   }

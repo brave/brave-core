@@ -290,7 +290,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         // migration is slow. Makes sure auto-discovered assets during asset migration to
         // CoreData are added after.
         Task { @MainActor [self] in
-        
+
           if let updatingUserAssets = self?.isUpdatingUserAssets, !updatingUserAssets {
             let dispatchGroup = DispatchGroup()
             for asset in discoveredAssets {
@@ -941,7 +941,8 @@ extension CryptoStore: PreferencesObserver {
   public func preferencesDidChange(for key: String) {
     Task { @MainActor in
       // we are only observing `Preferences.Wallet.migrateCoreToWalletUserAssetCompleted`
-      if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value, !autoDiscoveredAssets.isEmpty
+      if Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.value,
+        !autoDiscoveredAssets.isEmpty
       {
         for asset in autoDiscoveredAssets {
           await userAssetManager.addUserAsset(asset)

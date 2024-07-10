@@ -413,7 +413,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
         return (false, "Not able to remove network chainId (\(network.chainId)")
       }
       // delete local stored user assets that in this custom network
-      assetManager.removeGroup(for: network.walletUserAssetGroupId, completion: nil)
+      await assetManager.removeGroup(for: network.walletUserAssetGroupId)
 
       let (_, addStatus, errMsg) = await rpcService.addChain(network)
       guard addStatus == .success else {

@@ -144,14 +144,14 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
         for groupId in assets.keys {
           guard let assetsInOneGroup = assets[groupId] else { return }
           let group =
-          WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
-          ?? WalletUserAssetGroup(context: context, groupId: groupId)
+            WalletUserAssetGroup.getGroup(groupId: groupId, context: context)
+            ?? WalletUserAssetGroup(context: context, groupId: groupId)
           for asset in assetsInOneGroup
           where WalletUserAsset.getUserAsset(asset: asset, context: context) == nil {
             let visibleAsset = WalletUserAsset(context: context, asset: asset)
             visibleAsset.walletUserAssetGroup = group
           }
-          
+
           WalletUserAsset.saveContext(context)
         }
         DispatchQueue.main.async {

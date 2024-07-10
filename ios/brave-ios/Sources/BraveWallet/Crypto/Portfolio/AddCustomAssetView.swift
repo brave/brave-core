@@ -350,7 +350,8 @@ struct AddCustomAssetView: View {
 
   private func addCustomToken() {
     Task { @MainActor in
-      let network = networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
+      let network =
+        networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
       let token: BraveWallet.BlockchainToken
       switch selectedTokenType {
       case .token:
@@ -367,7 +368,7 @@ struct AddCustomAssetView: View {
           isSpam: false,
           symbol: symbolInput,
           decimals: Int32(decimalsInput)
-          ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
+            ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
           visible: true,
           tokenId: "",
           coingeckoId: coingeckoId,

@@ -169,7 +169,9 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     // onboarding
     Preferences.Wallet.isOnboardingCompleted.reset()
 
-    WalletUserAssetGroup.removeAllGroup()
+    Task { @MainActor in
+      await WalletUserAssetGroup.removeAllGroup()
+    }
   }
 
   func resetTransaction() {
