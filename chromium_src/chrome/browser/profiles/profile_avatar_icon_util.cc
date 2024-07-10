@@ -54,6 +54,15 @@ size_t GetBraveAvatarIconStartIndex();
       selected_avatar_idx == GetPlaceholderAvatarIndex());                   \
   avatars.Insert(avatars.begin(), base::Value(std::move(generic_avatar_info)));
 
+// It is necessary to match the declaration for this function to be referred to
+// by the translation unit, otherwise it cannot tell that the last argument can
+// have a default value.
+gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
+    SkColor fill_color,
+    SkColor stroke_color,
+    int size,
+    const PlaceholderAvatarIconParams& icon_params = {});
+
 }  // namespace profiles
 
 // Override some functions (see implementations for details).
@@ -187,9 +196,11 @@ ui::ImageModel GetGuestAvatar(int size) {
                                         size);
 }
 
-gfx::Image GetPlaceholderAvatarIconWithColors(SkColor fill_color,
-                                              SkColor stroke_color,
-                                              int size) {
+gfx::Image GetPlaceholderAvatarIconWithColors(
+    SkColor fill_color,
+    SkColor stroke_color,
+    int size,
+    const PlaceholderAvatarIconParams& icon_params) {
   return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
       GetPlaceholderAvatarIconResourceID());
 }
