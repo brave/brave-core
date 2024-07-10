@@ -11,8 +11,8 @@
 #include "base/files/file_util.h"
 #include "base/i18n/time_formatting.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "third_party/icu/source/i18n/unicode/timezone.h"
 
 namespace {
 
@@ -20,8 +20,8 @@ const int64_t kChunkSize = 1024;
 const size_t kDividerLength = 80;
 
 std::string FormatTime(const base::Time& time) {
-  return base::UTF16ToUTF8(
-      base::LocalizedTimeFormatWithPattern(time, "MMM dd, YYYY h::mm::ss.S a"));
+  return base::UnlocalizedTimeFormatWithPattern(
+      time, "MMM dd, YYYY h:mm:ss.S a", icu::TimeZone::getGMT());
 }
 
 std::string GetLogVerboseLevelName(int verbose_level) {
