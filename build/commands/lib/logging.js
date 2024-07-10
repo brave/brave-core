@@ -21,7 +21,7 @@ process.stdout.on('resize', setLineLength)
 const progressStyle = chalk.bold.inverse
 const statusStyle = chalk.green.italic
 const warningStyle = chalk.black.bgYellow
-const errorStyle = chalk.black.bgRed
+const errorStyle = chalk.red
 
 const cmdDirStyle = chalk.blue
 const cmdCmdStyle = chalk.green
