@@ -21,6 +21,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -315,6 +316,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
     }
 #endif
 
+    histogram_tester_ = std::make_unique<base::HistogramTester>();
+    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
+
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
@@ -322,13 +326,25 @@ class BraveWalletServiceUnitTest : public testing::Test {
         TestingBrowserProcess::GetGlobal());
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
+    builder.AddTestingFactory(
+        brave_wallet::BraveWalletServiceFactory::GetInstance(),
+        base::BindRepeating(
+            [](scoped_refptr<network::SharedURLLoaderFactory>
+                   shared_url_loader_factory,
+               TestingPrefServiceSimple* local_state,
+               content::BrowserContext* context)
+                -> std::unique_ptr<KeyedService> {
+              auto* profile = Profile::FromBrowserContext(context);
+              return std::make_unique<BraveWalletService>(
+                  shared_url_loader_factory,
+                  BraveWalletServiceDelegate::Create(profile),
+                  profile->GetPrefs(), local_state);
+            },
+            shared_url_loader_factory_, local_state_->Get()));
     profile_ = builder.Build();
-    histogram_tester_ = std::make_unique<base::HistogramTester>();
-    bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
-    service_ = std::make_unique<BraveWalletService>(
-        shared_url_loader_factory_,
-        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
-        local_state_->Get());
+    service_ = brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        profile_.get());
+    ASSERT_TRUE(service_.get());
     network_manager_ = service_->network_manager();
     json_rpc_service_ = service_->json_rpc_service();
     keyring_service_ = service_->keyring_service();
@@ -844,7 +860,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
-  std::unique_ptr<BraveWalletService> service_;
+  raw_ptr<BraveWalletService> service_ = nullptr;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
