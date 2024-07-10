@@ -5,6 +5,10 @@
 
 #include "chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h"
 
+// CreateNewDialog is a function declared in
+// JavaScriptTabModalDialogManagerDelegateDesktop. As we want our own factory
+// function, replaces the function name. Our version will be in the
+// brave_javascript_tab_modal_dialog_view_views.cc.
 #define CreateNewDialog CreateNewDialog_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/javascript_tab_modal_dialog_view_views.cc"

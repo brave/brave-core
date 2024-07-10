@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/types/to_address.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -35,7 +36,7 @@ BraveJavaScriptTabModalDialogViewViews::BraveJavaScriptTabModalDialogViewViews(
           default_prompt_text,
           std::move(dialog_callback),
           std::move(dialog_force_closed_callback)),
-      alerting_web_contents_(alerting_web_contents) {
+      alerting_web_contents_(*alerting_web_contents) {
   // JavaScriptTabModalDialogViewViews already created Widget.
   auto* widget = GetWidget();
   CHECK(widget);
@@ -90,25 +91,23 @@ JavaScriptTabModalDialogManagerDelegateDesktop::CreateNewDialog(
       ->weak_ptr_factory_.GetWeakPtr();
 }
 
-web_modal::WebContentsModalDialogHost*
+web_modal::WebContentsModalDialogHost&
 BraveJavaScriptTabModalDialogViewViews::GetModalDialogHost() {
   web_modal::WebContentsModalDialogManager* manager =
       web_modal::WebContentsModalDialogManager::FromWebContents(
-          alerting_web_contents_);
+          base::to_address(alerting_web_contents_));
   CHECK(manager);
 
   auto* modal_dialog_host =
       manager->delegate()->GetWebContentsModalDialogHost();
   CHECK(modal_dialog_host);
 
-  return modal_dialog_host;
+  return *modal_dialog_host;
 }
 
 void BraveJavaScriptTabModalDialogViewViews::UpdateWidgetBounds() {
   auto* widget = GetWidget();
-  if (!widget) {
-    return;
-  }
+  CHECK(widget);
 
   CHECK(has_desired_bounds_delegate());
   widget->SetBounds(GetDesiredWidgetBounds());
@@ -119,23 +118,25 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
   auto* widget = GetWidget();
   CHECK(widget);
 
-  auto* modal_dialog_host = GetModalDialogHost();
+  auto& modal_dialog_host = GetModalDialogHost();
 
   // When a tab is in split view mode, We want javascript dialog to be
   // centered to the relevant web view.
   gfx::Rect bounds = widget->GetWindowBoundsInScreen();
-  bounds.set_origin(modal_dialog_host->GetDialogPosition(bounds.size()));
+  bounds.set_origin(modal_dialog_host.GetDialogPosition(bounds.size()));
 
   // 1. Check if the tab is in split view mode.
-  auto* browser = chrome::FindBrowserWithTab(alerting_web_contents_);
+  auto* browser =
+      chrome::FindBrowserWithTab(base::to_address(alerting_web_contents_));
   if (!browser) {
     // This can happen on shutting down.
     return bounds.origin();
   }
 
   auto* tab_strip_model = browser->tab_strip_model();
-  auto tab_handle = tab_strip_model->GetTabHandleAt(
-      tab_strip_model->GetIndexOfWebContents(alerting_web_contents_));
+  auto tab_handle =
+      tab_strip_model->GetTabHandleAt(tab_strip_model->GetIndexOfWebContents(
+          base::to_address(alerting_web_contents_)));
 
   auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser);
   CHECK(split_view_browser_data);

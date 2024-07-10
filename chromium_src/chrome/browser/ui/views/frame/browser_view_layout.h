@@ -15,6 +15,8 @@
 #define LayoutBookmarkAndInfoBars virtual LayoutBookmarkAndInfoBars
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
+
+// Add a new method: NotifyDialogPositionRequiresUpdate()
 #define set_contents_border_widget           \
   set_contents_border_widget_unused();       \
   void NotifyDialogPositionRequiresUpdate(); \

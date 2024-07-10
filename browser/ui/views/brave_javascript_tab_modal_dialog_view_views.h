@@ -15,6 +15,9 @@ namespace web_modal {
 class WebContentsModalDialogHost;
 }  // namespace web_modal
 
+// This class overrides JavaScriptTabModalDialogViewViews to customize the
+// position of the dialog. In split view mode, we want dialogs to be centered to
+// its relevant web view.
 class BraveJavaScriptTabModalDialogViewViews
     : public JavaScriptTabModalDialogViewViews,
       public views::WidgetObserver {
@@ -35,14 +38,14 @@ class BraveJavaScriptTabModalDialogViewViews
  private:
   friend class JavaScriptTabModalDialogManagerDelegateDesktop;
 
-  web_modal::WebContentsModalDialogHost* GetModalDialogHost();
+  web_modal::WebContentsModalDialogHost& GetModalDialogHost();
 
   void UpdateWidgetBounds();
 
   // This returns point in dialog host's widget coordinate.
   gfx::Point GetDesiredPositionConsideringSplitView();
 
-  raw_ptr<content::WebContents> alerting_web_contents_ = nullptr;
+  raw_ref<content::WebContents> alerting_web_contents_;
 
   base::WeakPtrFactory<BraveJavaScriptTabModalDialogViewViews>
       weak_ptr_factory_{this};
