@@ -23,6 +23,8 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -186,7 +188,7 @@ void RegisterProfilePrefsForMigration(
 
   brave_rewards::RegisterProfilePrefsForMigration(registry);
 
-  brave_news::p3a::NewsMetrics::RegisterProfilePrefsForMigration(registry);
+  brave_news::p3a::prefs::RegisterProfileNewsMetricsPrefsForMigration(registry);
 
   // Added May 2023
 #if defined(TOOLKIT_VIEWS)
@@ -235,7 +237,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
-  brave_news::BraveNewsPrefManager::RegisterProfilePrefs(registry);
+  brave_news::prefs::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings

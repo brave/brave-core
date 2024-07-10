@@ -10,7 +10,7 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
-#include "brave/components/brave_news/browser/locales_helper.h"
+#include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"

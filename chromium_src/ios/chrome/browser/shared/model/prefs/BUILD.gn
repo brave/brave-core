@@ -6,6 +6,7 @@
 group("prefs") {
   deps = [
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync:prefs",

@@ -17,31 +17,15 @@
 #include "base/uuid.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
-#include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_observer.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_news {
-
-// static
-void BraveNewsPrefManager::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kShouldShowToolbarButton, true);
-  registry->RegisterBooleanPref(prefs::kNewTabPageShowToday,
-                                IsUserInDefaultEnabledLocale());
-  registry->RegisterBooleanPref(prefs::kBraveNewsOptedIn, false);
-  registry->RegisterDictionaryPref(prefs::kBraveNewsSources);
-  registry->RegisterDictionaryPref(prefs::kBraveNewsChannels);
-  registry->RegisterDictionaryPref(prefs::kBraveNewsDirectFeeds);
-  registry->RegisterBooleanPref(prefs::kBraveNewsOpenArticlesInNewTab, true);
-
-  p3a::NewsMetrics::RegisterProfilePrefs(registry);
-}
 
 BraveNewsPrefManager::BraveNewsPrefManager(PrefService& prefs) : prefs_(prefs) {
   pref_change_registrar_.Init(&*prefs_);
