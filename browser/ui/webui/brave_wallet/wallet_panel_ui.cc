@@ -170,6 +170,8 @@ void WalletPanelUI::CreatePanelHandler(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::MeldIntegrationServiceFactory::BindForContext(
       profile, std::move(meld_integration_service));
+  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
+      profile, std::move(brave_wallet_ipfs_service_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {
