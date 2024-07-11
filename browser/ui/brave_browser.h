@@ -54,6 +54,10 @@ class BraveBrowser : public Browser {
   void OnTabClosing(content::WebContents* contents) override;
   void TabStripEmpty() override;
 
+  void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                      scoped_refptr<content::FileSelectListener> listener,
+                      const blink::mojom::FileChooserParams& params) override;
+
   // Returns true when we should ask browser closing to users before handling
   // any warning/onbeforeunload handlers.
   bool ShouldAskForBrowserClosingBeforeHandlers();
