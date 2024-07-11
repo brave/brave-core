@@ -6,9 +6,13 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
-import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 import Label from '@brave/leo/react/label'
 import Icon from '@brave/leo/react/icon'
+
+// styles
+import {
+  layoutPanelWidth //
+} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const DappsGrid = styled.div`
   display: grid;

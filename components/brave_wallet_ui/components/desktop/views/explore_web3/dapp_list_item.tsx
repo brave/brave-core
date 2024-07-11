@@ -19,20 +19,16 @@ import {
 import { PlaceholderImage, StyledWrapper } from './dapp_list_item.styles'
 
 export const DappListItem = React.forwardRef<
-  HTMLDivElement,
+  HTMLButtonElement,
   {
     dapp: BraveWallet.Dapp
-    ref: React.Ref<HTMLDivElement>
+    ref: React.Ref<HTMLButtonElement>
     onClick?: (dappId: number) => void
   }
 >(({ dapp, onClick }, ref) => {
   return (
     <StyledWrapper
       ref={ref}
-      gap={'8px'}
-      padding={'12px 8px'}
-      width='100%'
-      justifyContent='flex-start'
       onClick={
         onClick
           ? function () {

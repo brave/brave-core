@@ -6,7 +6,7 @@
 // constants
 import { BraveWallet } from '../../constants/types'
 
-export const dappRadarChainNamesToChainIdMapping = {
+export const dappRadarChainNamesToChainIdMapping: Record<string, string> = {
   'aleph-zero': '', // NOT SUPPORTED
   'algorand': '', // NOT SUPPORTED
   'aptos': '', // NOT SUPPORTED

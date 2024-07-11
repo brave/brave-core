@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 
+// Components
 import {
   WalletPageStory //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'

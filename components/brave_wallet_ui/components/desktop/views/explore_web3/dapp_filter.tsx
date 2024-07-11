@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// Styles
 import { FilterButton, FilterLabel, FilterClose } from './explore_web3.style'
 
 interface Props {
