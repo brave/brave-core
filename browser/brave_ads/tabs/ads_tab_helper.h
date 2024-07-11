@@ -58,8 +58,12 @@ class AdsTabHelper : public content::WebContentsObserver,
   void MaybeSetBrowserIsActive();
   void MaybeSetBrowserIsNoLongerActive();
 
+  // Returns 'false' if the navigation was a back/forward navigation or a
+  // reload, otherwise 'true'.
   bool IsNewNavigation(content::NavigationHandle* navigation_handle);
 
+  // DO NOT use this before the navigation commit. It would always return false.
+  // You can use it from WebContentsObserver::DidFinishNavigation().
   bool IsErrorPage(content::NavigationHandle* navigation_handle);
 
   void ProcessNavigation();
@@ -84,7 +88,7 @@ class AdsTabHelper : public content::WebContentsObserver,
       const std::vector<GURL>& redirect_chain,
       base::Value value);
 
-  bool IsPlayingMedia(const std::string& media_player_id);
+  bool IsPlayingMedia(const std::string& media_player_uuid);
   void MaybeNotifyTabDidStartPlayingMedia();
   void MaybeNotifyTabDidStopPlayingMedia();
 
@@ -111,7 +115,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
 
-  SessionID tab_id_;
+  SessionID session_id_;
 
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
 
@@ -122,7 +126,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
 
-  std::set</*media_player_uuid*/ std::string> is_playing_media_;
+  std::set</*media_player_uuid*/ std::string> media_players_;
 
   std::optional<bool> is_browser_active_;
 
