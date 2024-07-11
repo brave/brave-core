@@ -48,6 +48,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   
   private var vpnConnectionStatusToggle: SwitchAccessoryView?
   
+  private var vpnKillSwitchStatusToggle: SwitchAccessoryView?
 
   /// Loading view with an transparent overlay
   private var overlayView: UIView?
@@ -72,7 +73,8 @@ public class BraveVPNSettingsViewController: TableViewController {
       overlay.addSubview(loaderView)
 
       overlay.frame = CGRect(size: tableView.contentSize)
-      loaderView.frame.origin = CGPoint(x: tableView.bounds.midX - (loaderView.bounds.width / 2), y: tableView.bounds.midY - 100)
+      loaderView.frame.origin = 
+        CGPoint(x: tableView.bounds.midX - (loaderView.bounds.width / 2), y: tableView.bounds.midY)
       
       loaderView.start()
       overlayView = overlay
@@ -233,7 +235,8 @@ public class BraveVPNSettingsViewController: TableViewController {
           selection: { [unowned self] in
             self.selectServerTapped()
           },
-          image: BraveVPN.serverLocation.isoCode?.regionFlagImage ?? UIImage(braveSystemNamed: "leo.globe"),
+          image: BraveVPN.serverLocation.isoCode?.regionFlagImage
+            ?? UIImage(braveSystemNamed: "leo.globe"),
           accessory: .disclosureIndicator,
           cellClass: MultilineSubtitleCell.self,
           uuid: locationCellId
@@ -265,21 +268,14 @@ public class BraveVPNSettingsViewController: TableViewController {
       initialValue: true,
       valueChange: { [weak self] killSwitchON in
         guard let self = self else { return }
+                
+        BraveVPN.helper.killSwitchEnabled = killSwitchON
         
-        self.vpnReconfigurationPending = true
-        self.isLoading = true
-        
-//        BraveVPN.reconnectVPN { success in
-//
-//          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//            self.isLoading = false
-//            self.vpnReconfigurationPending = false
-//            
-//            self.updateServerSectionInfo()
-//          }
-//        }
+        self.performAllNetworkReconnect()
       }
     )
+    
+    vpnKillSwitchStatusToggle = killSwitchView
     
     return Section(
       header: .title(Strings.VPN.settingsKillSwitchTitle.capitalized),
@@ -353,6 +349,28 @@ public class BraveVPNSettingsViewController: TableViewController {
       killSwitchSection,
       techSupportSection
     ]
+  }
+  
+  /// Reconnecting VPN after Kill Switch toggle is set
+  private func performAllNetworkReconnect() {
+   isLoading = true
+
+    BraveVPN.reconnect() { [weak self] connected in
+      guard let self = self else { return }
+        
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        self.isLoading = false
+        
+        guard connected else {
+          self.showEnableKillSwitchError()
+          return
+        }
+        
+        // Normally the connected server should not change
+        // This is added in case there is an unexpected change happens on server side
+        self.updateServerSectionInfo()
+      }
+    }
   }
 
   private func updateServerSectionInfo() {
@@ -488,31 +506,30 @@ extension BraveVPNSettingsViewController {
   
   private func showEnableKillSwitchError() {
     let alert = UIAlertController(
-      title: "Couldnt Enable Kill Switch",
-      message: "Description of the error goes here. TO BE CONFIRMED",
+      title: Strings.VPN.settingsKillSwitchToggleErrorTitle,
+      message: Strings.VPN.settingsKillSwitchToggleErrorDescription,
       preferredStyle: .alert
     )
 
-    let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
+    let cancel = UIAlertAction(
+      title: Strings.cancelButtonTitle,
+      style: .cancel,
+      handler: { [weak self] _ in
+        guard let self = self, let toggleStatus = self.vpnKillSwitchStatusToggle?.isOn else {
+          return
+        }
+        
+        // Re-try canceled
+        // Kill switch and UI is set  previous toggle status
+        BraveVPN.helper.killSwitchEnabled = !toggleStatus
+        self.vpnKillSwitchStatusToggle?.isOn = !toggleStatus
+    })
     
     let retry = UIAlertAction(
-      title: "Retry",
+      title: Strings.VPN.settingsRetryActionTitle,
       style: .default,
       handler: { [weak self] _ in
-        guard let self = self else { return }
-        
-        self.vpnReconfigurationPending = true
-        self.isLoading = true
-        
-        BraveVPN.reconnectVPN { success in
-
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.isLoading = false
-            self.vpnReconfigurationPending = false
-            
-            self.updateServerSectionInfo()
-          }
-        }
+        self?.performAllNetworkReconnect()
       }
     )
 
