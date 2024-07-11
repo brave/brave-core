@@ -26,7 +26,6 @@ source_set("ui") {
     "//ios/web/web_state/ui:web_controller_header",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
     "//ios/web/webui",
-    "//ui/base",
   ]
 
   frameworks = [

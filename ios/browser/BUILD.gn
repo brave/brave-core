@@ -70,7 +70,6 @@ source_set("browser") {
     "//ios/web/public/init",
     "//ios/web/public/navigation",
     "//ios/web/public/thread",
-    "//ui/base",
     "//url",
   ]
 }

@@ -30,7 +30,6 @@ source_set("web_state") {
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",
     "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
-    "//ui/base",
     "//url",
   ]
 

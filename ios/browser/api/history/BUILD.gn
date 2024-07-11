@@ -29,7 +29,6 @@ source_set("history") {
     "//ios/chrome/browser/sync/model",
     "//ios/web/public/thread",
     "//net",
-    "//ui/base",
     "//url",
   ]
 

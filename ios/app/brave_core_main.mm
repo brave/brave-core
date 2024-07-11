@@ -57,7 +57,6 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "components/sync/base/features.h"
-#include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_model_factory.h"
 #include "ios/chrome/browser/bookmarks/model/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/bookmarks/model/local_or_syncable_bookmark_model_factory.h"
@@ -78,6 +77,7 @@
 #include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/chrome/browser/webui/ui_bundled/chrome_web_ui_ios_controller_factory.h"
+#include "ios/public/provider/chrome/browser/app_utils/app_utils_api.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
@@ -173,7 +173,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
         base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
 
     // Register all providers before calling any Chromium code.
-    [ProviderRegistration registerProviders];
+    ios::provider::Initialize();
 
     // Setup WebClient ([ClientRegistration registerClients])
     _webClient.reset(new BraveWebClient());

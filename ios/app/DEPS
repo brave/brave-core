@@ -18,6 +18,7 @@ include_rules = [
   "+components/sync/base",
   "+components/sync/service",
   "+components/variations/variations_switches.h",
+  "+ios/public/provider/chrome/browser/app_utils/app_utils_api.h",
   "+ios/public/provider/chrome/browser/chrome_browser_provider.h",
   "+ios/public/provider/chrome/browser/overrides/overrides_api.h",
   "+ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h",

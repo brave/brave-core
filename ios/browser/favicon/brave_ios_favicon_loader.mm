@@ -19,7 +19,6 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
-#import "ios/chrome/browser/shared/ui/util/uikit_ui_util.h"
 #import "ios/chrome/common/ui/favicon/favicon_attributes.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "url/gurl.h"
@@ -94,6 +93,13 @@ void BraveFaviconLoader::FaviconForPageUrlOrHost(
       faviconBlockHandler(attributes);
       return;
     }
+
+    auto UIColorFromRGB = [](int rgb, CGFloat alpha = 1.0) -> UIColor* {
+      return [UIColor colorWithRed:((CGFloat)((rgb & 0xFF0000) >> 16)) / 255.0
+                             green:((CGFloat)((rgb & 0x00FF00) >> 8)) / 255.0
+                              blue:((CGFloat)(rgb & 0x0000FF)) / 255.0
+                             alpha:alpha];
+    };
 
     // Did not fetch valid favicon
     DCHECK(result.fallback_icon_style);

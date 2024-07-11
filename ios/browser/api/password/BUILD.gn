@@ -23,7 +23,6 @@ source_set("password") {
     "//ios/chrome/browser/passwords/model",
     "//ios/web/public/thread",
     "//net",
-    "//ui/base",
     "//url",
   ]
 

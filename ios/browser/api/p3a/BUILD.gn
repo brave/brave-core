@@ -21,7 +21,6 @@ source_set("p3a") {
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",
     "//net",
-    "//ui/base",
     "//url",
   ]
 }

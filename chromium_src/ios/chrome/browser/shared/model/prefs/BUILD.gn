@@ -20,5 +20,6 @@ group("prefs") {
     "//brave/components/p3a:buildflags",
     "//brave/components/skus/browser",
     "//brave/ios/browser/brave_stats",
+    "//ios/chrome/browser/shared/model/prefs:browser_prefs",
   ]
 }
