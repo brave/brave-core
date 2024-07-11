@@ -2020,6 +2020,12 @@ Are you sure you want to do this?
     <message name="IDS_ENTER_WORD" desc="Brave Wallet verify recovery phrase content">
       Enter the word in position <ph name="WORD_POSITION">%1$s</ph> from your recovery phrase.
     </message>
+    <message name="IDS_CHECK_WORD" desc="Brave Wallet verify recovery phrase title">
+      Let's check
+    </message>
+    <message name="IDS_ENTER_WORD" desc="Brave Wallet verify recovery phrase content">
+      Enter the word in position <ph name="WORD_POSITION">%1$s</ph> from your recovery phrase.
+    </message>
     <message name="IDS_SKIP_RECOVERY_STEP" desc="Brave Wallet skip recovery phrase dialog text">
       You can skip this step now, but you still need to back up your recovery phrase to ensure account security.
     </message>
