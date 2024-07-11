@@ -12,6 +12,10 @@ import { useBuy } from '../swap/hooks/useBuy'
 import { getLocale } from '../../../../common/locale'
 import { getAssetSymbol } from '../../../utils/meld_utils'
 
+// selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // components
 import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../../components/desktop/card-headers/page-title-header'
@@ -21,9 +25,19 @@ import { AmountButton } from './components/amount_button/amount_button'
 import { SelectCurrency } from './components/select_currency/select_currency'
 import { SelectAccount } from './components/select_account/select_account'
 import { SelectAsset } from './components/select_asset/select_asset'
+import { BuyQuote } from './components/buy_quote/buy_quote'
 
 // styles
-import { ControlPanel } from './fund_wallet_v1.style'
+import {
+  ContentWrapper,
+  ControlPanel,
+  Divider,
+  Loader,
+  LoaderText,
+  LoadingWrapper,
+  ServiceProvidersWrapper
+} from './fund_wallet_v1.style'
+import { Column } from '../../../components/shared/style'
 
 export const FundWalletScreen = () => {
   // state
@@ -47,8 +61,6 @@ export const FundWalletScreen = () => {
     defaultFiatCurrency,
     isFetchingQuotes,
     quotes,
-    buyErrors,
-    // timeUnitNextQuote,
     onSelectToken,
     onSelectAccount,
     onSelectCurrency,
@@ -56,10 +68,8 @@ export const FundWalletScreen = () => {
     serviceProviders
   } = useBuy()
 
-  console.log('Buy Errors', buyErrors)
-  console.log('Is fetching quotes:', isFetchingQuotes)
-  console.log('Quotes:', quotes)
-  console.log(serviceProviders)
+  // redux
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // computed
   const pageTitle = selectedAsset
@@ -74,29 +84,61 @@ export const FundWalletScreen = () => {
         //   hideHeader={isAndroid}
         cardHeader={<PageTitleHeader title={pageTitle} />}
         hideDivider
+        noMinCardHeight
+        useDarkBackground={isPanel}
+        noPadding={isPanel}
+        noCardPadding={isPanel}
       >
-        <ControlPanel>
-          <SelectAssetButton
-            labelText='Asset'
-            selectedAsset={selectedAsset}
-            onClick={() => setIsAssetDialogOpen(true)}
-          />
-          <SelectAccountButton
-            labelText='Account'
-            selectedAccount={selectedAccount}
-            onClick={() => setIsAccountDialogOpen(true)}
-          />
-          <AmountButton
-            labelText='Amount'
-            currencyCode={selectedCurrency?.currencyCode || defaultFiatCurrency}
-            amount={amount}
-            onClick={() => {
-              setIsCurrencyDialogOpen(true)
-            }}
-            onChange={onSetAmount}
-            estimatedCryptoAmount={estimatedCryptoAmount}
-          />
-        </ControlPanel>
+        <ContentWrapper>
+          <ControlPanel>
+            <SelectAssetButton
+              labelText='Asset'
+              selectedAsset={selectedAsset}
+              onClick={() => setIsAssetDialogOpen(true)}
+            />
+            <SelectAccountButton
+              labelText='Account'
+              selectedAccount={selectedAccount}
+              onClick={() => setIsAccountDialogOpen(true)}
+            />
+            <AmountButton
+              labelText='Amount'
+              currencyCode={
+                selectedCurrency?.currencyCode || defaultFiatCurrency
+              }
+              amount={amount}
+              onClick={() => {
+                setIsCurrencyDialogOpen(true)
+              }}
+              onChange={onSetAmount}
+              estimatedCryptoAmount={estimatedCryptoAmount}
+            />
+          </ControlPanel>
+          <ServiceProvidersWrapper>
+            {isFetchingQuotes ? (
+              <LoadingWrapper>
+                <Loader />
+                <LoaderText>Getting best prices...</LoaderText>
+              </LoadingWrapper>
+            ) : (
+              <>
+                {quotes?.length > 0 && serviceProviders?.length > 0 ? (
+                  <Column width='100%' padding='8px'>
+                    <Divider />
+                    {quotes?.map((quote) => (
+                      <BuyQuote
+                        key={quote.serviceProvider}
+                        quote={quote}
+                        serviceProviders={serviceProviders || []}
+                        isBestOption={false}
+                      />
+                    ))}
+                  </Column>
+                ) : null}
+              </>
+            )}
+          </ServiceProvidersWrapper>
+        </ContentWrapper>
       </WalletPageWrapper>
 
       <SelectAsset

@@ -3,11 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
-
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 
@@ -59,7 +54,7 @@ export const useBuy = () => {
   const { data: countries } = useGetMeldCountriesQuery()
   const { data: defaultCountryCode } = useGetDefaultCountryQuery()
   const [generateQuotes] = useGenerateMeldCryptoQuotesMutation()
-  const { data: serviceProviders, isLoading: isLoadingServiceProvider } =
+  const { data: serviceProviders = [], isLoading: isLoadingServiceProvider } =
     useGetMeldServiceProvidersQuery()
 
   // state
@@ -77,7 +72,7 @@ export const useBuy = () => {
   >(undefined)
   const [isFetchingQuotes, setIsFetchingQuotes] = React.useState(false)
   const [buyErrors, setBuyErrors] = React.useState<string[] | undefined>([])
-  const [quotes, setQuotes] = React.useState<MeldCryptoQuote[] | undefined>([])
+  const [quotes, setQuotes] = React.useState<MeldCryptoQuote[]>([])
   const [timeUnitNextQuote, setTimeUnitNextQuote] = React.useState<
     number | undefined
   >(undefined)
