@@ -51,8 +51,8 @@ std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AdsTabHelper>(*web_contents),
-      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
-  if (!tab_id_.is_valid()) {
+      session_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
+  if (!session_id_.is_valid()) {
     // Invalid session id instance.
     return;
   }
@@ -61,6 +61,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service_) {
+    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -133,7 +134,7 @@ void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
   MaybeNotifyBrowserDidResignActive();
 
   // Maybe notify of tab change after the browser's active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
+  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
   MaybeNotifyTabDidChange();
 }
 
@@ -185,7 +186,7 @@ void AdsTabHelper::ResetNavigationState() {
 
   is_error_page_ = false;
 
-  is_playing_media_.clear();
+  media_players_.clear();
 }
 
 void AdsTabHelper::MaybeNotifyBrowserDidBecomeActive() {
@@ -205,6 +206,7 @@ void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
   CHECK(navigation_handle);
 
   if (!ads_service_) {
+    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -227,6 +229,7 @@ void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
 
 void AdsTabHelper::MaybeNotifyTabDidChange() {
   if (!ads_service_) {
+    // No-op if the ads service is unavailable.
     return;
   }
 
@@ -236,7 +239,7 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
     return;
   }
 
-  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
+  ads_service_->NotifyTabDidChange(/*tab_id=*/session_id_.id(), redirect_chain_,
                                    is_new_navigation_, was_restored_,
                                    is_error_page_, IsVisible());
 }
@@ -258,9 +261,9 @@ void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
     // HTML is not required because verifiable conversions are only supported
     // for Brave Rewards users. However, we must notify that the tab content has
     // changed with empty HTML to ensure that regular conversions are processed.
-    return ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(),
-                                                       redirect_chain_,
-                                                       /*html=*/"");
+    return ads_service_->NotifyTabHtmlContentDidChange(
+        /*tab_id=*/session_id_.id(), redirect_chain_,
+        /*html=*/"");
   }
 
   // Only utilized for verifiable conversions, which requires the user to have
@@ -276,7 +279,8 @@ void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
     const std::vector<GURL>& redirect_chain,
     base::Value value) {
   if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain,
+    ads_service_->NotifyTabHtmlContentDidChange(/*tab_id=*/session_id_.id(),
+                                                redirect_chain,
                                                 /*html=*/value.GetString());
   }
 }
@@ -301,26 +305,27 @@ void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
     const std::vector<GURL>& redirect_chain,
     base::Value value) {
   if (ads_service_ && value.is_string()) {
-    ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain,
+    ads_service_->NotifyTabTextContentDidChange(/*tab_id=*/session_id_.id(),
+                                                redirect_chain,
                                                 /*text=*/value.GetString());
   }
 }
 
 void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
   if (ads_service_) {
-    ads_service_->NotifyTabDidStartPlayingMedia(tab_id_.id());
+    ads_service_->NotifyTabDidStartPlayingMedia(/*tab_id=*/session_id_.id());
   }
 }
 
 void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia() {
   if (ads_service_) {
-    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
+    ads_service_->NotifyTabDidStopPlayingMedia(/*tab_id=*/session_id_.id());
   }
 }
 
 void AdsTabHelper::MaybeNotifyTabdidClose() {
   if (ads_service_) {
-    ads_service_->NotifyDidCloseTab(tab_id_.id());
+    ads_service_->NotifyDidCloseTab(/*tab_id=*/session_id_.id());
   }
 }
 
@@ -340,7 +345,12 @@ void AdsTabHelper::DidStartNavigation(
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!ads_service_ || !navigation_handle->IsInPrimaryMainFrame() ||
+  if (!ads_service_) {
+    // No-op if the ads service is unavailable.
+    return;
+  }
+
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
       !navigation_handle->HasCommitted()) {
     return;
   }
@@ -364,14 +374,15 @@ void AdsTabHelper::DidFinishNavigation(
 
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (!ads_service_) {
+    // No-op if the ads service is unavailable.
     return;
   }
 
   ProcessNavigation();
 }
 
-bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_id) {
-  return base::Contains(is_playing_media_, media_player_id);
+bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_uuid) {
+  return base::Contains(media_players_, media_player_uuid);
 }
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
@@ -383,8 +394,8 @@ void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
     return;
   }
 
-  is_playing_media_.insert(media_player_uuid);
-  if (is_playing_media_.size() == 1) {
+  media_players_.insert(media_player_uuid);
+  if (media_players_.size() == 1) {
     // If this is the first media player that has started playing, notify that
     // the tab has started playing media.
     MaybeNotifyTabDidStartPlayingMedia();
@@ -402,8 +413,8 @@ void AdsTabHelper::MediaStoppedPlaying(
     return;
   }
 
-  is_playing_media_.erase(media_player_uuid);
-  if (is_playing_media_.empty()) {
+  media_players_.erase(media_player_uuid);
+  if (media_players_.empty()) {
     // If this is the last media player that has stopped playing, notify that
     // the tab has stopped playing media.
     MaybeNotifyTabDidStopPlayingMedia();
@@ -425,6 +436,9 @@ void AdsTabHelper::WebContentsDestroyed() {
 }
 
 #if !BUILDFLAG(IS_ANDROID)
+// TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
+// BrowserListObserver.
+
 void AdsTabHelper::OnBrowserSetLastActive(Browser* /*browser*/) {
   MaybeSetBrowserIsActive();
 }
