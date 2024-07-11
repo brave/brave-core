@@ -25,7 +25,7 @@ export function createLocaleContextForTesting (strings: any) {
   return {
     getString,
     async getPluralString (key: string, count: number) {
-      return getString(key).replace('$1', String(count))
+      return getString(key).replace('#', String(count))
     }
   }
 }

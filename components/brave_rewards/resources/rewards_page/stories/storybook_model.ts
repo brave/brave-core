@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { createStateManager } from '../../shared/lib/state_manager'
+import { createLocaleContextForTesting } from '../../shared/lib/locale_context'
 import { AppModel, AppState, defaultState, defaultModel } from '../lib/app_model'
+import { localeStrings } from '../lib/locale_strings'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -13,6 +15,7 @@ function delay(ms: number) {
 }
 
 export function createModel(): AppModel {
+  const locale = createLocaleContextForTesting(localeStrings)
   const stateManager = createStateManager<AppState>({
     ...defaultState(),
     loading: false,
@@ -21,6 +24,8 @@ export function createModel(): AppModel {
 
   return {
     ...defaultModel(),
+    getString: locale.getString,
+    getPluralString: locale.getPluralString,
     getState: stateManager.getState,
     addListener: stateManager.addListener,
     async enableRewards(countryCode) {

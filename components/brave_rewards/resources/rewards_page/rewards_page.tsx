@@ -10,7 +10,6 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import { LocaleContext } from '../shared/lib/locale_context'
 import { AppModelContext } from './lib/app_model_context'
 import { createModel } from './lib/webui_model'
-import { createLocaleForWebUI } from './lib/webui_locale'
 import { TabOpenerContext } from '../shared/components/new_tab_link'
 import { App } from './components/app'
 
@@ -37,12 +36,11 @@ whenDocumentReady().then(() => {
   handleLegacyURLs()
 
   const model = createModel()
-  const locale = createLocaleForWebUI()
   const root = createRoot(document.getElementById('root')!)
 
   root.render(
     <TabOpenerContext.Provider value={model}>
-      <LocaleContext.Provider value={locale}>
+      <LocaleContext.Provider value={model}>
         <AppModelContext.Provider value={model}>
           <App />
         </AppModelContext.Provider>

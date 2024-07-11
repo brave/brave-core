@@ -74,7 +74,7 @@ void RewardsPageTopUI::CreatePageHandler(
 
   handler_ = std::make_unique<RewardsPageHandler>(
       std::move(page), std::move(handler), std::move(bubble_delegate),
-      RewardsServiceFactory::GetForProfile(profile));
+      Profile::FromWebUI(web_ui()));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(RewardsPageTopUI)

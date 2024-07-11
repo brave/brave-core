@@ -94,6 +94,19 @@
       other {This month, you've visited # creators supported by Brave Rewards}
     }
   </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT_2" desc="">
+    Ready to start earning?
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT" desc="">
+    Connect a payout account
+  </message>
+  <message name="IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT" desc="">
+    {ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> this month}
+      =1 {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ad<ph name="COUNT_END">$2</ph> you've seen this month.}
+      other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph># Ads<ph name="COUNT_END">$2</ph> you've seen this month.}
+    }
+  </message>
 
   <!-- Rewards new tab page widget -->
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">

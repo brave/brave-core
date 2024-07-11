@@ -48,7 +48,7 @@ export const modalStyle = scopedCSS('app-modal', css`
     }
   }
 
-  ::backdrop {
+  &::backdrop {
     background: rgba(0, 0, 0, 0.15);
 
     animation-name: modal-backdrop-fade;

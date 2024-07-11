@@ -11,6 +11,9 @@ export const localeStrings = {
   appErrorTitle: 'Something went wrong',
   cancelButtonLabel: 'Cancel',
   closeButtonLabel: 'Close',
+  connectAccountSubtext: 'Connect a payout account',
+  connectAccountText: 'Ready to start earning?',
+  connectButtonLabel: 'Connect account',
   continueButtonLabel: 'Continue',
   countrySelectPlaceholder: 'Select',
   countrySelectTitle: 'Select your region',
@@ -39,7 +42,8 @@ export const localeStrings = {
   resetConsentText: 'I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I\'ve read the $1support article about resetting$2.',
   resetRewardsText: 'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting$2 for more details.',
   resetRewardsTitle: 'Reset Brave Rewards',
-  rewardsPageTitle: 'Rewards'
+  rewardsPageTitle: 'Rewards',
+  unconnectedAdsViewedText: 'You\'ve seen $1# Ads$2 this month'
 }
 
 export type StringKey = keyof typeof localeStrings
@@ -48,3 +52,23 @@ export function useLocaleContext() {
   return React.useContext<Locale<StringKey>>(LocaleContext)
 }
 
+export function usePluralString(key: StringKey, count: number | undefined) {
+  const { getPluralString } = useLocaleContext()
+  const [value, setValue] = React.useState('')
+
+  React.useEffect(() => {
+    if (typeof count !== 'number') {
+      setValue('')
+      return
+    }
+    let canUpdate = true
+    getPluralString(key, count).then((newValue) => {
+      if (canUpdate) {
+        setValue(newValue)
+      }
+    })
+    return () => { canUpdate = false }
+  }, [getPluralString, count])
+
+  return value
+}

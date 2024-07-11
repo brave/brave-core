@@ -25,9 +25,12 @@ static constexpr webui::ResourcePath kResources[] = {
     {"favicon.ico", IDR_BRAVE_REWARDS_FAVICON}};
 
 static constexpr webui::LocalizedString kStrings[] = {
-    {"appError", IDS_REWARDS_APP_ERROR_TITLE},
+    {"appErrorTitle", IDS_REWARDS_APP_ERROR_TITLE},
     {"cancelButtonLabel", IDS_REWARDS_PANEL_CANCEL},
     {"closeButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_CLOSE},
+    {"connectAccountSubtext", IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT},
+    {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT_2},
+    {"connectButtonLabel", IDS_REWARDS_CONNECT_ACCOUNT},
     {"continueButtonLabel", IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE},
     {"countrySelectPlaceholder", IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY},
     {"countrySelectTitle", IDS_REWARDS_COUNTRY_SELECT_TITLE},

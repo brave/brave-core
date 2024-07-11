@@ -31,10 +31,9 @@ void RewardsPageUI::CreatePageHandler(
     mojo::PendingRemote<mojom::RewardsPage> page,
     mojo::PendingReceiver<mojom::RewardsPageHandler> handler) {
   DCHECK(page);
-
-  handler_ = std::make_unique<RewardsPageHandler>(
-      std::move(page), std::move(handler), nullptr,
-      RewardsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui())));
+  handler_ = std::make_unique<RewardsPageHandler>(std::move(page),
+                                                  std::move(handler), nullptr,
+                                                  Profile::FromWebUI(web_ui()));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(RewardsPageUI)
