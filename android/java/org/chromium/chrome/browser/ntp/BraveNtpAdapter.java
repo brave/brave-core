@@ -86,14 +86,14 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int mTopMarginImageCredit;
     private float mImageCreditAlpha = 1f;
 
-    private static int TYPE_STATS = 1;
-    private static int TYPE_TOP_SITES = 2;
-    private static int TYPE_NEW_CONTENT = 3;
-    private static int TYPE_IMAGE_CREDIT = 4;
-    private static int TYPE_NEWS_OPTIN = 5;
-    private static int TYPE_NEWS_LOADING = 6;
-    private static int TYPE_NEWS = 7;
-    private static int TYPE_NEWS_NO_CONTENT_SOURCES = 8;
+    private static final int TYPE_STATS = 1;
+    private static final int TYPE_TOP_SITES = 2;
+    private static final int TYPE_NEW_CONTENT = 3;
+    private static final int TYPE_IMAGE_CREDIT = 4;
+    private static final int TYPE_NEWS_OPTIN = 5;
+    private static final int TYPE_NEWS_LOADING = 6;
+    private static final int TYPE_NEWS = 7;
+    private static final int TYPE_NEWS_NO_CONTENT_SOURCES = 8;
 
     private static final int ONE_ITEM_SPACE = 1;
     private static final int TWO_ITEMS_SPACE = 2;
@@ -130,7 +130,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof StatsViewHolder) {
             StatsViewHolder statsViewHolder = (StatsViewHolder) holder;
 
-            statsViewHolder.hideStatsImg.setOnClickListener(
+            statsViewHolder.mHideStatsImg.setOnClickListener(
                     view -> {
                         ChromeSharedPreferences.getInstance()
                                 .writeBoolean(
@@ -138,19 +138,21 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     });
             List<Pair<String, String>> statsPairs = BraveStatsUtil.getStatsPairs();
 
-            statsViewHolder.adsBlockedCountTv.setText(statsPairs.get(0).first);
-            statsViewHolder.dataSavedValueTv.setText(statsPairs.get(1).first);
-            statsViewHolder.estTimeSavedCountTv.setText(statsPairs.get(2).first);
-            statsViewHolder.adsBlockedCountTextTv.setText(statsPairs.get(0).second);
-            statsViewHolder.dataSavedValueTextTv.setText(statsPairs.get(1).second);
-            statsViewHolder.estTimeSavedCountTextTv.setText(statsPairs.get(2).second);
+            statsViewHolder.mAdsBlockedCountTv.setText(statsPairs.get(0).first);
+            statsViewHolder.mDataSavedValueTv.setText(statsPairs.get(1).first);
+            statsViewHolder.mEstTimeSavedCountTv.setText(statsPairs.get(2).first);
+            statsViewHolder.mAdsBlockedCountTextTv.setText(statsPairs.get(0).second);
+            statsViewHolder.mDataSavedValueTextTv.setText(statsPairs.get(1).second);
+            statsViewHolder.mEstTimeSavedCountTextTv.setText(statsPairs.get(2).second);
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
             int margin = dpToPx(mActivity, 16);
             layoutParams.setMargins(margin, margin, margin, 0);
-            statsViewHolder.ntpStatsLayout.setLayoutParams(layoutParams);
-            statsViewHolder.ntpStatsLayout.setOnClickListener(
+            statsViewHolder.mNtpStatsLayout.setLayoutParams(layoutParams);
+            statsViewHolder.mNtpStatsLayout.setOnClickListener(
                     view -> {
                         mOnBraveNtpListener.checkForBraveStats();
                     });
@@ -172,17 +174,19 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof NewContentViewHolder) {
             NewContentViewHolder newContentViewHolder = (NewContentViewHolder) holder;
 
-            newContentViewHolder.newContentLayout.setOnClickListener(
-                    view -> { mOnBraveNtpListener.loadNewContent(); });
+            newContentViewHolder.mNewContentLayout.setOnClickListener(
+                    view -> {
+                        mOnBraveNtpListener.loadNewContent();
+                    });
 
             if (mIsNewContentLoading) {
-                newContentViewHolder.newContentLayout.setClickable(false);
-                newContentViewHolder.newContentText.setVisibility(View.GONE);
-                newContentViewHolder.newContentProgressBar.setVisibility(View.VISIBLE);
+                newContentViewHolder.mNewContentLayout.setClickable(false);
+                newContentViewHolder.mNewContentText.setVisibility(View.GONE);
+                newContentViewHolder.mNewContentProgressBar.setVisibility(View.VISIBLE);
             } else {
-                newContentViewHolder.newContentLayout.setClickable(true);
-                newContentViewHolder.newContentText.setVisibility(View.VISIBLE);
-                newContentViewHolder.newContentProgressBar.setVisibility(View.GONE);
+                newContentViewHolder.mNewContentLayout.setClickable(true);
+                newContentViewHolder.mNewContentText.setVisibility(View.VISIBLE);
+                newContentViewHolder.mNewContentProgressBar.setVisibility(View.GONE);
             }
             mNewContentHeight =
                     NTPImageUtil.getViewHeight(newContentViewHolder.itemView)
@@ -194,18 +198,18 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (mNtpImage instanceof Wallpaper
                     && NTPImageUtil.isReferralEnabled()
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                imageCreditViewHolder.superReferralLogo.setVisibility(View.VISIBLE);
-                imageCreditViewHolder.creditTv.setVisibility(View.GONE);
+                imageCreditViewHolder.mSuperReferralLogo.setVisibility(View.VISIBLE);
+                imageCreditViewHolder.mCreditTv.setVisibility(View.GONE);
                 int floatingButtonIcon = R.drawable.ic_qr_code;
-                imageCreditViewHolder.superReferralLogo.setImageResource(floatingButtonIcon);
+                imageCreditViewHolder.mSuperReferralLogo.setImageResource(floatingButtonIcon);
                 int floatingButtonIconColor =
                         GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                        ? android.R.color.white
-                        : android.R.color.black;
+                                ? android.R.color.white
+                                : android.R.color.black;
                 ImageViewCompat.setImageTintList(
-                        imageCreditViewHolder.superReferralLogo,
+                        imageCreditViewHolder.mSuperReferralLogo,
                         ColorStateList.valueOf(mActivity.getColor(floatingButtonIconColor)));
-                imageCreditViewHolder.superReferralLogo.setOnClickListener(
+                imageCreditViewHolder.mSuperReferralLogo.setOnClickListener(
                         view -> {
                             QRCodeShareDialogFragment qRCodeShareDialogFragment =
                                     new QRCodeShareDialogFragment();
@@ -223,12 +227,19 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     && NTPImageUtil.shouldEnableNTPFeature()) {
                 if (mNtpImage instanceof BackgroundImage) {
                     BackgroundImage backgroundImage = (BackgroundImage) mNtpImage;
-                    imageCreditViewHolder.sponsoredLogo.setVisibility(View.GONE);
-                    imageCreditViewHolder.superReferralLogo.setVisibility(View.GONE);
+                    imageCreditViewHolder.mSponsoredLogo.setVisibility(View.GONE);
+                    imageCreditViewHolder.mSuperReferralLogo.setVisibility(View.GONE);
 
                     if (backgroundImage.getImageCredit() != null) {
-                        String imageCreditStr = String.format(mActivity.getResources().getString(
-                                R.string.photo_by, backgroundImage.getImageCredit().getName()));
+                        String imageCreditStr =
+                                String.format(
+                                        mActivity
+                                                .getResources()
+                                                .getString(
+                                                        R.string.photo_by,
+                                                        backgroundImage
+                                                                .getImageCredit()
+                                                                .getName()));
 
                         SpannableStringBuilder spannableString =
                                 new SpannableStringBuilder(imageCreditStr);
@@ -237,24 +248,26 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 ((imageCreditStr.length() - 1)
                                         - (backgroundImage.getImageCredit().getName().length()
                                                 - 1)),
-                                imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                imageCreditStr.length(),
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-                        imageCreditViewHolder.creditTv.setText(spannableString);
-                        imageCreditViewHolder.creditTv.setVisibility(View.VISIBLE);
+                        imageCreditViewHolder.mCreditTv.setText(spannableString);
+                        imageCreditViewHolder.mCreditTv.setVisibility(View.VISIBLE);
 
-                        imageCreditViewHolder.creditTv.setOnClickListener(view -> {
-                            if (backgroundImage.getImageCredit() != null) {
-                                TabUtils.openUrlInSameTab(
-                                        backgroundImage.getImageCredit().getUrl());
-                            }
-                        });
+                        imageCreditViewHolder.mCreditTv.setOnClickListener(
+                                view -> {
+                                    if (backgroundImage.getImageCredit() != null) {
+                                        TabUtils.openUrlInSameTab(
+                                                backgroundImage.getImageCredit().getUrl());
+                                    }
+                                });
                     }
                 }
             }
             if (!NTPImageUtil.isReferralEnabled() && mSponsoredLogo != null) {
-                imageCreditViewHolder.sponsoredLogo.setVisibility(View.VISIBLE);
-                imageCreditViewHolder.sponsoredLogo.setImageBitmap(mSponsoredLogo);
-                imageCreditViewHolder.sponsoredLogo.setOnClickListener(
+                imageCreditViewHolder.mSponsoredLogo.setVisibility(View.VISIBLE);
+                imageCreditViewHolder.mSponsoredLogo.setImageBitmap(mSponsoredLogo);
+                imageCreditViewHolder.mSponsoredLogo.setOnClickListener(
                         view -> {
                             if (mWallpaper.getLogoDestinationUrl() != null) {
                                 TabUtils.openUrlInSameTab(mWallpaper.getLogoDestinationUrl());
@@ -298,9 +311,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 layoutParams.setMargins(0, mTopMarginImageCredit, 0, 0);
 
-                imageCreditViewHolder.ntpImageCreditLayout.setLayoutParams(layoutParams);
+                imageCreditViewHolder.mNtpImageCreditLayout.setLayoutParams(layoutParams);
             }
-            imageCreditViewHolder.imageCreditLayout.setAlpha(mImageCreditAlpha);
+            imageCreditViewHolder.mImageCreditLayout.setAlpha(mImageCreditAlpha);
 
         } else if (holder instanceof NewsOptinViewHolder) {
             NewsOptinViewHolder newsOptinViewHolder = (NewsOptinViewHolder) holder;
@@ -312,21 +325,25 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             newsOptinViewHolder.itemView.setLayoutParams(layoutParams);
 
-            newsOptinViewHolder.optinClose.setOnClickListener(
-                    view -> { mOnBraveNtpListener.updateNewsOptin(false); });
+            newsOptinViewHolder.mOptinClose.setOnClickListener(
+                    view -> {
+                        mOnBraveNtpListener.updateNewsOptin(false);
+                    });
 
-            newsOptinViewHolder.optinLearnMore.setOnClickListener(view -> {
-                TabUtils.openUrlInSameTab(BraveConstants.BRAVE_NEWS_LEARN_MORE_URL);
-            });
+            newsOptinViewHolder.mOptinLearnMore.setOnClickListener(
+                    view -> {
+                        TabUtils.openUrlInSameTab(BraveConstants.BRAVE_NEWS_LEARN_MORE_URL);
+                    });
 
-            newsOptinViewHolder.optinButton.setOnClickListener(view -> {
-                mOnBraveNtpListener.updateNewsOptin(true);
-                mOnBraveNtpListener.getFeed(false);
-            });
+            newsOptinViewHolder.mOptinButton.setOnClickListener(
+                    view -> {
+                        mOnBraveNtpListener.updateNewsOptin(true);
+                        mOnBraveNtpListener.getFeed(false);
+                    });
 
         } else if (holder instanceof NewsViewHolder) {
             NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
-            newsViewHolder.linearLayout.removeAllViews();
+            newsViewHolder.mLinearLayout.removeAllViews();
 
             int newsLoadingCount = shouldDisplayNewsLoading() ? 1 : 0;
             int newsPosition =
@@ -339,8 +356,13 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (newsPosition < mNewsItems.size()) {
                 FeedItemsCard newsItem = mNewsItems.get(newsPosition);
                 if (mBraveNewsController != null) {
-                    new CardBuilderFeedCard(mBraveNewsController, mGlide,
-                            newsViewHolder.linearLayout, mActivity, newsPosition, newsItem,
+                    new CardBuilderFeedCard(
+                            mBraveNewsController,
+                            mGlide,
+                            newsViewHolder.mLinearLayout,
+                            mActivity,
+                            newsPosition,
+                            newsItem,
                             newsItem.getCardType());
                 }
             }
@@ -354,11 +376,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             noSourcesViewHolder.itemView.setLayoutParams(layoutParams);
 
-            noSourcesViewHolder.btnChooseContent.setOnClickListener(view -> {
-                if (mActivity instanceof BraveActivity) {
-                    ((BraveActivity) mActivity).openBraveNewsSettings();
-                }
-            });
+            noSourcesViewHolder.mBtnChooseContent.setOnClickListener(
+                    view -> {
+                        if (mActivity instanceof BraveActivity) {
+                            ((BraveActivity) mActivity).openBraveNewsSettings();
+                        }
+                    });
         }
     }
 
@@ -598,34 +621,34 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public static class StatsViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout ntpStatsLayout;
-        LinearLayout titleLayout;
-        ImageView hideStatsImg;
-        TextView adsBlockedCountTv;
-        TextView adsBlockedCountTextTv;
-        TextView dataSavedValueTv;
-        TextView dataSavedValueTextTv;
-        TextView estTimeSavedCountTv;
-        TextView estTimeSavedCountTextTv;
+        LinearLayout mNtpStatsLayout;
+        LinearLayout mTitleLayout;
+        ImageView mHideStatsImg;
+        TextView mAdsBlockedCountTv;
+        TextView mAdsBlockedCountTextTv;
+        TextView mDataSavedValueTv;
+        TextView mDataSavedValueTextTv;
+        TextView mEstTimeSavedCountTv;
+        TextView mEstTimeSavedCountTextTv;
 
         StatsViewHolder(View itemView) {
             super(itemView);
-            this.ntpStatsLayout = (LinearLayout) itemView.findViewById(R.id.ntp_stats_layout);
-            this.titleLayout = (LinearLayout) itemView.findViewById(R.id.brave_stats_title_layout);
-            this.hideStatsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
-            this.adsBlockedCountTv =
+            this.mNtpStatsLayout = (LinearLayout) itemView.findViewById(R.id.ntp_stats_layout);
+            this.mTitleLayout = (LinearLayout) itemView.findViewById(R.id.brave_stats_title_layout);
+            this.mHideStatsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
+            this.mAdsBlockedCountTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_ads_count);
-            this.adsBlockedCountTextTv =
+            this.mAdsBlockedCountTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_ads_count_text);
-            this.dataSavedValueTv =
+            this.mDataSavedValueTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_data_saved_value);
-            this.dataSavedValueTextTv =
+            this.mDataSavedValueTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_data_saved_value_text);
-            this.estTimeSavedCountTv =
+            this.mEstTimeSavedCountTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count);
-            this.estTimeSavedCountTextTv =
+            this.mEstTimeSavedCountTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count_text);
-            BraveTouchUtils.ensureMinTouchTarget(this.hideStatsImg);
+            BraveTouchUtils.ensureMinTouchTarget(this.mHideStatsImg);
         }
     }
 
@@ -636,82 +659,82 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public static class NewContentViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout newContentLayout;
-        TextView newContentText;
-        ProgressBar newContentProgressBar;
+        LinearLayout mNewContentLayout;
+        TextView mNewContentText;
+        ProgressBar mNewContentProgressBar;
 
         NewContentViewHolder(View itemView) {
             super(itemView);
-            this.newContentLayout = (LinearLayout) itemView.findViewById(R.id.new_content_layout);
-            this.newContentProgressBar =
+            this.mNewContentLayout = (LinearLayout) itemView.findViewById(R.id.new_content_layout);
+            this.mNewContentProgressBar =
                     (ProgressBar) itemView.findViewById(R.id.new_content_loading_spinner);
-            this.newContentText = (TextView) itemView.findViewById(R.id.new_content_button_text);
+            this.mNewContentText = (TextView) itemView.findViewById(R.id.new_content_button_text);
         }
     }
 
     public static class ImageCreditViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout ntpImageCreditLayout;
-        FrameLayout imageCreditLayout;
-        FloatingActionButton superReferralLogo;
-        TextView creditTv;
-        ImageView sponsoredLogo;
+        LinearLayout mNtpImageCreditLayout;
+        FrameLayout mImageCreditLayout;
+        FloatingActionButton mSuperReferralLogo;
+        TextView mCreditTv;
+        ImageView mSponsoredLogo;
 
         ImageCreditViewHolder(View itemView) {
             super(itemView);
-            this.ntpImageCreditLayout =
+            this.mNtpImageCreditLayout =
                     (LinearLayout) itemView.findViewById(R.id.ntp_image_credit_layout);
-            this.imageCreditLayout = (FrameLayout) itemView.findViewById(R.id.image_credit_layout);
-            this.superReferralLogo =
+            this.mImageCreditLayout = (FrameLayout) itemView.findViewById(R.id.image_credit_layout);
+            this.mSuperReferralLogo =
                     (FloatingActionButton) itemView.findViewById(R.id.super_referral_logo);
-            this.creditTv = (TextView) itemView.findViewById(R.id.credit_text);
-            this.sponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
-            BraveTouchUtils.ensureMinTouchTarget(this.creditTv);
+            this.mCreditTv = (TextView) itemView.findViewById(R.id.credit_text);
+            this.mSponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
+            BraveTouchUtils.ensureMinTouchTarget(this.mCreditTv);
         }
     }
 
     public static class NewsOptinViewHolder extends RecyclerView.ViewHolder {
-        FrameLayout optinButton;
-        ProgressBar optinLoadingSpinner;
-        ImageView optinClose;
-        TextView optinLearnMore;
-        TextView optinTv;
+        FrameLayout mOptinButton;
+        ProgressBar mOptinLoadingSpinner;
+        ImageView mOptinClose;
+        TextView mOptinLearnMore;
+        TextView mOptinTv;
 
         NewsOptinViewHolder(View itemView) {
             super(itemView);
-            optinButton = (FrameLayout) itemView.findViewById(R.id.optin_button);
-            optinClose = (ImageView) itemView.findViewById(R.id.close_optin);
-            optinLearnMore = (TextView) itemView.findViewById(R.id.optin_learnmore);
-            optinTv = (TextView) itemView.findViewById(R.id.optin_button_text);
-            optinLoadingSpinner = (ProgressBar) itemView.findViewById(R.id.optin_loading_spinner);
-            BraveTouchUtils.ensureMinTouchTarget(optinButton);
-            BraveTouchUtils.ensureMinTouchTarget(optinLearnMore);
+            mOptinButton = (FrameLayout) itemView.findViewById(R.id.optin_button);
+            mOptinClose = (ImageView) itemView.findViewById(R.id.close_optin);
+            mOptinLearnMore = (TextView) itemView.findViewById(R.id.optin_learnmore);
+            mOptinTv = (TextView) itemView.findViewById(R.id.optin_button_text);
+            mOptinLoadingSpinner = (ProgressBar) itemView.findViewById(R.id.optin_loading_spinner);
+            BraveTouchUtils.ensureMinTouchTarget(mOptinButton);
+            BraveTouchUtils.ensureMinTouchTarget(mOptinLearnMore);
         }
     }
 
     public static class NewsLoadingViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout linearLayout;
+        LinearLayout mLinearLayout;
 
         NewsLoadingViewHolder(View itemView) {
             super(itemView);
-            this.linearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
+            this.mLinearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
         }
     }
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout linearLayout;
+        LinearLayout mLinearLayout;
 
         NewsViewHolder(View itemView) {
             super(itemView);
-            this.linearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
+            this.mLinearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
         }
     }
 
     public static class NoSourcesViewHolder extends RecyclerView.ViewHolder {
-        Button btnChooseContent;
+        Button mBtnChooseContent;
 
         NoSourcesViewHolder(View itemView) {
             super(itemView);
-            this.btnChooseContent = (Button) itemView.findViewById(R.id.btn_choose_content);
+            this.mBtnChooseContent = (Button) itemView.findViewById(R.id.btn_choose_content);
         }
     }
 }

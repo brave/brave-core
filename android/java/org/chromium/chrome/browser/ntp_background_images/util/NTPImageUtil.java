@@ -318,9 +318,7 @@ public class NTPImageUtil {
         boolean isReferralEnabled =
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                 .getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
-                        == 1
-                ? true
-                : false;
+                        == 1;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
     }
 

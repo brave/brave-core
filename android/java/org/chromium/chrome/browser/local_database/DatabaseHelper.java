@@ -26,7 +26,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static volatile DatabaseHelper mInstance;
+    private static volatile DatabaseHelper sInstance;
 
     // Database Version
     private static final int DATABASE_VERSION = 3;
@@ -36,12 +36,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static DatabaseHelper getInstance() {
         synchronized (DatabaseHelper.class) {
-            if (mInstance == null) {
+            if (sInstance == null) {
                 Context context = ContextUtils.getApplicationContext();
-                mInstance = new DatabaseHelper(context);
+                sInstance = new DatabaseHelper(context);
             }
         }
-        return mInstance;
+        return sInstance;
     }
 
     public DatabaseHelper(Context context) {
@@ -458,8 +458,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst())
+        if (cursor.moveToFirst()) {
             sum = cursor.getLong(cursor.getColumnIndex("total"));
+        }
 
         cursor.close();
         return sum;
@@ -477,8 +478,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst())
+        if (cursor.moveToFirst()) {
             sum = cursor.getLong(cursor.getColumnIndex("total"));
+        }
 
         cursor.close();
         return sum;

@@ -865,6 +865,7 @@ public class BraveNewTabPageLayout
 
                     } else if (TextUtils.equals(
                             key, BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS)) {
+                        Log.e("NTP", "BRAVE_NEWS_PREF_SHOW_NEWS");
                         new Handler(Looper.getMainLooper())
                                 .postDelayed(
                                         () -> {

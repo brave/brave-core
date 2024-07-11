@@ -15,7 +15,6 @@
 #include "base/timer/timer.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 
-class PrefService;
 class Profile;
 class ProfileManager;
 
@@ -46,7 +45,6 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
   void ResetBrowserUIStateForAllProfiles();
   void StartResetTimer();
   base::Time GetFirstRunTime() const;
-  bool IsPartOfDayZeroExpt() const;
 
   // When fire, we'll reset browser UI to original.
   base::OneShotTimer reset_timer_;

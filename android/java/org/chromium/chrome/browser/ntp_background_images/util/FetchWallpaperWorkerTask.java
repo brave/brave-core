@@ -83,10 +83,12 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
 
         if (isCancelled()) return;
 
-        if (wallpapers.first != null && !wallpapers.first.isRecycled())
+        if (wallpapers.first != null && !wallpapers.first.isRecycled()) {
             mCallback.bgWallpaperRetrieved(wallpapers.first);
+        }
 
-        if (wallpapers.second != null && !wallpapers.second.isRecycled())
+        if (wallpapers.second != null && !wallpapers.second.isRecycled()) {
             mCallback.logoRetrieved((Wallpaper) mNTPImage, wallpapers.second);
+        }
     }
 }

@@ -1321,11 +1321,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * If |tab| is null, set disabled image to shields button and |urlString| is
-     * ignored.
-     * If |urlString| is null, url is fetched from |tab|.
+     * If |tab| is null, set disabled image to shields button and |urlString| is ignored. If
+     * |urlString| is null, url is fetched from |tab|.
      */
-    private void updateBraveShieldsButtonState(Tab tab) {
+    public void updateBraveShieldsButtonState(Tab tab) {
         if (mBraveShieldsButton == null) {
             assert false;
             return;

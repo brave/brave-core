@@ -11,34 +11,33 @@ import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil
 
 public class SponsoredTab {
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private NTPImage ntpImage;
-    private int tabIndex;
-    private boolean mShouldShowBanner;
+    private NTPImage mNtpImage;
+    private int mTabIndex;
 
     public SponsoredTab(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
         if (NTPImageUtil.shouldEnableNTPFeature()) {
-            ntpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
-            tabIndex = SponsoredImageUtil.getTabIndex();
+            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
+            mTabIndex = SponsoredImageUtil.getTabIndex();
         }
     }
 
     public NTPImage getTabNTPImage(boolean isReset) {
-        if (ntpImage == null || isReset) {
-            ntpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
+        if (mNtpImage == null || isReset) {
+            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
         }
-        return ntpImage;
+        return mNtpImage;
     }
 
     public void setNTPImage(NTPImage ntpImage) {
-        this.ntpImage = ntpImage;
+        this.mNtpImage = ntpImage;
     }
 
     public int getTabIndex() {
-        return tabIndex;
+        return mTabIndex;
     }
 
     public void setTanIndex(int tabIndex) {
-        this.tabIndex = tabIndex;
+        this.mTabIndex = tabIndex;
     }
 }

@@ -1815,6 +1815,14 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public void updateDayZeroChanges() {
+        Tab currentTab = getActivityTab();
+        BraveToolbarLayoutImpl layout = getBraveToolbarLayout();
+        if (currentTab != null && layout != null) {
+            layout.updateBraveShieldsButtonState(currentTab);
+        }
+    }
+
     public Tab openNewOrSelectExistingTab(String url) {
         return openNewOrSelectExistingTab(url, false);
     }
