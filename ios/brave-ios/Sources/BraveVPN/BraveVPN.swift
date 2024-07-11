@@ -187,7 +187,7 @@ public class BraveVPN {
 
   /// Reconnects to the vpn.
   /// The vpn must be configured prior to that otherwise it does nothing.
-  public static func reconnect() {
+  public static func reconnect(completion: ((Bool) -> Void)? = nil) {
     if reconnectPending {
       logAndStoreError("Can't reconnect the vpn while another reconnect is pending.")
       return
@@ -195,7 +195,9 @@ public class BraveVPN {
 
     reconnectPending = true
 
-    connectToVPN()
+    connectToVPN { status in
+      completion?(status)
+    }
   }
 
   /// Disconnects the vpn.
@@ -274,13 +276,6 @@ public class BraveVPN {
     helper.forceDisconnectVPNIfNecessary()
     GRDVPNHelper.clearVpnConfiguration()
 
-    connectToVPN { status in
-      completion?(status)
-    }
-  }
-  
-  public static func reconnectVPN(completion: ((Bool) -> Void)? = nil) {
-    helper.forceDisconnectVPNIfNecessary()
     connectToVPN { status in
       completion?(status)
     }
