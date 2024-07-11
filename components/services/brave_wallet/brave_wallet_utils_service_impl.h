@@ -26,12 +26,12 @@ class BraveWalletUtilsServiceImpl : public mojom::BraveWalletUtilsService {
       delete;
 
   void CreateZCashDecoderService(
-      mojo::PendingAssociatedReceiver<mojom::ZCashDecoder>
+      mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder>
           zcash_decoder_receiver) override;
 
  private:
   mojo::Receiver<mojom::BraveWalletUtilsService> receiver_;
-  mojo::SelfOwnedAssociatedReceiverRef<mojom::ZCashDecoder> instance_;
+  mojo::SelfOwnedAssociatedReceiverRef<zcash::mojom::ZCashDecoder> instance_;
 };
 
 }  // namespace brave_wallet

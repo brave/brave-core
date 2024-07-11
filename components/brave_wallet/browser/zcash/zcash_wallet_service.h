@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ZCASH_WALLET_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ZCASH_WALLET_SERVICE_H_
 
 #include <list>
 #include <map>
@@ -20,16 +20,20 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
-class CreateTransparentTransactionTask;
-class GetTransparentUtxosContext;
+class ZCashCreateTransparentTransactionTask;
+class ZCashCreateShieldAllTransactionTask;
+class ZCashGetTransparentUtxosContext;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
                            KeyringServiceObserverBase {
  public:
-  using UtxoMap = std::map<std::string, std::vector<mojom::ZCashUtxoPtr>>;
+  using UtxoMap =
+      std::map<std::string, std::vector<zcash::mojom::ZCashUtxoPtr>>;
   using RunDiscoveryResult =
       base::expected<std::vector<mojom::ZCashAddressPtr>, std::string>;
   using GetUtxosCallback =
@@ -57,6 +61,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void Bind(mojo::PendingReceiver<mojom::ZCashWalletService> receiver);
 
+  // Returns transparent balance for the account
   void GetBalance(const std::string& chain_id,
                   mojom::AccountIdPtr account_id,
                   GetBalanceCallback) override;
@@ -69,6 +74,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
    */
   void GetReceiverAddress(mojom::AccountIdPtr account_id,
                           GetReceiverAddressCallback callback) override;
+
+  // TODO(cypt4): Make this a part of zcash
+  // transaction
+  // Sends all account funds from transparent pool to orchard pool.
+  void ShieldFunds(const std::string& chain_id,
+                   mojom::AccountIdPtr account_id,
+                   ShieldFundsCallback callback) override;
 
   void RunDiscovery(mojom::AccountIdPtr account_id,
                     RunDiscoveryCallback callback);
@@ -95,6 +107,10 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                             const std::string& tx_hash,
                             GetTransactionStatusCallback callback);
 
+  void PostShieldTransaction(const std::string& chain_id,
+                             ZCashTransaction zcash_transaction,
+                             SignAndPostTransactionCallback callback);
+
   void SignAndPostTransaction(const std::string& chain_id,
                               const mojom::AccountIdPtr& account_id,
                               ZCashTransaction zcash_transaction,
@@ -103,10 +119,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void SetZCashRpcForTesting(std::unique_ptr<ZCashRpc> zcash_rpc);
 
  private:
-  friend class ZCashWalletServiceUnitTest;
-  friend class CreateTransparentTransactionTask;
-  friend class DiscoverNextUnusedZCashAddressTask;
+  friend class ZCashCreateShieldAllTransactionTask;
+  friend class ZCashCreateTransparentTransactionTask;
+  friend class ZCashDiscoverNextUnusedZCashAddressTask;
   friend class ZCashTxManager;
+  friend class ZCashWalletServiceUnitTest;
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
@@ -122,11 +139,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       mojom::AccountIdPtr account_id,
       RunDiscoveryCallback callback,
       std::vector<base::expected<mojom::ZCashAddressPtr, std::string>> result);
-  void OnGetUtxos(
-      scoped_refptr<GetTransparentUtxosContext> context,
-      const std::string& current_address,
-      base::expected<mojom::GetAddressUtxosResponsePtr, std::string> result);
-  void WorkOnGetUtxos(scoped_refptr<GetTransparentUtxosContext> context);
+  void OnGetUtxos(scoped_refptr<ZCashGetTransparentUtxosContext> context,
+                  const std::string& current_address,
+                  base::expected<zcash::mojom::GetAddressUtxosResponsePtr,
+                                 std::string> result);
+  void WorkOnGetUtxos(scoped_refptr<ZCashGetTransparentUtxosContext> context);
 
   void OnDiscoveryDoneForBalance(mojom::AccountIdPtr account_id,
                                  std::string chain_id,
@@ -136,32 +153,55 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                                  base::expected<UtxoMap, std::string> result);
   void OnTransactionResolvedForStatus(
       GetTransactionStatusCallback callback,
-      base::expected<mojom::RawTransactionPtr, std::string> result);
+      base::expected<zcash::mojom::RawTransactionPtr, std::string> result);
 
   void OnResolveLastBlockHeightForSendTransaction(
       const std::string& chain_id,
       const mojom::AccountIdPtr& account_id,
       ZCashTransaction zcash_transaction,
       SignAndPostTransactionCallback callback,
-      base::expected<mojom::BlockIDPtr, std::string> result);
+      base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
   void OnSendTransactionResult(
       SignAndPostTransactionCallback callback,
       ZCashTransaction zcash_transaction,
-      base::expected<mojom::SendResponsePtr, std::string> result);
+      base::expected<zcash::mojom::SendResponsePtr, std::string> result);
 
-  void CreateTransactionTaskDone(CreateTransparentTransactionTask* task);
+  void CreateTransactionTaskDone(ZCashCreateTransparentTransactionTask* task);
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+  void CreateShieldAllTransaction(const std::string& chain_id,
+                                  mojom::AccountIdPtr account_id,
+                                  CreateTransactionCallback callback);
+
+  void CreateShieldTransactionTaskDone(
+      const std::string& chain_id,
+      mojom::AccountIdPtr account_id,
+      ShieldFundsCallback callback,
+      base::expected<ZCashTransaction, std::string> transaction);
+
+  void OnPostShieldTransactionDone(ShieldFundsCallback callback,
+                                   std::string tx_id,
+                                   ZCashTransaction transaction,
+                                   std::string error);
+#endif
 
   void UpdateNextUnusedAddressForAccount(const mojom::AccountIdPtr& account_id,
                                          const mojom::ZCashAddressPtr& address);
 
   ZCashRpc* zcash_rpc();
+  KeyringService* keyring_service();
 
   raw_ptr<KeyringService> keyring_service_;
   std::unique_ptr<ZCashRpc> zcash_rpc_;
 
-  std::list<std::unique_ptr<CreateTransparentTransactionTask>>
+  std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+  std::unique_ptr<ZCashCreateShieldAllTransactionTask> shield_funds_task_;
+#endif
+
   mojo::ReceiverSet<mojom::ZCashWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
@@ -170,4 +210,4 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_WALLET_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_ZCASH_WALLET_SERVICE_H_

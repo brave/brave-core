@@ -350,4 +350,26 @@ TEST(ZCashUtilsUnitTest, GetMergedUnifiedAddress) {
   }
 }
 
+TEST(ZCashUtilsUnitTest, CalculateZCashTxFee) {
+  EXPECT_EQ(25000u, CalculateZCashTxFee(5, 0));
+  EXPECT_EQ(25000u, CalculateZCashTxFee(0, 5));
+  EXPECT_EQ(10000u, CalculateZCashTxFee(1, 0));
+  EXPECT_EQ(10000u, CalculateZCashTxFee(0, 1));
+  EXPECT_EQ(50000u, CalculateZCashTxFee(5, 5));
+  EXPECT_EQ(10000u, CalculateZCashTxFee(1, 1));
+}
+
+TEST(ZCashUtilsUnitTest, OutputZCashAddressSupported) {
+  EXPECT_FALSE(OutputZCashAddressSupported(
+      "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs__", false));
+  EXPECT_TRUE(OutputZCashAddressSupported("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs",
+                                          false));
+  EXPECT_FALSE(
+      OutputZCashAddressSupported("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", true));
+  EXPECT_TRUE(
+      OutputZCashAddressSupported("tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", true));
+  EXPECT_FALSE(OutputZCashAddressSupported(
+      "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", false));
+}
+
 }  // namespace brave_wallet

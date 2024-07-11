@@ -3806,4 +3806,81 @@ TEST_F(KeyringServiceUnitTest, MigrateSelectedAccount) {
   EXPECT_EQ(all_accounts->selected_account, fil_acc);
 }
 
+// Generated using https://github.com/zcash/zcash-test-vectors
+TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+
+  {
+    auto actual =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashMainnet,
+                                        mojom::AccountKind::kDerived, 2),
+                mojom::ZCashKeyId::New(2, 0 /* external */, 0))
+            .value();
+    auto expected = std::array<uint8_t, kOrchardRawBytesSize>(
+        {0x9d, 0x61, 0x35, 0xcc, 0x32, 0xd6, 0x79, 0x4d, 0x46, 0x70, 0x7f,
+         0xe4, 0x10, 0x65, 0x9a, 0x46, 0xe5, 0x39, 0x6a, 0xae, 0x2b, 0x8a,
+         0xc6, 0xc6, 0x7c, 0xb0, 0x13, 0x7e, 0x37, 0xb5, 0xb7, 0x98, 0x5b,
+         0xc2, 0x86, 0xe1, 0xc7, 0xb1, 0xda, 0x40, 0x4a, 0x86, 0x35});
+    EXPECT_EQ(expected, actual);
+  }
+
+  {
+    auto actual =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashMainnet,
+                                        mojom::AccountKind::kDerived, 1),
+                mojom::ZCashKeyId::New(1, 0 /* external */, 3))
+            .value();
+    auto expected = std::array<uint8_t, kOrchardRawBytesSize>(
+        {0x0f, 0xd0, 0x19, 0x37, 0x53, 0x52, 0xc9, 0x1c, 0xd1, 0x3e, 0xfb,
+         0x0a, 0x5c, 0x1e, 0x0f, 0x75, 0xd1, 0x6d, 0x31, 0x2a, 0x76, 0x74,
+         0x4f, 0xcf, 0x66, 0x74, 0x23, 0x5a, 0x26, 0x33, 0x76, 0x70, 0xc4,
+         0xcc, 0x15, 0x0d, 0xb2, 0x22, 0x2d, 0xaf, 0x3b, 0xc1, 0x02});
+    EXPECT_EQ(expected, actual);
+  }
+
+  {
+    auto actual =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashMainnet,
+                                        mojom::AccountKind::kDerived, 4),
+                mojom::ZCashKeyId::New(4, 0 /* external */, 0))
+            .value();
+    auto expected = std::array<uint8_t, kOrchardRawBytesSize>(
+        {0xfa, 0x12, 0x63, 0xd3, 0x8f, 0x3f, 0x10, 0x19, 0x60, 0x5e, 0xb7,
+         0xe2, 0x7c, 0xf7, 0x4c, 0x03, 0x03, 0x41, 0x14, 0xf2, 0x71, 0x9f,
+         0x71, 0xdc, 0x61, 0xb6, 0x52, 0xe3, 0x04, 0x12, 0x3f, 0x34, 0x78,
+         0x75, 0x02, 0x25, 0x78, 0x2a, 0x4a, 0x2b, 0x80, 0x00, 0xab});
+    EXPECT_EQ(expected, actual);
+  }
+}
+
+TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kBraveWalletZCashFeature);
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(RestoreWallet(&service, kMnemonicAbandonAbandon, "brave", false));
+
+  EXPECT_FALSE(service.GetOrchardRawBytes(
+      MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                              mojom::KeyringId::kZCashMainnet,
+                              mojom::AccountKind::kDerived, 1),
+      mojom::ZCashKeyId::New(1, 0 /* external */, 3)));
+}
+
 }  // namespace brave_wallet
