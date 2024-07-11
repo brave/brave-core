@@ -7,16 +7,17 @@ import * as React from 'react'
 
 import { ExternalLink } from './external_link'
 
-export const _ExternalLink = () => {
-  return (
-    <ExternalLink
-      href='https://brave.com'
-      text='Brave'
-      fullWidth
-    >
-     
-    </ExternalLink>
-  )
+export const _ExternalLink = {
+  render: () => {
+    return (
+      <ExternalLink
+        href='https://brave.com'
+        text='Brave'
+      />
+    )
+  }
 }
 
-export default {}
+export default {
+  component: ExternalLink
+}

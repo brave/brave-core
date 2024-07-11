@@ -19,17 +19,19 @@ const dappCategories = [
   'Exchanges'
 ]
 
-export const _Web3DappFilters = () => {
-  return (
-    <WalletPageStory>
-      <Web3DappFilters
-        categories={dappCategories}
-        onClose={() => {}}
-      />
-    </WalletPageStory>
-  )
+export const _Web3DappFilters = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <Web3DappFilters
+          categories={dappCategories}
+          onClose={() => {}}
+        />
+      </WalletPageStory>
+    )
+  }
 }
 
 export default {
-  name: 'Web3DappFilters'
+  component: Web3DappFilters
 }

@@ -14,21 +14,23 @@ import WalletPageWrapper from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { StyledWrapper } from '../crypto/style'
 import { ExploreWeb3View } from './explore_web3'
 
-export const _ExploreWeb3View = () => {
-  return (
-    <WalletPageStory>
-      <WalletPageWrapper
-        wrapContentInBox
-        cardHeader={
-          <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
-        }
-      >
-        <StyledWrapper>
-          <ExploreWeb3View />
-        </StyledWrapper>
-      </WalletPageWrapper>
-    </WalletPageStory>
-  )
+export const _ExploreWeb3View = {
+  render: () => {
+    return (
+      <WalletPageStory>
+        <WalletPageWrapper
+          wrapContentInBox
+          cardHeader={
+            <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
+          }
+        >
+          <StyledWrapper>
+            <ExploreWeb3View />
+          </StyledWrapper>
+        </WalletPageWrapper>
+      </WalletPageStory>
+    )
+  }
 }
 
-export default {}
+export default { component: ExploreWeb3View }

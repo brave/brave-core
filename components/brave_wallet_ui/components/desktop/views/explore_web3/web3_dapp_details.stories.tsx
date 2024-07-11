@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 
 // routes
 import { WalletRoutes } from '../../../../constants/types'
@@ -21,28 +21,33 @@ import { DappDetails } from './web3_dapp_details'
 import WalletPageWrapper from '../../wallet-page-wrapper/wallet-page-wrapper'
 import { PageTitleHeader } from '../../card-headers/page-title-header'
 
-export const _Web3DappDetails = () => {
-  return (
-    <WalletPageStory
-      initialRoute={makeDappDetailsRoute('3182') as WalletRoutes}
-    >
-      <Route
-        path={WalletRoutes.Web3DappDetails}
-        exact={false}
+export const _DappDetails = {
+  render: () => {
+    return (
+      <WalletPageStory
+        initialRoute={makeDappDetailsRoute('3182') as WalletRoutes}
       >
-        <WalletPageWrapper
-          wrapContentInBox
-          cardHeader={
-            <PageTitleHeader
-              title={getLocale('braveWalletAccountSettingsDetails')}
-            />
-          }
-        >
-          <DappDetails />
-        </WalletPageWrapper>
-      </Route>
-    </WalletPageStory>
-  )
+        <Switch>
+          <Route
+            path={WalletRoutes.Web3DappDetails}
+            exact={false}
+          >
+            <WalletPageWrapper
+              wrapContentInBox
+              cardHeader={
+                <PageTitleHeader
+                  title={getLocale('braveWalletAccountSettingsDetails')}
+                />
+              }
+            >
+              <DappDetails />
+            </WalletPageWrapper>
+          </Route>
+          <Redirect to={makeDappDetailsRoute('3182')} />
+        </Switch>
+      </WalletPageStory>
+    )
+  }
 }
 
-export default {}
+export default { component: DappDetails }

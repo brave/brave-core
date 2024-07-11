@@ -338,6 +338,7 @@ export class MockedWalletApiProxy {
 
     getTopDapps: async (chainId, coin) => {
       switch (chainId) {
+        // supporting only ethereum mainnet and solana in this mock
         case BraveWallet.MAINNET_CHAIN_ID: {
           const parser = createDappParserForRange(
             mockDappsListMap.ethereum.range
@@ -350,50 +351,6 @@ export class MockedWalletApiProxy {
           const parser = createDappParserForRange(mockDappsListMap.solana.range)
           return {
             dapps: mockDappsListMap.solana.results.map(parser)
-          }
-        }
-        case BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID: {
-          const parser = createDappParserForRange(
-            mockDappsListMap['binance-smart-chain'].range
-          )
-          return {
-            dapps: mockDappsListMap['binance-smart-chain'].results.map(parser)
-          }
-        }
-        case BraveWallet.POLYGON_MAINNET_CHAIN_ID: {
-          const parser = createDappParserForRange(
-            mockDappsListMap.polygon.range
-          )
-          return {
-            dapps: mockDappsListMap.polygon.results.map(parser)
-          }
-        }
-        case BraveWallet.OPTIMISM_MAINNET_CHAIN_ID: {
-          const parser = createDappParserForRange(
-            mockDappsListMap.optimism.range
-          )
-          return {
-            dapps: mockDappsListMap.optimism.results.map(parser)
-          }
-        }
-        case BraveWallet.AURORA_MAINNET_CHAIN_ID: {
-          const parser = createDappParserForRange(mockDappsListMap.aurora.range)
-          return {
-            dapps: mockDappsListMap.aurora.results.map(parser)
-          }
-        }
-        case BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: {
-          const parser = createDappParserForRange(
-            mockDappsListMap.avalanche.range
-          )
-          return {
-            dapps: mockDappsListMap.avalanche.results.map(parser)
-          }
-        }
-        case BraveWallet.FANTOM_MAINNET_CHAIN_ID: {
-          const parser = createDappParserForRange(mockDappsListMap.fantom.range)
-          return {
-            dapps: mockDappsListMap.fantom.results.map(parser)
           }
         }
         default:
