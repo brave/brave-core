@@ -1271,7 +1271,6 @@ const string kWemixMainnetChainId = "0x457";
 const string kXaiMainnetChainId = "0xa1337";
 const string kZetaChainMainnetChainId = "0x1b58";
 const string kZilliqaEVMChainId = "0x8001";
-const string kChainId = "";
 
 const string kBatTokenContractAddress = "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
