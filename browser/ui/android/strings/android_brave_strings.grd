@@ -2011,11 +2011,17 @@ Are you sure you want to do this?
     <message name="IDS_BACKUP_LATER" desc="Brave Wallet recovery phrase button text">
       I’ll back up later
     </message>
+    <message name="IDS_CHECK_WORD" desc="Brave Wallet verify recovery phrase title">
+      Let's check
+    </message>
+    <message name="IDS_ENTER_WORD" desc="Brave Wallet verify recovery phrase content">
+      Enter the word in position <ph name="WORD_POSITION">%1$s</ph> from your recovery phrase.
+    </message>
     <message name="IDS_SKIP_RECOVERY_STEP" desc="Brave Wallet skip recovery phrase dialog text">
-    You can skip this step now, but you can still need to back up your recovery phrase to ensure account security.
+      You can skip this step now, but you can still need to back up your recovery phrase to ensure account security.
     </message>
     <message name="IDS_SKIP_RECOVERY_STEP_TITLE" desc="Brave Wallet skip recovery phrase dialog title">
-    Skip this step?
+      Skip this step?
     </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?
@@ -2052,15 +2058,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
       Import from legacy Brave crypto wallets?
-    </message>
-    <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
-      Verify recovery phrase
-    </message>
-    <message name="IDS_VERIFY_RECOVERY_PHRASE_TEXT" desc="Brave Wallet onboarding text">
-      Select the words in your recovery phrase in their correct order.
-    </message>
-    <message name="IDS_VERIFY" desc="Brave Wallet onboarding text">
-      Verify
     </message>
     <message name="IDS_RESTORE" desc="Brave Wallet restore text">
       Restore
@@ -2143,8 +2140,8 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
       Does not protect you against dangerous websites, downloads, and extensions.
     </message>
-    <message name="IDS_PHRASES_DID_NOT_MATCH" desc="Brave Wallet text">
-      Phrases did not match. Please try again.
+    <message name="IDS_PHRASE_DOES_NOT_MATCH" desc="Brave Wallet error when phrase doesn't match">
+      Recovery phrase doesn’t match
     </message>
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.

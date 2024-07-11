@@ -144,11 +144,6 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                                             });
                     builder.show();
                 });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
@@ -158,6 +153,7 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
                         mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
                         mRecoveryPhraseAdapter.setRecoveryPhraseList(mRecoveryPhrases);
                         mRecoveryPhraseRecyclerView.setAdapter(mRecoveryPhraseAdapter);
+                        mOnboardingViewModel.generateVerificationWords(mRecoveryPhrases);
                     });
         }
     }

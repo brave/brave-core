@@ -5,13 +5,21 @@
 
 package org.chromium.chrome.browser.crypto_wallet.model;
 
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
+
+import android.util.Pair;
+import android.util.SparseArray;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class OnboardingViewModel extends ViewModel {
@@ -19,6 +27,7 @@ public class OnboardingViewModel extends ViewModel {
 
     @NonNull final Set<NetworkInfo> mSelectedNetworks = new HashSet<>();
     @NonNull final Set<NetworkInfo> mAvailableNetworks = new HashSet<>();
+    @NonNull final SparseArray<String> mVerificationWords = new SparseArray<>(3);
 
     public void setPassword(@NonNull final String password) {
         mPassword = password;
@@ -30,6 +39,30 @@ public class OnboardingViewModel extends ViewModel {
             throw new IllegalStateException("Wallet password must not be null.");
         }
         return mPassword;
+    }
+
+    @NonNull
+    public Pair<Integer, String> getVerificationStep(@NonNull final VerificationStep step) {
+        if (mVerificationWords.size() == 0) {
+            throw new IllegalStateException("Verification word list must not be null.");
+        }
+        switch (step) {
+            case FIRST -> {
+                return extractPositionAndWordAtIndex(0);
+            }
+            case SECOND -> {
+                return extractPositionAndWordAtIndex(1);
+            }
+            case THIRD -> {
+                return extractPositionAndWordAtIndex(2);
+            }
+            default -> throw new IllegalStateException("Verification step not supported for value " + step);
+        }
+    }
+
+    private Pair<Integer, String> extractPositionAndWordAtIndex(final int index) {
+        final int key = mVerificationWords.keyAt(index);
+        return new Pair<>(key, mVerificationWords.get(key));
     }
 
     public void setSelectedNetworks(
@@ -50,5 +83,24 @@ public class OnboardingViewModel extends ViewModel {
     @NonNull
     public Set<NetworkInfo> getAvailableNetworks() {
         return mAvailableNetworks;
+    }
+
+    public void generateVerificationWords(@NonNull final List<String> recoveryPhrases) {
+        final int wordsToChoose = 3;
+        final int size = recoveryPhrases.size();
+        assert size >= wordsToChoose : "Recovery phrase is less than three words.";
+
+        mVerificationWords.clear();
+        Random random = new Random();
+        // Ensure we only add unique random indexes.
+        List<Integer> chosenIndexes = new ArrayList<>();
+
+        while (chosenIndexes.size() < wordsToChoose) {
+            int randomIndex = random.nextInt(size);
+            if (!chosenIndexes.contains(randomIndex)) {
+                chosenIndexes.add(randomIndex);
+                mVerificationWords.put(randomIndex, recoveryPhrases.get(randomIndex));
+            }
+        }
     }
 }

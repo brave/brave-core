@@ -5,8 +5,10 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
-import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,108 +17,117 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.adapters.RecoveryPhraseAdapter;
-import org.chromium.chrome.browser.crypto_wallet.util.ItemOffsetDecoration;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.ui.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWalletFragment {
+    public enum VerificationStep {
+        FIRST,
+        SECOND,
+        THIRD
+    }
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
-
-    private RecyclerView mRecoveryPhrasesRecyclerView;
-    private RecyclerView mSelectedPhraseRecyclerView;
-
-    private RecoveryPhraseAdapter mRecoveryPhrasesAdapter;
-    private RecoveryPhraseAdapter mRecoveryPhrasesToVerifyAdapter;
+    private static final String VERIFICATION_STEP_ARG = "verificationStep";
 
     private Button mRecoveryPhraseButton;
-    private List<String> mRecoveryPhrases;
+    private TextView mSkip;
+    private TextView mCheckWord;
+    private TextInputLayout mTextInputLayout;
+    private TextInputEditText mTextInputExitText;
     private boolean mIsOnboarding;
+    private VerificationStep mVerificationStep;
+    private Pair<Integer, String> mWordToMatch;
+    private int mWordPosition;
+    private String mPhraseNotMatch;
 
     public interface OnRecoveryPhraseSelected {
         void onSelectedRecoveryPhrase(String phrase);
     }
 
     @NonNull
-    public static OnboardingVerifyRecoveryPhraseFragment newInstance(boolean isOnboarding) {
+    public static OnboardingVerifyRecoveryPhraseFragment newInstance(final boolean isOnboarding, @NonNull final VerificationStep verificationStep) {
         OnboardingVerifyRecoveryPhraseFragment fragment = new OnboardingVerifyRecoveryPhraseFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);
+        args.putSerializable(VERIFICATION_STEP_ARG, verificationStep);
         fragment.setArguments(args);
 
         return fragment;
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        final Bundle bundle = requireArguments();
+        mIsOnboarding = bundle.getBoolean(IS_ONBOARDING_ARG, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mVerificationStep = bundle.getSerializable(VERIFICATION_STEP_ARG, VerificationStep.class);
+        } else {
+            mVerificationStep = (VerificationStep) bundle.getSerializable(VERIFICATION_STEP_ARG);
+        }
+        if (mVerificationStep != null) {
+            mWordToMatch = mOnboardingViewModel.getVerificationStep(mVerificationStep);
+        }
+        mPhraseNotMatch = getResources().getString(R.string.phrase_does_not_match);
+    }
+
+    @Override
     public View onCreateView(
            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);
         return inflater.inflate(R.layout.fragment_verify_recovery_phrase, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecoveryPhraseButton = view.findViewById(R.id.btn_verify_recovery_phrase_continue);
+        mCheckWord = view.findViewById(R.id.check_word);
+        mCheckWord.setText(getString(R.string.enter_word, mWordToMatch.first));
+        mTextInputLayout = view.findViewById(R.id.text_input_layout);
+        mTextInputExitText = view.findViewById(R.id.text_input_edit_text);
+        mRecoveryPhraseButton = view.findViewById(R.id.button_verify_word);
         mRecoveryPhraseButton.setOnClickListener(
                 v -> {
-                    if (mRecoveryPhrasesToVerifyAdapter != null
-                            && mRecoveryPhrasesToVerifyAdapter.getRecoveryPhraseList().size() > 0) {
-                        KeyringService keyringService = getKeyringService();
+                    final Editable typedWord = mTextInputExitText.getText();
+                    if (typedWord == null) {
+                        phraseNotMatch();
+                        return;
+                    }
+                    if (mWordToMatch.second.equals(typedWord.toString())) {
                         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                        KeyringService keyringService = getKeyringService();
+                        if (braveWalletP3A != null && mIsOnboarding) {
+                            braveWalletP3A.reportOnboardingAction(OnboardingAction.COMPLETE);
+                        }
                         if (keyringService != null) {
-                            keyringService.getWalletMnemonic(
-                                    mOnboardingViewModel.getPassword(),
-                                    result -> {
-                                        String recoveryPhraseToVerify =
-                                                Utils.getRecoveryPhraseFromList(
-                                                        mRecoveryPhrasesToVerifyAdapter
-                                                                .getRecoveryPhraseList());
-                                        if (result.equals(recoveryPhraseToVerify)) {
-                                            if (braveWalletP3A != null && mIsOnboarding) {
-                                                braveWalletP3A.reportOnboardingAction(
-                                                        OnboardingAction.COMPLETE);
-                                            }
-                                            keyringService.notifyWalletBackupComplete();
-                                            if (mOnNextPage != null) {
-                                                if (mIsOnboarding) {
-                                                    // Show confirmation screen
-                                                    // only during onboarding process.
-                                                    mOnNextPage.incrementPages(1);
-                                                } else {
-                                                    // It's important to call the
-                                                    // `showWallet` method instead of
-                                                    // finishing the activity as we need to
-                                                    // reload the portfolio section to hide the
-                                                    // backup banner.
-                                                    mOnNextPage.showWallet(true);
-                                                }
-                                            }
-                                        } else {
-                                            phraseNotMatch();
-                                        }
-                                    });
-                        } else {
-                            phraseNotMatch();
+                            keyringService.notifyWalletBackupComplete();
+                        }
+                        if (mOnNextPage != null) {
+                            if (mIsOnboarding) {
+                                // Show confirmation screen
+                                // only during onboarding process.
+                                mOnNextPage.incrementPages(1);
+                            } else {
+                                // It's important to call the
+                                // `showWallet` method instead of
+                                // finishing the activity as we need to
+                                // reload the portfolio section to hide the
+                                // backup banner.
+                                mOnNextPage.showWallet(true);
+                            }
                         }
                     } else {
                         phraseNotMatch();
                     }
                 });
-        TextView recoveryPhraseSkipButton = view.findViewById(R.id.btn_verify_recovery_phrase_skip);
-        recoveryPhraseSkipButton.setOnClickListener(
+        mSkip = view.findViewById(R.id.skip);
+        mSkip.setOnClickListener(
                 v -> {
                     BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
                     if (braveWalletP3A != null && mIsOnboarding) {
@@ -133,122 +144,9 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                         requireActivity().finish();
                     }
                 });
-
-        KeyringService keyringService = getKeyringService();
-        if (keyringService != null) {
-            keyringService.getWalletMnemonic(
-                    mOnboardingViewModel.getPassword(),
-                    result -> {
-                        mRecoveryPhrases = Utils.getRecoveryPhraseAsList(result);
-                        Collections.shuffle(mRecoveryPhrases);
-                        setupRecoveryPhraseRecyclerView(view);
-                        setupSelectedRecoveryPhraseRecyclerView(view);
-                    });
-        }
     }
 
     private void phraseNotMatch() {
-        resetRecoveryPhrasesViews();
-        Toast.makeText(requireActivity(), R.string.phrases_did_not_match, Toast.LENGTH_SHORT).show();
+        mTextInputLayout.setError(mPhraseNotMatch);
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private void resetRecoveryPhrasesViews() {
-        if (mRecoveryPhrasesAdapter != null && mRecoveryPhrasesRecyclerView != null) {
-            mRecoveryPhrasesAdapter = new RecoveryPhraseAdapter();
-            mRecoveryPhrasesAdapter.setRecoveryPhraseList(mRecoveryPhrases);
-            mRecoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(mOnRecoveryPhraseSelected);
-            mRecoveryPhrasesRecyclerView.setAdapter(mRecoveryPhrasesAdapter);
-        }
-        if (mRecoveryPhrasesToVerifyAdapter != null) {
-            mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(new ArrayList<>());
-            mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void setupRecoveryPhraseRecyclerView(@NonNull View view) {
-        mRecoveryPhrasesRecyclerView = view.findViewById(R.id.recovery_phrase_recyclerview);
-        assert getActivity() != null;
-        mRecoveryPhrasesRecyclerView.addItemDecoration(
-                new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        mRecoveryPhrasesRecyclerView.setLayoutManager(layoutManager);
-
-        mRecoveryPhrasesAdapter = new RecoveryPhraseAdapter();
-        mRecoveryPhrasesAdapter.setRecoveryPhraseList(mRecoveryPhrases);
-        mRecoveryPhrasesAdapter.setOnRecoveryPhraseSelectedListener(mOnRecoveryPhraseSelected);
-        mRecoveryPhrasesRecyclerView.setAdapter(mRecoveryPhrasesAdapter);
-    }
-
-    private void setupSelectedRecoveryPhraseRecyclerView(@NonNull View view) {
-        mSelectedPhraseRecyclerView = view.findViewById(R.id.recovery_phrase_selected_recyclerview);
-        assert getActivity() != null;
-        mSelectedPhraseRecyclerView.addItemDecoration(
-                new ItemOffsetDecoration(getActivity(), R.dimen.zero_margin));
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        mSelectedPhraseRecyclerView.setLayoutManager(layoutManager);
-
-        mRecoveryPhrasesToVerifyAdapter = new RecoveryPhraseAdapter();
-        mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
-                mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
-        mRecoveryPhrasesToVerifyAdapter.setOnRecoveryPhraseSelectedListener(
-                mOnSelectedRecoveryPhraseSelected);
-        mRecoveryPhrasesToVerifyAdapter.setSelectedRecoveryPhrase(true);
-        mSelectedPhraseRecyclerView.setAdapter(mRecoveryPhrasesToVerifyAdapter);
-    }
-
-    OnRecoveryPhraseSelected mOnRecoveryPhraseSelected =
-            new OnRecoveryPhraseSelected() {
-                @Override
-                @SuppressLint("NotifyDataSetChanged")
-                public void onSelectedRecoveryPhrase(String phrase) {
-                    if (mRecoveryPhrasesAdapter != null) {
-                        mRecoveryPhrasesAdapter.notifyDataSetChanged();
-                    }
-
-                    if (mRecoveryPhrasesAdapter != null
-                            && mRecoveryPhrasesToVerifyAdapter != null) {
-                        List<String> newList =
-                                new ArrayList<>(
-                                        mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
-                        mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(newList);
-                        mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
-                    }
-
-                    if (mRecoveryPhrasesAdapter != null
-                            && mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
-                                    == mRecoveryPhrases.size()) {
-                        mRecoveryPhraseButton.setAlpha(1f);
-                        mRecoveryPhraseButton.setEnabled(true);
-                    }
-                }
-            };
-
-    OnRecoveryPhraseSelected mOnSelectedRecoveryPhraseSelected =
-            new OnRecoveryPhraseSelected() {
-                @Override
-                @SuppressLint("NotifyDataSetChanged")
-                public void onSelectedRecoveryPhrase(String phrase) {
-                    if (mRecoveryPhrasesAdapter != null) {
-                        mRecoveryPhrasesAdapter.addPhraseAtPosition(
-                                mRecoveryPhrases.indexOf(phrase), phrase);
-                        mRecoveryPhrasesAdapter.removeSelectedPhrase(phrase);
-                        mRecoveryPhrasesAdapter.notifyDataSetChanged();
-                    }
-
-                    if (mRecoveryPhrasesAdapter != null
-                            && mRecoveryPhrasesToVerifyAdapter != null) {
-                        mRecoveryPhrasesToVerifyAdapter.setRecoveryPhraseList(
-                                mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList());
-                        mRecoveryPhrasesToVerifyAdapter.notifyDataSetChanged();
-                    }
-
-                    if (mRecoveryPhrasesAdapter != null
-                            && mRecoveryPhrasesAdapter.getSelectedRecoveryPhraseList().size()
-                                    == mRecoveryPhrases.size()) {
-                        mRecoveryPhraseButton.setAlpha(1f);
-                        mRecoveryPhraseButton.setEnabled(true);
-                    }
-                }
-            };
 }
