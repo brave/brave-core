@@ -49,13 +49,11 @@ TEST_F(BraveAdsFixedUserDataBuilderTest, BuildFixedUserDataForRewardsUser) {
                           "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
                         }
                       ],
-                      "countryCode": "US",
                       "createdAtTimestamp": "2020-11-18T12:00:00.000Z",
                       "platform": "windows",
                       "rotatingHash": "I6KM54gXOrWqRHyrD518LmhePLHpIk4KSgCKOl0e3sc=",
                       "segment": "untargeted",
                       "studies": [],
-                      "topSegment": [],
                       "versionNumber": "1.2.3.4"
                     })"),
             fixed_user_data);

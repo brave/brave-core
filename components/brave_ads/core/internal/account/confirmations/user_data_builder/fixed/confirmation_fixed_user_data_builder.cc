@@ -8,12 +8,10 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/catalog_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/created_at_timestamp_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/fixed/locale_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/fixed/top_segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/version_number_user_data.h"
 
 namespace brave_ads {
@@ -24,12 +22,10 @@ base::Value::Dict BuildFixedUserData(const TransactionInfo& transaction) {
   user_data.Merge(BuildBuildChannelUserData());
   user_data.Merge(BuildCatalogUserData());
   user_data.Merge(BuildCreatedAtTimestampUserData(transaction));
-  user_data.Merge(BuildLocaleUserData());
   user_data.Merge(BuildPlatformUserData());
   user_data.Merge(BuildRotatingHashUserData(transaction));
   user_data.Merge(BuildSegmentUserData(transaction));
   user_data.Merge(BuildStudiesUserData());
-  user_data.Merge(BuildTopSegmentUserData(transaction));
   user_data.Merge(BuildVersionNumberUserData());
 
   return user_data;
