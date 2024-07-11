@@ -15,7 +15,7 @@ import { handleOpenURLClick, validateScheme } from '$web-common/SecureLink';
 import MaybePromptEnableSuggestions from './MaybePromptEnableSuggestions';
 
 const Container = styled.div`
-  border-top: 1px solid ${color.divider.subtle};
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 
   background: rgba(255,255,255,0.1);
 
