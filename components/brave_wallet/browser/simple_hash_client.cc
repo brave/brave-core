@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 
+#include <algorithm>
 #include <map>
 #include <optional>
 #include <utility>
@@ -894,7 +895,7 @@ SimpleHashClient::ParseSolCompressedNftProofData(
   }
 
   if (!root_opt || !data_hash_opt || !creator_hash_opt || !owner_opt ||
-      !merkle_tree_opt || !delegate_opt) {
+      !merkle_tree_opt) {
     return std::nullopt;
   }
 

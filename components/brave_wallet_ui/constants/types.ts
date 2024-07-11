@@ -278,6 +278,7 @@ export interface SendSolTransactionParams extends BaseTransactionParams {}
 export interface SPLTransferFromParams extends BaseTransactionParams {
   splTokenMintAddress: string
   decimals: number
+  isCompressedNft: boolean
 }
 
 export interface SendEthTransactionParams extends BaseEthTransactionParams {}
