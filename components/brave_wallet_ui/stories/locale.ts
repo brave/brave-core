@@ -395,6 +395,8 @@ provideStrings({
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
   braveWalletAccountBalance: 'Account balance',
+  braveWalletViewAddressOn: 'View address on:',
+  braveWalletNetworkExplorer: '$1 Explorer',
 
   // Add Account Options
   braveWalletCreateAccount: 'Create $1 account',

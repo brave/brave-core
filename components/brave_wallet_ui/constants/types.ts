@@ -840,6 +840,7 @@ export type AccountModalTypes =
   | 'details'
   | 'remove'
   | 'buy'
+  | 'explorer'
 
 export interface AccountButtonOptionsObjectType {
   name: string
