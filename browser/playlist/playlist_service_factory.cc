@@ -44,6 +44,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
@@ -112,7 +113,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
         continue;
       }
 
-      auto* side_panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser);
+      auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
       if (!side_panel_ui ||
           side_panel_ui->GetCurrentEntryId() != SidePanelEntryId::kPlaylist) {
         continue;

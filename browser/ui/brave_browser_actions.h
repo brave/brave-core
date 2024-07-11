@@ -15,7 +15,7 @@ class BraveBrowserActions : public BrowserActions {
   ~BraveBrowserActions() override;
 
  private:
-  void InitializeBraveBrowserActions();
+  void InitializeBrowserActions() override;
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_ACTIONS_H_

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index f59e9c5bc9fe6bf6dee23e014f86c39162254aef..a3a4ae2a4d0b3187b4be3d398b8aee0e78e76252 100644
+index 2224d31aec0642dfabc9d6e18f6f23b824c2bad6..06b42bb7b7ee3589bc67f50924da07f3da6aaa79 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -138,6 +138,7 @@ class GM2TabStyleViews : public TabStyleViews {
+@@ -141,6 +141,7 @@ class GM2TabStyleViews : public TabStyleViews {
    TabStyle::TabSelectionState GetSelectionState() const;
  
   private:
@@ -10,15 +10,15 @@ index f59e9c5bc9fe6bf6dee23e014f86c39162254aef..a3a4ae2a4d0b3187b4be3d398b8aee0e
    // Gets the bounds for the leading and trailing separators for a tab.
    TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-@@ -292,6 +293,7 @@ SkPath GM2TabStyleViews::GetPath(TabStyle::PathType path_type,
-   const ShapeModifier shape_modifier = GetShapeModifier(path_type);
-   const bool extend_left_to_bottom = shape_modifier & kNoLowerLeftArc;
+@@ -297,6 +298,7 @@ SkPath GM2TabStyleViews::GetPath(TabStyle::PathType path_type,
    const bool extend_right_to_bottom = shape_modifier & kNoLowerRightArc;
+   const bool compact_left_to_bottom =
+       !extend_left_to_bottom && (shape_modifier & kCompactLeftArc);
 +  extension_corner_radius = 0;
  
    SkPath path;
  
-@@ -609,9 +611,10 @@ TabStyle::SeparatorBounds GM2TabStyleViews::GetSeparatorBounds(
+@@ -621,9 +623,10 @@ TabStyle::SeparatorBounds GM2TabStyleViews::GetSeparatorBounds(
    TabStyle::SeparatorBounds separator_bounds;
  
    const int extra_vertical_space =
@@ -30,7 +30,7 @@ index f59e9c5bc9fe6bf6dee23e014f86c39162254aef..a3a4ae2a4d0b3187b4be3d398b8aee0e
  
    separator_bounds.leading = gfx::RectF(
        aligned_bounds.x() + corner_radius - separator_margin.right() -
-@@ -1028,14 +1031,18 @@ void GM2TabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -1047,14 +1050,18 @@ void GM2TabStyleViews::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

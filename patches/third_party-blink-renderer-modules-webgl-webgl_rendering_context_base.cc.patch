@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 801c6e3fc15714071ab325593c0ff40602450a87..6338179111fe0804d684e6c269e04977d0f940a9 100644
+index 801c6e3fc15714071ab325593c0ff40602450a87..e61c95c3196f031108f79c940d58da618ad06cd0 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -3185,6 +3185,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(
@@ -18,14 +18,14 @@ index 801c6e3fc15714071ab325593c0ff40602450a87..6338179111fe0804d684e6c269e04977
    GLuint program_id = ObjectNonZero(program);
    GLint max_name_length = -1;
    ContextGL()->GetProgramiv(program_id, GL_ACTIVE_UNIFORM_MAX_LENGTH,
-@@ -3245,6 +3247,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveUniform(
- std::optional<HeapVector<Member<WebGLShader>>>
+@@ -3246,6 +3248,7 @@ std::optional<HeapVector<Member<WebGLShader>>>
  WebGLRenderingContextBase::getAttachedShaders(WebGLProgram* program) {
    if (!ValidateWebGLProgramOrShader("getAttachedShaders", program))
      return std::nullopt;
 +  BRAVE_WEBGL_RENDERING_CONTEXT_BASE_NULLOPT
  
    HeapVector<Member<WebGLShader>> shader_objects;
+   for (GLenum shaderType : {GL_VERTEX_SHADER, GL_FRAGMENT_SHADER}) {
 @@ -3260,6 +3263,7 @@ GLint WebGLRenderingContextBase::getAttribLocation(WebGLProgram* program,
                                                     const String& name) {
    if (!ValidateWebGLProgramOrShader("getAttribLocation", program))
