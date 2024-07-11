@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // styles
-import { Column, Row } from '../../shared/style'
+import { Column, WalletButton } from '../../shared/style'
 
 export const alertItemGap = leo.spacing.m
 
@@ -50,8 +50,18 @@ export const CollapseIcon = styled(Icon)`
   margin-left: 4px;
 `
 
-export const CollapseTitleRow = styled(Row)`
+export const CollapseTitleRow = styled(WalletButton)`
   cursor: pointer;
+  font-family: 'Poppins';
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  background: none;
+  border: none;
 `
 
 export const FullWidthChildrenColumn = styled(Column)`

@@ -9,6 +9,7 @@ import Tooltip from '@brave/leo/react/tooltip'
 
 // types & magics
 import { BraveWallet } from '../../../../constants/types'
+import type { ParsedTransaction } from '../../../../utils/tx-utils'
 
 // utils
 import Amount from '../../../../utils/amount'
@@ -56,7 +57,6 @@ import {
   StateChangeText,
   TooltipContent
 } from './state_changes.styles'
-import { ParsedTransaction } from '../../../../utils/tx-utils'
 
 type BlockchainInfo = Pick<
   BraveWallet.NetworkInfo,

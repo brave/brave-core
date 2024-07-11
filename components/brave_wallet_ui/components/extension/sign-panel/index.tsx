@@ -73,6 +73,8 @@ interface Props {
   showWarning: boolean
 }
 
+// TODO: fix broken article link
+// https://github.com/brave/brave-browser/issues/39708
 const onClickLearnMore = () => {
   chrome.tabs.create(
     {

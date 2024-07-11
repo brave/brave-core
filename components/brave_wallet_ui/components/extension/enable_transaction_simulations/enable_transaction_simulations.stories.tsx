@@ -5,10 +5,13 @@
 
 import * as React from 'react'
 
+// components
 import {
   WalletPanelStory //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 import { EnableTransactionSimulations } from './enable_transaction_simulations'
+
+// styles
 import { PanelWrapper } from '../../../panel/style'
 import { LongWrapper } from '../../../stories/style'
 

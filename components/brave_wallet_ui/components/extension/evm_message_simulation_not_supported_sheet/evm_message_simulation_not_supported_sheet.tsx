@@ -73,8 +73,6 @@ export const EvmMessageSimulationNotSupportedSheet = () => {
             <Column width='100%'>
               <CollapseTitleRow
                 onClick={() => setIsMessageExpanded((prev) => !prev)}
-                alignItems='center'
-                justifyContent='center'
               >
                 <CollapseTitle>
                   {getLocale('braveWalletWhatIsMessageScanning')}

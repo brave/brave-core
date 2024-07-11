@@ -64,11 +64,6 @@ import { NetworkFeeRow } from './common/style'
 import {
   AccountNameAndAddress,
   NetworkNameText,
-  OriginRow,
-  SimulationInfoColumn,
-  TabsAndContent,
-  TabRow,
-  StyledWrapper,
   SimulatedTxMessageBox
 } from './confirm_simulated_tx_panel.styles'
 import { LearnMoreButton } from '../shared-panel-styles'
@@ -161,8 +156,6 @@ export const ConfirmSimulatedTransactionPanel = ({
       : BraveWallet.CoinType.SOL
   )
 
-  console.log({ txSimulation })
-
   const simulationHasOutgoingSPLandSOLTransfers =
     simulationType === 'SVM' &&
     txSimulation.expectedStateChanges.some(
@@ -245,7 +238,12 @@ export const ConfirmSimulatedTransactionPanel = ({
   }
 
   return (
-    <StyledWrapper>
+    <Column
+      width={'100%'}
+      height={'100%'}
+      alignItems='center'
+      justifyContent='space-between'
+    >
       <Column
         gap={'8px'}
         alignItems='center'
@@ -285,17 +283,32 @@ export const ConfirmSimulatedTransactionPanel = ({
           />
         </Row>
 
-        <OriginRow>
+        <Row
+          alignItems={'center'}
+          justifyContent={'center'}
+          padding={'0px 24px'}
+          width={'100%'}
+        >
           <TransactionOrigin
             originInfo={originInfo}
             contractAddress={contractAddress}
             network={transactionsNetwork}
             isFlagged={txSimulation.warnings.some((w) => isUrlWarning(w.kind))}
           />
-        </OriginRow>
+        </Row>
 
-        <TabsAndContent>
-          <TabRow>
+        <Column
+          alignItems={'flex-start'}
+          justifyContent={'center'}
+          width={'100%'}
+          padding={'0px 24px'}
+        >
+          <Row
+            alignItems={'flex-end'}
+            justifyContent={'center'}
+            width={'100%'}
+            marginBottom={'10px'}
+          >
             <PanelTab
               isSelected={selectedTab === 'transaction'}
               onSubmit={onSelectTab('transaction')}
@@ -311,9 +324,13 @@ export const ConfirmSimulatedTransactionPanel = ({
                 onSubmit={onToggleAdvancedTransactionSettings}
               />
             )}
-          </TabRow>
+          </Row>
 
-          <SimulationInfoColumn>
+          <Column
+            alignItems={'flex-start'}
+            justifyContent={'center'}
+            width={'100%'}
+          >
             {selectedTab === 'transaction' ? (
               simulationResultsErrorText ? (
                 <SimulatedTxMessageBox isDetails={true}>
@@ -371,8 +388,8 @@ export const ConfirmSimulatedTransactionPanel = ({
                 </>
               </Alert>
             )}
-          </SimulationInfoColumn>
-        </TabsAndContent>
+          </Column>
+        </Column>
       </Column>
 
       <Column
@@ -395,7 +412,7 @@ export const ConfirmSimulatedTransactionPanel = ({
           setIsWarningCollapsed={setIsWarningCollapsed}
         />
       </Column>
-    </StyledWrapper>
+    </Column>
   )
 }
 

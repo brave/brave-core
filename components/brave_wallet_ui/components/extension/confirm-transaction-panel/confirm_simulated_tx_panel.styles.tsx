@@ -14,15 +14,6 @@ import { styledScrollbarMixin } from '../../shared/style'
 // shared styles
 import { MessageBox } from './style'
 
-export const StyledWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-`
-
 export const IconButton = styled(Button)`
   background: none;
   border: none;
@@ -94,32 +85,6 @@ export const Divider = styled.div`
   margin-bottom: 8px;
 `
 
-export const OriginRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 0px 24px;
-  width: 100%;
-`
-
-export const SimulationInfoColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-`
-
-export const ContractOriginColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
-  gap: 4px;
-`
-
 export const NetworkNameText = styled.p`
   color: ${leo.color.text.secondary};
   font: ${leo.font.small.regular};
@@ -135,22 +100,4 @@ export const AccountNameAndAddress = styled.div`
 
 export const SimulatedTxMessageBox = styled(MessageBox)`
   width: 100%;
-`
-
-export const TabsAndContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  padding: 0px 24px;
-`
-
-export const TabRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 10px;
 `

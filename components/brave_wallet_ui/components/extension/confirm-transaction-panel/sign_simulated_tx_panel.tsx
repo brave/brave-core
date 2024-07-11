@@ -5,9 +5,11 @@
 
 import * as React from 'react'
 
+// Types
+import { BraveWallet, SignDataSteps } from '../../../constants/types'
+
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { BraveWallet, SignDataSteps } from '../../../constants/types'
 import {
   isUrlWarning,
   translateSimulationResultError
@@ -43,7 +45,7 @@ import {
 } from './common/pending_tx_actions_footer'
 
 // Styled Components
-import { Column, ErrorText } from '../../shared/style'
+import { Column, ErrorText, Row } from '../../shared/style'
 import {
   LearnMoreButton,
   TabRow,
@@ -59,10 +61,7 @@ import {
 } from '../sign-panel/style'
 import {
   AccountNameAndAddress,
-  NetworkNameText,
-  OriginRow,
-  SimulationInfoColumn,
-  StyledWrapper
+  NetworkNameText
 } from './confirm_simulated_tx_panel.styles'
 import { MessageBox } from './style'
 import { DetailColumn } from '../transaction-box/style'
@@ -84,7 +83,8 @@ type Props = {
   queueNumber: number
 }
 
-// TODO: fix broken article link
+// TODO: fix broken article link:
+// https://github.com/brave/brave-browser/issues/39708
 const onClickLearnMore = () => {
   window.open(
     'https://support.brave.com/hc/en-us/articles/4409513799693',
@@ -162,7 +162,12 @@ export const SignSimulatedTransactionPanel = ({
   }
 
   return (
-    <StyledWrapper>
+    <Column
+      width={'100%'}
+      height={'100%'}
+      alignItems='center'
+      justifyContent='space-between'
+    >
       <TopRow>
         <Column
           alignItems='flex-start'
@@ -227,7 +232,12 @@ export const SignSimulatedTransactionPanel = ({
               justifyContent={'flex-start'}
             >
               {originInfo && (
-                <OriginRow>
+                <Row
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  padding={'0px 24px'}
+                  width={'100%'}
+                >
                   <TransactionOrigin
                     network={network}
                     originInfo={originInfo}
@@ -235,7 +245,7 @@ export const SignSimulatedTransactionPanel = ({
                       isUrlWarning(w.kind)
                     )}
                   />
-                </OriginRow>
+                </Row>
               )}
 
               <TabRow>
@@ -251,7 +261,11 @@ export const SignSimulatedTransactionPanel = ({
                 />
               </TabRow>
 
-              <SimulationInfoColumn>
+              <Column
+                alignItems={'flex-start'}
+                justifyContent={'center'}
+                width={'100%'}
+              >
                 {selectedTab === 'transaction' ? (
                   simulationResultsErrorText ? (
                     <MessageBox
@@ -292,7 +306,7 @@ export const SignSimulatedTransactionPanel = ({
                     })}
                   </MessageBox>
                 )}
-              </SimulationInfoColumn>
+              </Column>
             </Column>
 
             <PendingTransactionActionsFooter
@@ -308,6 +322,6 @@ export const SignSimulatedTransactionPanel = ({
           </>
         )}
       </>
-    </StyledWrapper>
+    </Column>
   )
 }

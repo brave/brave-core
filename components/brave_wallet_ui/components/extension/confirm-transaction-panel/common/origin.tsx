@@ -113,7 +113,11 @@ export function TransactionOrigin({
           )}
         </IconsWrapper>
       </Column>
-      <ContractOriginColumn>
+      <ContractOriginColumn
+        alignItems='flex-start'
+        justifyContent='flex-start'
+        gap={'4px'}
+      >
         <OriginURLText>
           <SiteOrigin
             originSpec={originInfo.originSpec}

@@ -7,6 +7,8 @@ import * as React from 'react'
 
 // components
 import { Origin, TransactionOrigin } from './origin'
+
+// styles
 import { Column } from '../../../shared/style'
 
 // mocks

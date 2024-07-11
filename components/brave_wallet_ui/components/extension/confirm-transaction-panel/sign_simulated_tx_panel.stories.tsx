@@ -4,22 +4,27 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// components
+import {
+  WalletPanelStory //
+} from '../../../stories/wrappers/wallet-panel-story-wrapper'
+import { SignSimulatedTransactionPanel } from './sign_simulated_tx_panel'
+
+// styles
+import { PanelWrapper } from '../../../panel/style'
+import { LongWrapper } from '../../../stories/style'
+
+// mocks
+import {
+  mockSolanaMainnetNetwork //
+} from '../../../stories/mock-data/mock-networks'
 import {
   mockAccount,
   mockNoChangeSolSimulation,
   mockReceiveSolSimulation,
   mockSolDappSignTransactionRequest
 } from '../../../common/constants/mocks'
-import { PanelWrapper } from '../../../panel/style'
-import {
-  mockSolanaMainnetNetwork //
-} from '../../../stories/mock-data/mock-networks'
-import { LongWrapper } from '../../../stories/style'
-
-import {
-  WalletPanelStory //
-} from '../../../stories/wrappers/wallet-panel-story-wrapper'
-import { SignSimulatedTransactionPanel } from './sign_simulated_tx_panel'
 
 export const _SignSimulatedTransactionPanel = {
   title: 'Sign Simulated Transaction Panel',
