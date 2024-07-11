@@ -34,8 +34,6 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
-#include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #endif
 
 using testing::_;
@@ -110,8 +108,10 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     auto zcash_rpc = std::make_unique<testing::NiceMock<MockZCashRPC>>();
+
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        keyring_service_.get(), std::move(zcash_rpc));
+        keyring_service_.get(), std::move(zcash_rpc),
+        base::SequencedTaskRunner::GetCurrentDefault());
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     zcash_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);

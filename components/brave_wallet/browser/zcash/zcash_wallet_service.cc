@@ -37,19 +37,24 @@ ZCashWalletService::ZCashWalletService(
     KeyringService* keyring_service,
     PrefService* prefs,
     NetworkManager* network_manager,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : keyring_service_(keyring_service) {
   zcash_rpc_ = std::make_unique<ZCashRpc>(network_manager, url_loader_factory);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
+  background_task_runner_ = background_task_runner;
 }
 
-ZCashWalletService::ZCashWalletService(KeyringService* keyring_service,
-                                       std::unique_ptr<ZCashRpc> zcash_rpc)
+ZCashWalletService::ZCashWalletService(
+    KeyringService* keyring_service,
+    std::unique_ptr<ZCashRpc> zcash_rpc,
+    scoped_refptr<base::SequencedTaskRunner> background_task_runner)
     : keyring_service_(keyring_service) {
   zcash_rpc_ = std::move(zcash_rpc);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
+  background_task_runner_ = background_task_runner;
 }
 
 ZCashWalletService::~ZCashWalletService() = default;
@@ -450,7 +455,8 @@ void ZCashWalletService::CreateShieldAllTransaction(
   }
 
   shield_funds_task_ = base::WrapUnique<ZCashCreateShieldAllTransactionTask>(
-      new ZCashCreateShieldAllTransactionTask(this, chain_id, account_id,
+      new ZCashCreateShieldAllTransactionTask(this, background_task_runner_,
+                                              chain_id, account_id,
                                               std::move(callback)));
   shield_funds_task_->ScheduleWorkOnTask();
 }
