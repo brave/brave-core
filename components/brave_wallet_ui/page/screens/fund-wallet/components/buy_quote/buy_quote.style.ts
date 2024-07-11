@@ -18,6 +18,7 @@ export const StyledWrapper = styled.div<{ isOpen?: boolean }>`
   border: 1px solid
     ${(p) => (p.isOpen ? color.button.background : color.divider.subtle)};
   background-color: ${color.container.background};
+  width: 100%;
 `
 
 export const ProviderName = styled.p`
