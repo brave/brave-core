@@ -41,7 +41,7 @@ constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
     u"document?.body?.innerText";
 
 std::string MediaPlayerUuid(const content::MediaPlayerId& id) {
-  return base::StringPrintf("%d%d%d", id.frame_routing_id.child_id,
+  return base::StringPrintf("%d:%d:%d", id.frame_routing_id.child_id,
                             id.frame_routing_id.frame_routing_id,
                             id.delegate_id);
 }
@@ -314,15 +314,55 @@ void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
   }
 }
 
-void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
-  if (ads_service_) {
-    ads_service_->NotifyTabDidStartPlayingMedia(/*tab_id=*/session_id_.id());
+bool AdsTabHelper::IsMediaPlayerActive(const std::string& media_player_uuid) {
+  std::cout << "FOOBAR.IsMediaPlayerActive: "
+            << base::Contains(media_players_, media_player_uuid) << std::endl;
+
+  return base::Contains(media_players_, media_player_uuid);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia(
+    const content::MediaPlayerId& id) {
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  std::cout << "FOOBAR.MaybeNotifyTabDidStartPlayingMedia: "
+            << media_player_uuid << std::endl;
+
+  if (IsMediaPlayerActive(media_player_uuid)) {
+    // Already playing media.
+    std::cout << "FOOBAR.AlreadyPlayingMediaOrMuted" << std::endl;
+    return;
+  }
+
+  if (media_players_.size() == 1) {
+    // If this is the first media player that has started playing, we should
+    // notify that the tab has started playing media.
+    if (ads_service_) {
+      std::cout << "FOOBAR.NotifyTabDidStartPlayingMedia" << std::endl;
+      ads_service_->NotifyTabDidStartPlayingMedia(/*tab_id=*/session_id_.id());
+    }
   }
 }
 
-void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia() {
-  if (ads_service_) {
-    ads_service_->NotifyTabDidStopPlayingMedia(/*tab_id=*/session_id_.id());
+void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia(
+    const content::MediaPlayerId& id) {
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  std::cout << "FOOBAR.MaybeNotifyTabDidStopPlayingMedia: " << media_player_uuid
+            << std::endl;
+
+  if (!IsMediaPlayerActive(media_player_uuid)) {
+    // Not playing media.
+    return;
+  }
+
+  if (media_players_.empty()) {
+    // If this is last media player to stop playing, we should notify that the
+    // tab has stopped playing media.
+    if (ads_service_) {
+      std::cout << "FOOBAR.NotifyTabDidStopPlayingMedia" << std::endl;
+      ads_service_->NotifyTabDidStopPlayingMedia(/*tab_id=*/session_id_.id());
+    }
   }
 }
 
@@ -384,43 +424,51 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   ProcessNavigation();
 }
 
-bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_uuid) {
-  return base::Contains(media_players_, media_player_uuid);
-}
-
-void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
   const std::string media_player_uuid = MediaPlayerUuid(id);
 
-  if (IsPlayingMedia(media_player_uuid)) {
-    // Already playing media.
-    return;
+  std::cout << "FOOBAR.MediaStartedPlaying: " << media_player_uuid << std::endl;
+
+  media_players_[media_player_uuid] = {/*is_playing=*/true,
+                                       /*is_muted=*/!video_type.has_audio};
+
+  std::cout << "FOOBAR.ActiveMediaPlayers:" << std::endl;
+  for (const auto& [uuid, media_player] : media_players_) {
+    std::cout << "  MediaPlayer: " << uuid << "(" << media_player.is_playing
+              << ":" << media_player.is_muted << ")" << std::endl;
   }
 
-  media_players_.insert(media_player_uuid);
-  if (media_players_.size() == 1) {
-    // If this is the first media player that has started playing, notify that
-    // the tab has started playing media.
-    MaybeNotifyTabDidStartPlayingMedia();
-  }
+  MaybeNotifyTabDidStartPlayingMedia(id);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
-    const MediaPlayerInfo& /*video_type*/,
+    const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
-    WebContentsObserver::MediaStoppedReason /*reason*/) {
+    const WebContentsObserver::MediaStoppedReason /*reason*/) {
   const std::string media_player_uuid = MediaPlayerUuid(id);
 
-  if (!IsPlayingMedia(media_player_uuid)) {
-    // Not playing media.
-    return;
+  std::cout << "FOOBAR.MediaStoppedPlaying: " << media_player_uuid << std::endl;
+
+  media_players_[media_player_uuid] = {/*is_playing=*/true,
+                                       /*is_muted=*/!video_type.has_audio};
+
+  std::cout << "FOOBAR.ActiveMediaPlayers:" << std::endl;
+  for (const auto& [uuid, media_player] : media_players_) {
+    std::cout << "  MediaPlayer: " << uuid << "(" << media_player.is_playing
+              << ":" << media_player.is_muted << ")" << std::endl;
   }
 
-  media_players_.erase(media_player_uuid);
-  if (media_players_.empty()) {
-    // If this is the last media player that has stopped playing, notify that
-    // the tab has stopped playing media.
-    MaybeNotifyTabDidStopPlayingMedia();
+  MaybeNotifyTabDidStopPlayingMedia(id);
+}
+
+void AdsTabHelper::MediaMutedStatusChanged(const content::MediaPlayerId& id,
+                                           const bool muted) {
+  std::cout << "FOOBAR.MediaMutedStatusChanged: " << muted << std::endl;
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  if (base::Contains(media_players_, media_player_uuid)) {
+    media_players_[media_player_uuid].is_muted = muted;
   }
 }
 

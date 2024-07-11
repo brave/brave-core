@@ -6,8 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <map>
 #include <optional>
-#include <set>
 #include <string>
 #include <vector>
 
@@ -30,6 +30,11 @@ class GURL;
 namespace brave_ads {
 
 class AdsService;
+
+struct MediaPlayerInfo2 {
+  bool is_playing;
+  bool is_muted;
+};
 
 class AdsTabHelper : public content::WebContentsObserver,
 #if !BUILDFLAG(IS_ANDROID)
@@ -85,9 +90,9 @@ class AdsTabHelper : public content::WebContentsObserver,
       const std::vector<GURL>& redirect_chain,
       base::Value value) const;
 
-  bool IsPlayingMedia(const std::string& media_player_uuid);
-  void MaybeNotifyTabDidStartPlayingMedia();
-  void MaybeNotifyTabDidStopPlayingMedia();
+  bool IsMediaPlayerActive(const std::string& media_player_uuid);
+  void MaybeNotifyTabDidStartPlayingMedia(const content::MediaPlayerId& id);
+  void MaybeNotifyTabDidStopPlayingMedia(const content::MediaPlayerId& id);
 
   void MaybeNotifyTabdidClose();
 
@@ -103,6 +108,8 @@ class AdsTabHelper : public content::WebContentsObserver,
       const MediaPlayerInfo& video_type,
       const content::MediaPlayerId& id,
       WebContentsObserver::MediaStoppedReason reason) override;
+  void MediaMutedStatusChanged(const content::MediaPlayerId& id,
+                               bool muted) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
@@ -123,7 +130,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
 
-  std::set</*media_player_uuid*/ std::string> media_players_;
+  std::map</*media_player_uuid*/ std::string, MediaPlayerInfo2> media_players_;
 
   std::optional<bool> is_browser_active_;
 
