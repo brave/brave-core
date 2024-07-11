@@ -708,3 +708,21 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                               &referrer);
   EXPECT_EQ(referrer->url, kDocumentUrl);
 }
+
+// Confirm only expected extension has been installed.
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
+  // Info: This checkup will not cover on-demand component extension
+  // installation.
+  std::set<std::string> expected_extensions = {
+      brave_extension_id,
+      extensions::kWebStoreAppId,
+      extension_misc::kPdfExtensionId,
+  };
+
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  std::set<std::string> installed_extensions =
+      registry->GenerateInstalledExtensionsSet().GetIDs();
+
+  EXPECT_EQ(expected_extensions, installed_extensions);
+}
