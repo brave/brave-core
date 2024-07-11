@@ -134,7 +134,6 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(&BraveDefaultExtensionsHandler::SetBraveWalletEnabled,
                           base::Unretained(this)));
 #endif
-  web_ui()->RegisterMessageCallback(
   // TODO(petemill): If anything outside this handler is responsible for causing
   // restart-neccessary actions, then this should be moved to a generic handler
   // and the flag should be moved to somewhere more static / singleton-like.
