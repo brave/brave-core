@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -302,8 +304,7 @@ ZCashRpc::~ZCashRpc() = default;
 void ZCashRpc::GetTreeState(const std::string& chain_id,
                             zcash::mojom::BlockIDPtr block_id,
                             GetTreeStateCallback callback) {
-  GURL request_url = MakeGetTreeStateUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeGetTreeStateUrl(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
@@ -326,8 +327,7 @@ void ZCashRpc::GetTreeState(const std::string& chain_id,
 
 void ZCashRpc::GetLatestTreeState(const std::string& chain_id,
                                   GetTreeStateCallback callback) {
-  GURL request_url = MakeGetLatestTreeStateUrl(
-      GetNetworkURL(prefs_, chain_id, mojom::CoinType::ZEC));
+  GURL request_url = MakeGetLatestTreeStateUrl(GetNetworkURL(chain_id));
 
   if (!request_url.is_valid()) {
     std::move(callback).Run(
