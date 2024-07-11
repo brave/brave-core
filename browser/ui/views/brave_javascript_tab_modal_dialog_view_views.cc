@@ -36,7 +36,7 @@ BraveJavaScriptTabModalDialogViewViews::BraveJavaScriptTabModalDialogViewViews(
           default_prompt_text,
           std::move(dialog_callback),
           std::move(dialog_force_closed_callback)),
-      alerting_web_contents_(*alerting_web_contents) {
+      web_contents_(*parent_web_contents) {
   // JavaScriptTabModalDialogViewViews already created Widget.
   auto* widget = GetWidget();
   CHECK(widget);
@@ -95,7 +95,7 @@ web_modal::WebContentsModalDialogHost&
 BraveJavaScriptTabModalDialogViewViews::GetModalDialogHost() {
   web_modal::WebContentsModalDialogManager* manager =
       web_modal::WebContentsModalDialogManager::FromWebContents(
-          base::to_address(alerting_web_contents_));
+          base::to_address(web_contents_));
   CHECK(manager);
 
   auto* modal_dialog_host =
@@ -126,17 +126,15 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
   bounds.set_origin(modal_dialog_host.GetDialogPosition(bounds.size()));
 
   // 1. Check if the tab is in split view mode.
-  auto* browser =
-      chrome::FindBrowserWithTab(base::to_address(alerting_web_contents_));
+  auto* browser = chrome::FindBrowserWithTab(base::to_address(web_contents_));
   if (!browser) {
     // This can happen on shutting down.
     return bounds.origin();
   }
 
   auto* tab_strip_model = browser->tab_strip_model();
-  auto tab_handle =
-      tab_strip_model->GetTabHandleAt(tab_strip_model->GetIndexOfWebContents(
-          base::to_address(alerting_web_contents_)));
+  auto tab_handle = tab_strip_model->GetTabHandleAt(
+      tab_strip_model->GetIndexOfWebContents(base::to_address(web_contents_)));
 
   auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser);
   CHECK(split_view_browser_data);

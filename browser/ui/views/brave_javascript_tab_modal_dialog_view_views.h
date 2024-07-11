@@ -45,7 +45,7 @@ class BraveJavaScriptTabModalDialogViewViews
   // This returns point in dialog host's widget coordinate.
   gfx::Point GetDesiredPositionConsideringSplitView();
 
-  raw_ref<content::WebContents> alerting_web_contents_;
+  raw_ref<content::WebContents> web_contents_;
 
   base::WeakPtrFactory<BraveJavaScriptTabModalDialogViewViews>
       weak_ptr_factory_{this};
