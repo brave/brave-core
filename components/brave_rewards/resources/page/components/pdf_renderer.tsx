@@ -2,11 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 // @ts-nocheck
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
-// @ts-nocheck
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import styles from './ping-sign-pdf.module.css';
@@ -16,7 +12,9 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
-const ws = new WebSocket('ws://localhost:5000');
+let ws;
+const MAX_RECONNECT_ATTEMPTS = 5;
+let reconnectAttempts = 0;
 
 const SignaturePopup = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState(null);
@@ -35,10 +33,10 @@ const SignaturePopup = ({ onClose, onConfirm }) => {
 
   return (
     <div className={styles.popupOverlay}>
-      <div className={styles.popupContent}>
-        <h2>Choose a digital ID to sign with:</h2>
+      <div className={`${styles.popupContent} ${selectedSignature ? styles.selected : ''}`}>
+        <h2 className={styles.h2}>Choose a digital ID to sign with:</h2>
         <button className={styles.closeButton} onClick={onClose}>×</button>
-        
+
         {selectedSignature && (
           <div className={styles.selectedSignature}>
             <h3>{signatures.find(sig => sig.id === selectedSignature).name}</h3>
@@ -49,25 +47,27 @@ const SignaturePopup = ({ onClose, onConfirm }) => {
             <div className={styles.browseImage}>Browse for Image</div>
           </div>
         )}
-        
+
         <div className={styles.signatureList}>
           {signatures.map(sig => (
             <label key={sig.id} className={styles.signatureOption}>
-              <input 
+              <input
                 type="radio"
                 name="signature"
                 value={sig.id}
                 checked={selectedSignature === sig.id}
                 onChange={() => setSelectedSignature(sig.id)}
               />
-              <span>{sig.name}</span>
-              <span className={styles.issueDate}>Issued: {sig.issueDate}</span>
+              <div className={styles.signatureName}>
+                <span className={styles.issueName}>{sig.name}</span>
+                <span className={styles.issueDate}>Issued: {sig.issueDate}</span>
+              </div>
             </label>
           ))}
         </div>
         <div className={styles.buttons}>
           <button className={styles.addButton}>+ Add</button>
-          <button 
+          <button
             className={styles.confirmButton}
             onClick={handleConfirm}
             disabled={!selectedSignature}
@@ -80,64 +80,143 @@ const SignaturePopup = ({ onClose, onConfirm }) => {
   );
 };
 
+const SignatureMethodPopup = ({ onClose, onSelectMethod }) => (
+  <div className={styles.popupOverlay}>
+    <div className={styles.popupContent}>
+      <h2 className={styles.h2}>Choose Your Digital Signature Method</h2>
+      <button className={styles.closeButton} onClick={onClose}>×</button>
+      <div className={styles.methodOptions}>
+        <div className={styles.button} onClick={() => onSelectMethod('digitalID')}>
+          <div className={styles.buttonTitle}>Sign with digital ID (Recommended)</div>
+          <div className={styles.buttonDesc}>Sign documents quickly using your pre-uploaded signature data for a seamless and efficient signing process</div>
+        </div>
+        <div className={styles.button} onClick={() => onSelectMethod('imageUpload')}>
+        <div className={styles.buttonTitle}>Upload Image Signature</div>
+          <div className={styles.buttonDesc}>Select and upload an image of your signature from your device to sign documents easily and securely.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const SuccessPopup = ({ message, onSave, onContinue, isVerification}) => (
+  <div className={styles.successPopup}>
+    {isVerification ? (
+      <h2 className={`${styles.successTitle} ${styles.successVerificationTitle}`}>Verification Successfull!</h2>
+    ) : (
+    <h2 className={styles.successTitle}>Signature complete!</h2>
+    )}
+    <p className={styles.successMessage}>{message}</p>
+    {!isVerification ? (
+      <p className={styles.successName}>Placeholder</p>
+    ) : (
+      <p></p>
+    )} 
+    <div className={styles.successButtons}>
+      <button className={styles.confirmButton} onClick={onSave}>Save as</button>
+      <button className={styles.confirmButton} onClick={onContinue}>Continue</button>
+    </div>
+  </div>
+);
+
 export function PdfRenderer() {
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfFileName, setPdfFileName] = useState('');
   const [numPages, setNumPages] = useState(null);
   const [pdfBuff, setPdfBuff] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [verificationResult, setVerificationResult] = useState(null);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [isSelectionEnabled, setIsSelectionEnabled] = useState(false);
+  const [selectionCoords, setSelectionCoords] = useState({ startX: 1, startY: 1, endX: 1, endY: 1 });
+  const [currentPageIndex, setCurrentPageIndex] = useState(null);
   const [hsmPath, setHsmPath] = useState('');
   const [selectedSignature, setSelectedSignature] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [isEditingPageNumber, setIsEditingPageNumber] = useState(false);
   const [tempPageNumber, setTempPageNumber] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [showSignaturePopup, setShowSignaturePopup] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [showSignatureMethodPopup, setShowSignatureMethodPopup] = useState(false);
+  const [selectedSignatureImage, setSelectedSignatureImage] = useState(null);
+  const [isVerification, setIsVerification] = useState(false);
+  const overlayCanvasRefs = useRef([]);
+  const pdfCanvasRefs = useRef([]);
+  const pdfContainerRef = useRef(null);
+  const pageRefs = useRef([]);
+  const fileInputRef = useRef(null);
 
-  const showToast = useCallback((message, type) => {
-    const toast = document.createElement('div');
-    toast.className = `${styles.toast} ${styles[`toast${type.charAt(0).toUpperCase() + type.slice(1)}`]}`;
-    toast.innerText = message;
-    document.body.appendChild(toast);
-    setTimeout(() => {
-      toast.classList.add(styles.toastFadeOut);
-      toast.addEventListener('transitionend', () => toast.remove());
-    }, 3000);
-  }, []);
+  const connectWebSocket = () => {
+    ws = new WebSocket('ws://localhost:5000');
 
-  useEffect(() => {
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.action === 'signed') {
-        const signedPdfBuffer = new Uint8Array(
-          Buffer.from(data.data, 'base64'),
-        );
-        setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
-        setPdfBuff(signedPdfBuffer);
-        showToast('Document signed successfully!', 'success');
-        setIsLoading(false);
-      } else if (data.action === 'verified') {
-        setVerificationResult(data.verified);
-        setIsLoading(false);
-        if (data.verified) {
-          showToast('Document verification successful!', 'success');
-        } else {
-          showToast('Document verification failed.', 'error');
-        }
-      } else if (data.action === 'error') {
-        console.error('Server error:', data.message);
-        showToast(`Error: ${data.message}`, 'error');
-        setIsLoading(false);
+    ws.onopen = () => {
+      console.log('WebSocket connected');
+      reconnectAttempts = 0;
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket disconnected');
+      if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+        setTimeout(connectWebSocket, 3000);
+        reconnectAttempts++;
+      } else {
+        alert('Unable to connect to the server. Please check your connection and refresh the page.');
       }
     };
 
     ws.onerror = (error) => {
       console.error('WebSocket error:', error);
-      showToast('Connection error. Please try again later.', 'error');
+      alert('Connection error. Please try again later.');
     };
-  }, [showToast]);
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.action === 'signed') {
+        const signedPdfBuffer = new Uint8Array(Buffer.from(data.data, 'base64'));
+        setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
+        setPdfBuff(signedPdfBuffer);
+        setSuccessMessage(`Your document has been signed`);
+        setShowSuccessPopup(true);
+        setIsSelectionEnabled(false);
+        setIsLoading(false);
+        clearAllSelections();
+      } else if (data.action === 'verified') {
+        setIsLoading(false);
+        if (data.verified) {
+          setSuccessMessage('Document verification successful!');
+          setIsVerification(true);
+          setShowSuccessPopup(true);
+        } else {
+          alert('Document verification failed.');
+        }
+      } else if (data.action === 'error') {
+        console.error('Server error:', data.message);
+        alert(`Error: ${data.message}`);
+        setIsLoading(false);
+      }
+    };
+  };
+
+  useEffect(() => {
+    connectWebSocket();
+
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+    };
+  }, []);
+
+  const sendWebSocketMessage = (message) => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify(message));
+    } else {
+      alert('Not connected to the server. Please wait for the connection to be established.');
+      alert('Connection to server lost. Attempting to reconnect...');
+      connectWebSocket();
+    }
+  };
 
   const handleFileInput = useCallback(
     async (event) => {
@@ -148,16 +227,15 @@ export function PdfRenderer() {
           setPdfBuff(arrayBuffer);
           setPdfFile(new Blob([arrayBuffer], { type: 'application/pdf' }));
           setPdfFileName(file.name);
-          setVerificationResult(null);
         } catch (error) {
           console.error('Error reading PDF file:', error);
-          showToast('Error reading PDF file. Please try again.', 'error');
+          alert('Error reading PDF file. Please try again.');
         }
       } else {
-        showToast('Please upload a valid PDF file.', 'error');
+        alert('Please upload a valid PDF file.');
       }
     },
-    [showToast]
+    []
   );
 
   const handleDrop = useCallback(
@@ -169,36 +247,115 @@ export function PdfRenderer() {
     [handleFileInput]
   );
 
+  const handleLogoClick = () => {
+    if (!pdfFile) {
+      fileInputRef.current.click();
+    }
+  };
+
   const promptHsmPath = () => {
     const path = prompt('Enter HSM path:');
     if (path) setHsmPath(path);
     return path;
   };
 
+  const getMousePos = (canvas, event) => {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+  };
+
+  const isSelectionValid = () => {
+    const { startX, startY, endX, endY } = selectionCoords;
+    const width = Math.abs(endX - startX);
+    const height = Math.abs(endY - startY);
+    const minSize = 50; // Minimum size in pixels
+    return width >= minSize && height >= minSize;
+  };
+
+  const handleMouseDown = (event, pageIndex) => {
+    if (!isSelectionEnabled) return;
+    setIsSelecting(true);
+    const pos = getMousePos(overlayCanvasRefs.current[pageIndex], event);
+    setSelectionCoords({ startX: pos.x, startY: pos.y, endX: pos.x, endY: pos.y });
+    setCurrentPageIndex(pageIndex);
+  };
+
+  const handleMouseMove = (event, pageIndex) => {
+    if (!isSelecting || !isSelectionEnabled) return;
+    const pos = getMousePos(overlayCanvasRefs.current[pageIndex], event);
+    setSelectionCoords(prev => ({ ...prev, endX: pos.x, endY: pos.y }));
+    drawSelection(pos.x, pos.y, pageIndex);
+  };
+
+  const handleMouseUp = (pageIndex) => {
+    if (!isSelectionEnabled) return;
+    setIsSelecting(false);
+    if (isSelectionValid()) {
+      showEmbedSignConfirmation(pageIndex);
+    } else {
+      alert('Selected area is too small. Please select a larger area.');
+      clearSelection(pageIndex);
+    }
+  };
+
+  const drawSelection = (endX, endY, pageIndex) => {
+    const { startX, startY } = selectionCoords;
+    const overlayCtx = overlayCanvasRefs.current[pageIndex].getContext('2d');
+    clearOverlay(pageIndex);
+    overlayCtx.strokeStyle = 'blue';
+    overlayCtx.lineWidth = 2;
+    overlayCtx.strokeRect(startX, startY, endX - startX, endY - startY);
+  };
+
+  const clearOverlay = (pageIndex) => {
+    const overlayCtx = overlayCanvasRefs.current[pageIndex].getContext('2d');
+    overlayCtx.clearRect(0, 0, overlayCanvasRefs.current[pageIndex].width, overlayCanvasRefs.current[pageIndex].height);
+  };
+
+  const clearAllSelections = () => {
+    overlayCanvasRefs.current.forEach((canvas, index) => {
+      if (canvas) {
+        clearOverlay(index);
+      }
+    });
+  };
+
+  const showEmbedSignConfirmation = (pageIndex) => {
+    const confirmation = window.confirm("Do you want to embed the signature in the selected area?");
+    if (confirmation) {
+      setCurrentPageIndex(pageIndex);
+      sendSignRequest();
+    } else {
+      clearSelection(pageIndex);
+    }
+  };
+
   const sendSignRequest = () => {
     setIsLoading(true);
-    const hardcodedCoords = { startX: 100, startY: 100, endX: 200, endY: 200 };
-    ws.send(
-      JSON.stringify({
-        action: 'sign',
-        data: {
-          pdfBuffer: Array.from(new Uint8Array(pdfBuff)),
-          pageIndex: 0,
-          selectionCoords: hardcodedCoords,
-          hsmPath,
-          signatureId: selectedSignature,
-        },
-      }),
-    );
+    sendWebSocketMessage({
+      action: 'sign',
+      data: {
+        pdfBuffer: Array.from(new Uint8Array(pdfBuff)),
+        pageIndex: currentPageIndex,
+        selectionCoords: selectionCoords,
+        signatureType: selectedSignatureImage ? 'image' : 'digitalID',
+        hsmPath: selectedSignatureImage ? null : hsmPath,
+        signatureId: selectedSignatureImage ? null : selectedSignature,
+        signatureImage: selectedSignatureImage,
+      },
+    });
   };
 
   const handleSignButtonClick = useCallback(() => {
     if (!pdfBuff) {
-      showToast('Please upload a PDF first', 'error');
+      alert('Please upload a PDF first');
       return;
     }
-    setShowSignaturePopup(true);
-  }, [pdfBuff, showToast]);
+    setShowSignatureMethodPopup(true);
+  }, [pdfBuff]);
 
   const handleCloseSignaturePopup = () => {
     setShowSignaturePopup(false);
@@ -207,26 +364,50 @@ export function PdfRenderer() {
   const handleConfirmation = (signature) => {
     setSelectedSignature(signature);
     setShowSignaturePopup(false);
-    const path = promptHsmPath();
-    if (!path) return;
-    sendSignRequest();
+    setIsSelectionEnabled(true);
+  };
+
+  const handleSelectSignatureMethod = (method) => {
+    setShowSignatureMethodPopup(false);
+    if (method === 'digitalID') {
+      setShowSignaturePopup(true);
+    } else if (method === 'imageUpload') {
+      handleImageUpload();
+    }
+  };
+
+  const handleImageUpload = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const imageData = event.target.result;
+          setIsSelectionEnabled(true);
+          setSelectedSignatureImage(imageData);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
   };
 
   const handleVerifyButtonClick = useCallback(() => {
     if (!pdfBuff) {
-      showToast('Please upload a PDF first', 'error');
+      alert('Please upload a PDF first');
       return;
     }
     setIsLoading(true);
-    ws.send(
-      JSON.stringify({
-        action: 'verify',
-        data: {
-          Buff: Array.from(new Uint8Array(pdfBuff)),
-        },
-      }),
-    );
-  }, [pdfBuff, showToast]);
+    sendWebSocketMessage({
+      action: 'verify',
+      data: {
+        Buff: Array.from(new Uint8Array(pdfBuff)),
+      },
+    });
+  }, [pdfBuff]);
 
   const handleDownloadButtonClick = () => {
     if (pdfFile) {
@@ -239,17 +420,45 @@ export function PdfRenderer() {
 
   const onDocumentLoadSuccess = useCallback(({ numPages }) => {
     setNumPages(numPages);
+    // TODO: to be done prompted once, using extension api
+    // const path = promptHsmPath();
+    // if (!path) return;
     setPageNumber(1);
   }, []);
 
+  const onPageLoadSuccess = useCallback((pageIndex) => {
+    const pageCanvas = pdfCanvasRefs.current[pageIndex];
+    const overlayCanvas = overlayCanvasRefs.current[pageIndex];
+    if (pageCanvas && overlayCanvas) {
+      overlayCanvas.width = pageCanvas.width;
+      overlayCanvas.height = pageCanvas.height;
+    }
+    if (pageCanvas && pdfContainerRef.current) {
+      pdfContainerRef.current.style.maxWidth = `${pageCanvas.width}px`;
+    }
+  }, []);
+
+  const scrollToPage = (pageNum) => {
+    const pageElement = pageRefs.current[pageNum - 1];
+    if (pageElement) {
+      pageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const handlePreviousPage = useCallback(() => {
-    setPageNumber((prevPageNumber) => Math.max(prevPageNumber - 1, 1));
+    setPageNumber((prevPageNumber) => {
+      const newPageNumber = Math.max(prevPageNumber - 1, 1);
+      scrollToPage(newPageNumber);
+      return newPageNumber;
+    });
   }, []);
 
   const handleNextPage = useCallback(() => {
-    setPageNumber((prevPageNumber) => 
-      numPages ? Math.min(prevPageNumber + 1, numPages) : prevPageNumber
-    );
+    setPageNumber((prevPageNumber) => {
+      const newPageNumber = numPages ? Math.min(prevPageNumber + 1, numPages) : prevPageNumber;
+      scrollToPage(newPageNumber);
+      return newPageNumber;
+    });
   }, [numPages]);
 
   const handlePageNumberClick = () => {
@@ -266,8 +475,18 @@ export function PdfRenderer() {
     const newPageNumber = parseInt(tempPageNumber, 10);
     if (!isNaN(newPageNumber) && newPageNumber >= 1 && newPageNumber <= numPages) {
       setPageNumber(newPageNumber);
+      scrollToPage(newPageNumber);
     }
     setIsEditingPageNumber(false);
+  };
+
+  const handleSaveAs = () => {
+    handleDownloadButtonClick();
+    setShowSuccessPopup(false);
+  };
+
+  const handleContinue = () => {
+    setShowSuccessPopup(false);
   };
 
   useEffect(() => {
@@ -286,36 +505,63 @@ export function PdfRenderer() {
     };
   }, [handlePreviousPage, handleNextPage]);
 
-  const DropZone = ({ onFileInput, isDragging }) => (
-    <div 
-      className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
-      onDragOver={(e) => e.preventDefault()}
-      onDragEnter={() => setIsDragging(true)}
-      onDragLeave={() => setIsDragging(false)}
-      onDrop={handleDrop}
-    >
-      <div className={styles.pdfIcon}>📄</div>
-      <p className={styles.pdfText}>Choose a PDF file to add your digital signature</p>
-      <label htmlFor="fileInput" className={styles.addFileButton}>
-        + Add file
-      </label>
-      <input
-        id="fileInput"
-        type="file"
-        accept=".pdf"
-        onChange={onFileInput}
-        style={{ display: 'none' }}
-      />
-    </div>
-  );
+  const DropZone = ({ onFileInput, isDragging }) => {
+    const fileInputRef = useRef(null);
+  
+    const handleLogoClick = () => {
+      fileInputRef.current.click();
+    };
+  
+    return (
+      <div className={styles.dropZoneContainer}>
+        <div
+          className={`${styles.dropZone} ${isDragging ? styles.dragging : ''}`}
+          onDragOver={(e) => e.preventDefault()}
+          onDragEnter={() => setIsDragging(true)}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={handleDrop}
+        >
+          <img 
+            src="/path/to/your/pdf-logo.png" 
+            alt="PDF Logo" 
+            className={styles.pdfLogo}
+            onClick={handleLogoClick}
+          />
+          <p className={styles.pdfText}>Choose a PDF file to add your digital signature</p>
+          <label htmlFor="fileInput" className={styles.addFileButton}>
+            + Add file
+          </label>
+          <input
+            id="fileInput"
+            ref={fileInputRef}
+            type="file"
+            accept=".pdf"
+            onChange={onFileInput}
+            style={{ display: 'none' }}
+          />
+          <p className={styles.legalText}>
+              By clicking on add file, you agree to Ping's <br />
+              <a href="#" style={{ color: '#2BB563', textDecoration:'none' }}> Privacy policy </a>
+              &
+              <a href="#" style={{ color: '#2BB563', textDecoration:'none' }}> Terms of use</a>
+          </p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.app}>
       <header className={styles.header}>
         <div className={styles.navBar}>
-          <div className={styles.logo}>📄</div>
+          <img 
+            src="/path/to/your/pdf-logo.png" 
+            alt="PDF Logo" 
+            className={styles.logo}
+            onClick={handleLogoClick}
+          />
           <div className={styles.pdfFileName}>{pdfFileName}</div>
-          {pdfFile ? (
+          {pdfFile && !isSelectionEnabled ? (
             <div className={styles.headerControls}>
               <button className={styles.headerButton} onClick={handleSignButtonClick}>Add signature</button>
               <div className={styles.headerControlsBar}></div>
@@ -371,28 +617,60 @@ export function PdfRenderer() {
         {!pdfFile ? (
           <DropZone onFileInput={handleFileInput} isDragging={isDragging} />
         ) : (
-          <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
-            <Page
-              pageNumber={pageNumber}
-              width={600}
-            />
-          </Document>
+          <div className={styles.documentContainer} ref={pdfContainerRef}>
+            <Document
+              file={pdfFile}
+              onLoadSuccess={onDocumentLoadSuccess}
+              loading={<div>Loading PDF...</div>}
+            >
+              {numPages &&
+                Array.from({ length: numPages }, (_, index) => (
+                  <div key={`page_${index + 1}`} style={{ position: 'relative', marginBottom: '20px' }} ref={(el) => (pageRefs.current[index] = el)}>
+                    <Page
+                      pageNumber={index + 1}
+                      renderTextLayer={false}
+                      renderMode="canvas"
+                      onLoadSuccess={() => onPageLoadSuccess(index)}
+                      canvasRef={(el) => (pdfCanvasRefs.current[index] = el)}
+                      loading={<div>Loading page...</div>}
+                    />
+                    <canvas
+                      id={`overlayCanvas_${index}`}
+                      ref={(el) => (overlayCanvasRefs.current[index] = el)}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        pointerEvents: isSelectionEnabled ? 'auto' : 'none',
+                      }}
+                      onMouseDown={(e) => handleMouseDown(e, index)}
+                      onMouseMove={(e) => handleMouseMove(e, index)}
+                      onMouseUp={() => handleMouseUp(index)}
+                    />
+                  </div>
+                ))}
+            </Document>
+          </div>
         )}
       </div>
-      {verificationResult !== null && (
-        <div className={styles.verificationResult}>
-          <h3>Verification Result:</h3>
-          <p>
-            {verificationResult
-              ? 'Document is verified'
-              : 'Document verification failed'}
-          </p>
-        </div>
+      {showSignatureMethodPopup && (
+        <SignatureMethodPopup
+          onClose={() => setShowSignatureMethodPopup(false)}
+          onSelectMethod={handleSelectSignatureMethod}
+        />
       )}
       {showSignaturePopup && (
         <SignaturePopup
           onClose={handleCloseSignaturePopup}
           onConfirm={handleConfirmation}
+        />
+      )}
+      {showSuccessPopup && (
+        <SuccessPopup
+          message={successMessage}
+          onSave={handleSaveAs}
+          onContinue={handleContinue}
+          isVerification
         />
       )}
       {isLoading && (
