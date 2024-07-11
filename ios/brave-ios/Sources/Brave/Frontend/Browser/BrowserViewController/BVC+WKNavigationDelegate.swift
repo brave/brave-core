@@ -711,18 +711,13 @@ extension BrowserViewController: WKNavigationDelegate {
     {
       let internalUrl = InternalURL(responseURL)
 
-      tab.rewardsReportingState.isErrorPage = internalUrl?.isErrorPage == true
-      if !tab.rewardsReportingState.isErrorPage {
-        let kHttpClientErrorResponseCodeClass = 4
-        let kHttpServerErrorResponseCodeClass = 5
+      let kHttpClientErrorResponseCodeClass = 4
+      let kHttpServerErrorResponseCodeClass = 5
 
-        let responseCodeClass = response.statusCode / 100
-        if responseCodeClass == kHttpClientErrorResponseCodeClass
-          || responseCodeClass == kHttpServerErrorResponseCodeClass
-        {
-          tab.rewardsReportingState.isErrorPage = true
-        }
-      }
+      let responseCodeClass = response.statusCode / 100
+      tab.rewardsReportingState.isErrorPage =
+        (responseCodeClass == kHttpClientErrorResponseCodeClass
+          || responseCodeClass == kHttpServerErrorResponseCodeClass)
 
       if !tab.rewardsReportingState.wasRestored {
         tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true

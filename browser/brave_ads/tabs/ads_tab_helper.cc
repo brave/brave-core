@@ -149,10 +149,11 @@ bool AdsTabHelper::IsNewNavigation(
 bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
   CHECK(navigation_handle);
 
-  if (navigation_handle->IsErrorPage()) {
-    return true;
+  if (!navigation_handle->IsErrorPage()) {
+    return false;
   }
 
+  // Only consider client and server error responses as error pages.
   if (const net::HttpResponseHeaders* const response_headers =
           navigation_handle->GetResponseHeaders()) {
     const int response_code_class = response_headers->response_code() / 100;
