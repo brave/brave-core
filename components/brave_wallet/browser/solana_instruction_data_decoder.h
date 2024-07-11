@@ -36,6 +36,9 @@ std::optional<mojom::SolanaComputeBudgetInstruction>
 GetComputeBudgetInstructionType(const std::vector<uint8_t>& data,
                                 const std::string& program_id);
 
+bool IsCompressedNftTransferInstruction(const std::vector<uint8_t>& data,
+                                        const std::string& program_id);
+
 std::vector<InsParamPair> GetAccountParamsForTesting(
     std::optional<mojom::SolanaSystemInstruction> sys_ins_type,
     std::optional<mojom::SolanaTokenInstruction> token_ins_type);
