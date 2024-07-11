@@ -33,6 +33,7 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/adblock:rust_lib",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/resources:resources",
     "//components/component_updater:component_updater",
     "//components/prefs",
     "//crypto",
