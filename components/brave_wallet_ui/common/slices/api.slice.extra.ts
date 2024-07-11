@@ -38,7 +38,6 @@ import {
 } from '../../utils/account-utils'
 import { getCoinFromTxDataUnion } from '../../utils/network-utils'
 import { selectPendingTransactions } from './entities/transaction.entity'
-import { getDappNetworkIds } from '../../utils/dapp_utils'
 import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 
 export const useAccountsQuery = () => {
@@ -327,16 +326,8 @@ export const useGetDappRadarNetworks = () => {
       return []
     }
 
-    const dappChains = Array.from(
+    const dappNetworkIds = Array.from(
       new Set(dapps.map((dapp) => dapp.chains).flat())
-    )
-
-    const dappNetworkIds = getDappNetworkIds(
-      dappChains,
-      getEntitiesListFromEntityState(
-        networksRegistry,
-        networksRegistry.visibleIds
-      )
     )
 
     const dappNetworks = getEntitiesListFromEntityState(

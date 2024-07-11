@@ -145,13 +145,8 @@ export const DappDetails = () => {
           justifyContent={'flex-start'}
           alignItems={'flex-start'}
         >
-          {dapp.chains.map((chainName) => {
-            const net = networks.find((n) =>
-              n.chainName.toLowerCase().startsWith(
-                // The dapps list uses '-' to separate words
-                chainName.replaceAll('-', ' ')
-              )
-            )
+          {dapp.chains.map((chainId) => {
+            const net = networks.find((n) => n.chainId === chainId)
             return net ? (
               <CreateNetworkIcon
                 key={net.chainId}

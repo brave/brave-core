@@ -3,33 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// types
-import { BraveWallet } from '../constants/types'
-
-// utils
-import { getNetworkId } from '../common/slices/entities/network.entity'
-
-export const getDappNetworkIds = (
-  dappChains: string[],
-  networks: BraveWallet.NetworkInfo[]
-) => {
-  const dappNetworks = []
-
-  for (const chainName of dappChains) {
-    const net = networks.find((n) =>
-      n.chainName.toLowerCase().startsWith(
-        // The dapps list uses '-' to separate words
-        chainName.replaceAll('-', ' ')
-      )
-    )
-    if (net) {
-      dappNetworks.push(getNetworkId(net))
-    }
-  }
-
-  return dappNetworks
-}
-
 export function isDappMapEmpty<T, U>(map: Map<T, U[]>): boolean {
   // Check if the map has no categories
   if (map.size === 0) {

@@ -13,6 +13,9 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import {
+  dappRadarChainNamesToChainIdMapping //
+} from '../../constants/dapp_radar'
 
 export const dappRadarEndpoints = ({
   mutation,
@@ -20,15 +23,14 @@ export const dappRadarEndpoints = ({
 }: WalletApiEndpointBuilderParams) => {
   return {
     getTopDapps: query<BraveWallet.Dapp[], EntityId[] | undefined>({
-      queryFn: async (chainIdsArg, { endpoint }, extraOptions, baseQuery) => {
+      queryFn: async (networkIdsArg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
           const netsRegistry = await cache.getNetworksRegistry()
 
-          const chainIds =
-            chainIdsArg && chainIdsArg.length > 0
-              ? chainIdsArg
-              : netsRegistry.visibleIds
+          const chainIds = Object.values(
+            dappRadarChainNamesToChainIdMapping
+          ).filter((chainId) => !!chainId)
 
           const networks = getEntitiesListFromEntityState(
             netsRegistry,
@@ -54,14 +56,38 @@ export const dappRadarEndpoints = ({
 
           const uniqueTopDapps: BraveWallet.Dapp[] = []
 
+          console.log({ networkIdsArg: networkIdsArg || 'undefined' })
+
           for (const dapp of topDapps) {
             if (!uniqueTopDapps.some((d) => d.id === dapp.id)) {
               uniqueTopDapps.push(dapp)
             }
           }
 
+          // swap chain names with chainIds
+          const parsedUniqueTopDapps: BraveWallet.Dapp[] = uniqueTopDapps.map(
+            (dapp) => {
+              return {
+                ...dapp,
+                chains: dapp.chains
+                  .filter((chain) => {
+                    return !!dappRadarChainNamesToChainIdMapping[chain]
+                  })
+                  .map((chain) => {
+                    return dappRadarChainNamesToChainIdMapping[chain]
+                  })
+              }
+            }
+          )
+
           return {
-            data: uniqueTopDapps
+            // filter by network ids args until core supports more chains
+            data: parsedUniqueTopDapps.filter((dapp) => {
+              if (!networkIdsArg) {
+                return true
+              }
+              return dapp.chains.some((chain) => networkIdsArg.includes(chain))
+            })
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'unable to get top dApps', error)
