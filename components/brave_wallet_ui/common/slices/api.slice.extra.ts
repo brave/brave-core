@@ -317,7 +317,7 @@ export const useGetDappRadarNetworks = () => {
   const { data: networksRegistry, isLoading: isLoadingNetworks } =
     useGetNetworksRegistryQuery()
   const { data: dapps, isLoading: isLoadingDapps } = useGetTopDappsQuery(
-    networksRegistry?.visibleIds || skipToken
+    networksRegistry?.visibleIds ? undefined : skipToken
   )
 
   // memos

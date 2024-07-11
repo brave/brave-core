@@ -1,9 +1,8 @@
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EntityId } from '@reduxjs/toolkit'
 import { flatMapLimit } from 'async'
 
 // types
@@ -22,8 +21,8 @@ export const dappRadarEndpoints = ({
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getTopDapps: query<BraveWallet.Dapp[], EntityId[] | undefined>({
-      queryFn: async (networkIdsArg, { endpoint }, extraOptions, baseQuery) => {
+    getTopDapps: query<BraveWallet.Dapp[], void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
           const netsRegistry = await cache.getNetworksRegistry()
@@ -56,8 +55,6 @@ export const dappRadarEndpoints = ({
 
           const uniqueTopDapps: BraveWallet.Dapp[] = []
 
-          console.log({ networkIdsArg: networkIdsArg || 'undefined' })
-
           for (const dapp of topDapps) {
             if (!uniqueTopDapps.some((d) => d.id === dapp.id)) {
               uniqueTopDapps.push(dapp)
@@ -82,12 +79,7 @@ export const dappRadarEndpoints = ({
 
           return {
             // filter by network ids args until core supports more chains
-            data: parsedUniqueTopDapps.filter((dapp) => {
-              if (!networkIdsArg) {
-                return true
-              }
-              return dapp.chains.some((chain) => networkIdsArg.includes(chain))
-            })
+            data: parsedUniqueTopDapps
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'unable to get top dApps', error)

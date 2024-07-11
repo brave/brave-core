@@ -1,11 +1,10 @@
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-
 import ProgressRing from '@brave/leo/react/progressRing'
 
 // Types
@@ -79,6 +78,9 @@ export const ExploreWeb3View = () => {
 
   // queries
   const { dappNetworks } = useGetDappRadarNetworks()
+  const { isFetching: isLoading, data: topDapps } = useGetTopDappsQuery()
+
+  // memos
   const [visibleNetworks, visibleNetworkIds] = React.useMemo(() => {
     const networks =
       dappNetworks?.filter((network) => {
@@ -87,15 +89,16 @@ export const ExploreWeb3View = () => {
 
     return [networks, networks.map(getNetworkId)]
   }, [dappNetworks, filteredOutNetworkKeys])
-  const { isFetching: isLoading, data: topDapps } =
-    useGetTopDappsQuery(visibleNetworkIds)
 
-  console.log({
-    dappNetworkIds: dappNetworks.map(getNetworkId),
-    visibleNetworkIds
-  })
+  const topDappsForChains = React.useMemo(() => {
+    if (!topDapps) {
+      return []
+    }
+    return topDapps.filter((dapp) => {
+      return dapp.chains.some((chain) => visibleNetworkIds.includes(chain))
+    })
+  }, [topDapps, visibleNetworkIds])
 
-  // memos
   const controls = React.useMemo(() => {
     return [
       {
@@ -108,14 +111,14 @@ export const ExploreWeb3View = () => {
   // group dapps into categories
   const [dappCategories, categoryDappsMap, visibleCategories] =
     React.useMemo(() => {
-      if (!topDapps) {
+      if (!topDappsForChains) {
         return [[], new Map<string, BraveWallet.Dapp[]>(), []]
       }
 
       const categoriesSet = new Set<string>()
       const categoriesMap = new Map<string, BraveWallet.Dapp[]>()
 
-      topDapps.forEach((dapp) => {
+      topDappsForChains.forEach((dapp) => {
         dapp.categories.forEach((category) => {
           categoriesSet.add(category)
           if (!categoriesMap.has(category)) {
@@ -130,7 +133,7 @@ export const ExploreWeb3View = () => {
         (category) => !filteredOutCategories.includes(category)
       )
       return [categoriesList, categoriesMap, visibleCategories]
-    }, [filteredOutCategories, topDapps])
+    }, [filteredOutCategories, topDappsForChains])
 
   const visibleDappsMap = React.useMemo(() => {
     if (isDappMapEmpty(categoryDappsMap)) {
@@ -220,7 +223,7 @@ export const ExploreWeb3View = () => {
   }, [setFilteredOutCategories, setFilteredOutNetworkKeys])
 
   // render
-  if (isLoading || !topDapps) {
+  if (isLoading || !topDappsForChains) {
     return (
       <Column
         fullHeight
