@@ -85,9 +85,9 @@ class AdsTabHelper : public content::WebContentsObserver,
       const std::vector<GURL>& redirect_chain,
       base::Value value) const;
 
-  bool IsPlayingMedia(const std::string& media_player_uuid);
-  void MaybeNotifyTabDidStartPlayingMedia();
-  void MaybeNotifyTabDidStopPlayingMedia();
+  bool IsMediaPlayerActive(const std::string& media_player_uuid);
+  void MaybeNotifyTabDidStartPlayingMedia(const content::MediaPlayerId& id);
+  void MaybeNotifyTabDidStopPlayingMedia(const content::MediaPlayerId& id);
 
   void MaybeNotifyTabdidClose();
 
@@ -103,6 +103,8 @@ class AdsTabHelper : public content::WebContentsObserver,
       const MediaPlayerInfo& video_type,
       const content::MediaPlayerId& id,
       WebContentsObserver::MediaStoppedReason reason) override;
+  void MediaMutedStatusChanged(const content::MediaPlayerId& id,
+                               bool muted) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 

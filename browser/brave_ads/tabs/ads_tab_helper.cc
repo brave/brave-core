@@ -314,13 +314,47 @@ void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
   }
 }
 
-void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia() {
+bool AdsTabHelper::IsMediaPlayerActive(const std::string& media_player_uuid) {
+  return base::Contains(media_players_, media_player_uuid);
+}
+
+void AdsTabHelper::MaybeNotifyTabDidStartPlayingMedia(
+    const content::MediaPlayerId& id) {
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  if (IsMediaPlayerActive(media_player_uuid)) {
+    // Already playing media.
+    return;
+  }
+
+  media_players_.insert(media_player_uuid);
+  if (media_players_.size() > 1) {
+    // If this is not the first media player that has started playing, we should
+    // not notify that the tab has started playing media.
+    return;
+  }
+
   if (ads_service_) {
     ads_service_->NotifyTabDidStartPlayingMedia(/*tab_id=*/session_id_.id());
   }
 }
 
-void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia() {
+void AdsTabHelper::MaybeNotifyTabDidStopPlayingMedia(
+    const content::MediaPlayerId& id) {
+  const std::string media_player_uuid = MediaPlayerUuid(id);
+
+  if (!IsMediaPlayerActive(media_player_uuid)) {
+    // Not playing media.
+    return;
+  }
+
+  media_players_.erase(media_player_uuid);
+  if (!media_players_.empty()) {
+    // If this is not the last media player to stop playing, we should not
+    // notify that the tab has stopped playing media.
+    return;
+  }
+
   if (ads_service_) {
     ads_service_->NotifyTabDidStopPlayingMedia(/*tab_id=*/session_id_.id());
   }
@@ -384,24 +418,11 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   ProcessNavigation();
 }
 
-bool AdsTabHelper::IsPlayingMedia(const std::string& media_player_uuid) {
-  return base::Contains(media_players_, media_player_uuid);
-}
-
-void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
-  const std::string media_player_uuid = MediaPlayerUuid(id);
-
-  if (IsPlayingMedia(media_player_uuid)) {
-    // Already playing media.
-    return;
-  }
-
-  media_players_.insert(media_player_uuid);
-  if (media_players_.size() == 1) {
-    // If this is the first media player that has started playing, notify that
-    // the tab has started playing media.
-    MaybeNotifyTabDidStartPlayingMedia();
+  if (video_type.has_audio) {
+    // Only notify when audio is playing.
+    MaybeNotifyTabDidStartPlayingMedia(id);
   }
 }
 
@@ -409,18 +430,15 @@ void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& /*video_type*/,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason /*reason*/) {
-  const std::string media_player_uuid = MediaPlayerUuid(id);
+  MaybeNotifyTabDidStopPlayingMedia(id);
+}
 
-  if (!IsPlayingMedia(media_player_uuid)) {
-    // Not playing media.
-    return;
-  }
-
-  media_players_.erase(media_player_uuid);
-  if (media_players_.empty()) {
-    // If this is the last media player that has stopped playing, notify that
-    // the tab has stopped playing media.
-    MaybeNotifyTabDidStopPlayingMedia();
+void AdsTabHelper::MediaMutedStatusChanged(const content::MediaPlayerId& id,
+                                           const bool muted) {
+  if (muted) {
+    MaybeNotifyTabDidStopPlayingMedia(id);
+  } else {
+    MaybeNotifyTabDidStartPlayingMedia(id);
   }
 }
 
