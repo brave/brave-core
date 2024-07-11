@@ -351,7 +351,7 @@ extension Strings.Shields {
     "ShredThisSitesDataConfirmationMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Are you sure you want to delete '%@' data? This action cannot be undone.",
+    value: "Are you sure you want to delete %@ data? This action cannot be undone.",
     comment: """
       A message for a confirmation window that appears when a user clicks on 'Shred Data'. 
       The placeholder will be replaced with a website domain.
