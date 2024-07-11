@@ -287,6 +287,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletMaxSlippage", IDS_BRAVE_WALLET_MAX_SLIPPAGE},
     {"braveWalletMaxSlippageDescription",
      IDS_BRAVE_WALLET_SLIPPAGE_DESCRIPTION},
+    {"braveWalletPriceImpactDescription",
+     IDS_BRAVE_WALLET_PRICE_IMPACT_DESCRIPTION},
     {"braveWalletSuggestedValues", IDS_BRAVE_WALLET_SUGGESTED_VALUES},
     {"braveWalletMainstreamAssetPairs",
      IDS_BRAVE_WALLET_MAINSTREAM_ASSET_PAIRS},

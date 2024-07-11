@@ -605,11 +605,14 @@ provideStrings({
   braveWalletChangeProvider: 'Change provider',
   braveWalletRoute: 'Route',
   braveWalletMaxSlippage: 'Max slippage',
-
   braveWalletMaxSlippageDescription:
     'When the deviation between the price of the transaction you ' +
     'submitted and the price at the time of the transaction on chain is ' +
     'greater than this set value, the transaction will fail.',
+  braveWalletPriceImpactDescription:
+    'Price impact is how much your trade might move the market price. ' +
+    'Some tokens with low liquidity are more sensitive to trades, so even ' +
+    'smaller trades can shift the price a lot.',
   braveWalletSuggestedValues: 'Suggested Values:',
   braveWalletMainstreamAssetPairs: 'Mainstream Asset Pairs: $1%',
   braveWalletStablecoinPairs: 'Stablecoin Pairs: $1%',

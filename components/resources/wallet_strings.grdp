@@ -125,6 +125,7 @@
   <message name="IDS_BRAVE_WALLET_ROUTE" desc="Swap route label">Route</message>
   <message name="IDS_BRAVE_WALLET_MAX_SLIPPAGE" desc="Swap max slippage label">Max slippage</message>
   <message name="IDS_BRAVE_WALLET_SLIPPAGE_DESCRIPTION" desc="Swap max slippage description">When the deviation between the price of the transaction you submitted and the price at the time of the transaction on chain is greater than this set value, the transaction will fail.</message>
+  <message name="IDS_BRAVE_WALLET_PRICE_IMPACT_DESCRIPTION" desc="Swap price impact description">Price impact is how much your trade might move the market price. Some tokens with low liquidity are more sensitive to trades, so even smaller trades can shift the price a lot.</message>
   <message name="IDS_BRAVE_WALLET_SUGGESTED_VALUES" desc="Swap max slippage suggested values label">Suggested Values:</message>
   <message name="IDS_BRAVE_WALLET_MAINSTREAM_ASSET_PAIRS" desc="Swap max slippage mainstream asset pairs label">Mainstream Asset Pairs: <ph name="SLIPPAGE_PERCENT"><ex>0.5</ex>$1</ph>%</message>
   <message name="IDS_BRAVE_WALLET_STABLECOIN_PAIRS" desc="Swap max slippage stablecoin pairs label">Stablecoin Pairs: <ph name="SLIPPAGE_PERCENT"><ex>0.5</ex>$1</ph>%</message>

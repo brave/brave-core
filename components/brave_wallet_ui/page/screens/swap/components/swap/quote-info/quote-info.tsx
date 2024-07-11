@@ -65,6 +65,9 @@ import {
   BottomSheet //
 } from '../../../../../../components/shared/bottom_sheet/bottom_sheet'
 import { MaxSlippage } from '../max_slippage/max_slippage'
+import {
+  InfoIconTooltip //
+} from '../../../../../../components/shared/info_icon_tooltip/info_icon_tooltip'
 
 // Styled Components
 import {
@@ -559,13 +562,23 @@ export const QuoteInfo = (props: Props) => {
             )}
 
             <Row justifyContent='space-between'>
-              <Text
-                textSize='12px'
-                textColor='secondary'
-                textAlign='left'
+              <Row
+                width='unset'
+                gap='4px'
               >
-                {getLocale('braveSwapPriceImpact')}
-              </Text>
+                <Text
+                  textSize='12px'
+                  textColor='secondary'
+                  textAlign='left'
+                >
+                  {getLocale('braveSwapPriceImpact')}
+                </Text>
+                <InfoIconTooltip
+                  placement='right'
+                  text={getLocale('braveWalletPriceImpactDescription')}
+                  maxContentWidth={isPanel ? '200px' : undefined}
+                />
+              </Row>
               <Text
                 textSize='12px'
                 isBold={true}
