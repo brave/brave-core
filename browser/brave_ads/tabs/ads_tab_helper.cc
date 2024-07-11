@@ -57,7 +57,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     return;
   }
 
-  Profile* profile =
+  Profile* const profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service_) {
@@ -163,7 +163,16 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
 }
 
 void AdsTabHelper::ProcessNavigation() {
-  MaybeNotifyTabContentDidChange();
+  MaybeNotifyTabHtmlContentDidChange();
+  MaybeNotifyTabTextContentDidChange();
+
+  // Set `was_restored_` to `false` so that listeners are notified of tab
+  // changes after the tab is restored.
+  was_restored_ = false;
+}
+
+void AdsTabHelper::ProcessSameDocumentNavigation() {
+  MaybeNotifyTabHtmlContentDidChange();
 
   // Set `was_restored_` to `false` so that listeners are notified of tab
   // changes after the tab is restored.
@@ -232,22 +241,18 @@ void AdsTabHelper::MaybeNotifyTabDidChange() {
                                    is_error_page_, IsVisible());
 }
 
-void AdsTabHelper::MaybeNotifyTabContentDidChange() {
-  if (was_restored_ || !is_new_navigation_ || redirect_chain_.empty() ||
-      is_error_page_) {
-    // Don't notify content changes if the tab was restored, was a previously
-    // committed navigation, the web contents are still loading, or an error
-    // page was displayed.
-    return;
-  }
-
-  MaybeNotifyTabHtmlContentDidChange();
-  MaybeNotifyTabTextContentDidChange();
+bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
+  // Don't notify about content changes if the ads service is not available, the
+  // tab was restored, was a previously committed navigation, the web contents
+  // are still loading, or an error page was displayed.
+  return ads_service_ && !was_restored_ && is_new_navigation_ &&
+         !redirect_chain_.empty() && !is_error_page_;
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
-  CHECK(ads_service_);
-  CHECK(!redirect_chain_.empty());
+  if (!ShouldNotifyTabContentDidChange()) {
+    return;
+  }
 
   if (!UserHasJoinedBraveRewards()) {
     // HTML is not required because verifiable conversions are only supported
@@ -258,8 +263,8 @@ void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
                                                        /*html=*/"");
   }
 
-  // Only utilized for verifiable conversions, which requires the user to
-  // have joined Brave Rewards.
+  // Only utilized for verifiable conversions, which requires the user to have
+  // joined Brave Rewards.
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       kSerializeDocumentToStringJavaScript,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange,
@@ -277,7 +282,9 @@ void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
-  CHECK(!redirect_chain_.empty());
+  if (!ShouldNotifyTabContentDidChange()) {
+    return;
+  }
 
   if (UserHasOptedInToNotificationAds()) {
     // Only utilized for text classification, which requires the user to have
@@ -351,13 +358,15 @@ void AdsTabHelper::DidFinishNavigation(
   // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
   if (navigation_handle->IsSameDocument() &&
       web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
-    // Single-page application.
-    ProcessNavigation();
+    ProcessSameDocumentNavigation();
   }
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
-  // Multi-page application.
+  if (!ads_service_) {
+    return;
+  }
+
   ProcessNavigation();
 }
 
