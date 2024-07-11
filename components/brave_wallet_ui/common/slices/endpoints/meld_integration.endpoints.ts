@@ -9,7 +9,8 @@ import {
   MeldFiatCurrency,
   MeldFilter,
   MeldCryptoQuote,
-  MeldServiceProvider
+  MeldServiceProvider,
+  SupportedOnRampNetworks
 } from '../../../constants/types'
 import { handleEndpointError } from '../../../utils/api-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
@@ -69,6 +70,8 @@ export const meldIntegrationEndpoints = ({
     getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
+          const cryptoChains = SupportedOnRampNetworks.join(',')
+          console.log(cryptoChains)
           const { meldIntegrationService } = baseQuery(undefined).data
 
           // get all crypto currencies
@@ -84,6 +87,13 @@ export const meldIntegrationEndpoints = ({
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
 
+          const supportedAssets = cryptoCurrencies?.filter((asset) =>
+            SupportedOnRampNetworks.includes(
+              asset?.chainId?.toLowerCase() ?? ''
+            )
+          )
+
+          console.log({ supportedAssets, cryptoCurrencies })
           if (error) {
             return handleEndpointError(
               endpoint,
@@ -93,7 +103,7 @@ export const meldIntegrationEndpoints = ({
           }
 
           return {
-            data: cryptoCurrencies || []
+            data: supportedAssets || []
           }
         } catch (error) {
           return handleEndpointError(

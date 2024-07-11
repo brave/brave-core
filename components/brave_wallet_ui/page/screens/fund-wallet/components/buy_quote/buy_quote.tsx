@@ -60,7 +60,7 @@ export const BuyQuote = ({
   } = quote
 
   // state
-  const [isOpen, setIsOpen] = React.useState(true)
+  const [isOpen, setIsOpen] = React.useState(false)
 
   // computed
   const formattedSourceAmount = new Amount(sourceAmount ?? '').formatAsFiat(
@@ -104,7 +104,7 @@ export const BuyQuote = ({
           justifyContent='flex-start'
           alignItems='center'
         >
-          {providerImageUrl ? <ProviderImage src={providerImageUrl} /> : null}
+          {providerImageUrl ? <ProviderImage src={`chrome://image?${providerImageUrl}`} /> : null}
 
           <Column alignItems='flex-start'>
             <ProviderName>{formattedProviderName}</ProviderName>
