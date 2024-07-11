@@ -44,6 +44,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
@@ -470,7 +471,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till panel UI opens.
@@ -485,7 +486,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
 
   // Wait till panel UI opens.
@@ -500,7 +501,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   auto bookmark_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -645,8 +646,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
   EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
 
   // Open bookmark panel.
-  SidePanelUI::GetSidePanelUIForBrowser(browser())->Show(
-      SidePanelEntryId::kBookmarks);
+  browser()->GetFeatures().side_panel_ui()->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till bookmarks item is visible.
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -777,7 +777,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidePanelResizeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
 
   // Show bookmarks entry and it has active index.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -926,7 +926,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   if (GetParam()) {
     EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
   }
@@ -970,7 +970,7 @@ class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithChromeRefresh2023,
                        SidebarOpeningTest) {
   // Open side panel to check it doesn't make crash.
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
 
   // Wait till panel UI opens.
@@ -1090,7 +1090,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
 
   // Open a unmanaged "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   // Wait till sidebar show ends.
   WaitUntil(base::BindLambdaForTesting(

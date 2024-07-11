@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 1f6d053509c9f767d418025ddcbf6d1a9d65849a..14f7724ce393787c633bdf9712bfa6cc288c6ed2 100644
+index bd604b2fd4fc1399d6ead5fa9eb51ef72315ed6c..5cbb940b597f47cbe76c509747687220419efe98 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -57,7 +57,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
- import org.chromium.chrome.browser.ui.signin.SigninUtils;
+@@ -58,7 +58,7 @@ import org.chromium.chrome.browser.ui.signin.SigninUtils;
  import org.chromium.chrome.browser.ui.signin.SignoutButtonPreference;
  import org.chromium.chrome.browser.ui.signin.history_sync.HistorySyncHelper;
+ import org.chromium.chrome.browser.ui.theme.ChromeSemanticColorUtils;
 -import org.chromium.components.browser_ui.settings.ChromeBaseCheckBoxPreference;
 +import org.chromium.components.browser_ui.settings.brave_tricks.checkbox_to_switch.ChromeBaseCheckBoxPreference;
  import org.chromium.components.browser_ui.settings.ChromeBasePreference;
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
-@@ -597,7 +597,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -599,7 +599,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
                                                  ? ConsentLevel.SIGNIN
                                                  : ConsentLevel.SYNC));
          // May happen if account is removed from the device while this screen is shown.
