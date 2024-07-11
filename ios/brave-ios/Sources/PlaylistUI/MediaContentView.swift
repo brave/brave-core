@@ -39,24 +39,7 @@ struct MediaContentView: View {
         }
         .overlay {
           if !isFullScreen {
-            GeometryReader { proxy in
-              Color.clear
-                .contentShape(.rect.inset(by: 20))
-                .onTapGesture(count: 2) { point in
-                  if point.x < proxy.size.width / 2 {
-                    Task {
-                      await model.seekBackwards()
-                    }
-                  } else {
-                    Task {
-                      await model.seekForwards()
-                    }
-                  }
-                }
-                .onTapGesture {
-                  model.isPlaying.toggle()
-                }
-            }
+            PlayerGestureShortcutsView(model: model)
           }
         }
       if !isFullScreen {

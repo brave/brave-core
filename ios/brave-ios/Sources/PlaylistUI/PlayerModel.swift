@@ -182,7 +182,7 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  private let seekInterval: TimeInterval = 15.0
+  let seekInterval: TimeInterval = 15.0
 
   func seekBackwards() async {
     guard let currentItem = player.currentItem, currentItem.status == .readyToPlay else {
