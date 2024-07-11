@@ -58,6 +58,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/common/features.h"
 #endif
 
@@ -368,7 +369,9 @@ void BraveBrowserCommandController::UpdateCommandForPlaylist() {
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     UpdateCommandEnabled(
         IDC_SHOW_PLAYLIST_BUBBLE,
-        browser_->is_type_normal() && !browser_->profile()->IsOffTheRecord());
+        browser_->is_type_normal() &&
+            playlist::PlaylistServiceFactory::GetForBrowserContext(
+                browser_->profile()));
   }
 #endif
 }

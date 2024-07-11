@@ -28,8 +28,6 @@ class MediaDetectorComponentManager;
 
 class PlaylistServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static bool IsPlaylistEnabled(content::BrowserContext* context);
-
   static PlaylistService* GetForBrowserContext(
       content::BrowserContext* context);
 #if BUILDFLAG(IS_ANDROID)

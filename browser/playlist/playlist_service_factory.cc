@@ -206,14 +206,8 @@ PlaylistServiceFactory* PlaylistServiceFactory::GetInstance() {
 PlaylistService* PlaylistServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   DCHECK(context);
-  if (IsPlaylistEnabled(context)) {
-    GetInstance()->PrepareMediaDetectorComponentManager();
-
-    return static_cast<PlaylistService*>(
-        GetInstance()->GetServiceForBrowserContext(context, true));
-  }
-
-  return nullptr;
+  return static_cast<PlaylistService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -225,13 +219,6 @@ PlaylistServiceFactory::GetForContext(content::BrowserContext* context) {
       ->MakeRemote();
 }
 #endif  // BUILDFLAG(IS_ANDROID)
-
-// static
-bool PlaylistServiceFactory::IsPlaylistEnabled(
-    content::BrowserContext* context) {
-  return base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-         Profile::FromBrowserContext(context)->IsRegularProfile();
-}
 
 // static
 void PlaylistServiceFactory::RegisterLocalStatePrefs(
@@ -273,18 +260,26 @@ PlaylistServiceFactory::~PlaylistServiceFactory() = default;
 
 KeyedService* PlaylistServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  DCHECK(media_detector_component_manager_);
+  if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    return nullptr;
+  }
+
+  auto* profile = Profile::FromBrowserContext(context);
+  if (!profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
+  GetInstance()->PrepareMediaDetectorComponentManager();
+
   PrefService* local_state = g_browser_process->local_state();
   auto* service = new PlaylistService(
       context, local_state, media_detector_component_manager_.get(),
-      std::make_unique<PlaylistServiceDelegateImpl>(
-          Profile::FromBrowserContext(context)),
+      std::make_unique<PlaylistServiceDelegateImpl>(profile),
       brave_stats::GetFirstRunTime(local_state));
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   content::URLDataSource::Add(
-      context, std::make_unique<PlaylistDataSource>(
-                   Profile::FromBrowserContext(context), service));
+      context, std::make_unique<PlaylistDataSource>(profile, service));
 #endif
 
   return service;
