@@ -39,7 +39,9 @@ export const mockDappsListMap = {
         'dappId': 10734,
         'name': 'Magic Eden',
         'description':
-          'The NFT Marketplace Solana deserves, smooth as silk & fast as Solana. 0% listing fee, only 2% transaction fee.',
+          'The NFT Marketplace Solana deserves, ' +
+          'smooth as silk & fast as Solana. ' +
+          '0% listing fee, only 2% transaction fee.',
         'logo':
           'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/10734/magiceden-dapp-marketplaces-solana-logo_4c3e2b8273f1b58465b6032f5dafd8ad.png',
         'link': 'https://dappradar.com/dapp/magic-eden',
@@ -70,7 +72,8 @@ export const mockDappsListMap = {
         'dappId': 21299,
         'name': 'Uniswap NFT Aggregator',
         'description':
-          'Trade NFTs across major marketplaces to find more listings and better prices.',
+          'Trade NFTs across major marketplaces ' +
+          'to find more listings and better prices.',
         'logo':
           'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/21299/uniswapnftaggregator-dapp-marketplaces-ethereum-logo_96414b8e875f53c42e928d660f59eb00.png',
         'link': 'https://dappradar.com/dapp/uniswap-nft-aggregator',
@@ -92,7 +95,8 @@ export const mockDappsListMap = {
         'dappId': 4096,
         'name': 'Uniswap V2',
         'description':
-          'Uniswap is a fully decentralized protocol for automated liquidity provision on Ethereum.',
+          'Uniswap is a fully decentralized protocol ' +
+          'for automated liquidity provision on Ethereum.',
         'logo':
           'https://dashboard-assets.dappradar.com/geRRcWz9IdTwSrm1/document/4096/uniswapv2-dapp-exchanges-ethereum-logo_11a4e3145c01c2cb04882e8c08654fbe.png',
         'link': 'https://dappradar.com/dapp/uniswap-v2',
