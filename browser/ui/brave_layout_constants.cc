@@ -59,6 +59,8 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       }
       return 0;
     }
+    case LOCATION_BAR_CHILD_CORNER_RADIUS:
+      return 4;
     case TAB_SEPARATOR_HEIGHT: {
       return 24;
     }

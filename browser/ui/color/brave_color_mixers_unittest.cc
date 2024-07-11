@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cmath>
+
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_mixers.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,4 +32,7 @@ TEST_F(BraveColorMixersTest, ColorOverrideTest) {
 
   EXPECT_EQ(color_provider().GetColor(kColorToolbar),
             color_provider().GetColor(kColorInfoBarBackground));
+  EXPECT_EQ(color_provider().GetColor(kColorPageInfoIconHover),
+            SkColorSetA(color_provider().GetColor(kColorOmniboxText),
+                        std::ceil(0.10f * 255.0f)));
 }
