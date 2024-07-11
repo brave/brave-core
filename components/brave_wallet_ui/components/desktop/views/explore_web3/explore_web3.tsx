@@ -18,7 +18,8 @@ import { ExploreNavOptions } from '../../../../options/nav-options'
 import { getLocale } from '../../../../../common/locale'
 import { makeDappDetailsRoute } from '../../../../utils/routes-utils'
 import {
-  useLocalStorage //
+  useLocalStorage, //
+  useSyncedLocalStorage
 } from '../../../../common/hooks/use_local_storage'
 import {
   LOCAL_STORAGE_KEYS //
@@ -32,8 +33,7 @@ import {
   useGetDappRadarNetworks //
 } from '../../../../common/slices/api.slice.extra'
 import {
-  getNetworkId,
-  networkEntityAdapter //
+  getNetworkId //
 } from '../../../../common/slices/entities/network.entity'
 import { useQuery } from '../../../../common/hooks/use-query'
 
@@ -67,9 +67,11 @@ export const ExploreWeb3View = () => {
   const [showFilters, setShowFilters] = React.useState<boolean>(false)
 
   // local storage
-  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = useLocalStorage<
-    string[]
-  >(LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS, [])
+  const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] =
+    useSyncedLocalStorage<string[]>(
+      LOCAL_STORAGE_KEYS.FILTERED_OUT_DAPP_NETWORK_KEYS,
+      []
+    )
 
   const [filteredOutCategories, setFilteredOutCategories] = useLocalStorage<
     string[]
@@ -83,13 +85,15 @@ export const ExploreWeb3View = () => {
         return !filteredOutNetworkKeys.includes(getNetworkId(network))
       }) ?? []
 
-    return [
-      networks,
-      networks.map((network) => networkEntityAdapter.selectId(network))
-    ]
+    return [networks, networks.map(getNetworkId)]
   }, [dappNetworks, filteredOutNetworkKeys])
   const { isFetching: isLoading, data: topDapps } =
     useGetTopDappsQuery(visibleNetworkIds)
+
+  console.log({
+    dappNetworkIds: dappNetworks.map(getNetworkId),
+    visibleNetworkIds
+  })
 
   // memos
   const controls = React.useMemo(() => {
@@ -159,7 +163,8 @@ export const ExploreWeb3View = () => {
 
   // computed
   const showFiltersRow =
-    (filteredOutCategories.length > 0 || filteredOutNetworkKeys.length > 0) &&
+    (visibleCategories.length < dappCategories.length ||
+      visibleNetworks.length < dappNetworks.length) &&
     selectedCategory === null
 
   // methods
@@ -187,20 +192,26 @@ export const ExploreWeb3View = () => {
     })
   }, [history])
 
-  const onFilterOutCategory = React.useCallback(
+  const onRemoveCategoryFilter = React.useCallback(
     (category: string) => {
+      if (visibleCategories.length === 1) {
+        setFilteredOutCategories([]) // clear filter
+        return
+      }
       setFilteredOutCategories((prev) => prev.concat(category))
     },
-    [setFilteredOutCategories]
+    [setFilteredOutCategories, visibleCategories.length]
   )
 
-  const onFilterOutNetwork = React.useCallback(
+  const onRemoveNetworkFilter = React.useCallback(
     (network: BraveWallet.NetworkInfo) => {
-      setFilteredOutNetworkKeys((prev) =>
-        prev.concat(networkEntityAdapter.selectId(network).toString())
-      )
+      if (visibleNetworks.length === 1) {
+        setFilteredOutNetworkKeys([]) // clear filter
+        return
+      }
+      setFilteredOutNetworkKeys((prev) => prev.concat(getNetworkId(network)))
     },
-    [setFilteredOutNetworkKeys]
+    [setFilteredOutNetworkKeys, visibleNetworks.length]
   )
 
   const onClearFilters = React.useCallback(() => {
@@ -270,7 +281,7 @@ export const ExploreWeb3View = () => {
                     <DappFilter
                       key={category}
                       label={category}
-                      onClick={() => onFilterOutCategory(category)}
+                      onClick={() => onRemoveCategoryFilter(category)}
                     />
                   ))
                 : null}
@@ -280,7 +291,7 @@ export const ExploreWeb3View = () => {
                     <DappFilter
                       key={network.chainId}
                       label={network.chainName}
-                      onClick={() => onFilterOutNetwork(network)}
+                      onClick={() => onRemoveNetworkFilter(network)}
                     />
                   ))
                 : null}
