@@ -190,6 +190,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2024-05
   ipfs::ClearDeprecatedIpfsPrefs(profile_prefs);
 
+  // Added 2024-07
+  profile_prefs->ClearPref(kHangoutsEnabled);
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

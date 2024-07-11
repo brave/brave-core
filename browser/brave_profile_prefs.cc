@@ -214,6 +214,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2024-05
   ipfs::RegisterDeprecatedIpfsPrefs(registry);
+
+  // Added 2024-07
+  registry->RegisterBooleanPref(kHangoutsEnabled, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
