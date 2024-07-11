@@ -281,7 +281,7 @@ extension Strings {
         comment:
           "Table cell title for vpn's transport protocol and which open opens protocol select"
       )
-    
+
     public static let settingsKillSwitchTitle =
       NSLocalizedString(
         "vpn.settingsKillSwitch",
@@ -290,15 +290,42 @@ extension Strings {
         value: "Kill Switch",
         comment: "Title for the row when clicked it enables 'Kill Switch' on VPN connection"
       )
-    
+
     public static let settingsKillSwitchDescription =
       NSLocalizedString(
         "vpn.settingsKillSwitchDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "Ensures your data stays protected if the VPN disconnects unexpectedly. When enabled, it blocks all internet traffic if the VPN connection drops, preventing accidental data leaks. Note: Enabling or disabling this feature will briefly reconnect your VPN.",
+        value:
+          "Ensures your data stays protected if the VPN disconnects unexpectedly. When enabled, it blocks all internet traffic if the VPN connection drops, preventing accidental data leaks. Note: Enabling or disabling this feature will briefly reconnect your VPN.",
         comment: "Description for the row when clicked it enables 'Kill Switch' on VPN connection"
       )
+
+    public static let settingsKillSwitchToggleErrorTitle =
+      NSLocalizedString(
+        "vpn.settingsKillSwitchToggleErrorTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Couldnt Toggle Kill Switch",
+        comment: "Title for the error while toggling vpn kill switch"
+      )
+
+    public static let settingsKillSwitchToggleErrorDescription =
+      NSLocalizedString(
+        "vpn.settingsKillSwitchToggleErrorDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Description of the error goes here. TO BE CONFIRMED",
+        comment: "Description for the error while toggling vpn kill switch"
+      )
+
+    public static let settingsRetryActionTitle = NSLocalizedString(
+      "aichat.settingsRetryActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Retry",
+      comment: "The title for button for re-try"
+    )
 
     public static let settingsContactSupport =
       NSLocalizedString(
