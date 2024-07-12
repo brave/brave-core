@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Data
 import Playlist
 import Preferences
@@ -60,48 +61,51 @@ struct PlaylistDebugView: View {
       Grid {
         GridRow {
           Button {
-            if let directory = PlaylistDownloadManager.playlistDirectory {
-              isGenerating = true
+            Task {
+              if let directory = await PlaylistDownloadManager.playlistDirectory {
+                isGenerating = true
 
-              Task.delayed(bySeconds: 1.0) { @MainActor in
-                DataController.performOnMainContext(save: true) { context in
-                  let folder = PlaylistFolder.getFolder(
-                    uuid: PlaylistFolder.savedFolderUUID,
-                    context: context
-                  )
-
-                  for i in 0..<Int(value) {
-                    let item = "Test-\(i).mp4"
-                    let itemPath = directory.appending(path: item)
-                    let cacheData =
-                      Int(value) - Int(danglingAmount) - i > 0 ? try? itemPath.bookmarkData() : nil
-
-                    Task.detached {
-                      FileManager.default.createFile(
-                        atPath: itemPath.path,
-                        contents: Data(base64Encoded: mp4File)
-                      )
-                    }
-
-                    let playlistItem = PlaylistItem(
-                      context: context,
-                      name: "Test-\(i)",
-                      pageTitle: "Youtube - Brave: The Privacy Browser",
-                      pageSrc: "https://youtu.be/fiXaHv_9rmQ",
-                      cachedData: cacheData ?? Data(),
-                      duration: 0,
-                      mimeType: "video/mp4",
-                      mediaSrc: "https://youtu.be/fiXaHv_9rmQ"
+                Task.delayed(bySeconds: 1.0) { @MainActor in
+                  DataController.performOnMainContext(save: true) { context in
+                    let folder = PlaylistFolder.getFolder(
+                      uuid: PlaylistFolder.savedFolderUUID,
+                      context: context
                     )
 
-                    playlistItem.order = 0
-                    playlistItem.uuid = UUID().uuidString
-                    playlistItem.playlistFolder = folder
+                    for i in 0..<Int(value) {
+                      let item = "Test-\(i).mp4"
+                      let itemPath = directory.appending(path: item)
+                      let cacheData =
+                        Int(value) - Int(danglingAmount) - i > 0
+                        ? try? itemPath.bookmarkData() : nil
+
+                      Task {
+                        await AsyncFileManager.default.createFile(
+                          atPath: itemPath.path,
+                          contents: Data(base64Encoded: mp4File)
+                        )
+                      }
+
+                      let playlistItem = PlaylistItem(
+                        context: context,
+                        name: "Test-\(i)",
+                        pageTitle: "Youtube - Brave: The Privacy Browser",
+                        pageSrc: "https://youtu.be/fiXaHv_9rmQ",
+                        cachedData: cacheData ?? Data(),
+                        duration: 0,
+                        mimeType: "video/mp4",
+                        mediaSrc: "https://youtu.be/fiXaHv_9rmQ"
+                      )
+
+                      playlistItem.order = 0
+                      playlistItem.uuid = UUID().uuidString
+                      playlistItem.playlistFolder = folder
+                    }
+
+                    try? context.save()
+
+                    isGenerating = false
                   }
-
-                  try? context.save()
-
-                  isGenerating = false
                 }
               }
             }
@@ -143,7 +147,7 @@ struct PlaylistDebugView: View {
           Button {
             isDeletingItems = true
             Task.delayed(bySeconds: 1.0) { @MainActor in
-              PlaylistManager.shared.deleteAllItems(cacheOnly: false)
+              await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
               isDeletingItems = false
             }
           } label: {
@@ -169,7 +173,7 @@ struct PlaylistDebugView: View {
           Button {
             isDeletingCaches = true
             Task.delayed(bySeconds: 1.0) { @MainActor in
-              PlaylistManager.shared.deleteAllItems(cacheOnly: true)
+              await PlaylistManager.shared.deleteAllItems(cacheOnly: true)
               isDeletingCaches = false
             }
           } label: {

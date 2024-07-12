@@ -37,11 +37,56 @@ public func XCTAssertAsyncNoThrow<T>(
 }
 
 // swift-format-ignore
-public func XCTunwrapAsync<T>(
+public func XCTUnwrapAsync<T>(
   _ expression: @autoclosure @escaping () async throws -> T?,
   file: StaticString = #file,
   line: UInt = #line
 ) async throws -> T {
   let result = try await expression()
   return try XCTUnwrap(result, file: file, line: line)
+}
+
+// swift-format-ignore
+public func XCTAssertAsyncTrue(
+  _ expression: @autoclosure () async throws -> Bool,
+  _ message: @autoclosure () -> String = "",
+  file: StaticString = #filePath,
+  line: UInt = #line
+) async {
+  do {
+    let result = try await expression()
+    return XCTAssertTrue(result, file: file, line: line)
+  } catch {
+    XCTFail(message(), file: file, line: line)
+  }
+}
+
+// swift-format-ignore
+public func XCTAssertAsyncFalse(
+  _ expression: @autoclosure () async throws -> Bool,
+  _ message: @autoclosure () -> String = "",
+  file: StaticString = #filePath,
+  line: UInt = #line
+) async {
+  do {
+    let result = try await expression()
+    return XCTAssertFalse(result, file: file, line: line)
+  } catch {
+    XCTFail(message(), file: file, line: line)
+  }
+}
+
+// swift-format-ignore
+public func XCTAssertAsyncNil(
+  _ expression: @autoclosure () async throws -> Any?,
+  _ message: @autoclosure () -> String = "",
+  file: StaticString = #filePath,
+  line: UInt = #line
+) async {
+  do {
+    let result = try await expression()
+    return XCTAssertNil(result, file: file, line: line)
+  } catch {
+    XCTFail(message(), file: file, line: line)
+  }
 }

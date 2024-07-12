@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveNews
+import BraveShared
 import BraveShields
 import Combine
 import Data
@@ -201,14 +202,16 @@ import os
       }
     }
 
-    @Sendable func _toggleFolderAccessForBlockCookies(locked: Bool) {
-      if Preferences.Privacy.blockAllCookies.value,
-        FileManager.default.checkLockedStatus(folder: .cookie) != locked
-      {
-        FileManager.default.setFolderAccess([
-          (.cookie, locked),
-          (.webSiteData, locked),
-        ])
+    @Sendable func _toggleFolderAccessForBlockCookies(locked: Bool) async {
+      do {
+        if Preferences.Privacy.blockAllCookies.value,
+          try await AsyncFileManager.default.isWebDataLocked(atPath: .cookie) != locked
+        {
+          try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: locked)
+          try await AsyncFileManager.default.setWebDataAccess(atPath: .websiteData, lock: locked)
+        }
+      } catch {
+        Logger.module.error("Failed to change web data access to \(locked)")
       }
     }
 
@@ -218,7 +221,7 @@ import os
     if clearAffectsTabs {
       self.tabManager.resetConfiguration()
       // Unlock the folders to allow clearing of data.
-      _toggleFolderAccessForBlockCookies(locked: false)
+      await _toggleFolderAccessForBlockCookies(locked: false)
     }
 
     await _clear(clearables)
@@ -233,7 +236,7 @@ import os
       RecentlyClosed.removeAll()
     }
 
-    _toggleFolderAccessForBlockCookies(locked: true)
+    await _toggleFolderAccessForBlockCookies(locked: true)
 
     return historyCleared
   }

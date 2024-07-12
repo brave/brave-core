@@ -10,14 +10,6 @@ import XCTest
 
 final class AIChatTest: XCTestCase {
 
-  override func setUpWithError() throws {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
-
-  override func tearDownWithError() throws {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-  }
-
   func testAttributedStringTrimming() throws {
     var string = AttributedString(" test ")
     XCTAssertEqual(
@@ -108,7 +100,7 @@ final class AIChatTest: XCTestCase {
     )
   }
 
-  func testMarkdown() throws {
+  func testMarkdown() async throws {
     let response =
       """
       The following is ane example of hello world in c++
@@ -122,7 +114,7 @@ final class AIChatTest: XCTestCase {
       ```
       This code using the header `iostream` in order to print.
       """
-
+    await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
     guard
       let result = MarkdownParser.parse(
         string: response,
@@ -154,7 +146,7 @@ final class AIChatTest: XCTestCase {
     )
   }
 
-  func testHighlightJS() throws {
+  func testHighlightJS() async throws {
     let response =
       """
       The following is ane example of hello world in c++
@@ -168,7 +160,7 @@ final class AIChatTest: XCTestCase {
       ```
       This code using the header `iostream` in order to print.
       """
-
+    await MarkdownParser.prepareMarkdownParser(isDarkTheme: true)
     guard
       let result = MarkdownParser.parse(
         string: response,

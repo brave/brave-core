@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Data
 import Foundation
 import Preferences
@@ -11,11 +12,6 @@ import os
 
 /// A class for managing a single grouped engine
 @MainActor class AdBlockEngineManager {
-  /// The directory to which we should store the unified list into
-  private static var cacheFolderDirectory: FileManager.SearchPathDirectory {
-    return FileManager.SearchPathDirectory.cachesDirectory
-  }
-
   public struct FileInfo: Hashable, Equatable {
     let filterListInfo: GroupedAdBlockEngine.FilterListInfo
     let localFileURL: URL
@@ -50,7 +46,14 @@ import os
   ///
   /// - Note: Returns nil if the cache folder does not exist
   private var createdCacheFolderURL: URL? {
-    guard let folderURL = Self.cacheFolderDirectory.url else { return nil }
+    guard
+      let folderURL = try? AsyncFileManager.default.url(
+        for: .cachesDirectory,
+        in: .userDomainMask
+      )
+    else {
+      return nil
+    }
     let cacheFolderURL = folderURL.appendingPathComponent(
       Self.parentCacheFolderName,
       conformingTo: .folder
@@ -111,8 +114,11 @@ import os
 
   /// Load the engine from cache so it can be ready during launch
   func loadFromCache(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async -> Bool {
+    guard let createdCacheFolderURL else { return false }
     do {
-      guard let cachedGroupInfo = loadCachedInfo() else { return false }
+      guard let cachedGroupInfo = await loadCachedInfo(cacheFolderURL: createdCacheFolderURL) else {
+        return false
+      }
 
       let engineType = self.engineType
       let groupedEngine = try await Task.detached(priority: .high) {
@@ -140,9 +146,9 @@ import os
   }
 
   // Delete the cache. Mostly used for testing
-  func deleteCachedEngine() throws {
+  func deleteCachedEngine() async throws {
     guard let cacheFolderURL = createdCacheFolderURL else { return }
-    try FileManager.default.removeItem(at: cacheFolderURL)
+    try await AsyncFileManager.default.removeItem(at: cacheFolderURL)
   }
 
   /// This will compile available data, but will wait a little bit in case something new gets downloaded.
@@ -229,7 +235,7 @@ import os
     contentBlockerManager: ContentBlockerManager
   ) async throws {
     let engineType = self.engineType
-    let group = try combineRules(for: files)
+    let group = try await combineRules(for: files)
     self.pendingGroup = group
 
     ContentBlockerManager.log.debug(
@@ -270,16 +276,16 @@ import os
   }
 
   /// Take all the filter lists and combine them into one then save them into a cache folder.
-  private func combineRules(
+  nonisolated private func combineRules(
     for compilableFiles: [AdBlockEngineManager.FileInfo]
-  ) throws -> GroupedAdBlockEngine.FilterListGroup {
+  ) async throws -> GroupedAdBlockEngine.FilterListGroup {
     // 1. Create a file url
-    let cachedFolder = try getOrCreateCacheFolder()
+    let cachedFolder = try await getOrCreateCacheFolder()
     let fileURL = cachedFolder.appendingPathComponent("list.txt", conformingTo: .text)
     var compiledInfos: [GroupedAdBlockEngine.FilterListInfo] = []
     var unifiedRules = ""
     // 2. Join all the rules together
-    compilableFiles.forEach { fileInfo in
+    for fileInfo in compilableFiles {
       do {
         let fileContents = try String(contentsOf: fileInfo.localFileURL)
         compiledInfos.append(fileInfo.filterListInfo)
@@ -292,8 +298,8 @@ import os
     }
 
     // 3. Save the files into storage
-    if FileManager.default.fileExists(atPath: fileURL.path) {
-      try FileManager.default.removeItem(at: fileURL)
+    if await AsyncFileManager.default.fileExists(atPath: fileURL.path) {
+      try await AsyncFileManager.default.removeItem(at: fileURL)
     }
     try unifiedRules.write(to: fileURL, atomically: true, encoding: .utf8)
 
@@ -308,31 +314,26 @@ import os
   /// Get or create a cache folder for the given `Resource`
   ///
   /// - Note: This technically can't really return nil as the location and folder are hard coded
-  private func getOrCreateCacheFolder() throws -> URL {
-    guard
-      let folderURL = FileManager.default.getOrCreateFolder(
-        name: [Self.parentCacheFolderName, cacheFolderName].joined(separator: "/"),
-        location: Self.cacheFolderDirectory
-      )
-    else {
-      throw ResourceFileError.failedToCreateCacheFolder
-    }
-
-    return folderURL
+  private func getOrCreateCacheFolder() async throws -> URL {
+    try await AsyncFileManager.default.url(
+      for: .cachesDirectory,
+      appending: [Self.parentCacheFolderName, cacheFolderName].joined(separator: "/"),
+      create: true
+    )
   }
 
-  private func cache(engine: GroupedAdBlockEngine) async {
+  nonisolated private func cache(engine: GroupedAdBlockEngine) async {
     let encoder = JSONEncoder()
 
     do {
-      let folderURL = try getOrCreateCacheFolder()
+      let folderURL = try await getOrCreateCacheFolder()
 
       // Write the serialized engine
       let serializedEngine = try await engine.serialize()
       let serializedEngineURL = folderURL.appendingPathComponent("list.dat", conformingTo: .data)
 
-      if FileManager.default.fileExists(atPath: serializedEngineURL.path) {
-        try FileManager.default.removeItem(at: serializedEngineURL)
+      if await AsyncFileManager.default.fileExists(atPath: serializedEngineURL.path) {
+        try await AsyncFileManager.default.removeItem(at: serializedEngineURL)
       }
 
       try serializedEngine.write(to: serializedEngineURL)
@@ -342,8 +343,8 @@ import os
       let data = try encoder.encode(info)
       let infoFileURL = folderURL.appendingPathComponent("engine_info.json", conformingTo: .json)
 
-      if FileManager.default.fileExists(atPath: infoFileURL.path) {
-        try FileManager.default.removeItem(at: infoFileURL)
+      if await AsyncFileManager.default.fileExists(atPath: infoFileURL.path) {
+        try await AsyncFileManager.default.removeItem(at: infoFileURL)
       }
 
       try data.write(to: infoFileURL)
@@ -354,12 +355,15 @@ import os
     }
   }
 
-  private func loadCachedInfo() -> GroupedAdBlockEngine.FilterListGroup? {
-    guard let cacheFolderURL = createdCacheFolderURL else { return nil }
+  nonisolated private func loadCachedInfo(
+    cacheFolderURL: URL
+  ) async -> GroupedAdBlockEngine.FilterListGroup? {
     let cachedEngineURL = cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
-    guard FileManager.default.fileExists(atPath: cachedEngineURL.path) else { return nil }
+    guard await AsyncFileManager.default.fileExists(atPath: cachedEngineURL.path) else {
+      return nil
+    }
     let cachedInfoURL = cacheFolderURL.appendingPathComponent("engine_info", conformingTo: .json)
-    guard FileManager.default.fileExists(atPath: cachedInfoURL.path) else { return nil }
+    guard await AsyncFileManager.default.fileExists(atPath: cachedInfoURL.path) else { return nil }
     let decoder = JSONDecoder()
 
     do {

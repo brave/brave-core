@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import WebKit
 
@@ -37,9 +38,9 @@ class Download: NSObject {
   func pause() {}
   func resume() {}
 
-  fileprivate func uniqueDownloadPathForFilename(_ filename: String) throws -> URL {
-    let downloadsPath = try FileManager.default.downloadsPath()
-    let basePath = downloadsPath.appendingPathComponent(filename)
+  fileprivate func uniqueDownloadPathForFilename(_ filename: String) async throws -> URL {
+    let downloadsPath = try await AsyncFileManager.default.downloadsPath()
+    let basePath = downloadsPath.appending(path: filename)
     let fileExtension = basePath.pathExtension
     let filenameWithoutExtension =
       !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
@@ -47,12 +48,12 @@ class Download: NSObject {
     var proposedPath = basePath
     var count = 0
 
-    while FileManager.default.fileExists(atPath: proposedPath.path) {
+    while await AsyncFileManager.default.fileExists(atPath: proposedPath.path) {
       count += 1
 
       let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
-      proposedPath = downloadsPath.appendingPathComponent(proposedFilenameWithoutExtension)
-        .appendingPathExtension(fileExtension)
+      proposedPath = downloadsPath.appending(path: proposedFilenameWithoutExtension)
+        .appending(path: fileExtension)
     }
 
     return proposedPath
@@ -166,13 +167,21 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     downloadTask: URLSessionDownloadTask,
     didFinishDownloadingTo location: URL
   ) {
-    do {
-      let destination = try uniqueDownloadPathForFilename(filename)
-      try FileManager.default.moveItem(at: location, to: destination)
-      isComplete = true
-      delegate?.download(self, didFinishDownloadingTo: destination)
-    } catch {
-      delegate?.download(self, didCompleteWithError: error)
+    // This method will delete the downloaded file immediately after this delegate method returns
+    // so we must synchonously move the file to a temporary directory first before processing it
+    // on a different thread since the Task will execute after this method returns
+    let temporaryLocation = FileManager.default.temporaryDirectory
+      .appending(component: location.lastPathComponent)
+    try? FileManager.default.moveItem(at: location, to: temporaryLocation)
+    Task {
+      do {
+        let destination = try await uniqueDownloadPathForFilename(filename)
+        try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: destination)
+        isComplete = true
+        delegate?.download(self, didFinishDownloadingTo: destination)
+      } catch {
+        delegate?.download(self, didCompleteWithError: error)
+      }
     }
   }
 }

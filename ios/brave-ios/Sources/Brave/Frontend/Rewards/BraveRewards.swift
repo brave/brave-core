@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Combine
 import DeviceCheck
 import Foundation
@@ -168,17 +169,24 @@ public class BraveRewards: PreferencesObserver {
     }
   }
 
-  func reset() {
-    try? FileManager.default.removeItem(
+  func reset() async {
+    try? await AsyncFileManager.default.removeItem(
       at: configuration.storageURL.appendingPathComponent("ledger")
     )
     if ads.isServiceRunning(), !Preferences.BraveNews.isEnabled.value {
-      ads.shutdownService { [self] in
-        try? FileManager.default.removeItem(
-          at: configuration.storageURL.appendingPathComponent("ads")
-        )
-        if ads.isEnabled {
-          ads.initialize { _ in }
+      await withCheckedContinuation { continuation in
+        ads.shutdownService {
+          continuation.resume()
+        }
+      }
+      try? await AsyncFileManager.default.removeItem(
+        at: configuration.storageURL.appendingPathComponent("ads")
+      )
+      if ads.isEnabled {
+        await withCheckedContinuation { continuation in
+          ads.initialize { _ in
+            continuation.resume()
+          }
         }
       }
     }

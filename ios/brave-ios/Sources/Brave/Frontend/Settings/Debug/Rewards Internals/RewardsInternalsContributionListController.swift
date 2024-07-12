@@ -167,40 +167,36 @@ class RewardsInternalsContributionListController: TableViewController {
 struct RewardsInternalsContributionsGenerator: RewardsInternalsFileGenerator {
   func generateFiles(
     at path: String,
-    using builder: RewardsInternalsSharableBuilder,
-    completion: @escaping (Error?) -> Void
-  ) {
-    let rewardsAPI = builder.rewardsAPI
-    rewardsAPI.allContributions { contributions in
-      let conts = contributions.map { cont -> [String: Any] in
-        return [
-          "ID": cont.contributionId,
-          "Created at": builder.dateAndTimeFormatter.string(
-            from: Date(timeIntervalSince1970: TimeInterval(cont.createdAt))
-          ),
-          "Type": cont.type.displayText,
-          "Amount": cont.amount,
-          "Step": cont.step.displayText,
-          "Retry Count": cont.retryCount,
-          "Processor": cont.processor.displayText,
-          "Publishers": cont.publishers.map { pub in
-            return [
-              "Publisher Key": pub.publisherKey,
-              "Total Amount": pub.totalAmount,
-              "Contributed Amount": pub.contributedAmount,
-            ] as [String: Any]
-          },
-        ]
-      }
-      let data: [String: Any] = [
-        "Contributions": conts
-      ]
-      do {
-        try builder.writeJSON(from: data, named: "contributions", at: path)
-        completion(nil)
-      } catch {
-        completion(error)
+    using builder: RewardsInternalsSharableBuilder
+  ) async throws {
+    let contributions = await withCheckedContinuation { c in
+      builder.rewardsAPI.allContributions {
+        c.resume(returning: $0)
       }
     }
+    let conts = contributions.map { cont -> [String: Any] in
+      return [
+        "ID": cont.contributionId,
+        "Created at": builder.dateAndTimeFormatter.string(
+          from: Date(timeIntervalSince1970: TimeInterval(cont.createdAt))
+        ),
+        "Type": cont.type.displayText,
+        "Amount": cont.amount,
+        "Step": cont.step.displayText,
+        "Retry Count": cont.retryCount,
+        "Processor": cont.processor.displayText,
+        "Publishers": cont.publishers.map { pub in
+          return [
+            "Publisher Key": pub.publisherKey,
+            "Total Amount": pub.totalAmount,
+            "Contributed Amount": pub.contributedAmount,
+          ] as [String: Any]
+        },
+      ]
+    }
+    let data: [String: Any] = [
+      "Contributions": conts
+    ]
+    try await builder.writeJSON(from: data, named: "contributions", at: path)
   }
 }

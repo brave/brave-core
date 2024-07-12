@@ -767,7 +767,9 @@ extension BrowserViewController: WKNavigationDelegate {
       browserViewController: self
     ) {
       // Open our helper and cancel this response from the webview.
-      passbookHelper.open()
+      Task {
+        await passbookHelper.open()
+      }
       return .cancel
     }
 

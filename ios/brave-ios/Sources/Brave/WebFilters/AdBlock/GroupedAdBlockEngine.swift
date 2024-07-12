@@ -203,8 +203,8 @@ public actor GroupedAdBlockEngine {
     cachedFrameScriptTypes = FifoDict()
   }
 
-  func useResources(from info: ResourcesInfo) throws {
-    try engine.useResources(fromFileURL: info.localFileURL)
+  func useResources(from info: ResourcesInfo) async throws {
+    try await engine.useResources(fromFileURL: info.localFileURL)
     resourcesInfo = info
   }
 

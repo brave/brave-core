@@ -61,7 +61,7 @@ class BrowserNavigationHelper {
   }
 
   func openDownloads(_ completion: @escaping (Bool) -> Void) {
-    FileManager.default.openBraveDownloadsFolder(completion)
+    UIApplication.shared.openBraveDownloadsFolder(completion)
   }
 
   func openHistory(isModal: Bool = false) {

@@ -118,7 +118,8 @@ private struct CompileContentBlockersSectionView: View {
         This process may take a long time depending on the number of runs set and the filter list selected.
         """
       )
-    }.onAppear(perform: {
+    }
+    .task {
       var availableSelections = GroupedAdBlockEngine.EngineType.allCases.flatMap({
         engineType -> [Selection] in
         let sources = AdBlockGroupsManager.shared.sourceProvider.sources(for: engineType)
@@ -130,7 +131,7 @@ private struct CompileContentBlockersSectionView: View {
 
       let resource = BraveS3Resource.adBlockRules
       if let slimListURL = resource.downloadedFileURL,
-        let version = try? resource.cachedResult()?.version
+        let version = try? await resource.cachedResult()?.version
       {
         availableSelections.insert(.slimList(slimListURL, version: version), at: 0)
       }
@@ -140,7 +141,7 @@ private struct CompileContentBlockersSectionView: View {
       if selectionId.isEmpty, let selection = availableSelections.first {
         self.selectionId = selection.id
       }
-    })
+    }
   }
 
   @MainActor private func stopCompiling() {

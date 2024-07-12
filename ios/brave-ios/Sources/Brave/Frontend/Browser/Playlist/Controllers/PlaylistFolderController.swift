@@ -247,10 +247,9 @@ extension PlaylistFolderController: UITableViewDataSource {
 
 extension PlaylistFolderController: UITableViewDelegate {
 
-  private func deleteFolder(folder: PlaylistFolder) {
-    PlaylistManager.shared.delete(folder: folder) { [weak self] _ in
-      self?.reloadData()
-    }
+  private func deleteFolder(folder: PlaylistFolder) async {
+    await PlaylistManager.shared.delete(folder: folder)
+    reloadData()
   }
 
   private func onEditFolder(folderUUID: String) {
@@ -418,7 +417,9 @@ extension PlaylistFolderController: UITableViewDelegate {
             completionHandler(false)
             return
           }
-          self.deleteFolder(folder: folder)
+          Task {
+            await self.deleteFolder(folder: folder)
+          }
         }
 
         completionHandler(true)
@@ -471,7 +472,10 @@ extension PlaylistFolderController: UITableViewDelegate {
           handler: { _ in
             guard let self = self else { return }
             self.frc(for: section)?.fetchedObjects?.first(where: { $0.uuid == folderUUID })?.do {
-              self.deleteFolder(folder: $0)
+              item in
+              Task {
+                await self.deleteFolder(folder: item)
+              }
             }
           }
         ),

@@ -12,61 +12,10 @@ import Shared
 import Storage
 import os.log
 
-class ProfileFileAccessor: FileAccessor {
-  convenience init(profile: Profile) {
-    self.init(localName: profile.localName())
-  }
-
-  init(localName: String) {
-    let profileDirName = "profile.\(localName)"
-
-    // Bug 1147262: First option is for device, second is for simulator.
-    var rootPath: String
-    let sharedContainerIdentifier = AppInfo.sharedContainerIdentifier
-    if let url = FileManager.default.containerURL(
-      forSecurityApplicationGroupIdentifier: sharedContainerIdentifier
-    ) {
-      var isDirectory: ObjCBool = false
-
-      if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
-        do {
-          try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
-        } catch {
-          Logger.module.error(
-            "Unable to find the shared container directory and error while trying tpo create a new directory. "
-          )
-        }
-      }
-
-      rootPath = url.path
-    } else {
-      Logger.module.error(
-        "Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead."
-      )
-      rootPath =
-        (NSSearchPathForDirectoriesInDomains(
-          .applicationSupportDirectory,
-          .userDomainMask,
-          true
-        )[0])
-    }
-
-    super.init(rootPath: URL(fileURLWithPath: rootPath).appendingPathComponent(profileDirName).path)
-
-    // Create the "Downloads" folder in the documents directory if doesn't exist.
-    FileManager.default.getOrCreateFolder(
-      name: "Downloads",
-      excludeFromBackups: true,
-      location: .documentDirectory
-    )
-  }
-}
-
 /// A Profile manages access to the user's data.
 public protocol Profile: AnyObject {
   var prefs: Prefs { get }
   var searchEngines: SearchEngines { get }
-  var files: FileAccessor { get }
   var certStore: CertStore { get }
 
   var isShutdown: Bool { get }
@@ -98,8 +47,6 @@ open class BrowserProfile: Profile {
   fileprivate let name: String
   public var isShutdown = false
 
-  public let files: FileAccessor
-
   /// N.B., BrowserProfile is used from our extensions, often via a pattern like
   ///
   ///   BrowserProfile(…).foo.saveSomething(…)
@@ -111,29 +58,20 @@ open class BrowserProfile: Profile {
   /// A SyncDelegate can be provided in this initializer, or once the profile is initialized.
   /// However, if we provide it here, it's assumed that we're initializing it from the application,
   /// and initialize the logins.db.
-  public init(localName: String, clear: Bool = false) {
+  public init(localName: String) {
     Logger.module.debug("Initing profile \(localName) on thread \(Thread.current).")
     self.name = localName
-    self.files = ProfileFileAccessor(localName: localName)
 
-    if clear {
-      do {
-        // Remove the contents of the directory…
-        try self.files.removeFilesInDirectory()
-        // …then remove the directory itself.
-        try self.files.remove("")
-      } catch {
-        Logger.module.info("Cannot clear profile: \(error.localizedDescription)")
+    if let profilePath = FileManager.default.containerURL(
+      forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
+    )?.appendingPathComponent("profile.\(localName)").path {
+
+      // If the profile dir doesn't exist yet, this is first run (for this profile). The check is made here
+      // since the DB handles will create new DBs under the new profile folder.
+      if !FileManager.default.fileExists(atPath: profilePath) {
+        Logger.module.info("New profile. Removing old account metadata.")
+        prefs.clearAll()
       }
-    }
-
-    // If the profile dir doesn't exist yet, this is first run (for this profile). The check is made here
-    // since the DB handles will create new DBs under the new profile folder.
-    let isNewProfile = !files.exists("")
-
-    if isNewProfile {
-      Logger.module.info("New profile. Removing old account metadata.")
-      prefs.clearAll()
     }
   }
 
@@ -156,7 +94,7 @@ open class BrowserProfile: Profile {
   }
 
   public lazy var searchEngines: SearchEngines = {
-    return SearchEngines(files: self.files)
+    return SearchEngines()
   }()
 
   func makePrefs() -> Prefs {

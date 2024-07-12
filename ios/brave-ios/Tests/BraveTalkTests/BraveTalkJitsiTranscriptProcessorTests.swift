@@ -27,7 +27,7 @@ class BraveTalkJitsiTranscriptProcessorTests: XCTestCase {
     ]
 
     await transcriptProcessor.processTranscript(dictionary: dictionary)
-    let transcript = try await XCTunwrapAsync(await self.transcriptProcessor.getTranscript())
+    let transcript = try await XCTUnwrapAsync(await self.transcriptProcessor.getTranscript())
 
     XCTAssertTrue(
       transcript.contains("Alice: Hello there."),
@@ -61,7 +61,7 @@ class BraveTalkJitsiTranscriptProcessorTests: XCTestCase {
     await transcriptProcessor.processTranscript(dictionary: updatedDict)
     await transcriptProcessor.processTranscript(dictionary: finalDict)
 
-    let transcript = try await XCTunwrapAsync(await self.transcriptProcessor.getTranscript())
+    let transcript = try await XCTUnwrapAsync(await self.transcriptProcessor.getTranscript())
 
     XCTAssertTrue(
       transcript.contains("Alice: Goodbye."),
@@ -88,7 +88,7 @@ class BraveTalkJitsiTranscriptProcessorTests: XCTestCase {
     ]
 
     await transcriptProcessor.processTranscript(dictionary: mixedPriorityDict)
-    let transcript = try await XCTunwrapAsync(await self.transcriptProcessor.getTranscript())
+    let transcript = try await XCTUnwrapAsync(await self.transcriptProcessor.getTranscript())
 
     XCTAssertTrue(
       transcript.contains("Alice: Final text"),

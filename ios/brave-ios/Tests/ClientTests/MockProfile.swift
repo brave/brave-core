@@ -9,26 +9,11 @@ import XCTest
 
 @testable import Brave
 
-class MockFiles: FileAccessor {
-  init() {
-    let docPath = NSSearchPathForDirectoriesInDomains(
-      .applicationSupportDirectory,
-      .userDomainMask,
-      true
-    )[0]
-    super.init(rootPath: (docPath as NSString).appendingPathComponent("testing"))
-  }
-}
-
 open class MockProfile: Profile {
-
-  // Read/Writeable properties for mocking
-  public var files: FileAccessor
 
   fileprivate let name: String = "mockaccount"
 
   init() {
-    files = MockFiles()
   }
 
   public func localName() -> String {
@@ -52,7 +37,7 @@ open class MockProfile: Profile {
   }()
 
   lazy public var searchEngines: SearchEngines = {
-    return SearchEngines(files: self.files)
+    return SearchEngines()
   }()
 
   lazy public var prefs: Prefs = {

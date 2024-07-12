@@ -47,10 +47,13 @@ import Foundation
   func startIfNeeded() {
     guard !startedService else { return }
     self.startedService = true
-    CustomFilterListStorage.shared.loadCachedFilterLists()
 
-    for customURL in CustomFilterListStorage.shared.filterListsURLs {
-      startFetching(filterListCustomURL: customURL)
+    Task(priority: .high) {
+      await CustomFilterListStorage.shared.loadCachedFilterLists()
+
+      for customURL in CustomFilterListStorage.shared.filterListsURLs {
+        startFetching(filterListCustomURL: customURL)
+      }
     }
   }
 

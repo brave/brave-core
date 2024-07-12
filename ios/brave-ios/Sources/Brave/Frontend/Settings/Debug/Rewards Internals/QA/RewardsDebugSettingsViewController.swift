@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveUI
 import CoreServices
 import Preferences
@@ -42,8 +43,10 @@ class RewardsDebugSettingsViewController: TableViewController {
     guard value < EnvironmentOverride.sortedCases.count else { return }
     let overrideForIndex = EnvironmentOverride.sortedCases[value]
     Preferences.Rewards.environmentOverride.value = overrideForIndex.rawValue
-    self.rewards.reset()
-    self.showResetRewardsAlert()
+    Task {
+      await self.rewards.reset()
+      self.showResetRewardsAlert()
+    }
   }
 
   private let reconcileTimeTextField = UITextField().then {
@@ -302,40 +305,6 @@ class RewardsDebugSettingsViewController: TableViewController {
     ]
   }
 
-  private func createLegacyLedger() {
-    let fm = FileManager.default
-    let stateStorage = URL(
-      fileURLWithPath: NSSearchPathForDirectoriesInDomains(
-        .applicationSupportDirectory,
-        .userDomainMask,
-        true
-      ).first!
-    )
-    let legacyLedger = stateStorage.appendingPathComponent("legacy_ledger")
-    let ledgerFolder = stateStorage.appendingPathComponent("ledger")
-
-    do {
-      // Check if we've already migrated the users wallet to the `legacy_rewards` folder
-      if fm.fileExists(atPath: legacyLedger.path) {
-        // Reset it if so
-        try fm.removeItem(atPath: legacyLedger.path)
-      }
-      // Copy the current `ledger` directory into the new legacy state storage path
-      try fm.copyItem(at: ledgerFolder, to: legacyLedger)
-      // Remove the old Rewards DB so that it starts fresh
-      try fm.removeItem(atPath: ledgerFolder.appendingPathComponent("Rewards.db").path)
-      // And remove the sqlite journal file if it exists
-      let journalPath = ledgerFolder.appendingPathComponent("Rewards.db-journal").path
-      if fm.fileExists(atPath: journalPath) {
-        try fm.removeItem(atPath: journalPath)
-      }
-
-      showResetRewardsAlert()
-    } catch {
-      print("Failed to migrate legacy wallet into a new folder: \(error.localizedDescription)")
-    }
-  }
-
   private func displayAlert(title: String? = nil, message: String) {
     DispatchQueue.main.async {
       let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -371,8 +340,10 @@ class RewardsDebugSettingsViewController: TableViewController {
   }
 
   @objc private func tappedReset() {
-    rewards.reset()
-    showResetRewardsAlert()
+    Task {
+      await rewards.reset()
+      showResetRewardsAlert()
+    }
   }
 
   @objc private func tappedDone() {
@@ -431,48 +402,50 @@ extension RewardsDebugSettingsViewController: UIDocumentPickerDelegate {
     _ controller: UIDocumentPickerViewController,
     didPickDocumentsAt urls: [URL]
   ) {
-    guard let documentURL = urls.first, documentURL.pathExtension == "db" else { return }
-    guard
-      let appSupportPath = NSSearchPathForDirectoriesInDomains(
-        .applicationSupportDirectory,
-        .userDomainMask,
-        true
-      ).first
-    else { return }
-    let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
-    do {
-      _ = try FileManager.default.replaceItemAt(
-        URL(fileURLWithPath: dbPath),
-        withItemAt: documentURL
-      )
-      if FileManager.default.fileExists(atPath: "\(dbPath)-journal") {
-        try FileManager.default.removeItem(atPath: "\(dbPath)-journal")
-      }
-      let alert = UIAlertController(
-        title: "Database Imported",
-        message:
-          "Brave must be restarted after importing a database for data to be read from it correctly.",
-        preferredStyle: .alert
-      )
-      alert.addAction(
-        UIAlertAction(
-          title: "Exit Now",
-          style: .destructive,
-          handler: { _ in
-            fatalError()
-          }
+    Task { @MainActor in
+      guard let documentURL = urls.first, documentURL.pathExtension == "db" else { return }
+      guard
+        let appSupportPath = NSSearchPathForDirectoriesInDomains(
+          .applicationSupportDirectory,
+          .userDomainMask,
+          true
+        ).first
+      else { return }
+      let dbPath = (appSupportPath as NSString).appendingPathComponent("ledger/Rewards.db")
+      do {
+        _ = try await AsyncFileManager.default.replaceItemAt(
+          URL(fileURLWithPath: dbPath),
+          withItemAt: documentURL
         )
-      )
-      alert.addAction(UIAlertAction(title: "Later…", style: .default, handler: nil))
-      present(alert, animated: true)
-    } catch {
-      let alert = UIAlertController(
-        title: "Failed To Import Database",
-        message: error.localizedDescription,
-        preferredStyle: .alert
-      )
-      alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-      present(alert, animated: true)
+        if await AsyncFileManager.default.fileExists(atPath: "\(dbPath)-journal") {
+          try await AsyncFileManager.default.removeItem(atPath: "\(dbPath)-journal")
+        }
+        let alert = UIAlertController(
+          title: "Database Imported",
+          message:
+            "Brave must be restarted after importing a database for data to be read from it correctly.",
+          preferredStyle: .alert
+        )
+        alert.addAction(
+          UIAlertAction(
+            title: "Exit Now",
+            style: .destructive,
+            handler: { _ in
+              fatalError()
+            }
+          )
+        )
+        alert.addAction(UIAlertAction(title: "Later…", style: .default, handler: nil))
+        present(alert, animated: true)
+      } catch {
+        let alert = UIAlertController(
+          title: "Failed To Import Database",
+          message: error.localizedDescription,
+          preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true)
+      }
     }
   }
 }

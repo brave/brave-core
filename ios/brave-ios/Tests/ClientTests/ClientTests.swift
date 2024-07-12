@@ -5,6 +5,7 @@
 import BraveShared
 import Shared
 import Storage
+import TestHelpers
 import UIKit
 import WebKit
 import XCTest
@@ -30,20 +31,20 @@ class ClientTests: XCTestCase {
     }
   }
 
-  func testDownloadsFolder() {
-    let path = try? FileManager.default.downloadsPath()
-    XCTAssertNotNil(path)
+  func testDownloadsFolder() async throws {
+    let fileManager = AsyncFileManager.default
+    let path = try await fileManager.downloadsPath()
 
-    XCTAssert(FileManager.default.fileExists(atPath: path!.path))
+    await XCTAssertAsyncTrue(await fileManager.fileExists(atPath: path.path))
 
     // Let's pretend user deletes downloads folder via files.app
-    XCTAssertNoThrow(try FileManager.default.removeItem(at: path!))
+    await XCTAssertAsyncNoThrow(try await fileManager.removeItem(at: path))
 
-    XCTAssertFalse(FileManager.default.fileExists(atPath: path!.path))
+    await XCTAssertAsyncFalse(await fileManager.fileExists(atPath: path.path))
 
     // Calling downloads path should recreate the deleted folder
-    XCTAssertNoThrow(try FileManager.default.downloadsPath())
+    await XCTAssertAsyncNoThrow(try await fileManager.downloadsPath())
 
-    XCTAssert(FileManager.default.fileExists(atPath: path!.path))
+    await XCTAssertAsyncTrue(await fileManager.fileExists(atPath: path.path))
   }
 }

@@ -189,7 +189,7 @@ extension BrowserViewController {
         menuController.pushInnerMenu(vc)
       }
       MenuItemFactory.button(for: .downloads) {
-        FileManager.default.openBraveDownloadsFolder { success in
+        UIApplication.shared.openBraveDownloadsFolder { success in
           if !success {
             self.displayOpenDownloadsError()
           }

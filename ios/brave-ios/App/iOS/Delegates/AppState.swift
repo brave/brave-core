@@ -71,21 +71,6 @@ public class AppState {
     }
   }
 
-  private(set) public lazy var diskImageStore = { () -> DiskImageStore? in
-    do {
-      return try DiskImageStore(
-        files: profile.files,
-        namespace: "TabManagerScreenshots",
-        quality: UIConstants.screenshotQuality
-      )
-    } catch {
-      log.error(
-        "Failed to create an image store for files: \(self.profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)"
-      )
-    }
-    return nil
-  }()
-
   private init() {
     // Setup Constants
     AppState.setupConstants()

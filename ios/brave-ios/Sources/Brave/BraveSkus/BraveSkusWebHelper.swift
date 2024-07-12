@@ -45,7 +45,7 @@ class BraveSkusWebHelper {
     }
   }
 
-  fileprivate var receipt: String? {
+  fileprivate func fetchReceipt() async -> String? {
     guard let receiptUrl = Bundle.main.appStoreReceiptURL else { return nil }
 
     do {
@@ -57,8 +57,10 @@ class BraveSkusWebHelper {
   }
 
   /// Returns app's receipt and few other properties as a base64 encoded JSON.
-  var receiptData: (key: String, value: String)? {
-    guard let receipt = receipt, let bundleId = Bundle.main.bundleIdentifier else { return nil }
+  func fetchReceiptData() async -> (key: String, value: String)? {
+    guard let receipt = await fetchReceipt(), let bundleId = Bundle.main.bundleIdentifier else {
+      return nil
+    }
 
     struct ReceiptDataJson: Codable {
       let type: String
@@ -156,7 +158,7 @@ class BraveSkusWebHelper {
 class BraveSkusWebHelperMock: BraveSkusWebHelper {
   static let mockReceiptValue = "test-receipt"
 
-  override var receipt: String? {
+  override func fetchReceipt() async -> String? {
     Self.mockReceiptValue
   }
 }

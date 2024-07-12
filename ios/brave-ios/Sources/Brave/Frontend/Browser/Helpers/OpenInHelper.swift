@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import MobileCoreServices
 import PassKit
@@ -148,13 +149,16 @@ class OpenPassBookHelper: NSObject {
     super.init()
   }
 
-  func open() {
-    guard let passData = try? Data(contentsOf: url) else { return }
+  @MainActor func open() async {
+    let passData = try? await Task.detached { [url] in
+      try Data(contentsOf: url)
+    }.value
+    guard let passData else { return }
     do {
       let pass = try PKPass(data: passData)
       let passLibrary = PKPassLibrary()
       if passLibrary.containsPass(pass) {
-        UIApplication.shared.open(pass.passURL!, options: [:])
+        await UIApplication.shared.open(pass.passURL!, options: [:])
       } else {
         if let addController = PKAddPassesViewController(pass: pass) {
           browserViewController.present(addController, animated: true, completion: nil)

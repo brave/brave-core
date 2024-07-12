@@ -297,7 +297,6 @@ public class BrowserViewController: UIViewController {
     windowId: UUID,
     profile: Profile,
     attributionManager: AttributionManager,
-    diskImageStore: DiskImageStore?,
     braveCore: BraveCoreMain,
     rewards: BraveRewards,
     migration: Migration?,
@@ -2785,7 +2784,7 @@ extension BrowserViewController: TabDelegate {
       forType: tab.isPrivate ? .privateMode : .standard
     )
 
-    guard let url = engine.searchURLForQuery(selectedText) else {
+    guard let url = engine?.searchURLForQuery(selectedText) else {
       assertionFailure("If this returns nil, investigate why and add proper handling or commenting")
       return
     }
@@ -3298,13 +3297,11 @@ extension BrowserViewController: PreferencesObserver {
       // All `block all cookies` toggle requires a hard reset of Webkit configuration.
       tabManager.reset()
       if !Preferences.Privacy.blockAllCookies.value {
-        HTTPCookie.loadFromDisk { _ in
-          self.tabManager.reloadSelectedTab()
-          for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
-            tab.createWebview()
-            if let url = tab.webView?.url {
-              tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-            }
+        self.tabManager.reloadSelectedTab()
+        for tab in self.tabManager.allTabs where tab != self.tabManager.selectedTab {
+          tab.createWebview()
+          if let url = tab.webView?.url {
+            tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
           }
         }
       } else {
@@ -3444,7 +3441,7 @@ extension BrowserViewController {
       }
     }
 
-    if let searchURL = engine.searchURLForQuery(
+    if let searchURL = engine?.searchURLForQuery(
       text,
       isBraveSearchPromotion: isBraveSearchPromotion
     ) {

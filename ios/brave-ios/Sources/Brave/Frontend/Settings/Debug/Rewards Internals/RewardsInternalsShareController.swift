@@ -130,24 +130,26 @@ class RewardsInternalsShareController: UITableViewController {
         self.progressIndiciator.progress = 0
       }
     }
-    do {
-      if FileManager.default.fileExists(atPath: dropDirectory.path) {
-        try FileManager.default.removeItem(at: dropDirectory)
+    Task {
+      do {
+        if await AsyncFileManager.default.fileExists(atPath: dropDirectory.path) {
+          try await AsyncFileManager.default.removeItem(at: dropDirectory)
+        }
+        if await AsyncFileManager.default.fileExists(atPath: zipPath.path) {
+          try await AsyncFileManager.default.removeItem(at: zipPath)
+        }
+      } catch {
+        adsRewardsLog.warning(
+          "Failed to cleanup sharing Rewards Internals files: \(error.localizedDescription)"
+        )
       }
-      if FileManager.default.fileExists(atPath: zipPath.path) {
-        try FileManager.default.removeItem(at: zipPath)
-      }
-    } catch {
-      adsRewardsLog.warning(
-        "Failed to cleanup sharing Rewards Internals files: \(error.localizedDescription)"
-      )
     }
   }
 
   private let dropDirectory: URL
   private let zipPath: URL
 
-  private func share(_ senderIndexPath: IndexPath) {
+  private func share(_ senderIndexPath: IndexPath) async {
     // create temp folder, zip, share
     guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else { return }
     let sharables = selectedIndexPaths.map { self.sharables[$0.row] }
@@ -165,77 +167,56 @@ class RewardsInternalsShareController: UITableViewController {
       dateAndTimeFormatter: dateAndTimeFormatter
     )
     do {
-      if FileManager.default.fileExists(atPath: dropDirectory.path) {
-        try FileManager.default.removeItem(at: dropDirectory)
+      if await AsyncFileManager.default.fileExists(atPath: dropDirectory.path) {
+        try await AsyncFileManager.default.removeItem(at: dropDirectory)
       }
-      try FileManager.default.createDirectory(
+      try await AsyncFileManager.default.createDirectory(
         at: dropDirectory,
         withIntermediateDirectories: true,
         attributes: nil
       )
-      let group = DispatchGroup()
 
-      isSharing = true
-      for sharable in sharables {
-        let sharableFolder = dropDirectory.appendingPathComponent(sharable.id)
-        try FileManager.default.createDirectory(
-          at: sharableFolder,
-          withIntermediateDirectories: true,
-          attributes: nil
-        )
-        group.enter()
-        sharable.generator.generateFiles(at: sharableFolder.path, using: builder) { error in
-          defer { group.leave() }
-          if let error = error {
-            adsRewardsLog.error(
-              "Failed to generate files for the Rewards Intenrnals sharable with ID: \(sharable.id). Error: \(error.localizedDescription)"
-            )
+      try await withThrowingTaskGroup(of: Void.self) { group in
+        for sharable in sharables {
+          let sharableFolder = dropDirectory.appendingPathComponent(sharable.id)
+          try await AsyncFileManager.default.createDirectory(
+            at: sharableFolder,
+            withIntermediateDirectories: true,
+            attributes: nil
+          )
+          try await sharable.generator.generateFiles(at: sharableFolder.path, using: builder)
+        }
+      }
+      if await AsyncFileManager.default.fileExists(atPath: self.zipPath.path) {
+        try await AsyncFileManager.default.removeItem(at: self.zipPath)
+      }
+      let readingIntent: NSFileAccessIntent =
+        .readingIntent(with: self.dropDirectory, options: [.forUploading])
+      let _: Void = try await withCheckedThrowingContinuation { c in
+        NSFileCoordinator().coordinate(
+          with: [readingIntent],
+          queue: .init()
+        ) { error in
+          if let error {
+            c.resume(throwing: error)
+          } else {
+            c.resume()
           }
         }
       }
-      group.notify(queue: .global(qos: .userInitiated)) { [weak self] in
-        guard let self = self else { return }
-        do {
-          if FileManager.default.fileExists(atPath: self.zipPath.path) {
-            try FileManager.default.removeItem(at: self.zipPath)
-          }
-          let readingIntent: NSFileAccessIntent =
-            .readingIntent(with: self.dropDirectory, options: [.forUploading])
-          NSFileCoordinator().coordinate(
-            with: [readingIntent],
-            queue: .init()
-          ) { error in
-            if let error {
-              adsRewardsLog.error(
-                "Failed to zip up internals files. Error: \(error.localizedDescription)"
-              )
-              return
-            }
-            do {
-              try FileManager.default.moveItem(at: readingIntent.url, to: self.zipPath)
-              DispatchQueue.main.async {
-                let controller = UIActivityViewController(
-                  activityItems: [self.zipPath],
-                  applicationActivities: nil
-                )
-                controller.popoverPresentationController?.sourceView =
-                  self.tableView.cellForRow(at: senderIndexPath) ?? self.tableView
-                controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-                controller.completionWithItemsHandler = { _, _, _, _ in
-                  self.cleanup()
-                }
-                self.present(controller, animated: true)
-              }
-            } catch {
-              adsRewardsLog.error(
-                "Failed to move coordinated rewards internals zip file. Error: \(error.localizedDescription)"
-              )
-            }
-          }
-        } catch {
-          adsRewardsLog.error("Failed to zip directory: \(error.localizedDescription)")
+      try await AsyncFileManager.default.moveItem(at: readingIntent.url, to: self.zipPath)
+      await MainActor.run {
+        let controller = UIActivityViewController(
+          activityItems: [self.zipPath],
+          applicationActivities: nil
+        )
+        controller.popoverPresentationController?.sourceView =
+          self.tableView.cellForRow(at: senderIndexPath) ?? self.tableView
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        controller.completionWithItemsHandler = { _, _, _, _ in
           self.cleanup()
         }
+        self.present(controller, animated: true)
       }
     } catch {
       adsRewardsLog.error(
@@ -296,7 +277,11 @@ class RewardsInternalsShareController: UITableViewController {
     if indexPath.section == 1 {
       tableView.deselectRow(at: indexPath, animated: true)
       if isSharing { return }
-      share(indexPath)
+      Task {
+        isSharing = true
+        await share(indexPath)
+        isSharing = false
+      }
     }
   }
 }

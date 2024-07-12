@@ -499,7 +499,12 @@ class TabManager: NSObject {
       )
       tab.lastTitle = url.absoluteDisplayString
       tab.url = url
-      tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
+      tab.favicon = Favicon.default
+      Task { @MainActor in
+        if let icon = await FaviconFetcher.getIconFromCache(for: url) {
+          tab.favicon = icon
+        }
+      }
       tabs.append(tab)
     }
 
@@ -1202,7 +1207,7 @@ class TabManager: NSObject {
         )
 
         tab.lastTitle = savedTab.title
-        tab.favicon = FaviconFetcher.getIconFromCache(for: tabURL) ?? Favicon.default
+        tab.favicon = Favicon.default
         tab.setScreenshot(savedTab.screenshot)
 
         Task { @MainActor in

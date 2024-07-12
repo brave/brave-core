@@ -33,10 +33,10 @@ struct EditFolderView: View {
     )
   }
 
-  private func deleteSelectedItems() {
+  private func deleteSelectedItems() async {
     let items = selectedItems.compactMap { id in self.items.first(where: { $0.id == id }) }
     for item in items {
-      PlaylistManager.shared.delete(item: .init(item: item))
+      await PlaylistManager.shared.delete(item: .init(item: item))
     }
     selectedItems = []
   }
@@ -126,7 +126,9 @@ struct EditFolderView: View {
           .disabled(selectedItems.isEmpty || folders.count < 2)
           Spacer()
           Button(role: .destructive) {
-            deleteSelectedItems()
+            Task {
+              await deleteSelectedItems()
+            }
           } label: {
             Text("Delete")
           }

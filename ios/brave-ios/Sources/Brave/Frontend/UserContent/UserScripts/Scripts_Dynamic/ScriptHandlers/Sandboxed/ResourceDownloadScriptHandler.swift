@@ -64,20 +64,22 @@ class ResourceDownloadScriptHandler: TabContentScript {
   func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    defer { replyHandler(nil, nil) }
-
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
+      replyHandler(nil, nil)
       return
     }
 
-    do {
-      let response = try DownloadedResourceResponse.from(message: message)
-      tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
-    } catch {
-      tab?.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
+    Task {
+      do {
+        let response = try DownloadedResourceResponse.from(message: message)
+        await tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
+      } catch {
+        await tab?.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
+      }
+      replyHandler(nil, nil)
     }
   }
 
@@ -88,7 +90,9 @@ class ResourceDownloadScriptHandler: TabContentScript {
       contentWorld: self.scriptSandbox
     ) { _, error in
       if let error = error {
-        tab.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
+        Task {
+          await tab.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
+        }
       }
     }
   }

@@ -42,7 +42,7 @@ extension InternalSchemeResponse {
             </body>
         </html>
         """
-      let data = html.data(using: .utf8)!
+      let data = Data(html.utf8)
       let response = InternalSchemeHandler.response(forUrl: originURL)
       return (response, data)
     }
@@ -75,7 +75,7 @@ extension InternalSchemeResponse {
       </html>
       """
 
-    let data = html.data(using: .utf8)!
+    let data = Data(html.utf8)
     let response = InternalSchemeHandler.response(forUrl: url)
     return (response, data)
   }
@@ -85,7 +85,7 @@ extension InternalSchemeResponse {
 public class SessionRestoreHandler: InternalSchemeResponse {
   public static let path = "sessionrestore"
 
-  public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
+  public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let _url = request.url, let url = InternalURL(_url) else { return nil }
 
     // Handle the 'url='query param
@@ -95,10 +95,13 @@ public class SessionRestoreHandler: InternalSchemeResponse {
 
     // From here on, handle 'history=' query param
     let response = InternalSchemeHandler.response(forUrl: url.url)
-    guard
-      let sessionRestorePath = Bundle.module.path(forResource: "SessionRestore", ofType: "html"),
-      var html = try? String(contentsOfFile: sessionRestorePath)
-    else {
+
+    guard let asset = Bundle.module.url(forResource: "SessionRestore", withExtension: "html") else {
+      assert(false)
+      return nil
+    }
+
+    guard var html = await AsyncFileManager.default.utf8Contents(at: asset) else {
       assert(false)
       return nil
     }
@@ -109,11 +112,7 @@ public class SessionRestoreHandler: InternalSchemeResponse {
       with: SessionRestoreScriptHandler.scriptId
     )
 
-    guard let data = html.data(using: .utf8) else {
-      assert(false)
-      return nil
-    }
-
+    let data = Data(html.utf8)
     return (response, data)
   }
 

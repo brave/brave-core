@@ -31,7 +31,7 @@ public actor AdblockResourceDownloader: Sendable {
   }
 
   /// Start fetching resources
-  public func startFetching() {
+  public func startFetching() async {
     let fetchInterval = AppConstants.isOfficialBuild ? 6.hours : 10.minutes
 
     for resource in Self.handledResources {
@@ -40,13 +40,15 @@ public actor AdblockResourceDownloader: Sendable {
 
     // Remove any old files
     // We can remove this code in some not-so-distant future
-    for resource in Self.deprecatedResources {
-      do {
-        try resource.removeCacheFolder()
-      } catch {
-        ContentBlockerManager.log.error(
-          "Failed to removed deprecated file \(resource.cacheFileName): \(error)"
-        )
+    Task(priority: .low) {
+      for resource in Self.deprecatedResources {
+        do {
+          try await resource.removeCacheFolder()
+        } catch {
+          ContentBlockerManager.log.error(
+            "Failed to removed deprecated file \(resource.cacheFileName): \(error)"
+          )
+        }
       }
     }
   }
