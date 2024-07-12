@@ -111,15 +111,6 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
 #pragma mark - IOSHistorySearchOptions
 
-@interface IOSHistorySearchOptions () {
-  int max_count_;
-  bool host_only_;
-  base::Time begin_time_;
-  base::Time end_time_;
-  history::QueryOptions::DuplicateHandling duplicate_policy_;
-}
-@end
-
 @implementation IOSHistorySearchOptions
 
 - (instancetype)init {
@@ -146,87 +137,13 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                        beginDate:(nullable NSDate*)beginDate
                          endDate:(nullable NSDate*)endDate {
   if ((self = [super init])) {
-    [self setMaxCount:maxCount];
-    [self setHostOnly:hostOnly];
-    [self setDuplicateHandling:duplicateHandling];
-    if (beginDate) {
-      [self setBeginDate:beginDate];
-    }
-    if (endDate) {
-      [self setEndDate:endDate];
-    }
+    self.maxCount = maxCount;
+    self.hostOnly = hostOnly;
+    self.duplicateHandling = duplicateHandling;
+    self.beginDate = beginDate;
+    self.endDate = endDate;
   }
   return self;
-}
-
-- (void)setMaxCount:(NSUInteger)maxCount {
-  max_count_ = static_cast<int>(maxCount);
-}
-
-- (NSUInteger)maxCount {
-  return static_cast<NSUInteger>(max_count_);
-}
-
-- (void)setHostOnly:(BOOL)hostOnly {
-  host_only_ = hostOnly;
-}
-
-- (BOOL)hostOnly {
-  return host_only_;
-}
-
-- (void)setBeginDate:(NSDate*)beginDate {
-  begin_time_ = base::Time::FromNSDate(beginDate);
-}
-
-- (NSDate*)beginDate {
-  return begin_time_.ToNSDate();
-}
-
-- (void)setEndDate:(NSDate*)endDate {
-  end_time_ = base::Time::FromNSDate(endDate);
-}
-
-- (NSDate*)endDate {
-  return end_time_.ToNSDate();
-}
-
-- (void)setDuplicateHandling:(HistoryDuplicateHandlingIOS)duplicateHandling {
-  switch (duplicateHandling) {
-    case HistoryDuplicateHandlingIOSRemoveAll:
-      duplicate_policy_ =
-          history::QueryOptions::DuplicateHandling::REMOVE_ALL_DUPLICATES;
-      break;
-    case HistoryDuplicateHandlingIOSRemovePerDay:
-      duplicate_policy_ =
-          history::QueryOptions::DuplicateHandling::REMOVE_DUPLICATES_PER_DAY;
-      break;
-    case HistoryDuplicateHandlingIOSKeepAll:
-      duplicate_policy_ =
-          history::QueryOptions::DuplicateHandling::KEEP_ALL_DUPLICATES;
-      break;
-  }
-}
-
-- (HistoryDuplicateHandlingIOS)duplicateHandling {
-  switch (duplicate_policy_) {
-    case history::QueryOptions::DuplicateHandling::REMOVE_ALL_DUPLICATES:
-      return HistoryDuplicateHandlingIOSRemoveAll;
-    case history::QueryOptions::DuplicateHandling::REMOVE_DUPLICATES_PER_DAY:
-      return HistoryDuplicateHandlingIOSRemovePerDay;
-    case history::QueryOptions::DuplicateHandling::KEEP_ALL_DUPLICATES:
-      return HistoryDuplicateHandlingIOSKeepAll;
-  }
-}
-
-- (history::QueryOptions)queryOptions {
-  history::QueryOptions options;
-  options.max_count = max_count_;
-  options.host_only = host_only_;
-  options.begin_time = begin_time_;
-  options.end_time = end_time_;
-  options.duplicate_policy = duplicate_policy_;
-  return options;
 }
 @end
 
@@ -379,7 +296,31 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                                      : base::SysNSStringToUTF16(query);
 
     // Creating fetch options for querying history
-    history::QueryOptions options = searchOptions.queryOptions;
+    history::QueryOptions options;
+    options.max_count = static_cast<int>(searchOptions.maxCount);
+    options.host_only = searchOptions.hostOnly;
+
+    if (searchOptions.beginDate) {
+      options.begin_time = base::Time::FromNSDate(searchOptions.beginDate);
+    }
+    if (searchOptions.endDate) {
+      options.end_time = base::Time::FromNSDate(searchOptions.endDate);
+    }
+
+    switch (searchOptions.duplicateHandling) {
+      case HistoryDuplicateHandlingIOSRemoveAll:
+        options.duplicate_policy =
+            history::QueryOptions::DuplicateHandling::REMOVE_ALL_DUPLICATES;
+        break;
+      case HistoryDuplicateHandlingIOSRemovePerDay:
+        options.duplicate_policy =
+            history::QueryOptions::DuplicateHandling::REMOVE_DUPLICATES_PER_DAY;
+        break;
+      case HistoryDuplicateHandlingIOSKeepAll:
+        options.duplicate_policy =
+            history::QueryOptions::DuplicateHandling::KEEP_ALL_DUPLICATES;
+        break;
+    }
     options.matching_algorithm =
         query_parser::MatchingAlgorithm::ALWAYS_PREFIX_SEARCH;
 
