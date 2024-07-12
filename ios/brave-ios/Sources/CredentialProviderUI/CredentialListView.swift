@@ -217,13 +217,13 @@ extension CredentialListModel {
     var serviceIdentifier: String!
     var serviceName: String!
     var note: String!
-    var syncId: String!
+    var syncId: Data!
     var userDisplayName: String!
-    var userId: String!
-    var credentialId: String!
+    var userId: Data!
+    var credentialId: Data!
     var rpId: String!
-    var privateKey: String!
-    var encrypted: String!
+    var privateKey: Data!
+    var encrypted: Data!
     var creationTime: Int64 = 0
 
     init(
