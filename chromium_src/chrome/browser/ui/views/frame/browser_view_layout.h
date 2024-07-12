@@ -16,7 +16,8 @@
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
 
-// Add a new method: NotifyDialogPositionRequiresUpdate()
+// Add a new method: NotifyDialogPositionRequiresUpdate(). This is needed for
+// split view to update the dialog position when the split view is resized.
 #define set_contents_border_widget           \
   set_contents_border_widget_unused();       \
   void NotifyDialogPositionRequiresUpdate(); \
