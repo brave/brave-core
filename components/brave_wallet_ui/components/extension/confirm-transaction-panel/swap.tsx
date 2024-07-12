@@ -72,7 +72,7 @@ export function ConfirmSwapTransaction() {
 
   const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
     useSwapTransactionParser(selectedPendingTransaction)
-  
+
   // render
   if (
     showAdvancedTransactionSettings &&
