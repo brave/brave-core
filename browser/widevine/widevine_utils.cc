@@ -26,7 +26,7 @@ namespace {
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 void InstallWidevineOnceRegistered() {
-  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandInstall(
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->EnsureInstalled(
       kWidevineComponentId);
 }
 #endif

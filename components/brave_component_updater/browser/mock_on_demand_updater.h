@@ -21,7 +21,7 @@ class MockOnDemandUpdater : public component_updater::OnDemandUpdater {
   ~MockOnDemandUpdater() override;
 
   MOCK_METHOD(void,
-              OnDemandInstall,
+              EnsureInstalled,
               (const std::string& id, component_updater::Callback callback),
               (override));
   MOCK_METHOD(void,

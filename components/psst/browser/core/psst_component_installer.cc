@@ -158,7 +158,7 @@ void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
       // After Register, run the callback with component id.
       cus, base::BindOnce([]() {
         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-            ->OnDemandInstall(kPsstComponentId);
+            ->EnsureInstalled(kPsstComponentId);
       }));
 }
 

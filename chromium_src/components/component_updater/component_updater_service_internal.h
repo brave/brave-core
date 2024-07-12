@@ -11,7 +11,7 @@
 #define OnDemandUpdate                                                     \
   OnDemandUpdate(const std::vector<std::string>& ids, Priority priority,   \
                  Callback callback) override;                              \
-  void OnDemandInstall(const std::string& id, Callback callback) override; \
+  void EnsureInstalled(const std::string& id, Callback callback) override; \
   void OnDemandUpdate
 
 #include "src/components/component_updater/component_updater_service_internal.h"  // IWYU pragma: export

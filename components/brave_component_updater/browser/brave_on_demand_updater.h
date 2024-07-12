@@ -31,7 +31,7 @@ class BraveOnDemandUpdater {
 
   // Install the component with the given id. If the component is already
   // installed, do nothing.
-  void OnDemandInstall(
+  void EnsureInstalled(
       const std::string& id,
       component_updater::Callback callback = base::DoNothing());
 

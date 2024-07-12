@@ -23,7 +23,7 @@ class BraveOnDemandUpdater;
  private:                                                                 \
   friend class brave_component_updater::BraveOnDemandUpdater;             \
                                                                           \
-  virtual void OnDemandInstall(const std::string& id, Callback callback); \
+  virtual void EnsureInstalled(const std::string& id, Callback callback); \
   virtual void OnDemandUpdate(const std::vector<std::string>& ids,        \
                               Priority priority, Callback callback);      \
                                                                           \

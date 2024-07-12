@@ -51,9 +51,9 @@ bool BraveComponentUpdaterDelegate::Unregister(
   return component_updater_->UnregisterComponent(component_id);
 }
 
-void BraveComponentUpdaterDelegate::OnDemandInstall(
+void BraveComponentUpdaterDelegate::EnsureInstalled(
     const std::string& component_id) {
-  BraveOnDemandUpdater::GetInstance()->OnDemandInstall(component_id);
+  BraveOnDemandUpdater::GetInstance()->EnsureInstalled(component_id);
 }
 
 void BraveComponentUpdaterDelegate::AddObserver(ComponentObserver* observer) {

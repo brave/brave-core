@@ -194,7 +194,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
 
   void SetOnDemandInstallCallbackWithComponentReady(
       const base::FilePath& path) {
-    EXPECT_CALL(on_demand_updater_, OnDemandInstall(kComponentId, testing::_))
+    EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
         .WillOnce([path, this](const std::string& id,
                                component_updater::Callback callback) {
           // Unblock CreateWallet once the component is registered.
@@ -203,7 +203,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
   }
 
   void SetOnDemandInstallCallbackWithComponentUpdateError() {
-    EXPECT_CALL(on_demand_updater_, OnDemandInstall(kComponentId, testing::_))
+    EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
         .WillOnce([this](const std::string& id,
                          component_updater::Callback callback) {
           installer().OnEvent(update_client::UpdateClient::Observer::Events::

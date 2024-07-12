@@ -13,7 +13,7 @@
 
 namespace component_updater {
 
-void CrxUpdateService::OnDemandInstall(const std::string& id,
+void CrxUpdateService::EnsureInstalled(const std::string& id,
                                        Callback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -77,7 +77,7 @@ void CrxUpdateService::OnDemandUpdate(const std::vector<std::string>& ids,
                          std::move(update_complete_callback));
 }
 
-void OnDemandUpdater::OnDemandInstall(const std::string& id,
+void OnDemandUpdater::EnsureInstalled(const std::string& id,
                                       Callback callback) {
   NOTREACHED_NORETURN();
 }
