@@ -33,7 +33,7 @@ void TorTabHelper::DidFinishNavigation(
     return;
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
-      base::BindOnce(&TorTabHelper::ReloadTab, AsWeakPtr(),
+      base::BindOnce(&TorTabHelper::ReloadTab, weak_ptr_factory_.GetWeakPtr(),
                      navigation_handle->GetWebContents()),
       base::Seconds(1));
 }

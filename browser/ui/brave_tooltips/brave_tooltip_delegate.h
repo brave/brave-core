@@ -12,8 +12,7 @@
 
 namespace brave_tooltips {
 
-class BraveTooltipDelegate
-    : public base::SupportsWeakPtr<BraveTooltipDelegate> {
+class BraveTooltipDelegate {
  public:
   virtual ~BraveTooltipDelegate() = default;
 
@@ -33,6 +32,9 @@ class BraveTooltipDelegate
 
   // Called when the Cancel button is pressed
   virtual void OnTooltipCancelButtonPressed(const std::string& tooltip_id) {}
+
+  // Returns a WeakPtr to the implementation instance.
+  virtual base::WeakPtr<BraveTooltipDelegate> AsWeakPtr() = 0;
 };
 
 }  // namespace brave_tooltips

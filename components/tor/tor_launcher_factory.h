@@ -68,6 +68,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
                      const std::string& line) override;
   void OnTorRawMid(const std::string& status, const std::string& line) override;
   void OnTorRawEnd(const std::string& status, const std::string& line) override;
+  base::WeakPtr<tor::TorControl::Delegate> AsWeakPtr() override;
 
  private:
   friend base::NoDestructor<TorLauncherFactory>;
@@ -119,7 +120,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   };
   std::optional<InitializationMessage> last_init_message_;
 
-  base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
+  base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_COMPONENTS_TOR_TOR_LAUNCHER_FACTORY_H_

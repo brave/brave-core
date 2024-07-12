@@ -21,8 +21,7 @@ class BodyHandler;
 class BodyProducer;
 
 // Base throttle used for implementing sniffing functionality
-class BodySnifferThrottle : public blink::URLLoaderThrottle,
-                            public base::SupportsWeakPtr<BodySnifferThrottle> {
+class BodySnifferThrottle final : public blink::URLLoaderThrottle {
  public:
   // |task_runner| is used to bind the right task runner for handling incoming
   // IPC in BodySnifferUrlLoader. |task_runner| is supposed to be bound to the

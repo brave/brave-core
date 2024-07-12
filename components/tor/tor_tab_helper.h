@@ -17,9 +17,8 @@ class WebContents;
 
 namespace tor {
 
-class TorTabHelper : public content::WebContentsObserver,
-                     public content::WebContentsUserData<TorTabHelper>,
-                     public base::SupportsWeakPtr<TorTabHelper> {
+class TorTabHelper final : public content::WebContentsObserver,
+                           public content::WebContentsUserData<TorTabHelper> {
  public:
   TorTabHelper(const TorTabHelper&) = delete;
   TorTabHelper& operator=(const TorTabHelper&) = delete;
@@ -37,6 +36,8 @@ class TorTabHelper : public content::WebContentsObserver,
       content::NavigationHandle* navigation_handle) override;
 
   void ReloadTab(content::WebContents* web_contents);
+
+  base::WeakPtrFactory<TorTabHelper> weak_ptr_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

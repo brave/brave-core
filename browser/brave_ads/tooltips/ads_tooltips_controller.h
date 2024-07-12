@@ -17,8 +17,9 @@ class Profile;
 
 namespace brave_ads {
 
-class AdsTooltipsController : public AdsTooltipsDelegate,
-                              public brave_tooltips::BraveTooltipDelegate {
+class AdsTooltipsController final
+    : public AdsTooltipsDelegate,
+      public brave_tooltips::BraveTooltipDelegate {
  public:
   explicit AdsTooltipsController(Profile* profile);
 
@@ -39,11 +40,14 @@ class AdsTooltipsController : public AdsTooltipsDelegate,
       SnoozeScheduledCaptchaCallback snooze_captcha_callback) override;
   void CloseCaptchaTooltip() override;
 
+  base::WeakPtr<brave_tooltips::BraveTooltipDelegate> AsWeakPtr() override;
+
  private:
   // brave_tooltips::BraveTooltipDelegate:
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
+  base::WeakPtrFactory<BraveTooltipDelegate> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

@@ -12,10 +12,8 @@
 
 namespace brave_ads {
 
-class BackgroundHelperLinux
-    : public BackgroundHelper,
-      public base::SupportsWeakPtr<BackgroundHelperLinux>,
-      public BrowserListObserver {
+class BackgroundHelperLinux final : public BackgroundHelper,
+                                    public BrowserListObserver {
  public:
   BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
   BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
@@ -37,6 +35,10 @@ class BackgroundHelperLinux
 
   // BackgroundHelper impl
   bool IsForeground() const override;
+
+  base::WeakPtr<BackgroundHelperLinux> AsWeakPtr();
+
+  base::WeakPtrFactory<BackgroundHelperLinux> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

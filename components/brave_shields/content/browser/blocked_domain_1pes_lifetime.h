@@ -26,9 +26,8 @@ namespace brave_shields {
 // BlockedDomain1PESLifetime::Key. When the last top-level frame holding a
 // reference is destroyed or navigates to a non-blocked domain, 1PES will be
 // disabled.
-class BlockedDomain1PESLifetime
-    : public base::RefCounted<BlockedDomain1PESLifetime>,
-      public base::SupportsWeakPtr<BlockedDomain1PESLifetime> {
+class BlockedDomain1PESLifetime final
+    : public base::RefCounted<BlockedDomain1PESLifetime> {
  public:
   using Key = std::pair<ephemeral_storage::EphemeralStorageService*, GURL>;
 
@@ -40,6 +39,8 @@ class BlockedDomain1PESLifetime
 
   void AddOnReadyCallback(base::OnceCallback<void(bool)> on_ready);
 
+  base::WeakPtr<BlockedDomain1PESLifetime> AsWeakPtr();
+
  private:
   friend class RefCounted<BlockedDomain1PESLifetime>;
   virtual ~BlockedDomain1PESLifetime();
@@ -50,6 +51,8 @@ class BlockedDomain1PESLifetime
   const Key key_;
   std::vector<base::OnceCallback<void(bool)>> on_ready_;
   std::optional<bool> is_1pes_enabled_;
+
+  base::WeakPtrFactory<BlockedDomain1PESLifetime> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_shields

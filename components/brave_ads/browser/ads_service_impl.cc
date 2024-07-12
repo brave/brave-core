@@ -262,6 +262,10 @@ AdsServiceImpl::~AdsServiceImpl() {
   rewards_service_->RemoveObserver(this);
 }
 
+base::WeakPtr<AdsServiceImpl> AdsServiceImpl::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 bool AdsServiceImpl::IsBatAdsServiceBound() const {

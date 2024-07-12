@@ -64,13 +64,12 @@ class Database;
 class DeviceId;
 struct NewTabPageAdInfo;
 
-class AdsServiceImpl : public AdsService,
-                       public bat_ads::mojom::BatAdsClient,
-                       public bat_ads::mojom::BatAdsObserver,
-                       BackgroundHelper::Observer,
-                       public ResourceComponentObserver,
-                       public brave_rewards::RewardsServiceObserver,
-                       public base::SupportsWeakPtr<AdsServiceImpl> {
+class AdsServiceImpl final : public AdsService,
+                             public bat_ads::mojom::BatAdsClient,
+                             public bat_ads::mojom::BatAdsObserver,
+                             BackgroundHelper::Observer,
+                             public ResourceComponentObserver,
+                             public brave_rewards::RewardsServiceObserver {
  public:
   explicit AdsServiceImpl(
       Profile* profile,
@@ -90,6 +89,8 @@ class AdsServiceImpl : public AdsService,
   AdsServiceImpl& operator=(AdsServiceImpl&&) noexcept = delete;
 
   ~AdsServiceImpl() override;
+
+  base::WeakPtr<AdsServiceImpl> AsWeakPtr();
 
  private:
   using SimpleURLLoaderList =
@@ -460,6 +461,8 @@ class AdsServiceImpl : public AdsService,
       bat_ads_client_notifier_remote_;
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier>
       bat_ads_client_notifier_pending_receiver_;
+
+  base::WeakPtrFactory<AdsServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads

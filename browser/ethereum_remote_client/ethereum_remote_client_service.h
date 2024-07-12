@@ -29,9 +29,7 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
-class EthereumRemoteClientService
-    : public KeyedService,
-      public base::SupportsWeakPtr<EthereumRemoteClientService> {
+class EthereumRemoteClientService final : public KeyedService {
  public:
   explicit EthereumRemoteClientService(
       content::BrowserContext* context,
