@@ -413,6 +413,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAccountsEditVisibleAssets",
      IDS_BRAVE_WALLET_ACCOUNTS_EDIT_VISIBLE_ASSETS},
     {"braveWalletAccountBalance", IDS_BRAVE_WALLET_ACCOUNT_BALANCE},
+    {"braveWalletViewAddressOn", IDS_BRAVE_WALLET_VIEW_ADDRESS_ON},
+    {"braveWalletNetworkExplorer", IDS_BRAVE_WALLET_NETWORK_EXPLORER},
     {"braveWalletAddAccountCreate", IDS_BRAVE_WALLET_ADD_ACCOUNT_CREATE},
     {"braveWalletCreateAccount", IDS_BRAVE_WALLET_CREATE_ACCOUNT},
     {"braveWalletCreateAccountButton", IDS_BRAVE_WALLET_CREATE_ACCOUNT_BUTTON},

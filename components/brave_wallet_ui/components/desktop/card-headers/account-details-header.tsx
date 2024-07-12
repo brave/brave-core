@@ -192,6 +192,17 @@ export const AccountDetailsHeader = (props: Props) => {
         (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey'
       )
     }
+    // We are currently not able to support viewing a
+    // BTC or ZEC account on a block explorer.
+    // Link to issue https://github.com/brave/brave-browser/issues/39699
+    if (
+      account.accountId.coin === BraveWallet.CoinType.BTC ||
+      account.accountId.coin === BraveWallet.CoinType.ZEC
+    ) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'explorer'
+      )
+    }
     return options
   }, [account])
 

@@ -75,6 +75,9 @@ export const Header = styled.div<{
 export const Title = styled.span`
   color: ${leo.color.text.primary};
   font: ${leo.font.heading.h2};
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font: ${leo.font.heading.h4};
+  }
 `
 
 export const HeaderButton = styled(WalletButton)`

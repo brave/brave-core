@@ -230,6 +230,8 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_ASSETS" desc="Accounts screen assets title">Assets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EDIT_VISIBLE_ASSETS" desc="Accounts screen visible assets button">Visible assets</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_BALANCE" desc="Account Details account balance">Account balance</message>
+  <message name="IDS_BRAVE_WALLET_VIEW_ADDRESS_ON" desc="View address on explorer label">View address on:</message>
+  <message name="IDS_BRAVE_WALLET_NETWORK_EXPLORER" desc="Blockchain network explorer name"><ph name="BLOCKCHAIN_NETWORK_NAME"><ex>Ethereum Mainnet</ex>$1</ph> Explorer</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_CREATE" desc="Add account modal create button">Create</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BUTTON" desc="Add account modal create account button">Create account</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT" desc="Add account modal create account header title">Create <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> account</message>

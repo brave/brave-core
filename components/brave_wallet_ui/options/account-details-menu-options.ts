@@ -12,6 +12,11 @@ export const AccountDetailsMenuOptions: AccountButtonOptionsObjectType[] = [
     icon: 'edit-pencil'
   },
   {
+    id: 'explorer',
+    name: 'braveWalletTransactionExplorer',
+    icon: 'web3-blockexplorer'
+  },
+  {
     id: 'deposit',
     name: 'braveWalletAccountsDeposit',
     icon: 'money-bag-coins'
