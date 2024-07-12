@@ -19,6 +19,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -114,7 +115,7 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
-                    const std::vector<std::string>& history,
+                    const std::vector<std::string>& stop_words,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
         EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
@@ -139,7 +140,7 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
   engine_->SetMaxPageContentLengthForTesting(7);
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([](const std::string& prompt,
-                   const std::vector<std::string>& history,
+                   const std::vector<std::string>& stop_words,
                    EngineConsumer::GenerationCompletedCallback callback,
                    EngineConsumer::GenerationDataCallback data_callback) {
         std::string prompt_segment_with_truncated_page_content =
@@ -189,7 +190,7 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
   base::RunLoop run_loop3;
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
-                    const std::vector<std::string>& history,
+                    const std::vector<std::string>& stop_words,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
         EXPECT_TRUE(base::StartsWith(prompt, prompt_before_time_and_date));
@@ -213,6 +214,30 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
           }));
   run_loop3.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+
+  // Test with modified agent reply.
+  base::RunLoop run_loop4;
+  EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
+      .WillOnce([](const std::string& prompt,
+                   const std::vector<std::string>& stop_words,
+                   EngineConsumer::GenerationCompletedCallback callback,
+                   EngineConsumer::GenerationDataCallback data_callback) {
+        // Make sure the prompt uses the modified agent reply.
+        EXPECT_NE(prompt.find("Which show is 'This is the way' from?"),
+                  std::string::npos);
+        EXPECT_NE(prompt.find("The Mandalorian."), std::string::npos);
+        std::move(callback).Run("");
+      });
+
+  engine_->GenerateAssistantResponse(
+      false, "This is my page.", GetHistoryWithModifiedReply(), "Who?",
+      base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop4](EngineConsumer::GenerationResult) {
+            run_loop4.Quit();
+          }));
+  run_loop4.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
 }
 
 TEST_F(EngineConsumerClaudeUnitTest, TestGenerateRewriteSuggestion) {
@@ -222,7 +247,7 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateRewriteSuggestion) {
   auto* mock_client = GetMockRemoteCompletionClient();
   EXPECT_CALL(*mock_client, QueryPrompt(_, _, _, _))
       .WillOnce([&](const std::string& prompt,
-                    const std::vector<std::string>& history,
+                    const std::vector<std::string>& stop_words,
                     EngineConsumer::GenerationCompletedCallback callback,
                     EngineConsumer::GenerationDataCallback data_callback) {
         // The excerpt should become "Hello" instead of "Hello World" due to

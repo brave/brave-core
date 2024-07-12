@@ -99,6 +99,8 @@ if (!is_ios) {
       "engine/engine_consumer_llama_unittest.cc",
       "engine/engine_consumer_oai_unittest.cc",
       "engine/oai_api_client_unittest.cc",
+      "engine/test_utils.cc",
+      "engine/test_utils.h",
       "model_service_unittest.cc",
     ]
 

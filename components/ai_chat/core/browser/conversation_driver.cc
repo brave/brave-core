@@ -1350,10 +1350,60 @@ void ConversationDriver::ModifyConversation(uint32_t turn_index,
   }
 
   auto& turn = chat_history_.at(turn_index);
-  if (turn->character_type == CharacterType::ASSISTANT) {  // not supported yet
+
+  // Modifying answer, create an entry in edits with updated completion event.
+  if (turn->character_type == CharacterType::ASSISTANT) {
+    if (!turn->events || turn->events->empty()) {
+      return;
+    }
+
+    std::optional<size_t> completion_event_index;
+    for (size_t i = 0; i < turn->events->size(); ++i) {
+      if (turn->events->at(i)->is_completion_event()) {
+        completion_event_index = i;
+        break;
+      }
+    }
+    if (!completion_event_index.has_value()) {
+      return;
+    }
+
+    std::string trimmed_input;
+    base::TrimWhitespaceASCII(new_text, base::TRIM_ALL, &trimmed_input);
+    if (trimmed_input.empty() ||
+        trimmed_input == turn->events->at(*completion_event_index)
+                             ->get_completion_event()
+                             ->completion) {
+      return;
+    }
+
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    for (auto& event : *turn->events) {
+      events.push_back(event->Clone());
+    }
+
+    auto edited_turn = mojom::ConversationTurn::New(
+        turn->character_type, turn->action_type, turn->visibility,
+        trimmed_input, std::nullopt /* selected_text */, std::move(events),
+        base::Time::Now(), std::nullopt /* edits */);
+    edited_turn->events->at(*completion_event_index)
+        ->get_completion_event()
+        ->completion = trimmed_input;
+
+    if (!turn->edits) {
+      turn->edits.emplace();
+    }
+    turn->edits->emplace_back(std::move(edited_turn));
+
+    for (auto& obs : observers_) {
+      obs.OnHistoryUpdate();
+    }
+
     return;
   }
 
+  // Modifying human turn, create an entry in edits with updated text, drop
+  // anything after this turn_index and resubmit.
   std::string sanitized_input = new_text;
   engine_->SanitizeInput(sanitized_input);
   const auto& current_text = turn->edits && !turn->edits->empty()
@@ -1375,7 +1425,6 @@ void ConversationDriver::ModifyConversation(uint32_t turn_index,
   }
   turn->edits->emplace_back(std::move(edited_turn));
 
-  // Modifying human turn, drop anything after this turn_index and resubmit.
   auto new_turn = std::move(chat_history_.at(turn_index));
   chat_history_.erase(chat_history_.begin() + turn_index, chat_history_.end());
   for (auto& obs : observers_) {

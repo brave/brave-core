@@ -18,6 +18,7 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -265,6 +266,42 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
           }));
 
   run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+
+  // Test with a modified server reply.
+  base::RunLoop run_loop2;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const mojom::CustomModelOptions, base::Value::List messages,
+                    EngineConsumer::GenerationDataCallback,
+                    EngineConsumer::GenerationCompletedCallback
+                        completed_callback) {
+        // system role is added by the engine
+        EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+        EXPECT_EQ(*messages[0].GetDict().Find("content"),
+                  expected_system_message);
+
+        EXPECT_EQ(*messages[1].GetDict().Find("role"), "user");
+        EXPECT_EQ(*messages[1].GetDict().Find("content"),
+                  "Which show is 'This is the way' from?");
+
+        // Modified server reply should be used here.
+        EXPECT_EQ(*messages[2].GetDict().Find("role"), "assistant");
+        EXPECT_EQ(*messages[2].GetDict().Find("content"), "The Mandalorian.");
+
+        EXPECT_EQ(*messages[3].GetDict().Find("role"), "user");
+        EXPECT_EQ(*messages[3].GetDict().Find("content"),
+                  "Is it related to a broader series?");
+
+        std::move(completed_callback).Run(EngineConsumer::GenerationResult(""));
+      });
+
+  engine_->GenerateAssistantResponse(
+      false, "", GetHistoryWithModifiedReply(), "test", base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop2](EngineConsumer::GenerationResult result) {
+            run_loop2.Quit();
+          }));
+  run_loop2.Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
 
