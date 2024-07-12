@@ -25,8 +25,13 @@ base::Value::List GetVariationsList() {
   }
 
   base::Value::List variations_list;
-  for (std::string& variation : variations)
+  const std::string& seed_version = variations::GetSeedVersion();
+  if (!seed_version.empty() && seed_version != "1") {
+    variations_list.Append(seed_version);
+  }
+  for (std::string& variation : variations) {
     variations_list.Append(std::move(variation));
+  }
 
   return variations_list;
 }

@@ -24,6 +24,11 @@ OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVModule;
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeySyncURL;
+/// Sets the variations URL to a test seed generated in brave/brave-variations
+/// pull request.
+///
+/// Expected value: A brave/brave-variations pull request number
+OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVariationsPR;
 /// Overrides the variations seed URL. Defaults to production
 ///
 /// Expected value: A URL string
