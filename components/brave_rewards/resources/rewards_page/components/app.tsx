@@ -11,7 +11,8 @@ import { EventHubContext } from '../lib/event_hub'
 import { useRoute } from '../lib/router'
 import { useBreakpoint } from '../lib/breakpoint'
 import { AppErrorBoundary } from './app_error_boundary'
-import { AppFrame } from './app_frame'
+import { AppFrame, navRoutes } from './app_frame'
+import { HomeView } from './home/home_view'
 import { Onboarding } from './onboarding/onboarding'
 import { OnboardingSuccessModal } from './onboarding/onboarding_success_modal'
 import { ResetModal } from './reset_modal'
@@ -37,7 +38,7 @@ export function App() {
   const [showOnboardingSuccess, setShowOnboardingSuccess]
     = React.useState(false)
 
-  useRoute((route, router) => {
+  const route = useRoute((route, router) => {
     if (route === '/reset') {
       setShowResetModal(true)
       router.replaceRoute('/')
@@ -92,6 +93,17 @@ export function App() {
     return null
   }
 
+  function renderMainView() {
+    switch (route) {
+      case navRoutes.creators:
+        return <></>
+      case navRoutes.explore:
+        return <></>
+      default:
+        return <HomeView />
+    }
+  }
+
   function renderContent() {
     if (loading) {
       return (
@@ -108,7 +120,9 @@ export function App() {
 
     return (
       <>
-        <AppFrame />
+        <AppFrame>
+          {renderMainView()}
+        </AppFrame>
         {renderModal()}
       </>
     )

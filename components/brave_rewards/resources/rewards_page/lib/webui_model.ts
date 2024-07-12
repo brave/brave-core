@@ -22,6 +22,7 @@ function normalizePlatform(name: string) {
 
 export function createModel(): AppModel {
   const browserProxy = RewardsPageProxy.getInstance()
+  const pageHandler = browserProxy.handler
   const stateManager = createStateManager<AppState>(defaultState())
 
   // Expose the state manager for devtools diagnostic purposes.
@@ -39,13 +40,62 @@ export function createModel(): AppModel {
   })
 
   async function updatePaymentId() {
-    const { paymentId } = await browserProxy.handler.getRewardsPaymentId()
+    const { paymentId } = await pageHandler.getRewardsPaymentId()
     stateManager.update({ paymentId })
+  }
+
+  async function updatePayoutAccount() {
+    const { externalWallet } = await pageHandler.getExternalWallet()
+    if (!externalWallet) {
+      stateManager.update({ payoutAccount: null })
+      return
+    }
+
+    const provider = (() => {
+      switch (externalWallet.type) {
+        case 'uphold':
+        case 'bitflyer':
+        case 'gemini':
+        case 'zebpay':
+        case 'solana':
+          return externalWallet.type
+      }
+      return null
+    })()
+
+    if (!provider) {
+      console.error(`Invalid payout provider "${externalWallet.type}"`)
+      return
+    }
+
+    stateManager.update({
+      payoutAccount: {
+        provider,
+        authenticated: externalWallet.status === mojom.WalletStatus.kConnected,
+        displayName: externalWallet.userName,
+        url: externalWallet.accountUrl
+      }
+    })
+  }
+
+  async function updateAdsInfo() {
+    const { statement } = await pageHandler.getAdsStatement()
+    if (statement) {
+      stateManager.update({
+        adsInfo: {
+          adsReceivedThisMonth: statement.adsReceivedThisMonth
+        }
+      })
+    } else {
+      stateManager.update({ adsInfo: null })
+    }
   }
 
   async function loadData() {
     await Promise.all([
-      updatePaymentId()
+      updatePaymentId(),
+      updatePayoutAccount(),
+      updateAdsInfo()
     ])
 
     stateManager.update({ loading: false })
@@ -71,19 +121,28 @@ export function createModel(): AppModel {
     addListener: stateManager.addListener,
 
     onAppRendered() {
-      browserProxy.handler.onPageReady()
+      pageHandler.onPageReady()
     },
 
-    openTab(url: string) {
+    openTab(url) {
       if (stateManager.getState().embedder.isBubble) {
-        browserProxy.handler.openTab(url)
+        pageHandler.openTab(url)
         return
       }
       window.open(url, '_blank', 'noopener,noreferrer')
     },
 
+    getString(key) {
+      return loadTimeData.getString(key)
+    },
+
+    async getPluralString(key, count) {
+      const { pluralString } = await pageHandler.getPluralString(key, count)
+      return pluralString
+    },
+
     async enableRewards(countryCode) {
-      const { result } = await browserProxy.handler.enableRewards(countryCode)
+      const { result } = await pageHandler.enableRewards(countryCode)
       switch (result) {
         case mojom.CreateRewardsWalletResult.kSuccess:
           updatePaymentId()
@@ -101,13 +160,12 @@ export function createModel(): AppModel {
     },
 
     async getAvailableCountries() {
-      const { availableCountries } =
-        await browserProxy.handler.getAvailableCountries()
+      const { availableCountries } = await pageHandler.getAvailableCountries()
       return availableCountries
     },
 
     async resetRewards() {
-      await browserProxy.handler.resetRewards()
+      await pageHandler.resetRewards()
     }
   }
 }

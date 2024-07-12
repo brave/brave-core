@@ -6,7 +6,6 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 
 import { scopedCSS, css } from '../lib/scoped_css'
-import { buttonReset } from '../../shared/lib/css_mixins'
 
 import rewardsLogoImage from '../assets/rewards_logo.svg'
 import rewardsLogoImageDark from '../assets/rewards_logo_dark.svg'
@@ -37,14 +36,12 @@ export const style = scopedCSS('app-frame', css`
 
     button {
       --leo-icon-size: 24px;
-
-      ${buttonReset}
-      cursor: pointer;
     }
 
     main {
       flex: 1 0 auto;
       overflow: auto;
+      margin: 0 16px 16px;
     }
 
     footer {
@@ -129,8 +126,14 @@ export const style = scopedCSS('app-frame', css`
       overflow: auto;
     }
 
-    main {
+    .page-content {
       flex: 1 0 auto;
+      margin: 16px;
+    }
+
+    main {
+      margin: 0 auto;
+      max-width: 768px;
     }
 
     footer {
@@ -145,11 +148,6 @@ export const style = scopedCSS('app-frame', css`
 
     li {
       position: relative;
-
-      button {
-        ${buttonReset}
-        cursor: pointer;
-      }
 
       a, button {
         --leo-icon-size: 18px;

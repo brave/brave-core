@@ -97,7 +97,7 @@ function MoreMenu(props: { children: React.ReactNode }) {
   }
 
   function onHelp() {
-    tabOpener.openTab(urls.contactSupportURL)
+    tabOpener.openTab(urls.helpURL)
   }
 
   return (
@@ -172,9 +172,11 @@ function PageFrame(props: Props) {
           </ul>
         </footer>
       </div>
-      <main>
-        {props.children}
-      </main>
+      <div className='page-content'>
+        <main>
+          {props.children}
+        </main>
+      </div>
     </div>
   )
 }

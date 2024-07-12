@@ -88,9 +88,35 @@ export const style = scopedCSS('app', css`
 `)
 
 addStyles('app-global-styles', css`
-  ${style.selector} {
+  @scope (${style.selector}) {
     a {
       color: ${color.text.interactive};
+    }
+
+    .content-card {
+      border-radius: 16px;
+      padding: 4px;
+      background-color: rgb(from ${color.container.background} r g b / 55%);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      section {
+        border-radius: 12px;
+        padding: 8px 12px;
+        background: ${color.container.background};
+      }
+    }
+
+    button {
+      margin: 0;
+      padding: 0;
+      background: 0;
+      border: none;
+      font-size: inherit;
+      line-height: inherit;
+      cursor: pointer;
     }
   }
 `)

@@ -20,11 +20,31 @@ export interface AvailableCountryInfo {
   defaultCountryCode: string
 }
 
+export type PayoutAccountProvider =
+  'uphold' |
+  'bitflyer' |
+  'gemini' |
+  'zebpay' |
+  'solana'
+
+export interface PayoutAccount {
+  provider: PayoutAccountProvider
+  authenticated: boolean
+  displayName: string
+  url: string
+}
+
+export interface AdsInfo {
+  adsReceivedThisMonth: number
+}
+
 export interface AppState {
   loading: boolean
   openTime: number
   embedder: EmbedderInfo
   paymentId: string
+  payoutAccount: PayoutAccount | null
+  adsInfo: AdsInfo | null
 }
 
 export type AppStateListener = (state: AppState) => void
@@ -34,6 +54,8 @@ export interface AppModel {
   addListener: (callback: AppStateListener) => () => void
   onAppRendered: () => void
   openTab: (url: string) => void
+  getString: (key: string) => string
+  getPluralString: (key: string, count: number) => Promise<string>
   enableRewards: (countryCode: string) => Promise<EnableRewardsResult>
   getAvailableCountries: () => Promise<AvailableCountryInfo>
   resetRewards: () => Promise<void>
@@ -48,7 +70,9 @@ export function defaultState (): AppState {
       platform: 'desktop',
       animatedBackgroundEnabled: false
     },
-    paymentId: ''
+    paymentId: '',
+    payoutAccount: null,
+    adsInfo: null
   }
 }
 
@@ -63,9 +87,11 @@ export function defaultModel (): AppModel {
 
     openTab() {},
 
-    async enableRewards(countryCode) {
-      return 'unexpected-error'
-    },
+    getString(key) { return '' },
+
+    async getPluralString(key, count) { return '' },
+
+    async enableRewards(countryCode) { return 'unexpected-error' },
 
     async getAvailableCountries() {
       return {

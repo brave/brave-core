@@ -8,22 +8,26 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
-#include "base/scoped_observation.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_page.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+class Profile;
+
+namespace brave_ads {
+class AdsService;
+}
+
 namespace brave_rewards {
 
+class RewardsService;
+
 // The WebUI handler for messages originating from the Rewards page.
-class RewardsPageHandler : public mojom::RewardsPageHandler,
-                           public RewardsServiceObserver {
+class RewardsPageHandler : public mojom::RewardsPageHandler {
  public:
   // An optional helper that can be supplied by WebUI controller to allow
   // the WebUI application to execute bubble actions.
@@ -37,31 +41,35 @@ class RewardsPageHandler : public mojom::RewardsPageHandler,
   RewardsPageHandler(mojo::PendingRemote<mojom::RewardsPage> page,
                      mojo::PendingReceiver<mojom::RewardsPageHandler> receiver,
                      std::unique_ptr<BubbleDelegate> bubble_delegate,
-                     RewardsService* rewards_service);
+                     Profile* profile);
 
   ~RewardsPageHandler() override;
 
   // mojom::RewardsPageHandler:
   void OnPageReady() override;
   void OpenTab(const std::string& url) override;
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override;
   void GetAvailableCountries(GetAvailableCountriesCallback callback) override;
   void GetRewardsPaymentId(GetRewardsPaymentIdCallback callback) override;
+  void GetExternalWallet(GetExternalWalletCallback callback) override;
+  void GetAdsStatement(GetAdsStatementCallback callback) override;
   void EnableRewards(const std::string& country_code,
                      EnableRewardsCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
 
-  // RewardsServiceObserver:
-  void OnRewardsInitialized(RewardsService* rewards_service) override;
-  void OnRewardsWalletCreated() override;
-  void OnCompleteReset(bool success) override;
-
  private:
+  class UpdateObserver;
+  enum class UpdateSource { kAds, kRewards };
+  void OnUpdate(UpdateSource update_source);
+
   mojo::Receiver<mojom::RewardsPageHandler> receiver_;
   mojo::Remote<mojom::RewardsPage> page_;
   std::unique_ptr<BubbleDelegate> bubble_delegate_;
+  std::unique_ptr<UpdateObserver> update_observer_;
   raw_ptr<RewardsService> rewards_service_ = nullptr;
-  base::ScopedObservation<RewardsService, RewardsServiceObserver>
-      rewards_observation_{this};
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
 };
 
 }  // namespace brave_rewards
