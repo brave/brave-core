@@ -862,6 +862,8 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   mixer[kColorOmniboxResultsButtonIcon] = {kColorOmniboxResultsIcon};
   mixer[kColorOmniboxResultsButtonIconSelected] = {
       kColorOmniboxResultsIconSelected};
+  mixer[kColorPageInfoIconHover] = {
+      ui::SetAlpha(kColorOmniboxText, std::ceil(0.10f * 255.0f))};
 
   // We don't use bg color for location icon view.
   mixer[kColorPageInfoBackground] = {SK_ColorTRANSPARENT};
