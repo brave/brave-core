@@ -12,7 +12,8 @@
 
 namespace brave_l10n {
 
-// See https://orpa.princeton.edu/export-controls/sanctioned-countries.
+// See https://orpa.princeton.edu/export-controls/sanctioned-countries. The
+// following list is derived from category 3.
 
 inline constexpr auto kOFACSactionedISO31661CountryCodes =
     base::MakeFixedFlatSet<std::string_view>({
@@ -31,6 +32,7 @@ inline constexpr auto kOFACSactionedISO31661CountryCodes =
         "RU",  // Russia
         "SY",  // Syria
         "UA",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
+        "VE",  // Venezuela
 
         // ISO 3166-1 alpha-3 country codes. See
         // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3.
@@ -42,6 +44,7 @@ inline constexpr auto kOFACSactionedISO31661CountryCodes =
         "RUS",  // Russia
         "SYR",  // Syria
         "UKR",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
+        "VEN",  // Venezuela
 
         // ISO 3166-1 numeric-3 country codes. See
         // https://en.wikipedia.org/wiki/ISO_3166-1_numeric.
@@ -52,7 +55,8 @@ inline constexpr auto kOFACSactionedISO31661CountryCodes =
         "498",  // Moldova
         "643",  // Russia
         "760",  // Syria
-        "804"   // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
+        "804",  // Ukraine (includes Crimea, Donetsk, and Luhansk regions)
+        "862"   // Venezuela
     });
 
 }  // namespace brave_l10n
