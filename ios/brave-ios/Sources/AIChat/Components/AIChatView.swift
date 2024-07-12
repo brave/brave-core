@@ -114,6 +114,10 @@ public struct AIChatView: View {
                               model.changeModel(modelKey: basicModel.key)
                               model.retryLastRequest()
                             } else {
+                              if let turn = model.clearErrorAndGetFailedMessage() {
+                                prompt = turn.text
+                              }
+
                               Logger.module.error("No basic models available")
                             }
                           } else {
@@ -493,6 +497,10 @@ public struct AIChatView: View {
               model.changeModel(modelKey: basicModel.key)
               model.retryLastRequest()
             } else {
+              if let turn = model.clearErrorAndGetFailedMessage() {
+                prompt = turn.text
+              }
+
               Logger.module.error("No basic models available")
             }
           }
@@ -524,6 +532,10 @@ public struct AIChatView: View {
                 model.changeModel(modelKey: basicModel.key)
                 model.retryLastRequest()
               } else {
+                if let turn = model.clearErrorAndGetFailedMessage() {
+                  prompt = turn.text
+                }
+
                 Logger.module.error("No basic models available")
               }
             }
