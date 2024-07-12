@@ -422,11 +422,13 @@ export const findTransactionToken = <
   )
 }
 
-// Use this function to synchronously extract swap/bridge details from a
-// transaction.
-//
-// Prefer using useSwapTransactionParser() hook in React components, which
-// can asynchronously extract details from the blockchain.
+/**
+ * Use this function to synchronously extract swap/bridge details from a
+ * transaction.
+ *
+ * Prefer using useSwapTransactionParser() hook in React components, which
+ * can asynchronously extract details from the blockchain.
+*/
 export const getETHSwapTransactionBuyAndSellTokens = ({
   nativeAsset,
   tokensList,
