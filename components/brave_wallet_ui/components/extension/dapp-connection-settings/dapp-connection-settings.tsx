@@ -27,7 +27,10 @@ import {
 import { WalletSelectors } from '../../../common/selectors'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  DAppConnectionOptionsType
+} from '../../../constants/types'
 
 // Queries
 import {
@@ -70,8 +73,6 @@ import {
   NetworkIconWrapper,
   OverlapForClick
 } from './dapp-connection-settings.style'
-
-export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
 export const DAppConnectionSettings = () => {
   // Selectors

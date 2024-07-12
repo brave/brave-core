@@ -20,7 +20,7 @@ import {
 
 // Types
 import { BraveWallet } from '../../../constants/types'
-import { DAppConnectionOptionsType } from './dapp-connection-settings'
+import { DAppConnectionOptionsType } from 'components/brave_wallet_ui/constants/types'
 
 // Components
 import { ChangeAccountButton } from './change-account-button'
