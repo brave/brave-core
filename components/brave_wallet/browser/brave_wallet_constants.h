@@ -1505,7 +1505,7 @@ inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
     "So11111111111111111111111111111111111111112";
 
 // LiFi // 0x common constants
-constexpr char kNativeEVMAssetContractAddress[] =
+inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
