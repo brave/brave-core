@@ -107,18 +107,8 @@ public struct AIChatView: View {
                         },
                         dismissAction: {
                           if model.apiError == .rateLimitReached {
-                            if let basicModel = model.models.first(where: {
-                              $0.options.tag == .leoModelOptions
-                                && $0.options.leoModelOptions?.access == .basic
-                            }) {
-                              model.changeModel(modelKey: basicModel.key)
-                              model.retryLastRequest()
-                            } else {
-                              if let turn = model.clearErrorAndGetFailedMessage() {
-                                prompt = turn.text
-                              }
-
-                              Logger.module.error("No basic models available")
+                            if let turn = model.clearErrorAndGetFailedMessage() {
+                              prompt = turn.text
                             }
                           } else {
                             model.shouldShowPremiumPrompt = false
@@ -491,17 +481,8 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
 
-            if let basicModel = model.models.first(where: {
-              $0.options.tag == .leoModelOptions && $0.options.leoModelOptions?.access == .basic
-            }) {
-              model.changeModel(modelKey: basicModel.key)
-              model.retryLastRequest()
-            } else {
-              if let turn = model.clearErrorAndGetFailedMessage() {
-                prompt = turn.text
-              }
-
-              Logger.module.error("No basic models available")
+            if let turn = model.clearErrorAndGetFailedMessage() {
+              prompt = turn.text
             }
           }
         }
@@ -526,17 +507,8 @@ public struct AIChatView: View {
             Task { @MainActor in
               await model.refreshPremiumStatus()
 
-              if let basicModel = model.models.first(where: {
-                $0.options.tag == .leoModelOptions && $0.options.leoModelOptions?.access == .basic
-              }) {
-                model.changeModel(modelKey: basicModel.key)
-                model.retryLastRequest()
-              } else {
-                if let turn = model.clearErrorAndGetFailedMessage() {
-                  prompt = turn.text
-                }
-
-                Logger.module.error("No basic models available")
+              if let turn = model.clearErrorAndGetFailedMessage() {
+                prompt = turn.text
               }
             }
           }
