@@ -36,7 +36,6 @@ export const text = styled.div`
   button {
     ${mixins.buttonReset}
     text-decoration: underline;
-    font-weight: 600;
     cursor: pointer;
   }
 `
