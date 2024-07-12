@@ -243,16 +243,29 @@ struct AIChatResponseMessageView: View {
       .padding(16)
     }
 
+    struct CodeLine: Identifiable {
+      let lineNumber: Int
+      let codeLine: AttributedString
+
+      var id: String {
+        "\(lineNumber)\(codeLine)"
+      }
+    }
+
+    private var codeLines: [CodeLine] {
+      block.string.split(separator: "\n").enumerated().map { index, line in
+        .init(lineNumber: index + 1, codeLine: line)
+      }
+    }
+
     private var codeBlockSection: some View {
       Grid(alignment: .leading, horizontalSpacing: nil, verticalSpacing: nil) {
-        ForEach(Array(block.string.split(separator: "\n").enumerated()), id: \.offset) {
-          index,
-          line in
+        ForEach(codeLines) { line in
           GridRow(alignment: .firstTextBaseline) {
-            Text("\(index + 1).")
+            Text("\(line.lineNumber).")
               .font(.caption)
               .monospaced()
-            Text(line)
+            Text(line.codeLine)
               .font(.subheadline)
               .multilineTextAlignment(.leading)
           }
