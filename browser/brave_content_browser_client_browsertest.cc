@@ -624,11 +624,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
 
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
-                       HangoutsEnabledByDefault) {
-  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
+                       HangoutsDisabledByDefault) {
+  ASSERT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(registry->enabled_extensions().Contains(hangouts_extension_id));
+  ASSERT_FALSE(registry->enabled_extensions().Contains(hangouts_extension_id));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
