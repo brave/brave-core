@@ -214,6 +214,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2024-05
   ipfs::RegisterDeprecatedIpfsPrefs(registry);
+
+  // Added 2024-07
+  registry->RegisterBooleanPref(kHangoutsEnabled, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -304,10 +307,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
 #endif
-
-  // Disable the Google Hangouts extension (included by Chromium) by default.
-  // See https://github.com/brave/brave-browser/issues/39660 for more info.
-  registry->RegisterBooleanPref(kHangoutsEnabled, false);
 
   // Restore last profile on restart
   registry->SetDefaultPrefValue(

@@ -931,9 +931,6 @@
   <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
     Allow Google login for extensions
   </message>
-  <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
-    Uses Hangouts component to enable screen sharing and other features in the browser.
-  </message>
   <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for media router switch in settings">
     Media router enables cast feature in the browser.
   </message>
