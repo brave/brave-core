@@ -13,18 +13,10 @@ import {
   SignIcon,
   ConfirmIcon,
   StyledLink,
-  LaunchIcon
+  LaunchIcon,
+  PanelButtonTypes
 } from './style'
 import { Row } from '../../../shared/style'
-
-export type PanelButtonTypes =
-  | 'primary'
-  | 'secondary'
-  | 'danger'
-  | 'confirm'
-  | 'sign'
-  | 'reject'
-  | 'cancel'
 
 interface BaseProps {
   buttonType: PanelButtonTypes

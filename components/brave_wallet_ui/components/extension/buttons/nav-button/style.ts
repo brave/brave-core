@@ -7,9 +7,6 @@ import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
-// types
-import { PanelButtonTypes } from './index'
-
 // images
 import CloseIcon from '../../../../assets/svg-icons/close.svg'
 import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
@@ -18,6 +15,15 @@ import CheckIcon from '../../assets/filled-checkmark.svg'
 // styles
 import { walletButtonFocusMixin } from '../../../shared/style'
 import { Link } from 'react-router-dom'
+
+export type PanelButtonTypes =
+  | 'primary'
+  | 'secondary'
+  | 'danger'
+  | 'confirm'
+  | 'sign'
+  | 'reject'
+  | 'cancel'
 
 interface StyledButtonProps {
   buttonType: PanelButtonTypes
