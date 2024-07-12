@@ -203,11 +203,15 @@ extension UIAlertController {
   }
 
   class func shredDataAlert(
+    url: URL,
     confirmationHandler: @escaping (UIAlertAction) -> Void
   ) -> UIAlertController {
     let alert = UIAlertController(
       title: Strings.Shields.shredThisSitesDataConfirmationTitle,
-      message: Strings.Shields.shredThisSitesDataConfirmationMessage,
+      message: String(
+        format: Strings.Shields.shredThisSitesDataConfirmationMessage,
+        url.baseDomain ?? url.host ?? url.absoluteString
+      ),
       preferredStyle: .alert
     )
     alert.addAction(

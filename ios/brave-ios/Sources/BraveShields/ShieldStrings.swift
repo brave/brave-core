@@ -345,13 +345,17 @@ extension Strings.Shields {
     comment: "A title for a confirmation window that appears when a user clicks on 'Shred Data'"
   )
 
-  /// An option setting for shredding only when the app is closed
+  /// A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+  /// The placeholder should be replaced with a website domain.
   public static let shredThisSitesDataConfirmationMessage = NSLocalizedString(
     "ShredThisSitesDataConfirmationMessage",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Are you sure you want to delete this website's data? This action cannot be undone.",
-    comment: "A message for a confirmation window that appears when a user clicks on 'Shred Data'"
+    value: "Are you sure you want to delete %@ data? This action cannot be undone.",
+    comment: """
+      A message for a confirmation window that appears when a user clicks on 'Shred Data'. 
+      The placeholder will be replaced with a website domain.
+      """
   )
 
   /// A list row label for accessing the shred settings screen

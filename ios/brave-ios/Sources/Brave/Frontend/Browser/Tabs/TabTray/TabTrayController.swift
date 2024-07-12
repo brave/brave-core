@@ -704,9 +704,9 @@ class TabTrayController: AuthenticationController {
   }
 
   @objc func shredButtonPressed() {
-    let alert = UIAlertController.shredDataAlert { _ in
-      guard let tab = self.tabManager.selectedTab else { return }
-      guard let url = tab.url else { return }
+    guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
+
+    let alert = UIAlertController.shredDataAlert(url: url) { _ in
       LottieAnimationView.showShredAnimation(
         on: self.navigationController?.view ?? self.view
       ) { [weak self] in

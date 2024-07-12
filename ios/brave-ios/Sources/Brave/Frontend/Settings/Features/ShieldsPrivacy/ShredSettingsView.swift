@@ -65,7 +65,12 @@ struct ShredSettingsView: View {
   private var confirmationAlert: Alert {
     Alert(
       title: Text(Strings.Shields.shredThisSitesDataConfirmationTitle),
-      message: Text(Strings.Shields.shredThisSitesDataConfirmationMessage),
+      message: Text(
+        String(
+          format: Strings.Shields.shredThisSitesDataConfirmationMessage,
+          settings.url.baseDomain ?? settings.url.host ?? settings.url.absoluteString
+        )
+      ),
       primaryButton: .destructive(
         Text(Strings.Shields.shredDataButtonTitle),
         action: {
