@@ -1083,7 +1083,6 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
                         BottomSheetController.class,
-                        Supplier.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
                         SnackbarManager.class,
@@ -1139,8 +1138,6 @@ public class BytecodeTest {
                         ScrimCoordinator.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
-                        ActivityLifecycleDispatcher.class,
-                        Supplier.class,
                         TabModelSelector.class,
                         TabContentManager.class,
                         ViewGroup.class,
@@ -1500,7 +1497,6 @@ public class BytecodeTest {
                         ObservableSupplierImpl.class,
                         int.class,
                         Supplier.class,
-                        Supplier.class,
                         AppMenuDelegate.class,
                         StatusBarColorProvider.class,
                         ObservableSupplierImpl.class,
@@ -1808,14 +1804,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mBottomSheetController"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mActivityLifecycleDispatcher"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mIsWarmOnResumeSupplier"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",

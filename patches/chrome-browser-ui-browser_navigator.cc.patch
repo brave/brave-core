@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index ec2ca0cefeb4aeb7138d96c14808ea46b308e18d..304fcbf5439cc3a926a1130b62622a1176b39572 100644
+index de008a12ca355cf1156aa7dedfbd8101db2f3893..4ed3288a5972a6f3f6ae6aea8eb358f29cc75915 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -633,6 +633,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -638,6 +638,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
      // Block any navigation requests in locked fullscreen mode.
      return nullptr;
    }
@@ -10,7 +10,7 @@ index ec2ca0cefeb4aeb7138d96c14808ea46b308e18d..304fcbf5439cc3a926a1130b62622a11
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/40136163): Remove this code after we integrate with intent
-@@ -1042,6 +1043,7 @@ bool IsURLAllowedInIncognito(const GURL& url,
+@@ -1047,6 +1048,7 @@ bool IsURLAllowedInIncognito(const GURL& url,
      return stripped_url.is_valid() &&
             IsURLAllowedInIncognito(stripped_url, browser_context);
    }

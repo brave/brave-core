@@ -5,6 +5,10 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests crash because brave.search.p3a_default_switch pref is not
+# registered.
+-VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveNoFrames
+
 # These tests crash due to TestingBraveBrowserProcess::greaselion_download_service()
 # having NOTREACHED which causes an immediate crash
 # https://github.com/brave/brave-browser/issues/25726
