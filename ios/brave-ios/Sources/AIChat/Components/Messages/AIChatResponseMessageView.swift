@@ -228,10 +228,7 @@ struct AIChatResponseMessageView: View {
         Spacer()
         Button(
           action: {
-            UIPasteboard.general.setValue(
-              String(block.string.characters),
-              forPasteboardType: "public.plain-text"
-            )
+            UIPasteboard.general.string = String(block.string.characters)
           },
           label: {
             HStack(spacing: 8) {

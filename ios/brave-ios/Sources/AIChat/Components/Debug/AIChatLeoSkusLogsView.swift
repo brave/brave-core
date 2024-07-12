@@ -4,12 +4,12 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import BraveUI
 import OSLog
 import Preferences
 import SwiftUI
 import os.log
-import BraveStore
 
 public struct AIChatLeoSkusLogsView: View {
   @State
@@ -34,7 +34,7 @@ public struct AIChatLeoSkusLogsView: View {
     .navigationTitle("Leo Skus Logs")
     .toolbar {
       Button("Copy") {
-        UIPasteboard.general.setValue(text, forPasteboardType: "public.plain-text")
+        UIPasteboard.general.string = text
       }
     }
   }
