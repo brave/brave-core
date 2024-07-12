@@ -6,12 +6,12 @@
 package org.chromium.chrome.browser.toolbar.menu_button;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.view.View;
 
 import androidx.annotation.IdRes;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
@@ -25,8 +25,6 @@ import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
 public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
-    private static final String BRAVE_IS_MENU_FROM_BOTTOM = "brave_is_menu_from_bottom";
-
     private Activity mActivity;
 
     public BraveMenuButtonCoordinator(
@@ -73,13 +71,15 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     }
 
     public static void setMenuFromBottom(boolean isMenuFromBottom) {
-        SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
-        prefs.edit().putBoolean(BRAVE_IS_MENU_FROM_BOTTOM, isMenuFromBottom).apply();
+        ContextUtils.getAppSharedPreferences()
+                .edit()
+                .putBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, isMenuFromBottom)
+                .apply();
     }
 
     public static boolean isMenuFromBottom() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(BRAVE_IS_MENU_FROM_BOTTOM, true);
+        return ContextUtils.getAppSharedPreferences()
+                .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
     }
 
     public static void setupPropertyModel(

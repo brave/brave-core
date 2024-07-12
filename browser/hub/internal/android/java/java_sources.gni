@@ -1,0 +1,11 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Since we make bytecode changes on the same component and extend it at the same time, we
+# have to patch it directly to avoid circular dependency.
+brave_browser_hub_internal_java_sources = [
+  "//brave/browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubManagerImpl.java",
+  "//brave/browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubToolbarView.java",
+]

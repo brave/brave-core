@@ -965,6 +965,13 @@ public class BytecodeTest {
                         true,
                         void.class,
                         AutocompleteMatch.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/hub/HubManagerImpl",
+                        "ensureHubCoordinatorIsInitialized",
+                        MethodModifier.REGULAR,
+                        true,
+                        void.class));
         // NOTE: Add new checks above. For each new check in this method add proguard exception in
         // `brave/android/java/proguard.flags` file under `Add methods for invocation below`
         // section. Both test and regular apks should have the same exceptions.

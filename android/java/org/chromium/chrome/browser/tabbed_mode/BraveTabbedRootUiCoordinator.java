@@ -17,6 +17,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -56,7 +57,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
-    protected AppCompatActivity mActivity;
+    private AppCompatActivity mActivity;
+    private OneshotSupplier<HubManager> mHubManagerSupplier;
 
     public BraveTabbedRootUiCoordinator(
             @NonNull AppCompatActivity activity,
@@ -153,6 +155,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 manualFillingComponentSupplier);
 
         mActivity = activity;
+        mHubManagerSupplier = hubManagerSupplier;
     }
 
     @Override
@@ -166,5 +169,21 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                     .updateBottomSheetPosition(
                             mActivity.getResources().getConfiguration().orientation);
         }
+    }
+
+    @Override
+    protected void onLayoutManagerAvailable(LayoutManagerImpl layoutManager) {
+        super.onLayoutManagerAvailable(layoutManager);
+
+        mHubManagerSupplier.onAvailable(
+                hubManager -> {
+                    // Make it negative to indicate that we adjust the bottom margin.
+                    int bottomToolbarHeight =
+                            mActivity
+                                            .getResources()
+                                            .getDimensionPixelSize(R.dimen.bottom_controls_height)
+                                    * -1;
+                    hubManager.setStatusIndicatorHeight(bottomToolbarHeight);
+                });
     }
 }
