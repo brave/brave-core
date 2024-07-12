@@ -99,6 +99,11 @@ function ConversationList(props: ConversationListProps) {
     return -1
   }, [conversationHistory])
 
+  const getCompletion = (turn: mojom.ConversationTurn) => {
+    const event = turn.events?.find((event) => event.completionEvent)
+    return event?.completionEvent?.completion ?? ''
+  }
+
   return (
     <>
       <div>
@@ -114,9 +119,11 @@ function ConversationList(props: ConversationListProps) {
             id === 1 && isAIAssistant && context.shouldShowLongPageWarning
           const showEditInput = editInputId === id
           const showEditIndicator = !showEditInput && !!turn.edits?.length
-          const latestEdit = turn.edits?.at(-1);
-          const latestTurnText = latestEdit?.text ?? turn.text
-          const lastEditedTime = latestEdit?.createdTime ?? turn.createdTime
+          const latestEdit = turn.edits?.at(-1)
+          const latestTurn = latestEdit ?? turn
+          const latestTurnText =
+            isAIAssistant ? getCompletion(latestTurn) : latestTurn.text
+          const lastEditedTime = latestTurn.createdTime
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: context.isMobile,
@@ -136,7 +143,8 @@ function ConversationList(props: ConversationListProps) {
 
           const handleCopyText = () => {
             if (isAIAssistant) {
-              const event = turn.events?.find((event) => event.completionEvent)
+              const event =
+                latestTurn.events?.find((event) => event.completionEvent)
               if (!event?.completionEvent) return
               navigator.clipboard.writeText(event.completionEvent.completion)
             } else {
@@ -168,28 +176,38 @@ function ConversationList(props: ConversationListProps) {
                     <span>{isHuman ? 'You' : 'Leo'}</span>
                   </div>
                     {!turn.selectedText && (
-                      <div className={styles.turnActions}>
-                        <CopyButton onClick={handleCopyText} />
-                        {!isAIAssistant && (
-                          <EditButton onClick={() => setEditInputId(id)} />
+                      <div className={styles.rightContainer}>
+                        {latestEdit && (
+                          <div className={styles.editLabel}>
+                            <span className={styles.editLabelText}>
+                              {getLocale('editedLabel')}
+                            </span>
+                          </div>
                         )}
-                        {isAIAssistant &&
-                          context.currentModel?.options.leoModelOptions && (
-                          <ContextMenuAssistant
-                            ref={portalRefs}
-                            turnId={id}
-                            isOpen={activeMenuId === id}
-                            onClick={() => showAssistantMenu(id)}
-                            onClose={hideAssistantMenu}
+                        <div className={styles.turnActions}>
+                          <CopyButton onClick={handleCopyText} />
+                          <EditButton
+                            onClick={() => setEditInputId(id)}
+                            isDisabled={isAIAssistant && shouldDisableUserInput}
                           />
-                        )}
+                          {isAIAssistant &&
+                            context.currentModel?.options.leoModelOptions && (
+                            <ContextMenuAssistant
+                              ref={portalRefs}
+                              turnId={id}
+                              isOpen={activeMenuId === id}
+                              onClick={() => showAssistantMenu(id)}
+                              onClose={hideAssistantMenu}
+                            />
+                          )}
+                        </div>
                       </div>
                     )}
                 </div>
                 <div className={styles.message}>
-                  {isAIAssistant && (
+                  {isAIAssistant && !showEditInput && (
                     <AssistantResponse
-                      entry={turn}
+                      entry={latestTurn}
                       isEntryInProgress={isEntryInProgress}
                     />
                   )}

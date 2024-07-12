@@ -11,6 +11,7 @@ import styles from './style.module.scss'
 
 interface Props {
   onClick: () => void
+  isDisabled: boolean
 }
 
 function EditButton (props: Props) {
@@ -19,6 +20,7 @@ function EditButton (props: Props) {
       fab
       size='tiny'
       kind='plain-faint'
+      isDisabled={props.isDisabled}
       title={getLocale('editButtonLabel')}
     >
       <Icon name='edit-pencil' />

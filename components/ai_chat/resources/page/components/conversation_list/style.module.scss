@@ -92,6 +92,12 @@
   margin-top: var(--leo-spacing-m);
 }
 
+.rightContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .turnHeader {
   width: 100%;
   display: flex;
@@ -102,4 +108,23 @@
 .turnActions {
   display: flex;
   gap: 12px;
+}
+
+.editLabel {
+  display: flex;
+  height: 20px;
+  padding: 0px var(--leo-spacing-s);
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  border-radius: var(--leo-radius-s);
+  background: var(--leo-color-neutral-20);
+}
+
+.editLabelText {
+  color: var(---leo-color-neutral-60);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 10px;
 }

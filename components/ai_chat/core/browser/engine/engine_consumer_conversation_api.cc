@@ -124,7 +124,12 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     }
     ConversationEvent event;
     event.role = message->character_type;
-    event.content = (message == last_turn) ? human_input : message->text;
+
+    const std::string& text = (message->edits && !message->edits->empty())
+                                  ? message->edits->back()->text
+                                  : message->text;
+    event.content = (message == last_turn) ? human_input : text;
+
     // TODO(petemill): Shouldn't the server handle the map of mojom::ActionType
     // to prompts? (e.g. SUMMARIZE_PAGE, PARAPHRASE, etc.)
     event.type = ConversationEventType::ChatMessage;

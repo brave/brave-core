@@ -776,10 +776,39 @@ TEST_F(ConversationDriverUnitTest, ModifyConversation) {
   ASSERT_EQ(conversation_history.size(), 2u);
   EXPECT_EQ(conversation_history[1]->text, "new answer");
 
-  // Modify server response is not supported yet.
-  conversation_driver_->ModifyConversation(1, "answer2");
+  // Modify server response should have text and completion event updated in
+  // the entry of edits.
+  conversation_driver_->ModifyConversation(1, " answer2 ");
   ASSERT_EQ(conversation_history.size(), 2u);
   EXPECT_EQ(conversation_history[1]->text, "new answer");
+
+  ASSERT_TRUE(conversation_history[1]->edits);
+  ASSERT_EQ(conversation_history[1]->edits->size(), 1u);
+  EXPECT_EQ(conversation_history[1]->edits->at(0)->text, "answer2");
+  EXPECT_NE(conversation_history[1]->edits->at(0)->created_time,
+            conversation_history[1]->created_time);
+
+  ASSERT_TRUE(conversation_history[1]->events);
+  ASSERT_EQ(conversation_history[1]->events->size(), 1u);
+  ASSERT_TRUE(conversation_history[1]->events->at(0)->is_completion_event());
+  EXPECT_EQ(conversation_history[1]
+                ->events->at(0)
+                ->get_completion_event()
+                ->completion,
+            "new answer");
+
+  ASSERT_TRUE(conversation_history[1]->edits->at(0)->events);
+  ASSERT_EQ(conversation_history[1]->edits->at(0)->events->size(), 1u);
+  ASSERT_TRUE(conversation_history[1]
+                  ->edits->at(0)
+                  ->events->at(0)
+                  ->is_completion_event());
+  EXPECT_EQ(conversation_history[1]
+                ->edits->at(0)
+                ->events->at(0)
+                ->get_completion_event()
+                ->completion,
+            "answer2");
 }
 
 }  // namespace ai_chat
