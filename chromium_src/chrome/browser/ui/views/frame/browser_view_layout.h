@@ -16,8 +16,16 @@
 #define LayoutInfoBar virtual LayoutInfoBar
 #define LayoutContentsContainerView virtual LayoutContentsContainerView
 
+// Add a new method: NotifyDialogPositionRequiresUpdate(). This is needed for
+// split view to update the dialog position when the split view is resized.
+#define set_contents_border_widget           \
+  set_contents_border_widget_unused();       \
+  void NotifyDialogPositionRequiresUpdate(); \
+  void set_contents_border_widget
+
 #include "src/chrome/browser/ui/views/frame/browser_view_layout.h"  // IWYU pragma: export
 
+#undef set_contents_border_widget
 #undef LayoutContentsContainerView
 #undef LayoutInfoBar
 #undef LayoutBookmarkAndInfoBars

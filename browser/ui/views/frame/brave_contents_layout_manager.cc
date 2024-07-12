@@ -7,6 +7,8 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "ui/views/view.h"
 
 namespace {
@@ -122,5 +124,9 @@ void BraveContentsLayoutManager::LayoutImpl() {
     layout_web_contents_and_devtools(bounds, secondary_contents_view_,
                                      secondary_devtools_view_,
                                      secondary_strategy_);
+  }
+
+  if (browser_view_) {
+    browser_view_->NotifyDialogPositionRequiresUpdate();
   }
 }
