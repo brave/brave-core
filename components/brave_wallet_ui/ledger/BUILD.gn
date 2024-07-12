@@ -16,6 +16,12 @@ transpile_web_ui("ledger_bridge_ui") {
       ] ]
   webpack_aliases = [ "browser" ]
   resource_name = "ledger_bridge"
+
+  # TODO(apaymyshev): ledger iframe should not depend on wallet's mojo
+  deps = [
+    "//brave/components/brave_wallet/common:mojom_js",
+    "//brave/components/brave_wallet/common:preprocess_mojo",
+  ]
 }
 
 pack_web_resources("ledger_bridge_generated") {
