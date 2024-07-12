@@ -59,7 +59,10 @@
 
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
-#define url_is_typed_with_http_scheme() return_false()
+#define BRAVE_SHOULD_EXCLUDE_NAVIGATION                               \
+  if (level == NavigationRequestSecurityLevel::kExplicitHttpScheme) { \
+    return false;                                                     \
+  }
 
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
@@ -67,4 +70,4 @@
 #undef MaybeCreateLoaderForResponse
 #undef IsEnabled
 #undef IsLocalhost
-#undef url_is_typed_with_http_scheme
+#undef BRAVE_SHOULD_EXCLUDE_NAVIGATION
