@@ -2,7 +2,7 @@
   padding-bottom: 20px;
   font-family: Arial, sans-serif;
   background-color: #525659;
-  max-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -223,9 +223,9 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 77px;
+  height: 70px;
   padding: 10px 20px;
-  background-color: #3f4142;
+  background-color: #323639;
   border-bottom: 1px solid #383535;
   z-index: 10000 !important;
   gap: 30px;
@@ -595,6 +595,11 @@
   cursor: not-allowed;
 }
 
+.confirmButton:hover{
+  background-color: #2BB563;
+  color: white;
+}
+
 .documentContainer {
   overflow-y: auto;
   overflow-x: hidden;
@@ -626,7 +631,7 @@
   flex-direction: column;
   gap: 10px;
   /* max-width: 90%; */
-  height: 390px;
+  height: 350px;
   border: 1px solid #CACACA;
   background: #323639;
   transition: height 0.3s ease;
@@ -674,10 +679,21 @@
 
 .successButtons {
   display: flex;
-  margin-top: 90px;
+  margin-top: 62px;
   justify-content: center;
-  gap: 35px;
-  margin-left: 135px;
+  gap: 28px;
+  margin-left: 208px;
+}
+
+.btn{
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: white;
+}
+
+.continue:hover{
+  color: white;
+  background-color: #2BB563;
 }
 
 .methodOptions {
@@ -716,7 +732,8 @@
 }
 
 .methodOptions .button:hover {
-  background-color: #141414e1;
+  background-color: #ffffffe1;
+  color: #000;
 }
 
 /* Image Upload Styles */
@@ -746,3 +763,150 @@
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
+
+.animatedStatus {
+  transform: translateY(-50px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: white;
+  margin-left: 50px;
+  margin-top: 2px;
+  font-weight: 400;
+  margin-bottom: 2px;
+  margin-right: 35px;
+  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 1000;
+}
+
+.visible{
+  transform: translateY(0px);
+}
+
+.checking .tex{
+  margin-left: 10px;
+  color: #4a4a4a;
+}
+
+.success .tex{
+  margin-left: 10px;
+  color: #2bb563;
+}
+
+.error .tex{
+  margin-left: 10px;
+  color: #ff4d4f;
+}
+
+.statusContent {
+  display: flex;
+  align-items: center;
+}
+
+.statusIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+/* .checking .statusIcon {
+  background-color: #ffffff;
+}
+
+.success .statusIcon {
+  background-color: #ffffff;
+  animation: none;
+}
+
+.error .statusIcon {
+  background-color: #ffffff;
+  animation: none;
+} */
+
+.pageControls {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.pageControl {
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.pageNumber, .totalPages {
+  margin: 0 5px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.fadeAway{
+  opacity: 1;
+  transform: translateY(0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fadeAnimation{
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.verified{
+  text-shadow:0 0 3px #00ff00, 0 1px 5px #00ff00;
+}
+
+.notVerified{
+  text-shadow: 0 0 3px red, 0 1px 5px red;
+}
+
+.notVerified::after{
+  display: flex;
+  position: absolute;
+  content: "i";
+  text-align: center;
+  font-size: 8px;
+  padding: 2px 2px 4px 5px;
+  width: 15px;
+  color: white;
+  height: 15px;
+  border-radius: 10px;
+  border: 1px solid white;
+  right: -10px;
+  top: 11px;
+}
+
+
+/* Existing styles... */
+
+.tooltipContainer{
+  width: 332px;
+  height: 106px;
+  flex-shrink: 0;
+  padding: 10px 22px 33px 22px;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  background: #616669;
+}
+

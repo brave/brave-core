@@ -16,6 +16,14 @@ let ws;
 const MAX_RECONNECT_ATTEMPTS = 5;
 let reconnectAttempts = 0;
 
+const tooltip = ({ content }) => {
+  return (
+    <div className={styles.tooltipContainer}>
+      {content};
+    </div>
+  )
+}
+
 const SignaturePopup = ({ onClose, onConfirm }) => {
   const [selectedSignature, setSelectedSignature] = useState(null);
 
@@ -91,7 +99,7 @@ const SignatureMethodPopup = ({ onClose, onSelectMethod }) => (
           <div className={styles.buttonDesc}>Sign documents quickly using your pre-uploaded signature data for a seamless and efficient signing process</div>
         </div>
         <div className={styles.button} onClick={() => onSelectMethod('imageUpload')}>
-        <div className={styles.buttonTitle}>Upload Image Signature</div>
+          <div className={styles.buttonTitle}>Upload Image Signature</div>
           <div className={styles.buttonDesc}>Select and upload an image of your signature from your device to sign documents easily and securely.</div>
         </div>
       </div>
@@ -99,22 +107,30 @@ const SignatureMethodPopup = ({ onClose, onSelectMethod }) => (
   </div>
 );
 
-const SuccessPopup = ({ message, onSave, onContinue, isVerification}) => (
+const SuccessPopup = ({ message, onSave, onContinue, isVerification }) => (
   <div className={styles.successPopup}>
     {isVerification ? (
-      <h2 className={`${styles.successTitle} ${styles.successVerificationTitle}`}>Verification Successfull!</h2>
+      <h2 className={`${styles.successTitle} ${styles.successVerificationTitle}`}>Verification Successful!</h2>
     ) : (
-    <h2 className={styles.successTitle}>Signature complete!</h2>
+      <h2 className={styles.successTitle}>Signature complete!</h2>
     )}
     <p className={styles.successMessage}>{message}</p>
     {!isVerification ? (
       <p className={styles.successName}>Placeholder</p>
     ) : (
       <p></p>
-    )} 
+    )}
     <div className={styles.successButtons}>
-      <button className={styles.confirmButton} onClick={onSave}>Save as</button>
-      <button className={styles.confirmButton} onClick={onContinue}>Continue</button>
+      <button className={`${styles.confirmButton} ${styles.btn}`} onClick={onSave}>Save as</button>
+      <button className={`${styles.confirmButton} ${styles.continue}`} onClick={onContinue}>Continue</button>
+    </div>
+  </div>
+);
+
+const AnimatedStatus = ({ message, type }) => (
+  <div className={`${styles.animatedStatus} ${styles[type]} ${styles.visible}`}>
+    <div className={styles.statusContent}>
+      Status: <span className={styles.tex}>{message}</span>
     </div>
   </div>
 );
@@ -141,6 +157,11 @@ export function PdfRenderer() {
   const [showSignatureMethodPopup, setShowSignatureMethodPopup] = useState(false);
   const [selectedSignatureImage, setSelectedSignatureImage] = useState(null);
   const [isVerification, setIsVerification] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [isVerificationFailed, setIsVerificationFailed] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [isStatusVisible, setIsStatusVisible] = useState(false);
+  const [statusType, setStatusType] = useState('checking');
   const overlayCanvasRefs = useRef([]);
   const pdfCanvasRefs = useRef([]);
   const pdfContainerRef = useRef(null);
@@ -176,23 +197,48 @@ export function PdfRenderer() {
         const signedPdfBuffer = new Uint8Array(Buffer.from(data.data, 'base64'));
         setPdfFile(new Blob([signedPdfBuffer], { type: 'application/pdf' }));
         setPdfBuff(signedPdfBuffer);
+        setStatusMessage('Signature Complete');
+        setStatusType('success');
+        setIsStatusVisible(true);
+        setTimeout(() => {
+          setIsStatusVisible(false);
+        }, 3000);
+        setIsSelectionEnabled(false);
         setSuccessMessage(`Your document has been signed`);
         setShowSuccessPopup(true);
-        setIsSelectionEnabled(false);
         setIsLoading(false);
         clearAllSelections();
       } else if (data.action === 'verified') {
         setIsLoading(false);
         if (data.verified) {
-          setSuccessMessage('Document verification successful!');
-          setIsVerification(true);
-          setShowSuccessPopup(true);
+          setStatusMessage('Verification Successful');
+          setStatusType('success');
+          setIsVerified(true);
+          setIsVerificationFailed(false);
         } else {
-          alert('Document verification failed.');
+          setStatusMessage('Verification Failed');
+          setStatusType('error');
+          setIsVerified(false);
+          setIsVerificationFailed(true);
         }
+        setIsStatusVisible(true);
+        setTimeout(() => {
+          setIsStatusVisible(false);
+          if (data.verified) {
+            setSuccessMessage('Document verification successful!');
+            setIsVerification(true);
+            setShowSuccessPopup(false);
+          }
+        }, 3000);
       } else if (data.action === 'error') {
         console.error('Server error:', data.message);
-        alert(`Error: ${data.message}`);
+        setStatusMessage('Error');
+        setStatusType('error');
+        setIsStatusVisible(true);
+        setTimeout(() => {
+          setIsStatusVisible(false);
+          alert(`Error: ${data.message}`);
+        }, 3000);
         setIsLoading(false);
       }
     };
@@ -335,6 +381,9 @@ export function PdfRenderer() {
 
   const sendSignRequest = () => {
     setIsLoading(true);
+    setStatusMessage('Signing ...');
+    setStatusType('checking');
+    setIsStatusVisible(true);
     sendWebSocketMessage({
       action: 'sign',
       data: {
@@ -354,11 +403,15 @@ export function PdfRenderer() {
       alert('Please upload a PDF first');
       return;
     }
+    setStatusMessage('Preparing to sign ...');
+    setStatusType('checking');
+    setIsStatusVisible(true);
     setShowSignatureMethodPopup(true);
   }, [pdfBuff]);
 
   const handleCloseSignaturePopup = () => {
     setShowSignaturePopup(false);
+    setIsStatusVisible(false);
   };
 
   const handleConfirmation = (signature) => {
@@ -400,7 +453,9 @@ export function PdfRenderer() {
       alert('Please upload a PDF first');
       return;
     }
-    setIsLoading(true);
+    setStatusMessage('Checking ...');
+    setStatusType('checking');
+    setIsStatusVisible(true);
     sendWebSocketMessage({
       action: 'verify',
       data: {
@@ -420,9 +475,7 @@ export function PdfRenderer() {
 
   const onDocumentLoadSuccess = useCallback(({ numPages }) => {
     setNumPages(numPages);
-    // TODO: to be done prompted once, using extension api
-    // const path = promptHsmPath();
-    // if (!path) return;
+    setIsVerified(false);
     setPageNumber(1);
   }, []);
 
@@ -507,11 +560,11 @@ export function PdfRenderer() {
 
   const DropZone = ({ onFileInput, isDragging }) => {
     const fileInputRef = useRef(null);
-  
+
     const handleLogoClick = () => {
       fileInputRef.current.click();
     };
-  
+
     return (
       <div className={styles.dropZoneContainer}>
         <div
@@ -521,9 +574,9 @@ export function PdfRenderer() {
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
         >
-          <img 
-            src="/path/to/your/pdf-logo.png" 
-            alt="PDF Logo" 
+          <img
+            src="../assets/pdfLogo.png"
+            alt="PDF Logo"
             className={styles.pdfLogo}
             onClick={handleLogoClick}
           />
@@ -540,10 +593,10 @@ export function PdfRenderer() {
             style={{ display: 'none' }}
           />
           <p className={styles.legalText}>
-              By clicking on add file, you agree to Ping's <br />
-              <a href="#" style={{ color: '#2BB563', textDecoration:'none' }}> Privacy policy </a>
-              &
-              <a href="#" style={{ color: '#2BB563', textDecoration:'none' }}> Terms of use</a>
+            By clicking on add file, you agree to Ping's <br />
+            <a href="#" style={{ color: '#2BB563', textDecoration: 'none' }}> Privacy policy </a>
+            &
+            <a href="#" style={{ color: '#2BB563', textDecoration: 'none' }}> Terms of use</a>
           </p>
         </div>
       </div>
@@ -554,18 +607,24 @@ export function PdfRenderer() {
     <div className={styles.app}>
       <header className={styles.header}>
         <div className={styles.navBar}>
-          <img 
-            src="/path/to/your/pdf-logo.png" 
-            alt="PDF Logo" 
+          <img
+            src="../assets/pdfMain.png"
+            alt="PDF Logo"
             className={styles.logo}
             onClick={handleLogoClick}
           />
           <div className={styles.pdfFileName}>{pdfFileName}</div>
           {pdfFile && !isSelectionEnabled ? (
             <div className={styles.headerControls}>
-              <button className={styles.headerButton} onClick={handleSignButtonClick}>Add signature</button>
-              <div className={styles.headerControlsBar}></div>
-              <button className={styles.headerButton} onClick={handleVerifyButtonClick}>Verify document</button>
+              {isStatusVisible ? (
+                <AnimatedStatus message={statusMessage} type={statusType} />
+              ) : (
+                <div className={`${styles.fadeAway} ${isStatusVisible ? styles.fadeAnimation : ""}`}>
+                  <button className={styles.headerButton} onClick={handleSignButtonClick}>Add signature</button>
+                  <div className={styles.headerControlsBar}></div>
+                  <button className={`${styles.headerButton} ${isVerified ? styles.verified : ""} ${isVerificationFailed ? styles.notVerified : ""}`} onClick={handleVerifyButtonClick}>Verify document</button>
+                </div>
+              )}
               <div className={styles.headerControlsBar}></div>
               <div className={styles.pageChangingControls}>
                 <div className={styles.previousPage} onClick={handlePreviousPage}>&lt;</div>
@@ -670,7 +729,7 @@ export function PdfRenderer() {
           message={successMessage}
           onSave={handleSaveAs}
           onContinue={handleContinue}
-          isVerification
+          isVerification={isVerification}
         />
       )}
       {isLoading && (
