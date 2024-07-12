@@ -10,7 +10,7 @@
 #include "brave/app/brave_command_line_helper.cc"
 #include "brave/app/brave_main_delegate.cc"
 #include "brave/components/brave_sync/buildflags.h"
-#include "brave/components/variations/buildflags.h"
+#include "brave/components/variations/command_line_utils.h"
 #include "build/build_config.h"
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/sync/base/command_line_switches.h"
@@ -78,16 +78,8 @@ std::optional<int> ChromeMainDelegate::BasicStartupComplete() {
 
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
-  // Brave variations
-  command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                 BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
-  // Insecure fall-back for variations is set to the same (secure) URL. This is
-  // done so that if VariationsService tries to fall back to insecure url the
-  // check for kHttpScheme in VariationsService::MaybeRetryOverHTTP would
-  // prevent it from doing so as we don't want to use an insecure fall-back.
-  command_line.AppendSwitchASCII(
-      variations::switches::kVariationsInsecureServerURL,
-      BUILDFLAG(BRAVE_VARIATIONS_SERVER_URL));
+  variations::AppendBraveCommandLineOptions(
+      *base::CommandLine::ForCurrentProcess());
 
   // Runtime-enabled features. To override Chromium features default state
   // please see: brave/chromium_src/base/feature_override.h

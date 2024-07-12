@@ -118,6 +118,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/variations:buildflags",
     "//chrome/browser",
     "//chrome/browser/companion/core",
     "//chrome/browser/enterprise/connectors/analysis:features",

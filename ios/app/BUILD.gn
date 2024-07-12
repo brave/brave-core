@@ -35,7 +35,7 @@ source_set("app") {
     "//brave/components/p3a:buildflags",
     "//brave/components/skus/browser",
     "//brave/components/update_client:buildflags",
-    "//brave/components/variations:constants",
+    "//brave/components/variations",
     "//brave/ios/app/resources",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
