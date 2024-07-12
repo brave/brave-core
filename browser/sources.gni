@@ -443,7 +443,7 @@ if (is_win && is_official_build) {
 brave_chrome_browser_public_deps = [
   "//brave/browser:browser_process",
   "//brave/components/brave_sync:constants",
-  "//brave/components/variations:constants",
+  "//brave/components/variations",
 ]
 
 if (is_mac) {
