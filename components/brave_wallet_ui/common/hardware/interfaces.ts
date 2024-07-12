@@ -6,9 +6,9 @@
 import {
   BraveWallet,
   FilecoinNetwork,
+  HardwareVendor,
   SerializableTransactionInfo
 } from '../../constants/types'
-import { HardwareVendor } from '../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,

@@ -14,9 +14,7 @@ import {
   FilGetAccountCommand,
   FilGetAccountResponse,
   FilSignTransactionCommand,
-  FilSignTransactionResponse
-} from './fil-ledger-messages'
-import {
+  FilSignTransactionResponse,
   LedgerBridgeErrorCodes,
   LedgerCommand,
   UnlockResponse

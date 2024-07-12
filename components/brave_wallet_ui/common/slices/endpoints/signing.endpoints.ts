@@ -4,10 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { BraveWallet } from '../../../constants/types'
+import {
+  BraveWallet,
+  HardwareVendor,
+  HardwareWalletResponseCodeType
+} from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
-import { HardwareVendor } from '../../api/hardware_keyrings'
-import { HardwareWalletResponseCodeType } from '../../hardware/types'
 
 // actions
 import { PanelActions } from '../../../panel/actions'

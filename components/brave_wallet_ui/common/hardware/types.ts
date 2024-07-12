@@ -5,12 +5,14 @@
 import {
   BraveWallet,
   FilecoinNetwork,
+  HardwareVendor,
   HardwareWalletResponseCodeType
 } from '../../constants/types'
-import { LedgerError } from './ledgerjs/ledger-messages'
-import { EthereumSignedTx } from './ledgerjs/eth-ledger-messages'
-import { FilSignedLotusMessage } from './ledgerjs/fil-ledger-messages'
-import { HardwareVendor } from '../api/hardware_keyrings'
+import {
+  EthereumSignedTx,
+  FilSignedLotusMessage,
+  LedgerError
+} from './ledgerjs/ledger-messages'
 
 export interface SignHardwareTransactionType {
   success: boolean

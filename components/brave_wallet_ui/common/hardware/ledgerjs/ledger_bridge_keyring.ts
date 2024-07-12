@@ -4,9 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet, HardwareVendor } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
-import { HardwareVendor } from '../../api/hardware_keyrings'
 import { HardwareOperationResult } from '../types'
 import {
   LEDGER_BRIDGE_URL,

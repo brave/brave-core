@@ -7,11 +7,10 @@ import * as React from 'react'
 import { Redirect, useHistory, useParams } from 'react-router'
 
 // utils
-import { WalletRoutes } from '../../../../constants/types'
+import { HardwareVendor, WalletRoutes } from '../../../../constants/types'
 import {
   CreateAccountOptions //
 } from '../../../../options/create-account-options'
-import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
 
 // components
 import {

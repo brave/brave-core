@@ -5,15 +5,16 @@
 
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Sol from '@ledgerhq/hw-app-solana'
-import { LedgerCommand, UnlockResponse } from './ledger-messages'
 import {
+  LedgerCommand,
+  UnlockResponse,
   SolGetAccountCommand,
   SolGetAccountResponse,
   SolGetAccountResponsePayload,
   SolSignTransactionCommand,
   SolSignTransactionResponsePayload,
   SolSignTransactionResponse
-} from './sol-ledger-messages'
+} from './ledger-messages'
 import { LedgerUntrustedMessagingTransport } from './ledger-untrusted-transport'
 
 /** makes calls to the Solana app on a Ledger device */

@@ -20,6 +20,10 @@ export type NftDropdownOptionId = 'collected' | 'hidden'
 
 export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
+export type HardwareVendor =
+  | typeof BraveWallet.TREZOR_HARDWARE_VENDOR
+  | typeof BraveWallet.LEDGER_HARDWARE_VENDOR
+
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
