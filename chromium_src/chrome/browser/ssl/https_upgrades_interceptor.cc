@@ -59,12 +59,9 @@
 
 #define IsLocalhost(URL) IsLocalhostOrOnion(URL)
 
-#define url_is_typed_with_http_scheme() return_false()
-
 #include "src/chrome/browser/ssl/https_upgrades_interceptor.cc"
 
 #undef MaybeCreateLoader
 #undef MaybeCreateLoaderForResponse
 #undef IsEnabled
 #undef IsLocalhost
-#undef url_is_typed_with_http_scheme
