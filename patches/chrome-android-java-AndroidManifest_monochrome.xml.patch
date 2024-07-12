@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/AndroidManifest_monochrome.xml b/chrome/android/java/AndroidManifest_monochrome.xml
+index f168f66b901ca39e63cbc617da766c52557510f9..2187dcea226d1cb4ff54fed97184f249fd1eddd2 100644
+--- a/chrome/android/java/AndroidManifest_monochrome.xml
++++ b/chrome/android/java/AndroidManifest_monochrome.xml
+@@ -17,7 +17,7 @@
+ 
+ {% block extra_application_attributes %}
+ {{ super() }}
+-android:multiArch="true"
++android:multiArch="false"
+ android:extractNativeLibs="false"
+ {% if force_32_bit is defined and force_32_bit == 'true' %}
+ android:use32bitAbi="true"
