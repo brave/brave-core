@@ -29,8 +29,8 @@ function SellPanel () {
   return (
     <S.Box>
       <S.PanelContent>
+        <S.MainLogo />
         <S.PanelHeader role='banner'>
-          <S.MainLogo />
           <S.ProductTitle>{getLocale('braveVpn')}</S.ProductTitle>
           <S.PoweredBy>
             <span>{getLocale('braveVpnPoweredBy')}</span>

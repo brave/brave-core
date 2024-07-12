@@ -8,6 +8,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import '@brave/leo/tokens/css/variables.css'
 
 import '$web-components/app.global.scss'
 import { loadTimeData } from '../../../common/loadTimeData'
