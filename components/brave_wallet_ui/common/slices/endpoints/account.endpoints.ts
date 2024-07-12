@@ -9,19 +9,17 @@ import {
   BraveWallet,
   FilecoinNetwork
 } from '../../../constants/types'
-import { NETWORK_TAG_IDS } from './network.endpoints'
 
 // types
-import { WalletApiEndpointBuilderParams } from '../api-base.slice'
+import {
+  ACCOUNT_TAG_IDS,
+  NETWORK_TAG_IDS,
+  WalletApiEndpointBuilderParams
+} from '../api-base.slice'
 import { AccountInfoEntityState } from '../entities/account-info.entity'
 
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
-
-export const ACCOUNT_TAG_IDS = {
-  REGISTRY: 'REGISTRY',
-  SELECTED: 'SELECTED'
-} as const
 
 export const accountEndpoints = ({
   mutation,
