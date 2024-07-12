@@ -6,8 +6,6 @@
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 
 #include <string>
-#include "base/android/jni_android.h"
-#include "base/android/jni_string.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/time/time.h"
@@ -25,6 +23,8 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "brave/build/android/jni_headers/DayZeroHelper_jni.h"
 #endif  // #BUILDFLAG(IS_ANDROID)
 
