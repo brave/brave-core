@@ -70,7 +70,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   BrowserList::AddObserver(this);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-  MaybeSetBrowserIsActive();
+  MaybeNotifyBrowserDidBecomeActive();
 
   OnVisibilityChanged(web_contents->GetVisibility());
 }
@@ -106,36 +106,6 @@ bool AdsTabHelper::UserHasOptedInToNotificationAds() const {
 
 bool AdsTabHelper::IsVisible() const {
   return is_web_contents_visible_ && is_browser_active_.value_or(false);
-}
-
-void AdsTabHelper::MaybeSetBrowserIsActive() {
-  if (is_browser_active_ && *is_browser_active_) {
-    // Already active.
-    return;
-  }
-
-  is_browser_active_ = true;
-
-  MaybeNotifyBrowserDidBecomeActive();
-
-  // Maybe notify of tab change after the browser's active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
-  MaybeNotifyTabDidChange();
-}
-
-void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
-  if (is_browser_active_ && !*is_browser_active_) {
-    // Already inactive.
-    return;
-  }
-
-  is_browser_active_ = false;
-
-  MaybeNotifyBrowserDidResignActive();
-
-  // Maybe notify of tab change after the browser's active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
-  MaybeNotifyTabDidChange();
 }
 
 bool AdsTabHelper::IsNewNavigation(
@@ -191,15 +161,37 @@ void AdsTabHelper::ResetNavigationState() {
 }
 
 void AdsTabHelper::MaybeNotifyBrowserDidBecomeActive() {
+  if (is_browser_active_ && *is_browser_active_) {
+    // Already active.
+    return;
+  }
+
+  is_browser_active_ = true;
+
   if (ads_service_) {
     ads_service_->NotifyBrowserDidBecomeActive();
   }
+
+  // Maybe notify of tab change after the browser's active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
+  MaybeNotifyTabDidChange();
 }
 
 void AdsTabHelper::MaybeNotifyBrowserDidResignActive() {
+  if (is_browser_active_ && !*is_browser_active_) {
+    // Already inactive.
+    return;
+  }
+
+  is_browser_active_ = false;
+
   if (ads_service_) {
     ads_service_->NotifyBrowserDidResignActive();
   }
+
+  // Maybe notify of tab change after the browser's active state changes because
+  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
+  MaybeNotifyTabDidChange();
 }
 
 void AdsTabHelper::MaybeNotifyUserGestureEventTriggered(
@@ -249,11 +241,16 @@ bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents
   // are still loading, or an error page was displayed.
-  return ads_service_ && !was_restored_ && is_new_navigation_ &&
-         !redirect_chain_.empty() && !is_error_page_;
+  return !was_restored_ && is_new_navigation_ && !redirect_chain_.empty() &&
+         !is_error_page_;
 }
 
 void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
+  if (!ads_service_) {
+    // No-op if the ads service is unavailable.
+    return;
+  }
+
   if (!ShouldNotifyTabContentDidChange()) {
     return;
   }
@@ -278,7 +275,7 @@ void AdsTabHelper::MaybeNotifyTabHtmlContentDidChange() {
 
 void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
     const std::vector<GURL>& redirect_chain,
-    base::Value value) {
+    base::Value value) const {
   if (ads_service_ && value.is_string()) {
     ads_service_->NotifyTabHtmlContentDidChange(/*tab_id=*/session_id_.id(),
                                                 redirect_chain,
@@ -287,6 +284,11 @@ void AdsTabHelper::OnMaybeNotifyTabHtmlContentDidChange(
 }
 
 void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
+  if (!ads_service_) {
+    // No-op if the ads service is unavailable.
+    return;
+  }
+
   if (!ShouldNotifyTabContentDidChange()) {
     return;
   }
@@ -304,7 +306,7 @@ void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
 
 void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
     const std::vector<GURL>& redirect_chain,
-    base::Value value) {
+    base::Value value) const {
   if (ads_service_ && value.is_string()) {
     ads_service_->NotifyTabTextContentDidChange(/*tab_id=*/session_id_.id(),
                                                 redirect_chain,
@@ -441,11 +443,11 @@ void AdsTabHelper::WebContentsDestroyed() {
 // BrowserListObserver.
 
 void AdsTabHelper::OnBrowserSetLastActive(Browser* /*browser*/) {
-  MaybeSetBrowserIsActive();
+  MaybeNotifyBrowserDidBecomeActive();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* /*browser*/) {
-  MaybeSetBrowserIsNoLongerActive();
+  MaybeNotifyBrowserDidResignActive();
 }
 #endif
 

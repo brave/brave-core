@@ -55,9 +55,6 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   bool IsVisible() const;
 
-  void MaybeSetBrowserIsActive();
-  void MaybeSetBrowserIsNoLongerActive();
-
   // Returns 'false' if the navigation was a back/forward navigation or a
   // reload, otherwise 'true'.
   bool IsNewNavigation(content::NavigationHandle* navigation_handle);
@@ -82,11 +79,11 @@ class AdsTabHelper : public content::WebContentsObserver,
   void MaybeNotifyTabHtmlContentDidChange();
   void OnMaybeNotifyTabHtmlContentDidChange(
       const std::vector<GURL>& redirect_chain,
-      base::Value value);
+      base::Value value) const;
   void MaybeNotifyTabTextContentDidChange();
   void OnMaybeNotifyTabTextContentDidChange(
       const std::vector<GURL>& redirect_chain,
-      base::Value value);
+      base::Value value) const;
 
   bool IsPlayingMedia(const std::string& media_player_uuid);
   void MaybeNotifyTabDidStartPlayingMedia();
