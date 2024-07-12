@@ -273,6 +273,11 @@ class RewardsServiceImpl final : public RewardsService,
                              const std::string& query,
                              ConnectExternalWalletCallback) override;
 
+  void ConnectExternalWallet(
+      const std::string& provider,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback callback) override;
+
   void SetAutoContributeEnabled(bool enabled) override;
 
   void GetAllContributions(GetAllContributionsCallback callback) override;

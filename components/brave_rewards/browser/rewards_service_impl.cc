@@ -2161,24 +2161,10 @@ void RewardsServiceImpl::ConnectExternalWallet(
     const std::string& path,
     const std::string& query,
     ConnectExternalWalletCallback callback) {
-  auto inner_callback = base::BindOnce(
-      [](base::WeakPtr<RewardsServiceImpl> self,
-         ConnectExternalWalletCallback callback,
-         mojom::ConnectExternalWalletResult result) {
-        std::move(callback).Run(result);
-        self->RecordBackendP3AStats();
-      },
-      AsWeakPtr(), std::move(callback));
-
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(inner_callback),
-                         mojom::ConnectExternalWalletResult::kUnexpected);
-  }
-
   const auto path_items = base::SplitString(path, "/", base::TRIM_WHITESPACE,
                                             base::SPLIT_WANT_NONEMPTY);
   if (path_items.empty()) {
-    return DeferCallback(FROM_HERE, std::move(inner_callback),
+    return DeferCallback(FROM_HERE, std::move(callback),
                          mojom::ConnectExternalWalletResult::kUnexpected);
   }
 
@@ -2191,8 +2177,28 @@ void RewardsServiceImpl::ConnectExternalWallet(
         it.GetUnescapedValue();
   }
 
-  engine_->ConnectExternalWallet(wallet_type, query_parameters,
-                                 std::move(inner_callback));
+  ConnectExternalWallet(wallet_type, query_parameters, std::move(callback));
+}
+
+void RewardsServiceImpl::ConnectExternalWallet(
+    const std::string& provider,
+    const base::flat_map<std::string, std::string>& args,
+    ConnectExternalWalletCallback callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback),
+                         mojom::ConnectExternalWalletResult::kUnexpected);
+  }
+
+  auto inner_callback = base::BindOnce(
+      [](base::WeakPtr<RewardsServiceImpl> self,
+         ConnectExternalWalletCallback callback,
+         mojom::ConnectExternalWalletResult result) {
+        std::move(callback).Run(result);
+        self->RecordBackendP3AStats();
+      },
+      AsWeakPtr(), std::move(callback));
+
+  engine_->ConnectExternalWallet(provider, args, std::move(inner_callback));
 }
 
 void RewardsServiceImpl::ShowNotification(const std::string& type,

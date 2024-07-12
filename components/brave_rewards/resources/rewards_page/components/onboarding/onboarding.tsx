@@ -96,7 +96,7 @@ export function Onboarding(props: Props) {
 
   return (
     <div className='onboarding' {...style}>
-      <div className='logo' />
+      <div className='brave-rewards-logo' />
       <div className='bat-image'>
         <img alt='BAT' src={batCoinImage} />
       </div>

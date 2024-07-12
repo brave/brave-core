@@ -550,4 +550,140 @@
     It looks like this creator isn't set up to receive contributions via Web3 wallets yet.
   </message>
 
+  <!-- Connect UI -->
+  <message name="IDS_REWARDS_CONNECT_CUSTODIAL_TITLE" desc="">
+    Custodial accounts (requires ID verification)
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CUSTODIAL_TOOLTIP" desc="">
+    Custodial accounts are accounts with trusted third-party services that hold your BAT for you.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TITLE" desc="">
+    Self-custody
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TOOLTIP" desc="">
+    Self-custody gives you exclusive control over your BAT, along with complete responsibility for its security.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_NOTE" desc="">
+    With self-custody, BAT earnings will be paid out as SPL-BAT on the Solana network.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_TITLE" desc="">
+    Choose where you'd like to receive BAT
+  </message>
+  <message name="IDS_REWARDS_CONNECT_REGIONS_LEARN_MORE_TEXT" desc="">
+    Learn more about regions and support.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDER_NOT_AVAILABLE" desc="">
+    Currently not available in your region
+  </message>
+  <message name="IDS_REWARDS_CONNECT_TEXT" desc="">
+    To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SOLANA_BUTTON_LABEL" desc="">
+    Brave Wallet
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SOLANA_MESSAGE" desc="">
+    Or other wallet that supports Solana
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TERMS" desc="">
+    <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">$2</ph> and <ph name="PP_LINK_BEGIN">$3</ph>Privacy Policy<ph name="PP_LINK_END">$4</ph>.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_ERROR" desc="">
+    Something went wrong. Please try again
+  </message>
+  <message name="IDS_REWARDS_CONNECT_LOGIN_TEXT" desc="">
+    Log in or sign up
+  </message>
+  <message name="IDS_REWARDS_NEW_BADGE_TEXT" desc="">
+    NEW
+  </message>
+
+  <!-- Authorization modal -->
+  <message name="IDS_REWARDS_AUTHORIZE_ERROR_TITLE" desc="">
+    Error
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TEXT" desc="">
+    You've reached the maximum device limit for this <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TITLE" desc="">
+    Device limit reached
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_1" desc="">
+    Unfortunately, your Brave Rewards profile was flagged because our automated checks found some unexpected Brave Ads activity.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_2" desc="">
+    While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_3" desc="">
+    It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_4" desc="">
+    <ph name="BEGIN_LINK">$2</ph>Learn more about Brave's process for flagging Rewards profiles.<ph name="END_LINK">$3</ph>
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TITLE" desc="">
+    Brave Rewards profile is flagged
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_KYC_REQUIRED_TEXT" desc="">
+    Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_KYC_REQUIRED_TITLE" desc="">
+    You need a verified account to log in
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_COUNTRIES_TEXT" desc="">
+    Hmm, it looks like your Brave Rewards country does not match the country of the <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account you're trying to connect.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_COUNTRIES_TITLE" desc="">
+    Country mismatch
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">
+    Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">
+    Different account
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_1" desc="">
+    It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_2" desc="">
+    You can view <ph name="BEGIN_LINK">$2</ph>service status here<ph name="END_LINK">$3</ph>.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TITLE" desc="">
+    Connecting to selected custodian temporarily unavailable
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_1" desc="">
+    Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_2" desc="">
+    See the <ph name="LINK_BEGIN">$2</ph>current list of supported regions and learn more<ph name="END_LINK">$3</ph> about connecting a custodial account to Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TITLE" desc="">
+    Region currently not supported
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">
+    BAT is not yet supported in your region on Uphold.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
+    Error: BAT unavailable
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">
+    According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">
+    Limited Uphold account functionality
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TEXT" desc="">
+    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">$3</ph> for more help.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TITLE" desc="">
+    Request could not be validated
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TITLE" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TEXT" desc="">
+    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$2</ph>contact support<ph name="LINK_END">$3</ph> if the problem persists.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROCESSING_TEXT" desc="">
+    Your request is still being processed, please wait.
+  </message>
+
 </grit-part>

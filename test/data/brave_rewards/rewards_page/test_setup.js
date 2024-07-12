@@ -14,13 +14,12 @@ self.testing = (() => {
 
       function check() {
         const result = fn()
-        if (result != null) {
+        if (result) {
           resolve(result)
           return
         }
         setTimeout(check, interval)
         interval *= 2
-
         if (Date.now() - start > warnAfter) {
           console.warn(`Still waiting for ${name}`)
         }
@@ -49,27 +48,6 @@ self.testing = (() => {
     return elem
   }
 
-  let requestHandlers = []
-
-  function handleRequest(url, method) {
-    let urlObject = new URL(url)
-    for (let handler of requestHandlers) {
-      let result = handler(urlObject, method)
-      if (result) {
-        if (typeof result[1] === 'object') {
-          result[1] = JSON.stringify(result[1])
-        }
-        return result
-      }
-    }
-    console.warn(`Request <${method} ${url}> not handled`)
-    return [404, ""]
-  }
-
-  function addRequestHandler(handler) {
-    requestHandlers.push(handler)
-  }
-
   let tests = []
 
   async function runTests() {
@@ -86,11 +64,9 @@ self.testing = (() => {
 
   return {
     // Test Runner API
-    handleRequest,
     runTests,
 
     // Test API
-    addRequestHandler,
     addTest,
     waitFor,
     waitForElement,

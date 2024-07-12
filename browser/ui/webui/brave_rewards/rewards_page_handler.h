@@ -51,12 +51,23 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
+  void GetRewardsParameters(GetRewardsParametersCallback callback) override;
   void GetAvailableCountries(GetAvailableCountriesCallback callback) override;
   void GetRewardsPaymentId(GetRewardsPaymentIdCallback callback) override;
+  void GetCountryCode(GetCountryCodeCallback callback) override;
   void GetExternalWallet(GetExternalWalletCallback callback) override;
+  void GetExternalWalletProviders(
+      GetExternalWalletProvidersCallback callback) override;
   void GetAdsStatement(GetAdsStatementCallback callback) override;
   void EnableRewards(const std::string& country_code,
                      EnableRewardsCallback callback) override;
+  void BeginExternalWalletLogin(
+      const std::string& provider,
+      BeginExternalWalletLoginCallback callback) override;
+  void ConnectExternalWallet(
+      const std::string& provider,
+      const base::flat_map<std::string, std::string>& args,
+      ConnectExternalWalletCallback callback) override;
   void ResetRewards(ResetRewardsCallback callback) override;
 
  private:
