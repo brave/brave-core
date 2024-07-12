@@ -79,7 +79,7 @@ export const NavButton: React.FC<Props> = ({
         {isExternalLink && <LaunchIcon />}
       </Row>
     )
-  }, [buttonType, text, isExternalLink])
+  }, [isExternalLink, buttonType, isV2, text])
 
   // render
   return url ? (
