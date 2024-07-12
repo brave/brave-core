@@ -161,9 +161,17 @@ struct LiFiBridgeData {
   mojom::CoinType destination_coin;
 };
 
-std::string TransformLiFiAddress(const std::string& address) {
+std::string TransformContractAddress(const std::string& address) {
   if (address == kLiFiNativeEVMAssetContractAddress || address.empty()) {
     return kNativeEVMAssetContractAddress;
+  }
+
+  return address;
+}
+
+std::string TransformEoaAddress(const std::string& address) {
+  if (address == kLiFiNativeEVMAssetContractAddress) {
+    return "";
   }
 
   return address;
@@ -199,8 +207,9 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
     auto& swap_data = swap_data_list.front().GetList();
     return LiFiSwapData{
         .from_amount = swap_data[4].GetString(),
-        .sending_asset_id = TransformLiFiAddress(swap_data[2].GetString()),
-        .receiving_asset_id = TransformLiFiAddress(swap_data[3].GetString()),
+        .sending_asset_id = TransformContractAddress(swap_data[2].GetString()),
+        .receiving_asset_id =
+            TransformContractAddress(swap_data[3].GetString()),
     };
   } else if (swap_data_list.size() >= 2) {
     // Multi-hop swap.
@@ -213,9 +222,9 @@ std::optional<LiFiSwapData> LiFiSwapDataDecode(
     return LiFiSwapData{
         .from_amount = swap_data_front[4].GetString(),
         .sending_asset_id =
-            TransformLiFiAddress(swap_data_front[2].GetString()),
+            TransformContractAddress(swap_data_front[2].GetString()),
         .receiving_asset_id =
-            TransformLiFiAddress(swap_data_back[3].GetString()),
+            TransformContractAddress(swap_data_back[3].GetString()),
     };
   }
 
@@ -264,8 +273,8 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   return LiFiBridgeData{
       .bridge = data[1].GetString(),
       .integrator = data[2].GetString(),
-      .sending_asset_id = TransformLiFiAddress(data[4].GetString()),
-      .receiver = data[5].GetString(),
+      .sending_asset_id = TransformContractAddress(data[4].GetString()),
+      .receiver = TransformEoaAddress(data[5].GetString()),
       .min_amount = data[6].GetString(),
       .destination_chain_id = destination_chain_id,
       .destination_coin = destination_chain_id == mojom::kSolanaMainnet
@@ -413,12 +422,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto to_asset = decoded_path->back();
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id and to_chain_id are filled by caller.
     swap_info->from_asset = kNativeEVMAssetContractAddress;
     swap_info->from_amount = "";  // asset is ETH, amount is txn value
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = to_asset;
     swap_info->to_amount = decoded_calldata.value()[1].GetString();
-    swap_info->receiver = decoded_calldata.value()[2].GetString();
+    swap_info->receiver =
+        TransformEoaAddress(decoded_calldata.value()[2].GetString());
     swap_info->provider = "zeroex";
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
@@ -469,12 +481,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     auto to_asset = decoded_path->back();
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_asset = from_asset;
     swap_info->from_amount = decoded_calldata.value()[1].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = to_asset;
     swap_info->to_amount = decoded_calldata.value()[2].GetString();
-    swap_info->receiver = decoded_calldata.value()[3].GetString();
+    swap_info->receiver =
+        TransformEoaAddress(decoded_calldata.value()[3].GetString());
     swap_info->provider = "zeroex";
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
@@ -517,9 +532,11 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_asset = from_asset.GetString();
     swap_info->from_amount = decoded_calldata.value()[1].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = to_asset.GetString();
     swap_info->to_amount = decoded_calldata.value()[2].GetString();
     swap_info->receiver = "";  // unknown receiver
@@ -557,9 +574,11 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_asset = decoded_calldata.value()[0].GetString();
     swap_info->from_amount = decoded_calldata.value()[2].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = decoded_calldata.value()[1].GetString();
     swap_info->to_amount = decoded_calldata.value()[3].GetString();
     swap_info->receiver = "";  // unknown receiver
@@ -675,8 +694,10 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       swap_info->to_asset = decoded_calldata.value()[0].GetString();
     }
 
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_amount = decoded_calldata.value()[3].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_amount = decoded_calldata.value()[2].GetString();
     swap_info->receiver = "";  // unknown receiver
     swap_info->provider = "zeroex";
@@ -724,12 +745,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_asset = kNativeEVMAssetContractAddress;
     swap_info->from_amount = decoded_calldata.value()[2].GetString();
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = decoded_calldata.value()[0].GetString();
     swap_info->to_amount = decoded_calldata.value()[3].GetString();
-    swap_info->receiver = decoded_calldata.value()[1].GetString();
+    swap_info->receiver =
+        TransformEoaAddress(decoded_calldata.value()[1].GetString());
     swap_info->provider = "cowswap";
 
     return std::make_tuple(mojom::TransactionType::ETHSwap,
@@ -776,7 +800,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     CHECK_EQ(6u, decoded.value().size());
 
     auto min_amount_out = decoded.value()[4].GetString();
-    auto receiver = decoded.value()[3].GetString();
+    auto receiver = TransformEoaAddress(decoded.value()[3].GetString());
 
     // The swapData field is an array of tuples, each representing a swap fill
     // operation.
@@ -786,9 +810,11 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_asset = swap_data->sending_asset_id;
     swap_info->from_amount = swap_data->from_amount;
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = swap_data->receiving_asset_id;
     swap_info->to_amount = min_amount_out;
     swap_info->receiver = receiver;
@@ -839,7 +865,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     CHECK_EQ(6u, decoded.value().size());
 
     auto min_amount_out = decoded.value()[4].GetString();
-    auto receiver = decoded.value()[3].GetString();
+    auto receiver = TransformEoaAddress(decoded.value()[3].GetString());
 
     auto swap_data_list = base::Value::List();
     swap_data_list.Append(std::move(decoded.value()[5]));
@@ -849,9 +875,11 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin, from_chain_id, to_coin, and to_chain_id are filled by caller.
+    // from_chain_id and to_chain_id are filled by caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
     swap_info->from_asset = swap_data->sending_asset_id;
     swap_info->from_amount = swap_data->from_amount;
+    swap_info->to_coin = mojom::CoinType::ETH;
     swap_info->to_asset = swap_data->receiving_asset_id;
     swap_info->to_amount = min_amount_out;
     swap_info->receiver = receiver;
@@ -926,7 +954,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin and from_chain_id are filled in by the caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id is filled in by the caller.
     swap_info->from_asset = swap_data->sending_asset_id;
     swap_info->from_amount = swap_data->from_amount;
     swap_info->to_coin = bridge_data->destination_coin;
@@ -989,7 +1018,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     }
 
     auto swap_info = mojom::SwapInfo::New();
-    // from_coin and from_chain_id are filled in by the caller.
+    swap_info->from_coin = mojom::CoinType::ETH;
+    // from_chain_id is filled in by the caller.
     swap_info->from_asset = bridge_data->sending_asset_id;
     swap_info->from_amount = bridge_data->min_amount;
     swap_info->to_coin = bridge_data->destination_coin;

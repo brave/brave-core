@@ -139,11 +139,9 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
 
   if (swap_info) {
     swap_info->from_chain_id = chain_id_;
-    swap_info->from_coin = GetCoinType();
 
     if (swap_info->to_chain_id.empty()) {
       swap_info->to_chain_id = chain_id_;
-      swap_info->to_coin = GetCoinType();
     }
 
     if (swap_info->from_amount.empty() &&
