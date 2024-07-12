@@ -62,11 +62,6 @@
         "chrome/browser/bookmarks/android/bookmark_bridge.cc": [
             "BraveBookmarkBridge",
         ],
-        "chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc": [
-            "CHROME_BROWSER_WEB_APPLICATIONS_COMMANDS_CLEAR_BROWSING_DATA_COMMAND_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_PROVIDER_H_",
-            "CHROME_BROWSER_WEB_APPLICATIONS_WEB_APP_UTILS_H_",
-        ],
         "chrome/browser/chrome_content_browser_client.cc": [
             "CHROME_BROWSER_WEB_APPLICATIONS_POLICY_WEB_APP_POLICY_MANAGER_H_",
             "CHROME_BROWSER_WEB_APPLICATIONS_SYSTEM_WEB_APPS_SYSTEM_WEB_APP_MANAGER_H_",
