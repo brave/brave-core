@@ -2,18 +2,15 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet, FilecoinNetwork } from '../../constants/types'
+import {
+  BraveWallet,
+  FilecoinNetwork,
+  HardwareWalletResponseCodeType
+} from '../../constants/types'
 import { LedgerError } from './ledgerjs/ledger-messages'
 import { EthereumSignedTx } from './ledgerjs/eth-ledger-messages'
 import { FilSignedLotusMessage } from './ledgerjs/fil-ledger-messages'
 import { HardwareVendor } from '../api/hardware_keyrings'
-
-export type HardwareWalletResponseCodeType =
-  | 'deviceNotConnected'
-  | 'deviceBusy'
-  | 'openLedgerApp'
-  | 'transactionRejected'
-  | 'unauthorized'
 
 export interface SignHardwareTransactionType {
   success: boolean

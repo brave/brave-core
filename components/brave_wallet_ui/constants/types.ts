@@ -7,7 +7,6 @@ import { EntityId } from '@reduxjs/toolkit'
 
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import {
   ExternalWallet,
   ExternalWalletProvider
@@ -25,6 +24,13 @@ export { TimeDelta }
 export type RefreshOpts = {
   skipBalancesRefresh?: boolean
 }
+
+export type HardwareWalletResponseCodeType =
+  | 'deviceNotConnected'
+  | 'deviceBusy'
+  | 'openLedgerApp'
+  | 'transactionRejected'
+  | 'unauthorized'
 
 /**
  * SpotPriceRegistry represents a mapping of a unique ID for a token to its

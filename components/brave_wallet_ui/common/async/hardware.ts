@@ -6,7 +6,6 @@
 import {
   SignHardwareTransactionType,
   SignHardwareOperationResult,
-  HardwareWalletResponseCodeType,
   LedgerDerivationPaths,
   SolDerivationPaths,
   TrezorDerivationPaths,
@@ -29,7 +28,11 @@ import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { BraveWallet, SerializableTransactionInfo } from '../../constants/types'
+import {
+  BraveWallet,
+  HardwareWalletResponseCodeType,
+  SerializableTransactionInfo
+} from '../../constants/types'
 import {
   LedgerEthereumKeyring,
   LedgerFilecoinKeyring,
