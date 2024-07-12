@@ -861,3 +861,7 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout
 
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
+
+-keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    *** ensureHubCoordinatorIsInitialized(...);
+}
