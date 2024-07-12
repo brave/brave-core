@@ -143,8 +143,8 @@ class TransactionParserTests: XCTestCase {
           fromFiat: "$0.123",
           fromTokenMetadata: nil,
           gasFee: .init(
-            fee: "0.000031",
-            fiat: "$0.000031"
+            fee: "0.0000314986",
+            fiat: "$0.0000315"
           )
         )
       )
@@ -248,8 +248,8 @@ class TransactionParserTests: XCTestCase {
           fromFiat: "$0.864",
           fromTokenMetadata: nil,
           gasFee: .init(
-            fee: "0.000078",
-            fiat: "$0.000078"
+            fee: "0.0000776726",
+            fiat: "$0.0000777"
           )
         )
       )
@@ -271,7 +271,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse erc20Transfer transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testEthSwapTransaction() {
@@ -343,7 +343,7 @@ class TransactionParserTests: XCTestCase {
           minBuyAmount: "6.660592362643797387",
           minBuyAmountFiat: "$13.32",
           gasFee: .init(
-            fee: "0.000466",
+            fee: "0.0004663515",
             fiat: "$0.000466"
           )
         )
@@ -366,7 +366,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse ethSwap transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testEthSwapTransactionUSDCToDAI() {
@@ -438,7 +438,7 @@ class TransactionParserTests: XCTestCase {
           minBuyAmount: "0.125259433834718286",
           minBuyAmountFiat: "$0.251",
           gasFee: .init(
-            fee: "0.000466",
+            fee: "0.0004663515",
             fiat: "$0.000466"
           )
         )
@@ -461,7 +461,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse ethSwap transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testErc20ApproveTransaction() {
@@ -527,8 +527,8 @@ class TransactionParserTests: XCTestCase {
           isUnlimited: false,
           spenderAddress: "",
           gasFee: .init(
-            fee: "0.000061",
-            fiat: "$0.000061"
+            fee: "0.0000695985",
+            fiat: "$0.0000696"
           )
         )
       )
@@ -550,7 +550,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse erc20Approve transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testErc20ApproveTransactionUnlimited() {
@@ -617,8 +617,8 @@ class TransactionParserTests: XCTestCase {
           isUnlimited: true,
           spenderAddress: "",
           gasFee: .init(
-            fee: "0.000061",
-            fiat: "$0.000061"
+            fee: "0.0000695985",
+            fiat: "$0.0000696"
           )
         )
       )
@@ -640,7 +640,7 @@ class TransactionParserTests: XCTestCase {
       XCTFail("Failed to parse erc20Approve transaction")
       return
     }
-    XCTAssertEqual(expectedParsedTransaction, parsedTransaction)
+    XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
   func testErc721TransferFromTransaction() {
@@ -709,8 +709,8 @@ class TransactionParserTests: XCTestCase {
           owner: "0x1111111111aaaaaaaaaa2222222222bbbbbbbbbb",
           tokenId: "token.id",
           gasFee: .init(
-            fee: "0.000031",
-            fiat: "$0.000031"
+            fee: "0.0000314986",
+            fiat: "$0.0000315"
           )
         )
       )
