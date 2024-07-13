@@ -53,22 +53,38 @@ private let KVOs: [KVOConstants] = [
   ._sampledPageTopColor,
 ]
 
-@available(iOS 18.0, *)
 struct TranslationContainer: View {
-  var configuration: TranslationSession.Configuration?
   var scriptHandler: BraveTranslateScriptHandler
 
   var body: some View {
+    #if compiler(>=6.0)
     Color.clear
       .onAppear {
         print("translation container is visible")
       }
-      .translationTask(
-        configuration,
-        action: { session in
-          scriptHandler.activateScript(using: session)
+      .osAvailabilityModifiers({ view in
+        if #available(iOS 18.0, *) {
+          view.translationTask(
+            .init(source: "de"),
+            action: { session in
+              scriptHandler.activateScript(using: session)
+            }
+          )
+        } else {
+          view.task {
+            scriptHandler.activateScript()
+          }
         }
-      )
+      })
+    #else
+    Color.clear
+      .onAppear {
+        print("translation container is visible")
+      }
+      .task {
+        scriptHandler.activateScript()
+      }
+    #endif
   }
 }
 
@@ -2696,13 +2712,9 @@ extension BrowserViewController: TabDelegate {
       tab.requestBlockingContentHelper,
     ]
 
-    #if compiler(>=6.0)
-    if #available(iOS 18.0, *) {
-      injectedScripts.append(
-        BraveTranslateScriptHandler(tab: tab)
-      )
-    }
-    #endif
+    injectedScripts.append(
+      BraveTranslateScriptHandler(tab: tab)
+    )
 
     #if canImport(BraveTalk)
     injectedScripts.append(
