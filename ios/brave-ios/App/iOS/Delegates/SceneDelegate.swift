@@ -504,7 +504,7 @@ extension SceneDelegate {
 
   private func switchToTabForIntentURL(_ scene: UIWindowScene, intentURL: String?) {
     if let browserViewController = scene.browserViewController {
-      guard let siteURL = intentURL, let url = URL(string: siteURL) else {
+      guard let siteURL = intentURL, let url = URL(string: siteURL), url.isWebPage() else {
         browserViewController.openBlankNewTab(
           attemptLocationFieldFocus: false,
           isPrivate: Preferences.Privacy.privateBrowsingOnly.value
