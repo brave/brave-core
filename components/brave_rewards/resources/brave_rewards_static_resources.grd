@@ -21,6 +21,7 @@
         <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/assets/favicon.ico" type="BINDATA" />
         <include name="IDR_BRAVE_REWARDS_LOGO" file="page/assets/pdfLogo.png" type="BINDATA" />
         <include name="IDR_BRAVE_REWARDS_PDFMAIN" file="page/assets/pdfMain.png" type="BINDATA" />
+        <include name="IDR_BRAVE_REWARDS_PINGWATERMARK" file="page/assets/Frame.png" type="BINDATA" />
       </if>
 
       <!-- WebUI Ping Rewards Internals resources -->

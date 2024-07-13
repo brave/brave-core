@@ -389,6 +389,11 @@
   align-items: center;
 }
 
+.dropZone img{
+  width: 130px;
+  height: 130px;
+}
+
 .dropZone.dragging {
   border-color: #2BB563;
   background-color: #7a7f8177;
@@ -402,8 +407,8 @@
 
 .pdfFileName {
   position: absolute;
-  left: 40px;
-  width: 273px;
+  left: 38px;
+  width: 250px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -732,8 +737,8 @@
 }
 
 .methodOptions .button:hover {
-  background-color: #ffffffe1;
   color: #000;
+  background-color: #ffffff86;
 }
 
 /* Image Upload Styles */
@@ -766,7 +771,6 @@
 
 
 .animatedStatus {
-  transform: translateY(-50px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -780,6 +784,7 @@
   margin-bottom: 2px;
   margin-right: 35px;
   transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(-50px);
   z-index: 1000;
 }
 
@@ -789,7 +794,7 @@
 
 .checking .tex{
   margin-left: 10px;
-  color: #4a4a4a;
+  color: #fff;
 }
 
 .success .tex{
@@ -873,11 +878,13 @@
 }
 
 .verified{
-  text-shadow:0 0 3px #00ff00, 0 1px 5px #00ff00;
+  /* text-shadow:0 0 3px #00ff00, 0 1px 5px #00ff00; */
+  color: #2BB563;
 }
 
 .notVerified{
-  text-shadow: 0 0 3px red, 0 1px 5px red;
+  /* text-shadow: 0 0 3px red, 0 1px 5px red; */
+  color: red;
 }
 
 .notVerified::after{
@@ -885,17 +892,16 @@
   position: absolute;
   content: "i";
   text-align: center;
-  font-size: 8px;
-  padding: 2px 2px 4px 5px;
-  width: 15px;
-  color: white;
-  height: 15px;
+  font-size: 6px;
+  padding: 1px 0px 3px 4px;
+  width: 12px;
+  color: #ff7e00d4;
+  height: 12px;
   border-radius: 10px;
-  border: 1px solid white;
-  right: -10px;
-  top: 11px;
+  border: 1px solid #ff5b00b3;
+  right: -8px;
+  top: 12px;
 }
-
 
 /* Existing styles... */
 
@@ -910,3 +916,134 @@
   background: #616669;
 }
 
+.signaturePreview {
+  background-color: white;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.signatureImage {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.defaultSignature {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 36px;
+  color: black;
+}
+
+.nameInput {
+  width: 93%;
+  height: 50px;
+  padding: 18px;
+  /* align-items: center; */
+  margin-left: 17px;
+  /* justify-content: center; */
+  /* display: flex; */
+  color: #9E9797;
+  font-size: 20px;
+  margin-bottom: 20px;
+  background: #5E6163;
+  border: none;
+  /* border: 1px solid #ccc; */
+  border-radius: 10px;
+}
+
+.typedSignature{
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  height: 227px;
+  width: 500px;
+  /* height: 220px; */
+  font-size: 50px;
+  font-family: "Great Vibes";
+  margin-left: 20px;
+  padding: 23px 0px 58px 118px;
+  margin-bottom: 20px;
+}
+
+.popupTypeContent{
+  border-radius: 24px;
+  padding: 20px 25px;
+  width: 595px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* max-width: 90%; */
+  font-size: 20px;
+  color: #fff;
+  height: 550px;
+  border: 1px solid #CACACA;
+  background: #323639;
+  position: relative;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.typeButtons{
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4px 22px 12px 18px;
+    align-items: center;
+}
+
+.h3{
+  font-size: 50px;
+  color: #000;
+}
+
+
+/* Tooltip.module.css */
+.tooltipWrapper {
+  position: absolute;
+  top: 54px;
+  width: fit-content;
+  padding: 20px;
+  color: #473c3c;
+  background: #4645458f;
+  display: inline-block;
+  border-radius: 15px;
+}
+
+.tooltipContent {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tooltipContent::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltipCont{
+  width: fit-content;
+  padding: 10px;
+  display: none;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notVerified:hover + .tooltipCont {
+  display: block;
+}
