@@ -1,0 +1,1049 @@
+.app {
+  padding-bottom: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #525659;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.pdfLogo {
+  width: 50px; 
+  height: 50px; 
+  cursor: pointer;
+}
+
+.logo {
+  width: 30px; 
+  height: 30px; 
+  cursor: pointer;
+}
+
+.pdfInput {
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.button {
+  padding: 10px;
+  margin-right: 10px;
+  color: #FFF;
+  border: none;
+  border-radius: 5px;
+  cursor: poPoppins;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signButton {
+  background-color: #007BFF;
+}
+
+.verifyButton {
+  background-color: #28A745;
+}
+
+.downloadButton {
+  background-color: #FFC107;
+}
+
+.verificationResult {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.pdfContainer {
+  width: 70%;
+  max-width: 70vw;
+  flex-shrink: 0;
+  height: 90vh;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropZoneContainer {
+  width: 70%;
+  max-width: 1020px;
+  flex-shrink: 0;
+  height: 70vh;
+  background-color: transparent;
+  border: 3px dashed #888787;
+  margin-top: 80px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px 20px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+
+.loadingSpinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.confirmationDialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1003;
+}
+
+.confirmationDialog h3 {
+  margin-top: 0;
+}
+
+.confirmationDialog button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: poPoppins;
+}
+
+.confirmationDialog button:first-of-type {
+  background-color: #4caf50;
+  color: white;
+}
+
+.confirmationDialog button:last-of-type {
+  background-color: #f44336;
+  color: white;
+}
+
+.pdfIcon {
+  font-size: 48px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.pdfText {
+  color: #FFF;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 20px;
+}
+
+.legalText {
+  font-size: 12px;
+  color: #999;
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+.addFileButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 42.5px;
+  background: #0E4D87;
+  color: white;
+  border: none;
+  width: 273px;
+  height: 85px;
+  color: #FFF;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 25px;
+  font-weight: 400;
+  cursor: poPoppins;
+  transition: background-color 0.3s;
+}
+
+.addFileButton:hover {
+  background-color: #2980b9;
+}
+
+.legalText {
+  color: #FFF;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 60px;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  padding: 10px 20px;
+  background-color: #323639;
+  border-bottom: 1px solid #383535;
+  z-index: 10000 !important;
+  gap: 30px;
+}
+
+.navBar {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 1350px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.headerControls {
+  width: 610px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  border-radius: 55px;
+  border: 1px solid #717171;
+  background: rgba(255, 255, 255, 0.10);
+  justify-content: center;
+  gap: 20px;
+  margin-left: 150px;
+  margin-right: 100px;
+}
+
+.headerButton {
+  background-color: transparent;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.headerControlsBar::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 18px;
+  background-color: #707375;
+  border-radius: 10px;
+  right: 2px;
+}
+
+.navBarOnVerificationSuccess{
+  background: linear-gradient(to top, #2BB563, #323639, #D9D9D9 1%);
+}
+
+.pageChangingControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.previousPage,
+.nextPage,
+.separator,
+.totalPages {
+  font-size: 13px;
+  color: white;
+  font-weight: bold;
+}
+
+.previousPage,
+.nextPage {
+  cursor: poPoppins;
+}
+
+.pageNumber {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
+
+.currentPage,
+.pageNumberInput {
+  width: 29px;
+  height: 28px;
+  flex-shrink: 0;
+  background-color: #191b1c;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.saveButton {
+  width: 142px;
+  height: 41px;
+  flex-shrink: 0;
+  border-radius: 35px;
+  background: #E6E9EB;
+  color: #000;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.helpButton {
+  position: absolute;
+  top: 22px;
+  right: 10px;
+  font-size: 18px;
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border: 2px solid white;
+  border-radius: 20px;
+}
+
+.instructionText {
+  color: #2BB563;
+  font-family: Poppins;
+  font-size: 17.121px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.pageNumberInput {
+  width: 30px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.dropZone {
+  padding: 100px;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropZone img{
+  width: 130px;
+  height: 130px;
+}
+
+.dropZone.dragging {
+  border-color: #2BB563;
+  background-color: #7a7f8177;
+  backdrop-filter: blur(200px);
+}
+
+.dragDropText {
+  margin-top: 10px;
+  color: #666;
+}
+
+.pdfFileName {
+  position: absolute;
+  left: 38px;
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  color: white;
+  padding: 5px;
+}
+
+/* signature overlY DESIGN */
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popupContent {
+  border-radius: 24px;
+  padding: 20px 25px;
+  width: 595px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* max-width: 90%; */
+  height: 390px;
+  border: 1px solid #CACACA;
+  background: #323639;
+  position: relative;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.popupContent.selected {
+  height: 656px;
+}
+
+.popupContent .h2 {
+  color: #E6E9EB;
+  font-family: Poppins;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0 10px;
+}
+
+.h2::after{
+  content: "";
+  display: block;
+  position: relative;
+  width: 566px;
+  height: 2px;
+  background: #9E9999;
+  right: 20px;
+  bottom: -12px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+}
+
+.selectedSignature {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 42px;
+  margin-bottom: 20px;
+}
+
+.selectedSignature h3 {
+  font-size: 40px;
+  margin: 0 0 5px 0;
+}
+
+.selectedSignature p {
+  font-size: 16px;
+  color: #313030b0;
+  margin: 0;
+}
+
+.encKey {
+  font-size: 14px;
+  color: #fff;
+  margin-top: 5px;
+}
+
+.browseImage {
+  color: #007aff;
+  font-size: 14px;
+  text-align: right;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.signatureList {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.signatureOption {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.signatureOption input[type="radio"] {
+  margin-right: 5px;
+  width: 17px;
+  height: 17px;
+}
+
+.signatureName{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.issueName {
+  color: #E6E9EB;
+  font-family: Poppins;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.issueDate {
+  color: #E6E9EB;
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 20px 12px 20px;
+  align-items: center;
+}
+
+.addButton {
+  display: flex;
+  background: none;
+  align-items: baseline;
+  border: 2px solid white;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 15px 35px;
+  border-radius: 50px;
+}
+
+.confirmButton {
+  display: flex;
+  padding: 15px 35px;
+  align-items: baseline;
+  gap: 10px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.confirmButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.confirmButton:hover{
+  background-color: #2BB563;
+  color: white;
+}
+
+.documentContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: calc(100vh - 60px);
+  direction: ltr;
+}
+
+.documentContainer > * {
+  direction: rtl; 
+}
+
+.pdfContainer {
+  display: flex;
+  overflow-x: hidden;
+}
+
+/*success popup*/
+
+.successPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2c2c2c;
+  border-radius: 24px;
+  padding: 20px 45px;
+  width: 595px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* max-width: 90%; */
+  height: 350px;
+  border: 1px solid #CACACA;
+  background: #323639;
+  transition: height 0.3s ease;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.successTitle {
+  color: #2BB563;
+  font-family: Poppins;
+  font-size: 45px;
+  margin: 0px;
+  padding: 0px;
+  font-style: normal;
+  margin-top: 12px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.successVerificationTitle{
+  font-size: 40px;
+}
+
+.successMessage {
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -5px;
+}
+
+.successName{
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 25px;
+  font-style: normal;
+  margin: 0px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  margin-top: -10px;
+  line-height: normal;
+}
+
+.successButtons {
+  display: flex;
+  margin-top: 62px;
+  justify-content: center;
+  gap: 28px;
+  margin-left: 208px;
+}
+
+.btn{
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: white;
+}
+
+.continue:hover{
+  color: white;
+  background-color: #2BB563;
+}
+
+.methodOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.methodOptions .button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 19px 63px;
+  background-color: #464A4C;
+  border: none;
+  border-radius: 97px;
+  /* gap: 20px; */
+  height: 98px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttonTitle{
+  font-size: 20px;
+  color: #fff;
+}
+
+.buttonDesc{
+  font-size: 12px;
+  color: #fff; 
+  opacity: 0.5;
+}
+
+.methodOptions .button:hover {
+  color: #000;
+  background-color: #ffffff86;
+}
+
+/* Image Upload Styles */
+.imageUploadContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.imageUploadButton {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.imageUploadButton:hover {
+  background-color: #45a049;
+}
+
+.uploadedImage {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+
+.animatedStatus {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: white;
+  margin-left: 50px;
+  margin-top: 2px;
+  font-weight: 400;
+  margin-bottom: 2px;
+  margin-right: 35px;
+  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(-50px);
+  z-index: 1000;
+}
+
+.visible{
+  transform: translateY(0px);
+}
+
+.checking .tex{
+  margin-left: 10px;
+  color: #fff;
+}
+
+.success .tex{
+  margin-left: 10px;
+  color: #2bb563;
+}
+
+.error .tex{
+  margin-left: 10px;
+  color: #ff4d4f;
+}
+
+.statusContent {
+  display: flex;
+  align-items: center;
+}
+
+.statusIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+/* .checking .statusIcon {
+  background-color: #ffffff;
+}
+
+.success .statusIcon {
+  background-color: #ffffff;
+  animation: none;
+}
+
+.error .statusIcon {
+  background-color: #ffffff;
+  animation: none;
+} */
+
+.pageControls {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.pageControl {
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.pageNumber, .totalPages {
+  margin: 0 5px;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.fadeAway{
+  opacity: 1;
+  transform: translateY(0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fadeAnimation{
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.verified{
+  /* text-shadow:0 0 3px #00ff00, 0 1px 5px #00ff00; */
+  color: #2BB563;
+}
+
+.notVerified{
+  /* text-shadow: 0 0 3px red, 0 1px 5px red; */
+  color: red;
+}
+
+.notVerified::after{
+  display: flex;
+  position: absolute;
+  content: "i";
+  text-align: center;
+  font-size: 6px;
+  padding: 1px 0px 3px 4px;
+  width: 12px;
+  color: #ff7e00d4;
+  height: 12px;
+  border-radius: 10px;
+  border: 1px solid #ff5b00b3;
+  right: -8px;
+  top: 12px;
+}
+
+/* Existing styles... */
+
+.tooltipContainer{
+  width: 332px;
+  height: 106px;
+  flex-shrink: 0;
+  padding: 10px 22px 33px 22px;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  background: #616669;
+}
+
+.signaturePreview {
+  background-color: white;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.signatureImage {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.defaultSignature {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 36px;
+  color: black;
+}
+
+.nameInput {
+  width: 93%;
+  height: 50px;
+  padding: 18px;
+  /* align-items: center; */
+  margin-left: 17px;
+  /* justify-content: center; */
+  /* display: flex; */
+  color: #9E9797;
+  font-size: 20px;
+  margin-bottom: 20px;
+  background: #5E6163;
+  border: none;
+  /* border: 1px solid #ccc; */
+  border-radius: 10px;
+}
+
+.typedSignature{
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  height: 227px;
+  width: 500px;
+  /* height: 220px; */
+  font-size: 50px;
+  font-family: "Great Vibes";
+  margin-left: 20px;
+  padding: 23px 0px 58px 118px;
+  margin-bottom: 20px;
+}
+
+.popupTypeContent{
+  border-radius: 24px;
+  padding: 20px 25px;
+  width: 595px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* max-width: 90%; */
+  font-size: 20px;
+  color: #fff;
+  height: 550px;
+  border: 1px solid #CACACA;
+  background: #323639;
+  position: relative;
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.typeButtons{
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 4px 22px 12px 18px;
+    align-items: center;
+}
+
+.h3{
+  font-size: 50px;
+  color: #000;
+}
+
+
+/* Tooltip.module.css */
+.tooltipWrapper {
+  position: absolute;
+  top: 54px;
+  width: fit-content;
+  padding: 20px;
+  color: #473c3c;
+  background: #4645458f;
+  display: inline-block;
+  border-radius: 15px;
+}
+
+.tooltipContent {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.tooltipContent::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.tooltipCont{
+  width: fit-content;
+  padding: 10px;
+  display: none;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notVerified:hover + .tooltipCont {
+  display: block;
+}
