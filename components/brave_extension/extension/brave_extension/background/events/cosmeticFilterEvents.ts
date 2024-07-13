@@ -2,13 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-
 import { getLocale } from '../api/localeAPI'
 import { addSiteCosmeticFilter } from '../api/cosmeticFilterAPI'
-import { SigningService, signDocument } from '../docSigner'
-
-// Create an instance of SigningService
-const signingService = new SigningService();
+import { signDocument } from '../docSigner'
 
 export let rule = {
   host: '',
@@ -18,6 +14,7 @@ export let rule = {
 export const applyCosmeticFilter = (host: string, selector: string) => {
   if (selector) {
     const s: string = selector.trim()
+
     if (s.length > 0) {
       chrome.tabs.insertCSS({
         code: `${s} {display: none !important;}`,
@@ -28,6 +25,7 @@ export const applyCosmeticFilter = (host: string, selector: string) => {
             chrome.runtime.lastError.message)
         }
       })
+
       addSiteCosmeticFilter(host, s)
     }
   }
@@ -39,7 +37,6 @@ chrome.contextMenus.create({
   id: 'brave',
   contexts: ['all']
 })
-
 chrome.contextMenus.create({
   title: getLocale('elementPickerMode'),
   id: 'elementPickerMode',
@@ -47,9 +44,14 @@ chrome.contextMenus.create({
   contexts: ['all'],
   enabled: !chrome.extension.inIncognitoContext
 })
-
+// chrome.contextMenus.create({
+//   title: getLocale('manageCustomFilters'),
+//   id: 'manageCustomFilters',
+//   parentId: 'brave',
+//   contexts: ['all']
+// })
 chrome.contextMenus.create({
-  title: 'sign document using certificate',
+  title: 'Sign PDF',
   id: 'documentSigner',
   parentId: 'brave',
   contexts: ['all']
@@ -73,17 +75,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
       break
     }
-    case 'signDocument': {
-      // Handle document signing request
-      signDocument();
-      handleDocumentSigning(msg.documentHash)
-      break
-    }
   }
 })
 
 export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
   switch (info.menuItemId) {
+    // case 'manageCustomFilters':
+    //   openFilterManagementPage()
+    //   break
     case 'elementPickerMode': {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
         if (tabs.length > 0) {
@@ -93,17 +92,10 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       break
     }
     case 'documentSigner':
-      chrome.tabs.sendMessage(tab.id!, { type: 'initiateDocumentSigning' })
+      signDocument();
       break
     default: {
       console.warn(`[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}`)
     }
   }
-}
-
-function handleDocumentSigning(documentHash: string) {
-  signingService.sendMessage({
-    action: 'getCertAndSign',
-    data: { mdhash: documentHash }
-  });
 }
