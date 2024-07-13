@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_FARBLING_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_FARBLING_SERVICE_H_
 
+#include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 
 class GURL;
@@ -18,10 +19,10 @@ namespace brave {
 
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
 
-class BraveFarblingService {
+class BraveFarblingService : public KeyedService {
  public:
   BraveFarblingService();
-  ~BraveFarblingService();
+  ~BraveFarblingService() override;
 
   uint64_t session_token(bool is_off_the_record);
   void set_session_tokens_for_testing(uint64_t session_token,
