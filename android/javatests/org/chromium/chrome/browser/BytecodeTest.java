@@ -100,10 +100,15 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.toolbar.ToolbarTabController;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.desktop_windowing.DesktopWindowStateProvider;
@@ -111,6 +116,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -1160,6 +1166,34 @@ public class BytecodeTest {
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
+                        OneshotSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
+                        "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
+                        ToolbarControlContainer.class,
+                        ToolbarLayout.class,
+                        ToolbarDataProvider.class,
+                        ToolbarTabController.class,
+                        UserEducationHelper.class,
+                        List.class,
+                        OneshotSupplier.class,
+                        ThemeColorProvider.class,
+                        MenuButtonCoordinator.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        Supplier.class,
+                        HistoryDelegate.class,
+                        BooleanSupplier.class,
+                        OfflineDownloader.class,
+                        boolean.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class,
+                        BrowserStateBrowserControlsVisibilityDelegate.class,
+                        FullscreenManager.class,
+                        TabObscuringHandler.class,
+                        DesktopWindowStateProvider.class,
                         OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
