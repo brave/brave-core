@@ -96,6 +96,7 @@ class TabManager: NSObject {
   private let syncedTabsQueue = DispatchQueue(label: "synced-tabs-queue")
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
+  private let historyAPI: BraveHistoryAPI?
   public let privateBrowsingManager: PrivateBrowsingManager
   private var forgetTasks: [TabType: [String: Task<Void, Error>]] = [:]
 
@@ -118,6 +119,7 @@ class TabManager: NSObject {
     prefs: Prefs,
     rewards: BraveRewards?,
     tabGeneratorAPI: BraveTabGeneratorAPI?,
+    historyAPI: BraveHistoryAPI?,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
@@ -127,6 +129,7 @@ class TabManager: NSObject {
     self.navDelegate = TabManagerNavDelegate()
     self.rewards = rewards
     self.tabGeneratorAPI = tabGeneratorAPI
+    self.historyAPI = historyAPI
     self.privateBrowsingManager = privateBrowsingManager
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
@@ -864,12 +867,30 @@ class TabManager: NSObject {
 
   @MainActor private func forgetData(for url: URL, in tab: Tab) async {
     guard let etldP1 = url.baseDomain else { return }
+
     // Start a task to delete all data for this etldP1
     // The task may be delayed in case we want to cancel it
     let dataStore = tab.webView?.configuration.websiteDataStore
     await dataStore?.deleteDataRecords(
       forDomain: etldP1
     )
+
+    // Delete the history for forgotten websites
+    if let historyAPI = self.historyAPI {
+      let nodes = await historyAPI.search(
+        withQuery: etldP1,
+        options: HistorySearchOptions(
+          maxCount: 0,
+          hostOnly: false,
+          duplicateHandling: .keepAll,
+          begin: nil,
+          end: nil
+        )
+      ).filter { node in
+        node.url.baseDomain == etldP1
+      }
+      historyAPI.removeHistory(for: nodes)
+    }
 
     ContentBlockerManager.log.debug("Cleared website data for `\(etldP1)`")
     forgetTasks[tab.type]?.removeValue(forKey: etldP1)

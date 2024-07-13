@@ -186,13 +186,9 @@ struct HistoryView: View {
   }
 
   func delete(_ offsets: IndexSet, in section: HistorySection) {
-    for index in offsets {
-      guard let nodes = model.items[section] else {
-        continue
-      }
-
-      model.delete(item: nodes[index], searchQuery: searchText)
-    }
+    guard let nodes = model.items[section] else { return }
+    let nodesToDelete = offsets.map({ nodes[$0] })
+    model.delete(nodes: nodesToDelete)
   }
 }
 
