@@ -60,8 +60,7 @@ import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinato
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ActionModeController;
 import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
-// TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
-// import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
+import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
 import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
@@ -457,10 +456,10 @@ public class BraveToolbarManager extends ToolbarManager {
         boolean isMenuFromBottom =
                 mIsBottomToolbarVisible && BottomToolbarConfiguration.isBottomToolbarEnabled();
         BraveMenuButtonCoordinator.setMenuFromBottom(isMenuFromBottom);
-        // TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
-        // if (mToolbar instanceof BraveTopToolbarCoordinator) {
-        //     ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
-        // }
+
+        if (mToolbar instanceof BraveTopToolbarCoordinator) {
+            ((BraveTopToolbarCoordinator) mToolbar).onBottomToolbarVisibilityChanged(visible);
+        }
         if (mBottomControlsCoordinatorSupplier.get() instanceof BraveBottomControlsCoordinator) {
             ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
                     .setBottomToolbarVisible(visible);
@@ -474,15 +473,10 @@ public class BraveToolbarManager extends ToolbarManager {
         setBottomToolbarVisible(isBottomToolbarVisible);
     }
 
-    // TODO(alexeybarabash): WIP Upstream's cleanup legacy tab switcher code in toolbar
-    // isToolbarPhone method was removed along with BraveTopToolbarCoordinator class
-    // private boolean isToolbarPhone() {
-    //     assert (mToolbar instanceof BraveTopToolbarCoordinator);
-    //     return mToolbar instanceof BraveTopToolbarCoordinator
-    //             && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
-    // }
     private boolean isToolbarPhone() {
-        return true;
+        assert (mToolbar instanceof BraveTopToolbarCoordinator);
+        return mToolbar instanceof BraveTopToolbarCoordinator
+                && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
     }
 
     @Override

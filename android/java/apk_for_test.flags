@@ -158,6 +158,10 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.download.MimeUtils {
     *** canAutoOpenMimeType(...);
 }
