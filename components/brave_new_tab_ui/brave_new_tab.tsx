@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
@@ -28,7 +28,7 @@ function initialize () {
   // Get rendering going
   new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
   .then((themeType: chrome.braveTheme.ThemeType) => {
-    render(
+    createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <BraveCoreThemeProvider
           initialThemeType={themeType}
@@ -37,9 +37,7 @@ function initialize () {
         >
           <App />
         </BraveCoreThemeProvider>
-      </Provider>,
-      document.getElementById('root'),
-      () => console.timeStamp('first react render'))
+      </Provider>)
   })
   .catch((error) => {
     console.error('Problem mounting brave new tab', error)
