@@ -23,7 +23,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveFarblingService;
 }  // namespace brave
 
 namespace brave_component_updater {
@@ -145,7 +144,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
-  brave::BraveFarblingService* brave_farbling_service() override;
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
 
  private:
@@ -220,7 +218,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       brave_vpn_connection_manager_;
 #endif
 
-  std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::ProcessMiscMetrics> process_misc_metrics_;
   std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
 

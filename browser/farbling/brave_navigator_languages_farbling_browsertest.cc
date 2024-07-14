@@ -11,7 +11,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "brave/components/brave_shields/content/browser/brave_farbling_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -73,7 +73,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    g_brave_browser_process->brave_farbling_service()
+    BraveFarblingServiceFactory::GetForProfile(browser()->profile())
         ->set_session_tokens_for_testing(kTestingSessionToken,
                                          kTestingSessionToken);
 
