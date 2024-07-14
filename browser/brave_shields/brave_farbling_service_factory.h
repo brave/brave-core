@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_SERVICE_FACTORY_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_FARBLING_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_FARBLING_SERVICE_FACTORY_H_
 
 #include <memory>
 
@@ -40,4 +40,4 @@ class BraveFarblingServiceFactory : public BrowserContextKeyedServiceFactory {
 };
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_BRAVE_SHIELDS_BRAVE_FARBLING_SERVICE_FACTORY_H_

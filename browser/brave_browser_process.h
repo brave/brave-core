@@ -21,7 +21,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveFarblingService;
 class URLSanitizerComponentInstaller;
 }  // namespace brave
 
