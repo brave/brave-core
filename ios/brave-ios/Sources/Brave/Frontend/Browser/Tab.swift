@@ -116,16 +116,19 @@ class Tab: NSObject {
 
   private(set) var lastKnownSecureContentState: TabSecureContentState = .unknown
   func updateSecureContentState() async {
-    guard let securityStyle = await webView?.visibleSSLStatus?.securityStyle else {
+    guard let sslStatus = await webView?.visibleSSLStatus else {
       lastKnownSecureContentState = .unknown
       return
     }
-    lastKnownSecureContentState = switch securityStyle {
+    lastKnownSecureContentState = switch sslStatus.securityStyle {
     case .unknown: .unknown
     case .authenticated: .secure
-    case .authenticationBroken: .mixedContent
+    case .authenticationBroken: .missingSSL // FIXME: Not sure what status to use for this
     case .unauthenticated: .missingSSL
     @unknown default: .unknown
+    }
+    if lastKnownSecureContentState == .secure && !sslStatus.hasOnlySecureContent {
+      lastKnownSecureContentState = .mixedContent
     }
   }
 
