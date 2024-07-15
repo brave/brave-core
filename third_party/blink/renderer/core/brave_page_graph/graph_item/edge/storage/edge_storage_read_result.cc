@@ -5,7 +5,8 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_read_result.h"
 
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_script.h"
+#include "base/check.h"
+#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/actor/node_actor.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/node/storage/node_storage.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graphml.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_stream.h"
@@ -14,12 +15,14 @@ namespace brave_page_graph {
 
 EdgeStorageReadResult::EdgeStorageReadResult(GraphItemContext* context,
                                              NodeStorage* out_node,
-                                             NodeScript* in_node,
+                                             NodeActor* in_node,
                                              const FrameId& frame_id,
                                              const String& key,
                                              const blink::PageGraphValue& value)
     : EdgeStorage(context, out_node, in_node, frame_id, key),
-      value_(blink::PageGraphValueToString(value)) {}
+      value_(blink::PageGraphValueToString(value)) {
+  CHECK(!in_node->IsNodeParser());
+}
 
 EdgeStorageReadResult::~EdgeStorageReadResult() = default;
 

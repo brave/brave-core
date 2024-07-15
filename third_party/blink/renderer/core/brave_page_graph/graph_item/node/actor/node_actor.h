@@ -20,6 +20,9 @@ class NodeActor : public GraphNode {
 
   virtual bool IsNodeParser() const;
   virtual bool IsNodeScript() const;
+  virtual bool IsNodeScriptLocal() const;
+  virtual bool IsNodeScriptRemote() const;
+  virtual bool IsNodeUnknown() const;
 };
 
 }  // namespace brave_page_graph

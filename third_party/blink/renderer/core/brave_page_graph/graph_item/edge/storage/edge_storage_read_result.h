@@ -15,14 +15,14 @@
 
 namespace brave_page_graph {
 
-class NodeScript;
+class NodeActor;
 class NodeStorage;
 
 class EdgeStorageReadResult final : public EdgeStorage {
  public:
   EdgeStorageReadResult(GraphItemContext* context,
                         NodeStorage* out_node,
-                        NodeScript* in_node,
+                        NodeActor* in_node,
                         const FrameId& frame_id,
                         const String& key,
                         const blink::PageGraphValue& value);

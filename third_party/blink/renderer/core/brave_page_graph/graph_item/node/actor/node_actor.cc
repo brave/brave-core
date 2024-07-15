@@ -23,4 +23,16 @@ bool NodeActor::IsNodeScript() const {
   return false;
 }
 
+bool NodeActor::IsNodeScriptLocal() const {
+  return false;
+}
+
+bool NodeActor::IsNodeScriptRemote() const {
+  return false;
+}
+
+bool NodeActor::IsNodeUnknown() const {
+  return false;
+}
+
 }  // namespace brave_page_graph
