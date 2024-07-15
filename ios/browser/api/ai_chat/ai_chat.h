@@ -57,6 +57,8 @@ OBJC_EXPORT
 
 - (void)clearConversationHistory;
 
+- (nullable AiChatConversationTurn*)clearErrorAndGetFailedMessage;
+
 - (void)getPremiumStatus:(void (^_Nullable)(AiChatPremiumStatus))completion;
 
 - (void)submitSelectedText:(NSString*)selectedText
