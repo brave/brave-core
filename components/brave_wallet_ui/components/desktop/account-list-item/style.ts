@@ -19,11 +19,19 @@ export const StyledWrapper = styled.div<{
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  padding-right: 8px;
-  border-radius: 12px;
-  border: 1px solid ${leo.color.divider.subtle};
-  margin-bottom: 8px;
+  padding-right: 14px;
+  border-bottom: 1px solid ${leo.color.divider.subtle};
   transition: background-color 300ms ease-out;
+  &:first-child {
+    border-radius: ${leo.radius.l} ${leo.radius.l} 0px 0px;
+  }
+  &:last-child {
+    border-bottom: none;
+    border-radius: 0px 0px ${leo.radius.l} ${leo.radius.l};
+  }
+  &:only-child {
+    border-radius: ${leo.radius.l};
+  }
   &:hover {
     background-color: ${(p) =>
       p.isRewardsAccount ? 'transparent' : leo.color.page.background};
@@ -42,7 +50,7 @@ export const AccountButton = styled(WalletButton)`
   border: none;
   color: none;
   margin: 0px;
-  padding: 8px 0px 8px 8px;
+  padding: 14px 0px 14px 14px;
   &:disabled {
     cursor: default;
   }

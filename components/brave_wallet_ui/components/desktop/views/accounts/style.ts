@@ -50,3 +50,8 @@ export const EmptyStateWrapper = styled(Column)`
     padding: 16px;
   }
 `
+
+export const AccountsListWrapper = styled(Column)`
+  border-radius: ${leo.radius.l};
+  border: 1px solid ${leo.color.divider.subtle};
+`
