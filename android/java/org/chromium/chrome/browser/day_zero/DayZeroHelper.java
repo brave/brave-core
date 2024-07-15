@@ -16,14 +16,16 @@ public class DayZeroHelper {
     private static final String TAG = "DayZeroMojomHelper";
 
     @CalledByNative
-    private static void setDayZeroExptAndroid(boolean isPartOfDayZeroExpt) {
+    private static void setDayZeroExptAndroid(boolean shouldShowFeatures) {
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(BravePreferenceKeys.DAY_ZERO_EXPT_FLAG, isPartOfDayZeroExpt);
-        try {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            braveActivity.updateDayZeroChanges();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "Brave Activity is not available for day zero changes " + e);
+                .writeBoolean(BravePreferenceKeys.DAY_ZERO_EXPT_FLAG, shouldShowFeatures);
+        if (shouldShowFeatures) {
+            try {
+                BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                braveActivity.updateDayZeroChanges();
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "Brave Activity is not available for day zero changes " + e);
+            }
         }
     }
 

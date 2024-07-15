@@ -10,7 +10,9 @@
 
 #include "chrome/browser/chrome_browser_main.h"
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
 class DayZeroBrowserUIExptManager;
+#endif
 
 class BraveBrowserMainParts : public ChromeBrowserMainParts {
  public:

@@ -27,6 +27,7 @@ source_set("unit_tests") {
 }
 
 source_set("browser_tests") {
+if (is_win) {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
@@ -41,4 +42,5 @@ source_set("browser_tests") {
     "//components/prefs",
     "//content/test:test_support",
   ]
+  }
 }
