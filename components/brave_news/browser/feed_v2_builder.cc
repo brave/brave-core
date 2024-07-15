@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <optional>
+#include <sstream>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -735,16 +736,6 @@ void FeedV2Builder::BuildAllFeed(const SubscriptionsSnapshot& subscriptions,
                base::BindOnce(&GenerateAllFeed), std::move(callback));
 }
 
-void FeedV2Builder::EnsureFeedIsUpdating(
-    const SubscriptionsSnapshot& subscriptions) {
-  UpdateData(subscriptions,
-             {.signals = true,
-              .suggested_publishers = true,
-              .feed = true,
-              .topics = true},
-             base::DoNothing());
-}
-
 void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                                GetSignalsCallback callback) {
   UpdateData(subscriptions, {.signals = true},
@@ -763,14 +754,34 @@ void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-std::string FeedV2Builder::GetFeedSourceHash(
-    const SubscriptionsSnapshot& subscriptions) {
-  const auto& publishers = publishers_controller_->last_publishers();
-  auto channels = channels_controller_->GetChannelsFromPublishers(
-      publishers, subscriptions);
-  std::tie(hash_, subscribed_count_) =
-      GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
-  return hash_;
+void FeedV2Builder::GetLatestHash(
+    const SubscriptionsSnapshot& subscriptions,
+    bool refetch_data,
+    base::OnceCallback<void(const std::string& hash)> callback) {
+  UpdateData(
+      subscriptions,
+      {.signals = true,
+       .suggested_publishers = true,
+       .feed = refetch_data,
+       .topics = refetch_data},
+      base::BindOnce(
+          [](base::WeakPtr<FeedV2Builder> builder,
+             const SubscriptionsSnapshot& subscriptions,
+             base::OnceCallback<void(const std::string& hash)> callback) {
+            if (!builder) {
+              return;
+            }
+            const auto& publishers =
+                builder->publishers_controller_->last_publishers();
+            auto channels =
+                builder->channels_controller_->GetChannelsFromPublishers(
+                    publishers, subscriptions);
+            std::tie(builder->hash_, builder->subscribed_count_) =
+                GetFeedHashAndSubscribedCount(channels, publishers,
+                                              builder->feed_etags_);
+            std::move(callback).Run(builder->hash_);
+          },
+          weak_ptr_factory_.GetWeakPtr(), subscriptions, std::move(callback)));
 }
 
 void FeedV2Builder::UpdateData(const SubscriptionsSnapshot& subscriptions,

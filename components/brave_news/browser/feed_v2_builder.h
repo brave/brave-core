@@ -60,12 +60,13 @@ class FeedV2Builder {
                           BuildFeedCallback callback);
   void BuildAllFeed(const SubscriptionsSnapshot& subscriptions,
                     BuildFeedCallback callback);
-  void EnsureFeedIsUpdating(const SubscriptionsSnapshot& subscriptions);
 
   void GetSignals(const SubscriptionsSnapshot& subscriptions,
                   GetSignalsCallback callback);
 
-  std::string GetFeedSourceHash(const SubscriptionsSnapshot& subscriptions);
+  void GetLatestHash(const SubscriptionsSnapshot& subscriptions,
+                     bool refetch_data,
+                     base::OnceCallback<void(const std::string&)> callback);
 
  private:
   // FeedGenerator's will be called on a different thread. The data in

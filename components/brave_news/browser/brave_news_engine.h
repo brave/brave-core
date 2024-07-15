@@ -51,12 +51,14 @@ class BraveNewsEngine : public base::SupportsWeakPtr<BraveNewsEngine> {
                         const std::string& publisher_id,
                         m::GetPublisherFeedCallback callback);
   void EnsurePublishersIsUpdating(SubscriptionsSnapshot snapshot);
-  void EnsureFeedV2IsUpdating(SubscriptionsSnapshot snapshot);
   void GetFeedV2(SubscriptionsSnapshot snapshot, m::GetFeedV2Callback callback);
   void IsFeedV1UpdateAvailable(SubscriptionsSnapshot snapshot,
                                const std::string& displayed_hash,
                                m::IsFeedUpdateAvailableCallback callback);
-  void CheckForFeedsUpdate(SubscriptionsSnapshot snapshot, base::OnceCallback<void(std::string)> hash_callback);
+  void CheckForFeedsUpdate(
+      SubscriptionsSnapshot snapshot,
+      bool refetch_data,
+      base::OnceCallback<void(const std::string&)> callback);
   void PrefetchFeed(SubscriptionsSnapshot snapshot);
 
   void GetSignals(SubscriptionsSnapshot snapshot,

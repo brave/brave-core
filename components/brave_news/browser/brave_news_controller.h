@@ -166,7 +166,7 @@ class BraveNewsController
 
   void NotifyPublishersChanged(mojom::PublishersEventPtr event);
   void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
-  void NotifyFeedHash(std::string hash);
+  void NotifyFeedHash(const std::string& hash);
 
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
