@@ -10,12 +10,17 @@
 #include "brave/browser/ui/views/playlist/playlist_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "components/user_prefs/user_prefs.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/vector_icon_types.h"
 
 PlaylistActionIconView::PlaylistActionIconView(
     CommandUpdater* command_updater,
+    Browser* browser,
     IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
     PageActionIconView::Delegate* page_action_icon_delegate)
     : PageActionIconView(command_updater,
@@ -24,6 +29,11 @@ PlaylistActionIconView::PlaylistActionIconView(
                          page_action_icon_delegate,
                          "PlaylistActionIconView",
                          /*ephemeral=*/false) {
+  playlist_enabled_.Init(
+      playlist::kPlaylistEnabledPref,
+      user_prefs::UserPrefs::Get(browser->profile()),
+      base::BindRepeating(&PlaylistActionIconView::UpdateState,
+                          weak_ptr_factory_.GetWeakPtr()));
   SetVisible(false);
 }
 
@@ -39,6 +49,10 @@ void PlaylistActionIconView::ShowPlaylistBubble() {
 
 base::WeakPtr<PlaylistActionIconView> PlaylistActionIconView::AsWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
+}
+
+void PlaylistActionIconView::SetVisible(bool visible) {
+  PageActionIconView::SetVisible(visible && *playlist_enabled_);
 }
 
 views::BubbleDialogDelegate* PlaylistActionIconView::GetBubble() const {
