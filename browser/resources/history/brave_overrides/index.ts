@@ -4,4 +4,5 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import './app.js'
+import './history_item.js'
 import './side_bar.js'
