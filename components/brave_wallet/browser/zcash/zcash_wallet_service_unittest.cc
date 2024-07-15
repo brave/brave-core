@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
+#include "build/build_config.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -550,8 +551,15 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   testing::Mock::VerifyAndClearExpectations(&shield_funds_callback);
 }
 
+// ShieldFunds test is disabled on Windows x86 due to timeout.
+// See https://github.com/brave/brave-browser/issues/39698.
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_ShieldFunds DISABLED_ShieldFunds
+#else
+#define MAYBE_ShieldFunds ShieldFunds
+#endif
 // https://zcashblockexplorer.com/transactions/9956437828356014ae531b71f6a0337bb7980abf5e4d3d572a117a3f97db8a15/raw
-TEST_F(ZCashWalletServiceUnitTest, ShieldFunds) {
+TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
