@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
@@ -29,7 +30,11 @@ interface Props {
 }
 
 // Exported for tests.
-export function BraveWebTorrentPage ({ actions, torrentState, torrentObj }: Props) {
+export function BraveWebTorrentPage({
+  actions,
+  torrentState,
+  torrentObj
+}: Props) {
   const name = torrentObj?.name ?? torrentState?.name
   React.useEffect(() => {
     document.title = name ? `${name} - WebTorrent` : 'WebTorrent'
@@ -37,16 +42,27 @@ export function BraveWebTorrentPage ({ actions, torrentState, torrentObj }: Prop
 
   if (!torrentState) return null
 
-  if (torrentObj && typeof torrentState.ix === 'number') {
-    return <MediaViewer torrent={torrentObj} ix={torrentState.ix} />
+  if (
+    torrentObj &&
+    typeof torrentState.ix === 'number' &&
+    torrentState.infoHash
+  ) {
+    return (
+      <MediaViewer
+        torrent={torrentObj}
+        ix={torrentState.ix}
+      />
+    )
   }
 
-  return <TorrentViewer
-    actions={actions}
-    name={name}
-    torrentState={torrentState}
-    torrent={torrentObj}
-  />
+  return (
+    <TorrentViewer
+      actions={actions}
+      name={name}
+      torrentState={torrentState}
+      torrent={torrentObj}
+    />
+  )
 }
 
 export const mapStateToProps = (
@@ -63,7 +79,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
   actions: bindActionCreators(torrentActions, dispatch)
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BraveWebTorrentPage)
+export default connect(mapStateToProps, mapDispatchToProps)(BraveWebTorrentPage)

@@ -191,7 +191,7 @@
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
     "@types/react-router-dom": "^5.3.3",
-    "@types/webtorrent": "0.109.0",
+    "@types/webtorrent": "^0.109.8",
     "array-move": "^2.2.1",
     "async": "^3.2.4",
     "bignumber.js": "^9.0.2",
@@ -213,7 +213,7 @@
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4",
-    "webtorrent": "^0.114.0"
+    "webtorrent": "1.9.7"
   },
   "overrides": {
     "axios": "1.6.0",

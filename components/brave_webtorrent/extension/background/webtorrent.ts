@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as WebTorrent from 'webtorrent'
 import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
@@ -11,7 +12,7 @@ import { basename, extname } from 'path'
 import * as JSZip from 'jszip'
 
 let webTorrent: WebTorrent.Instance | undefined
-let servers: { [key: string]: any } = { }
+let servers: { [key: string]: any } = {}
 
 export const getWebTorrent = () => {
   if (!webTorrent) {
@@ -22,7 +23,10 @@ export const getWebTorrent = () => {
   return webTorrent
 }
 
-export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string) => void) => {
+export const createServer = (
+  torrent: WebTorrent.Torrent,
+  cb: (serverURL: string) => void
+) => {
   if (!torrent.infoHash) return // torrent is not ready
 
   const opts = {
@@ -53,12 +57,15 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
 }
 
 export const addTorrent = (torrentId: string | Instance) => {
-  const torrent = getWebTorrent().add(torrentId)
+  const client = getWebTorrent()
+  const torrent = client.add(torrentId)
   addTorrentEvents(torrent)
 }
 
 export const findTorrent = (infoHash: string) => {
-  return getWebTorrent().torrents.find(torrent => torrent.infoHash === infoHash)
+  return getWebTorrent().torrents.find(
+    (torrent) => torrent.infoHash === infoHash
+  )
 }
 
 const maybeDestroyWebTorrent = () => {
@@ -109,17 +116,16 @@ export const saveAllFiles = (infoHash: string) => {
       zip = zip.folder(torrent.name)
     }
 
-    zip.generateAsync({ type: 'blob' })
-      .then(
-        (blob: Blob) => downloadBlob(blob),
-        (err: Error) => console.error(err)
-      )
+    zip.generateAsync({ type: 'blob' }).then(
+      (blob: Blob) => downloadBlob(blob),
+      (err: Error) => console.error(err)
+    )
   }
 
   const addFilesToZip = () => {
     let addedFiles = 0
 
-    files.forEach(file => {
+    files.forEach((file) => {
       file.getBlob((err, blob) => {
         if (err) {
           console.error(err)

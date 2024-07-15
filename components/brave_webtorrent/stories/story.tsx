@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-
 import * as React from 'react'
 import { Meta } from '@storybook/react'
 
@@ -30,10 +29,12 @@ const sampleTorrent = {
   files: [
     {
       name: 'file1.jpg',
+      path: 'path/to/file1.jpg',
       length: 400
     },
     {
       name: 'file2.jpg',
+      path: 'path/to/file2.jpg',
       length: 500
     }
   ],
@@ -57,22 +58,30 @@ const torrentState: TorrentState = {
 
 export default {
   title: 'WebTorrent',
-  decorators: (Story) => <FullPageStory>
-    <Story />
-  </FullPageStory>
+  decorators: (Story) => (
+    <FullPageStory>
+      <Story />
+    </FullPageStory>
+  )
 } as Meta<typeof TorrentViewer>
 
 export const Page = {
-  render: () => <TorrentViewer actions={consoleLog}
-    name={'Fake Torrent with really long title'}
-    torrentState={torrentState} />
+  render: () => (
+    <TorrentViewer
+      actions={consoleLog}
+      name={'Fake Torrent with really long title'}
+      torrentState={torrentState}
+    />
+  )
 }
 
 export const PageWithTorrent = {
-  render: () => <TorrentViewer
-    actions={consoleLog}
-    torrent={sampleTorrent}
-    name={'Sample Torrent Name'}
-    torrentState={torrentState}
-  />
+  render: () => (
+    <TorrentViewer
+      actions={consoleLog}
+      torrent={sampleTorrent}
+      name={'Sample Torrent Name'}
+      torrentState={torrentState}
+    />
+  )
 }

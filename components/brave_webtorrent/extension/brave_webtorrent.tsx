@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { render } from 'react-dom'
@@ -23,8 +24,10 @@ import '$web-components/app.global.scss'
 // to brave_webtorrent2.html and have that rewrite the URL to
 // brave_webtorrent.html
 if (window.location.pathname === '/extension/brave_webtorrent2.html') {
-  window.location.href =
-    window.location.href.replace('brave_webtorrent2.html', 'brave_webtorrent.html')
+  window.location.href = window.location.href.replace(
+    'brave_webtorrent2.html',
+    'brave_webtorrent.html'
+  )
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -46,13 +49,19 @@ const unsubscribe = store.subscribe(async () => {
   unsubscribe()
 
   try {
-    const tab: any = await new Promise(resolve => chrome.tabs.getCurrent(resolve))
-    render(<Provider store={store}>
-      <GlobalStyle/>
-      <ThemeProvider theme={Theme}>
-        <App tabId={tab.id} />
-      </ThemeProvider>
-    </Provider>, document.getElementById('root'))
+    const tab: any = await new Promise((resolve) =>
+      chrome.tabs.getCurrent(resolve)
+    )
+
+    render(
+      <Provider store={store}>
+        <GlobalStyle />
+        <ThemeProvider theme={Theme}>
+          <App tabId={tab.id} />
+        </ThemeProvider>
+      </Provider>,
+      document.getElementById('root')
+    )
   } catch (err) {
     console.log('Problem mounting webtorrent', err)
   }

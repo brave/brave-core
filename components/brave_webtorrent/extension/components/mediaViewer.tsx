@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import styled from 'styled-components'
@@ -13,7 +14,12 @@ import Spinner from './spinner'
 const getSelectedFile = (torrent: TorrentObj, ix: number) => torrent.files?.[ix]
 
 const Container = styled.div`
-  video, audio, image-rendering, object, iframe, img {
+  video,
+  audio,
+  image-rendering,
+  object,
+  iframe,
+  img {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,7 +30,8 @@ const Container = styled.div`
     margin: auto;
   }
 
-  object, iframe {
+  object,
+  iframe {
     width: 100%;
     height: 100%;
   }
@@ -49,24 +56,29 @@ interface Props {
   ix: number
 }
 
-const playMedia = (element: HTMLMediaElement) => element.play().catch(err => console.error('Autoplay failed', err))
+const playMedia = (element: HTMLMediaElement) =>
+  element.play().catch((err) => console.error('Autoplay failed', err))
 const setMediaElementRef = (element: HTMLMediaElement | null) => {
   if (!element) return
   if (element.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
     playMedia(element)
     return
   }
-  element.addEventListener('loadeddata', () => playMedia(element), { once: true })
+  element.addEventListener('loadeddata', () => playMedia(element), {
+    once: true
+  })
 }
 
-export default function MediaViewer ({ torrent, ix }: Props) {
+export default function MediaViewer({ torrent, ix }: Props) {
   const file = getSelectedFile(torrent, ix)
   const fileType = getFileType(file)
   const fileURL = torrent.serverURL && torrent.serverURL + '/' + ix
   const loading = !file || !fileURL
 
   React.useEffect(() => {
-    document.body.style.backgroundColor = isMedia(fileType) ? 'rgb(0, 0, 0)' : ''
+    document.body.style.backgroundColor = isMedia(fileType)
+      ? 'rgb(0, 0, 0)'
+      : ''
 
     // Reset background color when unmounted.
     return () => {
@@ -74,16 +86,54 @@ export default function MediaViewer ({ torrent, ix }: Props) {
     }
   }, [fileType])
 
-  return <Container>
-    {loading
-      ? <LoadingContainer><Spinner/>Loading media...</LoadingContainer>
-      : <>
-        {fileType === 'video' && <video id='video' src={fileURL} ref={setMediaElementRef} controls />}
-        {fileType === 'audio' && <audio id='audio' src={fileURL} ref={setMediaElementRef} controls />}
-        {fileType === 'image' && <img id='image' src={fileURL} />}
-        {fileType === 'pdf' && <object id='object' type='application/pdf' data={fileURL}/>}
-        {fileType === 'iframe' && <iframe id='iframe' src={fileURL} sandbox='allow-same-origin' />}
-        {fileType === 'unknown' && <div>Unsupported file type</div>}
-      </>}
-  </Container>
+  return (
+    <Container>
+      {loading ? (
+        <LoadingContainer>
+          <Spinner />
+          Loading media...
+        </LoadingContainer>
+      ) : (
+        <>
+          {fileType === 'video' && (
+            <video
+              id='video'
+              src={fileURL}
+              ref={setMediaElementRef}
+              controls
+            />
+          )}
+          {fileType === 'audio' && (
+            <audio
+              id='audio'
+              src={fileURL}
+              ref={setMediaElementRef}
+              controls
+            />
+          )}
+          {fileType === 'image' && (
+            <img
+              id='image'
+              src={fileURL}
+            />
+          )}
+          {fileType === 'pdf' && (
+            <object
+              id='object'
+              type='application/pdf'
+              data={fileURL}
+            />
+          )}
+          {fileType === 'iframe' && (
+            <iframe
+              id='iframe'
+              src={fileURL}
+              sandbox='allow-same-origin'
+            />
+          )}
+          {fileType === 'unknown' && <div>Unsupported file type</div>}
+        </>
+      )}
+    </Container>
+  )
 }
