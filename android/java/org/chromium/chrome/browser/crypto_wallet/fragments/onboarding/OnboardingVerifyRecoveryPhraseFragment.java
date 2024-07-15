@@ -180,7 +180,6 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                 // only during onboarding process.
                                 mOnNextPage.incrementPages(1);
                             }
-
                         }
                     } else {
                         wordMismatch();
