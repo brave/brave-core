@@ -133,26 +133,26 @@ function installDepotTools(options = config.defaultOptions) {
       }
     }
 
-    const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg')
-    if (!fs.existsSync(ninjaLogCfgPath)) {
-      // Create a ninja config to prevent autoninja from calling "cipd
-      // auth-info" each time. See for details:
-      // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
-      const ninjaLogCfgConfig = {
-        'is-googler': false,
-        'version': 3,
-        'countdown': 10,
-        'opt-in': false
-      }
-      fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
-    }
-
     if (process.platform === 'win32' && config.isCI) {
       // Bootstrap gsutil on Windows manually to fix random LockFile issues.
       util.run(path.join(config.depotToolsDir, 'gsutil.py.bat'), [], {
         ...options,
         stdio: 'pipe'
       })
+    }
+
+    // Opt-out of chromium build telemetry. See for details:
+    // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
+    util.run('vpython3',
+             [path.join(config.depotToolsDir, 'build_telemetry.py'), 'opt-out'],
+             options)
+
+    // The old way to opt-out of chromium build telemetry.
+    // Could be removed after https://crrev.com/c/5669094 is merged.
+    const ninjalogUploaderWrapperPath =
+        path.join(config.depotToolsDir, 'ninjalog_uploader_wrapper.py')
+    if (fs.existsSync(ninjalogUploaderWrapperPath)) {
+      util.run('vpython3', [ninjalogUploaderWrapperPath, 'opt-out'], options)
     }
   })
 }
