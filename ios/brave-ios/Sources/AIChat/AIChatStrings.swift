@@ -940,5 +940,14 @@ extension Strings {
       comment:
         "The name of the AI-Assistant that's responsing to the user"
     )
+    public static let leoCodeExampleDefaultTitle = NSLocalizedString(
+      "aichat.leoCodeExampleDefaultTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Code example",
+      comment:
+        "The default title displayed above a code block when the language of the code is not known."
+    )
   }
 }

@@ -184,6 +184,22 @@ extension AttributedString {
 
     return self
   }
+
+  public func split(separator: String) -> [AttributedString] {
+    var working = self
+    var splitBySeparator: [AttributedString] = []
+    while let separatorRange = working.range(of: separator) {
+      let startIndex = working.startIndex
+      // add from starting index up to the separator
+      let string = AttributedString(working[startIndex..<separatorRange.lowerBound])
+      splitBySeparator.append(string)
+      // drop what we've added and the separator
+      working.removeSubrange(startIndex..<separatorRange.upperBound)
+    }
+    // remaining after last separator found
+    splitBySeparator.append(working)
+    return splitBySeparator
+  }
 }
 
 extension AttributedSubstring {

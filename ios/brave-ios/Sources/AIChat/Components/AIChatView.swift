@@ -401,7 +401,7 @@ public struct AIChatView: View {
       title: Strings.AIChat.responseContextMenuCopyTitle,
       icon: Image(braveSystemName: "leo.copy"),
       onSelected: {
-        UIPasteboard.general.setValue(turn.text, forPasteboardType: "public.plain-text")
+        UIPasteboard.general.string = turn.text
       }
     )
 
