@@ -116,13 +116,18 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
     }
   }, [query, searchEngine])
 
+  const setQueryExternal = React.useCallback((query: string) => {
+    setOpen(true)
+    setQuery(query)
+  }, [])
+
   const context = React.useMemo(() => ({
     open,
     setOpen,
     searchEngine,
     setSearchEngine,
     query,
-    setQuery,
+    setQuery: setQueryExternal,
     searchEngines,
     filteredSearchEngines
   }), [searchEngine, setSearchEngine, filteredSearchEngines, query, searchEngines, open])
