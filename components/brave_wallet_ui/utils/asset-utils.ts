@@ -562,3 +562,19 @@ export function getTokenCollectionName(
     }) || tokenNameToNftCollectionName(token)
   )
 }
+
+export function getCoinTypeName(coin: BraveWallet.CoinType) {
+  switch (coin) {
+    case BraveWallet.CoinType.FIL:
+      return 'Filecoin'
+    case BraveWallet.CoinType.ETH:
+      return 'Ethereum'
+    case BraveWallet.CoinType.SOL:
+      return 'Solana'
+    case BraveWallet.CoinType.BTC:
+      return 'Bitcoin'
+    case BraveWallet.CoinType.ZEC:
+      return 'ZCash'
+  }
+  return ''
+}

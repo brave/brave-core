@@ -19,7 +19,6 @@ import {
   GetBlockchainTokenIdArg
 } from '../../../utils/asset-utils'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
-import { walletApi, WalletApiSliceStateFromRoot } from '../api.slice'
 
 export type BlockchainTokenEntityAdaptor =
   EntityAdapter<BraveWallet.BlockchainToken> & {
@@ -118,14 +117,14 @@ export const combineTokenRegistries = (
     )
   )
   const coinTypes = new Set(
-    Object.keys(tokensRegistry.idsByCoinType).concat(
-      Object.keys(userTokensRegistry.idsByCoinType)
-    )
+    Object.keys(tokensRegistry.idsByCoinType)
+      .concat(Object.keys(userTokensRegistry.idsByCoinType))
+      .map(Number)
   )
 
-  const idsByCoinType: Record<string, string[]> = {}
-  const fungibleIdsByCoinType: Record<string, string[]> = {}
-  const nonFungibleIdsByCoinType: Record<string, string[]> = {}
+  const idsByCoinType: Record<string, EntityId[]> = {}
+  const fungibleIdsByCoinType: Record<string, EntityId[]> = {}
+  const nonFungibleIdsByCoinType: Record<string, EntityId[]> = {}
   const visibleTokenIdsByCoinType: Record<number, EntityId[]> = {}
   const hiddenTokenIdsByCoinType: Record<number, EntityId[]> = {}
   const fungibleVisibleTokenIdsByCoinType: Record<number, EntityId[]> = {}
@@ -397,37 +396,6 @@ export const combineTokenRegistries = (
   )
 }
 
-// Tokens Registry Selectors From Root
-const selectTokensRegistry = (state: WalletApiSliceStateFromRoot) => {
-  return (
-    walletApi.endpoints.getTokensRegistry.select()(state)?.data ??
-    blockchainTokenEntityAdaptorInitialState
-  )
-}
-
-export const {
-  selectAll: selectAllBlockchainTokens,
-  selectById: selectBlockchainTokenById,
-  selectEntities: selectBlockchainTokenEntities,
-  selectIds: selectBlockchainTokenIds,
-  selectTotal: selectTotalBlockchainTokens
-} = blockchainTokenEntityAdaptor.getSelectors(selectTokensRegistry)
-
-export const makeSelectAllBlockchainTokenIdsForChainId = () => {
-  return createDraftSafeSelector(
-    [selectTokensRegistry, (_, chainId: EntityId) => chainId],
-    (registry, chainId) => registry.idsByChainId[chainId]
-  )
-}
-
-export const makeSelectAllBlockchainTokensForChain = () => {
-  return createDraftSafeSelector(
-    [selectTokensRegistry, (_, chainId: EntityId) => chainId],
-    (registry, chainId) =>
-      getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
-  )
-}
-
 // From Query Results
 const selectTokensRegistryFromQueryResult = (result: {
   data?: BlockchainTokenEntityAdaptorState
@@ -455,37 +423,6 @@ export const makeSelectAllBlockchainTokenIdsForChainIdFromQueryResult = () => {
 export const makeSelectAllBlockchainTokensForChainFromQueryResult = () => {
   return createDraftSafeSelector(
     [selectTokensRegistryFromQueryResult, (_, chainId: EntityId) => chainId],
-    (registry, chainId) =>
-      getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
-  )
-}
-
-// User Assets Registry Selectors from Root State
-const selectUserAssetRegistry = (state: WalletApiSliceStateFromRoot) => {
-  return (
-    walletApi.endpoints.getUserTokensRegistry.select()(state)?.data ??
-    blockchainTokenEntityAdaptorInitialState
-  )
-}
-
-export const {
-  selectAll: selectAllUserAssets,
-  selectById: selectUserAssetById,
-  selectEntities: selectUserAssetEntities,
-  selectIds: selectUserAssetIds,
-  selectTotal: selectTotalUserAssets
-} = blockchainTokenEntityAdaptor.getSelectors(selectUserAssetRegistry)
-
-export const makeSelectUserAssetIdsForChainId = () => {
-  return createDraftSafeSelector(
-    [selectUserAssetRegistry, (_, chainId: EntityId) => chainId],
-    (registry, chainId) => registry.idsByChainId[chainId]
-  )
-}
-
-export const makeSelectAllUserAssetsForChain = () => {
-  return createDraftSafeSelector(
-    [selectUserAssetRegistry, (_, chainId: EntityId) => chainId],
     (registry, chainId) =>
       getEntitiesListFromEntityState(registry, registry.idsByChainId[chainId])
   )

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
 import { getPathForFilLedgerIndex } from '../../../utils/derivation_path_utils'
-import { getCoinName } from '../../api/hardware_keyrings'
+import { getCoinTypeName } from '../../../utils/asset-utils'
 import { LedgerFilecoinKeyring } from '../interfaces'
 import {
   GetAccountsHardwareOperationResult,
@@ -14,9 +14,7 @@ import {
   FilGetAccountResponse,
   FilGetAccountResponsePayload,
   FilSignTransactionResponse,
-  FilSignTransactionResponsePayload
-} from './fil-ledger-messages'
-import {
+  FilSignTransactionResponsePayload,
   LedgerBridgeErrorCodes,
   LedgerCommand,
   LedgerError
@@ -74,7 +72,7 @@ export default class FilecoinLedgerBridgeKeyring
       accounts.push({
         address: responsePayload.accounts[i],
         derivationPath: this.getPathForIndex(from + i, network),
-        name: getCoinName(this.coin()) + ' ' + this.type(),
+        name: getCoinTypeName(this.coin()) + ' ' + this.type(),
         hardwareVendor: this.type(),
         deviceId: responsePayload.deviceId,
         coin: this.coin(),

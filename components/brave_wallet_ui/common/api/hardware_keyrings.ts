@@ -7,7 +7,7 @@ import { assert } from 'chrome://resources/js/assert.js'
 import EthereumLedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, HardwareVendor } from '../../constants/types'
 import * as HWInterfaces from '../hardware/interfaces'
 import FilecoinLedgerBridgeKeyring from '../../common/hardware/ledgerjs/fil_ledger_bridge_keyring'
 
@@ -16,22 +16,6 @@ export type HardwareKeyring =
   | HWInterfaces.TrezorKeyring
   | HWInterfaces.LedgerFilecoinKeyring
   | HWInterfaces.LedgerSolanaKeyring
-
-export function getCoinName(coin: BraveWallet.CoinType) {
-  switch (coin) {
-    case BraveWallet.CoinType.FIL:
-      return 'Filecoin'
-    case BraveWallet.CoinType.ETH:
-      return 'Ethereum'
-  }
-  return ''
-}
-
-const VendorTypes = [
-  BraveWallet.TREZOR_HARDWARE_VENDOR,
-  BraveWallet.LEDGER_HARDWARE_VENDOR
-] as const
-export type HardwareVendor = (typeof VendorTypes)[number]
 
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: EthereumLedgerBridgeKeyring

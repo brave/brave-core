@@ -13,14 +13,12 @@ import {
 import {
   LedgerCommand,
   LedgerBridgeErrorCodes,
-  LedgerError
-} from './ledger-messages'
-import {
+  LedgerError,
   SolGetAccountResponse,
   SolGetAccountResponsePayload,
   SolSignTransactionResponse,
   SolSignTransactionResponsePayload
-} from './sol-ledger-messages'
+} from './ledger-messages'
 
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import LedgerBridgeKeyring from './ledger_bridge_keyring'

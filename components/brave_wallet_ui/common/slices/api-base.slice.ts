@@ -84,7 +84,7 @@ export function createWalletApiBase() {
 export const ACCOUNT_TAG_IDS = {
   REGISTRY: 'REGISTRY',
   SELECTED: 'SELECTED'
-}
+} as const
 
 export const NETWORK_TAG_IDS = {
   HIDDEN: 'HIDDEN',

@@ -13,7 +13,7 @@ import {
 import { WalletSelectors } from '../../../common/selectors'
 
 // Types
-import { DAppConnectionOptionsType } from './dapp-connection-settings'
+import { DAppConnectionOptionsType } from 'components/brave_wallet_ui/constants/types'
 import { BraveWallet, DAppSupportedCoinTypes } from '../../../constants/types'
 
 // Queries

@@ -12,6 +12,7 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   ETHFilForwarderTransferFromParams,
+  HardwareVendor,
   SendBtcTransactionParams,
   SendEthTransactionParams,
   SendFilTransactionParams,
@@ -30,7 +31,6 @@ import {
   SpeedupTransactionPayload
 } from '../../constants/action_types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
-import { HardwareVendor } from '../../api/hardware_keyrings'
 import {
   SignAllTransactionsProcessedPayload //
 } from '../../../panel/constants/action_types'

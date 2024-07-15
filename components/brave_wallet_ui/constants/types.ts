@@ -7,7 +7,6 @@ import { EntityId } from '@reduxjs/toolkit'
 
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
-import { HardwareWalletResponseCodeType } from '../common/hardware/types'
 import {
   ExternalWallet,
   ExternalWalletProvider
@@ -19,12 +18,25 @@ export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export type NftDropdownOptionId = 'collected' | 'hidden'
 
+export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
+
+export type HardwareVendor =
+  | typeof BraveWallet.TREZOR_HARDWARE_VENDOR
+  | typeof BraveWallet.LEDGER_HARDWARE_VENDOR
+
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
 export { TimeDelta }
 
 export type RefreshOpts = {
   skipBalancesRefresh?: boolean
 }
+
+export type HardwareWalletResponseCodeType =
+  | 'deviceNotConnected'
+  | 'deviceBusy'
+  | 'openLedgerApp'
+  | 'transactionRejected'
+  | 'unauthorized'
 
 /**
  * SpotPriceRegistry represents a mapping of a unique ID for a token to its

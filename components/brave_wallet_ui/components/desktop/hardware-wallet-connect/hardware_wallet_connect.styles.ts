@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import * as leo from '@brave/leo/tokens/css/variables'
-import { HardwareVendor } from '../../../common/api/hardware_keyrings'
+import { HardwareVendor } from '../../../constants/types'
 import Checkbox from '@brave/leo/react/checkbox'
 
 import TrezorLight from './images/trezor_light.svg'

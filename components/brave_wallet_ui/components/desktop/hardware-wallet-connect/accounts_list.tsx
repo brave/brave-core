@@ -14,13 +14,16 @@ import {
   TrezorDerivationPath,
   TrezorDerivationPaths
 } from '../../../common/hardware/types'
-import { BraveWallet, FilecoinNetwork } from '../../../constants/types'
+import {
+  BraveWallet,
+  FilecoinNetwork,
+  HardwareVendor
+} from '../../../constants/types'
 import {
   HardwareWalletDerivationPathLocaleMapping,
   HardwareWalletDerivationPathsMapping,
   SolHardwareWalletDerivationPathLocaleMapping
 } from './hardware_wallet_connect.types'
-import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -187,7 +190,7 @@ export const HardwareWalletAccountsList = ({
   const getPathValue = (
     path: string
   ): LedgerDerivationPath | TrezorDerivationPath => {
-    return ethDerivationPathsEnum[path]
+    return ethDerivationPathsEnum[path as keyof typeof ethDerivationPathsEnum]
   }
 
   const getDerivationPathLabel = (
@@ -284,14 +287,19 @@ export const HardwareWalletAccountsList = ({
               onChange={(e) => onChangeDerivationScheme(e.value)}
             >
               <div slot='value'>
-                {solDerivationPathsEnum[selectedDerivationScheme]}{' '}
+                {
+                  solDerivationPathsEnum[
+                    selectedDerivationScheme as SolDerivationPaths
+                  ]
+                }{' '}
                 {`"${getPathForSolLedgerIndex(
                   undefined,
                   selectedDerivationScheme as SolDerivationPaths
                 )}"`}
               </div>
               {Object.keys(solDerivationPathsEnum).map((path) => {
-                const pathLocale = solDerivationPathsEnum[path]
+                const pathLocale =
+                  solDerivationPathsEnum[path as SolDerivationPaths]
                 return (
                   <leo-option
                     value={path}

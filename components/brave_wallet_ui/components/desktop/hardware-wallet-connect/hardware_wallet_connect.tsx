@@ -40,11 +40,11 @@ import {
   DerivationBatchSize,
   SolDerivationPaths
 } from '../../../common/hardware/types'
-import { HardwareVendor } from '../../../common/api/hardware_keyrings'
 import {
   BraveWallet,
   CreateAccountOptionsType,
-  FilecoinNetwork
+  FilecoinNetwork,
+  HardwareVendor
 } from '../../../constants/types'
 import { LedgerError } from '../../../common/hardware/ledgerjs/ledger-messages'
 
