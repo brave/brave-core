@@ -664,6 +664,8 @@ brave_java_resources = [
   "java/res/drawable/recovery_phrase_bg.xml",
   "java/res/drawable/rect_round_corners_12.xml",
   "java/res/drawable/rect_up_round_corners_12.xml",
+  "java/res/drawable/rectangle_9.xml",
+  "java/res/drawable/rectangle_selected_9.xml",
   "java/res/drawable/refresh_credentials_bg.xml",
   "java/res/drawable/restore_wallet.xml",
   "java/res/drawable/rewards_info_icon.xml",

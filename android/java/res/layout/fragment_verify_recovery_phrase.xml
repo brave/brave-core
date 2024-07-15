@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:scrollbars="vertical"
     android:fadeScrollbars="false"
     android:fillViewport="true">
@@ -11,20 +10,53 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top"
         android:orientation="vertical">
 
-        <TextView
-            style="@style/HeadingH3"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="18dp"
-            android:text="@string/check_word"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:layout_gravity="center" >
+
+            <TextView
+                style="@style/HeadingH3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/check_word"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/recovery_step_1"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/rectangle_9" />
+
+            <ImageView
+                android:id="@+id/recovery_step_2"
+                android:layout_marginHorizontal="4dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/rectangle_9" />
+
+            <ImageView
+                android:id="@+id/recovery_step_3"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:src="@drawable/rectangle_9" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/check_word"

@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,10 +14,13 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -52,6 +56,11 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
     private TextView mCheckWord;
     private TextInputLayout mTextInputLayout;
     private TextInputEditText mTextInputEditText;
+    private ImageView mStep1;
+    private ImageView mStep2;
+    private ImageView mStep3;
+    @DrawableRes
+    private int mCurrentStepRes;
     private boolean mIsOnboarding;
     private VerificationStep mVerificationStep;
     private Pair<Integer, String> mWordToMatch;
@@ -93,6 +102,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
             mVerificationStep = (VerificationStep) bundle.getSerializable(VERIFICATION_STEP_ARG);
         }
         mPhraseNotMatch = getResources().getString(R.string.phrase_does_not_match);
+        mCurrentStepRes = R.drawable.rectangle_selected_9;
     }
 
     @Override
@@ -108,6 +118,18 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         mCheckWord = view.findViewById(R.id.check_word);
         mTextInputLayout = view.findViewById(R.id.text_input_layout);
         mTextInputEditText = view.findViewById(R.id.text_input_edit_text);
+        mStep1 = view.findViewById(R.id.recovery_step_1);
+        mStep2 = view.findViewById(R.id.recovery_step_2);
+        mStep3 = view.findViewById(R.id.recovery_step_3);
+
+        if (mVerificationStep == VerificationStep.FIRST) {
+            mStep1.setImageResource(mCurrentStepRes);
+        } else if (mVerificationStep == VerificationStep.SECOND) {
+            mStep2.setImageResource(mCurrentStepRes);
+        } else if (mVerificationStep == VerificationStep.THIRD) {
+            mStep3.setImageResource(mCurrentStepRes);
+        }
+
         mTextInputEditText.addTextChangedListener(
                 new TextWatcher() {
                     @Override
