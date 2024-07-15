@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 // Constants
 import { emptyRewardsInfo } from '../../../../../common/async/base-query-cache'
@@ -15,7 +16,10 @@ import {
 } from '../../../../../common/slices/api.slice'
 
 // Types
-import { SupportedTestNetworks } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  SupportedTestNetworks
+} from '../../../../../constants/types'
 
 // Options
 import {
@@ -38,15 +42,21 @@ import { Row } from '../../../../shared/style'
 interface Props {
   filteredOutNetworkKeys: string[]
   setFilteredOutNetworkKeys: (keys: string[]) => void
+  networksSubset?: BraveWallet.NetworkInfo[]
 }
 
-export const FilterNetworksSection = (props: Props) => {
-  const { filteredOutNetworkKeys, setFilteredOutNetworkKeys } = props
-
+export const FilterNetworksSection = ({
+  filteredOutNetworkKeys,
+  setFilteredOutNetworkKeys,
+  networksSubset
+}: Props) => {
   // Queries
-  const { data: networks } = useGetVisibleNetworksQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery(
+    networksSubset ? skipToken : undefined
+  )
   const { data: { rewardsNetwork: providerNetwork } = emptyRewardsInfo } =
-    useGetRewardsInfoQuery()
+    useGetRewardsInfoQuery(networksSubset ? skipToken : undefined)
+  const networks = networksSubset || visibleNetworks
 
   // Memos
   const primaryNetworks = React.useMemo(() => {

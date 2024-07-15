@@ -89,9 +89,8 @@ export const formatAsDouble = (value: string): string =>
   // Removes all characters except numbers, commas and decimals
   value.replace(/[^0-9.,]+/g, '')
 
-export const isValidateUrl = (url: string) => {
-  const re = /^\s*https?:\/\//
-  return re.test(url)
+export const isHttpsUrl = (url: string) => {
+  return url.startsWith('https://')
 }
 
 export function hasUnicode(str: string) {
@@ -183,4 +182,9 @@ export const isIpfs = (url?: string) => {
 
 export const getCid = (ipfsUrl: string) => {
   return ipfsUrl.replace(IPFS_PROTOCOL, '')
+}
+
+export const capitalizeFirstLetter = (input: string) => {
+  if (input.length === 0) return input
+  return input.charAt(0).toUpperCase() + input.slice(1)
 }

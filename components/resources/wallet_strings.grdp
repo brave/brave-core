@@ -1086,4 +1086,12 @@
   <message name="IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT name field">The token name for an NFT refers to the specific name given to a non-fungible token within a particular collection or project. This name distinguishes one NFT from another within the same collection.</message>
   <message name="IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT symbol field">The NFT symbol refers to the unique identifier used to distinguish the NFT collection or project.</message>
   <message name="IDS_BRAVE_WALLET_WATCH_ONLY" desc="Label to indicate that an asset is watch-only. This means that the asset is not owned by the user or it cannot be transferred">Watch-only</message>
+  <message name="IDS_BRAVE_WALLET_WEB_3" desc="Web3 page title">Web3</message>
+  <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
+  <message name="IDS_BRAVE_WALLET_NO_DAPPS_FOUND" desc="No DApps found message">No DApps found</message>
+  <message name="IDS_BRAVE_WALLET_ACTIVE_WALLETS" desc="Active wallets text">Active wallets</message>
+  <message name="IDS_BRAVE_WALLET_VISIT_DAPP" desc="Visit dapp button text">Visit <ph name="VALUE">$1<ex>Raydium</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_FILTERS" desc="Filters label">Filters</message>
+  <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
 </grit-part>

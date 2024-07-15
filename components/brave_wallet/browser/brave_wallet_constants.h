@@ -86,6 +86,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddNetworksAnytimeInSettings",
      IDS_BRAVE_WALLET_ADD_NETWORKS_ANYTIME_IN_SETTINGS},
     {"braveWalletContinueWithXItems", IDS_BRAVE_WALLET_CONTINUE_WITH_X_ITEMS},
+    {"braveWalletTopNavExplore", IDS_BRAVE_WALLET_TOP_NAV_EXPLORE},
+    {"braveWalletWeb3", IDS_BRAVE_WALLET_WEB_3},
     {"braveWalletSpenderAddress", IDS_BRAVE_WALLET_SPENDER_ADDRESS},
     {"braveWalletTokenIsVerifiedByLists",
      IDS_BRAVE_WALLET_TOKEN_IS_VERIFIED_BY_LISTS},
@@ -1444,7 +1446,13 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletLogIn", IDS_BRAVE_WALLET_LOG_IN},
     {"braveWalletViewOn", IDS_BRAVE_WALLET_VIEW_ON},
     {"braveWalletRewardsSettings", IDS_BRAVE_WALLET_REWARDS_SETTINGS},
-    {"braveWalletPlatforms", IDS_BRAVE_WALLET_PLATFORMS}};
+    {"braveWalletPlatforms", IDS_BRAVE_WALLET_PLATFORMS},
+    {"braveWalletNoDappsFound", IDS_BRAVE_WALLET_NO_DAPPS_FOUND},
+    {"braveWalletActiveWallets", IDS_BRAVE_WALLET_ACTIVE_WALLETS},
+    {"braveWalletVisitDapp", IDS_BRAVE_WALLET_VISIT_DAPP},
+    {"braveWalletFilters", IDS_BRAVE_WALLET_FILTERS},
+    {"braveWalletClearFilters", IDS_BRAVE_WALLET_CLEAR_FILTERS},
+    {"braveWalletShowMore", IDS_BRAVE_WALLET_SHOW_MORE}};
 
 // 0x swap constants
 inline constexpr char kZeroExGoerliBaseAPIURL[] =

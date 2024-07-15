@@ -223,6 +223,7 @@ leo_icons = [
   "file-corrupted.svg",
   "file-edit.svg",
   "file.svg",
+  "filter.svg",
   "filter-settings.svg",
   "flash.svg",
   "flashdrive.svg",
