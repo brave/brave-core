@@ -6,6 +6,7 @@
 import CoreSpotlight
 import Intents
 import MobileCoreServices
+import Shared
 
 public class OpenWebsiteIntentHandler: NSObject, OpenWebsiteIntentHandling {
 
@@ -13,20 +14,24 @@ public class OpenWebsiteIntentHandler: NSObject, OpenWebsiteIntentHandling {
     intent: OpenWebsiteIntent,
     completion: @escaping (OpenWebsiteIntentResponse) -> Void
   ) {
-    guard let siteURL = intent.websiteURL else {
+    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
+      !host.isEmpty, url.isWebPage(includeDataURIs: false)
+    else {
       completion(OpenWebsiteIntentResponse(code: .failure, userActivity: nil))
 
       return
     }
 
-    completion(OpenWebsiteIntentResponse.success(websiteURL: siteURL))
+    completion(OpenWebsiteIntentResponse.success(websiteURL: urlString))
   }
 
   public func confirm(
     intent: OpenWebsiteIntent,
     completion: @escaping (OpenWebsiteIntentResponse) -> Void
   ) {
-    guard let urlString = intent.websiteURL, URL(string: urlString) != nil else {
+    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
+      !host.isEmpty, url.isWebPage(includeDataURIs: false)
+    else {
       completion(OpenWebsiteIntentResponse(code: .failure, userActivity: nil))
       return
     }
@@ -41,20 +46,24 @@ public class OpenHistoryWebsiteIntentHandler: NSObject, OpenHistoryWebsiteIntent
     intent: OpenHistoryWebsiteIntent,
     completion: @escaping (OpenHistoryWebsiteIntentResponse) -> Void
   ) {
-    guard let siteURL = intent.websiteURL else {
+    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
+      !host.isEmpty, url.isWebPage(includeDataURIs: false)
+    else {
       completion(OpenHistoryWebsiteIntentResponse(code: .failure, userActivity: nil))
 
       return
     }
 
-    completion(OpenHistoryWebsiteIntentResponse.success(websiteURL: siteURL))
+    completion(OpenHistoryWebsiteIntentResponse.success(websiteURL: urlString))
   }
 
   public func confirm(
     intent: OpenHistoryWebsiteIntent,
     completion: @escaping (OpenHistoryWebsiteIntentResponse) -> Void
   ) {
-    guard let urlString = intent.websiteURL, URL(string: urlString) != nil else {
+    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
+      !host.isEmpty, url.isWebPage(includeDataURIs: false)
+    else {
       completion(OpenHistoryWebsiteIntentResponse(code: .failure, userActivity: nil))
       return
     }
@@ -69,20 +78,24 @@ public class OpenBookmarkWebsiteIntentHandler: NSObject, OpenBookmarkWebsiteInte
     intent: OpenBookmarkWebsiteIntent,
     completion: @escaping (OpenBookmarkWebsiteIntentResponse) -> Void
   ) {
-    guard let siteURL = intent.websiteURL else {
+    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
+      !host.isEmpty, url.isWebPage(includeDataURIs: false)
+    else {
       completion(OpenBookmarkWebsiteIntentResponse(code: .failure, userActivity: nil))
 
       return
     }
 
-    completion(OpenBookmarkWebsiteIntentResponse.success(websiteURL: siteURL))
+    completion(OpenBookmarkWebsiteIntentResponse.success(websiteURL: urlString))
   }
 
   public func confirm(
     intent: OpenBookmarkWebsiteIntent,
     completion: @escaping (OpenBookmarkWebsiteIntentResponse) -> Void
   ) {
-    guard let urlString = intent.websiteURL, URL(string: urlString) != nil else {
+    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
+      !host.isEmpty, url.isWebPage(includeDataURIs: false)
+    else {
       completion(OpenBookmarkWebsiteIntentResponse(code: .failure, userActivity: nil))
       return
     }
