@@ -58,12 +58,21 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final String recoveryPhrase = String.format(holder.recoveryPhraseText.getContext().getResources().getString(
-                                              R.string.recovery_phrase_item_text),
-                                (position + 1), mRecoveryPhraseList.get(position));
+        final String recoveryPhrase =
+                String.format(
+                        holder.recoveryPhraseText
+                                .getContext()
+                                .getResources()
+                                .getString(R.string.recovery_phrase_item_text),
+                        (position + 1),
+                        mRecoveryPhraseList.get(position));
         final SpannableString recoveryPhraseSpannable = new SpannableString(recoveryPhrase);
         if (mBlurPhrase) {
-            recoveryPhraseSpannable.setSpan(mMaskFilterSpan, 0, recoveryPhraseSpannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            recoveryPhraseSpannable.setSpan(
+                    mMaskFilterSpan,
+                    0,
+                    recoveryPhraseSpannable.length(),
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         } else {
             recoveryPhraseSpannable.removeSpan(mMaskFilterSpan);
         }

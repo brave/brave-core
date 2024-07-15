@@ -18,8 +18,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
@@ -39,10 +37,8 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     private AppCompatButton mRecoveryPhraseButton;
     private RecyclerView mRecoveryPhraseRecyclerView;
     private RecoveryPhraseAdapter mRecoveryPhraseAdapter;
-    @StringRes
-    private int mContinueStringRes;
-    @StringRes
-    private int mShowRecoveryPhraseStringRes;
+    @StringRes private int mContinueStringRes;
+    @StringRes private int mShowRecoveryPhraseStringRes;
 
     @NonNull
     public static OnboardingRecoveryPhraseFragment newInstance(final boolean isOnboarding) {

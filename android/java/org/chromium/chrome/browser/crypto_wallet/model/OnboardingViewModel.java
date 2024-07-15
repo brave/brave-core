@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.model;
 
-import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
-
 import android.util.Pair;
 import android.util.SparseArray;
 
@@ -15,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModel;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
 
 import java.util.ArrayList;
 import java.util.HashSet;

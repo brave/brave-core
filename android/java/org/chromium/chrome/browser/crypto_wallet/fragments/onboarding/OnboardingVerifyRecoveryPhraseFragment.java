@@ -43,6 +43,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
             return mStep;
         }
     }
+
     private static final String IS_ONBOARDING_ARG = "isOnboarding";
     private static final String VERIFICATION_STEP_ARG = "verificationStep";
 
@@ -57,8 +58,10 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
     private String mPhraseNotMatch;
 
     @NonNull
-    public static OnboardingVerifyRecoveryPhraseFragment newInstance(final boolean isOnboarding, @NonNull final VerificationStep verificationStep) {
-        OnboardingVerifyRecoveryPhraseFragment fragment = new OnboardingVerifyRecoveryPhraseFragment();
+    public static OnboardingVerifyRecoveryPhraseFragment newInstance(
+            final boolean isOnboarding, @NonNull final VerificationStep verificationStep) {
+        OnboardingVerifyRecoveryPhraseFragment fragment =
+                new OnboardingVerifyRecoveryPhraseFragment();
 
         Bundle args = new Bundle();
         args.putBoolean(IS_ONBOARDING_ARG, isOnboarding);
@@ -84,7 +87,8 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         final Bundle bundle = requireArguments();
         mIsOnboarding = bundle.getBoolean(IS_ONBOARDING_ARG, false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mVerificationStep = bundle.getSerializable(VERIFICATION_STEP_ARG, VerificationStep.class);
+            mVerificationStep =
+                    bundle.getSerializable(VERIFICATION_STEP_ARG, VerificationStep.class);
         } else {
             mVerificationStep = (VerificationStep) bundle.getSerializable(VERIFICATION_STEP_ARG);
         }
@@ -93,7 +97,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
 
     @Override
     public View onCreateView(
-           @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_verify_recovery_phrase, container, false);
     }
 
@@ -104,25 +108,27 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         mCheckWord = view.findViewById(R.id.check_word);
         mTextInputLayout = view.findViewById(R.id.text_input_layout);
         mTextInputEditText = view.findViewById(R.id.text_input_edit_text);
-        mTextInputEditText.addTextChangedListener(new TextWatcher() {
-              @Override
-              public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                  /* Not used. */
-              }
+        mTextInputEditText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        /* Not used. */
+                    }
 
-              @Override
-              public void onTextChanged(CharSequence s, int start, int before, int count) {
-                  enable(mRecoveryPhraseButton, s.length() != 0);
-                  mTextInputLayout.setErrorEnabled(false);
-              }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        enable(mRecoveryPhraseButton, s.length() != 0);
+                        mTextInputLayout.setErrorEnabled(false);
+                    }
 
-              @Override
-              public void afterTextChanged(Editable s) {
-                  /* Not used. */
-              }
-                                                  });
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        /* Not used. */
+                    }
+                });
 
-        mRecoveryPhraseButton.setOnClickListener(v -> {
+        mRecoveryPhraseButton.setOnClickListener(
+                v -> {
                     if (mWordToMatch == null) {
                         return;
                     }
@@ -155,7 +161,6 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                                 // only during onboarding process.
                                 mOnNextPage.incrementPages(1);
                             }
-
                         }
                     } else {
                         phraseNotMatch();
