@@ -19,18 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
     private List<String> mRecoveryPhraseList = new ArrayList<>();
-    private final List<String> mSelectedRecoveryPhraseList = new ArrayList<>();
-    private final List<Integer> mSelectedPositions = new ArrayList<>();
-    private OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
-            mOnRecoveryPhraseSelected;
-    private boolean mSelectedRecoveryPhrase;
     private boolean mBlurPhrase;
     private final MaskFilterSpan mMaskFilterSpan;
 
@@ -74,70 +68,10 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
             recoveryPhraseSpannable.removeSpan(mMaskFilterSpan);
         }
         holder.recoveryPhraseText.setText(recoveryPhraseSpannable);
-        if (mOnRecoveryPhraseSelected != null) {
-            holder.itemView.setOnClickListener(
-                    v -> {
-                        if (mSelectedRecoveryPhrase) {
-                            mRecoveryPhraseList.remove(recoveryPhrase);
-                        } else {
-                            mSelectedRecoveryPhraseList.add(recoveryPhrase);
-                            mSelectedPositions.add(position);
-                        }
-                        mOnRecoveryPhraseSelected.onSelectedRecoveryPhrase(recoveryPhrase);
-                    });
-            if (!mSelectedRecoveryPhrase) {
-                if (mSelectedRecoveryPhraseList.contains(recoveryPhrase)
-                        && mSelectedPositions.contains(position)) {
-                    holder.recoveryPhraseText.setEnabled(false);
-                    holder.recoveryPhraseText.setAlpha(0.5f);
-                    holder.recoveryPhraseText.setText("");
-                } else {
-                    holder.recoveryPhraseText.setEnabled(true);
-                    holder.recoveryPhraseText.setAlpha(1f);
-                    holder.recoveryPhraseText.setText(String.format(
-                            holder.recoveryPhraseText.getContext().getResources().getString(
-                                    R.string.recovery_phrase_item_text),
-                            (position + 1), recoveryPhrase));
-                }
-            }
-        }
-    }
-
-    public void setSelectedRecoveryPhrase(final boolean selectedRecoveryPhrase) {
-        mSelectedRecoveryPhrase = selectedRecoveryPhrase;
-    }
-
-    public void addPhraseAtPosition(int position, String phrase) {
-        mRecoveryPhraseList.set(position, phrase);
-    }
-
-    public void removeSelectedPhrase(String phrase) {
-        this.mSelectedRecoveryPhraseList.remove(phrase);
-        // We have to iterate as words sometimes can be duplicated in the recovery phrase
-        for (int i = 0; i < mRecoveryPhraseList.size(); i++) {
-            if (mRecoveryPhraseList.get(i).contains(phrase) && mSelectedPositions.contains(i)) {
-                mSelectedPositions.remove((Integer) i);
-                break;
-            }
-        }
     }
 
     public void setRecoveryPhraseList(List<String> recoveryPhraseList) {
         mRecoveryPhraseList = recoveryPhraseList;
-    }
-
-    public void setOnRecoveryPhraseSelectedListener(
-            OnboardingVerifyRecoveryPhraseFragment.OnRecoveryPhraseSelected
-                    onRecoveryPhraseSelected) {
-        this.mOnRecoveryPhraseSelected = onRecoveryPhraseSelected;
-    }
-
-    public List<String> getSelectedRecoveryPhraseList() {
-        return mSelectedRecoveryPhraseList;
-    }
-
-    public List<String> getRecoveryPhraseList() {
-        return mRecoveryPhraseList;
     }
 
     @Override

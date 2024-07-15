@@ -46,18 +46,8 @@ public class OnboardingViewModel extends ViewModel {
         if (mVerificationWords.size() == 0) {
             throw new IllegalStateException("Verification word list must not be null.");
         }
-        switch (step) {
-            case FIRST -> {
-                return extractPositionAndWordAtIndex(0);
-            }
-            case SECOND -> {
-                return extractPositionAndWordAtIndex(1);
-            }
-            case THIRD -> {
-                return extractPositionAndWordAtIndex(2);
-            }
-            default -> throw new IllegalStateException("Verification step not supported for value " + step);
-        }
+
+        return extractPositionAndWordAtIndex(step.getValue());
     }
 
     private Pair<Integer, String> extractPositionAndWordAtIndex(final int index) {
