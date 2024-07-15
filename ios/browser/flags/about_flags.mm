@@ -74,16 +74,26 @@
                                  kBraveWalletTransactionSimulationsFeature),  \
       })
 
-#define BRAVE_SHIELDS_FEATURE_ENTRIES                                    \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "brave-shred",                                                     \
-      "Enable Brave 'Shred' Feature",                                    \
-      "Enable the Brave ‘Shred’ feature which will allow a user to " \
-      "easily delete all site data on demand or automatically when "     \
-      "closing a site or terminating the application.",                  \
-      flags_ui::kOsIos,                                                  \
-      FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),   \
-  })
+#define BRAVE_SHIELDS_FEATURE_ENTRIES                                                       \
+  EXPAND_FEATURE_ENTRIES(                                                                   \
+      {                                                                                     \
+          "brave-shred",                                                                    \
+          "Enable Brave 'Shred' Feature",                                                   \
+          "Enable the Brave ‘Shred’ feature which will allow a user to "                    \
+          "easily delete all site data on demand or automatically when "                    \
+          "closing a site or terminating the application.",                                 \
+          flags_ui::kOsIos,                                                                 \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),                  \
+      },                                                                                    \
+      {                                                                                     \
+          "brave-youtube-request-blocking-script",                                          \
+          "Enable Request Blocking Script on YouTube",                                      \
+          "Disabling this flag will not inject the request blocking script into youtube. "  \
+          "Network blocking will still work though content blockers.",                      \
+          flags_ui::kOsIos,                                                                 \
+          FEATURE_VALUE_TYPE(                                                               \
+              brave_shields::features::kBraveAdblockYouTubeRequestBlockingScript),          \
+      })
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT                                          \
