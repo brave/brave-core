@@ -62,6 +62,7 @@
 #import "net/base/apple/url_conversions.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 
 namespace {
 
@@ -1268,6 +1269,20 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
     WebViewHolder::RemoveFromWebState(_webState.get());
     _webState.reset();
   }
+}
+
+@end
+
+@implementation CWVWebView (Extras)
+
+- (void)updateScripts {
+  // This runs `UpdateScripts` on the configuration provider which we will need
+  // to call in-place of `-[WKUserContentController removeAllUserScripts]` until
+  // all Brave JavaScript features are ported over to actual Chromium
+  // JavascriptFeature types and added to BraveWebClient
+  web::WKWebViewConfigurationProvider& config_provider =
+    web::WKWebViewConfigurationProvider::FromBrowserState(_webState->GetBrowserState());
+  config_provider.UpdateScripts();
 }
 
 @end

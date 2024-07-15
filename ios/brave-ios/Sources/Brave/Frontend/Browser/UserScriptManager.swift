@@ -285,15 +285,16 @@ class UserScriptManager {
     }
   }
 
-  public func loadScripts(into webView: WKWebView, scripts: Set<ScriptType>) {
+  public func loadScripts(into webView: BraveWebView, scripts: Set<ScriptType>) {
+    guard let wkWebView = webView.underlyingWebView else { return }
     if Preferences.UserScript.blockAllScripts.value {
       return
     }
 
     var scripts = scripts
 
-    webView.configuration.userContentController.do { scriptController in
-      scriptController.removeAllUserScripts()
+    wkWebView.configuration.userContentController.do { scriptController in
+      webView.updateScripts()
 
       // Inject all base scripts
       self.baseScripts.forEach {
@@ -343,7 +344,7 @@ class UserScriptManager {
       return
     }
 
-    guard let webView = tab.webView?.underlyingWebView else {
+    guard let webView = tab.webView, let wkWebView = webView.underlyingWebView else {
       Logger.module.info("Injecting Scripts into a Tab that has no WebView")
       return
     }
@@ -361,7 +362,7 @@ class UserScriptManager {
     )
     loadScripts(into: webView, scripts: userScripts)
 
-    webView.configuration.userContentController.do { scriptController in
+    wkWebView.configuration.userContentController.do { scriptController in
       // TODO: Somehow refactor wallet and get rid of this
       // Inject WALLET specific scripts
 
