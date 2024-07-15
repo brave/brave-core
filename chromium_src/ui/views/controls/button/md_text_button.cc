@@ -137,7 +137,7 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
              ButtonState::STATE_DISABLED},
             {.background_color = std::nullopt,
              .border_color = gfx::kColorButtonDisabled,
-             .text_color = gfx::kColorTextDisabled}},
+             .text_color = gfx::kColorTextDisabledDark}},
 
            {{ui::ButtonStyle::kTonal, ColorScheme::kLight,
              ButtonState::STATE_NORMAL},
@@ -205,7 +205,7 @@ const base::flat_map<MdTextButtonStyleKey, ButtonStyle>& GetButtonThemes() {
              ButtonState::STATE_DISABLED},
             {.background_color = std::nullopt,
              .border_color = std::nullopt,
-             .text_color = gfx::kColorTextDisabled}}});
+             .text_color = gfx::kColorTextDisabledDark}}});
 
   return *button_themes;
 }
