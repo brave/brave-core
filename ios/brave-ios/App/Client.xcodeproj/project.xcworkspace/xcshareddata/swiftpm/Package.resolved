@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/GuardianFirewall/GuardianConnect",
       "state" : {
-        "revision" : "3c828f38094debd22d217ee61c0ecf05d76cd741",
-        "version" : "1.9.1"
+        "revision" : "ff70592ebbcf0591a1691ff8a735f9d3d366f406",
+        "version" : "1.9.2"
       }
     },
     {

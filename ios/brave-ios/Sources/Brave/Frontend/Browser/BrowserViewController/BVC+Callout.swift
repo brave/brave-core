@@ -192,7 +192,7 @@ extension BrowserViewController {
       }
 
       if Preferences.VPN.popupShowed.value
-        || !VPNProductInfo.isComplete
+        || !BraveVPNProductInfo.isComplete
       {
         FullScreenCalloutType.vpnPromotion.preferenceValue.value = false
         return
@@ -335,7 +335,7 @@ extension BrowserViewController {
     case .purchased:
       presentVPNLinkReceiptCallout(skipSafeGuards: true)
     case .expired, .notPurchased:
-      if VPNProductInfo.isComplete {
+      if BraveVPNProductInfo.isComplete {
         presentCorrespondingVPNViewController()
       } else {
         // This is flaky. We fetch VPN prices from Apple asynchronously and it makes no sense to
@@ -343,7 +343,7 @@ extension BrowserViewController {
         // If not we do not show anything.
         // This can happen if the app is not in memory and we have to fresh launch it upon tapping on the in app event.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [self] in
-          if VPNProductInfo.isComplete {
+          if BraveVPNProductInfo.isComplete {
             presentCorrespondingVPNViewController()
           }
         }
