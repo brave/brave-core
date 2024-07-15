@@ -279,6 +279,9 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &blink::features::kReduceUserAgentMinorVersion,
       &blink::features::kUACHOverrideBlank,
       &features::kCertificateTransparencyAskBeforeEnabling,
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kLocationProviderManager,
+#endif
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
@@ -289,4 +292,11 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
   for (const auto* feature : enabled_features) {
     EXPECT_TRUE(base::FeatureList::IsEnabled(*feature)) << feature->name;
   }
+}
+
+TEST(FeatureDefaultsTest, DefaultFeatureParameters) {
+#if !BUILDFLAG(IS_ANDROID)
+  EXPECT_EQ(features::kLocationProviderManagerParam.default_value,
+            device::mojom::LocationProviderManagerMode::kPlatformOnly);
+#endif
 }
