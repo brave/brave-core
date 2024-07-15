@@ -13,23 +13,16 @@ import os.log
 
 /// A static class to handle all things related to the Brave VPN service.
 public class BraveVPN {
-  private static let housekeepingApi = GRDHousekeepingAPI()
-  private static let helper = GRDVPNHelper.sharedInstance()
+
   private static let serverManager = GRDServerManager()
   private static let tunnelManager = GRDTunnelManager()
 
+  public static let housekeepingApi = GRDHousekeepingAPI()
+  public static let helper = GRDVPNHelper.sharedInstance()
+
   public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
-  /// List of regions the VPN can connect to
-  /// This list is not static and it will be fetcghed with every app launch
-  static var allCountryRegions: [GRDRegion] = []
-
-  /// Record last used region
-  /// It is used to hold details of the region when automatic selection is used
-  static var lastKnownRegion: GRDRegion?
-
-  // Non translatable
-  private static let connectionName = "Brave Firewall + VPN"
+  private static let connectionName = "Brave Firewall + VPN"  // Non translatable
 
   // MARK: - Initialization
 
@@ -39,7 +32,7 @@ public class BraveVPN {
 
   /// Initialize the vpn service. It should be called even if the user hasn't bought the vpn yet.
   /// This function can have side effects if the receipt has expired(removes the vpn connection then).
-  public static func initialize(customCredential: SkusVPNCredential?) {
+  public static func initialize(customCredential: BraveVPNSkusCredential?) {
     @Sendable func clearConfiguration() {
       GRDVPNHelper.clearVpnConfiguration()
       clearCredentials()
@@ -86,171 +79,12 @@ public class BraveVPN {
       if receiptResponse?.status == .expired {
         clearConfiguration()
         logAndStoreError("Receipt expired")
+        return
       }
     }
-  }
-
-  public static func loadReceipt() async -> String? {
-    guard let receiptUrl = Bundle.main.appStoreReceiptURL,
-      let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString
-    else { return nil }
-
-    return receipt
-  }
-
-  /// Returns true if the app store receipt is in sandbox mode.
-  /// This can typically let us know whether a Testflight build is used or not.
-  /// Keep in mind this function may not work correctly for future iOS builds.
-  /// Apple prefers to validate the receipt by using a server.
-  public static var isSandbox: Bool {
-    Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
-  }
-
-  public static func setCustomVPNCredential(_ credential: SkusVPNCredential) {
-    GRDSubscriptionManager.setIsPayingUser(true)
-    populateRegionDataIfNecessary()
-
-    let dict: NSMutableDictionary =
-      [
-        "brave-vpn-premium-monthly-pass": credential.guardianCredential,
-        "brave-payments-env": credential.environment,
-        "validation-method": "brave-premium",
-      ]
-    helper.customSubscriberCredentialAuthKeys = dict
-  }
-
-  /// Connects to Guardian's server to validate locally stored receipt.
-  /// Returns ReceiptResponse whoich hold information about status of receipt expiration etc
-  public static func validateReceiptData() async -> ReceiptResponse? {
-    guard let receipt = await loadReceipt(),
-      let bundleId = Bundle.main.bundleIdentifier
-    else {
-      return nil
-    }
-
-    if Preferences.VPN.skusCredential.value != nil {
-      // Receipt verification applies to Apple's IAP only,
-      // if we detect Brave's SKU token we should not look at Apple's receipt.
-      return nil
-    }
-
-    return await withCheckedContinuation { continuation in
-      housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId) { response, error in
-        if let error = error {
-          // Error while fetching receipt response, the variations of error can be listed
-          // No App Store receipt data present
-          // Failed to retrieve receipt data from server
-          // Failed to decode JSON response data
-          logAndStoreError("Call for receipt verification failed: \(error.localizedDescription)")
-          continuation.resume(returning: nil)
-          return
-        }
-
-        guard let response = response else {
-          logAndStoreError("Receipt verification response is empty")
-          continuation.resume(returning: nil)
-          return
-        }
-
-        let receiptResponseItem = GRDIAPReceiptResponse(withReceiptResponse: response)
-        let processedReceiptDetail = BraveVPN.processReceiptResponse(
-          receiptResponseItem: receiptResponseItem
-        )
-
-        switch processedReceiptDetail.status {
-        case .expired:
-          Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
-          Preferences.VPN.originalTransactionId.value = nil
-          logAndStoreError(
-            "VPN Subscription LineItems are empty subscription expired",
-            printToConsole: false
-          )
-        case .active, .retryPeriod:
-          if let expirationDate = processedReceiptDetail.expiryDate {
-            Preferences.VPN.expirationDate.value = expirationDate
-          }
-
-          if let gracePeriodExpirationDate = processedReceiptDetail.graceExpiryDate {
-            Preferences.VPN.gracePeriodExpirationDate.value = gracePeriodExpirationDate
-          }
-
-          Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
-
-          populateRegionDataIfNecessary()
-          GRDSubscriptionManager.setIsPayingUser(true)
-        }
-
-        Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
-
-        continuation.resume(returning: processedReceiptDetail)
-      }
-    }
-  }
-
-  public static func processReceiptResponse(
-    receiptResponseItem: GRDIAPReceiptResponse
-  ) -> ReceiptResponse {
-    guard
-      let newestReceiptLineItem = receiptResponseItem.lineItems.sorted(by: {
-        $0.expiresDate > $1.expiresDate
-      }).first
-    else {
-      if let originalTransactionId = Preferences.VPN.originalTransactionId.value {
-        let lineItemMetaDataForOriginalId = receiptResponseItem.lineItemsMetadata.first(
-          where: { Int($0.originalTransactionId) ?? 00 == originalTransactionId })
-
-        if let metaData = lineItemMetaDataForOriginalId, metaData.gracePeriodExpiresDate > Date() {
-          let response = ReceiptResponse(
-            status: .retryPeriod,
-            expiryReason: ReceiptResponse.ExpirationIntent(rawValue: Int(metaData.expirationIntent))
-              ?? .none,
-            graceExpiryDate: metaData.gracePeriodExpiresDate,
-            isInTrialPeriod: false,
-            autoRenewEnabled: false
-          )
-
-          return response
-        }
-      }
-
-      return ReceiptResponse(status: .expired)
-    }
-
-    let lineItemMetaData = receiptResponseItem.lineItemsMetadata.first(
-      where: { Int($0.originalTransactionId) ?? 00 == newestReceiptLineItem.originalTransactionId })
-
-    // Original transaction id of last active subscription in order to detect grace period
-    Preferences.VPN.originalTransactionId.value = newestReceiptLineItem.originalTransactionId
-
-    guard let metadata = lineItemMetaData else {
-      logAndStoreError("No line item meta data - can not happen")
-      return ReceiptResponse(status: .active)
-    }
-
-    let receiptStatus: ReceiptResponse.Status =
-      lineItemMetaData?.isInBillingRetryPeriod == true ? .retryPeriod : .active
-    // Expiration Intent is unsigned
-    let expirationIntent =
-      ReceiptResponse.ExpirationIntent(rawValue: Int(metadata.expirationIntent)) ?? .none
-    // 0 is for turned off renewal, 1 is subscription renewal
-    let autoRenewEnabled = metadata.autoRenewStatus == 1
-
-    let response = ReceiptResponse(
-      status: receiptStatus,
-      expiryReason: expirationIntent,
-      expiryDate: newestReceiptLineItem.expiresDate,
-      graceExpiryDate: metadata.gracePeriodExpiresDate,
-      isInTrialPeriod: newestReceiptLineItem.isTrialPeriod,
-      autoRenewEnabled: autoRenewEnabled
-    )
-
-    return response
   }
 
   // MARK: - STATE
-
-  /// Lock to prevent user from spamming connect/disconnect button.
-  public static var reconnectPending = false
 
   /// A state in which the vpn can be.
   public enum State: Equatable {
@@ -267,6 +101,17 @@ public class BraveVPN {
       case .purchased: return nil
       }
     }
+  }
+
+  /// Lock to prevent user from spamming connect/disconnect button.
+  public static var reconnectPending = false
+
+  /// Returns true if the app store receipt is in sandbox mode.
+  /// This can typically let us know whether a Testflight build is used or not.
+  /// Keep in mind this function may not work correctly for future iOS builds.
+  /// Apple prefers to validate the receipt by using a server.
+  public static var isSandbox: Bool {
+    Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
   }
 
   /// Current state ot the VPN service.
@@ -312,72 +157,31 @@ public class BraveVPN {
   }
 
   /// Location of last used server for the vpn configuration.
-  public static var serverLocation: String? {
-    helper.mainCredential?.hostnameDisplayValue
+  public static var serverLocation: (hostName: String?, isoCode: String?) {
+    let mainCredential = helper.mainCredential
+
+    return (mainCredential?.hostnameDisplayValue, activatedRegion?.countryISOCode)
   }
 
-  /// Type of the vpn subscription
-  public enum SubscriptionType: Equatable {
-    case monthly, yearly, other
-  }
-
-  /// Type of the active purchased vpn plan
-  public static var activeSubscriptionType: SubscriptionType {
-    guard let credential = GRDSubscriberCredential.current() else {
-      logAndStoreError("subscriptionName: failed to retrieve subscriber credentials")
-      return .other
-    }
-    let productId = credential.subscriptionType
-
-    switch productId {
-    case VPNProductInfo.ProductIdentifiers.monthlySub:
-      return .monthly
-    case VPNProductInfo.ProductIdentifiers.yearlySub:
-      return .yearly
-    default:
-      return .other
-    }
-  }
-
-  /// Name of the purchased vpn plan.
-  public static var subscriptionName: String {
-    guard let credential = GRDSubscriberCredential.current() else {
-      logAndStoreError("subscriptionName: failed to retrieve subscriber credentials")
-      return ""
-    }
-    let productId = credential.subscriptionType
-
-    switch productId {
-    case VPNProductInfo.ProductIdentifiers.monthlySub:
-      return Strings.VPN.vpnSettingsMonthlySubName
-    case VPNProductInfo.ProductIdentifiers.yearlySub:
-      return Strings.VPN.vpnSettingsYearlySubName
-    case VPNProductInfo.ProductIdentifiers.monthlySubSKU:
-      return Strings.VPN.vpnSettingsMonthlySubName
-    default:
-      assertionFailure("Can't get product id")
-      return ""
-    }
-  }
-
-  // MARK: - ReceiptResponse
-
-  public struct ReceiptResponse {
-    public enum Status: Int {
-      case active, expired, retryPeriod
+  /// Detailed Location of last used server for the vpn configuration.
+  public static var serverLocationDetailed: (city: String?, country: String?) {
+    guard let serverLocation = serverLocation.hostName else {
+      return (nil, nil)
     }
 
-    enum ExpirationIntent: Int {
-      case none, cancelled, billingError, priceIncreaseConsent, notAvailable, unknown
+    // Spliting the location format into country and city
+    let locationComponents = serverLocation.split(separator: ",")
+
+    if locationComponents.count == 2 {
+      let city = locationComponents[safe: 0] ?? ""
+      let country = locationComponents[safe: 1] ?? ""
+
+      return (
+        city.trimmingCharacters(in: .whitespaces), country.trimmingCharacters(in: .whitespaces)
+      )
+    } else {
+      return (nil, nil)
     }
-
-    var status: Status
-    var expiryReason: ExpirationIntent = .none
-    var expiryDate: Date?
-    var graceExpiryDate: Date?
-
-    var isInTrialPeriod: Bool = false
-    var autoRenewEnabled: Bool = false
   }
 
   // MARK: - Actions
@@ -509,6 +313,21 @@ public class BraveVPN {
     }
   }
 
+  // MARK: - Credentials
+
+  public static func setCustomVPNCredential(_ credential: BraveVPNSkusCredential) {
+    GRDSubscriptionManager.setIsPayingUser(true)
+    populateRegionDataIfNecessary()
+
+    let dict: NSMutableDictionary =
+      [
+        "brave-vpn-premium-monthly-pass": credential.guardianCredential,
+        "brave-payments-env": credential.environment,
+        "validation-method": "brave-premium",
+      ]
+    helper.customSubscriberCredentialAuthKeys = dict
+  }
+
   public static func clearCredentials() {
     GRDKeychain.removeGuardianKeychainItems()
     GRDKeychain.removeSubscriberCredential(withRetries: 3)
@@ -526,70 +345,8 @@ public class BraveVPN {
     }
   }
 
-  // MARK: - Region selection
+  // MARK: - Notifications And Alerts
 
-  /// Returns currently chosen region. Returns nil if automatic region is selected.
-  public static var selectedRegion: GRDRegion? {
-    helper.selectedRegion
-  }
-
-  /// Return the region last activated with the details
-  /// It will give region details for automatic
-  public static var activatedRegion: GRDRegion? {
-    helper.selectedRegion ?? lastKnownRegion
-  }
-
-  /// Switched to use an automatic region, region closest to user location.
-  public static func useAutomaticRegion() {
-    helper.select(nil)
-  }
-
-  /// Returns true whether automatic region is selected.
-  public static var isAutomaticRegion: Bool {
-    helper.selectedRegion == nil
-  }
-
-  public static func changeVPNRegion(to region: GRDRegion?, completion: @escaping ((Bool) -> Void))
-  {
-    if isConnected {
-      helper.disconnectVPN()
-    }
-
-    helper.select(region)
-
-    // The preferred tunnel has to be used for configuration
-    // Otherwise faulty configuration will be added while connecting
-    let activeTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
-
-    helper.configureFirstTimeUser(for: activeTunnelProtocol, with: region) { success, error in
-      let subcredentials =
-        "Credentials \(GRDKeychain.getPasswordString(forAccount: kKeychainStr_SubscriberCredential) ?? "Empty")"
-
-      if success {
-        Logger.module.debug("Changed VPN region to \(region?.regionName ?? "default selection")")
-        completion(true)
-      } else {
-        Logger.module.debug("Connection failed: \(error ?? "nil")")
-        Logger.module.debug("Region change connection failed for subcredentials \(subcredentials)")
-        completion(false)
-      }
-    }
-  }
-
-  public static func populateRegionDataIfNecessary() {
-
-    helper.setPreferredRegionPrecision(kGRDRegionPrecisionCityByCountry)
-
-    helper.allRegions { regions, error in
-      guard let regions = regions else {
-        return
-      }
-
-      allCountryRegions = regions
-    }
-  }
-
-  // MARK: - VPN Alerts and notifications
   private static func shouldProcessVPNAlerts() -> Bool {
     switch vpnState {
     case .purchased(let enabled):
@@ -688,103 +445,6 @@ public class BraveVPN {
     }
   }
 
-  /// The function that fetched the last used region details from timezones
-  /// It used to get details of Region when Automatic Region is used
-  /// Otherwise the region detail items will be empty
-  /// - Parameter completion: completion block that returns region with details or error
-  public static func fetchLastUsedRegionDetail(_ completion: ((GRDRegion?, Bool) -> Void)? = nil) {
-    switch vpnState {
-    case .expired, .notPurchased:
-      break
-    case .purchased(_):
-      housekeepingApi.requestTimeZonesForRegions { timeZones, success, responseStatusCode in
-        guard success, let timeZones = timeZones else {
-          logAndStoreError(
-            "Failed to get timezones while fetching region: \(responseStatusCode)",
-            printToConsole: true
-          )
-          completion?(nil, false)
-
-          return
-        }
-
-        let region = GRDServerManager.localRegion(fromTimezones: timeZones)
-        completion?(region, true)
-        lastKnownRegion = region
-      }
-    }
-  }
-
-  // MARK: - Promotion
-
-  /// Editing product promotion order first yearly and monthly after
-  @MainActor public static func updateStorePromotionOrder() async {
-    let storePromotionController = SKProductStorePromotionController.default()
-    // Fetch Products
-    guard let yearlyProduct = VPNProductInfo.yearlySubProduct,
-      let monthlyProduct = VPNProductInfo.monthlySubProduct
-    else {
-      Logger.module.debug("Found empty while fetching SKProducts for promotion order")
-      return
-    }
-
-    // Update the order
-    do {
-      try await storePromotionController.update(promotionOrder: [yearlyProduct, monthlyProduct])
-    } catch {
-      Logger.module.debug("Error while opdating product promotion order ")
-    }
-  }
-
-  /// Hiding Store pormotion if the active subscription for the type
-  @MainActor public static func hideActiveStorePromotion() async {
-    let storePromotionController = SKProductStorePromotionController.default()
-
-    // Fetch Products
-    guard let yearlyProduct = VPNProductInfo.yearlySubProduct,
-      let monthlyProduct = VPNProductInfo.monthlySubProduct
-    else {
-      Logger.module.debug("Found empty while fetching SKProducts for promotion order")
-      return
-    }
-
-    // No promotion for VPN is purchased through website side
-    if Preferences.VPN.skusCredential.value != nil {
-      await hideSubscriptionType(yearlyProduct)
-      await hideSubscriptionType(monthlyProduct)
-
-      return
-    }
-
-    // Hide the promotion
-    let activeSubscriptionType = BraveVPN.activeSubscriptionType
-
-    switch activeSubscriptionType {
-    case .monthly:
-      await hideSubscriptionType(monthlyProduct)
-    case .yearly:
-      await hideSubscriptionType(yearlyProduct)
-    default:
-      break
-    }
-
-    func hideSubscriptionType(_ product: SKProduct) async {
-      do {
-        try await storePromotionController.update(promotionVisibility: .hide, for: product)
-      } catch {
-        Logger.module.debug("Error while opdating product promotion order ")
-      }
-    }
-  }
-
-  public static func activatePaymentTypeForStoredPromotion(savedPayment: SKPayment?) {
-    if let payment = savedPayment {
-      SKPaymentQueue.default().add(payment)
-    }
-
-    iapObserver.savedPayment = nil
-  }
-
   // MARK: - Error Handling
 
   /// Stores a in-memory list of vpn errors encountered during current browsing session.
@@ -793,7 +453,7 @@ public class BraveVPN {
 
   /// Prints out the error to the logger and stores it in a in memory array.
   /// This can be further used for a customer support form.
-  private static func logAndStoreError(_ message: String, printToConsole: Bool = true) {
+  public static func logAndStoreError(_ message: String, printToConsole: Bool = true) {
     if printToConsole {
       Logger.module.error("\(message)")
     }
@@ -807,3 +467,4 @@ public class BraveVPN {
     }
   }
 }
+
