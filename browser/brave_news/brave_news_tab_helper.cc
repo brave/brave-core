@@ -152,18 +152,25 @@ void BraveNewsTabHelper::ToggleSubscription(const GURL& feed_url) {
   controller_->GetPublisherForFeed(
       feed_url,
       base::BindOnce(
-          [](brave_news::BraveNewsController* controller, bool subscribed,
+          [](base::WeakPtr<BraveNewsTabHelper> tab_helper, bool subscribed,
              GURL feed_url, brave_news::mojom::PublisherPtr publisher) {
+            if (!tab_helper) {
+              return;
+            }
+
             if (publisher) {
-              controller->SetPublisherPref(
+              tab_helper->controller_->SetPublisherPref(
                   publisher->publisher_id,
                   subscribed ? brave_news::mojom::UserEnabled::DISABLED
                              : brave_news::mojom::UserEnabled::ENABLED);
             } else {
-              controller->SubscribeToNewDirectFeed(feed_url, base::DoNothing());
+              tab_helper->controller_->SubscribeToNewDirectFeed(
+                  feed_url, base::DoNothing());
             }
+
+            tab_helper->OnPublishersChanged();
           },
-          base::Unretained(controller_), subscribed, feed_url));
+          weak_ptr_factory_.GetWeakPtr(), subscribed, feed_url));
 }
 
 void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
@@ -194,8 +201,7 @@ void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
                 feed.requested_feed = true;
               }
               tab_helper->rss_page_feeds_.push_back(std::move(feed));
-
-              tab_helper->AvailableFeedsChanged();
+              tab_helper->OnPublishersChanged();
             },
             weak_ptr_factory_.GetWeakPtr(), feed_url));
   }
@@ -310,14 +316,11 @@ void BraveNewsTabHelper::OnPublishersChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto subscriptions = controller_->prefs().GetSubscriptions();
   for (auto& feed : rss_page_feeds_) {
-    if (feed.combined_publisher_id.empty()) {
-      feed.subscribed = base::Contains(
-          subscriptions.direct_feeds(), feed.feed_url,
-          [](const auto& direct_feed) { return direct_feed.url; });
-    } else {
-      feed.subscribed = base::Contains(subscriptions.enabled_publishers(),
-                                       feed.combined_publisher_id);
-    }
+    feed.subscribed =
+        base::Contains(subscriptions.enabled_publishers(),
+                       feed.combined_publisher_id) ||
+        base::Contains(subscriptions.direct_feeds(), feed.feed_url,
+                       [](const auto& direct_feed) { return direct_feed.url; });
   }
   controller_->GetPublishers(
       base::BindOnce(&BraveNewsTabHelper::OnReceivedNewPublishers,
