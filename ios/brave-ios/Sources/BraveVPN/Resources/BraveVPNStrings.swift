@@ -161,7 +161,6 @@ extension Strings {
     public static let installProfileBody =
       NSLocalizedString(
         "vpn.installProfileBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "This profile allows the VPN to automatically connect and secure traffic across your device all the time. This VPN connection will be encrypted and routed through Brave's intelligent firewall to block potentially harmful and invasive connections.",
@@ -171,7 +170,6 @@ extension Strings {
     public static let installProfileButtonText =
       NSLocalizedString(
         "vpn.installProfileButtonText",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Install VPN Profile",
         comment: "Text for 'install vpn profile' button"
@@ -180,7 +178,6 @@ extension Strings {
     public static let settingsSubscriptionSection =
       NSLocalizedString(
         "vpn.settingsSubscriptionSection",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Subscription",
         comment: "Header title for vpn settings subscription section."
@@ -189,7 +186,6 @@ extension Strings {
     public static let settingsServerSection =
       NSLocalizedString(
         "vpn.settingsServerSection",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Server",
         comment: "Header title for vpn settings server section."
@@ -198,7 +194,6 @@ extension Strings {
     public static let settingsSubscriptionStatus =
       NSLocalizedString(
         "vpn.settingsSubscriptionStatus",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Status",
         comment: "Table cell title for status of current VPN subscription."
@@ -207,7 +202,6 @@ extension Strings {
     public static let settingsSubscriptionExpiration =
       NSLocalizedString(
         "vpn.settingsSubscriptionExpiration",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Expires",
         comment: "Table cell title for cell that shows when the VPN subscription expires."
@@ -216,7 +210,6 @@ extension Strings {
     public static let settingsManageSubscription =
       NSLocalizedString(
         "vpn.settingsManageSubscription",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Manage Subscription",
         comment: "Button to manage your VPN subscription"
@@ -225,7 +218,6 @@ extension Strings {
     public static let settingsRedeemOfferCode =
       NSLocalizedString(
         "vpn.settingsRedeemOfferCode",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Redeem Offer Code",
         comment: "Button to redeem offer code subscription"
@@ -234,7 +226,6 @@ extension Strings {
     public static let settingsLinkReceipt =
       NSLocalizedString(
         "vpn.settingsLinkReceipt",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Link purchase to your Brave account",
         comment: "Button to link your VPN receipt to other devices."
@@ -243,7 +234,6 @@ extension Strings {
     public static let settingsLinkReceiptFooter =
       NSLocalizedString(
         "vpn.settingsLinkReceiptFooter",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Link your App Store purchase to your Brave account to use Brave VPN on other devices.",
@@ -253,7 +243,6 @@ extension Strings {
     public static let settingsServerHost =
       NSLocalizedString(
         "vpn.settingsServerHost",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Host",
         comment: "Table cell title for vpn's server host"
@@ -262,7 +251,6 @@ extension Strings {
     public static let settingsServerLocation =
       NSLocalizedString(
         "vpn.settingsServerLocation",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Location",
         comment: "Table cell title for vpn's server location and which open opens location select"
@@ -271,7 +259,6 @@ extension Strings {
     public static let settingsResetConfiguration =
       NSLocalizedString(
         "vpn.settingsResetConfiguration",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Reset Configuration",
         comment: "Button to reset VPN configuration"
@@ -280,7 +267,6 @@ extension Strings {
     public static let settingsTransportProtocol =
       NSLocalizedString(
         "vpn.settingsTransportProtocol",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Transport Protocol",
         comment:
@@ -290,7 +276,6 @@ extension Strings {
     public static let settingsContactSupport =
       NSLocalizedString(
         "vpn.settingsContactSupport",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Contact Technical Support",
         comment: "Button to contact tech support"
@@ -299,7 +284,6 @@ extension Strings {
     public static let settingsFAQ =
       NSLocalizedString(
         "vpn.settingsFAQ",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN Support",
         comment: "Button for FAQ"
@@ -308,7 +292,6 @@ extension Strings {
     public static let enableButton =
       NSLocalizedString(
         "vpn.enableButton",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Enable",
         comment: "Button text to enable Brave VPN"
@@ -317,7 +300,6 @@ extension Strings {
     public static let buyButton =
       NSLocalizedString(
         "vpn.buyButton",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Buy",
         comment: "Button text to buy Brave VPN"
@@ -326,7 +308,6 @@ extension Strings {
     public static let tryForFreeButton =
       NSLocalizedString(
         "vpn.learnMore",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Try for FREE",
         comment: "Button text to try free Brave VPN"
@@ -335,7 +316,6 @@ extension Strings {
     public static let settingHeaderBody =
       NSLocalizedString(
         "vpn.settingHeaderBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Upgrade to a VPN to protect your connection and block invasive trackers everywhere.",
@@ -345,7 +325,6 @@ extension Strings {
     public static let vpnConfigGenericErrorTitle =
       NSLocalizedString(
         "vpn.vpnConfigGenericErrorTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Error",
         comment: "Title for an alert when the VPN can't be configured"
@@ -354,7 +333,6 @@ extension Strings {
     public static let vpnConfigGenericErrorBody =
       NSLocalizedString(
         "vpn.vpnConfigGenericErrorBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "There was a problem initializing the VPN. Please try again or try resetting configuration in the VPN settings page.",
@@ -364,7 +342,6 @@ extension Strings {
     public static let vpnConfigPermissionDeniedErrorTitle =
       NSLocalizedString(
         "vpn.vpnConfigPermissionDeniedErrorTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Permission denied",
         comment: "Title for an alert when the user didn't allow to install VPN profile"
@@ -373,7 +350,6 @@ extension Strings {
     public static let vpnRedeemCodeButtonActionTitle =
       NSLocalizedString(
         "vpn.vpnRedeemCodeButtonActionTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Redeem Code",
         comment: "Title for a button for enabling the Redeem Code flow"
@@ -382,7 +358,6 @@ extension Strings {
     public static let vpnConfigPermissionDeniedErrorBody =
       NSLocalizedString(
         "vpn.vpnConfigPermissionDeniedErrorBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "The Brave Firewall + VPN requires a VPN profile to be installed on your device to work. ",
@@ -392,7 +367,6 @@ extension Strings {
     public static let vpnSettingsMonthlySubName =
       NSLocalizedString(
         "vpn.vpnSettingsMonthlySubName",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Monthly subscription",
         comment: "Name of monthly subscription in VPN Settings"
@@ -401,7 +375,6 @@ extension Strings {
     public static let vpnSettingsYearlySubName =
       NSLocalizedString(
         "vpn.vpnSettingsYearlySubName",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Yearly subscription",
         comment: "Name of annual subscription in VPN Settings"
@@ -410,7 +383,6 @@ extension Strings {
     public static let vpnErrorPurchaseFailedTitle =
       NSLocalizedString(
         "vpn.vpnErrorPurchaseFailedTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Error",
         comment: "Title for error when VPN could not be purchased."
@@ -419,7 +391,6 @@ extension Strings {
     public static let vpnErrorPurchaseFailedBody =
       NSLocalizedString(
         "vpn.vpnErrorPurchaseFailedBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
@@ -429,7 +400,6 @@ extension Strings {
     public static let vpnErrorOfferCodeFailedBody =
       NSLocalizedString(
         "vpn.vpnErrorOfferCodeFailedBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Unable to redeem offer code. Please try again, or check your offer code details and try again.",
@@ -439,7 +409,6 @@ extension Strings {
     public static let vpnResetAlertTitle =
       NSLocalizedString(
         "vpn.vpnResetAlertTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Reset configuration",
         comment: "Title for alert to reset vpn configuration"
@@ -448,7 +417,6 @@ extension Strings {
     public static let vpnResetAlertBody =
       NSLocalizedString(
         "vpn.vpnResetAlertBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "This will reset your Brave Firewall + VPN configuration and fix any errors. This process may take a minute.",
@@ -458,7 +426,6 @@ extension Strings {
     public static let vpnResetButton =
       NSLocalizedString(
         "vpn.vpnResetButton",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Reset",
         comment: "Button name to reset vpn configuration"
@@ -467,7 +434,6 @@ extension Strings {
     public static let contactFormHostname =
       NSLocalizedString(
         "vpn.contactFormHostname",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN Hostname",
         comment: "VPN Hostname field for customer support contact form."
@@ -476,7 +442,6 @@ extension Strings {
     public static let contactFormSubscriptionType =
       NSLocalizedString(
         "vpn.contactFormSubscriptionType",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Subscription Type",
         comment: "Subscription Type field for customer support contact form."
@@ -485,7 +450,6 @@ extension Strings {
     public static let contactFormAppStoreReceipt =
       NSLocalizedString(
         "vpn.contactFormAppStoreReceipt",
-        tableName: "BraveShared",
         bundle: .module,
         value: "App Store Receipt",
         comment: "App Store Receipt field for customer support contact form."
@@ -494,7 +458,6 @@ extension Strings {
     public static let contactFormAppVersion =
       NSLocalizedString(
         "vpn.contactFormAppVersion",
-        tableName: "BraveShared",
         bundle: .module,
         value: "App Version",
         comment: "App Version field for customer support contact form."
@@ -503,7 +466,6 @@ extension Strings {
     public static let contactFormTimezone =
       NSLocalizedString(
         "vpn.contactFormTimezone",
-        tableName: "BraveShared",
         bundle: .module,
         value: "iOS Timezone",
         comment: "iOS Timezone field for customer support contact form."
@@ -512,7 +474,6 @@ extension Strings {
     public static let contactFormPlatform =
       NSLocalizedString(
         "vpn.contactFormPlatform",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Platform",
         comment: "A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop'"
@@ -521,7 +482,6 @@ extension Strings {
     public static let contactFormNetworkType =
       NSLocalizedString(
         "vpn.contactFormNetworkType",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Network Type",
         comment: "Network Type field for customer support contact form."
@@ -530,7 +490,6 @@ extension Strings {
     public static let contactFormCarrier =
       NSLocalizedString(
         "vpn.contactFormCarrier",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Cellular Carrier",
         comment: "Cellular Carrier field for customer support contact form."
@@ -539,7 +498,6 @@ extension Strings {
     public static let contactFormLogs =
       NSLocalizedString(
         "vpn.contactFormLogs",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Error Logs",
         comment: "VPN logs field for customer support contact form."
@@ -548,7 +506,6 @@ extension Strings {
     public static let contactFormIssue =
       NSLocalizedString(
         "vpn.contactFormIssue",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Issue",
         comment: "Specific issue field for customer support contact form."
@@ -557,7 +514,6 @@ extension Strings {
     public static let contactFormIssueDescription =
       NSLocalizedString(
         "vpn.contactFormIssueDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Please choose the category that describes the issue.",
         comment: "Description used for specific issue field for customer support contact form."
@@ -566,7 +522,6 @@ extension Strings {
     public static let contactFormFooterSharedWithGuardian =
       NSLocalizedString(
         "vpn.contactFormFooterSharedWithGuardian",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Support provided with the help of the Guardian team.",
         comment: "Footer for customer support contact form."
@@ -575,7 +530,6 @@ extension Strings {
     public static let contactFormFooter =
       NSLocalizedString(
         "vpn.contactFormFooter",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Please select the information you're comfortable sharing with us.\n\nThe more information you initially share with us the easier it will be for our support staff to help you resolve your issue.",
@@ -585,7 +539,6 @@ extension Strings {
     public static let contactFormSendButton =
       NSLocalizedString(
         "vpn.contactFormSendButton",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Continue to Email",
         comment: "Button name to send contact form."
@@ -594,7 +547,6 @@ extension Strings {
     public static let contactFormIssueOtherConnectionError =
       NSLocalizedString(
         "vpn.contactFormIssueOtherConnectionError",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Cannot connect to the VPN (Other error)",
         comment: "Other connection problem for contact form issue field."
@@ -603,7 +555,6 @@ extension Strings {
     public static let contactFormIssueNoInternet =
       NSLocalizedString(
         "vpn.contactFormIssueNoInternet",
-        tableName: "BraveShared",
         bundle: .module,
         value: "No internet when connected",
         comment: "No internet problem for contact form issue field."
@@ -612,7 +563,6 @@ extension Strings {
     public static let contactFormIssueSlowConnection =
       NSLocalizedString(
         "vpn.contactFormIssueSlowConnection",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Slow connection",
         comment: "Slow connection problem for contact form issue field."
@@ -621,7 +571,6 @@ extension Strings {
     public static let contactFormIssueWebsiteProblems =
       NSLocalizedString(
         "vpn.contactFormIssueWebsiteProblems",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Website doesn't work",
         comment: "Website problem for contact form issue field."
@@ -630,7 +579,6 @@ extension Strings {
     public static let contactFormIssueConnectionReliability =
       NSLocalizedString(
         "vpn.contactFormIssueConnectionReliability",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Connection reliability problem",
         comment: "Connection problems for contact form issue field."
@@ -639,7 +587,6 @@ extension Strings {
     public static let contactFormIssueOther =
       NSLocalizedString(
         "vpn.contactFormIssueOther",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Other",
         comment: "Other problem for contact form issue field."
@@ -648,7 +595,6 @@ extension Strings {
     public static let subscriptionStatusExpired =
       NSLocalizedString(
         "vpn.planExpired",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Expired",
         comment: "Text to show user when their vpn plan has expired"
@@ -657,7 +603,6 @@ extension Strings {
     public static let resetVPNErrorTitle =
       NSLocalizedString(
         "vpn.resetVPNErrorTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Reset Failed",
         comment: "Title for error message when vpn configuration reset fails."
@@ -666,7 +611,6 @@ extension Strings {
     public static let resetVPNErrorBody =
       NSLocalizedString(
         "vpn.resetVPNErrorBody",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Unable to reset VPN configuration. Please try again. If the issue persists, contact support for assistance.",
@@ -676,7 +620,6 @@ extension Strings {
     public static let resetVPNErrorButtonActionTitle =
       NSLocalizedString(
         "vpn.resetVPNErrorButtonActionTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Try Again",
         comment: "Title of button to try again when vpn configuration reset fails."
@@ -685,7 +628,6 @@ extension Strings {
     public static let resetVPNSuccessTitle =
       NSLocalizedString(
         "vpn.resetVPNSuccessTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Reset Successful",
         comment: "Title for success message when vpn configuration reset succeeds."
@@ -694,7 +636,6 @@ extension Strings {
     public static let resetVPNSuccessBody =
       NSLocalizedString(
         "vpn.resetVPNSuccessBody",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN configuration has been reset successfully.",
         comment: "Message to show when vpn configuration reset succeeds."
@@ -703,7 +644,6 @@ extension Strings {
     public static let contactFormDoNotEditText =
       NSLocalizedString(
         "vpn.contactFormDoNotEditText",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Brave doesn’t track you or know how you use our app, so we don’t know how you've set up VPN. Please share info about the issue you're experiencing and we'll do our best to resolve it as soon as we can.",
@@ -713,7 +653,6 @@ extension Strings {
     public static let contactFormTitle =
       NSLocalizedString(
         "vpn.contactFormTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Brave Firewall + VPN Issue",
         comment: "Title for contact form email."
@@ -722,7 +661,6 @@ extension Strings {
     public static let iapDisclaimer =
       NSLocalizedString(
         "vpn.iapDisclaimer",
-        tableName: "BraveShared",
         bundle: .module,
         value: "All subscriptions are auto-renewed but can be cancelled before renewal.",
         comment: "Disclaimer about in app subscription"
@@ -731,7 +669,6 @@ extension Strings {
     public static let installSuccessPopup =
       NSLocalizedString(
         "vpn.installSuccessPopup",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN is now enabled",
         comment: "Popup that shows after user installs the vpn for the first time."
@@ -740,7 +677,6 @@ extension Strings {
     public static let vpnBackgroundNotificationTitle =
       NSLocalizedString(
         "vpn.vpnBackgroundNotificationTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Brave Firewall + VPN is ON",
         comment: "Notification title to tell user that the vpn is turned on even in background"
@@ -749,7 +685,6 @@ extension Strings {
     public static let vpnBackgroundNotificationBody =
       NSLocalizedString(
         "vpn.vpnBackgroundNotificationBody",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Even in the background, Brave will continue to protect you.",
         comment: "Notification title to tell user that the vpn is turned on even in background"
@@ -758,7 +693,6 @@ extension Strings {
     public static let vpnIAPBoilerPlate =
       NSLocalizedString(
         "vpn.vpnIAPBoilerPlate",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
@@ -768,7 +702,6 @@ extension Strings {
     public static let regionPickerTitle =
       NSLocalizedString(
         "vpn.regionPickerTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Server Region",
         comment: "Title for vpn region selector screen"
@@ -777,7 +710,6 @@ extension Strings {
     public static let regionPickerAutomaticDescription =
       NSLocalizedString(
         "vpn.regionPickerAutomaticDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.",
@@ -787,7 +719,6 @@ extension Strings {
     public static let regionPickerErrorTitle =
       NSLocalizedString(
         "vpn.regionPickerErrorTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Server Error",
         comment: "Title for error when we fail to switch vpn server for the user"
@@ -796,7 +727,6 @@ extension Strings {
     public static let regionPickerErrorMessage =
       NSLocalizedString(
         "vpn.regionPickerErrorMessage",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Failed to switch servers, please try again later.",
         comment: "Message for error when we fail to switch vpn server for the user"
@@ -805,7 +735,6 @@ extension Strings {
     public static let protocolPickerTitle =
       NSLocalizedString(
         "vpn.protocolPickerTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Transport Protocol",
         comment: "Title for vpn tunnel protocol screen"
@@ -814,7 +743,6 @@ extension Strings {
     public static let protocolPickerDescription =
       NSLocalizedString(
         "vpn.protocolPickerDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Please select your preferred transport protocol. Once switched your existing VPN credentials will be cleared and you will be reconnected if a VPN connection is currently established.",
@@ -824,7 +752,6 @@ extension Strings {
     public static let regionSwitchSuccessPopupText =
       NSLocalizedString(
         "vpn.regionSwitchSuccessPopupText",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN region changed.",
         comment: "Message that we show after successfully changing vpn region."
@@ -833,7 +760,6 @@ extension Strings {
     public static let protocolPickerErrorTitle =
       NSLocalizedString(
         "vpn.protocolPickerErrorTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Server Error",
         comment: "Title for error when we fail to switch tunnel protocol for the user"
@@ -842,7 +768,6 @@ extension Strings {
     public static let protocolPickerErrorMessage =
       NSLocalizedString(
         "vpn.protocolPickerErrorMessage",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Failed to switch tunnel protocol, please try again later.",
         comment: "Message for error when we fail to switch tunnel protocol for the user"
@@ -851,7 +776,6 @@ extension Strings {
     public static let protocolSwitchSuccessPopupText =
       NSLocalizedString(
         "vpn.protocolSwitchSuccessPopupText",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN Tunnel Protocol changed.",
         comment: "Message that we show after successfully changing tunnel protocol."
@@ -860,7 +784,6 @@ extension Strings {
     public static let settingsFailedToFetchServerList =
       NSLocalizedString(
         "vpn.settingsFailedToFetchServerList",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Failed to retrieve server list, please try again later.",
         comment: "Error message shown if we failed to retrieve vpn server list."
@@ -869,7 +792,6 @@ extension Strings {
     public static let contactFormEmailNotConfiguredBody =
       NSLocalizedString(
         "vpn.contactFormEmailNotConfiguredBody",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Can't send email. Please check your email configuration.",
         comment: "Button name to send contact form."
@@ -878,7 +800,6 @@ extension Strings {
     public static let vpnActionUpdatePaymentMethodSettingsText =
       NSLocalizedString(
         "vpn.vpnActionUpdatePaymentMethodSettingsText",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Update Payment Method",
         comment:
@@ -888,7 +809,6 @@ extension Strings {
     public static let vpnCityRegionOptimalTitle =
       NSLocalizedString(
         "vpn.vpnCityRegionOptimalTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Optimal",
         comment:
@@ -898,7 +818,6 @@ extension Strings {
     public static let vpnCityRegionOptimalDescription =
       NSLocalizedString(
         "vpn.vpnCityRegionOptimalDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Use the best server available",
         comment:
@@ -908,7 +827,6 @@ extension Strings {
     public static let serverRegionAutoSelectDescription =
       NSLocalizedString(
         "vpn.serverRegionAutoSelectDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value:
           "Auto-select the VPN server region closest to you based on your timezone. This option is recommended to maximize Internet speeds.",
@@ -919,7 +837,6 @@ extension Strings {
     public static let serverCountTitle =
       NSLocalizedString(
         "vpn.serverTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "%ld server",
         comment: "Text indicating how many server is used for that region used as Ex: '1 server'"
@@ -928,7 +845,6 @@ extension Strings {
     public static let multipleServerCountTitle =
       NSLocalizedString(
         "vpn.multipleServerCountTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "%ld servers",
         comment: "Text indicating how many server is used for that region used as Ex: '2 servers'"
@@ -937,7 +853,6 @@ extension Strings {
     public static let connectedRegionDescription =
       NSLocalizedString(
         "vpn.connectedRegionDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Connected",
         comment: "Text showing the vpn region is connected"
@@ -946,7 +861,6 @@ extension Strings {
     public static let automaticServerSelectionToggleTitle =
       NSLocalizedString(
         "vpn.automaticServerSelectionToggleTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Automatic",
         comment:
@@ -956,7 +870,6 @@ extension Strings {
     public static let availableServerTitle =
       NSLocalizedString(
         "vpn.availableServerTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "AVAILABLE SERVERS",
         comment: "Title on top the list of available servers"
@@ -965,7 +878,6 @@ extension Strings {
     public static let serverNameTitle =
       NSLocalizedString(
         "vpn.serverNameTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "%@ Server",
         comment: "Title showing which country serves list showing. Ex: 'Brazil Server"
@@ -974,7 +886,6 @@ extension Strings {
     public static let vpnRegionChangedTitle =
       NSLocalizedString(
         "vpn.protocolPickerDescription",
-        tableName: "BraveShared",
         bundle: .module,
         value: "VPN Region Changed",
         comment: "The alert title showing vpn region is changed"
