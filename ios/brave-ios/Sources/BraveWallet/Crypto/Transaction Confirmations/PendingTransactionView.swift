@@ -346,6 +346,7 @@ struct PendingTransactionView: View {
                     .multilineTextAlignment(.trailing)
                   Text(confirmationStore.gasFiat)
                     .font(.footnote)
+                    .multilineTextAlignment(.trailing)
                 }
               }
               .font(.callout)
