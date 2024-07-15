@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/feature_list.h"

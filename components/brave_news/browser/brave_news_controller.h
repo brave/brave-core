@@ -168,10 +168,7 @@ class BraveNewsController
   void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
   void NotifyFeedHash(const std::string& hash);
 
-  // Creates a function for querying history from a non-main thread. This lets
-  // us lazily pull a recent snapshot of history into our worker sequence.
-  BackgroundHistoryQuerier MakeHistoryQuerier(
-      base::WeakPtr<history::HistoryService> history_service);
+  BackgroundHistoryQuerier MakeHistoryQuerier();
 
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;

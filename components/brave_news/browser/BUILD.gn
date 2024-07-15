@@ -8,6 +8,7 @@ import("//build/config/features.gni")
 
 static_library("browser") {
   sources = [
+    "background_history_querier.cc",
     "background_history_querier.h",
     "brave_news_controller.cc",
     "brave_news_controller.h",

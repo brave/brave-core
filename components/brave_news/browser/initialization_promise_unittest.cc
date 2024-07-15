@@ -6,6 +6,7 @@
 #include "brave/components/brave_news/browser/initialization_promise.h"
 
 #include <string>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
@@ -54,7 +55,13 @@ class BraveNewsInitializationPromiseTest : public testing::Test {
                             test_url_loader_factory_.GetSafeWeakWrapper()),
         pref_manager_(*profile_.GetPrefs()),
         publishers_controller_(&api_request_helper_),
-        initialization_promise_(3, pref_manager_, publishers_controller_) {
+        initialization_promise_(
+            3,
+            pref_manager_,
+            base::BindRepeating(
+                [](mojom::BraveNewsController::GetLocaleCallback callback) {
+                  return std::move(callback).Run("en_US");
+                })) {
     // Ensure Brave News is enabled.
     pref_manager_.SetConfig(mojom::Configuration::New(true, true, true));
 

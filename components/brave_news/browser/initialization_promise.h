@@ -19,7 +19,6 @@
 namespace brave_news {
 
 class BraveNewsPrefManager;
-class PublishersController;
 
 class InitializationPromise {
  public:

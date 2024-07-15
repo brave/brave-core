@@ -27,6 +27,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/task/bind_post_task.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
@@ -137,8 +138,7 @@ BraveNewsController::BraveNewsController(
               // owned by BraveNewsController.
               base::Unretained(this))) {
   engine_.reset(
-      new BraveNewsEngine(url_loader_factory_->Clone(),
-                          MakeHistoryQuerier(history_service_->AsWeakPtr())));
+      new BraveNewsEngine(url_loader_factory_->Clone(), MakeHistoryQuerier()));
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 
   prefs_observation_.Observe(&pref_manager_);
@@ -827,9 +827,8 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
 
     // Reset our engine so all the caches are deleted.
-    engine_.reset(
-        new BraveNewsEngine(url_loader_factory_->Clone(),
-                            MakeHistoryQuerier(history_service_->AsWeakPtr())));
+    engine_.reset(new BraveNewsEngine(url_loader_factory_->Clone(),
+                                      MakeHistoryQuerier()));
   }
 }
 
@@ -957,38 +956,15 @@ void BraveNewsController::NotifyFeedHash(const std::string& hash) {
   }
 }
 
-BackgroundHistoryQuerier BraveNewsController::MakeHistoryQuerier(
-    base::WeakPtr<history::HistoryService> history_service) {
-  auto history_sequence = base::SequencedTaskRunner::GetCurrentDefault();
-  return base::BindRepeating(
-      [](scoped_refptr<base::SequencedTaskRunner> history_sequence,
-         base::WeakPtr<history::HistoryService> history_service,
-         base::WeakPtr<BraveNewsController> controller,
-         QueryHistoryCallback callback) {
-        // |bound_callback| will always be invoked on the caller's thread.
-        auto bound_callback =
-            base::BindPostTaskToCurrentDefault(std::move(callback));
-
-        history_sequence->PostTask(
-            FROM_HERE,
-            base::BindOnce(
-                [](base::WeakPtr<history::HistoryService> service,
-                   base::WeakPtr<BraveNewsController> controller,
-                   QueryHistoryCallback callback) {
-                  if (!service || !controller) {
-                    return;
-                  }
-
-                  history::QueryOptions options;
-                  options.max_count = 2000;
-                  options.SetRecentDayRange(14);
-                  service->QueryHistory(std::u16string(), options,
-                                        std::move(callback),
-                                        &controller->task_tracker_);
-                },
-                history_service, controller, std::move(bound_callback)));
-      },
-      history_sequence, history_service, weak_ptr_factory_.GetWeakPtr());
+BackgroundHistoryQuerier BraveNewsController::MakeHistoryQuerier() {
+  return brave_news::MakeHistoryQuerier(
+      history_service_->AsWeakPtr(),
+      base::BindRepeating(
+          [](base::WeakPtr<BraveNewsController> controller)
+              -> base::CancelableTaskTracker* {
+            return controller ? &controller->task_tracker_ : nullptr;
+          },
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 #undef IN_ENGINE

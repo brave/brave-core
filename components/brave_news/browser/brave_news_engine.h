@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_BRAVE_NEWS_ENGINE_H_
 
 #include <memory>
+#include <string>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
@@ -18,7 +19,6 @@
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
