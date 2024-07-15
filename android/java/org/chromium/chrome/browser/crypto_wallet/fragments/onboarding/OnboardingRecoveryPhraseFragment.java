@@ -57,6 +57,11 @@ public class OnboardingRecoveryPhraseFragment extends BaseOnboardingWalletFragme
     }
 
     @Override
+    protected boolean canBeClosed() {
+        return false;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIsOnboarding = requireArguments().getBoolean(IS_ONBOARDING_ARG, false);

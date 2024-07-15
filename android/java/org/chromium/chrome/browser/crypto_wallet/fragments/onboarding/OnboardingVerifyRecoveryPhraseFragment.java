@@ -61,7 +61,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
     private boolean mIsOnboarding;
     private VerificationStep mVerificationStep;
     private Pair<Integer, String> mWordToMatch;
-    private String mPhraseNotMatch;
+    private String mWordMismatch;
 
     @NonNull
     public static OnboardingVerifyRecoveryPhraseFragment newInstance(
@@ -98,7 +98,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         } else {
             mVerificationStep = (VerificationStep) bundle.getSerializable(VERIFICATION_STEP_ARG);
         }
-        mPhraseNotMatch = getResources().getString(R.string.phrase_does_not_match);
+        mWordMismatch = getResources().getString(R.string.phrase_does_not_match);
         mCurrentStepRes = R.drawable.rectangle_selected_9;
     }
 
@@ -153,7 +153,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                     }
                     final Editable typedWord = mTextInputEditText.getText();
                     if (typedWord == null) {
-                        phraseNotMatch();
+                        wordMismatch();
                         return;
                     }
                     if (mWordToMatch.second.equals(typedWord.toString())) {
@@ -182,7 +182,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
                             }
                         }
                     } else {
-                        phraseNotMatch();
+                        wordMismatch();
                     }
                 });
         mSkip = view.findViewById(R.id.skip);
@@ -199,7 +199,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
         }
     }
 
-    private void phraseNotMatch() {
-        mTextInputLayout.setError(mPhraseNotMatch);
+    private void wordMismatch() {
+        mTextInputLayout.setError(mWordMismatch);
     }
 }
