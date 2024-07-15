@@ -481,7 +481,7 @@ export class BaseQueryCache {
         this.rewardsInfo = emptyRewardsInfo
         return this.rewardsInfo
       }
-      const { provider, status, links } =
+      const { provider, status, url } =
         (await getBraveRewardsProxy().getExternalWallet()) || {}
 
       if (!provider || provider === 'solana') {
@@ -495,7 +495,7 @@ export class BaseQueryCache {
         balance,
         provider,
         status: status || WalletStatus.kNotConnected,
-        accountLink: links?.account,
+        accountLink: url,
         rewardsToken: getRewardsBATToken(provider),
         rewardsAccount: getNormalizedExternalRewardsWallet(provider),
         rewardsNetwork: getNormalizedExternalRewardsNetwork(provider),

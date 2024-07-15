@@ -36,8 +36,6 @@ import * as urls from '../../lib/rewards_urls'
 
 import * as style from './wallet_card.style'
 
-import * as mojom from '../../../shared/lib/mojom'
-
 const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
 })
@@ -71,8 +69,7 @@ export function WalletCard (props: Props) {
     useCounterAnimation(props.balance.valueOr(0), 450)
   const { externalWallet } = props
 
-  const walletDisconnected =
-    externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut
+  const walletDisconnected = externalWallet && !externalWallet.authenticated
 
   // The contribution summary is not currently shown for self-custody users.
   const showSummary = props.showSummary &&

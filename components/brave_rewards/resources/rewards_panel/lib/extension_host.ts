@@ -96,14 +96,13 @@ export function createHost (): Host {
       return urls.connectURL
     }
 
-    const { links } = externalWallet
     switch (action) {
       case 'reconnect':
         return urls.reconnectURL
       case 'verify':
         return urls.connectURL
       case 'view-account':
-        return links.account || ''
+        return externalWallet.url
     }
   }
 

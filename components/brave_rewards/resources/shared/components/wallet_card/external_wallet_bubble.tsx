@@ -15,8 +15,6 @@ import { WalletProviderIcon } from '../icons/wallet_provider_icon'
 
 import * as style from './external_wallet_bubble.style'
 
-import * as mojom from '../../../shared/lib/mojom'
-
 interface Props {
   externalWallet: ExternalWallet
   onExternalWalletAction: (action: ExternalWalletAction) => void
@@ -33,40 +31,33 @@ export function ExternalWalletBubble (props: Props) {
   }
 
   function getWalletStatus () {
-    switch (externalWallet.status) {
-      case mojom.WalletStatus.kLoggedOut:
-        return getString('walletDisconnected')
-      case mojom.WalletStatus.kConnected:
-        return getString('walletVerified')
+    if (!externalWallet.authenticated) {
+      return getString('walletDisconnected')
     }
-
-    return ''
+    return getString('walletVerified')
   }
 
   function renderAccountLink () {
-    switch (externalWallet.status) {
-      case mojom.WalletStatus.kLoggedOut:
-        return (
-          <button onClick={actionHandler('reconnect')}>
-            {
-              formatMessage(getString('walletLogIntoYourAccount'), [
-                providerName
-              ])
-            }
-          </button>
-        )
-      case mojom.WalletStatus.kConnected:
-        return (
-          <button onClick={actionHandler('view-account')}>
-            <span>
-              {formatMessage(getString('walletAccountLink'), [providerName])}
-            </span>
-            <Icon name='launch' />
-          </button>
-        )
+    if (!externalWallet.authenticated) {
+      return (
+        <button onClick={actionHandler('reconnect')}>
+          {
+            formatMessage(getString('walletLogIntoYourAccount'), [
+              providerName
+            ])
+          }
+        </button>
+      )
     }
 
-    return null
+    return (
+      <button onClick={actionHandler('view-account')}>
+        <span>
+          {formatMessage(getString('walletAccountLink'), [providerName])}
+        </span>
+        <Icon name='launch' />
+      </button>
+    )
   }
 
   return (
@@ -77,9 +68,11 @@ export function ExternalWalletBubble (props: Props) {
             <WalletProviderIcon provider={externalWallet.provider} />
           </style.providerIcon>
           <style.username>
-            {externalWallet.username}
+            {externalWallet.name}
           </style.username>
-          <style.status className={externalWallet.status === mojom.WalletStatus.kConnected ? 'connected' : ''}>
+          <style.status
+            className={externalWallet.authenticated ? 'connected' : ''}
+          >
             {getWalletStatus()}
           </style.status>
         </style.header>

@@ -5,6 +5,7 @@
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
+import { externalWalletFromExtensionData } from '../../shared/lib/external_wallet'
 import { AppModel, AppState, defaultState } from './app_model'
 import { RewardsPageProxy } from './rewards_page_proxy'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -46,35 +47,8 @@ export function createModel(): AppModel {
 
   async function updatePayoutAccount() {
     const { externalWallet } = await pageHandler.getExternalWallet()
-    if (!externalWallet) {
-      stateManager.update({ payoutAccount: null })
-      return
-    }
-
-    const provider = (() => {
-      switch (externalWallet.type) {
-        case 'uphold':
-        case 'bitflyer':
-        case 'gemini':
-        case 'zebpay':
-        case 'solana':
-          return externalWallet.type
-      }
-      return null
-    })()
-
-    if (!provider) {
-      console.error(`Invalid payout provider "${externalWallet.type}"`)
-      return
-    }
-
     stateManager.update({
-      payoutAccount: {
-        provider,
-        authenticated: externalWallet.status === mojom.WalletStatus.kConnected,
-        displayName: externalWallet.userName,
-        url: externalWallet.accountUrl
-      }
+      externalWallet: externalWalletFromExtensionData(externalWallet)
     })
   }
 

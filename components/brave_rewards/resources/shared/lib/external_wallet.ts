@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from '../../shared/lib/mojom'
-
 export type ExternalWalletProvider =
   'uphold' |
   'bitflyer' |
@@ -14,11 +12,9 @@ export type ExternalWalletProvider =
 
 export interface ExternalWallet {
   provider: ExternalWalletProvider
-  status: mojom.WalletStatus
-  username: string
-  links: {
-    account?: string
-  }
+  authenticated: boolean
+  name: string
+  url: string
 }
 
 // Returns the external wallet provider name for the specified provider.
@@ -68,34 +64,20 @@ export function lookupExternalWalletProviderName (providerKey: string) {
 export function externalWalletFromExtensionData (
   data: any
 ): ExternalWallet | null {
-  function mapStatus (status: number): mojom.WalletStatus | null {
-    switch (status) {
-      case 2:
-        return mojom.WalletStatus.kConnected
-      case 4:
-        return mojom.WalletStatus.kLoggedOut
-    }
-    return null
-  }
-
   if (!data || typeof data !== 'object') {
     return null
   }
 
   const provider = externalWalletProviderFromString(String(data.type || ''))
-  const status = mapStatus(Number(data.status || 0))
-
-  if (!provider || !status) {
+  if (!provider) {
     return null
   }
 
   return {
     provider,
-    status,
-    username: String(data.userName || ''),
-    links: {
-      account: String(data.accountUrl || '')
-    }
+    authenticated: data.status === 2,
+    name: String(data.userName || ''),
+    url: String(data.accountUrl || '')
   }
 }
 

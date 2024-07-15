@@ -1073,7 +1073,7 @@ export type WalletStatus = (typeof WalletStatus)[keyof typeof WalletStatus]
 
 export type RewardsExternalWallet = Pick<
   ExternalWallet,
-  'links' | 'provider' | 'username'
+  'url' | 'provider' | 'name'
 > & {
   status: WalletStatus
 }
