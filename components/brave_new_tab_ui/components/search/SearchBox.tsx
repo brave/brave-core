@@ -61,6 +61,19 @@ export default function SearchBox() {
     ? getLocale('searchBravePlaceholder')
     : getLocale('searchNonBravePlaceholder')
   const searchInput = React.useRef<HTMLElement>()
+
+  React.useEffect(() => {
+    const listener = (e: KeyboardEvent) => {
+      if (e.key === 'Tab' && document.activeElement === document.body) {
+        e.preventDefault()
+        searchInput.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', listener)
+    return () => {
+      document.removeEventListener('keydown', listener)
+    }
+  }, [])
   return <Container className={searchBoxClass}>
     <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.value)} placeholder={placeholderText}>
       <Flex slot="left-icon" align='center'>
