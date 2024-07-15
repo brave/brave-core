@@ -294,6 +294,63 @@ void MigrateToV39(mojom::DBTransactionInfo* const transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
+void MigrateToV40(mojom::DBTransactionInfo* const transaction) {
+  CHECK(transaction);
+
+  {
+    // Delete legacy transactions with an undefined `creative_instance_id`,
+    // `segment` or `ad_type`.
+    mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+    command->type = mojom::DBCommandInfo::Type::EXECUTE;
+    command->sql =
+        R"(
+          DELETE FROM
+            transactions
+          WHERE
+            COALESCE(creative_instance_id, '') = ''
+            OR COALESCE(segment, '') = ''
+            OR ad_type = '';)";
+    transaction->commands.push_back(std::move(command));
+  }
+
+  {
+    // Create a temporary table:
+    //   - with a new `creative_instance_id` column constraint.
+    //   - with a new `segment` column constraint.
+    //   - with a new `reconciled_at` default value.
+    mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+    command->type = mojom::DBCommandInfo::Type::EXECUTE;
+    command->sql =
+        R"(
+          CREATE TABLE transactions_temp (
+            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+            created_at TIMESTAMP NOT NULL,
+            creative_instance_id TEXT NOT NULL,
+            value DOUBLE NOT NULL,
+            segment TEXT NOT NULL,
+            ad_type TEXT NOT NULL,
+            confirmation_type TEXT NOT NULL,
+            reconciled_at TIMESTAMP DEFAULT 0
+          );)";
+    transaction->commands.push_back(std::move(command));
+
+    // Copy legacy columns to the temporary table, drop the legacy table, rename
+    // the temporary table and create an index.
+    const std::vector<std::string> columns = {
+        "id",      "created_at", "creative_instance_id", "value",
+        "segment", "ad_type",    "confirmation_type",    "reconciled_at"};
+
+    CopyTableColumns(transaction, "transactions", "transactions_temp", columns,
+                     /*should_drop=*/true);
+
+    RenameTable(transaction, "transactions_temp", "transactions");
+  }
+
+  // Optimize database query for `GetForDateRange`.
+  CreateTableIndex(transaction, /*table_name=*/"transactions",
+                   /*columns=*/{"created_at"});
+}
+
 }  // namespace
 
 void Transactions::Save(const TransactionList& transactions,
@@ -427,12 +484,12 @@ void Transactions::Create(mojom::DBTransactionInfo* transaction) {
           CREATE TABLE transactions (
             id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             created_at TIMESTAMP NOT NULL,
-            creative_instance_id TEXT,
+            creative_instance_id TEXT NOT NULL,
             value DOUBLE NOT NULL,
-            segment TEXT,
+            segment TEXT NOT NULL,
             ad_type TEXT NOT NULL,
             confirmation_type TEXT NOT NULL,
-            reconciled_at TIMESTAMP
+            reconciled_at TIMESTAMP DEFAULT 0
           );)";
   transaction->commands.push_back(std::move(command));
 
@@ -472,6 +529,11 @@ void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 39: {
       MigrateToV39(transaction);
+      break;
+    }
+
+    case 40: {
+      MigrateToV40(transaction);
       break;
     }
   }
