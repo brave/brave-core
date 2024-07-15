@@ -561,7 +561,7 @@ import os.log
     var results = Set<GenericBlocklistType>()
 
     // Get domain specific rule types
-    if domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) {
+    if domain.globalBlockAdsAndTrackingLevel.isEnabled {
       results = results.union([.blockAds, .blockTrackers])
     }
 

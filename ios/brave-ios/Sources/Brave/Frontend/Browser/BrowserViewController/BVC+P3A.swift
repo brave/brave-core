@@ -133,14 +133,9 @@ extension BrowserViewController {
     UmaHistogramEnumeration("Brave.IOS.IsLikelyDefault", sample: answer)
   }
 
-  func maybeRecordInitialShieldsP3A() {
+  @MainActor func maybeRecordInitialShieldsP3A() {
     if Preferences.Shields.initialP3AStateReported.value { return }
     defer { Preferences.Shields.initialP3AStateReported.value = true }
-    recordShieldsUpdateP3A(shield: .adblockAndTp)
-    recordShieldsUpdateP3A(shield: .fpProtection)
-  }
-
-  func recordShieldsUpdateP3A(shield: BraveShield) {
     let buckets: [Bucket] = [
       0,
       .r(1...5),
@@ -149,42 +144,44 @@ extension BrowserViewController {
       .r(21...30),
       .r(31...),
     ]
-    switch shield {
-    case .adblockAndTp:
-      // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
-      let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainAdsSettingsBelowGlobal",
-        buckets: buckets,
-        value: adsBelowGlobalCount
-      )
-      // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
-      let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainAdsSettingsAboveGlobal",
-        buckets: buckets,
-        value: adsAboveGlobalCount
-      )
-    case .fpProtection:
-      // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
-      let fingerprintingBelowGlobalCount =
-        Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
-        buckets: buckets,
-        value: fingerprintingBelowGlobalCount
-      )
-      // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
-      let fingerprintingAboveGlobalCount =
-        Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
-      UmaHistogramRecordValueToBucket(
-        "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
-        buckets: buckets,
-        value: fingerprintingAboveGlobalCount
-      )
-    case .allOff, .noScript:
-      break
-    }
+    recordShieldsLevelUpdateP3A(buckets: buckets)
+    recordFinterprintProtectionP3A(buckets: buckets)
+  }
+
+  @MainActor private func recordShieldsLevelUpdateP3A(buckets: [Bucket]) {
+    // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
+    let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainAdsSettingsBelowGlobal",
+      buckets: buckets,
+      value: adsBelowGlobalCount
+    )
+    // Q52 On how many domains has the user set the adblock setting to be higher (block more) than the default?
+    let adsAboveGlobalCount = Domain.totalDomainsWithAdblockShieldsIncreasedFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainAdsSettingsAboveGlobal",
+      buckets: buckets,
+      value: adsAboveGlobalCount
+    )
+  }
+
+  func recordFinterprintProtectionP3A(buckets: [Bucket]) {
+    // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
+    let fingerprintingBelowGlobalCount =
+      Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
+      buckets: buckets,
+      value: fingerprintingBelowGlobalCount
+    )
+    // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
+    let fingerprintingAboveGlobalCount =
+      Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
+    UmaHistogramRecordValueToBucket(
+      "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
+      buckets: buckets,
+      value: fingerprintingAboveGlobalCount
+    )
   }
 
   func recordDataSavedP3A(change: Int) {

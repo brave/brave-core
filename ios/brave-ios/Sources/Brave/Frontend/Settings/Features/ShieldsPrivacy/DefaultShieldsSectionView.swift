@@ -14,7 +14,7 @@ import Preferences
 import Strings
 import SwiftUI
 
-struct DefaultShieldsViewView: View {
+struct DefaultShieldsSectionView: View {
   enum CookieAlertType: String, Identifiable {
     case confirm
     case failed

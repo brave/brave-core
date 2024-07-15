@@ -379,12 +379,12 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
           .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
@@ -443,15 +443,12 @@ extension BrowserViewController: WKNavigationDelegate {
         }
 
         let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
-        let adsBlockingShieldUp = domain.isShieldExpected(
-          .adblockAndTp,
-          considerAllShieldsOption: true
-        )
+        let adsBlockingShieldUp = domain.globalBlockAdsAndTrackingLevel.isEnabled
         tab?.braveSearchResultAdManager = BraveSearchResultAdManager(
           url: requestURL,
           rewards: rewards,
           isPrivateBrowsing: isPrivateBrowsing,
-          isAggressiveAdsBlocking: domain.blockAdsAndTrackingLevel.isAggressive
+          isAggressiveAdsBlocking: domain.globalBlockAdsAndTrackingLevel.isAggressive
             && adsBlockingShieldUp
         )
       }
@@ -1765,7 +1762,7 @@ extension BrowserViewController: WKUIDelegate {
 
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
+      domainForMainFrame.globalBlockAdsAndTrackingLevel.isEnabled,
       navigationAction.targetFrame?.isMainFrame == true
     else { return nil }
 

@@ -8,7 +8,6 @@ import Preferences
 // These override the setting in the prefs
 public enum BraveShield {
   case allOff
-  case adblockAndTp
   case fpProtection
   case noScript
 
@@ -16,8 +15,6 @@ public enum BraveShield {
     switch self {
     case .allOff:
       return false
-    case .adblockAndTp:
-      return ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
     case .fpProtection:
       return Preferences.Shields.fingerprintingProtection.value
     case .noScript:

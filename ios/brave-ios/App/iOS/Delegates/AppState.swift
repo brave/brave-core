@@ -53,7 +53,6 @@ public class AppState {
           // initialization. This is because Database container may change. See bugs #3416, #3377.
           didBecomeActive = true
           DataController.shared.initializeOnce()
-          Migration.postCoreDataInitMigrations()
           Migration.migrateLostTabsActiveWindow()
         }
 

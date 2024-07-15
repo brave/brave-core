@@ -125,9 +125,60 @@ public class Migration {
     Preferences.Migration.lostTabsWindowIDMigration.value = true
   }
 
-  public static func postCoreDataInitMigrations() {
-    if Preferences.Migration.coreDataCompleted.value { return }
-    Preferences.Migration.coreDataCompleted.value = true
+  public static func migrateAdsConfirmations(for configruation: BraveRewards.Configuration) {
+    // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
+    // estimated payout remain correct.
+    //
+    // This hack is unfortunately neccessary due to a missed migration path when moving
+    // confirmations from ledger to ads, we must extract `confirmations.json` out of ledger's
+    // state file and save it as a new file under the ads directory.
+    let base = configruation.storageURL
+    let ledgerStateContainer = base.appendingPathComponent("ledger/random_state.plist")
+    let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
+    let fm = FileManager.default
+
+    if !fm.fileExists(atPath: ledgerStateContainer.path)
+      || fm.fileExists(atPath: adsConfirmations.path)
+    {
+      // Nothing to migrate or already migrated
+      return
+    }
+
+    do {
+      let contents = NSDictionary(contentsOfFile: ledgerStateContainer.path)
+      guard let confirmations = contents?["confirmations.json"] as? String else {
+        adsRewardsLog.debug("No confirmations found to migrate in ledger's state container")
+        return
+      }
+      try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
+    } catch {
+      adsRewardsLog.error(
+        "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
+      )
+    }
+  }
+}
+
+extension Migration {
+  /// Migrations that need to be run after data is loaded
+  @MainActor public static func postDataLoadMigration() {
+    migrateShieldLevel()
+  }
+
+  /// Migrate the shield level from the previous on/off toggle to the new ShieldLevel picker
+  @MainActor private static func migrateShieldLevel() {
+    guard
+      !Preferences.Migration
+        .domainAdBlockAndTrackingProtectionShieldLevelCompleted.value
+    else {
+      return
+    }
+    let domains = Domain.allDomainsWithMigratableShieldLevel()
+    for domain in domains ?? [] {
+      domain.migrateShieldLevel()
+    }
+    Preferences.Migration
+      .domainAdBlockAndTrackingProtectionShieldLevelCompleted.value = true
   }
 }
 
@@ -148,14 +199,7 @@ extension Preferences {
   /// Migration preferences
   fileprivate final class Migration {
     static let completed = Option<Bool>(key: "migration.completed", default: false)
-    // This is new preference introduced in iOS 1.32.3, tracks whether we should perform database migration.
-    // It should be called only for users who have not completed the migration beforehand.
-    // The reason for second migration flag is to first do file system migrations like moving database files,
-    // then do CRUD operations on the db if needed.
-    static let coreDataCompleted = Option<Bool>(
-      key: "migration.cd-completed",
-      default: Preferences.Migration.completed.value
-    )
+
     /// A new preference key will be introduced in 1.44.x, indicates if Wallet Preferences migration has completed
     static let walletProviderAccountRequestCompleted =
       Option<Bool>(key: "migration.wallet-provider-account-request-completed", default: false)
@@ -169,6 +213,14 @@ extension Preferences {
     /// allows a user to select between `standard`, `aggressive` and `disabled` instead of a simple on/off `Bool`
     static let adBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
       key: "migration.ad-block-and-tracking-protection-shield-level-completed",
+      default: false
+    )
+
+    /// A per domain ad blocking and tracking protection preference  in `1.69.x`
+    /// allows a user to select between `standard`, `aggressive` and `disabled`
+    /// instead of a simple on/off `Bool` on the domain level
+    static let domainAdBlockAndTrackingProtectionShieldLevelCompleted = Option<Bool>(
+      key: "migration.domain-ad-block-and-tracking-protection-shield-level-completed",
       default: false
     )
 

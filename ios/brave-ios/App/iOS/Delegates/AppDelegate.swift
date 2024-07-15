@@ -140,6 +140,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     AppState.shared.state = .launching(options: launchOptions ?? [:], active: true)
 
+    // Run migrations that need access to Data
+    Migration.postDataLoadMigration()
+
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
     SKPaymentQueue.default().add(BraveVPN.iapObserver)
