@@ -146,6 +146,14 @@ function installDepotTools(options = config.defaultOptions) {
     util.run('vpython3',
              [path.join(config.depotToolsDir, 'build_telemetry.py'), 'opt-out'],
              options)
+
+    // The old way to opt-out of chromium build telemetry.
+    // Could be removed after https://crrev.com/c/5669094 is merged.
+    const ninjalogUploaderWrapperPath =
+        path.join(config.depotToolsDir, 'ninjalog_uploader_wrapper.py')
+    if (fs.existsSync(ninjalogUploaderWrapperPath)) {
+      util.run('vpython3', [ninjalogUploaderWrapperPath, 'opt-out'], options)
+    }
   })
 }
 
