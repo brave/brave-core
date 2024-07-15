@@ -194,9 +194,20 @@ IN_PROC_BROWSER_TEST_F(
 
   EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }
+
+// This test can be flaky depending on the screen size. Our macOS CI doesn't
+// seem to have a large enough screen to run this test.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
+  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
+#else
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab \
+  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
+#endif
+
 IN_PROC_BROWSER_TEST_F(
     SplitViewBrowserTest,
-    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
+    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
   brave::ToggleVerticalTabStrip(browser());
   brave::NewSplitViewForTab(browser());
   auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
