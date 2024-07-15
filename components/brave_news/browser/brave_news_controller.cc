@@ -565,7 +565,15 @@ void BraveNewsController::IsFeedUpdateAvailable(
     const std::string& displayed_feed_hash,
     IsFeedUpdateAvailableCallback callback) {
   DVLOG(1) << __FUNCTION__;
-  IN_ENGINE(IsFeedV1UpdateAvailable, std::move(callback), displayed_feed_hash);
+  IN_ENGINE(CheckForFeedsUpdate,
+            base::BindOnce(
+                [](const std::string& displayed_feed_hash,
+                   IsFeedUpdateAvailableCallback callback,
+                   const std::string& latest_hash) {
+                  std::move(callback).Run(displayed_feed_hash != latest_hash);
+                },
+                displayed_feed_hash, std::move(callback)),
+            /*refetch_data=*/true);
 }
 
 void BraveNewsController::AddFeedListener(

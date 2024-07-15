@@ -86,16 +86,6 @@ void BraveNewsEngine::EnsurePublishersIsUpdating(
   GetPublishersController()->EnsurePublishersIsUpdating(snapshot);
 }
 
-void BraveNewsEngine::IsFeedV1UpdateAvailable(
-    SubscriptionsSnapshot snapshot,
-    const std::string& displayed_hash,
-    m::IsFeedUpdateAvailableCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto* builder = MaybeFeedV1Builder();
-  CHECK(builder);
-  builder->DoesFeedVersionDiffer(snapshot, displayed_hash, std::move(callback));
-}
-
 void BraveNewsEngine::GetChannels(SubscriptionsSnapshot snapshot,
                                   m::GetChannelsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -157,10 +147,9 @@ void BraveNewsEngine::GetPublisherFeed(SubscriptionsSnapshot snapshot,
   builder->BuildPublisherFeed(snapshot, publisher_id, std::move(callback));
 }
 
-void BraveNewsEngine::CheckForFeedsUpdate(
-    SubscriptionsSnapshot snapshot,
-    bool refetch_data,
-    base::OnceCallback<void(const std::string&)> callback) {
+void BraveNewsEngine::CheckForFeedsUpdate(SubscriptionsSnapshot snapshot,
+                                          bool refetch_data,
+                                          HashCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (auto* builder = MaybeFeedV2Builder()) {
     builder->GetLatestHash(snapshot, refetch_data, std::move(callback));
@@ -170,7 +159,7 @@ void BraveNewsEngine::CheckForFeedsUpdate(
   auto* builder = MaybeFeedV1Builder();
   CHECK(builder);
 
-  builder->UpdateIfRemoteChanged(snapshot);
+  builder->UpdateIfRemoteChanged(snapshot, std::move(callback));
 }
 
 void BraveNewsEngine::PrefetchFeed(SubscriptionsSnapshot snapshot) {

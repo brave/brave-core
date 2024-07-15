@@ -29,6 +29,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"
@@ -754,10 +755,9 @@ void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedV2Builder::GetLatestHash(
-    const SubscriptionsSnapshot& subscriptions,
-    bool refetch_data,
-    base::OnceCallback<void(const std::string& hash)> callback) {
+void FeedV2Builder::GetLatestHash(const SubscriptionsSnapshot& subscriptions,
+                                  bool refetch_data,
+                                  HashCallback callback) {
   UpdateData(
       subscriptions,
       {.signals = true,
@@ -767,7 +767,7 @@ void FeedV2Builder::GetLatestHash(
       base::BindOnce(
           [](base::WeakPtr<FeedV2Builder> builder,
              const SubscriptionsSnapshot& subscriptions,
-             base::OnceCallback<void(const std::string& hash)> callback) {
+             HashCallback callback) {
             if (!builder) {
               return;
             }

@@ -33,6 +33,7 @@ namespace brave_news {
 
 using BuildFeedCallback = mojom::BraveNewsController::GetFeedV2Callback;
 using GetSignalsCallback = mojom::BraveNewsController::GetSignalsCallback;
+using HashCallback = base::OnceCallback<void(const std::string&)>;
 
 class FeedGenerationInfo;
 
@@ -66,7 +67,7 @@ class FeedV2Builder {
 
   void GetLatestHash(const SubscriptionsSnapshot& subscriptions,
                      bool refetch_data,
-                     base::OnceCallback<void(const std::string&)> callback);
+                     HashCallback callback);
 
  private:
   // FeedGenerator's will be called on a different thread. The data in
