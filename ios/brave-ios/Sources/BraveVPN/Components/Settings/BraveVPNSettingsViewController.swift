@@ -9,14 +9,14 @@ import GuardianConnect
 import Preferences
 import Shared
 import Static
+import SwiftUI
 import UIKit
 import os.log
-import SwiftUI
 
 public class BraveVPNSettingsViewController: TableViewController {
 
   public var openURL: ((URL) -> Void)?
-  
+
   // MARK: Internal
 
   private let iapObserver: BraveVPNInAppPurchaseObserver
@@ -37,7 +37,7 @@ public class BraveVPNSettingsViewController: TableViewController {
 
     return dateFormatter.string(from: expirationDate)
   }
-  
+
   private var vpnReconfigurationPending = false {
     didSet {
       DispatchQueue.main.async {
@@ -45,9 +45,9 @@ public class BraveVPNSettingsViewController: TableViewController {
       }
     }
   }
-  
+
   private var vpnConnectionStatusToggle: SwitchAccessoryView?
-  
+
   private var vpnKillSwitchStatusToggle: SwitchAccessoryView?
 
   /// Loading view with an transparent overlay
@@ -60,7 +60,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       tableView.isScrollEnabled = true
 
       if !isLoading { return }
-      
+
       let loaderView = LoaderView(size: .normal).then {
         $0.tintColor = UIColor(braveSystemName: .iconInteractive)
       }
@@ -73,17 +73,17 @@ public class BraveVPNSettingsViewController: TableViewController {
       overlay.addSubview(loaderView)
 
       overlay.frame = CGRect(size: tableView.contentSize)
-      loaderView.frame.origin = 
+      loaderView.frame.origin =
         CGPoint(x: tableView.bounds.midX - (loaderView.bounds.width / 2), y: tableView.bounds.midY)
-      
+
       loaderView.start()
       overlayView = overlay
       tableView.isScrollEnabled = false
     }
   }
-  
+
   // MARK: Section Details
-  
+
   private let vpnStatusSectionCellId = "status"
   private let serverSectionId = "server"
   private let hostCellId = "host"
@@ -91,9 +91,9 @@ public class BraveVPNSettingsViewController: TableViewController {
   private let protocolCellId = "protocol"
   private let resetCellId = "reset"
   private let killSwitchSectionCellId = "killswitch"
-  
+
   // Section - VPN Status
-  
+
   private var vpnStatusSection: Static.Section {
     let statusSwitchView = SwitchAccessoryView(
       initialValue: BraveVPN.isConnected,
@@ -125,9 +125,9 @@ public class BraveVPNSettingsViewController: TableViewController {
       uuid: vpnStatusSectionCellId
     )
   }
-  
+
   // Section - Subscription
-  
+
   private var subscriptionSection: Static.Section {
     let (subscriptionStatus, statusDetailColor) = { () -> (String, UIColor) in
       if Preferences.VPN.vpnReceiptStatus.value
@@ -144,7 +144,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     }()
 
     let expiration = BraveVPN.vpnState == .expired ? "-" : expirationDate
-    
+
     var linkReceiptRows: [Row] {
       var rows = [Row]()
 
@@ -214,9 +214,9 @@ public class BraveVPNSettingsViewController: TableViewController {
       footer: .title(Strings.VPN.settingsLinkReceiptFooter)
     )
   }
-  
+
   // Section - Server
-  
+
   private var serverSection: Static.Section {
     let locationCity = BraveVPN.serverLocationDetailed.city ?? "-"
     let locationCountry = BraveVPN.serverLocationDetailed.country ?? hostname
@@ -262,21 +262,21 @@ public class BraveVPNSettingsViewController: TableViewController {
       uuid: serverSectionId
     )
   }
-  
+
   private var killSwitchSection: Static.Section {
     let killSwitchView = SwitchAccessoryView(
       initialValue: true,
       valueChange: { [weak self] killSwitchON in
         guard let self = self else { return }
-                
+
         BraveVPN.helper.killSwitchEnabled = killSwitchON
-        
+
         self.performAllNetworkReconnect()
       }
     )
-    
+
     vpnKillSwitchStatusToggle = killSwitchView
-    
+
     return Section(
       header: .title(Strings.VPN.settingsKillSwitchTitle.capitalized),
       rows: [
@@ -290,7 +290,7 @@ public class BraveVPNSettingsViewController: TableViewController {
       uuid: killSwitchSectionCellId
     )
   }
-  
+
   private var techSupportSection: Static.Section {
     return Section(
       header: .title(Strings.VPN.settingsSupportSection),
@@ -308,12 +308,13 @@ public class BraveVPNSettingsViewController: TableViewController {
             self.openURL?(.brave.braveVPNFaq)
           },
           cellClass: ButtonCell.self
-        )
-      ])
+        ),
+      ]
+    )
   }
-  
+
   // MARK: Lifecycle
-  
+
   public init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
     super.init(style: .insetGrouped)
@@ -323,7 +324,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
@@ -332,7 +333,7 @@ public class BraveVPNSettingsViewController: TableViewController {
     super.viewDidLoad()
 
     title = Strings.VPN.vpnName
-    
+
     // Add VPN Status Observer
     NotificationCenter.default.addObserver(
       self,
@@ -347,25 +348,25 @@ public class BraveVPNSettingsViewController: TableViewController {
       subscriptionSection,
       serverSection,
       killSwitchSection,
-      techSupportSection
+      techSupportSection,
     ]
   }
-  
+
   /// Reconnecting VPN after Kill Switch toggle is set
   private func performAllNetworkReconnect() {
-   isLoading = true
+    isLoading = true
 
-    BraveVPN.reconnect() { [weak self] connected in
+    BraveVPN.reconnect { [weak self] connected in
       guard let self = self else { return }
-        
+
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         self.isLoading = false
-        
+
         guard connected else {
           self.showEnableKillSwitchError()
           return
         }
-        
+
         // Normally the connected server should not change
         // This is added in case there is an unexpected change happens on server side
         self.updateServerSectionInfo()
@@ -503,7 +504,7 @@ extension BraveVPNSettingsViewController {
 
     present(alert, animated: true)
   }
-  
+
   private func showEnableKillSwitchError() {
     let alert = UIAlertController(
       title: Strings.VPN.settingsKillSwitchToggleErrorTitle,
@@ -518,13 +519,14 @@ extension BraveVPNSettingsViewController {
         guard let self = self, let toggleStatus = self.vpnKillSwitchStatusToggle?.isOn else {
           return
         }
-        
+
         // Re-try canceled
         // Kill switch and UI is set  previous toggle status
         BraveVPN.helper.killSwitchEnabled = !toggleStatus
         self.vpnKillSwitchStatusToggle?.isOn = !toggleStatus
-    })
-    
+      }
+    )
+
     let retry = UIAlertAction(
       title: Strings.VPN.settingsRetryActionTitle,
       style: .default,
