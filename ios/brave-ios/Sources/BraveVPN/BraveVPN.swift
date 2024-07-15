@@ -467,4 +467,3 @@ public class BraveVPN {
     }
   }
 }
-
