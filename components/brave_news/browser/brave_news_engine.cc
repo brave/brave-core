@@ -14,7 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/feed_v2_builder.h"

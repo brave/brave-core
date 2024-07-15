@@ -14,7 +14,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"

@@ -28,7 +28,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"

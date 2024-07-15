@@ -17,7 +17,7 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/feed_building.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"

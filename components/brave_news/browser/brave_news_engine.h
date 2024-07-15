@@ -14,7 +14,7 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
@@ -52,10 +52,9 @@ class BraveNewsEngine : public base::SupportsWeakPtr<BraveNewsEngine> {
                         m::GetPublisherFeedCallback callback);
   void EnsurePublishersIsUpdating(SubscriptionsSnapshot snapshot);
   void GetFeedV2(SubscriptionsSnapshot snapshot, m::GetFeedV2Callback callback);
-  void CheckForFeedsUpdate(
-      SubscriptionsSnapshot snapshot,
-      bool refetch_data,
-      HashCallback callback);
+  void CheckForFeedsUpdate(SubscriptionsSnapshot snapshot,
+                           bool refetch_data,
+                           HashCallback callback);
   void PrefetchFeed(SubscriptionsSnapshot snapshot);
 
   void GetSignals(SubscriptionsSnapshot snapshot,

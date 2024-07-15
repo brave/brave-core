@@ -34,7 +34,7 @@
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
@@ -127,11 +127,7 @@ BraveNewsController::BraveNewsController(
       task_runner_(base::ThreadPool::CreateSingleThreadTaskRunner(
           {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
-      engine_(std::unique_ptr<BraveNewsEngine, base::OnTaskRunnerDeleter>(
-          new BraveNewsEngine(url_loader_factory->Clone(),
-                              MakeHistoryQuerier(history_service_->AsWeakPtr(),
-                                                 &task_tracker_)),
-          base::OnTaskRunnerDeleter(task_runner_))),
+      engine_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       initialization_promise_(
           3,
           pref_manager_,
@@ -139,9 +135,10 @@ BraveNewsController::BraveNewsController(
               &BraveNewsController::GetLocale,
               // Unretained is safe here because |initialization_promise_| is
               // owned by BraveNewsController.
-              base::Unretained(this))),
-      weak_ptr_factory_(this) {
-  DCHECK(prefs);
+              base::Unretained(this))) {
+  engine_.reset(
+      new BraveNewsEngine(url_loader_factory_->Clone(),
+                          MakeHistoryQuerier(history_service_->AsWeakPtr())));
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 
   prefs_observation_.Observe(&pref_manager_);
@@ -830,11 +827,9 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
     VLOG(1) << "REMOVING DATA FROM MEMORY";
 
     // Reset our engine so all the caches are deleted.
-    engine_ = std::unique_ptr<BraveNewsEngine, base::OnTaskRunnerDeleter>(
-        new BraveNewsEngine(
-            url_loader_factory_->Clone(),
-            MakeHistoryQuerier(history_service_->AsWeakPtr(), &task_tracker_)),
-        base::OnTaskRunnerDeleter(task_runner_));
+    engine_.reset(
+        new BraveNewsEngine(url_loader_factory_->Clone(),
+                            MakeHistoryQuerier(history_service_->AsWeakPtr())));
   }
 }
 
@@ -960,6 +955,40 @@ void BraveNewsController::NotifyFeedHash(const std::string& hash) {
   for (const auto& observer : feed_listeners_) {
     observer->OnUpdateAvailable(hash);
   }
+}
+
+BackgroundHistoryQuerier BraveNewsController::MakeHistoryQuerier(
+    base::WeakPtr<history::HistoryService> history_service) {
+  auto history_sequence = base::SequencedTaskRunner::GetCurrentDefault();
+  return base::BindRepeating(
+      [](scoped_refptr<base::SequencedTaskRunner> history_sequence,
+         base::WeakPtr<history::HistoryService> history_service,
+         base::WeakPtr<BraveNewsController> controller,
+         QueryHistoryCallback callback) {
+        // |bound_callback| will always be invoked on the caller's thread.
+        auto bound_callback =
+            base::BindPostTaskToCurrentDefault(std::move(callback));
+
+        history_sequence->PostTask(
+            FROM_HERE,
+            base::BindOnce(
+                [](base::WeakPtr<history::HistoryService> service,
+                   base::WeakPtr<BraveNewsController> controller,
+                   QueryHistoryCallback callback) {
+                  if (!service || !controller) {
+                    return;
+                  }
+
+                  history::QueryOptions options;
+                  options.max_count = 2000;
+                  options.SetRecentDayRange(14);
+                  service->QueryHistory(std::u16string(), options,
+                                        std::move(callback),
+                                        &controller->task_tracker_);
+                },
+                history_service, controller, std::move(bound_callback)));
+      },
+      history_sequence, history_service, weak_ptr_factory_.GetWeakPtr());
 }
 
 #undef IN_ENGINE

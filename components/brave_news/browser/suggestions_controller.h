@@ -17,7 +17,7 @@
 #include "base/one_shot_event.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "components/history/core/browser/history_service.h"

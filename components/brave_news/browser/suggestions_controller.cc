@@ -20,7 +20,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/background_history_query.h"
+#include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/network.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
