@@ -106,11 +106,8 @@ public struct AIChatView: View {
                         },
                         dismissAction: {
                           if model.apiError == .rateLimitReached {
-                            if let basicModel = model.models.first(where: { $0.access == .basic }) {
-                              model.changeModel(modelKey: basicModel.key)
-                              model.retryLastRequest()
-                            } else {
-                              Logger.module.error("No basic models available")
+                            if let turn = model.clearErrorAndGetFailedMessage() {
+                              prompt = turn.text
                             }
                           } else {
                             model.shouldShowPremiumPrompt = false
@@ -482,11 +479,8 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
 
-            if let basicModel = model.models.first(where: { $0.access == .basic }) {
-              model.changeModel(modelKey: basicModel.key)
-              model.retryLastRequest()
-            } else {
-              Logger.module.error("No basic models available")
+            if let turn = model.clearErrorAndGetFailedMessage() {
+              prompt = turn.text
             }
           }
         }
@@ -511,11 +505,8 @@ public struct AIChatView: View {
             Task { @MainActor in
               await model.refreshPremiumStatus()
 
-              if let basicModel = model.models.first(where: { $0.access == .basic }) {
-                model.changeModel(modelKey: basicModel.key)
-                model.retryLastRequest()
-              } else {
-                Logger.module.error("No basic models available")
+              if let turn = model.clearErrorAndGetFailedMessage() {
+                prompt = turn.text
               }
             }
           }
