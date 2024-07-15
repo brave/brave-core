@@ -4,14 +4,13 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Strings
+@_exported import Strings
 
 extension Strings {
   struct VPN {
     public static let freeTrialDetail =
       NSLocalizedString(
         "vpn.freeTrialDetail",
-        tableName: "BraveShared",
         bundle: .module,
         value: "All plans include a %@!",
         comment:
@@ -21,7 +20,6 @@ extension Strings {
     public static let freeTrialPeriod =
       NSLocalizedString(
         "vpn.freeTrialPeriod",
-        tableName: "BraveShared",
         bundle: .module,
         value: "free 7-day trial",
         comment:
@@ -31,7 +29,6 @@ extension Strings {
     public static let freeTrialPeriodAction =
       NSLocalizedString(
         "vpn.freeTrialPeriodAction",
-        tableName: "BraveShared",
         bundle: .module,
         value: "try 7 days free",
         comment: "The button text that starts the trial action"
@@ -40,7 +37,6 @@ extension Strings {
     public static let activateSubscriptionAction =
       NSLocalizedString(
         "vpn.activateSubscriptionAction",
-        tableName: "BraveShared",
         bundle: .module,
         value: "activate",
         comment: "The button text that starts the subscription action"
@@ -49,7 +45,6 @@ extension Strings {
     public static let restorePurchases =
       NSLocalizedString(
         "vpn.restorePurchases",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Restore",
         comment: ""
@@ -58,7 +53,6 @@ extension Strings {
     public static let monthlySubTitle =
       NSLocalizedString(
         "vpn.monthlySubTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Monthly Subscription",
         comment: ""
@@ -67,7 +61,6 @@ extension Strings {
     public static let monthlySubDetail =
       NSLocalizedString(
         "vpn.monthlySubDetail",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Renews monthly",
         comment: "Used in context: 'Monthly subscription, (it) renews monthly'"
@@ -76,7 +69,6 @@ extension Strings {
     public static let yearlySubTitle =
       NSLocalizedString(
         "vpn.yearlySubTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "One year",
         comment: "One year lenght vpn subcription"
@@ -85,7 +77,6 @@ extension Strings {
     public static let yearlySubDetail =
       NSLocalizedString(
         "vpn.yearlySubDetail",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Renew annually save %@",
         comment:
@@ -95,7 +86,6 @@ extension Strings {
     public static let yearlySubDisclaimer =
       NSLocalizedString(
         "vpn.yearlySubDisclaimer",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Best value",
         comment:
@@ -107,7 +97,6 @@ extension Strings {
     public static let checkboxProtectYourDevices =
       NSLocalizedString(
         "vpn.checkboxProtectYourDevices",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Protect every app & your whole device",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
@@ -116,7 +105,6 @@ extension Strings {
     public static let checkboxSaferWifi =
       NSLocalizedString(
         "vpn.checkboxSaferWifi",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Safer for home or public Wi-Fi",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
@@ -125,7 +113,6 @@ extension Strings {
     public static let checkboxSpeedFast =
       NSLocalizedString(
         "vpn.checkboxSpeedFast",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Lightning-fast, up to 100 Mbps",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
@@ -134,7 +121,6 @@ extension Strings {
     public static let checkboxGeoLocation =
       NSLocalizedString(
         "vpn.checkboxGeoLocation",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Choose your geo/country location",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
@@ -143,7 +129,6 @@ extension Strings {
     public static let checkboxNoIPLog =
       NSLocalizedString(
         "vpn.checkboxNoIPLog",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Brave never logs your activity",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
@@ -152,7 +137,6 @@ extension Strings {
     public static let checkboxDevicesProtect =
       NSLocalizedString(
         "vpn.checkboxDevicesProtect",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Protect 5 devices on 1 subscription",
         comment: "Text for a checkbox to present the user benefits for using Brave VPN"
@@ -161,7 +145,6 @@ extension Strings {
     public static let installTitle =
       NSLocalizedString(
         "vpn.installTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Install VPN",
         comment: "Title for screen to install the VPN."
@@ -170,7 +153,6 @@ extension Strings {
     public static let installProfileTitle =
       NSLocalizedString(
         "vpn.installProfileTitle",
-        tableName: "BraveShared",
         bundle: .module,
         value: "Brave will now install a VPN profile.",
         comment: ""
