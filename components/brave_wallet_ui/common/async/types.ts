@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { AnyAction, MiddlewareAPI } from 'redux'
-import { ThunkDispatch } from 'redux-thunk'
+import { ThunkDispatch } from '@reduxjs/toolkit'
 
 import { WalletPageState, WalletPanelState } from '../../constants/types'
 

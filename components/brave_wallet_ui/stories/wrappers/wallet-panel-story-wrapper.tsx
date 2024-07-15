@@ -8,11 +8,6 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
-// utils
-
-// actions
-import { WalletActions } from '../../common/actions'
-
 // types
 import { PanelState, UIState, WalletState } from '../../constants/types'
 
@@ -62,10 +57,6 @@ export const WalletPanelStory: React.FC<
     walletApiDataOverrides,
     uiStateOverride
   ])
-
-  React.useEffect(() => {
-    store && store.dispatch(WalletActions.initialize())
-  }, [store])
 
   // render
   return (

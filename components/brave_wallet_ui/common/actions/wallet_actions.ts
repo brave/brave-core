@@ -8,22 +8,11 @@ import { WalletActions } from '../slices/wallet.slice'
 // We must re-export actions here until we remove all imports of this file
 export const {
   autoLockMinutesChanged,
-  backedUp,
-  defaultBaseCryptocurrencyChanged,
-  defaultBaseCurrencyChanged,
   getAllNetworks,
-  initialize,
   initialized,
-  walletCreated,
-  walletReset,
-  walletRestored,
-  locked,
-  refreshAll,
-  refreshBalancesAndPriceHistory,
-  refreshNetworksAndTokens,
   setAssetAutoDiscoveryCompleted,
   setPasswordAttempts,
-  unlocked,
   setIsRefreshingNetworksAndTokens,
-  setAllowedNewWalletAccountTypeNetworkIds
+  setAllowedNewWalletAccountTypeNetworkIds,
+  locked
 } = WalletActions

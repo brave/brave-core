@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -13,6 +12,9 @@ import {
 } from '../../../../../../common/constants/local-storage-keys'
 
 // hooks
+import {
+  useAppDispatch //
+} from '../../../../../../common/hooks/use_app_dispatch'
 import {
   useRemoveUserTokenMutation,
   useUpdateNftSpamStatusMutation,
@@ -23,7 +25,9 @@ import {
 } from '../../../../../../common/hooks/use_local_storage'
 
 // actions
-import { WalletActions } from '../../../../../../common/actions'
+import {
+  refreshNetworksAndTokens //
+} from '../../../../../../common/async/thunks'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
@@ -81,7 +85,7 @@ export const NFTGridViewItem = ({
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
 
   // hooks
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
@@ -129,13 +133,13 @@ export const NFTGridViewItem = ({
   const onUnSpam = async () => {
     setShowMore(false)
     await updateNftSpamStatus({ token, isSpam: false })
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    dispatch(refreshNetworksAndTokens())
   }
 
   const onMarkAsSpam = async () => {
     setShowMore(false)
     await updateNftSpamStatus({ token, isSpam: true })
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    dispatch(refreshNetworksAndTokens())
   }
 
   const onConfirmDelete = async () => {

@@ -36,7 +36,7 @@ import {
 } from '../../../panel/constants/action_types'
 
 // Actions
-import { PanelActions } from '../../../panel/actions'
+import { PanelActions } from '../panel.slice'
 
 // utils
 import {
@@ -61,6 +61,10 @@ import {
 } from '../../async/hardware'
 import { getLocale } from '../../../../common/locale'
 import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
+import {
+  navigateTo,
+  navigateToMain
+} from '../../../panel/async/wallet_panel_thunks'
 
 interface ProcessSignTransactionRequestPayload {
   approved: boolean
@@ -522,7 +526,7 @@ export const transactionEndpoints = ({
             arg.account.accountId.coin,
             () => {
               // dismiss hardware connect screen
-              store.dispatch(PanelActions.navigateToMain())
+              store.dispatch(navigateToMain())
             }
           )
 
@@ -668,7 +672,7 @@ export const transactionEndpoints = ({
               arg.account.accountId.coin,
               () => {
                 // dismiss hardware connect screen
-                store.dispatch(PanelActions.navigateToMain())
+                store.dispatch(navigateToMain())
               }
             )
 
@@ -1264,7 +1268,7 @@ export const transactionEndpoints = ({
                 ))
                 break
               default:
-                await store.dispatch(PanelActions.navigateToMain())
+                await store.dispatch(navigateToMain())
                 throw new Error(`unsupported coin type for hardware approval`)
             }
             if (success) {
@@ -1275,7 +1279,7 @@ export const transactionEndpoints = ({
                   id: txInfo.id
                 })
               )
-              store.dispatch(PanelActions.navigateTo('transactionStatus'))
+              store.dispatch(navigateTo('transactionStatus'))
               apiProxy.panelHandler?.setCloseOnDeactivate(true)
               return {
                 data: { success: true }
@@ -1299,7 +1303,7 @@ export const transactionEndpoints = ({
                   txInfo.chainId,
                   txInfo.id
                 )
-                store.dispatch(PanelActions.navigateToMain())
+                store.dispatch(navigateToMain())
                 return {
                   data: { success: true }
                 }
@@ -1313,7 +1317,7 @@ export const transactionEndpoints = ({
 
             if (error) {
               console.log(error)
-              store.dispatch(PanelActions.navigateToMain())
+              store.dispatch(navigateToMain())
 
               throw new Error(
                 typeof error === 'object'
@@ -1337,7 +1341,7 @@ export const transactionEndpoints = ({
                   id: txInfo.id
                 })
               )
-              store.dispatch(PanelActions.navigateTo('transactionStatus'))
+              store.dispatch(navigateTo('transactionStatus'))
               apiProxy.panelHandler?.setCloseOnDeactivate(true)
               // By default the focus is moved to the browser window
               // automatically when Trezor popup closed which triggers
@@ -1368,13 +1372,13 @@ export const transactionEndpoints = ({
               txInfo.chainId,
               txInfo.id
             )
-            store.dispatch(PanelActions.navigateToMain())
+            store.dispatch(navigateToMain())
             return {
               data: { success: false }
             }
           }
 
-          store.dispatch(PanelActions.navigateToMain())
+          store.dispatch(navigateToMain())
 
           return {
             data: { success: true }

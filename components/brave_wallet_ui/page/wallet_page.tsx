@@ -19,7 +19,7 @@ import {
 } from '../common/constants/local-storage-keys'
 
 // actions
-import * as WalletActions from '../common/actions/wallet_actions'
+import { refreshWalletInfo } from '../common/async/thunks'
 
 // contexts
 import { ApiProxyContext } from '../common/context/api-proxy.context'
@@ -73,7 +73,7 @@ function initialize() {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('root')!)
   root.render(<App />)
-  store.dispatch(WalletActions.initialize())
+  store.dispatch(refreshWalletInfo())
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

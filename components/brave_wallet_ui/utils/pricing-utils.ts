@@ -99,7 +99,6 @@ export const computeFiatAmountToAssetValue = ({
 
   return new Amount(value).div(priceInfo.price).times(1)
 }
-
 export const getPriceIdForToken = (
   token: Pick<
     BraveWallet.BlockchainToken,

@@ -11,7 +11,11 @@ import { useHistory } from 'react-router'
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
 import { UISelectors } from '../../../common/selectors'
-import { PanelActions } from '../../../panel/actions'
+
+// actions
+import {
+  cancelConnectHardwareWallet //
+} from '../../../panel/async/wallet_panel_thunks'
 
 // types
 import {
@@ -137,7 +141,7 @@ export const ConnectHardwareWalletPanel = ({
 
   // methods
   const onCancelConnect = React.useCallback(() => {
-    dispatch(PanelActions.cancelConnectHardwareWallet(account))
+    dispatch(cancelConnectHardwareWallet(account))
   }, [account, dispatch])
 
   const onSignData = React.useCallback(async () => {

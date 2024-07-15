@@ -2,8 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useHistory } from 'react-router'
 
@@ -22,6 +22,7 @@ import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { makeTransactionDetailsRoute } from '../../../utils/routes-utils'
 
 // Hooks
+import { useAppDispatch } from '../../../common/hooks/use_app_dispatch'
 import { useTransactionsNetwork } from '../../../common/hooks/use-transactions-network'
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useGetTransactionQuery } from '../../../common/slices/api.slice'
@@ -32,8 +33,10 @@ import {
 } from '../../../common/slices/api.slice.extra'
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 
-// Actions
-import * as WalletPanelActions from '../../../panel/actions/wallet_panel_actions'
+// Redux
+import { UISelectors } from '../../../common/selectors'
+import { PanelActions } from '../../../common/slices/panel.slice'
+import { navigateToMain } from '../../../panel/async/wallet_panel_thunks'
 
 // Components
 import { Panel } from '../panel/index'
@@ -42,7 +45,6 @@ import { TransactionComplete } from './complete'
 import { TransactionFailed } from './failed'
 import { Loader } from './common/common.style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
-import { UISelectors } from '../../../common/selectors'
 
 interface Props {
   transactionLookup: TransactionInfoLookup
@@ -64,7 +66,7 @@ export function TransactionStatus({ transactionLookup }: Props) {
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
   // hooks
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const transactionNetwork = useTransactionsNetwork(tx || undefined)
   const { transactionsQueueLength } = usePendingTransactions()
 
@@ -122,18 +124,18 @@ export function TransactionStatus({ transactionLookup }: Props) {
       return
     }
     dispatch(
-      WalletPanelActions.setSelectedTransactionId({
+      PanelActions.setSelectedTransactionId({
         chainId: tx.chainId,
         coin: getCoinFromTxDataUnion(tx.txDataUnion),
         id: tx.id
       })
     )
-    dispatch(WalletPanelActions.navigateToMain())
+    dispatch(navigateToMain())
     history.push(makeTransactionDetailsRoute(tx.id))
   }, [dispatch, history, tx])
 
   const onClose = () =>
-    dispatch(WalletPanelActions.setSelectedTransactionId(undefined))
+    dispatch(PanelActions.setSelectedTransactionId(undefined))
   const completePrimaryCTAText =
     transactionsQueueLength === 0
       ? getLocale('braveWalletButtonClose')

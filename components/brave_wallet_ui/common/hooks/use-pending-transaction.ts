@@ -5,13 +5,11 @@
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
-import { ThunkDispatch } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // actions
 import { UIActions } from '../slices/ui.slice'
-import { PanelActions } from '../../panel/actions'
+import { PanelActions } from '../slices/panel.slice'
 
 // utils
 import Amount from '../../utils/amount'
@@ -34,6 +32,7 @@ import {
 import { makeNetworkAsset } from '../../options/asset-options'
 
 // Custom Hooks
+import { useAppDispatch } from './use_app_dispatch'
 import useGetTokenInfo from './use-get-token-info'
 import { useAccountOrb, useAddressOrb } from './use-orb'
 import { useSafeUISelector } from './use-safe-selector'
@@ -68,6 +67,7 @@ import {
   UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
 import { MAX_UINT256 } from '../constants/magics'
+import { navigateTo } from '../../panel/async/wallet_panel_thunks'
 
 export const useSelectedPendingTransaction = () => {
   // redux
@@ -96,7 +96,7 @@ export const useSelectedPendingTransaction = () => {
 
 export const usePendingTransactions = () => {
   // redux
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
+  const dispatch = useAppDispatch()
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
@@ -500,7 +500,7 @@ export const usePendingTransactions = () => {
           id: transactionInfo.id
         })
       )
-      dispatch(PanelActions.navigateTo('transactionStatus'))
+      dispatch(navigateTo('transactionStatus'))
     }
   }, [approveTransaction, dispatch, transactionInfo])
 

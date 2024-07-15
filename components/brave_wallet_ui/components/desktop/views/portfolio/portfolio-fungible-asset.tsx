@@ -82,7 +82,8 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
-  useUpdateUserAssetVisibleMutation
+  useUpdateUserAssetVisibleMutation,
+  walletApi
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
@@ -98,9 +99,6 @@ import { Row, Column, LeoSquaredButton } from '../../../shared/style'
 import {
   TokenDetailsModal //
 } from './components/token-details-modal/token-details-modal'
-import {
-  WalletActions //
-} from '../../../../common/actions'
 import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import {
   WalletPageWrapper //
@@ -396,7 +394,14 @@ export const PortfolioFungibleAsset = () => {
       token: selectedAssetFromParams,
       isVisible: false
     }).unwrap()
-    dispatch(WalletActions.refreshBalancesAndPriceHistory())
+    dispatch(
+      walletApi.util.invalidateTags([
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance',
+        'HardwareAccountDiscoveryBalance'
+      ])
+    )
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)

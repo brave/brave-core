@@ -240,6 +240,13 @@ export interface WalletPanelState {
   ui: UIState
 }
 
+export interface ReduxStoreState {
+  wallet: WalletState
+  panel?: PanelState
+  page?: PageState
+  ui: UIState
+}
+
 export interface WalletInitializedPayload {
   walletInfo: BraveWallet.WalletInfo
   allAccounts: BraveWallet.AllAccountsInfo

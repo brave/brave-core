@@ -15,10 +15,6 @@ import {
   WalletState,
   WalletInitializedPayload
 } from '../../constants/types'
-import {
-  DefaultBaseCryptocurrencyChanged,
-  DefaultBaseCurrencyChanged
-} from '../constants/action_types'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -37,27 +33,8 @@ const defaultState: WalletState = {
 
 // async actions
 export const WalletAsyncActions = {
-  initialize: createAction('initialize'),
-  refreshAll: createAction('refreshAll'),
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
-  walletCreated: createAction('walletCreated'),
-  walletRestored: createAction('walletRestored'),
-  walletReset: createAction('walletReset'),
-  locked: createAction('locked'),
-  unlocked: createAction('unlocked'),
-  backedUp: createAction('backedUp'),
-  defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
-    'defaultBaseCurrencyChanged'
-  ), // refreshWalletInfo
-  defaultBaseCryptocurrencyChanged:
-    createAction<DefaultBaseCryptocurrencyChanged>(
-      'defaultBaseCryptocurrencyChanged'
-    ),
-  refreshNetworksAndTokens: createAction('refreshNetworksAndTokens'),
-  refreshBalancesAndPriceHistory: createAction(
-    'refreshBalancesAndPriceHistory'
-  ),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
 }
 
@@ -107,12 +84,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<EntityId[]>
       ) {
         state.allowedNewWalletAccountTypeNetworkIds = payload
-      }
-    },
-    extraReducers: (builder) => {
-      builder.addCase(WalletAsyncActions.locked.type, (state) => {
+      },
+
+      locked(state) {
         state.isWalletLocked = true
-      })
+      }
     }
   })
 }

@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
@@ -14,6 +13,7 @@ import {
 } from '../../../../../constants/types'
 
 // hooks
+import { useAppDispatch } from '../../../../../common/hooks/use_app_dispatch'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher //
@@ -31,7 +31,7 @@ import {
 import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // actions
-import { WalletActions } from '../../../../../common/actions'
+import { refreshNetworksAndTokens } from '../../../../../common/async/thunks'
 import { WalletPageActions } from '../../../../../page/actions'
 
 // utils
@@ -133,8 +133,7 @@ export const Nfts = ({
   const listScrollContainerRef = React.useRef<HTMLDivElement>(null)
 
   // redux
-  const dispatch = useDispatch()
-
+  const dispatch = useAppDispatch()
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
   )
@@ -465,7 +464,7 @@ export const Nfts = ({
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
   const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    dispatch(refreshNetworksAndTokens())
   }, [dispatch])
 
   const onSelectOption = React.useCallback(

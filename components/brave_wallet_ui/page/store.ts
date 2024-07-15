@@ -5,9 +5,6 @@
 
 import { configureStore } from '@reduxjs/toolkit'
 
-// async handlers
-import walletAsyncHandler from '../common/async/handlers'
-
 // api
 import getWalletPageApiProxy from './wallet_page_api_proxy'
 import { walletApi } from '../common/slices/api.slice'
@@ -37,12 +34,14 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
+      thunk: true,
       serializableCheck: false
-    }).concat(walletAsyncHandler, walletApi.middleware)
+    }).concat(walletApi.middleware)
 })
 
 export type WalletPageRootStore = typeof store
 export type RootStoreState = ReturnType<typeof store.getState>
+export type WalletPageAppDispatch = typeof store.dispatch
 
 const proxy = getWalletPageApiProxy()
 proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))

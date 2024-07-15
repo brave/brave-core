@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
 import { BraveWallet } from '../../../../../constants/types'
 
 // hooks
+import { useAppDispatch } from '../../../../../common/hooks/use_app_dispatch'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useBalancesFetcher //
@@ -28,8 +28,8 @@ import {
 import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // actions
-import { WalletActions } from '../../../../../common/actions'
 import { WalletPageActions } from '../../../../../page/actions'
+import { refreshNetworksAndTokens } from '../../../../../common/async/thunks'
 
 // utils
 import {
@@ -121,7 +121,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   const listScrollContainerRef = React.useRef<HTMLDivElement>(null)
 
   // redux
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
   )
@@ -345,7 +345,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
   const onRefresh = React.useCallback(() => {
-    dispatch(WalletActions.refreshNetworksAndTokens())
+    dispatch(refreshNetworksAndTokens())
   }, [dispatch])
 
   const navigateToPage = React.useCallback(

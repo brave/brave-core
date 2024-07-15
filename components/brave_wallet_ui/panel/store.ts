@@ -5,10 +5,6 @@
 
 import { configureStore } from '@reduxjs/toolkit'
 
-// handlers
-import walletPanelAsyncHandler from './async/wallet_panel_async_handler'
-import walletAsyncHandler from '../common/async/handlers'
-
 // api
 import getWalletPanelApiProxy from './wallet_panel_api_proxy'
 
@@ -16,8 +12,8 @@ import getWalletPanelApiProxy from './wallet_panel_api_proxy'
 import { walletApi } from '../common/slices/api.slice'
 import walletReducer from '../common/slices/wallet.slice'
 import pageReducer from '../page/reducers/page_reducer'
+import { panelReducer } from '../common/slices/panel.slice'
 import accountsTabReducer from '../page/reducers/accounts-tab-reducer'
-import { panelReducer } from './reducers/panel_reducer'
 import { uiReducer, defaultUIState } from '../common/slices/ui.slice'
 
 // utils
@@ -47,10 +43,12 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
-    }).concat(walletAsyncHandler, walletPanelAsyncHandler, walletApi.middleware)
+    }).concat(walletApi.middleware)
 })
 
-export type RootStoreState = ReturnType<typeof store.getState>
+export type PanelStore = typeof store
+export type PanelStoreState = ReturnType<typeof store.getState>
+export type WalletPanelAppDispatch = typeof store.dispatch
 
 const proxy = getWalletPanelApiProxy()
 proxy.addJsonRpcServiceObserver(makeJsonRpcServiceObserver(store))

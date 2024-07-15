@@ -9,25 +9,24 @@ import { BraveWallet } from '../constants/types'
 import { makeSerializableTransaction } from '../utils/model-serialization-utils'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
+import {
+  locked,
+  refreshNetworksAndTokens,
+  refreshWalletInfo
+} from './async/thunks'
 
 export function makeBraveWalletServiceTokenObserver(store: Store) {
   const braveWalletServiceTokenObserverReceiver =
     new BraveWallet.BraveWalletServiceTokenObserverReceiver({
       onTokenAdded(token) {
-        store.dispatch(
-          walletApi.endpoints.invalidateUserTokensRegistry.initiate()
-        )
-        store.dispatch(WalletActions.refreshNetworksAndTokens())
+        store.dispatch(refreshNetworksAndTokens())
         // re-parse transactions with new coins list
         store.dispatch(
           walletApi.endpoints.invalidateTransactionsCache.initiate()
         )
       },
       onTokenRemoved(token) {
-        store.dispatch(
-          walletApi.endpoints.invalidateUserTokensRegistry.initiate()
-        )
-        store.dispatch(WalletActions.refreshNetworksAndTokens())
+        store.dispatch(refreshNetworksAndTokens())
         // re-parse transactions with new coins list
         store.dispatch(
           walletApi.endpoints.invalidateTransactionsCache.initiate()
@@ -60,22 +59,22 @@ export function makeKeyringServiceObserver(store: Store) {
   const keyringServiceObserverReceiver =
     new BraveWallet.KeyringServiceObserverReceiver({
       walletCreated: function () {
-        store.dispatch(WalletActions.walletCreated())
+        store.dispatch(refreshWalletInfo())
       },
       walletRestored: function () {
-        store.dispatch(WalletActions.walletRestored())
+        store.dispatch(refreshWalletInfo())
       },
       walletReset: function () {
-        store.dispatch(WalletActions.walletReset())
+        window.location.reload()
       },
       locked: function () {
-        store.dispatch(WalletActions.locked())
+        store.dispatch(locked())
       },
       unlocked: function () {
-        store.dispatch(WalletActions.unlocked())
+        store.dispatch(refreshWalletInfo())
       },
       backedUp: function () {
-        store.dispatch(WalletActions.backedUp())
+        store.dispatch(refreshWalletInfo())
       },
       accountsChanged: function () {
         store.dispatch(walletApi.endpoints.invalidateAccountInfos.initiate())
@@ -185,19 +184,15 @@ export function makeBraveWalletServiceObserver(store: Store) {
         store.dispatch(walletApi.util.invalidateTags(['DefaultSolWallet']))
       },
       onDefaultBaseCurrencyChanged: function (currency) {
-        store.dispatch(WalletActions.defaultBaseCurrencyChanged({ currency }))
+        store.dispatch(refreshWalletInfo())
       },
       onDefaultBaseCryptocurrencyChanged: function (cryptocurrency) {
-        store.dispatch(
-          WalletActions.defaultBaseCryptocurrencyChanged({ cryptocurrency })
-        )
+        store.dispatch(refreshWalletInfo())
       },
       onNetworkListChanged: function () {
         // FIXME(onyb): Due to a bug, the OnNetworkListChanged event is fired
         // merely upon switching to a custom network.
-        //
-        // Skipping balances refresh for now, until the bug is fixed.
-        store.dispatch(WalletActions.refreshNetworksAndTokens())
+        store.dispatch(refreshNetworksAndTokens())
       },
       onDiscoverAssetsStarted: function () {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(false))
