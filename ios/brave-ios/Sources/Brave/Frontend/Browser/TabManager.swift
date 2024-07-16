@@ -1541,7 +1541,7 @@ extension TabManager: PreferencesObserver {
       // The default tab configurations also need to change.
       configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
     case Preferences.General.nightModeEnabled.key:
-      NightModeScriptHandler.setNightMode(
+      DarkReaderScriptHandler.set(
         tabManager: self,
         enabled: Preferences.General.nightModeEnabled.value
       )

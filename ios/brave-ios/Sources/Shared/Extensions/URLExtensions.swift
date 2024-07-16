@@ -308,7 +308,8 @@ extension URL {
     let majorsiteList = [
       "twitter", "youtube", "twitch",
       "soundcloud", "github", "netflix",
-      "imdb", "mail.proton",
+      "imdb", "mail.proton", "amazon",
+      "x",
     ]
 
     let searchSiteList = [
