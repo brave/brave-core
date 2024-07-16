@@ -25,6 +25,7 @@ aggregate_vector_icons("brave_vector_icons") {
     "download_unlock.icon",
     "sidebar_toolbar_button.icon",
     "sidebar_toolbar_button_right.icon",
+    "user_menu_guest.icon",
     "web_discovery_infobar_close_button.icon",
   ]
 

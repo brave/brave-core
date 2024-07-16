@@ -6,6 +6,7 @@
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 #include "base/values.h"
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
