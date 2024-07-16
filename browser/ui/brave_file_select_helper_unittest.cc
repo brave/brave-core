@@ -11,94 +11,76 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
-namespace {
-constexpr struct Case {
-  // The name of the test case.
-  const char* case_name;
-
-  // The URL of the main frame of the page.
-  const char* main_frame_url;
-
-  // Whether the main frame is alerting.
-  bool is_main_frame;
-
-  // If `is_main_frame` is false, the URL of the alerting frame of the page.
-  const char* alerting_frame_url;
-
-  // The expected title for the alert.
-  const char* expected;
-} kCases[] = {
-    // Standard main frame alert.
-    {"standard", "http://foo.com/", true, "", "foo.com wants to open"},
-
-    // Subframe alert from the same origin.
-    {"subframe same origin", "http://foo.com/1", false, "http://foo.com/2",
-     "foo.com wants to open"},
-    // Subframe alert from a different origin.
-    {"subframe different origin", "http://foo.com/", false, "http://bar.com/",
-     "An embedded page at bar.com wants to open"},
-
-    // file:
-    // - main frame:
-    {"file main frame", "file:///path/to/page.html", true, "",
-     "This page wants to open"},
-    // - subframe:
-    {"file subframe", "http://foo.com/", false, "file:///path/to/page.html",
-     "An embedded page on this page wants to open"},
-
-    // data:
-    // /!\ NOTE that this is for data URLs entered directly in the omnibox.
-    // For pages that generate frames with data URLs, see the browsertest.
-    // - main frame:
-    {"data main frame", "data:blahblah", true, "", "This page wants to open"},
-    // - subframe:
-    {"data subframe", "http://foo.com/", false, "data:blahblah",
-     "An embedded page on this page wants to open"},
-
-    // javascript:
-    // /!\ NOTE that this is for javascript URLs entered directly in the
-    // omnibox. For pages that generate frames with javascript URLs, see the
-    // browsertest.
-    // - main frame:
-    {"javascript main frame", "javascript:abc", true, "",
-     "This page wants to open"},
-    // - subframe:
-    {"javascript subframe", "http://foo.com/", false, "javascript:abc",
-     "An embedded page on this page wants to open"},
-
-    // about:
-    // /!\ NOTE that this is for about:blank URLs entered directly in the
-    // omnibox. For pages that generate frames with about:blank URLs, see the
-    // browsertest.
-    // - main frame:
-    {"about main frame", "about:blank", true, "", "This page wants to open"},
-    // - subframe:
-    {"about subframe", "http://foo.com/", false, "about:blank",
-     "An embedded page on this page wants to open"},
-
-    // blob:
-    // - main frame:
-    {"blob main frame",
-     "blob:http://foo.com/66666666-6666-6666-6666-666666666666", true, "",
-     "foo.com wants to open"},
-    // - subframe:
-    {"blob subframe", "http://bar.com/", false,
-     "blob:http://foo.com/66666666-6666-6666-6666-666666666666",
-     "An embedded page at foo.com wants to open"},
-
-    // filesystem:
-    // - main frame:
-    {"filesystem main frame", "filesystem:http://foo.com/bar.html", true, "",
-     "foo.com wants to open"},
-    // - subframe:
-    {"filesystem subframe", "http://bar.com/", false,
-     "filesystem:http://foo.com/bar.html",
-     "An embedded page at foo.com wants to open"},
-};
-
-}  // namespace
-
 TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
+  constexpr struct Case {
+    // The name of the test case.
+    const char* case_name;
+
+    // The URL of the main frame of the page.
+    const char* main_frame_url;
+
+    // Whether the main frame is alerting.
+    bool is_main_frame;
+
+    // If `is_main_frame` is false, the URL of the alerting frame of the page.
+    const char* alerting_frame_url;
+  } kCases[] = {
+      // Standard main frame alert.
+      {"standard", "http://foo.com/", true, ""},
+
+      // Subframe alert from the same origin.
+      {"subframe same origin", "http://foo.com/1", false, "http://foo.com/2"},
+      // Subframe alert from a different origin.
+      {"subframe different origin", "http://foo.com/", false,
+       "http://bar.com/"},
+
+      // file:
+      // - main frame:
+      {"file main frame", "file:///path/to/page.html", true, ""},
+      // - subframe:
+      {"file subframe", "http://foo.com/", false, "file:///path/to/page.html"},
+
+      // data:
+      // /!\ NOTE that this is for data URLs entered directly in the omnibox.
+      // For pages that generate frames with data URLs, see the browsertest.
+      // - main frame:
+      {"data main frame", "data:blahblah", true, ""},
+      // - subframe:
+      {"data subframe", "http://foo.com/", false, "data:blahblah"},
+
+      // javascript:
+      // /!\ NOTE that this is for javascript URLs entered directly in the
+      // omnibox. For pages that generate frames with javascript URLs, see the
+      // browsertest.
+      // - main frame:
+      {"javascript main frame", "javascript:abc", true, ""},
+      // - subframe:
+      {"javascript subframe", "http://foo.com/", false, "javascript:abc"},
+
+      // about:
+      // /!\ NOTE that this is for about:blank URLs entered directly in the
+      // omnibox. For pages that generate frames with about:blank URLs, see the
+      // browsertest.
+      // - main frame:
+      {"about main frame", "about:blank", true, ""},
+      // - subframe:
+      {"about subframe", "http://foo.com/", false, "about:blank"},
+
+      // blob:
+      // - main frame:
+      {"blob main frame",
+       "blob:http://foo.com/66666666-6666-6666-6666-666666666666", true, ""},
+      // - subframe:
+      {"blob subframe", "http://bar.com/", false,
+       "blob:http://foo.com/66666666-6666-6666-6666-666666666666"},
+
+      // filesystem:
+      // - main frame:
+      {"filesystem main frame", "filesystem:http://foo.com/bar.html", true, ""},
+      // - subframe:
+      {"filesystem subframe", "http://bar.com/", false,
+       "filesystem:http://foo.com/bar.html"},
+  };
   // Checks if our implementation is in sync with upstream.
   const brave::SiteTitleResourceIDMap resource_ids({
       {brave::SiteFrameTitleType::kStandardSameOrigin,
@@ -130,6 +112,89 @@ TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
 }
 
 TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect) {
+  constexpr struct Case {
+    // The name of the test case.
+    const char* case_name;
+
+    // The URL of the main frame of the page.
+    const char* main_frame_url;
+
+    // Whether the main frame is alerting.
+    bool is_main_frame;
+
+    // If `is_main_frame` is false, the URL of the alerting frame of the page.
+    const char* alerting_frame_url;
+
+    // The expected title for the alert.
+    const char* expected;
+  } kCases[] = {
+      // Standard main frame alert.
+      {"standard", "http://foo.com/", true, "", "foo.com wants to open"},
+
+      // Subframe alert from the same origin.
+      {"subframe same origin", "http://foo.com/1", false, "http://foo.com/2",
+       "foo.com wants to open"},
+      // Subframe alert from a different origin.
+      {"subframe different origin", "http://foo.com/", false, "http://bar.com/",
+       "An embedded page at bar.com wants to open"},
+
+      // file:
+      // - main frame:
+      {"file main frame", "file:///path/to/page.html", true, "",
+       "This page wants to open"},
+      // - subframe:
+      {"file subframe", "http://foo.com/", false, "file:///path/to/page.html",
+       "An embedded page on this page wants to open"},
+
+      // data:
+      // /!\ NOTE that this is for data URLs entered directly in the omnibox.
+      // For pages that generate frames with data URLs, see the browsertest.
+      // - main frame:
+      {"data main frame", "data:blahblah", true, "", "This page wants to open"},
+      // - subframe:
+      {"data subframe", "http://foo.com/", false, "data:blahblah",
+       "An embedded page on this page wants to open"},
+
+      // javascript:
+      // /!\ NOTE that this is for javascript URLs entered directly in the
+      // omnibox. For pages that generate frames with javascript URLs, see the
+      // browsertest.
+      // - main frame:
+      {"javascript main frame", "javascript:abc", true, "",
+       "This page wants to open"},
+      // - subframe:
+      {"javascript subframe", "http://foo.com/", false, "javascript:abc",
+       "An embedded page on this page wants to open"},
+
+      // about:
+      // /!\ NOTE that this is for about:blank URLs entered directly in the
+      // omnibox. For pages that generate frames with about:blank URLs, see the
+      // browsertest.
+      // - main frame:
+      {"about main frame", "about:blank", true, "", "This page wants to open"},
+      // - subframe:
+      {"about subframe", "http://foo.com/", false, "about:blank",
+       "An embedded page on this page wants to open"},
+
+      // blob:
+      // - main frame:
+      {"blob main frame",
+       "blob:http://foo.com/66666666-6666-6666-6666-666666666666", true, "",
+       "foo.com wants to open"},
+      // - subframe:
+      {"blob subframe", "http://bar.com/", false,
+       "blob:http://foo.com/66666666-6666-6666-6666-666666666666",
+       "An embedded page at foo.com wants to open"},
+
+      // filesystem:
+      // - main frame:
+      {"filesystem main frame", "filesystem:http://foo.com/bar.html", true, "",
+       "foo.com wants to open"},
+      // - subframe:
+      {"filesystem subframe", "http://bar.com/", false,
+       "filesystem:http://foo.com/bar.html",
+       "An embedded page at foo.com wants to open"},
+  };
   for (const auto& test_case : kCases) {
     SCOPED_TRACE(test_case.case_name);
     url::Origin main_frame_origin =
