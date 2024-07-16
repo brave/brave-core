@@ -71,10 +71,3 @@ export const showConnectToSite = createAsyncThunk(
     getWalletPanelApiProxy().panelHandler.showUI()
   }
 )
-
-export const setCloseOnDeactivate = createAsyncThunk(
-  'setCloseOnDeactivate',
-  async (payload: boolean, store) => {
-    getWalletPanelApiProxy().panelHandler.setCloseOnDeactivate(payload)
-  }
-)

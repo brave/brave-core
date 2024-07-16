@@ -16,9 +16,6 @@ import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/ur
 import { getLocale, getLocaleWithTag } from '$web-common/locale'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 
-// hooks
-import { useAppDispatch } from '../../../../common/hooks/use_app_dispatch'
-
 // options
 import { CreateAccountOptions } from '../../../../options/create-account-options'
 
@@ -35,11 +32,6 @@ import {
   BitcoinNetworkLocaleMapping,
   DAppSupportedCoinTypes
 } from '../../../../constants/types'
-
-// actions
-import {
-  setCloseOnDeactivate //
-} from '../../../../panel/async/wallet_panel_thunks'
 
 // components
 import { DividerLine } from '../../../extension/divider/index'
@@ -72,6 +64,7 @@ import {
   useImportBtcAccountMutation,
   useImportFilAccountMutation
 } from '../../../../common/slices/api.slice'
+import getAPIProxy from '../../../../common/async/bridge'
 
 interface Params {
   accountTypeName: string
@@ -93,7 +86,6 @@ export const ImportAccountModal = () => {
   const { accountTypeName } = useParams<Params>()
 
   // redux
-  const dispatch = useAppDispatch()
   const isBitcoinImportEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinImportEnabled
   )
@@ -200,7 +192,7 @@ export const ImportAccountModal = () => {
   const onClickFileUpload = () => {
     // To prevent panel from being closed when file chooser is open
     if (isPanel) {
-      dispatch(setCloseOnDeactivate(false))
+      getAPIProxy()?.panelHandler?.setCloseOnDeactivate(false)
       // For resume close on deactive when file chooser is close(select/cancel)
       window.addEventListener('focus', onFocusFileUpload)
     }
@@ -208,7 +200,7 @@ export const ImportAccountModal = () => {
 
   const onFocusFileUpload = () => {
     if (isPanel) {
-      dispatch(setCloseOnDeactivate(true))
+      getAPIProxy()?.panelHandler?.setCloseOnDeactivate(true)
       window.removeEventListener('focus', onFocusFileUpload)
     }
   }
