@@ -31,12 +31,6 @@ namespace brave_ads {
 namespace {
 
 void FailedToInitialize(InitializeCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/32066):
-  // Detect potential defects using `DumpWithoutCrashing`.
-  SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                            "Failed to initialize ads");
-  base::debug::DumpWithoutCrashing();
-
   BLOG(0, "Failed to initialize ads");
 
   std::move(callback).Run(/*success=*/false);
