@@ -10,7 +10,7 @@ use rmp_serde as rmps;
 use serde::{Deserialize, Serialize};
 
 use crate::blocker::{Blocker, NetworkFilterList};
-use crate::cosmetic_filter_cache::{CosmeticFilterCache, HostnameRuleDb};
+use crate::cosmetic_filter_cache::{CosmeticFilterCache, HostnameRuleDb, ProceduralOrActionFilter};
 use crate::filters::network::NetworkFilter;
 use crate::utils::Hash;
 
@@ -65,18 +65,32 @@ impl From<&HostnameRuleDb> for LegacyHostnameRuleDb {
                     .or_insert_with(|| vec![LegacySpecificFilterType::UnhideScriptInject(f.to_owned())]);
             }
         }
-        for (hash, bin) in v.style.0.iter() {
+        for (hash, bin) in v.procedural_action.0.iter() {
             for f in bin {
-                db.entry(*hash)
-                    .and_modify(|v| v.push(LegacySpecificFilterType::Style(f.0.to_owned(), f.1.to_owned())))
-                    .or_insert_with(|| vec![LegacySpecificFilterType::Style(f.0.to_owned(), f.1.to_owned())]);
+                match serde_json::from_str::<ProceduralOrActionFilter>(f) {
+                    Ok(f) => {
+                        if let Some((selector, style)) = f.as_css() {
+                            db.entry(*hash)
+                                .and_modify(|v| v.push(LegacySpecificFilterType::Style(selector.clone(), style.clone())))
+                                .or_insert_with(|| vec![LegacySpecificFilterType::Style(selector, style)]);
+                        }
+                    }
+                    _ => (),
+                }
             }
         }
-        for (hash, bin) in v.unstyle.0.iter() {
+        for (hash, bin) in v.procedural_action_exception.0.iter() {
             for f in bin {
-                db.entry(*hash)
-                    .and_modify(|v| v.push(LegacySpecificFilterType::UnhideStyle(f.0.to_owned(), f.1.to_owned())))
-                    .or_insert_with(|| vec![LegacySpecificFilterType::UnhideStyle(f.0.to_owned(), f.1.to_owned())]);
+                match serde_json::from_str::<ProceduralOrActionFilter>(f) {
+                    Ok(f) => {
+                        if let Some((selector, style)) = f.as_css() {
+                            db.entry(*hash)
+                                .and_modify(|v| v.push(LegacySpecificFilterType::UnhideStyle(selector.to_owned(), style.to_owned())))
+                                .or_insert_with(|| vec![LegacySpecificFilterType::UnhideStyle(selector.to_owned(), style.to_owned())]);
+                        }
+                    }
+                    _ => (),
+                }
             }
         }
         LegacyHostnameRuleDb {
@@ -91,8 +105,8 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
 
         let mut hide = HostnameFilterBin::default();
         let mut unhide = HostnameFilterBin::default();
-        let mut style = HostnameFilterBin::default();
-        let mut unstyle = HostnameFilterBin::default();
+        let mut procedural_action = HostnameFilterBin::default();
+        let mut procedural_action_exception = HostnameFilterBin::default();
         let mut inject_script = HostnameFilterBin::default();
         let mut uninject_script = HostnameFilterBin::default();
 
@@ -101,8 +115,8 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
                 match rule {
                     LegacySpecificFilterType::Hide(s) => hide.insert(&hash, s),
                     LegacySpecificFilterType::Unhide(s) => unhide.insert(&hash, s),
-                    LegacySpecificFilterType::Style(s, st) => style.insert(&hash, (s, st)),
-                    LegacySpecificFilterType::UnhideStyle(s, st) => unstyle.insert(&hash, (s, st)),
+                    LegacySpecificFilterType::Style(s, st) => procedural_action.insert_procedural_action_filter(&hash, &ProceduralOrActionFilter::from_css(s, st)),
+                    LegacySpecificFilterType::UnhideStyle(s, st) => procedural_action_exception.insert_procedural_action_filter(&hash, &ProceduralOrActionFilter::from_css(s, st)),
                     LegacySpecificFilterType::ScriptInject(s) => inject_script.insert(&hash, (s, Default::default())),
                     LegacySpecificFilterType::UnhideScriptInject(s) => uninject_script.insert(&hash, s),
                 }
@@ -113,14 +127,8 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
             unhide,
             inject_script,
             uninject_script,
-            remove: HostnameFilterBin::default(),
-            unremove: HostnameFilterBin::default(),
-            style,
-            unstyle,
-            remove_attr: HostnameFilterBin::default(),
-            unremove_attr: HostnameFilterBin::default(),
-            remove_class: HostnameFilterBin::default(),
-            unremove_class: HostnameFilterBin::default(),
+            procedural_action,
+            procedural_action_exception,
         }
     }
 }
