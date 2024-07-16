@@ -11,15 +11,15 @@ import { useHistory } from 'react-router'
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
 import { UISelectors } from '../../../common/selectors'
+import { cancelHardwareOperation } from '../../../common/async/hardware'
 
 // actions
-import {
-  cancelConnectHardwareWallet //
-} from '../../../panel/async/wallet_panel_thunks'
+import { navigateTo } from '../../../panel/async/wallet_panel_thunks'
 
 // types
 import {
   BraveWallet,
+  HardwareVendor,
   HardwareWalletResponseCodeType
 } from '../../../constants/types'
 
@@ -140,8 +140,17 @@ export const ConnectHardwareWalletPanel = ({
   }, [hardwareWalletCode, coinType, account.name])
 
   // methods
-  const onCancelConnect = React.useCallback(() => {
-    dispatch(cancelConnectHardwareWallet(account))
+  const onCancelConnect = React.useCallback(async () => {
+    if (account.hardware) {
+      // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
+      await cancelHardwareOperation(
+        account.hardware.vendor as HardwareVendor,
+        account.accountId.coin
+      )
+    }
+    // Navigating to main panel view will unmount ConnectHardwareWalletPanel
+    // and therefore forfeit connecting to the hardware wallet.
+    dispatch(navigateTo('main'))
   }, [account, dispatch])
 
   const onSignData = React.useCallback(async () => {

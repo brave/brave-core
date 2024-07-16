@@ -6,21 +6,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 // types
-import {
-  BraveWallet,
-  HardwareVendor,
-  PanelTypes,
-  ReduxStoreState
-} from '../../constants/types'
+import { PanelTypes, ReduxStoreState } from '../../constants/types'
 
 // Core
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 
 // actions
 import { PanelActions } from '../../common/slices/panel.slice'
-
-// Hardware
-import { cancelHardwareOperation } from '../../common/async/hardware'
 
 // utils
 import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
@@ -42,22 +34,5 @@ export const navigateTo = createAsyncThunk(
       panelHandler.setCloseOnDeactivate(true)
       panelHandler.showUI()
     }
-  }
-)
-
-export const cancelConnectHardwareWallet = createAsyncThunk(
-  'cancelConnectHardwareWallet',
-  async (payload: BraveWallet.AccountInfo, store) => {
-    if (payload.hardware) {
-      // eslint-disable-next-line max-len
-      // eslint-disable @typescript-eslint/no-unnecessary-type-assertion
-      await cancelHardwareOperation(
-        payload.hardware.vendor as HardwareVendor,
-        payload.accountId.coin
-      )
-    }
-    // Navigating to main panel view will unmount ConnectHardwareWalletPanel
-    // and therefore forfeit connecting to the hardware wallet.
-    await store.dispatch(navigateTo('main'))
   }
 )
