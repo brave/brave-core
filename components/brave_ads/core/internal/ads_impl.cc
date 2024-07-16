@@ -306,12 +306,6 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr wallet,
                                            InitializeCallback callback,
                                            const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to create or open database");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to create or open database");
 
     return FailedToInitialize(std::move(callback));
