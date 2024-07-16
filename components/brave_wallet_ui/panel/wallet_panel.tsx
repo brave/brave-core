@@ -25,7 +25,7 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 // redux
 import store, { walletPanelApiProxy } from './store'
-import { refreshWalletInfo, visibilityChanged } from '../common/async/thunks'
+import { refreshWalletInfo } from '../common/async/thunks'
 import { navigateTo, showConnectToSite } from './async/wallet_panel_thunks'
 
 // contexts
@@ -77,7 +77,10 @@ function initialize() {
 
   // Setup external events
   document.addEventListener('visibilitychange', () => {
-    store.dispatch(visibilityChanged(document.visibilityState === 'visible'))
+    if (document.visibilityState === 'visible') {
+      store.dispatch(refreshWalletInfo())
+      apiProxy?.panelHandler?.showUI()
+    }
   })
 
   // Parse webUI URL, dispatch showConnectToSite action if needed.

@@ -84,15 +84,3 @@ export const locked = createAsyncThunk(
     dispatch(WalletActions.locked)
   }
 )
-
-// Panel Only
-export const visibilityChanged = createAsyncThunk(
-  'visibilityChanged',
-  async (isVisible: boolean, store) => {
-    if (!isVisible) {
-      return
-    }
-    await store.dispatch(refreshWalletInfo())
-    getAPIProxy()?.panelHandler?.showUI()
-  }
-)
