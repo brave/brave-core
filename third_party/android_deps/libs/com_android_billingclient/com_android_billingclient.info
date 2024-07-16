@@ -6,9 +6,13 @@ assets = []
 has_classes_jar = true
 has_native_libraries = false
 has_proguard_flags = true
-has_r_text_file = false
+has_r_text_file = true
 is_manifest_empty = false
 manifest_package = "com.android.billingclient"
-resources = []
+resources = [
+  "res/raw/com_android_billingclient_heterodyne_info",
+  "res/raw/com_android_billingclient_registration_info.binarypb",
+  "res/xml/com_android_billingclient_phenotype.xml"
+]
 subjar_tuples = []
 subjars = []
