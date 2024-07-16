@@ -138,12 +138,6 @@ std::optional<ConfirmationInfo> BuildRewardConfirmation(
   const std::optional<RewardInfo> reward =
       BuildReward(token_generator, confirmation);
   if (!reward) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to build reward");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to build reward");
 
     return std::nullopt;
