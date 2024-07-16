@@ -397,6 +397,14 @@
         <item name="fontWeight">400</item>
     </style>
 
+    <style name="LargeSemibold">
+        <!-- Default browser size for fonts -->
+        <item name="android:textSize">@dimen/large_semibold</item>
+        <item name="lineHeight">24sp</item>
+        <item name="fontStyle">normal</item>
+        <item name="fontWeight">600</item>
+    </style>
+
     <style name="DefaultSemibold">
         <!-- Default Brave UI size -->
         <item name="android:textSize">@dimen/default_semibold</item>

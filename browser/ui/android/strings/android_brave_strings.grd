@@ -2018,10 +2018,7 @@ Are you sure you want to do this?
       Enter the word in position <ph name="WORD_POSITION">%1$s</ph> from your recovery phrase.
     </message>
     <message name="IDS_SKIP_RECOVERY_STEP" desc="Brave Wallet skip recovery phrase dialog text">
-      You can skip this step now, but you can still need to back up your recovery phrase to ensure account security.
-    </message>
-    <message name="IDS_SKIP_RECOVERY_STEP_TITLE" desc="Brave Wallet skip recovery phrase dialog title">
-      Skip this step?
+      You can skip this step now, but you still need to back up your recovery phrase to ensure account security.
     </message>
     <message name="IDS_ENABLE_FINGERPRINT_UNLOCK" desc="Brave Wallet onboarding text">
       Enable fingerprint unlock?

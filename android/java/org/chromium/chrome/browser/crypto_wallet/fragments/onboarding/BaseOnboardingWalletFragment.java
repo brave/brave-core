@@ -6,9 +6,12 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -30,6 +33,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFragment {
 
     protected OnboardingViewModel mOnboardingViewModel;
+    private AlertDialog mDialog;
 
     /** Returns {@code true} if the fragment can be closed. */
     protected boolean canBeClosed() {
@@ -60,6 +64,14 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
+    }
+
     protected void enable(@NonNull final AppCompatButton button, final boolean enable) {
         if (enable) {
             button.setAlpha(1f);
@@ -74,31 +86,30 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         MaterialAlertDialogBuilder builder =
                 new MaterialAlertDialogBuilder(
                                 requireContext(), R.style.BraveWalletAlertDialogTheme)
-                        .setTitle(R.string.skip_recovery_step_title)
-                        .setMessage(getString(R.string.skip_recovery_step))
-                        .setPositiveButton(
-                                R.string.backup_later,
-                                (dialog, which) -> {
-                                    BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                                    if (braveWalletP3A != null && isOnboarding) {
-                                        braveWalletP3A.reportOnboardingAction(
-                                                OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-                                    }
-                                    if (isOnboarding) {
-                                        if (mOnNextPage != null) {
-                                            // Show confirmation screen
-                                            // only during onboarding process.
-                                            mOnNextPage.incrementPages(incrementCount);
-                                        }
-                                    } else {
-                                        requireActivity().finish();
-                                    }
-                                })
-                        .setNegativeButton(
-                                R.string.go_back,
-                                (dialog, which) -> {
-                                    dialog.dismiss();
-                                });
-        builder.show();
+                        .setView(R.layout.dialog_skip_onboarding);
+        mDialog = builder.show();
+        AppCompatButton goBack = mDialog.findViewById(R.id.button_go_back);
+        if (goBack != null) {
+            goBack.setOnClickListener(v -> mDialog.dismiss());
+        }
+        TextView skip = mDialog.findViewById(R.id.skip);
+        if (skip != null) {
+            skip.setOnClickListener(v -> {
+                BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                if (braveWalletP3A != null && isOnboarding) {
+                    braveWalletP3A.reportOnboardingAction(
+                            OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+                }
+                if (isOnboarding) {
+                    if (mOnNextPage != null) {
+                        // Show confirmation screen
+                        // only during onboarding process.
+                        mOnNextPage.incrementPages(incrementCount);
+                    }
+                } else {
+                    requireActivity().finish();
+                }
+            });
+        }
     }
 }
