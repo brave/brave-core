@@ -40,7 +40,16 @@ export const refreshWalletInfo = createAsyncThunk(
     const { allAccounts } = await keyringService.getAllAccounts()
 
     dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
-    dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
+
+    dispatch(
+      walletApi.util.invalidateTags([
+        'DefaultFiatCurrency',
+        'ConnectedAccounts',
+        'DefaultEthWallet',
+        'DefaultSolWallet',
+        'IsMetaMaskInstalled'
+      ])
+    )
 
     // refresh networks registry & selected network
     await dispatch(walletApi.endpoints.refreshNetworkInfo.initiate()).unwrap()
@@ -51,15 +60,6 @@ export const refreshWalletInfo = createAsyncThunk(
       dispatch(walletApi.endpoints.invalidateUserTokensRegistry.initiate())
       braveWalletService.discoverAssetsOnAllSupportedChains(false)
     }
-
-    dispatch(
-      walletApi.util.invalidateTags([
-        'ConnectedAccounts',
-        'DefaultEthWallet',
-        'DefaultSolWallet',
-        'IsMetaMaskInstalled'
-      ])
-    )
   }
 )
 

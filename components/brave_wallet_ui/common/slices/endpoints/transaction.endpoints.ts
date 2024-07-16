@@ -61,10 +61,7 @@ import {
 } from '../../async/hardware'
 import { getLocale } from '../../../../common/locale'
 import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
-import {
-  navigateTo,
-  navigateToMain
-} from '../../../panel/async/wallet_panel_thunks'
+import { navigateTo } from '../../../panel/async/wallet_panel_thunks'
 
 interface ProcessSignTransactionRequestPayload {
   approved: boolean
@@ -526,7 +523,7 @@ export const transactionEndpoints = ({
             arg.account.accountId.coin,
             () => {
               // dismiss hardware connect screen
-              store.dispatch(navigateToMain())
+              store.dispatch(navigateTo('main'))
             }
           )
 
@@ -672,7 +669,7 @@ export const transactionEndpoints = ({
               arg.account.accountId.coin,
               () => {
                 // dismiss hardware connect screen
-                store.dispatch(navigateToMain())
+                store.dispatch(navigateTo('main'))
               }
             )
 
@@ -1268,7 +1265,7 @@ export const transactionEndpoints = ({
                 ))
                 break
               default:
-                await store.dispatch(navigateToMain())
+                await store.dispatch(navigateTo('main'))
                 throw new Error(`unsupported coin type for hardware approval`)
             }
             if (success) {
@@ -1303,7 +1300,7 @@ export const transactionEndpoints = ({
                   txInfo.chainId,
                   txInfo.id
                 )
-                store.dispatch(navigateToMain())
+                store.dispatch(navigateTo('main'))
                 return {
                   data: { success: true }
                 }
@@ -1317,7 +1314,7 @@ export const transactionEndpoints = ({
 
             if (error) {
               console.log(error)
-              store.dispatch(navigateToMain())
+              store.dispatch(navigateTo('main'))
 
               throw new Error(
                 typeof error === 'object'
@@ -1372,13 +1369,13 @@ export const transactionEndpoints = ({
               txInfo.chainId,
               txInfo.id
             )
-            store.dispatch(navigateToMain())
+            store.dispatch(navigateTo('main'))
             return {
               data: { success: false }
             }
           }
 
-          store.dispatch(navigateToMain())
+          store.dispatch(navigateTo('main'))
 
           return {
             data: { success: true }

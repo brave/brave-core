@@ -27,7 +27,7 @@ import {
   signMessageWithHardwareKeyring
 } from '../../async/hardware'
 import { toByteArrayStringUnion } from '../../../utils/mojo-utils'
-import { navigateToMain } from '../../../panel/async/wallet_panel_thunks'
+import { navigateTo } from '../../../panel/async/wallet_panel_thunks'
 
 interface ProcessSignMessageRequestArgs {
   approved: boolean
@@ -246,7 +246,7 @@ export const signingEndpoints = ({
                 }
           )
 
-          store.dispatch(navigateToMain())
+          store.dispatch(navigateTo('main'))
           api.panelHandler?.closeUI()
 
           return {

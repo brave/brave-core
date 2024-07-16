@@ -36,7 +36,7 @@ import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-pars
 // Redux
 import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../common/slices/panel.slice'
-import { navigateToMain } from '../../../panel/async/wallet_panel_thunks'
+import { navigateTo } from '../../../panel/async/wallet_panel_thunks'
 
 // Components
 import { Panel } from '../panel/index'
@@ -130,7 +130,7 @@ export function TransactionStatus({ transactionLookup }: Props) {
         id: tx.id
       })
     )
-    dispatch(navigateToMain())
+    dispatch(navigateTo('main'))
     history.push(makeTransactionDetailsRoute(tx.id))
   }, [dispatch, history, tx])
 

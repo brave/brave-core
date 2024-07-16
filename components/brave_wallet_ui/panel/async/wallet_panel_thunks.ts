@@ -36,18 +36,13 @@ export const navigateTo = createAsyncThunk(
       ?.selectedPanel
     // navigating away from the current panel, store the last known location
     storeCurrentAndPreviousPanel(payload, selectedPanel)
-  }
-)
 
-export const navigateToMain = createAsyncThunk(
-  'navigateToMain',
-  async (payload, store) => {
-    const { panelHandler } = getWalletPanelApiProxy()
-
-    store.dispatch(navigateTo('main'))
-    store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
-    panelHandler.setCloseOnDeactivate(true)
-    panelHandler.showUI()
+    if (payload === 'main') {
+      store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
+      const { panelHandler } = getWalletPanelApiProxy()
+      panelHandler.setCloseOnDeactivate(true)
+      panelHandler.showUI()
+    }
   }
 )
 
@@ -64,7 +59,7 @@ export const cancelConnectHardwareWallet = createAsyncThunk(
     }
     // Navigating to main panel view will unmount ConnectHardwareWalletPanel
     // and therefore forfeit connecting to the hardware wallet.
-    await store.dispatch(navigateToMain())
+    await store.dispatch(navigateTo('main'))
   }
 )
 
