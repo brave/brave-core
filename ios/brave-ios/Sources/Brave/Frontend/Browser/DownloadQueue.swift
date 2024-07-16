@@ -171,7 +171,7 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     // so we must synchonously move the file to a temporary directory first before processing it
     // on a different thread since the Task will execute after this method returns
     let temporaryLocation = FileManager.default.temporaryDirectory
-      .appending(component: location.lastPathComponent)
+      .appending(component: "\(filename)-\(location.lastPathComponent)")
     try? FileManager.default.moveItem(at: location, to: temporaryLocation)
     Task {
       do {

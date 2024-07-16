@@ -505,7 +505,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
     // so we must synchonously move the file to a temporary directory first before processing it
     // on a different thread since the Task will execute after this method returns
     let assetUrl = FileManager.default.temporaryDirectory
-      .appending(component: temporaryUrl.lastPathComponent)
+      .appending(component: "\(asset.id)-\(temporaryUrl.lastPathComponent)")
     try? FileManager.default.moveItem(at: temporaryUrl, to: assetUrl)
 
     @Sendable func cleanupAndFailDownload(location: URL?, error: Error) async {
