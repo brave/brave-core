@@ -9,14 +9,13 @@
 #include <windows.ui.notifications.h>
 #include <wrl/event.h>
 
-#include "base/memory/weak_ptr.h"
+#include <string>
+
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 
 namespace brave_ads {
 
-class NotificationHelperImplWin
-    : public NotificationHelperImpl,
-      public base::SupportsWeakPtr<NotificationHelperImplWin> {
+class NotificationHelperImplWin final : public NotificationHelperImpl {
  public:
   NotificationHelperImplWin(const NotificationHelperImplWin&) = delete;
   NotificationHelperImplWin& operator=(const NotificationHelperImplWin&) =

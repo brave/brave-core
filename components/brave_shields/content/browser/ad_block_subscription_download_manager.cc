@@ -106,6 +106,11 @@ bool AdBlockSubscriptionDownloadManager::IsAvailableForDownloads() const {
   return is_available_for_downloads_;
 }
 
+base::WeakPtr<AdBlockSubscriptionDownloadManager>
+AdBlockSubscriptionDownloadManager::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 void AdBlockSubscriptionDownloadManager::Shutdown() {
   is_available_for_downloads_ = false;
   CancelAllPendingDownloads();

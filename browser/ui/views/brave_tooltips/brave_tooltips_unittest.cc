@@ -30,8 +30,13 @@ class MockBraveTooltipDelegate : public brave_tooltips::BraveTooltipDelegate {
 
   void WaitForWidgetDestroyedNotification() { run_loop_.Run(); }
 
+  base::WeakPtr<BraveTooltipDelegate> AsWeakPtr() override {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
  private:
   base::RunLoop run_loop_;
+  base::WeakPtrFactory<BraveTooltipDelegate> weak_ptr_factory_{this};
 };
 
 class BraveTooltipsTest : public ChromeViewsTestBase {

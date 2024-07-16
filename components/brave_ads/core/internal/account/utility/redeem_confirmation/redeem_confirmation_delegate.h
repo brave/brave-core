@@ -12,8 +12,7 @@ namespace brave_ads {
 
 struct ConfirmationInfo;
 
-class RedeemConfirmationDelegate
-    : public base::SupportsWeakPtr<RedeemConfirmationDelegate> {
+class RedeemConfirmationDelegate {
  public:
   // Invoked to tell the delegate that the `confirmation` was redeemed.
   virtual void OnDidRedeemConfirmation(const ConfirmationInfo& confirmation) {}

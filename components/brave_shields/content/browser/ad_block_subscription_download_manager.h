@@ -30,9 +30,7 @@ class AdBlockSubscriptionServiceManager;
 class AdBlockSubscriptionDownloadClient;
 
 // Manages the downloads of filter lists for custom subscriptions.
-class AdBlockSubscriptionDownloadManager
-    : public KeyedService,
-      public base::SupportsWeakPtr<AdBlockSubscriptionDownloadManager> {
+class AdBlockSubscriptionDownloadManager final : public KeyedService {
  public:
   using DownloadManagerGetter = base::OnceCallback<void(
       base::OnceCallback<void(AdBlockSubscriptionDownloadManager*)>)>;
@@ -72,6 +70,8 @@ class AdBlockSubscriptionDownloadManager
       base::RepeatingCallback<void(const GURL&)> on_download_failed_callback) {
     on_download_failed_callback_ = on_download_failed_callback;
   }
+
+  base::WeakPtr<AdBlockSubscriptionDownloadManager> AsWeakPtr();
 
  private:
   friend class AdBlockSubscriptionDownloadClient;
@@ -143,6 +143,9 @@ class AdBlockSubscriptionDownloadManager
       subscription_path_callback_;
   base::RepeatingCallback<void(const GURL&)> on_download_succeeded_callback_;
   base::RepeatingCallback<void(const GURL&)> on_download_failed_callback_;
+
+  base::WeakPtrFactory<AdBlockSubscriptionDownloadManager> weak_ptr_factory_{
+      this};
 };
 
 }  // namespace brave_shields

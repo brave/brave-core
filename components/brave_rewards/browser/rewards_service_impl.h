@@ -94,12 +94,11 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
 
 using StopEngineCallback = base::OnceCallback<void(mojom::Result)>;
 
-class RewardsServiceImpl : public RewardsService,
-                           public mojom::RewardsEngineClient,
+class RewardsServiceImpl final : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
-                           public greaselion::GreaselionService::Observer,
+                                 public greaselion::GreaselionService::Observer,
 #endif
-                           public base::SupportsWeakPtr<RewardsServiceImpl> {
+                                 public mojom::RewardsEngineClient {
  public:
   RewardsServiceImpl(Profile* profile,
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -289,6 +288,8 @@ class RewardsServiceImpl : public RewardsService,
                      DecryptStringCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
+
+  base::WeakPtr<RewardsServiceImpl> AsWeakPtr();
 
   // Testing methods
   void SetEngineEnvForTesting();
@@ -583,6 +584,7 @@ class RewardsServiceImpl : public RewardsService,
   p3a::ConversionMonitor conversion_monitor_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<RewardsServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_rewards

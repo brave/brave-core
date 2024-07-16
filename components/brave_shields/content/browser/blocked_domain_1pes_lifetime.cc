@@ -63,6 +63,11 @@ void BlockedDomain1PESLifetime::AddOnReadyCallback(
   }
 }
 
+base::WeakPtr<BlockedDomain1PESLifetime>
+BlockedDomain1PESLifetime::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 void BlockedDomain1PESLifetime::Start1PESEnableRequest() {
   key_.first->Enable1PESForUrlIfPossible(
       key_.second,

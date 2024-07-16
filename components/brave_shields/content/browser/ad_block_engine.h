@@ -34,7 +34,7 @@ class PerfPredictorTabHelperTest;
 namespace brave_shields {
 
 // Service managing an adblock engine.
-class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
+class AdBlockEngine {
  public:
   explicit AdBlockEngine(bool is_default_engine);
   AdBlockEngine(const AdBlockEngine&) = delete;
@@ -82,6 +82,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void AddObserverForTest(TestObserver* observer);
   void RemoveObserverForTest();
 
+  base::WeakPtr<AdBlockEngine> AsWeakPtr();
+
  protected:
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
@@ -112,6 +114,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   bool is_default_engine_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<AdBlockEngine> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_shields

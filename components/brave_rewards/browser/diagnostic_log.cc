@@ -339,6 +339,11 @@ void DiagnosticLog::Write(const std::string& log_entry,
   Write(formatted_log_entry, std::move(callback));
 }
 
+base::WeakPtr<DiagnosticLog> DiagnosticLog::AsWeakPtr() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 void DiagnosticLog::Delete(StatusCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   file_task_runner_->PostTaskAndReplyWithResult(

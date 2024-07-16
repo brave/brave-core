@@ -2492,6 +2492,10 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
   engine_->GetRewardsWallet(std::move(callback));
 }
 
+base::WeakPtr<RewardsServiceImpl> RewardsServiceImpl::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 bool RewardsServiceImpl::IsBitFlyerCountry() const {
   return base::Contains(kBitflyerCountries, GetCountryCode());
 }

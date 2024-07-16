@@ -6,14 +6,11 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_ANDROID_H_
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_ANDROID_H_
 
-#include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 
 namespace brave_ads {
 
-class NotificationHelperImplAndroid
-    : public NotificationHelperImpl,
-      public base::SupportsWeakPtr<NotificationHelperImplAndroid> {
+class NotificationHelperImplAndroid final : public NotificationHelperImpl {
  public:
   NotificationHelperImplAndroid(const NotificationHelperImplAndroid&) = delete;
   NotificationHelperImplAndroid& operator=(

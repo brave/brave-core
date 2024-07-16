@@ -61,6 +61,11 @@ void AdsTooltipsController::CloseCaptchaTooltip() {
   brave_tooltips::BraveTooltipPopupHandler::Close(kScheduledCaptchaTooltipId);
 }
 
+base::WeakPtr<brave_tooltips::BraveTooltipDelegate>
+AdsTooltipsController::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 void AdsTooltipsController::OnTooltipWidgetDestroyed(
     const std::string& tooltip_id) {
   brave_tooltips::BraveTooltipPopupHandler::Destroy(kScheduledCaptchaTooltipId);

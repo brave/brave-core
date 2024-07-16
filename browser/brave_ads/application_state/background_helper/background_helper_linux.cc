@@ -66,4 +66,8 @@ void BackgroundHelperLinux::OnBrowserNoLongerActive(Browser* browser) {
       base::BindOnce(&BackgroundHelperLinux::TriggerOnBackground, AsWeakPtr()));
 }
 
+base::WeakPtr<BackgroundHelperLinux> BackgroundHelperLinux::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 }  // namespace brave_ads

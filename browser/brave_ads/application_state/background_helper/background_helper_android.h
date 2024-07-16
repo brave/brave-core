@@ -14,9 +14,7 @@
 
 namespace brave_ads {
 
-class BackgroundHelperAndroid
-    : public BackgroundHelper,
-      public base::SupportsWeakPtr<BackgroundHelperAndroid> {
+class BackgroundHelperAndroid final : public BackgroundHelper {
  public:
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
@@ -42,6 +40,7 @@ class BackgroundHelperAndroid
       app_status_listener_;
 
   base::android::ApplicationState last_state_;
+  base::WeakPtrFactory<BackgroundHelperAndroid> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_ads
