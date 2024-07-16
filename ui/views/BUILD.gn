@@ -5,10 +5,14 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "menu_config_unittest.cc" ]
+  sources = [
+    "md_text_button_unittest.cc",
+    "menu_config_unittest.cc",
+  ]
 
   deps = [
     "//testing/gtest",
+    "//ui/native_theme",
     "//ui/views",
     "//ui/views:test_support",
   ]
