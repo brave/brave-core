@@ -22,6 +22,12 @@ namespace misc_metrics {
 
 inline constexpr char kAutoSecureRequestsHistogramName[] =
     "Brave.DNS.AutoSecureRequests";
+inline constexpr char kQuad9AutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests.Quad9";
+inline constexpr char kWikimediaAutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests.Wikimedia";
+inline constexpr char kCloudflareAutoSecureRequestsHistogramName[] =
+    "Brave.DNS.AutoSecureRequests.Cloudflare";
 inline constexpr char kSecureDnsSettingHistogramName[] =
     "Brave.DNS.SecureSetting";
 

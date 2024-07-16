@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <string>
+#include <vector>
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -32,11 +33,7 @@ const char kDohModeSecure[] = "secure";
 const base::TimeDelta kAutoSecureInitDelay = base::Seconds(6);
 const base::TimeDelta kAutoSecureReportInterval = base::Seconds(20);
 
-constexpr char kQuad9Suffix[] = ".Quad9";
-constexpr char kWikimediaSuffix[] = ".Wikimedia";
-constexpr char kCloudflareSuffix[] = ".Cloudflare";
-
-std::string GetAutoSecureRequestsHistogramName() {
+const char* GetAutoSecureRequestsHistogramName() {
   std::string histogram_name = kAutoSecureRequestsHistogramName;
 
   if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
@@ -44,19 +41,36 @@ std::string GetAutoSecureRequestsHistogramName() {
 
     switch (endpoint_type) {
       case DohFallbackEndpointType::kQuad9:
-        histogram_name += kQuad9Suffix;
-        break;
+        return kQuad9AutoSecureRequestsHistogramName;
       case DohFallbackEndpointType::kWikimedia:
-        histogram_name += kWikimediaSuffix;
-        break;
+        return kWikimediaAutoSecureRequestsHistogramName;
       case DohFallbackEndpointType::kCloudflare:
-        histogram_name += kCloudflareSuffix;
-        break;
+        return kCloudflareAutoSecureRequestsHistogramName;
       default:
         break;
     }
   }
-  return histogram_name;
+  return kAutoSecureRequestsHistogramName;
+}
+
+std::vector<const char*> GetDisabledAutoSecureRequestsHistogramNames() {
+  std::vector<const char*> disabled_names;
+  const char* active_name = GetAutoSecureRequestsHistogramName();
+
+  if (active_name != kAutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kAutoSecureRequestsHistogramName);
+  }
+  if (active_name != kQuad9AutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kQuad9AutoSecureRequestsHistogramName);
+  }
+  if (active_name != kWikimediaAutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kWikimediaAutoSecureRequestsHistogramName);
+  }
+  if (active_name != kCloudflareAutoSecureRequestsHistogramName) {
+    disabled_names.push_back(kCloudflareAutoSecureRequestsHistogramName);
+  }
+
+  return disabled_names;
 }
 
 }  // namespace
@@ -91,6 +105,11 @@ DohMetrics::DohMetrics(PrefService* local_state) : local_state_(local_state) {
       base::BindRepeating(&DohMetrics::HandleDnsOverHttpsMode,
                           base::Unretained(this)));
   HandleDnsOverHttpsMode();
+
+  for (const char* disabled_histogram_name :
+       GetDisabledAutoSecureRequestsHistogramNames()) {
+    base::UmaHistogramExactLinear(disabled_histogram_name, INT_MAX - 1, 4);
+  }
 }
 
 DohMetrics::~DohMetrics() {
@@ -137,7 +156,7 @@ void DohMetrics::OnDnsRequestCounts(
       static_cast<double>(upgraded_request_storage_->GetWeeklySum()) /
       std::max(total_request_storage_->GetWeeklySum(), uint64_t(1u)) * 100.0;
   if (percentage == 0.0) {
-    UMA_HISTOGRAM_EXACT_LINEAR(histogram_name, INT_MAX - 1, 4);
+    base::UmaHistogramExactLinear(histogram_name, INT_MAX - 1, 4);
     return;
   }
 
