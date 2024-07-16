@@ -1514,12 +1514,6 @@
 # default.
 -BrowserCommandControllerBrowserTestToolbarPinningOnly.ShowTranslateStatusFrenchPage
 
-# These tests fail because we stub out the MetricsService.
--ChromeTracingDelegateBrowserTestOnStartup.ScenarioSetFromFieldtrial
--ClonedInstallClientIdResetBrowserTest.TestClonedInstallClientIdReset
--MetricsReportingStateTests/MetricsReportingStateClearDataTest.ClearPreviouslyCollectedMetricsData/*
--SampledOutClientIdSavedBrowserTest.ClientIdSaved
-
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
