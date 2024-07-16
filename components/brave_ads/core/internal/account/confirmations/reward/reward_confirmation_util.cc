@@ -56,12 +56,6 @@ std::optional<RewardInfo> BuildReward(
   const std::optional<ConfirmationTokenInfo> confirmation_token =
       MaybeGetConfirmationToken();
   if (!confirmation_token) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to get confirmation token");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to get confirmation token");
 
     return std::nullopt;
