@@ -5,7 +5,10 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useHistory, useLocation } from 'react-router'
+import {
+  useHistory
+  // useLocation
+} from 'react-router'
 
 // Options
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
@@ -123,8 +126,8 @@ const getAssetBalance = (
 }
 
 const defaultProviders = [
-  BraveWallet.SwapProvider.kAuto,
-  BraveWallet.SwapProvider.kLiFi
+  BraveWallet.SwapProvider.kAuto
+  // BraveWallet.SwapProvider.kLiFi
 ]
 
 const allProviders = [
@@ -147,8 +150,9 @@ export const useSwap = () => {
   // routing
   const query = useQuery()
   const history = useHistory()
-  const { pathname } = useLocation()
-  const isBridge = pathname.includes(WalletRoutes.Bridge)
+  // const { pathname } = useLocation()
+  const isBridge = false
+  // const isBridge = pathname.includes(WalletRoutes.Bridge)
 
   // Queries
   // FIXME(onyb): what happens when defaultFiatCurrency is empty
@@ -397,12 +401,15 @@ export const useSwap = () => {
     [quoteOptions, toToken]
   )
 
-  const fromAssetBalance = useMemo(() =>
-    fromToken && getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry),
+  const fromAssetBalance = useMemo(
+    () =>
+      fromToken &&
+      getAssetBalance(fromToken, fromAccount, tokenBalancesRegistry),
     [fromToken, fromAccount, tokenBalancesRegistry]
   )
-  const nativeAssetBalance = useMemo(() =>
-    nativeAsset &&
+  const nativeAssetBalance = useMemo(
+    () =>
+      nativeAsset &&
       getAssetBalance(nativeAsset, fromAccount, tokenBalancesRegistry),
     [nativeAsset, fromAccount, tokenBalancesRegistry]
   )

@@ -78,9 +78,7 @@ export const Container = () => {
   const isBitcoinEnabled = useSafeWalletSelector(
     WalletSelectors.isBitcoinEnabled
   )
-  const isZCashEnabled = useSafeWalletSelector(
-    WalletSelectors.isZCashEnabled
-  )
+  const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
 
   // page selectors (safe)
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
@@ -186,14 +184,14 @@ export const Container = () => {
         <Swap key='swap' />
       </ProtectedRoute>
 
-      <ProtectedRoute
+      {/* <ProtectedRoute
         path={WalletRoutes.Bridge}
         requirement={!isWalletLocked && !walletNotYetCreated}
         redirectRoute={defaultRedirect}
         exact={true}
       >
         <Swap key='bridge' />
-      </ProtectedRoute>
+      </ProtectedRoute> */}
 
       <ProtectedRoute
         path={WalletRoutes.Send}
@@ -226,9 +224,7 @@ export const Container = () => {
       <ProtectedRoute
         path={WalletRoutes.DevZCash}
         exact={true}
-        requirement={
-          !isWalletLocked && !walletNotYetCreated && isZCashEnabled
-        }
+        requirement={!isWalletLocked && !walletNotYetCreated && isZCashEnabled}
         redirectRoute={defaultRedirect}
       >
         <DevZCash />

@@ -44,8 +44,8 @@ export function isPersistableSessionRoute(
   return (
     isPersistableInPanel ||
     route.includes(WalletRoutes.Swap) ||
-    route.includes(WalletRoutes.Send) ||
-    route.includes(WalletRoutes.Bridge)
+    route.includes(WalletRoutes.Send)
+    // route.includes(WalletRoutes.Bridge)
   )
 }
 
@@ -262,9 +262,9 @@ export const makeSwapOrBridgeRoute = ({
       : baseQueryParams
   )
 
-  const route = routeType === 'bridge' ? WalletRoutes.Bridge : WalletRoutes.Swap
+  // const route = routeType === 'bridge' ? WalletRoutes.Bridge : WalletRoutes.Swap
 
-  return `${route}?${params.toString()}`
+  return `${WalletRoutes.Swap}?${params.toString()}`
 }
 
 export const makeTransactionDetailsRoute = (transactionId: string) => {

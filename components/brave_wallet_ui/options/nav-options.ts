@@ -42,12 +42,12 @@ export const isValidPanelNavigationOption = (
   )
 }
 
-const BridgeOption: NavOption = {
-  id: 'bridge',
-  name: 'braveWalletBridge',
-  icon: 'web3-bridge',
-  route: WalletRoutes.Bridge
-}
+// const BridgeOption: NavOption = {
+//   id: 'bridge',
+//   name: 'braveWalletBridge',
+//   icon: 'web3-bridge',
+//   route: WalletRoutes.Bridge
+// }
 
 export const BuySendSwapDepositOptions: NavOption[] = [
   {
@@ -68,7 +68,7 @@ export const BuySendSwapDepositOptions: NavOption[] = [
     icon: 'currency-exchange',
     route: WalletRoutes.Swap
   },
-  BridgeOption,
+  // BridgeOption,
   {
     id: 'deposit',
     name: 'braveWalletDepositCryptoButton',

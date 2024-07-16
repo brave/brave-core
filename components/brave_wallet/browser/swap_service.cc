@@ -335,7 +335,10 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
   auto has_lifi_support = IsNetworkSupportedByLiFi(params->from_chain_id) &&
                           IsNetworkSupportedByLiFi(params->to_chain_id) &&
                           // LiFi does not support ExactOut swaps.
-                          !params->from_amount.empty();
+                          !params->from_amount.empty() &&
+                          // Temporarily disable LiFi due to a exploit in their
+                          // LiFiDiamond contract on July 16, 2024
+                          false;
 
   // EVM swaps are served via 0x only if the provider is set to kZeroEx.
   if ((params->provider == mojom::SwapProvider::kZeroEx &&

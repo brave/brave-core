@@ -141,7 +141,8 @@ export const Swap = () => {
                   ? getLocale('braveWalletBridge')
                   : getLocale('braveWalletSwap')
               }
-              expandRoute={isBridge ? WalletRoutes.Bridge : WalletRoutes.Swap}
+              // expandRoute={isBridge ? WalletRoutes.Bridge : WalletRoutes.Swap}
+              expandRoute={WalletRoutes.Swap}
             />
           ) : undefined
         }
