@@ -117,8 +117,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
-      let coin = transaction.coin
-      let networksForCoin = await rpcService.allNetworks().filter({ $0.coin == coin })
+      let allNetworks = await rpcService.allNetworks()
+      let networksForCoin = allNetworks.filter({ $0.coin == transaction.coin })
       guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234
@@ -136,7 +136,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         networks: [network],
         includingUserDeleted: true
       ).flatMap(\.tokens)
-      if coin == .eth {
+      if transaction.coin == .eth {
         // Gather known information about the transaction(s) tokens
         let unknownTokenInfo = [transaction].unknownTokenContractAddressChainIdPairs(
           knownTokens: userAssets + allTokens + tokenInfoCache
@@ -156,7 +156,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       let allAccounts = await keyringService.allAccounts().accounts
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          currentNetwork: network,
+          allNetworks: allNetworks,
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens + tokenInfoCache,
@@ -190,7 +191,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          currentNetwork: network,
+          allNetworks: allNetworks,
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens + tokenInfoCache,
@@ -234,7 +236,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       )
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          network: network,
+          currentNetwork: network,
+          allNetworks: allNetworks,
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens,

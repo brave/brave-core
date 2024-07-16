@@ -167,6 +167,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
   func update() {
     Task { @MainActor in
+      let allNetworks = await rpcService.allNetworksForSupportedCoins()
       let networksForAccountCoin = await rpcService.allNetworks(for: [account.coin])
       let networksForAccount = networksForAccountCoin.filter {
         // .fil coin type has two different keyring ids
@@ -212,6 +213,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
         networksForCoin: [account.coin: networksForAccountCoin],
+        allNetworks: allNetworks,
         accountInfos: allAccountsForCoin,
         userAssets: allUserAssets,
         allTokens: allTokens,
@@ -293,6 +295,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
         networksForCoin: [account.coin: networksForAccountCoin],
+        allNetworks: allNetworks,
         accountInfos: allAccountsForCoin,
         userAssets: allUserAssets,
         allTokens: allTokens,
@@ -319,6 +322,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
         networksForCoin: [account.coin: networksForAccountCoin],
+        allNetworks: allNetworks,
         accountInfos: allAccountsForCoin,
         userAssets: allUserAssets,
         allTokens: allTokens,
@@ -350,6 +354,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: transactions,
           networksForCoin: [account.coin: networksForAccountCoin],
+          allNetworks: allNetworks,
           accountInfos: allAccountsForCoin,
           userAssets: allUserAssets,
           allTokens: allTokens,
@@ -430,6 +435,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
+    allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
@@ -466,7 +472,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
           }
           return TransactionParser.parseTransaction(
             transaction: transaction,
-            network: network,
+            currentNetwork: network,
+            allNetworks: allNetworks,
             accountInfos: accountInfos,
             userAssets: userAssets,
             allTokens: allTokens + tokenInfoCache,

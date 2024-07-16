@@ -140,8 +140,9 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       let allAccounts = await keyringService.allAccounts()
       let allAccountInfos = allAccounts.accounts
       // setup network filters if not currently setup
+      let allNetworks = await self.rpcService.allNetworksForSupportedCoins()
       if self.networkFilters.isEmpty {
-        self.networkFilters = await self.rpcService.allNetworksForSupportedCoins().map {
+        self.networkFilters = allNetworks.map {
           .init(isSelected: true, model: $0)
         }
       }
@@ -176,6 +177,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
+        allNetworks: allNetworks,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
         allTokens: allTokens + tokenInfoCache,
@@ -197,6 +199,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
+        allNetworks: allNetworks,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
         allTokens: allTokens,
@@ -237,6 +240,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
       self.transactionSections = buildTransactionSections(
         transactions: allTransactions,
         networksForCoin: networksForCoin,
+        allNetworks: allNetworks,
         accountInfos: allAccountInfos,
         userAssets: userAssets,
         allTokens: allTokens,
@@ -267,6 +271,7 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
     networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
+    allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
@@ -297,7 +302,8 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
           }
           return TransactionParser.parseTransaction(
             transaction: transaction,
-            network: network,
+            currentNetwork: network,
+            allNetworks: allNetworks,
             accountInfos: accountInfos,
             userAssets: userAssets,
             allTokens: allTokens + tokenInfoCache,
