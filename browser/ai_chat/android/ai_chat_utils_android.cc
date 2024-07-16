@@ -6,7 +6,9 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/time/time.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -25,15 +27,22 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
   // Send the query to the AIChat's backend.
-  auto* chat_tab_helper = AIChatTabHelper::FromWebContents(web_contents);
+  AIChatTabHelper* chat_tab_helper =
+      AIChatTabHelper::FromWebContents(web_contents);
   DCHECK(chat_tab_helper);
-  chat_tab_helper->MaybeUnlinkPageContent();
+  ConversationHandler* conversation =
+      AIChatServiceFactory::GetForBrowserContext(
+          web_contents->GetBrowserContext())
+          ->GetOrCreateConversationHandlerForContent(
+              chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+  CHECK(conversation);
+  conversation->MaybeUnlinkAssociatedContent();
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
       base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, false);
-  chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
+  conversation->SubmitHumanConversationEntry(std::move(turn));
 #endif
 }
 }  // namespace ai_chat

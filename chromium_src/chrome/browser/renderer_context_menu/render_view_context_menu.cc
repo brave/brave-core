@@ -44,6 +44,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/brave_browser.h"
@@ -306,13 +307,21 @@ void OnRewriteSuggestionCompleted(
     if (!browser) {
       return;
     }
-
+    ai_chat::AIChatService* ai_chat_service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            web_contents.get()->GetBrowserContext());
     ai_chat::AIChatTabHelper* helper =
         ai_chat::AIChatTabHelper::FromWebContents(web_contents.get());
     if (!helper) {
       return;
     }
-    helper->MaybeUnlinkPageContent();
+    ai_chat::ConversationHandler* conversation =
+        ai_chat_service->GetOrCreateConversationHandlerForContent(
+            helper->GetContentId(), helper->GetWeakPtr());
+    if (!conversation) {
+      return;
+    }
+    conversation->MaybeUnlinkAssociatedContent();
 
     auto* sidebar_controller =
         static_cast<BraveBrowser*>(browser)->sidebar_controller();
@@ -320,8 +329,8 @@ void OnRewriteSuggestionCompleted(
     sidebar_controller->ActivatePanelItem(
         sidebar::SidebarItem::BuiltInItemType::kChatUI);
 
-    helper->AddSubmitSelectedTextError(selected_text, action_type,
-                                       result.error());
+    conversation->AddSubmitSelectedTextError(selected_text, action_type,
+                                             result.error());
   }
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);
@@ -539,6 +548,11 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     VLOG(1) << "Can't get AI chat tab helper";
     return;
   }
+  ai_chat::ConversationHandler* conversation =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          source_web_contents_->GetBrowserContext())
+          ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
+                                                     helper->GetWeakPtr());
 
   // To do rewrite in-place, the following conditions must be met:
   // 1) Selected content is editable.
@@ -558,7 +572,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     // Before trying to activate the panel, unlink page content if needed.
     // This needs to be called before activating the panel to check against the
     // current state.
-    helper->MaybeUnlinkPageContent();
+    conversation->MaybeUnlinkAssociatedContent();
 
     // Active the panel.
     auto* sidebar_controller =
@@ -583,9 +597,9 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
                                         selected_text, action_type)
                        : base::NullCallback();
 
-  helper->SubmitSelectedText(selected_text, action_type,
-                             std::move(data_received_callback),
-                             std::move(completed_callback));
+  conversation->SubmitSelectedText(selected_text, action_type,
+                                   std::move(data_received_callback),
+                                   std::move(completed_callback));
 
   g_brave_browser_process->process_misc_metrics()
       ->ai_chat_metrics()

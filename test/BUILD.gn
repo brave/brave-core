@@ -367,6 +367,7 @@ test("brave_unit_tests") {
   if (enable_ai_chat) {
     deps += [
       "//brave/browser/ai_chat:unit_tests",
+      "//brave/browser/ui/ai_chat:unit_tests",
       "//brave/components/ai_chat/core/browser:unit_tests",
       "//brave/components/ai_chat/core/common:unit_tests",
       "//brave/components/ai_chat/renderer:unit_tests",

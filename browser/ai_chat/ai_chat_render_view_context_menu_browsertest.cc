@@ -9,11 +9,13 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -43,36 +45,6 @@
 using ::testing::_;
 
 namespace ai_chat {
-
-class MockEngineConsumer : public EngineConsumer {
- public:
-  MOCK_METHOD(void,
-              GenerateQuestionSuggestions,
-              (const bool&, const std::string&, SuggestedQuestionsCallback),
-              (override));
-  MOCK_METHOD(void,
-              GenerateAssistantResponse,
-              (const bool&,
-               const std::string&,
-               const ConversationHistory&,
-               const std::string&,
-               GenerationDataCallback,
-               GenerationCompletedCallback),
-              (override));
-  MOCK_METHOD(void,
-              GenerateRewriteSuggestion,
-              (std::string,
-               const std::string&,
-               GenerationDataCallback,
-               GenerationCompletedCallback),
-              (override));
-  MOCK_METHOD(void, SanitizeInput, (std::string&), (override));
-  MOCK_METHOD(void, ClearAllQueries, (), (override));
-  MOCK_METHOD(void,
-              UpdateModelOptions,
-              (const mojom::ModelOptions&),
-              (override));
-};
 
 class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
  public:
@@ -205,9 +177,17 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
       ai_chat::AIChatTabHelper::FromWebContents(contents);
   ASSERT_TRUE(helper);
 
-  helper->SetEngineForTesting(std::make_unique<MockEngineConsumer>());
-  auto* mock_engine =
-      static_cast<MockEngineConsumer*>(helper->GetEngineForTesting());
+  ConversationHandler* conversation_handler =
+      ai_chat::AIChatServiceFactory::GetInstance()
+          ->GetForBrowserContext(browser()->profile())
+          ->GetOrCreateConversationHandlerForContent(helper->GetContentId(),
+                                                     helper->GetWeakPtr());
+  ASSERT_TRUE(conversation_handler);
+
+  conversation_handler->SetEngineForTesting(
+      std::make_unique<MockEngineConsumer>());
+  auto* mock_engine = static_cast<MockEngineConsumer*>(
+      conversation_handler->GetEngineForTesting());
 
   // Test rewriting textarea value and verify that the response tag is ignored
   // by BraveRenderViewContextMenu

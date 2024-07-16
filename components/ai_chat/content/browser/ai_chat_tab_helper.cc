@@ -10,46 +10,32 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
-#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
-#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/favicon/content/content_favicon_driver.h"
-#include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "pdf/buildflags.h"
 #include "ui/accessibility/ax_mode.h"
 #include "ui/accessibility/ax_updates_and_events.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
-
-namespace {
-
-std::optional<uint32_t> g_max_page_content_length_for_testing;
-
-}  // namespace
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
     content::WebContents* web_contents,
@@ -103,32 +89,18 @@ void AIChatTabHelper::BindPageContentExtractorHost(
   tab_helper->BindPageContentExtractorReceiver(std::move(receiver));
 }
 
-// static
-void AIChatTabHelper::SetMaxContentLengthForTesting(
-    std::optional<uint32_t> max_length) {
-  g_max_page_content_length_for_testing = max_length;
-}
-
-AIChatTabHelper::AIChatTabHelper(
-    content::WebContents* web_contents,
-    AIChatMetrics* ai_chat_metrics,
-    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-        skus_service_getter,
-    PrefService* local_state_prefs,
-    const std::string& channel_name)
+AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
+                                 std::unique_ptr<PrintPreviewExtractionDelegate>
+                                     print_preview_extraction_delegate)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<AIChatTabHelper>(*web_contents),
-      ConversationDriver(
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()),
-          local_state_prefs,
-          ModelServiceFactory::GetForBrowserContext(
-              web_contents->GetBrowserContext()),
-          ai_chat_metrics,
-          skus_service_getter,
-          web_contents->GetBrowserContext()
-              ->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess(),
-          channel_name) {
+      AssociatedContentDriver(web_contents->GetBrowserContext()
+                                  ->GetDefaultStoragePartition()
+                                  ->GetURLLoaderFactoryForBrowserProcess()),
+      print_preview_extraction_delegate_(
+          std::move(print_preview_extraction_delegate)),
+      page_content_fetcher_delegate_(
+          std::make_unique<PageContentFetcher>(web_contents)) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
 }
@@ -144,23 +116,13 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   DVLOG(3) << " PDF Loaded: " << GetPageURL();
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "",
-                     std::move(pending_get_page_content_callback_));
-  }
-  if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
-    NotifyPrintPreviewRequested(true);
+    // Call GetPageContent again so that we can still utilize fallback
+    // to print preview for PDF if needed.
+    GetPageContent(std::move(pending_get_page_content_callback_), "");
   }
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
-  }
-}
-
-void AIChatTabHelper::OnPreviewTextReady(std::string ocr_text) {
-  if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
-    std::move(pending_print_preview_requests_[pending_navigation_id_])
-        .Run(std::move(ocr_text), false, "");
-    pending_print_preview_requests_.erase(pending_navigation_id_);
   }
 }
 
@@ -172,21 +134,18 @@ void AIChatTabHelper::WebContentsDestroyed() {
   inner_web_contents_ = nullptr;
 }
 
-void AIChatTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInMainFrame()) {
+void AIChatTabHelper::NavigationEntryCommitted(
+    const content::LoadCommittedDetails& load_details) {
+  if (!load_details.is_main_frame) {
     return;
   }
-  DVLOG(2) << __func__ << navigation_handle->GetNavigationId()
-           << " url: " << navigation_handle->GetURL().spec()
-           << " same document? " << navigation_handle->IsSameDocument();
-
-  is_page_loaded_ = false;
-  if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
-    std::move(pending_print_preview_requests_[pending_navigation_id_])
-        .Run("", false, "");
-    pending_print_preview_requests_.erase(pending_navigation_id_);
-  }
+  // UniqueID will provide a consitent value for the entry when navigating
+  // through history, allowing us to re-join conversations and navigations.
+  int pending_navigation_id = load_details.entry->GetUniqueID();
+  pending_navigation_id_ = pending_navigation_id;
+  DVLOG(2) << __func__ << " id: " << pending_navigation_id_
+           << " url: " << load_details.entry->GetVirtualURL()
+           << " same document? " << load_details.is_same_document;
 
   // Allow same-document navigation, as content often changes as a result
   // of framgment / pushState / replaceState navigations.
@@ -194,12 +153,11 @@ void AIChatTabHelper::DidFinishNavigation(
   // "DOM Content Loaded" event, so let's wait for something else such as
   // page title changing before committing to starting a new conversation
   // and treating it as a "fresh page".
-  is_same_document_navigation_ = navigation_handle->IsSameDocument();
-  pending_navigation_id_ = navigation_handle->GetNavigationId();
-
+  is_same_document_navigation_ = load_details.is_same_document;
   // Experimentally only call |OnNewPage| for same-page navigations _if_
   // it results in a page title change (see |TtileWasSet|).
   if (!is_same_document_navigation_) {
+    is_page_loaded_ = false;
     OnNewPage(pending_navigation_id_);
   }
 }
@@ -253,14 +211,13 @@ void AIChatTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
                                     const GURL& validated_url) {
   if (validated_url == GetPageURL()) {
     is_page_loaded_ = true;
-    if (pending_print_preview_requests_.contains(pending_navigation_id_)) {
-      NotifyPrintPreviewRequested(IsPdf(web_contents()));
+    if (pending_get_page_content_callback_) {
+      GetPageContent(std::move(pending_get_page_content_callback_), "");
     }
   }
 }
 
 // favicon::FaviconDriverObserver
-
 void AIChatTabHelper::OnFaviconUpdated(
     favicon::FaviconDriver* favicon_driver,
     NotificationIconType notification_icon_type,
@@ -286,16 +243,18 @@ void AIChatTabHelper::OnInterceptedPageContentChanged() {
   }
 }
 
-// ai_chat::ConversationDriver
-
 GURL AIChatTabHelper::GetPageURL() const {
   return web_contents()->GetLastCommittedURL();
 }
 
-void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
-                                     std::string_view invalidation_token) {
-  if (IsPdf(web_contents()) && !is_pdf_a11y_info_loaded_) {
+void AIChatTabHelper::GetPageContent(
+    ConversationHandler::GetPageContentCallback callback,
+    std::string_view invalidation_token) {
+  bool is_pdf = IsPdf(web_contents());
+  if (is_pdf && !is_pdf_a11y_info_loaded_) {
     if (pending_get_page_content_callback_) {
+      // TODO(petemill): Queue the callback in a Signal, instead of only
+      // allowing a single pending callback.
       std::move(pending_get_page_content_callback_).Run("", false, "");
     }
     // invalidation_token doesn't matter for PDF extraction.
@@ -321,50 +280,87 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     // Ocred but `remaining_page_count_` was set to total pdf page count. Hence
     // status IDS_PDF_OCR_COMPLETED or IDS_PDF_OCR_NO_RESULT won't be set.
     CheckPDFA11yTree();
-  } else {
-    if (base::Contains(kPrintPreviewRetrievalHosts,
-                       GetPageURL().host_piece())) {
-      pending_print_preview_requests_[pending_navigation_id_] =
-          std::move(callback);
-      if (is_page_loaded_) {
-        NotifyPrintPreviewRequested(false);
-      }
+    return;
+  }
+  if (base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host_piece()) &&
+      print_preview_extraction_delegate_ != nullptr) {
+    if (is_page_loaded_) {
+      // Get content using a printing / OCR mechanism, instead of
+      // directly from the source.
+      print_preview_extraction_delegate_->Extract(
+          is_pdf,
+          base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     } else {
-      FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+      // Run print preview extraction after load
+      if (pending_get_page_content_callback_) {
+        std::move(pending_get_page_content_callback_).Run("", false, "");
+      }
+      pending_get_page_content_callback_ = std::move(callback);
     }
+  } else {
+    page_content_fetcher_delegate_->FetchPageContent(
+        invalidation_token,
+        base::BindOnce(&AIChatTabHelper::OnFetchPageContentComplete,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
 }
 
-void AIChatTabHelper::PrintPreviewFallback(GetPageContentCallback callback) {
-  pending_print_preview_requests_[pending_navigation_id_] = std::move(callback);
-  if (IsPdf(web_contents())) {
-    // Print preview will be requested in OnPDFA11yInfoLoaded.
-    CheckPDFA11yTree();
-  } else if (is_page_loaded_) {
-    NotifyPrintPreviewRequested(false);
+void AIChatTabHelper::OnFetchPageContentComplete(
+    ConversationHandler::GetPageContentCallback callback,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token) {
+  if (!did_retry_get_page_content_after_page_load_ &&
+      base::CollapseWhitespaceASCII(content, true).empty() && !is_video) {
+    // Only try this once
+    did_retry_get_page_content_after_page_load_ = true;
+    DVLOG(1) << __func__ <<  "empty content, will retry once, is_page_loaded_=" << is_page_loaded_;
+    if (!is_page_loaded_) {
+      // Retry after page is loaded, including possible print preview fallback
+      if (pending_get_page_content_callback_) {
+        std::move(pending_get_page_content_callback_).Run("", false, "");
+      }
+      pending_get_page_content_callback_ = std::move(callback);
+      return;
+    }
+    if (is_page_loaded_) {
+      // Fallback to print preview extraction
+      print_preview_extraction_delegate_->Extract(
+          IsPdf(web_contents()),
+          base::BindOnce(&AIChatTabHelper::OnExtractPrintPreviewContentComplete,
+                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    }
+    return;
   }
+  std::move(callback).Run(std::move(content), is_video,
+                          std::move(invalidation_token));
+}
+
+void AIChatTabHelper::OnExtractPrintPreviewContentComplete(
+    ConversationHandler::GetPageContentCallback callback,
+    std::string content) {
+  // Invalidation token not applicable for print preview OCR
+  std::move(callback).Run(std::move(content), false, "");
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
   return web_contents()->GetTitle();
 }
 
+void OnNewPage(int64_t navigation_id) {
+  DVLOG(3) << __func__ << " id: " << navigation_id;
+  AssociatedContentDriver::OnNewPage(navigation_id);
+  did_retry_get_page_content_after_page_load_ = false;
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_).Run("", false, "");
+  }
+}
+
 void AIChatTabHelper::BindPageContentExtractorReceiver(
     mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
   page_content_extractor_receiver_.reset();
   page_content_extractor_receiver_.Bind(std::move(receiver));
-}
-
-uint32_t AIChatTabHelper::GetMaxPageContentLength() {
-  if (g_max_page_content_length_for_testing) {
-    return *g_max_page_content_length_for_testing;
-  }
-  auto& model = GetCurrentModel();
-  if (model.options->is_leo_model_options()) {
-    return model.options->get_leo_model_options()->max_page_content_length;
-  } else {
-    return kCustomModelMaxPageContentLength;
-  }
 }
 
 void AIChatTabHelper::CheckPDFA11yTree() {
@@ -400,7 +396,7 @@ void AIChatTabHelper::GetSearchSummarizerKey(
     return;
   }
 
-  ::ai_chat::GetSearchSummarizerKey(web_contents(), std::move(callback));
+  page_content_fetcher_delegate_->GetSearchSummarizerKey(std::move(callback));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

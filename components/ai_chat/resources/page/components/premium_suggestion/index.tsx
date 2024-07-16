@@ -4,11 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import formatMessage from '$web-common/formatMessage'
-import DataContext from '../../state/context'
+import { getLocale } from '$web-common/locale'
+import { useAIChat } from '../../state/ai_chat_context'
 import styles from './style.module.scss'
 
 interface PremiumSuggestionProps {
@@ -41,7 +41,7 @@ const featuresList = [
 ]
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
-  const context = React.useContext(DataContext)
+  const aiChatContext = useAIChat()
   const buttonRef = React.useRef<HTMLButtonElement>()
 
   const pricingInfo = formatMessage(getLocale('premiumPricing'), {
@@ -78,7 +78,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
           })}
         </ul>
       </div>
-      {!context.isMobile && (
+      {!aiChatContext.isMobile && (
         <div className={styles.priceList}>
           <button className={styles.priceButton} tabIndex={-1}>
             <span className={styles.priceButtonLabel}>Monthly</span>
@@ -90,7 +90,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         </div>
       )}
       <div className={styles.actions}>
-        <Button onClick={context.goPremium} ref={buttonRef}>
+        <Button onClick={aiChatContext.goPremium} ref={buttonRef}>
           {getLocale('upgradeButtonLabel')}
         </Button>
         {props.secondaryActionButton}

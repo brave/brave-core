@@ -49,6 +49,7 @@ std::vector<mojom::ModelPtr> GetCustomModelsFromService(
 }  // namespace
 
 AIChatSettingsHelper::AIChatSettingsHelper(content::BrowserContext* context) {
+  // TODO(petemill): Just use AIChatService to get premium status
   auto skus_service_getter = base::BindRepeating(
       [](content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
@@ -73,7 +74,7 @@ void AIChatSettingsHelper::GetPremiumStatus(GetPremiumStatusCallback callback) {
 }
 
 void AIChatSettingsHelper::OnPremiumStatusReceived(
-    mojom::PageHandler::GetPremiumStatusCallback parent_callback,
+    mojom::Service::GetPremiumStatusCallback parent_callback,
     mojom::PremiumStatus premium_status,
     mojom::PremiumInfoPtr premium_info) {
   std::move(parent_callback).Run(premium_status, std::move(premium_info));
@@ -87,9 +88,10 @@ void AIChatSettingsHelper::OnModelListUpdated() {
   }
 }
 
-void AIChatSettingsHelper::OnDefaultModelChanged(const std::string& key) {
+void AIChatSettingsHelper::OnDefaultModelChanged(const std::string& old_key,
+                                                 const std::string& new_key) {
   if (client_page_.is_bound()) {
-    client_page_->OnDefaultModelChanged(key);
+    client_page_->OnDefaultModelChanged(new_key);
   }
 }
 
