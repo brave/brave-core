@@ -3,17 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as WalletActions from './actions/wallet_actions'
+// types
 import { Store } from './async/types'
 import { BraveWallet } from '../constants/types'
+
+// actions
+import * as WalletActions from './actions/wallet_actions'
+import { refreshNetworksAndTokens, refreshWalletInfo } from './async/thunks'
+
+// utils
 import { makeSerializableTransaction } from '../utils/model-serialization-utils'
 import { walletApi } from './slices/api.slice'
 import { getCoinFromTxDataUnion } from '../utils/network-utils'
-import {
-  locked,
-  refreshNetworksAndTokens,
-  refreshWalletInfo
-} from './async/thunks'
+import { interactionNotifier } from './async/interactionNotifier'
 
 export function makeBraveWalletServiceTokenObserver(store: Store) {
   const braveWalletServiceTokenObserverReceiver =
@@ -68,7 +70,9 @@ export function makeKeyringServiceObserver(store: Store) {
         window.location.reload()
       },
       locked: function () {
-        store.dispatch(locked())
+        store.dispatch(refreshWalletInfo())
+        interactionNotifier.stopWatchingForInteraction()
+        store.dispatch(WalletActions.locked)
       },
       unlocked: function () {
         store.dispatch(refreshWalletInfo())

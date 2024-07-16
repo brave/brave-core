@@ -14,9 +14,7 @@ import { walletApi } from '../slices/api.slice'
 
 // Utils
 import getAPIProxy from './bridge'
-import InteractionNotifier from './interactionNotifier'
-
-const interactionNotifier = new InteractionNotifier()
+import { interactionNotifier } from './interactionNotifier'
 
 export const refreshWalletInfo = createAsyncThunk(
   'refreshWalletInfo',
@@ -73,14 +71,5 @@ export const refreshNetworksAndTokens = createAsyncThunk(
       walletApi.endpoints.invalidateUserTokensRegistry.initiate()
     ).unwrap()
     dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
-  }
-)
-
-export const locked = createAsyncThunk(
-  'locked',
-  async (_payload, { dispatch }) => {
-    dispatch(refreshWalletInfo())
-    interactionNotifier.stopWatchingForInteraction()
-    dispatch(WalletActions.locked)
   }
 )
