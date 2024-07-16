@@ -8,7 +8,7 @@
 #import "ai_chat.mojom.objc+private.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
-#include "brave/components/ai_chat/core/browser/conversation_driver.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/ios/browser/api/ai_chat/ai_chat_delegate.h"

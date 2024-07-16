@@ -59,7 +59,7 @@ IN_PROC_BROWSER_TEST_F(AIChatMetricsTest, ContextMenuActions) {
   ai_chat_metrics_->RecordEnabled(
       true, true,
       base::BindLambdaForTesting(
-          [&](mojom::PageHandler::GetPremiumStatusCallback callback) {
+          [&](mojom::Service::GetPremiumStatusCallback callback) {
             std::move(callback).Run(mojom::PremiumStatus::Active, nullptr);
           }));
   histogram_tester_.ExpectUniqueSample(kMostUsedContextMenuActionHistogramName,

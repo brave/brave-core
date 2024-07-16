@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
 #include "base/functional/callback_forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "url/gurl.h"
@@ -21,6 +22,8 @@ bool HasUserOptedIn(PrefService* prefs);
 void SetUserOptedIn(PrefService* prefs, bool opted_in);
 
 bool IsBraveSearchSERP(const GURL& url);
+
+bool IsPremiumStatus(mojom::PremiumStatus status);
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 using GetOCRTextCallback = base::OnceCallback<void(std::string)>;

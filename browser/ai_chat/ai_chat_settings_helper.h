@@ -66,13 +66,14 @@ class AIChatSettingsHelper : public mojom::AIChatSettingsHelper,
 
  private:
   void OnPremiumStatusReceived(
-      mojom::PageHandler::GetPremiumStatusCallback parent_callback,
+      mojom::Service::GetPremiumStatusCallback parent_callback,
       mojom::PremiumStatus premium_status,
       mojom::PremiumInfoPtr premium_info);
 
   // ModelService::Observer
   void OnModelListUpdated() override;
-  void OnDefaultModelChanged(const std::string& key) override;
+  void OnDefaultModelChanged(const std::string& old_key,
+                             const std::string& new_key) override;
 
 #if BUILDFLAG(IS_ANDROID)
   void OnCreateOrderId(CreateOrderIdCallback callback,

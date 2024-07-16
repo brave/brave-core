@@ -13,6 +13,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "components/prefs/pref_service.h"
@@ -94,6 +95,11 @@ bool IsBraveSearchSERP(const GURL& url) {
              brave_domains::GetServicesDomain(kBraveSearchURLPrefix) &&
          url.path_piece() == "/search" &&
          base::StartsWith(url.query_piece(), "q=");
+}
+
+bool IsPremiumStatus(mojom::PremiumStatus status) {
+  return status == mojom::PremiumStatus::Active ||
+         status == mojom::PremiumStatus::ActiveDisconnected;
 }
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)

@@ -17,10 +17,16 @@ static_library("browser") {
     "ai_chat_feedback_api.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
+    "ai_chat_service.cc",
+    "ai_chat_service.h",
+    "associated_archive_content.cc",
+    "associated_archive_content.h",
+    "associated_content_driver.cc",
+    "associated_content_driver.h",
     "constants.cc",
     "constants.h",
-    "conversation_driver.cc",
-    "conversation_driver.h",
+    "conversation_handler.cc",
+    "conversation_handler.h",
     "engine/conversation_api_client.cc",
     "engine/conversation_api_client.h",
     "engine/engine_consumer.cc",
@@ -119,7 +125,9 @@ if (!is_ios) {
     sources = [
       "ai_chat_credential_manager_unittest.cc",
       "ai_chat_metrics_unittest.cc",
-      "conversation_driver_unittest.cc",
+      "ai_chat_service_unittest.cc",
+      "associated_content_driver_unittest.cc",
+      "conversation_handler_unittest.cc",
       "engine/conversation_api_client_unittest.cc",
       "engine/engine_consumer_claude_unittest.cc",
       "engine/engine_consumer_conversation_api_unittest.cc",
@@ -166,6 +174,8 @@ if (!is_ios) {
 source_set("test_support") {
   testonly = true
   sources = [
+    "engine/mock_engine_consumer.cc",
+    "engine/mock_engine_consumer.h",
     "engine/mock_remote_completion_client.cc",
     "engine/mock_remote_completion_client.h",
   ]

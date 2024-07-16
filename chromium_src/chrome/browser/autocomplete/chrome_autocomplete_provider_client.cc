@@ -5,6 +5,7 @@
 
 #include "src/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc"
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -60,10 +61,16 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
       browser->tab_strip_model()->GetActiveWebContents());
   DCHECK(chat_tab_helper);
 
+  auto* conversation_handler =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(profile_)
+          ->GetOrCreateConversationHandlerForContent(
+              chat_tab_helper->GetContentId(), chat_tab_helper->GetWeakPtr());
+  CHECK(conversation_handler);
+
   // Before trying to activate the panel, unlink page content if needed.
   // This needs to be called before activating the panel to check against the
   // current state.
-  chat_tab_helper->MaybeUnlinkPageContent();
+  conversation_handler->MaybeUnlinkAssociatedContent();
 
   // Activate the panel.
   auto* sidebar_controller =
@@ -81,7 +88,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           std::nullopt /* events */, base::Time::Now(),
           std::nullopt /* edits */, false /* from_brave_search_SERP */);
 
-  chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
+  conversation_handler->SubmitHumanConversationEntry(std::move(turn));
 
   ai_chat::AIChatMetrics* metrics =
       g_brave_browser_process->process_misc_metrics()->ai_chat_metrics();

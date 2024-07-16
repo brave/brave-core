@@ -62,19 +62,21 @@ class AiChatBrowserTest : public InProcessBrowserTest {
   std::string FetchPageContent() {
     std::string content;
     base::RunLoop run_loop;
-    ai_chat::FetchPageContent(
-        browser()->tab_strip_model()->GetActiveWebContents(), "",
-        base::BindLambdaForTesting(
-            [&run_loop, &content](std::string page_content, bool is_video,
-                                  std::string invalidation_token) {
-              content = std::move(page_content);
-              run_loop.Quit();
-            }));
+    page_content_fetcher_ = std::make_unique<PageContentFetcher>(
+        browser()->tab_strip_model()->GetActiveWebContents());
+    page_content_fetcher_->FetchPageContent(
+        "", base::BindLambdaForTesting(
+                [&run_loop, &content](std::string page_content, bool is_video,
+                                      std::string invalidation_token) {
+                  content = std::move(page_content);
+                  run_loop.Quit();
+                }));
     run_loop.Run();
     return content;
   }
 
  private:
+  std::unique_ptr<PageContentFetcher> page_content_fetcher_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };

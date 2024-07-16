@@ -37,6 +37,7 @@ include_rules = [
   "+media/webrtc",  # For webrtc media switches.
   "+mojo/public",
   "+net",
+  "+printing/buildflags/buildflags.h",
   "+sandbox/mac",
   "+sandbox/policy",
   "+services/audio/public",

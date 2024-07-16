@@ -88,7 +88,7 @@ enum class ContextMenuAction {
 class AIChatMetrics {
  public:
   using RetrievePremiumStatusCallback =
-      base::OnceCallback<void(mojom::PageHandler::GetPremiumStatusCallback)>;
+      base::OnceCallback<void(mojom::Service::GetPremiumStatusCallback)>;
 
   explicit AIChatMetrics(PrefService* local_state);
   ~AIChatMetrics();

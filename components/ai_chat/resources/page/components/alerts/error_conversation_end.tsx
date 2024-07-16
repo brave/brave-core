@@ -7,7 +7,6 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import getPageHandlerInstance from '../../api/page_handler'
 import styles from './alerts.module.scss'
 
 function ErrorConversationEnd () {
@@ -21,7 +20,7 @@ function ErrorConversationEnd () {
         <Button
           slot='actions'
           kind='plain-faint'
-          onClick={() => { getPageHandlerInstance().pageHandler.clearConversationHistory() }}
+          onClick={() => { console.error('TODO: new conversation') }}
         >
             {getLocale('menuNewChat')}
         </Button>

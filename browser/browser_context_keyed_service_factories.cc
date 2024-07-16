@@ -97,6 +97,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #endif
 
@@ -193,6 +194,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   speedreader::SpeedreaderServiceFactory::GetInstance();
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat::AIChatServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
 #endif
 }

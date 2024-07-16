@@ -9,17 +9,16 @@ import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
-
-import styles from './style.module.scss'
+import { useConversation } from '../../state/conversation_context'
 import SiteTitle from '../site_title'
-import DataContext from '../../state/context'
+import styles from './style.module.scss'
 
 function PageContextToggle() {
-  const context = React.useContext(DataContext)
+  const conversationContext = useConversation()
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
 
   const handleToggleChange = ({ checked }: { checked: boolean }) => {
-    context.updateShouldSendPageContents(checked)
+    conversationContext.updateShouldSendPageContents(checked)
   }
 
   const toggleTooltipVisibility = () => {
@@ -31,7 +30,7 @@ function PageContextToggle() {
       <Toggle
         size='small'
         onChange={handleToggleChange}
-        checked={context.shouldSendPageContents}
+        checked={conversationContext.shouldSendPageContents}
         className={styles.toggle}
       >
         <span slot="on-icon" />

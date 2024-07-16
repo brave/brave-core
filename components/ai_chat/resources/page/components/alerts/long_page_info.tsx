@@ -4,21 +4,20 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
-import DataContext from '../../state/context'
-import styles from './alerts.module.scss'
 import formatMessage from '$web-common/formatMessage'
+import { getLocale } from '$web-common/locale'
+import { useConversation } from '../../state/conversation_context'
+import styles from './alerts.module.scss'
 
 export default function LongPageInfo() {
-  const context = React.useContext(DataContext)
+  const context = useConversation()
 
-
-  const warningText = context.siteInfo.isContentRefined
+  const warningText = context.associatedContentInfo?.isContentRefined
     ? getLocale('pageContentRefinedWarning')
     : formatMessage(getLocale('pageContentTooLongWarning'), {
     placeholders: {
-      $1: context.siteInfo.contentUsedPercentage + '%'
+      $1: context.associatedContentInfo?.contentUsedPercentage + '%'
     }
   })
 

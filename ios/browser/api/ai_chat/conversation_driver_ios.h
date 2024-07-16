@@ -15,7 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/ai_chat/core/browser/conversation_driver.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
 @protocol AIChatDelegate;

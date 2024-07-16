@@ -9,7 +9,8 @@ import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
 import { getLocale } from '$web-common/locale'
 import formatMessage from '$web-common/formatMessage'
-import DataContext from '../../state/context'
+import { useAIChat } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
 import styles from './style.module.scss'
 
 const CATEGORY_OPTIONS = new Map([
@@ -29,7 +30,8 @@ function FeedbackForm(props: FeedbackFormProps) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [category, setCategory] = React.useState('')
   const [feedbackText, setFeedbackText] = React.useState('')
-  const context = React.useContext(DataContext)
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
   const [shouldSendUrl, setShouldSendUrl] = React.useState(true)
 
   const canSubmit = !!category && !props.isDisabled
@@ -92,25 +94,25 @@ function FeedbackForm(props: FeedbackFormProps) {
             />
           </label>
         </fieldset>
-        {context.siteInfo?.hostname && (
+        {conversationContext.associatedContentInfo?.hostname && (
           <fieldset>
             <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
               <label>{
                 formatMessage(getLocale('sendSiteHostnameLabel'), {
                   placeholders: {
-                    $1: context.siteInfo.hostname
+                    $1: conversationContext.associatedContentInfo.hostname
                   }
                 })
               }</label>
             </Checkbox>
           </fieldset>
         )}
-        {!context.isPremiumUser && (
+        {!aiChatContext.isPremiumUser && (
           <div className={styles.premiumNote}>
             {formatMessage(getLocale('feedbackPremiumNote'), {
               tags: {
                 $1: (linkText) => (
-                  <Button kind='plain' size='medium' onClick={context.goPremium}>
+                  <Button kind='plain' size='medium' onClick={aiChatContext.goPremium}>
                     {linkText}
                   </Button>
                 )
