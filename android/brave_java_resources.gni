@@ -746,6 +746,7 @@ brave_java_resources = [
   "java/res/drawable/web_notification_small_icon_background.xml",
   "java/res/drawable/white_rounded_holo_button_thin.xml",
   "java/res/layout-land/brave_shields_stats_row.xml",
+  "java/res/layout/dialog_skip_onboarding.xml",
   "java/res/layout-sw600dp-land/brave_shields_stats_row.xml",
   "java/res/layout-sw600dp/brave_rewards_tippingpanel_fragment.xml",
   "java/res/layout-sw600dp/brave_rewards_tippingpanel_fragment_base.xml",
