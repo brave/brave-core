@@ -344,21 +344,21 @@ void AdsImpl::PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
   }
 
   PurgeAllOrphanedAdEvents(base::BindOnce(
-      &AdsImpl::PurgeOrphanedAdEventsCallback, weak_factory_.GetWeakPtr(),
+      &AdsImpl::PurgeAllOrphanedAdEventsCallback, weak_factory_.GetWeakPtr(),
       std::move(wallet), std::move(callback)));
 }
 
-void AdsImpl::PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
-                                            InitializeCallback callback,
-                                            const bool success) {
+void AdsImpl::PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
+                                               InitializeCallback callback,
+                                               const bool success) {
   if (!success) {
     // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
     // potential defects using `DumpWithoutCrashing`.
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to purge orphaned ad events");
+                              "Failed to purge all orphaned ad events");
     base::debug::DumpWithoutCrashing();
 
-    BLOG(0, "Failed to purge orphaned ad events");
+    BLOG(0, "Failed to purge all orphaned ad events");
 
     return FailedToInitialize(std::move(callback));
   }
