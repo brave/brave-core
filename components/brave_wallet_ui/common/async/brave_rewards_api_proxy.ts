@@ -62,7 +62,9 @@ export class BraveRewardsProxy {
         const rewardsWallet: RewardsExternalWallet | null = externalWallet
           ? {
               ...externalWallet,
-              status: externalWallet.status as WalletStatus
+              status: externalWallet.authenticated
+                ? WalletStatus.kConnected
+                : WalletStatus.kLoggedOut
             }
           : null
         resolve(rewardsWallet)

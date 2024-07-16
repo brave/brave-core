@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { ExternalWallet } from '../../shared/lib/external_wallet'
+
 interface EmbedderInfo {
   isBubble: boolean
   platform: 'android' | 'desktop'
@@ -20,20 +22,6 @@ export interface AvailableCountryInfo {
   defaultCountryCode: string
 }
 
-export type PayoutAccountProvider =
-  'uphold' |
-  'bitflyer' |
-  'gemini' |
-  'zebpay' |
-  'solana'
-
-export interface PayoutAccount {
-  provider: PayoutAccountProvider
-  authenticated: boolean
-  displayName: string
-  url: string
-}
-
 export interface AdsInfo {
   adsReceivedThisMonth: number
 }
@@ -43,7 +31,7 @@ export interface AppState {
   openTime: number
   embedder: EmbedderInfo
   paymentId: string
-  payoutAccount: PayoutAccount | null
+  externalWallet: ExternalWallet | null
   adsInfo: AdsInfo | null
 }
 
@@ -71,7 +59,7 @@ export function defaultState (): AppState {
       animatedBackgroundEnabled: false
     },
     paymentId: '',
-    payoutAccount: null,
+    externalWallet: null,
     adsInfo: null
   }
 }

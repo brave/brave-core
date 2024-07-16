@@ -29,7 +29,6 @@ import { Optional } from '../../../shared/lib/optional'
 
 import * as urls from '../../lib/rewards_urls'
 import * as style from './rewards_card.style'
-import * as mojom from '../../../shared/lib/mojom'
 
 const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
@@ -100,7 +99,7 @@ export function RewardsCard (props: Props) {
 
   function renderBalance () {
     const { externalWallet } = props
-    if (externalWallet && externalWallet.status === mojom.WalletStatus.kLoggedOut) {
+    if (externalWallet && !externalWallet.authenticated) {
       const onClick = () => {
         window.open(urls.reconnectURL, '_blank', 'noreferrer')
       }

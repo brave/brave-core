@@ -193,9 +193,9 @@ class PageWallet extends React.Component<Props> {
     if (externalWallet && walletStatus && walletProvider) {
       externalWalletInfo = {
         provider: walletProvider,
-        status: walletStatus,
-        username: externalWallet.userName || '',
-        links: {}
+        authenticated: walletStatus === mojom.WalletStatus.kConnected,
+        name: externalWallet.userName || '',
+        url: ''
       }
     }
 

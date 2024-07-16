@@ -16,8 +16,8 @@ import { style } from './earning_card.style'
 export function EarningCard() {
   const { getString } = useLocaleContext()
 
-  const [payoutAccount, adsInfo] = useAppState((state) => [
-    state.payoutAccount,
+  const [externalWallet, adsInfo] = useAppState((state) => [
+    state.externalWallet,
     state.adsInfo
   ])
 
@@ -61,7 +61,7 @@ export function EarningCard() {
     )
   }
 
-  if (!payoutAccount) {
+  if (!externalWallet) {
     return renderLimited()
   }
 

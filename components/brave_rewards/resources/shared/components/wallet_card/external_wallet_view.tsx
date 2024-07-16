@@ -15,8 +15,6 @@ import { ExternalWalletBubble } from './external_wallet_bubble'
 
 import * as style from './external_wallet_view.style'
 
-import * as mojom from '../../../shared/lib/mojom'
-
 interface Props {
   externalWallet: ExternalWallet | null
   onExternalWalletAction: (action: ExternalWalletAction) => void
@@ -61,7 +59,7 @@ export function ExternalWalletView (props: Props) {
         <button onClick={toggleBubble} className={showBubble ? 'pressed' : ''}>
           <style.buttonText data-test-id='external-wallet-status-text'>
             {
-              getString(externalWallet.status === mojom.WalletStatus.kLoggedOut
+              getString(!externalWallet.authenticated
                 ? 'walletDisconnected'
                 : 'walletVerified')
             }
