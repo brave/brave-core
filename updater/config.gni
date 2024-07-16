@@ -14,7 +14,19 @@ declare_args() {
   brave_enable_updater = false
 }
 
+declare_args() {
+  # It would be nice to declare build_omaha4 in the declare_args block above.
+  # But its default value depends on brave_enable_updater. In this case, GN
+  # requires us to create a separate declare_args block.
+  build_omaha4 = brave_enable_updater && !is_official_build
+}
+
 if (brave_enable_updater) {
   assert(target_os == "mac",
          "brave_enable_updater currently only takes effect on macOS.")
+}
+
+if (build_omaha4) {
+  assert(brave_enable_updater,
+         "brave_enable_updater must be true to build Omaha 4")
 }

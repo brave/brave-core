@@ -835,6 +835,18 @@ Config.prototype.getProjectRef = function (projectName, defaultValue = 'origin/m
 }
 
 Config.prototype.update = function (options) {
+  // Parse --gn args first, because the may be used below:
+  if (options.gn) {
+    parseExtraInputs(options.gn, this.extraGnArgs, (args, key, value) => {
+      try {
+        value = JSON.parse(value)
+      } catch (e) {
+        // On parse error, leave value as string.
+      }
+      args[key] = value
+    })
+  }
+
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -1163,6 +1175,9 @@ Config.prototype.update = function (options) {
 
   if (options.mac_signing_identifier)
     this.mac_signing_identifier = options.mac_signing_identifier
+  else if (this.extraGnArgs['mac_signing_identifier'])
+    // We reach here during `npm run build -- --target=...sign_updater ...`.
+    this.mac_signing_identifier = this.extraGnArgs['mac_signing_identifier']
 
   if (options.mac_installer_signing_identifier)
     this.mac_installer_signing_identifier = options.mac_installer_signing_identifier
@@ -1170,7 +1185,9 @@ Config.prototype.update = function (options) {
   if (options.mac_signing_keychain)
     this.mac_signing_keychain = options.mac_signing_keychain
 
-  if (options.notarize)
+  // We pass --gn notarize:true to `npm run build -- --target=...sign_updater`.
+  // So we need to check `extraGnArgs` here as well.
+  if (options.notarize || this.extraGnArgs['notarize'] === true)
     this.notarize = true
 
   if (options.gclient_verbose)
@@ -1186,17 +1203,6 @@ Config.prototype.update = function (options) {
     } else {
       this.xcode_gen_target = options.xcode_gen
     }
-  }
-
-  if (options.gn) {
-    parseExtraInputs(options.gn, this.extraGnArgs, (args, key, value) => {
-      try {
-        value = JSON.parse(value)
-      } catch (e) {
-        // On parse error, leave value as string.
-      }
-      args[key] = value
-    })
   }
 
   if (options.ninja) {
