@@ -26,6 +26,7 @@ export interface WalletApiDataOverrides {
   svmSimulationResponse?: BraveWallet.SolanaSimulationResponse | null
   signTransactionRequests?: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests?: BraveWallet.SignAllTransactionsRequest[]
+  activeOrigin?: BraveWallet.OriginInfo
 }
 
 export type BraveRewardsProxyOverrides = Partial<{

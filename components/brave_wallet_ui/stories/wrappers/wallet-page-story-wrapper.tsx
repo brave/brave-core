@@ -11,9 +11,6 @@ import { MemoryRouter } from 'react-router-dom'
 import { AccountsTabState } from '../../page/reducers/accounts-tab-reducer'
 import { createMockStore } from '../../utils/test-utils'
 
-// actions
-import { WalletActions } from '../../common/actions'
-
 // types
 import {
   PageState,
@@ -68,10 +65,6 @@ export const WalletPageStory: React.FC<
     uiStateOverride,
     apiOverrides
   ])
-
-  React.useEffect(() => {
-    store && store.dispatch(WalletActions.initialize())
-  }, [store])
 
   // render
   return (
