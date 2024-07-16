@@ -143,17 +143,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
   }
 
   if (from_version > to_version) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
-                            from_version);
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "to_sqlite_schema_version",
-                            to_version);
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Database downgrade not supported");
-    base::debug::DumpWithoutCrashing();
-
-    BLOG(0, "Failed to migrate database from schema version "
+    BLOG(0, "Database downgrade not supported from schema version "
                 << from_version << " to schema version " << to_version);
 
     NotifyFailedToMigrateDatabase(from_version, to_version);
