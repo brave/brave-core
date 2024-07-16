@@ -44,39 +44,43 @@ using mojom::CharacterType;
 using mojom::ConversationTurn;
 
 base::Value::List BuildMessages(
-    const std::string& human_input,
     const std::string& page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
     const EngineConsumer::ConversationHistory& conversation_history) {
-  const std::string prompt_segment_article =
-      page_content.empty()
-          ? ""
-          : base::StrCat(
-                {base::ReplaceStringPlaceholders(
-                     l10n_util::GetStringUTF8(
-                         is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
-                                  : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
-                     {page_content}, nullptr),
-                 "\n\n"});
-
-  std::string date_and_time_string =
-      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
-  std::string system_message = base::StrCat(
-      {prompt_segment_article,
-       base::ReplaceStringPlaceholders(
-           l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
-           {date_and_time_string}, nullptr)});
-
-  // build
   base::Value::List messages;
 
-  // append system message
+  // Append system message
   {
+    std::string date_and_time_string =
+        base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
+    std::string system_message = base::StrCat({base::ReplaceStringPlaceholders(
+        l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC),
+        {date_and_time_string}, nullptr)});
+
     base::Value::Dict message;
     message.Set("role", "system");
     message.Set("content", system_message);
     messages.Append(std::move(message));
+  }
+
+  // Append page content, if exists
+  if (!page_content.empty()) {
+    const std::string prompt_segment_article = base::ReplaceStringPlaceholders(
+        l10n_util::GetStringUTF8(
+            is_video ? IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT
+                     : IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT),
+        {page_content}, nullptr);
+
+    auto human_turn_iter = base::ranges::find_if(
+        conversation_history, [&](const mojom::ConversationTurnPtr& turn) {
+          return turn->character_type == CharacterType::HUMAN;
+        });
+
+    if (human_turn_iter != conversation_history.end()) {
+      human_turn_iter->get()->text =
+          base::StrCat({prompt_segment_article, human_turn_iter->get()->text});
+    }
   }
 
   for (const mojom::ConversationTurnPtr& turn : conversation_history) {
@@ -243,12 +247,13 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     selected_text =
         last_turn->selected_text->substr(0, max_page_content_length_);
   }
+
   const std::string& truncated_page_content = page_content.substr(
       0, selected_text ? max_page_content_length_ - selected_text->size()
                        : max_page_content_length_);
-  base::Value::List messages =
-      BuildMessages(human_input, truncated_page_content, selected_text,
-                    is_video, conversation_history);
+
+  base::Value::List messages = BuildMessages(
+      truncated_page_content, selected_text, is_video, conversation_history);
   api_->PerformRequest(model_options_, std::move(messages),
                        std::move(data_received_callback),
                        std::move(completed_callback));
