@@ -64,6 +64,10 @@ inline constexpr char kMiscMetricsTotalLocationBarEntriesStorage[] =
 
 inline constexpr char kMiscMetricsDayZeroVariantAtInstall[] =
     "brave.misc_metrics.day_zero_variant_at_install";
+
+inline constexpr char kMiscMetricsNTPWidgetUsageStorage[] =
+    "brave.misc_metrics.ntp_widget_usage";
+
 }  // namespace misc_metrics
 
 #endif  // BRAVE_COMPONENTS_MISC_METRICS_PREF_NAMES_H_

@@ -106,8 +106,11 @@ export class PrefHookManager<T extends {}> {
  */
 export function createPrefsHook<OnType extends {}>(prefManager: PrefHookManager<OnType>) {
     return <PrefType extends keyof OnType>(pref: PrefType) => {
-        const [, setValue] = useState(prefManager.getPref(pref))
-        const setPref = useCallback((value: OnType[PrefType]) => prefManager.savePref(pref, value), [prefManager, pref])
+        const [value, setValue] = useState(prefManager.getPref(pref))
+        const setPref = useCallback((value: OnType[PrefType]) => {
+            prefManager.savePref(pref, value)
+            setValue(value)
+        }, [prefManager, pref])
         useEffect(() => {
             // Update the value here - the value could have been updated between
             // the hook being created and getting mounted (triggering the
@@ -122,7 +125,7 @@ export function createPrefsHook<OnType extends {}>(prefManager: PrefHookManager<
         }, [prefManager, pref])
 
         return [
-            prefManager.getPref(pref),
+            value,
             setPref
         ] as const
     }
