@@ -396,12 +396,6 @@ void AdsImpl::MigrateConfirmationStateCallback(mojom::WalletInfoPtr wallet,
                                                InitializeCallback callback,
                                                const bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to migrate confirmation state");
-    base::debug::DumpWithoutCrashing();
-
     return FailedToInitialize(std::move(callback));
   }
 
