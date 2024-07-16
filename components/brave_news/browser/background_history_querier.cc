@@ -34,6 +34,7 @@ BackgroundHistoryQuerier MakeHistoryQuerier(
                    QueryHistoryCallback callback) {
                   auto* tracker = get_tracker.Run();
                   if (!service || !tracker) {
+                    std::move(callback).Run(history::QueryResults());
                     return;
                   }
 
