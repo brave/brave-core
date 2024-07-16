@@ -124,6 +124,7 @@ if (!is_ios) {
       "engine/test_utils.cc",
       "engine/test_utils.h",
       "model_service_unittest.cc",
+      "text_embedder_unittest.cc",
     ]
 
     deps = [
@@ -133,6 +134,7 @@ if (!is_ios) {
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/api_request_helper",
+      "//brave/components/constants",
       "//brave/components/l10n/common:test_support",
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/browser",
