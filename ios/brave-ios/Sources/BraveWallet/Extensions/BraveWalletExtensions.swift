@@ -391,6 +391,15 @@ extension BraveWallet.NetworkInfo {
     return nil
   }
 
+  func contractAddressURL(_ contractAddress: String) -> URL? {
+    if let explorerURL = blockExplorerUrls.first,
+      let contractAddressUrl = URL(string: "\(explorerURL)/address/\(contractAddress)/#code")
+    {
+      return contractAddressUrl
+    }
+    return nil
+  }
+
   func sort(
     with other: BraveWallet.NetworkInfo,
     parentOrder: Bool
