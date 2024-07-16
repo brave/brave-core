@@ -968,7 +968,7 @@
     Use Bridges
   </message>
   <message name="IDS_SETTINGS_TOR_USE_BRIDGES_DESC" desc="">
-    Bridges help you access the Tor Network in places where Tor is blocked. Depending on where you are located, one bridge may work better than others.
+    Bridges help you access the Tor Network in places where Tor is blocked. Depending on where you're located, one bridge may work better than others.
   </message>
   <message name="IDS_SETTINGS_TOR_CONNECTION_SETTINGS_TITLE" desc="">
     Tor connection settings
@@ -1025,7 +1025,7 @@
     Only resolve .onion addresses in Tor windows
   </message>
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_DESC" desc="">
-    Onion services will not be available outside of Tor windows.
+    Onion services won't be available outside of Tor windows.
   </message>
   <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
     Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
@@ -1235,7 +1235,7 @@
     Invalid address
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_MANDATORY_ERROR" desc="The error text of the wallet network dialog about empty mandatory fields">
-    This field cannot be blank.
+    This field can't be blank.
   </message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAID_ID_ERROR" desc="The error text of the wallet network dialog for invalid chain id fields">
     Invalid format, the chain id is a positive number
@@ -1310,7 +1310,7 @@
     Resetting the Leo assistant will require you to opt-in to use Brave
 Leo in the future and will also clear your chat history. Clearing your
 chat history will delete all your previous conversations with Brave
-Leo. This action cannot be undone.
+Leo. This action can't be undone.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_AUTOCOMPLETE_LINK" desc="A label for a link to settings page to adjust autocomplete suggestion based on Leo">
     Adjust autocomplete suggestions
@@ -1355,10 +1355,10 @@ Leo. This action cannot be undone.
     The name of the model as it will appear in the model selection menu
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_REQUEST_NAME_TOOLTIP_INFO" desc="A brief description for the input title for adding model request name">
-    The name of the model as it should appear in the request to the serving framework, i.e. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework the integration will not work)
+    The name of the model as it should appear in the request to the serving framework, i.e. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework the integration won't work)
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT_TOOLTIP_INFO" desc="A brief description for the input title for adding server endpoint url">
-    The url where your serving framework is listening for requests. If you are not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions
+    The url where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY_TOOLTIP_INFO" desc="A brief description for the input title for adding API key">
     Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.
@@ -1367,7 +1367,7 @@ Leo. This action cannot be undone.
     Close
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_PROXY_NOTE" desc="A note for users when adding model server info">
-    Brave does not proxy these requests, please read privacy terms of the chosen provider.
+    Brave doesn't proxy these requests, please read privacy terms of the chosen provider.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_ERROR" desc="An error note for users when url is invalidated">
     Non-local endpoints should employ the HTTPS protocol for secure data transmission.
