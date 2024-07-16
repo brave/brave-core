@@ -29,7 +29,6 @@ import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // actions
 import { WalletPageActions } from '../../../../../page/actions'
-import { refreshNetworksAndTokens } from '../../../../../common/async/thunks'
 
 // utils
 import {
@@ -40,6 +39,7 @@ import {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
   useGetUserTokensRegistryQuery,
+  useRefreshNetworksAndTokensMutation,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import {
@@ -125,9 +125,6 @@ export const NftCollection = ({ networks, accounts }: Props) => {
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
   )
-  const isRefreshingTokens = useSafeWalletSelector(
-    WalletSelectors.isRefreshingNetworksAndTokens
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // local-storage
@@ -202,8 +199,11 @@ export const NftCollection = ({ networks, accounts }: Props) => {
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
+  const [refreshNetworksAndTokens] = useRefreshNetworksAndTokensMutation()
 
   // memos & computed
+  const isRefreshingTokens = isFetchingUserTokens || isLoadingSimpleHashNfts
+
   const { visibleUserNonSpamNfts, visibleUserMarkedSpamNfts } =
     React.useMemo(() => {
       return groupSpamAndNonSpamNfts(visibleNfts)
@@ -344,10 +344,6 @@ export const NftCollection = ({ networks, accounts }: Props) => {
     hideNftDiscoveryModal()
   }, [hideNftDiscoveryModal, setNftDiscovery])
 
-  const onRefresh = React.useCallback(() => {
-    dispatch(refreshNetworksAndTokens())
-  }, [dispatch])
-
   const navigateToPage = React.useCallback(
     (pageNumber: number) => {
       history.push(makePortfolioNftCollectionRoute(collectionName, pageNumber))
@@ -385,7 +381,7 @@ export const NftCollection = ({ networks, accounts }: Props) => {
               <AutoDiscoveryEmptyState
                 isRefreshingTokens={isRefreshingTokens}
                 onImportNft={toggleShowAddNftModal}
-                onRefresh={onRefresh}
+                onRefresh={refreshNetworksAndTokens}
               />
             ) : (
               <NftsEmptyState onImportNft={toggleShowAddNftModal} />

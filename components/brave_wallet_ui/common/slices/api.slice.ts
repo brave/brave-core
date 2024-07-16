@@ -302,6 +302,8 @@ export const {
   useProcessSignTransactionRequestHardwareMutation,
   useProcessSignTransactionRequestMutation,
   useRefreshNetworkInfoMutation,
+  useRefreshNetworksAndTokensMutation,
+  useRefreshWalletInfoMutation,
   useRejectTransactionsMutation,
   useRemoveAccountMutation,
   useRemoveSitePermissionMutation,

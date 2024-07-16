@@ -13,9 +13,7 @@ import {
 
 // hooks
 import {
-  useAppDispatch //
-} from '../../../../../../common/hooks/use_app_dispatch'
-import {
+  useRefreshNetworksAndTokensMutation,
   useRemoveUserTokenMutation,
   useUpdateNftSpamStatusMutation,
   useUpdateUserAssetVisibleMutation
@@ -23,11 +21,6 @@ import {
 import {
   useSyncedLocalStorage //
 } from '../../../../../../common/hooks/use_local_storage'
-
-// actions
-import {
-  refreshNetworksAndTokens //
-} from '../../../../../../common/async/thunks'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
@@ -84,13 +77,11 @@ export const NFTGridViewItem = ({
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
 
-  // hooks
-  const dispatch = useAppDispatch()
-
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
   const [removeUserToken] = useRemoveUserTokenMutation()
   const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
+  const [refreshNetworksAndTokens] = useRefreshNetworksAndTokensMutation()
 
   // methods
   const onToggleShowMore = React.useCallback(
@@ -132,14 +123,14 @@ export const NFTGridViewItem = ({
 
   const onUnSpam = async () => {
     setShowMore(false)
-    await updateNftSpamStatus({ token, isSpam: false })
-    dispatch(refreshNetworksAndTokens())
+    await updateNftSpamStatus({ token, isSpam: false }).unwrap()
+    await refreshNetworksAndTokens().unwrap()
   }
 
   const onMarkAsSpam = async () => {
     setShowMore(false)
-    await updateNftSpamStatus({ token, isSpam: true })
-    dispatch(refreshNetworksAndTokens())
+    await updateNftSpamStatus({ token, isSpam: true }).unwrap()
+    await refreshNetworksAndTokens().unwrap()
   }
 
   const onConfirmDelete = async () => {

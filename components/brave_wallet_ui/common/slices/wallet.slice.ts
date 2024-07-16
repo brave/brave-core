@@ -3,18 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {
-  createAction,
-  createSlice,
-  PayloadAction,
-  EntityId
-} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, EntityId } from '@reduxjs/toolkit'
 
-import {
-  BraveWallet,
-  WalletState,
-  WalletInitializedPayload
-} from '../../constants/types'
+// types
+import { WalletState, WalletInitializedPayload } from '../../constants/types'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -27,15 +19,7 @@ const defaultState: WalletState = {
   addUserAssetError: false,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
-  isAnkrBalancesFeatureEnabled: false,
-  isRefreshingNetworksAndTokens: false
-}
-
-// async actions
-export const WalletAsyncActions = {
-  selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
-  getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
-  autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
+  isAnkrBalancesFeatureEnabled: false
 }
 
 // slice
@@ -72,13 +56,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.passwordAttempts = payload
       },
 
-      setIsRefreshingNetworksAndTokens: (
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) => {
-        state.isRefreshingNetworksAndTokens = payload
-      },
-
       setAllowedNewWalletAccountTypeNetworkIds(
         state: WalletState,
         { payload }: PayloadAction<EntityId[]>
@@ -99,5 +76,5 @@ export const createWalletReducer = (initialState: WalletState) => {
 
 export const walletSlice = createWalletSlice()
 export const walletReducer = walletSlice.reducer
-export const WalletActions = { ...walletSlice.actions, ...WalletAsyncActions }
+export const WalletActions = walletSlice.actions
 export default walletReducer

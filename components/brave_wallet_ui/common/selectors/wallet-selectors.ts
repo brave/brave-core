@@ -20,8 +20,6 @@ export const assetAutoDiscoveryCompleted = ({ wallet }: State) =>
   wallet.assetAutoDiscoveryCompleted
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
-export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
-  wallet.isRefreshingNetworksAndTokens
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)

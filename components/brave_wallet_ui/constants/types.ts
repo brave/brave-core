@@ -203,7 +203,6 @@ export interface WalletState {
   passwordAttempts: number
   assetAutoDiscoveryCompleted: boolean
   isAnkrBalancesFeatureEnabled: boolean
-  isRefreshingNetworksAndTokens: boolean
 }
 
 export interface PanelState {

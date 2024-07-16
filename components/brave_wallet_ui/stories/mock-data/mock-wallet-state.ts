@@ -53,6 +53,5 @@ export const mockWalletState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: false,
   passwordAttempts: 0,
-  assetAutoDiscoveryCompleted: false,
-  isRefreshingNetworksAndTokens: false
+  assetAutoDiscoveryCompleted: false
 }

@@ -10,9 +10,6 @@ import { Provider } from 'react-redux'
 // types
 import { PageState, PanelState, UIState, WalletState } from '../constants/types'
 
-// actions
-import { refreshWalletInfo } from '../common/async/thunks'
-
 // reducers
 import { createWalletApi } from '../common/slices/api.slice'
 import { createWalletReducer } from '../common/slices/wallet.slice'
@@ -109,7 +106,7 @@ export const createMockStore = (
   proxy?.addKeyringServiceObserver?.(makeKeyringServiceObserver(store))
   proxy?.addTxServiceObserver?.(makeTxServiceObserver(store))
   proxy?.addBraveWalletServiceObserver?.(makeBraveWalletServiceObserver(store))
-  store.dispatch(refreshWalletInfo())
+  store.dispatch(api.endpoints.refreshWalletInfo.initiate())
 
   return store
 }

@@ -25,7 +25,7 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 // redux
 import store, { walletPanelApiProxy } from './store'
-import { refreshWalletInfo } from '../common/async/thunks'
+import { walletApi } from '../common/slices/api.slice'
 import { navigateTo, showConnectToSite } from './async/wallet_panel_thunks'
 
 // contexts
@@ -73,12 +73,12 @@ function initialize() {
   const root = createRoot(document.getElementById('mountPoint')!)
   root.render(<App />)
 
-  store.dispatch(refreshWalletInfo())
+  store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
 
   // Setup external events
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-      store.dispatch(refreshWalletInfo())
+      store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
       apiProxy?.panelHandler?.showUI()
     }
   })
