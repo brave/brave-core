@@ -163,8 +163,8 @@ inline constexpr char kCrashReasonFeedbackDisplayedURL[] =
     "360018192251-How-do-I-fix-page-crashes-and-other-page-loading-errors-";
 
 // "Learn more" URL for the inactive tabs appearance setting.
-inline constexpr char kDiscardRingTreatmentLearnMoreUrl[] =
-    "https://support.brave.com/";
+inline constexpr char16_t kDiscardRingTreatmentLearnMoreUrl[] =
+    u"https://support.brave.com/";
 
 // "Learn more" URL for the "Do not track" setting in the privacy section.
 inline constexpr char16_t kDoNotTrackLearnMoreURL[] =
@@ -322,8 +322,8 @@ inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
 
 // "Learn more" URL for the performance intervention notification setting.
-inline constexpr char kPerformanceInterventionLearnMoreUrl[] =
-    "https://support.brave.com";
+inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
+    u"https://support.brave.com";
 
 // "Learn more" URL for the preloading section in Performance settings.
 inline constexpr char kPreloadingLearnMoreUrl[] = "https://support.brave.com";
