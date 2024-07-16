@@ -20,7 +20,6 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/ranges/algorithm.h"
 #include "base/rust_buildflags.h"
-#include "base/sequence_checker.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -427,7 +426,8 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
 
 void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   DCHECK(result_callback_);
-  VLOG(1) << "[[" << __func__ << "]]" << " Response completed\n";
+  VLOG(1) << "[[" << __func__ << "]]"
+          << " Response completed\n";
 
   request_is_finished_ = true;
 
@@ -449,7 +449,8 @@ void APIRequestHelper::URLLoaderHandler::OnRetry(
 void APIRequestHelper::URLLoaderHandler::OnResponse(
     ResponseConversionCallback conversion_callback,
     const std::unique_ptr<std::string> response_body) {
-  VLOG(1) << "[[" << __func__ << "]]" << " Response received\n";
+  VLOG(1) << "[[" << __func__ << "]]"
+          << " Response received\n";
   DCHECK(result_callback_);
   // This shouldn't be called on a request with multiple decoding operations,
   // otherwise we need to modify this to use data_chunk_parsed_callback_.

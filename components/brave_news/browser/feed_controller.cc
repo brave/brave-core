@@ -194,8 +194,9 @@ void FeedController::UpdateIfRemoteChanged(
         base::BindOnce(
             [](base::WeakPtr<FeedController> controller,
                HashCallback callback) {
-              LOG(ERROR) << "Responding with hash: "
-                         << controller->current_feed_.hash;
+              if (!controller) {
+                return;
+              }
               std::move(callback).Run(controller->current_feed_.hash);
             },
             weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -221,8 +222,9 @@ void FeedController::UpdateIfRemoteChanged(
                 base::BindOnce(
                     [](base::WeakPtr<FeedController> controller,
                        HashCallback callback) {
-                      LOG(ERROR) << "Responding with hash: "
-                                 << controller->current_feed_.hash;
+                      if (!controller) {
+                        return;
+                      }
                       std::move(callback).Run(controller->current_feed_.hash);
                     },
                     controller->weak_ptr_factory_.GetWeakPtr(),

@@ -14,18 +14,33 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
-#include "brave/components/brave_news/browser/channels_controller.h"
-#include "brave/components/brave_news/browser/feed_controller.h"
-#include "brave/components/brave_news/browser/feed_v2_builder.h"
-#include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/subscriptions_snapshot.h"
-#include "components/history/core/browser/history_service.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
+
+namespace api_request_helper {
+class APIRequestHelper;
+}
+
+namespace history {
+class HistoryService;
+}
+
+namespace network {
+class PendingSharedURLLoaderFactory;
+class SharedURLLoaderFactory;
+}  // namespace network
 
 namespace brave_news {
+
+class PublishersController;
+class SuggestionsController;
+class ChannelsController;
+class FeedController;
+class FeedV2Builder;
+class SubscriptionsSnapshot;
+
+using HashCallback = base::OnceCallback<void(const std::string&)>;
+using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
 class BraveNewsEngine : public base::SupportsWeakPtr<BraveNewsEngine> {
  public:

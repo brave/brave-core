@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <iterator>
 #include <optional>
-#include <sstream>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -19,7 +18,6 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -29,7 +27,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
-#include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_generation_info.h"

@@ -5,13 +5,10 @@
 
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 
-#include <algorithm>
-#include <cmath>
 #include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -25,7 +22,6 @@
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/one_shot_event.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
@@ -41,14 +37,9 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
-#include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/network.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
-#include "brave/components/brave_news/browser/suggestions_controller.h"
-#include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"

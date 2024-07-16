@@ -21,9 +21,8 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/initialization_promise.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -184,8 +183,8 @@ class BraveNewsController
 
   DirectFeedController direct_feed_controller_;
 
-  // Created on this thread but lives on a background sequence.
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  // Created on this sequence but lives on |task_runner_|.
   std::unique_ptr<BraveNewsEngine, base::OnTaskRunnerDeleter> engine_;
 
   base::OneShotTimer timer_prefetch_;

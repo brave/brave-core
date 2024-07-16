@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_TAB_HELPER_H_
 
-#include <optional>
 #include <string>
 #include <vector>
 

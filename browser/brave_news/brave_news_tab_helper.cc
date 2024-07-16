@@ -6,29 +6,22 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 
 #include <algorithm>
-#include <optional>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
-#include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/feed/rss_links_fetcher.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/views/tabs/tab.h"
-#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/feed/buildflags.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
