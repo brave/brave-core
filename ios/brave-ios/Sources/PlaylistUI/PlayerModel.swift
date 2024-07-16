@@ -264,12 +264,16 @@ public final class PlayerModel: ObservableObject {
     }
 
     static let normal = Self(rate: 1.0, braveSystemName: "leo.1x")
+    static let audio = Self(rate: 1.2, braveSystemName: "leo.1.2x")
     static let fast = Self(rate: 1.5, braveSystemName: "leo.1.5x")
     static let faster = Self(rate: 2.0, braveSystemName: "leo.2x")
 
+    static let supportedSpeeds: [Self] = [.normal, .audio, .fast, .faster]
+
     mutating func cycle() {
       switch self {
-      case .normal: self = .fast
+      case .normal: self = .audio
+      case .audio: self = .fast
       case .fast: self = .faster
       case .faster: self = .normal
       default: self = .fast
@@ -1051,10 +1055,6 @@ extension PlayerModel.RepeatMode {
     case .all: return .all
     }
   }
-}
-
-extension PlayerModel.PlaybackSpeed {
-  static var supportedSpeeds: [Self] = [.normal, .fast, .faster]
 }
 
 #if DEBUG
