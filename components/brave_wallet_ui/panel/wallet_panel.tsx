@@ -26,7 +26,8 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 // redux
 import store, { walletPanelApiProxy } from './store'
 import { walletApi } from '../common/slices/api.slice'
-import { navigateTo, showConnectToSite } from './async/wallet_panel_thunks'
+import { navigateTo } from './async/wallet_panel_thunks'
+import { PanelActions } from '../common/slices/panel.slice'
 
 // contexts
 import { ApiProxyContext } from '../common/context/api-proxy.context'
@@ -95,7 +96,11 @@ function initialize() {
       eTldPlusOne: eTldPlusOne
     }
 
-    store.dispatch(showConnectToSite({ accounts, originInfo }))
+    store.dispatch(
+      PanelActions.setSiteConnectionPayload({ accounts, originInfo })
+    )
+    store.dispatch(navigateTo('connectWithSite'))
+    apiProxy.panelHandler.showUI()
     return
   }
 
@@ -107,7 +112,7 @@ function initialize() {
     return
   }
 
-  apiProxy?.panelHandler?.showUI()
+  apiProxy.panelHandler?.showUI()
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

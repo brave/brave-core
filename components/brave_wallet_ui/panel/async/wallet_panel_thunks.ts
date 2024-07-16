@@ -17,7 +17,6 @@ import {
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 
 // actions
-import { ShowConnectToSitePayload } from '../constants/action_types'
 import { PanelActions } from '../../common/slices/panel.slice'
 
 // Hardware
@@ -60,14 +59,5 @@ export const cancelConnectHardwareWallet = createAsyncThunk(
     // Navigating to main panel view will unmount ConnectHardwareWalletPanel
     // and therefore forfeit connecting to the hardware wallet.
     await store.dispatch(navigateTo('main'))
-  }
-)
-
-export const showConnectToSite = createAsyncThunk(
-  'showConnectToSite',
-  async (payload: ShowConnectToSitePayload, store) => {
-    store.dispatch(navigateTo('connectWithSite'))
-    store.dispatch(PanelActions.setSiteConnectionPayload(payload))
-    getWalletPanelApiProxy().panelHandler.showUI()
   }
 )
