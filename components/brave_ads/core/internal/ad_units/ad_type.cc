@@ -46,20 +46,19 @@ constexpr auto kAdTypeToStringMap =
 AdType ToAdType(std::string_view value) {
   const auto iter = kToAdTypeMap.find(value);
   if (iter != kToAdTypeMap.cend()) {
-    return iter->second;
+    const auto [_, ad_type] = *iter;
+    return ad_type;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-  // potential defects using `NOTREACHED`.
-  SCOPED_CRASH_KEY_STRING32("Issue32066", "ad_type", value);
-  NOTREACHED_IN_MIGRATION() << "Unexpected value for AdType: " << value;
-  return AdType::kUndefined;
+  SCOPED_CRASH_KEY_STRING32("BraveAds", "unexpected_ad_type", value);
+  NOTREACHED_NORETURN() << "Unexpected value for AdType: " << value;
 }
 
 const char* ToString(AdType type) {
   const auto iter = kAdTypeToStringMap.find(type);
   if (iter != kAdTypeToStringMap.cend()) {
-    return iter->second.data();
+    const auto [_, ad_type] = *iter;
+    return ad_type.data();
   }
 
   NOTREACHED_NORETURN() << "Unexpected value for AdType: "
