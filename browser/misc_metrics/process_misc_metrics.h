@@ -24,6 +24,7 @@ namespace misc_metrics {
 
 #if !BUILDFLAG(IS_ANDROID)
 class MenuMetrics;
+class NewTabMetrics;
 class VerticalTabMetrics;
 #else
 class PrivacyHubMetrics;
@@ -44,6 +45,7 @@ class ProcessMiscMetrics {
 
 #if !BUILDFLAG(IS_ANDROID)
   MenuMetrics* menu_metrics();
+  NewTabMetrics* new_tab_metrics();
   VerticalTabMetrics* vertical_tab_metrics();
 #else
   PrivacyHubMetrics* privacy_hub_metrics();
@@ -57,6 +59,7 @@ class ProcessMiscMetrics {
  private:
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MenuMetrics> menu_metrics_;
+  std::unique_ptr<NewTabMetrics> new_tab_metrics_;
   std::unique_ptr<VerticalTabMetrics> vertical_tab_metrics_;
 #else
   std::unique_ptr<PrivacyHubMetrics> privacy_hub_metrics_;

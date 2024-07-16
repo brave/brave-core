@@ -276,6 +276,7 @@ void BraveNewTabPageHandler::GetSearchEngines(
       continue;
     }
     auto search_engine = brave_new_tab_page::mojom::SearchEngineInfo::New();
+    search_engine->prepopulate_id = template_url->prepopulate_id();
     search_engine->host = GURL(template_url->url()).host();
     search_engine->name = base::UTF16ToUTF8(template_url->short_name());
     search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());

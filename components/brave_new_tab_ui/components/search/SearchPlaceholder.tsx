@@ -14,6 +14,7 @@ import Icon from '@brave/leo/react/icon';
 import ButtonMenu from '@brave/leo/react/buttonMenu';
 import { spacing } from '@brave/leo/tokens/css/variables';
 import { getLocale } from '$web-common/locale';
+import getNTPBrowserAPI from '../../api/background';
 
 const MenuContainer = styled(ButtonMenu).attrs({
   'data-theme': 'light'
@@ -57,6 +58,7 @@ function Swapper() {
   const { open, setOpen } = useSearchContext()
   const [boxPos, setBoxPos] = React.useState(0)
   const [, setShowSearchBox] = useNewTabPref('showSearchBox')
+
   return <>
     {!open && <PlaceholderContainer onClick={e => {
       // If we were clicking a button inside the SearchBox, don't open the box.
@@ -89,6 +91,13 @@ function Swapper() {
 
 export default function SearchPlaceholder() {
   const [showSearchBox] = useNewTabPref('showSearchBox')
+
+  React.useEffect(() => {
+    if (!showSearchBox) {
+      getNTPBrowserAPI().newTabMetrics.reportNTPSearchDefaultEngine(null)
+    }
+  }, [showSearchBox]);
+
   if (!showSearchBox) return null
   return <SearchContext>
     <Swapper />
