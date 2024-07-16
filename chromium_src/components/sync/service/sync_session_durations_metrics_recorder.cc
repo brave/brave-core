@@ -39,9 +39,12 @@ void SyncSessionDurationsMetricsRecorder::
         const GoogleServiceAuthError& error,
         signin_metrics::SourceForRefreshTokenOperation token_operation_source) {
 }
-bool SyncSessionDurationsMetricsRecorder::IsSignedIn() const {
-  return false;
+
+SyncSessionDurationsMetricsRecorder::SigninStatus
+SyncSessionDurationsMetricsRecorder::GetSigninStatus() const {
+  return SyncSessionDurationsMetricsRecorder::SigninStatus::kSignedOut;
 }
+
 bool SyncSessionDurationsMetricsRecorder::IsSyncing() const {
   return false;
 }
