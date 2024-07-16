@@ -138,9 +138,6 @@ pub struct Resource {
     ///
     /// Aliases should never be added to this list. It should only contain primary/canonical
     /// resource names.
-    ///
-    /// Currently ignored, but will be respected in a future release. Bundle any required
-    /// dependencies inside the resource for now.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub dependencies: Vec<String>,
     /// Optionally defines permission levels required to use this resource for a scriptlet

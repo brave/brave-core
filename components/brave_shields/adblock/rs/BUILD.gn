@@ -27,7 +27,7 @@ rust_static_library("rust_lib") {
   cxx_bindings = [ "src/lib.rs" ]
 
   deps = [
-    "//brave/third_party/rust/adblock/v0_8:lib",
+    "//brave/third_party/rust/adblock/v0_9:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
     "//third_party/rust/serde_json/v1:lib",
   ]

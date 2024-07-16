@@ -1,9 +1,9 @@
 Name: adblock
 URL: https://crates.io/crates/adblock
 Description: Native Rust module for Adblock Plus syntax (e.g. EasyList, EasyPrivacy) filter parsing and matching.
-Version: 0.8.12
+Version: 0.9.0
 Security Critical: yes
 Shipped: yes
 License: Mozilla Public License 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/adblock-0.8.12/LICENSE
-Revision: e01430a534b64163e16590290bbf4df6218d16aa
+License File: //brave/third_party/rust/chromium_crates_io/vendor/adblock-0.9.0/LICENSE
+Revision: 91db74882d559d5f6cac371605be248690293f46

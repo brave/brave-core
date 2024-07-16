@@ -2,8 +2,6 @@
 //! content script injection.
 
 use memchr::{memchr as find_char, memmem, memrchr as find_char_reverse};
-use once_cell::sync::Lazy;
-use regex::Regex;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -42,16 +40,37 @@ pub enum CosmeticFilterError {
     InvalidScriptletArgs,
     #[error("location modifiers are unsupported")]
     LocationModifiersUnsupported,
+    #[error("procedural filters can only accept a single CSS selector")]
+    ProceduralFilterWithMultipleSelectors,
 }
 
 /// Refer to <https://github.com/uBlockOrigin/uBlock-issues/wiki/Static-filter-syntax#action-operators>
 #[derive(PartialEq, Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "type", content = "arg")]
+#[serde(rename_all="kebab-case")]
 pub enum CosmeticFilterAction {
+    /// Rules with a remove action, e.g. `example.com##.ad:remove()`.
+    ///
+    /// Matching elements are to be removed from the DOM.
     Remove,
+    /// Rules with a custom style for an element, e.g. `example.com##.ad:style(margin: 0)`.
+    ///
     /// Argument is one or more CSS property declarations, separated by the standard ;. Some
     /// characters, strings, and values are forbidden.
+    ///
+    /// The specified CSS styling should be applied to matching elements in the DOM.
     Style(String),
+    /// Rules with a remove attribute action, e.g. `example.com##.ad:remove-attr(onclick)`.
+    ///
+    /// Argument is the name of an HTML attribute.
+    ///
+    /// The attribute should be removed from matching elements in the DOM.
     RemoveAttr(String),
+    /// Rules with a remove class action, e.g. `example.com##.ad:remove-class(advert)`.
+    ///
+    /// The parameter is the name of a CSS class.
+    ///
+    /// The class should be removed from matching elements in the DOM.
     RemoveClass(String),
 }
 
@@ -88,10 +107,6 @@ bitflags::bitflags! {
     pub struct CosmeticFilterMask: u8 {
         const UNHIDE = 1 << 0;
         const SCRIPT_INJECT = 1 << 1;
-        const IS_UNICODE = 1 << 2;
-        const IS_CLASS_SELECTOR = 1 << 3;
-        const IS_ID_SELECTOR = 1 << 4;
-        const IS_SIMPLE = 1 << 5;
 
         // Careful with checking for NONE - will always match
         const NONE = 0;
@@ -107,13 +122,30 @@ pub struct CosmeticFilter {
     pub not_entities: Option<Vec<Hash>>,
     pub not_hostnames: Option<Vec<Hash>>,
     pub raw_line: Option<Box<String>>,
-    pub selector: String,
-    pub key: Option<String>,
+    pub selector: Vec<CosmeticFilterOperator>,
     pub action: Option<CosmeticFilterAction>,
     pub permission: PermissionMask,
 }
 
-pub enum CosmeticFilterLocationType {
+/// Individual parts of a cosmetic filter's selector. Most rules have a CSS selector; some may also
+/// have one or more procedural operators.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "type", content = "arg")]
+#[serde(rename_all="kebab-case")]
+pub enum CosmeticFilterOperator {
+    CssSelector(String),
+    HasText(String),
+    MatchesAttr(String),
+    MatchesCss(String),
+    MatchesCssBefore(String),
+    MatchesCssAfter(String),
+    MatchesPath(String),
+    MinTextLength(String),
+    Upward(String),
+    Xpath(String),
+}
+
+pub(crate) enum CosmeticFilterLocationType {
     Entity,
     NotEntity,
     Hostname,
@@ -136,7 +168,7 @@ struct CosmeticFilterLocations {
 
 impl CosmeticFilter {
     #[inline]
-    pub fn locations_before_sharp(
+    pub(crate) fn locations_before_sharp(
         line: &str,
         sharp_index: usize,
     ) -> impl Iterator<Item = (CosmeticFilterLocationType, &str)> {
@@ -174,7 +206,6 @@ impl CosmeticFilter {
     fn parse_before_sharp(
         line: &str,
         sharp_index: usize,
-        mask: &mut CosmeticFilterMask,
     ) -> Result<CosmeticFilterLocations, CosmeticFilterError> {
         let mut entities_vec = vec![];
         let mut not_entities_vec = vec![];
@@ -190,7 +221,6 @@ impl CosmeticFilter {
             if location.is_ascii() {
                 hostname.push_str(location);
             } else {
-                *mask |= CosmeticFilterMask::IS_UNICODE;
                 match idna::domain_to_ascii(location) {
                     Ok(x) if !x.is_empty() => hostname.push_str(&x),
                     _ => return Err(CosmeticFilterError::PunycodeError),
@@ -286,6 +316,19 @@ impl CosmeticFilter {
         Ok((selector, action))
     }
 
+    /// Returns the CSS selector, for rules which only consist of a CSS selector.
+    /// If a rule contains procedural operators, this method will return `None`.
+    pub fn plain_css_selector(&self) -> Option<&str> {
+        assert!(self.selector.len() > 0);
+        if self.selector.len() > 1 {
+            return None;
+        }
+        match &self.selector[0] {
+            CosmeticFilterOperator::CssSelector(s) => Some(s),
+            _ => None
+        }
+    }
+
     /// Parse the rule in `line` into a `CosmeticFilter`. If `debug` is true, the original rule
     /// will be reported in the resulting `CosmeticFilter` struct as well. Use `permission` to
     /// manage the filter's access to scriptlet resources for `+js(...)` injections.
@@ -339,7 +382,7 @@ impl CosmeticFilter {
                 hostnames,
                 not_hostnames,
             } = if sharp_index > 0 {
-                CosmeticFilter::parse_before_sharp(line, sharp_index, &mut mask)?
+                CosmeticFilter::parse_before_sharp(line, sharp_index)?
             } else {
                 CosmeticFilterLocations::default()
             };
@@ -363,16 +406,13 @@ impl CosmeticFilter {
                 }
                 mask |= CosmeticFilterMask::SCRIPT_INJECT;
                 (
-                    String::from(&line[suffix_start_index + 4..line.len() - 1]),
+                    // TODO: overloading `CssSelector` here is not ideal.
+                    vec![CosmeticFilterOperator::CssSelector(String::from(&line[suffix_start_index + 4..line.len() - 1]))],
                     None,
                 )
             } else {
                 let (selector, action) = CosmeticFilter::parse_after_sharp_nonscript(after_sharp)?;
-                let validated_selector = match validate_css_selector(selector, translate_abp_syntax)
-                {
-                    Some(s) => s,
-                    None => return Err(CosmeticFilterError::InvalidCssSelector),
-                };
+                let validated_selector = validate_css_selector(selector, translate_abp_syntax)?;
                 if sharp_index == 0 && action.is_some() {
                     return Err(CosmeticFilterError::GenericAction);
                 }
@@ -384,32 +424,6 @@ impl CosmeticFilter {
             {
                 return Err(CosmeticFilterError::DoubleNegation);
             }
-
-            if !selector.is_ascii() {
-                mask |= CosmeticFilterMask::IS_UNICODE;
-            }
-
-            let key = if !mask.contains(CosmeticFilterMask::SCRIPT_INJECT) {
-                if selector.starts_with('.') {
-                    let key = key_from_selector(&selector)?;
-                    mask |= CosmeticFilterMask::IS_CLASS_SELECTOR;
-                    if key == selector {
-                        mask |= CosmeticFilterMask::IS_SIMPLE;
-                    }
-                    Some(String::from(&key[1..]))
-                } else if selector.starts_with('#') {
-                    let key = key_from_selector(&selector)?;
-                    mask |= CosmeticFilterMask::IS_ID_SELECTOR;
-                    if key == selector {
-                        mask |= CosmeticFilterMask::IS_SIMPLE;
-                    }
-                    Some(String::from(&key[1..]))
-                } else {
-                    None
-                }
-            } else {
-                None
-            };
 
             Ok(CosmeticFilter {
                 entities,
@@ -423,7 +437,6 @@ impl CosmeticFilter {
                     None
                 },
                 selector,
-                key,
                 action,
                 permission,
             })
@@ -511,7 +524,7 @@ fn get_hashes_from_labels(hostname: &str, end: usize, start_of_domain: usize) ->
 
 /// Returns a `Vec` of the hashes of all segments of `hostname` that may match an
 /// entity-constrained rule.
-pub fn get_entity_hashes_from_labels(hostname: &str, domain: &str) -> Vec<Hash> {
+pub(crate) fn get_entity_hashes_from_labels(hostname: &str, domain: &str) -> Vec<Hash> {
     if let Some((hostname_without_public_suffix, public_suffix)) =
         get_hostname_without_public_suffix(hostname, domain)
     {
@@ -529,14 +542,16 @@ pub fn get_entity_hashes_from_labels(hostname: &str, domain: &str) -> Vec<Hash> 
 
 /// Returns a `Vec` of the hashes of all segments of `hostname` that may match a
 /// hostname-constrained rule.
-pub fn get_hostname_hashes_from_labels(hostname: &str, domain: &str) -> Vec<Hash> {
+pub(crate) fn get_hostname_hashes_from_labels(hostname: &str, domain: &str) -> Vec<Hash> {
     get_hashes_from_labels(hostname, hostname.len(), hostname.len() - domain.len())
 }
 
 #[cfg(not(feature = "css-validation"))]
 mod css_validation {
-    pub fn validate_css_selector(selector: &str, _accept_abp_selectors: bool) -> Option<String> {
-        Some(selector.to_string())
+    use super::{CosmeticFilterError, CosmeticFilterOperator};
+
+    pub fn validate_css_selector(selector: &str, _accept_abp_selectors: bool) -> Result<Vec<CosmeticFilterOperator>, CosmeticFilterError> {
+        Ok(vec![CosmeticFilterOperator::CssSelector(selector.to_string())])
     }
 
     pub fn is_valid_css_style(_style: &str) -> bool {
@@ -550,6 +565,7 @@ mod css_validation {
     use core::fmt::{Result as FmtResult, Write};
     use cssparser::{CowRcStr, ParseError, Parser, ParserInput, SourceLocation, ToCss, Token};
     use selectors::parser::SelectorParseErrorKind;
+    use super::{CosmeticFilterError, CosmeticFilterOperator};
 
     /// Returns a validated canonical CSS selector for the given input, or nothing if one can't be
     /// determined.
@@ -559,14 +575,14 @@ mod css_validation {
     ///
     /// In addition to normalizing formatting, this function will remove unsupported procedural
     /// selectors and convert others to canonical representations (i.e. `:-abp-has` -> `:has`).
-    pub fn validate_css_selector(selector: &str, accept_abp_selectors: bool) -> Option<String> {
+    pub fn validate_css_selector(selector: &str, accept_abp_selectors: bool) -> Result<Vec<CosmeticFilterOperator>, CosmeticFilterError> {
         use once_cell::sync::Lazy;
         use regex::Regex;
         static RE_SIMPLE_SELECTOR: Lazy<Regex> =
             Lazy::new(|| Regex::new(r"^[#.]?[A-Za-z_][\w-]*$").unwrap());
 
         if RE_SIMPLE_SELECTOR.is_match(selector) {
-            return Some(selector.to_string());
+            return Ok(vec![CosmeticFilterOperator::CssSelector(selector.to_string())]);
         }
 
         // Use `mock-stylesheet-marker` where uBO uses `color: red` since we have control over the
@@ -583,14 +599,126 @@ mod css_validation {
 
         let prelude = rule_list_parser
             .next()
-            .and_then(|r| r.ok())
-            .map(|prelude| prelude.to_css_string());
+            .and_then(|r| r.ok());
 
+        // There should only be one rule
         if rule_list_parser.next().is_some() {
-            return None;
+            return Err(CosmeticFilterError::InvalidCssSelector);
         }
 
-        prelude
+        fn has_procedural_operator(selector: &selectors::parser::Selector<SelectorImpl>) -> bool {
+            let mut iter = selector.iter();
+            loop {
+                while let Some(component) = iter.next() {
+                    if is_procedural_operator(component) {
+                        return true;
+                    }
+                }
+                if iter.next_sequence().is_none() {
+                    break false;
+                }
+            }
+        }
+
+        fn is_procedural_operator(c: &selectors::parser::Component<SelectorImpl>) -> bool {
+            use selectors::parser::Component;
+            // Avoid using `to_procedural_operator.is_some()`, which will re-allocate the argument string.
+            match c {
+                Component::NonTSPseudoClass(NonTSPseudoClass::HasText(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::MatchesAttr(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::MatchesCss(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::MatchesCssBefore(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::MatchesCssAfter(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::MatchesPath(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::MinTextLength(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::Upward(_)) => true,
+                Component::NonTSPseudoClass(NonTSPseudoClass::Xpath(_)) => true,
+                _ => false,
+            }
+        }
+
+        if let Some(prelude) = prelude {
+            if !prelude.0.iter().any(|s| has_procedural_operator(s)) {
+                // There are no procedural filters, so all selectors use standard CSS.
+                // It's ok to return that as a "single" selector.
+                return Ok(vec![CosmeticFilterOperator::CssSelector(prelude.to_css_string())]);
+            }
+
+            if prelude.0.len() != 1 {
+                // Procedural filters don't work well with multiple selectors
+                return Err(CosmeticFilterError::ProceduralFilterWithMultipleSelectors);
+            }
+
+            // Safe; early return if length is not 1
+            let selector = prelude.0.into_iter().next().unwrap();
+
+            /// Shim for items returned by `selectors::parser::SelectorIter`. Sequences and
+            /// components iterate in opposite directions, but we want to process them in a
+            /// consistent order, so they need to be manually collected and reversed.
+            enum SelectorsPart<'a> {
+                /// `SelectorIter` iterates over `Component`s from left-to-right.
+                Component(&'a selectors::parser::Component<SelectorImpl>),
+                /// `SelectorIter` iterates over sequences of `Component`s separated by
+                /// `Combinator`s from right-to-left.
+                Combinator(selectors::parser::Combinator),
+            }
+
+            // Collect the selector parts into `parts` in right-to-left order, reversing the
+            // components of each sequence as necessary.
+            let mut parts = vec![];
+            let mut iter = selector.iter();
+            loop {
+                // Manual iteration/collection necessary due to `SelectorIter`'s multi-iterator
+                // construction.
+                // - `.rev()` cannot work directly because it's not a fixed-size iterator.
+                // - `.collect()` cannot work because it takes ownership of the iterator, which is
+                //                still required later for `next_sequence`.
+                let mut components = vec![];
+                while let Some(component) = iter.next() {
+                    components.push(SelectorsPart::Component(component));
+                }
+                parts.extend(components.into_iter().rev());
+                if let Some(combinator) = iter.next_sequence() {
+                    parts.push(SelectorsPart::Combinator(combinator));
+                } else {
+                    break;
+                }
+            }
+
+            // We can now prepare `output` by iterating over all the parts of the selector in
+            // left-to-right order.
+            let mut pending_css_selector = String::new();
+            let mut output = vec![];
+            for part in parts.into_iter().rev() {
+                use selectors::parser::Component;
+                match part {
+                    SelectorsPart::Component(Component::NonTSPseudoClass(c)) => {
+                        if let Some(procedural_operator) = c.to_procedural_operator() {
+                            if !pending_css_selector.is_empty() {
+                                output.push(CosmeticFilterOperator::CssSelector(pending_css_selector));
+                                pending_css_selector = String::new();
+                            }
+                            output.push(procedural_operator);
+                        } else {
+                            c.to_css(&mut pending_css_selector).map_err(|_| CosmeticFilterError::InvalidCssSelector)?;
+                        }
+                    }
+                    SelectorsPart::Component(other) => {
+                        other.to_css(&mut pending_css_selector).map_err(|_| CosmeticFilterError::InvalidCssSelector)?;
+                    }
+                    SelectorsPart::Combinator(combinator) => {
+                        combinator.to_css(&mut pending_css_selector).map_err(|_| CosmeticFilterError::InvalidCssSelector)?;
+                    }
+                }
+            }
+            if !pending_css_selector.is_empty() {
+                output.push(CosmeticFilterOperator::CssSelector(pending_css_selector));
+            }
+
+            Ok(output)
+        } else {
+            Err(CosmeticFilterError::InvalidCssSelector)
+        }
     }
 
     struct QualifiedRuleParserImpl {
@@ -734,15 +862,51 @@ mod css_validation {
         > {
             let canonical_name = match (self.accept_abp_selectors, name.as_ref()) {
                 (true, "-abp-has") => Some("has"),
+                (true, "-abp-contains") => Some("has-text"),
+                (true, "contains") => Some("has-text"),
                 _ => None,
             }
             .unwrap_or(name.as_ref());
             match canonical_name {
-                "-abp-contains" | "-abp-has" | "-abp-properties" | "has-text" | "if" | "if-not"
-                | "matches-attr" | "matches-css" | "matches-css-after" | "matches-css-before"
-                | "matches-media" | "matches-path" | "min-text-length" | "nth-ancestor"
-                | "properties" | "subject" | "upward" | "remove" | "remove-attr"
-                | "remove-class" | "watch-attr" | "xpath" => {
+                "has-text" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::HasText(text));
+                }
+                "matches-attr" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::MatchesAttr(text));
+                }
+                "matches-css" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::MatchesCss(text));
+                }
+                "matches-css-before" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::MatchesCssBefore(text));
+                }
+                "matches-css-after" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::MatchesCssAfter(text));
+                }
+                "matches-path" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::MatchesPath(text));
+                }
+                "min-text-length" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::MinTextLength(text));
+                }
+                "upward" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::Upward(text));
+                }
+                "xpath" => {
+                    let text = to_css_nested(arguments)?;
+                    return Ok(NonTSPseudoClass::Xpath(text));
+                }
+                "-abp-contains" | "-abp-has" | "-abp-properties" | "contains" | "if" | "if-not"
+                | "matches-property" | "nth-ancestor" | "properties" | "subject" | "remove"
+                | "remove-attr" | "remove-class" => {
                     return Err(arguments.new_custom_error(
                         SelectorParseErrorKind::UnsupportedPseudoClassOrElement(name),
                     ))
@@ -852,6 +1016,24 @@ mod css_validation {
     /// Dummy struct for non-tree-structural pseudo-classes.
     #[derive(Clone, PartialEq, Eq)]
     enum NonTSPseudoClass {
+        /// The `:has-text` or `:-abp-contains` procedural operator.
+        HasText(String),
+        /// The `:matches-attr` procedural operator.
+        MatchesAttr(String),
+        /// The `:matches-css` procedural operator.
+        MatchesCss(String),
+        /// The `:matches-css-before` procedural operator.
+        MatchesCssBefore(String),
+        /// The `:matches-css-after` procedural operator.
+        MatchesCssAfter(String),
+        /// The `:matches-path` procedural operator.
+        MatchesPath(String),
+        /// The `:min-text-length` procedural operator.
+        MinTextLength(String),
+        /// The `:upward` procedural operator.
+        Upward(String),
+        /// The `:xpath` procedural operator.
+        Xpath(String),
         /// Any native CSS pseudoclass that isn't a procedural operator. Second argument contains inner arguments, if present.
         AnythingElse(String, Option<String>),
     }
@@ -870,10 +1052,36 @@ mod css_validation {
         fn to_css<W: Write>(&self, dest: &mut W) -> FmtResult {
             write!(dest, ":")?;
             match self {
+                Self::HasText(text) => write!(dest, "has-text({})", text)?,
+                Self::MatchesAttr(text) => write!(dest, "matches-attr({})", text)?,
+                Self::MatchesCss(text) => write!(dest, "matches-css({})", text)?,
+                Self::MatchesCssBefore(text) => write!(dest, "matches-css-before({})", text)?,
+                Self::MatchesCssAfter(text) => write!(dest, "matches-css-after({})", text)?,
+                Self::MatchesPath(text) => write!(dest, "matches-path({})", text)?,
+                Self::MinTextLength(text) => write!(dest, "min-text-length({})", text)?,
+                Self::Upward(text) => write!(dest, "upward({})", text)?,
+                Self::Xpath(text) => write!(dest, "xpath({})", text)?,
                 Self::AnythingElse(name, None) => write!(dest, "{}", name)?,
                 Self::AnythingElse(name, Some(args)) => write!(dest, "{}({})", name, args)?,
             }
             Ok(())
+        }
+    }
+
+    impl NonTSPseudoClass {
+        fn to_procedural_operator(&self) -> Option<CosmeticFilterOperator> {
+            match self {
+                NonTSPseudoClass::HasText(a) => Some(CosmeticFilterOperator::HasText(a.to_owned())),
+                NonTSPseudoClass::MatchesAttr(a) => Some(CosmeticFilterOperator::MatchesAttr(a.to_owned())),
+                NonTSPseudoClass::MatchesCss(a) => Some(CosmeticFilterOperator::MatchesCss(a.to_owned())),
+                NonTSPseudoClass::MatchesCssBefore(a) => Some(CosmeticFilterOperator::MatchesCssBefore(a.to_owned())),
+                NonTSPseudoClass::MatchesCssAfter(a) => Some(CosmeticFilterOperator::MatchesCssAfter(a.to_owned())),
+                NonTSPseudoClass::MatchesPath(a) => Some(CosmeticFilterOperator::MatchesPath(a.to_owned())),
+                NonTSPseudoClass::MinTextLength(a) => Some(CosmeticFilterOperator::MinTextLength(a.to_owned())),
+                NonTSPseudoClass::Upward(a) => Some(CosmeticFilterOperator::Upward(a.to_owned())),
+                NonTSPseudoClass::Xpath(a) => Some(CosmeticFilterOperator::Xpath(a.to_owned())),
+                _ => None,
+            }
         }
     }
 
@@ -902,119 +1110,23 @@ mod css_validation {
 
     #[test]
     fn bad_selector_inputs() {
-        assert!(validate_css_selector(r#"rm -rf ./*"#, false).is_none());
-        assert!(validate_css_selector(r#"javascript:alert("All pseudo-classes are valid")"#, false).is_some());
-        assert!(validate_css_selector(r#"javascript:alert("But opening comments are still forbidden" /*)"#, false).is_none());
-        assert!(validate_css_selector(r#"This is not a CSS selector."#, false).is_none());
-        assert!(validate_css_selector(r#"./malware.sh"#, false).is_none());
-        assert!(validate_css_selector(r#"https://safesite.ru"#, false).is_none());
-        assert!(validate_css_selector(r#"(function(){var e=60;return String.fromCharCode(e.charCodeAt(0))})();"#, false).is_none());
-        assert!(validate_css_selector(r#"#!/usr/bin/sh"#, false).is_none());
-        assert!(validate_css_selector(r#"input,input/*"#, false).is_none());
+        assert!(validate_css_selector(r#"rm -rf ./*"#, false).is_err());
+        assert!(validate_css_selector(r#"javascript:alert("All pseudo-classes are valid")"#, false).is_ok());
+        assert!(validate_css_selector(r#"javascript:alert("But opening comments are still forbidden" /*)"#, false).is_err());
+        assert!(validate_css_selector(r#"This is not a CSS selector."#, false).is_err());
+        assert!(validate_css_selector(r#"./malware.sh"#, false).is_err());
+        assert!(validate_css_selector(r#"https://safesite.ru"#, false).is_err());
+        assert!(validate_css_selector(r#"(function(){var e=60;return String.fromCharCode(e.charCodeAt(0))})();"#, false).is_err());
+        assert!(validate_css_selector(r#"#!/usr/bin/sh"#, false).is_err());
+        assert!(validate_css_selector(r#"input,input/*"#, false).is_err());
         // Accept a closing comment within a string. It should still be impossible to create an
         // opening comment to match it.
-        assert!(validate_css_selector(r#"input[x="*/{}*{background:url(https://hackvertor.co.uk/images/logo.gif)}"]"#, false).is_some());
+        assert!(validate_css_selector(r#"input[x="*/{}*{background:url(https://hackvertor.co.uk/images/logo.gif)}"]"#, false).is_ok());
     }
 
     #[test]
     fn escaped_quote_in_tag_name() {
-        assert_eq!(validate_css_selector(r#"head\""#, false), Some(r#"head\""#.to_string()));
-    }
-}
-
-static RE_PLAIN_SELECTOR: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[#.][\w\\-]+").unwrap());
-static RE_PLAIN_SELECTOR_ESCAPED: Lazy<Regex> =
-    Lazy::new(|| Regex::new(r"^[#.](?:\\[0-9A-Fa-f]+ |\\.|\w|-)+").unwrap());
-static RE_ESCAPE_SEQUENCE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\\([0-9A-Fa-f]+ |.)").unwrap());
-
-/// Returns the first token of a CSS selector.
-///
-/// This should only be called once `selector` has been verified to start with either a "#" or "."
-/// character.
-fn key_from_selector(selector: &str) -> Result<String, CosmeticFilterError> {
-    // If there are no escape characters in the selector, just take the first class or id token.
-    let mat = RE_PLAIN_SELECTOR.find(selector);
-    if let Some(location) = mat {
-        let key = &location.as_str();
-        if find_char(b'\\', key.as_bytes()).is_none() {
-            return Ok((*key).into());
-        }
-    } else {
-        return Err(CosmeticFilterError::InvalidCssSelector);
-    }
-
-    // Otherwise, the characters in the selector must be escaped.
-    let mat = RE_PLAIN_SELECTOR_ESCAPED.find(selector);
-    if let Some(location) = mat {
-        let mut key = String::with_capacity(selector.len());
-        let escaped = &location.as_str();
-        let mut beginning = 0;
-        let mat = RE_ESCAPE_SEQUENCE.captures_iter(escaped);
-        for capture in mat {
-            // Unwrap is safe because the 0th capture group is the match itself
-            let location = capture.get(0).unwrap();
-            key += &escaped[beginning..location.start()];
-            beginning = location.end();
-            // Unwrap is safe because there is a capture group specified in the regex
-            let capture = capture.get(1).unwrap().as_str();
-            if capture.chars().count() == 1 {   // Check number of unicode characters rather than byte length
-                key += capture;
-            } else {
-                // This u32 conversion can overflow
-                let codepoint = u32::from_str_radix(&capture[..capture.len() - 1], 16)
-                    .map_err(|_| CosmeticFilterError::InvalidCssSelector)?;
-
-                // Not all u32s are valid Unicode codepoints
-                key += &core::char::from_u32(codepoint)
-                    .ok_or(CosmeticFilterError::InvalidCssSelector)?
-                    .to_string();
-            }
-        }
-        Ok(key + &escaped[beginning..])
-    } else {
-        Err(CosmeticFilterError::InvalidCssSelector)
-    }
-}
-
-#[cfg(test)]
-mod key_from_selector_tests {
-    use super::key_from_selector;
-
-    #[test]
-    fn no_escapes() {
-        assert_eq!(key_from_selector(r#"#selector"#).unwrap(), "#selector");
-        assert_eq!(key_from_selector(r#"#ad-box[href="https://popads.net"]"#).unwrap(), "#ad-box");
-        assert_eq!(key_from_selector(r#".p"#).unwrap(), ".p");
-        assert_eq!(key_from_selector(r#".ad #ad.adblockblock"#).unwrap(), ".ad");
-        assert_eq!(key_from_selector(r#"#container.contained"#).unwrap(), "#container");
-    }
-
-    #[test]
-    fn escaped_characters() {
-        assert_eq!(key_from_selector(r"#Meebo\:AdElement\.Root").unwrap(), "#Meebo:AdElement.Root");
-        assert_eq!(key_from_selector(r"#\ Banner\ Ad\ -\ 590\ x\ 90").unwrap(), "# Banner Ad - 590 x 90");
-        assert_eq!(key_from_selector(r"#\ rek").unwrap(), "# rek");
-        assert_eq!(key_from_selector(r#"#\:rr .nH[role="main"] .mq:first-child"#).unwrap(), "#:rr");
-        assert_eq!(key_from_selector(r#"#adspot-300x600\,300x250-pos-1"#).unwrap(), "#adspot-300x600,300x250-pos-1");
-        assert_eq!(key_from_selector(r#"#adv_\'146\'"#).unwrap(), "#adv_\'146\'");
-        assert_eq!(key_from_selector(r#"#oas-mpu-left\<\/div\>"#).unwrap(), "#oas-mpu-left</div>");
-        assert_eq!(key_from_selector(r#".Trsp\(op\).Trsdu\(3s\)"#).unwrap(), ".Trsp(op)");
-    }
-
-    #[test]
-    fn escape_codes() {
-        assert_eq!(key_from_selector(r#"#\5f _mom_ad_12"#).unwrap(), "#__mom_ad_12");
-        assert_eq!(key_from_selector(r#"#\5f _nq__hh[style="display:block!important"]"#).unwrap(), "#__nq__hh");
-        assert_eq!(key_from_selector(r#"#\31 000-014-ros"#).unwrap(), "#1000-014-ros");
-        assert_eq!(key_from_selector(r#"#\33 00X250ad"#).unwrap(), "#300X250ad");
-        assert_eq!(key_from_selector(r#"#\5f _fixme"#).unwrap(), "#__fixme");
-        assert_eq!(key_from_selector(r#"#\37 28ad"#).unwrap(), "#728ad");
-    }
-
-    #[test]
-    fn bad_escapes() {
-        assert!(key_from_selector(r#"#\5ffffffffff overflows"#).is_err());
-        assert!(key_from_selector(r#"#\5fffffff is_too_large"#).is_err());
+        assert_eq!(validate_css_selector(r#"head\""#, false), Ok(vec![CosmeticFilterOperator::CssSelector(r#"head\""#.to_string())]));
     }
 }
 
@@ -1029,15 +1141,11 @@ mod parse_tests {
         hostnames: Option<Vec<Hash>>,
         not_entities: Option<Vec<Hash>>,
         not_hostnames: Option<Vec<Hash>>,
-        selector: String,
-        key: Option<String>,
+        selector: SelectorType,
         action: Option<CosmeticFilterAction>,
 
         unhide: bool,
         script_inject: bool,
-        is_unicode: bool,
-        is_class_selector: bool,
-        is_id_selector: bool,
     }
 
     impl From<&CosmeticFilter> for CosmeticFilterBreakdown {
@@ -1047,15 +1155,11 @@ mod parse_tests {
                 hostnames: filter.hostnames.as_ref().cloned(),
                 not_entities: filter.not_entities.as_ref().cloned(),
                 not_hostnames: filter.not_hostnames.as_ref().cloned(),
-                selector: filter.selector.clone(),
-                key: filter.key.as_ref().cloned(),
+                selector: SelectorType::from(filter),
                 action: filter.action.as_ref().cloned(),
 
                 unhide: filter.mask.contains(CosmeticFilterMask::UNHIDE),
                 script_inject: filter.mask.contains(CosmeticFilterMask::SCRIPT_INJECT),
-                is_unicode: filter.mask.contains(CosmeticFilterMask::IS_UNICODE),
-                is_class_selector: filter.mask.contains(CosmeticFilterMask::IS_CLASS_SELECTOR),
-                is_id_selector: filter.mask.contains(CosmeticFilterMask::IS_ID_SELECTOR),
             }
         }
     }
@@ -1073,15 +1177,27 @@ mod parse_tests {
                 hostnames: None,
                 not_entities: None,
                 not_hostnames: None,
-                selector: "".to_string(),
-                key: None,
+                selector: SelectorType::PlainCss(String::from("")),
                 action: None,
 
                 unhide: false,
                 script_inject: false,
-                is_unicode: false,
-                is_class_selector: false,
-                is_id_selector: false,
+            }
+        }
+    }
+
+    #[derive(Debug, PartialEq)]
+    enum SelectorType {
+        PlainCss(String),
+        Procedural(Vec<CosmeticFilterOperator>),
+    }
+
+    impl From<&CosmeticFilter> for SelectorType {
+        fn from(v: &CosmeticFilter) -> Self {
+            if let Some(selector) = v.plain_css_selector() {
+                Self::PlainCss(selector.to_string())
+            } else {
+                Self::Procedural(v.selector.clone())
             }
         }
     }
@@ -1102,39 +1218,35 @@ mod parse_tests {
         check_parse_result(
             "##div.popup",
             CosmeticFilterBreakdown {
-                selector: "div.popup".to_string(),
+                selector: SelectorType::PlainCss("div.popup".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             "###selector",
             CosmeticFilterBreakdown {
-                selector: "#selector".to_string(),
-                is_id_selector: true,
-                key: Some("selector".to_string()),
+                selector: SelectorType::PlainCss("#selector".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             "##.selector",
             CosmeticFilterBreakdown {
-                selector: ".selector".to_string(),
-                is_class_selector: true,
-                key: Some("selector".to_string()),
+                selector: SelectorType::PlainCss(".selector".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             "##a[href=\"foo.com\"]",
             CosmeticFilterBreakdown {
-                selector: "a[href=\"foo.com\"]".to_string(),
+                selector: SelectorType::PlainCss("a[href=\"foo.com\"]".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             "##[href=\"foo.com\"]",
             CosmeticFilterBreakdown {
-                selector: "[href=\"foo.com\"]".to_string(),
+                selector: SelectorType::PlainCss("[href=\"foo.com\"]".to_string()),
                 ..Default::default()
             },
         );
@@ -1155,7 +1267,7 @@ mod parse_tests {
         check_parse_result(
             r#"u00p.com##div[class^="adv-box"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"div[class^="adv-box"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"div[class^="adv-box"]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["u00p.com"]),
                 ..Default::default()
             },
@@ -1163,7 +1275,7 @@ mod parse_tests {
         check_parse_result(
             r#"distractify.com##div[class*="AdInArticle"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"div[class*="AdInArticle"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"div[class*="AdInArticle"]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["distractify.com"]),
                 ..Default::default()
             },
@@ -1171,7 +1283,7 @@ mod parse_tests {
         check_parse_result(
             r#"soundtrackcollector.com,the-numbers.com##a[href^="http://affiliates.allposters.com/"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href^="http://affiliates.allposters.com/"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href^="http://affiliates.allposters.com/"]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["soundtrackcollector.com", "the-numbers.com"]),
                 ..Default::default()
             },
@@ -1179,7 +1291,7 @@ mod parse_tests {
         check_parse_result(
             r#"thelocal.at,thelocal.ch,thelocal.de,thelocal.dk,thelocal.es,thelocal.fr,thelocal.it,thelocal.no,thelocal.se##div[class*="-widget"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"div[class*="-widget"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"div[class*="-widget"]"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "thelocal.at",
                     "thelocal.ch",
@@ -1197,7 +1309,7 @@ mod parse_tests {
         check_parse_result(
             r#"base64decode.org,base64encode.org,beautifyjson.org,minifyjson.org,numgen.org,pdfmrg.com,pdfspl.com,prettifycss.com,pwdgen.org,strlength.com,strreverse.com,uglifyjs.net,urldecoder.org##div[class^="banner_"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"div[class^="banner_"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"div[class^="banner_"]"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "base64decode.org",
                     "base64encode.org",
@@ -1219,7 +1331,7 @@ mod parse_tests {
         check_parse_result(
             r#"adforum.com,alliednews.com,americustimesrecorder.com,andovertownsman.com,athensreview.com,batesvilleheraldtribune.com,bdtonline.com,channel24.pk,chickashanews.com,claremoreprogress.com,cleburnetimesreview.com,clintonherald.com,commercejournal.com,commercial-news.com,coopercrier.com,cordeledispatch.com,corsicanadailysun.com,crossville-chronicle.com,cullmantimes.com,dailyiowegian.com,dailyitem.com,daltondailycitizen.com,derrynews.com,duncanbanner.com,eagletribune.com,edmondsun.com,effinghamdailynews.com,enewscourier.com,enidnews.com,farmtalknewspaper.com,fayettetribune.com,flasharcade.com,flashgames247.com,flyergroup.com,foxsportsasia.com,gainesvilleregister.com,gloucestertimes.com,goshennews.com,greensburgdailynews.com,heraldbanner.com,heraldbulletin.com,hgazette.com,homemagonline.com,itemonline.com,jacksonvilleprogress.com,jerusalemonline.com,joplinglobe.com,journal-times.com,journalexpress.net,kexp.org,kokomotribune.com,lockportjournal.com,mankatofreepress.com,mcalesternews.com,mccrearyrecord.com,mcleansborotimesleader.com,meadvilletribune.com,meridianstar.com,mineralwellsindex.com,montgomery-herald.com,mooreamerican.com,moultrieobserver.com,muskogeephoenix.com,ncnewsonline.com,newburyportnews.com,newsaegis.com,newsandtribune.com,niagara-gazette.com,njeffersonnews.com,normantranscript.com,opposingviews.com,orangeleader.com,oskaloosa.com,ottumwacourier.com,outlookmoney.com,palestineherald.com,panews.com,paulsvalleydailydemocrat.com,pellachronicle.com,pharostribune.com,pressrepublican.com,pryordailytimes.com,randolphguide.com,record-eagle.com,register-herald.com,register-news.com,reporter.net,rockwallheraldbanner.com,roysecityheraldbanner.com,rushvillerepublican.com,salemnews.com,sentinel-echo.com,sharonherald.com,shelbyvilledailyunion.com,siteslike.com,standardmedia.co.ke,starbeacon.com,stwnewspress.com,suwanneedemocrat.com,tahlequahdailypress.com,theadanews.com,theawesomer.com,thedailystar.com,thelandonline.com,themoreheadnews.com,thesnaponline.com,tiftongazette.com,times-news.com,timesenterprise.com,timessentinel.com,timeswv.com,tonawanda-news.com,tribdem.com,tribstar.com,unionrecorder.com,valdostadailytimes.com,washtimesherald.com,waurikademocrat.com,wcoutlook.com,weatherforddemocrat.com,woodwardnews.net,wrestlinginc.com##div[style="width:300px; height:250px;"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"div[style="width:300px; height:250px;"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"div[style="width:300px; height:250px;"]"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "adforum.com",
                     "alliednews.com",
@@ -1354,35 +1466,35 @@ mod parse_tests {
         check_parse_result(
             r#"##a[href$="/vghd.shtml"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href$="/vghd.shtml"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href$="/vghd.shtml"]"#.to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             r#"##a[href*=".adk2x.com/"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href*=".adk2x.com/"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href*=".adk2x.com/"]"#.to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             r#"##a[href^="//40ceexln7929.com/"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href^="//40ceexln7929.com/"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href^="//40ceexln7929.com/"]"#.to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             r#"##a[href*=".trust.zone"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href*=".trust.zone"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href*=".trust.zone"]"#.to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             r#"tf2maps.net##a[href="http://forums.tf2maps.net/payments.php"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href="http://forums.tf2maps.net/payments.php"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href="http://forums.tf2maps.net/payments.php"]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["tf2maps.net"]),
                 ..Default::default()
             },
@@ -1390,7 +1502,7 @@ mod parse_tests {
         check_parse_result(
             r#"rarbg.to,rarbg.unblockall.org,rarbgaccess.org,rarbgmirror.com,rarbgmirror.org,rarbgmirror.xyz,rarbgproxy.com,rarbgproxy.org,rarbgunblock.com##a[href][target="_blank"] > button"#,
             CosmeticFilterBreakdown {
-                selector: r#"a[href][target="_blank"] > button"#.to_string(),
+                selector: SelectorType::PlainCss(r#"a[href][target="_blank"] > button"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "rarbg.to",
                     "rarbg.unblockall.org",
@@ -1412,7 +1524,7 @@ mod parse_tests {
         check_parse_result(
             r#"hentaifr.net,jeu.info,tuxboard.com,xstory-fr.com##+js(goyavelab-defuser.js)"#,
             CosmeticFilterBreakdown {
-                selector: r#"goyavelab-defuser.js"#.to_string(),
+                selector: SelectorType::PlainCss(r#"goyavelab-defuser.js"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "hentaifr.net",
                     "jeu.info",
@@ -1426,7 +1538,7 @@ mod parse_tests {
         check_parse_result(
             r#"haus-garten-test.de,sozialversicherung-kompetent.de##+js(set-constant.js, Object.keys, trueFunc)"#,
             CosmeticFilterBreakdown {
-                selector: r#"set-constant.js, Object.keys, trueFunc"#.to_string(),
+                selector: SelectorType::PlainCss(r#"set-constant.js, Object.keys, trueFunc"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "haus-garten-test.de",
                     "sozialversicherung-kompetent.de",
@@ -1438,7 +1550,7 @@ mod parse_tests {
         check_parse_result(
             r#"airliners.de,auszeit.bio,autorevue.at,clever-tanken.de,fanfiktion.de,finya.de,frag-mutti.de,frustfrei-lernen.de,fussballdaten.de,gameswelt.*,liga3-online.de,lz.de,mt.de,psychic.de,rimondo.com,spielen.de,weltfussball.at,weristdeinfreund.de##+js(abort-current-inline-script.js, Number.isNaN)"#,
             CosmeticFilterBreakdown {
-                selector: r#"abort-current-inline-script.js, Number.isNaN"#.to_string(),
+                selector: SelectorType::PlainCss(r#"abort-current-inline-script.js, Number.isNaN"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "airliners.de",
                     "auszeit.bio",
@@ -1466,7 +1578,7 @@ mod parse_tests {
         check_parse_result(
             r#"prad.de##+js(abort-on-property-read.js, document.cookie)"#,
             CosmeticFilterBreakdown {
-                selector: r#"abort-on-property-read.js, document.cookie"#.to_string(),
+                selector: SelectorType::PlainCss(r#"abort-on-property-read.js, document.cookie"#.to_string()),
                 hostnames: sort_hash_domains(vec!["prad.de"]),
                 script_inject: true,
                 ..Default::default()
@@ -1475,7 +1587,7 @@ mod parse_tests {
         check_parse_result(
             r#"computerbild.de##+js(abort-on-property-read.js, Date.prototype.toUTCString)"#,
             CosmeticFilterBreakdown {
-                selector: r#"abort-on-property-read.js, Date.prototype.toUTCString"#.to_string(),
+                selector: SelectorType::PlainCss(r#"abort-on-property-read.js, Date.prototype.toUTCString"#.to_string()),
                 hostnames: sort_hash_domains(vec!["computerbild.de"]),
                 script_inject: true,
                 ..Default::default()
@@ -1484,7 +1596,7 @@ mod parse_tests {
         check_parse_result(
             r#"computerbild.de##+js(setTimeout-defuser.js, ())return)"#,
             CosmeticFilterBreakdown {
-                selector: r#"setTimeout-defuser.js, ())return"#.to_string(),
+                selector: SelectorType::PlainCss(r#"setTimeout-defuser.js, ())return"#.to_string()),
                 hostnames: sort_hash_domains(vec!["computerbild.de"]),
                 script_inject: true,
                 ..Default::default()
@@ -1497,7 +1609,7 @@ mod parse_tests {
         check_parse_result(
             r#"monova.*##+js(nowebrtc.js)"#,
             CosmeticFilterBreakdown {
-                selector: r#"nowebrtc.js"#.to_string(),
+                selector: SelectorType::PlainCss(r#"nowebrtc.js"#.to_string()),
                 entities: sort_hash_domains(vec!["monova"]),
                 script_inject: true,
                 ..Default::default()
@@ -1506,7 +1618,7 @@ mod parse_tests {
         check_parse_result(
             r#"monova.*##tr.success.desktop"#,
             CosmeticFilterBreakdown {
-                selector: r#"tr.success.desktop"#.to_string(),
+                selector: SelectorType::PlainCss(r#"tr.success.desktop"#.to_string()),
                 entities: sort_hash_domains(vec!["monova"]),
                 ..Default::default()
             },
@@ -1514,7 +1626,7 @@ mod parse_tests {
         check_parse_result(
             r#"monova.*#@#script + [class] > [class]:first-child"#,
             CosmeticFilterBreakdown {
-                selector: r#"script + [class] > [class]:first-child"#.to_string(),
+                selector: SelectorType::PlainCss(r#"script + [class] > [class]:first-child"#.to_string()),
                 entities: sort_hash_domains(vec!["monova"]),
                 unhide: true,
                 ..Default::default()
@@ -1523,7 +1635,7 @@ mod parse_tests {
         check_parse_result(
             r#"adshort.im,adsrt.*#@#[id*="ScriptRoot"]"#,
             CosmeticFilterBreakdown {
-                selector: r#"[id*="ScriptRoot"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"[id*="ScriptRoot"]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["adshort.im"]),
                 entities: sort_hash_domains(vec!["adsrt"]),
                 unhide: true,
@@ -1533,11 +1645,9 @@ mod parse_tests {
         check_parse_result(
             r#"downloadsource.*##.date:not(dt):style(display: block !important;)"#,
             CosmeticFilterBreakdown {
-                selector: r#".date:not(dt)"#.to_string(),
+                selector: SelectorType::PlainCss(r#".date:not(dt)"#.to_string()),
                 entities: sort_hash_domains(vec!["downloadsource"]),
                 action: Some(CosmeticFilterAction::Style("display: block !important;".into())),
-                is_class_selector: true,
-                key: Some("date".to_string()),
                 ..Default::default()
             },
         );
@@ -1548,22 +1658,18 @@ mod parse_tests {
         check_parse_result(
             r#"chip.de##.video-wrapper > video[style]:style(display:block!important;padding-top:0!important;)"#,
             CosmeticFilterBreakdown {
-                selector: r#".video-wrapper > video[style]"#.to_string(),
+                selector: SelectorType::PlainCss(r#".video-wrapper > video[style]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["chip.de"]),
                 action: Some(CosmeticFilterAction::Style("display:block!important;padding-top:0!important;".into())),
-                is_class_selector: true,
-                key: Some("video-wrapper".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             r#"allmusic.com##.advertising.medium-rectangle:style(min-height: 1px !important;)"#,
             CosmeticFilterBreakdown {
-                selector: r#".advertising.medium-rectangle"#.to_string(),
+                selector: SelectorType::PlainCss(r#".advertising.medium-rectangle"#.to_string()),
                 hostnames: sort_hash_domains(vec!["allmusic.com"]),
                 action: Some(CosmeticFilterAction::Style("min-height: 1px !important;".into())),
-                is_class_selector: true,
-                key: Some("advertising".to_string()),
                 ..Default::default()
             },
         );
@@ -1571,18 +1677,16 @@ mod parse_tests {
         check_parse_result(
             r#"quora.com##.signup_wall_prevent_scroll .SiteHeader,.signup_wall_prevent_scroll .LoggedOutFooter,.signup_wall_prevent_scroll .ContentWrapper:style(filter: none !important;)"#,
             CosmeticFilterBreakdown {
-                selector: r#".signup_wall_prevent_scroll .SiteHeader, .signup_wall_prevent_scroll .LoggedOutFooter, .signup_wall_prevent_scroll .ContentWrapper"#.to_string(),
+                selector: SelectorType::PlainCss(r#".signup_wall_prevent_scroll .SiteHeader, .signup_wall_prevent_scroll .LoggedOutFooter, .signup_wall_prevent_scroll .ContentWrapper"#.to_string()),
                 hostnames: sort_hash_domains(vec!["quora.com"]),
                 action: Some(CosmeticFilterAction::Style("filter: none !important;".into())),
-                is_class_selector: true,
-                key: Some("signup_wall_prevent_scroll".to_string()),
                 ..Default::default()
             }
         );
         check_parse_result(
             r#"imdb.com##body#styleguide-v2:style(background-color: #e3e2dd !important; background-image: none !important;)"#,
             CosmeticFilterBreakdown {
-                selector: r#"body#styleguide-v2"#.to_string(),
+                selector: SelectorType::PlainCss(r#"body#styleguide-v2"#.to_string()),
                 hostnames: sort_hash_domains(vec!["imdb.com"]),
                 action: Some(CosmeticFilterAction::Style("background-color: #e3e2dd !important; background-image: none !important;".into())),
                 ..Default::default()
@@ -1591,18 +1695,16 @@ mod parse_tests {
         check_parse_result(
             r#"streamcloud.eu###login > div[style^="width"]:style(display: block !important)"#,
             CosmeticFilterBreakdown {
-                selector: r#"#login > div[style^="width"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"#login > div[style^="width"]"#.to_string()),
                 hostnames: sort_hash_domains(vec!["streamcloud.eu"]),
                 action: Some(CosmeticFilterAction::Style("display: block !important".into())),
-                is_id_selector: true,
-                key: Some("login".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             r#"moonbit.co.in,moondoge.co.in,moonliteco.in##[src^="//coinad.com/ads/"]:style(visibility: collapse !important)"#,
             CosmeticFilterBreakdown {
-                selector: r#"[src^="//coinad.com/ads/"]"#.to_string(),
+                selector: SelectorType::PlainCss(r#"[src^="//coinad.com/ads/"]"#.to_string()),
                 hostnames: sort_hash_domains(vec![
                     "moonbit.co.in",
                     "moondoge.co.in",
@@ -1619,24 +1721,95 @@ mod parse_tests {
         check_parse_result(
             "###неделя",
             CosmeticFilterBreakdown {
-                selector: "#неделя".to_string(),
-                is_unicode: true,
-                is_id_selector: true,
-                key: Some("неделя".to_string()),
+                selector: SelectorType::PlainCss("#неделя".to_string()),
                 ..Default::default()
             },
         );
         check_parse_result(
             "неlloworlд.com#@##week",
             CosmeticFilterBreakdown {
-                selector: "#week".to_string(),
+                selector: SelectorType::PlainCss("#week".to_string()),
                 hostnames: sort_hash_domains(vec!["xn--lloworl-5ggb3f.com"]),
-                is_unicode: true,
-                is_id_selector: true,
-                key: Some("week".to_string()),
                 unhide: true,
                 ..Default::default()
             }
+        );
+    }
+
+    /// As of writing, these procedural filters with multiple comma-separated selectors aren't
+    /// fully supported by uBO. Here, they are treated as parsing errors.
+    #[test]
+    #[cfg(feature = "css-validation")]
+    fn multi_selector_procedural_filters() {
+        assert!(parse_cf("example.com##h1:has-text(Example Domain),p:has-text(More)").is_err());
+        assert!(parse_cf("example.com##h1,p:has-text(ill)").is_err());
+        assert!(parse_cf("example.com##h1:has-text(om),p").is_err());
+    }
+
+    #[test]
+    #[cfg(feature = "css-validation")]
+    fn procedural_operators() {
+        /// Check against simple `example.com` domains. Domain parsing is well-handled by other
+        /// tests, but procedural filters cannot be generic.
+        fn check_procedural(raw: &str, expected_selectors: Vec<CosmeticFilterOperator>) {
+            check_parse_result(
+                &format!("example.com##{}", raw),
+                CosmeticFilterBreakdown {
+                    selector: SelectorType::Procedural(expected_selectors),
+                    hostnames: sort_hash_domains(vec![
+                        "example.com",
+                    ]),
+                    ..Default::default()
+                }
+            );
+        }
+        check_procedural(
+            ".items:has-text(Sponsored)",
+            vec![
+                CosmeticFilterOperator::CssSelector(".items".to_string()),
+                CosmeticFilterOperator::HasText("Sponsored".to_string()),
+            ],
+        );
+        check_procedural(
+            "div.items:has(p):has-text(Sponsored)",
+            vec![
+                CosmeticFilterOperator::CssSelector("div.items:has(p)".to_string()),
+                CosmeticFilterOperator::HasText("Sponsored".to_string()),
+            ],
+        );
+        check_procedural(
+            "div.items:has-text(Sponsored):has(p)",
+            vec![
+                CosmeticFilterOperator::CssSelector("div.items".to_string()),
+                CosmeticFilterOperator::HasText("Sponsored".to_string()),
+                CosmeticFilterOperator::CssSelector(":has(p)".to_string()),
+            ],
+        );
+        check_procedural(
+            ".items:has-text(Sponsored) .container",
+            vec![
+                CosmeticFilterOperator::CssSelector(".items".to_string()),
+                CosmeticFilterOperator::HasText("Sponsored".to_string()),
+                CosmeticFilterOperator::CssSelector(" .container".to_string()),
+            ],
+        );
+        check_procedural(
+            ".items:has-text(Sponsored) > .container",
+            vec![
+                CosmeticFilterOperator::CssSelector(".items".to_string()),
+                CosmeticFilterOperator::HasText("Sponsored".to_string()),
+                CosmeticFilterOperator::CssSelector(" > .container".to_string()),
+            ],
+        );
+        check_procedural(
+            ".items:has-text(Sponsored) + .container:has-text(Ad) ~ div",
+            vec![
+                CosmeticFilterOperator::CssSelector(".items".to_string()),
+                CosmeticFilterOperator::HasText("Sponsored".to_string()),
+                CosmeticFilterOperator::CssSelector(" + .container".to_string()),
+                CosmeticFilterOperator::HasText("Ad".to_string()),
+                CosmeticFilterOperator::CssSelector(" ~ div".to_string()),
+            ],
         );
     }
 
@@ -1646,12 +1819,14 @@ mod parse_tests {
         assert!(parse_cf("yandex.*##.serp-item:if(:scope > div.organic div.organic__subtitle:matches-css-after(content: /[Рр]еклама/))").is_err());
         assert!(parse_cf(r#"facebook.com,facebookcorewwwi.onion##.ego_column:if(a[href^="/campaign/landing"])"#).is_err());
         assert!(parse_cf(r#"readcomiconline.to##^script:has-text(this[atob)"#).is_err());
-        assert!(parse_cf("twitter.com##article:has-text(/Promoted|Gesponsert|Реклама|Promocionado/):xpath(../..)").is_err());
         assert!(parse_cf("##").is_err());
         assert!(parse_cf("").is_err());
 
         // `:has` was previously limited to procedural filtering, but is now a native CSS feature.
         assert!(parse_cf(r#"thedailywtf.com##.article-body > div:has(a[href*="utm_medium"])"#).is_ok());
+
+        // `:has-text` and `:xpath` are now supported procedural filters
+        assert!(parse_cf("twitter.com##article:has-text(/Promoted|Gesponsert|Реклама|Promocionado/):xpath(../..)").is_ok());
     }
 
     #[test]
@@ -1996,13 +2171,13 @@ mod matching_tests {
     #[cfg(feature = "css-validation")]
     fn abp_has_conversion() {
         let rule = parse_cf("imgur.com#?#div.Gallery-Sidebar-PostContainer:-abp-has(div.promoted-hover)").unwrap();
-        assert_eq!(rule.selector, "div.Gallery-Sidebar-PostContainer:has(div.promoted-hover)");
+        assert_eq!(rule.plain_css_selector(), Some("div.Gallery-Sidebar-PostContainer:has(div.promoted-hover)"));
         let rule = parse_cf(r##"webtools.fineaty.com#?#div[class*=" hidden-"]:-abp-has(.adsbygoogle)"##).unwrap();
-        assert_eq!(rule.selector, r#"div[class*=" hidden-"]:has(.adsbygoogle)"#);
+        assert_eq!(rule.plain_css_selector(), Some(r#"div[class*=" hidden-"]:has(.adsbygoogle)"#));
         let rule = parse_cf(r##"facebook.com,facebookcorewwwi.onion#?#._6y8t:-abp-has(a[href="/ads/about/?entry_product=ad_preferences"])"##).unwrap();
-        assert_eq!(rule.selector, r#"._6y8t:has(a[href="/ads/about/?entry_product=ad_preferences"])"#);
+        assert_eq!(rule.plain_css_selector(), Some(r#"._6y8t:has(a[href="/ads/about/?entry_product=ad_preferences"])"#));
         let rule = parse_cf(r##"mtgarena.pro#?##root > div > div:-abp-has(> .vm-placement)"##).unwrap();
-        assert_eq!(rule.selector, r#"#root > div > div:has(> .vm-placement)"#);
+        assert_eq!(rule.plain_css_selector(), Some(r#"#root > div > div:has(> .vm-placement)"#));
         // Error without `#?#`:
         assert!(parse_cf(r##"mtgarena.pro###root > div > div:-abp-has(> .vm-placement)"##).is_err());
     }

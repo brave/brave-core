@@ -6,7 +6,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 use thiserror::Error;
 
-use super::{MimeType, PermissionMask, Resource, ResourceType};
+use super::{PermissionMask, Resource, ResourceType};
 
 /// Unified resource storage for both redirects and scriptlets.
 #[derive(Default)]
@@ -98,6 +98,19 @@ fn stringify_arg<const QUOTED: bool>(arg: &str) -> String {
     return String::from_utf8(output).unwrap();
 }
 
+/// Gets the function name from a JS function definition
+fn extract_function_name(fn_def: &str) -> Option<&str> {
+    // This is not bulletproof, but should be robust against most issues.
+    const FUNCTION_NAME_RE: Lazy<Regex> = Lazy::new(|| {
+        Regex::new(r#"^function\s+([^\(\)\{\}\s]+)\s*\("#).unwrap()
+    });
+
+    FUNCTION_NAME_RE.captures(&fn_def).map(|captures| {
+        // capture 1 is always present in the above regex if any match was made
+        captures.get(1).unwrap().as_str()
+    })
+}
+
 impl ResourceStorage {
     /// Convenience constructor that allows building storage for many resources at once. Errors are
     /// silently consumed.
@@ -119,10 +132,6 @@ impl ResourceStorage {
     /// Adds a resource to storage so that it can be retrieved later.
     pub fn add_resource(&mut self, resource: Resource) -> Result<(), AddResourceError> {
         if let ResourceType::Mime(content_type) = &resource.kind {
-            if matches!(content_type, MimeType::FnJavascript) {
-                return Err(AddResourceError::FnJavascriptNotSupported);
-            }
-
             if !resource.dependencies.is_empty() && !content_type.supports_dependencies() {
                 return Err(AddResourceError::ContentTypeDoesNotSupportDependencies);
             }
@@ -148,9 +157,60 @@ impl ResourceStorage {
         Ok(())
     }
 
-    /// Given the contents of a `+js(...)` filter part, return a scriptlet string appropriate for
-    /// injection in a page.
-    pub fn get_scriptlet_resource(&self, scriptlet_args: &str, filter_permission: PermissionMask) -> Result<String, ScriptletResourceError> {
+    /// Given the contents of the `+js(...)` parts of multiple filters, return a script string
+    /// appropriate for injection in a page.
+    pub fn get_scriptlet_resources<'a>(&self, script_injections: impl IntoIterator<Item = (&'a str, PermissionMask)>) -> String {
+        let mut deps = vec![];
+        let mut invokations = String::new();
+
+        script_injections.into_iter().for_each(|(s, mask)| {
+            if let Ok(invokation) = self.get_scriptlet_resource(s, mask, &mut deps) {
+                invokations += "try {\n";
+                invokations += &invokation;
+                invokations += "\n} catch ( e ) { }\n";
+            }
+        });
+
+        let mut result = String::new();
+
+        for dep in deps.iter() {
+            if let Ok(decoded) = base64::decode(&dep.content) {
+                if let Ok(dep) = core::str::from_utf8(&decoded) {
+                    result += dep;
+                    result += "\n";
+                }
+            }
+        }
+
+        result += &invokations;
+
+        result
+    }
+
+    /// Add all dependencies of `new_dep` to `prev_deps`, recursively and uniquely. If the given
+    /// permission is insufficient for any dependency, this will return an `Error`.
+    ///
+    /// Note that no ordering is guaranteed; function definitions in JS can appear after they are
+    /// used.
+    fn recursive_dependencies<'a: 'b, 'b>(&'a self, new_dep: &str, prev_deps: &mut Vec<&'b Resource>, filter_permission: PermissionMask) -> Result<(), ScriptletResourceError> {
+        if prev_deps.iter().find(|dep| dep.name == new_dep).is_some() {
+            return Ok(());
+        }
+
+        let resource = self.get_permissioned_resource(new_dep, filter_permission)?;
+
+        prev_deps.push(resource);
+
+        for dep in resource.dependencies.iter() {
+            self.recursive_dependencies(dep, prev_deps, filter_permission)?;
+        }
+
+        Ok(())
+    }
+
+    /// Given the contents of a single `+js(...)` filter part, return a scriptlet string
+    /// appropriate for injection in a page.
+    fn get_scriptlet_resource<'a: 'b, 'b>(&'a self, scriptlet_args: &str, filter_permission: PermissionMask, required_deps: &mut Vec<&'b Resource>) -> Result<String, ScriptletResourceError> {
         // `unwrap` is safe because these are guaranteed valid at filter parsing.
         let scriptlet_args = parse_scriptlet_args(scriptlet_args).unwrap();
 
@@ -165,24 +225,28 @@ impl ResourceStorage {
             return Err(ScriptletResourceError::ScriptletArgObjectSyntaxUnsupported);
         }
 
-        let resource = self
-            .get_internal_resource(&scriptlet_name)
-            .ok_or(ScriptletResourceError::NoMatchingScriptlet)?;
-
-        if !resource.permission.is_injectable_by(filter_permission) {
-            return Err(ScriptletResourceError::InsufficientPermissions);
-        }
+        let resource = self.get_permissioned_resource(&scriptlet_name, filter_permission)?;
 
         if !resource.kind.supports_scriptlet_injection() {
             return Err(ScriptletResourceError::ContentTypeNotInjectable);
         }
 
+        for dep in resource.dependencies.iter() {
+            self.recursive_dependencies(dep, required_deps, filter_permission)?;
+        };
+
         let template = String::from_utf8(base64::decode(&resource.content)?)?;
 
-        if template.starts_with("function") {
+        if let Some(function_name) = extract_function_name(&template) {
             // newer function-style resource: pass args using function call syntax
+
+            // add the scriptlet itself as a dependency and invoke via function name
+            if required_deps.iter().find(|dep| dep.name == resource.name).is_none() {
+                required_deps.push(resource);
+            }
+
             use itertools::Itertools as _;
-            Ok(format!("({})({})", template, args.iter().map(|arg| stringify_arg::<true>(arg)).join(", ")))
+            Ok(format!("{}({})", function_name, args.iter().map(|arg| stringify_arg::<true>(arg)).join(", ")))
         } else {
             // older template-style resource: replace first instances with args
             Ok(patch_template_scriptlet(template, args.iter().map(|arg| stringify_arg::<false>(arg))))
@@ -220,6 +284,18 @@ impl ResourceStorage {
 
         resource
     }
+
+    fn get_permissioned_resource(&self, scriptlet_name: &str, filter_permission: PermissionMask) -> Result<&Resource, ScriptletResourceError> {
+        let resource = self
+            .get_internal_resource(&scriptlet_name)
+            .ok_or(ScriptletResourceError::NoMatchingScriptlet)?;
+
+        if !resource.permission.is_injectable_by(filter_permission) {
+            return Err(ScriptletResourceError::InsufficientPermissions);
+        }
+
+        Ok(resource)
+    }
 }
 
 /// Describes failure cases when preparing [`Resource`]s to be used for adblocking.
@@ -231,8 +307,6 @@ pub enum AddResourceError {
     InvalidUtf8Content,
     #[error("resource name already added")]
     NameAlreadyAdded,
-    #[error("fn/javascript mime type is not yet supported")]
-    FnJavascriptNotSupported,
     #[error("resource content type does not support dependencies")]
     ContentTypeDoesNotSupportDependencies,
 }
@@ -460,6 +534,24 @@ pub(crate) fn parse_scriptlet_args(mut args: &str) -> Option<Vec<String>> {
 }
 
 #[cfg(test)]
+mod extract_function_name_tests {
+    use super::extract_function_name;
+
+    #[test]
+    fn test_extract_function_name() {
+        assert_eq!(extract_function_name("function test() {}"), Some("test"));
+        assert_eq!(extract_function_name("function $() {}"), Some("$"));
+        assert_eq!(extract_function_name("function _() {}"), Some("_"));
+        assert_eq!(extract_function_name("function ಠ_ಠ() {}"), Some("ಠ_ಠ"));
+        assert_eq!(extract_function_name("function\ntest\n(\n)\n{\n}"), Some("test"));
+        assert_eq!(extract_function_name("function\ttest\t(\t)\t{\t}"), Some("test"));
+        assert_eq!(extract_function_name("function test() { (function inner() {})() }"), Some("test"));
+        assert_eq!(extract_function_name("let e = function test() { (function inner() {})() }"), None);
+        assert_eq!(extract_function_name("function () { (function inner() {})() }"), None);
+    }
+}
+
+#[cfg(test)]
 mod arg_parsing_util_tests {
     use super::*;
 
@@ -490,6 +582,7 @@ mod arg_parsing_util_tests {
 #[cfg(test)]
 mod redirect_storage_tests {
     use super::*;
+    use crate::resources::MimeType;
 
     #[test]
     fn get_resource_by_name() {
@@ -545,6 +638,7 @@ mod redirect_storage_tests {
 #[cfg(test)]
 mod scriptlet_storage_tests {
     use super::*;
+    use crate::resources::MimeType;
 
     #[test]
     fn parse_argslist() {
@@ -675,47 +769,50 @@ mod scriptlet_storage_tests {
         ]);
 
         assert_eq!(
-            resources.get_scriptlet_resource("greet, world, adblock-rust", Default::default()),
-            Ok("console.log('Hello world, my name is adblock-rust')".into())
+            resources.get_scriptlet_resources([("greet, world, adblock-rust", Default::default())]),
+            "try {\nconsole.log('Hello world, my name is adblock-rust')\n} catch ( e ) { }\n",
         );
         assert_eq!(
-            resources.get_scriptlet_resource("alert, All systems are go!! ", Default::default()),
-            Ok("alert('All systems are go!!')".into())
+            resources.get_scriptlet_resources([("alert, All systems are go!! ", Default::default())]),
+            "try {\nalert('All systems are go!!')\n} catch ( e ) { }\n",
         );
         assert_eq!(
-            resources.get_scriptlet_resource("alert, Uh oh\\, check the logs...", Default::default()),
-            Ok("alert('Uh oh, check the logs...')".into())
+            resources.get_scriptlet_resources([("alert, Uh oh\\, check the logs...", Default::default())]),
+            "try {\nalert('Uh oh, check the logs...')\n} catch ( e ) { }\n",
         );
         assert_eq!(
-            resources.get_scriptlet_resource(r#"alert, this has "quotes""#, Default::default()),
-            Ok(r#"alert('this has \"quotes\"')"#.into())
+            resources.get_scriptlet_resources([(r#"alert, this has "quotes""#, Default::default())]),
+            "try {\nalert('this has \\\"quotes\\\"')\n} catch ( e ) { }\n",
         );
         assert_eq!(
-            resources.get_scriptlet_resource("blocktimer, 3000", Default::default()),
-            Ok("setTimeout(blockAds, 3000)".into())
-        );
-        assert_eq!(resources.get_scriptlet_resource("null", Default::default()), Ok("(()=>{})()".into()));
-        assert_eq!(
-            resources.get_scriptlet_resource("null, null", Default::default()),
-            Ok("(()=>{})()".into())
+            resources.get_scriptlet_resources([("blocktimer, 3000", Default::default())]),
+            "try {\nsetTimeout(blockAds, 3000)\n} catch ( e ) { }\n",
         );
         assert_eq!(
-            resources.get_scriptlet_resource("greet, everybody", Default::default()),
-            Ok("console.log('Hello everybody, my name is {{2}}')".into())
-        );
-
-        assert_eq!(
-            resources.get_scriptlet_resource("unit-testing", Default::default()),
-            Err(ScriptletResourceError::NoMatchingScriptlet)
+            resources.get_scriptlet_resources([("null", Default::default())]),
+            "try {\n(()=>{})()\n} catch ( e ) { }\n"
         );
         assert_eq!(
-            resources.get_scriptlet_resource("", Default::default()),
-            Err(ScriptletResourceError::MissingScriptletName)
+            resources.get_scriptlet_resources([("null, null", Default::default())]),
+            "try {\n(()=>{})()\n} catch ( e ) { }\n",
+        );
+        assert_eq!(
+            resources.get_scriptlet_resources([("greet, everybody", Default::default())]),
+            "try {\nconsole.log('Hello everybody, my name is {{2}}')\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("set-local-storage-item, Test, $remove$", Default::default()),
-            Ok("Test that dollar signs in $remove$ are untouched".into()),
+            resources.get_scriptlet_resource("unit-testing", Default::default(), &mut vec![]),
+            Err(ScriptletResourceError::NoMatchingScriptlet),
+        );
+        assert_eq!(
+            resources.get_scriptlet_resource("", Default::default(), &mut vec![]),
+            Err(ScriptletResourceError::MissingScriptletName),
+        );
+
+        assert_eq!(
+            resources.get_scriptlet_resources([("set-local-storage-item, Test, $remove$", Default::default())]),
+            "try {\nTest that dollar signs in $remove$ are untouched\n} catch ( e ) { }\n",
         );
     }
 
@@ -742,67 +839,67 @@ mod scriptlet_storage_tests {
                 name: "googletagservices_gpt.js".into(),
                 aliases: vec!["googletagservices.com/gpt.js".into(), "googletagservices-gpt".into()],
                 kind: ResourceType::Template,
-                content: base64::encode("function(a1 = '', a2 = '') {console.log(a1, a2)}"),
+                content: base64::encode("function gpt(a1 = '', a2 = '') {console.log(a1, a2)}"),
                 dependencies: vec![],
                 permission: Default::default(),
             },
         ]);
 
         assert_eq!(
-            resources.get_scriptlet_resource("aopr, code", Default::default()),
-            Ok("(function() {confirm(\"Do you want to code?\");})();".to_owned()),
+            resources.get_scriptlet_resources([("aopr, code", Default::default())]),
+            "try {\n(function() {confirm(\"Do you want to code?\");})();\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("abort-on-property-read, write tests", Default::default()),
-            Ok("(function() {confirm(\"Do you want to write tests?\");})();".to_owned()),
+            resources.get_scriptlet_resources([("abort-on-property-read, write tests", Default::default())]),
+            "try {\n(function() {confirm(\"Do you want to write tests?\");})();\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("abort-on-property-read.js, block advertisements", Default::default()),
-            Ok("(function() {confirm(\"Do you want to block advertisements?\");})();".to_owned()),
+            resources.get_scriptlet_resources([("abort-on-property-read.js, block advertisements", Default::default())]),
+            "try {\n(function() {confirm(\"Do you want to block advertisements?\");})();\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("acis", Default::default()),
-            Ok("(function() {alert(\"hi\");})();".to_owned()),
+            resources.get_scriptlet_resources([("acis", Default::default())]),
+            "try {\n(function() {alert(\"hi\");})();\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("acis.js", Default::default()),
-            Ok("(function() {alert(\"hi\");})();".to_owned()),
+            resources.get_scriptlet_resources([("acis.js", Default::default())]),
+            "try {\n(function() {alert(\"hi\");})();\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("googletagservices_gpt.js", Default::default()),
-            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})()".to_owned()),
+            resources.get_scriptlet_resources([("googletagservices_gpt.js", Default::default())]),
+            "function gpt(a1 = '', a2 = '') {console.log(a1, a2)}\ntry {\ngpt()\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("googletagservices_gpt, test1", Default::default()),
-            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})(\"test1\")".to_owned()),
+            resources.get_scriptlet_resources([("googletagservices_gpt, test1", Default::default())]),
+            "function gpt(a1 = '', a2 = '') {console.log(a1, a2)}\ntry {\ngpt(\"test1\")\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource("googletagservices.com/gpt, test1, test2", Default::default()),
-            Ok("(function(a1 = '', a2 = '') {console.log(a1, a2)})(\"test1\", \"test2\")".to_owned()),
+            resources.get_scriptlet_resources([("googletagservices.com/gpt, test1, test2", Default::default())]),
+            "function gpt(a1 = '', a2 = '') {console.log(a1, a2)}\ntry {\ngpt(\"test1\", \"test2\")\n} catch ( e ) { }\n",
         );
 
         assert_eq!(
-            resources.get_scriptlet_resource(r#"googletagservices.com/gpt.js, t"es't1, $te\st2$"#, Default::default()),
-            Ok(r#"(function(a1 = '', a2 = '') {console.log(a1, a2)})("t\"es't1", "$te\\st2$")"#.to_owned()),
+            resources.get_scriptlet_resource(r#"googletagservices.com/gpt.js, t"es't1, $te\st2$"#, Default::default(), &mut vec![]),
+            Ok(r#"gpt("t\"es't1", "$te\\st2$")"#.to_owned()),
         );
 
         // The alias does not have a `.js` extension, so it cannot be used for a scriptlet
         // injection (only as a redirect resource).
         assert_eq!(
-            resources.get_scriptlet_resource(r#"googletagservices-gpt, t"es't1, te\st2"#, Default::default()),
+            resources.get_scriptlet_resource(r#"googletagservices-gpt, t"es't1, te\st2"#, Default::default(), &mut vec![]),
             Err(ScriptletResourceError::NoMatchingScriptlet),
         );
 
         // Object-style injection
         assert_eq!(
-            resources.get_scriptlet_resource(r#"googletagservices.com/gpt, { "test": true }"#, Default::default()),
+            resources.get_scriptlet_resource(r#"googletagservices.com/gpt, { "test": true }"#, Default::default(), &mut vec![]),
             Err(ScriptletResourceError::ScriptletArgObjectSyntaxUnsupported),
         );
     }
@@ -826,16 +923,16 @@ mod scriptlet_storage_tests {
         assert_eq!(args, vec!["acs", "this", "probably", "is", "going", "to", "break", "brave", "and", "crash", "it", "instead", "of", "ignoring", "it"]);
 
         assert_eq!(
-            resources.get_scriptlet_resource("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it", Default::default()),
-            Ok("this probably is going to break brave and crash {{10}} {{11}} {{12}}".to_string()),
+            resources.get_scriptlet_resources([("acs, this, probably, is, going, to, break, brave, and, crash, it, instead, of, ignoring, it", Default::default())]),
+            "try {\nthis probably is going to break brave and crash {{10}} {{11}} {{12}}\n} catch ( e ) { }\n",
         );
     }
 
     #[test]
     fn permissions() {
-        const PERM0: PermissionMask = PermissionMask::from_bits(0b00000001);
-        const PERM1: PermissionMask = PermissionMask::from_bits(0b00000010);
-        const PERM10: PermissionMask = PermissionMask::from_bits(0b00000011);
+        const PERM01: PermissionMask = PermissionMask::from_bits(0b00000001);
+        const PERM10: PermissionMask = PermissionMask::from_bits(0b00000010);
+        const PERM11: PermissionMask = PermissionMask::from_bits(0b00000011);
         let resources = ResourceStorage::from_resources([
             Resource::simple("default-perms.js", MimeType::ApplicationJavascript, "default-perms"),
             Resource {
@@ -844,7 +941,7 @@ mod scriptlet_storage_tests {
                 kind: ResourceType::Mime(MimeType::ApplicationJavascript),
                 content: base64::encode("perm0"),
                 dependencies: vec![],
-                permission: PERM0,
+                permission: PERM01,
             },
             Resource {
                 name: "perm1.js".into(),
@@ -852,7 +949,7 @@ mod scriptlet_storage_tests {
                 kind: ResourceType::Mime(MimeType::ApplicationJavascript),
                 content: base64::encode("perm1"),
                 dependencies: vec![],
-                permission: PERM1,
+                permission: PERM10,
             },
             Resource {
                 name: "perm10.js".into(),
@@ -860,7 +957,7 @@ mod scriptlet_storage_tests {
                 kind: ResourceType::Mime(MimeType::ApplicationJavascript),
                 content: base64::encode("perm10"),
                 dependencies: vec![],
-                permission: PERM10,
+                permission: PERM11,
             },
         ]);
 
@@ -868,28 +965,182 @@ mod scriptlet_storage_tests {
             for ident in expect_ok {
                 if ident.len() > 2 {
                     assert_eq!(
-                        resources.get_scriptlet_resource(ident, perm),
-                        Ok(ident.to_string()),
+                        resources.get_scriptlet_resources([(*ident, perm)]),
+                        format!("try {{\n{}\n}} catch ( e ) {{ }}\n", ident),
                     );
                 } else {
                     assert_eq!(
-                        resources.get_scriptlet_resource(ident, perm),
-                        Ok(format!("perm{}", ident)),
+                        resources.get_scriptlet_resources([(*ident, perm)]),
+                        format!("try {{\nperm{}\n}} catch ( e ) {{ }}\n", ident),
                     );
                 }
             }
 
             for ident in expect_fail {
                 assert_eq!(
-                    resources.get_scriptlet_resource(ident, perm),
+                    resources.get_scriptlet_resource(ident, perm, &mut vec![]),
                     Err(ScriptletResourceError::InsufficientPermissions),
                 );
             }
         }
 
         test_perm(&resources, Default::default(), &["default-perms"], &["perm0", "perm1", "perm10", "0", "1", "10"]);
-        test_perm(&resources, PERM0, &["default-perms", "perm0", "0"], &["perm1", "perm10", "1", "10"]);
-        test_perm(&resources, PERM1, &["default-perms", "perm1", "1"], &["perm0", "perm10", "0", "10"]);
-        test_perm(&resources, PERM10, &["default-perms", "perm0", "perm1", "perm10", "0", "1", "10"], &[]);
+        test_perm(&resources, PERM01, &["default-perms", "perm0", "0"], &["perm1", "perm10", "1", "10"]);
+        test_perm(&resources, PERM10, &["default-perms", "perm1", "1"], &["perm0", "perm10", "0", "10"]);
+        test_perm(&resources, PERM11, &["default-perms", "perm0", "perm1", "perm10", "0", "1", "10"], &[]);
+    }
+
+    #[test]
+    fn dependencies() {
+        const PERM01: PermissionMask = PermissionMask::from_bits(0b00000001);
+        let resources = ResourceStorage::from_resources([
+            Resource::simple("simple.fn", MimeType::FnJavascript, "simple"),
+            Resource {
+                name: "permissioned.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("permissioned"),
+                dependencies: vec!["a.fn".to_string(), "common.fn".to_string()],
+                permission: PERM01,
+            },
+            Resource {
+                name: "a.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("a"),
+                dependencies: vec!["common.fn".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "b.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("b"),
+                dependencies: vec!["common.fn".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "common.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("common"),
+                dependencies: vec![],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "test.js".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::ApplicationJavascript),
+                content: base64::encode("function test() {}"),
+                dependencies: vec!["permissioned.fn".to_string(), "a.fn".to_string(), "b.fn".to_string(), "common.fn".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "deploop1.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("deploop1"),
+                dependencies: vec!["deploop1.fn".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "deploop2a.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("deploop2a"),
+                dependencies: vec!["deploop2b.fn".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "deploop2b.fn".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::FnJavascript),
+                content: base64::encode("deploop2b"),
+                dependencies: vec!["deploop2a.fn".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "test-wrapper.js".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::ApplicationJavascript),
+                content: base64::encode("function testWrapper() { test(arguments) }"),
+                dependencies: vec!["test.js".to_string()],
+                permission: Default::default(),
+            },
+            Resource {
+                name: "shared.js".into(),
+                aliases: vec![],
+                kind: ResourceType::Mime(MimeType::ApplicationJavascript),
+                content: base64::encode("function shared() { }"),
+                dependencies: vec!["a.fn".to_string(), "b.fn".to_string()],
+                permission: Default::default(),
+            },
+        ]);
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("common.fn", &mut deps, Default::default()), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["common.fn"]);
+        }
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("a.fn", &mut deps, Default::default()), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["a.fn", "common.fn"]);
+        }
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("b.fn", &mut deps, Default::default()), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["b.fn", "common.fn"]);
+        }
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("permissioned.fn", &mut deps, Default::default()), Err(ScriptletResourceError::InsufficientPermissions));
+        }
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("permissioned.fn", &mut deps, PERM01), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["permissioned.fn", "a.fn", "common.fn"]);
+        }
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("test.js", &mut deps, Default::default()), Err(ScriptletResourceError::InsufficientPermissions));
+        }
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("test.js", &mut deps, PERM01), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["test.js", "permissioned.fn", "a.fn", "common.fn", "b.fn"]);
+        }
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("deploop1.fn", &mut deps, Default::default()), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["deploop1.fn"]);
+        }
+
+        {
+            let mut deps = vec![];
+            assert_eq!(resources.recursive_dependencies("deploop2a.fn", &mut deps, Default::default()), Ok(()));
+            assert_eq!(deps.iter().map(|dep| dep.name.to_string()).collect::<Vec<_>>(), vec!["deploop2a.fn", "deploop2b.fn"]);
+        }
+
+        assert_eq!(resources.get_scriptlet_resources([]), "");
+
+        assert_eq!(resources.get_scriptlet_resources([("test, arg1, arg2", Default::default())]), "");
+
+        assert_eq!(resources.get_scriptlet_resources([("test, arg1, arg2", PERM01)]), "permissioned\na\ncommon\nb\nfunction test() {}\ntry {\ntest(\"arg1\", \"arg2\")\n} catch ( e ) { }\n");
+
+        // Note: `test` still gets inserted as a dependency before it becomes apparent that
+        // `permissioned` is not authorized. However, this shouldn't have much detrimental effect.
+        assert_eq!(resources.get_scriptlet_resources([("test-wrapper", Default::default())]), "function test() {}\n");
+        assert_eq!(resources.get_scriptlet_resources([("test-wrapper", PERM01)]), "function test() {}\npermissioned\na\ncommon\nb\nfunction testWrapper() { test(arguments) }\ntry {\ntestWrapper()\n} catch ( e ) { }\n");
+
+        assert_eq!(resources.get_scriptlet_resources([("test", PERM01), ("test-wrapper", PERM01)]), "permissioned\na\ncommon\nb\nfunction test() {}\nfunction testWrapper() { test(arguments) }\ntry {\ntest()\n} catch ( e ) { }\ntry {\ntestWrapper()\n} catch ( e ) { }\n");
+
+        assert_eq!(resources.get_scriptlet_resources([("shared, argument", Default::default())]), "a\ncommon\nb\nfunction shared() { }\ntry {\nshared(\"argument\")\n} catch ( e ) { }\n");
+        assert_eq!(resources.get_scriptlet_resources([("test, 1", PERM01), ("test-wrapper, 2", PERM01), ("shared, 3", Default::default())]), "permissioned\na\ncommon\nb\nfunction test() {}\nfunction testWrapper() { test(arguments) }\nfunction shared() { }\ntry {\ntest(\"1\")\n} catch ( e ) { }\ntry {\ntestWrapper(\"2\")\n} catch ( e ) { }\ntry {\nshared(\"3\")\n} catch ( e ) { }\n");
     }
 }

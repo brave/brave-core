@@ -8,13 +8,18 @@
 //! cosmetic filters and allows them to be queried efficiently at runtime for any which may be
 //! relevant to a particular page.
 
-use crate::filters::cosmetic::CosmeticFilter;
-use crate::filters::cosmetic::CosmeticFilterMask;
+use crate::filters::cosmetic::{
+    CosmeticFilter,
+    CosmeticFilterAction,
+    CosmeticFilterMask,
+    CosmeticFilterOperator,
+};
 use crate::resources::{PermissionMask, ResourceStorage};
 use crate::utils::Hash;
 
 use std::collections::{HashMap, HashSet};
 
+use memchr::memchr as find_char;
 use serde::{Deserialize, Serialize};
 
 /// Contains cosmetic filter information intended to be used on a particular URL.
@@ -23,18 +28,8 @@ pub struct UrlSpecificResources {
     /// `hide_selectors` is a set of any CSS selector on the page that should be hidden, i.e.
     /// styled as `{ display: none !important; }`.
     pub hide_selectors: HashSet<String>,
-    /// `style_selectors` is a map of CSS selectors on the page to respective non-hide style rules,
-    /// i.e. any required styles other than `display: none`.
-    pub style_selectors: HashMap<String, Vec<String>>,
-    /// `remove_selectors` is a set of any CSS selector on the page that should be removed from the
-    /// DOM.
-    pub remove_selectors: HashSet<String>,
-    /// `remove_attrs` is a map of CSS selectors on the page to respective HTML attributes that
-    /// should be removed from matching elements.
-    pub remove_attrs: HashMap<String, Vec<String>>,
-    /// `remove_attrs` is a map of CSS selectors on the page to respective CSS classes that should
-    /// be removed from matching elements.
-    pub remove_classes: HashMap<String, Vec<String>>,
+    /// Set of JSON-encoded procedural filters or filters with an action.
+    pub procedural_actions: HashSet<String>,
     /// `exceptions` is a set of any class or id CSS selectors that should not have generic rules
     /// applied. In practice, these should be passed to `class_id_stylesheet` and not used
     /// otherwise.
@@ -52,10 +47,7 @@ impl UrlSpecificResources {
     pub fn empty() -> Self {
         Self {
             hide_selectors: HashSet::new(),
-            style_selectors: HashMap::new(),
-            remove_selectors: HashSet::new(),
-            remove_attrs: HashMap::new(),
-            remove_classes: HashMap::new(),
+            procedural_actions: HashSet::new(),
             exceptions: HashSet::new(),
             injected_script: String::new(),
             generichide: false,
@@ -138,34 +130,37 @@ impl CosmeticFilterCache {
 
     /// Add a filter, assuming it has already been determined to be a generic rule
     fn add_generic_filter(&mut self, rule: CosmeticFilter) {
-        if rule.mask.contains(CosmeticFilterMask::IS_CLASS_SELECTOR) {
-            if let Some(key) = &rule.key {
-                let key = key.clone();
-                if rule.mask.contains(CosmeticFilterMask::IS_SIMPLE) {
-                    self.simple_class_rules.insert(key);
+        let selector = rule.plain_css_selector().expect("Procedural cosmetic filters cannot be generic").to_string();
+        if selector.starts_with('.') {
+            if let Some(key) = key_from_selector(&selector) {
+                assert!(key.starts_with('.'));
+                let class = key[1..].to_string();
+                if key == selector {
+                    self.simple_class_rules.insert(class);
                 } else {
-                    if let Some(bucket) = self.complex_class_rules.get_mut(&key) {
-                        bucket.push(rule.selector);
+                    if let Some(bucket) = self.complex_class_rules.get_mut(&class) {
+                        bucket.push(selector);
                     } else {
-                        self.complex_class_rules.insert(key, vec![rule.selector]);
+                        self.complex_class_rules.insert(class, vec![selector]);
                     }
                 }
             }
-        } else if rule.mask.contains(CosmeticFilterMask::IS_ID_SELECTOR) {
-            if let Some(key) = &rule.key {
-                let key = key.clone();
-                if rule.mask.contains(CosmeticFilterMask::IS_SIMPLE) {
-                    self.simple_id_rules.insert(key);
+        } else if selector.starts_with('#') {
+            if let Some(key) = key_from_selector(&selector) {
+                assert!(key.starts_with('#'));
+                let id = key[1..].to_string();
+                if key == selector {
+                    self.simple_id_rules.insert(id);
                 } else {
-                    if let Some(bucket) = self.complex_id_rules.get_mut(&key) {
-                        bucket.push(rule.selector);
+                    if let Some(bucket) = self.complex_id_rules.get_mut(&id) {
+                        bucket.push(selector);
                     } else {
-                        self.complex_id_rules.insert(key, vec![rule.selector]);
+                        self.complex_id_rules.insert(id, vec![selector]);
                     }
                 }
             }
         } else {
-            self.misc_generic_selectors.insert(rule.selector);
+            self.misc_generic_selectors.insert(selector);
         }
     }
 
@@ -241,10 +236,7 @@ impl CosmeticFilterCache {
         let (request_entities, request_hostnames) = hostname_domain_hashes(hostname, domain_str);
 
         let mut specific_hide_selectors = HashSet::new();
-        let mut style_selectors = HashMap::<_, Vec<_>>::new();
-        let mut remove_selectors = HashSet::new();
-        let mut remove_attrs = HashMap::<_, Vec<_>>::new();
-        let mut remove_classes = HashMap::<_, Vec<_>>::new();
+        let mut procedural_actions = HashSet::new();
         let mut script_injections = HashMap::<&str, PermissionMask>::new();
         let mut exceptions = HashSet::new();
 
@@ -257,16 +249,9 @@ impl CosmeticFilterCache {
                 s.iter().for_each(|s| { dest_set.insert(s.to_owned()); });
             }
         }
-        fn populate_map(hash: &Hash, source_bin: &HostnameFilterBin<(String, String)>, dest_map: &mut HashMap<String, Vec<String>>) {
-            if let Some(s) = source_bin.get(hash) {
-                s.iter().for_each(|s| {
-                    dest_map.entry(s.0.to_owned()).and_modify(|v| v.push(s.1.to_owned())).or_insert_with(|| vec![s.1.to_owned()]);
-                });
-            }
-        }
         for hash in hashes.iter() {
             populate_set(hash, &self.specific_rules.hide, &mut specific_hide_selectors);
-            populate_set(hash, &self.specific_rules.remove, &mut remove_selectors);
+            populate_set(hash, &self.specific_rules.procedural_action, &mut procedural_actions);
             // special behavior: `script_injections` doesn't have to own the strings yet, since the
             // scripts need to be fetched and templated later
             if let Some(s) = self.specific_rules.inject_script.get(hash) {
@@ -274,28 +259,12 @@ impl CosmeticFilterCache {
                     script_injections.entry(s).and_modify(|entry| *entry |= *mask).or_insert(*mask);
                 });
             }
-
-            populate_map(hash, &self.specific_rules.style, &mut style_selectors);
-            populate_map(hash, &self.specific_rules.remove_attr, &mut remove_attrs);
-            populate_map(hash, &self.specific_rules.remove_class, &mut remove_classes);
         }
 
         fn prune_set(hash: &Hash, source_bin: &HostnameFilterBin<String>, dest_set: &mut HashSet<String>) {
             if let Some(s) = source_bin.get(hash) {
                 s.iter().for_each(|s| {
                     dest_set.remove(s);
-                });
-            }
-        }
-        fn prune_map(hash: &Hash, source_bin: &HostnameFilterBin<(String, String)>, dest_map: &mut HashMap<String, Vec<String>>) {
-            if let Some(s) = source_bin.get(hash) {
-                s.iter().for_each(|s| {
-                    if let Some(v) = dest_map.get_mut(&s.0) {
-                        v.retain(|e| e != &s.1);
-                        if v.is_empty() {
-                            dest_map.remove(&s.0);
-                        }
-                    }
                 });
             }
         }
@@ -307,7 +276,7 @@ impl CosmeticFilterCache {
                     exceptions.insert(s.to_owned());
                 });
             }
-            prune_set(hash, &self.specific_rules.unremove, &mut remove_selectors);
+            prune_set(hash, &self.specific_rules.procedural_action_exception, &mut procedural_actions);
             // same logic but not using prune_set since strings are unowned, (see above)
             if let Some(s) = self.specific_rules.uninject_script.get(hash) {
                 for s in s {
@@ -321,10 +290,6 @@ impl CosmeticFilterCache {
                     script_injections.remove(s.as_str());
                 }
             }
-
-            prune_map(hash, &self.specific_rules.unstyle, &mut style_selectors);
-            prune_map(hash, &self.specific_rules.unremove_attr, &mut remove_attrs);
-            prune_map(hash, &self.specific_rules.unremove_class, &mut remove_classes);
         }
 
         let hide_selectors = if generichide {
@@ -341,21 +306,11 @@ impl CosmeticFilterCache {
             hide_selectors
         };
 
-        let mut injected_script = String::new();
-        script_injections.iter().for_each(|(s, mask)| {
-            if let Ok(filled_template) = resources.get_scriptlet_resource(s, *mask) {
-                injected_script += "try {\n";
-                injected_script += &filled_template;
-                injected_script += "\n} catch ( e ) { }\n";
-            }
-        });
+        let injected_script = resources.get_scriptlet_resources(script_injections);
 
         UrlSpecificResources {
             hide_selectors,
-            style_selectors,
-            remove_selectors,
-            remove_attrs,
-            remove_classes,
+            procedural_actions,
             exceptions,
             injected_script,
             generichide,
@@ -386,6 +341,13 @@ impl<T> HostnameFilterBin<T> {
     }
 }
 
+impl HostnameFilterBin<String> {
+    /// Convenience method that serializes to JSON
+    pub fn insert_procedural_action_filter(&mut self, token: &Hash, f: &ProceduralOrActionFilter) {
+        self.insert(token, serde_json::to_string(f).unwrap());
+    }
+}
+
 /// Holds filter bins categorized by filter type.
 #[derive(Default)]
 pub(crate) struct HostnameRuleDb {
@@ -409,68 +371,74 @@ pub(crate) struct HostnameRuleDb {
     ///
     /// In practice, these rules are extremely rare in filter lists.
     pub uninject_script: HostnameFilterBin<String>,
-    /// Simple hostname-specific rules with a remove action, e.g. `example.com##.ad:remove()`.
+    /// Procedural filters and/or filters with a [`CosmeticFilterAction`].
     ///
-    /// The parameter is the rule's CSS selector.
-    pub remove: HostnameFilterBin<String>,
-    /// Simple hostname-specific remove action exception rules, e.g. `example.com#@#.ad:remove()`.
+    /// Each is a [`ProceduralOrActionFilter`] struct serialized as JSON.
+    pub procedural_action: HostnameFilterBin<String>,
+    /// Exceptions for procedural filters and/or filters with a [`CosmeticFilterAction`].
     ///
-    /// The parameter is the rule's CSS selector.
-    pub unremove: HostnameFilterBin<String>,
-    /// Hostname-specific rules with a custom style for an element, e.g.
-    /// `example.com##.ad:style(margin: 0)`.
-    ///
-    /// The parameters are the rule's selector and its additional style.
-    pub style: HostnameFilterBin<(String, String)>,
-    /// Hostname-specific exception rules for a custom style for an element, e.g.
-    /// `example.com#@#.ad:style(margin: 0)`.
-    ///
-    /// The parameters are the rule's selector and its additional style.
-    ///
-    /// In practice, this kind of rule does not appear in filter lists, although it is not
-    /// explicitly forbidden according to any syntax documentation.
-    pub unstyle: HostnameFilterBin<(String, String)>,
-    /// Simple hostname-specific rules with a remove attribute action, e.g. `example.com##.ad:remove()`.
-    ///
-    /// The parameters are the rule's CSS selector and the class to remove.
-    pub remove_attr: HostnameFilterBin<(String, String)>,
-    /// Simple hostname-specific remove attribute action exception rules, e.g. `example.com#@#.ad:remove()`.
-    ///
-    /// The parameters are the rule's CSS selector and the class to remove.
-    pub unremove_attr: HostnameFilterBin<(String, String)>,
-    /// Simple hostname-specific rules with a remove class action, e.g. `example.com##.ad:remove()`.
-    ///
-    /// The parameters are the rule's CSS selector and the class to remove.
-    pub remove_class: HostnameFilterBin<(String, String)>,
-    /// Simple hostname-specific remove class action exception rules, e.g. `example.com#@#.ad:remove()`.
-    ///
-    /// The parameters are the rule's CSS selector and the class to remove.
-    pub unremove_class: HostnameFilterBin<(String, String)>,
+    /// Each is a [`ProceduralOrActionFilter`] struct serialized as JSON.
+    pub procedural_action_exception: HostnameFilterBin<String>,
+}
+
+/// Representations of filters with complex behavior that relies on in-page JS logic.
+///
+/// These get stored in-memory as JSON and should be deserialized/acted on by a content script.
+/// JSON is pragmatic here since there are relatively fewer of these type of rules, and they will
+/// be handled by in-page JS anyways.
+#[derive(Deserialize, Serialize, Clone)]
+pub struct ProceduralOrActionFilter {
+    /// A selector for elements that this filter applies to.
+    /// This may be a plain CSS selector, or it can consist of multiple procedural operators.
+    pub selector: Vec<CosmeticFilterOperator>,
+    /// An action to apply to matching elements.
+    /// If no action is present, the filter assumes default behavior of hiding the element with
+    /// a style of `display: none !important`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub action: Option<CosmeticFilterAction>,
+}
+
+impl ProceduralOrActionFilter {
+    /// Returns `(selector, style)` if the filter can be expressed in pure CSS.
+    pub fn as_css(&self) -> Option<(String, String)> {
+        match (&self.selector[..], &self.action) {
+            ([CosmeticFilterOperator::CssSelector(selector)], None) => Some((selector.to_string(), "display: none !important".to_string())),
+            ([CosmeticFilterOperator::CssSelector(selector)], Some(CosmeticFilterAction::Style(style))) => Some((selector.to_string(), style.to_string())),
+            _ => None,
+        }
+    }
+
+    /// Convenience constructor for pure CSS style filters.
+    pub(crate) fn from_css(selector: String, style: String) -> Self {
+        Self {
+            selector: vec![CosmeticFilterOperator::CssSelector(selector)],
+            action: Some(CosmeticFilterAction::Style(style)),
+        }
+    }
 }
 
 impl HostnameRuleDb {
     pub fn store_rule(&mut self, rule: CosmeticFilter) {
-        use crate::filters::cosmetic::CosmeticFilterAction;
         use SpecificFilterType::*;
 
         let unhide = rule.mask.contains(CosmeticFilterMask::UNHIDE);
         let script_inject = rule.mask.contains(CosmeticFilterMask::SCRIPT_INJECT);
-        let selector = rule.selector;
 
-        let kind = match (unhide, script_inject, rule.action) {
-            (false, false, None) => Hide(selector),
-            (true, false, None) => Unhide(selector),
-            (false, true, None) => InjectScript((selector, rule.permission)),
-            (true, true, None) => UninjectScript((selector, rule.permission)),
-            (false, false, Some(CosmeticFilterAction::Style(s))) => Style((selector, s)),
-            (true, false, Some(CosmeticFilterAction::Style(s)) )=> Unstyle((selector, s)),
-            (false, false, Some(CosmeticFilterAction::Remove)) => Remove(selector),
-            (true, false, Some(CosmeticFilterAction::Remove)) => Unremove(selector),
-            (false, false, Some(CosmeticFilterAction::RemoveClass(c))) => RemoveClass((selector, c)),
-            (true, false, Some(CosmeticFilterAction::RemoveClass(c))) => UnremoveClass((selector, c)),
-            (false, false, Some(CosmeticFilterAction::RemoveAttr(a))) => RemoveAttr((selector, a)),
-            (true, false, Some(CosmeticFilterAction::RemoveAttr(a))) => UnremoveAttr((selector, a)),
-            (_, true, Some(_)) => return, // shouldn't be possible
+        let kind = match (script_inject, rule.plain_css_selector().map(|s| s.to_string()), rule.action) {
+            (false, Some(selector), None) => Hide(selector),
+            (true, Some(selector), None) => InjectScript((selector, rule.permission)),
+            (false, selector, action) => ProceduralOrAction(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: selector.map(|selector| vec![CosmeticFilterOperator::CssSelector(selector)]).unwrap_or(rule.selector),
+                action
+            }).unwrap()),
+            (true, _, Some(_)) => return, // script injection with action - shouldn't be possible
+            (true, None, _) => return, // script injection without plain CSS selector - shouldn't be possible
+        };
+
+        let kind = if unhide {
+            kind.negated()
+        } else {
+            kind
         };
 
         let tokens_to_insert = std::iter::empty()
@@ -496,14 +464,8 @@ impl HostnameRuleDb {
             Unhide(s) => self.unhide.insert(token, s),
             InjectScript(s) => self.inject_script.insert(token, s),
             UninjectScript((s, _)) => self.uninject_script.insert(token, s),
-            Remove(s) => self.remove.insert(token, s),
-            Unremove(s) => self.unremove.insert(token, s),
-            Style(s) => self.style.insert(token, s),
-            Unstyle(s) => self.unstyle.insert(token, s),
-            RemoveAttr(s) => self.remove_attr.insert(token, s),
-            UnremoveAttr(s) => self.unremove_attr.insert(token, s),
-            RemoveClass(s) => self.remove_class.insert(token, s),
-            UnremoveClass(s) => self.unremove_class.insert(token, s),
+            ProceduralOrAction(s) => self.procedural_action.insert(token, s),
+            ProceduralOrActionException(s) => self.procedural_action_exception.insert(token, s),
         }
     }
 }
@@ -515,14 +477,8 @@ enum SpecificFilterType {
     Unhide(String),
     InjectScript((String, PermissionMask)),
     UninjectScript((String, PermissionMask)),
-    Remove(String),
-    Unremove(String),
-    Style((String, String)),
-    Unstyle((String, String)),
-    RemoveAttr((String, String)),
-    UnremoveAttr((String, String)),
-    RemoveClass((String, String)),
-    UnremoveClass((String, String)),
+    ProceduralOrAction(String),
+    ProceduralOrActionException(String),
 }
 
 impl SpecificFilterType {
@@ -532,14 +488,8 @@ impl SpecificFilterType {
             Self::Unhide(s) => Self::Hide(s),
             Self::InjectScript(s) => Self::UninjectScript(s),
             Self::UninjectScript(s) => Self::InjectScript(s),
-            Self::Remove(s) => Self::Unremove(s),
-            Self::Unremove(s) => Self::Remove(s),
-            Self::Style(s) => Self::Unstyle(s),
-            Self::Unstyle(s) => Self::Style(s),
-            Self::RemoveAttr(s) => Self::UnremoveAttr(s),
-            Self::UnremoveAttr(s) => Self::RemoveAttr(s),
-            Self::RemoveClass(s) => Self::UnremoveClass(s),
-            Self::UnremoveClass(s) => Self::RemoveClass(s),
+            Self::ProceduralOrAction(s) => Self::ProceduralOrActionException(s),
+            Self::ProceduralOrActionException(s) => Self::ProceduralOrAction(s),
         }
     }
 }
@@ -551,6 +501,103 @@ fn hostname_domain_hashes(hostname: &str, domain: &str) -> (Vec<Hash>, Vec<Hash>
         crate::filters::cosmetic::get_hostname_hashes_from_labels(hostname, domain);
 
     (request_entities, request_hostnames)
+}
+
+/// Returns the first token of a CSS selector.
+///
+/// This should only be called once `selector` has been verified to start with either a "#" or "."
+/// character.
+fn key_from_selector(selector: &str) -> Option<String> {
+    use once_cell::sync::Lazy;
+    use regex::Regex;
+
+    static RE_PLAIN_SELECTOR: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[#.][\w\\-]+").unwrap());
+    static RE_PLAIN_SELECTOR_ESCAPED: Lazy<Regex> =
+        Lazy::new(|| Regex::new(r"^[#.](?:\\[0-9A-Fa-f]+ |\\.|\w|-)+").unwrap());
+    static RE_ESCAPE_SEQUENCE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\\([0-9A-Fa-f]+ |.)").unwrap());
+
+    // If there are no escape characters in the selector, just take the first class or id token.
+    let mat = RE_PLAIN_SELECTOR.find(selector);
+    if let Some(location) = mat {
+        let key = &location.as_str();
+        if find_char(b'\\', key.as_bytes()).is_none() {
+            return Some((*key).into());
+        }
+    } else {
+        return None;
+    }
+
+    // Otherwise, the characters in the selector must be escaped.
+    let mat = RE_PLAIN_SELECTOR_ESCAPED.find(selector);
+    if let Some(location) = mat {
+        let mut key = String::with_capacity(selector.len());
+        let escaped = &location.as_str();
+        let mut beginning = 0;
+        let mat = RE_ESCAPE_SEQUENCE.captures_iter(escaped);
+        for capture in mat {
+            // Unwrap is safe because the 0th capture group is the match itself
+            let location = capture.get(0).unwrap();
+            key += &escaped[beginning..location.start()];
+            beginning = location.end();
+            // Unwrap is safe because there is a capture group specified in the regex
+            let capture = capture.get(1).unwrap().as_str();
+            if capture.chars().count() == 1 {   // Check number of unicode characters rather than byte length
+                key += capture;
+            } else {
+                // This u32 conversion can overflow
+                let codepoint = u32::from_str_radix(&capture[..capture.len() - 1], 16).ok()?;
+
+                // Not all u32s are valid Unicode codepoints
+                key += &core::char::from_u32(codepoint)?
+                    .to_string();
+            }
+        }
+        Some(key + &escaped[beginning..])
+    } else {
+        None
+    }
+}
+
+#[cfg(test)]
+mod key_from_selector_tests {
+    use super::key_from_selector;
+
+    #[test]
+    fn no_escapes() {
+        assert_eq!(key_from_selector(r#"#selector"#).unwrap(), "#selector");
+        assert_eq!(key_from_selector(r#"#ad-box[href="https://popads.net"]"#).unwrap(), "#ad-box");
+        assert_eq!(key_from_selector(r#".p"#).unwrap(), ".p");
+        assert_eq!(key_from_selector(r#".ad #ad.adblockblock"#).unwrap(), ".ad");
+        assert_eq!(key_from_selector(r#"#container.contained"#).unwrap(), "#container");
+    }
+
+    #[test]
+    fn escaped_characters() {
+        assert_eq!(key_from_selector(r"#Meebo\:AdElement\.Root").unwrap(), "#Meebo:AdElement.Root");
+        assert_eq!(key_from_selector(r"#\ Banner\ Ad\ -\ 590\ x\ 90").unwrap(), "# Banner Ad - 590 x 90");
+        assert_eq!(key_from_selector(r"#\ rek").unwrap(), "# rek");
+        assert_eq!(key_from_selector(r#"#\:rr .nH[role="main"] .mq:first-child"#).unwrap(), "#:rr");
+        assert_eq!(key_from_selector(r#"#adspot-300x600\,300x250-pos-1"#).unwrap(), "#adspot-300x600,300x250-pos-1");
+        assert_eq!(key_from_selector(r#"#adv_\'146\'"#).unwrap(), "#adv_\'146\'");
+        assert_eq!(key_from_selector(r#"#oas-mpu-left\<\/div\>"#).unwrap(), "#oas-mpu-left</div>");
+        assert_eq!(key_from_selector(r#".Trsp\(op\).Trsdu\(3s\)"#).unwrap(), ".Trsp(op)");
+    }
+
+    #[test]
+    fn escape_codes() {
+        assert_eq!(key_from_selector(r#"#\5f _mom_ad_12"#).unwrap(), "#__mom_ad_12");
+        assert_eq!(key_from_selector(r#"#\5f _nq__hh[style="display:block!important"]"#).unwrap(), "#__nq__hh");
+        assert_eq!(key_from_selector(r#"#\31 000-014-ros"#).unwrap(), "#1000-014-ros");
+        assert_eq!(key_from_selector(r#"#\33 00X250ad"#).unwrap(), "#300X250ad");
+        assert_eq!(key_from_selector(r#"#\5f _fixme"#).unwrap(), "#__fixme");
+        assert_eq!(key_from_selector(r#"#\37 28ad"#).unwrap(), "#728ad");
+    }
+
+    #[test]
+    fn bad_escapes() {
+        assert!(key_from_selector(r#"#\5ffffffffff overflows"#).is_none());
+        assert!(key_from_selector(r#"#\5fffffff is_too_large"#).is_none());
+    }
 }
 
 #[cfg(test)]
@@ -629,31 +676,26 @@ mod cosmetic_cache_tests {
         let out = cfcache.hostname_cosmetic_resources(&resources, "test.example.com", false);
         expected.hide_selectors.clear();
         expected
-            .style_selectors
-            .insert(".element".to_owned(), vec!["background: #fff".to_owned()]);
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter::from_css(".element".to_string(), "background: #fff".to_string())).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a2.sub.example.com", false);
-        expected.style_selectors.clear();
+        expected.procedural_actions.clear();
         expected
-            .style_selectors
-            .insert(".element".to_owned(), vec!["background: #000".to_owned()]);
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter::from_css(".element".to_string(), "background: #000".to_string())).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a3.example.com", false);
-        expected.style_selectors.clear();
+        expected.procedural_actions.clear();
         expected
-            .style_selectors
-            .insert(".element".to_owned(), vec!["background: #000".to_owned(), "background: #fff".to_owned()]);
-        // order is non-deterministic
-        if out != expected {
-            expected
-                .style_selectors
-                .get_mut(".element")
-                .unwrap()
-                .reverse();
-            assert_eq!(out, expected);
-        }
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter::from_css(".element".to_string(), "background: #000".to_string())).unwrap());
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter::from_css(".element".to_string(), "background: #fff".to_string())).unwrap());
+        assert_eq!(out, expected);
     }
 
     #[test]
@@ -738,16 +780,24 @@ mod cosmetic_cache_tests {
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "test.example.com", false);
         expected.hide_selectors.clear();
-        expected.remove_selectors.insert(".element".to_owned());
+        expected.procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::Remove),
+            }).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a2.sub.example.com", false);
-        expected.remove_selectors.clear();
+        expected.procedural_actions.clear();
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a3.example.com", false);
-        expected.remove_selectors.clear();
-        expected.remove_selectors.insert(".element".to_owned());
+        expected.procedural_actions.clear();
+        expected.procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::Remove),
+            }).unwrap());
         assert_eq!(out, expected);
     }
 
@@ -776,31 +826,38 @@ mod cosmetic_cache_tests {
         let out = cfcache.hostname_cosmetic_resources(&resources, "test.example.com", false);
         expected.hide_selectors.clear();
         expected
-            .remove_attrs
-            .insert(".element".to_owned(), vec!["style".to_owned()]);
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveAttr("style".to_string())),
+            }).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a2.sub.example.com", false);
-        expected.remove_attrs.clear();
+        expected.procedural_actions.clear();
         expected
-            .remove_attrs
-            .insert(".element".to_owned(), vec!["src".to_owned()]);
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveAttr("src".to_string())),
+            }).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a3.example.com", false);
-        expected.remove_attrs.clear();
+        expected.procedural_actions.clear();
         expected
-            .remove_attrs
-            .insert(".element".to_owned(), vec!["src".to_owned(), "style".to_owned()]);
-        // order is non-deterministic
-        if out != expected {
-            expected
-                .remove_attrs
-                .get_mut(".element")
-                .unwrap()
-                .reverse();
-            assert_eq!(out, expected);
-        }
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveAttr("src".to_string())),
+            }).unwrap());
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveAttr("style".to_string())),
+            }).unwrap());
+        assert_eq!(out, expected);
     }
 
     #[test]
@@ -828,31 +885,78 @@ mod cosmetic_cache_tests {
         let out = cfcache.hostname_cosmetic_resources(&resources, "test.example.com", false);
         expected.hide_selectors.clear();
         expected
-            .remove_classes
-            .insert(".element".to_owned(), vec!["overlay".to_owned()]);
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveClass("overlay".to_string())),
+            }).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a2.sub.example.com", false);
-        expected.remove_classes.clear();
+        expected.procedural_actions.clear();
         expected
-            .remove_classes
-            .insert(".element".to_owned(), vec!["banner".to_owned()]);
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveClass("banner".to_string())),
+            }).unwrap());
         assert_eq!(out, expected);
 
         let out = cfcache.hostname_cosmetic_resources(&resources, "a3.example.com", false);
-        expected.remove_classes.clear();
+        expected.procedural_actions.clear();
         expected
-            .remove_classes
-            .insert(".element".to_owned(), vec!["banner".to_owned(), "overlay".to_owned()]);
-        // order is non-deterministic
-        if out != expected {
-            expected
-                .remove_classes
-                .get_mut(".element")
-                .unwrap()
-                .reverse();
-            assert_eq!(out, expected);
-        }
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveClass("banner".to_string())),
+            }).unwrap());
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector(".element".to_string())],
+                action: Some(CosmeticFilterAction::RemoveClass("overlay".to_string())),
+            }).unwrap());
+        assert_eq!(out, expected);
+    }
+
+    #[test]
+    #[cfg(feature = "css-validation")]
+    fn procedural_actions() {
+        let cfcache = cache_from_rules(vec![
+            "example.com##div:has(video):remove()",
+            "example.com##div:has-text(Ad):remove()",
+            "example.com##div:has-text(Sponsored) > p",
+            "example.com##div:has-text(Cookie) > p:remove-class(overlay)",
+        ]);
+        let resources = ResourceStorage::default();
+
+        let out = cfcache.hostname_cosmetic_resources(&resources, "example.com", false);
+        let mut expected = UrlSpecificResources::empty();
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector("div:has(video)".to_string())],
+                action: Some(CosmeticFilterAction::Remove),
+            }).unwrap());
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector("div".to_string()), CosmeticFilterOperator::HasText("Ad".to_string())],
+                action: Some(CosmeticFilterAction::Remove),
+            }).unwrap());
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector("div".to_string()), CosmeticFilterOperator::HasText("Cookie".to_string()), CosmeticFilterOperator::CssSelector(" > p".to_string())],
+                action: Some(CosmeticFilterAction::RemoveClass("overlay".to_string())),
+            }).unwrap());
+        expected
+            .procedural_actions
+            .insert(serde_json::to_string(&ProceduralOrActionFilter {
+                selector: vec![CosmeticFilterOperator::CssSelector("div".to_string()), CosmeticFilterOperator::HasText("Sponsored".to_string()), CosmeticFilterOperator::CssSelector(" > p".to_string())],
+                action: None,
+            }).unwrap());
+        assert_eq!(out, expected);
     }
 
     /// Avoid impossible type inference for type parameter `impl AsRef<str>`

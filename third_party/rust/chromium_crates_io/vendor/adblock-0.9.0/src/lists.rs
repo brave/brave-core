@@ -813,7 +813,7 @@ r##"[uBlock Origin]
         {
             let input = "sportowefakty.wp.pl#@?#body > [class]:not([id]):matches-css(position: fixed):matches-css(top: 0px)";
             let result = parse_filter(input, true, Default::default());
-            assert!(matches!(result, Err(FilterParseError::Cosmetic(CosmeticFilterError::InvalidCssSelector))));
+            assert!(matches!(result, Ok(ParsedFilter::Cosmetic(..))));
         }
         {
             let input = r#"odkrywamyzakryte.com#%#//scriptlet("abort-on-property-read", "sc_adv_out")"#;
