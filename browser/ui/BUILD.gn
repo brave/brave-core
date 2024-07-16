@@ -832,7 +832,6 @@ source_set("ui") {
     "//ui/gfx",
     "//ui/resources",
     "//ui/shell_dialogs",
-    "//ui/web_dialogs",
     "//ui/webui",
     "//url",
   ]
@@ -1031,6 +1030,7 @@ source_set("ui") {
       "//mojo/public/cpp/bindings",
       "//third_party/blink/public/common",
       "//ui/color",
+      "//ui/web_dialogs",
     ]
   }
 
