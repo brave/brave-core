@@ -10,7 +10,7 @@ use rmp_serde as rmps;
 use serde::{Deserialize, Serialize};
 
 use crate::blocker::{Blocker, NetworkFilterList};
-use crate::cosmetic_filter_cache::{CosmeticFilterCache, HostnameRuleDb};
+use crate::cosmetic_filter_cache::{CosmeticFilterCache, HostnameRuleDb, ProceduralOrActionFilter};
 use crate::filters::network::NetworkFilter;
 use crate::utils::Hash;
 
@@ -30,7 +30,7 @@ enum LegacySpecificFilterType {
 
 #[derive(Deserialize, Serialize, Default)]
 pub(crate) struct LegacyHostnameRuleDb {
-    #[serde(serialize_with = "crate::data_format::utils::stabilize_hashmap_serialization")]
+    #[serde(serialize_with = "stabilize_hashmap_serialization")]
     db: HashMap<Hash, Vec<LegacySpecificFilterType>>,
 }
 
@@ -65,18 +65,32 @@ impl From<&HostnameRuleDb> for LegacyHostnameRuleDb {
                     .or_insert_with(|| vec![LegacySpecificFilterType::UnhideScriptInject(f.to_owned())]);
             }
         }
-        for (hash, bin) in v.style.0.iter() {
+        for (hash, bin) in v.procedural_action.0.iter() {
             for f in bin {
-                db.entry(*hash)
-                    .and_modify(|v| v.push(LegacySpecificFilterType::Style(f.0.to_owned(), f.1.to_owned())))
-                    .or_insert_with(|| vec![LegacySpecificFilterType::Style(f.0.to_owned(), f.1.to_owned())]);
+                match serde_json::from_str::<ProceduralOrActionFilter>(f) {
+                    Ok(f) => {
+                        if let Some((selector, style)) = f.as_css() {
+                            db.entry(*hash)
+                                .and_modify(|v| v.push(LegacySpecificFilterType::Style(selector.clone(), style.clone())))
+                                .or_insert_with(|| vec![LegacySpecificFilterType::Style(selector, style)]);
+                        }
+                    }
+                    _ => (),
+                }
             }
         }
-        for (hash, bin) in v.unstyle.0.iter() {
+        for (hash, bin) in v.procedural_action_exception.0.iter() {
             for f in bin {
-                db.entry(*hash)
-                    .and_modify(|v| v.push(LegacySpecificFilterType::UnhideStyle(f.0.to_owned(), f.1.to_owned())))
-                    .or_insert_with(|| vec![LegacySpecificFilterType::UnhideStyle(f.0.to_owned(), f.1.to_owned())]);
+                match serde_json::from_str::<ProceduralOrActionFilter>(f) {
+                    Ok(f) => {
+                        if let Some((selector, style)) = f.as_css() {
+                            db.entry(*hash)
+                                .and_modify(|v| v.push(LegacySpecificFilterType::UnhideStyle(selector.to_owned(), style.to_owned())))
+                                .or_insert_with(|| vec![LegacySpecificFilterType::UnhideStyle(selector.to_owned(), style.to_owned())]);
+                        }
+                    }
+                    _ => (),
+                }
             }
         }
         LegacyHostnameRuleDb {
@@ -91,8 +105,8 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
 
         let mut hide = HostnameFilterBin::default();
         let mut unhide = HostnameFilterBin::default();
-        let mut style = HostnameFilterBin::default();
-        let mut unstyle = HostnameFilterBin::default();
+        let mut procedural_action = HostnameFilterBin::default();
+        let mut procedural_action_exception = HostnameFilterBin::default();
         let mut inject_script = HostnameFilterBin::default();
         let mut uninject_script = HostnameFilterBin::default();
 
@@ -101,8 +115,8 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
                 match rule {
                     LegacySpecificFilterType::Hide(s) => hide.insert(&hash, s),
                     LegacySpecificFilterType::Unhide(s) => unhide.insert(&hash, s),
-                    LegacySpecificFilterType::Style(s, st) => style.insert(&hash, (s, st)),
-                    LegacySpecificFilterType::UnhideStyle(s, st) => unstyle.insert(&hash, (s, st)),
+                    LegacySpecificFilterType::Style(s, st) => procedural_action.insert_procedural_action_filter(&hash, &ProceduralOrActionFilter::from_css(s, st)),
+                    LegacySpecificFilterType::UnhideStyle(s, st) => procedural_action_exception.insert_procedural_action_filter(&hash, &ProceduralOrActionFilter::from_css(s, st)),
                     LegacySpecificFilterType::ScriptInject(s) => inject_script.insert(&hash, (s, Default::default())),
                     LegacySpecificFilterType::UnhideScriptInject(s) => uninject_script.insert(&hash, s),
                 }
@@ -113,14 +127,8 @@ impl Into<HostnameRuleDb> for LegacyHostnameRuleDb {
             unhide,
             inject_script,
             uninject_script,
-            remove: HostnameFilterBin::default(),
-            unremove: HostnameFilterBin::default(),
-            style,
-            unstyle,
-            remove_attr: HostnameFilterBin::default(),
-            unremove_attr: HostnameFilterBin::default(),
-            remove_class: HostnameFilterBin::default(),
-            unremove_class: HostnameFilterBin::default(),
+            procedural_action,
+            procedural_action_exception,
         }
     }
 }
@@ -133,7 +141,7 @@ pub(crate) struct LegacyRedirectResource {
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
 pub(crate) struct LegacyRedirectResourceStorage {
-    #[serde(serialize_with = "crate::data_format::utils::stabilize_hashmap_serialization")]
+    #[serde(serialize_with = "stabilize_hashmap_serialization")]
     pub resources: HashMap<String, LegacyRedirectResource>,
 }
 
@@ -144,7 +152,7 @@ pub(crate) struct LegacyScriptletResource {
 
 #[derive(Default, Deserialize, Serialize)]
 pub(crate) struct LegacyScriptletResourceStorage {
-    #[serde(serialize_with = "crate::data_format::utils::stabilize_hashmap_serialization")]
+    #[serde(serialize_with = "stabilize_hashmap_serialization")]
     resources: HashMap<String, LegacyScriptletResource>,
 }
 
@@ -208,7 +216,7 @@ where
 {
     #[derive(Serialize, Default)]
     struct NetworkFilterListV0SerializeFmt<'a> {
-        #[serde(serialize_with = "crate::data_format::utils::stabilize_hashmap_serialization")]
+        #[serde(serialize_with = "stabilize_hashmap_serialization")]
         filter_map: HashMap<crate::utils::Hash, Vec<NetworkFilterV0SerializeFmt<'a>>>,
     }
 
@@ -275,6 +283,11 @@ pub(crate) struct SerializeFormat<'a> {
     misc_generic_selectors: &'a HashSet<String>,
 
     scriptlets: LegacyScriptletResourceStorage,
+
+    #[serde(serialize_with = "stabilize_hashmap_serialization")]
+    procedural_action: &'a HashMap<Hash, Vec<String>>,
+    #[serde(serialize_with = "stabilize_hashmap_serialization")]
+    procedural_action_exception: &'a HashMap<Hash, Vec<String>>,
 }
 
 impl<'a> SerializeFormat<'a> {
@@ -374,6 +387,11 @@ pub(crate) struct DeserializeFormat {
     misc_generic_selectors: HashSet<String>,
 
     _scriptlets: LegacyScriptletResourceStorage,
+
+    #[serde(default)]
+    procedural_action: HashMap<Hash, Vec<String>>,
+    #[serde(default)]
+    procedural_action_exception: HashMap<Hash, Vec<String>>,
 }
 
 impl DeserializeFormat {
@@ -414,12 +432,21 @@ impl<'a> From<(&'a Blocker, &'a CosmeticFilterCache)> for SerializeFormat<'a> {
             misc_generic_selectors: &cfc.misc_generic_selectors,
 
             scriptlets: LegacyScriptletResourceStorage::default(),
+
+            procedural_action: &cfc.specific_rules.procedural_action.0,
+            procedural_action_exception: &cfc.specific_rules.procedural_action_exception.0,
         }
     }
 }
 
 impl From<DeserializeFormat> for (Blocker, CosmeticFilterCache) {
     fn from(v: DeserializeFormat) -> Self {
+        use crate::cosmetic_filter_cache::HostnameFilterBin;
+
+        let mut specific_rules: HostnameRuleDb = v.specific_rules.into();
+        specific_rules.procedural_action = HostnameFilterBin(v.procedural_action);
+        specific_rules.procedural_action_exception = HostnameFilterBin(v.procedural_action_exception);
+
         (
             Blocker {
                 csp: v.csp.into(),
@@ -446,7 +473,7 @@ impl From<DeserializeFormat> for (Blocker, CosmeticFilterCache) {
                 complex_class_rules: v.complex_class_rules,
                 complex_id_rules: v.complex_id_rules,
 
-                specific_rules: v.specific_rules.into(),
+                specific_rules,
 
                 misc_generic_selectors: v.misc_generic_selectors,
             },

@@ -148,5 +148,225 @@ const classes = (expectedClasses) =>
     <div class="container">
       <div id="real-user-content"></div>
     </div>
+
+    <section id="procedural-filter-has-text">
+      <div class="string-cases">
+        <h2>String cases for <code>:has-text</code></h2>
+        <div data-expect="hidden">
+          <p>Please hide me.</p>
+        </div>
+        <div>
+          <p data-expect="visible">Fake out hide.</p>
+        </div>
+        <div>
+          <p data-expect="visible">And do not hide this element.</p>
+        </div>
+      </div>
+      <div class="regex-cases">
+        <h2>RegEx cases for <code>:has-text</code></h2>
+        <div data-expect="hidden">
+          <p>This should be hidden.</p>
+        </div>
+        <div>
+          <p data-expect="visible">This should be hidden (but not really).</p>
+        </div>
+        <div>
+          <p data-expect="visible">This should not be hidden.</p>
+        </div>
+      </div>
+      <p class="items" data-expect="visible">
+        This should be visible bc the word "S p o n s o r e d" does not appear
+      </p>
+      <p class="items" data-expect="hidden">
+        This should be hidden because of the word "Sponsored"
+      </p>
+      <p data-expect="visible">
+        This should be visible bc it doesn't have the class "items" despite
+        saying "Sponsored"
+      </p>
+      <p data-expect="visible">
+        This should be visible bc it doesn't have the class "items" nor
+        the text sponsored
+      </p>
+      <div class="items2" style="display: none">Sponsored</div>
+      <div class="container" data-expect="hidden">This should be hidden bc of the text "Ad"</div>
+
+      <div class="items2" style="display: none">Sponsored</div>
+      <div class="container" data-expect="visible">This should NOT hidden bc of there is no text "A d"</div>
+
+      <div class="items2" style="display: none"></div>
+      <div class="container" data-expect="visible">This should NOT hidden bc the previous sibling does not say "Sponsored", even though this says "Ad"</div>
+    </section>
+
+    <section id="procedural-filter-matches-attr">
+      <div>
+        <h2>String cases for <code>:matches-attr</code></h2>
+        <div test-attr="test-value" data-expect="hidden">
+          This should be hidden.
+        </div>
+        <div diff-attr="test-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-attr="diff-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div diff-attr="diff-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+      </div>
+
+      <div>
+        <h2>Regex cases for <code>:matches-attr</code></h2>
+        <div test-yes-attr="test-yes-value" data-expect="hidden">
+          This should be hidden.
+        </div>
+        <div test-yes-attr="test-no-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-no-attr="test-yes-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-no-attr="test-no-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+      </div>
+    </section>
+
+    <section id="procedural-filter-matches-css">
+      <style>
+        .needle {
+          opacity: 0.9;
+        }
+        .other-needle::before {
+          display: inline-block;
+        }
+        .quoted-value-case p.target::before {
+          content: "advertisement"
+        }
+      </style>
+      <div>
+        <h2><code>:matches-css</code></h2>
+        <div>
+          <p data-expect="visible">This should not be hidden</p>
+          <p class="needle" data-expect="hidden">This should be hidden</p>
+        </div>
+        <p data-expect="visible">This should not be hidden</p>
+        <p class="needle" expect="hidden">This should be hidden</p>
+      </div>
+
+      <div>
+        <h2><code>:matches-css-before</code></h2>
+        <div>
+          <p class="other-needle" data-expect="hidden">This should be hidden</p>
+        </div>
+        <div>
+          <div class="other-needle"></div>
+          <div data-expect="visible">This should not be hidden</div>
+        </div>
+      </div>
+
+      <div class="quoted-value-case">
+        <h2><code>:matches-css-before</code>, quoted CSS attribute case</h2>
+        <p data-expect="visible">This should not be hidden</p>
+        <p class="target" data-expect="hidden">This should be hidden</p>
+        <p data-expect="visible">This should not be hidden</p>
+      </div>
+    </section>
+
+    <section id="procedural-filter-matches-path">
+      <div class="positive-string-case">
+        <h2><code>:matches-path</code> positive string case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="positive-regex-case">
+        <h2><code>:matches-path</code> positive regex case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="negative-case">
+        <h2><code>:matches-path</code>: negative case</h2>
+        <p class="odd" data-expect="visible">Should not be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+    </section>
+
+    <section id="procedural-filter-min-text-length">
+      <p data-expect="hidden">
+        This should be hidden bc it contains 50 characters
+      </p>
+      <p data-expect="visible">
+        This should not hidden, 37 characters
+      </p>
+    </section>
+
+    <section id="procedural-filter-upward">
+      <div class="string-tests">
+        <h2>String cases for <code>:upward</code></h2>
+        <div class="needle" data-expect="hidden">
+          This should be hidden
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+        <section class="needle" data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </section>
+        <div data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+      </div>
+
+      <div class="int-tests">
+        <h2>Integer cases for <code>:upward</code></h2>
+        <div test-needle="true" data-expect="hidden">
+          This should be hidden
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+        <section class="needle" data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </section>
+        <div data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="procedural-filter-xpath">
+      <div class="no-subject-case">
+        <h2><code>:xpath</code> no subject case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="with-subject-case">
+        <h2><code>:xpath</code>: with subject case</h2>
+        <p class="odd" data-expect="visible">Should not be hidden</p>
+        <p class="even" data-expect="hidden">Should be hidden</p>
+        <p class="odd" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+    </section>
 </body>
 </html>
