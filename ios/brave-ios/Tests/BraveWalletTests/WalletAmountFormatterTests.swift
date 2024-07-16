@@ -50,7 +50,7 @@ class WalletAmountFormatterTests: XCTestCase {
     let formatter = WalletAmountFormatter(decimalFormatStyle: .gasFee(limit: "100"))
     XCTAssertEqual(
       try XCTUnwrap(formatter.decimalString(for: "31050382080585020020", decimals: 18)),
-      "3105.038208"
+      "3105.0382080585"
     )
   }
   func testInvalidString() {

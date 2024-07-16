@@ -22,7 +22,7 @@ struct WalletAmountFormatter {
     case balance
     /// A format to be used when you want to display a deicmal gas amount.
     ///
-    /// Shows 6 decimals of precision and is rounded. Example: `3.141592`
+    /// Shows 10 decimals of precision and is rounded. Example: `3.141592`
     case gasFee(limit: String, radix: Radix = .decimal)
 
     fileprivate var precision: Int {
@@ -32,7 +32,7 @@ struct WalletAmountFormatter {
       case .balance:
         return 4
       case .gasFee:
-        return 6
+        return 10
       }
     }
 
