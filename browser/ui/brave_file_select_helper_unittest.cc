@@ -136,7 +136,7 @@ TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect) {
        "foo.com wants to open"},
       // Subframe alert from a different origin.
       {"subframe different origin", "http://foo.com/", false, "http://bar.com/",
-       "An embedded page at bar.com wants to open"},
+       "An embedded page on bar.com wants to open"},
 
       // file:
       // - main frame:
@@ -184,7 +184,7 @@ TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect) {
       // - subframe:
       {"blob subframe", "http://bar.com/", false,
        "blob:http://foo.com/66666666-6666-6666-6666-666666666666",
-       "An embedded page at foo.com wants to open"},
+       "An embedded page on foo.com wants to open"},
 
       // filesystem:
       // - main frame:
@@ -193,7 +193,7 @@ TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect) {
       // - subframe:
       {"filesystem subframe", "http://bar.com/", false,
        "filesystem:http://foo.com/bar.html",
-       "An embedded page at foo.com wants to open"},
+       "An embedded page on foo.com wants to open"},
   };
   for (const auto& test_case : kCases) {
     SCOPED_TRACE(test_case.case_name);

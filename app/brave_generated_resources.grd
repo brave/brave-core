@@ -1305,7 +1305,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to open
       </message>
       <message name="IDS_FILE_SELECT_OPEN_TITLE_IFRAME" desc="">
-        An embedded page at <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to open
+        An embedded page on <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to open
       </message>
       <message name="IDS_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL" desc="">
         This page wants to open
@@ -1317,13 +1317,13 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to save
       </message>
       <message name="IDS_FILE_SELECT_SAVE_TITLE_IFRAME" desc="">
-        An embedded page at <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to save
+        An embedded page on <ph name="SITE">$1<ex>http://foo.com</ex></ph> wants to save
       </message>
       <message name="IDS_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL" desc="">
         This page wants to save
       </message>
       <message name="IDS_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL_IFRAME" desc="">
-        An embedded page on this page wants to open
+        An embedded page on this page wants to save
       </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
