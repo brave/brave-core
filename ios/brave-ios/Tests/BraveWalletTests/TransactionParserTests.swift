@@ -183,8 +183,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -250,7 +249,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      network: .mockMainnet,
+      network: network,
       details: .erc20Transfer(
         .init(
           fromToken: .previewDaiToken,
@@ -269,8 +268,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -331,16 +329,16 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
-      network: .mockMainnet,
+      network: network,
       details: .ethSwap(
         .init(
           fromToken: .previewToken,
-          fromNetwork: .mockMainnet,
+          fromNetwork: network,
           fromValue: "0x1b6951ef585a000",
           fromAmount: "0.12345",
           fromFiat: "$0.123",
           toToken: .previewDaiToken,
-          toNetwork: .mockMainnet,
+          toNetwork: network,
           minBuyValue: "0x5c6f2d76e910358b",
           minBuyAmount: "6.660592362643797387",
           minBuyAmountFiat: "$13.32",
@@ -355,8 +353,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -417,16 +414,16 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "0x Exchange Proxy",
       toAddress: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",
-      network: .mockMainnet,
+      network: network,
       details: .ethSwap(
         .init(
           fromToken: .mockUSDCToken,
-          fromNetwork: .mockMainnet,
+          fromNetwork: network,
           fromValue: "0x16e360",
           fromAmount: "1.5",
           fromFiat: "$4.50",
           toToken: .previewDaiToken,
-          toNetwork: .mockMainnet,
+          toNetwork: network,
           minBuyValue: "0x1bd02ca9a7c244e",
           minBuyAmount: "0.125259433834718286",
           minBuyAmountFiat: "$0.251",
@@ -441,8 +438,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -491,7 +487,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      network: .mockMainnet,
+      network: network,
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
@@ -512,8 +508,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -563,7 +558,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress.truncatedAddress,
       toAddress: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
-      network: .mockMainnet,
+      network: network,
       details: .ethErc20Approve(
         .init(
           token: .previewDaiToken,
@@ -584,8 +579,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -638,7 +632,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[0],
       namedToAddress: "Ethereum Account 2",
       toAddress: "0x0987654321098765432109876543210987654321",
-      network: .mockMainnet,
+      network: network,
       details: .erc721Transfer(
         .init(
           fromToken: .previewDaiToken,
@@ -658,8 +652,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon],
+        allNetworks: [network, .mockPolygon],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -710,7 +703,7 @@ class TransactionParserTests: XCTestCase {
       txDataUnion: .init(solanaTxData: transactionData),
       txType: .solanaSystemTransfer,
       txArgs: [],
-      chainId: BraveWallet.SolanaMainnet,
+      chainId: network.chainId,
       effectiveRecipient: transactionData.toWalletAddress
     )
     let expectedParsedTransaction = ParsedTransaction(
@@ -719,7 +712,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[2],
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].address,
-      network: .mockSolana,
+      network: network,
       details: .solSystemTransfer(
         .init(
           fromToken: .mockSolToken,
@@ -738,8 +731,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon, .mockSolana],
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -808,7 +800,7 @@ class TransactionParserTests: XCTestCase {
       txDataUnion: .init(solanaTxData: transactionData),
       txType: .solanaSplTokenTransfer,
       txArgs: [],
-      chainId: BraveWallet.SolanaMainnet,
+      chainId: network.chainId,
       effectiveRecipient: transactionData.toWalletAddress
     )
     let expectedParsedTransaction = ParsedTransaction(
@@ -817,7 +809,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[2],
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].address,
-      network: .mockSolana,
+      network: network,
       details: .solSplTokenTransfer(
         .init(
           fromToken: .mockSpdToken,
@@ -836,8 +828,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon, .mockSolana],
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -889,7 +880,7 @@ class TransactionParserTests: XCTestCase {
       txDataUnion: .init(solanaTxData: transactionData),
       txType: .solanaSplTokenTransfer,
       txArgs: [],
-      chainId: BraveWallet.SolanaMainnet,
+      chainId: network.chainId,
       effectiveRecipient: transactionData.toWalletAddress
     )
     let expectedParsedTransaction = ParsedTransaction(
@@ -898,7 +889,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: accountInfos[2],
       namedToAddress: accountInfos[3].name,
       toAddress: accountInfos[3].address,
-      network: .mockSolana,
+      network: network,
       details: .solSplTokenTransfer(
         .init(
           fromToken: .mockSolanaNFTToken,
@@ -917,8 +908,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon, .mockSolana],
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -1172,8 +1162,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon, .mockFilecoinMainnet, .mockFilecoinTestnet],
+        allNetworks: [.mockMainnet, .mockPolygon, .mockFilecoinMainnet, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,
@@ -1237,7 +1226,7 @@ class TransactionParserTests: XCTestCase {
       fromAccountInfo: mockFromAccount,
       namedToAddress: "",
       toAddress: mockToAccountAddress,
-      network: .mockBitcoinMainnet,
+      network: network,
       details: .btcSend(
         .init(
           fromToken: .mockBTCToken,
@@ -1256,8 +1245,7 @@ class TransactionParserTests: XCTestCase {
     guard
       let parsedTransaction = TransactionParser.parseTransaction(
         transaction: transaction,
-        currentNetwork: network,
-        allNetworks: [.mockMainnet, .mockPolygon, .mockBitcoinMainnet],
+        allNetworks: [.mockMainnet, .mockPolygon, network],
         accountInfos: accountInfos,
         userAssets: tokens,
         allTokens: tokens,

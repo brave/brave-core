@@ -574,7 +574,6 @@ extension ParsedTransaction {
   static func previewParsedTransaction(from txInfo: BraveWallet.TransactionInfo) -> Self? {
     TransactionParser.parseTransaction(
       transaction: txInfo,
-      currentNetwork: .mockMainnet,
       allNetworks: [.mockMainnet],
       accountInfos: [.previewAccount],
       userAssets: [.previewToken, .previewDaiToken],

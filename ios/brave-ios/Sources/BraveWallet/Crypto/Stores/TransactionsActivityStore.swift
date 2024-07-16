@@ -295,14 +295,8 @@ class TransactionsActivityStore: ObservableObject, WalletObserverStore {
         transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
         .compactMap { transaction in
-          guard let networks = networksForCoin[transaction.coin],
-            let network = networks.first(where: { $0.chainId == transaction.chainId })
-          else {
-            return nil
-          }
           return TransactionParser.parseTransaction(
             transaction: transaction,
-            currentNetwork: network,
             allNetworks: allNetworks,
             accountInfos: accountInfos,
             userAssets: userAssets,

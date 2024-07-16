@@ -212,7 +212,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
-        networksForCoin: [account.coin: networksForAccountCoin],
         allNetworks: allNetworks,
         accountInfos: allAccountsForCoin,
         userAssets: allUserAssets,
@@ -294,7 +293,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
-        networksForCoin: [account.coin: networksForAccountCoin],
         allNetworks: allNetworks,
         accountInfos: allAccountsForCoin,
         userAssets: allUserAssets,
@@ -321,7 +319,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
       )
       self.transactionSections = buildTransactionSections(
         transactions: transactions,
-        networksForCoin: [account.coin: networksForAccountCoin],
         allNetworks: allNetworks,
         accountInfos: allAccountsForCoin,
         userAssets: allUserAssets,
@@ -353,7 +350,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         }
         self.transactionSections = buildTransactionSections(
           transactions: transactions,
-          networksForCoin: [account.coin: networksForAccountCoin],
           allNetworks: allNetworks,
           accountInfos: allAccountsForCoin,
           userAssets: allUserAssets,
@@ -434,7 +430,6 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
-    networksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]],
     allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
@@ -465,14 +460,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
         transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
         .compactMap { transaction in
-          guard let networks = networksForCoin[transaction.coin],
-            let network = networks.first(where: { $0.chainId == transaction.chainId })
-          else {
-            return nil
-          }
           return TransactionParser.parseTransaction(
             transaction: transaction,
-            currentNetwork: network,
             allNetworks: allNetworks,
             accountInfos: accountInfos,
             userAssets: userAssets,

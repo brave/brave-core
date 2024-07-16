@@ -313,7 +313,6 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
 
       guard
         let parsedTransaction = transaction.parsedTransaction(
-          currentNetwork: network,
           allNetworks: allNetworks,
           accountInfos: allAccountsForCoin,
           userAssets: userAssets,
