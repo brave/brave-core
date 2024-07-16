@@ -6,8 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_POPUP_VIEW_VIEWS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_OMNIBOX_OMNIBOX_POPUP_VIEW_VIEWS_H_
 
-#define OmniboxSuggestionButtonRowBrowserTest \
-  OmniboxSuggestionButtonRowBrowserTest;      \
+#define OmniboxSuggestionButtonRowBrowserTest  \
+  OmniboxSuggestionButtonRowBrowserTest;       \
+  LocationBarView* location_bar_view() const { \
+    return location_bar_view_;                 \
+  }                                            \
   friend class BraveOmniboxPopupViewViews
 
 #define GetTargetBounds virtual GetTargetBounds
