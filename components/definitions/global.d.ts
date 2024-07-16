@@ -15,6 +15,33 @@ type RequestIdleCallbackDeadline = {
 }
 
 declare global {
+  type StyleAction = {
+    type: 'style'
+    arg: string
+  }
+  type RemoveAction = {
+    type: 'remove'
+  }
+  type RemoveAttrAction = {
+    type: 'remove-attr'
+    arg: string
+  }
+  type RemoveClassAction = {
+    type: 'remove-class'
+    arg: string
+  }
+
+  type CosmeticFilterAction = StyleAction | RemoveAction | RemoveAttrAction | RemoveClassAction;
+
+  interface ProceduralOperator {
+    type: OperatorType
+    arg: string
+  }
+  type ProceduralSelector = ProceduralOperator[];
+  type ProceduralActionFilter = {
+    selector: ProceduralSelector
+    action?: CosmeticFilterAction
+  }
   interface Window {
     // Typescript doesn't include requestIdleCallback as it's non-standard.
     // Since it's supported in Chromium, we can include it here.
@@ -44,10 +71,8 @@ declare global {
       switchToSelectorsPollingThreshold : number | undefined
       fetchNewClassIdRulesThrottlingMs : number | undefined
       tryScheduleQueuePump: (() => void)
-      selectorsToRemove: string[] | undefined
-      classesToRemoveBySelector: Map<string, string[]> | undefined
-      attributesToRemoveBySelector: Map<string, string[]> | undefined
-      hasRemovals: boolean
+      proceduralActionFilters?: ProceduralActionFilter[]
+      hasProceduralActions: boolean
     }
   }
 }

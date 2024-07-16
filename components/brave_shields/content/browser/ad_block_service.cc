@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 
-#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -13,7 +12,7 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
+#include "base/json/json_reader.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
@@ -207,6 +206,41 @@ base::Value::Dict AdBlockService::UrlCosmeticResources(
         } else {
           it++;
         }
+      }
+    }
+
+    base::Value::List* procedural_actions =
+        resources.FindList("procedural_actions");
+    // In standard blocking mode, drop procedural filters but otherwise keep
+    // action filters.
+    if (procedural_actions) {
+      base::Value::List::iterator it = procedural_actions->begin();
+      while (it < procedural_actions->end()) {
+        DCHECK(it->is_string());
+        auto* pfilter_str = it->GetIfString();
+        if (pfilter_str == nullptr) {
+          continue;
+        }
+        auto val = base::JSONReader::ReadDict(*pfilter_str);
+        if (val) {
+          auto* list = val->FindList("selector");
+          if (list && list->size() != 1) {
+            // Non-procedural filters are always a single operator in length.
+            it = procedural_actions->erase(it);
+            continue;
+          }
+          // The single operator must also be a `css-selector`.
+          auto op_iterator = list->begin();
+          auto* dict = op_iterator->GetIfDict();
+          if (dict) {
+            auto* str = dict->FindString("type");
+            if (str && *str != "css-selector") {
+              it = procedural_actions->erase(it);
+              continue;
+            }
+          }
+        }
+        it++;
       }
     }
   }

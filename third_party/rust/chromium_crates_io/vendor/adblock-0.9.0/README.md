@@ -29,7 +29,7 @@ It may be a good fit for yours, too!
 
 See [docs.rs](https://docs.rs/adblock) for detailed API documentation.
 
-Also check the [Rust example](./examples/example.rs) or the [NodeJS example](./js/example.js).
+Also check the [Rust example](./examples/example.rs) or the [NodeJS example](./js/example.mjs).
 
 ### Optional features
 

@@ -5,6 +5,7 @@
 
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_handler.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -14,13 +15,12 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "content/public/renderer/render_frame.h"
-#include "gin/arguments.h"
+#include "gin/converter.h"
 #include "gin/function_template.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
@@ -29,7 +29,6 @@
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_css_origin.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -122,20 +121,20 @@ const char kHideSelectorsInjectScript[] =
           };
         })();)";
 
-const char kRemovalsInjectScript[] =
+const char kProceduralActionsScript[] =
     R"((function() {
           const CC = window.content_cosmetic;
-          CC.selectorsToRemove = %s;
-          const dictToMap = (d) => d === undefined
-            ? d
-            : new Map(Object.entries(d));
-          CC.classesToRemoveBySelector = dictToMap(%s);
-          CC.attributesToRemoveBySelector = dictToMap(%s);
-          CC.hasRemovals = (
-            CC.selectorsToRemove !== undefined
-            || CC.classesToRemoveBySelector !== undefined
-            || CC.attributesToRemoveBySelector !== undefined
-          );
+          let stylesheet = '';
+          const takeStyleFilter = filter => {
+            if (filter.selector.length === 1 && filter.selector[0].type === 'css-selector' && filter.action && filter.action.type === 'style') {
+              stylesheet += filter.selector[0].arg + '{' + filter.action.arg + '}\n';
+              return false;
+            }
+            return true;
+          };
+          CC.proceduralActionFilters = JSON.parse(String.raw`$1`).filter(f => takeStyleFilter(f));
+          CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
+          return stylesheet;
         })();)";
 
 std::string LoadDataResource(const int id) {
@@ -359,6 +358,10 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       isolate, javascript_object, "isFirstPartyUrl",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnIsFirstParty,
                           base::Unretained(this)));
+  BindFunctionToObject(
+      isolate, javascript_object, "injectStylesheet",
+      base::BindRepeating(&CosmeticFiltersJSHandler::InjectStylesheet,
+                          base::Unretained(this)));
 
   BindFunctionToObject(
       isolate, javascript_object, "addSiteCosmeticFilter",
@@ -560,46 +563,53 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
 
   CSSRulesRoutine(*resources_dict_);
 
-  bool has_removals = false;
-  //: remove()
-  std::string remove_selectors_json;
-  const auto* remove_selectors_list =
-      resources_dict_->FindList("remove_selectors");
-  if (remove_selectors_list && !remove_selectors_list->empty()) {
-    base::JSONWriter::Write(*remove_selectors_list, &remove_selectors_json);
-    has_removals = true;
+  bool has_procedural_actions = false;
+  std::string procedural_actions_json;
+  const auto* procedural_actions_list =
+      resources_dict_->FindList("procedural_actions");
+  if (procedural_actions_list && !procedural_actions_list->empty()) {
+    // Each element of procedural_actions_list is already formatted as JSON.
+    // Combine them into a single JSON list using string concatenation to avoid
+    // double-escaping.
+    auto procedural_actions_strings = std::vector<std::string>();
+    std::transform(procedural_actions_list->cbegin(),
+                   procedural_actions_list->cend(),
+                   std::back_inserter(procedural_actions_strings),
+                   [](const base::Value& action) -> std::string {
+                     return action.GetString();
+                   });
+    procedural_actions_json = base::StrCat(
+        {"[", base::JoinString(procedural_actions_strings, ","), "]"});
+    has_procedural_actions = true;
   } else {
-    remove_selectors_json = "undefined";
+    procedural_actions_json = "null";
   }
 
-  //: remove_classes
-  std::string remove_classes_json;
-  const auto* remove_classes_dictionary =
-      resources_dict_->FindDict("remove_classes");
-  if (remove_classes_dictionary && !remove_classes_dictionary->empty()) {
-    base::JSONWriter::Write(*remove_classes_dictionary, &remove_classes_json);
-    has_removals = true;
-  }
+  if (has_procedural_actions) {
+    std::string procedural_actions_script = base::ReplaceStringPlaceholders(
+        kProceduralActionsScript, {procedural_actions_json.c_str()}, nullptr);
 
-  //: remove_attrs
-  std::string remove_attrs_json;
-  const auto* remove_attrs_dictionary =
-      resources_dict_->FindDict("remove_attrs");
-  if (remove_attrs_dictionary && !remove_attrs_dictionary->empty()) {
-    base::JSONWriter::Write(*remove_attrs_dictionary, &remove_attrs_json);
-    has_removals = true;
-  }
+    v8::Isolate* isolate = web_frame->GetAgentGroupScheduler()->Isolate();
+    v8::HandleScope handle_scope(isolate);
 
-  if (has_removals) {
-    // Building a script for removals
-    std::string new_selectors_script = base::StringPrintf(
-        kRemovalsInjectScript, remove_selectors_json.c_str(),
-        remove_classes_json.c_str(), remove_attrs_json.c_str());
-    web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_,
-        blink::WebScriptSource(
-            blink::WebString::FromUTF8(new_selectors_script)),
-        blink::BackForwardCacheAware::kAllow);
+    v8::Local<v8::Value> v8_stylesheet =
+        web_frame->ExecuteScriptInIsolatedWorldAndReturnValue(
+            isolated_world_id_,
+            blink::WebScriptSource(
+                blink::WebString::FromUTF8(procedural_actions_script)),
+            blink::BackForwardCacheAware::kAllow);
+
+    DCHECK(v8_stylesheet->IsString());
+    if (!v8_stylesheet.IsEmpty() && v8_stylesheet->IsString()) {
+      v8::Local<v8::String> v8_str = v8_stylesheet.As<v8::String>();
+      int length = v8_str->Utf8Length(isolate);
+      if (length > 0) {
+        std::string str;
+        gin::Converter<std::string>::FromV8(isolate, v8_str, &str);
+
+        InjectStylesheet(str);
+      }
+    }
   }
 }
 
@@ -656,22 +666,6 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     for (auto& selector : *force_hide_selectors_list) {
       DCHECK(selector.is_string());
       stylesheet += selector.GetString() + "{display:none !important}";
-    }
-  }
-
-  const auto* style_selectors_dictionary =
-      resources_dict.FindDict("style_selectors");
-  if (style_selectors_dictionary) {
-    for (const auto kv : *style_selectors_dictionary) {
-      DCHECK(kv.second.is_list());
-      std::string selector = kv.first;
-      const auto& styles = kv.second.GetList();
-      stylesheet += selector + '{';
-      for (auto& style : styles) {
-        DCHECK(style.is_string());
-        stylesheet += style.GetString() + ';';
-      }
-      stylesheet += '}';
     }
   }
 

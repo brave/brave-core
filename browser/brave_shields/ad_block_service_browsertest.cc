@@ -2674,6 +2674,240 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
+// Test `has-text` procedural filters in standard blocking mode
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       ProceduralFilterHasTextStandardBlocking) {
+  DisableAggressiveMode();
+
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-cases > div:has-text(hide me)\n"
+      "a.com##.regex-cases > div:has-text(/should be [a-z]{6}\\./)\n"
+      "a.com##.items:has-text(Sponsored)\n"
+      "a.com##.items2:has-text(Sponsored) + .container:has-text(Ad)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `has-text` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterHasText) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-cases > div:has-text(hide me)\n"
+      "a.com##.regex-cases > div:has-text(/should be [a-z]{6}\\./)\n"
+      "a.com##.items:has-text(Sponsored)\n"
+      "a.com##.items2:has-text(Sponsored) + .container:has-text(Ad)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-has-text [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `matches-attr` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesAttr) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##:matches-attr(\"test-attr\"=\"test-value\")\n"
+      "a.com##:matches-attr(\"/test-y.{2}-attr/\"=\"/test-y[a-z]s-value/\")");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-attr [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-attr [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `matches-css` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesCss) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##:matches-css(opacity: 0.9)\n"
+      "a.com##:matches-css-before(display: inline-block)\n"
+      "a.com##:matches-css-before(content:\"advertisement\")");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-css [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-css [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `matches-path` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMatchesPath) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##section .positive-string-case "
+      "p.odd:matches-path(cosmetic_filtering.html)\n"
+      "a.com##section .positive-regex-case "
+      "p.odd:matches-path(/c[aeiou]smetic\\_[a-z]{9}/)\n"
+      "a.com##section .negative-case:matches-path(/some-other-page.html)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-path [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-matches-path [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `min-text-length` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterMinTextLength) {
+  UpdateAdBlockInstanceWithRules("a.com##p:min-text-length(50)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-min-text-length [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-min-text-length [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `upward` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterUpward) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##.string-tests em.target:upward(div.needle)\n"
+      "a.com##.int-tests "
+      "em.target:upward(2):matches-attr(test-needle=\"true\")");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-upward [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-upward [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
+// Test `xpath` procedural filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ProceduralFilterXpath) {
+  UpdateAdBlockInstanceWithRules(
+      "a.com##:xpath(//div[@class='no-subject-case']/p[@class='odd'])\n"
+      "a.com##div.with-subject-case:xpath(p[@class='even'])");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  content::WebContents* contents = web_contents();
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-xpath [data-expect="hidden"]', 'display', 'none'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+
+  {
+    auto result = EvalJs(
+        contents,
+        R"(waitCSSSelector('#procedural-filter-xpath [data-expect="visible"]', 'display', 'block'))");
+    ASSERT_TRUE(result.error.empty());
+    EXPECT_EQ(base::Value(true), result.value);
+  }
+}
+
 class CookieListPrefObserver {
  public:
   explicit CookieListPrefObserver(PrefService* local_state) {
