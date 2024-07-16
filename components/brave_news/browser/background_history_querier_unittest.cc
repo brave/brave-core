@@ -14,12 +14,12 @@ namespace brave_news {
 
 class BraveNewsBackgroundHistoryQuerierTest : public testing::Test {
  public:
-  BraveNewsBackgroundHistoryQuerierTest();
+  BraveNewsBackgroundHistoryQuerierTest() = default;
   BraveNewsBackgroundHistoryQuerierTest(
       const BraveNewsBackgroundHistoryQuerierTest&) = delete;
   BraveNewsBackgroundHistoryQuerierTest& operator=(
       const BraveNewsBackgroundHistoryQuerierTest&) = delete;
-  ~BraveNewsBackgroundHistoryQuerierTest() override;
+  ~BraveNewsBackgroundHistoryQuerierTest() override = default;
 };
 
 TEST_F(BraveNewsBackgroundHistoryQuerierTest, CanGetHistoryOffMainThread) {}

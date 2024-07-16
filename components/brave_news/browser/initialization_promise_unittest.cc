@@ -58,10 +58,9 @@ class BraveNewsInitializationPromiseTest : public testing::Test {
         initialization_promise_(
             3,
             pref_manager_,
-            base::BindRepeating(
-                [](mojom::BraveNewsController::GetLocaleCallback callback) {
-                  return std::move(callback).Run("en_US");
-                })) {
+            base::BindRepeating(&PublishersController::GetLocale,
+                                base::Unretained(&publishers_controller_),
+                                pref_manager_.GetSubscriptions())) {
     // Ensure Brave News is enabled.
     pref_manager_.SetConfig(mojom::Configuration::New(true, true, true));
 
