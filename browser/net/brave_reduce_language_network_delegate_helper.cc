@@ -65,11 +65,11 @@ std::string FarbleAcceptLanguageHeader(
   // Add a fake q value after the language code.
   brave::FarblingPRNG prng;
 
-  auto* brave_farbling_service = BraveFarblingServiceFactory::GetForProfile(
-      profile->IsOffTheRecord() ? profile->GetOriginalProfile() : profile);
+  auto* brave_farbling_service =
+      BraveFarblingServiceFactory::GetForProfile(profile);
   if (brave_farbling_service &&
-      brave_farbling_service->MakePseudoRandomGeneratorForURL(
-          origin_url, profile->IsOffTheRecord(), &prng)) {
+      brave_farbling_service->MakePseudoRandomGeneratorForURL(origin_url,
+                                                              &prng)) {
     accept_language_string += kFakeQValues[prng() % kFakeQValues.size()];
   }
 

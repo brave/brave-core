@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 
 class Profile;
 namespace base {
@@ -19,7 +19,7 @@ class NoDestructor;
 namespace brave {
 class BraveFarblingService;
 
-class BraveFarblingServiceFactory : public BrowserContextKeyedServiceFactory {
+class BraveFarblingServiceFactory : public ProfileKeyedServiceFactory {
  public:
   BraveFarblingServiceFactory(const BraveFarblingServiceFactory&) = delete;
   BraveFarblingServiceFactory& operator=(const BraveFarblingServiceFactory&) =
@@ -34,7 +34,7 @@ class BraveFarblingServiceFactory : public BrowserContextKeyedServiceFactory {
   BraveFarblingServiceFactory();
   ~BraveFarblingServiceFactory() override;
 
-  // BrowserContextKeyedServiceFactory overrides:
+  // ProfileKeyedServiceFactory overrides:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };

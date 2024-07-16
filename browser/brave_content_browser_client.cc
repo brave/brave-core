@@ -898,20 +898,18 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
                   : nullptr;
       if (profile) {
         auto* brave_farbling_service =
-            brave::BraveFarblingServiceFactory::GetForProfile(
-                profile->IsOffTheRecord() ? profile->GetOriginalProfile()
-                                          : profile);
+            brave::BraveFarblingServiceFactory::GetForProfile(profile);
         if (brave_farbling_service) {
-          session_token =
-              brave_farbling_service->session_token(!profile->IsOffTheRecord());
+          session_token = brave_farbling_service->session_token();
         }
-        command_line->AppendSwitchASCII("brave_session_token",
-                                        base::NumberToString(session_token));
       }
       if (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
         command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
       }
     }
+
+    command_line->AppendSwitchASCII("brave_session_token",
+                                    base::NumberToString(session_token));
 
     // Switches to pass to render processes.
     static const char* const kSwitchNames[] = {

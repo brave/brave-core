@@ -75,8 +75,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     brave::BraveFarblingServiceFactory::GetForProfile(browser()->profile())
-        ->set_session_tokens_for_testing(kTestingSessionToken,
-                                         kTestingSessionToken);
+        ->set_session_tokens_for_testing(kTestingSessionToken);
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

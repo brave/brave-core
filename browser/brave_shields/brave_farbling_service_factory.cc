@@ -8,8 +8,6 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave {
@@ -28,9 +26,13 @@ BraveFarblingService* BraveFarblingServiceFactory::GetForProfile(
 }
 
 BraveFarblingServiceFactory::BraveFarblingServiceFactory()
-    : BrowserContextKeyedServiceFactory(
-          "BraveFarblingServiceFactory",
-          BrowserContextDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactory(
+          "BraveFarblingService",
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOwnInstance)
+              .WithGuest(ProfileSelection::kOwnInstance)
+              .WithSystem(ProfileSelection::kNone)
+              .Build()) {}
 
 BraveFarblingServiceFactory::~BraveFarblingServiceFactory() = default;
 
