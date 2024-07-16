@@ -52,7 +52,8 @@ import {
   getAssetIdKey,
   getTokenCollectionName,
   getTokensWithBalanceForAccounts,
-  groupSpamAndNonSpamNfts
+  groupSpamAndNonSpamNfts,
+  isTokenWatchOnly
 } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import {
@@ -405,6 +406,12 @@ export const NftCollection = ({
                       onSelectAsset={onSelectAsset}
                       isTokenHidden={isHidden}
                       isTokenSpam={isSpam}
+                      isWatchOnly={isTokenWatchOnly(
+                        nft,
+                        allAccounts,
+                        tokenBalancesRegistry,
+                        spamTokenBalancesRegistry
+                      )}
                     />
                   )
                 })}
