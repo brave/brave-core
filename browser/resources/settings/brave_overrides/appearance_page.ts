@@ -195,19 +195,14 @@ RegisterPolymerTemplateModifications({
       colorSchemeModeRow.remove()
     }
 
-    // Remove upstream side panel header and radio buttons from Appearance as we
+    // Remove upstream side panel header and dropdown from Appearance as we
     // have our own separate side panel section
-    const sidePanelSettingsRadioGroup =
-      templateContent.getElementById('side-panel')
-    if (!sidePanelSettingsRadioGroup) {
-      console.error(`[Settings] Couldn't find side-panel`)
-    } else {
-      if (sidePanelSettingsRadioGroup.parentNode &&
-          sidePanelSettingsRadioGroup.parentNode.previousElementSibling) {
-        sidePanelSettingsRadioGroup.parentNode.previousElementSibling.
-          setAttribute('hidden', 'true')
-      }
-      sidePanelSettingsRadioGroup.setAttribute('hidden', 'true')
+    const sidePanelPosition =
+      templateContent.getElementById('sidePanelPosition')
+    if (!sidePanelPosition) {
+      console.error(`[Settings] Couldn't find sidePanelPosition`)
+    } else if (sidePanelPosition.parentNode) {
+      sidePanelPosition.parentNode.setAttribute('hidden', 'true')
     }
   }
 })
