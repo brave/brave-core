@@ -66,13 +66,7 @@ class ResourceDownloadScriptHandler: TabContentScript {
     didReceiveScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    if !verifyMessage(message: message) {
-      assertionFailure("Missing required security token.")
-      replyHandler(nil, nil)
-      return
-    }
-
-    Task {
+    Task { @MainActor in
       do {
         let response = try DownloadedResourceResponse.from(message: message)
         await tab?.temporaryDocument?.onDocumentDownloaded(document: response, error: nil)
