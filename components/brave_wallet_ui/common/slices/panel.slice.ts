@@ -47,6 +47,11 @@ export const createPanelSlice = (initialState: PanelState = defaultState) => {
     reducers: {
       setSelectedPanel: (state, { payload }: PayloadAction<PanelTypes>) => {
         state.selectedPanel = payload
+
+        if (payload === 'main') {
+          // clear hardware wallet interaction error
+          state.hardwareWalletCode = undefined
+        }
       },
 
       setSiteConnectionPayload: (

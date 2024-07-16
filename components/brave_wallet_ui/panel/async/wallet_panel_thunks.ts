@@ -29,7 +29,6 @@ export const navigateTo = createAsyncThunk(
     storeCurrentAndPreviousPanel(payload, selectedPanel)
 
     if (payload === 'main') {
-      store.dispatch(PanelActions.setHardwareWalletInteractionError(undefined))
       const { panelHandler } = getWalletPanelApiProxy()
       panelHandler.setCloseOnDeactivate(true)
       panelHandler.showUI()
