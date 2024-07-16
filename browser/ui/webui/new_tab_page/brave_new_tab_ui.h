@@ -50,7 +50,9 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   void CreatePageHandler(
       mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
-          pending_page_handler) override;
+          pending_page_handler,
+      mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
+          pending_new_tab_metrics) override;
 
   std::unique_ptr<BraveNewTabPageHandler> page_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
