@@ -108,6 +108,26 @@ void RejectMismatchError(base::Value id,
                           false);
 }
 
+bool IsTypedDataStructure(const std::string& normalized_json_request) {
+  std::string address;
+  std::string message;
+  base::Value::Dict domain;
+  std::vector<uint8_t> domain_hash_out;
+  std::vector<uint8_t> primary_hash_out;
+
+  mojom::EthSignTypedDataMetaPtr meta;
+
+  if (ParseEthSignTypedDataParams(normalized_json_request, &address, &message,
+                                  &domain, EthSignTypedDataHelper::Version::kV4,
+                                  &domain_hash_out, &primary_hash_out, &meta) ||
+      ParseEthSignTypedDataParams(normalized_json_request, &address, &message,
+                                  &domain, EthSignTypedDataHelper::Version::kV3,
+                                  &domain_hash_out, &primary_hash_out, &meta)) {
+    return true;
+  }
+  return false;
+}
+
 }  // namespace
 
 EthereumProviderImpl::EthereumProviderImpl(
@@ -951,6 +971,10 @@ void EthereumProviderImpl::CommonRequestOrSendAsync(
       SendErrorOnRequest(error, error_message, std::move(callback),
                          std::move(id));
       return;
+    }
+    // Typed data should only be signed by eth_signTypedData
+    if (IsTypedDataStructure(normalized_json_request)) {
+      return RejectInvalidParams(std::move(id), std::move(callback));
     }
     SignMessage(address, message, std::move(callback), std::move(id));
   } else if (method == kPersonalEcRecover) {
