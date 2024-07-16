@@ -48,17 +48,22 @@ public final class WalletUserAssetGroup: NSManagedObject, CRUD {
     WalletUserAssetGroup.all(context: context ?? DataController.viewContext)
   }
 
-  public static func removeGroup(_ groupId: String, completion: (() -> Void)? = nil) {
-    WalletUserAssetGroup.deleteAll(
-      predicate: NSPredicate(format: "groupId == %@", groupId),
-      completion: completion
-    )
+  public static func removeGroup(_ groupId: String) async {
+    await withCheckedContinuation { continuation in
+      WalletUserAssetGroup.deleteAll(
+        predicate: NSPredicate(format: "groupId == %@", groupId)
+      ) {
+        continuation.resume()
+      }
+    }
   }
 
-  public static func removeAllGroup(completion: (() -> Void)? = nil) {
-    WalletUserAssetGroup.deleteAll(
-      completion: completion
-    )
+  public static func removeAllGroup() async {
+    await withCheckedContinuation { continuation in
+      WalletUserAssetGroup.deleteAll {
+        continuation.resume()
+      }
+    }
   }
 
   public static func groupExists(groupId: String) -> Bool {

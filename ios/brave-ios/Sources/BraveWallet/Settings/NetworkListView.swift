@@ -24,7 +24,9 @@ struct NetworkListView: View {
   }
 
   private func removeNetwork(_ network: BraveWallet.NetworkInfo) {
-    networkStore.removeCustomNetwork(network) { _ in }
+    Task { @MainActor in
+      await networkStore.removeCustomNetwork(network)
+    }
   }
 
   private var customNetworks: [BraveWallet.NetworkInfo] {

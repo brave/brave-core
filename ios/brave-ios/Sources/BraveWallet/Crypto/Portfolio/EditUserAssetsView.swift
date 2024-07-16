@@ -249,7 +249,8 @@ struct EditUserAssetsView: View {
   }
 
   private func removeCustomToken(_ token: BraveWallet.BlockchainToken) {
-    userAssetsStore.removeUserAsset(token: token) { [self] success in
+    Task { @MainActor in
+      let success = await userAssetsStore.removeUserAsset(token: token)
       isPresentingAssetRemovalError = !success
     }
   }

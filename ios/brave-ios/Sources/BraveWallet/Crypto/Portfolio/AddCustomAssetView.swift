@@ -349,70 +349,72 @@ struct AddCustomAssetView: View {
   }
 
   private func addCustomToken() {
-    let network = networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
-    let token: BraveWallet.BlockchainToken
-    switch selectedTokenType {
-    case .token:
-      token = BraveWallet.BlockchainToken(
-        contractAddress: addressInput,
-        name: nameInput,
-        logo: logo,
-        isCompressed: false,
-        isErc20: network.coin != .sol,
-        isErc721: false,
-        isErc1155: false,
-        splTokenProgram: .unknown,
-        isNft: false,
-        isSpam: false,
-        symbol: symbolInput,
-        decimals: Int32(decimalsInput)
-          ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
-        visible: true,
-        tokenId: "",
-        coingeckoId: coingeckoId,
-        chainId: network.chainId,
-        coin: network.coin
-      )
-    case .nft:
-      var tokenIdToHex = ""
-      if let tokenIdValue = Int16(tokenId) {
-        tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
-      }
-      if let knownERC721Token = tokenNeedsTokenId {
-        knownERC721Token.tokenId = tokenIdToHex
-        if let userSelectedNetworkId = networkSelectionStore.networkSelectionInForm?.chainId {
-          knownERC721Token.chainId = userSelectedNetworkId
-        }
-        if knownERC721Token.name != nameInput {
-          knownERC721Token.name = nameInput
-        }
-        if knownERC721Token.symbol != symbolInput {
-          knownERC721Token.symbol = symbolInput
-        }
-        token = knownERC721Token
-      } else {
+    Task { @MainActor in
+      let network =
+        networkSelectionStore.networkSelectionInForm ?? networkStore.defaultSelectedChain
+      let token: BraveWallet.BlockchainToken
+      switch selectedTokenType {
+      case .token:
         token = BraveWallet.BlockchainToken(
           contractAddress: addressInput,
           name: nameInput,
-          logo: "",
+          logo: logo,
           isCompressed: false,
-          isErc20: false,
-          isErc721: network.coin != .sol && !tokenIdToHex.isEmpty,
+          isErc20: network.coin != .sol,
+          isErc721: false,
           isErc1155: false,
           splTokenProgram: .unknown,
-          isNft: true,
+          isNft: false,
           isSpam: false,
           symbol: symbolInput,
-          decimals: 0,
+          decimals: Int32(decimalsInput)
+            ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
           visible: true,
-          tokenId: tokenIdToHex,
+          tokenId: "",
           coingeckoId: coingeckoId,
           chainId: network.chainId,
           coin: network.coin
         )
+      case .nft:
+        var tokenIdToHex = ""
+        if let tokenIdValue = Int16(tokenId) {
+          tokenIdToHex = "0x\(String(format: "%02x", tokenIdValue))"
+        }
+        if let knownERC721Token = tokenNeedsTokenId {
+          knownERC721Token.tokenId = tokenIdToHex
+          if let userSelectedNetworkId = networkSelectionStore.networkSelectionInForm?.chainId {
+            knownERC721Token.chainId = userSelectedNetworkId
+          }
+          if knownERC721Token.name != nameInput {
+            knownERC721Token.name = nameInput
+          }
+          if knownERC721Token.symbol != symbolInput {
+            knownERC721Token.symbol = symbolInput
+          }
+          token = knownERC721Token
+        } else {
+          token = BraveWallet.BlockchainToken(
+            contractAddress: addressInput,
+            name: nameInput,
+            logo: "",
+            isCompressed: false,
+            isErc20: false,
+            isErc721: network.coin != .sol && !tokenIdToHex.isEmpty,
+            isErc1155: false,
+            splTokenProgram: .unknown,
+            isNft: true,
+            isSpam: false,
+            symbol: symbolInput,
+            decimals: 0,
+            visible: true,
+            tokenId: tokenIdToHex,
+            coingeckoId: coingeckoId,
+            chainId: network.chainId,
+            coin: network.coin
+          )
+        }
       }
-    }
-    userAssetStore.addUserAsset(token) { [self] success in
+      let success = await userAssetStore.addUserAsset(token)
       if success {
         presentationMode.dismiss()
       } else {

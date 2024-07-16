@@ -15,13 +15,14 @@ public class AssetStore: Identifiable, ObservableObject, Equatable, WalletObserv
     didSet {
       // update user asset's visibility. `assetManager` will broadcast to all its user assets data
       // observers to update views. `assetManager` will also fetch user asset's balance
-      assetManager.updateUserAsset(
-        for: token,
-        visible: isVisible,
-        isSpam: false,
-        isDeletedByUser: false,
-        completion: nil
-      )
+      Task {
+        await assetManager.updateUserAsset(
+          for: token,
+          visible: isVisible,
+          isSpam: false,
+          isDeletedByUser: false
+        )
+      }
     }
   }
   var network: BraveWallet.NetworkInfo
@@ -198,28 +199,24 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     }
   }
 
-  func addUserAsset(
-    _ asset: BraveWallet.BlockchainToken,
-    completion: @escaping (_ success: Bool) -> Void
-  ) {
+  @MainActor func addUserAsset(
+    _ asset: BraveWallet.BlockchainToken
+  ) async -> Bool {
     if let existedAsset = assetManager.getUserAsset(asset), !existedAsset.isDeletedByUser {
-      completion(false)
+      return false
     } else {
-      assetManager.addUserAsset(asset) { [weak self] in
-        self?.update()
-        completion(true)
-      }
+      await assetManager.addUserAsset(asset)
+      update()
+      return true
     }
   }
 
-  func removeUserAsset(
-    token: BraveWallet.BlockchainToken,
-    completion: @escaping (_ success: Bool) -> Void
-  ) {
-    assetManager.removeUserAsset(token) { [weak self] in
-      self?.update()
-      completion(true)
-    }
+  @MainActor func removeUserAsset(
+    token: BraveWallet.BlockchainToken
+  ) async -> Bool {
+    await assetManager.removeUserAsset(token)
+    update()
+    return true
   }
 
   func tokenInfo(

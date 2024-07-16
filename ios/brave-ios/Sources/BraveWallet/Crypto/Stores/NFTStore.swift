@@ -351,11 +351,10 @@ public class NFTStore: ObservableObject, WalletObserverStore {
                     )
                     balanceForNFT = Int(balanceInDouble ?? 0)
                     nftBalances.merge(with: [account.id: balanceForNFT ?? 0])
-                    assetManager.updateBalance(
+                    await assetManager.updateBalance(
                       for: nft,
                       account: account.id,
-                      balance: "\(balanceForNFT ?? 0)",
-                      completion: nil
+                      balance: "\(balanceForNFT ?? 0)"
                     )
                   }
                   return [nft.id: nftBalances]
@@ -726,28 +725,14 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     isSpam: Bool,
     isDeletedByUser: Bool
   ) {
-    assetManager.updateUserAsset(
-      for: token,
-      visible: visible,
-      isSpam: isSpam,
-      isDeletedByUser: isDeletedByUser
-    ) { [weak self] in
-      guard let self else { return }
-      let selectedAccounts = self.filters.accounts.filter(\.isSelected).map(\.model)
-      let selectedNetworks = self.filters.networks.filter(\.isSelected).map(\.model)
-
-      let unionedSpamNFTs = computeSpamNFTs(
-        selectedNetworks: selectedNetworks,
-        selectedAccounts: selectedAccounts,
-        simpleHashSpamNFTs: simpleHashSpamNFTs
+    Task { @MainActor in
+      await assetManager.updateUserAsset(
+        for: token,
+        visible: visible,
+        isSpam: isSpam,
+        isDeletedByUser: isDeletedByUser
       )
-
-      (userNFTGroups, _) = buildNFTGroupModels(
-        groupBy: filters.groupBy,
-        spams: unionedSpamNFTs,
-        selectedAccounts: selectedAccounts,
-        selectedNetworks: selectedNetworks
-      )
+      update()
     }
   }
 

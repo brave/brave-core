@@ -327,9 +327,6 @@ struct NFTView: View {
                   for: selectedNFTViewModel.token,
                   metadata: nftMetadata
                 )
-              },
-              onNFTStatusUpdated: {
-                nftStore.update()
               }
             )
           }
