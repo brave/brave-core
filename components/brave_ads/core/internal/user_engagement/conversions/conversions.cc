@@ -76,12 +76,6 @@ void Conversions::GetCreativeSetConversionsCallback(
     const bool success,
     const CreativeSetConversionList& creative_set_conversions) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to get creative set conversions");
-    base::debug::DumpWithoutCrashing();
-
     return BLOG(0, "Failed to get creative set conversions");
   }
 
