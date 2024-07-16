@@ -6,6 +6,24 @@
 import("//brave/build/config.gni")
 import("//testing/test.gni")
 
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "variations_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//components/variations",
+    "//components/variations:test_support",
+    "//components/variations/service",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
 source_set("brave_metrics_unit_tests") {
   testonly = true
 
