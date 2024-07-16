@@ -10,6 +10,7 @@
 namespace metrics::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kMetricsServiceDeltaSnapshotInBg, base::FEATURE_DISABLED_BY_DEFAULT},
     {kStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
