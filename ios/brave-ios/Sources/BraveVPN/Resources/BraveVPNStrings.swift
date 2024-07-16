@@ -302,7 +302,7 @@ extension Strings {
       NSLocalizedString(
         "vpn.settingsKillSwitchToggleErrorTitle",
         bundle: .module,
-        value: "Couldnt Toggle Kill Switch",
+        value: "Could not Toggle Kill Switch",
         comment: "Title for the error while toggling vpn kill switch"
       )
 
@@ -310,7 +310,7 @@ extension Strings {
       NSLocalizedString(
         "vpn.settingsKillSwitchToggleErrorDescription",
         bundle: .module,
-        value: "Description of the error goes here. TO BE CONFIRMED",
+        value: "An error happened while enabling the VPN Connection",
         comment: "Description for the error while toggling vpn kill switch"
       )
 
