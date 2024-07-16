@@ -5,14 +5,12 @@
 
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
-#include <vector>
+#include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_news {

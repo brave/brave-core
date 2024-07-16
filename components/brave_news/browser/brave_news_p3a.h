@@ -12,7 +12,6 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 
-class PrefRegistrySimple;
 class PrefService;
 
 namespace brave_news::p3a {
@@ -58,10 +57,6 @@ class NewsMetrics : public BraveNewsPrefManager::PrefObserver {
 
   NewsMetrics(const NewsMetrics&) = delete;
   NewsMetrics& operator=(const NewsMetrics&) = delete;
-
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-  static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   void RecordAtInit();
   void RecordAtSessionStart();

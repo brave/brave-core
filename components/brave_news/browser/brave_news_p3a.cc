@@ -12,12 +12,11 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
-#include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_news::p3a {
@@ -306,30 +305,6 @@ void NewsMetrics::RecordWeeklySessionCount(bool is_add) {
       AddToWeeklyStorageAndGetSum(prefs::kBraveNewsWeeklySessionCount, is_add);
   p3a_utils::RecordToHistogramBucket(kWeeklySessionCountHistogramName, kBuckets,
                                      total_session_count);
-}
-
-void NewsMetrics::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(prefs::kBraveNewsWeeklySessionCount);
-  registry->RegisterListPref(prefs::kBraveNewsWeeklyDisplayAdViewedCount);
-  registry->RegisterListPref(prefs::kBraveNewsWeeklyAddedDirectFeedsCount);
-  registry->RegisterListPref(prefs::kBraveNewsTotalCardViews);
-  registry->RegisterListPref(prefs::kBraveNewsTotalCardVisits);
-  registry->RegisterListPref(prefs::kBraveNewsVisitDepthSum);
-  registry->RegisterListPref(prefs::kBraveNewsTotalSidebarFilterUsages);
-  p3a_utils::RegisterFeatureUsagePrefs(
-      registry, prefs::kBraveNewsFirstSessionTime,
-      prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay, nullptr,
-      nullptr);
-  registry->RegisterBooleanPref(prefs::kBraveNewsWasEverEnabled, false);
-}
-
-void NewsMetrics::RegisterProfilePrefsForMigration(
-    PrefRegistrySimple* registry) {
-  // Reserved for future deprecated P3A-related prefs
-}
-
-void NewsMetrics::MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  // Reserved for future deprecated P3A-related prefs
 }
 
 void NewsMetrics::OnConfigChanged() {

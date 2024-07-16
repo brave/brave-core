@@ -14,11 +14,11 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/locales_helper.h"
 
 namespace brave_news {
 
 using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
-using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
 class PublishersController {
  public:
