@@ -56,24 +56,8 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   int index = 0;
   for (const auto& transaction : transactions) {
     if (!transaction.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_transaction_id",
-                            transaction.id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_creative_instance_id",
-                            transaction.creative_instance_id.empty());
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
-                                ToString(transaction.ad_type));
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
-                                ToString(transaction.confirmation_type));
-      SCOPED_CRASH_KEY_BOOL("Issue32066", "undefined_created_at",
-                            !transaction.created_at);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid transaction");
       base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid transaction");
-
       continue;
     }
 
@@ -138,24 +122,8 @@ void GetCallback(GetTransactionsCallback callback,
   for (const auto& record : command_response->result->get_records()) {
     const TransactionInfo transaction = GetFromRecord(&*record);
     if (!transaction.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_transaction_id",
-                            transaction.id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue32066", "empty_creative_instance_id",
-                            transaction.creative_instance_id.empty());
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
-                                ToString(transaction.ad_type));
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
-                                ToString(transaction.confirmation_type));
-      SCOPED_CRASH_KEY_BOOL("Issue32066", "undefined_created_at",
-                            !transaction.created_at);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                "Invalid transaction");
       base::debug::DumpWithoutCrashing();
-
       BLOG(0, "Invalid transaction");
-
       continue;
     }
 
