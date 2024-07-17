@@ -37,8 +37,5 @@ cargo_crate("lib") {
     "//brave/third_party/rust/ppv_lite86/v0_2:lib",
     "//brave/third_party/rust/rand_core/v0_5:lib",
   ]
-  features = [
-    "simd",
-    "std",
-  ]
+  features = [ "std" ]
 }

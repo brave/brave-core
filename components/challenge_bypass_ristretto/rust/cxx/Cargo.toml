@@ -6,10 +6,10 @@ edition = "2018"
 license = "MPL-2.0"
 
 [dependencies]
-challenge-bypass-ristretto = { version = "1.0.2", features = ["base64"] }
+challenge-bypass-ristretto = { version = "2.0.0", features = ["base64"] }
 cxx = { version = "1.0" }
 derive_more = "0.99"
-hmac = "0.10"
+hmac = "0.12"
 lazy_static = "1.4.0"
-rand = "0.7"
-sha2 = "0.9"
+rand = { version = "0.8", features = ["getrandom"] }
+sha2 = "0.10"
