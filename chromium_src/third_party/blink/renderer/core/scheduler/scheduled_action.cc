@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "third_party/blink/renderer/modules/scheduler/scheduled_action.h"
+#include "third_party/blink/renderer/core/scheduler/scheduled_action.h"
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
 #include "brave/v8/include/v8-isolate-page-graph-utils.h"
@@ -23,7 +23,7 @@
 
 #define ScriptFetchOptions GetScriptFetchOptions
 
-#include "src/third_party/blink/renderer/modules/scheduler/scheduled_action.cc"
+#include "src/third_party/blink/renderer/core/scheduler/scheduled_action.cc"
 
 #undef ScriptFetchOptions
 #undef BRAVE_SCHEDULED_ACTION_STRING_HANDLER_CONSTRUCTOR
