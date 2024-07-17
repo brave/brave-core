@@ -8,10 +8,10 @@ import Shared
 import UIKit
 
 @objc protocol FavoriteCellDelegate {
-  func editFavorite(_ favoriteCell: FavoriteCell)
+  func editFavorite(_ favoriteCell: FavoritesCell)
 }
 
-class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
+class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
   static let imageAspectRatio: Float = 1.0
   static let placeholderImage = UIImage(
     named: "defaultTopSiteIcon",
@@ -117,7 +117,7 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
   }
 }
 
-extension FavoriteCell: UIPointerInteractionDelegate {
+extension FavoritesCell: UIPointerInteractionDelegate {
   func pointerInteraction(
     _ interaction: UIPointerInteraction,
     styleFor region: UIPointerRegion

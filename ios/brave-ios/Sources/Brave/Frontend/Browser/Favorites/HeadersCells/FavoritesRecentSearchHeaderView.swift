@@ -8,7 +8,7 @@ import Foundation
 import Shared
 import UIKit
 
-class RecentSearchHeaderView: UICollectionReusableView {
+class FavoritesRecentSearchHeaderView: UICollectionReusableView {
   private struct DesignUX {
     static let buttonHeight = 40.0
     static let paddingX = 15.0

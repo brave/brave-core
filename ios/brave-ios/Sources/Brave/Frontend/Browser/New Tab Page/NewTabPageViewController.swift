@@ -1578,7 +1578,7 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     let itemProvider = NSItemProvider(object: "\(indexPath)" as NSString)
     let dragItem = UIDragItem(itemProvider: itemProvider).then {
       $0.previewProvider = { () -> UIDragPreview? in
-        guard let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell else {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell else {
           return nil
         }
         return UIDragPreview(view: cell.imageView)
@@ -1668,7 +1668,7 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     let previewParameters = UIDragPreviewParameters().then {
       $0.backgroundColor = .clear
 
-      if let cell = collectionView.cellForItem(at: indexPath) as? FavoriteCell {
+      if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell {
         $0.visiblePath = UIBezierPath(roundedRect: cell.imageView.frame, cornerRadius: 8)
       }
     }

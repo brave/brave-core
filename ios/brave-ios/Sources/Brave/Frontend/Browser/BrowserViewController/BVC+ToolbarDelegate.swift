@@ -720,11 +720,9 @@ extension BrowserViewController: TopToolbarDelegate {
 
   private func displayFavoritesController() {
     if favoritesController == nil {
-      let tabType = TabType.of(tabManager.selectedTab)
       let favoritesController = FavoritesViewController(
-        tabType: tabType,
         privateBrowsingManager: privateBrowsingManager,
-        action: { [weak self] bookmark, action in
+        bookmarkAction: { [weak self] bookmark, action in
           self?.handleFavoriteAction(favorite: bookmark, action: action)
         },
         recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in

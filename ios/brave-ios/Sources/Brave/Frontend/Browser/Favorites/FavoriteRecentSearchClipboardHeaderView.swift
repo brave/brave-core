@@ -8,7 +8,7 @@ import Foundation
 import Shared
 import UIKit
 
-class RecentSearchClipboardHeaderView: UICollectionReusableView {
+class FavoriteRecentSearchClipboardHeaderView: UICollectionReusableView {
   let button = UIButton().then {
     let image = UIImage(named: "recent-search-link", in: .module, compatibleWith: nil)!
     let paddingX: CGFloat = 15.0
