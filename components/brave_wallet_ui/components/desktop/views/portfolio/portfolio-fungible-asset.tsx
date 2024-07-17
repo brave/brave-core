@@ -82,8 +82,7 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
-  useUpdateUserAssetVisibleMutation,
-  walletApi
+  useUpdateUserAssetVisibleMutation
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
@@ -394,19 +393,10 @@ export const PortfolioFungibleAsset = () => {
       token: selectedAssetFromParams,
       isVisible: false
     }).unwrap()
-    dispatch(
-      walletApi.util.invalidateTags([
-        'TokenBalances',
-        'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance',
-        'HardwareAccountDiscoveryBalance'
-      ])
-    )
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
   }, [
-    dispatch,
     history,
     selectedAssetFromParams,
     showHideTokenModel,

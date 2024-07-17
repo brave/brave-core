@@ -121,8 +121,7 @@ export const tokenEndpoints = ({
         { type: 'UserBlockchainTokens', id: getAssetIdKey(tokenArg) },
         'TokenBalances',
         'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance',
-        'PricesHistory'
+        'AccountTokenCurrentBalance'
       ]
     }),
 
@@ -331,7 +330,11 @@ export const tokenEndpoints = ({
               {
                 type: 'UserBlockchainTokens',
                 id: getAssetIdKey(arg.token)
-              }
+              },
+              'TokenBalances',
+              'TokenBalancesForChainId',
+              'AccountTokenCurrentBalance',
+              'HardwareAccountDiscoveryBalance'
             ]
           : ['UNKNOWN_ERROR']
     }),
