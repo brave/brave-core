@@ -770,7 +770,13 @@ bool ShouldMigrateRemovedPreloadedNetwork(PrefService* prefs,
     }
   }
 
-  return network_manager.GetCurrentChainId(coin, std::nullopt) == chain_id;
+  const auto& selected_default_networks =
+      prefs->GetDict(kBraveWalletSelectedNetworks);
+  const std::string* selected_chain_id =
+      selected_default_networks.FindString(GetPrefKeyForCoinType(coin));
+
+  return selected_chain_id &&
+         base::ToLowerASCII(*selected_chain_id) == chain_id;
 }
 
 void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
