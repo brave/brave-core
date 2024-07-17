@@ -3,11 +3,36 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Foundation
 import PassKit
 import Shared
 import WebKit
+
+extension BrowserViewController: CWVDownloadTaskDelegate {
+  public func downloadTask(
+    _ downloadTask: CWVDownloadTask,
+    didFinishWithError error: (any Error)?
+  ) {
+    if let error {
+      // display an error
+      let alertController = UIAlertController(
+        title: Strings.unableToAddPassErrorTitle,
+        message: Strings.unableToAddPassErrorMessage,
+        preferredStyle: .alert
+      )
+      alertController.addAction(
+        UIAlertAction(title: Strings.unableToAddPassErrorDismiss, style: .cancel) { (action) in
+          // Do nothing.
+        }
+      )
+      present(alertController, animated: true, completion: nil)
+      return
+    }
+    // FIXME: Not sure what will go here yet since I think we only used WKDownloadDelegate for passkit which we cant do anymore (likely need to use PasskitTabHelper)
+  }
+}
 
 extension BrowserViewController: WKDownloadDelegate {
 

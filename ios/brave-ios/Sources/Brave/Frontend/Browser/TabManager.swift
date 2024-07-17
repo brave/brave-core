@@ -134,8 +134,7 @@ class TabManager: NSObject {
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
     super.init()
 
-    // FIXME: Nav Delegate
-//    self.navDelegate.tabManager = self
+    self.navDelegate.tabManager = self
     addNavigationDelegate(self)
 
     Preferences.Shields.blockImages.observe(from: self)
@@ -1487,66 +1486,49 @@ class TabManager: NSObject {
 }
 
 extension TabManager: CWVNavigationDelegate {
+  func webViewDidStartProvisionalNavigation(_ webView: CWVWebView) {
+    if let tab = self[webView] {
+      tab.contentBlocker.clearPageStats()
+    }
+  }
 
-}
+  func webViewDidFinishNavigation(_ webView: CWVWebView) {
+    // only store changes if this is not an error page
+    // as we current handle tab restore as error page redirects then this ensures that we don't
+    // call storeChanges unnecessarily on startup
 
-extension TabManager: WKNavigationDelegate {
-  // FIXME: Nav Delegate
-//
-//  // Note the main frame JSContext (i.e. document, window) is not available yet.
-//  func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-//    if let tab = self[webView] {
-//      tab.contentBlocker.clearPageStats()
-//    }
-//  }
-//
-//  // The main frame JSContext is available, and DOM parsing has begun.
-//  // Do not excute JS at this point that requires running prior to DOM parsing.
-//  func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-//  }
-//
-//  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//    // only store changes if this is not an error page
-//    // as we current handle tab restore as error page redirects then this ensures that we don't
-//    // call storeChanges unnecessarily on startup
-//
-//    if let url = webView.lastCommittedURL {
-//      // tab restore uses internal pages,
-//      // so don't call storeChanges unnecessarily on startup
-//      if InternalURL(url)?.isSessionRestore == true {
-//        return
-//      }
-//
-//      if let tab = tabForWebView(webView) {
-//        if Preferences.Privacy.privateBrowsingOnly.value
-//          || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
-//        {
-//          return
-//        }
-//
-//        preserveScreenshot(for: tab)
-//        saveTab(tab)
-//      }
-//    }
-//  }
-//
-//  func tabForWebView(_ webView: WKWebView) -> Tab? {
-//    objc_sync_enter(self)
-//    defer { objc_sync_exit(self) }
-//
-//    return allTabs.first(where: { $0.webView === webView })
-//  }
-//
-//  func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-//  }
-//
-//  /// Called when the WKWebView's content process has gone away. If this happens for the currently selected tab
-//  /// then we immediately reload it.
-//  func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-//    if let tab = selectedTab, tab.webView == webView {
-//      webView.reload()
-//    }
-//  }
+    if let url = webView.lastCommittedURL {
+      // tab restore uses internal pages,
+      // so don't call storeChanges unnecessarily on startup
+      if InternalURL(url)?.isSessionRestore == true {
+        return
+      }
+
+      if let tab = tabForWebView(webView) {
+        if Preferences.Privacy.privateBrowsingOnly.value
+            || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
+        {
+          return
+        }
+
+        preserveScreenshot(for: tab)
+        saveTab(tab)
+      }
+    }
+  }
+
+  func tabForWebView(_ webView: CWVWebView) -> Tab? {
+    objc_sync_enter(self)
+    defer { objc_sync_exit(self) }
+
+    return allTabs.first(where: { $0.webView == webView })
+  }
+
+  func webViewWebContentProcessDidTerminate(_ webView: CWVWebView) {
+    if let tab = selectedTab, tab.webView == webView {
+      webView.reload()
+    }
+  }
 }
 
 // MARK: - TabManagerDelegate optional methods.

@@ -38,7 +38,9 @@ class BraveWebView: CWVWebView {
     }
     CWVWebView.webInspectorEnabled = true
     CWVWebView.customUserAgent = UserAgent.userAgentForDesktopMode
-    CWVWebView.chromeContextMenuEnabled = false
+    // For some reason this must be true for context menus to work correctly even though it should
+    // just be forwarding WKWebView's ui delegate method by default. Needs more investigation
+    CWVWebView.chromeContextMenuEnabled = true
     CWVWebView.skipAccountStorageCheckEnabled = true
 
     super.init(

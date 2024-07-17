@@ -42,11 +42,14 @@ extension CWVNavigationType: CustomDebugStringConvertible {
   }
 
   public static func == (lhs: CWVNavigationType, rhs: CWVNavigationType) -> Bool {
-    lhs.coreType.rawValue == rhs.coreType.rawValue
+    assert(lhs.rawValue <= CWVNavigationType.lastCore.rawValue, "\(lhs) is a qualifier, not a core type, replace with a `contains()` check`")
+    assert(rhs.rawValue <= CWVNavigationType.lastCore.rawValue, "\(rhs) is a qualifier, not a core type, replace with a `contains()` check`")
+    return lhs.coreType.rawValue == rhs.coreType.rawValue
   }
 
   public func contains(_ member: CWVNavigationType) -> Bool {
-    qualifiers.rawValue & member.rawValue != 0
+    assert(member.rawValue > CWVNavigationType.lastCore.rawValue, "\(member) is a core type, not a qualifier, replace with an equality check")
+    return qualifiers.rawValue & member.rawValue != 0
   }
 
   // FIXME: Probably need to implement rest of Set-methods
@@ -129,6 +132,9 @@ extension UTType {
 extension BrowserViewController: CWVNavigationDelegate {
   public func webViewDidCommitNavigation(_ webView: CWVWebView) {
     guard let tab = tab(for: webView) else { return }
+    
+    // Reset the stored http request now that load has committed.
+    tab.upgradedHTTPSRequest = nil
 
     // Set the committed url which will also set tab.url
     tab.committedURL = webView.lastCommittedURL
@@ -368,9 +374,7 @@ extension BrowserViewController: CWVNavigationDelegate {
     }
 
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    tab?.rewardsReportingState.isNewNavigation =
-    !navigationAction.navigationType.contains(.forwardBack) &&
-    !navigationAction.navigationType.contains(.reload) // FIXME: Test
+    tab?.rewardsReportingState.isNewNavigation = navigationAction.navigationType.isNewNavigation // FIXME: Test
     tab?.currentRequestURL = requestURL
 
     // Website redirection logic
@@ -898,7 +902,132 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // If none of our helpers are responsible for handling this response,
     // just let the webview handle it as normal.
-    return .download
+    return .allow
+  }
+
+  public func webViewDidFinishNavigation(_ webView: CWVWebView) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    // Inject app's IAP receipt for Brave SKUs if necessary
+    if !tab.isPrivate {
+      Task { @MainActor in
+        await BraveSkusAccountLink.injectLocalStorage(webView: webView)
+      }
+    }
+
+    // Second attempt to inject results to the BraveSearch.
+    // This will be called if we got fallback results faster than
+    // the page navigation.
+    if let braveSearchManager = tab.braveSearchManager {
+      // Fallback results are ready before navigation finished,
+      // they must be injected here.
+      if !braveSearchManager.fallbackQueryResultsPending {
+        tab.injectResults()
+      }
+    } else {
+      // If not applicable, null results must be injected regardless.
+      // The website waits on us until this is called with either results or null.
+      tab.injectResults()
+    }
+
+    navigateInTab(tab: tab)
+    rewards.reportTabUpdated(
+      tab: tab,
+      isSelected: tabManager.selectedTab == tab,
+      isPrivate: privateBrowsingManager.isPrivateBrowsing
+    )
+    tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    // Reset `rewardsReportingState` tab property so that listeners
+    // can be notified of tab changes when a new navigation happens.
+    tab.rewardsReportingState = RewardsTabChangeReportingState()
+
+    Task {
+      await tab.updateEthereumProperties()
+      await tab.updateSolanaProperties()
+    }
+
+    if webView.visibleURL.isLocal == false {
+      // Set rewards inter site url as new page load url.
+      tab.rewardsXHRLoadURL = webView.visibleURL
+    }
+
+    if tab.walletEthProvider != nil {
+      tab.emitEthereumEvent(.connect)
+    }
+
+    if let lastCommittedURL = webView.lastCommittedURL {
+      maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
+    }
+
+    // Added this method to determine long press menu actions better
+    // Since these actions are depending on tabmanager opened WebsiteCount
+    updateToolbarUsingTabManager(tabManager)
+
+    recordFinishedPageLoadP3A()
+  }
+
+  // FIXME: Need to refactor this logic into BraveWebClient::PrepareErrorPage + CWVWebView's handleSSLErrorWith delegate method
+  public func webView(_ webView: CWVWebView, didFailNavigationWithError error: any Error) {
+    guard let tab = tab(for: webView), let webView = tab.webView else { return }
+
+    // Handle invalid upgrade to https
+    if let responseURL = webView.lastCommittedURL,
+       let response = handleInvalidHTTPSUpgrade(
+        tab: tab,
+        responseURL: responseURL
+       )
+    {
+      tab.loadRequest(response)
+      return
+    }
+
+    // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
+    // to open an external application and hand it over to UIApplication.openURL(). The result
+    // will be that we switch to the external app, for example the app store, while keeping the
+    // original web page in the tab instead of replacing it with an error page.
+    var error = error as NSError
+    if error.domain == "WebKitErrorDomain" && error.code == 102 {
+      return
+    }
+
+    if checkIfWebContentProcessHasCrashed(webView, error: error) {
+      return
+    }
+
+    if let sslPinningError = tab.sslPinningError {
+      error = sslPinningError as NSError
+    }
+
+    if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
+      if tab === tabManager.selectedTab {
+        updateToolbarCurrentURL(tab.url?.displayURL)
+        updateWebViewPageZoom(tab: tab)
+      }
+      return
+    }
+
+    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
+
+      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
+      // Reseting the progress bar in case there is an error is necessary
+      if tab == self.tabManager.selectedTab {
+        self.topToolbar.hideProgressBar()
+      }
+
+      // If the local web server isn't working for some reason (Brave cellular data is
+      // disabled in settings, for example), we'll fail to load the session restore URL.
+      // We rely on loading that page to get the restore callback to reset the restoring
+      // flag, so if we fail to load that page, reset it here.
+      if InternalURL(url)?.aboutComponent == "sessionrestore" {
+        tab.restoring = false
+      }
+    }
+  }
+
+  public func webView(_ webView: CWVWebView, didRequestDownloadWith task: CWVDownloadTask) {
+    task.delegate = self
+    let temporaryDir = FileManager.default.temporaryDirectory.appending(path: task.suggestedFileName)
+    task.startDownloadToLocalFile(atPath: temporaryDir.path())
   }
 }
 
@@ -966,347 +1095,6 @@ extension BrowserViewController {
       tabManager.removeTab(tab)
     }
   }
-
-  /*
-  public func webView(
-    _ webView: WKWebView,
-    navigationAction: WKNavigationAction,
-    didBecome download: WKDownload
-  ) {
-    Logger.module.error(
-      "ERROR: Should Never download NavigationAction since we never return .download from decidePolicyForAction."
-    )
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    navigationResponse: WKNavigationResponse,
-    didBecome download: WKDownload
-  ) {
-    download.delegate = self
-  }
-
-  @MainActor
-  public func webView(
-    _ webView: WKWebView,
-    respondTo challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-
-    // If this is a certificate challenge, see if the certificate has previously been
-    // accepted by the user.
-    let host = challenge.protectionSpace.host
-    let origin = "\(host):\(challenge.protectionSpace.port)"
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-      let trust = challenge.protectionSpace.serverTrust
-    {
-
-      let cert = await Task<SecCertificate?, Never>.detached {
-        return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first
-      }.value
-
-      if let cert = cert, profile.certStore.containsCertificate(cert, forOrigin: origin) {
-        return (.useCredential, URLCredential(trust: trust))
-      }
-    }
-
-    // Certificate Pinning
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-      if let serverTrust = challenge.protectionSpace.serverTrust {
-        let host = challenge.protectionSpace.host
-        let port = challenge.protectionSpace.port
-
-        let result = await BraveCertificateUtils.verifyTrust(serverTrust, host: host, port: port)
-        let certificateChain = await Task<[SecCertificate], Never>.detached {
-          return SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
-        }.value
-
-        // Cert is valid and should be pinned
-        if result == 0 {
-          return (.useCredential, URLCredential(trust: serverTrust))
-        }
-
-        // Cert is valid and should not be pinned
-        // Let the system handle it and we'll show an error if the system cannot validate it
-        if result == Int32.min {
-          // Cert is POTENTIALLY invalid and cannot be pinned
-
-          // Let WebKit handle the request and validate the cert
-          // This is the same as calling `BraveCertificateUtils.evaluateTrust` but with more error info provided by WebKit
-          return (.performDefaultHandling, nil)
-        }
-
-        // Cert is invalid and cannot be pinned
-        Logger.module.error("CERTIFICATE_INVALID")
-        let errorCode = CFNetworkErrors.braveCertificatePinningFailed.rawValue
-
-        let underlyingError = NSError(
-          domain: kCFErrorDomainCFNetwork as String,
-          code: Int(errorCode),
-          userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)]
-        )
-
-        let error = NSError(
-          domain: kCFErrorDomainCFNetwork as String,
-          code: Int(errorCode),
-          userInfo: [
-            NSURLErrorFailingURLErrorKey: webView.url as Any,
-            "NSErrorPeerCertificateChainKey": certificateChain,
-            NSUnderlyingErrorKey: underlyingError,
-          ]
-        )
-
-        // Handle the error later in `didFailProvisionalNavigation`
-        self.tab(for: webView)?.sslPinningError = error
-
-        return (.cancelAuthenticationChallenge, nil)
-      }
-    }
-
-    // URLAuthenticationChallenge isn't Sendable atm
-    let protectionSpace = challenge.protectionSpace
-    let credential = challenge.proposedCredential
-    let previousFailureCount = challenge.previousFailureCount
-
-    guard
-      protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
-        || protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest
-        || protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-      let tab = tab(for: webView)
-    else {
-      return (.performDefaultHandling, nil)
-    }
-
-    // The challenge may come from a background tab, so ensure it's the one visible.
-    tabManager.selectTab(tab)
-    tab.isDisplayingBasicAuthPrompt = true
-    defer { tab.isDisplayingBasicAuthPrompt = false }
-
-    let isHidden = webView.isHidden
-    defer { webView.isHidden = isHidden }
-
-    // Manually trigger a `url` change notification
-    if host != tab.url?.host {
-      webView.isHidden = true
-
-      observeValue(
-        forKeyPath: KVOConstants.url.keyPath,
-        of: webView,
-        change: [.newKey: webView.url as Any, .kindKey: 1],
-        context: nil
-      )
-    }
-
-    do {
-      let credentials = try await Authenticator.handleAuthRequest(
-        self,
-        credential: credential,
-        protectionSpace: protectionSpace,
-        previousFailureCount: previousFailureCount
-      )
-
-      if BasicAuthCredentialsManager.validDomains.contains(host) {
-        BasicAuthCredentialsManager.setCredential(
-          origin: origin,
-          credential: credentials.credentials
-        )
-      }
-
-      return (.useCredential, credentials.credentials)
-    } catch {
-      return (.rejectProtectionSpace, nil)
-    }
-  }
-
-  public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    guard let tab = tab(for: webView) else { return }
-
-    // Reset the stored http request now that load has committed.
-    tab.upgradedHTTPSRequest = nil
-
-    // Set the committed url which will also set tab.url
-    tab.committedURL = webView.url
-
-    // Server Trust and URL is also updated in didCommit
-    // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
-    // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
-    // So manually trigger it with the current trust.
-
-    observeValue(
-      forKeyPath: KVOConstants.serverTrust.keyPath,
-      of: webView,
-      change: [.newKey: webView.serverTrust as Any, .kindKey: 1],
-      context: nil
-    )
-
-    // Need to evaluate Night mode script injection after url is set inside the Tab
-    tab.nightMode = Preferences.General.nightModeEnabled.value
-    tab.clearSolanaConnectedAccounts()
-
-    // Providers need re-initialized when changing origin to align with desktop in
-    // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
-    // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
-    if let provider = braveCore.braveWalletAPI.ethereumProvider(
-      with: tab,
-      isPrivateBrowsing: tab.isPrivate
-    ) {
-      // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
-      // on initialization. Fetching allowed accounts requires the origin; so we need to
-      // initialize after `commitedURL` / `url` are updated above
-      tab.walletEthProvider = provider
-      tab.walletEthProvider?.initialize(eventsListener: tab)
-    }
-    if let provider = braveCore.braveWalletAPI.solanaProvider(
-      with: tab,
-      isPrivateBrowsing: tab.isPrivate
-    ) {
-      tab.walletSolProvider = provider
-      tab.walletSolProvider?.initialize(eventsListener: tab)
-    }
-
-    rewards.reportTabNavigation(tabId: tab.rewardsId)
-
-    // The toolbar and url bar changes can not be
-    // on different tab than selected. Or the webview
-    // previews and etc will effect the status
-    guard tabManager.selectedTab === tab else {
-      return
-    }
-
-    updateUIForReaderHomeStateForTab(tab)
-    updateBackForwardActionStatus(for: webView)
-  }
-
-  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    if let tab = tabManager[webView] {
-      // Inject app's IAP receipt for Brave SKUs if necessary
-      if !tab.isPrivate {
-        Task { @MainActor in
-          await BraveSkusAccountLink.injectLocalStorage(webView: webView)
-        }
-      }
-
-      // Second attempt to inject results to the BraveSearch.
-      // This will be called if we got fallback results faster than
-      // the page navigation.
-      if let braveSearchManager = tab.braveSearchManager {
-        // Fallback results are ready before navigation finished,
-        // they must be injected here.
-        if !braveSearchManager.fallbackQueryResultsPending {
-          tab.injectResults()
-        }
-      } else {
-        // If not applicable, null results must be injected regardless.
-        // The website waits on us until this is called with either results or null.
-        tab.injectResults()
-      }
-
-      navigateInTab(tab: tab, to: navigation)
-      rewards.reportTabUpdated(
-        tab: tab,
-        isSelected: tabManager.selectedTab == tab,
-        isPrivate: privateBrowsingManager.isPrivateBrowsing
-      )
-      tab.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
-      // Reset `rewardsReportingState` tab property so that listeners
-      // can be notified of tab changes when a new navigation happens.
-      tab.rewardsReportingState = RewardsTabChangeReportingState()
-
-      Task {
-        await tab.updateEthereumProperties()
-        await tab.updateSolanaProperties()
-      }
-
-      if webView.url?.isLocal == false {
-        // Set rewards inter site url as new page load url.
-        tab.rewardsXHRLoadURL = webView.url
-      }
-
-      if tab.walletEthProvider != nil {
-        tab.emitEthereumEvent(.connect)
-      }
-
-      if let lastCommittedURL = tab.committedURL {
-        maybeRecordBraveSearchDailyUsage(url: lastCommittedURL)
-      }
-    }
-
-    // Added this method to determine long press menu actions better
-    // Since these actions are depending on tabmanager opened WebsiteCount
-    updateToolbarUsingTabManager(tabManager)
-
-    recordFinishedPageLoadP3A()
-  }
-
-  public func webView(
-    _ webView: WKWebView,
-    didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!
-  ) {
-    appendUrlToRedirectChain(webView)
-  }
-
-  /// Invoked when an error occurs while starting to load data for the main frame.
-  public func webView(
-    _ webView: WKWebView,
-    didFailProvisionalNavigation navigation: WKNavigation!,
-    withError error: Error
-  ) {
-    guard let tab = tab(for: webView) else { return }
-
-    // Handle invalid upgrade to https
-    if let responseURL = webView.url,
-      let response = handleInvalidHTTPSUpgrade(
-        tab: tab,
-        responseURL: responseURL
-      )
-    {
-      tab.loadRequest(response)
-      return
-    }
-
-    // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
-    // to open an external application and hand it over to UIApplication.openURL(). The result
-    // will be that we switch to the external app, for example the app store, while keeping the
-    // original web page in the tab instead of replacing it with an error page.
-    var error = error as NSError
-    if error.domain == "WebKitErrorDomain" && error.code == 102 {
-      return
-    }
-
-    if checkIfWebContentProcessHasCrashed(webView, error: error) {
-      return
-    }
-
-    if let sslPinningError = tab.sslPinningError {
-      error = sslPinningError as NSError
-    }
-
-    if error.code == Int(CFNetworkErrors.cfurlErrorCancelled.rawValue) {
-      if tab === tabManager.selectedTab {
-        updateToolbarCurrentURL(tab.url?.displayURL)
-        updateWebViewPageZoom(tab: tab)
-      }
-      return
-    }
-
-    if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
-
-      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
-      // Reseting the progress bar in case there is an error is necessary
-      if tab == self.tabManager.selectedTab {
-        self.topToolbar.hideProgressBar()
-      }
-
-      // If the local web server isn't working for some reason (Brave cellular data is
-      // disabled in settings, for example), we'll fail to load the session restore URL.
-      // We rely on loading that page to get the restore callback to reset the restoring
-      // flag, so if we fail to load that page, reset it here.
-      if InternalURL(url)?.aboutComponent == "sessionrestore" {
-        tab.restoring = false
-      }
-    }
-  }
-   */
 }
 
 // MARK: WKNavigationDelegateHelper
@@ -1476,31 +1264,30 @@ extension BrowserViewController {
 
 // MARK: WKUIDelegate
 
-extension BrowserViewController: WKUIDelegate {
-  // FIXME: UI Delegate
-//  public func webView(
-//    _ webView: WKWebView,
-//    createWebViewWith configuration: WKWebViewConfiguration,
-//    for navigationAction: WKNavigationAction,
-//    windowFeatures: WKWindowFeatures
-//  ) -> WKWebView? {
-//    guard let parentTab = tabManager[webView] else { return nil }
-//
-//    guard !navigationAction.isInternalUnprivileged,
-//      let navigationURL = navigationAction.request.url,
-//      navigationURL.shouldRequestBeOpenedAsPopup()
-//    else {
-//      print("Denying popup from request: \(navigationAction.request)")
-//      return nil
-//    }
-//
-//    if let currentTab = tabManager.selectedTab {
-//      screenshotHelper.takeScreenshot(currentTab)
-//    }
-//
-//    // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
-//    // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
-//    // the request here manually leads to incorrect results!!
+extension BrowserViewController: CWVUIDelegate {
+  public func webView(
+    _ webView: CWVWebView,
+    createWebViewWith configuration: CWVWebViewConfiguration,
+    for action: CWVNavigationAction
+  ) -> CWVWebView? {
+    guard let parentTab = tabManager[webView] else { return nil }
+    guard !action.request.isInternalUnprivileged,
+          let navigationURL = action.request.url,
+          navigationURL.shouldRequestBeOpenedAsPopup()
+    else {
+      print("Denying popup from request: \(action.request)")
+      return nil
+    }
+
+    if let currentTab = tabManager.selectedTab {
+      screenshotHelper.takeScreenshot(currentTab)
+    }
+
+    // FIXME: Will require refactoring Tab to take CWVWebViewConfiguration's
+
+    // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
+    // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
+    // the request here manually leads to incorrect results!!
 //    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
 //
 //    newTab.url = URL(string: "about:blank")
@@ -1511,424 +1298,423 @@ extension BrowserViewController: WKUIDelegate {
 //    // restore it as if it was a dead tab.
 //    var observation: NSKeyValueObservation?
 //    observation = newTab.webView?.observe(
-//      \.url,
-//      changeHandler: { [weak self] webView, _ in
-//        _ = observation  // Silence write but not read warning
-//        observation = nil
-//        guard let self = self, let tab = self.tabManager[webView] else { return }
-//        self.tabManager.selectTab(tab)
-//      }
+//      \.visibleURL,
+//       changeHandler: { [weak self] webView, _ in
+//         _ = observation  // Silence write but not read warning
+//         observation = nil
+//         guard let self = self, let tab = self.tabManager[webView] else { return }
+//         self.tabManager.selectTab(tab)
+//       }
 //    )
 //
 //    return newTab.webView
-//  }
-//
-//  public func webViewDidClose(_ webView: WKWebView) {
-//    guard let tab = tabManager[webView] else { return }
-//    tabManager.addTabToRecentlyClosed(tab)
-//    tabManager.removeTab(tab)
-//  }
-//
-//  public func webView(
-//    _ webView: WKWebView,
-//    requestMediaCapturePermissionFor origin: WKSecurityOrigin,
-//    initiatedByFrame frame: WKFrameInfo,
-//    type: WKMediaCaptureType,
-//    decisionHandler: @escaping (WKPermissionDecision) -> Void
-//  ) {
-//    let titleFormat: String = {
-//      switch type {
-//      case .camera:
-//        return Strings.requestCameraPermissionPrompt
-//      case .microphone:
-//        return Strings.requestMicrophonePermissionPrompt
-//      case .cameraAndMicrophone:
-//        return Strings.requestCameraAndMicrophonePermissionPrompt
-//      @unknown default:
-//        return Strings.requestCaptureDevicePermissionPrompt
-//      }
-//    }()
-//    let title = String.localizedStringWithFormat(titleFormat, origin.host)
-//    let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
-//    alertController.addAction(
-//      .init(
-//        title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
-//        style: .default,
-//        handler: { _ in
-//          decisionHandler(.grant)
-//        }
-//      )
-//    )
-//    alertController.addAction(
-//      .init(
-//        title: Strings.CancelString,
-//        style: .cancel,
-//        handler: { _ in
-//          decisionHandler(.deny)
-//        }
-//      )
-//    )
-//    alertController.dismissedWithoutAction = {
-//      decisionHandler(.prompt)
-//    }
-//    if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen {
-//      webView.closeAllMediaPresentations {
-//        self.present(alertController, animated: true)
-//      }
-//      return
-//    }
-//    present(alertController, animated: true)
-//  }
-//
-//  fileprivate func shouldDisplayJSAlertForWebView(_ webView: WKWebView) -> Bool {
-//    // Only display a JS Alert if we are selected and there isn't anything being shown
-//    return ((tabManager.selectedTab == nil ? false : tabManager.selectedTab!.webView == webView))
-//      && (self.presentedViewController == nil)
-//  }
-//
-//  public func webView(
-//    _ webView: WKWebView,
-//    runJavaScriptAlertPanelWithMessage message: String,
-//    initiatedByFrame frame: WKFrameInfo,
-//    completionHandler: @escaping () -> Void
-//  ) {
-//    var messageAlert = MessageAlert(
-//      message: message,
-//      frame: frame,
-//      completionHandler: completionHandler,
-//      suppressHandler: nil
-//    )
-//    handleAlert(webView: webView, alert: &messageAlert) {
-//      completionHandler()
-//    }
-//  }
-//
-//  public func webView(
-//    _ webView: WKWebView,
-//    runJavaScriptConfirmPanelWithMessage message: String,
-//    initiatedByFrame frame: WKFrameInfo,
-//    completionHandler: @escaping (Bool) -> Void
-//  ) {
-//    var confirmAlert = ConfirmPanelAlert(
-//      message: message,
-//      frame: frame,
-//      completionHandler: completionHandler,
-//      suppressHandler: nil
-//    )
-//    handleAlert(webView: webView, alert: &confirmAlert) {
-//      completionHandler(false)
-//    }
-//  }
-//
-//  public func webView(
-//    _ webView: WKWebView,
-//    runJavaScriptTextInputPanelWithPrompt prompt: String,
-//    defaultText: String?,
-//    initiatedByFrame frame: WKFrameInfo,
-//    completionHandler: @escaping (String?) -> Void
-//  ) {
-//    var textInputAlert = TextInputAlert(
-//      message: prompt,
-//      frame: frame,
-//      completionHandler: completionHandler,
-//      defaultText: defaultText,
-//      suppressHandler: nil
-//    )
-//    handleAlert(webView: webView, alert: &textInputAlert) {
-//      completionHandler(nil)
-//    }
-//  }
-//
-//  func suppressJSAlerts(webView: WKWebView) {
-//    let script = """
-//      window.alert=window.confirm=window.prompt=function(n){},
-//      [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
-//      """
-//    webView.evaluateSafeJavaScript(
-//      functionName: script,
-//      contentWorld: .defaultClient,
-//      asFunction: false
-//    )
-//  }
-//
-//  func handleAlert<T: JSAlertInfo>(
-//    webView: WKWebView,
-//    alert: inout T,
-//    completionHandler: @escaping () -> Void
-//  ) {
-//    guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
-//      suppressJSAlerts(webView: webView)
-//      tabManager[webView]?.cancelQueuedAlerts()
-//      completionHandler()
-//      return
-//    }
-//    promptingTab.alertShownCount += 1
-//    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
-//      if suppress {
-//        func suppressDialogues(_: UIAlertAction) {
-//          self.suppressJSAlerts(webView: webView)
-//          promptingTab.blockAllAlerts = true
-//          self.tabManager[webView]?.cancelQueuedAlerts()
-//          completionHandler()
-//        }
-//        // Show confirm alert here.
-//        let suppressSheet = UIAlertController(
-//          title: nil,
-//          message: Strings.suppressAlertsActionMessage,
-//          preferredStyle: .actionSheet
-//        )
-//        suppressSheet.addAction(
-//          UIAlertAction(
-//            title: Strings.suppressAlertsActionTitle,
-//            style: .destructive,
-//            handler: suppressDialogues
-//          )
-//        )
-//        suppressSheet.addAction(
-//          UIAlertAction(
-//            title: Strings.cancelButtonTitle,
-//            style: .cancel,
-//            handler: { _ in
-//              completionHandler()
-//            }
-//          )
-//        )
-//        if UIDevice.current.userInterfaceIdiom == .pad,
-//          let popoverController = suppressSheet.popoverPresentationController
-//        {
-//          popoverController.sourceView = self.view
-//          popoverController.sourceRect = CGRect(
-//            x: self.view.bounds.midX,
-//            y: self.view.bounds.midY,
-//            width: 0,
-//            height: 0
-//          )
-//          popoverController.permittedArrowDirections = []
-//        }
-//        self.present(suppressSheet, animated: true)
-//      } else {
-//        completionHandler()
-//      }
-//    }
-//    alert.suppressHandler = promptingTab.alertShownCount > 1 ? suppressBlock : nil
-//    if shouldDisplayJSAlertForWebView(webView) {
-//      let controller = alert.alertController()
-//      controller.delegate = self
-//      present(controller, animated: true)
-//    } else {
-//      promptingTab.queueJavascriptAlertPrompt(alert)
-//    }
-//  }
-//
-//  func checkIfWebContentProcessHasCrashed(_ webView: WKWebView, error: NSError) -> Bool {
-//    if error.code == WKError.webContentProcessTerminated.rawValue
-//      && error.domain == "WebKitErrorDomain"
-//    {
-//      print("WebContent process has crashed. Trying to reload to restart it.")
-//      webView.reload()
-//      return true
-//    }
-//
-//    return false
-//  }
-//
-//  @MainActor public func webView(
-//    _ webView: WKWebView,
-//    contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
-//  ) async -> UIContextMenuConfiguration? {
-//    // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
-//    // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
-//    guard let url = elementInfo.linkURL, url.isWebPage() else {
-//      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
-//    }
-//
-//    let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
-//      var actions = [UIAction]()
-//
-//      if let currentTab = self.tabManager.selectedTab {
-//        let tabType = currentTab.type
-//
-//        if !tabType.isPrivate {
-//          let openNewTabAction = UIAction(
-//            title: Strings.openNewTabButtonTitle,
-//            image: UIImage(systemName: "plus")
-//          ) { _ in
-//            self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
-//          }
-//
-//          openNewTabAction.accessibilityLabel = "linkContextMenu.openInNewTab"
-//          actions.append(openNewTabAction)
-//        }
-//
-//        let openNewPrivateTabAction = UIAction(
-//          title: Strings.openNewPrivateTabButtonTitle,
-//          image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
-//        ) { _ in
-//          if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
-//            self.askForLocalAuthentication { [weak self] success, error in
-//              if success {
-//                self?.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
-//              }
-//            }
-//          } else {
-//            self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
-//          }
-//        }
-//        openNewPrivateTabAction.accessibilityLabel = "linkContextMenu.openInNewPrivateTab"
-//
-//        actions.append(openNewPrivateTabAction)
-//
-//        if UIApplication.shared.supportsMultipleScenes {
-//          if !tabType.isPrivate {
-//            let openNewWindowAction = UIAction(
-//              title: Strings.openInNewWindowTitle,
-//              image: UIImage(braveSystemNamed: "leo.window")
-//            ) { _ in
-//              self.openInNewWindow(url: url, isPrivate: false)
-//            }
-//
-//            openNewWindowAction.accessibilityLabel = "linkContextMenu.openInNewWindow"
-//            actions.append(openNewWindowAction)
-//          }
-//
-//          let openNewPrivateWindowAction = UIAction(
-//            title: Strings.openInNewPrivateWindowTitle,
-//            image: UIImage(braveSystemNamed: "leo.window.tab-private")
-//          ) { _ in
-//            if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
-//              self.askForLocalAuthentication { [weak self] success, error in
-//                if success {
-//                  self?.openInNewWindow(url: url, isPrivate: true)
-//                }
-//              }
-//            } else {
-//              self.openInNewWindow(url: url, isPrivate: true)
-//            }
-//          }
-//
-//          openNewPrivateWindowAction.accessibilityLabel = "linkContextMenu.openInNewPrivateWindow"
-//          actions.append(openNewPrivateWindowAction)
-//        }
-//
-//        let copyAction = UIAction(
-//          title: Strings.copyLinkActionTitle,
-//          image: UIImage(systemName: "doc.on.doc"),
-//          handler: UIAction.deferredActionHandler { _ in
-//            UIPasteboard.general.url = url as URL
-//          }
-//        )
-//        copyAction.accessibilityLabel = "linkContextMenu.copyLink"
-//        actions.append(copyAction)
-//
-//        let copyCleanLinkAction = UIAction(
-//          title: Strings.copyCleanLink,
-//          image: UIImage(braveSystemNamed: "leo.broom"),
-//          handler: UIAction.deferredActionHandler { _ in
-//            let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
-//            let cleanedURL = service?.sanitizeURL(url) ?? url
-//            UIPasteboard.general.url = cleanedURL
-//          }
-//        )
-//        copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
-//        actions.append(copyCleanLinkAction)
-//
-//        if let braveWebView = webView as? BraveWebView {
-//          let shareAction = UIAction(
-//            title: Strings.shareLinkActionTitle,
-//            image: UIImage(systemName: "square.and.arrow.up")
-//          ) { _ in
-//            let touchPoint = braveWebView.lastHitPoint
-//            let touchRect = CGRect(origin: touchPoint, size: .zero)
-//
-//            // TODO: Find a way to add fixes #3323 and #2961 here:
-//            // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
-//            // `temporaryDocument` returns the downloaded file to disk on the current tab.
-//            // Using a downloaded file url results in having functions like "Save to files" available.
-//            // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
-//            // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
-//            // This results in the fixes for #3323 and #2961 not being included in this share scenario.
-//            // This is not a regression, we simply never handled this scenario in both fixes.
-//            // Some possibile fixes include:
-//            // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
-//            // - Add custom "Save to file" functionality (needs investigation).
-//            self.presentActivityViewController(
-//              url,
-//              sourceView: braveWebView,
-//              sourceRect: touchRect,
-//              arrowDirection: .any
-//            )
-//          }
-//
-//          shareAction.accessibilityLabel = "linkContextMenu.share"
-//
-//          actions.append(shareAction)
-//        }
-//
-//        let linkPreview = Preferences.General.enableLinkPreview.value
-//
-//        let linkPreviewTitle =
-//          linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
-//        let linkPreviewAction = UIAction(
-//          title: linkPreviewTitle,
-//          image: UIImage(systemName: "eye.fill")
-//        ) { _ in
-//          Preferences.General.enableLinkPreview.value.toggle()
-//        }
-//
-//        actions.append(linkPreviewAction)
-//      }
-//
-//      return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
-//    }
-//
+    return nil
+  }
+
+  public func webViewDidClose(_ webView: CWVWebView) {
+    guard let tab = tabManager[webView] else { return }
+    tabManager.addTabToRecentlyClosed(tab)
+    tabManager.removeTab(tab)
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    requestMediaCapturePermissionFor type: CWVMediaCaptureType,
+    decisionHandler: @escaping (CWVPermissionDecision) -> Void
+  ) {
+    let titleFormat: String = {
+      switch type {
+      case .camera:
+        return Strings.requestCameraPermissionPrompt
+      case .microphone:
+        return Strings.requestMicrophonePermissionPrompt
+      case .cameraAndMicrophone:
+        return Strings.requestCameraAndMicrophonePermissionPrompt
+      @unknown default:
+        return Strings.requestCaptureDevicePermissionPrompt
+      }
+    }()
+    // FIXME: Test
+    guard let host = webView.visibleURL.host else { return }
+    let title = String.localizedStringWithFormat(titleFormat, host)
+    let alertController = BrowserAlertController(title: title, message: nil, preferredStyle: .alert)
+    alertController.addAction(
+      .init(
+        title: Strings.requestCaptureDevicePermissionAllowButtonTitle,
+        style: .default,
+        handler: { _ in
+          decisionHandler(.grant)
+        }
+      )
+    )
+    alertController.addAction(
+      .init(
+        title: Strings.CancelString,
+        style: .cancel,
+        handler: { _ in
+          decisionHandler(.deny)
+        }
+      )
+    )
+    alertController.dismissedWithoutAction = {
+      decisionHandler(.prompt)
+    }
+    present(alertController, animated: true)
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    contextMenuConfigurationFor element: CWVHTMLElement,
+    completionHandler: @escaping (UIContextMenuConfiguration?) -> Void
+  ) {
+    // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
+    // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
+    guard let url = element.hyperlink, url.isWebPage() else {
+      completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil))
+      return
+    }
+
+    let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
+      var actions = [UIAction]()
+
+      if let currentTab = self.tabManager.selectedTab {
+        let tabType = currentTab.type
+
+        if !tabType.isPrivate {
+          let openNewTabAction = UIAction(
+            title: Strings.openNewTabButtonTitle,
+            image: UIImage(systemName: "plus")
+          ) { _ in
+            self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
+          }
+
+          openNewTabAction.accessibilityLabel = "linkContextMenu.openInNewTab"
+          actions.append(openNewTabAction)
+        }
+
+        let openNewPrivateTabAction = UIAction(
+          title: Strings.openNewPrivateTabButtonTitle,
+          image: UIImage(named: "private_glasses", in: .module, compatibleWith: nil)!.template
+        ) { _ in
+          if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+            self.askForLocalAuthentication { [weak self] success, error in
+              if success {
+                self?.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+              }
+            }
+          } else {
+            self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
+          }
+        }
+        openNewPrivateTabAction.accessibilityLabel = "linkContextMenu.openInNewPrivateTab"
+
+        actions.append(openNewPrivateTabAction)
+
+        if UIApplication.shared.supportsMultipleScenes {
+          if !tabType.isPrivate {
+            let openNewWindowAction = UIAction(
+              title: Strings.openInNewWindowTitle,
+              image: UIImage(braveSystemNamed: "leo.window")
+            ) { _ in
+              self.openInNewWindow(url: url, isPrivate: false)
+            }
+
+            openNewWindowAction.accessibilityLabel = "linkContextMenu.openInNewWindow"
+            actions.append(openNewWindowAction)
+          }
+
+          let openNewPrivateWindowAction = UIAction(
+            title: Strings.openInNewPrivateWindowTitle,
+            image: UIImage(braveSystemNamed: "leo.window.tab-private")
+          ) { _ in
+            if !tabType.isPrivate, Preferences.Privacy.privateBrowsingLock.value {
+              self.askForLocalAuthentication { [weak self] success, error in
+                if success {
+                  self?.openInNewWindow(url: url, isPrivate: true)
+                }
+              }
+            } else {
+              self.openInNewWindow(url: url, isPrivate: true)
+            }
+          }
+
+          openNewPrivateWindowAction.accessibilityLabel = "linkContextMenu.openInNewPrivateWindow"
+          actions.append(openNewPrivateWindowAction)
+        }
+
+        let copyAction = UIAction(
+          title: Strings.copyLinkActionTitle,
+          image: UIImage(systemName: "doc.on.doc"),
+          handler: UIAction.deferredActionHandler { _ in
+            UIPasteboard.general.url = url as URL
+          }
+        )
+        copyAction.accessibilityLabel = "linkContextMenu.copyLink"
+        actions.append(copyAction)
+
+        let copyCleanLinkAction = UIAction(
+          title: Strings.copyCleanLink,
+          image: UIImage(braveSystemNamed: "leo.broom"),
+          handler: UIAction.deferredActionHandler { _ in
+            let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
+            let cleanedURL = service?.sanitizeURL(url) ?? url
+            UIPasteboard.general.url = cleanedURL
+          }
+        )
+        copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
+        actions.append(copyCleanLinkAction)
+
+        if let braveWebView = webView as? BraveWebView {
+          let shareAction = UIAction(
+            title: Strings.shareLinkActionTitle,
+            image: UIImage(systemName: "square.and.arrow.up")
+          ) { _ in
+            let touchPoint = braveWebView.lastHitPoint
+            let touchRect = CGRect(origin: touchPoint, size: .zero)
+
+            // TODO: Find a way to add fixes #3323 and #2961 here:
+            // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
+            // `temporaryDocument` returns the downloaded file to disk on the current tab.
+            // Using a downloaded file url results in having functions like "Save to files" available.
+            // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
+            // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
+            // This results in the fixes for #3323 and #2961 not being included in this share scenario.
+            // This is not a regression, we simply never handled this scenario in both fixes.
+            // Some possibile fixes include:
+            // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
+            // - Add custom "Save to file" functionality (needs investigation).
+            self.presentActivityViewController(
+              url,
+              sourceView: braveWebView,
+              sourceRect: touchRect,
+              arrowDirection: .any
+            )
+          }
+
+          shareAction.accessibilityLabel = "linkContextMenu.share"
+
+          actions.append(shareAction)
+        }
+
+        let linkPreview = Preferences.General.enableLinkPreview.value
+
+        let linkPreviewTitle =
+        linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
+        let linkPreviewAction = UIAction(
+          title: linkPreviewTitle,
+          image: UIImage(systemName: "eye.fill")
+        ) { _ in
+          Preferences.General.enableLinkPreview.value.toggle()
+        }
+
+        actions.append(linkPreviewAction)
+      }
+
+      return UIMenu(title: url.absoluteString.truncate(length: 100), children: actions)
+    }
+
+    // FIXME: Link previews
 //    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
-//      if let tab = tabManager.tabForWebView(webView) {
+//      if let tab = tabManager[webView] {
 //        return LinkPreviewViewController(url: url, for: tab, browserController: self)
 //      }
 //      return nil
 //    }
-//
+
 //    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
-//    return UIContextMenuConfiguration(
-//      identifier: nil,
-//      previewProvider: linkPreviewProvider,
-//      actionProvider: actionProvider
-//    )
-//  }
-//
-//  public func webView(
-//    _ webView: WKWebView,
-//    contextMenuForElement elementInfo: WKContextMenuElementInfo,
-//    willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating
-//  ) {
-//    guard let url = elementInfo.linkURL else { return }
-//    webView.load(URLRequest(url: url))
-//  }
-//
-//  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
-//    let tab = self.tabManager.addTab(
-//      URLRequest(url: url),
-//      afterTab: currentTab,
-//      isPrivate: inPrivateMode
-//    )
-//    if inPrivateMode && !privateBrowsingManager.isPrivateBrowsing {
-//      self.tabManager.selectTab(tab)
-//    } else {
-//      // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
-//      let toast = ButtonToast(
-//        labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText,
-//        buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
-//        completion: { buttonPressed in
-//          if buttonPressed {
-//            self.tabManager.selectTab(tab)
-//          }
-//        }
-//      )
-//      self.show(toast: toast)
-//    }
-//    self.toolbarVisibilityViewModel.toolbarState = .expanded
-//  }
-//
+    completionHandler(UIContextMenuConfiguration(
+      identifier: nil,
+      previewProvider: nil,
+      actionProvider: actionProvider
+    ))
+  }
+
+  public func webView(_ webView: CWVWebView, didLoad favIcons: [CWVFavicon]) {
+    print("loaded favicons: \(favIcons)")
+    // FIXME: Gotta run this through to download them and update the favicons on disk?
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    runJavaScriptAlertPanelWithMessage message: String,
+    pageURL url: URL,
+    completionHandler: @escaping () -> Void
+  ) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    var messageAlert = MessageAlert(
+      message: message,
+      pageURL: url,
+      completionHandler: completionHandler,
+      suppressHandler: nil
+    )
+    handleAlert(webView: webView, alert: &messageAlert) {
+      completionHandler()
+    }
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    runJavaScriptConfirmPanelWithMessage message: String,
+    pageURL url: URL,
+    completionHandler: @escaping (Bool) -> Void
+  ) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    var confirmAlert = ConfirmPanelAlert(
+      message: message,
+      pageURL: url,
+      completionHandler: completionHandler,
+      suppressHandler: nil
+    )
+    handleAlert(webView: webView, alert: &confirmAlert) {
+      completionHandler(false)
+    }
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
+    runJavaScriptTextInputPanelWithPrompt prompt: String,
+    defaultText: String,
+    pageURL url: URL,
+    completionHandler: @escaping (String?) -> Void
+  ) {
+    guard let tab = tabManager[webView], let webView = tab.webView else { return }
+    var textInputAlert = TextInputAlert(
+      message: prompt,
+      pageURL: url,
+      completionHandler: completionHandler,
+      defaultText: defaultText,
+      suppressHandler: nil
+    )
+    handleAlert(webView: webView, alert: &textInputAlert) {
+      completionHandler(nil)
+    }
+  }
+}
+
+extension BrowserViewController {
+  fileprivate func shouldDisplayJSAlertForWebView(_ webView: BraveWebView) -> Bool {
+    // Only display a JS Alert if we are selected and there isn't anything being shown
+    return ((tabManager.selectedTab == nil ? false : tabManager.selectedTab!.webView == webView))
+      && (self.presentedViewController == nil)
+  }
+
+  func suppressJSAlerts(webView: BraveWebView) {
+    let script = """
+      window.alert=window.confirm=window.prompt=function(n){},
+      [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
+      """
+    webView.underlyingWebView?.evaluateSafeJavaScript(
+      functionName: script,
+      contentWorld: .defaultClient,
+      asFunction: false
+    )
+  }
+
+  func handleAlert<T: JSAlertInfo>(
+    webView: BraveWebView,
+    alert: inout T,
+    completionHandler: @escaping () -> Void
+  ) {
+    guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
+      suppressJSAlerts(webView: webView)
+      tabManager[webView]?.cancelQueuedAlerts()
+      completionHandler()
+      return
+    }
+    promptingTab.alertShownCount += 1
+    let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
+      if suppress {
+        func suppressDialogues(_: UIAlertAction) {
+          self.suppressJSAlerts(webView: webView)
+          promptingTab.blockAllAlerts = true
+          self.tabManager[webView]?.cancelQueuedAlerts()
+          completionHandler()
+        }
+        // Show confirm alert here.
+        let suppressSheet = UIAlertController(
+          title: nil,
+          message: Strings.suppressAlertsActionMessage,
+          preferredStyle: .actionSheet
+        )
+        suppressSheet.addAction(
+          UIAlertAction(
+            title: Strings.suppressAlertsActionTitle,
+            style: .destructive,
+            handler: suppressDialogues
+          )
+        )
+        suppressSheet.addAction(
+          UIAlertAction(
+            title: Strings.cancelButtonTitle,
+            style: .cancel,
+            handler: { _ in
+              completionHandler()
+            }
+          )
+        )
+        if UIDevice.current.userInterfaceIdiom == .pad,
+          let popoverController = suppressSheet.popoverPresentationController
+        {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(
+            x: self.view.bounds.midX,
+            y: self.view.bounds.midY,
+            width: 0,
+            height: 0
+          )
+          popoverController.permittedArrowDirections = []
+        }
+        self.present(suppressSheet, animated: true)
+      } else {
+        completionHandler()
+      }
+    }
+    alert.suppressHandler = promptingTab.alertShownCount > 1 ? suppressBlock : nil
+    if shouldDisplayJSAlertForWebView(webView) {
+      let controller = alert.alertController()
+      controller.delegate = self
+      present(controller, animated: true)
+    } else {
+      promptingTab.queueJavascriptAlertPrompt(alert)
+    }
+  }
+
+  func checkIfWebContentProcessHasCrashed(_ webView: CWVWebView, error: NSError) -> Bool {
+    if error.code == WKError.webContentProcessTerminated.rawValue
+      && error.domain == "WebKitErrorDomain"
+    {
+      print("WebContent process has crashed. Trying to reload to restart it.")
+      webView.reload()
+      return true
+    }
+
+    return false
+  }
+
+  fileprivate func addTab(url: URL, inPrivateMode: Bool, currentTab: Tab) {
+    let tab = self.tabManager.addTab(
+      URLRequest(url: url),
+      afterTab: currentTab,
+      isPrivate: inPrivateMode
+    )
+    if inPrivateMode && !privateBrowsingManager.isPrivateBrowsing {
+      self.tabManager.selectTab(tab)
+    } else {
+      // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
+      let toast = ButtonToast(
+        labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText,
+        buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
+        completion: { buttonPressed in
+          if buttonPressed {
+            self.tabManager.selectTab(tab)
+          }
+        }
+      )
+      self.show(toast: toast)
+    }
+    self.toolbarVisibilityViewModel.toolbarState = .expanded
+  }
+
   /// Get a possible redirect request from debouncing or query param stripping
   private func getInternalRedirect(
     from navigationAction: CWVNavigationAction,

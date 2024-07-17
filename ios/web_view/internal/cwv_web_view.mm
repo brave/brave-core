@@ -63,6 +63,7 @@
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
 namespace {
 
@@ -1109,6 +1110,8 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
   }
 
   [self attachSecurityInterstitialHelpersToWebStateIfNecessary];
+  AttachTabHelpers(_webState.get(), /*for_prerender=*/ false);
+
   WebViewHolder::CreateForWebState(_webState.get());
   WebViewHolder::FromWebState(_webState.get())->set_web_view(self);
 
