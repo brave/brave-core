@@ -30,7 +30,13 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/lib/string_serialization.h"
+#include "net/base/load_flags.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/url_constants.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -42,11 +48,36 @@ constexpr char kURLRefreshPremiumSession[] =
     "https://account.brave.com/?intent=recover&product=leo";
 constexpr char kURLLearnMoreBraveSearchLeo[] =
     "https://support.brave.com/hc/en-us/categories/20990938292237-Brave-Leo";
+constexpr char kAllowedWebSourceFaviconHost[] = "imgs.search.brave.com";
+
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kURLGoPremium[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
 constexpr char kURLManagePremium[] = "https://account.brave.com/";
 #endif
+
+net::NetworkTrafficAnnotationTag GetSearchFaviconNetworkAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
+      semantics {
+        sender: "AI Chat"
+        description:
+          "This is used to fetch the favicon for search sources that are"
+          "returned in the chat conversation search events."
+        trigger:
+          "Triggered by receiving a search event from the AI Chat engine."
+        data:
+          "The favicon url for a source that appeared in a response to the"
+          "user's AI Chat conversation."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
 }  // namespace
 
 namespace ai_chat {
@@ -248,6 +279,38 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
   // window because it's always full screen
   ai_chat::OpenURL(url.spec());
 #endif
+}
+
+void AIChatUIPageHandler::GetSearchFavicon(const GURL& url,
+                                           GetSearchFaviconCallback callback) {
+  // Validate url is from search sources and this function isn't being misused.
+  if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
+      base::CompareCaseInsensitiveASCII(url.host_piece(),
+                                        kAllowedWebSourceFaviconHost) != 0) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = url;
+  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  request->method = net::HttpRequestHeaders::kGetMethod;
+  auto url_loader = network::SimpleURLLoader::Create(
+      std::move(request), GetSearchFaviconNetworkAnnotationTag());
+  // Don't need error body
+  url_loader->SetAllowHttpErrorResults(false);
+  // GET request, so we can retry without fear of repeated operations
+  url_loader->SetRetryOptions(
+      3, network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+  // Send request, limited to 300kb
+  auto iter = search_favicon_url_loaders_.insert(
+      search_favicon_url_loaders_.begin(), std::move(url_loader));
+  iter->get()->DownloadToString(
+      profile_->GetURLLoaderFactory().get(),
+      base::BindOnce(&AIChatUIPageHandler::OnSearchFaviconResponse,
+                     weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback)),
+      300 * 1024);
 }
 
 void AIChatUIPageHandler::GoPremium() {
@@ -514,6 +577,32 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
 #endif
     std::move(callback).Run(status, std::move(info));
   }
+}
+
+void AIChatUIPageHandler::OnSearchFaviconResponse(
+    SimpleURLLoaderList::iterator iter,
+    GetSearchFaviconCallback callback,
+    const std::unique_ptr<std::string> response_body) {
+  auto* loader = iter->get();
+  auto response_code = -1;
+  if (loader->ResponseInfo()) {
+    auto headers_list = loader->ResponseInfo()->headers;
+    if (headers_list) {
+      response_code = headers_list->response_code();
+    }
+  }
+
+  search_favicon_url_loaders_.erase(iter);
+
+  if (!response_body || response_body->empty() || response_code < 200 ||
+      response_code > 299) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // Download was successful, uint8Array will be easier to move over mojom
+  std::vector<uint8_t> image_bytes(response_body->begin(),
+                                   response_body->end());
+  std::move(callback).Run(image_bytes);
 }
 
 }  // namespace ai_chat

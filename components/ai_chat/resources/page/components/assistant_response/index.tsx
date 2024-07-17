@@ -12,6 +12,7 @@ import MarkdownRenderer from '../markdown_renderer'
 import styles from './style.module.scss'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
+import WebSourcesEvent from './web_sources_event'
 
 function SearchSummary (props: { searchQueries: string[] }) {
   const handleOpenSearchQuery = React.useCallback((e: React.MouseEvent, query: string) => {
@@ -48,7 +49,10 @@ function SearchSummary (props: { searchQueries: string[] }) {
 }
 
 export default function AssistantResponse(props: { entry: mojom.ConversationTurn, isEntryInProgress: boolean }) {
+  // Extract certain events which need to render at specific locations (e.g. end of the events)
   const searchQueriesEvent = props.entry.events?.find(event => !!event.searchQueriesEvent)?.searchQueriesEvent
+  const sourcesEvent = props.entry.events?.find(event => !!event.sourcesEvent)?.sourcesEvent
+
   const hasCompletionStarted = !props.isEntryInProgress || props.entry.events?.find(event => !!event.completionEvent)
 
   return (<>
@@ -69,18 +73,20 @@ export default function AssistantResponse(props: { entry: mojom.ConversationTurn
       }
       // TODO(petemill): Consider displaying in-progress queries if the API
       // timing improves (or worsens for the completion events).
-      // if (event.searchQueriesEvent && props.isEntryInProgress) {
-      //   return (<>
-      //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-      //   </>)
-      // }
 
       // Unknown events should be ignored
       return null
     })
   }
-  { !props.isEntryInProgress && searchQueriesEvent &&
-    <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
+  { !props.isEntryInProgress &&
+    <>
+    {searchQueriesEvent &&
+      <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
+    }
+    {sourcesEvent &&
+      <WebSourcesEvent sources={sourcesEvent.sources} />
+    }
+    </>
   }
   </>)
 }

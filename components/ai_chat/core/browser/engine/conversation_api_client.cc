@@ -97,6 +97,35 @@ mojom::ConversationEntryEventPtr ParseResponseEvent(
     }
     return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         std::move(event));
+  } else if (*type == "webSources") {
+    const base::Value::List* sources = response_event.FindList("sources");
+    if (!sources) {
+      return nullptr;
+    }
+    auto event = mojom::WebSourcesEvent::New();
+    for (auto& item : *sources) {
+      if (!item.is_dict()) {
+        continue;
+      }
+      const base::Value::Dict& source = item.GetDict();
+      const std::string* title = source.FindString("title");
+      const std::string* url = source.FindString("url");
+      const std::string* favicon_url = source.FindString("favicon");
+      if (!title || !url || !favicon_url) {
+        DVLOG(2) << "Missing required fields in web source event: "
+                 << item.DebugString();
+        continue;
+      }
+      GURL item_url(*url);
+      GURL item_favicon_url(*favicon_url);
+      if (!item_url.is_valid() || !item_favicon_url.is_valid()) {
+        DVLOG(2) << "Invalid URL in web source event: " << item.DebugString();
+        continue;
+      }
+      event->sources.push_back(
+          mojom::WebSource::New(*title, item_url, item_favicon_url));
+    }
+    return mojom::ConversationEntryEvent::NewSourcesEvent(std::move(event));
   }
   // Server will provide different types of events. From time to time, new
   // types of events will be introduced and we should ignore unknown ones.

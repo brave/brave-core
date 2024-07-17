@@ -219,6 +219,27 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         }
         {
           base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "webSources");
+          base::Value sources(base::Value::Type::LIST);
+          {
+            base::Value query(base::Value::Type::DICT);
+            query.GetDict().Set("title", "Star Wars");
+            query.GetDict().Set("url", "https://starwars.com");
+            query.GetDict().Set("favicon", "https://starwars.com/favicon");
+            sources.GetList().Append(std::move(query));
+          }
+          {
+            base::Value query(base::Value::Type::DICT);
+            query.GetDict().Set("title", "Star Trek");
+            query.GetDict().Set("url", "https://startrek.com");
+            query.GetDict().Set("favicon", "https://startrek.com/favicon");
+            sources.GetList().Append(std::move(query));
+          }
+          result.GetDict().Set("sources", std::move(sources));
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+        {
+          base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "completion");
           result.GetDict().Set("completion", expected_completion_response);
           data_received_callback.Run(base::ok(std::move(result)));
@@ -247,6 +268,21 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_EQ(queries.size(), 2u);
         EXPECT_EQ(queries[0], "Star Wars");
         EXPECT_EQ(queries[1], "Star Trek");
+      });
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_sources_event());
+        auto& sources = event->get_sources_event()->sources;
+        EXPECT_EQ(sources.size(), 2u);
+        EXPECT_EQ(sources[0]->title, "Star Wars");
+        EXPECT_EQ(sources[1]->title, "Star Trek");
+        EXPECT_EQ(sources[0]->url.spec(), "https://starwars.com/");
+        EXPECT_EQ(sources[1]->url.spec(), "https://startrek.com/");
+        EXPECT_EQ(sources[0]->favicon_url.spec(),
+                  "https://starwars.com/favicon");
+        EXPECT_EQ(sources[1]->favicon_url.spec(),
+                  "https://startrek.com/favicon");
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)

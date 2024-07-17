@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
@@ -36,6 +37,10 @@ class WebContents;
 namespace favicon {
 class FaviconService;
 }  // namespace favicon
+
+namespace network {
+class SimpleURLLoader;
+}  // namespace network
 
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
@@ -69,6 +74,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
   void GenerateQuestions() override;
   void GetSiteInfo(GetSiteInfoCallback callback) override;
+  void GetSearchFavicon(const GURL& url,
+                        GetSearchFaviconCallback callback) override;
   void OpenBraveLeoSettings() override;
   void OpenURL(const GURL& url) override;
   void OpenLearnMoreAboutBraveSearchWithLeo() override;
@@ -103,6 +110,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
  private:
+  using SimpleURLLoaderList =
+      std::list<std::unique_ptr<network::SimpleURLLoader>>;
   class ChatContextObserver : public content::WebContentsObserver {
    public:
     explicit ChatContextObserver(content::WebContents* web_contents,
@@ -137,6 +146,11 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                           ai_chat::mojom::PremiumStatus status,
                           ai_chat::mojom::PremiumInfoPtr info);
 
+  void OnSearchFaviconResponse(
+      SimpleURLLoaderList::iterator iter,
+      GetSearchFaviconCallback callback,
+      const std::unique_ptr<std::string> response_body);
+
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
@@ -144,6 +158,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   raw_ptr<Profile> profile_ = nullptr;
 
   base::CancelableTaskTracker favicon_task_tracker_;
+  SimpleURLLoaderList search_favicon_url_loaders_;
 
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};

@@ -34,7 +34,8 @@ function getSearchEvent(queries: string[]): mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
     searchQueriesEvent: { searchQueries: queries },
-    searchStatusEvent: undefined
+    searchStatusEvent: undefined,
+    sourcesEvent: undefined
   }
 }
 
@@ -42,7 +43,17 @@ function getSearchStatusEvent(): mojom.ConversationEntryEvent {
   return {
     completionEvent: undefined,
     searchQueriesEvent: undefined,
-    searchStatusEvent: { isSearching: true }
+    searchStatusEvent: { isSearching: true },
+    sourcesEvent: undefined
+  }
+}
+
+function getSourcesEvent(sources: mojom.WebSource[]): mojom.ConversationEntryEvent {
+  return {
+    completionEvent: undefined,
+    searchQueriesEvent: undefined,
+    searchStatusEvent: undefined,
+    sourcesEvent: { sources }
   }
 }
 
@@ -141,7 +152,10 @@ const HISTORY: mojom.ConversationTurn[] = [
     actionType: mojom.ActionType.UNSPECIFIED,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined,
-    events: [getSearchStatusEvent(), getSearchEvent(['pointer compression', 'c++ language specification']), getCompletionEvent('Pointer compression is a memory optimization technique.')]
+    events: [getSearchStatusEvent(), getSearchEvent(['pointer compression', 'c++ language specification']), getCompletionEvent('Pointer compression is a memory optimization technique.'), getSourcesEvent([
+      { title: 'LTT Store', faviconUrl: { url: 'https://lttstore.com/favicon.ico' }, url: { url: 'https://lttstore.com' }},
+      { title: 'Tesla Model Y', faviconUrl: { url: 'https://www.tesla.com/favicon.ico' }, url: { url: 'https://www.tesla.com/modely' }}
+    ])]
   },
   {
     text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
