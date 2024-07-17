@@ -27,16 +27,17 @@ class BraveNewsController;
 
 class BraveNewsControllerFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static BraveNewsController* GetForContext(content::BrowserContext* context);
-  static mojo::PendingRemote<mojom::BraveNewsController> GetRemoteService(
+  static BraveNewsController* GetForBrowserContext(
       content::BrowserContext* context);
-  static BraveNewsController* GetControllerForContext(
+  static mojo::PendingRemote<mojom::BraveNewsController> GetRemoteService(
       content::BrowserContext* context);
   static BraveNewsControllerFactory* GetInstance();
 
   BraveNewsControllerFactory(const BraveNewsControllerFactory&) = delete;
   BraveNewsControllerFactory& operator=(const BraveNewsControllerFactory&) =
       delete;
+
+  bool ServiceIsCreatedWithBrowserContext() const override;
 
  private:
   friend base::NoDestructor<BraveNewsControllerFactory>;

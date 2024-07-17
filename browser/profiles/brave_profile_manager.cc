@@ -103,7 +103,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   DCHECK(status);
   status->UpdateGCMDriverStatus();
 #endif
-  brave_news::BraveNewsControllerFactory::GetForContext(profile);
   brave_federated::BraveFederatedServiceFactory::GetForBrowserContext(profile);
   brave::URLSanitizerServiceFactory::GetForBrowserContext(profile);
   misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
