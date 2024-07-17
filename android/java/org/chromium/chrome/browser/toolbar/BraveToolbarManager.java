@@ -19,6 +19,7 @@ import org.chromium.base.CallbackController;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
@@ -52,6 +53,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUi;
 import org.chromium.chrome.browser.tasks.tab_management.TabManagementDelegateProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.bottom.BottomControlsContentDelegate;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
@@ -101,7 +103,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private ObservableSupplierImpl<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
     private IncognitoStateProvider mIncognitoStateProvider;
-    private TabGroupUi mTabGroupUi;
     private BottomSheetController mBottomSheetController;
     private TabContentManager mTabContentManager;
     private TabCreatorManager mTabCreatorManager;
@@ -114,6 +115,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private ToolbarManager.ConstraintsProxy mConstraintsProxy;
 
     // Own members.
+    private TabGroupUi mTabGroupUi;
     private boolean mIsBottomToolbarVisible;
     private ObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
     private OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
@@ -127,6 +129,8 @@ public class BraveToolbarManager extends ToolbarManager {
     private ObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
     private ObservableSupplier<Profile> mProfileSupplier;
     private BrowserControlsVisibilityManager mBrowserControlsVisibilityManager;
+    private OneshotSupplierImpl<BottomControlsContentDelegate> mContentDelegateSupplier =
+            new OneshotSupplierImpl<>();
 
     public BraveToolbarManager(
             AppCompatActivity activity,
@@ -279,6 +283,9 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mLayoutStateProviderSupplier,
                                     mSnackbarManager,
                                     mModalDialogManagerSupplier.get());
+
+            mContentDelegateSupplier.set(mTabGroupUi);
+
             mBottomControlsCoordinatorSupplier.set(
                     new BraveBottomControlsCoordinator(
                             mLayoutStateProviderSupplier,
@@ -304,7 +311,7 @@ public class BraveToolbarManager extends ToolbarManager {
                             mFullscreenManager,
                             mEdgeToEdgeControllerSupplier,
                             mBottomControls,
-                            mTabGroupUi,
+                            mContentDelegateSupplier,
                             mTabObscuringHandler,
                             mOverlayPanelVisibilitySupplier,
                             mConstraintsProxy,

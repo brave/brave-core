@@ -1557,10 +1557,11 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         Profile.class,
                         NativePageHost.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
-                "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
-                Profile.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
+                        "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/firstrun/FreIntentCreator",
@@ -1779,8 +1780,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mIncognitoStateProvider"));
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabGroupUi"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
