@@ -149,12 +149,13 @@ where
                     .unwrap_or_default()
                     .into_iter()
                     .filter_map(|tlv2_cred| {
+                        let valid_from = tlv2_cred.valid_from;
                         tlv2_cred
                             .unblinded_creds
                             .unwrap_or_default()
                             .into_iter()
-                            .filter(|single_cred| !single_cred.spent && tlv2_cred.valid_from > now)
-                            .map(|_| tlv2_cred.valid_from)
+                            .filter(|single_cred| !single_cred.spent && valid_from > now)
+                            .map(|_| valid_from)
                             .next()
                     })
                     .min(); // Find the smallest valid_from among them
