@@ -91,6 +91,7 @@ import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabContextMenuItemDelegate;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
@@ -131,7 +132,6 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectableListL
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
 import org.chromium.components.commerce.core.ShoppingService;
-import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
@@ -1561,17 +1561,26 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
                 "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
                 Profile.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/firstrun/FreIntentCreator",
-                "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/components/external_intents/ExternalNavigationHandler",
-                "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
-                ExternalNavigationDelegate.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
-                "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
-                ContextMenuItemDelegate.class, Supplier.class, int.class, ExternalAuthUtils.class,
-                Context.class, ContextMenuParams.class, ContextMenuNativeDelegate.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/firstrun/FreIntentCreator",
+                        "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/external_intents/ExternalNavigationHandler",
+                        "org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler",
+                        ExternalNavigationDelegate.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator",
+                        "org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator",
+                        TabContextMenuItemDelegate.class,
+                        Supplier.class,
+                        int.class,
+                        ExternalAuthUtils.class,
+                        Context.class,
+                        ContextMenuParams.class,
+                        ContextMenuNativeDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/base/shared_preferences/StrictPreferenceKeyChecker",
