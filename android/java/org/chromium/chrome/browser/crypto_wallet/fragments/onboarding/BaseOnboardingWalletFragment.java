@@ -114,22 +114,23 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         }
         TextView skip = mDialog.findViewById(R.id.skip);
         if (skip != null) {
-            skip.setOnClickListener(v -> {
-                BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                if (braveWalletP3A != null && isOnboarding) {
-                    braveWalletP3A.reportOnboardingAction(
-                            OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-                }
-                if (isOnboarding) {
-                    if (mOnNextPage != null) {
-                        // Show confirmation screen
-                        // only during onboarding process.
-                        mOnNextPage.incrementPages(incrementCount);
-                    }
-                } else {
-                    requireActivity().finish();
-                }
-            });
+            skip.setOnClickListener(
+                    v -> {
+                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
+                        if (braveWalletP3A != null && isOnboarding) {
+                            braveWalletP3A.reportOnboardingAction(
+                                    OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
+                        }
+                        if (isOnboarding) {
+                            if (mOnNextPage != null) {
+                                // Show confirmation screen
+                                // only during onboarding process.
+                                mOnNextPage.incrementPages(incrementCount);
+                            }
+                        } else {
+                            requireActivity().finish();
+                        }
+                    });
         }
     }
 }
