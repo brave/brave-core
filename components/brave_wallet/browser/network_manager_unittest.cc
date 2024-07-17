@@ -956,6 +956,48 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
   }
 }
 
+TEST_F(NetworkManagerUnitTest, GetCurrentChainIdFallback) {
+  mojom::NetworkInfo chain = GetTestNetworkInfo1();
+  auto some_origin = url::Origin::Create(GURL("https://a.com"));
+
+  network_manager()->AddCustomNetwork(chain);
+  network_manager()->SetCurrentChainId(mojom::CoinType::ETH, std::nullopt,
+                                       chain.chain_id);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
+      chain.chain_id);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
+      chain.chain_id);
+
+  network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
+      mojom::kMainnetChainId);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
+      mojom::kMainnetChainId);
+
+  chain.chain_id = "another_id";
+  network_manager()->AddCustomNetwork(chain);
+  network_manager()->SetCurrentChainId(mojom::CoinType::ETH, some_origin,
+                                       chain.chain_id);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
+      mojom::kMainnetChainId);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
+      chain.chain_id);
+
+  network_manager()->RemoveCustomNetwork(chain.chain_id, mojom::CoinType::ETH);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, std::nullopt),
+      mojom::kMainnetChainId);
+  EXPECT_EQ(
+      network_manager()->GetCurrentChainId(mojom::CoinType::ETH, some_origin),
+      mojom::kMainnetChainId);
+}
+
 TEST_F(NetworkManagerUnitTest, GetUnstoppableDomainsRpcUrl) {
   EXPECT_EQ(
       GURL("https://ethereum-mainnet.wallet.brave.com"),

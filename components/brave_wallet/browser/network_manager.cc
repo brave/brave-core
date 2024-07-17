@@ -717,6 +717,28 @@ std::string GetCurrentChainIdFromPrefs(PrefService* prefs,
   return base::ToLowerASCII(*chain_id);
 }
 
+std::string GetCurrentChainIdFromPrefs(
+    PrefService* prefs,
+    mojom::CoinType coin,
+    const std::optional<::url::Origin>& origin) {
+  if (!origin) {
+    return GetCurrentChainIdFromPrefs(prefs, coin);
+  }
+  const auto& selected_networks =
+      prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
+  const auto* coin_dict =
+      selected_networks.FindDict(GetPrefKeyForCoinType(coin));
+  if (!coin_dict) {
+    return GetCurrentChainIdFromPrefs(prefs, coin);
+  }
+  const auto* chain_id_str = coin_dict->FindString(origin->Serialize());
+  if (!chain_id_str) {
+    return GetCurrentChainIdFromPrefs(prefs, coin);
+  }
+
+  return base::ToLowerASCII(*chain_id_str);
+}
+
 }  // namespace
 
 NetworkManager::NetworkManager(PrefService* prefs) : prefs_(prefs) {}
@@ -1283,22 +1305,25 @@ void NetworkManager::RemoveHiddenNetwork(mojom::CoinType coin,
 std::string NetworkManager::GetCurrentChainId(
     mojom::CoinType coin,
     const std::optional<url::Origin>& origin) {
-  if (!origin) {
-    return GetCurrentChainIdFromPrefs(prefs_, coin);
+  auto chain_id_from_prefs = GetCurrentChainIdFromPrefs(prefs_, coin, origin);
+  for (auto& chain : GetAllChains()) {
+    if (coin == chain->coin && base::EqualsCaseInsensitiveASCII(
+                                   chain_id_from_prefs, chain->chain_id)) {
+      return chain_id_from_prefs;
+    }
   }
-  const auto& selected_networks =
-      prefs_->GetDict(kBraveWalletSelectedNetworksPerOrigin);
-  const auto* coin_dict =
-      selected_networks.FindDict(GetPrefKeyForCoinType(coin));
-  if (!coin_dict) {
-    return GetCurrentChainIdFromPrefs(prefs_, coin);
+  if (coin == mojom::CoinType::ETH) {
+    return mojom::kMainnetChainId;
+  } else if (coin == mojom::CoinType::SOL) {
+    return mojom::kSolanaMainnet;
+  } else if (coin == mojom::CoinType::FIL) {
+    return mojom::kFilecoinMainnet;
+  } else if (coin == mojom::CoinType::BTC) {
+    return mojom::kBitcoinMainnet;
+  } else if (coin == mojom::CoinType::ZEC) {
+    return mojom::kZCashMainnet;
   }
-  const auto* chain_id_str = coin_dict->FindString(origin->Serialize());
-  if (!chain_id_str) {
-    return GetCurrentChainIdFromPrefs(prefs_, coin);
-  }
-
-  return base::ToLowerASCII(*chain_id_str);
+  NOTREACHED_NORETURN() << coin;
 }
 
 bool NetworkManager::SetCurrentChainId(mojom::CoinType coin,
