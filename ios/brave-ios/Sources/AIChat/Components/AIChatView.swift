@@ -107,8 +107,16 @@ public struct AIChatView: View {
                         },
                         dismissAction: {
                           if model.apiError == .rateLimitReached {
-                            if let turn = model.clearErrorAndGetFailedMessage() {
-                              prompt = turn.text
+                            if let nonPremiumModel = model.models.first(where: {
+                              guard let leoModelOptions = $0.options.leoModelOptions else {
+                                return false
+                              }
+                              return leoModelOptions.access != .premium
+                            }) {
+                              model.changeModel(modelKey: nonPremiumModel.key)
+                              model.retryLastRequest()
+                            } else {
+                              Logger.module.error("No non-premium models available")
                             }
                           } else {
                             model.shouldShowPremiumPrompt = false
@@ -480,8 +488,14 @@ public struct AIChatView: View {
           Task { @MainActor in
             await model.refreshPremiumStatus()
 
-            if let turn = model.clearErrorAndGetFailedMessage() {
-              prompt = turn.text
+            if let nonPremiumModel = model.models.first(where: {
+              guard let leoModelOptions = $0.options.leoModelOptions else { return false }
+              return leoModelOptions.access != .premium
+            }) {
+              model.changeModel(modelKey: nonPremiumModel.key)
+              model.retryLastRequest()
+            } else {
+              Logger.module.error("No non-premium models available")
             }
           }
         }
