@@ -93,6 +93,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
       &blink::features::kClientHintsFormFactors,
+      &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
       &blink::features::kFencedFramesM120FeaturesPart2,
@@ -139,7 +140,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeStructuredMetrics,
-      &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDesktopPWAsLinkCapturing,
