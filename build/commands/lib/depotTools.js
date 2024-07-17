@@ -158,7 +158,7 @@ function optOutOfBuildTelemetry() {
     path.join(config.depotToolsDir, 'ninjalog_uploader_wrapper.py')
   if (fs.existsSync(ninjalogUploaderWrapperPath)) {
     util.run('vpython3', [ninjalogUploaderWrapperPath, 'opt-out'],
-             config.defaultOptions)
+      config.defaultOptions)
   }
 }
 
