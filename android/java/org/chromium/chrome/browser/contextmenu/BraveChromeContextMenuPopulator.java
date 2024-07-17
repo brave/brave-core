@@ -11,6 +11,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
+import org.chromium.chrome.browser.tab.TabContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
@@ -19,16 +20,26 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url_sanitizer.mojom.UrlSanitizerService;
 
-public class BraveChromeContextMenuPopulator
-        extends ChromeContextMenuPopulator implements ConnectionErrorHandler {
-    private final ContextMenuItemDelegate mItemDelegate;
+public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator
+        implements ConnectionErrorHandler {
+    private final TabContextMenuItemDelegate mItemDelegate;
     private final ContextMenuParams mParams;
 
-    public BraveChromeContextMenuPopulator(ContextMenuItemDelegate itemDelegate,
-            Supplier<ShareDelegate> shareDelegate, @ContextMenuMode int mode,
-            ExternalAuthUtils externalAuthUtils, Context context, ContextMenuParams params,
+    public BraveChromeContextMenuPopulator(
+            TabContextMenuItemDelegate itemDelegate,
+            Supplier<ShareDelegate> shareDelegate,
+            @ContextMenuMode int mode,
+            ExternalAuthUtils externalAuthUtils,
+            Context context,
+            ContextMenuParams params,
             ContextMenuNativeDelegate nativeDelegate) {
-        super(itemDelegate, shareDelegate, mode, externalAuthUtils, context, params,
+        super(
+                itemDelegate,
+                shareDelegate,
+                mode,
+                externalAuthUtils,
+                context,
+                params,
                 nativeDelegate);
 
         mItemDelegate = itemDelegate;
