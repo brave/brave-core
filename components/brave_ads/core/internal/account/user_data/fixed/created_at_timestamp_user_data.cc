@@ -20,11 +20,11 @@ base::Value::Dict BuildCreatedAtTimestampUserData(
     const TransactionInfo& transaction) {
   CHECK(transaction.IsValid());
 
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   user_data.Set(kCreatedAtTimestampKey,
                 TimeToPrivacyPreservingIso8601(*transaction.created_at));

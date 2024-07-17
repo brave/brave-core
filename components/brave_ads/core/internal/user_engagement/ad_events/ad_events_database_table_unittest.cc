@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
@@ -260,6 +261,44 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
   const AdEventInfo ad_event_2 =
       BuildAdEvent(ad_2, ConfirmationType::kViewedImpression,
                    /*created_at=*/Now());
+  database_table_.RecordEvent(ad_event_2, result_callback.Get());
+
+  // Act
+  database_table_.PurgeExpired(result_callback.Get());
+
+  // Assert
+  base::MockCallback<database::table::GetAdEventsCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true, AdEventList{ad_event_2}));
+  database_table_.GetAll(callback.Get());
+}
+
+TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpiredForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
+
+  base::MockCallback<ResultCallback> result_callback;
+  EXPECT_CALL(result_callback, Run(/*success=*/true)).Times(3);
+
+  // Ad event 1: Recorded on 19th March 2024. This ad event should be purged
+  // because it will occur outside the expiry window.
+  const NotificationAdInfo ad_1 =
+      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_1 =
+      BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
+                   /*created_at=*/Now());
+  database_table_.RecordEvent(ad_event_1, result_callback.Get());
+
+  // Move the clock forward to when the ad events expire.
+  AdvanceClockBy(base::Days(30));
+
+  // Ad event 2: Recorded on 18th April 2024. This ad event should be included
+  // because it occurred within the expiry window.
+  const NotificationAdInfo ad_2 =
+      test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_2 = BuildAdEvent(ad_2, ConfirmationType::kClicked,
+                                              /*created_at=*/Now());
   database_table_.RecordEvent(ad_event_2, result_callback.Get());
 
   // Act

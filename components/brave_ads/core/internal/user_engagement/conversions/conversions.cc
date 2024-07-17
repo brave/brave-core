@@ -155,8 +155,8 @@ void Conversions::CheckForConversions(
     }
     const auto& [creative_set_id, creative_set_conversion_bucket] = *iter;
 
-    // Yes, so can we convert this ad event?
-    if (!CanConvertAdEvent(ad_event)) {
+    // Yes, so are we allowed to convert this ad event?
+    if (!IsAllowedToConvertAdEvent(ad_event)) {
       // No, so skip this ad event.
       continue;
     }

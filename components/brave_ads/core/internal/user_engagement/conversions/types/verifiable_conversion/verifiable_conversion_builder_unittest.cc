@@ -7,6 +7,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 
@@ -14,22 +16,15 @@
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kHtml[] =
-    R"(<html>Hello World!<div id="xyzzy-id">waldo</div><meta name="ad-conversion-id" content="fred"></html>)";
-
-}  // namespace
-
 class BraveAdsVerifiableConversionBuilderTest : public UnitTestBase {};
 
-TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
+TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversion) {
   // Arrange
   ConversionResourceIdPatternMap resource_id_patterns;
   resource_id_patterns.insert(
-      {/*url_pattern=*/"https://foo.com/bar",
+      {test::kMatchingUrlPattern,
        ConversionResourceIdPatternInfo{
-           /*url_pattern=*/"https://foo.com/bar",
+           test::kMatchingUrlPattern,
            ConversionResourceIdPatternSearchInType::kHtml,
            /*id_pattern=*/R"(<div.*id="xyzzy-id".*>(.*)</div>)"}});
 
@@ -40,8 +35,9 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
   // Act
   const std::optional<VerifiableConversionInfo> verifiable_conversion =
       MaybeBuildVerifiableConversion(
-          /*redirect_chain=*/{GURL("https://foo.com/bar")}, kHtml,
-          resource_id_patterns, creative_set_conversion);
+          test::BuildVerifiableConversionRedirectChain(),
+          test::kVerifiableConversionHtml, resource_id_patterns,
+          creative_set_conversion);
   ASSERT_TRUE(verifiable_conversion);
 
   // Assert
@@ -52,22 +48,21 @@ TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversionId) {
 }
 
 TEST_F(BraveAdsVerifiableConversionBuilderTest,
-       DoNotBuildVerifiableConversionId) {
+       DoNotBuildVerifiableConversion) {
   // Arrange
   ConversionResourceIdPatternMap resource_id_patterns;
   resource_id_patterns.insert(
-      {/*url_pattern=*/"https://foo.com/bar?qux_id=*",
+      {test::BuildVerifiableConversionUrlPattern(),
        ConversionResourceIdPatternInfo{
-           /*url_pattern=*/"https://foo.com/bar?qux_id=*",
+           test::BuildVerifiableConversionUrlPattern(),
            ConversionResourceIdPatternSearchInType::kUrlRedirect,
-           /*id_pattern=*/"qux_id=(.*)"}});
-
-  CreativeSetConversionInfo creative_set_conversion;
+           test::kVerifiableConversionIdPattern}});
 
   // Act & Assert
   EXPECT_FALSE(MaybeBuildVerifiableConversion(
-      /*redirect_chain=*/{GURL("https://bar.com/foo")}, kHtml,
-      resource_id_patterns, creative_set_conversion));
+      test::BuildVerifiableConversionRedirectChain(),
+      test::kVerifiableConversionHtml, resource_id_patterns,
+      /*creative_set_conversion=*/{}));
 }
 
 }  // namespace brave_ads

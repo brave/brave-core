@@ -363,12 +363,11 @@ TEST_F(BraveAdsAccountTest,
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
   account_->Deposit(test::kCreativeInstanceId, test::kSegment,
-                    AdType::kNotificationAd,
+                    AdType::kSearchResultAd,
                     ConfirmationType::kViewedImpression);
 
   // Assert
@@ -390,12 +389,11 @@ TEST_F(BraveAdsAccountTest,
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act
-  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(account_observer_mock_, OnDidProcessDeposit).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToProcessDeposit).Times(0);
-  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
-
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
   account_->Deposit(test::kCreativeInstanceId, test::kSegment,
-                    AdType::kNotificationAd, ConfirmationType::kClicked);
+                    AdType::kNewTabPageAd, ConfirmationType::kClicked);
 
   // Assert
   base::MockCallback<database::table::GetTransactionsCallback> callback;

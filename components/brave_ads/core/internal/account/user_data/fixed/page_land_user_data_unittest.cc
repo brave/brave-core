@@ -7,6 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "url/gurl.h"
 
@@ -43,6 +44,24 @@ TEST_F(BraveAdsPageLandUserDataTest,
               /*is_visible=*/true,
               /*redirect_chain=*/{GURL("https://brave.com")},
               /*is_error_page=*/false,
+              /*is_playing_media=*/false});
+
+  // Assert
+  EXPECT_THAT(user_data, ::testing::IsEmpty());
+}
+
+TEST_F(
+    BraveAdsPageLandUserDataTest,
+    DoNotBuildPageLandUserDataForHttpResponseStatusErrorPageForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  // Act
+  const base::Value::Dict user_data = BuildPageLandUserData(
+      TabInfo{/*id=*/1,
+              /*is_visible=*/true,
+              /*redirect_chain=*/{GURL("https://brave.com")},
+              /*is_error_page=*/true,
               /*is_playing_media=*/false});
 
   // Assert

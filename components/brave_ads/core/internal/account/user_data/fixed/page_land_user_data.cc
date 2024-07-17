@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
 
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 
 namespace brave_ads {
@@ -17,6 +18,10 @@ constexpr char kHttpErrorPageResponseStatus[] = "errorPage";
 }  // namespace
 
 base::Value::Dict BuildPageLandUserData(const TabInfo& tab) {
+  if (!UserHasJoinedBraveRewards()) {
+    return {};
+  }
+
   base::Value::Dict user_data;
 
   if (tab.is_error_page) {

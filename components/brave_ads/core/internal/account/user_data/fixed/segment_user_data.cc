@@ -15,11 +15,11 @@ constexpr char kSegmentKey[] = "segment";
 }  // namespace
 
 base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   if (transaction.ad_type != AdType::kSearchResultAd &&
       !transaction.segment.empty()) {

@@ -20,11 +20,11 @@ constexpr char kAdFormatKey[] = "ad_format";
 }  // namespace
 
 base::Value::Dict BuildSummaryUserData(const PaymentTokenList& payment_tokens) {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   const AdTypeBucketMap ad_type_buckets = BuildAdTypeBuckets(payment_tokens);
 

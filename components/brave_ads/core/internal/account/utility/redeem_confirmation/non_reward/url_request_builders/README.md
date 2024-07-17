@@ -1,5 +1,5 @@
-# Redeem Non-Reward Confirmation URL Request Builders
+# Non-Brave Rewards User Confirmation Redemption URL Request Builders
 
-Non-reward confirmation redemption URL request builders are used to construct URLs programmatically for non-Brave Rewards users.
+Confirmation redemption URL request builders are used to programmatically construct URLs.
 
 Please add to it!
