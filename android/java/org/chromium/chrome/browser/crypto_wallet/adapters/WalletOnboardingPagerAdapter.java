@@ -198,7 +198,7 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
             case BACKUP -> {
                 final boolean isOnboarding = false;
                 if (position == 0) {
-                    return OnboardingBackupWalletFragment.newInstance(isOnboarding);
+                    return OnboardingBackupWalletFragment.newInstance();
                 } else if (position == 1) {
                     return OnboardingRecoveryPhraseFragment.newInstance(isOnboarding);
                 } else if (position == 2) {

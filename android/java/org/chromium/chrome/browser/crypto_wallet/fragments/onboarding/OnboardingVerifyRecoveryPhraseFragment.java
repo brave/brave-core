@@ -136,7 +136,7 @@ public class OnboardingVerifyRecoveryPhraseFragment extends BaseOnboardingWallet
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        enable(mRecoveryPhraseButton, s.length() != 0);
+                        mRecoveryPhraseButton.setEnabled(s.length() != 0);
                         mTextInputLayout.setErrorEnabled(false);
                     }
 

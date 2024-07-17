@@ -70,6 +70,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:theme="@style/BraveWalletInputLayoutTheme"
             style="@style/BraveWalletInputLayout"
             app:errorEnabled="true"
             app:endIconMode="clear_text"
@@ -80,6 +81,7 @@
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/BraveWalletInputEditText"
                 android:id="@+id/text_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +101,6 @@
             android:gravity="center"
             android:text="@string/continue_text"
             android:enabled="false"
-            android:alpha="0.5"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginHorizontal="16dp"

@@ -21,13 +21,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -59,7 +59,7 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
 
     private TextInputEditText mUnlockWalletPassword;
     private TextInputLayout mUnlockWalletPasswordLayout;
-    private Button mUnlockButton;
+    private AppCompatButton mUnlockButton;
     private TextView mUnlockWalletRestoreButton;
     private ImageView mBiometricUnlockButton;
 
@@ -93,7 +93,6 @@ public class UnlockWalletFragment extends BaseWalletNextPageFragment {
         mUnlockWalletPassword = view.findViewById(R.id.unlock_wallet_password);
         mUnlockWalletPasswordLayout = view.findViewById(R.id.unlock_wallet_password_layout);
         mUnlockButton = view.findViewById(R.id.btn_unlock);
-        mUnlockButton.setEnabled(false);
         mUnlockWalletRestoreButton = view.findViewById(R.id.btn_unlock_wallet_restore);
         mBiometricUnlockButton = view.findViewById(R.id.biometric_unlock_wallet);
 

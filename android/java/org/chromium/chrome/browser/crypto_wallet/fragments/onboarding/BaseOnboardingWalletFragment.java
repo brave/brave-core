@@ -71,16 +71,6 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         }
     }
 
-    protected void enable(@NonNull final AppCompatButton button, final boolean enable) {
-        if (enable) {
-            button.setAlpha(1f);
-            button.setEnabled(true);
-        } else {
-            button.setAlpha(0.5f);
-            button.setEnabled(false);
-        }
-    }
-
     protected void showSkipDialog(final boolean isOnboarding, final int incrementCount) {
         MaterialAlertDialogBuilder builder =
                 new MaterialAlertDialogBuilder(

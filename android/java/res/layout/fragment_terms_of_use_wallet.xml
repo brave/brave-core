@@ -77,7 +77,6 @@
             android:gravity="center"
             android:text="@string/continue_text"
             android:enabled="false"
-            android:alpha="0.5"
             android:layout_marginBottom="40dp"
             android:layout_marginHorizontal="16dp"
             android:layout_alignParentStart="true"

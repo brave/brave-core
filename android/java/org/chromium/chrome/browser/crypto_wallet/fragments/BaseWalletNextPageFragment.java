@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -66,6 +67,16 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
     public void onDetach() {
         mOnNextPage = null;
         super.onDetach();
+    }
+
+    protected void enable(@NonNull final AppCompatButton button, final boolean enable) {
+        if (enable) {
+            button.setAlpha(1f);
+            button.setEnabled(true);
+        } else {
+            button.setAlpha(0.5f);
+            button.setEnabled(false);
+        }
     }
 
     @Nullable

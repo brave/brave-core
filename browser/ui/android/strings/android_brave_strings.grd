@@ -1942,20 +1942,17 @@ Are you sure you want to do this?
     <message name="IDS_SETUP_CRYPTO_DESCRIPTION" desc="Brave Wallet onboarding new wallet description">
       Get started with Brave Wallet within minutes
     </message>
-    <message name="IDS_BACKUP_YOUR_WALLET" desc="Brave Wallet onboarding text">
-      Backup your wallet now!
+    <message name="IDS_ENTER_PASSWORD_TO_CONTINUE_TITLE" desc="Brave Wallet enter password text">
+      Enter a password to continue
     </message>
-    <message name="IDS_BACKUP_YOUR_WALLET_TEXT" desc="Brave Wallet onboarding text">
-      In the next step you’ll see a 12-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.
+    <message name="IDS_ENTER_PASSWORD_TO_CONTINUE" desc="Brave Wallet enter password to back up wallet text">
+      Enter your Brave Wallet password to start backing up wallet.
     </message>
     <message name="IDS_CONTINUE_TEXT" desc="Brave Wallet onboarding text">
       Continue
     </message>
     <message name="IDS_MESSAGE" desc="Brave wallet message title text">
       Message
-    </message>
-    <message name="IDS_BACKUP_WALLET_CHECKBOX_TEXT" desc="Brave Wallet onboarding text">
-      I understand that if I lose my recovery phrase, I won’t be able to access my crypto wallet.
     </message>
     <message name="IDS_WALLET_ACCEPT_ITEMS" desc="Brave Wallet creation subtitle">
       We require that you acknowledge the items below
@@ -3120,9 +3117,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_UPDATING_VPN_PROFILE" desc="Message to indicate profile is being update after split tunnel update.">
       Updating VPN Profile ...
-    </message>
-    <message name="IDS_BACKUP_WALLET_PASSWORD" desc="Brave Wallet prompt to enter a password">
-      Enter your Brave Wallet password
     </message>
     <message name="IDS_BRAVE_WALLET_SIGN_WARNING" desc="Sign panel warning message">
       Note that Brave can't verify what will happen if you sign. A signature could authorize nearly any operation in your account or on your behalf, including (but not limited to) giving total control of your account and crypto assets to the site making the request. Only sign if you're sure you want to take this action, and trust the requesting site.
