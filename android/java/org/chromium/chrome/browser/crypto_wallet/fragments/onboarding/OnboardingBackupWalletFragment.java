@@ -19,11 +19,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,9 +31,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnNextPage;
@@ -159,7 +153,6 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
             // noinspection NewApi
             showBiometricAuthenticationDialog();
         }
-
     }
 
     @Override
@@ -173,7 +166,8 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
         final BiometricPrompt.AuthenticationCallback authenticationCallback =
                 new BiometricPrompt.AuthenticationCallback() {
                     @Override
-                    public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult authenticationResult) {
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult authenticationResult) {
                         super.onAuthenticationSucceeded(authenticationResult);
 
                         final KeyringService keyringService = getKeyringService();
@@ -182,15 +176,15 @@ public class OnboardingBackupWalletFragment extends BaseOnboardingWalletFragment
                         try {
                             unlockWalletPassword = KeystoreHelper.decryptText();
                         } catch (InvalidAlgorithmParameterException
-                                 | UnrecoverableEntryException
-                                 | NoSuchPaddingException
-                                 | IllegalBlockSizeException
-                                 | CertificateException
-                                 | KeyStoreException
-                                 | NoSuchAlgorithmException
-                                 | BadPaddingException
-                                 | IOException
-                                 | InvalidKeyException e) {
+                                | UnrecoverableEntryException
+                                | NoSuchPaddingException
+                                | IllegalBlockSizeException
+                                | CertificateException
+                                | KeyStoreException
+                                | NoSuchAlgorithmException
+                                | BadPaddingException
+                                | IOException
+                                | InvalidKeyException e) {
                             // KeystoreHelper.decryptText() may throw a long list
                             // of exceptions.
                             showBiometricAuthenticationButton();
