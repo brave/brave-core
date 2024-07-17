@@ -84,6 +84,8 @@ async function RunCommand() {
     }
   })
 
+  depotTools.optOutOfBuildTelemetry()
+
   await util.applyPatches()
 
   if (!program.nohooks) {
