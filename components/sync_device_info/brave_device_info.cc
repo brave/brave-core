@@ -31,6 +31,7 @@ BraveDeviceInfo::BraveDeviceInfo(
     const std::optional<PhoneAsASecurityKeyInfo>& paask_info,
     const std::string& fcm_registration_token,
     const ModelTypeSet& interested_data_types,
+    std::optional<base::Time> floating_workspace_last_signin_timestamp,
     bool is_self_delete_supported)
     : DeviceInfo(guid,
                  client_name,
@@ -50,7 +51,8 @@ BraveDeviceInfo::BraveDeviceInfo(
                  sharing_info,
                  paask_info,
                  fcm_registration_token,
-                 interested_data_types),
+                 interested_data_types,
+                 floating_workspace_last_signin_timestamp),
       is_self_delete_supported_(is_self_delete_supported) {}
 
 bool BraveDeviceInfo::is_self_delete_supported() const {
