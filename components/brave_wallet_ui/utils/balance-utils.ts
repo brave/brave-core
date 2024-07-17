@@ -9,6 +9,21 @@ import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
 // utils
 import Amount from './amount'
+import { getAssetIdKey } from './asset-utils'
+
+export interface BalanceResult {
+  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>
+  chainId: string
+  contractAddress: string
+  balance: string
+  coinType: BraveWallet.CoinType
+  /** For NFTs */
+  tokenId: string
+}
+
+type SetBalanceArg = BalanceResult & {
+  tokenBalancesRegistry: TokenBalancesRegistry
+}
 
 export const formatTokenBalanceWithSymbol = (
   balance: string,
@@ -45,6 +60,21 @@ export const getPercentAmount = (
   return formattedAmount
 }
 
+export const getIsTokenInRegistry = (
+  accountId: BraveWallet.AccountId,
+  asset: BraveWallet.BlockchainToken,
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+) => {
+  if (!tokenBalancesRegistry) {
+    return false
+  }
+  return (
+    tokenBalancesRegistry.accounts?.[getAccountBalancesKey(accountId)]?.chains[
+      asset?.chainId
+    ]?.tokenBalances[getAssetIdKey(asset)] !== undefined
+  )
+}
+
 export const getBalance = (
   accountId: BraveWallet.AccountId | undefined,
   asset: BraveWallet.BlockchainToken | undefined,
@@ -65,18 +95,19 @@ export const getBalance = (
     return '0'
   }
 
-  const balance =
-    chainIdBalances.tokenBalances[asset.contractAddress.toLowerCase()]
+  const balance = chainIdBalances.tokenBalances[getAssetIdKey(asset)]
   return balance || '0'
 }
 
-export function setBalance(
-  accountId: Pick<BraveWallet.AccountId, 'uniqueKey'>,
-  chainId: string,
-  contractAddress: string,
-  balance: string,
-  tokenBalancesRegistry: TokenBalancesRegistry
-) {
+export function setBalance({
+  accountId,
+  balance,
+  chainId,
+  contractAddress,
+  tokenBalancesRegistry,
+  coinType,
+  tokenId
+}: SetBalanceArg) {
   const accountBalanceKey = getAccountBalancesKey(accountId)
   if (!tokenBalancesRegistry.accounts[accountBalanceKey]) {
     tokenBalancesRegistry.accounts[accountBalanceKey] = { chains: {} }
@@ -88,7 +119,9 @@ export function setBalance(
   }
 
   const chainBalances = accountBalances.chains[chainId]
-  chainBalances.tokenBalances[contractAddress.toLowerCase()] = balance
+  chainBalances.tokenBalances[
+    getAssetIdKey({ chainId, coin: coinType, contractAddress, tokenId })
+  ] = balance
 }
 
 export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {

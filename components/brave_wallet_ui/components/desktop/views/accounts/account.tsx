@@ -44,7 +44,7 @@ import { getPriceIdForToken } from '../../../../utils/api-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult //
 } from '../../../../common/slices/entities/blockchain-token.entity'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { getAssetIdKey, isTokenWatchOnly } from '../../../../utils/asset-utils'
 
 // Styled Components
 import {
@@ -270,6 +270,16 @@ export const Account = () => {
           }
         : skipToken
     )
+
+  const { data: spamTokenBalancesRegistry } = useBalancesFetcher(
+    networkList
+      ? {
+          accounts,
+          networks: networkList,
+          isSpamRegistry: true
+        }
+      : skipToken
+  )
 
   const nonFungibleTokens = React.useMemo(
     () =>
@@ -546,6 +556,12 @@ export const Account = () => {
                   onSelectAsset={() => onSelectAsset(nft)}
                   isTokenHidden={false}
                   isTokenSpam={false}
+                  isWatchOnly={isTokenWatchOnly(
+                    nft,
+                    accounts,
+                    tokenBalancesRegistry,
+                    spamTokenBalancesRegistry
+                  )}
                 />
               ))}
             </NftGrid>
