@@ -112,9 +112,15 @@ license_files = ['LICENCE']
 [crate.arrayref]
 license_files = ['LICENSE']
 
+[crate.base64ct]
+extra_input_roots = [ "../README.md" ]
+
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
+
+[crate.const-oid]
+extra_input_roots = [ "../README.md" ]
 
 [crate.cbor4ii]
 extra_input_roots = [ "../README.md" ]
@@ -354,6 +360,9 @@ extra_input_roots = [ "../README.md" ]
 
 [crate.siphasher]
 license_files = ['../../../../../common/licenses/Apache-2.0']
+
+[crate.spki]
+extra_input_roots = [ "../README.md" ]
 
 [crate.sta-rs]
 license_files = ['LICENSE']
