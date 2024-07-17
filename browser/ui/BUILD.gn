@@ -619,8 +619,6 @@ source_set("ui") {
 
     if (is_win) {
       sources += [
-        "day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
-        "day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
       ]

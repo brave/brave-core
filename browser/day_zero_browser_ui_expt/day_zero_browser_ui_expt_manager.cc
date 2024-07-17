@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 
+#include <string>
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/time/time.h"
@@ -16,9 +17,16 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+#include "brave/build/android/jni_headers/DayZeroHelper_jni.h"
+#endif  // #BUILDFLAG(IS_ANDROID)
 
 namespace {
 constexpr int kDayZeroFeatureDurationInDays = 1;
@@ -32,7 +40,8 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
   }
 
   // This class should be instantiated after getting valid first run time;
-  if (brave_stats::GetFirstRunTime(nullptr).is_null()) {
+  if (brave_stats::GetFirstRunTime(g_browser_process->local_state())
+          .is_null()) {
     // This should not be happened in production but not 100% in the wild(ex,
     // corrupted user data). Just early return for safe. If upstream changes the
     // timing of fetching first run time, browser test will catch this.
@@ -40,9 +49,25 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
     return nullptr;
   }
 
+  std::optional<std::string> day_zero_variant;
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  }
+
+  if (!day_zero_variant) {
+    LOG(ERROR) << __func__ << "Day zero Expt variant is not available";
+    return nullptr;
+  }
+
+  if (day_zero_variant != "a") {
+    LOG(ERROR) << __func__ << "Day zero Expt variant is not 'a'";
+    return nullptr;
+  }
+
   // If one day passed since first run, we don't need to touch original default
   // pref values. Just early return and this class is no-op.
-  if (base::Time::Now() - brave_stats::GetFirstRunTime(nullptr) >=
+  if (base::Time::Now() -
+          brave_stats::GetFirstRunTime(g_browser_process->local_state()) >=
       base::Days(kDayZeroFeatureDurationInDays)) {
     VLOG(2) << __func__ << " Already passed day zero feature duration.";
     return nullptr;
@@ -99,6 +124,10 @@ void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
                              base::Value(false));
   prefs->SetDefaultPrefValue(brave_news::prefs::kNewTabPageShowToday,
                              base::Value(false));
+#if BUILDFLAG(IS_ANDROID)
+  Java_DayZeroHelper_setDayZeroExptAndroid(
+      base::android::AttachCurrentThread(), false);
+#endif  // #BUILDFLAG(IS_ANDROID)
 }
 
 void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
@@ -116,6 +145,10 @@ void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
   prefs->SetDefaultPrefValue(
       brave_news::prefs::kNewTabPageShowToday,
       base::Value(brave_news::IsUserInDefaultEnabledLocale()));
+#if BUILDFLAG(IS_ANDROID)
+  Java_DayZeroHelper_setDayZeroExptAndroid(
+      base::android::AttachCurrentThread(), true);
+#endif  // #BUILDFLAG(IS_ANDROID)
 }
 
 void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
@@ -163,5 +196,5 @@ base::Time DayZeroBrowserUIExptManager::GetFirstRunTime() const {
     return *first_run_time_for_testing_;
   }
 
-  return brave_stats::GetFirstRunTime(nullptr);
+  return brave_stats::GetFirstRunTime(g_browser_process->local_state());
 }

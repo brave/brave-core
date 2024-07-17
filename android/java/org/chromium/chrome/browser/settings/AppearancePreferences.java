@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
+import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -94,9 +95,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         ChromeSwitchPreference showBraveRewardsIconPref =
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_REWARDS_ICON);
         if (showBraveRewardsIconPref != null) {
-            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            showBraveRewardsIconPref.setChecked(
-                    sharedPreferences.getBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, true));
+            showBraveRewardsIconPref.setChecked(NtpUtil.shouldShowRewardsIcon());
             showBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 

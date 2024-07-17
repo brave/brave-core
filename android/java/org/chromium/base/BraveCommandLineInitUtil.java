@@ -26,6 +26,8 @@ public abstract class BraveCommandLineInitUtil {
     private static final String PREF_LINK_SUBSCRIPTION_ON_STAGING = "link_subscription_on_staging";
     private static final String TEST_VARIATIONS_SERVER_URL_FILE =
             "/data/local/tmp/brave-test-variations-server-url";
+    private static final String TEST_DAY_ZERO_EXPT_FILE =
+            "/data/local/tmp/brave-test-day-zero-expt";
 
     public static void initCommandLine(
             String fileName, @Nullable Supplier<Boolean> shouldUseDebugFlags) {
@@ -57,6 +59,21 @@ public abstract class BraveCommandLineInitUtil {
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Failed to read variations server file: " + e.getMessage());
+            }
+        }
+
+        File dayZeroExptFile = new File(TEST_DAY_ZERO_EXPT_FILE);
+        if (dayZeroExptFile.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(dayZeroExptFile))) {
+                String testDayZeroExpt = reader.readLine();
+                if (testDayZeroExpt != null && !testDayZeroExpt.isEmpty()) {
+                    Log.w(TAG, "Day zero expt applied: " + testDayZeroExpt);
+                    qaCommandLine += testDayZeroExpt;
+                } else {
+                    Log.w(TAG, "Day zero expt file appears to be empty");
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to read Day zero expt file: " + e.getMessage());
             }
         }
 

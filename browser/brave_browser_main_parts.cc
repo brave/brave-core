@@ -69,8 +69,8 @@
 #include "extensions/browser/extension_system.h"
 #endif
 
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/ui/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 #endif
 
 BraveBrowserMainParts::BraveBrowserMainParts(bool is_integration_test,
@@ -98,7 +98,7 @@ void BraveBrowserMainParts::PreBrowserStart() {
   speedreader::SpeedreaderExtendedInfoHandler::Register();
 #endif
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
   // As DayZeroBrowserUIExptManager uses first run sentinel time,
   // PreBrowserStart() is good place to initialize.
   day_zero_browser_ui_expt_manager_ =

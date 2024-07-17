@@ -18,7 +18,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.DisplayAd;
 import org.chromium.brave_news.mojom.Image;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.url.mojom.Url;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static volatile DatabaseHelper mInstance;
+    private static volatile DatabaseHelper sInstance;
 
     // Database Version
     private static final int DATABASE_VERSION = 3;
@@ -36,12 +36,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static DatabaseHelper getInstance() {
         synchronized (DatabaseHelper.class) {
-            if (mInstance == null) {
+            if (sInstance == null) {
                 Context context = ContextUtils.getApplicationContext();
-                mInstance = new DatabaseHelper(context);
+                sInstance = new DatabaseHelper(context);
             }
         }
-        return mInstance;
+        return sInstance;
     }
 
     public DatabaseHelper(Context context) {
@@ -149,7 +149,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private boolean isTopSiteAlreadyAdded(String destinationUrl) {
         SQLiteDatabase sqldb = this.getReadableDatabase();
-        String query = "Select * from " + TopSiteTable.TABLE_NAME + " where " + TopSiteTable.COLUMN_DESTINATION_URL + " =?";
+        String query =
+                "Select * from "
+                        + TopSiteTable.TABLE_NAME
+                        + " where "
+                        + TopSiteTable.COLUMN_DESTINATION_URL
+                        + " =?";
         Cursor cursor = sqldb.rawQuery(query, new String[] {destinationUrl});
         if (cursor.getCount() <= 0) {
             cursor.close();
@@ -160,7 +165,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void insertTopSite(TopSite topSite) {
-        if (!isTopSiteAlreadyAdded(topSite.getDestinationUrl()) && !NTPUtil.isInRemovedTopSite(topSite.getDestinationUrl())) {
+        if (!isTopSiteAlreadyAdded(topSite.getDestinationUrl())
+                && !NTPImageUtil.isInRemovedTopSite(topSite.getDestinationUrl())) {
             // get writable database as we want to write data
             SQLiteDatabase db = this.getWritableDatabase();
 
@@ -239,11 +245,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private boolean isAdsTrackerAlreadyAdded(BraveStatsTable braveStat) {
-
-        String sql = "SELECT * FROM "
-                     + BraveStatsTable.TABLE_NAME
-                     + " WHERE " + BraveStatsTable.COLUMN_STAT_SITE + " = '" + braveStat.getStatSite() + "'"
-                     + " AND " + BraveStatsTable.COLUMN_URL + " = '" + braveStat.getUrl() + "'";
+        String sql =
+                "SELECT * FROM "
+                        + BraveStatsTable.TABLE_NAME
+                        + " WHERE "
+                        + BraveStatsTable.COLUMN_STAT_SITE
+                        + " = '"
+                        + braveStat.getStatSite()
+                        + "'"
+                        + " AND "
+                        + BraveStatsTable.COLUMN_URL
+                        + " = '"
+                        + braveStat.getUrl()
+                        + "'";
 
         Log.e("NTP", sql);
 
@@ -291,10 +305,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<BraveStatsTable> getAllStatsWithDate(String thresholdTime, String currentTime) {
         List<BraveStatsTable> braveStats = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM "
-                             + BraveStatsTable.TABLE_NAME
-                             + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP
-                             + " BETWEEN date('" + thresholdTime + "') AND date('" + currentTime + "')";
+        String selectQuery =
+                "SELECT  * FROM "
+                        + BraveStatsTable.TABLE_NAME
+                        + " WHERE "
+                        + BraveStatsTable.COLUMN_TIMESTAMP
+                        + " BETWEEN date('"
+                        + thresholdTime
+                        + "') AND date('"
+                        + currentTime
+                        + "')";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -323,19 +343,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Pair<String, Integer>> getStatsWithDate(String thresholdTime, String currentTime) {
         List<Pair<String, Integer>> braveStats = new ArrayList<>();
 
-        String selectQuery = "SELECT  " + BraveStatsTable.COLUMN_DOMAIN + ", " + BraveStatsTable.COLUMN_TIMESTAMP + " , COUNT(*) as stat_count FROM "
-                             + BraveStatsTable.TABLE_NAME
-                             + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP
-                             + " BETWEEN date('" + thresholdTime + "') AND date('" + currentTime + "')"
-                             + " GROUP BY " + BraveStatsTable.COLUMN_DOMAIN
-                             + " ORDER BY stat_count DESC";
+        String selectQuery =
+                "SELECT  "
+                        + BraveStatsTable.COLUMN_DOMAIN
+                        + ", "
+                        + BraveStatsTable.COLUMN_TIMESTAMP
+                        + " , COUNT(*) as stat_count FROM "
+                        + BraveStatsTable.TABLE_NAME
+                        + " WHERE "
+                        + BraveStatsTable.COLUMN_TIMESTAMP
+                        + " BETWEEN date('"
+                        + thresholdTime
+                        + "') AND date('"
+                        + currentTime
+                        + "')"
+                        + " GROUP BY "
+                        + BraveStatsTable.COLUMN_DOMAIN
+                        + " ORDER BY stat_count DESC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                Pair<String, Integer> statPair = new Pair<>(cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)), cursor.getInt(cursor.getColumnIndex("stat_count")));
+                Pair<String, Integer> statPair =
+                        new Pair<>(
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                                cursor.getInt(cursor.getColumnIndex("stat_count")));
                 braveStats.add(statPair);
             } while (cursor.moveToNext());
         }
@@ -349,12 +384,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Pair<String, Integer>> getSitesWithDate(String thresholdTime, String currentTime) {
         List<Pair<String, Integer>> braveStats = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  " + BraveStatsTable.COLUMN_STAT_SITE_DOMAIN + ", COUNT(*) as site_count FROM "
-                             + BraveStatsTable.TABLE_NAME
-                             + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP
-                             + " BETWEEN date('" + thresholdTime + "') AND date('" + currentTime + "')"
-                             + " GROUP BY " + BraveStatsTable.COLUMN_STAT_SITE_DOMAIN
-                             + " ORDER BY site_count DESC";
+        String selectQuery =
+                "SELECT  "
+                        + BraveStatsTable.COLUMN_STAT_SITE_DOMAIN
+                        + ", COUNT(*) as site_count FROM "
+                        + BraveStatsTable.TABLE_NAME
+                        + " WHERE "
+                        + BraveStatsTable.COLUMN_TIMESTAMP
+                        + " BETWEEN date('"
+                        + thresholdTime
+                        + "') AND date('"
+                        + currentTime
+                        + "')"
+                        + " GROUP BY "
+                        + BraveStatsTable.COLUMN_STAT_SITE_DOMAIN
+                        + " ORDER BY site_count DESC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -362,7 +406,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                Pair<String, Integer> statPair = new Pair<>(cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)), cursor.getInt(cursor.getColumnIndex("site_count")));
+                Pair<String, Integer> statPair =
+                        new Pair<>(
+                                cursor.getString(
+                                        cursor.getColumnIndex(
+                                                BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
+                                cursor.getInt(cursor.getColumnIndex("site_count")));
                 braveStats.add(statPair);
             } while (cursor.moveToNext());
         }
@@ -393,16 +442,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public long getTotalSavedBandwidthWithDate(String thresholdTime, String currentTime) {
         long sum = 0;
-        String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "
-                             + SavedBandwidthTable.TABLE_NAME
-                             + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP
-                             + " BETWEEN date('" + thresholdTime + "') AND date('" + currentTime + "')";
+        String selectQuery =
+                "SELECT  SUM("
+                        + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH
+                        + ") as total FROM "
+                        + SavedBandwidthTable.TABLE_NAME
+                        + " WHERE "
+                        + BraveStatsTable.COLUMN_TIMESTAMP
+                        + " BETWEEN date('"
+                        + thresholdTime
+                        + "') AND date('"
+                        + currentTime
+                        + "')";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst())
+        if (cursor.moveToFirst()) {
             sum = cursor.getLong(cursor.getColumnIndex("total"));
+        }
 
         cursor.close();
         return sum;
@@ -411,14 +469,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public long getTotalSavedBandwidth() {
         long sum = 0;
-        String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "
-                             + SavedBandwidthTable.TABLE_NAME;
+        String selectQuery =
+                "SELECT  SUM("
+                        + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH
+                        + ") as total FROM "
+                        + SavedBandwidthTable.TABLE_NAME;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst())
+        if (cursor.moveToFirst()) {
             sum = cursor.getLong(cursor.getColumnIndex("total"));
+        }
 
         cursor.close();
         return sum;
