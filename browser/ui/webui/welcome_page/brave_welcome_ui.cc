@@ -5,27 +5,25 @@
 
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 
 #include "base/feature_list.h"
-#include "base/memory/raw_ptr.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/browser/ui/webui/welcome_page/welcome_dom_handler.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/components/p3a/p3a_service.h"
+#include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/webui/settings/privacy_sandbox_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/branded_strings.h"

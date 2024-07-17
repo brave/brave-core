@@ -5,16 +5,7 @@
 
 #include "components/metrics/enabled_state_provider.h"
 
-#include "base/base_switches.h"
-#include "base/command_line.h"
-
-namespace metrics {
-
-bool EnabledStateProvider::IsReportingEnabled() const {
-  return false;
-}
-
-void EnabledStateProvider::SetIgnoreForceFieldTrialsForTesting(
-    bool ignore_trials) {}
-
-}  // namespace metrics
+// Consent is only for chromium metrics services which we disable
+#define IsConsentGiven() false
+#include "src/components/metrics/enabled_state_provider.cc"
+#undef IsConsentGiven

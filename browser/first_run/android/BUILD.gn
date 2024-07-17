@@ -3,21 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("first_run") {
-  visibility = [
-    "android",
-    "test:unit_tests",
-    "//chrome/browser",
-  ]
-
-  sources = [
-    "first_run.cc",
-    "first_run.h",
-  ]
+source_set("android") {
+  sources = [ "brave_first_run_utils.cc" ]
 
   deps = [
-    "//brave/browser/metrics",
-    "//chrome/common",
+    "//brave/browser/first_run",
+    "//brave/build/android:jni_headers",
   ]
-  public_deps = [ "//base" ]
 }
