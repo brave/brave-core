@@ -19,11 +19,11 @@ constexpr char kDiagnosticIdKey[] = "diagnosticId";
 }  // namespace
 
 base::Value::Dict BuildDiagnosticIdUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   const std::string diagnostic_id = GetProfileStringPref(prefs::kDiagnosticId);
 

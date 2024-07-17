@@ -17,11 +17,11 @@ constexpr char kPlatformKey[] = "platform";
 }  // namespace
 
 base::Value::Dict BuildPlatformUserData() {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   const std::string platform_name = PlatformHelper::GetInstance().GetName();
   if (!platform_name.empty()) {

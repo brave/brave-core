@@ -18,11 +18,11 @@ constexpr char kHttpErrorPageResponseStatus[] = "errorPage";
 }  // namespace
 
 base::Value::Dict BuildPageLandUserData(const TabInfo& tab) {
-  base::Value::Dict user_data;
-
   if (!UserHasJoinedBraveRewards()) {
-    return user_data;
+    return {};
   }
+
+  base::Value::Dict user_data;
 
   if (tab.is_error_page) {
     user_data.Set(kHttpResponseStatusKey, kHttpErrorPageResponseStatus);
