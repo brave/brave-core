@@ -895,10 +895,12 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
     engine_->GenerateRewriteSuggestion(
         selected_text, question,
         base::BindRepeating(
-            [](GeneratedTextCallback received_callback,
+            [](GeneratedTextCallback received_callback, bool is_delta_text,
+               std::string& result,
                mojom::ConversationEntryEventPtr rewrite_event) {
               constexpr char kResponseTagPattern[] =
-                  "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
+                  "<\\/"
+                  "?(response>|response|respons|respon|respo|resp|res|re|r)?$";
               if (!rewrite_event->is_completion_event()) {
                 return;
               }
@@ -906,20 +908,30 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
               std::string suggestion =
                   rewrite_event->get_completion_event()->completion;
 
-              base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL,
-                                        &suggestion);
+              if (!is_delta_text) {
+                base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL,
+                                          &suggestion);
+              }
+
               if (suggestion.empty()) {
                 return;
               }
 
               // Avoid showing the ending tag.
+              // TODO(petemill): Could the server include this inside
+              // a partial response that we haven't received yet? If so,
+              // we should strip the kResponseTagPattern and not discard
+              // the whole partial response.
               if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
                 return;
               }
 
-              received_callback.Run(suggestion);
+              result = is_delta_text ? base::StrCat({result, suggestion})
+                                     : suggestion;
+              received_callback.Run(result);
             },
-            std::move(received_callback)),
+            std::move(received_callback), engine_->SupportsDeltaTextResponses(),
+            base::OwnedRef(std::string(""))),
         std::move(completed_callback));
   } else if (!received_callback && !completed_callback) {
     // Use sidebar.
