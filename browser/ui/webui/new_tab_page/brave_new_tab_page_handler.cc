@@ -468,8 +468,7 @@ void BraveNewTabPageHandler::OnCustomImageBackgroundsUpdated() {
 }
 
 void BraveNewTabPageHandler::FileSelected(const ui::SelectedFileInfo& file,
-                                          int index,
-                                          void* params) {
+                                          int index) {
   profile_->set_last_selected_directory(file.path().DirName());
 
   file_manager_->SaveImage(
@@ -480,8 +479,7 @@ void BraveNewTabPageHandler::FileSelected(const ui::SelectedFileInfo& file,
 }
 
 void BraveNewTabPageHandler::MultiFilesSelected(
-    const std::vector<ui::SelectedFileInfo>& files,
-    void* params) {
+    const std::vector<ui::SelectedFileInfo>& files) {
   NTPBackgroundPrefs prefs(profile_->GetPrefs());
   auto available_image_count =
       brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
@@ -491,12 +489,12 @@ void BraveNewTabPageHandler::MultiFilesSelected(
       break;
     }
 
-    FileSelected(file, 0, params);
+    FileSelected(file, 0);
     available_image_count--;
   }
 }
 
-void BraveNewTabPageHandler::FileSelectionCanceled(void* params) {
+void BraveNewTabPageHandler::FileSelectionCanceled() {
   select_file_dialog_ = nullptr;
 }
 

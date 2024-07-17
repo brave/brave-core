@@ -218,8 +218,7 @@ void SkusInternalsUI::DownloadSkusState() {
 }
 
 void SkusInternalsUI::FileSelected(const ui::SelectedFileInfo& file,
-                                   int index,
-                                   void* params) {
+                                   int index) {
   auto* web_contents = web_ui()->GetWebContents();
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
@@ -231,7 +230,7 @@ void SkusInternalsUI::FileSelected(const ui::SelectedFileInfo& file,
                                             GetSkusStateAsString()));
 }
 
-void SkusInternalsUI::FileSelectionCanceled(void* params) {
+void SkusInternalsUI::FileSelectionCanceled() {
   select_file_dialog_ = nullptr;
 }
 
