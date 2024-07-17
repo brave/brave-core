@@ -300,12 +300,7 @@ export const networkEndpoints = ({
           )
         }
       },
-      invalidatesTags: (result, error) => [
-        'Network',
-        'TokenBalances',
-        'TokenBalances',
-        'AccountTokenCurrentBalance'
-      ]
+      invalidatesTags: (result, error) => ['Network']
     }),
     setNetwork: mutation<
       {
@@ -379,12 +374,7 @@ export const networkEndpoints = ({
         }
       },
       // refresh networks & selected network
-      invalidatesTags: [
-        'Network',
-        'TokenBalances',
-        'TokenBalancesForChainId',
-        'AccountTokenCurrentBalance'
-      ]
+      invalidatesTags: ['Network']
     }),
     acknowledgePendingAddChainRequest: mutation<
       /**  success */
