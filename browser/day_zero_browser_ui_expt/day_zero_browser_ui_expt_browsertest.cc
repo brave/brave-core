@@ -26,7 +26,9 @@ class DayZeroBrowserUIExptBrowserTest
  public:
   DayZeroBrowserUIExptBrowserTest() {
     if (IsDayZeroEnabled()) {
-      feature_list_.InitAndEnableFeature(features::kBraveDayZeroExperiment);
+      feature_list_.InitAndEnableFeatureWithParameters(
+          features::kBraveDayZeroExperiment,
+          {{"variant", "a"}});
     }
   }
 
