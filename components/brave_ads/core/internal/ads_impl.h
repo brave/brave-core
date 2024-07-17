@@ -122,9 +122,9 @@ class AdsImpl final : public Ads {
   void PurgeExpiredAdEventsCallback(mojom::WalletInfoPtr wallet,
                                     InitializeCallback callback,
                                     bool success);
-  void PurgeOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
-                                     InitializeCallback callback,
-                                     bool success);
+  void PurgeAllOrphanedAdEventsCallback(mojom::WalletInfoPtr wallet,
+                                        InitializeCallback callback,
+                                        bool success);
   void MigrateClientStateCallback(mojom::WalletInfoPtr wallet,
                                   InitializeCallback callback,
                                   bool success);

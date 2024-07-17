@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
@@ -28,12 +27,6 @@ void BuildStatement(BuildStatementCallback callback) {
           [](BuildStatementCallback callback, const bool success,
              const TransactionList& transactions) {
             if (!success) {
-              // TODO(https://github.com/brave/brave-browser/issues/32066):
-              // Detect potential defects using `DumpWithoutCrashing`.
-              SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                                        "Failed to get transactions");
-              base::debug::DumpWithoutCrashing();
-
               BLOG(0, "Failed to get transactions");
 
               return std::move(callback).Run(/*statement=*/nullptr);

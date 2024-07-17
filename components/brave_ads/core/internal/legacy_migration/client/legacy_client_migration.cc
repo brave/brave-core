@@ -85,10 +85,10 @@ void MigrateClientState(InitializeCallback callback) {
                           // `DumpWithoutCrashing`.
                           SCOPED_CRASH_KEY_STRING64(
                               "Issue32066", "failure_reason",
-                              "Failed to migrated client state");
+                              "Failed to migrate client state");
                           base::debug::DumpWithoutCrashing();
 
-                          BLOG(0, "Failed to migrated client state");
+                          BLOG(0, "Failed to migrate client state");
 
                           return FailedToMigrate(std::move(callback));
                         }

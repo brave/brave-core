@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -54,12 +53,6 @@ void EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback(
     const bool success,
     const AdEventList& ad_events) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to get ad events");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to get ad events");
 
     return std::move(callback).Run(/*eligible_ads=*/{});
@@ -92,12 +85,6 @@ void EligibleNotificationAdsV2::GetEligibleAdsCallback(
     const SegmentList& /*segments*/,
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to get ads");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to get ads");
 
     return std::move(callback).Run(/*eligible_ads=*/{});
