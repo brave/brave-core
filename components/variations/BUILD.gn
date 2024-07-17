@@ -11,6 +11,30 @@ buildflag_header("buildflags") {
   flags = [ "BRAVE_VARIATIONS_SERVER_URL=\"$brave_variations_server_url\"" ]
 }
 
-group("constants") {
-  public_deps = [ ":buildflags" ]
+static_library("variations") {
+  sources = [
+    "command_line_utils.cc",
+    "command_line_utils.h",
+    "switches.h",
+  ]
+
+  deps = [
+    ":buildflags",
+    "//base",
+    "//components/variations",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "command_line_utils_unittest.cc" ]
+
+  deps = [
+    ":buildflags",
+    ":variations",
+    "//base",
+    "//components/variations",
+    "//testing/gtest",
+  ]
 }

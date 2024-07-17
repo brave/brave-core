@@ -17,6 +17,8 @@ extension BraveCoreSwitchKey {
       return "Component Updater"
     case .syncURL:
       return "Sync URL"
+    case .variationsPR:
+      return "Variations PR"
     case .variationsURL:
       return "Variations URL"
     case .p3aDoNotRandomizeUploadInterval:
@@ -317,14 +319,18 @@ struct BraveCoreDebugSwitchesView: View {
       }
       Section {
         Group {
-          // Sync URL
           NavigationLink {
             BasicStringInputView(coreSwitch: .syncURL)
               .keyboardType(.URL)
           } label: {
             SwitchContainer(.syncURL)
           }
-          // Variations URL
+          NavigationLink {
+            BasicStringInputView(coreSwitch: .variationsPR)
+              .keyboardType(.numberPad)
+          } label: {
+            SwitchContainer(.variationsPR)
+          }
           NavigationLink {
             BasicStringInputView(coreSwitch: .variationsURL)
               .keyboardType(.URL)

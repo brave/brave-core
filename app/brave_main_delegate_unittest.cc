@@ -46,16 +46,9 @@ TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine) {
   base::CommandLine& command_line = *base::CommandLine::ForCurrentProcess();
   const std::string override_sync_url = "https://sync.com";
   const std::string override_origin_trials_public_key = "public_key";
-  const std::string override_variations_url = "https://variations.com";
-  const std::string override_insecure_variations_url = "https://variations.com";
   command_line.AppendSwitchASCII(syncer::kSyncServiceURL, override_sync_url);
   command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
                                  override_origin_trials_public_key);
-  command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                 override_variations_url);
-  command_line.AppendSwitchASCII(
-      variations::switches::kVariationsInsecureServerURL,
-      override_insecure_variations_url);
 
   BraveMainDelegate::AppendCommandLineOptions();
 
@@ -66,14 +59,4 @@ TEST(BraveMainDelegateUnitTest, OverrideSwitchFromCommandLine) {
       override_origin_trials_public_key.c_str(),
       command_line.GetSwitchValueASCII(embedder_support::kOriginTrialPublicKey)
           .c_str());
-  ASSERT_STREQ(
-      override_variations_url.c_str(),
-      command_line
-          .GetSwitchValueASCII(variations::switches::kVariationsServerURL)
-          .c_str());
-  ASSERT_STREQ(override_insecure_variations_url.c_str(),
-               command_line
-                   .GetSwitchValueASCII(
-                       variations::switches::kVariationsInsecureServerURL)
-                   .c_str());
 }

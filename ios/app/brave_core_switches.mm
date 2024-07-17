@@ -9,6 +9,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/p3a/switches.h"
+#include "brave/components/variations/switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
@@ -23,6 +24,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyVModule =
     base::SysUTF8ToNSString(switches::kVModule);
 const BraveCoreSwitchKey BraveCoreSwitchKeySyncURL =
     base::SysUTF8ToNSString(syncer::kSyncServiceURL);
+const BraveCoreSwitchKey BraveCoreSwitchKeyVariationsPR =
+    base::SysUTF8ToNSString(variations::switches::kVariationsPR);
 const BraveCoreSwitchKey BraveCoreSwitchKeyVariationsURL =
     base::SysUTF8ToNSString(variations::switches::kVariationsServerURL);
 // There is no exposed switch for rewards
