@@ -9,17 +9,8 @@ import {
   SpotPriceRegistry
 } from '../constants/types'
 
-export const isNativeAsset = (asset: MeldCryptoCurrency) =>
-  !asset.contractAddress
-
-export const getAssetName = (asset: MeldCryptoCurrency) => {
-  return isNativeAsset(asset) ? asset.chainName : asset.name
-}
-
 export const getAssetSymbol = (asset: MeldCryptoCurrency) => {
-  return isNativeAsset(asset)
-    ? asset.chainCode ?? ''
-    : asset.currencyCode.replace(`_${asset.chainCode}`, '')
+  return asset.currencyCode.replace(`_${asset.chainCode}`, '')
 }
 
 export const getAssetPriceId = (asset: MeldCryptoCurrency) => {
@@ -39,8 +30,8 @@ export const getTokenPriceFromRegistry = (
   return spotPriceRegistry[getAssetPriceId(asset)]
 }
 
-export const getAssetIdKey = (
-  asset: MeldCryptoCurrency
-) => {
-  return `${asset.chainId}-${asset.currencyCode}-${asset.contractAddress}`
+export const getAssetIdKey = (asset: MeldCryptoCurrency) => {
+  return `0x${parseInt(asset.chainId ?? '').toString(16)}-${asset.currencyCode}-${
+    asset.contractAddress
+  }`
 }

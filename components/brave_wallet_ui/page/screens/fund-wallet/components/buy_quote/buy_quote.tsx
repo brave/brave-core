@@ -60,11 +60,11 @@ export const BuyQuote = ({
   } = quote
 
   // state
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(true)
 
   // computed
   const formattedSourceAmount = new Amount(sourceAmount ?? '').formatAsFiat(
-    '',
+    sourceCurrencyCode,
     2
   )
   const formattedCryptoAmount = new Amount(

@@ -53,7 +53,7 @@ export const FundWalletScreen = () => {
     amount,
     isLoadingAssets,
     isLoadingSpotPrices,
-    estimatedCryptoAmount,
+    formattedCryptoEstimate,
     spotPriceRegistry,
     fiatCurrencies,
     accounts,
@@ -65,7 +65,8 @@ export const FundWalletScreen = () => {
     onSelectAccount,
     onSelectCurrency,
     onSetAmount,
-    serviceProviders
+    serviceProviders,
+    onFlipAmounts
   } = useBuy()
 
   // redux
@@ -111,7 +112,8 @@ export const FundWalletScreen = () => {
                 setIsCurrencyDialogOpen(true)
               }}
               onChange={onSetAmount}
-              estimatedCryptoAmount={estimatedCryptoAmount}
+              estimatedCryptoAmount={formattedCryptoEstimate}
+              onFlipAmounts={onFlipAmounts}
             />
           </ControlPanel>
           <ServiceProvidersWrapper>
@@ -123,7 +125,10 @@ export const FundWalletScreen = () => {
             ) : (
               <>
                 {quotes?.length > 0 && serviceProviders?.length > 0 ? (
-                  <Column width='100%' padding='8px'>
+                  <Column
+                    width='100%'
+                    padding='8px'
+                  >
                     <Divider />
                     {quotes?.map((quote) => (
                       <BuyQuote
@@ -146,6 +151,7 @@ export const FundWalletScreen = () => {
         assets={cryptoCurrencies || []}
         selectedAsset={selectedAsset}
         spotPriceRegistry={spotPriceRegistry}
+        selectedFiatCurrency={selectedCurrency}
         isLoadingAssets={isLoadingAssets}
         isLoadingSpotPrices={isLoadingSpotPrices}
         onSelectAsset={(asset) => {

@@ -19,6 +19,7 @@ import {
   AmountWrapper,
   CurrencyCode,
   LabelWrapper,
+  FlipButton,
   SwapVerticalIcon
 } from './amount_button.style'
 
@@ -29,6 +30,7 @@ interface SelectAccountProps {
   estimatedCryptoAmount?: string
   onChange: (amount: string) => void
   onClick: () => void
+  onFlipAmounts?: () => void
 }
 
 export const AmountButton = ({
@@ -37,7 +39,8 @@ export const AmountButton = ({
   amount,
   estimatedCryptoAmount,
   onChange,
-  onClick
+  onClick,
+  onFlipAmounts
 }: SelectAccountProps) => {
   // methods
   const onInputChange = React.useCallback(
@@ -75,10 +78,12 @@ export const AmountButton = ({
             {estimatedCryptoAmount ? (
               <Row
                 justifyContent='flex-end'
-                gap='8px'
+                gap='4px'
               >
                 <AmountEstimate>{estimatedCryptoAmount}</AmountEstimate>
-                <SwapVerticalIcon />
+                <FlipButton onClick={onFlipAmounts}>
+                  <SwapVerticalIcon />
+                </FlipButton>
               </Row>
             ) : null}
           </AmountWrapper>

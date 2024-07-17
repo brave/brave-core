@@ -41,6 +41,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
               justifyContent='flex-start'
               gap='8px'
               minWidth='94px'
+              minHeight='40px'
             >
               {selectedAsset && (
                 <>

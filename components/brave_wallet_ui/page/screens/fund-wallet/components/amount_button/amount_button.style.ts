@@ -8,6 +8,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
 import { layoutPanelWidth } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 export const CurrencyCode = styled.span`
   color: ${color.text.primary};
@@ -57,7 +58,16 @@ export const AmountEstimate = styled.span`
   }
 `
 
+export const FlipButton = styled(Button).attrs({
+  kind: 'plain',
+  size: 'tiny'
+})`
+  --leo-button-padding: 0;
+  flex: 0;
+`
+
 export const SwapVerticalIcon = styled(Icon).attrs({ name: 'swap-vertical' })`
   --leo-icon-color: ${color.icon.interactive};
   --leo-icon-size: 20px;
+  cursor: pointer;
 `

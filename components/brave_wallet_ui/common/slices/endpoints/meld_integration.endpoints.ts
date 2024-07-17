@@ -70,8 +70,6 @@ export const meldIntegrationEndpoints = ({
     getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
       queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
         try {
-          const cryptoChains = SupportedOnRampNetworks.join(',')
-          console.log(cryptoChains)
           const { meldIntegrationService } = baseQuery(undefined).data
 
           // get all crypto currencies
@@ -89,11 +87,10 @@ export const meldIntegrationEndpoints = ({
 
           const supportedAssets = cryptoCurrencies?.filter((asset) =>
             SupportedOnRampNetworks.includes(
-              asset?.chainId?.toLowerCase() ?? ''
+              '0x' + parseInt(asset?.chainId ?? '').toString(16)
             )
           )
 
-          console.log({ supportedAssets, cryptoCurrencies })
           if (error) {
             return handleEndpointError(
               endpoint,
@@ -126,10 +123,8 @@ export const meldIntegrationEndpoints = ({
             })
           })
 
-          console.log(defaultCountry)
-
           return {
-            data: 'US'
+            data: defaultCountry
           }
         } catch (error) {
           return handleEndpointError(
