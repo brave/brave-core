@@ -1221,6 +1221,12 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       ['build'],
       ['third_party', 'depot_tools'],
     ]
+    if (this.getTargetOS() === 'mac' && process.platform !== 'darwin') {
+      const crossCompileDir = ['brave', 'build', 'mac', 'cross-compile']
+      const pathDir = [this.srcDir, ...crossCompileDir, 'path']
+      env = this.addPathToEnv(env, path.join(...pathDir, true))
+      pythonPaths.push([...crossCompileDir, 'pythonpath'])
+    }
     pythonPaths.forEach(p => {
       env = this.addPythonPathToEnv(env, path.join(this.srcDir, ...p))
     })

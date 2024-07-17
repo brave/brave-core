@@ -392,7 +392,12 @@ action("sign_pkg") {
 
 action("create_dmg") {
   script = "//build/gn_run_binary.py"
-  shell_script = "//chrome/installer/mac/pkg-dmg"
+
+  if (host_os == "mac") {
+    shell_script = "//chrome/installer/mac/pkg-dmg"
+  } else {
+    shell_script = "cross-compile/pkg-dmg-linux.py"
+  }
 
   args = [
     rebase_path(shell_script, root_build_dir),
