@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
@@ -15,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -203,12 +205,12 @@ TEST_F(EngineConsumerOAIUnitTest, TestGenerateAssistantResponse) {
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE, human_input, selected_text,
-      std::nullopt));
+      std::nullopt, base::Time::Now(), std::nullopt));
 
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, assistant_input, std::nullopt,
-      std::nullopt));
+      std::nullopt, base::Time::Now(), std::nullopt));
 
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));

@@ -9,6 +9,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/base/mac/conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -106,7 +107,8 @@
       ai_chat::mojom::CharacterType::HUMAN,
       ai_chat::mojom::ActionType::UNSPECIFIED,
       ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
-      base::SysNSStringToUTF8(text), std::nullopt, std::nullopt));
+      base::SysNSStringToUTF8(text), std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt));
 }
 
 - (void)submitSummarizationRequest {

@@ -22,6 +22,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -416,7 +417,8 @@ void ConversationDriver::UpdateOrCreateLastAssistantEntry(
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         ConversationTurnVisibility::VISIBLE, "", std::nullopt,
-        std::vector<mojom::ConversationEntryEventPtr>{});
+        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+        std::nullopt);
     chat_history_.push_back(std::move(entry));
   }
 
@@ -868,7 +870,7 @@ void ConversationDriver::AddSubmitSelectedTextError(
   const std::string& question = GetActionTypeQuestion(action_type);
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
-      question, selected_text, std::nullopt);
+      question, selected_text, std::nullopt, base::Time::Now(), std::nullopt);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -925,7 +927,7 @@ void ConversationDriver::SubmitSelectedTextWithQuestion(
     // Use sidebar.
     mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
         CharacterType::HUMAN, action_type, ConversationTurnVisibility::VISIBLE,
-        question, selected_text, std::nullopt);
+        question, selected_text, std::nullopt, base::Time::Now(), std::nullopt);
 
     SubmitHumanConversationEntry(std::move(turn));
   } else {
@@ -937,6 +939,12 @@ void ConversationDriver::SubmitHumanConversationEntry(
     mojom::ConversationTurnPtr turn) {
   VLOG(1) << __func__;
   DVLOG(4) << __func__ << ": " << turn->text;
+
+  // If there's edits, use the last one as the latest turn.
+  bool has_edits = turn->edits && !turn->edits->empty();
+  mojom::ConversationTurnPtr& latest_turn =
+      has_edits ? turn->edits->back() : turn;
+
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
   // - conversation to be active
@@ -963,7 +971,7 @@ void ConversationDriver::SubmitHumanConversationEntry(
     return;
   }
 
-  DCHECK(turn->character_type == CharacterType::HUMAN);
+  DCHECK(latest_turn->character_type == CharacterType::HUMAN);
 
   is_request_in_progress_ = true;
   for (auto& obs : observers_) {
@@ -971,16 +979,20 @@ void ConversationDriver::SubmitHumanConversationEntry(
   }
 
   // If it's a suggested question, remove it
-  auto found_question_iter = base::ranges::find(suggestions_, turn->text);
+  auto found_question_iter =
+      base::ranges::find(suggestions_, latest_turn->text);
   if (found_question_iter != suggestions_.end()) {
     suggestions_.erase(found_question_iter);
     OnSuggestedQuestionsChanged();
   }
 
   // Directly modify Entry's text to remove engine-breaking substrings
-  engine_->SanitizeInput(turn->text);
-  if (turn->selected_text) {
-    engine_->SanitizeInput(*turn->selected_text);
+  if (!has_edits) {  // Edits are already sanitized.
+    engine_->SanitizeInput(latest_turn->text);
+  }
+
+  if (latest_turn->selected_text) {
+    engine_->SanitizeInput(*latest_turn->selected_text);
   }
 
   // TODO(petemill): Tokenize the summary question so that we
@@ -988,19 +1000,20 @@ void ConversationDriver::SubmitHumanConversationEntry(
   // TODO(jocelyn): Assigning turn.type below is a workaround for now since
   // callers of SubmitHumanConversationEntry mojo API currently don't have
   // action_type specified.
-  std::string question_part = turn->text;
-  if (turn->action_type == mojom::ActionType::UNSPECIFIED) {
-    if (turn->text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
-      turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
+  std::string question_part = latest_turn->text;
+  if (latest_turn->action_type == mojom::ActionType::UNSPECIFIED) {
+    if (latest_turn->text ==
+        l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
+      latest_turn->action_type = mojom::ActionType::SUMMARIZE_PAGE;
       question_part =
           l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
-    } else if (turn->text ==
+    } else if (latest_turn->text ==
                l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
-      turn->action_type = mojom::ActionType::SUMMARIZE_VIDEO;
+      latest_turn->action_type = mojom::ActionType::SUMMARIZE_VIDEO;
       question_part =
           l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
     } else {
-      turn->action_type = mojom::ActionType::QUERY;
+      latest_turn->action_type = mojom::ActionType::QUERY;
     }
   }
 
@@ -1165,7 +1178,7 @@ void ConversationDriver::SubmitSummarizationRequest() {
       CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_PAGE,
       ConversationTurnVisibility::VISIBLE,
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE), std::nullopt,
-      std::nullopt);
+      std::nullopt, base::Time::Now(), std::nullopt);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -1329,4 +1342,47 @@ void ConversationDriver::SendFeedback(
                                   : std::nullopt,
                               std::move(on_complete));
 }
+
+void ConversationDriver::ModifyConversation(uint32_t turn_index,
+                                            const std::string& new_text) {
+  if (turn_index >= chat_history_.size()) {
+    return;
+  }
+
+  auto& turn = chat_history_.at(turn_index);
+  if (turn->character_type == CharacterType::ASSISTANT) {  // not supported yet
+    return;
+  }
+
+  std::string sanitized_input = new_text;
+  engine_->SanitizeInput(sanitized_input);
+  const auto& current_text = turn->edits && !turn->edits->empty()
+                                 ? turn->edits->back()->text
+                                 : turn->text;
+  if (sanitized_input.empty() || sanitized_input == current_text) {
+    return;
+  }
+
+  // turn->selected_text and turn->events are actually std::nullopt for
+  // editable human turns in our current implementation, just use std::nullopt
+  // here directly to be more explicit and avoid confusion.
+  auto edited_turn = mojom::ConversationTurn::New(
+      turn->character_type, turn->action_type, turn->visibility,
+      sanitized_input, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */);
+  if (!turn->edits) {
+    turn->edits.emplace();
+  }
+  turn->edits->emplace_back(std::move(edited_turn));
+
+  // Modifying human turn, drop anything after this turn_index and resubmit.
+  auto new_turn = std::move(chat_history_.at(turn_index));
+  chat_history_.erase(chat_history_.begin() + turn_index, chat_history_.end());
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+  }
+
+  SubmitHumanConversationEntry(std::move(new_turn));
+}
+
 }  // namespace ai_chat

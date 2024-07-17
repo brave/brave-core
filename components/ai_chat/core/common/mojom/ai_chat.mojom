@@ -147,6 +147,15 @@ struct ConversationTurn {
   // to be an event - as the events become richer, the order around text could
   // be important.
   array<ConversationEntryEvent>? events;
+
+  mojo_base.mojom.Time created_time;
+
+  // Edits to this turn, sorted by time of creation, with the most recent edit
+  // at the end of the array. When this appears, the value of |text| field is
+  // the original text of the turn, the last entry of this array should be used
+  // instead of the original turn text when submitting the turn to the AI
+  // engine or displaying the most recent text to users.
+  array<ConversationTurn>? edits;
 };
 
 // Represents an AI engine model choice, usually for the user to choose for a
@@ -264,6 +273,7 @@ interface PageHandler {
   ClosePanel();
   GetActionMenuList() => (array<ActionGroup> action_list);
   OpenModelSupportUrl();
+  ModifyConversation(uint32 turn_index, string new_text);
 };
 
 interface ChatUIPage {

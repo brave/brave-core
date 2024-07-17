@@ -72,12 +72,13 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
 
   // Send the query to the AIChat's backend.
   ai_chat::mojom::ConversationTurnPtr turn =
-      ai_chat::mojom::ConversationTurn::New();
-  turn->character_type = ai_chat::mojom::CharacterType::HUMAN;
-  turn->action_type = ai_chat::mojom::ActionType::QUERY;
-  turn->visibility = ai_chat::mojom::ConversationTurnVisibility::VISIBLE;
-  turn->text = base::UTF16ToUTF8(query);
-  turn->selected_text = std::nullopt;
+      ai_chat::mojom::ConversationTurn::New(
+          ai_chat::mojom::CharacterType::HUMAN,
+          ai_chat::mojom::ActionType::QUERY,
+          ai_chat::mojom::ConversationTurnVisibility::VISIBLE,
+          base::UTF16ToUTF8(query) /* text */, std::nullopt /* selected_text */,
+          std::nullopt /* events */, base::Time::Now(),
+          std::nullopt /* edits */);
 
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 

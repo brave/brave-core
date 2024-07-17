@@ -16,6 +16,7 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_remote_completion_client.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -71,11 +72,12 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
       mojom::ConversationTurnVisibility::VISIBLE,
-      "Which show is this catchphrase from?", "I have spoken.", std::nullopt));
+      "Which show is this catchphrase from?", "I have spoken.", std::nullopt,
+      base::Time::Now(), std::nullopt));
   history.push_back(mojom::ConversationTurn::New(
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt));
   auto* mock_remote_completion_client = GetMockRemoteCompletionClient();
   std::string prompt_before_time_and_date =
       "\n\nHuman: Here is the text of a web page in <page> tags:\n<page>\nThis "

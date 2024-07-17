@@ -5,6 +5,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
+#include "base/time/time.h"
 #include "brave/build/android/jni_headers/BraveLeoUtils_jni.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -30,8 +31,8 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       mojom::ConversationTurnVisibility::VISIBLE,
-      base::android::ConvertJavaStringToUTF8(query), std::nullopt,
-      std::nullopt);
+      base::android::ConvertJavaStringToUTF8(query), std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt);
   chat_tab_helper->SubmitHumanConversationEntry(std::move(turn));
 #endif
 }

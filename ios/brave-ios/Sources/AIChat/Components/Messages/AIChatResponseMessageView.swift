@@ -301,7 +301,9 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
           text:
             "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.",
           selectedText: nil,
-          events: nil
+          events: nil,
+          createdTime: Date.now,
+          edits: nil
         ),
       isEntryInProgress: false
     )
