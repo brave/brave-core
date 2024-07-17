@@ -582,13 +582,18 @@ import os.log
 
     // Get rule lists for custom filter lists
     let customFilterLists = CustomFilterListStorage.shared.filterListsURLs
-    let customRuleLists = customFilterLists.compactMap { customURL -> BlocklistType? in
+    var customRuleLists = customFilterLists.compactMap { customURL -> BlocklistType? in
       guard customURL.setting.isEnabled else { return nil }
       return .filterListURL(uuid: customURL.setting.uuid)
     }
 
+    // Add any custom filter list text files
+    if (try? CustomFilterListStorage.shared.savedCustomRulesFileURL()) != nil {
+      customRuleLists.append(.filterListText)
+    }
+
     return Set(genericRuleLists).union(additionalRuleLists)
-      .union(customRuleLists).union([.filterListText])
+      .union(customRuleLists)
   }
 
   /// Return the enabled rule types for this domain and the enabled settings.
