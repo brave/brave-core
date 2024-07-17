@@ -73,6 +73,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       SpecificsToSharingInfo(specifics),
       SpecificsToPhoneAsASecurityKeyInfo(specifics),
       specifics.invalidation_fields().instance_id_token(), data_types,
+      SpecificsToFloatingWorkspaceLastSigninTime(specifics),
       specifics.has_brave_fields() &&
           specifics.brave_fields().has_is_self_delete_supported() &&
           specifics.brave_fields().is_self_delete_supported());
