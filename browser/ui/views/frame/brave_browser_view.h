@@ -194,8 +194,8 @@ class BraveBrowserView : public BrowserView,
 
   void UpdateSideBarHorizontalAlignment();
 
-  tabs::TabHandle GetActiveTabHandle() const;
-  bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile) const;
+  tabs::TabHandle GetActiveTabHandle();
+  bool IsActiveWebContentsTiled(const SplitViewBrowserData::Tile& tile);
   void UpdateSplitViewSizeDelta(content::WebContents* old_contents,
                                 content::WebContents* new_contents);
   void UpdateContentsWebViewVisual();
