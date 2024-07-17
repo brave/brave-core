@@ -187,15 +187,15 @@ export function makeBraveWalletServiceObserver(store: Store) {
         store.dispatch(walletApi.util.invalidateTags(['DefaultSolWallet']))
       },
       onDefaultBaseCurrencyChanged: function (currency) {
-        store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
+        store.dispatch(walletApi.util.invalidateTags(['DefaultFiatCurrency']))
       },
       onDefaultBaseCryptocurrencyChanged: function (cryptocurrency) {
-        store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
+        // No-op
       },
       onNetworkListChanged: function () {
         // FIXME(onyb): Due to a bug, the OnNetworkListChanged event is fired
         // merely upon switching to a custom network.
-        store.dispatch(walletApi.endpoints.refreshWalletInfo.initiate())
+        store.dispatch(walletApi.endpoints.refreshNetworksAndTokens.initiate())
       },
       onDiscoverAssetsStarted: function () {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(false))
