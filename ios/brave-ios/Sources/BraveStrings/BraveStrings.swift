@@ -799,6 +799,14 @@ extension Strings {
         comment:
           "Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout"
       )
+    public static let p3aCalloutCloseAccessibilityLabel =
+      NSLocalizedString(
+        "p3aCalloutCloseAccessibilityLabel",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Close Privacy Preserving Product Callout",
+        comment: ""
+      )
     public static let p3aCalloutLinkTitle =
       NSLocalizedString(
         "callout.p3aCalloutLinkTitle",

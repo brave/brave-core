@@ -9,6 +9,8 @@ import Shared
 import SwiftUI
 
 public struct OnboardingVPNDetailsView: View {
+  @Environment(\.presentationMode) @Binding private var presentationMode
+
   public var learnMore: (() -> Void)?
 
   private let descriptionItems = [
@@ -73,6 +75,17 @@ public struct OnboardingVPNDetailsView: View {
     .padding(EdgeInsets(top: 24, leading: 24, bottom: 36, trailing: 24))
     .background(Color(.braveBackground))
     .accessibilityEmbedInScrollView()
+    .overlay {
+      Button {
+        presentationMode.dismiss()
+      } label: {
+        Image(braveSystemName: "leo.close")
+          .renderingMode(.template)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+      .padding([.top, .trailing], 20)
+    }
   }
 }
 

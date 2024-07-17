@@ -21,6 +21,16 @@ public class Welcome3PAViewController: UIViewController {
       $0.backgroundColor = UIColor.black.withAlphaComponent(0.3)
     }
 
+    let closeButton = BraveButton().then {
+      $0.setImage(
+        UIImage(braveSystemNamed: "leo.close")!.template,
+        for: .normal
+      )
+      $0.tintColor = UIColor(braveSystemName: .textPrimary)
+      $0.accessibilityLabel = Strings.Callout.p3aCalloutCloseAccessibilityLabel
+      $0.hitTestSlop = UIEdgeInsets(equalInset: -20)
+    }
+
     view.addSubview(backgroundView)
     backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
@@ -30,8 +40,16 @@ public class Welcome3PAViewController: UIViewController {
       $0.centerX.centerY.equalToSuperview()
     }
 
+    contentView.addSubview(closeButton)
+    closeButton.snp.makeConstraints {
+      $0.top.equalToSuperview().inset(20)
+      $0.trailing.equalToSuperview().inset(30)
+    }
+
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(backgroundTapped))
     backgroundView.addGestureRecognizer(tapGesture)
+
+    closeButton.addTarget(self, action: #selector(backgroundTapped), for: .touchUpInside)
   }
 
   @objc func backgroundTapped() {
