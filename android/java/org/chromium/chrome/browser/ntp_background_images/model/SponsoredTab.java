@@ -6,39 +6,38 @@
 package org.chromium.chrome.browser.ntp_background_images.model;
 
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 
 public class SponsoredTab {
     private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private NTPImage ntpImage;
-    private int tabIndex;
-    private boolean mShouldShowBanner;
+    private NTPImage mNtpImage;
+    private int mTabIndex;
 
     public SponsoredTab(NTPBackgroundImagesBridge mNTPBackgroundImagesBridge) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
-        if (NTPUtil.shouldEnableNTPFeature()) {
-            ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
-            tabIndex = SponsoredImageUtil.getTabIndex();
+        if (NTPImageUtil.shouldEnableNTPFeature()) {
+            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
+            mTabIndex = SponsoredImageUtil.getTabIndex();
         }
     }
 
     public NTPImage getTabNTPImage(boolean isReset) {
-        if (ntpImage == null || isReset) {
-            ntpImage = NTPUtil.getNTPImage(mNTPBackgroundImagesBridge);
+        if (mNtpImage == null || isReset) {
+            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge);
         }
-        return ntpImage;
+        return mNtpImage;
     }
 
     public void setNTPImage(NTPImage ntpImage) {
-        this.ntpImage = ntpImage;
+        this.mNtpImage = ntpImage;
     }
 
     public int getTabIndex() {
-        return tabIndex;
+        return mTabIndex;
     }
 
     public void setTanIndex(int tabIndex) {
-        this.tabIndex = tabIndex;
+        this.mTabIndex = tabIndex;
     }
 }
