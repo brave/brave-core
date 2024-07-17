@@ -972,12 +972,12 @@ window.__firefox__.execute(function($) {
    * Adds given style selectors to allStyleRules
    * @param {*} styleSelectors The style selectors to add
    */
-  const processStyleSelectors = (styleSelectors) => {
+  /*const processStyleSelectors = (styleSelectors) => {
     styleSelectors.forEach(entry => {
       const rule = entry.selector + '{' + entry.rules.join(';') + ';}'
       CC.allStyleRules.push(rule)
     })
-  }
+  }*/
 
   /// Moves the stylesheet to the bottom of the page
   const moveStyle = () => {
@@ -1113,9 +1113,10 @@ window.__firefox__.execute(function($) {
   }
 
   // Load some static style selectors if they are defined
-  if (args.styleSelectors) {
+  // TODO - args.proceduralActionFilters
+  /*if (args.styleSelectors) {
     processStyleSelectors(args.styleSelectors)
-  }
+  }*/
 
   window.setTimeout(waitForBody, maxTimeMSBeforeStart)
 });

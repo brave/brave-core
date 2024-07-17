@@ -107,27 +107,16 @@ class SiteStateListenerScriptHandler: TabContentScript {
   ) throws -> UserScriptType.SelectorsPollerSetup {
     var standardSelectors: Set<String> = []
     var aggressiveSelectors: Set<String> = []
-    var styleSelectors: [String: Set<String>] = [:]
+    var proceduralActionFilters: Set<String> = []
 
     for modelTuple in modelTuples {
-      for (key, values) in modelTuple.model.styleSelectors {
-        styleSelectors[key] = styleSelectors[key]?.union(Set(values)) ?? Set(values)
-      }
+      proceduralActionFilters.union(modelTuple.model.proceduralActions)
 
       if modelTuple.isAlwaysAggressive {
         aggressiveSelectors = aggressiveSelectors.union(modelTuple.model.hideSelectors)
       } else {
         standardSelectors = standardSelectors.union(modelTuple.model.hideSelectors)
       }
-    }
-
-    let styleSelectorObjects = styleSelectors.map {
-      selector,
-      rules -> UserScriptType.SelectorsPollerSetup.StyleSelectorEntry in
-      UserScriptType.SelectorsPollerSetup.StyleSelectorEntry(
-        selector: selector,
-        rules: rules
-      )
     }
 
     return UserScriptType.SelectorsPollerSetup(
@@ -138,7 +127,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       fetchNewClassIdRulesThrottlingMs: 100,
       aggressiveSelectors: aggressiveSelectors,
       standardSelectors: standardSelectors,
-      styleSelectors: Set(styleSelectorObjects)
+      proceduralActionFilters: proceduralActionFilters
     )
   }
 }

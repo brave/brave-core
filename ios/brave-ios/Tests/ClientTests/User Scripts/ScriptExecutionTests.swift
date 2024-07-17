@@ -239,7 +239,7 @@ final class ScriptExecutionTests: XCTestCase {
       fetchNewClassIdRulesThrottlingMs: 100,
       aggressiveSelectors: initialAggressiveSelectors,
       standardSelectors: initialStandardSelectors.union(invalidSelectors),
-      styleSelectors: []
+      proceduralActionFilters: []
     )
 
     // Attach fake message handlers for our CF script
