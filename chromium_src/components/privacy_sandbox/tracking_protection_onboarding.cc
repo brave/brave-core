@@ -13,7 +13,7 @@ namespace privacy_sandbox {
 
 void TrackingProtectionOnboarding::MaybeMarkModeBEligible() {
   DCHECK_EQ(TrackingProtectionOnboardingStatus::kIneligible,
-            GetInternalOnboardingStatus(pref_service_));
+            GetInternalModeBOnboardingStatus(pref_service_));
   return;
 }
 
