@@ -955,7 +955,7 @@ public class BytecodeTest {
                         int.class,
                         float.class,
                         float.class,
-                        boolean.class));
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/password_manager/settings/ExportFlow",
