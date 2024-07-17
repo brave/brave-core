@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -147,31 +148,40 @@ void SuggestionsController::GetSuggestedPublisherIds(
   GetOrFetchSimilarityMatrix(
       subscriptions,
       base::BindOnce(
-          [](SuggestionsController* controller,
+          [](base::WeakPtr<SuggestionsController> controller,
              const SubscriptionsSnapshot& subscriptions,
              GetSuggestedPublisherIdsCallback callback) {
+            if (!controller) {
+              return;
+            }
             controller->publishers_controller_->GetOrFetchPublishers(
                 subscriptions,
                 base::BindOnce(
-                    [](SuggestionsController* controller,
+                    [](base::WeakPtr<SuggestionsController> controller,
                        GetSuggestedPublisherIdsCallback callback,
                        Publishers publishers) {
+                      if (!controller) {
+                        return;
+                      }
                       controller->history_querier_->Run(base::BindOnce(
-                          [](SuggestionsController* controller,
+                          [](base::WeakPtr<SuggestionsController> controller,
                              Publishers publishers,
                              GetSuggestedPublisherIdsCallback callback,
                              history::QueryResults results) {
+                            if (!controller) {
+                              return;
+                            }
                             auto result =
                                 controller->GetSuggestedPublisherIdsWithHistory(
                                     publishers, results);
                             std::move(callback).Run(std::move(result));
                           },
-                          base::Unretained(controller), std::move(publishers),
+                          controller, std::move(publishers),
                           std::move(callback)));
                     },
-                    base::Unretained(controller), std::move(callback)));
+                    controller, std::move(callback)));
           },
-          base::Unretained(this), subscriptions, std::move(callback)));
+          weak_ptr_factory_.GetWeakPtr(), subscriptions, std::move(callback)));
 }
 
 std::vector<std::string>
@@ -278,14 +288,21 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
   publishers_controller_->GetLocale(
       subscriptions,
       base::BindOnce(
-          [](SuggestionsController* controller,
+          [](base::WeakPtr<SuggestionsController> controller,
              const SubscriptionsSnapshot& subscriptions,
              const std::string& locale) {
+            if (!controller) {
+              return;
+            }
             controller->publishers_controller_->GetOrFetchPublishers(
                 subscriptions,
                 base::BindOnce(
-                    [](SuggestionsController* controller,
+                    [](base::WeakPtr<SuggestionsController> controller,
                        const std::string& locale, Publishers publishers) {
+                      if (!controller) {
+                        return;
+                      }
+
                       const GURL url(
                           "https://" + brave_news::GetHostname() +
                           "/source-suggestions/source_similarity_t10." +
@@ -293,10 +310,14 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                       controller->api_request_helper_->Request(
                           "GET", url, "", "",
                           base::BindOnce(
-                              [](SuggestionsController* controller,
+                              [](base::WeakPtr<SuggestionsController>
+                                     controller,
                                  std::string locale,
                                  api_request_helper::APIRequestResult
                                      api_request_result) {
+                                if (!controller) {
+                                  return;
+                                }
                                 controller->locale_ = locale;
                                 controller->similarities_ =
                                     ParseSimilarityResponse(
@@ -307,14 +328,14 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating(
                                 controller->on_current_update_complete_ =
                                     std::make_unique<base::OneShotEvent>();
                               },
-                              base::Unretained(controller), locale),
+                              controller, locale),
                           {},
                           {.auto_retry_on_network_change = true,
                            .timeout = GetDefaultRequestTimeout()});
                     },
-                    base::Unretained(controller), locale));
+                    controller, locale));
           },
-          base::Unretained(this), subscriptions));
+          weak_ptr_factory_.GetWeakPtr(), subscriptions));
 }
 
 void SuggestionsController::GetOrFetchSimilarityMatrix(

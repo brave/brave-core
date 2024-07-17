@@ -14,6 +14,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -72,6 +73,8 @@ class SuggestionsController {
 
   std::string locale_;
   PublisherSimilarities similarities_;
+
+  base::WeakPtrFactory<SuggestionsController> weak_ptr_factory_{this};
 };
 }  // namespace brave_news
 
