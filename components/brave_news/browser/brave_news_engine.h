@@ -21,10 +21,6 @@ namespace api_request_helper {
 class APIRequestHelper;
 }
 
-namespace history {
-class HistoryService;
-}
-
 namespace network {
 class PendingSharedURLLoaderFactory;
 class SharedURLLoaderFactory;
@@ -42,7 +38,7 @@ class SubscriptionsSnapshot;
 using HashCallback = base::OnceCallback<void(const std::string&)>;
 using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
-class BraveNewsEngine : public base::SupportsWeakPtr<BraveNewsEngine> {
+class BraveNewsEngine {
  public:
   // Alias so its easier to reuse the callbacks from the mojom interface.
   using m = mojom::BraveNewsController;
@@ -88,6 +84,8 @@ class BraveNewsEngine : public base::SupportsWeakPtr<BraveNewsEngine> {
   void GetSuggestedPublisherIds(SubscriptionsSnapshot snapshot,
                                 m::GetSuggestedPublisherIdsCallback callback);
 
+  base::WeakPtr<BraveNewsEngine> AsWeakPtr();
+
  private:
   FeedV2Builder* MaybeFeedV2Builder();
   FeedController* MaybeFeedV1Builder();
@@ -121,6 +119,8 @@ class BraveNewsEngine : public base::SupportsWeakPtr<BraveNewsEngine> {
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<BraveNewsEngine> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news

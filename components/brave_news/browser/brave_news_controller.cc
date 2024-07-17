@@ -354,9 +354,8 @@ void BraveNewsController::SetChannelSubscribed(
 void BraveNewsController::SubscribeToNewDirectFeed(
     const GURL& feed_url,
     SubscribeToNewDirectFeedCallback callback) {
-  DVLOG(1) << __FUNCTION__;
+  VLOG(1) << __FUNCTION__ << ": " << feed_url.spec();
   // Verify the url points at a valid feed
-  VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
   if (!feed_url.is_valid()) {
     std::move(callback).Run(false, false, std::nullopt);
     return;
@@ -372,8 +371,8 @@ void BraveNewsController::OnVerifiedDirectFeedUrl(
     SubscribeToNewDirectFeedCallback callback,
     const bool is_valid,
     const std::string& feed_title) {
-  DVLOG(1) << __FUNCTION__;
-  VLOG(1) << "Is new feed valid? " << is_valid << " Title: " << feed_title;
+  VLOG(1) << __FUNCTION__ << " Is new feed valid? " << is_valid
+          << " Title: " << feed_title;
   if (!is_valid) {
     std::move(callback).Run(false, false, std::nullopt);
     return;
@@ -428,9 +427,8 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
                                        GetImageDataCallback callback) {
-  DVLOG(1) << __FUNCTION__;
+  VLOG(2) << __FUNCTION__ << " " << padded_image_url.spec();
   // Validate
-  VLOG(2) << "getimagedata " << padded_image_url.spec();
   if (!padded_image_url.is_valid()) {
     std::optional<std::vector<uint8_t>> args;
     std::move(callback).Run(std::move(args));
@@ -527,8 +525,7 @@ void BraveNewsController::GetFavIconData(const std::string& publisher_id,
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
                                            mojom::UserEnabled new_status) {
-  DVLOG(1) << __FUNCTION__;
-  VLOG(1) << "set publisher pref: " << new_status;
+  VLOG(1) << __FUNCTION__ << " " << publisher_id << ": " << new_status;
   GetPublishers(base::BindOnce(
       [](const std::string& publisher_id, mojom::UserEnabled new_status,
          BraveNewsController* controller, Publishers publishers) {
@@ -753,8 +750,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
 }
 
 void BraveNewsController::Prefetch() {
-  DVLOG(1) << __FUNCTION__;
-  VLOG(1) << "PREFETCHING: ensuring feed has been retrieved";
+  VLOG(1) << __FUNCTION__;
 
   IN_ENGINE_FF(PrefetchFeed);
 }

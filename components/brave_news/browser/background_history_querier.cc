@@ -7,14 +7,18 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/task/bind_post_task.h"
 #include "components/history/core/browser/history_types.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace brave_news {
 
 BackgroundHistoryQuerier MakeHistoryQuerier(
     base::WeakPtr<history::HistoryService> history_service,
     base::RepeatingCallback<base::CancelableTaskTracker*()> get_tracker) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   auto history_sequence = base::SequencedTaskRunner::GetCurrentDefault();
   return base::BindRepeating(
       [](scoped_refptr<base::SequencedTaskRunner> history_sequence,
@@ -32,6 +36,7 @@ BackgroundHistoryQuerier MakeHistoryQuerier(
                    base::RepeatingCallback<base::CancelableTaskTracker*()>
                        get_tracker,
                    QueryHistoryCallback callback) {
+                  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
                   auto* tracker = get_tracker.Run();
                   if (!service || !tracker) {
                     std::move(callback).Run(history::QueryResults());

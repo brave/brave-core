@@ -13,6 +13,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
@@ -103,6 +104,7 @@ void BraveNewsEngine::GetSuggestedPublisherIds(
 
 void BraveNewsEngine::GetFeed(SubscriptionsSnapshot snapshot,
                               m::GetFeedCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (auto* builder = MaybeFeedV1Builder()) {
     builder->GetOrFetchFeed(snapshot, std::move(callback));
   } else {
@@ -256,6 +258,10 @@ SuggestionsController* BraveNewsEngine::GetSuggestionsController() {
   }
 
   return suggestions_controller_.get();
+}
+
+base::WeakPtr<BraveNewsEngine> BraveNewsEngine::AsWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 }  // namespace brave_news

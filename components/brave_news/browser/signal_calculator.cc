@@ -46,9 +46,6 @@ void SignalCalculator::GetSignals(const SubscriptionsSnapshot& subscriptions,
                                   const FeedItems& feed,
                                   SignalsCallback callback) {
   auto articles = GetArticles(feed);
-  history::QueryOptions options;
-  options.SetRecentDayRange(21);
-  options.max_count = 2000;
   history_querier_->Run(base::BindOnce(
       &SignalCalculator::OnGotHistory, weak_ptr_factory_.GetWeakPtr(),
       subscriptions, std::move(articles), std::move(callback)));

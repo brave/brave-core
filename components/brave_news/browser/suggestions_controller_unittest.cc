@@ -95,8 +95,7 @@ class BraveNewsSuggestionsControllerTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
 
-  BackgroundHistoryQuerier querier_ =
-      base::BindRepeating([](QueryHistoryCallback callback) {});
+  BackgroundHistoryQuerier querier_ = base::DoNothing();
   PublishersController publishers_controller_;
   SuggestionsController suggestions_controller_;
 };

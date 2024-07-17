@@ -36,8 +36,7 @@
 namespace {
 class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
  public:
-  explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper,
-                               size_t feeds)
+  explicit WaitForFeedsChanged(BraveNewsTabHelper* tab_helper, size_t feeds)
       : feeds_(feeds), tab_helper_(tab_helper) {
     news_observer_.Observe(tab_helper_);
   }
