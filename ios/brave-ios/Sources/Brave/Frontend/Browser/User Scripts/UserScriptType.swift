@@ -10,10 +10,6 @@ import WebKit
 enum UserScriptType: Hashable {
   /// An object used to setup the selectors poller script
   struct SelectorsPollerSetup: Hashable, Encodable {
-    struct StyleSelectorEntry: Hashable, Encodable {
-      let selector: String
-      var rules: Set<String>
-    }
     /// Determines if we hide first party content or not. This is controlled via agressive or standard mode
     /// Standard mode may unhide 1p content for certain filter lists.
     let hideFirstPartyContent: Bool
@@ -33,7 +29,8 @@ enum UserScriptType: Hashable {
     /// Standard selectors may be unhidden on standard mode if they contain 1p content
     let standardSelectors: Set<String>
     /// These are hide selectors that will get automatically processed when the script loads.
-    let styleSelectors: Set<StyleSelectorEntry>
+    /// These are represented as raw JSON and will still need to be parsed.
+    let proceduralActionFilters: Set<String>
   }
 
   struct EngineScriptConfiguration: Hashable {
