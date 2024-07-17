@@ -741,9 +741,6 @@ enum TransactionParser {
         )
       )
     case .solanaDappSignAndSendTransaction, .solanaDappSignTransaction, .solanaSwap:
-      let formatter = WalletAmountFormatter(
-        decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: Int(txNetwork.decimals))
-      )
       let transactionLamports = transaction.txDataUnion.solanaTxData?.lamports
       let fromAddress = transaction.fromAddress
       var toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress
