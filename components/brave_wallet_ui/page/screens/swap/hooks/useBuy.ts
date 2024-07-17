@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 // types
@@ -44,6 +44,16 @@ export type BuyParamOverrides = {
   account?: string
 }
 
+const defaultAsset: MeldCryptoCurrency = {
+  'currencyCode': 'ETH',
+  'name': 'Ethereum',
+  'chainCode': 'ETH',
+  'chainName': 'Ethereum',
+  'chainId': '1',
+  'contractAddress': '0x0000000000000000000000000000000000000000',
+  'symbolImageUrl': 'https://images-currency.meld.io/crypto/ETH/symbol.png'
+}
+
 export const useBuy = () => {
   // queries
   const { data: defaultFiatCurrency = 'USD' } = useGetDefaultFiatCurrencyQuery()
@@ -58,30 +68,28 @@ export const useBuy = () => {
     useGetMeldServiceProvidersQuery()
 
   // state
-  const [selectedAsset, setSelectedAsset] = React.useState<
-    MeldCryptoCurrency | undefined
-  >(undefined)
-  const [selectedCurrency, setSelectedCurrency] = React.useState<
+  const [selectedAsset, setSelectedAsset] =
+    useState<MeldCryptoCurrency>(defaultAsset)
+  const [selectedCurrency, setSelectedCurrency] = useState<
     MeldFiatCurrency | undefined
   >(undefined)
   const [selectedAccount, setSelectedAccount] =
-    React.useState<BraveWallet.AccountInfo>(accounts[0])
-  const [amount, setAmount] = React.useState<string>('')
-  const [abortController, setAbortController] = React.useState<
+    useState<BraveWallet.AccountInfo>(accounts[0])
+  const [amount, setAmount] = useState<string>('')
+  const [abortController, setAbortController] = useState<
     AbortController | undefined
   >(undefined)
-  const [isFetchingQuotes, setIsFetchingQuotes] = React.useState(false)
-  const [buyErrors, setBuyErrors] = React.useState<string[] | undefined>([])
-  const [quotes, setQuotes] = React.useState<MeldCryptoQuote[]>([])
-  const [timeUnitNextQuote, setTimeUnitNextQuote] = React.useState<
+  const [isFetchingQuotes, setIsFetchingQuotes] = useState(false)
+  const [buyErrors, setBuyErrors] = useState<string[] | undefined>([])
+  const [quotes, setQuotes] = useState<MeldCryptoQuote[]>([])
+  const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
     number | undefined
   >(undefined)
 
   // computed
-  const tokenPriceIds: string[] = []
-  // React.useMemo(() => {
-  //   return cryptoCurrencies?.map((asset) => getAssetPriceId(asset)) ?? []
-  // }, [cryptoCurrencies])
+  const tokenPriceIds: string[] = useMemo(() => {
+    return cryptoCurrencies?.map((asset) => getAssetPriceId(asset)) ?? []
+  }, [cryptoCurrencies])
 
   const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
@@ -95,32 +103,35 @@ export const useBuy = () => {
     )
 
   // memos
-  const selectedAssetSpotPrice = React.useMemo(() => {
+  const selectedAssetSpotPrice = useMemo(() => {
     if (selectedAsset && spotPriceRegistry) {
       return spotPriceRegistry[getAssetPriceId(selectedAsset)]
     }
     return undefined
   }, [selectedAsset, spotPriceRegistry])
 
-  const estimatedCryptoAmount = React.useMemo(() => {
+  const [cryptoEstimate, formattedCryptoEstimate] = useMemo(() => {
     if (selectedAssetSpotPrice && selectedAsset) {
       const symbol = getAssetSymbol(selectedAsset)
-      return new Amount(amount)
-        .div(selectedAssetSpotPrice.price)
-        .formatAsAsset(5, symbol)
+      const estimate = new Amount(amount).div(selectedAssetSpotPrice.price)
+
+      return [
+        estimate?.toNumber().toString(),
+        estimate?.formatAsAsset(5, symbol)
+      ]
     }
-    return ''
+    return ['', '']
   }, [selectedAssetSpotPrice, selectedAsset, amount])
 
   // methods
-  const reset = React.useCallback(() => {
-    setSelectedAsset(undefined)
+  const reset = useCallback(() => {
+    setSelectedAsset(defaultAsset)
     setSelectedCurrency(undefined)
     setSelectedAccount(accounts[0])
     setAmount('')
     setBuyErrors([])
     setQuotes([])
-    setTimeUnitNextQuote(undefined)
+    setTimeUntilNextQuote(undefined)
 
     if (abortController) {
       abortController.abort()
@@ -128,19 +139,26 @@ export const useBuy = () => {
     }
   }, [abortController, accounts])
 
-  const handleQuoteRefreshInternal = React.useCallback(
+  const handleQuoteRefreshInternal = useCallback(
     async (overrides: BuyParamOverrides) => {
-      const assetSymbol = selectedAsset
-        ? getAssetSymbol(selectedAsset)
-        : undefined
       const params = {
-        country: overrides.country || defaultCountryCode || 'US',
+        country:
+          overrides.country === undefined
+            ? defaultCountryCode
+            : overrides.country,
         sourceCurrencyCode:
-          overrides.sourceCurrencyCode || selectedCurrency?.currencyCode,
+          overrides.sourceCurrencyCode === undefined
+            ? selectedCurrency?.currencyCode
+            : overrides.sourceCurrencyCode,
         destionationCurrencyCode:
-          overrides.destionationCurrencyCode || assetSymbol,
-        amount: overrides.amount || new Amount(amount).toNumber(),
-        account: overrides.account || selectedAccount.address
+          overrides.destionationCurrencyCode === undefined
+            ? selectedAsset?.currencyCode
+            : overrides.destionationCurrencyCode,
+        amount: overrides.amount === undefined ? amount : overrides.amount,
+        account:
+          overrides.account === undefined
+            ? selectedAccount.address
+            : overrides.account
       }
 
       if (
@@ -151,20 +169,18 @@ export const useBuy = () => {
         return
       }
 
-      const amountWrapped = new Amount(amount)
+      const amountWrapped = new Amount(params.amount)
       const isAmountEmpty =
         amountWrapped.isZero() ||
         amountWrapped.isNaN() ||
         amountWrapped.isUndefined()
 
       if (isAmountEmpty) {
-        reset()
         return
       }
 
       const controller = new AbortController()
       setAbortController(controller)
-      setIsFetchingQuotes(true)
 
       let quoteResponse
       try {
@@ -188,6 +204,7 @@ export const useBuy = () => {
       }
 
       if (quoteResponse?.error) {
+        console.log('quoteResponse.error', quoteResponse.error)
         setBuyErrors(quoteResponse.error)
       }
 
@@ -197,7 +214,7 @@ export const useBuy = () => {
 
       setIsFetchingQuotes(false)
       setAbortController(undefined)
-      setTimeUnitNextQuote(10000)
+      setTimeUntilNextQuote(10000)
     },
     [
       amount,
@@ -206,24 +223,26 @@ export const useBuy = () => {
       reset,
       selectedAccount?.address,
       selectedAsset,
-      selectedCurrency?.currencyCode
+      selectedCurrency?.currencyCode,
+      quotes
     ]
   )
 
   const handleQuoteRefresh = useDebouncedCallback(
     async (overrides: BuyParamOverrides) => {
-      console.log('fetching quotes', overrides)
       await handleQuoteRefreshInternal(overrides)
     },
     700
   )
 
-  const onSetAmount = React.useCallback(
+  const onSetAmount = useCallback(
     async (value: string) => {
       setAmount(value)
       if (!value) {
         setAmount('')
       }
+
+      setQuotes([])
 
       await handleQuoteRefresh({
         amount: value
@@ -232,7 +251,7 @@ export const useBuy = () => {
     [handleQuoteRefresh]
   )
 
-  const onSelectCurrency = React.useCallback(
+  const onSelectCurrency = useCallback(
     async (currency: MeldFiatCurrency) => {
       setSelectedCurrency(currency)
 
@@ -253,51 +272,60 @@ export const useBuy = () => {
     [handleQuoteRefresh, selectedAsset]
   )
 
-  const onSelectAccount = React.useCallback(
-    async (account: BraveWallet.AccountInfo) => {
-      setSelectedAccount(account)
-
-      await handleQuoteRefresh({
-        account: account.address
-      })
-    },
-    [handleQuoteRefresh]
-  )
-
-  const onSelectToken = React.useCallback(
+  const onSelectToken = useCallback(
     async (asset: MeldCryptoCurrency) => {
+      console.log('setting asset to: ', asset)
       setSelectedAsset(asset)
 
       await handleQuoteRefresh({
-        destionationCurrencyCode: getAssetSymbol(asset)
+        destionationCurrencyCode: asset?.currencyCode
       })
     },
     [handleQuoteRefresh]
   )
 
+  const onFlipAmounts = useCallback(async () => {
+    if (!cryptoEstimate) return
+
+    setAmount(cryptoEstimate)
+    await handleQuoteRefresh({
+      amount: cryptoEstimate
+    })
+  }, [cryptoEstimate, handleQuoteRefresh])
+
   // effects
-  React.useEffect(() => {
+  useEffect(() => {
     if (accounts.length > 0 && !selectedAccount) {
       setSelectedAccount(accounts[0])
     }
   }, [accounts, selectedAccount])
 
-  React.useEffect(() => {
-    if (cryptoCurrencies && cryptoCurrencies.length > 0 && !selectedAsset) {
-      setSelectedAsset(cryptoCurrencies[0])
-    }
-  }, [cryptoCurrencies, selectedAsset])
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (fiatCurrencies && fiatCurrencies.length > 0 && !selectedCurrency) {
       const defaultCurrency = fiatCurrencies.find(
         (currency) =>
           currency.currencyCode.toLowerCase() ===
           defaultFiatCurrency.toLowerCase()
       )
-      setSelectedCurrency(defaultCurrency || fiatCurrencies[0])
+      setSelectedCurrency(defaultCurrency)
     }
   }, [defaultFiatCurrency, fiatCurrencies, selectedCurrency])
+
+  // fetch quotes in intervals
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (timeUntilNextQuote && timeUntilNextQuote !== 0) {
+        setTimeUntilNextQuote(timeUntilNextQuote - 1000)
+        return
+      }
+      if (!isFetchingQuotes) {
+        await handleQuoteRefresh({})
+      }
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [handleQuoteRefresh, timeUntilNextQuote, isFetchingQuotes])
 
   return {
     selectedAsset,
@@ -306,7 +334,8 @@ export const useBuy = () => {
     amount,
     isLoadingAssets,
     isLoadingSpotPrices,
-    estimatedCryptoAmount,
+    cryptoEstimate,
+    formattedCryptoEstimate,
     selectedAssetSpotPrice,
     spotPriceRegistry,
     fiatCurrencies,
@@ -319,12 +348,13 @@ export const useBuy = () => {
     isFetchingQuotes,
     quotes,
     buyErrors,
-    timeUnitNextQuote,
+    timeUntilNextQuote,
     onSelectToken,
-    onSelectAccount,
+    onSelectAccount: setSelectedAccount,
     onSelectCurrency,
     onSetAmount,
     serviceProviders,
-    isLoadingServiceProvider
+    isLoadingServiceProvider,
+    onFlipAmounts
   }
 }

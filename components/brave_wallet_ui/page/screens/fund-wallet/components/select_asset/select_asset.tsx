@@ -34,7 +34,6 @@ import {
 } from './select_asset.style'
 import { ContainerButton, Dialog, DialogTitle } from '../shared/style'
 import {
-  getAssetName,
   getAssetSymbol,
   getTokenPriceFromRegistry,
   getAssetIdKey
@@ -77,7 +76,6 @@ export const AssetListItem = ({
   const { symbolImageUrl, currencyCode, chainName } = asset
 
   const assetSymbol = getAssetSymbol(asset)
-  const assetName = getAssetName(asset)
   const networkDescription =
     currencyCode !== ''
       ? getLocale('braveWalletPortfolioAssetNetworkDescription')
@@ -96,7 +94,7 @@ export const AssetListItem = ({
   )
 
   const formattedPrice = assetPrice
-    ? new Amount(assetPrice.price).formatAsFiat(fiatCurrencyCode ?? '')
+    ? new Amount(assetPrice.price).formatAsFiat(fiatCurrencyCode ?? '', 4)
     : ''
 
   return (
@@ -111,7 +109,7 @@ export const AssetListItem = ({
         >
           <AssetImage src={`chrome://image?${symbolImageUrl}`} />
           <Column alignItems='flex-start'>
-            <AssetName>{assetName}</AssetName>
+            <AssetName>{asset.name}</AssetName>
             <AssetNetwork>{networkDescription}</AssetNetwork>
           </Column>
         </Row>
