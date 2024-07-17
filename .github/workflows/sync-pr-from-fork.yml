@@ -46,5 +46,5 @@ jobs:
 
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
           if [[ "$existing_prs" = "[]" ]]; then
-            gh pr create -F ".github/PULL_REQUEST_TEMPLATE.md" -B "$baseRefName" -H "$contribHeadRefName" -t "Don't merge - this is a CI run for $url"
+            gh pr create --draft --body-file ".github/PULL_REQUEST_TEMPLATE.md" --base "$baseRefName" --head "$contribHeadRefName" --assignee "$headRepositoryOwnerLogin" -t "CI run for #$PR_NUMBER"
           fi
