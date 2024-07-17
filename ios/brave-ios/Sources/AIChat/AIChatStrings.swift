@@ -556,7 +556,7 @@ extension Strings {
       "aichat.advancedSettingsHeaderTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Leo is an AI-powered smart assistant. Built right into the browser.",
+      value: "Leo is an AI-powered smart assistant, built right into the browser.",
       comment: "The title for the header for adjusting leo ai settings"
     )
     public static let advancedSettingsSubscriptionStatusTitle = NSLocalizedString(
