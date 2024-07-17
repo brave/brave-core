@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsSubdivisionUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsSubdivisionUrlRequestBuilderTest : public test::TestBase {};
 
 TEST_F(BraveAdsSubdivisionUrlRequestBuilderTest, BuildUrl) {
   // Arrange

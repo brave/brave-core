@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -18,7 +18,7 @@ namespace {
 constexpr size_t kSegmentsMaxCount = 2;
 }  // namespace
 
-class BraveAdsTopSegmentsTest : public UnitTestBase {};
+class BraveAdsTopSegmentsTest : public test::TestBase {};
 
 TEST_F(BraveAdsTopSegmentsTest, GetTopChildSegments) {
   // Arrange

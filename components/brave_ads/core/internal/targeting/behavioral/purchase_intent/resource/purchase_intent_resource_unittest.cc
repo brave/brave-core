@@ -13,8 +13,8 @@
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/resource_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_path_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -25,10 +25,10 @@
 
 namespace brave_ads {
 
-class BraveAdsPurchaseIntentResourceTest : public UnitTestBase {
+class BraveAdsPurchaseIntentResourceTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     resource_ = std::make_unique<PurchaseIntentResource>();
   }
@@ -73,7 +73,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
                                           const int /*version*/,
                                           LoadFileCallback callback) {
         const base::FilePath path =
-            ComponentResourcesTestDataPath().AppendASCII(
+            test::ComponentResourcesDataPath().AppendASCII(
                 test::kMissingResourceId);
 
         base::File file(

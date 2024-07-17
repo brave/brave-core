@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/user_engagement/ad_events/ad_event_cache.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,14 +20,14 @@ constexpr char kID2[] = "5b2f108c-e176-4a3e-8e7c-fe67fb3db518";
 
 }  // namespace
 
-class BraveAdsAdEventCacheTest : public UnitTestBase {
+class BraveAdsAdEventCacheTest : public test::TestBase {
  protected:
   void CacheAdEvent(const std::string& id,
                     const AdType ad_type,
                     const ConfirmationType confirmation_type) {
     ad_event_cache_.AddEntryForInstanceId(id, ToString(ad_type),
                                           ToString(confirmation_type),
-                                          /*time=*/Now());
+                                          /*time=*/test::Now());
   }
 
   std::vector<base::Time> GetCachedAdEvents(
@@ -49,7 +49,7 @@ TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForNewType) {
       AdType::kNotificationAd, ConfirmationType::kViewedImpression);
 
   // Assert
-  const std::vector<base::Time> expected_cached_ad_events = {Now()};
+  const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events, cached_ad_events);
 }
 
@@ -65,7 +65,8 @@ TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForExistingType) {
       AdType::kNotificationAd, ConfirmationType::kViewedImpression);
 
   // Assert
-  const std::vector<base::Time> expected_cached_ad_events = {Now(), Now()};
+  const std::vector<base::Time> expected_cached_ad_events = {test::Now(),
+                                                             test::Now()};
   EXPECT_EQ(expected_cached_ad_events, cached_ad_events);
 }
 
@@ -81,7 +82,8 @@ TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForMultipleIds) {
       AdType::kNotificationAd, ConfirmationType::kViewedImpression);
 
   // Assert
-  const std::vector<base::Time> expected_cached_ad_events = {Now(), Now()};
+  const std::vector<base::Time> expected_cached_ad_events = {test::Now(),
+                                                             test::Now()};
   EXPECT_EQ(expected_cached_ad_events, cached_ad_events);
 }
 
@@ -96,7 +98,7 @@ TEST_F(BraveAdsAdEventCacheTest, CacheAdEventForMultipleAdTypes) {
       AdType::kNotificationAd, ConfirmationType::kViewedImpression);
 
   // Assert
-  const std::vector<base::Time> expected_cached_ad_events = {Now()};
+  const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events, cached_ad_events);
 }
 
@@ -115,7 +117,7 @@ TEST_F(BraveAdsAdEventCacheTest, PurgeCacheOlderThan) {
       AdType::kNotificationAd, ConfirmationType::kViewedImpression);
 
   // Assert
-  const std::vector<base::Time> expected_cached_ad_events = {Now()};
+  const std::vector<base::Time> expected_cached_ad_events = {test::Now()};
   EXPECT_EQ(expected_cached_ad_events, cached_ad_events);
 }
 

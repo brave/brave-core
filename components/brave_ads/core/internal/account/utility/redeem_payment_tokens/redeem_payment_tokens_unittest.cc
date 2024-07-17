@@ -16,10 +16,10 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
 
@@ -27,7 +27,7 @@
 
 namespace brave_ads {
 
-class BraveAdsRedeemPaymentTokensTest : public UnitTestBase {
+class BraveAdsRedeemPaymentTokensTest : public test::TestBase {
  protected:
   BraveAdsRedeemPaymentTokensTest()
       : redeem_payment_tokens_(std::make_unique<RedeemPaymentTokens>()) {
@@ -40,12 +40,12 @@ class BraveAdsRedeemPaymentTokensTest : public UnitTestBase {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 
@@ -69,13 +69,13 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokens) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()},
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
 
   const PaymentTokenList payment_tokens = test::SetPaymentTokens(/*count=*/1);
 
@@ -100,12 +100,12 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, RedeemPaymentTokensMultipleTimes) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 
@@ -124,7 +124,7 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, ScheduleNextTokenRedemption) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
   // Arrange
-  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
@@ -142,14 +142,14 @@ TEST_F(BraveAdsRedeemPaymentTokensTest, NoPaymentTokens) {
 
 TEST_F(BraveAdsRedeemPaymentTokensTest, Retry) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_NOT_FOUND,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_NOT_FOUND)},
         {net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 

@@ -8,17 +8,17 @@
 #include <sstream>
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::cbr {
+namespace brave_ads {
 
-class BraveAdsVerificationSignatureTest : public UnitTestBase {};
+class BraveAdsVerificationSignatureTest : public test::TestBase {};
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToInitialize) {
   // Arrange
-  const VerificationSignature verification_signature;
+  const cbr::VerificationSignature verification_signature;
 
   // Act & Assert
   EXPECT_FALSE(verification_signature.has_value());
@@ -26,7 +26,7 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToInitialize) {
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  const VerificationSignature verification_signature("");
+  const cbr::VerificationSignature verification_signature("");
 
   // Act & Assert
   EXPECT_FALSE(verification_signature.has_value());
@@ -34,7 +34,8 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToInitializeWithEmptyBase64) {
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  const VerificationSignature verification_signature(kInvalidBase64);
+  const cbr::VerificationSignature verification_signature(
+      cbr::test::kInvalidBase64);
 
   // Act & Assert
   EXPECT_FALSE(verification_signature.has_value());
@@ -42,8 +43,9 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToInitializeWithInvalidBase64) {
 
 TEST_F(BraveAdsVerificationSignatureTest, DecodeBase64) {
   // Act
-  const VerificationSignature verification_signature =
-      VerificationSignature::DecodeBase64(kVerificationSignatureBase64);
+  const cbr::VerificationSignature verification_signature =
+      cbr::VerificationSignature::DecodeBase64(
+          cbr::test::kVerificationSignatureBase64);
 
   // Assert
   EXPECT_TRUE(verification_signature.has_value());
@@ -51,8 +53,8 @@ TEST_F(BraveAdsVerificationSignatureTest, DecodeBase64) {
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
   // Act
-  const VerificationSignature verification_signature =
-      VerificationSignature::DecodeBase64("");
+  const cbr::VerificationSignature verification_signature =
+      cbr::VerificationSignature::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(verification_signature.has_value());
@@ -60,8 +62,8 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeEmptyBase64) {
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
   // Act
-  const VerificationSignature verification_signature =
-      VerificationSignature::DecodeBase64(kInvalidBase64);
+  const cbr::VerificationSignature verification_signature =
+      cbr::VerificationSignature::DecodeBase64(cbr::test::kInvalidBase64);
 
   // Assert
   EXPECT_FALSE(verification_signature.has_value());
@@ -69,17 +71,17 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToDecodeInvalidBase64) {
 
 TEST_F(BraveAdsVerificationSignatureTest, EncodeBase64) {
   // Arrange
-  const VerificationSignature verification_signature(
-      kVerificationSignatureBase64);
+  const cbr::VerificationSignature verification_signature(
+      cbr::test::kVerificationSignatureBase64);
 
   // Act & Assert
-  EXPECT_EQ(kVerificationSignatureBase64,
+  EXPECT_EQ(cbr::test::kVerificationSignatureBase64,
             verification_signature.EncodeBase64());
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  const VerificationSignature verification_signature;
+  const cbr::VerificationSignature verification_signature;
 
   // Act & Assert
   EXPECT_FALSE(verification_signature.EncodeBase64());
@@ -87,8 +89,8 @@ TEST_F(BraveAdsVerificationSignatureTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST_F(BraveAdsVerificationSignatureTest, IsEqual) {
   // Arrange
-  const VerificationSignature verification_signature(
-      kVerificationSignatureBase64);
+  const cbr::VerificationSignature verification_signature(
+      cbr::test::kVerificationSignatureBase64);
 
   // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
@@ -96,7 +98,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsEqual) {
 
 TEST_F(BraveAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
   // Arrange
-  const VerificationSignature verification_signature;
+  const cbr::VerificationSignature verification_signature;
 
   // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
@@ -104,7 +106,7 @@ TEST_F(BraveAdsVerificationSignatureTest, IsEqualWhenUninitialized) {
 
 TEST_F(BraveAdsVerificationSignatureTest, IsEmptyBase64Equal) {
   // Arrange
-  const VerificationSignature verification_signature("");
+  const cbr::VerificationSignature verification_signature("");
 
   // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
@@ -112,7 +114,8 @@ TEST_F(BraveAdsVerificationSignatureTest, IsEmptyBase64Equal) {
 
 TEST_F(BraveAdsVerificationSignatureTest, IsInvalidBase64Equal) {
   // Arrange
-  const VerificationSignature verification_signature(kInvalidBase64);
+  const cbr::VerificationSignature verification_signature(
+      cbr::test::kInvalidBase64);
 
   // Act & Assert
   EXPECT_EQ(verification_signature, verification_signature);
@@ -120,30 +123,31 @@ TEST_F(BraveAdsVerificationSignatureTest, IsInvalidBase64Equal) {
 
 TEST_F(BraveAdsVerificationSignatureTest, IsNotEqual) {
   // Arrange
-  const VerificationSignature verification_signature(
-      kVerificationSignatureBase64);
+  const cbr::VerificationSignature verification_signature(
+      cbr::test::kVerificationSignatureBase64);
 
   // Act & Assert
-  const VerificationSignature different_verification_signature(kInvalidBase64);
-  EXPECT_NE(different_verification_signature, verification_signature);
+  const cbr::VerificationSignature another_verification_signature(
+      cbr::test::kInvalidBase64);
+  EXPECT_NE(another_verification_signature, verification_signature);
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, OutputStream) {
   // Arrange
-  const VerificationSignature verification_signature(
-      kVerificationSignatureBase64);
+  const cbr::VerificationSignature verification_signature(
+      cbr::test::kVerificationSignatureBase64);
 
   // Act
   std::stringstream ss;
   ss << verification_signature;
 
   // Assert
-  EXPECT_EQ(kVerificationSignatureBase64, ss.str());
+  EXPECT_EQ(cbr::test::kVerificationSignatureBase64, ss.str());
 }
 
 TEST_F(BraveAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
   // Arrange
-  const VerificationSignature verification_signature;
+  const cbr::VerificationSignature verification_signature;
 
   // Act
   std::stringstream ss;
@@ -153,4 +157,4 @@ TEST_F(BraveAdsVerificationSignatureTest, OutputStreamWhenUninitialized) {
   EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads

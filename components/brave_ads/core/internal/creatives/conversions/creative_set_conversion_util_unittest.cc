@@ -5,11 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
@@ -19,7 +18,7 @@
 
 namespace brave_ads {
 
-class BraveAdsCreativeSetConversionUtilTest : public UnitTestBase {};
+class BraveAdsCreativeSetConversionUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeSetConversionUtilTest,
        GetMatchingCreativeSetConversions) {
@@ -77,20 +76,20 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest, GetCreativeSetConversionCounts) {
   AdEventList ad_events;
 
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
 
-  AdEventInfo ad_event_2 =
-      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
+  AdEventInfo ad_event_2 = BuildAdEvent(ad, ConfirmationType::kConversion,
+                                        /*created_at=*/test::Now());
   ad_event_2.creative_set_id = "4e83a23c-1194-40f8-8fdc-2f38d7ed75c8";
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_3);
 
-  const AdEventInfo ad_event_4 =
-      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
+  const AdEventInfo ad_event_4 = BuildAdEvent(ad, ConfirmationType::kConversion,
+                                              /*created_at=*/test::Now());
   ad_events.push_back(ad_event_4);
   ad_events.push_back(ad_event_4);
 
@@ -239,8 +238,8 @@ TEST_F(BraveAdsCreativeSetConversionUtilTest,
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kConversion, /*created_at=*/Now());
+  const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kConversion,
+                                            /*created_at=*/test::Now());
 
   AdvanceClockBy(base::Days(3) + base::Milliseconds(1));
 

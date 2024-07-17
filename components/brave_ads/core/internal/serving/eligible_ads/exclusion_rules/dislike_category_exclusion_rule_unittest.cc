@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/dislike_category_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/history/category_content_info.h"
@@ -15,7 +15,7 @@
 
 namespace brave_ads {
 
-class BraveAdsDislikeCategoryExclusionRuleTest : public UnitTestBase {
+class BraveAdsDislikeCategoryExclusionRuleTest : public test::TestBase {
  protected:
   const DislikeCategoryExclusionRule exclusion_rule_;
 };

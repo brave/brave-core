@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
@@ -32,10 +32,10 @@
 
 namespace brave_ads {
 
-class BraveAdsHistoryManagerTest : public UnitTestBase {
+class BraveAdsHistoryManagerTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     HistoryManager::GetInstance().AddObserver(&history_manager_observer_mock_);
   }
@@ -44,7 +44,7 @@ class BraveAdsHistoryManagerTest : public UnitTestBase {
     HistoryManager::GetInstance().RemoveObserver(
         &history_manager_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   HistoryManagerObserverMock history_manager_observer_mock_;

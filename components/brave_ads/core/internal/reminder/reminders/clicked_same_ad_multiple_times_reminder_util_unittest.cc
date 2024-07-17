@@ -9,8 +9,8 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
@@ -52,10 +52,11 @@ HistoryItemInfo AddHistory(const int count, const bool should_use_random_uuid) {
 
 }  // namespace
 
-class BraveAdsClickedSameAdMultipleTimesReminderUtilTest : public UnitTestBase {
+class BraveAdsClickedSameAdMultipleTimesReminderUtilTest
+    : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     ads_observer_mock_ = test::AddAdsObserverMock();
   }
@@ -77,7 +78,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
 TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
        DoNotRemindUserOnMobileOperatingSystems) {
   // Arrange
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   const HistoryItemInfo history_item =
       AddHistory(/*count=*/kRemindUserIfClickingTheSameAdAfter.Get(),

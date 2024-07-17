@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -17,7 +17,7 @@
 
 namespace brave_ads {
 
-class BraveAdsHistoryItemUtilTest : public UnitTestBase {};
+class BraveAdsHistoryItemUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
   // Arrange
@@ -31,7 +31,7 @@ TEST_F(BraveAdsHistoryItemUtilTest, BuildHistoryItem) {
 
   // Assert
   HistoryItemInfo expected_history_item;
-  expected_history_item.created_at = Now();
+  expected_history_item.created_at = test::Now();
   expected_history_item.ad_content.type = ad.type;
   expected_history_item.ad_content.placement_id = ad.placement_id;
   expected_history_item.ad_content.creative_instance_id =

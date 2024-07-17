@@ -12,13 +12,13 @@
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::cbr {
+namespace brave_ads {
 
 TEST(BraveAdsChallengeBypassRistrettoTest, BuildCredential) {
   // Act
-  const std::optional<base::Value::Dict> credential =
-      BuildCredential(UnblindedToken(kUnblindedTokenBase64),
-                      /*payload=*/"definition: the weight of a payload");
+  const std::optional<base::Value::Dict> credential = cbr::BuildCredential(
+      cbr::UnblindedToken(cbr::test::kUnblindedTokenBase64),
+      /*payload=*/"definition: the weight of a payload");
   ASSERT_TRUE(credential);
 
   // Assert
@@ -31,4 +31,4 @@ TEST(BraveAdsChallengeBypassRistrettoTest, BuildCredential) {
             *credential);
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads

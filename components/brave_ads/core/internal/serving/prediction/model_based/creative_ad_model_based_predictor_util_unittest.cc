@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_util.h"
 
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_ad_model_based_predictor_info.h"
@@ -19,7 +18,7 @@
 
 namespace brave_ads {
 
-class BraveAdsCreativeAdModelBasedPredictorUtilTest : public UnitTestBase {};
+class BraveAdsCreativeAdModelBasedPredictorUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
        ComputeCreativeAdModelBasedPredictors) {
@@ -53,7 +52,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorUtilTest,
   const AdEventInfo ad_event =
       test::BuildAdEvent(creative_ad_2, AdType::kNotificationAd,
                          ConfirmationType::kViewedImpression,
-                         /*created_at=*/Now() - base::Hours(3),
+                         /*created_at=*/test::Now() - base::Hours(3),
                          /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 

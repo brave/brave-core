@@ -7,8 +7,8 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -20,12 +20,12 @@ constexpr char kValidSpamClassificationPipeline[] =
     "ml/pipeline/text_processing/linear/valid_spam_classification.fb";
 }  // namespace
 
-class BraveAdsLinearPipelineUtilTest : public UnitTestBase {};
+class BraveAdsLinearPipelineUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsLinearPipelineUtilTest, LoadLinearPipelineTest) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToString(kValidSpamClassificationPipeline);
+      test::MaybeReadFileToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(contents);
 
   // Act

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
@@ -13,7 +13,7 @@
 
 namespace brave_ads::ml {
 
-class BraveAdsHashedNGramsTransformationTest : public UnitTestBase {};
+class BraveAdsHashedNGramsTransformationTest : public test::TestBase {};
 
 TEST_F(BraveAdsHashedNGramsTransformationTest, WrongInputDataTest) {
   // Arrange

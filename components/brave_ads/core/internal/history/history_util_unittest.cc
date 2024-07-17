@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_feature.h"
@@ -29,7 +29,7 @@ HistoryItemInfo BuildAndAddHistoryItem() {
 
 }  // namespace
 
-class BraveAdsHistoryUtilTest : public UnitTestBase {};
+class BraveAdsHistoryUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsHistoryUtilTest, AddHistory) {
   // Act

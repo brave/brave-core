@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
 
@@ -22,7 +22,7 @@ constexpr const char* kCreativeSetIds[] = {
 
 }  // namespace
 
-class BraveAdsTotalMaxExclusionRuleTest : public UnitTestBase {};
+class BraveAdsTotalMaxExclusionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfThereAreNoAdEvents) {
   // Arrange
@@ -57,7 +57,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldIncludeIfDoesNotExceedCap) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/Now(),
+      /*created_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
@@ -80,7 +80,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest,
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad_2, AdType::kNotificationAd,
-      ConfirmationType::kServedImpression, /*created_at=*/Now(),
+      ConfirmationType::kServedImpression, /*created_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
@@ -100,7 +100,7 @@ TEST_F(BraveAdsTotalMaxExclusionRuleTest, ShouldExcludeIfExceedsCap) {
   AdEventList ad_events;
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kServedImpression,
-      /*created_at=*/Now(),
+      /*created_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-class BraveAdsConfirmationTokensPermissionRuleTest : public UnitTestBase {};
+class BraveAdsConfirmationTokensPermissionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {

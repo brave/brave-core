@@ -7,8 +7,8 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
@@ -89,12 +89,12 @@ HistoryItemList BuildHistoryItems() {
 
 }  // namespace
 
-class BraveAdsHistoryItemValueUtilTest : public UnitTestBase {};
+class BraveAdsHistoryItemValueUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
   // Arrange
   AdvanceClockTo(
-      TimeFromUTCString("Fri, 28 Sep 2012 17:45"));  // Hello Jaxson!!!
+      test::TimeFromUTCString("Fri, 28 Sep 2012 17:45"));  // Hello Jaxson!!!
 
   const base::Value::List list = base::test::ParseJsonList(kJson);
 
@@ -107,7 +107,7 @@ TEST_F(BraveAdsHistoryItemValueUtilTest, FromValue) {
 
 TEST_F(BraveAdsHistoryItemValueUtilTest, ToValue) {
   // Arrange
-  AdvanceClockTo(TimeFromUTCString("Fri, 28 Sep 2012 17:45"));
+  AdvanceClockTo(test::TimeFromUTCString("Fri, 28 Sep 2012 17:45"));
 
   const HistoryItemList history_items = BuildHistoryItems();
 

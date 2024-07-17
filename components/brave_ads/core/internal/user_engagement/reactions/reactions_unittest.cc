@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
@@ -26,10 +26,10 @@
 
 namespace brave_ads {
 
-class BraveAdsReactionsTest : public UnitTestBase {
+class BraveAdsReactionsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
@@ -44,7 +44,7 @@ class BraveAdsReactionsTest : public UnitTestBase {
   void TearDown() override {
     account_->RemoveObserver(&account_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;

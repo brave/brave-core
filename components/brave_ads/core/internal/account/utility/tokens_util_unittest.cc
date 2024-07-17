@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -23,25 +23,26 @@ namespace {
 
 base::Value::Dict BuildUrlResponseBody() {
   return base::Value::Dict()
-      .Set("batchProof", cbr::kBatchDLEQProofBase64)
-      .Set("signedTokens", base::Value::List().Append(cbr::kSignedTokenBase64))
-      .Set("publicKey", cbr::kPublicKeyBase64);
+      .Set("batchProof", cbr::test::kBatchDLEQProofBase64)
+      .Set("signedTokens",
+           base::Value::List().Append(cbr::test::kSignedTokenBase64))
+      .Set("publicKey", cbr::test::kPublicKeyBase64);
 }
 
 }  // namespace
 
-class BraveAdsSignedTokensUtilTest : public UnitTestBase {};
+class BraveAdsSignedTokensUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsSignedTokensUtilTest, ParsePublicKey) {
   // Act & Assert
-  EXPECT_EQ(cbr::PublicKey(cbr::kPublicKeyBase64),
+  EXPECT_EQ(cbr::PublicKey(cbr::test::kPublicKeyBase64),
             ParsePublicKey(BuildUrlResponseBody()));
 }
 
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidPublicKey) {
   // Arrange
   const base::Value::Dict dict =
-      BuildUrlResponseBody().Set("publicKey", cbr::kInvalidBase64);
+      BuildUrlResponseBody().Set("publicKey", cbr::test::kInvalidBase64);
 
   // Act & Assert
   EXPECT_FALSE(ParsePublicKey(dict));
@@ -55,7 +56,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, ParseSignedTokens) {
 
   // Assert
   const std::vector<cbr::SignedToken> expected_signed_tokens = {
-      cbr::SignedToken(cbr::kSignedTokenBase64)};
+      cbr::SignedToken(cbr::test::kSignedTokenBase64)};
   EXPECT_EQ(expected_signed_tokens, signed_tokens);
 }
 
@@ -71,7 +72,7 @@ TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseSignedTokensIfMissingKey) {
 TEST_F(BraveAdsSignedTokensUtilTest, DoNotParseInvalidSignedTokens) {
   // Arrange
   const base::Value::Dict dict =
-      BuildUrlResponseBody().Set("signedTokens", cbr::kInvalidBase64);
+      BuildUrlResponseBody().Set("signedTokens", cbr::test::kInvalidBase64);
 
   // Act & Assert
   EXPECT_FALSE(ParseSignedTokens(dict));
@@ -139,7 +140,7 @@ TEST_F(BraveAdsSignedTokensUtilTest,
        DoNotParseVerifyAndUnblindInvalidSignedTokens) {
   // Arrange
   const base::Value::Dict dict = BuildUrlResponseBody().Set(
-      "signedTokens", base::Value::List().Append(cbr::kInvalidBase64));
+      "signedTokens", base::Value::List().Append(cbr::test::kInvalidBase64));
 
   // Act
   const auto result = ParseVerifyAndUnblindTokens(dict, cbr::test::GetTokens(),

@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
@@ -46,7 +46,7 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BraveAdsNewTabPageAdValueUtilTest : public UnitTestBase {};
+class BraveAdsNewTabPageAdValueUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   // Arrange

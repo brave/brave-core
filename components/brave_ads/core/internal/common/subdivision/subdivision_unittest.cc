@@ -9,9 +9,8 @@
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -21,10 +20,10 @@
 
 namespace brave_ads {
 
-class BraveAdsSubdivisionTest : public UnitTestBase {
+class BraveAdsSubdivisionTest : public test::TestBase {
  public:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     subdivision_ = std::make_unique<Subdivision>();
     subdivision_->AddObserver(&subdivision_observer_mock_);
@@ -33,16 +32,16 @@ class BraveAdsSubdivisionTest : public UnitTestBase {
   void TearDown() override {
     subdivision_->RemoveObserver(&subdivision_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   void MockHttpOkUrlResponse(const std::string& country_code,
                              const std::string& subdivision_code) {
-    const URLResponseMap url_responses = {
+    const test::URLResponseMap url_responses = {
         {BuildSubdivisionUrlPath(),
          {{net::HTTP_OK, test::BuildSubdivisionUrlResponseBody(
                              country_code, subdivision_code)}}}};
-    MockUrlResponses(ads_client_mock_, url_responses);
+    test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
  protected:
@@ -152,7 +151,7 @@ TEST_F(BraveAdsSubdivisionTest, OnDidOptOutBraveNews) {
 
 TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body=*/net::GetHttpReasonPhrase(
@@ -160,7 +159,7 @@ TEST_F(BraveAdsSubdivisionTest, RetryAfterInvalidUrlResponseStatusCode) {
         {net::HTTP_OK,
          test::BuildSubdivisionUrlResponseBody(
              /*country_code=*/"US", /*subdivision_code=*/"CA")}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
 
@@ -216,9 +215,9 @@ TEST_F(BraveAdsSubdivisionTest, EmptyCountryCode) {
 
 TEST_F(BraveAdsSubdivisionTest, NotValidSubdivisionResonse) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildSubdivisionUrlPath(), {{net::HTTP_OK, /*response_body=*/"{}"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
 

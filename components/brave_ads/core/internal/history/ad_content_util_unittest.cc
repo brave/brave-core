@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
@@ -24,7 +24,7 @@ constexpr char kDescription[] = "description";
 
 }  // namespace
 
-class BraveAdsAdContentUtilTest : public UnitTestBase {};
+class BraveAdsAdContentUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdContentUtilTest, Build) {
   // Arrange

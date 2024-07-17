@@ -28,10 +28,10 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "net/http/http_status_code.h"
@@ -40,10 +40,10 @@
 
 namespace brave_ads {
 
-class BraveAdsUserRewardsTest : public AdsClientMock, public UnitTestBase {
+class BraveAdsUserRewardsTest : public AdsClientMock, public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     user_rewards_ =
         std::make_unique<UserRewards>(&token_generator_mock_, test::Wallet());
@@ -60,10 +60,10 @@ TEST_F(BraveAdsUserRewardsTest, FetchIssuers) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
   user_rewards_->FetchIssuers();
@@ -76,7 +76,7 @@ TEST_F(BraveAdsUserRewardsTest, DoNotFetchInvalidIssuers) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/R"(
           {
             "ping": 7200000,
@@ -153,7 +153,7 @@ TEST_F(BraveAdsUserRewardsTest, DoNotFetchInvalidIssuers) {
               }
             ]
           })"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
   user_rewards_->FetchIssuers();
@@ -166,13 +166,13 @@ TEST_F(BraveAdsUserRewardsTest, DoNotFetchMissingIssuers) {
   // Arrange
   test::BuildAndSetIssuers();
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/R"(
           {
             "ping": 7200000,
             "issuers": []
           })"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
   user_rewards_->FetchIssuers();
@@ -188,13 +188,13 @@ TEST_F(BraveAdsUserRewardsTest, RefillConfirmationTokens) {
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
                                    test::kRequestSignedTokensNonce),
        {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
   user_rewards_->MaybeRefillConfirmationTokens();
@@ -205,12 +205,12 @@ TEST_F(BraveAdsUserRewardsTest, RefillConfirmationTokens) {
 
 TEST_F(BraveAdsUserRewardsTest, RedeemPaymentTokens) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRedeemPaymentTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_OK, test::BuildRedeemPaymentTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, Now());
+  test::SetProfileTimePrefValue(prefs::kNextTokenRedemptionAt, test::Now());
 
   test::SetPaymentTokens(/*count=*/1);
 
@@ -230,10 +230,10 @@ TEST_F(BraveAdsUserRewardsTest, MigrateVerifiedRewardsUser) {
 
   test::RefillConfirmationTokens(/*count=*/1);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   test::SetPaymentTokens(/*count=*/1);
 
@@ -269,7 +269,7 @@ TEST_F(BraveAdsUserRewardsTest,
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
@@ -279,7 +279,7 @@ TEST_F(BraveAdsUserRewardsTest,
               "captcha_id": "daf85dc8-164e-4eb9-a4d4-1836055004b3"
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(ads_client_mock_,
               ShowScheduledCaptcha(
@@ -297,7 +297,7 @@ TEST_F(BraveAdsUserRewardsTest,
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
@@ -307,7 +307,7 @@ TEST_F(BraveAdsUserRewardsTest,
               "captcha_id": ""
             }
           )"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(ads_client_mock_, ShowScheduledCaptcha).Times(0);
 
@@ -322,13 +322,13 @@ TEST_F(BraveAdsUserRewardsTest,
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(test::kWalletPaymentId),
        {{net::HTTP_CREATED, test::BuildRequestSignedTokensUrlResponseBody()}}},
       {BuildGetSignedTokensUrlPath(test::kWalletPaymentId,
                                    test::kRequestSignedTokensNonce),
        {{net::HTTP_OK, test::BuildGetSignedTokensUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(ads_client_mock_, ShowScheduledCaptcha).Times(0);
 

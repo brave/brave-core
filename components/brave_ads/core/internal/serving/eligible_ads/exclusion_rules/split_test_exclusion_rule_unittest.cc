@@ -8,7 +8,7 @@
 #include "base/metrics/field_trial.h"
 #include "base/test/mock_entropy_provider.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -30,7 +30,7 @@ scoped_refptr<base::FieldTrial> CreateFieldTrial(
 
 }  // namespace
 
-class BraveAdsSplitTestExclusionRuleTest : public UnitTestBase {
+class BraveAdsSplitTestExclusionRuleTest : public test::TestBase {
  protected:
   const SplitTestExclusionRule exclusion_rule_;
 };

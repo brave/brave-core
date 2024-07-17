@@ -8,28 +8,28 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsRotatingHashUserDataTest : public UnitTestBase {
+class BraveAdsRotatingHashUserDataTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    AdvanceClockTo(TimeFromUTCString("2 June 2022 11:00"));
+    AdvanceClockTo(test::TimeFromUTCString("2 June 2022 11:00"));
   }
 };
 
 TEST_F(BraveAdsRotatingHashUserDataTest,
        BuildRotatingHashUserDataForRewardsUser) {
   // Arrange
-  MockDeviceId();
+  test::MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
@@ -53,7 +53,7 @@ TEST_F(BraveAdsRotatingHashUserDataTest,
   // Arrange
   test::DisableBraveRewards();
 
-  MockDeviceId();
+  test::MockDeviceId();
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, AdType::kNotificationAd,

@@ -7,8 +7,8 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
@@ -19,7 +19,7 @@
 
 namespace brave_ads {
 
-class BraveAdsAdEventHandlerUtilTest : public UnitTestBase {};
+class BraveAdsAdEventHandlerUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   // Arrange
@@ -29,7 +29,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEvent) {
   AdEventList ad_events;
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,
-                   /*created_at=*/Now());
+                   /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -44,7 +44,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEvent) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -60,7 +60,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasFiredAdEventWithinTimeWindow) {
   AdEventList ad_events;
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kServedImpression,
-                   /*created_at=*/Now());
+                   /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -76,7 +76,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, HasNeverFiredAdEventWithinTimeWindow) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   AdvanceClockBy(base::Seconds(5));
@@ -94,7 +94,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -134,10 +134,10 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
   AdvanceClockBy(kDeduplicateViewedAdEventFor.Get());
@@ -159,10 +159,10 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
   AdvanceClockBy(kDeduplicateViewedAdEventFor.Get() + base::Seconds(1));
@@ -183,13 +183,13 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateViewedAdEvent) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
-  AdvanceClockTo(DistantFuture());
+  AdvanceClockTo(test::DistantFuture());
 
   // Act & Assert
   EXPECT_TRUE(ShouldDeduplicateAdEvent(
@@ -208,7 +208,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -228,13 +228,13 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_3);
 
   AdvanceClockBy(kDeduplicateClickedAdEventFor.Get());
@@ -256,13 +256,13 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_3);
 
   AdvanceClockBy(kDeduplicateClickedAdEventFor.Get() + base::Seconds(1));
@@ -283,16 +283,16 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateClickedAdEvent) {
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
   const AdEventInfo ad_event_3 =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_3);
 
-  AdvanceClockTo(DistantFuture());
+  AdvanceClockTo(test::DistantFuture());
 
   // Act & Assert
   EXPECT_TRUE(ShouldDeduplicateAdEvent(
@@ -311,10 +311,10 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
   // Act & Assert

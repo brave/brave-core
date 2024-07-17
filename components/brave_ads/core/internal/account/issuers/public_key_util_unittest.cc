@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -22,7 +22,7 @@ constexpr char kMissingPublicKeyBase64[] =
 
 }  // namespace
 
-class BraveAdsPublicKeyUtilTest : public UnitTestBase {};
+class BraveAdsPublicKeyUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsPublicKeyUtilTest, PublicKeyExists) {
   // Arrange

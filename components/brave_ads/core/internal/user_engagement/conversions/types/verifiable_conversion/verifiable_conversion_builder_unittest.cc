@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-class BraveAdsVerifiableConversionBuilderTest : public UnitTestBase {};
+class BraveAdsVerifiableConversionBuilderTest : public test::TestBase {};
 
 TEST_F(BraveAdsVerifiableConversionBuilderTest, BuildVerifiableConversion) {
   // Arrange

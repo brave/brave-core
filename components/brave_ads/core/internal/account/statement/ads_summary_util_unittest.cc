@@ -6,21 +6,19 @@
 #include "brave/components/brave_ads/core/internal/account/statement/ads_summary_util.h"
 
 #include "base/containers/flat_map.h"
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsAdsSummaryUtilTest : public UnitTestBase {};
+class BraveAdsAdsSummaryUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020"));
+  AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -30,7 +28,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020"));
+  AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, AdType::kNotificationAd, ConfirmationType::kClicked,
@@ -43,9 +41,9 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  const base::Time from_time = Now();
+  const base::Time from_time = test::Now();
 
-  AdvanceClockTo(TimeFromString("1 January 2021"));
+  AdvanceClockTo(test::TimeFromString("1 January 2021"));
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, AdType::kNotificationAd,
@@ -69,7 +67,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
 
   // Act
   const base::flat_map<std::string, int32_t> ads_summary =
-      GetAdsSummaryForDateRange(transactions, from_time, DistantFuture());
+      GetAdsSummaryForDateRange(transactions, from_time, test::DistantFuture());
 
   // Assert
   const base::flat_map<std::string, int32_t> expected_ads_summary = {
@@ -79,7 +77,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
 
 TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020"));
+  AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -94,12 +92,12 @@ TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("1 January 2021"));
+  AdvanceClockTo(test::TimeFromString("1 January 2021"));
 
   // Act
   const base::flat_map<std::string, int32_t> ads_summary =
-      GetAdsSummaryForDateRange(transactions, /*from_time=*/Now(),
-                                /*to_time=*/DistantFuture());
+      GetAdsSummaryForDateRange(transactions, /*from_time=*/test::Now(),
+                                /*to_time=*/test::DistantFuture());
 
   // Assert
   EXPECT_THAT(ads_summary, ::testing::IsEmpty());
@@ -109,8 +107,8 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForNoTransactions) {
   // Act
   const base::flat_map<std::string, int32_t> ads_summary =
       GetAdsSummaryForDateRange(/*transactions=*/{},
-                                /*from_time=*/DistantPast(),
-                                /*to_time=*/DistantFuture());
+                                /*from_time=*/test::DistantPast(),
+                                /*to_time=*/test::DistantFuture());
 
   // Assert
   EXPECT_THAT(ads_summary, ::testing::IsEmpty());

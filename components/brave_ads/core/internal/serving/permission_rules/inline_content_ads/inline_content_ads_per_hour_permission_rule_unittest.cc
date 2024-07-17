@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
@@ -14,8 +14,8 @@
 
 namespace brave_ads {
 
-class BraveAdsInlineContentAdsPerHourPermissionRuleTest : public UnitTestBase {
-};
+class BraveAdsInlineContentAdsPerHourPermissionRuleTest
+    : public test::TestBase {};
 
 TEST_F(BraveAdsInlineContentAdsPerHourPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {

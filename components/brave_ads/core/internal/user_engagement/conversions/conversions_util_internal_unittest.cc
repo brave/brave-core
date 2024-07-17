@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util_internal.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -17,7 +17,7 @@
 
 namespace brave_ads {
 
-class BraveAdsConversionsUtilInternalTest : public UnitTestBase {};
+class BraveAdsConversionsUtilInternalTest : public test::TestBase {};
 
 TEST_F(BraveAdsConversionsUtilInternalTest,
        CanConvertAdEventForNonRewardsUser) {
@@ -49,7 +49,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
       }
 
       const AdEventInfo ad_event =
-          BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
+          BuildAdEvent(ad, confirmation_type, /*created_at=*/test::Now());
       EXPECT_EQ(expected_can_convert_ad_event, CanConvertAdEvent(ad_event));
     }
   }
@@ -72,7 +72,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest, CanConvertAdEventForRewardsUser) {
           confirmation_type == ConfirmationType::kClicked;
 
       const AdEventInfo ad_event =
-          BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
+          BuildAdEvent(ad, confirmation_type, /*created_at=*/test::Now());
       EXPECT_EQ(expected_can_convert_ad_event, CanConvertAdEvent(ad_event));
     }
   }

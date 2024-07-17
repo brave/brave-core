@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types.h"
@@ -28,7 +28,7 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/Now());
+                   /*created_at=*/test::Now());
 
   // Act
   const ConversionInfo conversion =
@@ -49,7 +49,7 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, ConfirmationType::kViewedImpression,
-                   /*created_at=*/Now());
+                   /*created_at=*/test::Now());
 
   // Act
   const ConversionInfo conversion = BuildConversion(

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
@@ -14,10 +14,10 @@
 
 namespace brave_ads {
 
-class BraveAdsUserActivityScoringUtilTest : public UnitTestBase {
+class BraveAdsUserActivityScoringUtilTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         kUserActivityFeature, {{"triggers", "0D=1.0;08=1.0"},

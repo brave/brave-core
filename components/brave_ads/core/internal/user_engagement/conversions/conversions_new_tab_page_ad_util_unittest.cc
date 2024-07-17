@@ -5,8 +5,8 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
@@ -18,7 +18,7 @@
 
 namespace brave_ads {
 
-class BraveAdsConversionsNewTabPageAdUtilTest : public UnitTestBase {};
+class BraveAdsConversionsNewTabPageAdUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsConversionsNewTabPageAdUtilTest, AllowedToConvertViewedAdEvent) {
   // Arrange
@@ -26,7 +26,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest, AllowedToConvertViewedAdEvent) {
       test::BuildAd(AdType::kNewTabPageAd, /*should_generate_random_uuids=*/
                     true);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
@@ -42,7 +42,7 @@ TEST_F(
       test::BuildAd(AdType::kNewTabPageAd, /*should_generate_random_uuids=*/
                     true);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
@@ -56,7 +56,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
@@ -70,7 +70,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
@@ -82,7 +82,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
@@ -96,7 +96,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
@@ -114,7 +114,7 @@ TEST_F(
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
@@ -129,7 +129,7 @@ TEST_F(
   const AdInfo ad = test::BuildAd(AdType::kNewTabPageAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
@@ -150,7 +150,7 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
     }
 
     const AdEventInfo ad_event =
-        BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
+        BuildAdEvent(ad, confirmation_type, /*created_at=*/test::Now());
     EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
   }
 }

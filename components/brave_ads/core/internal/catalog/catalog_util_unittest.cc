@@ -7,22 +7,22 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsCatalogUtilTest : public UnitTestBase {};
+class BraveAdsCatalogUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Arrange
   SetCatalogId(test::kCatalogId);
   SetCatalogVersion(1);
   SetCatalogPing(base::Hours(1));
-  SetCatalogLastUpdated(Now());
+  SetCatalogLastUpdated(test::Now());
 
   // Act
   ResetCatalog();
@@ -69,7 +69,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotChanged) {
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogHasExpired) {
   // Arrange
-  SetCatalogLastUpdated(Now());
+  SetCatalogLastUpdated(test::Now());
 
   AdvanceClockBy(base::Days(1));
 
@@ -79,7 +79,7 @@ TEST_F(BraveAdsCatalogUtilTest, CatalogHasExpired) {
 
 TEST_F(BraveAdsCatalogUtilTest, CatalogHasNotExpired) {
   // Arrange
-  SetCatalogLastUpdated(Now());
+  SetCatalogLastUpdated(test::Now());
 
   AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 

@@ -10,10 +10,9 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
@@ -22,23 +21,23 @@
 
 namespace brave_ads {
 
-class BraveAdsDiagnosticManagerTest : public UnitTestBase {};
+class BraveAdsDiagnosticManagerTest : public test::TestBase {};
 
 TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
-  MockDeviceId();
+  test::MockDeviceId();
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
-  AdvanceClockTo(TimeFromString("Wed, 18 Nov 1970 12:34:56"));
+  AdvanceClockTo(test::TimeFromString("Wed, 18 Nov 1970 12:34:56"));
 
   SetCatalogId(test::kCatalogId);
-  SetCatalogLastUpdated(Now());
+  SetCatalogLastUpdated(test::Now());
 
   AdvanceClockTo(
-      TimeFromString("Fri, 16 Mar 2012 06:23:00"));  // Hello Phoebe!!!
+      test::TimeFromString("Fri, 16 Mar 2012 06:23:00"));  // Hello Phoebe!!!
 
-  SetLastUnIdleTimeDiagnosticEntry(Now());
+  SetLastUnIdleTimeDiagnosticEntry(test::Now());
 
   // Act & Assert
   const base::Value::List expected_diagnostics = base::test::ParseJsonList(
