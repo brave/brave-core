@@ -13,6 +13,8 @@ static_library("misc_metrics") {
     "language_metrics.h",
     "menu_metrics.cc",
     "menu_metrics.h",
+    "new_tab_metrics.cc",
+    "new_tab_metrics.h",
     "page_metrics.cc",
     "page_metrics.h",
     "pref_names.h",
@@ -24,6 +26,7 @@ static_library("misc_metrics") {
 
   deps = [
     "//base",
+    "//brave/components/brave_new_tab_ui:mojom",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
@@ -36,6 +39,7 @@ static_library("misc_metrics") {
     "//components/language/core/browser",
     "//components/language/core/common",
     "//components/prefs",
+    "//components/search_engines",
     "//url",
   ]
 
@@ -49,6 +53,7 @@ source_set("unit_tests") {
     "general_browser_usage_unittest.cc",
     "language_metrics_unittest.cc",
     "menu_metrics_unittest.cc",
+    "new_tab_metrics_unittest.cc",
     "privacy_hub_metrics_unittest.cc",
     "tab_metrics_unittest.cc",
   ]
@@ -59,6 +64,7 @@ source_set("unit_tests") {
     "//brave/components/misc_metrics",
     "//components/language/core/browser",
     "//components/prefs:test_support",
+    "//components/search_engines",
     "//content/test:test_support",
     "//testing/gtest",
   ]

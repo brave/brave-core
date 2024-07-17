@@ -43,6 +43,7 @@ const openMatch = (match: AutocompleteMatch, line: number, event: React.MouseEve
   }
 
   const button = 'button' in event ? event.button : 0
+  getNTPBrowserAPI().newTabMetrics.reportNTPSearchUsage()
   omniboxController.openAutocompleteMatch(line, match.destinationUrl, true, button, event.altKey, event.ctrlKey, event.metaKey, event.shiftKey)
 }
 
