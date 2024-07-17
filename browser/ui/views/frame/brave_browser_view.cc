@@ -384,7 +384,7 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   DeprecatedLayoutImmediately();
 }
 
-tabs::TabHandle BraveBrowserView::GetActiveTabHandle() const {
+tabs::TabHandle BraveBrowserView::GetActiveTabHandle() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 
   auto* model = browser()->tab_strip_model();
@@ -393,7 +393,7 @@ tabs::TabHandle BraveBrowserView::GetActiveTabHandle() const {
 }
 
 bool BraveBrowserView::IsActiveWebContentsTiled(
-    const SplitViewBrowserData::Tile& tile) const {
+    const SplitViewBrowserData::Tile& tile) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 
   auto active_tab_handle = GetActiveTabHandle();
