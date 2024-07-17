@@ -25,6 +25,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 namespace brave_news {
@@ -91,7 +92,7 @@ class BraveNewsBackgroundHistoryQuerierTest : public testing::Test {
   MockHistoryService history_service_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
+  content::BrowserTaskEnvironment task_environment_;
 
   base::CancelableTaskTracker tracker_;
   scoped_refptr<base::SequencedTaskRunner> bg_task_runner_;

@@ -47,6 +47,7 @@ class WaitForFeedsChanged : public BraveNewsTabHelper::PageFeedsObserver {
     if (!last_feeds_) {
       loop_.Run();
     }
+    base::RunLoop().RunUntilIdle();
     return last_feeds_.value();
   }
 
@@ -177,7 +178,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
   // invalid. When we receive the change notification, we should have removed
   // the invalid feed.
   {
-    WaitForFeedsChanged waiter(tab_helper, /*notify_on_empty=*/true);
+    WaitForFeedsChanged waiter(tab_helper, 0);
     EXPECT_EQ(feed_url.spec(), tab_helper->GetTitleForFeedUrl(feed_url));
 
     auto result = waiter.WaitForFeeds();

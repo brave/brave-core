@@ -96,7 +96,11 @@ class BraveNewsTabHelper
   raw_ptr<brave_news::BraveNewsController> controller_;
 
   std::vector<FeedDetails> rss_page_feeds_;
-  brave_news::mojom::PublisherPtr page_feed_ = nullptr;
+
+  // The (optional) publisher associated with this page from our
+  // PublishersController. This may be duplicated by one of the
+  // |rss_page_feeds_| so we should ensure we deduplicate based on |feed_url|.
+  brave_news::mojom::PublisherPtr default_feed_ = nullptr;
 
   base::ObserverList<PageFeedsObserver> observers_;
 

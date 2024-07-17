@@ -165,7 +165,7 @@ class BraveNewsController
 
   void NotifyPublishersChanged(mojom::PublishersEventPtr event);
   void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
-  void NotifyFeedHash(const std::string& hash);
+  void NotifyFeedChanged(const std::string& hash);
 
   BackgroundHistoryQuerier MakeHistoryQuerier();
 

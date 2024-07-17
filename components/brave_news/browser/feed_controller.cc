@@ -165,22 +165,20 @@ void FeedController::EnsureFeedIsCached(
 void FeedController::UpdateIfRemoteChanged(
     const SubscriptionsSnapshot& subscriptions,
     HashCallback callback) {
+  auto hash_callback = base::BindOnce(
+      [](base::WeakPtr<FeedController> controller, HashCallback callback) {
+        if (!controller) {
+          return;
+        }
+
+        std::move(callback).Run(controller->current_feed_.hash);
+      },
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   // If already updating, update with the hash once the update is complete.
   // We don't want to collide with an update which starts and completes before
   // our HEAD request completes (which admittedly is very unlikely).
   if (is_update_in_progress_) {
-    on_current_update_complete_->Post(
-        FROM_HERE,
-        base::BindOnce(
-            [](base::WeakPtr<FeedController> controller,
-               HashCallback callback) {
-              if (!controller) {
-                return;
-              }
-
-              std::move(callback).Run(controller->current_feed_.hash);
-            },
-            weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    on_current_update_complete_->Post(FROM_HERE, std::move(hash_callback));
     return;
   }
 
@@ -189,17 +187,7 @@ void FeedController::UpdateIfRemoteChanged(
   if (!subscriptions.DiffPublishers(last_subscriptions_).IsEmpty() ||
       !subscriptions.DiffChannels(last_subscriptions_).IsEmpty()) {
     EnsureFeedIsUpdating(subscriptions);
-    on_current_update_complete_->Post(
-        FROM_HERE,
-        base::BindOnce(
-            [](base::WeakPtr<FeedController> controller,
-               HashCallback callback) {
-              if (!controller) {
-                return;
-              }
-              std::move(callback).Run(controller->current_feed_.hash);
-            },
-            weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    on_current_update_complete_->Post(FROM_HERE, std::move(hash_callback));
     return;
   }
 
@@ -207,32 +195,22 @@ void FeedController::UpdateIfRemoteChanged(
       subscriptions, locale_feed_etags_,
       base::BindOnce(
           [](FeedController* controller,
-             const SubscriptionsSnapshot& subscriptions, HashCallback callback,
-             bool has_update) {
+             const SubscriptionsSnapshot& subscriptions,
+             base::OnceClosure callback, bool has_update) {
             if (!has_update) {
-              std::move(callback).Run(controller->current_feed_.hash);
+              std::move(callback).Run();
               return;
             }
 
             // If the remote feeds have changed, refetch/regenerate the feed and
             // fire the callback with the new hash.
             controller->EnsureFeedIsUpdating(subscriptions);
-            controller->on_current_update_complete_->Post(
-                FROM_HERE,
-                base::BindOnce(
-                    [](base::WeakPtr<FeedController> controller,
-                       HashCallback callback) {
-                      if (!controller) {
-                        return;
-                      }
-                      std::move(callback).Run(controller->current_feed_.hash);
-                    },
-                    controller->weak_ptr_factory_.GetWeakPtr(),
-                    std::move(callback)));
+            controller->on_current_update_complete_->Post(FROM_HERE,
+                                                          std::move(callback));
           },
           // Note: Unretained is safe here because this class owns the
           // FeedFetcher, which uses WeakPtrs internally.
-          base::Unretained(this), subscriptions, std::move(callback)));
+          base::Unretained(this), subscriptions, std::move(hash_callback)));
 }
 
 void FeedController::ClearCache() {

@@ -65,9 +65,9 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
   base::flat_set<GURL> seen_feeds;
 
   auto current_url = GetWebContents().GetLastCommittedURL();
-  if (page_feed_) {
-    seen_feeds.insert(page_feed_->feed_source);
-    feeds.push_back(page_feed_->feed_source);
+  if (default_feed_) {
+    seen_feeds.insert(default_feed_->feed_source);
+    feeds.push_back(default_feed_->feed_source);
   }
 
   for (const auto& rss_feed : rss_page_feeds_) {
@@ -83,8 +83,8 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
 }
 
 bool BraveNewsTabHelper::IsSubscribed(const GURL& feed_url) {
-  if (page_feed_ && page_feed_->feed_source == feed_url) {
-    return brave_news::IsSubscribed(page_feed_);
+  if (default_feed_ && default_feed_->feed_source == feed_url) {
+    return brave_news::IsSubscribed(default_feed_);
   }
 
   auto it = std::ranges::find(rss_page_feeds_, feed_url,
@@ -97,7 +97,7 @@ bool BraveNewsTabHelper::IsSubscribed(const GURL& feed_url) {
 }
 
 bool BraveNewsTabHelper::IsSubscribed() {
-  return (page_feed_ && brave_news::IsSubscribed(page_feed_)) ||
+  return (default_feed_ && brave_news::IsSubscribed(default_feed_)) ||
          base::ranges::any_of(rss_page_feeds_,
                               [](const auto& feed) { return feed.subscribed; });
 }
@@ -105,8 +105,8 @@ bool BraveNewsTabHelper::IsSubscribed() {
 std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
   // If there's a default publisher for this |feed_url| we should use it's
   // title.
-  if (page_feed_ && page_feed_->feed_source == feed_url) {
-    return page_feed_->publisher_name;
+  if (default_feed_ && default_feed_->feed_source == feed_url) {
+    return default_feed_->publisher_name;
   }
 
   // Otherwise, find the |FeedDetails| for this |feed_url|.
@@ -262,7 +262,7 @@ void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
   rss_page_feeds_.clear();
-  page_feed_ = nullptr;
+  default_feed_ = nullptr;
 
   UpdatePageFeed();
   AvailableFeedsChanged();
@@ -279,12 +279,12 @@ void BraveNewsTabHelper::UpdatePageFeed() {
             }
 
             if (!publisher) {
-              tab_helper->page_feed_ = nullptr;
+              tab_helper->default_feed_ = nullptr;
               tab_helper->AvailableFeedsChanged();
               return;
             }
 
-            tab_helper->page_feed_ = std::move(publisher);
+            tab_helper->default_feed_ = std::move(publisher);
             tab_helper->AvailableFeedsChanged();
           },
           weak_ptr_factory_.GetWeakPtr()));

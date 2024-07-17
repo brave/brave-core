@@ -744,7 +744,7 @@ void BraveNewsController::CheckForFeedsUpdate() {
   }
 
   IN_ENGINE(CheckForFeedsUpdate,
-            base::BindOnce(&BraveNewsController::NotifyFeedHash,
+            base::BindOnce(&BraveNewsController::NotifyFeedChanged,
                            weak_ptr_factory_.GetWeakPtr()),
             /*refetch_data=*/true);
 }
@@ -889,7 +889,7 @@ void BraveNewsController::OnPublishersChanged() {
 
   // Check for feed update.
   IN_ENGINE(CheckForFeedsUpdate,
-            base::BindOnce(&BraveNewsController::NotifyFeedHash,
+            base::BindOnce(&BraveNewsController::NotifyFeedChanged,
                            weak_ptr_factory_.GetWeakPtr()),
             /*refetch_data=*/false);
 }
@@ -921,7 +921,7 @@ void BraveNewsController::OnChannelsChanged() {
     // TODO: We should fire a callback if an update is available, and notify
     // listeners.
     IN_ENGINE(CheckForFeedsUpdate,
-              base::BindOnce(&BraveNewsController::NotifyFeedHash,
+              base::BindOnce(&BraveNewsController::NotifyFeedChanged,
                              weak_ptr_factory_.GetWeakPtr()),
               /*refetch_data=*/false);
   } else {
@@ -936,7 +936,7 @@ void BraveNewsController::NotifyChannelsChanged(mojom::ChannelsEventPtr event) {
   }
 }
 
-void BraveNewsController::NotifyFeedHash(const std::string& hash) {
+void BraveNewsController::NotifyFeedChanged(const std::string& hash) {
   DVLOG(1) << __FUNCTION__;
   for (const auto& observer : feed_listeners_) {
     observer->OnUpdateAvailable(hash);
