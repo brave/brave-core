@@ -926,41 +926,43 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
   const nfts = nonNativeTokens.filter((token) => token.isNft)
 
-  // NFTs
-  const { balances: nftBalances, errorMessage: nftBalancesErrorMessage } =
-    await jsonRpcService.getNftBalances(
-      arg.accountId.address,
-      nfts.map((token) => {
-        return {
-          chainId: token.chainId,
-          contractAddress: token.contractAddress,
-          tokenId: token.tokenId
-        }
-      }),
-      arg.coin
-    )
+  if (nfts.length) {
+    // NFTs
+    const { balances: nftBalances, errorMessage: nftBalancesErrorMessage } =
+      await jsonRpcService.getNftBalances(
+        arg.accountId.address,
+        nfts.map((token) => {
+          return {
+            chainId: token.chainId,
+            contractAddress: token.contractAddress,
+            tokenId: token.tokenId
+          }
+        }),
+        arg.coin
+      )
 
-  if (nftBalancesErrorMessage) {
-    console.warn(
-      'An error occurred while fetching NFT balances: ' +
-        nftBalancesErrorMessage
-    )
-  }
-
-  nftBalances.forEach((nftBalance, index) => {
-    const token = nfts[index]
-    if (!token) {
-      return
+    if (nftBalancesErrorMessage) {
+      console.warn(
+        'An error occurred while fetching NFT balances: ' +
+          nftBalancesErrorMessage
+      )
     }
-    onBalance({
-      accountId: arg.accountId,
-      chainId: arg.chainId,
-      contractAddress: token.contractAddress,
-      balance: nftBalance.toString(),
-      coinType: token.coin,
-      tokenId: token.tokenId
+
+    nftBalances.forEach((nftBalance, index) => {
+      const token = nfts[index]
+      if (!token) {
+        return
+      }
+      onBalance({
+        accountId: arg.accountId,
+        chainId: arg.chainId,
+        contractAddress: token.contractAddress,
+        balance: nftBalance.toString(),
+        coinType: token.coin,
+        tokenId: token.tokenId
+      })
     })
-  })
+  }
 
   if (arg.coin === CoinTypes.ETH) {
     // jsonRpcService.getERC20TokenBalances cannot handle
