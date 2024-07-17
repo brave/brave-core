@@ -86,7 +86,8 @@ public class TabSwitcherBottomToolbarCoordinator {
 
         mNewTabButton = root.findViewById(R.id.tab_switcher_new_tab_button);
         Drawable background =
-                ApiCompatibilityUtils.getDrawable(root.getResources(), R.drawable.ntp_search_box);
+                ApiCompatibilityUtils.getDrawable(
+                        root.getResources(), R.drawable.home_surface_search_box_background);
         background.mutate();
         mNewTabButton.setBackground(background);
         mNewTabButton.setOnClickListener(newTabClickListener);

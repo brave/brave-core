@@ -45,8 +45,9 @@ class SearchAccelerator extends ChromeImageButton
 
         mContext = context;
 
-        mBackground = ApiCompatibilityUtils.getDrawable(
-                mContext.getResources(), R.drawable.ntp_search_box);
+        mBackground =
+                ApiCompatibilityUtils.getDrawable(
+                        mContext.getResources(), R.drawable.home_surface_search_box_background);
         mBackground.mutate();
         setBackground(mBackground);
 
