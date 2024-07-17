@@ -432,13 +432,6 @@ extension Strings {
       value: "Maybe Later",
       comment: "The title for dismiss button when premium upsell when paywall is triggered"
     )
-    public static let paywallRateLimitDismissActionTitle = NSLocalizedString(
-      "aichat.paywallRateLimitDismissActionTitle",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Continue with Basic Model",
-      comment: "The title for dismiss button when rate limit is shown after sending a message"
-    )
     public static let paywallUpsellModelTypeTopicTitle = NSLocalizedString(
       "aichat.paywallUpsellModelTypeTopicTitle",
       tableName: "BraveLeo",

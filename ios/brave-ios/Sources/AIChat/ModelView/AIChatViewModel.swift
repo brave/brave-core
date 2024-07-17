@@ -223,6 +223,11 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   @MainActor
+  func clearErrorAndGetFailedMessage() -> AiChat.ConversationTurn? {
+    api.clearErrorAndGetFailedMessage()
+  }
+
+  @MainActor
   func rateConversation(isLiked: Bool, turnId: UInt) async -> String? {
     return await api.rateMessage(isLiked, turnId: turnId)
   }

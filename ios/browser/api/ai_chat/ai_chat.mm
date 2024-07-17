@@ -175,6 +175,16 @@
   driver_->ClearConversationHistory();
 }
 
+- (AiChatConversationTurn*)clearErrorAndGetFailedMessage {
+  ai_chat::mojom::ConversationTurnPtr turn =
+      driver_->ClearErrorAndGetFailedMessage();
+  if (turn) {
+    return [[AiChatConversationTurn alloc]
+        initWithConversationTurnPtr:std::move(turn)];
+  }
+  return nullptr;
+}
+
 - (AiChatAPIError)currentAPIError {
   return static_cast<AiChatAPIError>(driver_->GetCurrentAPIError());
 }

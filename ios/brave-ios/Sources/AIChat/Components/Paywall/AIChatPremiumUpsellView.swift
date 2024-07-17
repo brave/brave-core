@@ -36,12 +36,7 @@ struct AIChatPremiumUpsellView: View {
     }
 
     var dismissActionTitle: String {
-      switch self {
-      case .premium:
-        return Strings.AIChat.paywallPremiumUpsellDismissAction
-      case .rateLimit:
-        return Strings.AIChat.paywallRateLimitDismissActionTitle
-      }
+      return Strings.AIChat.paywallPremiumUpsellDismissAction
     }
   }
 
