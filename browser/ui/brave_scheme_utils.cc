@@ -7,9 +7,12 @@
 
 #include "base/strings/string_util.h"
 
-namespace brave_utils {
+namespace {
 constexpr char16_t kChromeSchema16[] = u"chrome://";
 constexpr char16_t kBraveSchema16[] = u"brave://";
+}  // namespace
+
+namespace brave_utils {
 
 bool ReplaceChromeToBraveScheme(std::u16string& url_string) {
   if (base::StartsWith(url_string, kChromeSchema16,
