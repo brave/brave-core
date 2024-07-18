@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAdapter.ViewHolder> {
+    private static final String BLANK_SPACES = "   ";
     private List<String> mRecoveryPhraseList = new ArrayList<>();
     private boolean mBlurPhrase;
     private final MaskFilterSpan mMaskFilterSpan;
@@ -66,11 +67,13 @@ public class RecoveryPhraseAdapter extends RecyclerView.Adapter<RecoveryPhraseAd
                                 .getString(R.string.recovery_phrase_item_text),
                         (position + 1),
                         mRecoveryPhraseList.get(position));
-        final SpannableString recoveryPhraseSpannable = new SpannableString(recoveryPhrase);
+        // When blurring a word, add blank spaces at the beginning to improve the overall effect,
+        // otherwise the blur will be rendered with an ugly cut at the beginning.
+        final SpannableString recoveryPhraseSpannable = mBlurPhrase ? new SpannableString(BLANK_SPACES + recoveryPhrase) : new SpannableString(recoveryPhrase);
         if (mBlurPhrase) {
             recoveryPhraseSpannable.setSpan(
                     mMaskFilterSpan,
-                    0,
+                    BLANK_SPACES.length(),
                     recoveryPhraseSpannable.length(),
                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         } else {
