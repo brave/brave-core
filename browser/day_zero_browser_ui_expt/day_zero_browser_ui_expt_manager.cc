@@ -59,7 +59,7 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
     return nullptr;
   }
 
-  if (day_zero_variant != "a") {
+  if (day_zero_variant != "a" || day_zero_variant != "b") {
     LOG(ERROR) << __func__ << "Day zero Expt variant is not 'a'";
     return nullptr;
   }
@@ -74,11 +74,12 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
   }
 
   // base::WrapUnique for using private ctor.
-  return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager));
+  return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager, day_zero_variant));
 }
 
 DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
     ProfileManager* profile_manager,
+    std::optional<std::string> day_zero_variant,
     std::optional<base::Time> mock_first_run_time)
     : profile_manager_(*profile_manager),
       first_run_time_for_testing_(mock_first_run_time) {
@@ -91,7 +92,9 @@ DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
   }
 
   observation_.Observe(&(*profile_manager_));
-  StartResetTimer();
+  if (day_zero_variant == "a") {
+    StartResetTimer();
+  }
 }
 
 DayZeroBrowserUIExptManager::~DayZeroBrowserUIExptManager() {

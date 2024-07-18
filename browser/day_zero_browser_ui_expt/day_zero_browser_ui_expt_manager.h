@@ -38,6 +38,7 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
   // |mock_first_run_time| only for testing.
   DayZeroBrowserUIExptManager(
       ProfileManager* profile_manager,
+      std::optional<std::string> day_zero_variant,
       std::optional<base::Time> mock_first_run_time = std::nullopt);
 
   void SetForDayZeroBrowserUI(Profile* profile);
