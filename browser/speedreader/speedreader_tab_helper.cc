@@ -65,10 +65,13 @@ std::u16string GetSpeedreaderData(
        base::UTF8ToUTF16(base::WriteJson(sr_data).value_or("{}"))});
 }
 
-SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
+SpeedreaderTabHelper::SpeedreaderTabHelper(
+    content::WebContents* web_contents,
+    SpeedreaderRewriterService* rewriter_service)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
-      PageDistiller(web_contents) {
+      PageDistiller(web_contents),
+      rewriter_service_(rewriter_service) {
   dom_distiller::AddObserver(web_contents, this);
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
@@ -82,9 +85,18 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
 // static
 void SpeedreaderTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
-    SpeedreaderTabHelper::CreateForWebContents(contents);
+  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+    return;
   }
+
+  auto* rewriter_service =
+      g_brave_browser_process->speedreader_rewriter_service();
+  if (!rewriter_service) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  SpeedreaderTabHelper::CreateForWebContents(contents, rewriter_service);
 }
 
 // static
@@ -280,18 +292,10 @@ void SpeedreaderTabHelper::ProcessNavigation(
     return;
   }
 
-  auto* rewriter_service =
-      g_brave_browser_process->speedreader_rewriter_service();
-  if (!rewriter_service) {
-    CHECK_IS_TEST();
-    return;
-  }
   auto* nav_entry = navigation_handle->GetNavigationEntry();
-
   const bool url_looks_readable =
-      rewriter_service && nav_entry &&
-      nav_entry->GetVirtualURL().SchemeIsHTTPOrHTTPS() &&
-      rewriter_service->URLLooksReadable(navigation_handle->GetURL());
+      nav_entry && nav_entry->GetVirtualURL().SchemeIsHTTPOrHTTPS() &&
+      rewriter_service_->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
       GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL());
