@@ -107,7 +107,8 @@ class SpeedreaderTabHelper
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
-  explicit SpeedreaderTabHelper(content::WebContents* web_contents);
+  explicit SpeedreaderTabHelper(content::WebContents* web_contents,
+                                SpeedreaderRewriterService* rewriter_service);
 
   void BindReceiver(
       mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver);
@@ -184,6 +185,8 @@ class SpeedreaderTabHelper
 
   DistillState distill_state_{DistillStates::ViewOriginal()};
 
+  const raw_ptr<SpeedreaderRewriterService> rewriter_service_ =
+      nullptr;  // NOT OWNED
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;
 
   mojo::AssociatedReceiver<mojom::SpeedreaderHost> receiver_{this};
