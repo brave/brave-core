@@ -2037,7 +2037,7 @@ public class BrowserViewController: UIViewController {
   func updateBackForwardActionStatus(for webView: BraveWebView?) {
     guard let webView = webView else { return }
 
-    if let forwardListItem = webView.underlyingWebView?.backForwardList.forwardList.first,
+    if let forwardListItem = webView.backForwardList.forwardList.first(where: { _ in true }),
       forwardListItem.url.isInternalURL(for: .readermode)
     {
       navigationToolbar.updateForwardStatus(false)

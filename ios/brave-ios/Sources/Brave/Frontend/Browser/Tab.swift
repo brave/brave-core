@@ -627,16 +627,16 @@ class Tab: NSObject {
     return webView?.estimatedProgress ?? 0
   }
 
-  var backList: [WKBackForwardListItem]? {
-    return webView?.underlyingWebView?.backForwardList.backList
+  var backList: CWVBackForwardListItemArray? {
+    return webView?.backForwardList.backList
   }
 
-  var forwardList: [WKBackForwardListItem]? {
-    return webView?.underlyingWebView?.backForwardList.forwardList
+  var forwardList: CWVBackForwardListItemArray? {
+    return webView?.backForwardList.forwardList
   }
 
   var historyList: [URL] {
-    func listToUrl(_ item: WKBackForwardListItem) -> URL { return item.url }
+    func listToUrl(_ item: CWVBackForwardListItem) -> URL { return item.url }
     var tabs = self.backList?.map(listToUrl) ?? [URL]()
     tabs.append(self.url!)
     return tabs
@@ -759,8 +759,8 @@ class Tab: NSObject {
     _ = webView?.goForward()
   }
 
-  func goToBackForwardListItem(_ item: WKBackForwardListItem) {
-    _ = webView?.underlyingWebView?.go(to: item)
+  func goToBackForwardListItem(_ item: CWVBackForwardListItem) {
+    _ = webView?.go(to: item)
   }
 
   func loadRequest(_ request: URLRequest) {
