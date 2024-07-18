@@ -95,7 +95,8 @@ SplitView::SplitView(Browser* browser,
 
 SplitView::~SplitView() = default;
 
-SplitView::AfterSwapWebContents SplitView::WillSwapActiveWebContents(
+SplitView::AfterSetWebContents
+SplitView::WillSetActiveWebContentsToContentsWebView(
     BrowserViewKey,
     content::WebContents* new_contents,
     int index) {

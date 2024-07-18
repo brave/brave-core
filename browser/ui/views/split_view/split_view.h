@@ -46,13 +46,13 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   ~SplitView() override;
 
   // Called that must be called by BraveBrowserView. This must be called before
-  // BrowserView swaps active web contents, we don't observe tab strip model
-  // directly. returns callback that should be called after swapping active web
-  // contents
-  using AfterSwapWebContents =
+  // BrowserView sets the active web contents to contents web view, we don't
+  // observe tab strip model directly. This returns callback that should be
+  // called after swapping active web contents
+  using AfterSetWebContents =
       base::OnceCallback<void(content::WebContents* old_contents,
                               content::WebContents* new_contents)>;
-  [[nodiscard]] AfterSwapWebContents WillSwapActiveWebContents(
+  [[nodiscard]] AfterSetWebContents WillSetActiveWebContentsToContentsWebView(
       BrowserViewKey,
       content::WebContents* new_contents,
       int index);
