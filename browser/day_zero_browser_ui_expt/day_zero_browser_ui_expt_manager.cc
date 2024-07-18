@@ -5,21 +5,23 @@
 
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 
-#include <string>
-#include "base/check_is_test.h"
-#include "base/command_line.h"
-#include "base/time/time.h"
+#include <optional>
+
+#include "base/functional/bind.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/day_zero_browser_ui_expt/pref_names.h"
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -28,9 +30,11 @@
 #include "brave/build/android/jni_headers/DayZeroHelper_jni.h"
 #endif  // #BUILDFLAG(IS_ANDROID)
 
-namespace {
-constexpr int kDayZeroFeatureDurationInDays = 1;
-}  // namespace
+// static
+void DayZeroBrowserUIExptManager::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kDayZeroExperimentTargetInstall, false);
+}
 
 // static
 std::unique_ptr<DayZeroBrowserUIExptManager>
@@ -39,59 +43,56 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
     return nullptr;
   }
 
-  // This class should be instantiated after getting valid first run time;
-  if (brave_stats::GetFirstRunTime(g_browser_process->local_state())
-          .is_null()) {
-    // This should not be happened in production but not 100% in the wild(ex,
-    // corrupted user data). Just early return for safe. If upstream changes the
-    // timing of fetching first run time, browser test will catch this.
-    LOG(ERROR) << __func__ << " This should be happened only on test.";
-    return nullptr;
-  }
-
   std::optional<std::string> day_zero_variant;
   if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
     day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
   }
 
+  CHECK(g_browser_process && g_browser_process->local_state());
+  auto* local_state = g_browser_process->local_state();
   if (!day_zero_variant) {
-    LOG(ERROR) << __func__ << "Day zero Expt variant is not available";
+    VLOG(2) << __func__ << ": Day zero Expt variant is not available";
+    local_state->SetBoolean(kDayZeroExperimentTargetInstall, false);
     return nullptr;
   }
 
   if (day_zero_variant != "a") {
-    LOG(ERROR) << __func__ << "Day zero Expt variant is not 'a'";
+    VLOG(2) << __func__ << ": Day zero Expt variant is not 'a'";
+    local_state->SetBoolean(kDayZeroExperimentTargetInstall, false);
     return nullptr;
   }
 
-  // If one day passed since first run, we don't need to touch original default
-  // pref values. Just early return and this class is no-op.
-  if (base::Time::Now() -
-          brave_stats::GetFirstRunTime(g_browser_process->local_state()) >=
-      base::Days(kDayZeroFeatureDurationInDays)) {
-    VLOG(2) << __func__ << " Already passed day zero feature duration.";
+  if (brave_stats::IsFirstRun(local_state)) {
+    VLOG(2) << __func__ << ": Set Day zero experiment to this fresh user.";
+    local_state->SetBoolean(kDayZeroExperimentTargetInstall, true);
+  }
+
+  if (!local_state->GetBoolean(kDayZeroExperimentTargetInstall)) {
+    VLOG(2) << __func__
+            << ": This is existing user. Day zero experiment is only applied "
+               "to fresh user.";
     return nullptr;
   }
 
   // base::WrapUnique for using private ctor.
-  return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager));
+  return base::WrapUnique(
+      new DayZeroBrowserUIExptManager(profile_manager, local_state));
 }
 
 DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
     ProfileManager* profile_manager,
-    std::optional<base::Time> mock_first_run_time)
-    : profile_manager_(*profile_manager),
-      first_run_time_for_testing_(mock_first_run_time) {
-  for (auto* profile : profile_manager_->GetLoadedProfiles()) {
-    if (!profile->IsRegularProfile()) {
-      continue;
-    }
+    PrefService* local_state)
+    : profile_manager_(*profile_manager) {
+  p3a_enabled_.Init(
+      p3a::kP3AEnabled, local_state,
+      base::BindRepeating(&DayZeroBrowserUIExptManager::OnP3AEnabledChanged,
+                          base::Unretained(this)));
 
-    SetForDayZeroBrowserUI(profile);
+  if (IsP3AEnabled()) {
+    SetDayZeroBrowserUIForAllProfiles();
   }
 
   observation_.Observe(&(*profile_manager_));
-  StartResetTimer();
 }
 
 DayZeroBrowserUIExptManager::~DayZeroBrowserUIExptManager() {
@@ -101,6 +102,10 @@ DayZeroBrowserUIExptManager::~DayZeroBrowserUIExptManager() {
 }
 
 void DayZeroBrowserUIExptManager::OnProfileAdded(Profile* profile) {
+  if (!IsP3AEnabled()) {
+    return;
+  }
+
   SetForDayZeroBrowserUI(profile);
 }
 
@@ -165,36 +170,22 @@ void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
   }
 }
 
-void DayZeroBrowserUIExptManager::StartResetTimer() {
-  auto remained_time_to_expt_duration_since_first_run =
-      GetFirstRunTime() - base::Time::Now();
-
-  // Convenient switch only for testing purpose.
-  constexpr char kUseShortExpirationForDayZeroExpt[] =
-      "use-short-expiration-for-day-zero-expt";
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          kUseShortExpirationForDayZeroExpt)) {
-    remained_time_to_expt_duration_since_first_run += base::Minutes(2);
-  } else {
-    remained_time_to_expt_duration_since_first_run +=
-        base::Days(kDayZeroFeatureDurationInDays);
-  }
-
-  // If remained time is negative, reset to original here.
-  if (remained_time_to_expt_duration_since_first_run < base::TimeDelta()) {
-    ResetBrowserUIStateForAllProfiles();
-    return;
-  }
-
-  reset_timer_.Start(
-      FROM_HERE, remained_time_to_expt_duration_since_first_run, this,
-      &DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles);
+void DayZeroBrowserUIExptManager::OnP3AEnabledChanged(
+    const std::string& pref_names) {
+  IsP3AEnabled() ? SetDayZeroBrowserUIForAllProfiles()
+                 : ResetBrowserUIStateForAllProfiles();
 }
 
-base::Time DayZeroBrowserUIExptManager::GetFirstRunTime() const {
-  if (first_run_time_for_testing_) {
-    return *first_run_time_for_testing_;
-  }
+bool DayZeroBrowserUIExptManager::IsP3AEnabled() const {
+  return p3a_enabled_.GetValue();
+}
 
-  return brave_stats::GetFirstRunTime(g_browser_process->local_state());
+void DayZeroBrowserUIExptManager::SetDayZeroBrowserUIForAllProfiles() {
+  for (auto* profile : profile_manager_->GetLoadedProfiles()) {
+    if (!profile->IsRegularProfile()) {
+      continue;
+    }
+
+    SetForDayZeroBrowserUI(profile);
+  }
 }

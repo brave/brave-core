@@ -7,19 +7,22 @@
 #define BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_DAY_ZERO_BROWSER_UI_EXPT_MANAGER_H_
 
 #include <memory>
-#include <optional>
+#include <string>
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
-#include "base/time/time.h"
-#include "base/timer/timer.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
+#include "components/prefs/pref_member.h"
 
+class PrefRegistrySimple;
+class PrefService;
 class Profile;
 class ProfileManager;
 
+// Handling browser UI for day-zero experiment.
 class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
  public:
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static std::unique_ptr<DayZeroBrowserUIExptManager> Create(
       ProfileManager* profile_manager);
 
@@ -35,21 +38,18 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
  private:
   friend class DayZeroBrowserUIExptTest;
 
-  // |mock_first_run_time| only for testing.
-  DayZeroBrowserUIExptManager(
-      ProfileManager* profile_manager,
-      std::optional<base::Time> mock_first_run_time = std::nullopt);
+  DayZeroBrowserUIExptManager(ProfileManager* profile_manager,
+                              PrefService* local_state);
 
   void SetForDayZeroBrowserUI(Profile* profile);
   void ResetForDayZeroBrowserUI(Profile* profile);
   void ResetBrowserUIStateForAllProfiles();
-  void StartResetTimer();
-  base::Time GetFirstRunTime() const;
+  void OnP3AEnabledChanged(const std::string& pref_names);
+  bool IsP3AEnabled() const;
+  void SetDayZeroBrowserUIForAllProfiles();
 
-  // When fire, we'll reset browser UI to original.
-  base::OneShotTimer reset_timer_;
   raw_ref<ProfileManager> profile_manager_;
-  std::optional<base::Time> first_run_time_for_testing_;
+  BooleanPrefMember p3a_enabled_;
   base::ScopedObservation<ProfileManager, ProfileManagerObserver> observation_{
       this};
 };
