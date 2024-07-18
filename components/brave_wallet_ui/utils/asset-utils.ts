@@ -217,6 +217,18 @@ export const findTokenBySymbol = (
   )
 }
 
+export const findTokenByAssetId = <
+  T extends Pick<
+    BraveWallet.BlockchainToken,
+    'contractAddress' | 'chainId' | 'tokenId' | 'coin'
+  >
+>(
+  assetId: string,
+  tokensList: T[]
+) => {
+  return tokensList.find((t) => getAssetIdKey(t) === assetId)
+}
+
 export const isNativeAsset = (
   token: Pick<BraveWallet.BlockchainToken, 'contractAddress'>
 ) => token.contractAddress === ''
