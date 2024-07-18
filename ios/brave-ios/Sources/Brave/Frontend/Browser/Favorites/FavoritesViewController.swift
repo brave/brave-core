@@ -52,6 +52,29 @@ class FavoritesViewController: UIViewController {
     $0.fetchRequest.fetchLimit = 5
   }
 
+  var availableSections: [FavoritesSection] {
+    var sections = [FavoritesSection]()
+    if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
+      sections.append(.pasteboard)
+    }
+
+    if let favoritesObjects = favoritesFRC.fetchedObjects, !favoritesObjects.isEmpty {
+      sections.append(.favorites)
+    }
+
+    if !privateBrowsingManager.isPrivateBrowsing
+      && Preferences.Search.shouldShowRecentSearches.value,
+      RecentSearch.totalCount() > 0
+    {
+      sections.append(.recentSearches)
+    } else if !privateBrowsingManager.isPrivateBrowsing
+      && Preferences.Search.shouldShowRecentSearchesOptIn.value
+    {
+      sections.append(.recentSearches)
+    }
+    return sections
+  }
+
   // Private Browsing
   var privateBrowsingManager: PrivateBrowsingManager
   private var privateModeCancellable: AnyCancellable?
@@ -70,7 +93,7 @@ class FavoritesViewController: UIViewController {
 
     collectionView.do {
       $0.register(
-        FavoriteRecentSearchClipboardHeaderView.self,
+        FavoritesRecentSearchClipboardHeaderView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
         withReuseIdentifier: "pasteboard_header"
       )
@@ -606,7 +629,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           ofKind: kind,
           withReuseIdentifier: "pasteboard_header",
           for: indexPath
-        ) as? FavoriteRecentSearchClipboardHeaderView {
+        ) as? FavoritesRecentSearchClipboardHeaderView {
           header.button.removeTarget(self, action: nil, for: .touchUpInside)
           header.button.addTarget(self, action: #selector(onPasteboardAction), for: .touchUpInside)
           return header
@@ -625,31 +648,31 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           withReuseIdentifier: "recent_searches_header",
           for: indexPath
         ) as? FavoritesRecentSearchHeaderView {
-          header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
-
-          header.showButton.addTarget(
-            self,
-            action: #selector(onRecentSearchShowPressed),
-            for: .touchUpInside
-          )
-          header.hideClearButton.addTarget(
-            self,
-            action: #selector(onRecentSearchHideOrClearPressed(_:)),
-            for: .touchUpInside
-          )
-
-          let shouldShowRecentSearches = Preferences.Search.shouldShowRecentSearches.value
-          var showButtonVisible = !shouldShowRecentSearches
-          var clearButtonVisible = !shouldShowRecentSearches
-          if let fetchedObjects = recentSearchesFRC.fetchedObjects, shouldShowRecentSearches {
-            let totalCount = RecentSearch.totalCount()
-            showButtonVisible = fetchedObjects.count < totalCount
-            clearButtonVisible = fetchedObjects.count <= totalCount
-          }
-          header.setButtonVisibility(
-            showButtonVisible: showButtonVisible,
-            clearButtonVisible: clearButtonVisible
-          )
+//          header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
+//
+//          header.showButton.addTarget(
+//            self,
+//            action: #selector(onRecentSearchShowPressed),
+//            for: .touchUpInside
+//          )
+//          header.hideClearButton.addTarget(
+//            self,
+//            action: #selector(onRecentSearchHideOrClearPressed(_:)),
+//            for: .touchUpInside
+//          )
+//
+//          let shouldShowRecentSearches = Preferences.Search.shouldShowRecentSearches.value
+//          var showButtonVisible = !shouldShowRecentSearches
+//          var clearButtonVisible = !shouldShowRecentSearches
+//          if let fetchedObjects = recentSearchesFRC.fetchedObjects, shouldShowRecentSearches {
+//            let totalCount = RecentSearch.totalCount()
+//            showButtonVisible = fetchedObjects.count < totalCount
+//            clearButtonVisible = fetchedObjects.count <= totalCount
+//          }
+//          header.setButtonVisibility(
+//            showButtonVisible: showButtonVisible,
+//            clearButtonVisible: clearButtonVisible
+//          )
 
           return header
         }

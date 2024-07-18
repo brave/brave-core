@@ -8,7 +8,6 @@ import Shared
 import UIKit
 
 class FavoritesHeaderView: UICollectionReusableView {
-
   let label = UILabel().then {
     $0.text = Strings.recentSearchFavorites
     $0.font = .systemFont(ofSize: 18, weight: .semibold)
