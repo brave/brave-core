@@ -11,6 +11,16 @@ from components.perf_test_utils import GetProcessOutput
 
 def PushChangesToBranch(files: Dict[str, str], branch: str,
                         commit_message: str):
+
+  #TODO: clarify email and username
+  GetProcessOutput(
+      ['git', 'config', 'user.email', '"brave-builds+devops@brave.com"'],
+      cwd=path_util.GetBraveDir(),
+      check=True)
+  GetProcessOutput(['git', 'config', 'user.name', '"brave-builds"'],
+                   cwd=path_util.GetBraveDir(),
+                   check=True)
+
   for attempt in range(3):
     logging.info('Pushing changes to branch %s #%d', branch, attempt)
     branch_exists, _ = GetProcessOutput(['git', 'fetch', 'origin', branch],
