@@ -46,9 +46,9 @@ def PushChangesToBranch(files: Dict[str, str], branch: str,
                      check=True)
     if GetProcessOutput(['git', 'push', 'origin', f'{branch}:{branch}'],
                         cwd=path_util.GetBraveDir()):
-      return True
+      return
 
-  return False
+  raise RuntimeError(f'Can\'t push changes to branch {branch}')
 
 
 def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
