@@ -55,6 +55,7 @@ import {
   useGetCombinedTokensListQuery,
   useAccountQuery
 } from '../slices/api.slice.extra'
+import { useSwapTransactionParser } from './use-swap-tx-parser'
 import {
   defaultQuerySubscriptionOptions,
   querySubscriptionOptions60s
@@ -279,17 +280,19 @@ export const usePendingTransactions = () => {
       : skipToken
   )
 
+  const { sellToken, sellAmountWei } = useSwapTransactionParser(transactionInfo)
+
   const { data: sellTokenBalance } = useGetAccountTokenCurrentBalanceQuery(
-    txAccount && transactionDetails?.sellToken
+    txAccount && sellToken
       ? {
           accountId: txAccount.accountId,
           token: {
-            coin: transactionDetails.sellToken.coin,
-            chainId: transactionDetails.sellToken.chainId,
-            contractAddress: transactionDetails.sellToken.contractAddress,
-            isErc721: transactionDetails.sellToken.isErc721,
-            isNft: transactionDetails.sellToken.isNft,
-            tokenId: transactionDetails.sellToken.tokenId
+            coin: sellToken.coin,
+            chainId: sellToken.chainId,
+            contractAddress: sellToken.contractAddress,
+            isErc721: sellToken.isErc721,
+            isNft: sellToken.isNft,
+            tokenId: sellToken.tokenId
           }
         }
       : skipToken
@@ -301,7 +304,7 @@ export const usePendingTransactions = () => {
           accountNativeBalance: nativeBalance || '',
           accountTokenBalance: transferTokenBalance || '',
           gasFee,
-          sellAmountWei: transactionDetails?.sellAmountWei || Amount.empty(),
+          sellAmountWei,
           sellTokenBalance: sellTokenBalance || '',
           tx: transactionInfo
         })
@@ -310,7 +313,7 @@ export const usePendingTransactions = () => {
     gasFee,
     nativeBalance,
     sellTokenBalance,
-    transactionDetails?.sellAmountWei,
+    sellAmountWei,
     transactionInfo,
     transferTokenBalance
   ])

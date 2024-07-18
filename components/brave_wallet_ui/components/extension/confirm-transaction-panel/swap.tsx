@@ -31,6 +31,7 @@ import { usePendingTransactions } from '../../../common/hooks/use-pending-transa
 import {
   useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
+import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 
 export function ConfirmSwapTransaction() {
   // redux
@@ -68,6 +69,9 @@ export function ConfirmSwapTransaction() {
     setShowAdvancedTransactionSettings(!showAdvancedTransactionSettings)
   }
   const onToggleEditGas = () => setIsEditingGas(!isEditingGas)
+
+  const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+    useSwapTransactionParser(selectedPendingTransaction)
 
   // render
   if (
@@ -107,10 +111,14 @@ export function ConfirmSwapTransaction() {
 
       {isWarningCollapsed && (
         <SwapBase
-          sellToken={transactionDetails?.sellToken}
-          buyToken={transactionDetails?.buyToken}
-          sellAmount={transactionDetails?.sellAmountWei?.format()}
-          buyAmount={transactionDetails?.minBuyAmountWei?.format()}
+          sellToken={sellToken}
+          buyToken={buyToken}
+          sellAmount={
+            !sellAmountWei.isUndefined() ? sellAmountWei.format() : undefined
+          }
+          buyAmount={
+            !buyAmountWei.isUndefined() ? buyAmountWei.format() : undefined
+          }
           senderLabel={transactionDetails?.senderLabel}
           senderOrb={fromOrb}
           recipientOrb={toOrb}

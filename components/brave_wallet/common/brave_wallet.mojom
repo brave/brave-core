@@ -1752,6 +1752,24 @@ union TxDataUnion {
   ZecTxData zec_tx_data;
 };
 
+struct SwapInfo {
+  CoinType from_coin;
+  string from_chain_id;
+  string from_asset;
+  string from_amount;
+
+  CoinType to_coin;
+  string to_chain_id;
+  // An empty string indicates that the asset could not be reliably determined.
+  string to_asset;
+  // An empty string indicates that the amount could not be reliably determined.
+  string to_amount;
+
+  // An empty string indicates that the recipient is not known.
+  string receiver;
+  string provider;
+};
+
 struct TransactionInfo {
   string id;
   string? from_address; // Filled with account address for ETH, SOL and FIL.
@@ -1776,6 +1794,8 @@ struct TransactionInfo {
   // TODO(cypt4): Add for SOL
   string? effective_recipient;
   bool is_retriable;
+
+  SwapInfo? swap_info;
 };
 
 interface TxServiceObserver {

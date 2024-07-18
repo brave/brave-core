@@ -112,7 +112,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     },
     {
       chainId: '',
@@ -150,7 +151,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     },
     {
       chainId: '',
@@ -188,7 +190,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     },
     {
       chainId: '',
@@ -226,7 +229,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     },
     {
       chainId: '',
@@ -264,7 +268,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     }
   ],
   [
@@ -304,7 +309,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     },
     {
       chainId: '',
@@ -342,7 +348,8 @@ const transactionDummyData: SerializableTransactionInfo[][] = [
       confirmedTime: { microseconds: 0 },
       originInfo: mockOriginInfo,
       effectiveRecipient: '',
-      isRetriable: false
+      isRetriable: false,
+      swapInfo: undefined
     }
   ]
 ]
