@@ -27,26 +27,15 @@ class DayZeroBrowserUIExptTest : public testing::Test,
                                  public testing::WithParamInterface<bool> {
  public:
   DayZeroBrowserUIExptTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
-    if (IsDayZeroEnabled()) {
-      feature_list_.InitAndEnableFeature(features::kBraveDayZeroExperiment);
-    }
-  }
+      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {}
 
   void SetUp() override {
     ASSERT_TRUE(testing_profile_manager_.SetUp());
     observation_.Observe(g_browser_process->profile_manager());
     if (IsDayZeroEnabled()) {
-      // Get mock first run time and uset it for current time also.
-      base::Time first_run_time;
-      if (base::Time::FromString("2500-01-01", &first_run_time)) {
-        task_environment_.AdvanceClock(first_run_time - base::Time::Now());
-      }
-
       // base::WrapUnique for using private ctor.
       manager_ = base::WrapUnique(new DayZeroBrowserUIExptManager(
-          g_browser_process->profile_manager(), first_run_time));
+          g_browser_process->profile_manager()));
     }
   }
 
@@ -116,13 +105,6 @@ TEST_P(DayZeroBrowserUIExptTest, PrefsTest) {
     CheckBrowserHasOriginalUI(profile);
     CheckBrowserHasOriginalUI(profile2);
   }
-
-  // Advance 1-day and check prefs value are reset.
-  task_environment_.AdvanceClock(base::Days(1));
-  base::RunLoop().RunUntilIdle();
-
-  CheckBrowserHasOriginalUI(profile);
-  CheckBrowserHasOriginalUI(profile2);
 }
 
 INSTANTIATE_TEST_SUITE_P(DayZeroExpt,

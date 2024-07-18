@@ -27,7 +27,6 @@ source_set("unit_tests") {
 }
 
 source_set("browser_tests") {
-if (is_win) {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
@@ -37,10 +36,10 @@ if (is_win) {
     "//base",
     "//brave/components/brave_rewards/common",
     "//chrome/browser",
+    "//chrome/browser:browser_process",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//components/prefs",
     "//content/test:test_support",
   ]
-  }
 }
