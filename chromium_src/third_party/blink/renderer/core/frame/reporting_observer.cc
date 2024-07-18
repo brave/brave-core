@@ -11,11 +11,9 @@
 
 namespace blink {
 
-void ReportingObserver::QueueReport(Report* report) {
-  // Don't add reports. We previously used to disable ReportingObserver in
-  // Brave, but for webcompat reasons, we now just no-op it. This makes
-  // takeRecords() always return an empty list.
-  return;
-}
+// Don't add reports. We previously used to disable ReportingObserver in
+// Brave, but for webcompat reasons, we now just no-op it. This makes
+// takeRecords() always return an empty list.
+void ReportingObserver::QueueReport(Report* report) {}
 
 }  // namespace blink
