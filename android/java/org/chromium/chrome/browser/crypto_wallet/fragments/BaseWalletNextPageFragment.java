@@ -222,17 +222,6 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
                                     if (result) {
                                         biometricAuthenticationCallback.authenticationSuccess(
                                                 unlockWalletPassword);
-                                        //
-                                        // Utils.clearClipboard(unlockWalletPassword);
-                                        //
-                                        // mUnlockWalletPassword.setText(null);
-                                        //
-                                        // mOnboardingViewModel.setPassword(unlockWalletPassword);
-                                        //                                        if (mOnNextPage !=
-                                        // null) {
-                                        //
-                                        // mOnNextPage.incrementPages(1);
-                                        //                                        }
                                     } else {
                                         showBiometricAuthenticationButton(biometricUnlockButton);
                                     }
