@@ -185,6 +185,7 @@ var package = Package(
     ),
     .target(
       name: "BrowserIntentsModels",
+      dependencies: ["Shared"],
       sources: ["BrowserIntents.intentdefinition", "CustomIntentHandler.swift"],
       plugins: ["IntentBuilderPlugin"]
     ),
