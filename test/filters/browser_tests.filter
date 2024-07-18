@@ -1207,7 +1207,10 @@
 
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
+-All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
 -LensOverlayControllerBrowserTest.*
+-LensOverlayControllerBrowserFullscreenDisabled.*
+-LensOverlayControllerBrowserWithPixelsTest.*
 
 # This test fails because we don't implement an accent color for titlebars or
 # tabs on Windows
