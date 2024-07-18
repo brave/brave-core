@@ -1,30 +1,19 @@
-Total size 135384K
+Total size 93230K
 
-GROUP Adblock [8077K total]
-   105K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.165 [adcocjohghhfpidemphmcmlmhnfgikei]
-    45K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.6884 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1301K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.7406 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
-   139K Brave Ad Block Updater (Regional Catalog) 1.0.57 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5589K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.6415 [iodkpdagapdfkphljnddpjlldadblomo]
-     8K Brave Ad Block Updater (Brave Experimental Adblock Rules (plaintext)) 1.0.25 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
-   887K Brave Ad Block Updater (Resources) 1.0.91 [mfddibmblmbccpadfndgakiopmmhebop]
+GROUP Adblock [1128K total]
+   139K Brave Ad Block Updater (Regional Catalog) 1.0.60 [gkboaolpopklhgplhaaiboijnklogmbc]
+   988K Brave Ad Block Updater (Resources) 1.0.93 [mfddibmblmbccpadfndgakiopmmhebop]
 
-GROUP Ads [22975K total]
-    72K Brave Ads Resources 1.0.101 [iblokdlgekdjophgeonmanpnjihcjkjj]
- 22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
+GROUP Other [158K total]
+   158K Brave Local Data Files Updater 1.0.820 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP Ntp [13729K total]
- 12803K Brave NTP background images 1.0.14 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   925K Brave NTP sponsored images 1.0.1633 [gccbbckogglekeggclmmekihdgdpdgoe]
-
-GROUP Other [157K total]
-   157K Brave Local Data Files Updater 1.0.782 [afalakplffnnnlkncjhbmahjfjhmlkal]
-
-GROUP large_files [80237K total]
-  3262K Default\Local Extension Settings\mnojpmjdmbbfmejpflffifhffcmidifd\000003.log
-  1022K Default\Local Storage\leveldb\000003.ldb
-  1010K Default\Session Storage\000003.ldb
- 44096K Default\publisher_info_db
-  1945K Safe Browsing\ChromeExtMalware.store.32_13357744536199942
-  1011K Safe Browsing\UrlMalBin.store.4_13357744536174233
- 27889K Safe Browsing\UrlSoceng.store.4_13357744535888997
+GROUP large_files [85841K total]
+  3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
+  1022K Default/Local Storage/leveldb/000003.ldb
+  1010K Default/Session Storage/000003.ldb
+  3401K Default/Sessions/Session_13365766728508453
+  2202K Default/Sessions/Session_13365766730306418
+ 44096K Default/publisher_info_db
+  1945K Safe Browsing/ChromeExtMalware.store.32_13357744536199942
+  1011K Safe Browsing/UrlMalBin.store.4_13357744536174233
+ 27889K Safe Browsing/UrlSoceng.store.4_13357744535888997
