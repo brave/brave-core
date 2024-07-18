@@ -21,7 +21,7 @@ const size_t kDividerLength = 80;
 
 std::string FormatTime(const base::Time& time) {
   return base::UnlocalizedTimeFormatWithPattern(
-      time, "MMM dd, YYYY h:mm:ss.S a", icu::TimeZone::getGMT());
+      time, "MMM dd, YYYY h:mm:ss.S a zzz", icu::TimeZone::getGMT());
 }
 
 std::string GetLogVerboseLevelName(int verbose_level) {
