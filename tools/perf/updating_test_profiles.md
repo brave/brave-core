@@ -5,7 +5,7 @@ The recommended update interval is once a month.
 
 ## Important details
 
-* The profiles are stored as zip archives in the `perf-data` bucket on AWS S3 storage.
+* The profiles are stored as zip archives in the `brave-perf-data` bucket on AWS S3 storage.
 * `brave-core` stores only sha1 hashes of these profiles.
 * Profiles have versions. After updating, the old browser versions continue to use the old profiles (using git history to rewind the time). This ensures build reproducibility.
 

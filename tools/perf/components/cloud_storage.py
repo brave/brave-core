@@ -6,7 +6,7 @@ import components.perf_test_utils as perf_test_utils
 
 from download_from_google_storage import get_sha1
 
-_CLOUD_BUCKET = 'perf-data'
+_CLOUD_BUCKET = 'brave-perf-data'
 _CLOUD_HTTPS_URL = f'https://{_CLOUD_BUCKET}.s3.brave.com'
 
 
