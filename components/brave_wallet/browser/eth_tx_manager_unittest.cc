@@ -99,13 +99,9 @@ void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
 
   // Verify tx type.
   if (success) {
-    mojom::TransactionType tx_type;
-    std::vector<std::string> tx_params;
-    std::vector<std::string> tx_args;
     auto tx_info = GetTransactionInfoFromData(data);
     ASSERT_NE(tx_info, std::nullopt);
-    std::tie(tx_type, tx_params, tx_args) = *tx_info;
-    EXPECT_EQ(expected_type, tx_type);
+    EXPECT_EQ(expected_type, std::get<0>(*tx_info));
   }
 
   run_loop->Quit();
@@ -447,10 +443,12 @@ class EthTxManagerUnitTest : public testing::Test {
                 mojom::TransactionType tx_type;
                 std::vector<std::string> tx_params;
                 std::vector<std::string> tx_args;
+                mojom::SwapInfoPtr swap_info;
 
                 auto tx_info = GetTransactionInfoFromData(data);
                 ASSERT_NE(tx_info, std::nullopt);
-                std::tie(tx_type, tx_params, tx_args) = *tx_info;
+                std::tie(tx_type, tx_params, tx_args, swap_info) =
+                    std::move(*tx_info);
 
                 EXPECT_EQ(expected_type, tx_type);
                 EXPECT_EQ(tx_args[0], from);
@@ -463,6 +461,7 @@ class EthTxManagerUnitTest : public testing::Test {
                 EXPECT_EQ(tx_params[2], "uint256");
                 EXPECT_EQ(tx_params[3], "uint256");
                 EXPECT_EQ(tx_params[4], "bytes");
+                EXPECT_FALSE(swap_info);
               }
               run_loop.Quit();
             }));

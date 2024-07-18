@@ -11,6 +11,7 @@
 
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
@@ -116,6 +117,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   mojom::TransactionType tx_type;
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
   std::vector<uint8_t> data{0x0};
   if (tx_->data().size() > 0) {
     data = tx_->data();
@@ -126,13 +128,26 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   if (!tx_info) {
     LOG(ERROR) << "Error parsing transaction data: " << ToHex(data);
   } else {
-    std::tie(tx_type, tx_params, tx_args) = *tx_info;
+    std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
     final_recipient = GetFinalRecipient(chain_id, tx_->to().ToChecksumAddress(),
                                         tx_type, tx_args);
   }
   std::optional<std::string> signed_transaction;
   if (tx_->IsSigned()) {
     signed_transaction = tx_->GetSignedTransaction();
+  }
+
+  if (swap_info) {
+    swap_info->from_chain_id = chain_id_;
+
+    if (swap_info->to_chain_id.empty()) {
+      swap_info->to_chain_id = chain_id_;
+    }
+
+    if (swap_info->from_amount.empty() &&
+        swap_info->from_asset == kNativeEVMAssetContractAddress) {
+      swap_info->from_amount = Uint256ValueToHex(tx_->value());
+    }
   }
 
   return mojom::TransactionInfo::New(
@@ -151,7 +166,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
       base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
       base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
       origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      final_recipient, IsRetriable());
+      final_recipient, IsRetriable(), std::move(swap_info));
 }
 
 mojom::CoinType EthTxMeta::GetCoinType() const {

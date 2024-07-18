@@ -126,7 +126,7 @@ enum TransactionParser {
 
   static func parseTransaction(
     transaction: BraveWallet.TransactionInfo,
-    network: BraveWallet.NetworkInfo,
+    allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
@@ -136,11 +136,19 @@ enum TransactionParser {
     currencyFormatter: NumberFormatter,
     decimalFormatStyle: WalletAmountFormatter.DecimalFormatStyle? = nil
   ) -> ParsedTransaction? {
+    guard
+      let txNetwork = allNetworks.first(where: {
+        $0.chainId.caseInsensitiveCompare(transaction.chainId) == .orderedSame
+          && $0.coin == transaction.coin
+      })
+    else {
+      return nil
+    }
+    let formatter = WalletAmountFormatter(
+      decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: Int(txNetwork.decimals))
+    )
     let fromAccountInfo =
       accountInfos.first(where: { $0.accountId == transaction.fromAccountId }) ?? .init()
-    let formatter = WalletAmountFormatter(
-      decimalFormatStyle: decimalFormatStyle ?? .decimals(precision: Int(network.decimals))
-    )
     switch transaction.txType {
     case .ethSend, .other:
       if let filTxData = transaction.txDataUnion.filTxData {  // FIL send tx
@@ -149,30 +157,30 @@ enum TransactionParser {
           formatter.decimalString(
             for: sendValue,
             radix: .decimal,
-            decimals: Int(network.nativeToken.decimals)
+            decimals: Int(txNetwork.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
         let sendFiat =
           currencyFormatter.formatAsFiat(
-            assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+            assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
               * (Double(sendValueFormatted) ?? 0)
           ) ?? "$0.00"
         let gasLimitValueFormatted =
           formatter.decimalString(
             for: filTxData.gasLimit,
             radix: .decimal,
-            decimals: Int(network.nativeToken.decimals)
+            decimals: Int(txNetwork.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
         let gasPremiumValueFormatted =
           formatter.decimalString(
             for: filTxData.gasPremium,
             radix: .decimal,
-            decimals: Int(network.nativeToken.decimals)
+            decimals: Int(txNetwork.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
         let gasFeeCapValueFormatted =
           formatter.decimalString(
             for: filTxData.gasFeeCap,
             radix: .decimal,
-            decimals: Int(network.nativeToken.decimals)
+            decimals: Int(txNetwork.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
         // Example
         // Send 1 FIL
@@ -197,10 +205,10 @@ enum TransactionParser {
           fromAccountInfo: fromAccountInfo,
           namedToAddress: NamedAddresses.name(for: filTxData.to, accounts: accountInfos),
           toAddress: filTxData.to,
-          network: network,
+          network: txNetwork,
           details: .filSend(
             .init(
-              sendToken: network.nativeToken,
+              sendToken: txNetwork.nativeToken,
               sendValue: filTxData.value,
               sendAmount: sendValueFormatted,
               sendFiat: sendFiat,
@@ -209,7 +217,7 @@ enum TransactionParser {
               gasFeeCap: gasFeeCapValueFormatted,
               gasFee: gasFee(
                 from: transaction,
-                network: network,
+                network: txNetwork,
                 assetRatios: assetRatios,
                 currencyFormatter: currencyFormatter
               )
@@ -218,19 +226,18 @@ enum TransactionParser {
         )
       } else if let btcTxData = transaction.txDataUnion.btcTxData {  // BTC send tx
         // Require 8 decimals precision for BTC parsing
-        let formatter = WalletAmountFormatter(decimalFormatStyle: .decimals(precision: 8))
         let namedFromAccount = fromAccountInfo.name
         let fromValue = "\(btcTxData.amount)"
         let fromValueFormatted =
           formatter.decimalString(
             for: fromValue,
             radix: .decimal,
-            decimals: Int(network.decimals)
+            decimals: Int(txNetwork.decimals)
           )?.trimmingTrailingZeros ?? ""
         let fromFiat =
           currencyFormatter.string(
             from: NSNumber(
-              value: assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+              value: assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
                 * (Double(fromValueFormatted) ?? 0)
             )
           ) ?? "$0.00"
@@ -248,7 +255,7 @@ enum TransactionParser {
           fromAccountInfo: fromAccountInfo,
           namedToAddress: "",
           toAddress: btcTxData.to,
-          network: network,
+          network: txNetwork,
           details: .btcSend(
             .init(
               fromToken: fromToken,
@@ -258,7 +265,7 @@ enum TransactionParser {
               fromTokenMetadata: nil,
               gasFee: gasFee(
                 from: transaction,
-                network: network,
+                network: txNetwork,
                 assetRatios: assetRatios,
                 currencyFormatter: currencyFormatter
               )
@@ -271,11 +278,11 @@ enum TransactionParser {
           formatter.decimalString(
             for: fromValue.removingHexPrefix,
             radix: .hex,
-            decimals: Int(network.decimals)
+            decimals: Int(txNetwork.decimals)
           )?.trimmingTrailingZeros ?? ""
         let fromFiat =
           currencyFormatter.formatAsFiat(
-            assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+            assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
               * (Double(fromValueFormatted) ?? 0)
           ) ?? "$0.00"
         // Example:
@@ -298,17 +305,17 @@ enum TransactionParser {
             accounts: accountInfos
           ),
           toAddress: transaction.ethTxToAddress,
-          network: network,
+          network: txNetwork,
           details: .ethSend(
             .init(
-              fromToken: network.nativeToken,
+              fromToken: txNetwork.nativeToken,
               fromValue: fromValue,
               fromAmount: fromValueFormatted,
               fromFiat: fromFiat,
               fromTokenMetadata: nil,
               gasFee: gasFee(
                 from: transaction,
-                network: network,
+                network: txNetwork,
                 assetRatios: assetRatios,
                 currencyFormatter: currencyFormatter
               )
@@ -325,7 +332,7 @@ enum TransactionParser {
       }
       let fromToken = token(
         for: tokenContractAddress,
-        network: network,
+        network: txNetwork,
         userAssets: userAssets,
         allTokens: allTokens
       )
@@ -360,7 +367,7 @@ enum TransactionParser {
         fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        network: network,
+        network: txNetwork,
         details: .erc20Transfer(
           .init(
             fromToken: fromToken,
@@ -370,7 +377,7 @@ enum TransactionParser {
             fromTokenMetadata: nil,
             gasFee: gasFee(
               from: transaction,
-              network: network,
+              network: txNetwork,
               assetRatios: assetRatios,
               currencyFormatter: currencyFormatter
             )
@@ -378,27 +385,43 @@ enum TransactionParser {
         )
       )
     case .ethSwap:
-      guard let sellAmountValue = transaction.txArgs[safe: 1],
-        let minBuyAmountValue = transaction.txArgs[safe: 2]
+      guard let swapInfo = transaction.swapInfo
       else {
         return nil
       }
+      let sellAmountValue = swapInfo.fromAmount
+      let minBuyAmountValue = swapInfo.toAmount
+
       let (fromTokenAddress, toTokenAddress) = transaction.ethSwapTokenContractAddresses ?? ("", "")
+
+      let fromNetwork =
+        allNetworks.first {
+          $0.coin == swapInfo.fromCoin && $0.chainId == swapInfo.fromChainId
+        } ?? txNetwork
 
       let fromToken = token(
         for: fromTokenAddress,
-        network: network,
+        network: fromNetwork,
         userAssets: userAssets,
         allTokens: allTokens
       )
-      let fromTokenDecimals = Int(fromToken?.decimals ?? network.decimals)
+
+      let fromTokenDecimals = Int(fromToken?.decimals ?? fromNetwork.decimals)
+
+      let toNetwork =
+        allNetworks.first {
+          $0.chainId.caseInsensitiveCompare(swapInfo.toChainId) == .orderedSame
+            && $0.coin == swapInfo.toCoin
+        } ?? txNetwork
+
       let toToken = token(
         for: toTokenAddress,
-        network: network,
+        network: toNetwork,
         userAssets: userAssets,
         allTokens: allTokens
       )
-      let toTokenDecimals = Int(toToken?.decimals ?? network.decimals)
+
+      let toTokenDecimals = Int(toToken?.decimals ?? toNetwork.decimals)
 
       let formattedSellAmount =
         formatter.decimalString(
@@ -427,7 +450,6 @@ enum TransactionParser {
       // USDC -> DAI
       // Sell Amount: 1.5
       //
-      // fillPath = "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d"
       // fromTokenAddress = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
       // fromToken.symbol = "USDC"
       // sellAmountValue = "0x16e360"
@@ -450,20 +472,22 @@ enum TransactionParser {
           accounts: accountInfos
         ),
         toAddress: transaction.ethTxToAddress,
-        network: network,
+        network: txNetwork,
         details: .ethSwap(
           .init(
             fromToken: fromToken,
+            fromNetwork: fromNetwork,
             fromValue: sellAmountValue,
             fromAmount: formattedSellAmount,
             fromFiat: fromFiat,
             toToken: toToken,
+            toNetwork: toNetwork,
             minBuyValue: minBuyAmountValue,
             minBuyAmount: formattedMinBuyAmount,
             minBuyAmountFiat: minBuyAmountFiat,
             gasFee: gasFee(
               from: transaction,
-              network: network,
+              network: txNetwork,
               assetRatios: assetRatios,
               currencyFormatter: currencyFormatter
             )
@@ -479,7 +503,7 @@ enum TransactionParser {
       }
       let token = token(
         for: contractAddress,
-        network: network,
+        network: txNetwork,
         userAssets: userAssets,
         allTokens: allTokens
       )
@@ -494,7 +518,7 @@ enum TransactionParser {
           formatter.decimalString(
             for: value.removingHexPrefix,
             radix: .hex,
-            decimals: Int(token?.decimals ?? network.decimals)
+            decimals: Int(token?.decimals ?? txNetwork.decimals)
           )?.trimmingTrailingZeros ?? ""
         approvalFiat =
           currencyFormatter.formatAsFiat(
@@ -524,7 +548,7 @@ enum TransactionParser {
           accounts: accountInfos
         ),
         toAddress: transaction.ethTxToAddress,
-        network: network,
+        network: txNetwork,
         details: .ethErc20Approve(
           .init(
             token: token,
@@ -536,7 +560,7 @@ enum TransactionParser {
             spenderAddress: spenderAddress,
             gasFee: gasFee(
               from: transaction,
-              network: network,
+              network: txNetwork,
               assetRatios: assetRatios,
               currencyFormatter: currencyFormatter
             )
@@ -553,7 +577,7 @@ enum TransactionParser {
       }
       let token = token(
         for: tokenContractAddress,
-        network: network,
+        network: txNetwork,
         userAssets: userAssets,
         allTokens: allTokens
       )
@@ -573,7 +597,7 @@ enum TransactionParser {
         fromAccountInfo: fromAccountInfo,  // The caller, which may not be the owner
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        network: network,
+        network: txNetwork,
         details: .erc721Transfer(
           .init(
             fromToken: token,
@@ -584,7 +608,7 @@ enum TransactionParser {
             tokenId: tokenId,
             gasFee: gasFee(
               from: transaction,
-              network: network,
+              network: txNetwork,
               assetRatios: assetRatios,
               currencyFormatter: currencyFormatter
             )
@@ -599,11 +623,14 @@ enum TransactionParser {
       }
       let fromValue = "\(lamports)"
       let fromValueFormatted =
-        formatter.decimalString(for: fromValue, radix: .decimal, decimals: Int(network.decimals))?
-        .trimmingTrailingZeros ?? ""
+        formatter.decimalString(
+          for: fromValue,
+          radix: .decimal,
+          decimals: Int(txNetwork.decimals)
+        )?.trimmingTrailingZeros ?? ""
       let fromFiat =
         currencyFormatter.formatAsFiat(
-          assetRatios[network.nativeToken.assetRatioId.lowercased(), default: 0]
+          assetRatios[txNetwork.nativeToken.assetRatioId.lowercased(), default: 0]
             * (Double(fromValueFormatted) ?? 0)
         ) ?? "$0.00"
       // Example:
@@ -623,17 +650,17 @@ enum TransactionParser {
         fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        network: network,
+        network: txNetwork,
         details: .solSystemTransfer(
           .init(
-            fromToken: network.nativeToken,
+            fromToken: txNetwork.nativeToken,
             fromValue: fromValue,
             fromAmount: fromValueFormatted,
             fromFiat: fromFiat,
             fromTokenMetadata: nil,
             gasFee: gasFee(
               from: transaction,
-              network: network,
+              network: txNetwork,
               assetRatios: assetRatios,
               solEstimatedTxFee: solEstimatedTxFee,
               currencyFormatter: currencyFormatter
@@ -651,7 +678,7 @@ enum TransactionParser {
       }
       let fromToken = token(
         for: splTokenMintAddress,
-        network: network,
+        network: txNetwork,
         userAssets: userAssets,
         allTokens: allTokens
       )
@@ -695,7 +722,7 @@ enum TransactionParser {
         fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress, accounts: accountInfos),
         toAddress: toAddress,
-        network: network,
+        network: txNetwork,
         details: .solSplTokenTransfer(
           .init(
             fromToken: fromToken,
@@ -705,7 +732,7 @@ enum TransactionParser {
             fromTokenMetadata: tokenNFTMetadata,
             gasFee: gasFee(
               from: transaction,
-              network: network,
+              network: txNetwork,
               assetRatios: assetRatios,
               solEstimatedTxFee: solEstimatedTxFee,
               currencyFormatter: currencyFormatter
@@ -787,8 +814,11 @@ enum TransactionParser {
           {
             let transactionTotal = transactionLamportsValue + valueFromInstructions
             fromValue =
-              transactionTotal.decimalExpansion(precisionAfterDecimalPoint: Int(network.decimals))
-              .trimmingTrailingZeros
+              transactionTotal
+              .decimalExpansion(
+                precisionAfterDecimalPoint:
+                  Int(txNetwork.decimals)
+              ).trimmingTrailingZeros
             if let transactionTotalFormatted = formatter.decimalString(
               for: "\(transactionTotal)",
               decimals: 9
@@ -810,7 +840,7 @@ enum TransactionParser {
         symbol: symbol,
         gasFee: gasFee(
           from: transaction,
-          network: network,
+          network: txNetwork,
           assetRatios: assetRatios,
           solEstimatedTxFee: solEstimatedTxFee,
           currencyFormatter: currencyFormatter
@@ -832,12 +862,14 @@ enum TransactionParser {
         fromAccountInfo: fromAccountInfo,
         namedToAddress: NamedAddresses.name(for: toAddress ?? "", accounts: accountInfos),
         toAddress: toAddress ?? "",
-        network: network,
+        network: txNetwork,
         details: details
       )
     case .erc1155SafeTransferFrom:
       return nil
     case .ethFilForwarderTransfer:
+      return nil
+    case .solanaCompressedNftTransfer:
       return nil
     @unknown default:
       return nil
@@ -1106,6 +1138,8 @@ struct SendDetails: Equatable {
 struct EthSwapDetails: Equatable {
   /// Token being swapped from
   let fromToken: BraveWallet.BlockchainToken?
+  /// From token network
+  let fromNetwork: BraveWallet.NetworkInfo
   /// From value prior to formatting
   let fromValue: String
   /// From amount formatted
@@ -1115,6 +1149,8 @@ struct EthSwapDetails: Equatable {
 
   /// Token being swapped to
   let toToken: BraveWallet.BlockchainToken?
+  /// To token network
+  let toNetwork: BraveWallet.NetworkInfo
   /// Min. buy value prior to formatting
   let minBuyValue: String
   /// Min. buy amount formatted
@@ -1200,7 +1236,7 @@ struct FilSendDetails: Equatable {
 extension BraveWallet.TransactionInfo {
   /// Use `TransactionParser` to build a `ParsedTransaction` model for this transaction.
   func parsedTransaction(
-    network: BraveWallet.NetworkInfo,
+    allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
@@ -1212,7 +1248,7 @@ extension BraveWallet.TransactionInfo {
   ) -> ParsedTransaction? {
     TransactionParser.parseTransaction(
       transaction: self,
-      network: network,
+      allNetworks: allNetworks,
       accountInfos: accountInfos,
       userAssets: userAssets,
       allTokens: allTokens,
@@ -1284,16 +1320,9 @@ extension BraveWallet.TransactionInfo {
 
   /// Contract address for the from and to token being swapped
   var ethSwapTokenContractAddresses: (from: String, to: String)? {
-    guard txType == .ethSwap, let fillPath = txArgs[safe: 0] else { return nil }
-    let fillPathNoHexPrefix = fillPath.removingHexPrefix
-    let fillPathLength = fillPathNoHexPrefix.count / 2
-    let splitIndex = fillPathNoHexPrefix.index(
-      fillPathNoHexPrefix.startIndex,
-      offsetBy: fillPathLength
-    )
-    let fromTokenAddress = String(fillPathNoHexPrefix[..<splitIndex]).addingHexPrefix
-    let toTokenAddress = String(fillPathNoHexPrefix[splitIndex...]).addingHexPrefix
-    return (fromTokenAddress, toTokenAddress)
+    guard txType == .ethSwap, let swapInfo = swapInfo
+    else { return nil }
+    return (swapInfo.fromAsset, swapInfo.toAsset)
   }
 
   /// Contract address for the ERC721 token
@@ -1333,6 +1362,8 @@ extension BraveWallet.TransactionInfo {
       .solanaSwap:
       break
     case .ethFilForwarderTransfer:
+      break
+    case .solanaCompressedNftTransfer:
       break
     @unknown default:
       break

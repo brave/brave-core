@@ -26,7 +26,6 @@ import {
   findTransactionToken,
   getTransactionApprovalTargetAddress,
   isSwapTransaction,
-  getETHSwapTransactionBuyAndSellTokens,
   getTransactionTransferredValue,
   getIsTxApprovalUnlimited
 } from '../../../utils/tx-utils'
@@ -38,7 +37,6 @@ import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
-import Amount from '../../../utils/amount'
 
 // Hooks
 import {
@@ -51,6 +49,7 @@ import {
   useAccountQuery,
   useGetCombinedTokensListQuery
 } from '../../../common/slices/api.slice.extra'
+import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
 
 // Components
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
@@ -93,7 +92,7 @@ const noneTxStatusDisplayTypes = [
   BraveWallet.TransactionStatus.Confirmed,
   BraveWallet.TransactionStatus.Signed
 ]
-export interface Props {
+interface Props {
   transaction: BraveWallet.TransactionInfo | SerializableTransactionInfo
   isFocused?: boolean
   onClick?: (
@@ -171,21 +170,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       accountInfosRegistry
     )
 
-    const { buyToken, sellToken, buyAmount, sellAmount } = React.useMemo(() => {
-      return transaction.txType === BraveWallet.TransactionType.ETHSwap
-        ? getETHSwapTransactionBuyAndSellTokens({
-            nativeAsset: networkAsset,
-            tokensList: combinedTokensList,
-            tx: transaction
-          })
-        : {
-            buyToken: undefined,
-            sellToken: txToken,
-            buyAmount: new Amount(''),
-            sellAmount: new Amount(''),
-            buyAmountWei: new Amount('')
-          }
-    }, [transaction, networkAsset, combinedTokensList, txToken])
+    const { buyToken, sellToken, buyAmountWei, sellAmountWei } =
+      useSwapTransactionParser(transaction)
 
     const [normalizedTransferredValue, transferredValueWei] =
       React.useMemo(() => {
@@ -286,8 +272,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     const formattedApprovalAmount = isTxApprovalUnlimited
       ? getLocale('braveWalletTransactionApproveUnlimited')
       : formattedSendCurrencyTotal
-    const formattedSellAmount = sellAmount?.formatAsAsset(6, sellToken?.symbol)
-    const formattedBuyAmount = buyAmount?.formatAsAsset(6, buyToken?.symbol)
+    const formattedSellAmount = sellToken
+      ? sellAmountWei
+          .divideByDecimals(sellToken.decimals)
+          .formatAsAsset(6, sellToken.symbol)
+      : ''
+    const formattedBuyAmount = buyToken
+      ? buyAmountWei
+          .divideByDecimals(buyToken.decimals)
+          .formatAsAsset(6, buyToken.symbol)
+      : ''
     const isSolanaSwap = isSwap && isSolanaTx
     const showAmounts = !txToken?.isNft && !isSolanaSwap
     const showTransactionStatus = !noneTxStatusDisplayTypes.includes(
