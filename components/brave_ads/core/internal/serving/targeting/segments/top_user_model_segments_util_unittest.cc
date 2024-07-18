@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
@@ -37,7 +37,7 @@ UserModelInfo BuildUserModel() {
 
 }  // namespace
 
-class BraveAdsTopUserModelSegmentsUtilTest : public UnitTestBase {};
+class BraveAdsTopUserModelSegmentsUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegments) {
   // Arrange

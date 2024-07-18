@@ -6,17 +6,17 @@
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsBrowserManagerTest : public UnitTestBase {
+class BraveAdsBrowserManagerTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     BrowserManager::GetInstance().AddObserver(&browser_manager_observer_mock_);
   }
@@ -25,7 +25,7 @@ class BraveAdsBrowserManagerTest : public UnitTestBase {
     BrowserManager::GetInstance().RemoveObserver(
         &browser_manager_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   BrowserManagerObserverMock browser_manager_observer_mock_;
@@ -91,7 +91,7 @@ TEST_F(BraveAdsBrowserManagerTest,
 TEST_F(BraveAdsBrowserManagerTest,
        OnNotifyDidInitializeAdsWhenBrowserIsInactive) {
   // Arrange
-  MockIsBrowserActive(ads_client_mock_, false);
+  test::MockIsBrowserActive(ads_client_mock_, false);
 
   // Act
   NotifyDidInitializeAds();

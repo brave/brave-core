@@ -10,8 +10,8 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -24,16 +24,16 @@
 
 namespace brave_ads {
 
-class BraveAdsNewTabPageAdIntegrationTest : public UnitTestBase {
+class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
  protected:
-  void SetUp() override { UnitTestBase::SetUp(/*is_integration_test=*/true); }
+  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
-    const URLResponseMap url_responses = {
+    const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
          {{net::HTTP_OK,
            /*response_body=*/"/catalog_with_new_tab_page_ad.json"}}}};
-    MockUrlResponses(ads_client_mock_, url_responses);
+    test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
   void TriggerNewTabPageAdEventAndVerifiyExpectations(

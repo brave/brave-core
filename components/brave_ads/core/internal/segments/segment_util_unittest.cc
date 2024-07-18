@@ -10,8 +10,8 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/history/category_content_info.h"
@@ -20,12 +20,12 @@
 
 namespace brave_ads {
 
-class BraveAdsSegmentUtilTest : public UnitTestBase {};
+class BraveAdsSegmentUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsSegmentUtilTest, GetSegmentsFromCatalog) {
   // Arrange
   const std::optional<std::string> contents =
-      MaybeReadFileToString(test::kCatalogWithMultipleCampaignsFilename);
+      test::MaybeReadFileToString(test::kCatalogWithMultipleCampaignsFilename);
   ASSERT_TRUE(contents);
 
   const std::optional<CatalogInfo> catalog =

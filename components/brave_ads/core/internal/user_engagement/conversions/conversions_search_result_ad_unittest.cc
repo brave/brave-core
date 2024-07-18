@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_unittest_base.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
@@ -23,7 +23,7 @@
 namespace brave_ads {
 
 class BraveAdsConversionsSearchResultAdTest
-    : public BraveAdsConversionsUnitTestBase {};
+    : public test::BraveAdsConversionsTestBase {};
 
 TEST_F(BraveAdsConversionsSearchResultAdTest,
        ConvertViewedAdIfOptedInToSearchResultAds) {

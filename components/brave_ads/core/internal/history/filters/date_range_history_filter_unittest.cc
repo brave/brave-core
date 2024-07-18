@@ -5,8 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/filters/date_range_history_filter.h"
 
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -43,7 +42,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   HistoryItemList history_items = GetHistory();
 
   const base::Time from_time = base::Time::FromSecondsSinceUnixEpoch(444444444);
-  const base::Time to_time = DistantFuture();
+  const base::Time to_time = test::DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 
@@ -72,7 +71,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   HistoryItemList history_items = GetHistory();
 
   const base::Time from_time = base::Time::FromSecondsSinceUnixEpoch(777777777);
-  const base::Time to_time = DistantFuture();
+  const base::Time to_time = test::DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 
@@ -88,7 +87,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Arrange
   HistoryItemList history_items = GetHistory();
 
-  const base::Time from_time = DistantPast();
+  const base::Time from_time = test::DistantPast();
   const base::Time to_time = base::Time::FromSecondsSinceUnixEpoch(444444444);
 
   const DateRangeHistoryFilter filter(from_time, to_time);
@@ -117,7 +116,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Arrange
   HistoryItemList history_items = GetHistory();
 
-  const base::Time from_time = DistantPast();
+  const base::Time from_time = test::DistantPast();
   const base::Time to_time = base::Time::FromSecondsSinceUnixEpoch(111111111);
 
   const DateRangeHistoryFilter filter(from_time, to_time);
@@ -134,8 +133,8 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Arrange
   HistoryItemList history_items = GetHistory();
 
-  const base::Time from_time = DistantPast();
-  const base::Time to_time = DistantFuture();
+  const base::Time from_time = test::DistantPast();
+  const base::Time to_time = test::DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 
@@ -169,8 +168,8 @@ TEST(BraveAdsDateRangeHistoryFilterTest,
   // Arrange
   HistoryItemList history_items = GetHistory();
 
-  const base::Time from_time = DistantFuture();
-  const base::Time to_time = DistantPast();
+  const base::Time from_time = test::DistantFuture();
+  const base::Time to_time = test::DistantPast();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 
@@ -186,7 +185,7 @@ TEST(BraveAdsDateRangeHistoryFilterTest, FilterEmptyHistory) {
   HistoryItemList history_items;
 
   const base::Time from_time = base::Time::FromSecondsSinceUnixEpoch(444444444);
-  const base::Time to_time = DistantFuture();
+  const base::Time to_time = test::DistantFuture();
 
   const DateRangeHistoryFilter filter(from_time, to_time);
 

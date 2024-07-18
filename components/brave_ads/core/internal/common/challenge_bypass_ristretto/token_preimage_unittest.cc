@@ -8,17 +8,17 @@
 #include <sstream>
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
-namespace brave_ads::cbr {
+namespace brave_ads {
 
-class BraveAdsTokenPreimageTest : public UnitTestBase {};
+class BraveAdsTokenPreimageTest : public test::TestBase {};
 
 TEST_F(BraveAdsTokenPreimageTest, FailToInitialize) {
   // Arrange
-  const TokenPreimage token_preimage;
+  const cbr::TokenPreimage token_preimage;
 
   // Act & Assert
   EXPECT_FALSE(token_preimage.has_value());
@@ -26,7 +26,7 @@ TEST_F(BraveAdsTokenPreimageTest, FailToInitialize) {
 
 TEST_F(BraveAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
   // Arrange
-  const TokenPreimage token_preimage("");
+  const cbr::TokenPreimage token_preimage("");
 
   // Act & Assert
   EXPECT_FALSE(token_preimage.has_value());
@@ -34,7 +34,7 @@ TEST_F(BraveAdsTokenPreimageTest, FailToInitializeWithEmptyBase64) {
 
 TEST_F(BraveAdsTokenPreimageTest, FailToInitializeWithInvalidBase64) {
   // Arrange
-  const TokenPreimage token_preimage(kInvalidBase64);
+  const cbr::TokenPreimage token_preimage(cbr::test::kInvalidBase64);
 
   // Act & Assert
   EXPECT_FALSE(token_preimage.has_value());
@@ -42,8 +42,8 @@ TEST_F(BraveAdsTokenPreimageTest, FailToInitializeWithInvalidBase64) {
 
 TEST_F(BraveAdsTokenPreimageTest, DecodeBase64) {
   // Act
-  const TokenPreimage token_preimage =
-      TokenPreimage::DecodeBase64(kTokenPreimageBase64);
+  const cbr::TokenPreimage token_preimage =
+      cbr::TokenPreimage::DecodeBase64(cbr::test::kTokenPreimageBase64);
 
   // Assert
   EXPECT_TRUE(token_preimage.has_value());
@@ -51,7 +51,8 @@ TEST_F(BraveAdsTokenPreimageTest, DecodeBase64) {
 
 TEST_F(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
   // Act
-  const TokenPreimage token_preimage = TokenPreimage::DecodeBase64("");
+  const cbr::TokenPreimage token_preimage =
+      cbr::TokenPreimage::DecodeBase64("");
 
   // Assert
   EXPECT_FALSE(token_preimage.has_value());
@@ -59,8 +60,8 @@ TEST_F(BraveAdsTokenPreimageTest, FailToDecodeEmptyBase64) {
 
 TEST_F(BraveAdsTokenPreimageTest, FailToDecodeInvalidBase64) {
   // Act
-  const TokenPreimage token_preimage =
-      TokenPreimage::DecodeBase64(kInvalidBase64);
+  const cbr::TokenPreimage token_preimage =
+      cbr::TokenPreimage::DecodeBase64(cbr::test::kInvalidBase64);
 
   // Assert
   EXPECT_FALSE(token_preimage.has_value());
@@ -68,15 +69,15 @@ TEST_F(BraveAdsTokenPreimageTest, FailToDecodeInvalidBase64) {
 
 TEST_F(BraveAdsTokenPreimageTest, EncodeBase64) {
   // Arrange
-  const TokenPreimage token_preimage(kTokenPreimageBase64);
+  const cbr::TokenPreimage token_preimage(cbr::test::kTokenPreimageBase64);
 
   // Act & Assert
-  EXPECT_EQ(kTokenPreimageBase64, token_preimage.EncodeBase64());
+  EXPECT_EQ(cbr::test::kTokenPreimageBase64, token_preimage.EncodeBase64());
 }
 
 TEST_F(BraveAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
   // Arrange
-  const TokenPreimage token_preimage;
+  const cbr::TokenPreimage token_preimage;
 
   // Act & Assert
   EXPECT_FALSE(token_preimage.EncodeBase64());
@@ -84,7 +85,7 @@ TEST_F(BraveAdsTokenPreimageTest, FailToEncodeBase64WhenUninitialized) {
 
 TEST_F(BraveAdsTokenPreimageTest, IsEqual) {
   // Arrange
-  const TokenPreimage token_preimage(kTokenPreimageBase64);
+  const cbr::TokenPreimage token_preimage(cbr::test::kTokenPreimageBase64);
 
   // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
@@ -92,7 +93,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsEqual) {
 
 TEST_F(BraveAdsTokenPreimageTest, IsEqualWhenUninitialized) {
   // Arrange
-  const TokenPreimage token_preimage;
+  const cbr::TokenPreimage token_preimage;
 
   // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
@@ -100,7 +101,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsEqualWhenUninitialized) {
 
 TEST_F(BraveAdsTokenPreimageTest, IsEmptyBase64Equal) {
   // Arrange
-  const TokenPreimage token_preimage("");
+  const cbr::TokenPreimage token_preimage("");
 
   // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
@@ -108,7 +109,7 @@ TEST_F(BraveAdsTokenPreimageTest, IsEmptyBase64Equal) {
 
 TEST_F(BraveAdsTokenPreimageTest, IsInvalidBase64Equal) {
   // Arrange
-  const TokenPreimage token_preimage(kInvalidBase64);
+  const cbr::TokenPreimage token_preimage(cbr::test::kInvalidBase64);
 
   // Act & Assert
   EXPECT_EQ(token_preimage, token_preimage);
@@ -116,28 +117,28 @@ TEST_F(BraveAdsTokenPreimageTest, IsInvalidBase64Equal) {
 
 TEST_F(BraveAdsTokenPreimageTest, IsNotEqual) {
   // Arrange
-  const TokenPreimage token_preimage(kTokenPreimageBase64);
+  const cbr::TokenPreimage token_preimage(cbr::test::kTokenPreimageBase64);
 
   // Act & Assert
-  const TokenPreimage different_token_preimage(kInvalidBase64);
-  EXPECT_NE(different_token_preimage, token_preimage);
+  const cbr::TokenPreimage another_token_preimage(cbr::test::kInvalidBase64);
+  EXPECT_NE(another_token_preimage, token_preimage);
 }
 
 TEST_F(BraveAdsTokenPreimageTest, OutputStream) {
   // Arrange
-  const TokenPreimage token_preimage(kTokenPreimageBase64);
+  const cbr::TokenPreimage token_preimage(cbr::test::kTokenPreimageBase64);
 
   // Act
   std::stringstream ss;
   ss << token_preimage;
 
   // Assert
-  EXPECT_EQ(kTokenPreimageBase64, ss.str());
+  EXPECT_EQ(cbr::test::kTokenPreimageBase64, ss.str());
 }
 
 TEST_F(BraveAdsTokenPreimageTest, OutputStreamWhenUninitialized) {
   // Arrange
-  const TokenPreimage token_preimage;
+  const cbr::TokenPreimage token_preimage;
 
   // Act
   std::stringstream ss;
@@ -147,4 +148,4 @@ TEST_F(BraveAdsTokenPreimageTest, OutputStreamWhenUninitialized) {
   EXPECT_THAT(ss.str(), ::testing::IsEmpty());
 }
 
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads

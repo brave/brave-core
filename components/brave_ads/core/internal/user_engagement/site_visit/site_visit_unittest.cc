@@ -10,7 +10,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h"
@@ -21,10 +21,10 @@
 
 namespace brave_ads {
 
-class BraveAdsSiteVisitTest : public UnitTestBase {
+class BraveAdsSiteVisitTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     site_visit_ = std::make_unique<SiteVisit>();
     site_visit_->AddObserver(&site_visit_observer_mock_);
@@ -36,7 +36,7 @@ class BraveAdsSiteVisitTest : public UnitTestBase {
   void TearDown() override {
     site_visit_->RemoveObserver(&site_visit_observer_mock_);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   std::unique_ptr<SiteVisit> site_visit_;

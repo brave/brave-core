@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationsIssuerUtilTest : public UnitTestBase {};
+class BraveAdsConfirmationsIssuerUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsValid) {
   // Arrange

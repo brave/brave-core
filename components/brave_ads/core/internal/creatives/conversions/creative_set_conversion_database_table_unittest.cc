@@ -7,7 +7,7 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-class BraveAdsCreativeSetConversionDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeSetConversionDatabaseTableTest : public test::TestBase {
  protected:
   database::table::CreativeSetConversions database_table_;
 };

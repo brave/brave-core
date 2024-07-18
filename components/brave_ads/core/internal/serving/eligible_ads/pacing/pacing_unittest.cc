@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/pacing/pacing_random_util.h"
@@ -24,7 +24,7 @@ std::vector<double> GetPacingRandomNumbers() {
 
 }  // namespace
 
-class BraveAdsPacingTest : public UnitTestBase {};
+class BraveAdsPacingTest : public test::TestBase {};
 TEST_F(BraveAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;

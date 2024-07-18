@@ -12,18 +12,18 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
+class BraveAdsIssuersUrlRequestTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     issuers_url_request_ = std::make_unique<IssuersUrlRequest>();
     issuers_url_request_->SetDelegate(&delegate_mock_);
@@ -35,10 +35,10 @@ class BraveAdsIssuersUrlRequestTest : public UnitTestBase {
 
 TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFetchIssuers(test::BuildIssuers()));
@@ -50,9 +50,9 @@ TEST_F(BraveAdsIssuersUrlRequestTest, FetchIssuers) {
 
 TEST_F(BraveAdsIssuersUrlRequestTest, DoNotFetchIssuersIfInvalidResponseBody) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(), {{net::HTTP_OK, /*response_body=*/"{INVALID}"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFetchIssuers).Times(0);
@@ -66,13 +66,13 @@ TEST_F(BraveAdsIssuersUrlRequestTest, DoNotFetchIssuersIfInvalidResponseBody) {
 
 TEST_F(BraveAdsIssuersUrlRequestTest, RetryFetchingIssuersIfNonHttpOkResponse) {
   // Arrange
-  const URLResponseMap url_responses = {
+  const test::URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_INTERNAL_SERVER_ERROR,
          /*response_body=*/net::GetHttpReasonPhrase(
              net::HTTP_INTERNAL_SERVER_ERROR)},
         {net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  test::MockUrlResponses(ads_client_mock_, url_responses);
 
   ON_CALL(delegate_mock_, OnDidFetchIssuers)
       .WillByDefault(::testing::Invoke(

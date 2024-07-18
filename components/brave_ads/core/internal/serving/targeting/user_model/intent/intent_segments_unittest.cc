@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
@@ -19,10 +19,10 @@
 
 namespace brave_ads {
 
-class BraveAdsIntentSegmentsTest : public UnitTestBase {
+class BraveAdsIntentSegmentsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     targeting_helper_ =
         std::make_unique<test::TargetingHelper>(task_environment_);

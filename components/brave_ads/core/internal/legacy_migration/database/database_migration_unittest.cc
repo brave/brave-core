@@ -4,11 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
+#include "brave/components/brave_ads/core/public/database/database_constants.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -22,7 +22,7 @@ std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
 
 }  // namespace
 
-class BraveAdsDatabaseMigrationTest : public UnitTestBase,
+class BraveAdsDatabaseMigrationTest : public test::TestBase,
                                       public ::testing::WithParamInterface<int>,
                                       public DatabaseManagerObserver {
  protected:
@@ -35,7 +35,7 @@ class BraveAdsDatabaseMigrationTest : public UnitTestBase,
   void TearDown() override {
     DatabaseManager::GetInstance().RemoveObserver(this);
 
-    UnitTestBase::TearDown();
+    test::TestBase::TearDown();
   }
 
   static int GetSchemaVersion() { return GetParam(); }

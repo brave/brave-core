@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsMarkedAsInappropriateExclusionRuleTest : public UnitTestBase {
+class BraveAdsMarkedAsInappropriateExclusionRuleTest : public test::TestBase {
  protected:
   const MarkedAsInappropriateExclusionRule exclusion_rule_;
 };

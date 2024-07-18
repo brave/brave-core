@@ -13,9 +13,8 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
@@ -23,14 +22,14 @@
 
 namespace brave_ads {
 
-class BraveAdsConfirmationUserDataBuilderTest : public UnitTestBase {
+class BraveAdsConfirmationUserDataBuilderTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::MockConfirmationUserData();
 
-    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
+    AdvanceClockTo(test::TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
@@ -39,7 +38,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
+      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/false);
 
   // Act
@@ -83,7 +82,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   const TransactionInfo transaction = test::BuildTransaction(
       /*value=*/0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewedImpression, /*reconciled_at=*/Now(),
+      ConfirmationType::kViewedImpression, /*reconciled_at=*/test::Now(),
       /*should_generate_random_uuids=*/false);
 
   // Act

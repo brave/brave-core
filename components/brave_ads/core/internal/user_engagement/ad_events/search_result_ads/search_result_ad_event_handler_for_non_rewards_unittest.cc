@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
@@ -53,10 +53,10 @@ void VerifyCreativeSetConversionExpectation(const size_t expected_count) {
 }  // namespace
 
 class BraveAdsSearchResultAdEventHandlerForNonRewardsTest
-    : public UnitTestBase {
+    : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     scoped_feature_list_.InitAndEnableFeature(
         kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);

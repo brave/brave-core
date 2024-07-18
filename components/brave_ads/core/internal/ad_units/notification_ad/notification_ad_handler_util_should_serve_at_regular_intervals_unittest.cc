@@ -5,9 +5,9 @@
 
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_profile_pref_value.h"
+#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -51,16 +51,16 @@ struct ParamInfo final {
 }  // namespace
 
 class BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest
-    : public UnitTestBase,
+    : public test::TestBase,
       public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
     const ParamInfo param = GetParam();
 
-    SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds,
-                               param.should_opt_in);
+    test::SetProfileBooleanPrefValue(prefs::kOptedInToNotificationAds,
+                                     param.should_opt_in);
 
-    MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
+    test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
         ads_client_mock_, param.can_show_while_browser_is_backgrounded);
 
     test::SetMaximumNotificationAdsPerHour(1);

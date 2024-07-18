@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "url/gurl.h"
 
@@ -27,10 +27,10 @@ constexpr char kExpectedUrlRequestContent[] =
 }  // namespace
 
 class BraveAdsCreateNonRewardConfirmationUrlRequestBuilderTest
-    : public UnitTestBase {
+    : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::DisableBraveRewards();
   }

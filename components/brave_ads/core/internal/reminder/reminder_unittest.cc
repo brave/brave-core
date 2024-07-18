@@ -13,7 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -38,10 +38,10 @@ void AddHistory(const size_t count) {
 
 }  // namespace
 
-class BraveAdsReminderTest : public UnitTestBase {
+class BraveAdsReminderTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     ads_observer_mock_ = test::AddAdsObserverMock();
 

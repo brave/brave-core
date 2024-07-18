@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
 #include "url/gurl.h"
@@ -17,10 +17,10 @@
 
 namespace brave_ads {
 
-class BraveAdsPurchaseIntentModelTest : public UnitTestBase {
+class BraveAdsPurchaseIntentModelTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     resource_ = std::make_unique<PurchaseIntentResource>();
   }

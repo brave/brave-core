@@ -11,8 +11,8 @@
 #include "base/json/json_writer.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
@@ -25,14 +25,14 @@
 
 namespace brave_ads {
 
-class BraveAdsConversionUserDataUtilTest : public UnitTestBase {};
+class BraveAdsConversionUserDataUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsConversionUserDataUtilTest, BuildVerifiableConversionUserData) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   const ConversionInfo conversion = BuildConversion(
       ad_event, VerifiableConversionInfo{
                     test::kVerifiableConversionId,
@@ -59,7 +59,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   const ConversionInfo conversion =
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 
@@ -75,7 +75,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest,
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   const ConversionInfo conversion = BuildConversion(
       ad_event, VerifiableConversionInfo{
                     test::kVerifiableConversionId,
@@ -90,7 +90,7 @@ TEST_F(BraveAdsConversionUserDataUtilTest, BuildConversionActionTypeUserData) {
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kViewedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kViewedImpression, /*created_at=*/test::Now());
   const ConversionInfo conversion =
       BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt);
 

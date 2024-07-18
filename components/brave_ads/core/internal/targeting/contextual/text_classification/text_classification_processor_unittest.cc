@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
@@ -17,10 +17,10 @@
 
 namespace brave_ads {
 
-class BraveAdsTextClassificationProcessorTest : public UnitTestBase {
+class BraveAdsTextClassificationProcessorTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     resource_ = std::make_unique<TextClassificationResource>();
   }

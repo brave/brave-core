@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_test_util.h"
@@ -32,7 +32,7 @@ TEST(BraveAdsSeenAdsUtilTest, DoNotGetLastSeenAdAtForUnseenAd) {
   AdEventList ad_events;
   const AdEventInfo ad_event =
       BuildAdEvent(ad_1, ConfirmationType::kViewedImpression,
-                   /*created_at=*/Now() - base::Hours(12));
+                   /*created_at=*/test::Now() - base::Hours(12));
   ad_events.push_back(ad_event);
 
   const NotificationAdInfo ad_2 =
@@ -50,7 +50,7 @@ TEST(BraveAdsSeenAdsUtilTest, GetLastSeenAdAt) {
   const NotificationAdInfo ad_2 =
       test::BuildNotificationAd(/*should_generate_random_uuids=*/true);
 
-  const base::Time now = Now();
+  const base::Time now = test::Now();
 
   AdEventList ad_events;
 

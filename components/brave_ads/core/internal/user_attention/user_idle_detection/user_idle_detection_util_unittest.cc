@@ -6,14 +6,14 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection_util.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsUserIdleDetectionUtilTest : public UnitTestBase {};
+class BraveAdsUserIdleDetectionUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsUserIdleDetectionUtilTest, WasLocked) {
   // Arrange

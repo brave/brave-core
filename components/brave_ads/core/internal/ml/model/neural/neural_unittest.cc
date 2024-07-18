@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/neural_pipeline_test_util.h"
 
@@ -17,7 +17,7 @@
 
 namespace brave_ads::ml {
 
-class BraveAdsNeuralTest : public UnitTestBase {
+class BraveAdsNeuralTest : public test::TestBase {
  public:
   std::optional<NeuralModel> BuildNeuralModel(
       const std::vector<std::vector<VectorData>>& raw_matrices,

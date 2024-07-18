@@ -6,19 +6,18 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsTransactionsUtilTest : public UnitTestBase {};
+class BraveAdsTransactionsUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020"));
+  AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -28,7 +27,7 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020"));
+  AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, AdType::kNotificationAd, ConfirmationType::kClicked,
@@ -37,13 +36,13 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
 
   // Act & Assert
   EXPECT_EQ(TransactionList{transaction_2},
-            GetTransactionsForDateRange(transactions, /*from_time=*/Now(),
-                                        /*to_time=*/DistantFuture()));
+            GetTransactionsForDateRange(transactions, /*from_time=*/test::Now(),
+                                        /*to_time=*/test::DistantFuture()));
 }
 
 TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020"));
+  AdvanceClockTo(test::TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -58,13 +57,13 @@ TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020"));
+  AdvanceClockTo(test::TimeFromString("25 December 2020"));
 
   // Act
   const TransactionList transactions_for_date_range =
       GetTransactionsForDateRange(
-          transactions, /*from_time=*/TimeFromString("1 January 2021"),
-          /*to_time=*/TimeFromString("31 December 2021"));
+          transactions, /*from_time=*/test::TimeFromString("1 January 2021"),
+          /*to_time=*/test::TimeFromString("31 December 2021"));
 
   // Assert
   EXPECT_THAT(transactions_for_date_range, ::testing::IsEmpty());

@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_test_util.h"
@@ -16,12 +16,13 @@
 
 namespace brave_ads {
 
-class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
+class BraveAdsDaypartExclusionRuleTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
-    AdvanceClockTo(TimeFromString("Sun, 19 Mar 2023 05:35"));  // Hello Rory!!!
+    AdvanceClockTo(
+        test::TimeFromString("Sun, 19 Mar 2023 05:35"));  // Hello Rory!!!
   }
 
   const DaypartExclusionRule exclusion_rule_;

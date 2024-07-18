@@ -7,8 +7,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
@@ -22,10 +22,10 @@
 namespace brave_ads {
 
 class BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest
-    : public UnitTestBase {
+    : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     scoped_feature_list_.InitAndEnableFeature(
         kShouldAlwaysTriggerBraveSearchResultAdEventsFeature);
@@ -178,7 +178,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -196,10 +196,10 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 = BuildAdEvent(
-      ad, ConfirmationType::kServedImpression, /*created_at=*/Now());
+      ad, ConfirmationType::kServedImpression, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
   const AdEventInfo ad_event_2 =
-      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/Now());
+      BuildAdEvent(ad, ConfirmationType::kClicked, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
   // Act & Assert

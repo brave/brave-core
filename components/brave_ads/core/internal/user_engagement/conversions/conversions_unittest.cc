@@ -9,16 +9,16 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_test_constants.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -30,7 +30,7 @@
 
 namespace brave_ads {
 
-class BraveAdsConversionsTest : public BraveAdsConversionsUnitTestBase {};
+class BraveAdsConversionsTest : public test::BraveAdsConversionsTestBase {};
 
 TEST_F(BraveAdsConversionsTest,
        DoNotCapConversionsWithinDifferentCreativeSets) {

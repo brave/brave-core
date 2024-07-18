@@ -18,9 +18,8 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 
@@ -28,14 +27,14 @@
 
 namespace brave_ads {
 
-class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
+class BraveAdsRewardConfirmationUtilTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     test::MockConfirmationUserData();
 
-    AdvanceClockTo(TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
+    AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
   }
 
   TokenGeneratorMock token_generator_mock_;
@@ -106,11 +105,12 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
             "versionNumber": "1.2.3.4"
           })");
 
-  EXPECT_THAT(*confirmation,
-              ::testing::FieldsAre(
-                  test::kTransactionId, test::kCreativeInstanceId,
-                  ConfirmationType::kViewedImpression, AdType::kNotificationAd,
-                  /*created_at*/ Now(), expected_reward, expected_user_data));
+  EXPECT_THAT(
+      *confirmation,
+      ::testing::FieldsAre(
+          test::kTransactionId, test::kCreativeInstanceId,
+          ConfirmationType::kViewedImpression, AdType::kNotificationAd,
+          /*created_at*/ test::Now(), expected_reward, expected_user_data));
 }
 
 TEST_F(BraveAdsRewardConfirmationUtilTest,

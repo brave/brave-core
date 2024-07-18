@@ -9,14 +9,15 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsRequestSignedTokensUrlRequestBuilderTest : public test::TestBase {
+};
 
 TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange

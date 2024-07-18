@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_trigger_info.h"
 
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsUserActivityUtilTest : public UnitTestBase {};
+class BraveAdsUserActivityUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsUserActivityUtilTest, GetNumberOfUserActivityEvents) {
   // Arrange

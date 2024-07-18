@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_idle_detection/user_idle_detection.h"
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsUserIdleDetectionTest : public UnitTestBase {};
+class BraveAdsUserIdleDetectionTest : public test::TestBase {};
 
 TEST_F(BraveAdsUserIdleDetectionTest, RewardsUserDidBecomeActive) {
   // Arrange

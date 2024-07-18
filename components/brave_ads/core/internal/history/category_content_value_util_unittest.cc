@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 #include "brave/components/brave_ads/core/public/history/category_content_info.h"
 
@@ -26,7 +26,7 @@ constexpr char kJson[] =
 
 }  // namespace
 
-class BraveAdsCategoryContentValueUtilTest : public UnitTestBase {};
+class BraveAdsCategoryContentValueUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsCategoryContentValueUtilTest, FromValue) {
   // Arrange

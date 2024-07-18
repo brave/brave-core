@@ -6,14 +6,14 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_builder.h"
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsGetSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
+class BraveAdsGetSignedTokensUrlRequestBuilderTest : public test::TestBase {};
 
 TEST_F(BraveAdsGetSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange

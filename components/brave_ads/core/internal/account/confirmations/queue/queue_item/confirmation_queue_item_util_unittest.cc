@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
 
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util_constants.h"
@@ -13,14 +12,14 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-class BraveAdsConfirmationQueueItemDelayTest : public UnitTestBase {
+class BraveAdsConfirmationQueueItemDelayTest : public test::TestBase {
  protected:
   TokenGeneratorMock token_generator_mock_;
 };
@@ -38,7 +37,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(*confirmation,
-                                 /*process_at=*/Now() + base::Hours(1));
+                                 /*process_at=*/test::Now() + base::Hours(1));
 
   // Act
   const base::TimeDelta delay_before_processing_confirmation_queue_item =
@@ -61,7 +60,8 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
                                     /*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
-      BuildConfirmationQueueItem(*confirmation, /*process_at=*/DistantPast());
+      BuildConfirmationQueueItem(*confirmation,
+                                 /*process_at=*/test::DistantPast());
 
   // Act
   const base::TimeDelta delay_before_processing_confirmation_queue_item =
@@ -85,8 +85,9 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
                                     /*should_generate_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
-      BuildConfirmationQueueItem(*confirmation,
-                                 /*process_at=*/Now() + base::Milliseconds(1));
+      BuildConfirmationQueueItem(
+          *confirmation,
+          /*process_at=*/test::Now() + base::Milliseconds(1));
 
   // Act
   const base::TimeDelta delay_before_processing_confirmation_queue_item =

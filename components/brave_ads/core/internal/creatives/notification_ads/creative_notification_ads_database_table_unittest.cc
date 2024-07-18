@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 
@@ -15,7 +15,7 @@
 
 namespace brave_ads {
 
-class BraveAdsCreativeNotificationAdsDatabaseTableTest : public UnitTestBase {
+class BraveAdsCreativeNotificationAdsDatabaseTableTest : public test::TestBase {
  protected:
   database::table::CreativeNotificationAds database_table_;
 };
@@ -184,14 +184,14 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableTest, GetNonExpired) {
 
   CreativeNotificationAdInfo creative_ad_1 =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
-  creative_ad_1.start_at = DistantPast();
-  creative_ad_1.end_at = Now();
+  creative_ad_1.start_at = test::DistantPast();
+  creative_ad_1.end_at = test::Now();
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
-  creative_ad_2.start_at = DistantPast();
-  creative_ad_2.end_at = DistantFuture();
+  creative_ad_2.start_at = test::DistantPast();
+  creative_ad_2.end_at = test::DistantFuture();
   creative_ads.push_back(creative_ad_2);
 
   database::SaveCreativeNotificationAds(creative_ads);

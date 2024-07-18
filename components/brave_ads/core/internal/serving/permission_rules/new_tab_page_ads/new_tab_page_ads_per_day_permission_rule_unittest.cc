@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
@@ -14,8 +14,7 @@
 
 namespace brave_ads {
 
-class BraveAdsNewTabPageAdsPerDayPermissionRuleTest : public UnitTestBase {
-};
+class BraveAdsNewTabPageAdsPerDayPermissionRuleTest : public test::TestBase {};
 
 TEST_F(BraveAdsNewTabPageAdsPerDayPermissionRuleTest,
        ShouldAllowIfThereAreNoAdEvents) {

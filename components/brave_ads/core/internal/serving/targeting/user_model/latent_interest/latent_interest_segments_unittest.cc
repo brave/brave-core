@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
 
@@ -15,10 +15,10 @@
 
 namespace brave_ads {
 
-class BraveAdsLatentInterestSegmentsTest : public UnitTestBase {
+class BraveAdsLatentInterestSegmentsTest : public test::TestBase {
  protected:
   void SetUp() override {
-    UnitTestBase::SetUp();
+    test::TestBase::SetUp();
 
     targeting_helper_ =
         std::make_unique<test::TargetingHelper>(task_environment_);
