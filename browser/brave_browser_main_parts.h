@@ -8,10 +8,6 @@
 
 #include "chrome/browser/chrome_browser_main.h"
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
-class DayZeroBrowserUIExptManager;
-#endif
-
 class BraveBrowserMainParts : public ChromeBrowserMainParts {
  public:
   using ChromeBrowserMainParts::ChromeBrowserMainParts;
@@ -29,10 +25,6 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
 
  private:
   friend class ChromeBrowserMainExtraPartsTor;
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
-  std::unique_ptr<DayZeroBrowserUIExptManager>
-      day_zero_browser_ui_expt_manager_;
-#endif
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_PARTS_H_

@@ -17,6 +17,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/prefs",
@@ -27,20 +28,18 @@ source_set("unit_tests") {
 }
 
 source_set("browser_tests") {
-  if (is_win) {
-    testonly = true
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "day_zero_browser_ui_expt_browsertest.cc" ]
-
-    deps = [
-      "//base",
-      "//brave/components/brave_rewards/common",
-      "//chrome/browser",
-      "//chrome/browser/ui",
-      "//chrome/test:test_support_ui",
-      "//components/prefs",
-      "//content/test:test_support",
-    ]
-  }
+  sources = [ "day_zero_browser_ui_expt_browsertest.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/common",
+    "//chrome/browser",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/test:test_support",
+  ]
 }
