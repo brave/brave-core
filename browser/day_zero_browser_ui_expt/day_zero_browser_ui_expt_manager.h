@@ -7,13 +7,15 @@
 #define BRAVE_BROWSER_DAY_ZERO_BROWSER_UI_EXPT_DAY_ZERO_BROWSER_UI_EXPT_MANAGER_H_
 
 #include <memory>
-#include <optional>
+#include <string>
 
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
+#include "components/prefs/pref_member.h"
 
 class PrefRegistrySimple;
+class PrefService;
 class Profile;
 class ProfileManager;
 
@@ -36,13 +38,18 @@ class DayZeroBrowserUIExptManager : public ProfileManagerObserver {
  private:
   friend class DayZeroBrowserUIExptTest;
 
-  explicit DayZeroBrowserUIExptManager(ProfileManager* profile_manager);
+  DayZeroBrowserUIExptManager(ProfileManager* profile_manager,
+                              PrefService* local_state);
 
   void SetForDayZeroBrowserUI(Profile* profile);
   void ResetForDayZeroBrowserUI(Profile* profile);
   void ResetBrowserUIStateForAllProfiles();
+  void OnP3AEnabledChanged(const std::string& pref_names);
+  bool IsP3AEnabled() const;
+  void SetDayZeroBrowserUIForAllProfiles();
 
   raw_ref<ProfileManager> profile_manager_;
+  BooleanPrefMember p3a_enabled_;
   base::ScopedObservation<ProfileManager, ProfileManagerObserver> observation_{
       this};
 };

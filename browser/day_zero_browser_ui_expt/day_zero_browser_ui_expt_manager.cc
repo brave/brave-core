@@ -5,8 +5,9 @@
 
 #include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
 
-#include <string>
+#include <optional>
 
+#include "base/functional/bind.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/day_zero_browser_ui_expt/pref_names.h"
@@ -16,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -73,18 +75,21 @@ DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
   }
 
   // base::WrapUnique for using private ctor.
-  return base::WrapUnique(new DayZeroBrowserUIExptManager(profile_manager));
+  return base::WrapUnique(
+      new DayZeroBrowserUIExptManager(profile_manager, local_state));
 }
 
 DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
-    ProfileManager* profile_manager)
+    ProfileManager* profile_manager,
+    PrefService* local_state)
     : profile_manager_(*profile_manager) {
-  for (auto* profile : profile_manager_->GetLoadedProfiles()) {
-    if (!profile->IsRegularProfile()) {
-      continue;
-    }
+  p3a_enabled_.Init(
+      p3a::kP3AEnabled, local_state,
+      base::BindRepeating(&DayZeroBrowserUIExptManager::OnP3AEnabledChanged,
+                          base::Unretained(this)));
 
-    SetForDayZeroBrowserUI(profile);
+  if (IsP3AEnabled()) {
+    SetDayZeroBrowserUIForAllProfiles();
   }
 
   observation_.Observe(&(*profile_manager_));
@@ -97,6 +102,10 @@ DayZeroBrowserUIExptManager::~DayZeroBrowserUIExptManager() {
 }
 
 void DayZeroBrowserUIExptManager::OnProfileAdded(Profile* profile) {
+  if (!IsP3AEnabled()) {
+    return;
+  }
+
   SetForDayZeroBrowserUI(profile);
 }
 
@@ -158,5 +167,25 @@ void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
     }
 
     ResetForDayZeroBrowserUI(profile);
+  }
+}
+
+void DayZeroBrowserUIExptManager::OnP3AEnabledChanged(
+    const std::string& pref_names) {
+  IsP3AEnabled() ? SetDayZeroBrowserUIForAllProfiles()
+                 : ResetBrowserUIStateForAllProfiles();
+}
+
+bool DayZeroBrowserUIExptManager::IsP3AEnabled() const {
+  return p3a_enabled_.GetValue();
+}
+
+void DayZeroBrowserUIExptManager::SetDayZeroBrowserUIForAllProfiles() {
+  for (auto* profile : profile_manager_->GetLoadedProfiles()) {
+    if (!profile->IsRegularProfile()) {
+      continue;
+    }
+
+    SetForDayZeroBrowserUI(profile);
   }
 }
