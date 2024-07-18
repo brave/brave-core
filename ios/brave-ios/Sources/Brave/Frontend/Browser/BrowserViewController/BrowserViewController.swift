@@ -2617,6 +2617,13 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 extension BrowserViewController: TabDelegate {
   func tab(_ tab: Tab, didCreateWebView webView: BraveWebView) {
     webView.frame = webViewContainer.frame
+    if webView.frame.size == .zero {
+      // Set a non empty CGRect to avoid DCHECKs that occur when a load happens
+      // after state restoration, and before the view hierarchy is laid out for the
+      // first time.
+      // https://source.chromium.org/chromium/chromium/src/+/main:ios/web/web_state/ui/crw_web_request_controller.mm;l=518;drc=df887034106ef438611326745a7cd276eedd4953
+      webView.frame.size = .init(width: 1, height: 1)
+    }
 
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
     KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }

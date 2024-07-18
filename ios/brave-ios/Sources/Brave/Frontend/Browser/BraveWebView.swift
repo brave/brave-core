@@ -68,13 +68,11 @@ class BraveWebView: CWVWebView {
   }
 }
 
-extension WKWebView {
+extension CWVWebView {
   public var sessionData: Data? {
-    get {
-      interactionState as? Data
-    }
-    set {
-      interactionState = newValue
-    }
+    if lastCommittedURL == nil { return nil }
+    let coder = NSKeyedArchiver(requiringSecureCoding: false)
+    encodeRestorableState(with: coder)
+    return coder.encodedData
   }
 }

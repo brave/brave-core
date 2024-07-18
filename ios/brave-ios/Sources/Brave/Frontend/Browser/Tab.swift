@@ -464,7 +464,11 @@ class Tab: NSObject {
         )
       }
       let webView = TabWebView(
-        frame: .zero,
+        // Set a non empty CGRect to avoid DCHECKs that occur when a load happens
+        // after state restoration, and before the view hierarchy is laid out for the
+        // first time.
+        // https://source.chromium.org/chromium/chromium/src/+/main:ios/web/web_state/ui/crw_web_request_controller.mm;l=518;drc=df887034106ef438611326745a7cd276eedd4953
+        frame: .init(width: 1.0, height: 1.0),
         tab: self,
         configuration: configuration!,
         isPrivate: isPrivate
@@ -538,7 +542,7 @@ class Tab: NSObject {
     // To remove history from WebKit, we simply update the session data AFTER calling "clear" above
     SessionTab.update(
       tabId: id,
-      interactionState: webView.underlyingWebView?.sessionData ?? Data(),
+      interactionState: webView.sessionData ?? Data(),
       title: title,
       url: webView.lastCommittedURL ?? TabManager.ntpInteralURL
     )
@@ -549,10 +553,11 @@ class Tab: NSObject {
     // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
     // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
     // to trigger the session restore via custom handlers
-    if let sessionInfo = restorationData {
+    if let sessionInfo = restorationData, let coder = try? NSKeyedUnarchiver(forReadingFrom: sessionInfo.interactionState) {
       restoring = true
       lastTitle = sessionInfo.title
-      webView.underlyingWebView?.interactionState = sessionInfo.interactionState
+      coder.requiresSecureCoding = false
+      webView.decodeRestorableState(with: coder)
       restoring = false
       rewardsReportingState.wasRestored = true
       self.sessionData = nil
