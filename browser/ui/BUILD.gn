@@ -1347,6 +1347,7 @@ source_set("unit_tests") {
       "brave_file_select_utils_unittest.cc",
       "brave_layout_constants_unittest.cc",
       "brave_scheme_utils_unittest.cc",
+      "views/split_view/split_view_location_bar_unittest.cc",
     ]
     deps = [
       "//brave/components/l10n/common:test_support",

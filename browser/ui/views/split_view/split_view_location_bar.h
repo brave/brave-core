@@ -6,7 +6,11 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_LOCATION_BAR_H_
 #define BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_LOCATION_BAR_H_
 
+#include <memory>
+#include <string>
+
 #include "base/scoped_observation.h"
+#include "chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
 #include "components/prefs/pref_member.h"
 #include "components/url_formatter/url_formatter.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -21,6 +25,7 @@ class ImageView;
 }  // namespace views
 
 class PrefService;
+class LocationBarModel;
 
 // A simple version of the location bar for secondary web view.
 // This location bar only shows host of the current page.
@@ -29,7 +34,8 @@ class PrefService;
 // the site might not be safe.
 class SplitViewLocationBar : public views::WidgetDelegateView,
                              public content::WebContentsObserver,
-                             public views::ViewObserver {
+                             public views::ViewObserver,
+                             public ChromeLocationBarModelDelegate {
   METADATA_HEADER(SplitViewLocationBar, views::WidgetDelegateView)
 
  public:
@@ -57,8 +63,22 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   void OnViewBoundsChanged(views::View* observed_view) override;
   void OnViewIsDeleting(views::View* observed_view) override;
 
+  // ChromeLocationBarModelDelegate:
+  content::WebContents* GetActiveWebContents() const override;
+  bool ShouldDisplayURL() const override;
+
  private:
-  explicit SplitViewLocationBar(PrefService* service);
+  friend class SplitViewLocationBarUnitTest;
+
+  FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest, GetURLForDisplay_HTTP);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest,
+                           GetURLForDisplay_HTTPS);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest,
+                           UpdateURLAndIcon_CertErrorShouldShowHTTPSwithStrike);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewLocationBarUnitTest,
+                           UpdateIcon_InsecureContentsShouldShowWarningIcon);
+
+  explicit SplitViewLocationBar(PrefService* prefs);
 
   void UpdateVisibility();
   void UpdateBounds();
@@ -66,11 +86,13 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   void UpdateIcon();
   bool IsContentsSafe() const;
   bool HasCertError() const;
-  url_formatter::FormatUrlType GetURLFormatType() const;
+  std::u16string GetURLForDisplay() const;
 
   SkPath GetBorderPath(bool close);
 
   raw_ptr<PrefService> prefs_ = nullptr;
+
+  std::unique_ptr<LocationBarModel> location_bar_model_;
 
   raw_ptr<views::ImageView> safety_icon_ = nullptr;
   raw_ptr<views::Label> https_with_strike_ = nullptr;
@@ -90,4 +112,4 @@ END_VIEW_BUILDER
 
 DEFINE_VIEW_BUILDER(/*no export*/, SplitViewLocationBar)
 
-#endif  // __BRAVE_BROWSER_SRC_BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_LOCATION_BAR_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_LOCATION_BAR_H_
