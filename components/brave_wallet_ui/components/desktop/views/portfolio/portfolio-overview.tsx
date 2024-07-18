@@ -98,7 +98,6 @@ import {
   useGetVisibleNetworksQuery,
   useGetPricesHistoryQuery,
   useGetTokenSpotPricesQuery,
-  useReportActiveWalletsToP3AMutation,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery
@@ -274,14 +273,6 @@ export const PortfolioOverview = () => {
             networks: visiblePortfolioNetworks
           }
     )
-
-  const [reportActiveWalletsToP3A] = useReportActiveWalletsToP3AMutation()
-  React.useEffect(() => {
-    ;(async () => {
-      tokenBalancesRegistry &&
-        (await reportActiveWalletsToP3A(tokenBalancesRegistry))
-    })()
-  }, [reportActiveWalletsToP3A, tokenBalancesRegistry])
 
   // This will scrape all the user's accounts and combine the asset balances
   // for a single asset

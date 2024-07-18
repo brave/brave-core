@@ -131,20 +131,20 @@ export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {
 }
 
 export const getActiveWalletCount = (
-  accounts: BraveWallet.AccountInfo[],
+  accountIds: BraveWallet.AccountId[],
   tokenBalancesRegistry: TokenBalancesRegistry,
   countTestNetworks: boolean
 ) => {
   const activeWalletCount: Record<BraveWallet.CoinType, number> = {}
 
-  accounts.map((account) => {
+  accountIds.map((accountId) => {
     const accountBalances =
-      tokenBalancesRegistry.accounts[getAccountBalancesKey(account.accountId)]
+      tokenBalancesRegistry.accounts[getAccountBalancesKey(accountId)]
     if (!accountBalances) {
       return
     }
 
-    const coin = account.accountId.coin
+    const { coin } = accountId
 
     if (activeWalletCount[coin] === undefined) {
       activeWalletCount[coin] = 0

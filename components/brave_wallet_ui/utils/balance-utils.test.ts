@@ -253,6 +253,8 @@ const createMockRegistry = (balance: string) => {
   return tokenBalancesRegistry
 }
 
+const mockAccountIds = mockAccounts.map((account) => account.accountId)
+
 describe('getActiveWalletCount', () => {
   it('should return nothing with empty input', () => {
     const registry = createEmptyTokenBalancesRegistry()
@@ -262,7 +264,13 @@ describe('getActiveWalletCount', () => {
   it('should return no active accounts when zero balance', () => {
     const registry = createMockRegistry('0')
 
-    expect(getActiveWalletCount(mockAccounts, registry, false)).toStrictEqual({
+    expect(
+      getActiveWalletCount(
+        mockAccountIds,
+        registry,
+        false //
+      )
+    ).toStrictEqual({
       [BraveWallet.CoinType.BTC]: 0,
       [BraveWallet.CoinType.ETH]: 0,
       [BraveWallet.CoinType.FIL]: 0,
@@ -297,7 +305,7 @@ describe('getActiveWalletCount', () => {
     })
 
     expect(
-      getActiveWalletCount(mockAccounts, tokenBalancesRegistry, false)
+      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, false)
     ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 0,
       [BraveWallet.CoinType.SOL]: 0,
@@ -333,7 +341,7 @@ describe('getActiveWalletCount', () => {
     })
 
     expect(
-      getActiveWalletCount(mockAccounts, tokenBalancesRegistry, true)
+      getActiveWalletCount(mockAccountIds, tokenBalancesRegistry, true)
     ).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 1,
       [BraveWallet.CoinType.SOL]: 0,
@@ -346,7 +354,7 @@ describe('getActiveWalletCount', () => {
   it('should report active accounts', () => {
     const registry = createMockRegistry('1')
 
-    expect(getActiveWalletCount(mockAccounts, registry, true)).toStrictEqual({
+    expect(getActiveWalletCount(mockAccountIds, registry, true)).toStrictEqual({
       [BraveWallet.CoinType.ETH]: 1,
       [BraveWallet.CoinType.SOL]: 1,
       [BraveWallet.CoinType.FIL]: 1,
@@ -388,7 +396,11 @@ describe('getActiveWalletCount', () => {
 
     expect(
       getActiveWalletCount(
-        [...mockAccounts, mockEthAccountInfo2, mockZecAccount2],
+        [
+          ...mockAccountIds,
+          mockEthAccountInfo2.accountId,
+          mockZecAccount2.accountId
+        ],
         tokenBalancesRegistry,
         true
       )

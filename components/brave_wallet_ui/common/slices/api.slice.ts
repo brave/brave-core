@@ -304,7 +304,6 @@ export const {
   useRemoveAccountMutation,
   useRemoveSitePermissionMutation,
   useRemoveUserTokenMutation,
-  useReportActiveWalletsToP3AMutation,
   useReportOnboardingActionMutation,
   useRequestSitePermissionMutation,
   useRestoreNetworksMutation,
