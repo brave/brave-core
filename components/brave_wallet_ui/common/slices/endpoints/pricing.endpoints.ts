@@ -24,7 +24,7 @@ import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 import { makeSerializableTimeDelta } from '../../../utils/model-serialization-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
-import { getAssetIdKey } from '../../../utils/asset-utils'
+import { findTokenByAssetId } from '../../../utils/asset-utils'
 
 interface GetTokenSpotPricesArg {
   ids: string[]
@@ -303,7 +303,7 @@ export const pricingEndpoints = ({
             .map(([chainId, tokenBalancesForChainId]) => {
               return Object.entries(tokenBalancesForChainId.tokenBalances).map(
                 ([assetId, balance]) => {
-                  const token = tokens.find((t) => getAssetIdKey(t) === assetId)
+                  const token = findTokenByAssetId(assetId, tokens)
 
                   if (token) {
                     const priceId = getPriceIdForToken(token)
