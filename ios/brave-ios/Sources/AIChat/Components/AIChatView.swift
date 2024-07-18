@@ -107,10 +107,7 @@ public struct AIChatView: View {
                         dismissAction: {
                           if model.apiError == .rateLimitReached {
                             if let nonPremiumModel = model.models.first(where: {
-                              guard let leoModelOptions = $0.options.leoModelOptions else {
-                                return false
-                              }
-                              return leoModelOptions.access != .premium
+                              $0.access != .premium
                             }) {
                               model.changeModel(modelKey: nonPremiumModel.key)
                               model.retryLastRequest()
@@ -488,8 +485,7 @@ public struct AIChatView: View {
             await model.refreshPremiumStatus()
 
             if let nonPremiumModel = model.models.first(where: {
-              guard let leoModelOptions = $0.options.leoModelOptions else { return false }
-              return leoModelOptions.access != .premium
+              $0.access != .premium
             }) {
               model.changeModel(modelKey: nonPremiumModel.key)
               model.retryLastRequest()
