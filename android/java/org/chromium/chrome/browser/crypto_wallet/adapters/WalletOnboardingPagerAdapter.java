@@ -49,6 +49,7 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
 
     private static final long TERMS_OF_USE_PASSWORD_CREATION_ID = 999;
     private static final long TERMS_OF_USE_RESTORE_ID = 998;
+    private static final long UNLOCK_ID = 997;
 
     @NonNull private final BraveWalletP3a mBraveWalletP3A;
     private final boolean mRestartSetupAction;
@@ -69,6 +70,9 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
     }
 
     public void setWalletAction(@NonNull final WalletAction walletAction) {
+        if (walletAction == mWalletAction) {
+            return;
+        }
         mWalletAction = walletAction;
 
         if (walletAction == WalletAction.ONBOARDING) {
@@ -84,6 +88,9 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public long getItemId(int position) {
+        if (position == 0 && mWalletAction == WalletAction.UNLOCK) {
+            return UNLOCK_ID;
+        }
         // The terms of use fragment is used by two different wallet actions,
         // and it's important to differentiate the IDs for not sharing their state,
         // so we are manually passing constants for these two cases.
