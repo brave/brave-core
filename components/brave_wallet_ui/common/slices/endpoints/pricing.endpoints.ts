@@ -24,6 +24,7 @@ import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 import { makeSerializableTimeDelta } from '../../../utils/model-serialization-utils'
 import { getPriceIdForToken } from '../../../utils/api-utils'
 import Amount from '../../../utils/amount'
+import { findTokenByAssetId } from '../../../utils/asset-utils'
 
 interface GetTokenSpotPricesArg {
   ids: string[]
@@ -56,6 +57,7 @@ interface GetPricesHistoryArg {
       | 'decimals'
       | 'symbol'
       | 'coingeckoId'
+      | 'tokenId'
     >
   >
 
@@ -150,7 +152,7 @@ export const pricingEndpoints = ({
 
           const registry: SpotPriceRegistry = results
             .flat()
-            .reduce((acc, assetPrice) => {
+            .reduce<SpotPriceRegistry>((acc, assetPrice) => {
               acc[assetPrice.fromAsset.toLowerCase()] = assetPrice
               return acc
             }, {})
@@ -281,16 +283,16 @@ export const pricingEndpoints = ({
 
               const chainBalances = aggregatedBalances[chainId].tokenBalances
 
-              for (const [contractAddress, tokenBalance] of Object.entries(
+              for (const [assetId, tokenBalance] of Object.entries(
                 tokenBalancesForChainId.tokenBalances
               )) {
-                if (!chainBalances[contractAddress.toLowerCase()]) {
-                  chainBalances[contractAddress.toLowerCase()] = tokenBalance
+                if (!chainBalances[assetId.toLowerCase()]) {
+                  chainBalances[assetId.toLowerCase()] = tokenBalance
                 } else {
-                  chainBalances[contractAddress.toLowerCase()] = new Amount(
+                  chainBalances[assetId.toLowerCase()] = new Amount(
                     tokenBalance
                   )
-                    .plus(chainBalances[contractAddress.toLowerCase()])
+                    .plus(chainBalances[assetId.toLowerCase()])
                     .format()
                 }
               }
@@ -300,13 +302,8 @@ export const pricingEndpoints = ({
           const jointHistory = Object.entries(aggregatedBalances)
             .map(([chainId, tokenBalancesForChainId]) => {
               return Object.entries(tokenBalancesForChainId.tokenBalances).map(
-                ([contractAddress, balance]) => {
-                  const token = tokens.find(
-                    (t) =>
-                      t.chainId === chainId &&
-                      t.contractAddress.toLowerCase() ===
-                        contractAddress.toLowerCase()
-                  )
+                ([assetId, balance]) => {
+                  const token = findTokenByAssetId(assetId, tokens)
 
                   if (token) {
                     const priceId = getPriceIdForToken(token)
