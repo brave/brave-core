@@ -107,10 +107,10 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
 
   if options.upload:
     new_profile_sha1_path = cloud_storage.UploadFileToCloudStorage(
-        cloud_storage.CloudFolder.PROFILES, profile_zip_sizes)
+        cloud_storage.CloudFolder.PROFILES, profile_zip)
     files: Dict[str, str] = dict()
     files[new_profile_sha1_path] = os.path.join(GetBravePerfProfileDir(),
-                                                zip_filename)
+                                                zip_filename + '.sha1')
     files[profile_zip_sizes] = os.path.join(GetBravePerfProfileDir(),
                                             sizes_filename)
     version_str = cfg.version.to_string()
