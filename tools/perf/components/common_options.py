@@ -42,6 +42,8 @@ class CommonOptions:
   target_arch: str = ''
 
   do_report: bool = False
+  upload: bool = True
+  upload_branch: Optional[str] = None
   report_on_failure: bool = False
   local_run: bool = False
   retry_count = 2
@@ -118,6 +120,17 @@ class CommonOptions:
         '--report-on-failure',
         action='store_true',
         help='[ci-mode] Report to the dashboard despite test failures')
+    parser.add_argument(
+        '--upload',
+        action='store_true',
+        default=True,
+        help=
+        '(for profile updating) Update the updated profile to cloud storage and push the changes to b-c'
+    )
+    parser.add_argument(
+        '--upload-branch',
+        type=str,
+        help='(for profile updating) A target branch to push the changes')
 
     parser.add_argument('--more-help',
                         action='help',
@@ -169,5 +182,7 @@ class CommonOptions:
 
     options.do_report = (not args.no_report and not args.local_run
                          and options.mode == PerfMode.RUN)
+    options.upload = args.upload
+    options.upload_branch = args.upload_branch
 
     return options

@@ -5,7 +5,7 @@ The recommended update interval is once a month.
 
 ## Important details
 
-* The profiles are stored as zip archives in the`brave-telemetry` bucket on Google Cloud Storage(GCS ) .
+* The profiles are stored as zip archives in the `perf-data` bucket on AWS S3 storage.
 * `brave-core` stores only sha1 hashes of these profiles.
 * Profiles have versions. After updating, the old browser versions continue to use the old profiles (using git history to rewind the time). This ensures build reproducibility.
 
@@ -20,7 +20,7 @@ The recommended update interval is once a month.
 * Chromium and Brave use different profiles, so two builds for each platforms win/mac-arm64/android should be launched (6 builds in total). For details, check the configurations in  `configs/ci/`.
 * For CI URLS check [README.md](./README.md)
 
-## Step 2: Upload to GCS
+## Step 2: Upload to S3
 
 * Download `artifacts.zip` (the URL in the Console Output) from all the builds and extract them.
 * Each unpacked artifact contains a zip archive with the updated profile (e.g. `brave-typical-win.zip`) and `.size` file (e.g. `brave-typical-win.zip.sizes`). Copy these files to `./profiles/`.

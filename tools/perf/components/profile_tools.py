@@ -14,6 +14,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
+import components.perf_test_utils as perf_test_utils
+
+from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
 from components.common_options import CommonOptions
@@ -87,16 +90,32 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
 
   CleanProfileCaches(profile_dir)
 
+  zip_filename = cfg.profile + '.zip'
+  sizes_filename = cfg.profile + '.zip.sizes'
+
   profile_zip = os.path.join(options.working_directory, 'artifacts',
-                             cfg.profile + '.zip')
+                             zip_filename)
   profile_zip_sizes = os.path.join(options.working_directory, 'artifacts',
-                                   cfg.profile + '.zip.sizes')
+                                   sizes_filename)
   logging.info('Packing profile %s to %s', profile_dir, profile_zip)
   with scoped_cwd(profile_dir):
     make_zip(profile_zip, files=[], dirs=['.'])
 
   with open(profile_zip_sizes, 'w', encoding='utf-8') as f:
     f.write(GetProfileStats(profile_dir).toText())
+
+  if options.upload:
+    new_profile_sha1_path = perf_test_utils.UploadFileToCloudStorage(
+        perf_test_utils.CloudFolder.PROFILES, profile_zip_sizes)
+    files: Dict[str, str] = dict()
+    files[new_profile_sha1_path] = os.path.join(GetBravePerfProfileDir(),
+                                                zip_filename)
+    files[profile_zip_sizes] = os.path.join(GetBravePerfProfileDir(),
+                                            sizes_filename)
+    version_str = cfg.version.to_string()
+    commit_message = f'Update perf profile {cfg.profile} using {version_str}'
+    branch = options.upload_branch or f'update-perf-profiles-{version_str}'
+    perf_test_utils.PushChangesToBranch(files, branch, commit_message)
 
 
 def _sizeKB(size: int) -> int:
