@@ -570,7 +570,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
         items = GenerateClusterBlock(info);
       }
     } else if (iteration_type == 2) {
-      // Step 6: Optional special card
+      // Step 6: Optional special card or Advertisement
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
       if (TossCoin()) {
         DVLOG(1) << "Step 6.1: Special Block";
