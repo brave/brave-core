@@ -44,6 +44,7 @@ import {
   mockBasicAttentionToken,
   mockErc20TokensList,
   mockErc721Token,
+  mockMoonCatNFT,
   mockSplBat,
   mockSplNft,
   mockSplUSDC,
@@ -1081,6 +1082,16 @@ export class MockedWalletApiProxy {
         },
         error: 0,
         errorMessage: ''
+      }
+    },
+    getERC721OwnerOf: async (contract, tokenId, chainId) => {
+      if (contract === mockMoonCatNFT.contractAddress) {
+        return { ownerAddress: mockAccount.address, error: 0, errorMessage: '' }
+      }
+      return {
+        error: 0,
+        errorMessage: '',
+        ownerAddress: '0xDeadBeef'
       }
     }
   }
