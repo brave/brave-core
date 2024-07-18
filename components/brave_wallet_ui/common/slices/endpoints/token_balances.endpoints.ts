@@ -51,6 +51,7 @@ import { getIsRewardsNetwork } from '../../../utils/rewards_utils'
 import {
   blockchainTokenEntityAdaptorInitialState //
 } from '../entities/blockchain-token.entity'
+import { reportActiveWalletsToP3A } from '../../../utils/p3a_utils'
 
 type BalanceNetwork = Pick<
   BraveWallet.NetworkInfo,
@@ -499,6 +500,8 @@ export const tokenBalancesEndpoints = ({
             } else {
               setPersistedPortfolioTokenBalances(mergedRegistry)
             }
+
+            reportActiveWalletsToP3A(arg.accountIds, mergedRegistry)
           } catch (error) {
             handleEndpointError(
               'getTokenBalancesRegistry.onCacheEntryAdded',
