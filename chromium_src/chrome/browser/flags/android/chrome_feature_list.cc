@@ -64,8 +64,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {tab_groups::kAndroidTabGroupStableIds, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIncognitoReauthenticationForAndroid, base::FEATURE_ENABLED_BY_DEFAULT},
     {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kShowNtpAtStartupAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kStartSurfaceAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSurfacePolish, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAdaptiveButtonInTopToolbarCustomizationV2,
      base::FEATURE_DISABLED_BY_DEFAULT},
