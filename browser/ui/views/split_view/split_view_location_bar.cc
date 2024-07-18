@@ -7,34 +7,43 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/ssl/security_state_tab_helper.h"
+#include "chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"
+#include "chrome/common/url_constants.h"
+#include "components/omnibox/browser/location_bar_model_impl.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/prefs/pref_service.h"
-#include "components/url_formatter/url_formatter.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "net/cert/cert_status_flags.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/point.h"
-#include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/controls/styled_label.h"
 #include "ui/views/layout/box_layout_view.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "url/url_constants.h"
 
-SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs) : prefs_(prefs) {
+SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs)
+    : prefs_(prefs),
+      location_bar_model_(std::make_unique<LocationBarModelImpl>(
+          this,
+          content::kMaxURLDisplayChars)) {
   constexpr auto kChildSpacing = 8;
   views::Builder<SplitViewLocationBar>(this)
       .SetBorder(
@@ -82,6 +91,11 @@ SplitViewLocationBar::SplitViewLocationBar(PrefService* prefs) : prefs_(prefs) {
   https_with_strike_->SetFontList(
       https_with_strike_->font_list().DeriveWithStyle(
           gfx::Font::FontStyle::STRIKE_THROUGH));
+
+  if (!prefs_) {
+    CHECK_IS_TEST();
+    return;
+  }
 
   prevent_url_elision_.Init(
       omnibox::kPreventUrlElisionsInOmnibox, prefs_,
@@ -181,6 +195,26 @@ void SplitViewLocationBar::OnViewIsDeleting(views::View* observed_view) {
   view_observation_.Reset();
 }
 
+content::WebContents* SplitViewLocationBar::GetActiveWebContents() const {
+  return web_contents();
+}
+
+bool SplitViewLocationBar::ShouldDisplayURL() const {
+  content::NavigationEntry* entry = GetNavigationEntry();
+  if (entry && !entry->IsInitialEntry()) {
+    // We don't want to hide chrome://newtab url for this location bar.
+    const auto is_ntp = [](const GURL& url) {
+      return url.SchemeIs(content::kChromeUIScheme) &&
+             url.host() == chrome::kChromeUINewTabHost;
+    };
+    if (is_ntp(entry->GetVirtualURL()) || is_ntp(entry->GetURL())) {
+      return true;
+    }
+  }
+
+  return ChromeLocationBarModelDelegate::ShouldDisplayURL();
+}
+
 void SplitViewLocationBar::UpdateVisibility() {
   auto* view = view_observation_.GetSource();
   if (view && view->GetVisible()) {
@@ -205,32 +239,24 @@ void SplitViewLocationBar::UpdateBounds() {
 }
 
 void SplitViewLocationBar::UpdateURLAndIcon() {
-  if (auto* contents = web_contents()) {
-    auto format = GetURLFormatType();
-    if (HasCertError()) {
-      // In case of cert error, we show https scheme with another view so that
-      // we can strike the scheme. So we omit HTTPS here.
-      format |= url_formatter::kFormatUrlOmitHTTPS;
-      https_with_strike_->SetVisible(true);
-      scheme_separator_->SetVisible(true);
+  auto url_text = GetURLForDisplay();
+  if (HasCertError()) {
+    // In case of cert error, we show https scheme with another view so that
+    // we can strike the scheme. So we omit HTTPS here.
+    https_with_strike_->SetVisible(true);
+    scheme_separator_->SetVisible(true);
+    if (url_text.starts_with(u"https://")) {
+      url_text = url_text.substr(8);
     } else {
-      https_with_strike_->SetVisible(false);
-      scheme_separator_->SetVisible(false);
+      CHECK_IS_TEST();
     }
-
-    auto url = contents->GetLastCommittedURL();
-    auto origin = url::Origin::Create(url);
-    auto formatted_origin = url_formatter::FormatUrl(
-        origin.opaque() ? url : origin.GetURL(), format,
-        base::UnescapeRule::SPACES, nullptr, nullptr, nullptr);
-    url_->SetText(formatted_origin);
-    UpdateIcon();
   } else {
     https_with_strike_->SetVisible(false);
     scheme_separator_->SetVisible(false);
-    url_->SetText({});
-    UpdateIcon();
   }
+
+  url_->SetText(url_text);
+  UpdateIcon();
 
   UpdateBounds();
 }
@@ -241,40 +267,24 @@ void SplitViewLocationBar::UpdateIcon() {
 }
 
 bool SplitViewLocationBar::IsContentsSafe() const {
-  if (!web_contents()) {
-    return true;
-  }
-
-  auto security_level = SecurityStateTabHelper::FromWebContents(web_contents())
-                            ->GetSecurityLevel();
+  auto security_level = location_bar_model_->GetSecurityLevel();
   return security_level == security_state::SecurityLevel::SECURE ||
          security_level == security_state::SecurityLevel::NONE;
 }
 
 bool SplitViewLocationBar::HasCertError() const {
-  if (!web_contents()) {
-    return false;
-  }
-
-  return net::IsCertStatusError(
-      SecurityStateTabHelper::FromWebContents(web_contents())
-          ->GetVisibleSecurityState()
-          ->cert_status);
+  return net::IsCertStatusError(location_bar_model_->GetCertStatus());
 }
 
-url_formatter::FormatUrlType SplitViewLocationBar::GetURLFormatType() const {
-  const auto full_url_format = url_formatter::kFormatUrlOmitDefaults &
-                               ~url_formatter::kFormatUrlOmitHTTP;
-  if (*prevent_url_elision_) {
-    return full_url_format;
+std::u16string SplitViewLocationBar::GetURLForDisplay() const {
+  auto url = location_bar_model_->GetURLForDisplay();
+  if (location_bar_model_->GetURL().scheme() == url::kHttpScheme &&
+      !url.starts_with(u"http://")) {
+    // In split view, we want to show the scheme for http.
+    url = u"http://" + url;
   }
 
-  if (IsContentsSafe()) {
-    return url_formatter::kFormatUrlOmitDefaults |
-           url_formatter::kFormatUrlOmitHTTPS;
-  }
-
-  return full_url_format;
+  return url;
 }
 
 SkPath SplitViewLocationBar::GetBorderPath(bool close) {
