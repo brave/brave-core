@@ -143,7 +143,7 @@ void BraveBrowser::RunFileChooser(
     // Fill title of file chooser with origin of the frame.
 
     // Note that save mode param is for PPAPI. 'Save As...' or downloading
-    // something doesn't reach here. They shows select file dialog from
+    // something doesn't reach here. They show 'select file dialog' from
     // DownloadFilePicker::DownloadFilePicker directly.
     // https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/public/mojom/choosers/file_chooser.mojom;l=27;drc=047c7dc4ee1ce908d7fea38ca063fa2f80f92c77
 
