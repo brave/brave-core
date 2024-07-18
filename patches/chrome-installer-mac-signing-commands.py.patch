@@ -1,0 +1,13 @@
+diff --git a/chrome/installer/mac/signing/commands.py b/chrome/installer/mac/signing/commands.py
+index 398a4cafbf4e46fe720f273bf8a4183d07bd4fc9..6d21fc28734c78246f5d8471099c55670a0d49ba 100644
+--- a/chrome/installer/mac/signing/commands.py
++++ b/chrome/installer/mac/signing/commands.py
+@@ -129,7 +129,7 @@ def macos_version():
+         A list containing one element for each component of the version number,
+         such as [10, 15, 6] and [11, 0].
+     """
+-    return [int(x) for x in platform.mac_ver()[0].split('.')]
++    return [int(x) for x in os.getenv('MACOS_VERSION', platform.mac_ver()[0]).split('.')]
+ 
+ 
+ def read_plist(path):

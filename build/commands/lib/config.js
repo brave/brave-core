@@ -1212,6 +1212,11 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party',
                                            'rust-toolchain', 'bin'), true)
     env = this.addPathToEnv(env, this.depotToolsDir, true)
+    if (this.getTargetOS() === 'mac' && process.platform !== 'darwin') {
+      const crossCompilePath = path.join(this.srcDir, 'brave', 'build', 'mac',
+                                         'cross-compile', 'path')
+      env = this.addPathToEnv(env, crossCompilePath, true)
+    }
     const pythonPaths = [
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
@@ -1221,12 +1226,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       ['build'],
       ['third_party', 'depot_tools'],
     ]
-    if (this.getTargetOS() === 'mac' && process.platform !== 'darwin') {
-      const crossCompileDir = ['brave', 'build', 'mac', 'cross-compile']
-      const pathDir = [this.srcDir, ...crossCompileDir, 'path']
-      env = this.addPathToEnv(env, path.join(...pathDir), true)
-      pythonPaths.push([...crossCompileDir, 'pythonpath'])
-    }
     pythonPaths.forEach(p => {
       env = this.addPythonPathToEnv(env, path.join(this.srcDir, ...p))
     })
