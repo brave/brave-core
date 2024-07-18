@@ -37,7 +37,6 @@ class FavoritesViewController: UIViewController {
     DataSource(
       collectionView: self.collectionView,
       cellProvider: { [weak self] collectionView, indexPath, wrapper -> UICollectionViewCell? in
-
         self?.cellProvider(collectionView: collectionView, indexPath: indexPath, wrapper: wrapper)
       }
     )
@@ -70,7 +69,7 @@ class FavoritesViewController: UIViewController {
     } else if !privateBrowsingManager.isPrivateBrowsing
       && Preferences.Search.shouldShowRecentSearchesOptIn.value
     {
-      sections.append(.recentSearches)
+      sections.append(.recentSearchesOptIn)
     }
     return sections
   }
@@ -109,6 +108,13 @@ class FavoritesViewController: UIViewController {
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
         withReuseIdentifier: "recent_searches_header"
       )
+
+      $0.register(
+        FavoritesRecentSearchOptInHeaderView.self,
+        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+        withReuseIdentifier: "recent_searches_opt-in_header"
+      )
+
     }
 
     favoritesFRC.delegate = self
@@ -261,7 +267,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     }
 
     switch section {
-    case .pasteboard:
+    case .pasteboard, .recentSearchesOptIn:
       break
     case .favorites:
       guard let bookmark = favoritesFRC.fetchedObjects?[safe: indexPath.item] else {
@@ -301,10 +307,8 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     case .favorites:
       return CGSize(width: collectionView.bounds.width, height: 32.0)
     case .recentSearches:
-      if Preferences.Search.shouldShowRecentSearches.value {
-        return CGSize(width: collectionView.bounds.width, height: 22.0)
-      }
-
+      return CGSize(width: collectionView.bounds.width, height: 22.0)
+    case .recentSearchesOptIn:
       return CGSize(width: collectionView.bounds.width, height: 150.0)
     }
   }
@@ -319,22 +323,24 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
       return .zero
     }
 
+    let collectionViewWidth =
+      collectionView.bounds.width - (layout.sectionInset.left + layout.sectionInset.right)
+      - (collectionView.contentInset.left + collectionView.contentInset.right)
+
     switch section {
-    case .pasteboard:
-      assertionFailure("Pasteboard section should have no items")
+    case .pasteboard, .recentSearchesOptIn:
+      assertionFailure("Pasteboard/Recent Search Opt-In section should have no items")
       return .zero
     case .favorites:
       return favoriteGridSize
     case .recentSearches:
-      let width =
-        collectionView.bounds.width - (layout.sectionInset.left + layout.sectionInset.right)
-        - (collectionView.contentInset.left + collectionView.contentInset.right)
-      return CGSize(width: width, height: 28.0)
+      return CGSize(width: collectionViewWidth, height: 28.0)
     }
   }
 }
 
-// Recent Searches
+// MARK: - Action
+
 extension FavoritesViewController {
   func onOpenRecentSearch(_ recentSearch: RecentSearch) {
     recentSearchAction(recentSearch, false)
@@ -391,13 +397,15 @@ extension FavoritesViewController {
   }
 }
 
+// MARK: - Preference Observer
+
 extension FavoritesViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     updateUIWithSnapshot()
   }
 }
 
-// MARK: - Diffable data source + NSFetchedResultsControllerDelegate
+// MARK: -  NSFetchedResultsControllerDelegate + Diffable DataSource
 
 extension FavoritesViewController: NSFetchedResultsControllerDelegate {
   private var favoritesSectionExists: Bool {
@@ -648,34 +656,44 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           withReuseIdentifier: "recent_searches_header",
           for: indexPath
         ) as? FavoritesRecentSearchHeaderView {
-//          header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
-//
-//          header.showButton.addTarget(
-//            self,
-//            action: #selector(onRecentSearchShowPressed),
-//            for: .touchUpInside
-//          )
-//          header.hideClearButton.addTarget(
-//            self,
-//            action: #selector(onRecentSearchHideOrClearPressed(_:)),
-//            for: .touchUpInside
-//          )
-//
-//          let shouldShowRecentSearches = Preferences.Search.shouldShowRecentSearches.value
-//          var showButtonVisible = !shouldShowRecentSearches
-//          var clearButtonVisible = !shouldShowRecentSearches
-//          if let fetchedObjects = recentSearchesFRC.fetchedObjects, shouldShowRecentSearches {
-//            let totalCount = RecentSearch.totalCount()
-//            showButtonVisible = fetchedObjects.count < totalCount
-//            clearButtonVisible = fetchedObjects.count <= totalCount
-//          }
-//          header.setButtonVisibility(
-//            showButtonVisible: showButtonVisible,
-//            clearButtonVisible: clearButtonVisible
-//          )
+          //          header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
+          //
+          //          header.showButton.addTarget(
+          //            self,
+          //            action: #selector(onRecentSearchShowPressed),
+          //            for: .touchUpInside
+          //          )
+          //          header.hideClearButton.addTarget(
+          //            self,
+          //            action: #selector(onRecentSearchHideOrClearPressed(_:)),
+          //            for: .touchUpInside
+          //          )
+          //
+          //          let shouldShowRecentSearches = Preferences.Search.shouldShowRecentSearches.value
+          //          var showButtonVisible = !shouldShowRecentSearches
+          //          var clearButtonVisible = !shouldShowRecentSearches
+          //          if let fetchedObjects = recentSearchesFRC.fetchedObjects, shouldShowRecentSearches {
+          //            let totalCount = RecentSearch.totalCount()
+          //            showButtonVisible = fetchedObjects.count < totalCount
+          //            clearButtonVisible = fetchedObjects.count <= totalCount
+          //          }
+          //          header.setButtonVisibility(
+          //            showButtonVisible: showButtonVisible,
+          //            clearButtonVisible: clearButtonVisible
+          //          )
 
           return header
         }
+      case .recentSearchesOptIn:
+        if let header = collectionView.dequeueReusableSupplementaryView(
+          ofKind: kind,
+          withReuseIdentifier: "recent_searches_opt-in_header",
+          for: indexPath
+        ) as? FavoritesRecentSearchOptInHeaderView {
+
+          return header
+        }
+
       }
 
     }

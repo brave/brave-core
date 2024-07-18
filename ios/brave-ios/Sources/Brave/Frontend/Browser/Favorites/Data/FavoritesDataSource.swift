@@ -38,4 +38,5 @@ enum FavoritesSection: Int, CaseIterable {
   case pasteboard
   case favorites
   case recentSearches
+  case recentSearchesOptIn
 }

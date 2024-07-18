@@ -66,7 +66,7 @@ extension FavoritesViewController {
           children: [urlMenu, favMenu]
         )
       }
-    case .recentSearches:
+    case .recentSearches, .recentSearchesOptIn:
       break
     }
     return nil

@@ -39,7 +39,7 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
       }
       dragItem.localObject = bookmark
       return [dragItem]
-    case .recentSearches:
+    case .recentSearches, .recentSearchesOptIn:
       break
     }
     return []

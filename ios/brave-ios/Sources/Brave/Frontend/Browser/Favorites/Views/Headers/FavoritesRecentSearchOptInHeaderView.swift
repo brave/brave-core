@@ -8,14 +8,12 @@ import Foundation
 import Shared
 import UIKit
 
-class FavoritesRecentSearchOptInCell: UICollectionViewCell, CollectionViewReusable {
+class FavoritesRecentSearchOptInHeaderView: UICollectionReusableView {
   private struct DesignUX {
     static let buttonHeight = 40.0
     static let paddingX = 15.0
     static let paddingY = 10.0
   }
-
-  static let identifier = "RecentSearchOptInCell"
 
   private let titleLabel = UILabel().then {
     $0.text = Strings.recentSearchSectionTitle
