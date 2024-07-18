@@ -10,28 +10,19 @@ import subprocess
 import tempfile
 import platform
 
-from enum import Enum
 from threading import Timer
 from typing import Dict, List, Optional, Tuple
 from urllib.request import urlopen
 
 import components.path_util as path_util
 
-from download_from_google_storage import get_sha1
-
 with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
   from lib.util import extract_zip
-
-_CLOUD_BUCKET = 'perf-data'
-_CLOUD_HTTPS_URL = f'https://{_CLOUD_BUCKET}.s3.brave.com'
-
-
-class CloudFolder(str, Enum):
-  PROFILES = 'perf-profiles'
 
 
 def IsSha1Hash(s: str) -> bool:
   return re.match(r'[a-f0-9]{40}', s) is not None
+
 
 def ToChromiumPlatformName(target_os: str) -> str:
   if target_os == 'mac':
@@ -131,74 +122,7 @@ def DownloadFile(url: str, output: str):
     output_file.write(data)
 
 
-def DownloadFileFromCloudStorage(folder: CloudFolder, sha1: str, output: str):
-  assert IsSha1Hash(sha1)
-  url = f'{_CLOUD_HTTPS_URL}/{folder}/{sha1}'
-  DownloadFile(url, output)
-
-
-def UploadFileToCloudStorage(folder: CloudFolder, path: str):
-  assert os.path.isfile(path)
-  sha1 = get_sha1(path)
-  sha1_path = path + '.sha1'
-  with open(sha1_path, 'w', encoding='utf-8') as f:
-    f.write(sha1 + '\n')
-
-  s3_url = f's3://{_CLOUD_BUCKET}/{sha1}'
-
-  #TODO: return this:
-  #s3_url = f's3://{_CLOUD_BUCKET}/{folder}/{sha1}'
-  success, _ = GetProcessOutput(
-      ['aws', 's3', 'cp', path, s3_url, '--acl', 'bucket-owner-full-control'])
-  if not success:
-    raise RuntimeError(f'Can\'t upload to {s3_url}')
-  return sha1_path
-
-
-def PushChangesToBranch(files: Dict[str, str], branch: str,
-                        commit_message: str):
-  for attempt in range(3):
-    logging.info('Pushing changes to branch %s #%d', branch, attempt)
-    branch_exists, _ = GetProcessOutput(['git', 'fetch', 'origin', branch],
-                                        cwd=path_util.GetBraveDir())
-    logging.info(branch_exists)
-    if branch_exists:
-      GetProcessOutput(['git', 'checkout', '-f', 'FETCH_HEAD'],
-                       cwd=path_util.GetBraveDir(),
-                       check=True)
-
-    GetProcessOutput(['git', 'checkout', '-B', branch],
-                     cwd=path_util.GetBraveDir(),
-                     check=True)
-    for local_file, stage_path in files.items():
-      assert os.path.isfile(local_file)
-      shutil.copy(local_file, stage_path)
-      GetProcessOutput(['git', 'add', stage_path],
-                       cwd=path_util.GetBraveDir(),
-                       check=True)
-
-    GetProcessOutput(['git', 'commit', '-m', f'{commit_message}'],
-                     cwd=path_util.GetBraveDir(),
-                     check=True)
-    if GetProcessOutput(['git', 'push', 'origin', f'{branch}:{branch}'],
-                        cwd=path_util.GetBraveDir()):
-      return True
-
-  return False
-
-
 def DownloadArchiveAndUnpack(output_directory: str, url: str):
   _, f = tempfile.mkstemp(dir=output_directory)
   DownloadFile(url, f)
   extract_zip(f, output_directory)
-
-
-def GetFileAtRevision(filepath: str, revision: str) -> Optional[str]:
-  if os.path.isabs(filepath):
-    filepath = os.path.relpath(filepath, path_util.GetBraveDir())
-  normalized_path = filepath.replace('\\', '/')
-  success, content = GetProcessOutput(
-      ['git', 'show', f'{revision}:{normalized_path}'],
-      cwd=path_util.GetBraveDir(),
-      output_to_debug=False)
-  return content if success else None

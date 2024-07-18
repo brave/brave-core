@@ -10,20 +10,15 @@ import shutil
 
 import components.path_util as path_util
 
-from components.perf_test_utils import CloudFolder, DownloadFile, DownloadFileFromCloudStorage, GetFileAtRevision, IsSha1Hash
+from components.cloud_storage import CloudFolder, DownloadFileFromCloudStorage
 from components.version import BraveVersion
+from components.git_tools import GetFileAtRevision
+from components.perf_test_utils import IsSha1Hash
+
 
 with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
   from lib.util import extract_zip
 
-
-def DownloadFromCloudStorage(sha1: str, output_path: str) -> None:
-  """Download a file from brave perf storage.
-
-  For manual uploading call: aws s3 cp <file> s3://perf-data/
-  """
-  url = GetProfileDownloadUrl(sha1)
-  DownloadFile(url, output_path)
 
 def _GetProfileHash(profile: str, version: BraveVersion) -> str:
   if IsSha1Hash(profile):  # the explicit profile hash
