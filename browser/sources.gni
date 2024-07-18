@@ -339,8 +339,6 @@ if (ethereum_remote_client_enabled) {
 if (is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/android/brave_init_android.cc",
-    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
-    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
     "//chrome/browser/bookmarks/bookmark_html_writer.cc",
@@ -421,8 +419,6 @@ if (is_win) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_shell_integration_win.cc",
     "//brave/browser/brave_shell_integration_win.h",
-    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
-    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
     "//brave/browser/default_protocol_handler_utils_win.cc",
     "//brave/browser/default_protocol_handler_utils_win.h",
   ]
@@ -430,6 +426,14 @@ if (is_win) {
   brave_chrome_browser_deps += [
     "//chrome/install_static:install_static_util",
     "//chrome/installer/util:with_no_strings",
+  ]
+}
+
+if (is_win || is_android) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
+    "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
+    "//brave/browser/day_zero_browser_ui_expt/pref_names.h",
   ]
 }
 
