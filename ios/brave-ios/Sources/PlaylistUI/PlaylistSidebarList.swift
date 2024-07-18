@@ -52,7 +52,7 @@ struct PlaylistSidebarList: View {
           } label: {
             PlaylistItemView(
               title: item.name,
-              assetURL: item.assetURL,
+              assetURL: URL(string: item.mediaSrc),
               pageURL: URL(string: item.pageSrc),
               duration: .init(item.duration),
               isSelected: selectedItemID == item.id,
@@ -208,8 +208,11 @@ struct PlaylistSidebarListHeader: View {
     let items = selectedFolderItems
     var totalSize: Int = 0
     for item in items {
-      guard let cachedDataURL = item.cachedDataURL else { continue }
+      guard let cachedData = item.cachedData else { continue }
       totalSize += await Task.detached {
+        guard let cachedDataURL = await PlaylistItem.resolvingCachedData(cachedData) else {
+          return 0
+        }
         // No CoreData usage allowed in here
         do {
           let values = try cachedDataURL.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])
@@ -326,7 +329,7 @@ struct PlaylistSidebarListHeader: View {
     .task {
       await calculateTotalSizeOnDisk(for: selectedFolder)
     }
-    .onChange(of: selectedFolderItems.map(\.cachedDataURL)) { _ in
+    .onChange(of: selectedFolderItems.map(\.cachedData)) { _ in
       Task {
         await calculateTotalSizeOnDisk(for: selectedFolder)
       }

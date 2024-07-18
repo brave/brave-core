@@ -23,8 +23,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var uuid: String?
   @NSManaged public var playlistFolder: PlaylistFolder?
 
-  public var cachedDataURL: URL? {
-    guard let cachedData else { return nil }
+  static public func resolvingCachedData(_ cachedData: Data) async -> URL? {
     do {
       var isStale: Bool = false
       let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)

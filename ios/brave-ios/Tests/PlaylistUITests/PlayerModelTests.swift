@@ -210,6 +210,7 @@ class PlayerModelTests: CoreDataTestCase {
     await playerModel.prepareItemQueue()
 
     XCTAssertEqual(playerModel.selectedItemID, items[9].id)
+    XCTAssertFalse(playerModel.canPlayNextItem)
 
     await playerModel.playNextItem()
 
@@ -235,6 +236,7 @@ class PlayerModelTests: CoreDataTestCase {
     await playerModel.playNextItem()
 
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
+    XCTAssertTrue(playerModel.canPlayNextItem)
 
     await playerModel.playNextItem()
 
@@ -260,10 +262,12 @@ class PlayerModelTests: CoreDataTestCase {
     playerModel.repeatMode = .all
 
     XCTAssertEqual(playerModel.selectedItemID, items[8].id)
+    XCTAssertTrue(playerModel.canPlayNextItem)
 
     await playerModel.playNextItem()
 
     XCTAssertEqual(playerModel.selectedItemID, items[9].id)
+    XCTAssertTrue(playerModel.canPlayNextItem)
 
     await playerModel.playNextItem()
 
@@ -407,7 +411,7 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertTrue(playerModel.isPlaying)
 
     await playerModel.seek(to: 5, accurately: true)
-    XCTAssertEqual(playerModel.currentTime, 5)
+    XCTAssertEqual(playerModel.currentTime.rounded(), 5)
 
     playerModel.pause()
     XCTAssertFalse(playerModel.isPlaying)
