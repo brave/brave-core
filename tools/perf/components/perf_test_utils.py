@@ -2,21 +2,34 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
+from enum import Enum
 import logging
 import os
+import re
+import shutil
 import subprocess
 import tempfile
 import platform
 
 from threading import Timer
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 from urllib.request import urlopen
 
 import components.path_util as path_util
 
+from download_from_google_storage import get_sha1
+
 with path_util.SysPath(path_util.GetBraveScriptDir(), 0):
   from lib.util import extract_zip
 
+_CLOUD_BUCKET = 'perf-data'
+_CLOUD_HTTPS_URL = f'https://{_CLOUD_BUCKET}.s3.brave.com/'
+
+class CloudFolder(str, Enum):
+  PROFILES = 'perf-profiles'
+
+def IsSha1Hash(s: str) -> bool:
+  return re.match(r'[a-f0-9]{40}', s) is not None
 
 def ToChromiumPlatformName(target_os: str) -> str:
   if target_os == 'mac':
@@ -114,6 +127,44 @@ def DownloadFile(url: str, output: str):
   os.makedirs(os.path.dirname(output), exist_ok=True)
   with open(output, 'wb') as output_file:
     output_file.write(data)
+
+def DownloadFileFromCloudStorage(folder: CloudFolder, sha1: str, output: str):
+  assert IsSha1Hash(sha1)
+
+
+def UploadFileToCloudStorage(folder: CloudFolder, path: str):
+  assert os.path.isfile(path)
+  sha1 = get_sha1(path)
+  sha1_path = path + '.sha1'
+  with open(sha1_path, 'w', encoding='utf-8') as f:
+    f.write(sha1 + '\n')
+
+  s3_url = f's3://{_CLOUD_BUCKET}/{folder}'
+  logging.info(['aws', 's3', 'cp', path, s3_url])
+  success = True
+  # success, _ = GetProcessOutput(
+  #     ['aws', 's3', 'cp', path, s3_url])
+  if not success:
+    raise RuntimeError(f'Can\'t upload to {s3_url}')
+  return sha1_path
+
+
+def PushChangesToBranch(files: Dict[str, str], branch: str, commit_message: str):
+  branch_exists, _ = GetProcessOutput(['git', 'fetch', 'origin', branch], cwd=path_util.GetBraveDir())
+  logging.info(branch_exists)
+  # if branch_exists:
+  #   GetProcessOutput(['git', 'checkout', '-f', 'FETCH_HEAD'], cwd=path_util.GetBraveDir(), check=True)
+
+  GetProcessOutput(['git', 'checkout', '-B', branch], cwd=path_util.GetBraveDir(), check=True)
+  for local_file, stage_path in files.items():
+    assert os.path.isfile(local_file)
+    shutil.copy(local_file, stage_path)
+    GetProcessOutput(['git', 'add', stage_path], cwd=path_util.GetBraveDir(), check=True)
+
+  GetProcessOutput(['git', 'commit', '-m', f'{commit_message}'],
+                    cwd=path_util.GetBraveDir(), check=True)
+  return GetProcessOutput(['git', 'push', 'origin', f'{branch}:{branch}'],
+                   cwd=path_util.GetBraveDir())
 
 
 def DownloadArchiveAndUnpack(output_directory: str, url: str):

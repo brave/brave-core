@@ -92,7 +92,7 @@ class _UpdateProfilePage(page_module.Page):
 
   def __init__(self, page_set, delay: int):
     EXTRA_BROWSER_ARGUMENTS = ['--enable-brave-features-for-perf-testing']
-    self._delay = delay
+    self._delay = 5
     super().__init__(url='chrome://components',
                      page_set=page_set,
                      shared_page_state_class=_UpdateProfileSharedPageState,

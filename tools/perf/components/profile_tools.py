@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
+from components.path_util import GetBravePerfProfileDir
+from components.perf_test_utils import CloudFolder, PushChangesToBranch, UploadFileToCloudStorage
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
 from components.common_options import CommonOptions
@@ -97,6 +99,17 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
 
   with open(profile_zip_sizes, 'w', encoding='utf-8') as f:
     f.write(GetProfileStats(profile_dir).toText())
+
+  target_sha1_filepath = os.path.join(GetBravePerfProfileDir(),
+                               f'{cfg.profile}.zip.sha1')
+  target_sizes_filepath = os.path.join(GetBravePerfProfileDir(),
+                               f'{cfg.profile}.zip.sizes')
+
+  new_profile_sha1_path = UploadFileToCloudStorage(CloudFolder.PROFILES, profile_zip_sizes)
+  files: Dict[str, str] = dict()
+  files[new_profile_sha1_path] = target_sha1_filepath
+  files[profile_zip_sizes] = target_sizes_filepath
+  PushChangesToBranch(files, 'test-update-profile', 'test-update')
 
 
 def _sizeKB(size: int) -> int:

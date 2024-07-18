@@ -1,7 +1,7 @@
 {
   "configurations": [{
     "dashboard-bot-name": "test-agent",
-    "browser-type": "brave",
+    "browser-type": "brave.no-trials",
     "profile": "brave-typical-win",
     "extra-browser-args": ["--disable-features=CalculateNativeWinOcclusion"],
     "extra-benchmark-args": [],
