@@ -3,18 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as mojo from 'gen/mojo/public/mojom/base/time.mojom.m.js'
+import type * as mojo from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 
 type MojomEnum = {
-  [key: string]: number,
-  MIN_VALUE: number,
+  [key: string]: number
+  MIN_VALUE: number
   MAX_VALUE: number
 }
 
 /**
  * Converts a mojo time to a JS time.
  */
-export function mojoTimeToJSDate (mojoTime: mojo.Time): Date {
+export function mojoTimeToJSDate(mojoTime: mojo.Time): Date {
   // The JS Date() is based off of the number of milliseconds since the
   // UNIX epoch (1970-01-01 00::00:00 UTC), while |internalValue| of the
   // base::Time (represented in mojom.Time) represents the number of
@@ -35,11 +35,15 @@ export function mojoTimeToJSDate (mojoTime: mojo.Time): Date {
  * @param {!mojoBase.mojom.TimeDelta} mojoTime
  * @return {!Date}
  */
-export function mojoTimeDeltaToJSDate (mojoTime: mojo.TimeDelta) {
+export function mojoTimeDeltaToJSDate(mojoTime: mojo.TimeDelta) {
   return new Date(Number(mojoTime.microseconds) / 1000)
 }
 
-export function getKeysForMojomEnum<T extends MojomEnum>(mojomEnum: T): Array<Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>> {
+export function getKeysForMojomEnum<T extends MojomEnum>(
+  mojomEnum: T
+): Array<Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>> {
   const ignoreKeys = ['MIN_VALUE', 'MAX_VALUE']
-  return Object.keys(mojomEnum).filter(k => !ignoreKeys.includes(k)) as Array<Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>>
+  return Object.keys(mojomEnum).filter((k) => !ignoreKeys.includes(k)) as Array<
+    Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>
+  >
 }
