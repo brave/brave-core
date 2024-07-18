@@ -161,6 +161,13 @@ public class FaviconFetcher {
     await storeInCache(favicon, for: url, persistent: persistent)
   }
 
+  /// Delete the favicon from disk and memory cache for the given URL
+  public static func deleteCache(for url: URL) async {
+    let cachedURL = cacheURL(for: url)
+    SDImageCache.shared.memoryCache.removeObject(forKey: cachedURL.absoluteString)
+    SDImageCache.shared.diskCache.removeData(forKey: cachedURL.absoluteString)
+  }
+
   private static func cacheURL(for url: URL) -> URL {
     // Some websites still only have a favicon for the FULL url including the fragmented parts
     // But they won't have a favicon for their domain
