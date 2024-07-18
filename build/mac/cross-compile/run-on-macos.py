@@ -35,10 +35,12 @@ MACOS_HOST = os.environ['MACOS_HOST']
 SRC_DIR_LOCAL = dirname(dirname(dirname(dirname(dirname(dirname(__file__))))))
 SRC_DIR_MOUNT_IN_MACOS = os.environ['MACOS_SRC_DIR_MOUNT']
 
-assert gettempdir().startswith(SRC_DIR_LOCAL), \
-    f'The root temporary directory must be a subdirectory of {SRC_DIR_LOCAL} ' \
-    f'- otherwise, the macOS host cannot access it. Consider setting the ' \
-    f'TMPDIR environment variable.'
+tmp_dir = gettempdir()
+
+assert tmp_dir.startswith(SRC_DIR_LOCAL), \
+    f'The root temporary directory {tmp_dir} must be a subdirectory of ' \
+    f'{SRC_DIR_LOCAL} - otherwise, the macOS host cannot access it. Consider ' \
+    f'setting the TMPDIR environment variable.'
 
 cmd = basename(sys.argv[0])
 cwd = os.getcwd()
