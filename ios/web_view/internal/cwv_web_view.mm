@@ -1288,4 +1288,12 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
   config_provider.UpdateScripts();
 }
 
+- (void)createPDF:(void (^)(NSData* _Nullable))completionHandler {
+  _webState->CreateFullPagePdf(base::BindOnce(completionHandler));
+}
+
+- (void)takeSnapshotWithRect:(CGRect)rect completionHandler:(void (^)(UIImage* _Nullable))completionHandler {
+  _webState->TakeSnapshot(rect, base::BindRepeating(completionHandler));
+}
+
 @end

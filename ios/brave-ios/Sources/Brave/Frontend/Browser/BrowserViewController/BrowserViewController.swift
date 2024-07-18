@@ -3511,11 +3511,10 @@ extension BrowserViewController: UIScreenshotServiceDelegate {
       rect.origin.y =
         webView.scrollView.contentSize.height - rect.height - webView.scrollView.contentOffset.y
 
-      webView.underlyingWebView?.createPDF { result in
-        switch result {
-        case .success(let data):
+      webView.createPDF { data in
+        if let data {
           continuation.resume(returning: (data, 0, rect))
-        case .failure:
+        } else {
           continuation.resume(returning: (nil, 0, .zero))
         }
       }

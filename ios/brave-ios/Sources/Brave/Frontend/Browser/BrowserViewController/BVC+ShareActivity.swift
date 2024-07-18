@@ -187,13 +187,12 @@ extension BrowserViewController {
           BasicMenuActivity(
             activityType: .createPDF,
             callback: {
-              webView.underlyingWebView?.createPDF { [weak self] result in
+              webView.createPDF { [weak self] data in
                 dispatchPrecondition(condition: .onQueue(.main))
                 guard let self = self else {
                   return
                 }
-                switch result {
-                case .success(let pdfData):
+                if let pdfData = data {
                   Task {
                     // Create a valid filename
                     let validFilenameSet = CharacterSet(charactersIn: ":/")
@@ -226,10 +225,9 @@ extension BrowserViewController {
                       )
                     }
                   }
-
-                case .failure(let error):
+                } else {
                   Logger.module.error(
-                    "Failed to create PDF with error: \(error.localizedDescription)"
+                    "Failed to create PDF"
                   )
                 }
               }
