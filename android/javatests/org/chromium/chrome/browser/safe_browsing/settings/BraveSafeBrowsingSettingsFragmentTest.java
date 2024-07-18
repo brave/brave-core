@@ -15,9 +15,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
-import org.chromium.content_public.browser.test.util.TestThreadUtils;
 
 @RunWith(BaseJUnit4ClassRunner.class)
 public class BraveSafeBrowsingSettingsFragmentTest {
@@ -39,10 +39,13 @@ public class BraveSafeBrowsingSettingsFragmentTest {
     @Test
     @SmallTest
     public void testEnhancedProtectionNotVisible() {
-        TestThreadUtils.runOnUiThreadBlocking(() -> {
-            Assert.assertEquals(
-                    mSafeBrowsingPreference.getEnhancedProtectionButtonForTesting().getVisibility(),
-                    View.GONE);
-        });
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    Assert.assertEquals(
+                            mSafeBrowsingPreference
+                                    .getEnhancedProtectionButtonForTesting()
+                                    .getVisibility(),
+                            View.GONE);
+                });
     }
 }
