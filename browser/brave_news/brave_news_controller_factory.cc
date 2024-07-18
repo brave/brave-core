@@ -25,7 +25,7 @@ BraveNewsControllerFactory* BraveNewsControllerFactory::GetInstance() {
 }
 
 // static
-BraveNewsController* BraveNewsControllerFactory::GetForContext(
+BraveNewsController* BraveNewsControllerFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   return static_cast<BraveNewsController*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
@@ -39,13 +39,6 @@ BraveNewsControllerFactory::GetRemoteService(content::BrowserContext* context) {
       ->MakeRemote();
 }
 
-// static
-BraveNewsController* BraveNewsControllerFactory::GetControllerForContext(
-    content::BrowserContext* context) {
-  return static_cast<BraveNewsController*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
-}
-
 BraveNewsControllerFactory::BraveNewsControllerFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveNewsControllerFactory",
@@ -56,6 +49,10 @@ BraveNewsControllerFactory::BraveNewsControllerFactory()
 }
 
 BraveNewsControllerFactory::~BraveNewsControllerFactory() = default;
+
+bool BraveNewsControllerFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
 
 KeyedService* BraveNewsControllerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

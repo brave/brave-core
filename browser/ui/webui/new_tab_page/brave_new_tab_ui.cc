@@ -111,7 +111,7 @@ void BraveNewTabUI::BindInterface(
   DCHECK(profile);
   // Wire up JS mojom to service
   auto* brave_news_controller =
-      brave_news::BraveNewsControllerFactory::GetForContext(profile);
+      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
   if (brave_news_controller) {
     brave_news_controller->Bind(std::move(receiver));
   }

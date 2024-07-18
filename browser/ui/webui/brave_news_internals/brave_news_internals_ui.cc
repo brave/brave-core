@@ -31,7 +31,7 @@ void BraveNewsInternalsUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   auto* controller =
-      brave_news::BraveNewsControllerFactory::GetForContext(profile);
+      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
   if (!controller) {
     return;
   }
