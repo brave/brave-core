@@ -28,6 +28,8 @@ namespace internal {
 
 // Returns true if |url| has a valid scheme that we allow to import. We
 // filter out the URL with a unsupported scheme.
+// Taken from src/chrome/utility/importer/bookmarks_file_importer.cc because the
+// file is not compiled on Android,
 bool CanImportURL(const GURL& url) {
   // The URL is not valid.
   if (!url.is_valid()) {
@@ -35,9 +37,8 @@ bool CanImportURL(const GURL& url) {
   }
 
   // Filter out the URLs with unsupported schemes.
-  const char* const kInvalidSchemes[] = {"wyciwyg", "place"};
-  for (size_t i = 0; i < std::size(kInvalidSchemes); ++i) {
-    if (url.SchemeIs(kInvalidSchemes[i])) {
+  for (const char* invalid_scheme : {"wyciwyg", "place"}) {
+    if (url.SchemeIs(invalid_scheme)) {
       return false;
     }
   }
@@ -56,16 +57,15 @@ bool CanImportURL(const GURL& url) {
     }
 
     GURL fixed_url(url_formatter::FixupURL(url.spec(), std::string()));
-    for (size_t i = 0; i < chrome::kNumberOfChromeHostURLs; ++i) {
-      if (fixed_url.DomainIs(chrome::kChromeHostURLs[i])) {
+    const base::span<const base::cstring_view> hosts = chrome::ChromeURLHosts();
+    for (const base::cstring_view host : hosts) {
+      if (fixed_url.DomainIs(host)) {
         return true;
       }
     }
 
-    for (size_t i = 0; i < chrome::kNumberOfChromeDebugURLs; ++i) {
-      if (fixed_url == chrome::kChromeDebugURLs[i]) {
-        return true;
-      }
+    if (base::Contains(chrome::ChromeDebugURLs(), fixed_url)) {
+      return true;
     }
 
     // If url has either chrome:// or about: schemes but wasn't found in the
