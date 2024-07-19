@@ -119,7 +119,11 @@ export const FromAsset = (props: Props) => {
 
   const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(
-      token && defaultFiatCurrency
+      token &&
+        !token.isNft &&
+        !token.isErc721 &&
+        !token.isErc1155 &&
+        defaultFiatCurrency
         ? {
             ids: [getPriceIdForToken(token)],
             toCurrency: defaultFiatCurrency
