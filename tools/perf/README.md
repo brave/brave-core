@@ -15,23 +15,30 @@ The current structure:
 
 ## S3 manual upload
 
-`shasum -a 1 <filename> > <filename>.sha1`
-`aws s3 cp <filename> s3://brave-perf-data/<folder>/<filename> \
-  --profile go-translate-dev --acl bucket-owner-full-control`
+Make sure that you setup aws cli tools.
 
-## GSC manual upload
+1. Calculate SHA1 hash
+2. Upload to `s3://brave-perf-data/<folder>/<sha1>`
+3. Store the hash as `<filename>.sha1`
+
+A sh command to run all 3 steps:
+`FILE=<filename>; \
+SHA1=$(shasum -a 1 BUILD.gn | head -c 40); \
+  aws s3 cp $FILE s3://brave-perf-data/<folder>/$SHA1 \
+    --profile go-translate-dev --acl bucket-owner-full-control \
+  echo $SHA1 > $FILE.sha1;`
+
+## GSC manual upload (legacy)
 
 `upload_to_google_storage.py --bucket=brave-telemetry <file>`
 the script will produce `.sha1` automatically.
 
 ## How to update wpr
 
-* Get write access to `brave-telemetry` GCS bucket (ask @devops-team);
 * `cd src/`;
 * Remove old downloaded wprs: `rm -rf ./brave/tools/perf/page_sets/data/*.wprgo`;
 * Record new wprs: `vpython3 tools/perf/record_wpr <benchmark_name> --browser=system  --story-filter <story-filter>`;
 * Upload the archives to the cloud storage: `ls ./brave/tools/perf/page_sets/data/*.wprgo | xargs <upload_cmd>`.
-  `*.sha1` files will be generated;
 * `cd brave`;
 * Review and commit new `.sha1` files (not `.wprgo`) plus new entries in
   `./brave/tools/perf/page_sets_data/*.json`.

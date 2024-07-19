@@ -124,13 +124,14 @@ class CommonOptions:
         '--upload',
         action='store_true',
         default=True,
-        help=
-        '(for profile updating) Update the updated profile to cloud storage and push the changes to b-c'
-    )
+        help=(
+            '[For profile updating] Update the updated profile to cloud storage'
+            + 'and push the changes to b-c'))
     parser.add_argument(
         '--upload-branch',
         type=str,
-        help='(for profile updating) A target branch to push the changes')
+        help=('[For profile updating] A target brave-core branch' +
+              ' to push the changes'))
 
     parser.add_argument('--more-help',
                         action='help',
