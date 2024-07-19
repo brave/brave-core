@@ -580,6 +580,7 @@ source_set("ui") {
 
     deps += [
       "//chrome/browser/devtools",
+      "//chrome/browser/ui/views/bubble",
       "//components/bookmarks/browser",
     ]
 
