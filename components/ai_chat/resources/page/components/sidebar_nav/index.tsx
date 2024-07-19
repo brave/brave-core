@@ -66,6 +66,7 @@ function SimpleInput(props: SimpleInputProps) {
   return (
     <form onSubmit={handleSubmit}>
       <input
+        className={styles.simpleInput}
         type='text'
         value={value}
         onChange={handleChange}

@@ -20,7 +20,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  background: white;
+  background: var(--leo-color-container-background);
   margin: 6px 6px 6px 0;
 }
 
@@ -53,4 +53,5 @@
   z-index: 3;
   padding-left: 16px;
   padding-top: 20px;
+  color: var(--leo-color-icon-default);
 }

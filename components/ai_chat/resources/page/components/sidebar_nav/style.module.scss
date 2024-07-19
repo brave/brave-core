@@ -42,6 +42,7 @@
 
 .optionsButton {
   --leo-icon-size: 20px;
+  color: var(--leo-color-icon-interactive);
   position: absolute;
   top: 0;
   right: 0;
@@ -136,7 +137,7 @@
   width: 100%;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
-  background: white;
+  background: var(--leo-color-container-background);
 
   input {
     width: 100%;
@@ -148,4 +149,12 @@
     &:focus { outline: none; }
     &::placeholder { color: var(--leo-color-text-tertiary); }
   }
+}
+
+.simpleInput {
+  outline: 0;
+  border-radius: 4px;
+  border: 1px solid var(--leo-color-icon-interactive);
+  padding: 0 4px;
+  background: var(--leo-color-container-background);
 }
