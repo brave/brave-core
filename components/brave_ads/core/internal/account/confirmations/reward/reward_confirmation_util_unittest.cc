@@ -43,7 +43,6 @@ class BraveAdsRewardConfirmationUtilTest : public test::TestBase {
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
@@ -65,7 +64,6 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
 TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
@@ -84,10 +82,10 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   UserDataInfo expected_user_data;
   expected_user_data.dynamic = base::test::ParseJsonDict(
       R"(
-            {
-              "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
-              "systemTimestamp": "1996-07-08T09:00:00.000Z"
-            })");
+          {
+            "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+            "systemTimestamp": "1996-07-08T09:00:00.000Z"
+          })");
   expected_user_data.fixed = base::test::ParseJsonDict(
       R"(
           {

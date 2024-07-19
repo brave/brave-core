@@ -198,7 +198,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -228,7 +227,6 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
@@ -257,7 +255,6 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
@@ -271,7 +268,6 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert

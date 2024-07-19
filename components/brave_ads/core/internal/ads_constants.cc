@@ -5,8 +5,14 @@
 
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
-namespace brave_ads::data::resource {
+namespace brave_ads {
 
-const char kCatalogJsonSchemaFilename[] = "catalog-schema.json";
+const char kDatabaseFilename[] = "database.sqlite";
 
-}  // namespace brave_ads::data::resource
+const char kClientJsonFilename[] = "client.json";
+
+const char kConfirmationsJsonFilename[] = "confirmations.json";
+
+const char kCatalogJsonSchemaDataResourceName[] = "catalog-schema.json";
+
+}  // namespace brave_ads

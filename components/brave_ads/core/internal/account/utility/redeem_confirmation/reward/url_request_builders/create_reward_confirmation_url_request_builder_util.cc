@@ -13,13 +13,13 @@ namespace brave_ads {
 
 std::string BuildCreateRewardConfirmationUrlPath(
     const std::string& transaction_id,
-    const std::string& credential_base64_url) {
+    const std::string& credential_base64url) {
   CHECK(!transaction_id.empty());
-  CHECK(!credential_base64_url.empty());
+  CHECK(!credential_base64url.empty());
 
   return base::StringPrintf("/v%d/confirmation/%s/%s", kTokensServerVersion,
                             transaction_id.c_str(),
-                            credential_base64_url.c_str());
+                            credential_base64url.c_str());
 }
 
 }  // namespace brave_ads

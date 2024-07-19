@@ -30,8 +30,8 @@ class DeviceId {
   // identifier has the following characteristics:
   // 1. It is shared across users of a device.
   // 2. It is resilient to device reboots.
-  // 3. It can be reset in *some* way by the user. In Particular, it can *not*
-  //    be based only on a MAC address of a physical device. The specific
+  // 3. It can be reset in *some* way by the user. In Particular, it *cannot* be
+  //    based only on a MAC address of a physical device. The specific
   //    implementation varies across platforms, some of them requiring a round
   //    trip to the IO or FILE thread. "callback" will always be called on the
   //    UI thread though (sometimes directly if the implementation allows

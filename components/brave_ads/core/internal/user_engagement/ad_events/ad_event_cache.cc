@@ -45,6 +45,8 @@ void AdEventCache::AddEntryForInstanceId(const std::string& id,
 
   ad_event_cache_[id][type_id].push_back(time);
 
+  // Purge entries older than 1 day since this cache is utilized solely for
+  // permission rules, which requires ad events from only the past day.
   PurgeCacheOlderThan(ad_event_cache_[id][type_id], base::Days(1));
 }
 

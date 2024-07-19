@@ -21,11 +21,11 @@ Refer to `*_test_util.h`, `*_test_helper.h`, `*_test_constants.h`, and `*_test_t
 
 ## Mocking Task Environment
 
-You can fast-forward virtual time using `FastForwardClockBy`, `SuspendedFastForwardClockBy`, `FastForwardClockTo`, `FastForwardClockToNextPendingTask`, `NextPendingTaskDelay`, `GetPendingTaskCount`, and `HasPendingTasks`, causing all tasks on the main thread and thread pool with a remaining delay to be executed.
+You can fast-forward virtual time using the `FastForwardClockBy`, `SuspendedFastForwardClockBy`, `FastForwardClockTo`, `FastForwardClockToNextPendingTask` helpers. These cause all tasks on the main thread and thread pool with a remaining delay to be executed.
 
-You can advance the clock using `AdvanceClockBy`, `AdvanceClockTo`, `AdvanceClockToLocalMidnight`, and `AdvanceClockToUTCMidnight`, which do not run tasks.
+Alternatively, you can advance the clock using the `AdvanceClockBy`, `AdvanceClockTo`, `AdvanceClockToLocalMidnight`, and `AdvanceClockToUTCMidnight` helpers, which do not run tasks.
 
-You can also use `task_environment_`.
+For more information, refer to the usage of [task_environment_](../../../../../../../base/test/task_environment.h).
 
 ## Mocking Command-Line Switches
 
@@ -93,7 +93,7 @@ Inline or text file responses can contain `<time:period>` tags for mocking times
 
 You can add one or more responses per request. These will be returned in the given order and will wrap back to the first response after reaching the last, i.e.,
 
-    const test::URLResponseMap url_responses2 = {
+    const test::URLResponseMap url_responses = {
       {
         "/foo/bar", {
           {

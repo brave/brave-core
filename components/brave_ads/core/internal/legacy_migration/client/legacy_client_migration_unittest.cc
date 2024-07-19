@@ -8,8 +8,8 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -29,7 +29,7 @@ class BraveAdsLegacyClientMigrationTest : public test::TestBase {
 
 TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
   // Arrange
-  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientStateFilename));
+  ASSERT_TRUE(CopyFileFromTestPathToTempPath(kClientJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;
@@ -42,7 +42,7 @@ TEST_F(BraveAdsLegacyClientMigrationTest, Migrate) {
 TEST_F(BraveAdsLegacyClientMigrationTest, ResetMalformedState) {
   // Arrange
   ASSERT_TRUE(CopyFileFromTestPathToTempPath(kMalformedJsonFilename,
-                                             kClientStateFilename));
+                                             kClientJsonFilename));
 
   // Act & Assert
   base::MockCallback<InitializeCallback> callback;

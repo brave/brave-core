@@ -32,13 +32,12 @@ class BraveAdsConfirmationsTest : public test::TestBase {
 
   std::unique_ptr<Confirmations> confirmations_;
 
-  database::table::ConfirmationQueue queue_database_table_;
+  database::table::ConfirmationQueue confirmation_queue_database_table_;
 };
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
   test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
@@ -53,7 +52,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::SizeIs(1)));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
@@ -72,7 +71,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*confirmation_queue_items=*/::testing::SizeIs(1)));
-  queue_database_table_.GetAll(callback.Get());
+  confirmation_queue_database_table_.GetAll(callback.Get());
 }
 
 }  // namespace brave_ads

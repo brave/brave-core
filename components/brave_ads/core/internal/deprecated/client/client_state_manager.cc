@@ -15,10 +15,10 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
@@ -95,7 +95,7 @@ const FlaggedAdList& ClientStateManager::GetFlaggedAds() const {
 void ClientStateManager::LoadState(InitializeCallback callback) {
   BLOG(3, "Loading client state");
 
-  Load(kClientStateFilename,
+  Load(kClientJsonFilename,
        base::BindOnce(&ClientStateManager::LoadCallback,
                       weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -387,7 +387,7 @@ void ClientStateManager::SaveState() {
 
   BLOG(9, "Saving client state");
 
-  Save(kClientStateFilename, client_.ToJson(),
+  Save(kClientJsonFilename, client_.ToJson(),
        base::BindOnce([](const bool success) {
          if (!success) {
            // TODO(https://github.com/brave/brave-browser/issues/32066): Detect

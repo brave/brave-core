@@ -432,7 +432,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
   // Arrange
   const std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
-          test::kCatalogWithSingleCampaignFilename);
+          test::kCatalogWithSingleCampaignJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act
@@ -452,7 +452,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
   // Arrange
   const std::optional<std::string> contents =
       test::MaybeReadFileToStringAndReplaceTags(
-          test::kCatalogWithMultipleCampaignsFilename);
+          test::kCatalogWithMultipleCampaignsJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act
@@ -471,7 +471,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
   // Arrange
   const std::optional<std::string> contents =
-      test::MaybeReadFileToStringAndReplaceTags(test::kEmptyCatalogFilename);
+      test::MaybeReadFileToStringAndReplaceTags(
+          test::kEmptyCatalogJsonFilename);
   ASSERT_TRUE(contents);
 
   // Act
@@ -486,9 +487,9 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
                                    /*campaigns*/ ::testing::IsEmpty()));
 }
 
-TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, InvalidCatalog) {
+TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, MalformedCatalog) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadCatalog(test::kInvalidCatalogJson));
+  EXPECT_FALSE(json::reader::ReadCatalog(test::kMalformedCatalogJson));
 }
 
 }  // namespace brave_ads
