@@ -353,47 +353,46 @@ extension FavoritesViewController {
 
   @objc
   func onRecentSearchShowPressed() {
-    if Preferences.Search.shouldShowRecentSearches.value {
-      // User already had recent searches enabled, and they want to see more results
-      NSFetchedResultsController<RecentSearch>.deleteCache(withName: recentSearchesFRC.cacheName)
-      recentSearchesFRC.fetchRequest.fetchLimit = 0
-      fetchRecentSearches()
-    } else {
-      // User enabled recent searches
-      Preferences.Search.shouldShowRecentSearches.value = true
-      Preferences.Search.shouldShowRecentSearchesOptIn.value = false
-    }
+    // User enabled recent searches
+    Preferences.Search.shouldShowRecentSearches.value = true
+    Preferences.Search.shouldShowRecentSearchesOptIn.value = false
   }
 
   @objc
-  func onRecentSearchHideOrClearPressed(_ button: UIButton) {
-    if Preferences.Search.shouldShowRecentSearches.value {
-      // User cleared recent searches
+  func onRecentSearchShowMorePressed() {
+    // User already had recent searches enabled, and they want to see more results
+    NSFetchedResultsController<RecentSearch>.deleteCache(withName: recentSearchesFRC.cacheName)
+    recentSearchesFRC.fetchRequest.fetchLimit = 0
+    fetchRecentSearches()
+  }
 
-      // brave-ios/issues/3762
-      // No title, no message
-      let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-      alert.addAction(
-        UIAlertAction(
-          title: Strings.recentSearchClearAlertButton,
-          style: .default,
-          handler: { _ in
-            RecentSearch.removeAll()
-          }
-        )
+  @objc
+  func onRecentSearchHidePressed(_ button: UIButton) {
+    // User doesn't want to see the recent searches option again
+    Preferences.Search.shouldShowRecentSearchesOptIn.value = false
+  }
+
+  @objc
+  func onRecentSearchClearPressed(_ button: UIButton) {
+    // User cleared recent searches
+    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    alert.addAction(
+      UIAlertAction(
+        title: Strings.recentSearchClearAlertButton,
+        style: .default,
+        handler: { _ in
+          RecentSearch.removeAll()
+        }
       )
+    )
 
-      alert.popoverPresentationController?.sourceView = button
-      alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
+    alert.popoverPresentationController?.sourceView = button
+    alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
 
-      alert.addAction(
-        UIAlertAction(title: Strings.cancelButtonTitle, style: .destructive, handler: nil)
-      )
-      present(alert, animated: true, completion: nil)
-    } else {
-      // User doesn't want to see the recent searches option again
-      Preferences.Search.shouldShowRecentSearchesOptIn.value = false
-    }
+    alert.addAction(
+      UIAlertAction(title: Strings.cancelButtonTitle, style: .destructive, handler: nil)
+    )
+    present(alert, animated: true, completion: nil)
   }
 }
 
@@ -656,31 +655,28 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           withReuseIdentifier: "recent_searches_header",
           for: indexPath
         ) as? FavoritesRecentSearchHeaderView {
-          //          header.resetLayout(showRecentSearches: Preferences.Search.shouldShowRecentSearches.value)
-          //
-          //          header.showButton.addTarget(
-          //            self,
-          //            action: #selector(onRecentSearchShowPressed),
-          //            for: .touchUpInside
-          //          )
-          //          header.hideClearButton.addTarget(
-          //            self,
-          //            action: #selector(onRecentSearchHideOrClearPressed(_:)),
-          //            for: .touchUpInside
-          //          )
-          //
-          //          let shouldShowRecentSearches = Preferences.Search.shouldShowRecentSearches.value
-          //          var showButtonVisible = !shouldShowRecentSearches
-          //          var clearButtonVisible = !shouldShowRecentSearches
-          //          if let fetchedObjects = recentSearchesFRC.fetchedObjects, shouldShowRecentSearches {
-          //            let totalCount = RecentSearch.totalCount()
-          //            showButtonVisible = fetchedObjects.count < totalCount
-          //            clearButtonVisible = fetchedObjects.count <= totalCount
-          //          }
-          //          header.setButtonVisibility(
-          //            showButtonVisible: showButtonVisible,
-          //            clearButtonVisible: clearButtonVisible
-          //          )
+          header.showMoreButton.addTarget(
+            self,
+            action: #selector(onRecentSearchShowMorePressed),
+            for: .touchUpInside
+          )
+
+          header.clearButton.addTarget(
+            self,
+            action: #selector(onRecentSearchClearPressed(_:)),
+            for: .touchUpInside
+          )
+
+          var showMoreButtonVisible = false
+
+          if let fetchedObjects = recentSearchesFRC.fetchedObjects {
+            let totalCount = RecentSearch.totalCount()
+            showMoreButtonVisible = fetchedObjects.count < totalCount
+          }
+
+          header.setButtonVisibility(
+            showMoreButtonVisible: showMoreButtonVisible
+          )
 
           return header
         }
@@ -691,11 +687,20 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           for: indexPath
         ) as? FavoritesRecentSearchOptInHeaderView {
 
+          header.showButton.addTarget(
+            self,
+            action: #selector(onRecentSearchShowPressed),
+            for: .touchUpInside
+          )
+          header.hideButton.addTarget(
+            self,
+            action: #selector(onRecentSearchHidePressed(_:)),
+            for: .touchUpInside
+          )
+
           return header
         }
-
       }
-
     }
     return UICollectionReusableView()
   }
