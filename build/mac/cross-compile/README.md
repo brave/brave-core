@@ -27,7 +27,8 @@ npm run build -- --target_os=mac --target_arch=x64
 npm run build -- Static --target_os=mac --target_arch=x64
 ```
 
-For `Release`, you need to disable dSYM generation and symbol stripping:
+The current implementation does not yet support dSYM generation and symbol
+stripping, so you need to disable them for `Release` builds:
 
 ```
 npm run build -- Release --target_os=mac --target_arch=x64 \
