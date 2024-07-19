@@ -20,11 +20,20 @@ class Origin;
 
 namespace brave {
 
+// This enum values are used to determine the title of the file select dialog.
+// Basically it mirrors std::u16string
+// AppModalDialogManager::GetSiteFrameTitle() implementation.
 enum class SiteFrameTitleType {
-  kStandardSameOrigin,
-  kStandardDifferentOrigin,
-  kNonStandardSameOrigin,
-  kNonStandardDifferentOrigin
+  kStandardSameOrigin,  // alerting frame has http(s) scheme and has the same
+                        // origin with main frame
+  kStandardDifferentOrigin,    // alerting frame http(s) scheme and has a
+                               // different origin with main frame
+  kNonStandardSameOrigin,      // alerting frame has other schemes (e.g. file,
+                               // data, javascript) and has the same origin with
+                               // main frame
+  kNonStandardDifferentOrigin  // alerting frame has other schemes (e.g. file,
+                               // data, javascript) and has a different origin
+                               // with main frame
 };
 
 using SiteTitleResourceIDMap = base::flat_map<SiteFrameTitleType, int>;

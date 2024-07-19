@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_file_select_utils.h"
+
+#include "base/strings/utf_string_conversions.h"
 #include "components/javascript_dialogs/app_modal_dialog_manager.h"
 #include "components/strings/grit/components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
