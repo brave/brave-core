@@ -17,6 +17,7 @@ interface Props {
 
 const duration = '0.4s'
 const easing = 'cubic-bezier(0.7, -0.4, 0.4, 1.4)'
+const fillMode = 'both'
 
 const enterDialog = keyframes`
   from {
@@ -69,20 +70,20 @@ const Dialog = styled.dialog<{ offsetY: number }>`
   margin-top: var(--margin-top);
   padding: 0px;
 
-  animation: ${enterDialog} ${duration} ${easing};
+  animation: ${enterDialog} ${duration} ${easing} ${fillMode};
 
   &::backdrop {
     opacity: 1;
     background: ${color.dialogs.scrimBackground};
     backdrop-filter: blur(4px);
-    animation: ${enterBackdrop} ${duration} ${easing};
+    animation: ${enterBackdrop} ${duration} ${easing} ${fillMode};
   }
 
   &.closing {
-    animation: ${exitDialog} ${duration} ${easing};
+    animation: ${exitDialog} ${duration} ${easing} ${fillMode};
 
     &::backdrop {
-      animation: ${exitBackdrop} ${duration} ${easing};
+      animation: ${exitBackdrop} ${duration} ${easing} ${fillMode};
     }
   }
 `
