@@ -24,7 +24,7 @@ std::u16string GetTitle(content::RenderFrameHost* render_frame_host,
   return brave::GetFileSelectTitle(
       content::WebContents::FromRenderFrameHost(render_frame_host),
       render_frame_host->GetLastCommittedOrigin(),
-      brave::GetFileSelectResourceIDsForSave());
+      brave::FileSelectTitleType::kSave);
 #endif
 }
 

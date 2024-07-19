@@ -26,33 +26,37 @@ namespace brave {
 enum class SiteFrameTitleType {
   kStandardSameOrigin,  // alerting frame has http(s) scheme and has the same
                         // origin with main frame
-  kStandardDifferentOrigin,    // alerting frame http(s) scheme and has a
-                               // different origin with main frame
-  kNonStandardSameOrigin,      // alerting frame has other schemes (e.g. file,
-                               // data, javascript) and has the same origin with
-                               // main frame
-  kNonStandardDifferentOrigin  // alerting frame has other schemes (e.g. file,
-                               // data, javascript) and has a different origin
-                               // with main frame
+  kStandardDifferentOrigin,  // alerting frame http(s) scheme and has a
+                             // different origin with main frame
+  kNonStandardSameOrigin,    // alerting frame has other schemes (e.g. file,
+                             // data, javascript) and has the same origin with
+                             // main frame
+  kNonStandardDifferentOrigin,  // alerting frame has other schemes (e.g. file,
+                                // data, javascript) and has a different origin
+                                // with main frame
+  kSize
 };
 
-using SiteTitleResourceIDMap = base::flat_map<SiteFrameTitleType, int>;
+enum class FileSelectTitleType {
+  kOpen,
+  kSave,
+  kChromiumDefault,  // used for comparing with the default title of the file
+                     // select dialog in Chromium
+  kSize
+};
 
 std::u16string GetFileSelectTitle(content::WebContents* contents,
                                   const url::Origin& alerting_frame_origin,
-                                  const SiteTitleResourceIDMap& resource_ids);
+                                  FileSelectTitleType file_select_type);
 
 std::u16string GetSiteFrameTitleForFileSelect(
-    SiteFrameTitleType type,
+    SiteFrameTitleType frame_type,
     const url::Origin& alerting_frame_origin,
-    const SiteTitleResourceIDMap& resource_ids);
+    FileSelectTitleType select_type);
 
 SiteFrameTitleType GetSiteFrameTitleType(
     const url::Origin& main_frame_origin,
     const url::Origin& alerting_frame_origin);
-
-const SiteTitleResourceIDMap& GetFileSelectResourceIDsForOpen();
-const SiteTitleResourceIDMap& GetFileSelectResourceIDsForSave();
 
 }  // namespace brave
 

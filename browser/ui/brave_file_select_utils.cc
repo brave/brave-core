@@ -5,11 +5,14 @@
 
 #include "brave/browser/ui/brave_file_select_utils.h"
 
+#include <unordered_map>
+
 #include "base/i18n/rtl.h"
 #include "base/no_destructor.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/url_identity.h"
+#include "components/strings/grit/components_strings.h"
 #include "components/url_formatter/elide_url.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -43,7 +46,7 @@ url::Origin UnwrapOriginIfOpaque(const url::Origin& origin) {
 
 std::u16string GetFileSelectTitle(content::WebContents* web_contents,
                                   const url::Origin& alerting_frame_origin,
-                                  const SiteTitleResourceIDMap& resource_ids) {
+                                  FileSelectTitleType file_select_type) {
   // This implementation partially mirrors
   // ChromeAppModalDialogManagerDelegate::GetTitle().
   // TODO(sko) It's hard to test this behavior is in sync at this moment. Even
@@ -71,25 +74,53 @@ std::u16string GetFileSelectTitle(content::WebContents* web_contents,
       web_contents->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   return GetSiteFrameTitleForFileSelect(
       GetSiteFrameTitleType(main_frame_origin, alerting_frame_origin),
-      alerting_frame_origin, resource_ids);
+      alerting_frame_origin, file_select_type);
 }
 
 std::u16string GetSiteFrameTitleForFileSelect(
-    SiteFrameTitleType type,
+    SiteFrameTitleType frame_type,
     const url::Origin& alerting_frame_origin,
-    const SiteTitleResourceIDMap& resource_ids) {
-  if (type == SiteFrameTitleType::kStandardSameOrigin ||
-      type == SiteFrameTitleType::kStandardDifferentOrigin) {
+    FileSelectTitleType file_select_type) {
+  constexpr std::array<
+      std::array<int, static_cast<size_t>(SiteFrameTitleType::kSize)>,
+      static_cast<size_t>(FileSelectTitleType::kSize)>
+      kResourceIDs = {
+          {/*FileSelectTitleType::kOpen,*/
+           {
+               IDS_BRAVE_FILE_SELECT_OPEN_TITLE,  //  brave::SiteFrameTitleType::kStandardSameOrigin
+               IDS_BRAVE_FILE_SELECT_OPEN_TITLE_IFRAME,  // brave::SiteFrameTitleType::kStandardDifferentOrigin
+               IDS_BRAVE_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL,  // brave::SiteFrameTitleType::kNonStandardSameOrigin
+               IDS_BRAVE_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL_IFRAME  // brave::SiteFrameTitleType::kNonStandardDifferentOrigin
+           },
+           /*FileSelectTitleType::kSave,*/
+           {
+               IDS_BRAVE_FILE_SELECT_SAVE_TITLE,  // brave::SiteFrameTitleType::kStandardSameOrigin
+               IDS_BRAVE_FILE_SELECT_SAVE_TITLE_IFRAME,  // brave::SiteFrameTitleType::kStandardDifferentOrigin
+               IDS_BRAVE_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL,  // brave::SiteFrameTitleType::kNonStandardSameOrigin
+               IDS_BRAVE_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL_IFRAME  // brave::SiteFrameTitleType::kNonStandardDifferentOrigin
+           },
+           /*FileSelectTitleType::kChromiumDefault*/
+           {
+               IDS_JAVASCRIPT_MESSAGEBOX_TITLE,  // brave::SiteFrameTitleType::kStandardSameOrigin
+               IDS_JAVASCRIPT_MESSAGEBOX_TITLE_IFRAME,  // brave::SiteFrameTitleType::kStandardDifferentOrigin,
+               IDS_JAVASCRIPT_MESSAGEBOX_TITLE_NONSTANDARD_URL,  // brave::SiteFrameTitleType::kNonStandardSameOrigin
+               IDS_JAVASCRIPT_MESSAGEBOX_TITLE_NONSTANDARD_URL_IFRAME,  // brave::SiteFrameTitleType::kNonStandardDifferentOrigin,
+           }}};
+
+  if (frame_type == SiteFrameTitleType::kStandardSameOrigin ||
+      frame_type == SiteFrameTitleType::kStandardDifferentOrigin) {
     std::u16string origin_string =
         url_formatter::FormatOriginForSecurityDisplay(
             UnwrapOriginIfOpaque(alerting_frame_origin),
             url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS);
     return l10n_util::GetStringFUTF16(
-        resource_ids.at(type),
+        kResourceIDs[static_cast<size_t>(file_select_type)]
+                    [static_cast<size_t>(frame_type)],
         base::i18n::GetDisplayStringInLTRDirectionality(origin_string));
   }
 
-  return l10n_util::GetStringUTF16(resource_ids.at(type));
+  return l10n_util::GetStringUTF16(kResourceIDs[static_cast<size_t>(
+      file_select_type)][static_cast<size_t>(frame_type)]);
 }
 
 SiteFrameTitleType GetSiteFrameTitleType(
@@ -115,34 +146,6 @@ SiteFrameTitleType GetSiteFrameTitleType(
   return is_same_origin_as_main_frame
              ? SiteFrameTitleType::kNonStandardSameOrigin
              : SiteFrameTitleType::kNonStandardDifferentOrigin;
-}
-
-const SiteTitleResourceIDMap& GetFileSelectResourceIDsForOpen() {
-  static const base::NoDestructor<brave::SiteTitleResourceIDMap>
-      kResourcesForOpen(
-          {{brave::SiteFrameTitleType::kStandardSameOrigin,
-            IDS_FILE_SELECT_OPEN_TITLE},
-           {brave::SiteFrameTitleType::kStandardDifferentOrigin,
-            IDS_FILE_SELECT_OPEN_TITLE_IFRAME},
-           {brave::SiteFrameTitleType::kNonStandardSameOrigin,
-            IDS_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL},
-           {brave::SiteFrameTitleType::kNonStandardDifferentOrigin,
-            IDS_FILE_SELECT_OPEN_TITLE_NONSTANDARD_URL_IFRAME}});
-  return *kResourcesForOpen;
-}
-
-const SiteTitleResourceIDMap& GetFileSelectResourceIDsForSave() {
-  static const base::NoDestructor<brave::SiteTitleResourceIDMap>
-      kResourcesForSave(
-          {{brave::SiteFrameTitleType::kStandardSameOrigin,
-            IDS_FILE_SELECT_SAVE_TITLE},
-           {brave::SiteFrameTitleType::kStandardDifferentOrigin,
-            IDS_FILE_SELECT_SAVE_TITLE_IFRAME},
-           {brave::SiteFrameTitleType::kNonStandardSameOrigin,
-            IDS_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL},
-           {brave::SiteFrameTitleType::kNonStandardDifferentOrigin,
-            IDS_FILE_SELECT_SAVE_TITLE_NONSTANDARD_URL_IFRAME}});
-  return *kResourcesForSave;
 }
 
 }  // namespace brave

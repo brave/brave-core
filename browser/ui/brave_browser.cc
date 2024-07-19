@@ -151,8 +151,8 @@ void BraveBrowser::RunFileChooser(
         content::WebContents::FromRenderFrameHost(render_frame_host),
         render_frame_host->GetLastCommittedOrigin(),
         params.mode == blink::mojom::FileChooserParams::Mode::kSave
-            ? brave::GetFileSelectResourceIDsForSave()
-            : brave::GetFileSelectResourceIDsForOpen());
+            ? brave::FileSelectTitleType::kSave
+            : brave::FileSelectTitleType::kOpen);
   }
   Browser::RunFileChooser(render_frame_host, listener, *new_params);
 #endif

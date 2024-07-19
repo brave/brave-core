@@ -8,7 +8,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/javascript_dialogs/app_modal_dialog_manager.h"
-#include "components/strings/grit/components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
@@ -83,16 +82,6 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
        "filesystem:http://foo.com/bar.html"},
   };
   // Checks if our implementation is in sync with upstream.
-  const brave::SiteTitleResourceIDMap resource_ids({
-      {brave::SiteFrameTitleType::kStandardSameOrigin,
-       IDS_JAVASCRIPT_MESSAGEBOX_TITLE},
-      {brave::SiteFrameTitleType::kStandardDifferentOrigin,
-       IDS_JAVASCRIPT_MESSAGEBOX_TITLE_IFRAME},
-      {brave::SiteFrameTitleType::kNonStandardSameOrigin,
-       IDS_JAVASCRIPT_MESSAGEBOX_TITLE_NONSTANDARD_URL},
-      {brave::SiteFrameTitleType::kNonStandardDifferentOrigin,
-       IDS_JAVASCRIPT_MESSAGEBOX_TITLE_NONSTANDARD_URL_IFRAME},
-  });
 
   for (const auto& test_case : kCases) {
     SCOPED_TRACE(test_case.case_name);
@@ -108,7 +97,8 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
               brave::GetSiteFrameTitleForFileSelect(
                   brave::GetSiteFrameTitleType(main_frame_origin,
                                                alerting_frame_origin),
-                  alerting_frame_origin, resource_ids));
+                  alerting_frame_origin,
+                  brave::FileSelectTitleType::kChromiumDefault));
   }
 }
 
@@ -207,16 +197,15 @@ TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Open) {
         test_case.is_main_frame
             ? main_frame_origin
             : url::Origin::Create(GURL(test_case.alerting_frame_url));
-    EXPECT_EQ(
-        base::UTF8ToUTF16(test_case.expected),
-        brave::GetSiteFrameTitleForFileSelect(
-            brave::GetSiteFrameTitleType(main_frame_origin,
-                                         alerting_frame_origin),
-            alerting_frame_origin, brave::GetFileSelectResourceIDsForOpen()));
+    EXPECT_EQ(base::UTF8ToUTF16(test_case.expected),
+              brave::GetSiteFrameTitleForFileSelect(
+                  brave::GetSiteFrameTitleType(main_frame_origin,
+                                               alerting_frame_origin),
+                  alerting_frame_origin, brave::FileSelectTitleType::kOpen));
   }
 }
 
-TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect_Save) {
+TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect_Save) {
   constexpr struct Case {
     // The name of the test case.
     const char* case_name;
@@ -311,11 +300,10 @@ TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect_Save) {
         test_case.is_main_frame
             ? main_frame_origin
             : url::Origin::Create(GURL(test_case.alerting_frame_url));
-    EXPECT_EQ(
-        base::UTF8ToUTF16(test_case.expected),
-        brave::GetSiteFrameTitleForFileSelect(
-            brave::GetSiteFrameTitleType(main_frame_origin,
-                                         alerting_frame_origin),
-            alerting_frame_origin, brave::GetFileSelectResourceIDsForSave()));
+    EXPECT_EQ(base::UTF8ToUTF16(test_case.expected),
+              brave::GetSiteFrameTitleForFileSelect(
+                  brave::GetSiteFrameTitleType(main_frame_origin,
+                                               alerting_frame_origin),
+                  alerting_frame_origin, brave::FileSelectTitleType::kSave));
   }
 }
