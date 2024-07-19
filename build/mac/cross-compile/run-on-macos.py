@@ -17,8 +17,6 @@ at /MyMount.
 When you now execute `codesign --sign out/Brave.app`, then this script runs and
 executes, essentially, `ssh ventura "codesign --sign /MyMount/out/Brave.app"`.
 The net effect is that src/out/Brave.app on your local machine gets codesigned.
-
-This script requires several environment variables to be set. Please see below.
 """
 
 from os.path import basename, exists, dirname, relpath, join
@@ -31,62 +29,88 @@ from uuid import uuid4
 import os
 import sys
 
-MACOS_HOST = os.environ['MACOS_HOST']
-SRC_DIR_LOCAL = dirname(dirname(dirname(dirname(dirname(dirname(__file__))))))
-SRC_DIR_MOUNT_IN_MACOS = os.environ['MACOS_SRC_DIR_MOUNT']
+SRC_DIR = dirname(dirname(dirname(dirname(dirname(dirname(__file__))))))
 
-tmp_dir = gettempdir()
+def main(argv):
+    check_tmp_dir()
+    tool, args = basename(argv[0]), argv[1:]
+    host, src_dir_on_host, keychain_pw = read_env_vars(tool)
+    remote_commands = get_remote_commands(tool, args, os.getcwd(),
+                                          src_dir_on_host, keychain_pw)
+    if tool == 'codesign':
+        print(' && '.join(' '.join(map(quote, args)) for args in remote_commands))
+    exit_code = run_via_ssh(host, remote_commands)
+    return get_outer_exit_code(tool, args, exit_code)
 
-assert tmp_dir.startswith(SRC_DIR_LOCAL), \
-    f'The root temporary directory {tmp_dir} must be a subdirectory of ' \
-    f'{SRC_DIR_LOCAL} - otherwise, the macOS host cannot access it. Consider ' \
-    f'setting the TMPDIR environment variable.'
+def check_tmp_dir():
+    tmp_dir = gettempdir()
+    assert tmp_dir.startswith(SRC_DIR), \
+        f'The root temporary directory {tmp_dir} must be a subdirectory of ' \
+        f'{SRC_DIR} - otherwise, the macOS host cannot access it. ' \
+        f'Consider setting the TMPDIR environment variable.'
 
-cmd = basename(sys.argv[0])
-cwd = os.getcwd()
-assert cwd.startswith(SRC_DIR_LOCAL)
+def read_env_vars(tool):
+    host = require_env_var('MACOS_HOST')
+    src_dir_on_host = require_env_var('MACOS_SRC_DIR_MOUNT')
+    keychain_pw = \
+        require_env_var('KEYCHAIN_PASSWORD') if requires_keychain(tool) else ''
+    return host, src_dir_on_host, keychain_pw
 
-cwd_path_in_macos = join(SRC_DIR_MOUNT_IN_MACOS, relpath(cwd, SRC_DIR_LOCAL))
-steps = [('cd', quote(cwd_path_in_macos))]
+def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw):
+    result = []
+    cwd_on_host = join(src_dir_on_host, relpath(cwd, SRC_DIR))
+    result.append(['cd', cwd_on_host])
+    if requires_keychain(tool):
+        result.append(['security', 'unlock-keychain', '-p', keychain_pw])
+    args_on_host = make_relative(args, cwd)
+    if tool == 'pkgbuild' and '--analyze' not in args:
+        result.extend(get_pkgbuild_commands(tool, args_on_host))
+    else:
+        result.append([tool] + args_on_host)
+    return result
 
-if cmd in ('codesign', 'productsign'):
-    steps += [('security', 'unlock-keychain', '-p',
-               quote(os.environ['KEYCHAIN_PASSWORD']))]
-
-args = [cmd]
-
-for arg in sys.argv[1:]:
-    if exists(arg) or (exists(dirname(arg)) and dirname(arg) != '/'):
-        arg = relpath(arg, cwd)
-    args.append(quote(arg))
-
-pkg_dest_on_host = None
-if cmd == 'pkgbuild' and '--analyze' not in args:
+def get_pkgbuild_commands(tool, args_on_host):
+    result = []
     # We get errors without this delay:
-    sleep(1)
-    # When SRC_DIR_MOUNT_IN_MACOS is mounted via mount_9p, then pkgbuild fails
-    # to write to it. So write to a known-writeable location. Further below,
-    # we then `mv` to the correct destination.
-    pkg_dest_on_host = args[-1]
-    pkg_dest_on_guest = '~/pkgbuild-pkg-' + uuid4().hex
-    args[-1] = pkg_dest_on_guest
+    result.append(['sleep', '1'])
+    # When src_dir_on_host is mounted via mount_9p, then pkgbuild fails to
+    # write to it. So write to a known-writeable location. Then `mv` to the
+    # correct destination.
+    pkgbuild_dest_orig = args_on_host[-1]
+    pkgbuild_dest_writeable = '~/pkgbuild-pkg-' + uuid4().hex
+    result.append([tool] + args_on_host[:-1] + [pkgbuild_dest_writeable])
+    result.append(['mv', pkgbuild_dest_writeable, pkgbuild_dest_orig])
+    return result
 
-steps.append(args)
+def get_outer_exit_code(tool, args, exit_code_on_host):
+    if tool == 'xcodebuild' and args == ['-version']:
+        # Upstream runs this command line purely for informational purposes. If
+        # only the command line tools of Xcode are installed, then the command
+        # exits with an error (code 1). But the build goes through just fine. So
+        # ignore the non-zero exit code:
+        return 0
+    return exit_code_on_host
 
-if pkg_dest_on_host:
-    steps.append(('mv', pkg_dest_on_guest, pkg_dest_on_host))
+def make_relative(args, cwd):
+    result = []
+    for arg in args:
+        if exists(arg) or (exists(dirname(arg)) and dirname(arg) != '/'):
+            arg = relpath(arg, cwd)
+        result.append(arg)
+    return result
 
-remote_command = ' && '.join(map(' '.join, steps))
+def requires_keychain(tool):
+    return tool in ('codesign', 'productsign')
 
-cp = run(['ssh', MACOS_HOST, remote_command])  # pylint: disable=subprocess-run-check
+def run_via_ssh(host, commands):
+    command_str = ' && '.join(' '.join(map(quote, args)) for args in commands)
+    # pylint: disable=subprocess-run-check
+    cp = run(['ssh', host, command_str])
+    return cp.returncode
 
-exit_code = cp.returncode
+def require_env_var(name):
+    assert name in os.environ, f'Please set environment variable {name}.'
+    return os.environ[name]
 
-if cmd == 'xcodebuild' and sys.argv[1:] == ['-version']:
-    # Upstream runs this command line purely for informational purposes. If only
-    # the command line tools of Xcode are installed, then the command exits with
-    # an error (code 1). But the build goes through just fine. So ignore the
-    # non-zero exit code:
-    exit_code = 0
-
-sys.exit(exit_code)
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
