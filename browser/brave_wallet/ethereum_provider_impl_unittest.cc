@@ -28,7 +28,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -223,9 +222,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
         AssetRatioServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    brave_wallet_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser_context());
+    brave_wallet_service_ = std::make_unique<BraveWalletService>(
+        shared_url_loader_factory_,
+        BraveWalletServiceDelegate::Create(browser_context()), prefs(),
+        local_state_->Get());
+    ASSERT_TRUE(brave_wallet_service_.get());
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
@@ -242,7 +243,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
                 .release())));
 
     provider_ = std::make_unique<EthereumProviderImpl>(
-        host_content_settings_map(), brave_wallet_service_,
+        host_content_settings_map(), brave_wallet_service_.get(),
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
             web_contents(), web_contents()->GetPrimaryMainFrame()),
         prefs());
@@ -946,7 +947,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
 
  protected:
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
+  std::unique_ptr<BraveWalletService> brave_wallet_service_;
 };
 
 TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {
@@ -979,7 +980,8 @@ TEST_F(EthereumProviderImplUnitTest, ValidateBrokenPayloads) {
 
 TEST_F(EthereumProviderImplUnitTest, EmptyDelegate) {
   EthereumProviderImpl provider_impl(host_content_settings_map(),
-                                     brave_wallet_service_, nullptr, prefs());
+                                     brave_wallet_service_.get(), nullptr,
+                                     prefs());
   ValidateErrorCode(&provider_impl,
                     R"({"params": [{
         "chainId": "0x111",
