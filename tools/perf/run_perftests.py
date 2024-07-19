@@ -76,8 +76,7 @@ def _RunUpdateProfile(config: perf_config.PerfConfig,
   config.benchmarks = [
       perf_config.BenchmarkConfig({
           'name': 'brave_utils.online',
-          # TODO: return 5
-          'pageset-repeat': 1,
+          'pageset-repeat': 5,
           'stories': ['UpdateProfile']
       })
   ]
