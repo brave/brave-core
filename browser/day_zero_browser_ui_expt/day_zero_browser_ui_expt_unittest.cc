@@ -9,6 +9,7 @@
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_registry.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -75,11 +76,12 @@ class DayZeroBrowserUIExptTest : public testing::Test,
 
   // ProfileManagerObserver overrides:
   void OnProfileAdded(Profile* profile) override {
+    auto* registry = static_cast<TestingProfile*>(profile)
+                         ->GetTestingPrefService()
+                         ->registry();
     // Need to explicitely register as it's done via its factory.
-    ntp_background_images::ViewCounterService::RegisterProfilePrefs(
-        static_cast<TestingProfile*>(profile)
-            ->GetTestingPrefService()
-            ->registry());
+    ntp_background_images::ViewCounterService::RegisterProfilePrefs(registry);
+    brave_rewards::RegisterProfilePrefs(registry);
   }
 
   void OnProfileManagerDestroying() override {
