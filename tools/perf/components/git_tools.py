@@ -1,12 +1,31 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 import logging
 import os
 import shutil
 
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import components.path_util as path_util
 
 from components.perf_test_utils import GetProcessOutput
+
+GH_BRAVE_PERF_TEAM = 'brave/perf-team'
+
+
+def MakeGithubPR(branch: str, target: str, title: str, body: str,
+                 extra_args: List[str], reviewers: List[str]):
+  args = [
+      'gh', 'pr', 'create', '--base', target, '--head', branch, '--title',
+      title, '--body', body
+  ]
+  for reviewer in reviewers:
+    args.extend(['--reviewer', reviewer])
+  for arg in extra_args:
+    args.append(arg)
+  return GetProcessOutput(args, cwd=path_util.GetBraveDir())
 
 
 def PushChangesToBranch(files: Dict[str, str], branch: str,

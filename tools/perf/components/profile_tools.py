@@ -16,7 +16,7 @@ from dataclasses import dataclass, asdict
 
 import components.cloud_storage as cloud_storage
 
-from components.git_tools import PushChangesToBranch
+from components.git_tools import GH_BRAVE_PERF_TEAM, MakeGithubPR, PushChangesToBranch
 from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
@@ -30,6 +30,19 @@ _CACHE_DIRECTORIES = [
     os.path.join('Default', 'GPUCache'), 'cache', 'GrShaderCache',
     'GraphiteDawnCache', 'ShaderCache', 'component_crx_cache'
 ]
+
+_PR_SEE_DETAILS_LINK = ('https://github.com/brave/brave-core/blob/master/' +
+                        'tools/perf/updating_test_profiles.md')
+_PR_BODY = f"""Automated perf profile update via CI
+Pre-approval checklist:
+- Wait all expected profiles are update (currently 6 profiles).
+- Review the changes in .size files.
+
+Notes:
+* Multiple pushes are expected after the PR is created.
+* Until the PR is merged it has no effect, so CI/skip is added.
+
+[See details]({_PR_SEE_DETAILS_LINK})"""
 
 
 def _GetDirectorySize(path: str):
@@ -117,6 +130,13 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
     commit_message = f'Update perf profile {cfg.profile} using {version_str}'
     branch = options.upload_branch or f'update-perf-profiles-{version_str}'
     PushChangesToBranch(files, branch, commit_message)
+
+    MakeGithubPR(branch=branch,
+                 target='master',
+                 title=f'Roll perf profiles update ({branch})',
+                 body=_PR_BODY,
+                 reviewers=[GH_BRAVE_PERF_TEAM],
+                 extra_args=['--label', 'CI/skip'])
 
 
 def _sizeKB(size: int) -> int:
