@@ -14,7 +14,6 @@ import sys
 import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
 import signing.model  # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 
-from functools import cache
 from lib.widevine import can_generate_sig_file, generate_sig_file
 from os.path import basename, splitext, exists
 from signing import model  # pylint: disable=import-error, reimported
@@ -201,13 +200,3 @@ class ConfigWrapper:
 
     def __getattr__(self, name):
         return getattr(self._target, name)
-
-
-@cache
-def BraveGetMacRelease(upstream_value):
-    if upstream_value:
-        # The typical case.
-        return upstream_value
-    # We are cross-compiling. Fetch the release version from the remote macOS
-    # host. Here, `sw_vers` is a fake binary on the PATH that achieves this.
-    return check_output(['sw_vers', '-productVersion'], text=True).rstrip()

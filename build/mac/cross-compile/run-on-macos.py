@@ -31,6 +31,7 @@ import sys
 
 SRC_DIR = dirname(dirname(dirname(dirname(dirname(dirname(__file__))))))
 
+
 def main(argv):
     check_tmp_dir()
     tool, args = basename(argv[0]), argv[1:]
@@ -38,9 +39,11 @@ def main(argv):
     remote_commands = get_remote_commands(tool, args, os.getcwd(),
                                           src_dir_on_host, keychain_pw)
     if tool == 'codesign':
-        print(' && '.join(' '.join(map(quote, args)) for args in remote_commands))
+        print(' && '.join(' '.join(map(quote, args))
+                          for args in remote_commands))
     exit_code = run_via_ssh(host, remote_commands)
     return get_outer_exit_code(tool, args, exit_code)
+
 
 def check_tmp_dir():
     tmp_dir = gettempdir()
@@ -49,12 +52,14 @@ def check_tmp_dir():
         f'{SRC_DIR} - otherwise, the macOS host cannot access it. ' \
         f'Consider setting the TMPDIR environment variable.'
 
+
 def read_env_vars(tool):
     host = require_env_var('MACOS_HOST')
     src_dir_on_host = require_env_var('MACOS_SRC_DIR_MOUNT')
     keychain_pw = \
         require_env_var('KEYCHAIN_PASSWORD') if requires_keychain(tool) else ''
     return host, src_dir_on_host, keychain_pw
+
 
 def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw):
     result = []
@@ -69,6 +74,7 @@ def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw):
         result.append([tool] + args_on_host)
     return result
 
+
 def get_pkgbuild_commands(tool, args_on_host):
     result = []
     # We get errors without this delay:
@@ -82,6 +88,7 @@ def get_pkgbuild_commands(tool, args_on_host):
     result.append(['mv', pkgbuild_dest_writeable, pkgbuild_dest_orig])
     return result
 
+
 def get_outer_exit_code(tool, args, exit_code_on_host):
     if tool == 'xcodebuild' and args == ['-version']:
         # Upstream runs this command line purely for informational purposes. If
@@ -91,6 +98,7 @@ def get_outer_exit_code(tool, args, exit_code_on_host):
         return 0
     return exit_code_on_host
 
+
 def make_relative(args, cwd):
     result = []
     for arg in args:
@@ -99,8 +107,10 @@ def make_relative(args, cwd):
         result.append(arg)
     return result
 
+
 def requires_keychain(tool):
     return tool in ('codesign', 'productsign')
+
 
 def run_via_ssh(host, commands):
     command_str = ' && '.join(' '.join(map(quote, args)) for args in commands)
@@ -108,9 +118,11 @@ def run_via_ssh(host, commands):
     cp = run(['ssh', host, command_str])
     return cp.returncode
 
+
 def require_env_var(name):
     assert name in os.environ, f'Please set environment variable {name}.'
     return os.environ[name]
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))

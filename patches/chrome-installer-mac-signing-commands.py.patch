@@ -1,13 +1,10 @@
 diff --git a/chrome/installer/mac/signing/commands.py b/chrome/installer/mac/signing/commands.py
-index 398a4cafbf4e46fe720f273bf8a4183d07bd4fc9..7e82a335b5c0fe8a6f3dc673d3fe14a48def5228 100644
+index 398a4cafbf4e46fe720f273bf8a4183d07bd4fc9..33ecbd824318637bb4cfb0107d66d0d198e0f441 100644
 --- a/chrome/installer/mac/signing/commands.py
 +++ b/chrome/installer/mac/signing/commands.py
-@@ -129,7 +129,7 @@ def macos_version():
-         A list containing one element for each component of the version number,
-         such as [10, 15, 6] and [11, 0].
-     """
--    return [int(x) for x in platform.mac_ver()[0].split('.')]
-+    return [int(x) for x in __import__('signing_helper').BraveGetMacRelease(platform.mac_ver()[0]).split('.')]
+@@ -200,3 +200,4 @@ class WorkDirectory(object):
  
- 
- def read_plist(path):
+     def __exit__(self, exc_type, value, traceback):
+         shutil.rmtree(self._workdir)
++from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/installer/mac/signing/commands.py", globals(), locals())
+\ No newline at end of file
