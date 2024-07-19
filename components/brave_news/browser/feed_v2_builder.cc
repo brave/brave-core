@@ -412,15 +412,6 @@ std::vector<mojom::FeedItemV2Ptr> GenerateAd() {
 std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
     FeedGenerationInfo& info) {
   DVLOG(1) << __FUNCTION__;
-  // Note: This step is not implemented properly yet. It should
-  // 1. Display an advert, if we have one
-  // 2. Fallback to a discover card.
-  // Ads have not been integrated with this process yet, so this is being
-  // mocked with another coin toss.
-
-  if (TossCoin()) {
-    return GenerateAd();
-  }
 
   auto& suggested_publisher_ids = info.suggested_publisher_ids();
   std::vector<mojom::FeedItemV2Ptr> result;
@@ -580,13 +571,14 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
         items = GenerateClusterBlock(info);
       }
     } else if (iteration_type == 2) {
-      // Step 6: Optional special card
+      // Step 6: Optional special card or Advertisement
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
       if (TossCoin()) {
-        DVLOG(1) << "Step 6: Special Block";
+        DVLOG(1) << "Step 6.1: Special Block";
         items = GenerateSpecialBlock(info);
       } else {
-        DVLOG(1) << "Step 6: None (approximately half the time)";
+        DVLOG(1) << "Step 6.2: Advertisement";
+        items = GenerateAd();
       }
     } else {
       NOTREACHED_IN_MIGRATION();
