@@ -1343,6 +1343,7 @@ source_set("unit_tests") {
       "brave_layout_constants_unittest.cc",
     ]
     deps = [
+      "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
       "//components/javascript_dialogs",
       "//testing/gtest",
