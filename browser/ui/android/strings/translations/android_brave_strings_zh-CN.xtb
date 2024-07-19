@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">显示 Brave 统计信息</translation>
 <translation id="8297488609722895137">照片提供者：<ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">轻击“开始使用 Brave Rewards”，即表示您同意 <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">您查看此背景图片将获得报酬。</translation>
 <translation id="7136586167396205364">隐藏赞助图片</translation>
-<translation id="2927095357213611519">您可以使用代币来支持网站创建者。\n您可以通过观看尊重隐私的广告赚取代币。</translation>
 <translation id="2898634658146274982">在 Brave 中打开外部链接</translation>
 <translation id="5616508928556767259">在 Brave 网站浏览器中打开来自其他应用程序的链接。注意：必须将 Brave 设置为默认浏览器。</translation>
 <translation id="2394961582378297792">已退出登录</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">开启</translation>
 <translation id="4963218453264888510">关闭</translation>
 <translation id="7474113515179313724">您在浏览这个网站时没有 Brave 的隐私保护。它是否与 Shields 无法正常配合使用？</translation>
+<translation id="4226543734057230801">以太坊网络</translation>
+<translation id="3504157706952484145">Filecoin 网络</translation>
+<translation id="1561541094377237745">Solana 网络</translation>
+<translation id="7141438739990875547">比特币网络</translation>
 <translation id="9055546041146396417">如果这个站点出现故障，请尝试关闭 Shields。</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">韩国门户网站&amp;搜索</translation>
 <translation id="177282784098234156">隐私, 独立, 用户优先</translation>
 <translation id="1410130669636877548">当您搜索网络时，某些搜索引擎会比其他搜索引擎更好地保护您的隐私。</translation>
-<translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
-<translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>
 <translation id="3479552764303398839">以后再说</translation>
 <translation id="7138272885617540195">允许在 Brave 之外的应用程序中打开应用程序链接</translation>
 <translation id="4954512758656527938">默认以太坊钱包</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">每月续订</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/月</translation>
 <translation id="1163809943099641131">一年</translation>
-<translation id="7574007394522199115">每年续订，可节省<ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">每年续订<ph name="DISCOUNT_TEXT_START"/>，节省 <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
-<translation id="2655185358771731232">免费试用 7 天。7 天后，您将被收取套餐价格。所有订阅都会自动续订，但在续订之前可以取消。</translation>
+<translation id="5125233570742276182">我们会通过您的 Google 账户收取订阅费用。购买订阅后，免费试用的任何未使用部分（如已提供）会被没收。您的订阅会自动更新，除非在当前订阅期结束前至少 24 小时以前取消该订阅。您可以在设置中管理您的订阅。使用 Brave，即表示您同意使用条款和隐私政策。</translation>
+<translation id="5035172357624830412">已在  brave.com 上购买？</translation>
+<translation id="713136183174551885">刷新您的凭证</translation>
 <translation id="6053992191006521518">免费试用</translation>
 <translation id="5903391101107992067">免费试用 7 天</translation>
 <translation id="721747358270435486">安装 VPN</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">添加</translation>
 <translation id="6889920539620318793">设为活动</translation>
 <translation id="2653659639078652383">提交</translation>
-<translation id="4556601961751528347">变更链接账号</translation>
+<translation id="4945690646623486292">选择网络</translation>
 <translation id="5233638681132016545">打开新的标签页</translation>
 <translation id="8006088103295786154">存取 Brave 钱包</translation>
 <translation id="8030169304546394654">已断开连接</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">要导入此代币吗？</translation>
 <translation id="1324417023773393937">Brave 的浏览器</translation>
 <translation id="6044189892950611565">Brave 浏览器的通知通道</translation>
-<translation id="1173919438868967364">选择帐户</translation>
+<translation id="4556601961751528347">变更链接账号</translation>
 <translation id="8922793255489232731">找不到相匹配的时区：<ph name="VALUE"/></translation>
 <translation id="6471216025161697462">已连接到 <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">试用</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">日期</translation>
 <translation id="346505172740911461">市场价</translation>
 <translation id="5494920125229734069">全选</translation>
-<translation id="5972844218283131174">取消选择所有</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">用 Brave Wallet 登录</translation>
 <translation id="3696514931437952995">你正在登录<ph name="ORIGIN"/>。Brave 钱包将与<ph name="ORIGIN"/>共享钱包地址。</translation>

@@ -418,9 +418,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7275773481201277457">Brave İstatistiklerini Göster</translation>
 <translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Cesur Ödüllerini Kullanmaya Başla düğmesine dokunarak <ph name="TERMS_OF_SERVICE"/>'yi kabul etmiş olursunuz.</translation>
-<translation id="3794079107601824147">Bu arka plan resmini görmek için ödeme alın.</translation>
 <translation id="7136586167396205364">Sponsorlu Resimleri Gizle</translation>
-<translation id="2927095357213611519">Tokenler ile web tasarımcıları destekleyebilirsiniz.\nGizlilik dostu reklamlar izleyerek token kazanın.</translation>
 <translation id="2898634658146274982">Harici linkleri Brave'de aç</translation>
 <translation id="5616508928556767259">Diğer uygulamalardaki bağlantıları Brave web görünümünde açar. Not: Varsayılan tarayıcınız Brave olmalıdır.</translation>
 <translation id="2394961582378297792">Oturum kapatıldı</translation>
@@ -478,6 +476,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8912304686498704084">AÇIK</translation>
 <translation id="4963218453264888510">KAPALI</translation>
 <translation id="7474113515179313724">Bu siteyi Brave'in gizlilik koruması olmadan tarıyorsunuz. Shields açıkken doğru çalışmıyor mu?</translation>
+<translation id="4226543734057230801">Ethereum ağları</translation>
+<translation id="3504157706952484145">Filecoin ağları</translation>
+<translation id="1561541094377237745">Solana ağları</translation>
+<translation id="7141438739990875547">Bitcoin ağları</translation>
 <translation id="9055546041146396417">Bu site bozuk görüntülenirse, Shileds'ı kapatmayı deneyin.</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
@@ -576,8 +578,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2422627462367776805">Güney Kore web portalı ve araması</translation>
 <translation id="177282784098234156">Gizli, bağımsız, kullanıcı öncelikli</translation>
 <translation id="1410130669636877548">Webde arama yaptığınızda, bazı arama motorları gizliliğinizi diğerlerinden daha iyi korur.</translation>
-<translation id="5187052478998910855">Rewards'la ilgili bir hatırlatıcı mı lazım?</translation>
-<translation id="8622329973403382303">Tarihe bir Rewards rock yıldızı olarak geçmek için, işlerin nasıl yürüdüğü konusunda tazelenmek amacıyla hızlı bir gezinti yapın!</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
 <translation id="7138272885617540195">Uygulama bağlantılarının Brave dışındaki uygulamalarda açılmasına izin ver</translation>
 <translation id="4954512758656527938">Varsayılan Ethereum cüzdanı</translation>
@@ -703,9 +703,11 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6748319398471481216">Aylık olarak yenilenir</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / ay</translation>
 <translation id="1163809943099641131">Bir Yıl</translation>
-<translation id="7574007394522199115">Yıllık olarak yenileyin, %%<ph name="PERCENTAGE_AMOUNT"/> tasarruf edin</translation>
+<translation id="172859718096975160">Yıllık olarak yenileyin vve <ph name="DISCOUNT_TEXT_START"/>%%<ph name="PERCENTAGE_AMOUNT"/> tasarruf edin<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yıl</translation>
-<translation id="2655185358771731232">7 günlüğüne ücretsiz deneyin. 7 gün sonra plan ücreti hesabınıza yansıtılır. Tüm abonelikler otomatik olarak yenilenir fakat yenilemeden önce iptal edilebilir.</translation>
+<translation id="5125233570742276182">Abonelikler Google hesabınız üzerinden ücretlendirilir. Ücretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir. \n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.</translation>
+<translation id="5035172357624830412">brave.com adresinden zaten satın aldınız mı?</translation>
+<translation id="713136183174551885">Kimlik bilgilerinizi yenileyin</translation>
 <translation id="6053992191006521518">ÜCRETSİZ olarak deneyin</translation>
 <translation id="5903391101107992067">7 Gün Ücretsiz Deneyin</translation>
 <translation id="721747358270435486">VPN'i Yükle</translation>
@@ -851,7 +853,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7791543448312431591">Ekle</translation>
 <translation id="6889920539620318793">Aktif olarak ayarla</translation>
 <translation id="2653659639078652383">Gönder</translation>
-<translation id="4556601961751528347">Bağlı Hesabı Değiştirin</translation>
+<translation id="4945690646623486292">Ağ Seç</translation>
 <translation id="5233638681132016545">Yeni sekme</translation>
 <translation id="8006088103295786154">Brave Cüzdan'a Eriş</translation>
 <translation id="8030169304546394654">Bağlantı kesildi</translation>
@@ -908,7 +910,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2322227405137827074">Bu token'ı içe aktarmak ister misiniz?</translation>
 <translation id="1324417023773393937">Brave Tarayıcı</translation>
 <translation id="6044189892950611565">Brave Tarayıcı için bildirim kanalı</translation>
-<translation id="1173919438868967364">Hesabı Seç</translation>
+<translation id="4556601961751528347">Bağlı Hesabı Değiştirin</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/> ile eşleşen bir saat dilimi bulunamadı</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> ile bağlı</translation>
 <translation id="1968852757206592413">Deneme</translation>
@@ -1064,7 +1066,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4932733599132424254">Tarih</translation>
 <translation id="346505172740911461">Piyasa Fiyatı</translation>
 <translation id="5494920125229734069">Tümünü seç</translation>
-<translation id="5972844218283131174">Tüm seçimleri kaldır</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Brave Cüzdan'la oturum açın</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/> adresinde oturum açıyorsunuz. Brave Cüzdanı, cüzdan adresinizi <ph name="ORIGIN"/> ile paylaşacak.</translation>

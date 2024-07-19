@@ -417,9 +417,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="7275773481201277457">Hiển thị Số liệu thống kê Brave</translation>
 <translation id="8297488609722895137">Ảnh chụp bởi <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Bằng cách nhấn vào Bắt đầu sử dụng Brave Rewards, bạn đồng ý với the <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Nhận tiền thưởng để xem hình nền này.</translation>
 <translation id="7136586167396205364">Ẩn các Hình được Tài trợ</translation>
-<translation id="2927095357213611519">Bạn có thể hỗ trợ các nhà sáng tạo nội dung web bằng token.\nKiếm token bằng cách xem các quảng cáo tôn trọng quyền riêng tư.</translation>
 <translation id="2898634658146274982">Mở các liên kết bên ngoài trong Brave</translation>
 <translation id="5616508928556767259">Mở liên kết từ các ứng dụng khác trong chế độ xem web Brave. Lưu ý: Brave phải được đặt làm trình duyệt mặc định của bạn.</translation>
 <translation id="2394961582378297792">Đã đăng xuất</translation>
@@ -477,6 +475,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8912304686498704084">LÊN</translation>
 <translation id="4963218453264888510">XUỐNG</translation>
 <translation id="7474113515179313724">Bạn đang duyệt trang web này mà không được Brave bảo vệ quyền riêng tư. Mọi thứ không hoạt động đúng khi bật Khiên sao?</translation>
+<translation id="4226543734057230801">Mạng Ethereum</translation>
+<translation id="3504157706952484145">Mạng Filecoin</translation>
+<translation id="1561541094377237745">Mạng Solana</translation>
+<translation id="7141438739990875547">Mạng Bitcoin</translation>
 <translation id="9055546041146396417">Nếu trang web này bị hỏng, hãy thử tắt Khiên.</translation>
 <translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="8510478288840333677">Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Shields:</translation>
@@ -575,8 +577,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2422627462367776805">Cổng thông tin điện tử &amp; tìm kiếm của Hàn Quốc</translation>
 <translation id="177282784098234156">Riêng tư, độc lập, người dùng là trên hết</translation>
 <translation id="1410130669636877548">Một vài công cụ tìm kiếm bảo vệ quyền riêng tư của bạn tốt hơn những công cụ khác khi bạn tìm kiếm trên web</translation>
-<translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
-<translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Phần thưởng!</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
 <translation id="7138272885617540195">Cho phép mở liên kết ứng dụng trong các ứng dụng bên ngoài Brave</translation>
 <translation id="4954512758656527938">Ví Ethereum mặc định</translation>
@@ -702,9 +702,11 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6748319398471481216">Gia hạn mỗi tháng</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / tháng</translation>
 <translation id="1163809943099641131">Một năm</translation>
-<translation id="7574007394522199115">Gia hạn hàng năm tiết kiệm <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Gia hạn hàng năm <ph name="DISCOUNT_TEXT_START"/>tiết kiệm <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / năm</translation>
-<translation id="2655185358771731232">Dùng thử miễn phí trong 7 ngày. Sau 7 ngày, bạn sẽ được tính phí theo giá gói. Tất cả các gói đăng ký được tự động gia hạn nhưng có thể hủy trước khi gia hạn.</translation>
+<translation id="5125233570742276182">Đăng ký sẽ được tính phí thông qua tài khoản Google của bạn. Mọi phần chưa sử dụng của bản dùng thử miễn phí, nếu được cung cấp, sẽ bị mất khi bạn mua đăng ký.\n\nĐăng ký của bạn sẽ tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kết thúc giai đoạn hiện tại.\n\nBạn có thể quản lý đăng ký của mình trong Cài đặt.\nBằng cách sử dụng Brave, bạn đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư.</translation>
+<translation id="5035172357624830412">Đã mua trên brave.com?</translation>
+<translation id="713136183174551885">Làm mới thông tin đăng nhập của bạn</translation>
 <translation id="6053992191006521518">Dùng thử MIỄN PHÍ</translation>
 <translation id="5903391101107992067">Dùng thử miễn phí 7 ngày!</translation>
 <translation id="721747358270435486">Cài đặt VPN</translation>
@@ -850,7 +852,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="7791543448312431591">Thêm</translation>
 <translation id="6889920539620318793">Đặt là đang hoạt động</translation>
 <translation id="2653659639078652383">Gửi</translation>
-<translation id="4556601961751528347">Thay đổi tài khoản được kết nối</translation>
+<translation id="4945690646623486292">Chọn mạng</translation>
 <translation id="5233638681132016545">Tab mới</translation>
 <translation id="8006088103295786154">Truy cập Ví Brave</translation>
 <translation id="8030169304546394654">Đã ngắt kết nối</translation>
@@ -907,7 +909,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2322227405137827074">Bạn có muốn nhập token này không?</translation>
 <translation id="1324417023773393937">Trình duyệt Brave</translation>
 <translation id="6044189892950611565">Kênh thông báo cho Trình duyệt Brave</translation>
-<translation id="1173919438868967364">Chọn tài khoản</translation>
+<translation id="4556601961751528347">Thay đổi tài khoản được kết nối</translation>
 <translation id="8922793255489232731">Không thể tải múi giờ phù hợp cho: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Đã kết nối với <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Dùng thử</translation>
@@ -1063,7 +1065,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4932733599132424254">Ngày</translation>
 <translation id="346505172740911461">Giá thị trường</translation>
 <translation id="5494920125229734069">Chọn tất cả</translation>
-<translation id="5972844218283131174">Bỏ chọn tất cả</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Đăng nhập bằng Ví Brave</translation>
 <translation id="3696514931437952995">Bạn đang đăng nhập vào<ph name="ORIGIN"/>. Ví Brave sẽ chia sẻ địa chỉ ví của bạn với <ph name="ORIGIN"/>.</translation>

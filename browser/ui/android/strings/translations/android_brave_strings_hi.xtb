@@ -416,9 +416,7 @@
 <translation id="7275773481201277457">Brave के आँकड़े दिखाएँ</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/> के द्वारा फ़ोटो</translation>
 <translation id="4761229094276239865">टैप करके ब्रेव रिवार्ड्स का उपयोग शुरू करें, आप <ph name="TERMS_OF_SERVICE"/>.से सहमत हैं।</translation>
-<translation id="3794079107601824147">इस बैकग्राउंड इमेज को देखने के लिए भुगतान प्राप्त करें।</translation>
 <translation id="7136586167396205364">प्रायोजित इमेज छिपाएँ</translation>
-<translation id="2927095357213611519">आप टोकन से वेब रचनाकारों की सहायता कर सकते हैं।\nगोपनीयता सम्बंधित विज्ञापन देखकर टोकर अर्जित करें।</translation>
 <translation id="2898634658146274982">बाहरी लिंक Brave में खोलें</translation>
 <translation id="5616508928556767259">अन्य ऐप की लिंक को Brave वेबव्यू में खोलें. ध्यान दें : Brave को आपका डिफ़ॉल्ट ब्राउज़र होना ज़रूरी है.</translation>
 <translation id="2394961582378297792">लॉग आउट हुआ</translation>
@@ -476,6 +474,10 @@
 <translation id="8912304686498704084">अप</translation>
 <translation id="4963218453264888510">डाउन</translation>
 <translation id="7474113515179313724">आप Brave की गोपनीयता सुरक्षा के बिना इस साइट को ब्राउज़ कर रहे हैं। क्या यह शील्ड के साथ सही तरीके से काम नहीं करता है?</translation>
+<translation id="4226543734057230801">Ethereum नेटवर्क</translation>
+<translation id="3504157706952484145">Filecoin नेटवर्क</translation>
+<translation id="1561541094377237745">Solana नेटवर्क</translation>
+<translation id="7141438739990875547">Bitcoin नेटवर्क</translation>
 <translation id="9055546041146396417">यदि यह साइट ठीक से नहीं दिखाई देती है, तो शील्ड को डाउन करने का प्रयास करें।</translation>
 <translation id="1209739344687072997">एक ब्रेक हुई साइट की रिपोर्ट करें</translation>
 <translation id="8510478288840333677">चलिए Brave के डेवलपर्स को बताएँ कि यह साइट संरक्षण साथ ठीक से काम नहीं करती है:</translation>
@@ -574,8 +576,6 @@
 <translation id="2422627462367776805">दक्षिण कोरिया वेब पोर्टल और सर्च</translation>
 <translation id="177282784098234156">निजी, स्वतंत्र, उपयोगकर्ता-केंद्रित</translation>
 <translation id="1410130669636877548">जब आप वेब पर खोज करते हैं तो कुछ खोज इंजन आपकी गोपनीयता की दूसरों की तुलना में बेहतर तरीके से सुरक्षा करते हैं।</translation>
-<translation id="5187052478998910855">पुरस्कारों के बारे में नई जानकारी चाहिए?</translation>
-<translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="7138272885617540195">ऐप लिंक को Brave के बाहर के ऐप्स में खोलने की अनुमति दें</translation>
 <translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
@@ -701,9 +701,11 @@
 <translation id="6748319398471481216">हर महीने रिन्यू होता है</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / महीने.</translation>
 <translation id="1163809943099641131">एक साल</translation>
-<translation id="7574007394522199115">सालाना रिन्यू करके<ph name="PERCENTAGE_AMOUNT"/>%% की बचत करें</translation>
+<translation id="172859718096975160">सालाना रिन्यू करें <ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/> बचाएँ</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / साल.</translation>
-<translation id="2655185358771731232">7 दिनों के लिए मुफ़्त आज़माएँ. 7 दिनों के बाद, आपसे प्लान की कीमत ली जाएगी. सभी सब्सक्रिप्शन अपने आप रिन्यू होते हैं लेकिन रिन्यू होने से पहले कैंसिल किए जा सकते हैं.</translation>
+<translation id="5125233570742276182">सब्सक्रिप्शन की राशि आपके Google अकाउंट के ज़रिए लिया जाएगा. जब आप सब्सक्रिप्शन खरीदते हैं, तो फ़्री ट्रायल का बचा हुआ कोई भी हिस्सा, अगर ऑफ़र किया गया हो, खत्म हो जाता है.\n\nसब्सक्रिप्शन की मौजूदा अवधि खत्म होने के कम-से-कम 24 घंटे पहले अगर उसे कैंसिल नहीं किया जाता है, तो वह अपने आप रिन्यू हो जाती है.\n\nआप अपनी सब्सक्रिप्शन को 'सेटिंग्स' से मैनेज कर सकते हैं।\nBrave का इस्तेमाल करके, आप इस्तेमाल की शर्तों और प्राइवेसी पॉलिसी पर अपनी सहमति देते हैं.</translation>
+<translation id="5035172357624830412">Brave.com पर पहले ही खरीद चुके हैं?</translation>
+<translation id="713136183174551885">अपने क्रेडेंशियल रिफ़्रेश करें</translation>
 <translation id="6053992191006521518">फ़्री में आज़माएँ</translation>
 <translation id="5903391101107992067">7 दिन फ़्री में आज़माएँ</translation>
 <translation id="721747358270435486">VPN इंस्टॉल करें</translation>
@@ -849,7 +851,7 @@
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
 <translation id="2653659639078652383">सबमिट करें</translation>
-<translation id="4556601961751528347">कनेक्ट किए गए अकाउंट को बदलें</translation>
+<translation id="4945690646623486292">नेटवर्क चुनें</translation>
 <translation id="5233638681132016545">नया टैब</translation>
 <translation id="8006088103295786154">Brave वॉलेट को ऐक्सेस करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट हो गया है</translation>
@@ -906,7 +908,7 @@
 <translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
 <translation id="6044189892950611565">Brave Browser के लिए नोटिफ़िकेशन चैनल</translation>
-<translation id="1173919438868967364">अकाउंट चुनें</translation>
+<translation id="4556601961751528347">कनेक्ट किए गए अकाउंट को बदलें</translation>
 <translation id="8922793255489232731"><ph name="VALUE"/> : के लिए मिलता-जुलता टाइमज़ोन नहीं मिला</translation>
 <translation id="6471216025161697462"><ph name="VALUE"/> से कनेक्ट किया गया है</translation>
 <translation id="1968852757206592413">ट्रायल</translation>
@@ -1062,7 +1064,6 @@
 <translation id="4932733599132424254">तिथि</translation>
 <translation id="346505172740911461">मार्केट की कीमत</translation>
 <translation id="5494920125229734069">सभी को चुनें</translation>
-<translation id="5972844218283131174">सभी चुने हुए को हटाएँ</translation>
 <translation id="6129027151000961048">लियो</translation>
 <translation id="8613144770663526433">Brave वॉलेट के साथ साइन इन करें</translation>
 <translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
