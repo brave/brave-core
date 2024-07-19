@@ -32,7 +32,7 @@ provideStrings({
   braveVpnFeature2: 'Hide your IP & change your location',
   braveVpnFeature3: 'Hundreds of servers around the world',
   braveVpnFeature4: 'Lightning-fast connection speeds',
-  braveVpnFeature5: 'Protect up to 5 devices with one plan',
+  braveVpnFeature5: 'Protect up to 10 devices with one plan',
   braveVpnLoading: 'One moment while loading…',
   braveVpnPurchaseFailed: 'Unable to check the status of your purchase, probably a network problem, try again or contact support.',
   braveVpnEditPaymentMethod: 'Edit payment method',

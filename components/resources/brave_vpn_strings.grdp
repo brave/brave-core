@@ -113,7 +113,7 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
-    Protect up to 5 devices with one plan
+    Protect up to 10 devices with one plan
   </message>
   <message name="IDS_BRAVE_VPN_SUPPORT_TICKET_FAILED" desc="Label to show failed response from support ticket creation request">
     Failed to create support ticket, check your connection.
