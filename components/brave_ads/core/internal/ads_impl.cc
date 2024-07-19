@@ -19,13 +19,12 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
-#include "brave/components/brave_ads/core/public/history/category_content_value_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_value_util.h"
 
 namespace brave_ads {
 
@@ -229,13 +228,13 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
           ad_type, std::move(callback)));
 }
 
-HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
-                                    const HistorySortType sort_type,
+AdHistoryList AdsImpl::GetAdHistory(const AdHistoryFilterType filter_type,
+                                    const AdHistorySortType sort_type,
                                     const base::Time from_time,
                                     const base::Time to_time) {
   return is_initialized_
-             ? HistoryManager::Get(filter_type, sort_type, from_time, to_time)
-             : HistoryItemList{};
+             ? AdHistoryManager::Get(filter_type, sort_type, from_time, to_time)
+             : AdHistoryList{};
 }
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
@@ -255,42 +254,42 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
 }
 
 mojom::UserReactionType AdsImpl::ToggleLikeAd(const base::Value::Dict& value) {
-  return is_initialized_
-             ? HistoryManager::GetInstance().LikeAd(AdContentFromValue(value))
-             : mojom::UserReactionType::kNeutral;
+  return is_initialized_ ? AdHistoryManager::GetInstance().LikeAd(
+                               AdHistoryItemFromValue(value))
+                         : mojom::UserReactionType::kNeutral;
 }
 
 mojom::UserReactionType AdsImpl::ToggleDislikeAd(
     const base::Value::Dict& value) {
-  return is_initialized_ ? HistoryManager::GetInstance().DislikeAd(
-                               AdContentFromValue(value))
+  return is_initialized_ ? AdHistoryManager::GetInstance().DislikeAd(
+                               AdHistoryItemFromValue(value))
                          : mojom::UserReactionType::kNeutral;
 }
 
 mojom::UserReactionType AdsImpl::ToggleLikeCategory(
     const base::Value::Dict& value) {
-  return is_initialized_ ? HistoryManager::GetInstance().LikeCategory(
-                               CategoryContentFromValue(value))
+  return is_initialized_ ? AdHistoryManager::GetInstance().LikeCategory(
+                               AdHistoryItemFromValue(value))
                          : mojom::UserReactionType::kNeutral;
 }
 
 mojom::UserReactionType AdsImpl::ToggleDislikeCategory(
     const base::Value::Dict& value) {
-  return is_initialized_ ? HistoryManager::GetInstance().DislikeCategory(
-                               CategoryContentFromValue(value))
+  return is_initialized_ ? AdHistoryManager::GetInstance().DislikeCategory(
+                               AdHistoryItemFromValue(value))
                          : mojom::UserReactionType::kNeutral;
 }
 
 bool AdsImpl::ToggleSaveAd(const base::Value::Dict& value) {
-  return is_initialized_ ? HistoryManager::GetInstance().ToggleSaveAd(
-                               AdContentFromValue(value))
+  return is_initialized_ ? AdHistoryManager::GetInstance().ToggleSaveAd(
+                               AdHistoryItemFromValue(value))
                          : false;
 }
 
 bool AdsImpl::ToggleMarkAdAsInappropriate(const base::Value::Dict& value) {
   return is_initialized_
-             ? HistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
-                   AdContentFromValue(value))
+             ? AdHistoryManager::GetInstance().ToggleMarkAdAsInappropriate(
+                   AdHistoryItemFromValue(value))
              : false;
 }
 

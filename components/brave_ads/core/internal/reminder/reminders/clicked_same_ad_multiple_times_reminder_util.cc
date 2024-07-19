@@ -11,36 +11,36 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
 
 namespace {
 
-bool CanRemind(const HistoryItemInfo& history_item) {
+bool CanRemind(const AdHistoryItemInfo& ad_history_item) {
   return !PlatformHelper::GetInstance().IsMobile() &&
          kRemindUserIfClickingTheSameAdAfter.Get() > 0 &&
-         history_item.ad_content.type == AdType::kNotificationAd &&
-         history_item.ad_content.confirmation_type ==
-             ConfirmationType::kClicked;
+         ad_history_item.type == AdType::kNotificationAd &&
+         ad_history_item.confirmation_type == ConfirmationType::kClicked;
 }
 
 }  // namespace
 
-bool DidUserClickTheSameAdMultipleTimes(const HistoryItemInfo& history_item) {
-  if (!CanRemind(history_item)) {
+bool DidUserClickTheSameAdMultipleTimes(
+    const AdHistoryItemInfo& ad_history_item) {
+  if (!CanRemind(ad_history_item)) {
     return false;
   }
 
   const size_t count = base::ranges::count_if(
-      HistoryManager::Get(), [&history_item](const HistoryItemInfo& other) {
-        return other.ad_content.confirmation_type ==
-                   ConfirmationType::kClicked &&
-               other.ad_content.creative_instance_id ==
-                   history_item.ad_content.creative_instance_id;
+      AdHistoryManager::Get(),
+      [&ad_history_item](const AdHistoryItemInfo& other) {
+        return other.confirmation_type == ConfirmationType::kClicked &&
+               other.creative_instance_id ==
+                   ad_history_item.creative_instance_id;
       });
 
   if (count == 0) {

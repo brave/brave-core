@@ -102,7 +102,6 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
                              event_type, std::move(callback));
   }
 
-  // TODO(tmancey): Decouple to `new_tab_page_ad_event_handler_util.cc`.
   if (!WasAdServed(ad, ad_events, event_type)) {
     BLOG(1,
          "New tab page ad: Not allowed because an ad was not served for "
@@ -112,7 +111,6 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
                              event_type, std::move(callback));
   }
 
-  // TODO(tmancey): Decouple to `new_tab_page_ad_event_handler_util.cc`.
   if (ShouldDeduplicateAdEvent(ad, ad_events, event_type)) {
     BLOG(1, "New tab page ad: Not allowed as deduplicated "
                 << event_type << " event for placement id " << ad.placement_id);

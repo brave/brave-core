@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -206,7 +206,7 @@ void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewedImpression);
@@ -220,7 +220,7 @@ void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
 
   site_visit_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);

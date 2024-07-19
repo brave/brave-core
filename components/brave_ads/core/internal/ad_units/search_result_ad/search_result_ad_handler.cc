@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -173,7 +173,7 @@ void SearchResultAdHandler::OnDidFireSearchResultAdViewedEvent(
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kViewedImpression);
@@ -187,7 +187,7 @@ void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
 
   site_visit_->SetLastClickedAd(ad);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
+  AdHistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kClicked);

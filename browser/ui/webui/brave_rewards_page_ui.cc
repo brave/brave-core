@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/targeting/geographical/subdivision/supported_subdivisions.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -263,8 +264,6 @@ class RewardsDOMHandler
 };
 
 namespace {
-
-constexpr int kDaysOfAdsHistory = 30;
 
 constexpr char kAdsSubdivisionTargeting[] = "adsSubdivisionTargeting";
 constexpr char kAutoDetectedSubdivisionTargeting[] =
@@ -1117,14 +1116,15 @@ void RewardsDOMHandler::GetAdsHistory(const base::Value::List& args) {
 
   const base::Time now = base::Time::Now();
 
-  const base::Time from_time = now - base::Days(kDaysOfAdsHistory - 1);
+  const base::Time from_time =
+      now - brave_ads::kAdHistoryRetentionPeriod - base::Days(1);
   const base::Time from_time_at_local_midnight = from_time.LocalMidnight();
 
   brave_rewards::p3a::RecordAdsHistoryView();
 
-  ads_service_->GetHistory(from_time_at_local_midnight, now,
-                           base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
-                                          weak_factory_.GetWeakPtr()));
+  ads_service_->GetAdHistory(from_time_at_local_midnight, now,
+                             base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
+                                            weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetAdsHistory(base::Value::List ads_history) {

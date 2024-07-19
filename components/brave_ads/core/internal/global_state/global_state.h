@@ -25,7 +25,7 @@ class ConfirmationStateManager;
 class DatabaseManager;
 class DiagnosticManager;
 class GlobalStateHolder;
-class HistoryManager;
+class AdHistoryManager;
 class NotificationAdManager;
 class TabManager;
 class UserActivityManager;
@@ -54,7 +54,7 @@ class GlobalState final {
   ConfirmationStateManager& GetConfirmationStateManager();
   DatabaseManager& GetDatabaseManager();
   DiagnosticManager& GetDiagnosticManager();
-  HistoryManager& GetHistoryManager();
+  AdHistoryManager& GetHistoryManager();
   NotificationAdManager& GetNotificationAdManager();
   TabManager& GetTabManager();
   UserActivityManager& GetUserActivityManager();
@@ -78,7 +78,7 @@ class GlobalState final {
   std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<HistoryManager> history_manager_;
+  std::unique_ptr<AdHistoryManager> history_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
