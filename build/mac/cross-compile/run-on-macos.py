@@ -24,7 +24,6 @@ from shlex import quote
 from subprocess import run
 from tempfile import gettempdir
 from time import sleep
-from uuid import uuid4
 
 import os
 import sys
@@ -38,9 +37,6 @@ def main(argv):
     host, src_dir_on_host, keychain_pw = read_env_vars(tool)
     remote_commands = get_remote_commands(tool, args, os.getcwd(),
                                           src_dir_on_host, keychain_pw)
-    if tool == 'codesign':
-        print(' && '.join(' '.join(map(quote, args))
-                          for args in remote_commands))
     exit_code = run_via_ssh(host, remote_commands)
     return get_outer_exit_code(tool, args, exit_code)
 
@@ -64,9 +60,9 @@ def read_env_vars(tool):
 def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw):
     result = []
     cwd_on_host = join(src_dir_on_host, relpath(cwd, SRC_DIR))
-    result.append(['cd', cwd_on_host])
+    result.append(['cd', quote(cwd_on_host)])
     if requires_keychain(tool):
-        result.append(['security', 'unlock-keychain', '-p', keychain_pw])
+        result.append(['security', 'unlock-keychain', '-p', quote(keychain_pw)])
     args_on_host = make_relative(args, cwd)
     if tool == 'pkgbuild' and '--analyze' not in args:
         result.extend(get_pkgbuild_commands(tool, args_on_host))
@@ -83,9 +79,9 @@ def get_pkgbuild_commands(tool, args_on_host):
     # write to it. So write to a known-writeable location. Then `mv` to the
     # correct destination.
     pkgbuild_dest_orig = args_on_host[-1]
-    pkgbuild_dest_writeable = '~/pkgbuild-pkg-' + uuid4().hex
-    result.append([tool] + args_on_host[:-1] + [pkgbuild_dest_writeable])
-    result.append(['mv', pkgbuild_dest_writeable, pkgbuild_dest_orig])
+    result.append(['tempfile=$(mktemp)'])
+    result.append([tool] + args_on_host[:-1] + ['$tempfile'])
+    result.append(['mv', '$tempfile', pkgbuild_dest_orig])
     return result
 
 
@@ -104,7 +100,7 @@ def make_relative(args, cwd):
     for arg in args:
         if exists(arg) or (exists(dirname(arg)) and dirname(arg) != '/'):
             arg = relpath(arg, cwd)
-        result.append(arg)
+        result.append(quote(arg))
     return result
 
 
@@ -113,7 +109,7 @@ def requires_keychain(tool):
 
 
 def run_via_ssh(host, commands):
-    command_str = ' && '.join(' '.join(map(quote, args)) for args in commands)
+    command_str = ' && '.join(map(' '.join, commands))
     # pylint: disable=subprocess-run-check
     cp = run(['ssh', host, command_str])
     return cp.returncode
