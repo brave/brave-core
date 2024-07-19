@@ -11,7 +11,7 @@
 #include "ui/shell_dialogs/select_file_dialog.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/brave_file_select_helper.h"
+#include "brave/browser/ui/brave_file_select_utils.h"
 #endif
 
 namespace {

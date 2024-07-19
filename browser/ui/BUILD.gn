@@ -150,8 +150,8 @@ source_set("ui") {
       "brave_browser_content_setting_bubble_model_delegate.h",
       "brave_browser_window.cc",
       "brave_browser_window.h",
-      "brave_file_select_helper.cc",
-      "brave_file_select_helper.h",
+      "brave_file_select_utils.cc",
+      "brave_file_select_utils.h",
       "brave_icon_with_badge_image_source.cc",
       "brave_icon_with_badge_image_source.h",
       "brave_layout_constants.cc",
@@ -1339,7 +1339,7 @@ source_set("unit_tests") {
   if (!is_android) {
     testonly = true
     sources = [
-      "brave_file_select_helper_unittest.cc",
+      "brave_file_select_utils_unittest.cc",
       "brave_layout_constants_unittest.cc",
     ]
     deps = [

@@ -3,15 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_file_select_helper.h"
-
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/brave_file_select_utils.h"
 #include "components/javascript_dialogs/app_modal_dialog_manager.h"
 #include "components/strings/grit/components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
-TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
+TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
   constexpr struct Case {
     // The name of the test case.
     const char* case_name;
@@ -111,7 +110,7 @@ TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitle_InSyncWithUpstream) {
   }
 }
 
-TEST(BraveFileSelectHelperUnitTest, GetSiteFrameTitleForFileSelect) {
+TEST(BraveFileSelectUtilsUnitTest, GetSiteFrameTitleForFileSelect) {
   constexpr struct Case {
     // The name of the test case.
     const char* case_name;

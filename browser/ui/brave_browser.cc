@@ -14,7 +14,7 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/brave_file_select_helper.h"
+#include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
