@@ -59,7 +59,8 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
   effectiveRecipient: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
@@ -114,7 +115,8 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   confirmedTime: { microseconds: 0 },
   originInfo: mockOriginInfo,
   effectiveRecipient: undefined,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockFilSendTransaction: FileCoinTransactionInfo = {
@@ -148,7 +150,8 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   txStatus: BraveWallet.TransactionStatus.Confirmed,
   txType: BraveWallet.TransactionType.Other,
   effectiveRecipient: mockAccount.address,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockedErc20ApprovalTransaction = {
@@ -206,7 +209,8 @@ export const mockEthSendTransaction = {
   },
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   effectiveRecipient: mockEthAccount.accountId.address,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockBtcSendTransaction = {
@@ -243,7 +247,8 @@ export const mockBtcSendTransaction = {
   },
   chainId: BraveWallet.BITCOIN_MAINNET,
   effectiveRecipient: mockBtcAccount.accountId.address,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const mockZecSendTransaction = {
@@ -279,7 +284,8 @@ export const mockZecSendTransaction = {
   },
   chainId: BraveWallet.Z_CASH_MAINNET,
   effectiveRecipient: mockZecAccount.accountId.address,
-  isRetriable: false
+  isRetriable: false,
+  swapInfo: undefined
 }
 
 export const createMockERC20TransferTxArgs = ({
@@ -315,25 +321,6 @@ export const createMockERC721TxArgs = ({
 }) => {
   // (address owner, address to, uint256 tokenId)
   return [owner, to, tokenId.toString()]
-}
-
-export const createMockEthSwapTxArgs = ({
-  buyTokenContractAddress,
-  sellTokenContractAddress,
-  buyAmountWei,
-  sellAmountWei
-}: {
-  sellTokenContractAddress: string
-  buyTokenContractAddress: string
-  sellAmountWei: string
-  buyAmountWei: string
-}) => {
-  const fillPath = `${sellTokenContractAddress}${
-    //
-    buyTokenContractAddress.replace('0x', '')
-  }`
-  // (bytes fillPath, uint256 sellAmount, uint256 minBuyAmount)
-  return [fillPath, sellAmountWei, buyAmountWei]
 }
 
 export const createMockTransactionInfo = (arg: {
@@ -406,6 +393,7 @@ export const createMockTransactionInfo = (arg: {
   }
 
   let txArgs: string[] = []
+  let swapInfo
 
   switch (true) {
     case isERC20Approve: {
@@ -430,12 +418,18 @@ export const createMockTransactionInfo = (arg: {
       txBase.txDataUnion.ethTxData1559 = ethTxData
     }
     case isSwap: {
-      txArgs = createMockEthSwapTxArgs({
-        buyAmountWei: buyAmount || '',
-        buyTokenContractAddress: buyAssetContractAddress || '',
-        sellAmountWei: sendApproveOrSellAmount,
-        sellTokenContractAddress: sendApproveOrSellAssetContractAddress
-      })
+      swapInfo = {
+        fromCoin: BraveWallet.CoinType.ETH,
+        fromChainId: chainId,
+        fromAsset: sendApproveOrSellAssetContractAddress,
+        fromAmount: sendApproveOrSellAmount,
+        toCoin: BraveWallet.CoinType.ETH,
+        toChainId: chainId,
+        toAsset: buyAssetContractAddress,
+        toAmount: buyAmount || '',
+        receiver: toAddress,
+        provider: 'lifi'
+      } as BraveWallet.SwapInfo
     }
   }
 
@@ -450,6 +444,7 @@ export const createMockTransactionInfo = (arg: {
     id: `${txBase.id}--${JSON.stringify(arg)}`,
     chainId,
     fromAccountId: fromAccount.accountId,
-    txArgs
+    txArgs,
+    swapInfo
   }
 }

@@ -280,7 +280,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         // 1. build transaction sections
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
@@ -299,7 +299,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         guard !Task.isCancelled else { return }
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
@@ -315,7 +315,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         guard !Task.isCancelled else { return }
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
-          network: network,
+          allNetworks: allNetworks,
           accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
@@ -501,7 +501,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 
   private func buildTransactionSections(
     transactions: [BraveWallet.TransactionInfo],
-    network: BraveWallet.NetworkInfo,
+    allNetworks: [BraveWallet.NetworkInfo],
     accountInfos: [BraveWallet.AccountInfo],
     userAssets: [BraveWallet.BlockchainToken],
     allTokens: [BraveWallet.BlockchainToken],
@@ -527,7 +527,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         .compactMap { transaction in
           return TransactionParser.parseTransaction(
             transaction: transaction,
-            network: network,
+            allNetworks: allNetworks,
             accountInfos: accountInfos,
             userAssets: userAssets,
             allTokens: allTokens + tokenInfoCache,
