@@ -13,11 +13,15 @@
 #undef SetIsEnabled
 
 // By default we will send three (3) non-privacy-risking CHs: kUA, kUAMobile,
-// and kUAPlatform. Additionally, if we receive CH requests for
-// kUAPlatformVersion and/or kUAModel, we will send these, but:
-// - kUAModel will be always set to an empty string;
-// - kUAPlatformVersion will be clamped to the same value we report in the
-//   User-Agent string.
+// and kUAPlatform.
+// Additionally:
+//   - if we receive CH requests for kUAArch, kUABitness, kUAFullVersionList, or
+//   kUAWoW64, we will send these.
+//   - if we receive CH requests for kUAPlatformVersion and/or kUAModel, we will
+//   send these, too, but:
+//     - kUAModel will be always set to an empty string;
+//     - kUAPlatformVersion will be clamped to the same value we report in the
+//     User-Agent string.
 
 namespace blink {
 
@@ -26,10 +30,14 @@ void EnabledClientHints::SetIsEnabled(const WebClientHintsType type,
   bool type_is_enabled = false;
   switch (type) {
     case WebClientHintsType::kUA:
+    case WebClientHintsType::kUAArch:
+    case WebClientHintsType::kUABitness:
+    case WebClientHintsType::kUAFullVersionList:
     case WebClientHintsType::kUAMobile:
     case WebClientHintsType::kUAModel:
     case WebClientHintsType::kUAPlatform:
     case WebClientHintsType::kUAPlatformVersion:
+    case WebClientHintsType::kUAWoW64:
       type_is_enabled = true;
       break;
     default:
