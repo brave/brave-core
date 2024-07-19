@@ -63,4 +63,12 @@ content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
   return context;
 }
 
+bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
+  // KeyringService and BraveWalletP3A expect a valid local state. Without it
+  // we'd need to put a lot of unnecessary ifs/checks into those services.
+  // Instead, we just won't create the wallet service if the local state isn't
+  // available.
+  return (g_browser_process->local_state() == nullptr);
+}
+
 }  // namespace brave_wallet
