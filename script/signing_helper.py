@@ -17,7 +17,6 @@ import signing.model  # pylint: disable=import-error, reimported, wrong-import-p
 from lib.widevine import can_generate_sig_file, generate_sig_file
 from os.path import basename, splitext, exists
 from signing import model  # pylint: disable=import-error, reimported
-from subprocess import check_output
 
 # Construct path to signing modules in chrome/installer/mac/signing
 signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
