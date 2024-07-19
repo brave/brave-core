@@ -178,5 +178,11 @@ extension Strings {
       value: "Brave News",
       comment: "The name of the feature"
     )
+    public static let braveLeo = NSLocalizedString(
+      "widgets.braveLeo",
+      bundle: widgetBundle,
+      value: "Leo AI",
+      comment: "The name of the feature"
+    )
   }
 }
