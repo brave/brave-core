@@ -1,4 +1,4 @@
-Total size 149508K
+Total size 142514K
 
 GROUP Adblock [8271K total]
    112K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.182 [adcocjohghhfpidemphmcmlmhnfgikei]
@@ -17,14 +17,14 @@ GROUP Ntp [13214K total]
    410K Brave NTP sponsored images 1.0.1580 [pldjcdmpjcopmodlfjplijaacnccpggc]
 
 GROUP Other [158K total]
-   158K Brave Local Data Files Updater 1.0.821 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   158K Brave Local Data Files Updater 1.0.822 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [94743K total]
+GROUP large_files [87756K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   1022K Default/Local Storage/leveldb/000003.ldb
   1010K Default/Session Storage/000003.ldb
-  8796K Default/Sessions/Session_13365864773836554
-  5676K Default/Sessions/Session_13365864775449293
+  2723K Default/Sessions/Session_13365866134116393
+  4763K Default/Sessions/Session_13365866136396208
  44128K Default/publisher_info_db
   1945K Safe Browsing/ChromeExtMalware.store.32_13357744536199942
   1011K Safe Browsing/UrlMalBin.store.4_13357744536174233
