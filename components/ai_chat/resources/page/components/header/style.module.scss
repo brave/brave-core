@@ -62,3 +62,16 @@
   gap: 16px;
   padding-left: 36px;
 }
+
+.pageTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pageText {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  line-height: 1;
+  white-space: nowrap;
+}

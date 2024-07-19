@@ -42,7 +42,7 @@ export default function FeatureMenu() {
         fab
         kind="plain-faint"
       >
-        <Icon name='settings' />
+        <Icon name='more-vertical' />
       </Button>
       <div className={styles.menuSectionTitle}>
         {getLocale('menuTitleModels')}
