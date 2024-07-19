@@ -178,6 +178,16 @@
 					<key>INEnumValueName</key>
 					<string>braveNews</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Leo AI</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>U0eRbw</string>
+					<key>INEnumValueIndex</key>
+					<integer>11</integer>
+					<key>INEnumValueName</key>
+					<string>braveLeo</string>
+				</dict>
 			</array>
 		</dict>
 	</array>
@@ -186,11 +196,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>22D49</string>
+	<string>23F79</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>14C18</string>
+	<string>15E204a</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>14.2</string>
+	<string>15.3</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
@@ -308,7 +318,7 @@
 			<key>INIntentIneligibleForSuggestions</key>
 			<true/>
 			<key>INIntentLastParameterTag</key>
-			<integer>9</integer>
+			<integer>11</integer>
 			<key>INIntentName</key>
 			<string>ShortcutsConfiguration</string>
 			<key>INIntentParameters</key>
@@ -490,6 +500,66 @@
 					</array>
 					<key>INIntentParameterTag</key>
 					<integer>9</integer>
+					<key>INIntentParameterType</key>
+					<string>Integer</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>#4</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>M2Y1rg</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>4</integer>
+					<key>INIntentParameterEnumType</key>
+					<string>WidgetShortcut</string>
+					<key>INIntentParameterEnumTypeNamespace</key>
+					<string>88xZPY</string>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataDefaultValue</key>
+						<string>braveLeo</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>slot4</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>There are ${count} options matching ‘${slot4}’.</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>z517nu</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>DisambiguationIntroduction</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogFormatString</key>
+							<string>Just to confirm, you wanted ‘${slot4}’?</string>
+							<key>INIntentParameterPromptDialogFormatStringID</key>
+							<string>EvESs0</string>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Confirmation</string>
+						</dict>
+					</array>
+					<key>INIntentParameterTag</key>
+					<integer>11</integer>
 					<key>INIntentParameterType</key>
 					<string>Integer</string>
 				</dict>
