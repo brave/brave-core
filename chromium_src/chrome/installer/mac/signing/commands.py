@@ -10,7 +10,6 @@ import override_utils
 import platform
 
 
-@cache
 @override_utils.override_function(globals())
 def macos_version(original_function):
     if platform.system() == 'Darwin':
