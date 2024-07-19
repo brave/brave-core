@@ -5,6 +5,7 @@
 import logging
 import os
 import shutil
+import json
 
 from typing import Dict, List, Optional
 
@@ -13,6 +14,18 @@ import components.path_util as path_util
 from components.perf_test_utils import GetProcessOutput
 
 GH_BRAVE_PERF_TEAM = 'brave/perf-team'
+_GH_EMAIL = '"brave-builds+devops@brave.com"'
+_GH_USERNAME = '"brave-builds"'
+
+
+def DoesPrOpen(branch: str, target: Optional[str] = None):
+  args = ['gh', 'pr', 'list', '--head', branch, '--json', 'number']
+  if target is not None:
+    args.extend(['--base', target])
+  _, output = GetProcessOutput(args, cwd=path_util.GetBraveDir(), check=True)
+  pr_list = json.loads(output)
+  assert isinstance(pr_list, list)
+  return len(pr_list) > 0
 
 
 def MakeGithubPR(branch: str, target: str, title: str, body: str,
@@ -31,20 +44,18 @@ def MakeGithubPR(branch: str, target: str, title: str, body: str,
 def PushChangesToBranch(files: Dict[str, str], branch: str,
                         commit_message: str):
 
-  #TODO: clarify email and username
-  GetProcessOutput(
-      ['git', 'config', 'user.email', '"brave-builds+devops@brave.com"'],
-      cwd=path_util.GetBraveDir(),
-      check=True)
-  GetProcessOutput(['git', 'config', 'user.name', '"brave-builds"'],
+  GetProcessOutput(['git', 'config', 'user.email', _GH_EMAIL],
+                   cwd=path_util.GetBraveDir(),
+                   check=True)
+  GetProcessOutput(['git', 'config', 'user.name', _GH_USERNAME],
                    cwd=path_util.GetBraveDir(),
                    check=True)
 
+  # Make a few attempts to rebase if non fast-forward
   for attempt in range(3):
     logging.info('Pushing changes to branch %s #%d', branch, attempt)
     branch_exists, _ = GetProcessOutput(['git', 'fetch', 'origin', branch],
                                         cwd=path_util.GetBraveDir())
-    logging.info(branch_exists)
     if branch_exists:
       GetProcessOutput(['git', 'checkout', '-f', 'FETCH_HEAD'],
                        cwd=path_util.GetBraveDir(),

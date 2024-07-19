@@ -15,8 +15,8 @@ from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, asdict
 
 import components.cloud_storage as cloud_storage
+import components.git_tools as git_tools
 
-from components.git_tools import GH_BRAVE_PERF_TEAM, MakeGithubPR, PushChangesToBranch
 from components.path_util import GetBravePerfProfileDir
 from components.perf_profile import GetProfilePath
 from components.perf_config import RunnerConfig
@@ -129,14 +129,19 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
     version_str = cfg.version.to_string()
     commit_message = f'Update perf profile {cfg.profile} using {version_str}'
     branch = options.upload_branch or f'update-perf-profiles-{version_str}'
-    PushChangesToBranch(files, branch, commit_message)
+    git_tools.PushChangesToBranch(files, branch, commit_message)
 
-    MakeGithubPR(branch=branch,
-                 target='master',
-                 title=f'Roll perf profiles update ({branch})',
-                 body=_PR_BODY,
-                 reviewers=[GH_BRAVE_PERF_TEAM],
-                 extra_args=['--label', 'CI/skip'])
+    if git_tools.DoesPrOpen(branch):
+      logging.info('The PR exists, skip making it')
+    else:
+      logging.info('Making a github PR from branch %s', branch)
+      git_tools.MakeGithubPR(branch=branch,
+                             target='master',
+                             title=f'Roll perf profiles update ({branch})',
+                             body=_PR_BODY,
+                             reviewers=[git_tools.GH_BRAVE_PERF_TEAM],
+                             extra_args=['--label', 'CI/skip'])
+
 
 
 def _sizeKB(size: int) -> int:
