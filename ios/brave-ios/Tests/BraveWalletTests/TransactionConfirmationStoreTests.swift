@@ -71,6 +71,9 @@ class TransactionConfirmationStoreTests: XCTestCase {
     rpcService._erc20TokenAllowance = { _, _, _, _, completion in
       completion("16345785d8a0000", .success, "")  // 0.1000
     }
+    rpcService._code = { _, _, _, completion in
+      completion("0x", .success, "")
+    }
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
     txService._allTransactionInfo = { coin, chainId, address, completion in
