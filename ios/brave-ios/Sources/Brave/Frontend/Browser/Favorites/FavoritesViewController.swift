@@ -51,6 +51,8 @@ class FavoritesViewController: UIViewController {
     $0.fetchRequest.fetchLimit = 5
   }
 
+  private var preferenceBeingObserved = false
+
   var availableSections: [FavoritesSection] {
     var sections = [FavoritesSection]()
     if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
@@ -359,17 +361,17 @@ extension FavoritesViewController {
   }
 
   @objc
+  func onRecentSearchHidePressed(_ button: UIButton) {
+    // User doesn't want to see the recent searches option again
+    Preferences.Search.shouldShowRecentSearchesOptIn.value = false
+  }
+
+  @objc
   func onRecentSearchShowMorePressed() {
     // User already had recent searches enabled, and they want to see more results
     NSFetchedResultsController<RecentSearch>.deleteCache(withName: recentSearchesFRC.cacheName)
     recentSearchesFRC.fetchRequest.fetchLimit = 0
     fetchRecentSearches()
-  }
-
-  @objc
-  func onRecentSearchHidePressed(_ button: UIButton) {
-    // User doesn't want to see the recent searches option again
-    Preferences.Search.shouldShowRecentSearchesOptIn.value = false
   }
 
   @objc
@@ -400,6 +402,7 @@ extension FavoritesViewController {
 
 extension FavoritesViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
+    preferenceBeingObserved = true
     updateUIWithSnapshot()
   }
 }
@@ -451,13 +454,19 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
     _ controller: NSFetchedResultsController<NSFetchRequestResult>,
     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference
   ) {
-
-    // Skip applying snapshots before first `initialSnapshotSetup` is made.
-    if dataSource.snapshot().numberOfSections == 0 {
+    // Do not update section contents preference value is changed
+    guard !preferenceBeingObserved else {
+      preferenceBeingObserved = false
       return
     }
 
     let currentSnapshot = dataSource.snapshot()
+
+    // Skip applying snapshots before first `initialSnapshotSetup` is made.
+    if currentSnapshot.numberOfSections == 0 {
+      return
+    }
+
     var newSnapshot = Snapshot()
     newSnapshot.appendSections(availableSections)
 
