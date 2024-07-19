@@ -812,7 +812,7 @@ class Tab: NSObject {
       return
     }
 
-    if let _ = webView?.underlyingWebView?.reloadFromOrigin() {
+    if let _ = webView?.reload() {
       nightMode = Preferences.General.nightModeEnabled.value
       Logger.module.debug("reloaded zombified tab from origin")
       return
