@@ -16,7 +16,7 @@ import {
 } from 'recharts'
 
 // Types
-import { TokenPriceHistory } from '../../constants/types'
+import type { TokenPriceHistory } from '../../constants/types'
 
 // Utils
 import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
