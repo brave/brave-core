@@ -20,6 +20,7 @@ import SettingsPanel from '../components/settings-panel'
 import LoadingPanel from '../components/loading-panel'
 import ContactSupport from '../components/contact-support'
 import './mock-data/api'
+import '@brave/leo/tokens/css/variables.css'
 
 export default {
   title: 'VPN/Panels',

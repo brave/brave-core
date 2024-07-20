@@ -55,7 +55,7 @@
   <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to"><ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. You can try again, or choose another.</message>
 
   <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn">
-    Start free trial
+    Start 7-day free trial
   </message>
 
   <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN.">Already purchased VPN?</message>
@@ -97,23 +97,23 @@
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_1" desc="Key feature for selling advertising">
-    Block trackers &amp; ads across all apps
+    Extra privacy &amp; security online
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_2" desc="Key feature for selling advertising">
-    Protects you from unwanted network connections
+    Hide your IP &amp; change your location
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_3" desc="Key feature for selling advertising">
-    Choose your VPN location
+    Hundreds of servers around the world
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_4" desc="Key feature for selling advertising">
-    Fast and unlimited up to 500 Mbps
+    Lightning-fast connection speeds
   </message>
 
   <message name="IDS_BRAVE_VPN_FEATURE_5" desc="Key feature for selling advertising">
-    24/7 support
+    Protect up to 10 devices with one plan
   </message>
   <message name="IDS_BRAVE_VPN_SUPPORT_TICKET_FAILED" desc="Label to show failed response from support ticket creation request">
     Failed to create support ticket, check your connection.
