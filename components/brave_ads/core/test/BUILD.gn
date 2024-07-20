@@ -399,7 +399,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/history/history_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/history_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/sorts/history_sort_unittest.cc",
-    "//brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_issue_23794_unittest.cc",
     "//brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_unittest.cc",
     "//brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_unittest.cc",
