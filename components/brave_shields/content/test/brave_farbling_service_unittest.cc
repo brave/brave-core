@@ -8,8 +8,6 @@
 #include <memory>
 #include <tuple>
 
-#include "chrome/test/base/testing_profile.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 #include "url/gurl.h"
@@ -36,7 +34,6 @@ class BraveFarblingServiceTest : public testing::Test {
   }
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<brave::BraveFarblingService> farbling_service_;
 };
 
