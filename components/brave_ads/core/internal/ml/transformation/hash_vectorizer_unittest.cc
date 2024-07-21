@@ -25,7 +25,7 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
 
   // Act
   const base::Value::Dict dict = base::test::ParseJsonDictFromFile(
-      test::DataPath().AppendASCII(kHashCheck));
+      test::RootDataPath().AppendASCII(kHashCheck));
 
   const base::Value::Dict* const test_case_name_dict =
       dict.FindDict(test_case_name);

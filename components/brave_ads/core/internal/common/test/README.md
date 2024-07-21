@@ -62,7 +62,7 @@ See [file_path_test_util.h](file_path_test_util.h).
 
 ## Mocking URL Responses
 
-Mocked responses for URL requests can be defined inline or read from a text file. Store test data files in `brave/components/brave_ads/core/test/data/`. Inline filenames should begin with a forward slash, i.e.,
+Mocked responses for URL requests can be defined inline or read from a text file. Store test data files in `brave/components/brave_ads/core/test/data/url_responses`. Inline filenames should begin with a forward slash, i.e.,
 
     const test::URLResponseMap url_responses = {
       "/foo/bar", {

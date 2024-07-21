@@ -43,7 +43,8 @@ class BraveAdsInvalidDatabaseMigrationTest
 
   void MaybeMockDatabase() {
     const std::string database_filename = base::StringPrintf(
-        "database/invalid_database_schema_%d.sqlite", GetSchemaVersion());
+        "database_migration/invalid_database_schema_%d.sqlite",
+        GetSchemaVersion());
     ASSERT_TRUE(
         CopyFileFromTestPathToTempPath(database_filename, kDatabaseFilename));
   }

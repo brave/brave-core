@@ -12,11 +12,22 @@ class FilePath;
 
 namespace brave_ads::test {
 
-base::FilePath DataPath();
+// Returns the path of `brave/components/brave_ads`.
+base::FilePath RootPath();
 
+// Returns the path of `brave/components/brave_ads/resources`.
+base::FilePath DataResourcesPath();
+
+// Returns the path of `brave/components/brave_ads/core/test/data`.
+base::FilePath RootDataPath();
+
+// Returns the path of
+// `brave/components/brave_ads/core/test/data/component_resources`.
 base::FilePath ComponentResourcesDataPath();
 
-base::FilePath DataResourcesPath();
+// Returns the path of
+// `brave/components/brave_ads/core/test/data/url_responses`.
+base::FilePath UrlResponsesDataPath();
 
 }  // namespace brave_ads::test
 

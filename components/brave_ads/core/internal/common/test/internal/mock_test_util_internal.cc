@@ -169,7 +169,7 @@ void MockLoad(AdsClientMock& mock, const base::ScopedTempDir& temp_dir) {
             base::FilePath path = temp_dir.GetPath().AppendASCII(name);
             if (!base::PathExists(path)) {
               // If path does not exist load the file from the test path.
-              path = DataPath().AppendASCII(name);
+              path = RootDataPath().AppendASCII(name);
             }
 
             std::string value;

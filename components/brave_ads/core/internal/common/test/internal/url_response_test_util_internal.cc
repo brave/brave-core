@@ -120,8 +120,8 @@ std::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
   auto [response_status_code, response_body] = *url_response;
 
   if (ShouldReadResponseBodyFromFile(response_body)) {
-    const base::FilePath path =
-        DataPath().AppendASCII(ParseFilenameFromResponseBody(response_body));
+    const base::FilePath path = UrlResponsesDataPath().AppendASCII(
+        ParseFilenameFromResponseBody(response_body));
     if (!base::ReadFileToString(path, &response_body)) {
       NOTREACHED_NORETURN() << path << " not found";
     }

@@ -13,7 +13,7 @@
 namespace brave_ads::test {
 
 std::optional<std::string> MaybeReadFileToString(const std::string& name) {
-  const base::FilePath path = DataPath().AppendASCII(name);
+  const base::FilePath path = RootDataPath().AppendASCII(name);
 
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
