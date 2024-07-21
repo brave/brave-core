@@ -8,16 +8,9 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
-
 namespace brave_ads {
 
-struct IssuerInfo;
 struct IssuersInfo;
-
-namespace cbr {
-class PublicKey;
-}  // namespace cbr
 
 void SetIssuers(const IssuersInfo& issuers);
 std::optional<IssuersInfo> GetIssuers();
@@ -27,13 +20,6 @@ bool IsIssuersValid(const IssuersInfo& issuers);
 
 bool HasIssuers();
 bool HasIssuersChanged(const IssuersInfo& other);
-
-bool IssuerExistsForType(IssuerType issuer_type);
-std::optional<IssuerInfo> GetIssuerForType(const IssuersInfo& issuers,
-                                           IssuerType issuer_type);
-
-bool PublicKeyExistsForIssuerType(IssuerType issuer_type,
-                                  const cbr::PublicKey& public_key);
 
 }  // namespace brave_ads
 

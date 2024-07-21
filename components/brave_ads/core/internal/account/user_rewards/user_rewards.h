@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
