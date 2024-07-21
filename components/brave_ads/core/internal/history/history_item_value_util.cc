@@ -106,9 +106,9 @@ HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   HistoryItemList history_items;
   history_items.reserve(list.size());
 
-  for (const auto& item : list) {
-    if (const auto* const item_dict = item.GetIfDict()) {
-      history_items.push_back(HistoryItemFromValue(*item_dict));
+  for (const auto& value : list) {
+    if (const auto* const dict = value.GetIfDict()) {
+      history_items.push_back(HistoryItemFromValue(*dict));
     }
   }
 

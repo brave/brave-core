@@ -43,8 +43,8 @@ std::optional<std::vector<cbr::SignedToken>> ParseSignedTokens(
 
   std::vector<cbr::SignedToken> signed_tokens;
 
-  for (const auto& item : *list) {
-    const std::string* const signed_token_base64 = item.GetIfString();
+  for (const auto& value : *list) {
+    const std::string* const signed_token_base64 = value.GetIfString();
     if (!signed_token_base64) {
       return std::nullopt;
     }

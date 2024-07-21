@@ -3,20 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
+
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
 namespace brave_ads::test {
 
 namespace {
 
-IssuerInfo BuildIssuer(const IssuerType type, const PublicKeyMap& public_keys) {
+IssuerInfo BuildIssuer(const IssuerType type,
+                       const IssuerPublicKeyMap& issuer_public_keys) {
   IssuerInfo issuer;
   issuer.type = type;
-  issuer.public_keys = public_keys;
+  issuer.public_keys = issuer_public_keys;
 
   return issuer;
 }
@@ -58,22 +60,23 @@ std::string BuildIssuersUrlResponseBody() {
       })";
 }
 
-IssuersInfo BuildIssuers(const int ping,
-                         const PublicKeyMap& confirmations_public_keys,
-                         const PublicKeyMap& payments_public_keys) {
+IssuersInfo BuildIssuers(
+    const int ping,
+    const IssuerPublicKeyMap& confirmations_issuer_public_keys,
+    const IssuerPublicKeyMap& payments_issuer_public_keys) {
   IssuersInfo issuers;
 
   issuers.ping = ping;
 
-  if (!confirmations_public_keys.empty()) {
-    const IssuerInfo confirmations_issuer =
-        BuildIssuer(IssuerType::kConfirmations, confirmations_public_keys);
+  if (!confirmations_issuer_public_keys.empty()) {
+    const IssuerInfo confirmations_issuer = BuildIssuer(
+        IssuerType::kConfirmations, confirmations_issuer_public_keys);
     issuers.issuers.push_back(confirmations_issuer);
   }
 
-  if (!payments_public_keys.empty()) {
+  if (!payments_issuer_public_keys.empty()) {
     const IssuerInfo payments_issuer =
-        BuildIssuer(IssuerType::kPayments, payments_public_keys);
+        BuildIssuer(IssuerType::kPayments, payments_issuer_public_keys);
     issuers.issuers.push_back(payments_issuer);
   }
 
@@ -81,9 +84,11 @@ IssuersInfo BuildIssuers(const int ping,
 }
 
 IssuersInfo BuildIssuers() {
-  return BuildIssuers(7'200'000,
+  return BuildIssuers(/*ping=*/7'200'000,
+                      /*confirmations_issuer_public_keys=*/
                       {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
                        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
+                      /*payments_issuer_public_keys=*/
                       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                        {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
 }

@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "url/gurl.h"
 
@@ -489,7 +490,7 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, ParseEmptyCatalog) {
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, MalformedCatalog) {
   // Act & Assert
-  EXPECT_FALSE(json::reader::ReadCatalog(test::kMalformedCatalogJson));
+  EXPECT_FALSE(json::reader::ReadCatalog(test::kMalformedJson));
 }
 
 }  // namespace brave_ads
