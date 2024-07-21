@@ -17,7 +17,7 @@ provideStrings({
   braveVpnChooseAnotherServer: 'Choose another server',
   braveVpnUnableConnectInfo: '$1 couldn\'t connect to $2 server. You can try again, or choose another',
   braveVpnBuy: 'Start 7-day free trial',
-  braveVpnPurchased: 'Already purchased VPN?',
+  braveVpnPurchased: 'Already purchased Brave VPN?',
   braveVpnPoweredBy: 'Powered by',
   braveVpnSettings: 'Settings',
   braveVpnSettingsPanelHeader: 'Settings',

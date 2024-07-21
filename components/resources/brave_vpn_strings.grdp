@@ -58,7 +58,7 @@
     Start 7-day free trial
   </message>
 
-  <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN.">Already purchased VPN?</message>
+  <message name="IDS_BRAVE_VPN_HAS_PURCHASED" desc="Link text to redirect the user to Brave account login page. Do not translate VPN.">Already purchased Brave VPN?</message>
 
   <message name="IDS_BRAVE_VPN_POWERED_BY" desc="Label to show next to Guardian logo">
     Powered by
