@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -132,6 +133,21 @@ class ConversationAPIUnitTest : public testing::Test {
     return events_json;
   }
 
+  std::optional<std::string> GetLanguage(std::string_view body_json) {
+    auto dict = base::JSONReader::ReadDict(body_json);
+    EXPECT_TRUE(dict.has_value());
+    if (!dict.has_value()) {
+      return std::nullopt;
+    }
+
+    const std::string* language = dict->FindString("language");
+    if (!language) {
+      return std::nullopt;
+    }
+
+    return *language;
+  }
+
   std::string FormatComparableEventsJson(std::string_view formatted_json) {
     auto events = base::JSONReader::Read(formatted_json);
     EXPECT_TRUE(events.has_value()) << "Verify that the string is valid JSON!";
@@ -167,6 +183,9 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
     {"role": "user", "type": "chatMessage", "content": "Is this related to a broader series?"}
   ])";
+  std::string expected_language = "en_KY";
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
+      expected_language);
   std::string expected_completion_response = "Yes, Star Wars";
 
   MockAPIRequestHelper* mock_request_helper =
@@ -200,6 +219,13 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         // Verify body contains events in expected json format
         EXPECT_STREQ(GetEventsJson(body).c_str(),
                      FormatComparableEventsJson(expected_events_body).c_str());
+
+        // Verify body contains the language
+        auto language = GetLanguage(body);
+        EXPECT_TRUE(language.has_value());
+        if (language.has_value()) {
+          EXPECT_EQ(language.value(), expected_language);
+        }
 
         // Send some event responses so that we can verify it is passed
         // through to the PerformRequest callbacks.
@@ -292,6 +318,9 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
     {"role": "user", "type": "pageExcerpt", "content": "The Mandalorian"},
     {"role": "user", "type": "chatMessage", "content": "Is this related to a broader series?"}
   ])";
+  std::string expected_language = "en_KY";
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
+      expected_language);
   std::string expected_completion_response = "Yes, Star Wars";
 
   MockAPIRequestHelper* mock_request_helper =
@@ -318,6 +347,13 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         // Verify body contains events in expected json format
         EXPECT_STREQ(GetEventsJson(body).c_str(),
                      FormatComparableEventsJson(expected_events_body).c_str());
+
+        // Verify body contains the language
+        auto language = GetLanguage(body);
+        EXPECT_TRUE(language.has_value());
+        if (language.has_value()) {
+          EXPECT_EQ(language.value(), expected_language);
+        }
 
         // Send a simple completion response so that we can verify it is passed
         // through to the PerformRequest callbacks.
