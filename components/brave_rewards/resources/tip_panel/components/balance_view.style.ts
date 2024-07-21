@@ -34,7 +34,7 @@ export const title = styled.div`
 `
 
 export const provider = styled.div`
-  background: ${leo.color.gray['10']};
+  background: ${leo.color.neutral['10']};
   border-radius: 4px;
   padding: 3px 6px;
 
@@ -43,7 +43,7 @@ export const provider = styled.div`
   line-height: 18px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: ${leo.color.gray['50']};
+  color: ${leo.color.neutral['50']};
 
   .icon {
     height: 12px;

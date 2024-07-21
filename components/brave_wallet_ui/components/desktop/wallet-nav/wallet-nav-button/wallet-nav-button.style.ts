@@ -12,10 +12,10 @@ import { layoutSmallWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.
 export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
   --button-background-hover: ${leo.color.container.highlight};
   @media (prefers-color-scheme: dark) {
-    --button-background-hover: ${leo.color.primitive.gray[80]};
+    --button-background-hover: ${leo.color.primitive.neutral[80]};
   }
   --icon-color: ${(p) =>
-    p.isSelected ? leo.color.icon.interactive : leo.color.gray[30]};
+    p.isSelected ? leo.color.icon.interactive : leo.color.neutral[30]};
   --text-color: ${(p) =>
     p.isSelected ? leo.color.text.interactive : leo.color.text.secondary};
   --indicator-color: ${(p) =>

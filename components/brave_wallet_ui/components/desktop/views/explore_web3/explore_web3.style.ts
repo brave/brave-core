@@ -44,13 +44,13 @@ export const PlainButton = styled(Button).attrs({
 `
 
 export const FilterLabel = styled(Label).attrs({
-  color: 'gray',
+  color: 'neutral',
   mode: 'default'
 })`
   --leo-label-padding: 8px;
   --leo-label-icon-size: 14px;
 
-  color: ${leo.color.gray[50]};
+  color: ${leo.color.neutral[50]};
   font: ${leo.font.xSmall.regular};
   font-weight: 700;
   text-transform: uppercase;

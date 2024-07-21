@@ -13,7 +13,7 @@ export const OriginURLText = styled.span`
   word-break: break-word;
   text-align: left;
   margin-bottom: 4px;
-  color: ${leo.color.gray[60]};
+  color: ${leo.color.neutral[60]};
   font-size: 12px;
   margin-bottom: 0px;
 `

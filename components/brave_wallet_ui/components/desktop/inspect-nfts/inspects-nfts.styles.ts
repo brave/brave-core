@@ -107,7 +107,7 @@ export const PinNftsButton = styled(ActionButton).attrs({
   &:disabled {
     color: ${leo.color.white};
     opacity: 0.5;
-    background-color: ${leo.color.gray[30]};
+    background-color: ${leo.color.neutral[30]};
     cursor: default;
   }
 `
