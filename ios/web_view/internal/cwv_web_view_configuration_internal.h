@@ -5,11 +5,15 @@
 #ifndef IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_
 #define IOS_WEB_VIEW_INTERNAL_CWV_WEB_VIEW_CONFIGURATION_INTERNAL_H_
 
-#include <memory>
-
 #import "ios/web_view/public/cwv_web_view_configuration.h"
 
+#include <memory>
+
 NS_ASSUME_NONNULL_BEGIN
+
+namespace ios_web_view {
+class WebViewBrowserState;
+}  // namespace ios_web_view
 
 class ChromeBrowserState;
 

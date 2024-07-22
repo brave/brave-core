@@ -2,17 +2,20 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+#import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
+
 #import <memory>
 
 #import "base/threading/thread_restrictions.h"
-#import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #import "components/keyed_service/core/service_access_type.h"
-#import "ios/chrome/browser/shared/model/application_context/application_context.h"
-#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
-#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #import "ios/web_view/internal/cwv_preferences_internal.h"
 #import "ios/web_view/internal/cwv_user_content_controller_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
+#import "ios/web_view/internal/web_view_global_state_util.h"
+
+#import "ios/chrome/browser/shared/model/application_context/application_context.h"
+#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 
 namespace {
 CWVWebViewConfiguration* gDefaultConfiguration = nil;
@@ -38,6 +41,14 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
 @synthesize preferences = _preferences;
 @synthesize syncController = _syncController;
 @synthesize userContentController = _userContentController;
+
++ (void)initialize {
+  if (self != [CWVWebViewConfiguration class]) {
+    return;
+  }
+
+  ios_web_view::InitializeGlobalState();
+}
 
 + (void)shutDown {
   // Non-persistent configurations should be shut down first because its browser

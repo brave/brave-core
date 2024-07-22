@@ -41,6 +41,7 @@
 #include "ios/chrome/browser/power_bookmarks/model/power_bookmark_service_factory.h"
 #include "ios/chrome/browser/push_notification/model/push_notification_profile_service_factory.h"
 #include "ios/chrome/browser/reading_list/model/reading_list_model_factory.h"
+#include "ios/chrome/browser/safe_browsing/model/safe_browsing_client_factory.h"
 #include "ios/chrome/browser/safe_browsing/model/safe_browsing_metrics_collector_factory.h"
 #include "ios/chrome/browser/saved_tab_groups/model/tab_group_sync_service_factory.h"
 #include "ios/chrome/browser/search_engines/model/template_url_service_factory.h"
@@ -122,6 +123,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   SyncServiceFactory::GetInstance();
   UnifiedConsentServiceFactory::GetInstance();
   ReadingListModelFactory::GetInstance();
+  SafeBrowsingClientFactory::GetInstance();
   SafeBrowsingMetricsCollectorFactory::GetInstance();
   SendTabToSelfSyncServiceFactory::GetInstance();
   SessionRestorationServiceFactory::GetInstance();

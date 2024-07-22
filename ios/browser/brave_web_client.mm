@@ -10,6 +10,7 @@
 #include "base/ios/ns_error_util.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
+#import "components/translate/ios/browser/translate_java_script_feature.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_error.h"
@@ -77,6 +78,10 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   // Disable majority of ChromeWebClient JS features
   std::vector<web::JavaScriptFeature*> features;
   // FIXME: Add any JavaScriptFeature's from Chromium as needed
+  features.push_back(
+      security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
+          GetInstance());
+  features.push_back(translate::TranslateJavaScriptFeature::GetInstance());
   return features;
 }
 

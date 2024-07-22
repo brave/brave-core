@@ -65,6 +65,7 @@ source_set("web_view") {
     "//ios/web_view/internal/utils/nsobject_description_utils.mm",
     "//ios/web_view/internal/web_view_download_manager.h",
     "//ios/web_view/internal/web_view_download_manager.mm",
+    "//ios/web_view/internal/web_view_global_state_util_stub.mm",
     "//ios/web_view/internal/web_view_java_script_dialog_presenter.h",
     "//ios/web_view/internal/web_view_java_script_dialog_presenter.mm",
     "//ios/web_view/internal/web_view_message_handler_java_script_feature.h",
