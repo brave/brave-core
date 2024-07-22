@@ -541,6 +541,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
       // We fetch cookies to determine if backup search was enabled on the website.
       let profile = self.profile
+      // FIXME: Find a way to get this out of CWVWebView
       let cookies = await webView.underlyingWebView?.configuration.websiteDataStore.httpCookieStore.allCookies() ?? []
       tab?.braveSearchManager = BraveSearchManager(
         profile: profile,
@@ -874,6 +875,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 //    }
 
     // Check if this response should be downloaded.
+    // FIXME: Find a way to get this out of CWVWebView
     if let cookieStore = tab?.webView?.underlyingWebView?.configuration.websiteDataStore.httpCookieStore,
         let downloadHelper = DownloadHelper(
       request: request,
@@ -963,6 +965,22 @@ extension BrowserViewController: CWVNavigationDelegate {
     updateToolbarUsingTabManager(tabManager)
 
     recordFinishedPageLoadP3A()
+  }
+
+  public func webView(_ webView: CWVWebView, handleSSLErrorWith handler: CWVSSLErrorHandler) {
+    guard let tab = tab(for: webView), let webView = tab.webView else { return }
+
+    let error = handler.error as NSError
+
+    handler.displayErrorPage(withHTML: "")
+
+    ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: handler.url, inWebView: webView)
+    
+    // Submitting same erroneous URL using toolbar will cause progress bar get stuck
+    // Reseting the progress bar in case there is an error is necessary
+    if tab == self.tabManager.selectedTab {
+      self.topToolbar.hideProgressBar()
+    }
   }
 
   // FIXME: Need to refactor this logic into BraveWebClient::PrepareErrorPage + CWVWebView's handleSSLErrorWith delegate method

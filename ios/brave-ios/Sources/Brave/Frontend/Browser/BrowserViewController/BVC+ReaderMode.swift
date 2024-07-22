@@ -144,7 +144,7 @@ extension BrowserViewController {
   /// of the current page is there. And if so, we go there.
 
   func enableReaderMode() {
-    guard let tab = tabManager.selectedTab, let webView = tab.webView?.underlyingWebView else { return }
+    guard let tab = tabManager.selectedTab, let webView = tab.webView else { return }
 
     let backList = webView.backForwardList.backList
     let forwardList = webView.backForwardList.forwardList
@@ -157,17 +157,17 @@ extension BrowserViewController {
 
     recordTimeBasedNumberReaderModeUsedP3A(activated: true)
 
-    if backList.count > 1 && backList.last?.url == readerModeURL {
+    if backList.count > 1 && backList[backList.count - 1].url == readerModeURL {
       let playlistItem = tab.playlistItem
-      webView.go(to: backList.last!)
+      webView.go(to: backList[backList.count - 1])
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-    } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
+    } else if forwardList.count > 0 && forwardList[0].url == readerModeURL {
       let playlistItem = tab.playlistItem
-      webView.go(to: forwardList.first!)
+      webView.go(to: forwardList[0])
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
     } else {
       // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-      webView.evaluateSafeJavaScript(
+      webView.underlyingWebView?.evaluateSafeJavaScript(
         functionName: "\(readerModeNamespace).readerize",
         contentWorld: ReaderModeScriptHandler.scriptSandbox
       ) { (object, error) -> Void in
@@ -175,9 +175,8 @@ extension BrowserViewController {
           let playlistItem = tab.playlistItem
           Task {
             try? await self.readerModeCache.put(currentURL, readabilityResult)
-            if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
-              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-            }
+            webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest)
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           }
         }
       }
@@ -191,26 +190,25 @@ extension BrowserViewController {
 
   func disableReaderMode() {
     if let tab = tabManager.selectedTab,
-       let webView = tab.webView?.underlyingWebView
+       let webView = tab.webView
     {
       let backList = webView.backForwardList.backList
       let forwardList = webView.backForwardList.forwardList
 
       if let currentURL = webView.backForwardList.currentItem?.url {
         if let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode) {
-          if backList.count > 1 && backList.last?.url == originalURL {
+          if backList.count > 1 && backList[backList.count - 1].url == originalURL {
             let playlistItem = tab.playlistItem
-            webView.go(to: backList.last!)
+            webView.go(to: backList[backList.count - 1])
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-          } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
+          } else if forwardList.count > 0 && forwardList[0].url == originalURL {
             let playlistItem = tab.playlistItem
-            webView.go(to: forwardList.first!)
+            webView.go(to: forwardList[0])
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           } else {
             let playlistItem = tab.playlistItem
-            if webView.load(URLRequest(url: originalURL)) != nil {
-              PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
-            }
+            webView.load(URLRequest(url: originalURL))
+            PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
           }
         }
       }

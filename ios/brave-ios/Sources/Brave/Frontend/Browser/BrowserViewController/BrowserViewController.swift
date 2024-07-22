@@ -2972,10 +2972,7 @@ extension BrowserViewController: SearchViewControllerDelegate {
     shouldFindInPage query: String
   ) {
     topToolbar.leaveOverlayMode()
-    if let findInteraction = tabManager.selectedTab?.webView?.underlyingWebView?.findInteraction {
-      findInteraction.searchText = query
-      findInteraction.presentFindNavigator(showingReplace: false)
-    }
+    tabManager.selectedTab?.webView?.findInPageController.findString(inPage: query)
   }
 
   func searchViewControllerAllowFindInPage() -> Bool {
