@@ -108,14 +108,11 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     React.useState<boolean>(isWalletBackedUp)
   const [isDefaultWalletBannerDismissed, setDismissDefaultWalletBanner] =
     React.useState<boolean>(false)
-  const [selectedExploreSegment, setSelectedExploreSegment] = React.useState<string>(
-    WalletRoutes.MarketSub
-  )
+  const [selectedExploreSegment, setSelectedExploreSegment] =
+    React.useState<string>(WalletRoutes.MarketSub)
 
   // routing
   const history = useHistory()
-  const query = useQuery()
-  const selectedDappCategory = query.get('dappCategory')
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -372,7 +369,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           <WalletPageWrapper
             wrapContentInBox
             cardHeader={exploreWeb3Header}
-            useFullHeight={selectedDappCategory !== null}
           >
             <StyledWrapper>
               {banners}

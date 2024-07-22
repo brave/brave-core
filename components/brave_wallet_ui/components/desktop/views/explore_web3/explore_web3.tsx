@@ -37,9 +37,8 @@ import {
 import { useQuery } from '../../../../common/hooks/use-query'
 
 // Components
-import {
-  // SegmentedControl //
-} from '../../../shared/segmented_control/segmented_control'
+import // SegmentedControl //
+'../../../shared/segmented_control/segmented_control'
 import {
   HeaderControlBar //
 } from '../../../header_control_bar/header_control_bar'
@@ -47,7 +46,7 @@ import {
   Web3DappFilters //
 } from '../../popup-modals/filter-modals/web3_dapp_filters_modal'
 import { DappListItem } from './dapp_list_item'
-import { VirtualizedDappsList } from './virtualized_dapps_list'
+// import { VirtualizedDappsList } from './virtualized_dapps_list'
 import { DappFilter } from './dapp_filter'
 
 // Styles
@@ -308,10 +307,20 @@ export const ExploreWeb3View = () => {
         {!isDappMapEmpty(visibleDappsMap) ||
         selectedCategoryDapps?.length === 0 ? (
           selectedCategory ? (
-            <VirtualizedDappsList
-              dappsList={selectedCategoryDapps || []}
-              onClickDapp={onDappClick}
-            />
+            // <VirtualizedDappsList
+            //   dappsList={selectedCategoryDapps || []}
+            //   onClickDapp={onDappClick}
+            // />
+
+            <DappsGrid>
+              {(selectedCategoryDapps || []).map((dapp) => (
+                <DappListItem
+                  key={dapp.id}
+                  dapp={dapp}
+                  onClick={() => onDappClick(dapp.id)}
+                />
+              ))}
+            </DappsGrid>
           ) : (
             <DappsGrid>
               {Array.from(visibleDappsMap).map(([category, dapps]) => (
