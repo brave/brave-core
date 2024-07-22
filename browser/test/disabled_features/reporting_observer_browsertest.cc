@@ -32,11 +32,11 @@ class ReportingObserverTest : public InProcessBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsDisabled) {
+IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsNoop) {
   GURL url = embedded_test_server()->GetURL(kReportingObserver);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_EQ(true, EvalJs(contents, "isReportingObserverDisabled();"));
+  EXPECT_EQ(true, EvalJs(contents, "isReportingObserverNoop();"));
 }
