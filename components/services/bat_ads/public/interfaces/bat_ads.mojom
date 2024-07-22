@@ -190,22 +190,19 @@ interface BatAds {
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>
       (bool success);
 
-  GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
+  GetAdHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
       (mojo_base.mojom.ListValue value);
 
   ToggleLikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-
   ToggleLikeCategory(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
   ToggleDislikeCategory(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-
   ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-
   ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
 };

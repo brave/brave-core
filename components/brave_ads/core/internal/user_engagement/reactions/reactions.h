@@ -7,14 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_REACTIONS_REACTIONS_H_
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 
 namespace brave_ads {
 
 class Account;
-struct AdContentInfo;
+struct AdHistoryItemInfo;
 
-class Reactions final : public HistoryManagerObserver {
+class Reactions final : public AdHistoryManagerObserver {
  public:
   explicit Reactions(Account& account);
 
@@ -27,11 +27,12 @@ class Reactions final : public HistoryManagerObserver {
   ~Reactions() override;
 
  private:
-  // HistoryManagerObserver:
-  void OnDidLikeAd(const AdContentInfo& ad_content) override;
-  void OnDidDislikeAd(const AdContentInfo& ad_content) override;
-  void OnDidMarkAdAsInappropriate(const AdContentInfo& ad_content) override;
-  void OnDidSaveAd(const AdContentInfo& ad_content) override;
+  // AdHistoryManagerObserver:
+  void OnDidLikeAd(const AdHistoryItemInfo& ad_history_item) override;
+  void OnDidDislikeAd(const AdHistoryItemInfo& ad_history_item) override;
+  void OnDidMarkAdAsInappropriate(
+      const AdHistoryItemInfo& ad_history_item) override;
+  void OnDidSaveAd(const AdHistoryItemInfo& ad_history_item) override;
 
   const raw_ref<const Account> account_;
 };

@@ -26,7 +26,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/history/history_feature.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
@@ -93,7 +93,7 @@ struct ParamInfo final {
      true},
     {{switches::kEnableFeatures, kEligibleAdFeature.name}, true},
     {{switches::kEnableFeatures, kExclusionRulesFeature.name}, true},
-    {{switches::kEnableFeatures, kHistoryFeature.name}, true},
+    {{switches::kEnableFeatures, kAdHistoryFeature.name}, true},
     {{switches::kEnableFeatures, kInlineContentAdFeature.name}, true},
     {{switches::kEnableFeatures, kInlineContentAdServingFeature.name}, true},
     {{switches::kEnableFeatures, kIssuersFeature.name}, true},
@@ -147,7 +147,7 @@ struct ParamInfo final {
     {{variations::switches::kForceFieldTrialParams,
       kExclusionRulesFeature.name},
      true},
-    {{variations::switches::kForceFieldTrialParams, kHistoryFeature.name},
+    {{variations::switches::kForceFieldTrialParams, kAdHistoryFeature.name},
      true},
     {{variations::switches::kForceFieldTrialParams,
       kInlineContentAdFeature.name},

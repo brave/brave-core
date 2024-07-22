@@ -7,7 +7,7 @@
 
 #include "base/location.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminder_feature.h"
 #include "brave/components/brave_ads/core/internal/reminder/reminders/clicked_same_ad_multiple_times_reminder_util.h"
 
@@ -17,12 +17,12 @@ namespace {
 
 constexpr base::TimeDelta kMaybeShowReminderAfter = base::Milliseconds(100);
 
-void MaybeShowReminder(const HistoryItemInfo& history_item) {
+void MaybeShowReminder(const AdHistoryItemInfo& ad_history_item) {
   if (!base::FeatureList::IsEnabled(kReminderFeature)) {
     return;
   }
 
-  if (DidUserClickTheSameAdMultipleTimes(history_item)) {
+  if (DidUserClickTheSameAdMultipleTimes(ad_history_item)) {
     RemindUserTheyDoNotNeedToClickToEarnRewards();
   }
 }
@@ -30,23 +30,24 @@ void MaybeShowReminder(const HistoryItemInfo& history_item) {
 }  // namespace
 
 Reminder::Reminder() {
-  HistoryManager::GetInstance().AddObserver(this);
+  AdHistoryManager::GetInstance().AddObserver(this);
 }
 
 Reminder::~Reminder() {
-  HistoryManager::GetInstance().RemoveObserver(this);
+  AdHistoryManager::GetInstance().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void Reminder::MaybeShowReminderAfterDelay(
-    const HistoryItemInfo& history_item) {
+    const AdHistoryItemInfo& ad_history_item) {
   timer_.Start(FROM_HERE, kMaybeShowReminderAfter,
-               base::BindOnce(&MaybeShowReminder, history_item));
+               base::BindOnce(&MaybeShowReminder, ad_history_item));
 }
 
-void Reminder::OnDidAddHistory(const HistoryItemInfo& history_item) {
-  MaybeShowReminderAfterDelay(history_item);
+void Reminder::OnDidAppendAdHistoryItem(
+    const AdHistoryItemInfo& ad_history_item) {
+  MaybeShowReminderAfterDelay(ad_history_item);
 }
 
 }  // namespace brave_ads

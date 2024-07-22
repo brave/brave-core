@@ -252,9 +252,9 @@ class AdsServiceImpl final : public AdsService,
       mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
-  void GetHistory(base::Time from_time,
-                  base::Time to_time,
-                  GetHistoryCallback callback) override;
+  void GetAdHistory(base::Time from_time,
+                    base::Time to_time,
+                    GetAdHistoryCallback callback) override;
 
   void ToggleLikeAd(base::Value::Dict value,
                     ToggleLikeAdCallback callback) override;
