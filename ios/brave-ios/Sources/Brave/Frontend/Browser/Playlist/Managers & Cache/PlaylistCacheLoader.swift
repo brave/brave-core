@@ -93,8 +93,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       // When creating a tab, TabManager automatically adds a uiDelegate
       // This webView is invisible and we don't want any UI being handled.
       // FIXME: Nav Delegate
-//      webView.uiDelegate = nil
-//      webView.navigationDelegate = self
+      //      webView.uiDelegate = nil
+      //      webView.navigationDelegate = self
 
       tab.replaceContentScript(
         PlaylistWebLoaderContentHelper(self),
@@ -330,7 +330,9 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       return (.cancel, preferences)
     }
 
-    if navigationAction.request.isInternalUnprivileged && navigationAction.navigationType != .backForward {
+    if navigationAction.request.isInternalUnprivileged
+      && navigationAction.navigationType != .backForward
+    {
       return (.cancel, preferences)
     }
 

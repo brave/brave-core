@@ -30,15 +30,14 @@ class BraveWebClient : public ChromeWebClient {
 
   std::vector<web::JavaScriptFeature*> GetJavaScriptFeatures(
       web::BrowserState* browser_state) const override;
-  void PrepareErrorPage(
-    web::WebState* web_state,
-    const GURL& url,
-    NSError* error,
-    bool is_post,
-    bool is_off_the_record,
-    const std::optional<net::SSLInfo>& info,
-    int64_t navigation_id,
-    base::OnceCallback<void(NSString*)> callback) override;
+  void PrepareErrorPage(web::WebState* web_state,
+                        const GURL& url,
+                        NSError* error,
+                        bool is_post,
+                        bool is_off_the_record,
+                        const std::optional<net::SSLInfo>& info,
+                        int64_t navigation_id,
+                        base::OnceCallback<void(NSString*)> callback) override;
 
   bool EnableLongPressUIContextMenu() const override;
   bool EnableWebInspector(web::BrowserState* browser_state) const override;

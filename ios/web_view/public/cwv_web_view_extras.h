@@ -18,7 +18,8 @@ CWV_EXPORT
 @interface CWVWebView (Extras)
 - (void)updateScripts;
 - (void)createPDF:(void (^)(NSData* _Nullable))completionHandler;
-- (void)takeSnapshotWithRect:(CGRect)rect completionHandler:(void (^)(UIImage* _Nullable))completionHandler;
+- (void)takeSnapshotWithRect:(CGRect)rect
+           completionHandler:(void (^)(UIImage* _Nullable))completionHandler;
 @end
 
 NS_ASSUME_NONNULL_END

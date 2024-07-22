@@ -48,16 +48,16 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
       return domainsWithUniversalLinks.contains(domain)
     }
     // FIXME: Private API, check how Chromium handles this
-//    if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value
-//        || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad())
-//    {
-//      // Stop Brave from opening universal links by using the private enum value
-//      // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
-//      // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
-//      let allowDecision =
-//      WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2) ?? .allow
-//      return allowDecision
-//    }
+    //    if isPrivateBrowsing || !Preferences.General.followUniversalLinks.value
+    //        || (Preferences.General.keepYouTubeInBrave.value && isYouTubeLoad())
+    //    {
+    //      // Stop Brave from opening universal links by using the private enum value
+    //      // `_WKNavigationActionPolicyAllowWithoutTryingAppLink` which is defined here:
+    //      // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKNavigationDelegatePrivate.h#L62
+    //      let allowDecision =
+    //      WKNavigationActionPolicy(rawValue: WKNavigationActionPolicy.allow.rawValue + 2) ?? .allow
+    //      return allowDecision
+    //    }
     return .allow
   }
 
@@ -78,8 +78,12 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
 
     let group = DispatchGroup()
     for delegate in delegates {
-      if !delegate.responds(to: #selector(CWVNavigationDelegate.webView(_:decidePolicyFor:decisionHandler:) as CWVNavigationActionSignature))
-      {
+      if !delegate.responds(
+        to: #selector(
+          CWVNavigationDelegate.webView(_:decidePolicyFor:decisionHandler:)
+            as CWVNavigationActionSignature
+        )
+      ) {
         continue
       }
       group.enter()
@@ -91,9 +95,9 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
             res = policy
           }
 
-//          if policy == .download {
-//            res = policy
-//          }
+          //          if policy == .download {
+          //            res = policy
+          //          }
           group.leave()
         }
       )
@@ -121,7 +125,12 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
 
     let group = DispatchGroup()
     for delegate in delegates {
-      if !delegate.responds(to: #selector(CWVNavigationDelegate.webView(_:decidePolicyFor:decisionHandler:) as CWVNavigationResponseSignature)) {
+      if !delegate.responds(
+        to: #selector(
+          CWVNavigationDelegate.webView(_:decidePolicyFor:decisionHandler:)
+            as CWVNavigationResponseSignature
+        )
+      ) {
         continue
       }
       group.enter()
@@ -133,9 +142,9 @@ class TabManagerNavDelegate: NSObject, CWVNavigationDelegate {
             res = policy
           }
 
-//          if policy == .download {
-//            res = policy
-//          }
+          //          if policy == .download {
+          //            res = policy
+          //          }
           group.leave()
         }
       )

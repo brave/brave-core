@@ -122,18 +122,19 @@ class Tab: NSObject {
     }
     lastKnownSecureContentState = await {
       switch sslStatus.securityStyle {
-      case .unknown: 
+      case .unknown:
         return .unknown
       case .authenticated:
         if !sslStatus.hasOnlySecureContent {
           return .mixedContent
         }
         return .secure
-      case .authenticationBroken: 
-        return .missingSSL // FIXME: Not sure what status to use for this
+      case .authenticationBroken:
+        return .missingSSL  // FIXME: Not sure what status to use for this
       case .unauthenticated:
         if let lastCommittedURL = await webView?.lastCommittedURL,
-           let internalURL = InternalURL(lastCommittedURL) {
+          let internalURL = InternalURL(lastCommittedURL)
+        {
           if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: lastCommittedURL) != 0 {
             return .invalidCert
           }
@@ -427,7 +428,7 @@ class Tab: NSObject {
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     // FIXME: Delete sync tab code entirely
-    _syncTab = nil//tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
+    _syncTab = nil  //tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
 
     // FIXME: Do we need favicon driver anymore with CWVWebView?
     if let syncTab = _syncTab {
@@ -495,7 +496,7 @@ class Tab: NSObject {
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.allowsBackForwardNavigationGestures = true
       // FIXME: Link previews
-//      webView.underlyingWebView?.allowsLinkPreview = true
+      //      webView.underlyingWebView?.allowsLinkPreview = true
 
       // Turning off masking allows the web content to flow outside of the scrollView's frame
       // which allows the content appear beneath the toolbars in the BrowserViewController
@@ -571,7 +572,9 @@ class Tab: NSObject {
     // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
     // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
     // to trigger the session restore via custom handlers
-    if let sessionInfo = restorationData, let coder = try? NSKeyedUnarchiver(forReadingFrom: sessionInfo.interactionState) {
+    if let sessionInfo = restorationData,
+      let coder = try? NSKeyedUnarchiver(forReadingFrom: sessionInfo.interactionState)
+    {
       restoring = true
       lastTitle = sessionInfo.title
       coder.requiresSecureCoding = false
@@ -588,8 +591,10 @@ class Tab: NSObject {
     }
   }
 
-  func restore(_ webView: BraveWebView, requestRestorationData: (title: String, request: URLRequest)?)
-  {
+  func restore(
+    _ webView: BraveWebView,
+    requestRestorationData: (title: String, request: URLRequest)?
+  ) {
     if let sessionInfo = requestRestorationData {
       restoring = true
       lastTitle = sessionInfo.title
@@ -1039,7 +1044,8 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func uninstall(from tab: Tab) {
     helpers.forEach {
       let name = type(of: $0.value).messageHandlerName
-      tab.webView?.underlyingWebView?.configuration.userContentController.removeScriptMessageHandler(forName: name)
+      tab.webView?.underlyingWebView?.configuration.userContentController
+        .removeScriptMessageHandler(forName: name)
     }
   }
 
@@ -1086,10 +1092,11 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   func removeContentScript(name: String, forTab tab: Tab, contentWorld: WKContentWorld) {
     if let helper = helpers[name] {
       let scriptMessageHandlerName = type(of: helper).messageHandlerName
-      tab.webView?.underlyingWebView?.configuration.userContentController.removeScriptMessageHandler(
-        forName: scriptMessageHandlerName,
-        contentWorld: contentWorld
-      )
+      tab.webView?.underlyingWebView?.configuration.userContentController
+        .removeScriptMessageHandler(
+          forName: scriptMessageHandlerName,
+          contentWorld: contentWorld
+        )
       helpers[name] = nil
     }
   }
@@ -1170,7 +1177,10 @@ class TabWebView: BraveWebView, MenuHelperInterface {
   }
 
   private func getCurrentSelectedText(callback: @escaping (String?) -> Void) {
-    underlyingWebView?.evaluateSafeJavaScript(functionName: "getSelection().toString", contentWorld: .defaultClient) {
+    underlyingWebView?.evaluateSafeJavaScript(
+      functionName: "getSelection().toString",
+      contentWorld: .defaultClient
+    ) {
       result,
       _ in
       let selectedText = result as? String
@@ -1215,7 +1225,9 @@ extension Tab {
       // The method we pass data to is undefined.
       // For such case we do not call that method or remove the search backup manager.
 
-      self.webView?.underlyingWebView?.evaluateJavaScript("window.onFetchedBackupResults === undefined") {
+      self.webView?.underlyingWebView?.evaluateJavaScript(
+        "window.onFetchedBackupResults === undefined"
+      ) {
         result,
         error in
 

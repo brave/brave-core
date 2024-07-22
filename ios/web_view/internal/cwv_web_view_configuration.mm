@@ -2,18 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
-
 #import <memory>
 
 #import "base/threading/thread_restrictions.h"
+#import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #import "components/keyed_service/core/service_access_type.h"
 #import "ios/chrome/browser/shared/model/application_context/application_context.h"
+#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
 #import "ios/web_view/internal/cwv_preferences_internal.h"
 #import "ios/web_view/internal/cwv_user_content_controller_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
-#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 
 namespace {
 CWVWebViewConfiguration* gDefaultConfiguration = nil;
@@ -58,8 +57,8 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
         GetApplicationContext()->GetChromeBrowserStateManager();
     ChromeBrowserState* browserState =
         browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse();
-    gDefaultConfiguration = [[CWVWebViewConfiguration alloc]
-        initWithBrowserState:browserState];
+    gDefaultConfiguration =
+        [[CWVWebViewConfiguration alloc] initWithBrowserState:browserState];
   });
   return gDefaultConfiguration;
 }
@@ -73,13 +72,13 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
 }
 
 + (CWVWebViewConfiguration*)nonPersistentConfiguration {
-    ios::ChromeBrowserStateManager* browserStateManager =
-        GetApplicationContext()->GetChromeBrowserStateManager();
-    ChromeBrowserState* browserState =
-        browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse()->GetOffTheRecordChromeBrowserState();
+  ios::ChromeBrowserStateManager* browserStateManager =
+      GetApplicationContext()->GetChromeBrowserStateManager();
+  ChromeBrowserState* browserState =
+      browserStateManager->GetLastUsedBrowserStateDeprecatedDoNotUse()
+          ->GetOffTheRecordChromeBrowserState();
   CWVWebViewConfiguration* nonPersistentConfiguration =
-      [[CWVWebViewConfiguration alloc]
-          initWithBrowserState:browserState];
+      [[CWVWebViewConfiguration alloc] initWithBrowserState:browserState];
 
   // Save a weak pointer to nonpersistent configurations so they may be shut
   // down later.
@@ -92,8 +91,7 @@ NSHashTable<CWVWebViewConfiguration*>* gNonPersistentConfigurations = nil;
   return nonPersistentConfiguration;
 }
 
-- (instancetype)initWithBrowserState:
-    (ChromeBrowserState*)browserState {
+- (instancetype)initWithBrowserState:(ChromeBrowserState*)browserState {
   self = [super init];
   if (self) {
     _browserState = browserState;

@@ -23,10 +23,6 @@ config("config") {
 source_set("web_view") {
   sources = ios_web_view_public_headers
   sources += [
-    "internal/cwv_web_view.mm",
-    "internal/cwv_web_view_configuration.mm",
-    "internal/cwv_web_view_configuration_internal.h",
-
     "//ios/web_view/internal/cwv_back_forward_list.mm",
     "//ios/web_view/internal/cwv_back_forward_list_internal.h",
     "//ios/web_view/internal/cwv_back_forward_list_item.mm",
@@ -75,6 +71,9 @@ source_set("web_view") {
     "//ios/web_view/internal/web_view_message_handler_java_script_feature.mm",
     "//ios/web_view/internal/web_view_web_state_policy_decider.h",
     "//ios/web_view/internal/web_view_web_state_policy_decider.mm",
+    "internal/cwv_web_view.mm",
+    "internal/cwv_web_view_configuration.mm",
+    "internal/cwv_web_view_configuration_internal.h",
   ]
   public_deps = [
     "//base",
@@ -120,10 +119,6 @@ source_set("web_view") {
     "//ios/components/security_interstitials",
     "//ios/components/security_interstitials/https_only_mode:feature",
     "//ios/components/security_interstitials/lookalikes",
-    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
-    "//ios/web/webui",
-
-
     "//ios/components/webui:provider",
     "//ios/components/webui:url_constants",
     "//ios/components/webui/sync_internals",
@@ -144,6 +139,8 @@ source_set("web_view") {
     "//ios/web/public/session/proto",
     "//ios/web/public/web_view_only",
     "//ios/web/public/webui",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+    "//ios/web/webui",
     "//ios/web_view/internal/js_messaging:cwv_messaging_js",
     "//net",
     "//net:extras",
@@ -153,5 +150,5 @@ source_set("web_view") {
     "//ui/display",
     "//url",
   ]
-  configs += [":config"]
+  configs += [ ":config" ]
 }

@@ -270,7 +270,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
       finishEditingAndSubmit(url, isUserDefinedURLNavigation: isUserDefinedURLNavigation)
       return true
-//      return handleChromiumWebUIURL(url)
+      //      return handleChromiumWebUIURL(url)
     }
 
     guard let fixupURL = URIFixup.getURL(text) else {
@@ -1015,7 +1015,8 @@ extension BrowserViewController: ToolbarDelegate {
     else { return }
     // FIXME: Certificate
     let hasCertificate =
-    (tab.webView?.underlyingWebView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
+      (tab.webView?.underlyingWebView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url)))
+      != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
       secureState: tab.lastKnownSecureContentState,

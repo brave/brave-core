@@ -2,13 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "ios/web_view/internal/cwv_web_view_internal.h"
+#import <WebKit/WebKit.h>
 
 #include <memory>
 #include <unordered_map>
 #include <utility>
-
-#import <WebKit/WebKit.h>
 
 #include "base/apple/foundation_util.h"
 #include "base/functional/bind.h"
@@ -19,6 +17,9 @@
 #import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "components/url_formatter/elide_url.h"
 #include "google_apis/google_api_keys.h"
+#import "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_container.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_tab_allow_list.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_tab_helper.h"
@@ -44,14 +45,14 @@
 #import "ios/web/public/web_client.h"
 #import "ios/web/public/web_state.h"
 #import "ios/web/public/web_view_only/wk_web_view_configuration_util.h"
-#import "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #import "ios/web_view/internal/cwv_back_forward_list_internal.h"
 #import "ios/web_view/internal/cwv_favicon_internal.h"
 #import "ios/web_view/internal/cwv_find_in_page_controller_internal.h"
 #import "ios/web_view/internal/cwv_html_element_internal.h"
 #import "ios/web_view/internal/cwv_navigation_action_internal.h"
 #import "ios/web_view/internal/cwv_ssl_status_internal.h"
-#include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
+#import "ios/web_view/internal/cwv_web_view_internal.h"
 #import "ios/web_view/internal/web_view_java_script_dialog_presenter.h"
 #import "ios/web_view/internal/web_view_message_handler_java_script_feature.h"
 #import "ios/web_view/internal/web_view_web_state_policy_decider.h"
@@ -62,8 +63,6 @@
 #import "net/base/apple/url_conversions.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
-#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
 namespace {
 
@@ -572,13 +571,15 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
 }
 
 - (void)goBack {
-  if (_webState->GetNavigationManager())
+  if (_webState->GetNavigationManager()) {
     _webState->GetNavigationManager()->GoBack();
+  }
 }
 
 - (void)goForward {
-  if (_webState->GetNavigationManager())
+  if (_webState->GetNavigationManager()) {
     _webState->GetNavigationManager()->GoForward();
+  }
 }
 
 - (BOOL)goToBackForwardListItem:(CWVBackForwardListItem*)item {
@@ -786,8 +787,8 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
     createNewWebStateForURL:(const GURL&)URL
                   openerURL:(const GURL&)openerURL
             initiatedByUser:(BOOL)initiatedByUser {
-  SEL selector =
-      @selector(webView:createWebViewWithConfiguration:forNavigationAction:);
+  SEL selector = @selector(webView:
+      createWebViewWithConfiguration:forNavigationAction:);
   if (![_UIDelegate respondsToSelector:selector]) {
     return nullptr;
   }
@@ -995,7 +996,8 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
 //   PasswordSuggestionHelper* suggestionHelper =
 //       [[PasswordSuggestionHelper alloc] initWithWebState:_webState.get()];
 //   PasswordControllerDriverHelper* driverHelper =
-//       [[PasswordControllerDriverHelper alloc] initWithWebState:_webState.get()];
+//       [[PasswordControllerDriverHelper alloc]
+//       initWithWebState:_webState.get()];
 //   SharedPasswordController* passwordController =
 //       [[SharedPasswordController alloc] initWithWebState:_webState.get()
 //                                                  manager:passwordManager.get()
@@ -1110,7 +1112,7 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
   }
 
   [self attachSecurityInterstitialHelpersToWebStateIfNecessary];
-  AttachTabHelpers(_webState.get(), /*for_prerender=*/ false);
+  AttachTabHelpers(_webState.get(), /*for_prerender=*/false);
 
   WebViewHolder::CreateForWebState(_webState.get());
   WebViewHolder::FromWebState(_webState.get())->set_web_view(self);
@@ -1148,9 +1150,9 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
 
   // Recreate and restore the delegate only if previously lazily loaded.
   // if (_autofillController) {
-  //   id<CWVAutofillControllerDelegate> delegate = _autofillController.delegate;
-  //   _autofillController = [self newAutofillController];
-  //   _autofillController.delegate = delegate;
+  //   id<CWVAutofillControllerDelegate> delegate =
+  //   _autofillController.delegate; _autofillController = [self
+  //   newAutofillController]; _autofillController.delegate = delegate;
   // }
 
   [self addInternalWebViewAsSubview];
@@ -1238,7 +1240,8 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
 
   // Unsafe URLs should only be intercepted if handled by the delegate.
   // if ([_navigationDelegate
-  //         respondsToSelector:@selector(webView:handleUnsafeURLWithHandler:)]) {
+  //         respondsToSelector:@selector(webView:handleUnsafeURLWithHandler:)])
+  //         {
   //   SafeBrowsingClient* client =
   //       ios_web_view::WebViewSafeBrowsingClientFactory::GetForBrowserState(
   //           _webState->GetBrowserState());
@@ -1284,7 +1287,8 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
   // all Brave JavaScript features are ported over to actual Chromium
   // JavascriptFeature types and added to BraveWebClient
   web::WKWebViewConfigurationProvider& config_provider =
-    web::WKWebViewConfigurationProvider::FromBrowserState(_webState->GetBrowserState());
+      web::WKWebViewConfigurationProvider::FromBrowserState(
+          _webState->GetBrowserState());
   config_provider.UpdateScripts();
 }
 
@@ -1292,7 +1296,8 @@ WEB_STATE_USER_DATA_KEY_IMPL(WebViewHolder)
   _webState->CreateFullPagePdf(base::BindOnce(completionHandler));
 }
 
-- (void)takeSnapshotWithRect:(CGRect)rect completionHandler:(void (^)(UIImage* _Nullable))completionHandler {
+- (void)takeSnapshotWithRect:(CGRect)rect
+           completionHandler:(void (^)(UIImage* _Nullable))completionHandler {
   _webState->TakeSnapshot(rect, base::BindRepeating(completionHandler));
 }
 

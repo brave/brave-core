@@ -51,8 +51,8 @@ private let KVOs: [KVOConstants] = [
 ]
 
 private let webViewKVOs: [KVOConstants] = [
-  ._sampledPageTopColor,
-//  .url,
+  ._sampledPageTopColor
+  //  .url,
 ]
 
 public class BrowserViewController: UIViewController {
@@ -1975,7 +1975,9 @@ public class BrowserViewController: UIViewController {
       // Ensure that the tab title *actually* changed to prevent repeated calls
       // to navigateInTab(tab:).
       guard
-        let title = (webView.title?.isEmpty == true ? webView.lastCommittedURL?.absoluteString : webView.title)
+        let title =
+          (webView.title?.isEmpty == true
+            ? webView.lastCommittedURL?.absoluteString : webView.title)
       else { break }
       if !title.isEmpty && title != tab.lastTitle {
         navigateInTab(tab: tab)
@@ -2001,38 +2003,38 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-//  func logSecureContentState(
-//    tab: Tab,
-//    path: KVOConstants? = nil,
-//    change: [NSKeyValueChangeKey: Any]? = nil
-//  ) {
-//    var text = """
-//      Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
-//       Secure State: \(tab.lastKnownSecureContentState.rawValue)
-//      """
-//
-//    if let keyPath = path?.keyPath {
-//      text.append("\n Value Observed: \(keyPath)\n")
-//    }
-//
-//    if let webView = tab.webView {
-//      text.append(
-//        """
-//         WebView url: \(webView.lastCommittedURL?.absoluteString ?? "nil")
-//         WebView hasOnlySecureContent: \(webView. hasOnlySecureContent ?? false ? "true" : "false")
-//         WebView serverTrust: \(webView.serverTrust != nil ? "present" : "nil")
-//        """
-//      )
-//    }
-//
-//    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
-//      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
-//    } else if let change, let value = change[.newKey] {
-//      text.append("\n Change: \(String(describing: value))")
-//    }
-//
-//    DebugLogger.log(for: .secureState, text: text)
-//  }
+  //  func logSecureContentState(
+  //    tab: Tab,
+  //    path: KVOConstants? = nil,
+  //    change: [NSKeyValueChangeKey: Any]? = nil
+  //  ) {
+  //    var text = """
+  //      Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
+  //       Secure State: \(tab.lastKnownSecureContentState.rawValue)
+  //      """
+  //
+  //    if let keyPath = path?.keyPath {
+  //      text.append("\n Value Observed: \(keyPath)\n")
+  //    }
+  //
+  //    if let webView = tab.webView {
+  //      text.append(
+  //        """
+  //         WebView url: \(webView.lastCommittedURL?.absoluteString ?? "nil")
+  //         WebView hasOnlySecureContent: \(webView. hasOnlySecureContent ?? false ? "true" : "false")
+  //         WebView serverTrust: \(webView.serverTrust != nil ? "present" : "nil")
+  //        """
+  //      )
+  //    }
+  //
+  //    if let change, path == .serverTrust, let newServerTrust = change[.newKey] {
+  //      text.append("\n Change: \(newServerTrust != nil ? "present" : "nil")")
+  //    } else if let change, let value = change[.newKey] {
+  //      text.append("\n Change: \(String(describing: value))")
+  //    }
+  //
+  //    DebugLogger.log(for: .secureState, text: text)
+  //  }
 
   func updateBackForwardActionStatus(for webView: BraveWebView?) {
     guard let webView = webView else { return }
@@ -2627,7 +2629,14 @@ extension BrowserViewController: TabDelegate {
 
     // Observers that live as long as the tab. Make sure these are all cleared in willDeleteWebView below!
     KVOs.forEach { webView.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil) }
-    webViewKVOs.forEach { webView.underlyingWebView?.addObserver(self, forKeyPath: $0.keyPath, options: .new, context: nil )}
+    webViewKVOs.forEach {
+      webView.underlyingWebView?.addObserver(
+        self,
+        forKeyPath: $0.keyPath,
+        options: .new,
+        context: nil
+      )
+    }
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [

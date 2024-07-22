@@ -33,6 +33,6 @@ void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration) {
   [[configuration preferences] setElementFullscreenEnabled:NO];
 }
 
-}
+}  // namespace brave
 
 #include "src/ios/web/web_state/ui/wk_web_view_configuration_provider.mm"

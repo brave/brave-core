@@ -42,13 +42,22 @@ extension CWVNavigationType: CustomDebugStringConvertible {
   }
 
   public static func == (lhs: CWVNavigationType, rhs: CWVNavigationType) -> Bool {
-    assert(lhs.rawValue <= CWVNavigationType.lastCore.rawValue, "\(lhs) is a qualifier, not a core type, replace with a `contains()` check`")
-    assert(rhs.rawValue <= CWVNavigationType.lastCore.rawValue, "\(rhs) is a qualifier, not a core type, replace with a `contains()` check`")
+    assert(
+      lhs.rawValue <= CWVNavigationType.lastCore.rawValue,
+      "\(lhs) is a qualifier, not a core type, replace with a `contains()` check`"
+    )
+    assert(
+      rhs.rawValue <= CWVNavigationType.lastCore.rawValue,
+      "\(rhs) is a qualifier, not a core type, replace with a `contains()` check`"
+    )
     return lhs.coreType.rawValue == rhs.coreType.rawValue
   }
 
   public func contains(_ member: CWVNavigationType) -> Bool {
-    assert(member.rawValue > CWVNavigationType.lastCore.rawValue, "\(member) is a core type, not a qualifier, replace with an equality check")
+    assert(
+      member.rawValue > CWVNavigationType.lastCore.rawValue,
+      "\(member) is a core type, not a qualifier, replace with an equality check"
+    )
     return qualifiers.rawValue & member.rawValue != 0
   }
 
@@ -185,7 +194,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // check if web view is loading a different origin than the one currently loaded
     if let selectedTab = tabManager.selectedTab,
-       selectedTab.url?.origin != webView.visibleURL.origin
+      selectedTab.url?.origin != webView.visibleURL.origin
     {
 
       // new site has a different origin, hide wallet icon.
@@ -194,7 +203,7 @@ extension BrowserViewController: CWVNavigationDelegate {
       tabManager.selectedTab?.clearSolanaConnectedAccounts()
       // close wallet panel if it's open
       if let popoverController = self.presentedViewController as? PopoverController,
-         popoverController.contentController is WalletPanelHostingController
+        popoverController.contentController is WalletPanelHostingController
       {
         self.dismiss(animated: true)
       }
@@ -249,9 +258,10 @@ extension BrowserViewController: CWVNavigationDelegate {
       return .cancel
     }
     if InternalURL.isValid(url: requestURL) {
-      if navigationAction.navigationType.contains(.forwardBack), navigationAction.request.isInternalUnprivileged,
-         !navigationAction.navigationType.isMainFrame // FIXME: Test
-//         navigationAction.targetFrame?.isMainFrame == false
+      if navigationAction.navigationType.contains(.forwardBack),
+        navigationAction.request.isInternalUnprivileged,
+        !navigationAction.navigationType.isMainFrame  // FIXME: Test
+          //         navigationAction.targetFrame?.isMainFrame == false
           || navigationAction.request.cachePolicy == .useProtocolCachePolicy
       {
         Logger.module.warning("Denying unprivileged request: \(navigationAction.request)")
@@ -271,7 +281,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // Universal links do not work if the request originates from the app, manual handling is required.
     if let mainDocURL = navigationAction.request.mainDocumentURL,
-       let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true)
+      let universalLink = UniversalLinkManager.universalLinkType(for: mainDocURL, checkPath: true)
     {
       switch universalLink {
       case .buyVPN:
@@ -311,13 +321,13 @@ extension BrowserViewController: CWVNavigationDelegate {
       if requestURL.scheme == MarketplaceKitURIScheme {
         if let queryItems = URLComponents(url: requestURL, resolvingAgainstBaseURL: false)?
           .queryItems,
-           let adpURL = queryItems.first(where: {
-             $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
-           })?.value?.asURL,
-           navigationAction.navigationType.isMainFrame,
-//           navigationAction.sourceFrame.isMainFrame,
-//           adpURL.baseDomain == navigationAction.sourceFrame.request.url?.baseDomain
-            adpURL.baseDomain == navigationAction.request.url?.baseDomain // FIXME: Test
+          let adpURL = queryItems.first(where: {
+            $0.name.caseInsensitiveCompare("alternativeDistributionPackage") == .orderedSame
+          })?.value?.asURL,
+          navigationAction.navigationType.isMainFrame,
+          //           navigationAction.sourceFrame.isMainFrame,
+          //           adpURL.baseDomain == navigationAction.sourceFrame.request.url?.baseDomain
+          adpURL.baseDomain == navigationAction.request.url?.baseDomain  // FIXME: Test
         {
           return .allow
         }
@@ -346,7 +356,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // handles Decentralized DNS
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
-       navigationAction.navigationType == .autoToplevel
+      navigationAction.navigationType == .autoToplevel
     {
       topToolbar.locationView.loading = true
       let result = await decentralizedDNSHelper.lookup(
@@ -362,7 +372,7 @@ extension BrowserViewController: CWVNavigationDelegate {
         return .cancel
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-           let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = braveCore.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
           requestURL = resolvedIPFSURL
         } else {
@@ -374,14 +384,14 @@ extension BrowserViewController: CWVNavigationDelegate {
     }
 
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    tab?.rewardsReportingState.isNewNavigation = navigationAction.navigationType.isNewNavigation // FIXME: Test
+    tab?.rewardsReportingState.isNewNavigation = navigationAction.navigationType.isNewNavigation  // FIXME: Test
     tab?.currentRequestURL = requestURL
 
     // Website redirection logic
     if requestURL.isWebPage(includeDataURIs: false),
-       navigationAction.navigationType.isMainFrame,
-       navigationAction.navigationType.isRedirect, // FIXME: Test?
-       let redirectURL = WebsiteRedirects.redirect(for: requestURL)
+      navigationAction.navigationType.isMainFrame,
+      navigationAction.navigationType.isRedirect,  // FIXME: Test?
+      let redirectURL = WebsiteRedirects.redirect(for: requestURL)
     {
 
       tab?.loadRequest(URLRequest(url: redirectURL))
@@ -405,17 +415,18 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       // Handle the "forget me" feature on navigation
-      if let tab = tab, //navigationAction.targetFrame?.isMainFrame == true {
-         navigationAction.navigationType.isMainFrame { // FIXME: Test
+      if let tab = tab,  //navigationAction.targetFrame?.isMainFrame == true {
+        navigationAction.navigationType.isMainFrame
+      {  // FIXME: Test
         // Cancel any forget data requests
         tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
 
         // Forget any websites that have "forget me" enabled
         // if we navigated away from the previous domain
         if let currentURL = tab.url,
-           !InternalURL.isValid(url: currentURL),
-           let currentETLDP1 = currentURL.baseDomain,
-           mainDocumentURL.baseDomain != currentETLDP1
+          !InternalURL.isValid(url: currentURL),
+          let currentETLDP1 = currentURL.baseDomain,
+          mainDocumentURL.baseDomain != currentETLDP1
         {
           tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
         }
@@ -427,11 +438,11 @@ extension BrowserViewController: CWVNavigationDelegate {
       )
 
       if let tab = tab,
-         let modifiedRequest = getInternalRedirect(
+        let modifiedRequest = getInternalRedirect(
           from: navigationAction,
           in: tab,
           domainForMainFrame: domainForMainFrame
-         )
+        )
       {
         tab.isInternalRedirect = true
         tab.loadRequest(modifiedRequest)
@@ -453,8 +464,8 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       // Set some additional user scripts
-//      if navigationAction.targetFrame?.isMainFrame == true {
-      if navigationAction.navigationType.isMainFrame { // FIXME: Test
+      //      if navigationAction.targetFrame?.isMainFrame == true {
+      if navigationAction.navigationType.isMainFrame {  // FIXME: Test
         tab?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
@@ -472,37 +483,37 @@ extension BrowserViewController: CWVNavigationDelegate {
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
-            .searchResultAd: BraveAds.shouldSupportSearchResultAds()
-          && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
+          .searchResultAd: BraveAds.shouldSupportSearchResultAds()
+            && BraveSearchManager.isValidURL(requestURL) && !isPrivateBrowsing,
         ])
       }
 
       // Check if custom user scripts must be added to or removed from the web view.
       // FIXME: Figure out how to do this check with CWVNavigationAction
-//      if let targetFrame = navigationAction.targetFrame {
-//        tab?.currentPageData?.addSubframeURL(
-//          forRequestURL: requestURL,
-//          isForMainFrame: targetFrame.isMainFrame
-//        )
-//        let scriptTypes =
-//        await tab?.currentPageData?.makeUserScriptTypes(
-//          domain: domainForMainFrame,
-//          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
-//        ) ?? []
-//        tab?.setCustomUserScript(scripts: scriptTypes)
-//      }
+      //      if let targetFrame = navigationAction.targetFrame {
+      //        tab?.currentPageData?.addSubframeURL(
+      //          forRequestURL: requestURL,
+      //          isForMainFrame: targetFrame.isMainFrame
+      //        )
+      //        let scriptTypes =
+      //        await tab?.currentPageData?.makeUserScriptTypes(
+      //          domain: domainForMainFrame,
+      //          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+      //        ) ?? []
+      //        tab?.setCustomUserScript(scripts: scriptTypes)
+      //      }
     }
 
     // Brave Search logic.
 
     if navigationAction.navigationType.isMainFrame,
-       BraveSearchManager.isValidURL(requestURL),
-       let webView = tabManager[webView]?.webView
+      BraveSearchManager.isValidURL(requestURL),
+      let webView = tabManager[webView]?.webView
     {
 
       if let braveSearchResultAdManager = tab?.braveSearchResultAdManager,
-         braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
-         navigationAction.navigationType == .link
+        braveSearchResultAdManager.isSearchResultAdClickedURL(requestURL),
+        navigationAction.navigationType == .link
       {
         braveSearchResultAdManager.maybeTriggerSearchResultAdClickedEvent(requestURL)
         tab?.braveSearchResultAdManager = nil
@@ -514,8 +525,8 @@ extension BrowserViewController: CWVNavigationDelegate {
         //   - The "Search Ads" is opted-out.
         //   - The requested URL host is one of the Brave Search domains.
         if !isPrivateBrowsing && rewards.isEnabled
-            && !rewards.ads.isOptedInToSearchResultAds()
-            && navigationAction.request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
+          && !rewards.ads.isOptedInToSearchResultAds()
+          && navigationAction.request.allHTTPHeaderFields?["Brave-Search-Ads"] == nil
         {
           var modifiedRequest = URLRequest(url: requestURL)
           modifiedRequest.setValue("?0", forHTTPHeaderField: "Brave-Search-Ads")
@@ -542,7 +553,9 @@ extension BrowserViewController: CWVNavigationDelegate {
       // We fetch cookies to determine if backup search was enabled on the website.
       let profile = self.profile
       // FIXME: Find a way to get this out of CWVWebView
-      let cookies = await webView.underlyingWebView?.configuration.websiteDataStore.httpCookieStore.allCookies() ?? []
+      let cookies =
+        await webView.underlyingWebView?.configuration.websiteDataStore.httpCookieStore.allCookies()
+        ?? []
       tab?.braveSearchManager = BraveSearchManager(
         profile: profile,
         url: requestURL,
@@ -576,12 +589,12 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     if ["http", "https", "data", "blob", "file"].contains(requestURL.scheme) {
       // FIXME: Test
-      if navigationAction.navigationType.isMainFrame { //navigationAction.targetFrame?.isMainFrame == true {
+      if navigationAction.navigationType.isMainFrame {  //navigationAction.targetFrame?.isMainFrame == true {
         // FIXME: Find a way to do this with CWVWebView
-//        tab?.updateUserAgent(webView, newURL: requestURL)
+        //        tab?.updateUserAgent(webView, newURL: requestURL)
 
         if let etldP1 = requestURL.baseDomain,
-           tab?.proceedAnywaysDomainList.contains(etldP1) == false
+          tab?.proceedAnywaysDomainList.contains(etldP1) == false
         {
           let domain = Domain.getOrCreate(forUrl: requestURL, persistent: !isPrivateBrowsing)
 
@@ -617,11 +630,11 @@ extension BrowserViewController: CWVNavigationDelegate {
       // No adblocking logic is be used on session restore urls. It uses javascript to retrieve the
       // request then the page is reloaded with a proper url and adblocking rules are applied.
       if let mainDocumentURL = navigationAction.request.mainDocumentURL,
-         mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
-         !(InternalURL(requestURL)?.isSessionRestore ?? false),
-         navigationAction.navigationType.isMainFrame // FIXME: Test
-//         navigationAction.sourceFrame.isMainFrame
-//          || navigationAction.targetFrame?.isMainFrame == true
+        mainDocumentURL.schemelessAbsoluteString == requestURL.schemelessAbsoluteString,
+        !(InternalURL(requestURL)?.isSessionRestore ?? false),
+        navigationAction.navigationType.isMainFrame  // FIXME: Test
+      //         navigationAction.sourceFrame.isMainFrame
+      //          || navigationAction.targetFrame?.isMainFrame == true
       {
         // Identify specific block lists that need to be applied to the requesting domain
         let domainForShields = Domain.getOrCreate(
@@ -635,8 +648,9 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       let documentTargetURL: URL? =
-      // FIXME: Test
-      navigationAction.request.mainDocumentURL ?? /*navigationAction.targetFrame?.request
+        // FIXME: Test
+        navigationAction.request.mainDocumentURL
+        ?? /*navigationAction.targetFrame?.request
         .mainDocumentURL ??*/ requestURL  // Should be the same as the sourceFrame URL
       if let documentTargetURL = documentTargetURL {
         let domainForShields = Domain.getOrCreate(
@@ -658,8 +672,8 @@ extension BrowserViewController: CWVNavigationDelegate {
         // - Brandon T.
         //
         // FIXME: Find a way to do this with CWVWebView
-//        preferences.allowsContentJavaScript = isScriptsEnabled
-//        webView.configuration.preferences.javaScriptEnabled = isScriptsEnabled
+        //        preferences.allowsContentJavaScript = isScriptsEnabled
+        //        webView.configuration.preferences.javaScriptEnabled = isScriptsEnabled
       }
 
       // Cookie Blocking code below
@@ -668,17 +682,17 @@ extension BrowserViewController: CWVNavigationDelegate {
       }
 
       // Reset the block alert bool on new host.
-      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL.host, // webView.url?.host,
-         newHost != oldHost
+      if let newHost: String = requestURL.host, let oldHost: String = webView.visibleURL.host,  // webView.url?.host,
+        newHost != oldHost
       {
         self.tabManager.selectedTab?.alertShownCount = 0
         self.tabManager.selectedTab?.blockAllAlerts = false
       }
 
       // FIXME: Find a way to do this with CWVWebView
-//      if navigationAction.shouldPerformDownload {
-//        self.shouldDownloadNavigationResponse = true
-//      }
+      //      if navigationAction.shouldPerformDownload {
+      //        self.shouldDownloadNavigationResponse = true
+      //      }
 
       ContentBlockerManager.signpost.endInterval("decidePolicyFor", state)
       return .allow
@@ -695,15 +709,15 @@ extension BrowserViewController: CWVNavigationDelegate {
         navigationAction: navigationAction
       )
       let isSyntheticClick =
-      navigationAction.responds(to: Selector(("_syntheticClickType")))
-      && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
+        navigationAction.responds(to: Selector(("_syntheticClickType")))
+        && navigationAction.value(forKey: "syntheticClickType") as? Int == 0
 
       // Do not show error message for JS navigated links or redirect
       // as it's not the result of a user action.
       // FIXME: Test
       if !shouldOpen, navigationAction.navigationType == .link && !isSyntheticClick {
         if self.presentedViewController == nil && self.presentingViewController == nil
-            && tab?.isExternalAppAlertPresented == false && tab?.isExternalAppAlertSuppressed == false
+          && tab?.isExternalAppAlertPresented == false && tab?.isExternalAppAlertSuppressed == false
         {
 
           return await withCheckedContinuation { continuation in
@@ -756,13 +770,13 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // Handle invalid upgrade to https
     if isInvalid,
-       navigationResponse.isForMainFrame,
-       let responseURL = responseURL,
-       let tab = tab,
-       let originalResponse = handleInvalidHTTPSUpgrade(
+      navigationResponse.isForMainFrame,
+      let responseURL = responseURL,
+      let tab = tab,
+      let originalResponse = handleInvalidHTTPSUpgrade(
         tab: tab,
         responseURL: responseURL
-       )
+      )
     {
       tab.loadRequest(originalResponse)
       return .cancel
@@ -775,22 +789,22 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // Check if we upgraded to https and if so we need to update the url of frame evaluations
     if let responseURL = responseURL,
-       let domain = tab?.currentPageData?.domain(persistent: !isPrivateBrowsing),
-       tab?.currentPageData?.upgradeFrameURL(
+      let domain = tab?.currentPageData?.domain(persistent: !isPrivateBrowsing),
+      tab?.currentPageData?.upgradeFrameURL(
         forResponseURL: responseURL,
         isForMainFrame: navigationResponse.isForMainFrame
-       ) == true
+      ) == true
     {
       let scriptTypes =
-      await tab?.currentPageData?.makeUserScriptTypes(
-        domain: domain,
-        isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
-      ) ?? []
+        await tab?.currentPageData?.makeUserScriptTypes(
+          domain: domain,
+          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
+        ) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
 
     if let tab = tab, let responseURL = responseURL,
-       let response = response as? HTTPURLResponse
+      let response = response as? HTTPURLResponse
     {
       let internalUrl = InternalURL(responseURL)
 
@@ -799,8 +813,8 @@ extension BrowserViewController: CWVNavigationDelegate {
 
       let responseCodeClass = response.statusCode / 100
       tab.rewardsReportingState.isErrorPage =
-      (responseCodeClass == kHttpClientErrorResponseCodeClass
-       || responseCodeClass == kHttpServerErrorResponseCodeClass)
+        (responseCodeClass == kHttpClientErrorResponseCodeClass
+          || responseCodeClass == kHttpServerErrorResponseCodeClass)
 
       if !tab.rewardsReportingState.wasRestored {
         tab.rewardsReportingState.wasRestored = internalUrl?.isSessionRestore == true
@@ -814,7 +828,8 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // We can only show this content in the web view if this web view is not pending
     // download via the context menu.
-    let canShowInWebView = /*navigationResponse.canShowMIMEType &&*/ (webView != pendingDownloadWebView)
+    let canShowInWebView = /*navigationResponse.canShowMIMEType &&*/
+      (webView != pendingDownloadWebView)
     let forceDownload = webView == pendingDownloadWebView
 
     let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
@@ -824,10 +839,10 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // SFSafariViewController only supports http/https links
     if navigationResponse.isForMainFrame, let url = responseURL,
-       url.isWebPage(includeDataURIs: false),
-       let tab, tab === tabManager.selectedTab,
-       let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
-       mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
+      url.isWebPage(includeDataURIs: false),
+      let tab, tab === tabManager.selectedTab,
+      let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
+      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
     {
       handleLinkWithSafariViewController(url, tab: tab)
       return .cancel
@@ -867,23 +882,25 @@ extension BrowserViewController: CWVNavigationDelegate {
     // Check if this response should be handed off to Passbook.
 
     // FIXME: Chromium policy deciders dont allow .download
-//    if shouldDownloadNavigationResponse {
-//      shouldDownloadNavigationResponse = false
-//      if response.mimeType == MIMEType.passbook {
-//        return .download
-//      }
-//    }
+    //    if shouldDownloadNavigationResponse {
+    //      shouldDownloadNavigationResponse = false
+    //      if response.mimeType == MIMEType.passbook {
+    //        return .download
+    //      }
+    //    }
 
     // Check if this response should be downloaded.
     // FIXME: Find a way to get this out of CWVWebView
-    if let cookieStore = tab?.webView?.underlyingWebView?.configuration.websiteDataStore.httpCookieStore,
-        let downloadHelper = DownloadHelper(
-      request: request,
-      response: response,
-      cookieStore: cookieStore,
-      canShowInWebView: canShowInWebView,
-      forceDownload: forceDownload
-    ) {
+    if let cookieStore = tab?.webView?.underlyingWebView?.configuration.websiteDataStore
+      .httpCookieStore,
+      let downloadHelper = DownloadHelper(
+        request: request,
+        response: response,
+        cookieStore: cookieStore,
+        canShowInWebView: canShowInWebView,
+        forceDownload: forceDownload
+      )
+    {
       // Clear the pending download web view so that subsequent navigations from the same
       // web view don't invoke another download.
       pendingDownloadWebView = nil
@@ -894,7 +911,7 @@ extension BrowserViewController: CWVNavigationDelegate {
 
       // Open our helper and cancel this response from the webview.
       if tab === tabManager.selectedTab,
-         let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
+        let downloadAlert = downloadHelper.downloadAlert(from: view, okAction: downloadAlertAction)
       {
         present(downloadAlert, animated: true, completion: nil)
       }
@@ -974,8 +991,12 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     handler.displayErrorPage(withHTML: "")
 
-    ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: handler.url, inWebView: webView)
-    
+    ErrorPageHelper(certStore: profile.certStore).loadPage(
+      error,
+      forUrl: handler.url,
+      inWebView: webView
+    )
+
     // Submitting same erroneous URL using toolbar will cause progress bar get stuck
     // Reseting the progress bar in case there is an error is necessary
     if tab == self.tabManager.selectedTab {
@@ -989,10 +1010,10 @@ extension BrowserViewController: CWVNavigationDelegate {
 
     // Handle invalid upgrade to https
     if let responseURL = webView.lastCommittedURL,
-       let response = handleInvalidHTTPSUpgrade(
+      let response = handleInvalidHTTPSUpgrade(
         tab: tab,
         responseURL: responseURL
-       )
+      )
     {
       tab.loadRequest(response)
       return
@@ -1044,7 +1065,9 @@ extension BrowserViewController: CWVNavigationDelegate {
 
   public func webView(_ webView: CWVWebView, didRequestDownloadWith task: CWVDownloadTask) {
     task.delegate = self
-    let temporaryDir = FileManager.default.temporaryDirectory.appending(path: task.suggestedFileName)
+    let temporaryDir = FileManager.default.temporaryDirectory.appending(
+      path: task.suggestedFileName
+    )
     task.startDownloadToLocalFile(atPath: temporaryDir.path())
   }
 }
@@ -1290,8 +1313,8 @@ extension BrowserViewController: CWVUIDelegate {
   ) -> CWVWebView? {
     guard let parentTab = tabManager[webView] else { return nil }
     guard !action.request.isInternalUnprivileged,
-          let navigationURL = action.request.url,
-          navigationURL.shouldRequestBeOpenedAsPopup()
+      let navigationURL = action.request.url,
+      navigationURL.shouldRequestBeOpenedAsPopup()
     else {
       print("Denying popup from request: \(action.request)")
       return nil
@@ -1306,26 +1329,26 @@ extension BrowserViewController: CWVUIDelegate {
     // If the page uses `window.open()` or `[target="_blank"]`, open the page in a new tab.
     // IMPORTANT!!: WebKit will perform the `URLRequest` automatically!! Attempting to do
     // the request here manually leads to incorrect results!!
-//    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
-//
-//    newTab.url = URL(string: "about:blank")
-//
-//    toolbarVisibilityViewModel.toolbarState = .expanded
-//
-//    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
-//    // restore it as if it was a dead tab.
-//    var observation: NSKeyValueObservation?
-//    observation = newTab.webView?.observe(
-//      \.visibleURL,
-//       changeHandler: { [weak self] webView, _ in
-//         _ = observation  // Silence write but not read warning
-//         observation = nil
-//         guard let self = self, let tab = self.tabManager[webView] else { return }
-//         self.tabManager.selectTab(tab)
-//       }
-//    )
-//
-//    return newTab.webView
+    //    let newTab = tabManager.addPopupForParentTab(parentTab, configuration: configuration)
+    //
+    //    newTab.url = URL(string: "about:blank")
+    //
+    //    toolbarVisibilityViewModel.toolbarState = .expanded
+    //
+    //    // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
+    //    // restore it as if it was a dead tab.
+    //    var observation: NSKeyValueObservation?
+    //    observation = newTab.webView?.observe(
+    //      \.visibleURL,
+    //       changeHandler: { [weak self] webView, _ in
+    //         _ = observation  // Silence write but not read warning
+    //         observation = nil
+    //         guard let self = self, let tab = self.tabManager[webView] else { return }
+    //         self.tabManager.selectTab(tab)
+    //       }
+    //    )
+    //
+    //    return newTab.webView
     return nil
   }
 
@@ -1388,7 +1411,9 @@ extension BrowserViewController: CWVUIDelegate {
     // Only show context menu for valid links such as `http`, `https`, `data`. Safari does not show it for anything else.
     // This is because you cannot open `javascript:something` URLs in a new page, or share it, or anything else.
     guard let url = element.hyperlink, url.isWebPage() else {
-      completionHandler(UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil))
+      completionHandler(
+        UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
+      )
       return
     }
 
@@ -1517,7 +1542,7 @@ extension BrowserViewController: CWVUIDelegate {
         let linkPreview = Preferences.General.enableLinkPreview.value
 
         let linkPreviewTitle =
-        linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
+          linkPreview ? Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
         let linkPreviewAction = UIAction(
           title: linkPreviewTitle,
           image: UIImage(systemName: "eye.fill")
@@ -1532,19 +1557,21 @@ extension BrowserViewController: CWVUIDelegate {
     }
 
     // FIXME: Link previews
-//    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
-//      if let tab = tabManager[webView] {
-//        return LinkPreviewViewController(url: url, for: tab, browserController: self)
-//      }
-//      return nil
-//    }
+    //    let linkPreview: UIContextMenuContentPreviewProvider? = { [unowned self] in
+    //      if let tab = tabManager[webView] {
+    //        return LinkPreviewViewController(url: url, for: tab, browserController: self)
+    //      }
+    //      return nil
+    //    }
 
-//    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
-    completionHandler(UIContextMenuConfiguration(
-      identifier: nil,
-      previewProvider: nil,
-      actionProvider: actionProvider
-    ))
+    //    let linkPreviewProvider = Preferences.General.enableLinkPreview.value ? linkPreview : nil
+    completionHandler(
+      UIContextMenuConfiguration(
+        identifier: nil,
+        previewProvider: nil,
+        actionProvider: actionProvider
+      )
+    )
   }
 
   public func webView(_ webView: CWVWebView, didLoad favIcons: [CWVFavicon]) {

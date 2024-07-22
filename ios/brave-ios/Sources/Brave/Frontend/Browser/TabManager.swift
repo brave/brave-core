@@ -214,7 +214,6 @@ class TabManager: NSObject {
     return nil
   }
 
-
   var currentDisplayedIndex: Int? {
     assert(Thread.isMainThread)
 
@@ -1508,7 +1507,7 @@ extension TabManager: CWVNavigationDelegate {
 
       if let tab = tabForWebView(webView) {
         if Preferences.Privacy.privateBrowsingOnly.value
-            || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
+          || (tab.isPrivate && !Preferences.Privacy.persistentPrivateBrowsing.value)
         {
           return
         }
@@ -1548,7 +1547,8 @@ extension TabManager: PreferencesObserver {
       let allowPopups = !Preferences.General.blockPopups.value
       // Each tab may have its own configuration, so we should tell each of them in turn.
       allTabs.forEach {
-        $0.webView?.underlyingWebView?.configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+        $0.webView?.underlyingWebView?.configuration.preferences
+          .javaScriptCanOpenWindowsAutomatically = allowPopups
       }
       // The default tab configurations also need to change.
       configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups

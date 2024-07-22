@@ -11,18 +11,17 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
-#include "ios/components/webui/web_ui_url_constants.h"
-#import "ios/public/provider/chrome/browser/url_rewriters/url_rewriters_api.h"
-#import "ios/web/public/navigation/browser_url_rewriter.h"
-#import "net/base/apple/url_conversions.h"
-#include "url/gurl.h"
-
 #import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_error.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_error.h"
+#include "ios/components/webui/web_ui_url_constants.h"
+#import "ios/public/provider/chrome/browser/url_rewriters/url_rewriters_api.h"
+#import "ios/web/public/navigation/browser_url_rewriter.h"
+#import "ios/web_view/internal/cwv_ssl_error_handler_internal.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
 #import "ios/web_view/public/cwv_navigation_delegate.h"
-#import "ios/web_view/internal/cwv_ssl_error_handler_internal.h"
+#import "net/base/apple/url_conversions.h"
+#include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -73,7 +72,8 @@ bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
   return false;
 }
 
-std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(web::BrowserState* browser_state) const {
+std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
+    web::BrowserState* browser_state) const {
   // Disable majority of ChromeWebClient JS features
   std::vector<web::JavaScriptFeature*> features;
   // FIXME: Add any JavaScriptFeature's from Chromium as needed
@@ -109,13 +109,11 @@ void BraveWebClient::PrepareErrorPage(
       [navigation_delegate
           respondsToSelector:@selector(webView:handleUnsafeURLWithHandler:)]) {
     DCHECK_EQ(kUnsafeResourceErrorCode, final_underlying_error.code);
-  }
-  else if ([final_underlying_error.domain isEqual:kLookalikeUrlErrorDomain] &&
+  } else if ([final_underlying_error.domain isEqual:kLookalikeUrlErrorDomain] &&
              [navigation_delegate respondsToSelector:@selector
                                   (webView:handleLookalikeURLWithHandler:)]) {
     DCHECK_EQ(kLookalikeUrlErrorCode, final_underlying_error.code);
-  }
-  else if (info.has_value() &&
+  } else if (info.has_value() &&
              [navigation_delegate respondsToSelector:@selector
                                   (webView:handleSSLErrorWithHandler:)]) {
     CWVSSLErrorHandler* handler = [[CWVSSLErrorHandler alloc]

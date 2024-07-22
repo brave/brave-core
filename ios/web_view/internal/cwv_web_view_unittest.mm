@@ -2,18 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "brave/ios/web_view/internal/cwv_web_view_internal.h"
-
 #import <memory>
 
 #import "base/test/ios/wait_util.h"
+#import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
+#import "brave/ios/web_view/internal/cwv_web_view_internal.h"
+#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #import "ios/web/common/crw_input_view_provider.h"
 #import "ios/web/common/uikit_ui_util.h"
 #import "ios/web/public/test/scoped_testing_web_client.h"
 #import "ios/web/public/test/web_task_environment.h"
 #import "ios/web/public/web_client.h"
-#import "brave/ios/web_view/internal/cwv_web_view_configuration_internal.h"
-#import "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #import "ios/web_view/test/test_with_locale_and_resources.h"
 #import "ios/web_view/test/web_view_test_util.h"
 #import "testing/gtest/include/gtest/gtest.h"

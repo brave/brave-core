@@ -26,7 +26,7 @@ class LinkPreviewViewController: UIViewController {
 
   override func viewDidLoad() {
     guard let parentTab = parentTab,
-          let tabWebView = parentTab.webView?.underlyingWebView
+      let tabWebView = parentTab.webView?.underlyingWebView
     else {
       return
     }

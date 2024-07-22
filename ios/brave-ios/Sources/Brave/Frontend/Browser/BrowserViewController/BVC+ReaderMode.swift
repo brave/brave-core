@@ -190,7 +190,7 @@ extension BrowserViewController {
 
   func disableReaderMode() {
     if let tab = tabManager.selectedTab,
-       let webView = tab.webView
+      let webView = tab.webView
     {
       let backList = webView.backForwardList.backList
       let forwardList = webView.backForwardList.forwardList
