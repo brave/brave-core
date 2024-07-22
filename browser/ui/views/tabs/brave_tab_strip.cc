@@ -395,8 +395,10 @@ void BraveTabStrip::UpdateTabContainer() {
       tab_container_->OnGroupVisualsChanged(group_id, visual_data, visual_data);
     }
 
-    for (int i = 0; i < model->count(); i++) {
-      observer_->OnTabAdded(i);
+    if (observer_) {
+      for (int i = 0; i < model->count(); i++) {
+        observer_->OnTabAdded(i);
+      }
     }
 
     // During drag-and-drop session, the active value could be invalid.
