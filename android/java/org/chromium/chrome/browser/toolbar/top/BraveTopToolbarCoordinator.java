@@ -5,14 +5,18 @@
 
 package org.chromium.chrome.browser.toolbar.top;
 
+import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
+import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -112,6 +116,34 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         mConstraintsProxy = constraintsSupplier;
         mTabModelSelectorSupplier = tabModelSelectorSupplier;
         mControlContainer = controlContainer;
+
+        if (isToolbarPhone()) {
+            // We basically do here what we must do at ToolbarPhone.ctor
+            // mLocationBarBackgroundColorForNtp =
+            //      getContext().getColor(R.color.location_bar_background_color_for_ntp);
+            // But we can't use bytecode patching to overide constructor because ToolbarPhone object
+            // is created via reflection during inflate of layout/toolbar_phone.xml.
+            // So use reflection to set ToolbarPhone.mLocationBarBackgroundColorForNtp
+
+            // ContextUtils.getApplicationContext() does not respect Dark theme,
+            // we must get ToolbarPhone context.
+            Object toolbarContext =
+                    BraveReflectionUtil.InvokeMethod(
+                            android.view.View.class, mBraveToolbarLayout, "getContext");
+
+            assert toolbarContext instanceof Context;
+
+            @ColorInt
+            int locationBarBackgroundColorForNtp =
+                    ((Context) toolbarContext)
+                            .getColor(R.color.location_bar_background_color_for_ntp);
+
+            BraveReflectionUtil.setIntField(
+                    ToolbarPhone.class,
+                    "mLocationBarBackgroundColorForNtp",
+                    mBraveToolbarLayout,
+                    locationBarBackgroundColorForNtp);
+        }
     }
 
     public void onBottomToolbarVisibilityChanged(boolean isVisible) {

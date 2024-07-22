@@ -354,7 +354,9 @@
 
 -keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
--keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone
+-keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone {
+    *** mLocationBarBackgroundColorForNtp;
+}
 
 -keep class org.chromium.components.permissions.PermissionDialogModelFactory {
     *** getModel(...);

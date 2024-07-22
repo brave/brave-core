@@ -1992,6 +1992,10 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/compositor/layouts/ToolbarSwipeLayout",
                         "mMoveToolbar"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/toolbar/top/ToolbarPhone",
+                        "mLocationBarBackgroundColorForNtp"));
     }
 
     @Test
