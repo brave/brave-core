@@ -576,9 +576,10 @@ export const Nfts = ({
                   })
                 : renderedListPage.map((nft) => {
                     const assetId = getAssetIdKey(nft)
-                    const isSpam = allSpamNftsIds.includes(assetId)
+                    const isSpam =
+                      nft.isSpam || allSpamNftsIds.includes(assetId)
                     const isHidden =
-                      isSpam ||
+                      !nft.visible ||
                       Boolean(
                         userTokensRegistry?.nonFungibleHiddenTokenIds.includes(
                           assetId
