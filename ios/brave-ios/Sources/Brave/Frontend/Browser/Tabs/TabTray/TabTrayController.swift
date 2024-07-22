@@ -184,7 +184,7 @@ class TabTrayController: AuthenticationController {
     button.titleLabel?.adjustsFontForContentSizeCategory = true
     button.contentHorizontalAlignment = .right
     button.titleLabel?.adjustsFontSizeToFitWidth = true
-    button.accessibilityLabel = Strings.Shields.shredSitesData
+    button.accessibilityLabel = Strings.Shields.shredSiteData
     button.accessibilityIdentifier = "TabTrayController.shredButton"
     return button
   }()
