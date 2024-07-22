@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { Route, useHistory, Switch, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import SegmentedControlItem from '@brave/leo/react/controlItem'
 
 // utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
@@ -36,7 +37,7 @@ import {
 } from '../../../../common/hooks/use_portfolio_accounts'
 
 // style
-import { StyledWrapper } from './style'
+import { StyledWrapper, SegmentedControl } from './style'
 import { Column } from '../../../shared/style'
 
 // components
@@ -107,6 +108,9 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     React.useState<boolean>(isWalletBackedUp)
   const [isDefaultWalletBannerDismissed, setDismissDefaultWalletBanner] =
     React.useState<boolean>(false)
+  const [selectedExploreSegment, setSelectedExploreSegment] = React.useState<string>(
+    WalletRoutes.MarketSub
+  )
 
   // routing
   const history = useHistory()
@@ -219,6 +223,27 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     ]
   )
 
+  const exploreWeb3Header = React.useMemo(
+    () => (
+      <SegmentedControl
+        value={selectedExploreSegment}
+        onChange={({ value }) => {
+          if (!value) return
+          setSelectedExploreSegment(value)
+          history.push(value)
+        }}
+      >
+        <SegmentedControlItem value={WalletRoutes.Market}>
+          Market
+        </SegmentedControlItem>
+        <SegmentedControlItem value={WalletRoutes.Web3}>
+          Web3
+        </SegmentedControlItem>
+      </SegmentedControl>
+    ),
+    [history, selectedExploreSegment]
+  )
+
   // render
   return (
     <>
@@ -318,12 +343,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper
             wrapContentInBox
-            cardHeader={
-              <PageTitleHeader
-                title={getLocale('braveWalletTopNavMarket')}
-                expandRoute={WalletRoutes.Market}
-              />
-            }
+            cardHeader={exploreWeb3Header}
           >
             <StyledWrapper>
               {banners}
@@ -351,9 +371,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper
             wrapContentInBox
-            cardHeader={
-              <PageTitleHeader title={getLocale('braveWalletTopNavExplore')} />
-            }
+            cardHeader={exploreWeb3Header}
             useFullHeight={selectedDappCategory !== null}
           >
             <StyledWrapper>
@@ -368,7 +386,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           exact={true}
         >
           <WalletPageWrapper
-            wrapContentInBox
+            // wrapContentInBox
             cardHeader={
               <PageTitleHeader
                 title={getLocale('braveWalletAccountSettingsDetails')}

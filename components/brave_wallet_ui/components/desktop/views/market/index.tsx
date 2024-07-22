@@ -20,11 +20,11 @@ import {
 import { WalletRoutes } from '../../../../constants/types'
 
 // Options
-import { ExploreNavOptions } from '../../../../options/nav-options'
+// import { ExploreNavOptions } from '../../../../options/nav-options'
 
 // Components
 import {
-  SegmentedControl //
+  // SegmentedControl //
 } from '../../../shared/segmented_control/segmented_control'
 
 // Styled Components
@@ -229,10 +229,10 @@ export const MarketView = () => {
           fullWidth
         >
           <ControlsRow>
-            <SegmentedControl
+            {/* <SegmentedControl
               navOptions={ExploreNavOptions}
               width={384}
-            />
+            /> */}
           </ControlsRow>
           <MarketDataIframe
             iframeHeight={iframeHeight}

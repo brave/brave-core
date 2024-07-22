@@ -53,6 +53,8 @@ export const dappRadarEndpoints = ({
             }
           )
 
+          console.log(topDapps)
+
           const uniqueTopDapps: BraveWallet.Dapp[] = []
 
           for (const dapp of topDapps) {

@@ -11,7 +11,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 
 // Constants & Options
-import { ExploreNavOptions } from '../../../../options/nav-options'
+// import { ExploreNavOptions } from '../../../../options/nav-options'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -38,7 +38,7 @@ import { useQuery } from '../../../../common/hooks/use-query'
 
 // Components
 import {
-  SegmentedControl //
+  // SegmentedControl //
 } from '../../../shared/segmented_control/segmented_control'
 import {
   HeaderControlBar //
@@ -242,10 +242,10 @@ export const ExploreWeb3View = () => {
         justifyContent='flex-start'
       >
         <ControlsRow>
-          <SegmentedControl
+          {/* <SegmentedControl
             navOptions={ExploreNavOptions}
             width={384}
-          />
+          /> */}
         </ControlsRow>
         <HeaderControlBar
           actions={controls}
