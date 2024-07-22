@@ -179,7 +179,14 @@ export const AddNftForm = (props: Props) => {
   } = useGetNftMetadataQuery(
     tokenInfo &&
       (tokenInfo.coin === BraveWallet.CoinType.SOL || tokenInfo.tokenId)
-      ? tokenInfo
+      ? {
+          chainId: tokenInfo.chainId,
+          contractAddress: tokenInfo.contractAddress,
+          tokenId: tokenInfo.tokenId,
+          coin: tokenInfo.coin,
+          isErc721: tokenInfo.isErc721,
+          isNft: tokenInfo.isNft
+        }
       : skipToken
   )
 
@@ -440,6 +447,13 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={customTokenName}
             onInput={handleTokenNameChanged}
+            disabled={
+              // prevent edits when data has been found on-chain
+              !hasGetTokenInfoError &&
+              !!matchedTokenInfo?.name &&
+              !hasNftMetadataError &&
+              !!nftMetadata?.contractInformation.name
+            }
             type='text'
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
@@ -471,6 +485,10 @@ export const AddNftForm = (props: Props) => {
           <Input
             value={customTokenSymbol}
             onInput={handleTokenSymbolChanged}
+            disabled={
+              // prevent edits when data has been found on-chain
+              !hasGetTokenInfoError && !!matchedTokenInfo?.symbol
+            }
             type='text'
             placeholder={getLocale('braveWalletExempliGratia').replace(
               '$1',
