@@ -495,27 +495,6 @@ export const tokenEndpoints = ({
 
           cache.clearUserTokensRegistry()
 
-          const deleteResult = await braveWalletService.removeUserAsset(
-            arg.token
-          )
-
-          if (!deleteResult.success) {
-            throw new Error('Unable to delete token')
-          }
-
-          // track token if not spam
-          if (!arg.isSpam) {
-            const { success: addTokenSuccess } = await addUserToken({
-              braveWalletService,
-              cache,
-              tokenArg: { ...arg.token, isSpam: arg.isSpam }
-            })
-
-            if (!addTokenSuccess) {
-              throw new Error('Unable to add token')
-            }
-          }
-
           return {
             data: success
           }

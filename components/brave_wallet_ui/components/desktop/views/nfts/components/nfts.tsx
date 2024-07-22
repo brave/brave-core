@@ -573,21 +573,21 @@ export const Nfts = ({
             <NftGrid padding='0px'>
               {renderedListPage.map((nft) => {
                 const assetId = getAssetIdKey(nft)
-                const isSpam = allSpamNftsIds.includes(assetId)
+                const isSpam = nft.isSpam || allSpamNftsIds.includes(assetId)
+                const isHidden =
+                  !nft.visible ||
+                  Boolean(
+                    userTokensRegistry?.nonFungibleHiddenTokenIds.includes(
+                      assetId
+                    )
+                  )
 
                 return (
                   <NFTGridViewItem
                     key={assetId}
                     token={nft}
                     onSelectAsset={onSelectAsset}
-                    isTokenHidden={
-                      isSpam ||
-                      Boolean(
-                        userTokensRegistry?.nonFungibleHiddenTokenIds.includes(
-                          assetId
-                        )
-                      )
-                    }
+                    isTokenHidden={isHidden}
                     isTokenSpam={isSpam}
                   />
                 )
