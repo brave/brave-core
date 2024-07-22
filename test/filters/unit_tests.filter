@@ -688,6 +688,18 @@
 -ThemeColorPickerHandlerTest.GetChromeColorsExtended
 -ThemeColorPickerHandlerTest.SetSeedColor
 
+# These tests are disabled because we hide the password card in
+# brave://settings/safetyCheck which also involves always returning a "safe"
+# password card state
+-All/PasswordStatusCheckServiceParameterizedCardTest.PasswordCardState/*
+-PasswordStatusCheckServiceBaseTest.PasswordCardCheckTime
+-SafetyHubCardDataHelperTest.GetOverallState_Multi
+-SafetyHubCardDataHelperTest.GetOverallState_Password
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_HasRecommendationsAndHeader
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_AllModules
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_OneModule
+-SafetyHubHandlerTest.HandleGetSafetyHubEntryPointData_Subheader_TwoModulesWithPassword
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
