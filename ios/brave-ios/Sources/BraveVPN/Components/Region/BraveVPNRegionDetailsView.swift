@@ -66,7 +66,11 @@ struct BraveRegionDetailsView: View {
     }
     .onAppear {
       let regions = cityRegions.map {
-        BraveVPNCityRegion(displayName: $0.displayName, regionName: $0.regionName)
+        BraveVPNCityRegion(
+          displayName: $0.displayName,
+          regionName: $0.regionName,
+          serverCount: Int(truncating: $0.serverCount)
+        )
       }
 
       cityRegionDetail.assignSelectedRegion(
@@ -107,14 +111,12 @@ struct BraveRegionDetailsView: View {
               : Color(braveSystemName: .textPrimary)
           )
 
-        if region.isAutomatic == true {
-          Text(Strings.VPN.vpnCityRegionOptimalDescription)
-            .foregroundStyle(
-              cityRegionDetail.selectedRegion == region
-                ? Color(braveSystemName: .textInteractive)
-                : Color(braveSystemName: .textPrimary)
-            )
-        }
+        Text(generateServerCountDetails(for: region))
+          .foregroundStyle(
+            cityRegionDetail.selectedRegion == region
+              ? Color(braveSystemName: .textInteractive)
+              : Color(braveSystemName: .textPrimary)
+          )
       }
       Spacer()
 
@@ -127,6 +129,18 @@ struct BraveRegionDetailsView: View {
     .onTapGesture {
       selectDesignatedVPNCity(region)
     }
+  }
+
+  private func generateServerCountDetails(for region: BraveVPNCityRegion) -> String {
+    let serverCount = region.serverCount
+
+    let serverCountTitle =
+      serverCount > 1
+      ? String(format: Strings.VPN.multipleServerCountTitle, serverCount)
+      : String(format: Strings.VPN.serverCountTitle, serverCount)
+
+    return region.isAutomatic == true
+      ? Strings.VPN.vpnCityRegionOptimalDescription : serverCountTitle
   }
 
   private func selectDesignatedVPNCity(_ region: BraveVPNCityRegion) {

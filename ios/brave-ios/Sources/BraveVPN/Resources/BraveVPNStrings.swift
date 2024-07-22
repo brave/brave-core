@@ -834,20 +834,36 @@ extension Strings {
           "Text for description of toggle that auto selcets the server according to time zone."
       )
 
+    public static let cityCountTitle =
+      NSLocalizedString(
+        "vpn.cityCountTitle",
+        bundle: .module,
+        value: "%ld City",
+        comment: "Text indicating how many cities is used for that country used as Ex: '1 City'"
+      )
+
+    public static let multipleCityCountTitle =
+      NSLocalizedString(
+        "vpn.multipleCityCountTitle",
+        bundle: .module,
+        value: "%ld Cities",
+        comment: "Text indicating how many cities is used for that region used as Ex: '2 Cities'"
+      )
+
     public static let serverCountTitle =
       NSLocalizedString(
         "vpn.serverTitle",
         bundle: .module,
-        value: "%ld server",
-        comment: "Text indicating how many server is used for that region used as Ex: '1 server'"
+        value: "%ld Server",
+        comment: "Text indicating how many server is used for that region used as Ex: '1 Server'"
       )
 
     public static let multipleServerCountTitle =
       NSLocalizedString(
         "vpn.multipleServerCountTitle",
         bundle: .module,
-        value: "%ld servers",
-        comment: "Text indicating how many server is used for that region used as Ex: '2 servers'"
+        value: "%ld Servers",
+        comment: "Text indicating how many server is used for that region used as Ex: '2 Servers'"
       )
 
     public static let connectedRegionDescription =
