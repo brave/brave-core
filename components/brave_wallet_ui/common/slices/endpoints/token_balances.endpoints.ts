@@ -975,10 +975,15 @@ async function fetchAccountTokenBalanceRegistryForChainId({
 
     // ERC20 Tokens
     if (supportedChainIds.includes(arg.chainId)) {
+      const erc20Tokens = nonNativeTokens.filter((token) => !token.isNft)
+
+      // nothing to fetch
+      if (!erc20Tokens.length) {
+        return
+      }
+
       const result = await jsonRpcService.getERC20TokenBalances(
-        nonNativeTokens
-          .filter((token) => !token.isNft)
-          .map((token) => token.contractAddress),
+        erc20Tokens.map((token) => token.contractAddress),
         arg.accountId.address,
         arg.chainId
       )
@@ -988,7 +993,15 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           'Error calling ' +
             'jsonRpcService.getERC20TokenBalances: ' +
             `error=${result.errorMessage} arg=` +
-            JSON.stringify(arg, undefined, 2)
+            JSON.stringify(
+              {
+                tokens: erc20Tokens,
+                address: arg.accountId.address,
+                chainId: arg.chainId
+              },
+              undefined,
+              2
+            )
         )
       }
 
