@@ -6,12 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUER_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUER_INFO_H_
 
+#include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 
 namespace brave_ads {
+
+using IssuerPublicKeyMap =
+    base::flat_map</*public_key*/ std::string, /*associated_value*/ double>;
 
 struct IssuerInfo final {
   IssuerInfo();
@@ -27,7 +31,7 @@ struct IssuerInfo final {
   bool operator==(const IssuerInfo&) const = default;
 
   IssuerType type = IssuerType::kUndefined;
-  PublicKeyMap public_keys;
+  IssuerPublicKeyMap public_keys;
 };
 
 using IssuerList = std::vector<IssuerInfo>;

@@ -16,8 +16,6 @@ inline constexpr char kCatalogWithMultipleCampaignsJsonFilename[] =
     "catalog_with_multiple_campaigns.json";
 inline constexpr char kEmptyCatalogJsonFilename[] = "empty_catalog.json";
 
-inline constexpr char kMalformedCatalogJson[] = "MALFORMED_JSON";
-
 }  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_TEST_CONSTANTS_H_

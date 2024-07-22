@@ -21,7 +21,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] =
+constexpr char kNotificationAdAsJson[] =
     R"(
         {
           "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -36,7 +36,7 @@ constexpr char kJson[] =
           "uuid": "9bac9ae4-693c-4569-9b3e-300e357780cf"
         })";
 
-constexpr char kListJson[] =
+constexpr char kNotificationAdsAsJson[] =
     R"(
         [
           {
@@ -69,7 +69,7 @@ constexpr char kListJson[] =
 
 class BraveAdsNotificationAdValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsNotificationAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
@@ -80,10 +80,10 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, ToValue) {
   const base::Value::Dict dict = NotificationAdToValue(ad);
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kJson), dict);
+  EXPECT_EQ(base::test::ParseJsonDict(kNotificationAdAsJson), dict);
 }
 
-TEST_F(BraveAdsNotificationAdValueUtilTest, ToListValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsToValue) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
@@ -94,12 +94,13 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, ToListValue) {
   const base::Value::List list = NotificationAdsToValue({ad, ad});
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonList(kListJson), list);
+  EXPECT_EQ(base::test::ParseJsonList(kNotificationAdsAsJson), list);
 }
 
-TEST_F(BraveAdsNotificationAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdFromValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict =
+      base::test::ParseJsonDict(kNotificationAdAsJson);
 
   // Act
   const NotificationAdInfo ad = NotificationAdFromValue(dict);
@@ -110,9 +111,10 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, FromValue) {
   EXPECT_EQ(BuildNotificationAd(creative_ad, test::kPlacementId), ad);
 }
 
-TEST_F(BraveAdsNotificationAdValueUtilTest, FromListValue) {
+TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsFromValue) {
   // Arrange
-  const base::Value::List list = base::test::ParseJsonList(kListJson);
+  const base::Value::List list =
+      base::test::ParseJsonList(kNotificationAdsAsJson);
 
   // Act
   const base::circular_deque<NotificationAdInfo> ads =

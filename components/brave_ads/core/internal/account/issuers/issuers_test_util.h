@@ -8,24 +8,20 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 
-namespace brave_ads {
-
-struct IssuersInfo;
-
-namespace test {
+namespace brave_ads::test {
 
 std::string BuildIssuersUrlResponseBody();
 
-IssuersInfo BuildIssuers(int ping,
-                         const PublicKeyMap& confirmations_public_keys,
-                         const PublicKeyMap& payments_public_keys);
+IssuersInfo BuildIssuers(
+    int ping,
+    const IssuerPublicKeyMap& confirmations_issuer_public_keys,
+    const IssuerPublicKeyMap& payments_issuer_public_keys);
 IssuersInfo BuildIssuers();
 void BuildAndSetIssuers();
 
-}  // namespace test
-
-}  // namespace brave_ads
+}  // namespace brave_ads::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_TEST_UTIL_H_

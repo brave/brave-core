@@ -107,7 +107,6 @@ static_library("internal") {
     "account/issuers/issuers_value_util.h",
     "account/issuers/payments_issuer_util.cc",
     "account/issuers/payments_issuer_util.h",
-    "account/issuers/public_key_alias.h",
     "account/issuers/public_key_util.cc",
     "account/issuers/public_key_util.h",
     "account/statement/ads_received_util.cc",

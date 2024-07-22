@@ -19,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kJson[] =
+constexpr char kNewTabPageAdAsJson[] =
     R"(
         {
           "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -48,9 +48,9 @@ constexpr char kJson[] =
 
 class BraveAdsNewTabPageAdValueUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
+TEST_F(BraveAdsNewTabPageAdValueUtilTest, NewTabPageAdFromValue) {
   // Arrange
-  const base::Value::Dict dict = base::test::ParseJsonDict(kJson);
+  const base::Value::Dict dict = base::test::ParseJsonDict(kNewTabPageAdAsJson);
 
   // Act
   const NewTabPageAdInfo ad = NewTabPageAdFromValue(dict);
@@ -61,7 +61,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, FromValue) {
   EXPECT_EQ(BuildNewTabPageAd(test::kPlacementId, creative_ad), ad);
 }
 
-TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
+TEST_F(BraveAdsNewTabPageAdValueUtilTest, NewTabPageAdToValue) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/false);
@@ -72,7 +72,7 @@ TEST_F(BraveAdsNewTabPageAdValueUtilTest, ToValue) {
   const base::Value::Dict dict = NewTabPageAdToValue(ad);
 
   // Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kJson), dict);
+  EXPECT_EQ(base::test::ParseJsonDict(kNewTabPageAdAsJson), dict);
 }
 
 }  // namespace brave_ads
