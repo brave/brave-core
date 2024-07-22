@@ -179,11 +179,6 @@ namespace swap_responses {
     DOMString logoURI;
   };
 
-  dictionary LiFiInsurance {
-    DOMString state;
-    DOMString feeAmountUsd;
-  };
-
   dictionary LiFiStep {
     DOMString id;
     DOMString type;
@@ -209,7 +204,6 @@ namespace swap_responses {
     LiFiToken toToken;
     DOMString toAddress;
     LiFiStep[] steps;
-    LiFiInsurance insurance;
     DOMString[] tags;
   };
 
