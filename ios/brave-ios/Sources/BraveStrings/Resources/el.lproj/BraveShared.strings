@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Το Brave θα ήθελε να έχει πρόσβαση στις Φωτογραφίες σας";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Προσθήκη σελιδοδείκτη";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Προσθήκη σελιδοδείκτη";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Προσθήκη προσαρμοσμένης λίστας φίλτρων";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Προσθέστε επιπλέον λίστες, τις οποίες μπορεί να δημιουργήσει και να συντηρεί η έμπιστη κοινότητά σας.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Να εγγράφεστε μόνο σε λίστες από οργανισμούς που εμπιστεύεστε**. Το πρόγραμμα περιήγησής σας θα ελέγχει περιοδικά για ενημερώσεις λιστών από τη διεύθυνση URL που εισάγετε.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Προσθήκη στα αγαπημένα";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Αποκλεισμός της οθόνης";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Αποκλεισμός ειδοποιήσεων \"Μετάβαση στην εφαρμογή\"";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Αποκλεισμός αναδυόμενων παραθύρων";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Κλείσιμο";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Σίγουρα θέλετε να κλείσετε όλες τις ανοιχτές καρτέλες;";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Κλείστε όλες τις άλλες καρτέλες";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Είστε βέβαιοι ότι θέλετε να κλείσετε όλες τις ανοιχτές καρτέλες;";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Επιβεβαίωση";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Φιλτράρισμα περιεχομένου";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Ενεργοποιήστε προσαρμοσμένα φίλτρα που αποκλείουν τοπικούς και σχετικούς με τη γλώσσα ιχνηλάτες και Eνοχλήσεις";
 
 /* Cookie settings option title */
 "CookieControl" = "Έλεγχος Cookies";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Μηχανές αναζήτησης σε χρήση";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Προσαρμοσμένη λίστα φίλτρων";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Προσαρμοσμένες λίστες φίλτρων";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "Διεύθυνση URL προσαρμοσμένης λίστας φίλτρων";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Προσθήκη";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Κλείσιμο επεξήγησης προεπιλεγμένου προγράμματος περιήγησης";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Προεπιλεγμένες λίστες φίλτρων";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Προεπιλογή Brave";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Συσκευή %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Απόρριψη αλλαγών";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Σίγουρα θέλετε να απορρίψετε τις αλλαγές; Οι τροποποιήσεις που τυχόν έχουν γίνει θα χαθούν.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Απόρριψη αλλαγών;";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Πιστοποιητικό ασφαλείας";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Δυνατότητες";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Η διεύθυνση URL που εισαγάγατε δεν είναι έγκυρη";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Μόνο ασφαλείς διευθύνσεις URL (https) επιτρέπονται για προσαρμοσμένες λίστες φίλτρων";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Προσθήκη";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Επιπλέον δημοφιλείς λίστες της κοινότητας. Λάβετε υπόψη ότι η ενεργοποίηση πολλών φίλτρων θα υποβαθμίσει τις ταχύτητες περιήγησης.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Η λήψη απέτυχε";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Λήψη σε εκκρεμότητα";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Επεξεργασία";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Τελευταία ενημέρωση %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Εισαγάγετε τη διεύθυνση URL της λίστας φίλτρων εδώ ";
 
 /* Share action title */
 "FindInPage" = "Εύρεση στη σελίδα";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Αποθήκευση";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Αποθήκευση αλλαγών";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Αποθηκευμένες συνδέσεις";
 
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Επιλέξτε τον τύπο της συσκευής με την οποία θέλετε να συγχρονίσετε.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Ο κωδικός έληξε. Δημιουργήστε νέο κωδικό, κάνοντας κλικ στο παρακάτω κουμπί.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Αυτός ο προσωρινός κωδικός θα ισχύει για %@";
 
 /* Computer device button title */
 "SyncComputerDevice" = "Υπολογιστής";

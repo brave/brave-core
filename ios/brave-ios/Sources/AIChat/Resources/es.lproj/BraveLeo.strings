@@ -1,11 +1,17 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Tu sesión en Brave ha caducado. Visita la página de tu cuenta para actualizarla y regresa para usar las funciones prémium.";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Añadir comentarios";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Actívelo para añadir un atajo a Leo en la barra de direcciones.";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "Mostrar sugerencias autocompletadas en la barra de direcciones";
+"aichat.advancedSettingsAutocompleteTitle" = "Mostrar en la barra de direcciones";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "Modelo predeterminado para conversaciones nuevas";
+"aichat.advancedSettingsDefaultModelTitle" = "Modelo predeterminado";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo es un asistente inteligente de IA integrado en el navegador.";
@@ -33,6 +39,9 @@
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "Preguntar a Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo está a tope ahora mismo. Vuelve a intentarlo dentro de unos minutos.";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "¡Pregúntame lo que quieras! Podemos hablar del tema que te apetezca. Estoy aprendiendo y mejorando constantemente para dar las mejores respuestas posibles.";
@@ -116,19 +125,34 @@
 "aichat.infoAboutPageContext" = "Da forma a las respuestas en función del contenido de la página";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Instant, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude 3 Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos.";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Claude Instant de Anthropic";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "Claude Haiku de Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Conversaciones a la velocidad del rayo";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude 3 Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos.";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "Claude Sonnet de Anthropic";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Equilibrio entre velocidad e inteligencia";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hola, me llamo Leo. Soy asistente de IA de Brave, con la tecnología de %@. Pregúntame lo que quieras y haré todo lo posible por responderte.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hola, me llamo Leo. Soy un ayudante mediante inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de Llama 13B, un modelo creado por Meta que brinda un uso eficaz en multitud de situaciones.";
+"aichat.introMessageLlamaMessageDescription" = "Hola, me llamo Leo. Soy un ayudante mediante inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de Llama 3 8B, un modelo creado por Meta que brinda un uso eficaz en multitud de situaciones.";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 3 8b de Meta";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Chat de uso general";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "Hola, me llamo Leo. Soy un asistente con inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de Mixtral 8x7B, un modelo creado por Mistral AI para llevar a cabo tareas avanzadas.";
@@ -136,17 +160,38 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral de Mistral AI";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "Tareas avanzadas de chat";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "Chat";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Búsqueda de respuestas mejorada para";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Mejorando la respuesta con Búsqueda de Brave...";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Leo IA";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "Actívalo para preguntar acerca de esta página. Su contenido y tus mensajes se enviarán a Brave Leo.";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "Información sobre el contexto de la página";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Slash Tools";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Ninguno";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Desconocido";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "No disponible";
@@ -192,9 +237,6 @@
 
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "No ha sido posible completar la compra. Vuelve a intentarlo, o comprueba la información de pago que tienes en Apple e inténtalo de nuevo.";
-
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "Continuar con el modelo básico";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Suscríbete a Premium para acceder a un mayor índice de respuestas o vuelve a intentarlo en otro momento.";
@@ -265,6 +307,9 @@
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Error al valorar la respuesta";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Actualizar";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "Restablecer y borrar los datos de Leo";
 
@@ -308,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "Lo entiendo";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo es un asistente privado con IA que mejora tu experiencia en internet. Puedes usarlo gratis con acceso limitado. Brave Leo Premium ofrece más modelos, límites más altos y permite que los suscriptores tengan acceso en primicia a nuevas funcionalidades. El modelo predeterminado para todos los usuarios es Mixtral8x7B. Consulta más detalles en la **[wiki de Brave](%1$@)**\n\nPor defecto, cuando haces una pregunta, Leo Brave puede acceder y usar el contenido de la página web que estás viendo o cualquier texto que resaltes en una página para darte una respuesta. La exactitud de las respuestas no está garantizada, y puede incluir información imprecisa, engañosa o falsa. Leo utiliza datos de la búsqueda de Brave para mejorar la calidad de las respuestas. No envíes información confidencial ni privada, y sé prudente con las respuestas sobre salud, finanzas, seguridad personal o temas similares. Puedes cambiar las preferencias de Leo en cualquier momento desde Ajustes Leo.\n\nLeo no recopila identificadores que puedan estar vinculados contigo; por ejemplo, tu dirección IP. No se utiliza ningún dato para entrenar los modelos de IA, y estos tampoco guardan ningún dato personal (excepto Anthropic, que almacena los datos durante 30 días antes de eliminarlos). Consulta más detalles en la **[política de privacidad](%2$@)**";
+"aichat.termsConditionsDescription" = "Brave Leo es un ayudante mediante inteligencia artificial que le permite sacar más partido a Internet. Leo está disponible gratuitamente con acceso limitado. La modalidad Premium de pago ofrece más modelos, límites más altos y acceso anticipado a funciones nuevas. El modelo predeterminado para todos los usuarios es el Mixtral 8x7B en estos momentos. Visite el **[Centro de ayuda](%1$@)** de Brave para obtener más información.\n\nCada vez que formula una pregunta, Brave Leo recopila y usa el contenido de la página web en la que se encuentra o el texto que seleccione para brindarle una respuesta. En algunas ocasiones, Leo hace uso de Búsqueda de Brave y se nutre de los resultados obtenidos con la búsqueda para responderle de forma más precisa. En cualquier caso, la plena exactitud de las respuestas no está garantizada, y cabe la posibilidad de que contengan información imprecisa, engañosa o falsa. Evite proporcionar información confidencial o privada, y sea prudente con las respuestas sobre salud, finanzas, seguridad personas o cuestiones que entrañen riesgos. Puede ajustar las opciones de Leo en cualquier momento en \"Ajustes\" > \"Leo\".\n\nLeo no recopila elementos de identificación que puedan vincularle con usted (como, por ejemplo, su dirección IP). Asimismo, no empleamos datos de ningún tipo para entrenar a los modelos de IA, y estos no retienen ningún dato de índole personal (excepto Antropic, que lo hace durante 30 días y, luego, los elimina). Consulte la **[Política de privacidad](%2$@)** para obtener más información.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatear con Brave Leo en privado";
@@ -321,4 +366,7 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "Suscripción anual";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Tú";
 

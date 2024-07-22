@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave dorește să acceseze galeria ta de poze.";
 
-/* Button to add a bookmark */
-"AddBookmark" = "Adaugă marcaj";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Adaugă marcaj";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "Adaugă listă de filtre personalizate";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Adaugă liste suplimentare, create și întreținute de comunitatea în care ai încredere.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Abonează-te doar la liste alcătuite de entități în care ai încredere**. Browser-ul va verifica periodic actualizările listelor din URL-ul introdus.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Adaugă la favorite";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "Monitor de blocare";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "Blochează anunțurile de tip \"Deschide în aplicație\"";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "Blochează popup-uri";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "Închide";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "Ești sigur că vrei să închizi toate celelalte file deschise?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "Închide toate celelalte file";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "Ești sigur(ă) că vrei să închizi toate filele deschise?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "Confirmă";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "Filtrarea conținutului";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "Activează filtre personalizate care blochează urmăritori si elemente deranjante specifice regiunii sau limbii";
 
 /* Cookie settings option title */
 "CookieControl" = "Control cookie-uri";
@@ -515,7 +500,7 @@
 "CopyLinkActionTitle" = "Copiază link";
 
 /* Copy Tabs info to clipboard action sheet action. */
-"copyTabsDebugToClipboard" = "Copiați informațiile filelor în clipboard.";
+"copyTabsDebugToClipboard" = "Copiază informațiile filelor in clipboard.";
 
 /* Copy codewords title */
 "CopyToClipboard" = "Copiază în Clipboard";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motoare de căutare folosite în prezent";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "Listă de filtre personalizate";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "Liste de filtre personalizate";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "URL listă de filtre personalizate";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "Adaugă";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "Închide fereastra de browser implicit";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "Liste de filtre implicite";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave implicit";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispozitiv %1$@ (%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "Renunță la modificări";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "Ești sigur că vrei să renunți la aceste modificări? Ele vor fi pierdute.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "Renunță la modificări?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "Certificat de securitate";
@@ -719,7 +701,7 @@
 "EditFolderTitle" = "Editează dosar";
 
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
-"enablePullToRefresh" = "Activează Trage-pentru-refresh";
+"enablePullToRefresh" = "Activează Trage-pentru-actualizare";
 
 /* Sync enter code words */
 "EnterCodeWords" = "Introdu cuvintele codului";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "Funcționalități";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "Adresa URL introdusă nu este validă";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "Numai URL-urile securizate (HTTPS) sunt permise pentru listele de filtre personalizate";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "Adaugă";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Liste comunitare suplimentare. Reține că activarea prea multor filtre va reduce viteza de navigare.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Descărcare eșuată";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "Descărcare în așteptare";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Editează";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Introdu adresa URL a listei de filtre";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "Ultima actualizare %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "Introdu URL pentru lista de filtre aici";
 
 /* Share action title */
 "FindInPage" = "Găsește în pagină";
@@ -1457,7 +1409,7 @@
 "p3a.continue" = "Continuă";
 
 /* A subtitle shown on the setting that toggles analytics on Brave. */
-"p3a.settingSubtitle" = "Aceste răspunsuri confidențiale ajută Brave să estimeze măsura în care sunt utilizate anumite funcții cu scopul de a le îmbunătăți pentru dvs.";
+"p3a.settingSubtitle" = "Aceste răspunsuri confidențiale ajută Brave să estimeze măsura în care sunt utilizate anumite funcții cu scopul de a le îmbunătăți.";
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permite datele de produs cu protecția confidențialității (P3A)";
@@ -1475,7 +1427,7 @@
 "pageSecurityView.pageUnknownStatusTitle" = "Conexiune către site neverificată.";
 
 /* No comment provided by engineer. */
-"pageSecurityView.pageUnknownStatusWarning" = "Conexiunea dvs. către acest site nu a putut fi verificată complet. Puteți continua sau încercați să reîncărcați pagina pentru a stabili o conexiune securizată.";
+"pageSecurityView.pageUnknownStatusWarning" = "Conexiunea ta către acest site nu a putut fi verificată complet. Poți continua sau reîncărca pagina pentru a stabili o conexiune securizată.";
 
 /* No comment provided by engineer. */
 "pageSecurityView.viewCertificateButtonTitle" = "Afișează certificatul";
@@ -1496,7 +1448,7 @@
 "pagezoom.settings.reset-all" = "Resetează tot";
 
 /* Description of the Web-Page Zoom reset all option */
-"pagezoom.settings.reset-all-description" = "Resetarează nivel de zoom pe site-urile web";
+"pagezoom.settings.reset-all-description" = "Resetează nivelul de zoom pe site-urile web";
 
 /* Title for list of websites shown in settings screen */
 "pagezoom.settings.specificWebsitesZoomLevelsSectionTitle" = "Setări pagini specifice";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "Salvează";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "Salvează modificările";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "Credențiale salvate";
 
@@ -2678,7 +2633,7 @@
 "settings.qualitySettings" = "Setări calitate";
 
 /* Description to explain the daily usage ping toggle */
-"settings.sendUsagePingDescription" = "Prin acest ping confidențial, Brave poate estima numărul de utilizatori activi.";
+"settings.sendUsagePingDescription" = "Acest ping confidențial permite lui Brave să estimeze numărul de utilizatori activi.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Trimite automat către Brave ping-ul de utilizare zilnică";
@@ -3026,7 +2981,7 @@
 "sync.syncDeleteAccount" = "Șterge contul de sincronizare";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart1" = "Ștergerea contului va elimina datele dvs. criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele dvs. conectate.";
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Ștergerea contului tău va elimina datele tale criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele conectate.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.syncDeleteAccountAlertDescriptionPart2" = "În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.";
@@ -3077,7 +3032,7 @@
 "SyncAddDeviceWords" = "Introdu codul de sincronizare ";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pe dispozitivul tău, mergi la Sincronizare în panoul de Setări și apasă butonul \"%@\".  Introdu cuvintele codului lanțului de sincronizare afișate mai jos.\n\nAi grijă de acest cod ca de o parolă. Dacă cineva intră în posesia lui, poate citi și modifica datele tale sincronizate.";
+"SyncAddDeviceWordsDescription" = "Pe dispozitivul tău, mergi la Sincronizare în panoul de Setări și apasă butonul \"%@\".  Introdu cuvintele codului lanțului de sincronizare afișate mai jos. \n\nAi grijă de acest cod ca de o parolă. Dacă cineva intră în posesia lui, poate citi și modifica datele tale sincronizate.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Introdu cuvintele cod";
@@ -3091,6 +3046,12 @@
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "Alege tipul dispozitivului cu care vrei să te sincronizezi.";
 
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "Codul a expirat. Generează unul nou dând click pe butonul de mai jos.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "Acest cod temporar este valid doar pentru următoarele %@";
+
 /* Computer device button title */
 "SyncComputerDevice" = "Computer";
 
@@ -3098,7 +3059,7 @@
 "SyncDeleteAccount" = "Șterge contul de sincronizare";
 
 /* Sync Error Description */
-"syncDeprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune Brave mai veche. Actualizați la cea mai recentă versiune Brave pe alt dispozitiv al dvs., apoi creați un cod nou de sincronizare.";
+"syncDeprecatedVersionError" = "Se pare că acest cod a fost creat pe un dispozitiv care rulează o versiune mai veche a lui Brave. Actualizează Brave la cea mai recentă versiune pe celălalt dispozitiv apoi generează un cod nou de sincronizare.";
 
 /* Sync you browser settings across devices. */
 "SyncDevices" = "Dispozitive și setări";
@@ -3461,7 +3422,7 @@
 "today.promoted" = "Promovat";
 
 /* Title for long press action sheet list which has item for rate / hide */
-"today.rateBraveCardActionSheetTitle" = "Evaluați Brave în AppStore";
+"today.rateBraveCardActionSheetTitle" = "Evaluează Brave în App Store";
 
 /* Title for long press action that will hide Brave Rate Card */
 "today.rateBraveCardHideActionTitle" = "Ascunde";
@@ -3641,7 +3602,7 @@
 "vpn.contactFormIssueConnectionReliability" = "Problemă de stabilitate a conexiunii";
 
 /* Description used for specific issue field for customer support contact form. */
-"vpn.contactFormIssueDescription" = "Alegeți categoria care descrie problema.";
+"vpn.contactFormIssueDescription" = "Te rog să alegi categoria care descrie problema.";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Fără internet în momentul conectării";
@@ -4034,7 +3995,7 @@
 "Yesterday" = "Ieri";
 
 /* Setting to enable high quality youtube videos */
-"YoutubeMediaQuality" = "Activați calitate înaltă pentru videoclipurile de pe Youtube";
+"YoutubeMediaQuality" = "Activează calitate înaltă pentru Youtube";
 
 /* Description of setting to enable high quality youtube videos */
 "YoutubeMediaQualityDetails" = "Activarea acestei funcții experimentale va reda imagini video la calitatea maximă disponibilă și va utiliza date suplimentare.";

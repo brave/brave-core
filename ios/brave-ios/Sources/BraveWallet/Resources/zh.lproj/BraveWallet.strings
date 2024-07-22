@@ -10,8 +10,8 @@
 /* The title displayed on the account details screen */
 "wallet.accountDetailsTitle" = "账户详细信息";
 
-/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters. */
-"wallet.accountNameLengthError" = "帐户名称长度不超过 30 个字符";
+/* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example \"Account name must be at 30 characters or less\") */
+"wallet.accountNameLengthError" = "帳戶名稱的長度不得超過 %lld 個字元";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "隐私密钥";
@@ -93,6 +93,9 @@
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "新增网络";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the address. */
+"wallet.addressLabel" = "地址";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
 "wallet.addSuggestedTokenSubtitle" = "您想导入此令牌？";
@@ -226,6 +229,9 @@
 /* Type of biometrics. This will be used in Biometric setup screen. */
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
+/* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example \"Only zprv extended keys are supported.\") */
+"wallet.bitcoinImportExtendedKeyWarning" = "僅支援 %@ 延伸金鑰。";
+
 /* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Brave 费用： %@";
 
@@ -243,6 +249,9 @@
 
 /* Title displayed in row beside users available BTC balance. */
 "wallet.btcAvailableBalanceTitle" = "可用";
+
+/* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
+"wallet.btcOrdinalsUnsupportedWarning" = "Brave Wallet 目前不支持比特币 NFT（Oridinals）。通过包含 Ordinals 的地址发送 BTC 可能会导致 Ordinals 转移。";
 
 /* Description displayed in row beside users pending balance. */
 "wallet.btcPendingBalanceDesc" = "您的钱包余额即将发生变动。";
@@ -457,9 +466,6 @@
 /* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
 "wallet.customNetworkRpcUrlsTitle" = "RPC URL";
 
-/* The title of custom network list screen */
-"wallet.customNetworksTitle" = "自定义网络";
-
 /* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
 "wallet.customNetworkSymbolNamePlaceholder" = "输入货币名称";
 
@@ -568,26 +574,11 @@
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "解密请求";
 
-/* The default Bitcoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Bitcoin Account 3\") */
-"wallet.defaultBitcoinAccountName" = "比特币账户 %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Ethereum Account 2\") */
+"wallet.defaultAccountName" = "%1$@ 帳戶 %2$lld";
 
-/* The default Ethereum account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Ethereum Account 3\") */
-"wallet.defaultEthAccountName" = "以太坊账户 %lld";
-
-/* The default Filecoin account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Filecoin Account 3\") */
-"wallet.defaultFilAccountName" = "Filecoin 账户 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Ethereum Account 3\") */
-"wallet.defaultSecondaryEthAccountName" = "次要以太坊账户 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Filecoin Account 3\") */
-"wallet.defaultSecondaryFilAccountName" = "次要 Filecoin 账户 %lld";
-
-/* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Solana Account 3\") */
-"wallet.defaultSecondarySolAccountName" = "次要 Solana 账户 %lld";
-
-/* The default Solana account name when adding a primary account and not entering a custom name. '%lld' refers to a number (for example \"Solana Account 3\") */
-"wallet.defaultSolAccountName" = "Solana 账户 %lld";
+/* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example \"Filecoin Testnet Account 2\") */
+"wallet.defaultTestnetAccountName" = "%1$@ 測試網帳戶 %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "删除";
@@ -898,6 +889,9 @@
 /* A label shown inside of a box when there is no input data for a given Solana transaction */
 "wallet.inputDataPlaceholderSolana" = "功能类型：%d";
 
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Input index. */
+"wallet.inputLabel" = "輸入";
+
 /* An error message when there is no insufficient balance for swapping. It will be displayed as the title of the disabled swap button at the bottom in the Swap Screen. */
 "wallet.insufficientBalance" = "余额不足";
 
@@ -1165,9 +1159,6 @@
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "无资产";
 
-/* The empty state displayed when the user has not yet added any custom networks. */
-"wallet.noNetworks" = "未添加网络";
-
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "无次要账户。";
 
@@ -1185,6 +1176,9 @@
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "其他钱包操作";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the Output index. */
+"wallet.outputLabel" = "輸出";
 
 /* The error message displayed when a user enters a password that does not meet the requirements */
 "wallet.passwordDoesNotMeetRequirementsError" = "密码长度至少为 8 个字符。";
@@ -1411,6 +1405,9 @@
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "发送代币，或将代币从一个账户转入另一账户。";
 
+/* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
+"wallet.sendErrorBtcAddressNotValid" = "不是有效的 BTC 位址";
+
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
 "wallet.sendErrorDomainNotRegistered" = "网域没有已连结的 %@ 地址";
 
@@ -1440,6 +1437,9 @@
 
 /* As in sent cryptocurrency from one asset to another */
 "wallet.sent" = "已发送";
+
+/* One of the context menu option for user to tap to set a default network in wallet settings. */
+"wallet.setDefaultNetwork" = "設為預設";
 
 /* Title of the set IPFS gateway button */
 "wallet.setGatewayButtonTitle" = "設定";
@@ -1521,9 +1521,6 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "显示隐私密钥";
-
-/* A label beside the toggle for showing / hiding test networks in the Networks screen of Wallet settings */
-"wallet.showTestNetworksTitle" = "显示测试网络";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "显示零余额";
@@ -2031,6 +2028,9 @@
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@上的 %1$@";
+
+/* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
+"wallet.valueLabel" = "價值";
 
 /* The error message when input phrase does not match the correct one. */
 "wallet.verifyRecoveryPhraseError" = "复原密语不相符";

@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Tilføj flere lister, der er oprettet og vedligeholdt af dit trofaste fællesskab.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Abonner kun på lister fra enheder, du stoler på**. Din browser kontrollerer regelmæssig for opdateringer til lister fra den URL, du indtaster.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Tilføj filter efter URL";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** er din billet til en reklamefri og uafbrudt videooplevelse.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standard";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blokér anmodninger om at \"skifte til app\"";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave-spiller";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Se i Brave Player i stedet";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Indholdssortering";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Aktivér tilpassede filtre, der blokerer regionale og sprogspecifikke sporingsenheder og irritationer.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Brugerdefineret filterliste";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Tilpasset filterliste URL";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Tilpassede filtre";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Tilføj brugerdefinerede filtre her. Sørg for at bruge Adblock-filtersyntaksen.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Ugyldig regel `%1$@` på linje %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Tilføj dine brugerdefinerede filtre her, ét per linje.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Brugerdefinerede filtre understøtter højst %i linjer";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Standardfilterlister";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Gå tilbage";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Aktiver Global Privacy Control";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Eksterne filterlister";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Den indtastede URL er ugyldig";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Kun sikre (https) URL'er er tilladt for tilpassede filterlister";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Tilføj";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Flere populære fælleskabslister. Vær opmærksom på, at aktiveringen af for mange filtre nedsætter browser-hastigheden. ";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Download mislykkedes";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Afventer download";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Rediger";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Indtast filterliste-URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Sidst opdateret %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Indtast filterlistens URL her ";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Striks";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Webstedet er usikkert";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Forbindelsen til %@ er usikker";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Trackere og annonceblokering";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Opgrader forbindelser til HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Du ser denne advarsel, fordi webstedet ikke understøtter HTTPS.";
 

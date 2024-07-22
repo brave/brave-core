@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Legg til ytterligere lister som er laget og oppdatert av brukerfellesskapet.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Abonner bare på lister fra kilder du stoler på**. Nettleseren din ser jevnlig etter listeoppdateringer fra nettadressen du skriver inn.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Legg til filter etter nettadresse";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** er billetten din til en annonsefri og uavbrutt videoopplevelse.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standard";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blokker varsler om å bytte til app";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave Player";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Se i Brave Player i stedet";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Innholdsfiltrering";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Slå på egendefinerte filtre som blokkerer regionale og språkspesifikke sporere og andre plagsomme ting";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Egendefinert filterliste";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Nettadresse til egendefinert filterliste";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Egendefinerte filtre";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Legg til egendefinerte filtre her. Husk å bruke Adblock-filter-syntaks.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Ugyldig regel: «%1$@» på linje %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Legg til de egendefinerte filtrene her, én per linje.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Egendefinerte filtre støtter ikke mer enn %i linjer";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Standard filterlister";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Gå tilbake";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Aktiver Global Privacy Control";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Eksterne filterlister";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Nettadressen er ugyldig";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Bare sikre (https) nettadresser er tillatt for egendefinerte filterlister";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Legg til";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Øvrige populære fellesskapslister. Merk at det å slå på for mange filtre vil ha en negativ innvirkning på nettleserhastigheten.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Nedlastingen mislyktes";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Nedlasting venter";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Endre";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Skriv inn filterliste-URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Sist oppdatert %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Skriv inn filterliste-URL-en her";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strengt";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Nettstedet er ikke sikkert";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Tilkoblingen til %@ er ikke sikker";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Sporings- og annonseblokkering";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Oppgrader tilkoblinger til HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Du ser denne advarselen fordi dette nettstedet ikke støtter HTTPS.";
 

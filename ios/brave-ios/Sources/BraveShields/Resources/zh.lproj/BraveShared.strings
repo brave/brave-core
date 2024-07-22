@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "新增由您信任的社群所建立及維護的額外清單。";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**仅订阅来自您信任的实体的列表**。您的浏览器将定期检查您输入的网址的列表更新。";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "透過 URL 新增篩選條件";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** 是您获得无广告、不间断视频体验的入场券。";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "標準";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "屏蔽“切换到应用程序”通知";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave Player";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "改为在 Brave Player 中观看";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "內容過濾";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "启用自定义过滤器来屏蔽特定区域和语言的追踪器和烦人的内容。";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "自定义筛选器列表";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "输入过滤器列表网址";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "自訂過濾器";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "在此新增自訂篩選條件。請確保使用 Adblock 篩選條件語法。";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "行 %2$i 的規則「%1$@」無效";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "在此新增您的自訂篩選條件，每行一個。";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "自訂篩選條件最多支援 %i 行";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "默认筛选器列表";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "返回";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "启用全局隐私控制";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "外部篩選清單";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "输入的网址无效";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "自定义筛选器列表只允许使用安全（https）网址";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "添加";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "其他熱門社群清單。請注意，啟用太多過濾器可能會導致瀏覽速度變慢。";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "下載失敗";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "等待下载";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "编辑";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "輸入過濾器清單 URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "上次更新时间 %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "在此处输入筛选器清单网址";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "嚴格";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "網站不安全";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "您與 %@ 之間的連線不安全";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "跟踪器和广告屏蔽";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "将连接升级为 HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "您會看到這項警告，是因為此網站不支援 HTTPS。";
 
