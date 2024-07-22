@@ -56,6 +56,14 @@ export function App() {
     })
   }, [eventHub])
 
+  function onMount(elem: HTMLElement | null) {
+    if (elem) {
+      elem.style.setProperty(
+        '--app-screen-height',
+        window.screen.availHeight + 'px')
+    }
+  }
+
   function getComponentKey() {
     // This component key is used to reset the internal view state of the
     // component tree when the app is "reopened".
@@ -142,7 +150,12 @@ export function App() {
   }
 
   return (
-    <div key={getComponentKey()} className={getClassNames()} {...style}>
+    <div
+      key={getComponentKey()}
+      className={getClassNames()}
+      ref={onMount}
+      {...style}
+    >
       <AppErrorBoundary>
         {renderContent()}
       </AppErrorBoundary>

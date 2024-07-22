@@ -89,7 +89,7 @@ export const style = scopedCSS('app-frame', css`
     display: flex;
 
     .sidebar {
-      block-size: 100cqb;
+      min-block-size: 100cqb;
       flex: 0 1 250px;
       display: flex;
       flex-direction: column;
