@@ -58,7 +58,7 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
         : p.buttonType === 'primary' ||
           p.buttonType === 'confirm' ||
           p.buttonType === 'sign'
-        ? leo.color.primitive.primary[60]
+        ? leo.color.primitive.primary[40]
         : p.buttonType === 'danger'
         ? p.theme.color.errorBorder
         : 'transparent'};

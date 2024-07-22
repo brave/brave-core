@@ -21,7 +21,7 @@ export const enableRewardsButton = `
     cursor: default;
 
     .brave-theme-dark & {
-      background: ${leo.color.primitive.neutral[40]};
+      background: ${leo.color.primitive.neutral[70]};
     }
   }
 `
