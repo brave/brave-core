@@ -17,6 +17,7 @@
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
+#import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
 #import "ios/components/security_interstitials/lookalikes/lookalike_url_error.h"
 #import "ios/components/security_interstitials/safe_browsing/safe_browsing_error.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
@@ -56,7 +57,11 @@ void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
 }
 
 bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
-  return ChromeWebClient::IsAppSpecificURL(url) || url.SchemeIs(kBraveUIScheme);
+  // temporarily add `internal://` scheme handling until those pages can be
+  // ported to WebUI
+  return ChromeWebClient::IsAppSpecificURL(url) ||
+         url.SchemeIs(kBraveUIScheme) ||
+         url.SchemeIs("internal");
 }
 
 bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
@@ -68,11 +73,11 @@ bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
   return false;
 }
 
-std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
-    web::BrowserState* browser_state) const {
-  // We don't use Chromium web views for anything but WebUI at the moment, so
-  // we don't need any JS features added.
-  return {};
+std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(web::BrowserState* browser_state) const {
+  // Disable majority of ChromeWebClient JS features
+  std::vector<web::JavaScriptFeature*> features;
+  // FIXME: Add any JavaScriptFeature's from Chromium as needed
+  return features;
 }
 
 void BraveWebClient::PostBrowserURLRewriterCreation(
