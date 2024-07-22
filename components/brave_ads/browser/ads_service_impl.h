@@ -63,6 +63,7 @@ class BatAdsServiceFactory;
 class Database;
 class DeviceId;
 struct NewTabPageAdInfo;
+class ResourceComponent;
 
 class AdsServiceImpl final : public AdsService,
                              public bat_ads::mojom::BatAdsClient,
@@ -79,6 +80,7 @@ class AdsServiceImpl final : public AdsService,
       std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
+      brave_ads::ResourceComponent* resource_component,
       history::HistoryService* history_service,
       brave_rewards::RewardsService* rewards_service);
 
@@ -98,6 +100,7 @@ class AdsServiceImpl final : public AdsService,
 
   void RegisterResourceComponents() const;
   void RegisterResourceComponentsForCurrentCountryCode() const;
+  void RegisterResourceComponentsForDefaultLanguageCode() const;
 
   void Migrate();
 
@@ -197,6 +200,8 @@ class AdsServiceImpl final : public AdsService,
   void SnoozeScheduledCaptchaCallback();
 
   void OnNotificationAdPositionChanged();
+
+  void ShutdownAdsService();
 
   // KeyedService:
   void Shutdown() override;
@@ -392,6 +397,8 @@ class AdsServiceImpl final : public AdsService,
 
   bool is_bat_ads_initialized_ = false;
 
+  bool is_shutting_down_ = false;
+
   bool browser_upgrade_required_to_serve_ads_ = false;
 
   // Brave Ads Service starts count is needed to avoid possible double Brave
@@ -427,6 +434,9 @@ class AdsServiceImpl final : public AdsService,
   const raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 
   const raw_ptr<PrefService> local_state_ = nullptr;  // NOT OWNED
+
+  const raw_ptr<brave_ads::ResourceComponent> resource_component_ =
+      nullptr;  // NOT OWNED
 
   const raw_ptr<history::HistoryService> history_service_ =
       nullptr;  // NOT OWNED
