@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Tor 비공개 창입니다</translation>
 <translation id="1037341607922068025">Tor 비공개 창 열기</translation>
+<translation id="607982085107926247">Tor에서 열기: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">다른 디바이스에서 이 Brave 동기화 계정이 삭제되었습니다. 동기화를 비활성화할 의도가 아니라면 <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>계정을 새로 만드세요.</translation>
 <translation id="6965382102122355670">좋습니다</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">IPFS에서 게시 및 파일 받기</translation>
 <translation id="9220923434129933852">IPFS 설정 읽기 및 수정</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">.onion 주소를 사용하여 열기</translation>
+<translation id="2269780537090240241">.onion 주소를 사용하여 열기: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">강제 붙여넣기</translation>
 <translation id="4901618511712685702">IPFS로 가져오기</translation>
 <translation id="6794469945030154569">이 페이지</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 빅테크 기업으로부터 100% 독립적입니다.</translation>
 <translation id="42032117189492785">고유한 색인을 갖춘 AI 기반 검색.</translation>
 <translation id="8606416238399082160">프라이버시 완벽 보호, 100% 독립적, 뛰어난 AI 기능.</translation>
+<translation id="7706528608480893054">DDG는 모양만 다른 Bing일 뿐입니다. 진정한 프라이버시, 더 나은 결과, 독립된 색인을 이용할 때입니다. Brave 검색을 이용하세요.</translation>
+<translation id="3818133234428578803">덕덕 바이바이</translation>
+<translation id="14817360483752259">Brave는 사용자 개인, 검색어, 클릭 내역을 추적하지 않습니다. 그리고 (DDG처럼) Bing을 모양만 바꾼 게 아닙니다.</translation>
+<translation id="4381193110021038941">더 나은 검색 결과</translation>
+<translation id="3846545273704969734">Brave 검색은 독립적인 기관에 의해 Bing(이나 DuckDuckGo와 같은 Bing 변형)에 비해 더 나은 결과를 제공한다고 검증되었습니다.</translation>
+<translation id="2841164160723712537">검색 결과 개선</translation>
+<translation id="4639001639513524869">Brave 검색은 DuckDuckGo보다 대부분의 검색어에서 결과가 더 뛰어납니다. 그리고 완벽하게 프라이버시를 보호합니다.</translation>
 <translation id="5240031343741051161">Brave Search 이용하기</translation>
 <translation id="5234764350956374838">숨기기</translation>
+<translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="2370739752330685659">나중에</translation>
 <translation id="5100490448228945668">Brave 검색 전환을 닫고 Enter를 누르면 이 추천 항목을 제거합니다.</translation>
 <translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다.  <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">확인을 클릭하면 Windows 10 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
 <translation id="9164786361657554526">확인을 클릭하면 macOS 10.15 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
 <translation id="2770465223704140727">목록에서 제거</translation>
+<translation id="6020553119523541665">이미 다른 창에 이 탭이 활성화되어 있음</translation>
+<translation id="4987392683074136770">이 탭을 클릭하면 콘텐츠를 이 창으로 가져옵니다.</translation>
+<translation id="8355523213948477234">분할 보기 메뉴 버튼</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="2104347391516032700">BAT 리워드 서비스</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">마우스 오른쪽 버튼을 클릭하여 제거</translation>
 <translation id="495046168593986294">위로 스크롤</translation>
 <translation id="4021716437419160885">아래로 스크롤</translation>
-<translation id="1907157509746585817">북마크</translation>
-<translation id="4840597165888262798">읽기 목록</translation>
+<translation id="2702801445560668637">읽기 목록</translation>
 <translation id="2533715613366623756">북마크 관리자</translation>
 <translation id="3405021928725149239">북마크 관리자</translation>
 <translation id="6284218950354553099">일일 사용 Ping을 Brave에 자동으로 보내기</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
 <translation id="8487693399751278191">지금 북마크 가져오기...</translation>
 <translation id="2557899542277210112">빠르게 액세스하려면, 북마크 바에 북마크를 배치하세요.</translation>
-<translation id="2702801445560668637">읽기 목록</translation>
 <translation id="1968543937259008435">가장 철저한 온라인 프라이버시를 접할 준비가 되셨나요?</translation>
 <translation id="6817415381278637662">Brave를 기본 브라우저로 설정하여, 모든 웹페이지에서 Brave의 프라이버시 보호 기능을 마음껏 누리세요.</translation>
 <translation id="8722651357687610395">Brave를 기본으로 설정</translation>
@@ -348,6 +358,7 @@
 <translation id="2113977810652731515">카드</translation>
 <translation id="4096343215397759358">미리보기가 있는 카드</translation>
 <translation id="5297085818601043899">툴팁</translation>
+<translation id="5219886318310413094">모든 창에 고정된 탭 표시</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
@@ -462,10 +473,6 @@
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
 <translation id="2988792685798128092">사이트를 닫으면 삭제</translation>
-<translation id="4663317021223369617">쿠키 및 사이트 데이터</translation>
-<translation id="7050661313034564003">이 사이트의 모든 쿠키 및 로컬에 저장된 데이터 표시</translation>
-<translation id="8339059274628563283"><ph name="SITE"/>에 로컬 저장된 데이터</translation>
-<translation id="1963227389609234879">모두 삭제</translation>
 <translation id="7702907602086592255">도메인</translation>
 <translation id="3202131003361292969">경로</translation>
 <translation id="5390743329570580756">다음에 대해 보내기:</translation>

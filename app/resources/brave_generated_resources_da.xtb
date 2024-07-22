@@ -43,6 +43,7 @@ Eller skift senere på<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Dette er et privat vindue med Tor</translation>
 <translation id="1037341607922068025">Åbn privat vindue med Tor</translation>
+<translation id="607982085107926247">Åbn i Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">Denne Brave Sync-konto blev slettet fra en anden enhed. Hvis du ikke ønskede at deaktivere Sync, <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>skal du genskabe kontoen</translation>
 <translation id="6965382102122355670">OK</translation>
@@ -53,7 +54,7 @@ Eller skift senere på<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3094628781200061820">Udgiv og find filer fra IPFS</translation>
 <translation id="9220923434129933852">Læs og modificér IPFS-indstillinger</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">Åbn via .onion-adresse</translation>
+<translation id="2269780537090240241">Åbn ved at bruge .onion-adresse: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">Tving indsæt</translation>
 <translation id="4901618511712685702">Importér til IPFS</translation>
 <translation id="6794469945030154569">Denne webside</translation>
@@ -120,8 +121,16 @@ vindue med Tor</translation>
 <translation id="45040495135337202">Brave sporer ikke dig, dine søgninger eller dine klik. Og den er 100 % uafhængig af Big Tech.</translation>
 <translation id="42032117189492785">AI-understøttet søgning med et unikt indeks.</translation>
 <translation id="8606416238399082160">100 % uforstyrret, 100 % uafhængigt og med fantastiske AI-funktioner.</translation>
+<translation id="7706528608480893054">DDG er bare Bing i forklædning. Tid til ægte privatliv, bedre resultater og et uafhængigt indeks. Tid til Brave Search.</translation>
+<translation id="3818133234428578803">Drop anden</translation>
+<translation id="14817360483752259">Brave Search sporer ikke dig, dine forespørgsler eller dine klik. Og (i modsætning til DDG) er det ikke bare Bing i forklædning.</translation>
+<translation id="4381193110021038941">Få bedre resultater</translation>
+<translation id="3846545273704969734">Brave Search er uafhængigt verificeret til at have bedre resultater end Bing (eller Bing-kloner som DuckDuckGo).</translation>
+<translation id="2841164160723712537">Forbedr søgeresultater</translation>
+<translation id="4639001639513524869">Brave Search har bedre resultater end DuckDuckGo for de fleste forespørgsler. Og det er i sandhed privat.</translation>
 <translation id="5240031343741051161">Prøv Brave-søgninger</translation>
 <translation id="5234764350956374838">Luk</translation>
+<translation id="9218430445555521422">Indstil som standard</translation>
 <translation id="2370739752330685659">Måske senere</translation>
 <translation id="5100490448228945668">Afvis Braves søgekonvertering, tryk på Enter for at fjerne dette forslag.</translation>
 <translation id="9194637241566114638">Hjælp os med at forbedre <ph name="SEARCH_NAME"/> ved at sende anonym brugerdata. <ph name="MORE_INFO"/></translation>
@@ -131,6 +140,9 @@ vindue med Tor</translation>
 <translation id="1162706247109707219">Ved at klikke på OK anerkender du, at din installering af Brave IKKE modtager kritiske sikkerhedsopdateringer, før du opdaterer til Windows 10 eller nyere. Denne advarsel bliver IKKE vist igen.</translation>
 <translation id="9164786361657554526">Ved at klikke på OK anerkender du, at din installering af Brave IKKE modtager kritiske sikkerhedsopdateringer, før du opdaterer til macOS 10.15 eller nyere. Denne advarsel bliver IKKE vist igen.</translation>
 <translation id="2770465223704140727">Fjern fra listen</translation>
+<translation id="6020553119523541665">Denne fane er aktiv i et andet vindue</translation>
+<translation id="4987392683074136770">Klik på denne fane bringer dens indhold til dette vindue</translation>
+<translation id="8355523213948477234">Del vis menu-knap</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="2104347391516032700">Bat Rewards-service</translation>
 <translation id="6040143037577758943">Luk</translation>
@@ -167,8 +179,7 @@ vindue med Tor</translation>
 <translation id="6959315322491671328">Højreklik for at fjerne</translation>
 <translation id="495046168593986294">Scroll op</translation>
 <translation id="4021716437419160885">Scroll ned</translation>
-<translation id="1907157509746585817">bogmærker</translation>
-<translation id="4840597165888262798">læseliste</translation>
+<translation id="2702801445560668637">Læseliste</translation>
 <translation id="2533715613366623756">Bogmærkeadministrator</translation>
 <translation id="3405021928725149239">Bogmærkeadministrator</translation>
 <translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
@@ -252,7 +263,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="796831669370432378">Klik på bogmærkeknappen for at tilføje et bogmærke ved siden af adresselinjen</translation>
 <translation id="8487693399751278191">Importér bogmærker nu...</translation>
 <translation id="2557899542277210112">For hurtig adgang skal du placere dine bogmærker her på bogmærkelinien.</translation>
-<translation id="2702801445560668637">Læseliste</translation>
 <translation id="1968543937259008435">Klar til mere privatliv online?</translation>
 <translation id="6817415381278637662">Vælg Brave som din standardbrowser for at få Braves privatlivsbeskyttelse på alle websider, du åbner.</translation>
 <translation id="8722651357687610395">Indstil Brave som standard</translation>
@@ -349,6 +359,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2113977810652731515">Kort</translation>
 <translation id="4096343215397759358">Kort med forhåndsvisning</translation>
 <translation id="5297085818601043899">Værktøjstip</translation>
+<translation id="5219886318310413094">Vis fastgjorte faner i alle vinduer</translation>
 <translation id="2396127686705429331">Vis bogmærkeknap</translation>
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="4109670531935487117">Vis autofuldførelsesforslag i adressefeltet</translation>
@@ -463,10 +474,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2808630562319398131">Nulstil Brave-belønningsdata...</translation>
 <translation id="6438096877646138757">Sider, der fjerner cookies, når du lukker dem</translation>
 <translation id="2988792685798128092">Fjern, når siden lukkes</translation>
-<translation id="4663317021223369617">Cookies og site-data</translation>
-<translation id="7050661313034564003">Vis alle cookies og lokalt gemt data for dette site</translation>
-<translation id="8339059274628563283">Data fra <ph name="SITE"/>, der er gemt lokalt</translation>
-<translation id="1963227389609234879">Slet alle</translation>
 <translation id="7702907602086592255">Domæne</translation>
 <translation id="3202131003361292969">Sti</translation>
 <translation id="5390743329570580756">Send til</translation>

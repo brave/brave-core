@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">के द्वारा फोटो</translation>
 <translation id="7108338896283013870">छुपाएं</translation>
-<translation id="7115515527894388910">पसन्द सम्पादित करें</translation>
-<translation id="7606029853066610626">बुकमार्क्स देखें और प्रबंधित करें</translation>
-<translation id="5550994254534676787">अपनी ब्राउज़िंग हिस्ट्री को देखें.</translation>
 <translation id="985862351129593673">डैशबोर्ड को कस्टमाइज़ करें</translation>
 <translation id="7180865173735832675">कस्टमाइज़ करें</translation>
 <translation id="8522669544471808198">बैकग्राउंड इमेज दिखाएँ</translation>
@@ -57,11 +54,21 @@
 <translation id="430556192781857057">आपके द्वारा अक्सर देखी जाने वाली वेबसाइटों के आधार पर शीर्ष साइटों का सुझाव दिया जाता है</translation>
 <translation id="1773147648972887693">बार-बार विजिट की जाने वाली चीजें दिखाएँ</translation>
 <translation id="4546260624932151782">पसंदीदा दिखाएँ</translation>
+<translation id="8975314993825375476">लिस्ट को कस्टमाइज़ करें</translation>
+<translation id="5525668735313040116">गोपनीय तौर पर वेब सर्च करें</translation>
+<translation id="1629390138158333592">वेब पर ढूँढें</translation>
+<translation id="4016940744851230999">नए टैब पेज पर सर्च विजेट दिखाएँ</translation>
+<translation id="7092560902264458951">नए टैब पेज पर सर्च इंजन की सुविधा दें</translation>
+<translation id="6849526088357652209">कस्टमाइज़ करने लायक उपलब्ध इंजन</translation>
+<translation id="5131747739868436035">सर्च छिपाएँ</translation>
+<translation id="423209533815462685">सर्च के सुझाव चालू करने हैं?</translation>
+<translation id="2086952631598737687">सर्च करने के लिए आप जो भी टाइप करेंगे, उन्हें बेहतर सुझावों के लिए आपके सर्च इंजन को भेज दिया जाएगा.</translation>
+<translation id="3435896845095436175">सक्षम करें</translation>
+<translation id="780301667611848630">जी नहीं, रहने दें</translation>
 <translation id="1230746063445072175">और बेहतर प्राइवेसी चाहते हैं?</translation>
 <translation id="6699628638740071563">Google को छोड़ने का समय आ गया है.</translation>
 <translation id="2045455461902775806">सर्च नतीजों में Brave किसी तरह का भेदभाव या उन्हें सेंसर नहीं करता है और यह आपको, आपके सवालों या आपकी क्लिक को ट्रैक नहीं करता है.</translation>
 <translation id="6811221529729056895">Brave सर्च को अभी आज़माएँ</translation>
-<translation id="5525668735313040116">गोपनीय तौर पर वेब सर्च करें</translation>
 <translation id="3446024864193919737">Brave पुरस्कार दिखाएँ</translation>
 <translation id="5585019845078534178">कार्ड्स</translation>
 <translation id="3870475560794762985">स्पांसर्ड इमेजों को दिखाएं</translation>
@@ -83,7 +90,6 @@
 <translation id="7610541582755894669">रंगों का मेल</translation>
 <translation id="1606851618930975029">हर नए टैब पर रिफ़्रेश करें</translation>
 <translation id="7040134046053881468">रिवॉर्ड पैनल खोलें</translation>
-<translation id="9024104284526126630">आप Brave में एक निजी कॉल शुरू कर सकते हैं।</translation>
 <translation id="370665806235115550">लोड हो रही हैं...</translation>
 <translation id="4634933166298842522">सदस्यता मैनेज करें</translation>
 <translation id="4108314971463891922">फ़ॉलो करें</translation>
@@ -450,6 +456,7 @@
 <translation id="1109729143147368573">दुनिया भर में लगभग 50 मिलियन व्यापारियों और एटीएम में अपनी क्रिप्टो और अन्य संपत्ति को खर्च करें। क्रिप्टो प्राप्त करने के लिए क्रिप्टो खर्च करें!</translation>
 <translation id="3787061634640932557">कार्ड एडिट करें</translation>
 <translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
+<translation id="6297791103122079275">बात करें</translation>
 <translation id="5977237145327845546">अपने दोस्तों और सहकर्मियों के साथ एक निजी वीडियो कॉल शुरू करें।</translation>
 <translation id="8863928195533744356">कॉल शुरू करें</translation>
 <translation id="3651550649176056334">आपके डेटा के बारे में</translation>
@@ -593,7 +600,7 @@
 <translation id="3026978804849658576">स्टेटमेंट देखें</translation>
 <translation id="1848737374354350807">शेष</translation>
 <translation id="6516984207843289176">अकाउंट कनेक्ट करें</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>कमाई शुरू करने के लिए तैयार हैं?<ph name="BOLD_END"/> अपना अकाउंट कनेक्ट करें या हमारे किसी पार्टनर के साथ नया अकाउंट बनाएँ.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>कमाई शुरू करने के लिए तैयार हैं?<ph name="BOLD_END"/> कोई अकाउंट कनेक्ट करें ताकि हमें पता हो कि आपकी कमाई कहाँ भेजनी है.</translation>
 <translation id="902298128239575729">अपना आर्थिक योगदान Brave रिवॉर्ड के ज़रिए भेजें</translation>
 <translation id="6276721355724491595">जब आपका कस्टोडियल अकाउंट कनेक्ट हो जाएगा, तो आप अपने Brave रिवॉर्ड बैलेंस से अपने पसंदीदा क्रिएटर को ऑन-डिमांड योगदान भेज पाएँगे.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -601,6 +608,7 @@
       other {इस महीने आपने Brave रिवॉर्ड द्वारा सपोर्ट किए जाने वाले # क्रिएटर को देखा है}
     }</translation>
 <translation id="6067959437127691361">Brave रिवॉर्ड का इस्तेमाल करने से कंटेंट क्रिएटर को सपोर्ट मिलता है और आपको BAT कमाने का मौका मिलता है.</translation>
+<translation id="944736176598169208">रिवॉर्ड</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
 <translation id="885805571521218129">यह इस महीने Brave Ads के लिए आपकी अनुमानित कमाई की सीमा को दर्शाता है.</translation>
 <translation id="3863981251715594911">ये कैसे काम करता है?</translation>
@@ -745,7 +753,6 @@
 <translation id="6180576227145734714">निर्दिष्ट होने पर लेन-देन डेटा 'टू' एक मान्य पता होना चाहिए</translation>
 <translation id="6688162556547723415">अनुरोध की गई विधि और/या अकाउंट यूज़र के द्वारा ऑथराइज़ किए हुए नहीं हैं</translation>
 <translation id="8767749833522980474">क्रिप्टो</translation>
-<translation id="944736176598169208">Rewards</translation>
 <translation id="6122742277607781713">पोर्टफ़ोलियो</translation>
 <translation id="7020503656406658141">मूल्य</translation>
 <translation id="3586775666459823714">NFTs</translation>
@@ -784,7 +791,7 @@
 <translation id="2329227154184107678">ऑर्डर को जाँचें</translation>
 <translation id="3220443877821207794">समीक्षा भेजें</translation>
 <translation id="8530071505111489657">कोई टोकन उपलब्ध नहीं है</translation>
-<translation id="615791330696335475">टोकन को नाम से सर्च करें</translation>
+<translation id="9021834401351805394">नाम से सर्च करें या पता पेस्ट करें</translation>
 <translation id="5009335307032488349">NFT को नाम या आईडी से सर्च करें</translation>
 <translation id="8667560635828712526">एसेट चुनें</translation>
 <translation id="4853960199138416955">वर्तमान में Brave वॉलेट Bitcoin NFT (ऑर्डिनल्स) को सपोर्ट नहीं करता है। ऑर्डिनल्स वाले पते से BTC भेजने पर अनजाने में इसके ऑर्डिनल्स स्थानांतरित हो सकते हैं।</translation>
@@ -793,6 +800,11 @@
 <translation id="4504682768625050939">सार्वजनिक पता या डोमेन डालें.</translation>
 <translation id="5292796745632149097">इस पर भेजें</translation>
 <translation id="7022684620581223496">ग़लत डोमेन एक्सटेंशन.</translation>
+<translation id="7620616707541471029">जारी रखने के लिए अकाउंट चुनें</translation>
+<translation id="7099260104593926742">मार्केट प्राइस</translation>
+<translation id="6954838107964168963">मेरे पास हैं</translation>
+<translation id="1976851706319678835">मेरे पास नहीं हैं</translation>
+<translation id="7372882109707907136">राशि/24 घंटे</translation>
 <translation id="9209024278910716955">चुने गए नेटवर्क पर खरीदारी की सुविधा नहीं है</translation>
 <translation id="4982630604810554641">डोमने ढूँढ रहे हैं...</translation>
 <translation id="5467044307473123584">Brave .eth डोमेन को हल करने के लिए ऑफ़-चेन गेटवे के इस्तेमाल को सपोर्ट करता है.</translation>
@@ -895,7 +907,7 @@
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="232925166623833246">हार्डवेयर वॉलेट से इम्पोर्ट करें</translation>
 <translation id="4324198334837993695">हार्डवेयर</translation>
-<translation id="3067168166931605141">अकाउंट नेम</translation>
+<translation id="9079725315195697532">इस अकाउंट को नाम दें</translation>
 <translation id="1011614786846182272">ये अकाउंट Web3 DApps के साथ इस्तेमाल किए जा सकते हैं और इन्हें आपके पोर्टफ़ोलियो में भी दिखाया जा सकता है. हालाँकि ध्यान दें कि सेकेंडरी अकाउंट को आपके प्राइमरी अकाउंट के बैकअप से रिकवरी फ़्रेज़ के ज़रिए रीस्टोर नहीं किया जा सकता.</translation>
 <translation id="1136772623587250243">क्लिपबोर्ड से प्राइवेट चाभी पेस्ट करें</translation>
 <translation id="7978412674231730200">निजी कुंजी</translation>
@@ -947,6 +959,7 @@
 <translation id="453788800165937690">चेतावनी: अपनी निजी कुंजी को कभी साझा न करें। अगर किसी के पास यह निजी कुंजी हो, तो वह आपकी संपत्ति को हमेशा के लिए ले सकता है।</translation>
 <translation id="2416098547200943834">ध्यान दें : हेक्स-एनकोडेड JSON के तौर पर प्राइवेट की दी जाती है, जिसमें प्राइवेट की और प्रोटोकॉल की जानकारी होती है. <ph name="LINK_START"/>और जानें<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ध्यान दें : ज़रूरी है कि प्राइवेट की हेक्स-एनकोडेड JSON के तौर पर दिया जाए, जिसमें प्राइवेट की और प्रोटोकॉल की जानकारी हो. <ph name="LINK_START"/>और जानें<ph name="LINK_END"/>.</translation>
+<translation id="1505724566145200403">ध्यान दें : सिर्फ़ zprv(या Testnet के लिए vprv) एक्सटेंडेड की ही काम करते हैं.</translation>
 <translation id="42126664696688958">एक्सपोर्ट करें</translation>
 <translation id="1366855498335432549">जमा</translation>
 <translation id="790104325876206743">अकाउंट सेटिंग्स</translation>
@@ -1511,6 +1524,7 @@
 <translation id="5709875713144853427">स्वैप करने के लिए कोई टोकन चुनें</translation>
 <translation id="720404198240859011">बिना बैलेंस वाले टोकन दिखाएँ</translation>
 <translation id="4886690455791686940">ज़ीरो बैलेंस को छिपाएँ</translation>
+<translation id="615791330696335475">टोकन को नाम से सर्च करें</translation>
 <translation id="381485723922188688">विकल्प</translation>
 <translation id="6680650203439190394">शुल्क</translation>
 <translation id="2538996898605796431">कीमत का प्रभाव</translation>
@@ -1622,8 +1636,6 @@
 <translation id="1215089823252478557">अनुमानित बैलेंस का बदलाव देखें</translation>
 <translation id="2761574758015819991">संभावित दुर्भावनापूर्ण लेनदेन की पहचान करें</translation>
 <translation id="168533464844528463">धोखाधड़ी की कोशिशों का पता लगाने में मदद करें</translation>
-<translation id="780301667611848630">जी नहीं, रहने दें</translation>
-<translation id="3435896845095436175">सक्षम करें</translation>
 <translation id="7269757150305059881">यह सेवा देने के लिए Brave किसी भागीदार के साथ काम करता है। सक्षम करके, आप अहस्ताक्षरित लेनदेन और उनके DApp URL को हमारे भागीदार के साथ साझा करने के लिए सहमति देते हैं।</translation>
 <translation id="7790932700072432983"><ph name="TAG_BEFORE"/>सेटिंग्स<ph name="TAG_AFTER"/> में जाकर किसी भी समय बदलें।</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
@@ -1638,6 +1650,10 @@
 <translation id="6405354572620970908">यह अनुरोध गलत इरादे वाला लग रहा है और इससे आपको चोरी का खतरा हो सकता है। अगर आपको इस ऐप पर भरोसा न हो, तो आगे न बढ़ें।</translation>
 <translation id="786261184916565476">हमें <ph name="VALUE"/> समस्याएँ मिली हैं।</translation>
 <translation id="2826600321627372011">कोई रूट नहीं मिला</translation>
+<translation id="2451778499022193433">अकाउंट के नाम में <ph name="VALUE"/> या कम कैरेक्टर होने चाहिए</translation>
+<translation id="8488138412489236285">पासवर्ड डालें (अगर लागू हो)</translation>
+<translation id="9166422618242592074">इंपोर्ट टाइप</translation>
+<translation id="1913853014470037784">जो NFT मेरे नहीं हैं, उन्हें छिपाएँ</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1871,9 +1887,11 @@
 <translation id="712598284361781729">नया स्प्लिट व्यू</translation>
 <translation id="1130188644637295274">स्प्लिट व्यू में खोलें</translation>
 <translation id="6459036216700972269">टैब को अलग करें</translation>
+<translation id="4235382917338421035">टैब की जगह स्वैप करें</translation>
 <translation id="3617523374417810198">नया स्प्लिट व्यू</translation>
 <translation id="8571323456914890254">स्प्लिट व्यू में खोलें</translation>
 <translation id="5329136173514538969">टैब को अलग करें</translation>
+<translation id="7595612919377246359">टैब की जगह स्वैप करें</translation>
 <translation id="8591883849678260674">मूल देखें</translation>
 <translation id="1969654232209826429">पढ़ने में कम से कम इतना समय लगेगा</translation>
 <translation id="4101707289420716287">स्पीडरीडर बंद करें</translation>
@@ -1918,7 +1936,7 @@
 <translation id="7921782882718083488">इस पेज को संक्षेप में बताएँ</translation>
 <translation id="7932221068776853847">इस पेज का कंटेंट लियो को भेजे जाने से रोकने के लिए डिसकनेक्ट करें और नई बातचीत शुरू करें.</translation>
 <translation id="1167803637855350748">लियो से कनेक्ट करते समय नेटवर्क की समस्या हुई, अपना कनेक्शन जाँचें और फिर से कोशिश करें.</translation>
-<translation id="1996126325390835277">इस समय लियो काफ़ी व्यस्त है. कृपया कुछ देर में फिर से कोशिश करें.</translation>
+<translation id="1996126325390835277">आप प्रीमियम रेट की सीमा पूरी कर चुके हैं. कुछ घंटों में कृपया फिर से कोशिश करें.</translation>
 <translation id="7144878232160441200">पुन: प्रयास करें</translation>
 <translation id="8570488829560315702">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Llama 3 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफॉरमेंस और कई यूज़ केसेज़ के लिए लागू है.<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">नमस्ते, मैं लियो हूँ. मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ. मैं Mixtral 8x7B द्वारा संचालित हूँ, जो एडवांस टास्क को संभालने के लिए Mistral AI द्वारा बनाया गया एक मॉडल है. <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
@@ -1926,6 +1944,7 @@
 <translation id="8583558415545871403">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Haiku की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
 <translation id="4147243042852964992">नमस्ते, मैं लियो हूँ. मुझे Brave ने एक प्रॉक्सी के तौर पर बनाया है और मुझमें Anthropic द्वारा बनाए गए Claude 3 Sonnet की शक्ति है, जिसके ज़रिए मैं बातचीत के साथ ही टेक्स्ट प्रोसेसिंग के काम करता हूँ.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, <ph name="COMPANY_NAME"/> की पेशकश</translation>
+<translation id="963346402440669081">प्रीमियम</translation>
 <translation id="6187065185557150870">चैट</translation>
 <translation id="2961040541145689181">नई चैट</translation>
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
@@ -1935,7 +1954,7 @@
 <translation id="6637015365469044269">अभी अपग्रेड करें</translation>
 <translation id="5543505256451301851">7 दिन फ़्री में आज़माएँ</translation>
 <translation id="849535826888024304">जवाब मिलने की सीमा खत्म हुई</translation>
-<translation id="2252128900328632803">प्रीमियम की सदस्यता लेकर जवाब की उच्च दर प्राप्त करें। जारी रखने के लिए आप हमारे कम ताकतवर Llama2 13b वाले मुफ़्त मॉडल पर भी स्विच कर सकते हैं।</translation>
+<translation id="2252128900328632803">आप लियो के लिए रेट की सीमा पूरी कर चुके हैं. ज़्यादा रिस्पॉन्स पाने के लिए प्रीमियम सब्सक्राइब करें या बाद में फिर से कोशिश करें.</translation>
 <translation id="4173478269537830374">विभिन्न AI मॉडल खोजें</translation>
 <translation id="3245401959451976966">अपनी रचनात्मकता को अनलॉक करें</translation>
 <translation id="4165928407303989823">विषय पर बने रहें</translation>
@@ -1987,7 +2006,7 @@
 <translation id="5642775487085641191">क्या आप सिर्फ़ चैट करना चाहते हैं?</translation>
 <translation id="8857222718794549840">मुझसे कुछ भी पूछिए! हम आपकी पसंद के किसी भी विषय के बारे में बात कर सकते हैं। मैं हमेशा सीखता रहता हूं और सुधार करता रहता हूं, ताकि आपको बेहतर जवाब दे सकूं।</translation>
 <translation id="9051226419897869406">Brave Leo के साथ निजी तौर पर चैट करें</translation>
-<translation id="1173570303649278801">जवाब देने के लिए पेज के संदर्भ का इस्तेमाल करें</translation>
+<translation id="637548538907281147">पेज के कंटेंट के मुताबिक जवाब तैयार करें</translation>
 <translation id="8599503173207256429">इस पेज के बारे में पूछने के लिए टॉगल करके चालू करें। इसके कॉन्टेंट को आपके मैसेज के साथ Brave Leo पर भेज दिया जाएगा।</translation>
 <translation id="318819763888864209">सभी सदस्यताएं अपने आप नवीनीकृत हो जाती हैं, लेकिन नवीनीकरण से पहले किसी भी समय रद्द की जा सकती हैं।</translation>
 <translation id="5091223967610958">(<ph name="HOST_NAME"/>) पर आप जिस पेज पर हैं, उसका होस्टनेम शेयर करें, ताकि हम Leo को बेहतर बना सकें।</translation>

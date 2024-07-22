@@ -417,9 +417,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>
 <translation id="8297488609722895137">Larawan ni <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Sa pamamagitan ng pag-tap sa Simulang gamitin ang Mga Reward ng Brave, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Mabayaran para tingnan ang larawan sa background na ito.</translation>
 <translation id="7136586167396205364">Itago ang Mga Naka-sponsor na Larawan</translation>
-<translation id="2927095357213611519">Maaari mong suportahan ang mga creator sa web gamit ang mga token.\nMakakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy.</translation>
 <translation id="2898634658146274982">Buksan ang mga external na link sa Brave</translation>
 <translation id="5616508928556767259">Binubuksan ang mga link mula sa iba pang app sa Brave webview. Tandaan: Dapat itakda ang Brave bilang iyong default na browser.</translation>
 <translation id="2394961582378297792">Na-log out</translation>
@@ -477,6 +475,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8912304686498704084">PATAAS</translation>
 <translation id="4963218453264888510">PABABA</translation>
 <translation id="7474113515179313724">Bina-browse mo ang site na ito nang wala ng mga proteksyon sa privacy ng Brave. Hindi ba ito gumagana nang maayos nang naka-on ang Shields?</translation>
+<translation id="4226543734057230801">Mga Ethereum network</translation>
+<translation id="3504157706952484145">Mga Filecoin network</translation>
+<translation id="1561541094377237745">Mga Solana network</translation>
+<translation id="7141438739990875547">Mga network ng Bitcoin</translation>
 <translation id="9055546041146396417">Kung mukhang sira ang site na ito, subukan nang hindi naka-on ang Shields.</translation>
 <translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
 <translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
@@ -575,8 +577,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2422627462367776805">Web portal at search mula sa South Korea</translation>
 <translation id="177282784098234156">Pribado, independent, at binibigyang-priyoridad ang user</translation>
 <translation id="1410130669636877548">Pinoprotektahan ng ilang search engine ang iyong privacy nang mas mahusay sa iba kapag naghahanap ka sa web.</translation>
-<translation id="5187052478998910855">Kailangan ng refresher sa Rewards?</translation>
-<translation id="8622329973403382303">Mabilis na matuto tungkol sa kung paano ito gumagana para maalala bilang nangunguna sa Rewards!</translation>
 <translation id="3479552764303398839">Hindi ngayon</translation>
 <translation id="7138272885617540195">Payagan ang mga link ng app na magbukas sa mga app sa labas ng Brave</translation>
 <translation id="4954512758656527938">Default na Ethereum wallet</translation>
@@ -702,9 +702,11 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6748319398471481216">Nagre-renew buwan-buwan</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / buwan</translation>
 <translation id="1163809943099641131">Isang Taon</translation>
-<translation id="7574007394522199115">I-renew taon-taon at makatipid ng <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">I-renew taon-taon at <ph name="DISCOUNT_TEXT_START"/>makatipid ng <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / taon</translation>
-<translation id="2655185358771731232">Libreng subukan sa loob ng 7 araw. Makalipas ang 7 araw, sisingilin ka para sa presyo ng plano. Awtomatikong nare-renew ang mga subscription pero pwede itong kanselahin bago ma-renew.</translation>
+<translation id="5125233570742276182">Sisingilin ang mga subscription sa pamamagitan ng inyong Google account. Mawawala ang anumang hindi nagamit na bahagi ng libreng trial, kung inialok, kapag bumili kayo ng subscription.\n\nAwtomatikong mare-renew ang inyong subscription maliban kung kakanselahin ito nang kahit man lang 24 na oras bago ang pagtatapos ng kasalukuyang panahon.\n\nMaaari ninyong i-manage ang inyong mga subscription sa Mga Setting.\nSa pamamagitan ng paggamit sa Brave, sumasang-ayon kayo sa Mga Tuntunin ng Paggamit at Privacy Policy.</translation>
+<translation id="5035172357624830412">Nabili na sa brave.com?</translation>
+<translation id="713136183174551885">I-refresh ang inyong mga kredensyal</translation>
 <translation id="6053992191006521518">Subukan nang LIBRE</translation>
 <translation id="5903391101107992067">Subukan nang 7 Araw - Libre</translation>
 <translation id="721747358270435486">Mag-install ng VPN</translation>
@@ -850,7 +852,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7791543448312431591">Idagdag</translation>
 <translation id="6889920539620318793">Itakda bilang aktibo</translation>
 <translation id="2653659639078652383">Isumite</translation>
-<translation id="4556601961751528347">Baguhin ang Mga Nakakonektang Account</translation>
+<translation id="4945690646623486292">Pumili ng Network</translation>
 <translation id="5233638681132016545">Bagong tab</translation>
 <translation id="8006088103295786154">I-access ang Brave Wallet</translation>
 <translation id="8030169304546394654">Nakadiskonekta</translation>
@@ -907,7 +909,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2322227405137827074">Gusto mo bang i-import ang token na ito?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Channel ng notification para sa Brave Browser</translation>
-<translation id="1173919438868967364">Pumili ng Account</translation>
+<translation id="4556601961751528347">Baguhin ang Mga Nakakonektang Account</translation>
 <translation id="8922793255489232731">Hindi nakuha ang katugmang timezone para sa : <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Nakakonekta sa <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Trial</translation>
@@ -1063,7 +1065,6 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="4932733599132424254">Petsa</translation>
 <translation id="346505172740911461">Presyo sa Market</translation>
 <translation id="5494920125229734069">Piliin ang lahat</translation>
-<translation id="5972844218283131174">Alisin sa pagkakapili ang lahat</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Mag-sign in gamit ang Brave Wallet</translation>
 <translation id="3696514931437952995">Nagsa-sign in ka sa <ph name="ORIGIN"/>. Ibabahagi ng Brave wallet ang wallet address mo sa <ph name="ORIGIN"/>.</translation>

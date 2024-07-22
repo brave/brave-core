@@ -26,9 +26,6 @@
 <translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Foto von</translation>
 <translation id="7108338896283013870">Ausblenden</translation>
-<translation id="7115515527894388910">Einstellungen bearbeiten</translation>
-<translation id="7606029853066610626">Lesezeichen ansehen und verwalten</translation>
-<translation id="5550994254534676787">Browserverlauf ansehen</translation>
 <translation id="985862351129593673">Dashboard anpassen</translation>
 <translation id="7180865173735832675">Anpa</translation>
 <translation id="8522669544471808198">Hintergrundbilder anzeigen</translation>
@@ -57,11 +54,21 @@
 <translation id="430556192781857057">Top-Websites werden basierend auf Websites vorgeschlagen, die Sie häufig besuchen</translation>
 <translation id="1773147648972887693">Kürzlich besuchte Websites anzeigen</translation>
 <translation id="4546260624932151782">Favoriten anzeigen</translation>
+<translation id="8975314993825375476">Liste anpassen</translation>
+<translation id="5525668735313040116">Das Internet privat durchsuchen</translation>
+<translation id="1629390138158333592">Durchsuche das Netz</translation>
+<translation id="4016940744851230999">Suchwidget auf der „Neuer Tab“-Seite anzeigen</translation>
+<translation id="7092560902264458951">Suchmaschinen auf der „Neuer Tab“-Seite anzeigen</translation>
+<translation id="6849526088357652209">Verfügbare Suchmaschinen anpassen</translation>
+<translation id="5131747739868436035">Suche ausblenden</translation>
+<translation id="423209533815462685">Suchvorschläge aktivieren?</translation>
+<translation id="2086952631598737687">Wenn Sie suchen, wird der von Ihnen eingegebene Text an Ihre Suchmaschine geschickt, um bessere Vorschläge zu erhalten.</translation>
+<translation id="3435896845095436175">Aktivieren</translation>
+<translation id="780301667611848630">Kein Interesse</translation>
 <translation id="1230746063445072175">Sie möchten noch mehr Datenschutz?</translation>
 <translation id="6699628638740071563">Dann sollten Sie sich von Google verabschieden.</translation>
 <translation id="2045455461902775806">Die Brave-Suche verzerrt oder zensiert die Ergebnisse nicht, und sie erfasst weder Sie noch Ihre Suchanfragen oder Ihre Klicks.</translation>
 <translation id="6811221529729056895">Brave-Suche jetzt ausprobieren</translation>
-<translation id="5525668735313040116">Privat im Internet suchen</translation>
 <translation id="3446024864193919737">Brave Rewards anzeigen</translation>
 <translation id="5585019845078534178">Karten</translation>
 <translation id="3870475560794762985">Gesponserte Bilder anzeigen</translation>
@@ -83,7 +90,6 @@
 <translation id="7610541582755894669">Farbverläufe</translation>
 <translation id="1606851618930975029">In jedem neuen Tab aktualisieren</translation>
 <translation id="7040134046053881468">Belohnungsmenü öffnen</translation>
-<translation id="9024104284526126630">Sie können einen privaten Anruf in Brave starten.</translation>
 <translation id="370665806235115550">Laden...</translation>
 <translation id="4634933166298842522">Abonnements verwalten</translation>
 <translation id="4108314971463891922">Folgen</translation>
@@ -449,6 +455,7 @@
 <translation id="1109729143147368573">Geben Sie Ihre Krypto und andere Assets bei nahezu 50 Millionen Händlern und Geldautomaten weltweit aus. Geben Sie Krypto aus, um Krypto zu erhalten!</translation>
 <translation id="3787061634640932557">Karten bearbeiten</translation>
 <translation id="2070991379950719711">Brave Rewards jetzt nutzen</translation>
+<translation id="6297791103122079275">Videokonferenz</translation>
 <translation id="5977237145327845546">Starten Sie einen privaten Videoanruf mit Ihren Freunden und Kollegen.</translation>
 <translation id="8863928195533744356">Anruf starten</translation>
 <translation id="3651550649176056334">Über ihre Daten</translation>
@@ -592,7 +599,7 @@
 <translation id="3026978804849658576">Kontoauszug ansehen</translation>
 <translation id="1848737374354350807">Guthaben:</translation>
 <translation id="6516984207843289176">Konto verknüpfen</translation>
-<translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Bereit, mit dem Verdienen zu beginnen?<ph name="BOLD_END"/> Verknüpfen Sie Ihr Konto oder erstellen Sie ein neues bei einem unserer Partner.</translation>
+<translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>Wollen Sie etwas verdienen?<ph name="BOLD_END"/> Verbinden Sie ein Konto, auf das wir Ihren Verdienst überweisen können.</translation>
 <translation id="902298128239575729">Senden Sie Beiträge mit Brave-Belohnungen</translation>
 <translation id="6276721355724491595">Nachdem Sie Ihr Depotkonto verknüpft haben, können Sie über das Guthaben aus Ihren Brave-Belohnungen einmalige Beiträge an Ihre Lieblingsersteller senden.</translation>
 <translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
@@ -600,6 +607,7 @@
       other {Diesen Monat haben Sie # Ersteller besucht, die von Brave-Belohnungen unterstützt werden}
     }</translation>
 <translation id="6067959437127691361">Mit Brave-Belohnungen unterstützen Sie die Ersteller von Inhalten und können BAT verdienen.</translation>
+<translation id="944736176598169208">Belohnungen</translation>
 <translation id="2359808026110333948">Fortfahren</translation>
 <translation id="885805571521218129">Dies stellt Ihre geschätzte Verdienstspanne für Brave-Anzeigen dar.</translation>
 <translation id="3863981251715594911">Wie funktioniert das?</translation>
@@ -744,7 +752,6 @@
 <translation id="6180576227145734714">Transaktionsdaten 'to' müssen bei Angabe eine gültige Adresse sein</translation>
 <translation id="6688162556547723415">Die angeforderte Methode und/oder das angeforderte Konto wurden vom Benutzer nicht autorisiert.</translation>
 <translation id="8767749833522980474">Krypto</translation>
-<translation id="944736176598169208">Prämien</translation>
 <translation id="6122742277607781713">Portfolio</translation>
 <translation id="7020503656406658141">Preise</translation>
 <translation id="3586775666459823714">NFTs</translation>
@@ -783,7 +790,7 @@
 <translation id="2329227154184107678">Auftrag prüfen</translation>
 <translation id="3220443877821207794">Senden überprüfen</translation>
 <translation id="8530071505111489657">Keine Token verfügbar</translation>
-<translation id="615791330696335475">Token nach Namen suchen</translation>
+<translation id="9021834401351805394">Suchen Sie nach dem Namen oder fügen Sie eine Adresse ein</translation>
 <translation id="5009335307032488349">NFT nach Namen, ID suchen</translation>
 <translation id="8667560635828712526">Asset auswählen</translation>
 <translation id="4853960199138416955">Brave-Wallet unterstützt derzeit keine Bitcoin-NFTs („Ordinals“). Das Senden von BTC von einer Adresse, die Ordinals hat, kann dazu führen, dass die Ordinals versehentlich übertragen werden.</translation>
@@ -792,6 +799,11 @@
 <translation id="4504682768625050939">Öffentliche Adresse oder Domain eingeben</translation>
 <translation id="5292796745632149097">Senden an</translation>
 <translation id="7022684620581223496">Ungültige Domain-Erweiterung.</translation>
+<translation id="7620616707541471029">Wählen Sie ein Konto, um fortzufahren</translation>
+<translation id="7099260104593926742">Marktpreis</translation>
+<translation id="6954838107964168963">Im Besitz</translation>
+<translation id="1976851706319678835">Nicht im Besitz</translation>
+<translation id="7372882109707907136">Betrag/24 h</translation>
 <translation id="9209024278910716955">Kaufen wird für das ausgewählte Netzwerk nicht unterstützt</translation>
 <translation id="4982630604810554641">Domain wird gesucht …</translation>
 <translation id="5467044307473123584">Brave unterstützt die Verwendung von Off-chain-Gateways zur Auflösung von .eth-Domains.</translation>
@@ -894,7 +906,7 @@
 <translation id="8275038454117074363">importieren</translation>
 <translation id="232925166623833246">Import aus Hardware-Wallet</translation>
 <translation id="4324198334837993695">Hardware</translation>
-<translation id="3067168166931605141">Kontoname</translation>
+<translation id="9079725315195697532">Geben Sie dem Konto einen Namen</translation>
 <translation id="1011614786846182272">Diese Konten können mit Web3 DApps verwendet und in Ihrem Portfolio angezeigt werden. Beachten Sie jedoch, dass sekundäre Konten nicht über die Wiederherstellungsphrase aus Ihrem primären Konto-Backup wiederhergestellt werden können.</translation>
 <translation id="1136772623587250243">Privaten Schlüssel aus der Zwischenablage einfügen</translation>
 <translation id="7978412674231730200">Privater Schlüssel</translation>
@@ -946,6 +958,7 @@
 <translation id="453788800165937690">ACHTUNG: Teilen Sie Ihren privaten Schlüssen niemandem mit. Jeder, der diesen privaten Schlüssel besitzt, kann Ihre Assets für immer übernehmen.</translation>
 <translation id="2416098547200943834">HINWEIS: Der private Schlüssel wird als JSON-Datei mit Hexadezimalcodierung bereitgestellt, die den privaten Schlüssel und Protokolldaten enthält. <ph name="LINK_START"/>Mehr erfahren<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">HINWEIS: Der private Schlüssel muss als JSON-Datei mit Hexadezimalcodierung bereitgestellt werden, die den privaten Schlüssel und Protokolldaten enthält.<ph name="LINK_START"/>Mehr erfahren<ph name="LINK_END"/>.</translation>
+<translation id="1505724566145200403">HINWEIS: Nur erweiterte zPrv-Schlüssel (oder vPrv-Schlüssel für Testnet) werden unterstützt.</translation>
 <translation id="42126664696688958">Exportieren</translation>
 <translation id="1366855498335432549">Einzahlen</translation>
 <translation id="790104325876206743">Kontoeinstellungen</translation>
@@ -1510,6 +1523,7 @@
 <translation id="5709875713144853427">Wählen Sie ein Token zum Tauschen aus</translation>
 <translation id="720404198240859011">Token ohne Guthaben anzeigen</translation>
 <translation id="4886690455791686940">Nullsaldo ausblenden</translation>
+<translation id="615791330696335475">Token nach Namen suchen</translation>
 <translation id="381485723922188688">Option</translation>
 <translation id="6680650203439190394">Kurs</translation>
 <translation id="2538996898605796431">Auswirkung auf den Preis</translation>
@@ -1621,8 +1635,6 @@
 <translation id="1215089823252478557">geschätzte Änderung des Guthabens zu sehen</translation>
 <translation id="2761574758015819991">potenziell bösartige Transaktionen zu identifizieren</translation>
 <translation id="168533464844528463">dabei zu helfen, Phishing-Versuche zu erkennen</translation>
-<translation id="780301667611848630">Kein Interesse</translation>
-<translation id="3435896845095436175">Aktivieren</translation>
 <translation id="7269757150305059881">Brave arbeitet mit einem Partner zusammen, um diesen Service anzubieten. Durch die Aktivierung erklärst du dich damit einverstanden, unsignierte Transaktionen und ihre DApp-URLs mit unserem Partner zu teilen.</translation>
 <translation id="7790932700072432983">Kann jederzeit in den <ph name="TAG_BEFORE"/>Einstellungen<ph name="TAG_AFTER"/> geändert werden.</translation>
 <translation id="8688672835843460752">Verfügbar</translation>
@@ -1637,6 +1649,10 @@
 <translation id="6405354572620970908">Diese Anfrage scheint bösartig zu sein und kann Sie einem Diebstahlrisiko aussetzen. Fahren Sie nicht fort, wenn Sie der App nicht vertrauen.</translation>
 <translation id="786261184916565476">Wir haben <ph name="VALUE"/> Probleme gefunden.</translation>
 <translation id="2826600321627372011">Keine Routen gefunden</translation>
+<translation id="2451778499022193433">Der Name darf maximal <ph name="VALUE"/> Zeichen lang sein</translation>
+<translation id="8488138412489236285">Geben Sie das Passwort ein (falls zutreffend)</translation>
+<translation id="9166422618242592074">Importtyp</translation>
+<translation id="1913853014470037784">NFTs, die sich nicht in Ihrem Besitz finden, ausblenden</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>
@@ -1870,9 +1886,11 @@
 <translation id="712598284361781729">Neue geteilte Ansicht</translation>
 <translation id="1130188644637295274">In geteilter Ansicht öffnen</translation>
 <translation id="6459036216700972269">Teilung der Tabs aufheben</translation>
+<translation id="4235382917338421035">Tab-Positionen austauschen</translation>
 <translation id="3617523374417810198">Neue geteilte Ansicht</translation>
 <translation id="8571323456914890254">In geteilter Ansicht öffnen</translation>
 <translation id="5329136173514538969">Teilung der Tabs aufheben</translation>
+<translation id="7595612919377246359">Tab-Positionen austauschen</translation>
 <translation id="8591883849678260674">Orginal anzeigen</translation>
 <translation id="1969654232209826429">Min. Lesezeit</translation>
 <translation id="4101707289420716287">Speedreader ausschalten</translation>
@@ -1917,7 +1935,7 @@
 <translation id="7921782882718083488">Diese Seite zusammenfassen</translation>
 <translation id="7932221068776853847">Trennen Sie die Verbindung, um diesen Seiteninhalt nicht mehr an Leo zu senden und eine neue Unterhaltung zu beginnen.</translation>
 <translation id="1167803637855350748">Bei der Verbindung mit Leo ist ein Netzwerkproblem aufgetreten. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</translation>
-<translation id="1996126325390835277">Leo ist gerade zu beschäftigt. Bitte versuchen Sie es in ein paar Minuten erneut.</translation>
+<translation id="1996126325390835277">Sie haben die Premium-Antwortquote erreicht. Bitte versuchen Sie es in ein paar Stunden erneut.</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
 <translation id="8570488829560315702">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich laufe auf Llama 3 8B, einem Modell, das von Meta entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hallo, ich bin Leo. Ich bin ein vollständig gehosteter KI-Assistent von Brave. Ich laufe auf Mixtral 8x7B, einem Modell, das von Mistral AI für fortgeschrittene Aufgaben entwickelt wurde. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
@@ -1925,6 +1943,7 @@
 <translation id="8583558415545871403">Hallo, ich bin Leo. Ich bin ein Proxy von Brave und werde von Claude 3 Haiku angetrieben, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen.</translation>
 <translation id="4147243042852964992">Hallo, ich bin Leo. Ich bin ein Proxy von Brave und werde von Claude 3 Sonnet angetrieben, einem von Anthropic entwickeltem Modell, um Konversations- und Textverarbeitungsaufgaben zu unterstützen.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> von <ph name="COMPANY_NAME"/></translation>
+<translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">Neuer Chat</translation>
 <translation id="7557539689487606886">Jetzt Premium sichern</translation>
@@ -1934,7 +1953,7 @@
 <translation id="6637015365469044269">Jetzt Upgrade durchführen</translation>
 <translation id="5543505256451301851">7 Tage lang kostenlos ausprobieren</translation>
 <translation id="849535826888024304">Maximale Antwortquote erreicht</translation>
-<translation id="2252128900328632803">Schalten Sie eine höhere Antwortquote frei, indem Sie ein Premium abonnieren. Sie können auch zu unserem weniger leistungsstarken, kostenlosen Modell Llama2 13b wechseln, um fortzufahren.</translation>
+<translation id="2252128900328632803">Sie haben die Antwortquote für Leo erreicht. Schalten Sie eine höhere Antwortquote frei, indem Sie ein Premium-Abonnement abschließen, oder versuchen Sie es bald erneut.</translation>
 <translation id="4173478269537830374">Erkunden Sie verschiedene KI-Modelle</translation>
 <translation id="3245401959451976966">Entfesseln Sie Ihre Kreativität</translation>
 <translation id="4165928407303989823">Bleiben Sie im Thema</translation>
@@ -1986,7 +2005,7 @@
 <translation id="5642775487085641191">Sie möchten nur chatten?</translation>
 <translation id="8857222718794549840">Fragen Sie mich, was Sie möchten. Wir können über jedes Thema sprechen, das Sie möchten. Ich lerne ständig dazu, um bessere Antworten geben zu können.</translation>
 <translation id="9051226419897869406">Chatten Sie privat mit Brave Leo</translation>
-<translation id="1173570303649278801">Seitenkontext in die Antwort einbeziehen</translation>
+<translation id="637548538907281147">Gestalten Sie Antworten, die auf dem Inhalt der Seite basieren</translation>
 <translation id="8599503173207256429">Aktivieren Sie diese Option, um Fragen zu dieser Seite zu stellen. Ihre Inhalte werden zusammen mit Ihren Nachrichten an Brave Leo gesendet.</translation>
 <translation id="318819763888864209">Alle Abonnements werden automatisch verlängert, können aber jederzeit vor der Erneuerung gekündigt werden.</translation>
 <translation id="5091223967610958">Teilen Sie den Hostnamen der Seite, auf der Sie sind (<ph name="HOST_NAME"/>), damit wir Leo noch weiter verbessern können.</translation>

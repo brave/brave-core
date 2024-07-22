@@ -5,14 +5,13 @@
 <translation id="1063300264396686489">Tabgruppen von anderen Geräten automatisch öffnen</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> von deinen Tabs wurden längere Zeit nicht verwendet. Möchtest du sie schließen?</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Vor <ph name="NUM_YEARS_ONE"/> Jahr erstellt}other{Vor <ph name="NUM_YEARS_MANY"/> Jahren erstellt}}</translation>
-<translation id="1155815720264022949">Möchtest du alte Tabs schließen?</translation>
 <translation id="1173894706177603556">Umbenennen</translation>
 <translation id="1197088940767939838">Orange</translation>
-<translation id="1215127405478249895">Tabs überprüfen</translation>
 <translation id="125153950246128346">Tippen, um einen anderen Tab zu sehen</translation>
+<translation id="1273910660700874265">Optionen für Tapgruppe „<ph name="TITLE_OF_GROUP"/>“</translation>
 <translation id="1322824555808364080">Andere einladen</translation>
-<translation id="1326271443836399892">Hier kannst du dir die aktuellen Aufräum-Einstellungen ansehen.</translation>
 <translation id="1419023007528516122">Dadurch wird die Gruppe endgültig von deinem Gerät gelöscht</translation>
+<translation id="1486715732399361704">Hier findest du alle deine Tabgruppen</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Vor <ph name="NUM_MINS_ONE"/> Minute erstellt}other{Vor <ph name="NUM_MINS_MANY"/> Minuten erstellt}}</translation>
 <translation id="1501480321619201731">Gruppe löschen</translation>
 <translation id="1555130319947370107">Blau</translation>
@@ -41,9 +40,9 @@
 <translation id="4691798003247738043">Brave | Informationen zu diesem Händler</translation>
 <translation id="2977480621796371840">Aus Gruppe entfernen</translation>
 <translation id="3008554597174452548">Produkt nicht mehr beobachten</translation>
+<translation id="3026391124054406831">Erstelle Gruppen, um deine Tabs zu organisieren.</translation>
 <translation id="3052964831964880138"><ph name="PRICE_DROP"/> Preisnachlass auf das Produkt „<ph name="PRODUCT_NAME"/>“</translation>
 <translation id="3078350928901129212">Farbe des Symbols für Tabgruppe (<ph name="COLOR_NAME"/>)</translation>
-<translation id="313819129451406482">{TABS_COUNT,plural, =1{Du hast <ph name="TABS_COUNT_ONE"/> archivierten Tab}other{Du hast <ph name="TABS_COUNT_MANY"/> archivierte Tabs}}</translation>
 <translation id="3194464645767632461">Bewertung</translation>
 <translation id="3291470810748040983">Du erhältst eine Benachrichtigung, wenn auf einem offenen Tab ein günstigerer Preis verfügbar ist</translation>
 <translation id="3322827343001922122">Aktionsmenü für die Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ öffnen</translation>
@@ -55,13 +54,14 @@
 <translation id="3882834874697329510">Falls du benachrichtigt werden möchtest, wenn auf einem offenen Tab ein günstigerer Preis verfügbar ist, aktiviere Benachrichtigungen in den Einstellungen.</translation>
 <translation id="3940195383040445971">Preise auf Tabs beobachten</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{Tab gruppieren}other{Tabs gruppieren}}</translation>
+<translation id="395587619114760247">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> inaktiver Tab}other{<ph name="TABS_COUNT_MANY"/> inaktive Tabs}}</translation>
+<translation id="3969565576924904454">„<ph name="TITLE_OF_GROUP"/>“ öffnen</translation>
 <translation id="3996880007329611795">Benachrichtigungen erhalten</translation>
 <translation id="4009732926939031387">{NUM_DAYS,plural, =1{Vor <ph name="NUM_DAYS_ONE"/> Tag erstellt}other{Vor <ph name="NUM_DAYS_MANY"/> Tagen erstellt}}</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> Tabs scheinen zusammenzugehören. Sollen sie gruppiert werden?</translation>
 <translation id="4139634748112164403">Die Tabs bleiben auf diesem Gerät geöffnet, aber die Gruppe wird endgültig gelöscht</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{Gruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_ONE"/> Tab schließen, Farbe: <ph name="COLOR_NAME"/>.}other{Gruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_MANY"/> Tabs schließen, Farbe: <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="4159784952369912983">Violett</translation>
-<translation id="4212246570487010370">Mehr ansehen</translation>
 <translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_ONE"/> Tab maximieren.}other{Tabgruppe „<ph name="TITLE_OF_GROUP"/>“ mit <ph name="TABS_COUNT_MANY"/> Tabs maximieren.}}</translation>
 <translation id="427987768447457592">Neue Tabgruppe</translation>
 <translation id="4460014764210899310">Gruppierung aufheben</translation>
@@ -78,16 +78,14 @@
 <translation id="5007392906805964215">Ansehen</translation>
 <translation id="5073204694187207510">Vollbildraster ausblenden</translation>
 <translation id="5076161749301278626">Möchtest du dir Händlerrezensionen ansehen?</translation>
-<translation id="5082793167783849073">Du kannst Seiten schnell miteinander vergleichen, indem du eine Gruppe erstellst. Berühre und halte einen Link, um den Vorgang zu starten.</translation>
+<translation id="5082793167783849073">Du kannst Seiten schnell miteinander vergleichen, indem du eine Gruppe erstellst. Halte einen Link gedrückt, um den Vorgang zu starten.</translation>
 <translation id="5094423602314093681">Tab(s) entfernen und Gruppe löschen?</translation>
 <translation id="5161254044473106830">Titel erforderlich</translation>
-<translation id="5303274951032363933">{TABS_COUNT,plural, =1{Du hast <ph name="TABS_COUNT_ONE"/> Tab, den du in letzter Zeit nicht verwendet hast}other{Du hast <ph name="TABS_COUNT_MANY"/> Tabs, die du in letzter Zeit nicht verwendet hast}}</translation>
 <translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{Tabgruppe mit <ph name="TABS_COUNT_ONE"/> Tab schließen.}other{Tabgruppe mit <ph name="TABS_COUNT_MANY"/> Tabs schließen.}}</translation>
 <translation id="5339733443032484186">Dein letzter Tab</translation>
 <translation id="5400836586163650660">Grau</translation>
 <translation id="5490235265819901748">Tabgruppe maximiert</translation>
 <translation id="5494920125229734069">Alle auswählen</translation>
-<translation id="5545379293264651575">Ohne Ansehen schließen</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Tabgruppe mit <ph name="TABS_COUNT_ONE"/> Tab schließen, Farbe: <ph name="COLOR_NAME"/>.}other{Tabgruppe mit <ph name="TABS_COUNT_MANY"/> Tabs schließen, Farbe: <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="5556417849629758491">Geschäftsinformationen anzeigen, Option ist oben auf dem Bildschirm verfügbar</translation>
 <translation id="3225229609960545342">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> Link aus Brave}other{<ph name="TABS_COUNT_MANY"/> Links aus Brave}}</translation>
@@ -100,6 +98,7 @@
 <translation id="6054741997831917303">Der Preis dieses Artikels ist kürzlich von <ph name="PREVIOUS_PRICE"/> auf <ph name="NEW_PRICE"/> gefallen</translation>
 <translation id="6193448654517602979">Tabs auswählen</translation>
 <translation id="6228793724645064692">(Händlerbewertung)</translation>
+<translation id="6271513594716432922">Alle inaktiven Tabs schließen</translation>
 <translation id="6333260925957816943">Informationen zu diesem Händler</translation>
 <translation id="6381032505162537930">Hier werden deine Tabgruppen angezeigt</translation>
 <translation id="639823877092900621">{TABS_COUNT,plural, =1{Gruppierung des <ph name="TABS_COUNT_ONE"/> ausgewählten Tabs aufheben}other{Gruppierung der <ph name="TABS_COUNT_MANY"/> ausgewählten Tabs aufheben}}</translation>
@@ -108,9 +107,8 @@
 <translation id="6557858706263317126">+ <ph name="HIDDEN_TABS_COUNT"/></translation>
 <translation id="6562820390860419811">Tab nach links bewegen</translation>
 <translation id="6615455863669487791">Zeigen</translation>
-<translation id="6398241160085205003">Deine geschlossenen Tabs findest du im Brave-Hauptmenü unter „Zuletzt geöffnete Tabs“.</translation>
 <translation id="6744956528665271406">Gruppenfarbe bearbeiten</translation>
-<translation id="6840760312327750441">Wenn du Tabs gruppieren möchtest, berühre und halte einen Tab. Ziehe ihn dann auf einen anderen Tab.</translation>
+<translation id="6840760312327750441">Wenn du Tabs gruppieren möchtest, halte einen Tab gedrückt. Ziehe ihn dann auf einen anderen Tab.</translation>
 <translation id="6856809498882026482">Modus für die Mehrfachauswahl ausblenden</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Tab teilen}other{Tabs teilen}}</translation>
 <translation id="7129458170538955174">Informationen zu diesem Händler sind halb geöffnet</translation>
@@ -144,7 +142,6 @@
 <translation id="8338427544764842461">Deine Tabgruppen werden hier gespeichert und auf allen deinen angemeldeten Geräten aktualisiert</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ausgewählten Tab schließen}other{<ph name="TABS_COUNT_MANY"/> ausgewählte Tabs schließen}}</translation>
 <translation id="8398929769197326728">Neuer Ordner – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
-<translation id="870736955561925754">Tab schließen und Gruppe löschen?</translation>
 <translation id="8714939927607906138">Günstigerer Preis</translation>
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Vor <ph name="NUM_MONTHS_ONE"/> Monat erstellt}other{Vor <ph name="NUM_MONTHS_MANY"/> Monaten erstellt}}</translation>
@@ -157,12 +154,11 @@
 <translation id="9169594135889675189">Der Gruppe einen neuen Tab hinzufügen</translation>
 <translation id="9216898458513705996">Die Tabs bleiben auf diesem Gerät geöffnet, aber die Gruppe wird auf allen Geräten gelöscht, die mit <ph name="USER_EMAIL"/> angemeldet sind</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Tabgruppe mit <ph name="TABS_COUNT_ONE"/> Tab maximieren, Farbe: <ph name="COLOR_NAME"/>.}other{Tabgruppe mit <ph name="TABS_COUNT_MANY"/> Tabs maximieren, Farbe: <ph name="COLOR_NAME"/>.}}</translation>
-<translation id="955558140275419384">In diesem Editor kannst du dir alle archivierten Tabs ansehen und sie aufräumen.</translation>
 <translation id="959682366969460160">Besser organisiert</translation>
 <translation id="992256792861109788">Rosa</translation>
-<translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
-=1 {Ihre geschlossenen Registerkarten finden Sie unter Letzte Registerkarten im Brave-Hauptmenü. Ihre private Registerkarte ist nicht mehr verfügbar.}
-other {Sie finden Ihre geschlossenen Registerkarten unter Letzte Registerkarten im Brave-Hauptmenü. Ihre # privaten Registerkarten sind nicht mehr verfügbar.}}</translation>
 <translation id="3228718275011575753">Alle privaten Tabs schließen?</translation>
 <translation id="6687920250729800417">Ihre Aktivität in diesen privaten Tabs wird von diesem Gerät gelöscht</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Ihre geschlossenen Tabs und Gruppen können in den Abschnitten „Zuletzt geöffnete Tabs“ oder „Tabgruppen“ wieder geöffnet werden. Dies gilt allerdings nicht für Ihren privaten Tab.}
+        other {Ihre geschlossenen Tabs und Gruppen können in den Abschnitten „Zuletzt geöffnete Tabs“ oder „Tabgruppen“ wieder geöffnet werden. Dies gilt allerdings nicht für Ihre privaten Tabs.}}</translation>
 </translationbundle>
