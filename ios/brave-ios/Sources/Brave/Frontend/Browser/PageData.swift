@@ -15,7 +15,7 @@ import WebKit
 ///
 /// Since frames may be loaded as the user scrolls which may need additional scripts to be injected,
 /// We cache information about frames in order to prevent excessive reloading of scripts.
-struct PageData {
+@MainActor struct PageData {
   /// The url of the page (i.e. main frame)
   private(set) var mainFrameURL: URL
   /// A list of all currently available subframes for this current page
