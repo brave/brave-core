@@ -43,7 +43,7 @@ class COMPONENT_EXPORT(AI_REWRITER_RENDERER) AIRewriterButtonPositioner
   void UpdateButton(blink::WebDocument document, blink::WebDOMEvent event);
 
   base::ScopedClosureRunner remove_listener_;
-  mojo::AssociatedRemote<mojom::AIRewriterButton> button_;
+  mojo::AssociatedRemote<mojom::AIRewriterButtonController> button_;
 
   base::WeakPtrFactory<AIRewriterButtonPositioner> weak_ptr_factory_{this};
 };

@@ -8,14 +8,12 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/views/ai_rewriter/ai_rewriter_button_view.h"
+#include "brave/browser/ai_rewriter/ai_rewriter_button.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_widget_host_view.h"
-#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -25,15 +23,14 @@
 namespace ai_rewriter {
 
 AIRewriterTabHelper::AIRewriterTabHelper(content::WebContents* contents)
-    : content::WebContentsUserData<AIRewriterTabHelper>(*contents),
-      content::WebContentsObserver(contents) {}
+    : content::WebContentsUserData<AIRewriterTabHelper>(*contents) {}
 
 AIRewriterTabHelper::~AIRewriterTabHelper() = default;
 
 // static
 void AIRewriterTabHelper::Bind(
     content::RenderFrameHost* rfh,
-    mojo::PendingAssociatedReceiver<ai_rewriter::mojom::AIRewriterButton>
+    mojo::PendingAssociatedReceiver<mojom::AIRewriterButtonController>
         receiver) {
   auto* contents = content::WebContents::FromRenderFrameHost(rfh);
   CHECK(contents);
@@ -50,14 +47,6 @@ void AIRewriterTabHelper::Bind(
   tab_helper->receivers_.Add(tab_helper, std::move(receiver),
                              rfh->GetGlobalFrameToken());
 }
-
-void AIRewriterTabHelper::OnVisibilityChanged(content::Visibility visibility) {
-  if (visibility == content::Visibility::HIDDEN) {
-    Hide();
-  }
-}
-
-void AIRewriterTabHelper::PrimaryPageChanged(content::Page& page) {}
 
 void AIRewriterTabHelper::Hide() {
   if (button_) {
@@ -92,10 +81,9 @@ void AIRewriterTabHelper::Show(const gfx::Rect& rect) {
   }
 }
 
-ai_rewriter::AIRewriterButtonView* AIRewriterTabHelper::GetButton() {
+ai_rewriter::AIRewriterButton* AIRewriterTabHelper::GetButton() {
   if (!button_) {
-    button_ =
-        ai_rewriter::AIRewriterButtonView::MaybeCreateButton(web_contents());
+    button_ = ai_rewriter::CreateRewriterButton(&GetWebContents());
   }
 
   return button_.get();

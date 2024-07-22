@@ -8,20 +8,22 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/views/ai_rewriter/ai_rewriter_button_view.h"
 #include "brave/components/ai_rewriter/common/mojom/ai_rewriter.mojom.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver_set.h"
 
 namespace ai_rewriter {
+class AIRewriterButton;
+
+// This class exists to direct all the RenderFrames for a WebContents to a
+// single AIRewriterButton and handle positioning the button relative to the
+// MainFrame.
 class AIRewriterTabHelper
     : public content::WebContentsUserData<AIRewriterTabHelper>,
-      public content::WebContentsObserver,
-      public mojom::AIRewriterButton {
+      public mojom::AIRewriterButtonController {
  public:
   AIRewriterTabHelper(const AIRewriterTabHelper&) = delete;
   AIRewriterTabHelper& operator=(const AIRewriterTabHelper&) = delete;
@@ -29,17 +31,14 @@ class AIRewriterTabHelper
 
   static void Bind(
       content::RenderFrameHost* host,
-      mojo::PendingAssociatedReceiver<mojom::AIRewriterButton> receiver);
+      mojo::PendingAssociatedReceiver<mojom::AIRewriterButtonController>
+          receiver);
 
-  // content::WebContentsObserver:
-  void PrimaryPageChanged(content::Page& page) override;
-  void OnVisibilityChanged(content::Visibility visibility) override;
-
-  // mojom::AIRewriterButton:
+  // mojom::AIRewriterButtonController:
   void Hide() override;
   void Show(const gfx::Rect& rect) override;
 
-  base::WeakPtr<AIRewriterButtonView> button_for_testing() { return button_; }
+  base::WeakPtr<AIRewriterButton> button_for_testing() { return button_; }
 
   void SetOnVisibilityChangeForTesting(
       base::RepeatingClosure visibility_change_callback) {
@@ -49,10 +48,10 @@ class AIRewriterTabHelper
  private:
   explicit AIRewriterTabHelper(content::WebContents* contents);
 
-  ai_rewriter::AIRewriterButtonView* GetButton();
+  ai_rewriter::AIRewriterButton* GetButton();
 
-  base::WeakPtr<ai_rewriter::AIRewriterButtonView> button_;
-  mojo::AssociatedReceiverSet<mojom::AIRewriterButton,
+  base::WeakPtr<ai_rewriter::AIRewriterButton> button_;
+  mojo::AssociatedReceiverSet<mojom::AIRewriterButtonController,
                               content::GlobalRenderFrameHostToken>
       receivers_;
 

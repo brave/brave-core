@@ -190,11 +190,6 @@ class BraveBrowserView : public BrowserView,
   void ShowPlaylistBubble() override;
 #endif
 
-#if BUILDFLAG(ENABLE_AI_REWRITER)
-  void ShowRewriterButton(const gfx::Rect& rect) override;
-  void HideRewriterButton() override;
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   void ShowWaybackMachineBubble() override;
 #endif

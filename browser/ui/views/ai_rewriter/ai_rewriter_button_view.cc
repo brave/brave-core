@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ai_rewriter/ai_rewriter_button.h"
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
@@ -69,7 +70,7 @@ AIRewriterButtonView::AIRewriterButtonView(Browser* browser,
 
 AIRewriterButtonView::~AIRewriterButtonView() = default;
 
-base::WeakPtr<AIRewriterButtonView> AIRewriterButtonView::MaybeCreateButton(
+base::WeakPtr<AIRewriterButton> AIRewriterButtonView::MaybeCreateButton(
     content::WebContents* contents) {
   auto* browser = chrome::FindBrowserWithTab(contents);
 
@@ -124,6 +125,14 @@ void AIRewriterButtonView::Hide() {
   GetWidget()->Hide();
 }
 
+void AIRewriterButtonView::Close() {
+  GetWidget()->Close();
+}
+
+bool AIRewriterButtonView::IsShowing() const {
+  return GetWidget()->IsVisible();
+}
+
 AIRewriterDialogDelegate* AIRewriterButtonView::OpenDialog() {
   auto* host = web_contents()->GetFocusedFrame()->GetRenderWidgetHost();
   CHECK(host);
@@ -139,11 +148,17 @@ AIRewriterDialogDelegate* AIRewriterButtonView::OpenDialog() {
 }
 
 void AIRewriterButtonView::PrimaryPageChanged(content::Page& page) {
-  GetWidget()->Close();
+  Close();
 }
 
 void AIRewriterButtonView::WebContentsDestroyed() {
-  GetWidget()->Close();
+  Close();
+}
+
+void AIRewriterButtonView::OnVisibilityChanged(content::Visibility visibility) {
+  if (visibility == content::Visibility::HIDDEN) {
+    Hide();
+  }
 }
 
 void AIRewriterButtonView::OnTabStripModelChanged(
@@ -153,9 +168,14 @@ void AIRewriterButtonView::OnTabStripModelChanged(
   // If the tab has been removed, close the widget
   if (change.type() == TabStripModelChange::kRemoved &&
       base::Contains(change.GetRemove()->contents, web_contents(),
-                     [](auto& removed) { return removed.contents; })) {
-    GetWidget()->Close();
+                     &TabStripModelChange::RemovedTab::contents)) {
+    Close();
   }
+}
+
+base::WeakPtr<AIRewriterButton> CreateRewriterButton(
+    content::WebContents* contents) {
+  return AIRewriterButtonView::MaybeCreateButton(contents);
 }
 
 BEGIN_METADATA(AIRewriterButtonView)

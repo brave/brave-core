@@ -115,7 +115,7 @@ IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
   auto* tab_helper = AIRewriterTabHelper::FromWebContents(contents());
   EXPECT_TRUE(tab_helper);
   EXPECT_TRUE(tab_helper->button_for_testing());
-  EXPECT_TRUE(tab_helper->button_for_testing()->GetWidget()->IsVisible());
+  EXPECT_TRUE(tab_helper->button_for_testing()->IsShowing());
 }
 
 IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
@@ -126,13 +126,13 @@ IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
   auto* tab_helper = AIRewriterTabHelper::FromWebContents(contents());
   EXPECT_TRUE(tab_helper);
   EXPECT_TRUE(tab_helper->button_for_testing());
-  EXPECT_TRUE(tab_helper->button_for_testing()->GetWidget()->IsVisible());
+  EXPECT_TRUE(tab_helper->button_for_testing()->IsShowing());
 
   SelectTextInSelectorOrClear("#non-editable");
   WaitForVisibilityChange();
 
   EXPECT_TRUE(tab_helper->button_for_testing());
-  EXPECT_FALSE(tab_helper->button_for_testing()->GetWidget()->IsVisible());
+  EXPECT_FALSE(tab_helper->button_for_testing()->IsShowing());
 }
 
 IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
@@ -143,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
   auto* tab_helper = AIRewriterTabHelper::FromWebContents(contents());
   EXPECT_TRUE(tab_helper);
   EXPECT_TRUE(tab_helper->button_for_testing());
-  EXPECT_TRUE(tab_helper->button_for_testing()->GetWidget()->IsVisible());
+  EXPECT_TRUE(tab_helper->button_for_testing()->IsShowing());
 
   NavigateToPath("/simple.html");
 
@@ -158,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
   auto* tab_helper = AIRewriterTabHelper::FromWebContents(contents());
   EXPECT_TRUE(tab_helper);
   EXPECT_TRUE(tab_helper->button_for_testing());
-  EXPECT_TRUE(tab_helper->button_for_testing()->GetWidget()->IsVisible());
+  EXPECT_TRUE(tab_helper->button_for_testing()->IsShowing());
 
   NavigateToPath("/simple.html");
 
@@ -175,7 +175,7 @@ IN_PROC_BROWSER_TEST_F(AIRewriterButtonViewBrowserTest,
 
   auto button = tab_helper->button_for_testing();
   EXPECT_TRUE(button);
-  EXPECT_TRUE(button->GetWidget()->IsVisible());
+  EXPECT_TRUE(button->IsShowing());
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GetURL("/simple.html"),

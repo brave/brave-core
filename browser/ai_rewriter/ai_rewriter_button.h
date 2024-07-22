@@ -7,19 +7,26 @@
 #define BRAVE_BROWSER_AI_REWRITER_AI_REWRITER_BUTTON_H_
 
 #include "base/memory/weak_ptr.h"
-#include "content/public/browser/web_contents.h"
 #include "ui/gfx/geometry/rect.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace ai_rewriter {
 
-class AIRewriterButtonModel {
+class AIRewriterDialogDelegate;
+
+class AIRewriterButton {
  public:
+  virtual AIRewriterDialogDelegate* OpenDialog() = 0;
+
   virtual void Show(const gfx::Rect& rect) = 0;
   virtual void Hide() = 0;
-  virtual void Close() = 0;
+  virtual bool IsShowing() const = 0;
 };
 
-base::WeakPtr<AIRewriterButtonModel> CreateRewriterButton(
+base::WeakPtr<AIRewriterButton> CreateRewriterButton(
     content::WebContents* contents);
 
 }  // namespace ai_rewriter

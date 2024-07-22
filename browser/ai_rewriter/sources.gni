@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_ai_rewriter_sources = [
-  "//brave/browser/ai_rewriter/ai_rewriter_model.h",
+  "//brave/browser/ai_rewriter/ai_rewriter_button.h",
   "//brave/browser/ai_rewriter/ai_rewriter_tab_helper.cc",
   "//brave/browser/ai_rewriter/ai_rewriter_tab_helper.h",
 ]
