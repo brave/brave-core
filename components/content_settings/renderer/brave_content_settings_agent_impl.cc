@@ -332,6 +332,8 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
 
 BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
     ContentSettingsType webcompat_settings_type) {
+  GetOrCreateBraveShieldsRemote()->OnWebcompatFeatureInvoked(
+      webcompat_settings_type);
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;

@@ -104,6 +104,7 @@ class CORE_EXPORT BraveSessionCache final
   BraveFarblingLevel farbling_level_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
   WTF::HashMap<ContentSettingsType, BraveFarblingLevel> farbling_levels_;
+  blink::WebContentSettingsClient* settings_client_ = nullptr;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

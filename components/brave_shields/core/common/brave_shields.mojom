@@ -5,6 +5,7 @@
 
 module brave_shields.mojom;
 
+import "components/content_settings/core/common/content_settings_types.mojom";
 import "mojo/public/mojom/base/string16.mojom";
 
 interface BraveShieldsHost {
@@ -14,6 +15,9 @@ interface BraveShieldsHost {
   // Notify the browser process that JavaScript execution has been temporary
   // allowed, passing the details in |details| as a 16-bit string.
   OnJavaScriptAllowedOnce(mojo_base.mojom.String16 details);
+  // Notify the browser process that a webcompat feature has been invoked.
+  OnWebcompatFeatureInvoked(
+    content_settings.mojom.ContentSettingsType webcompat_settings_type);
 };
 
 interface BraveShields {

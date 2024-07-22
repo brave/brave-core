@@ -24,7 +24,7 @@ if (!is_ios) {
     "//brave/components/constants",
     "//brave/components/content_settings/core/common",
     "//brave/components/google_sign_in_permission",
-    "//brave/components/webcompat:core",
+    "//brave/components/webcompat/content/browser",
     "//components/prefs",
     "//content/public/browser",
     "//net",

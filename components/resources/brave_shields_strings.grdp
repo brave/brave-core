@@ -178,6 +178,18 @@
     Allowed scripts
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_PROTECTIONS_APPLIED_LABEL" desc="Label for secondary panel of Shields which shows a list of invoked fingerprinting protections">
+    Fingerprinting protections applied
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_BLOCKED_FINGERPRINTS_LABEL" desc="Label for secondary panel of Shields which shows a list of blocked fingerprints">
+    Blocked fingerprints
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_ALLOWED_FINGERPRINTS_LABEL" desc="Label for secondary panel of Shields which shows a list of allowed fingerprints">
+    Allowed fingerprints
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_COOKIE_LIST_TITLE" desc="Title for CookieList opt-in bubble">
     Shields
   </message>

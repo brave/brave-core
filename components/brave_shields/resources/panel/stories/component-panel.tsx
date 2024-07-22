@@ -63,7 +63,8 @@ export default {
           allowedJsList: LIST_JS,
           httpRedirectsList: [],
           fingerprintsList: [],
-          faviconUrl: { url: 'https://brave.com/static-assets/images/brave-favicon.png' }
+          faviconUrl: { url: 'https://brave.com/static-assets/images/brave-favicon.png' },
+          invokedWebcompatList: []
         },
         siteSettings: {
           adBlockMode: AdBlockMode.ALLOW,
@@ -71,7 +72,8 @@ export default {
           cookieBlockMode: CookieBlockMode.ALLOW,
           httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
-          isForgetFirstPartyStorageEnabled: false
+          isForgetFirstPartyStorageEnabled: false,
+          webcompatSettings: {}
         },
         viewType: ViewType.Main
       }

@@ -14,14 +14,49 @@ import {
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Button from '$web-components/button'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
-import { ScriptsInfo, Footer, ScriptsList } from './style'
+import { ToggleListContainer, ScriptsInfo, Footer, ScriptsList } from './style'
+import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m.js';
 
+import Toggle from '../../../../../web-components/toggle'
 
 interface Props {
   blockedList: Url[]
   allowedList?: Url[]
   totalAllowedTitle?: string
   totalBlockedTitle: string
+}
+
+function generateWebcompatEntries (invokedWebcompatList: Number[] | undefined) : Array<[string, Number]> {
+  if (invokedWebcompatList === undefined) {
+    return [];
+  }
+  const names = Object.keys(ContentSettingsType)
+  let raw : Array<[string, Number]> = []
+  for (const name of names) {
+    const value = ContentSettingsType[name]
+    if (value > ContentSettingsType.BRAVE_WEBCOMPAT_NONE &&
+        value < ContentSettingsType.BRAVE_WEBCOMPAT_ALL &&
+        invokedWebcompatList.includes(value)) {
+      const displayName = name.replace("BRAVE_WEBCOMPAT_", "").replaceAll("_", " ").toLowerCase();
+      raw.push([displayName, value]);
+    }
+  }
+  return raw;
+}
+
+function countActiveProtections (
+  webcompatSettings: Map<ContentSettingsType, boolean>,
+  invokedWebcompatList: number[] | undefined) {
+  if (invokedWebcompatList === undefined) {
+    return 0;
+  }
+  let count = 0;
+  for (const invokedItem of invokedWebcompatList) {
+    if (webcompatSettings[invokedItem] === false) {
+      count++;
+    }
+  }
+  return count;
 }
 
 function groupByOrigin (data: Url[]) {
@@ -50,8 +85,37 @@ function groupByOrigin (data: Url[]) {
   return map
 }
 
-function TreeList (props: Props) {
+function SidePanel (props: {
+  children: React.ReactNode
+}) {
   const { siteBlockInfo, setViewType } = React.useContext(DataContext)
+  return (
+    <S.Box>
+      <S.HeaderBox>
+        <S.SiteTitleBox>
+          <S.FavIconBox>
+            <img src={siteBlockInfo?.faviconUrl.url} />
+          </S.FavIconBox>
+          <S.SiteTitle>{siteBlockInfo?.host}</S.SiteTitle>
+        </S.SiteTitleBox>
+      </S.HeaderBox>
+      <S.Scroller>
+        {props.children}
+      </S.Scroller>
+      <Footer>
+        <Button
+          aria-label="Back to previous screen"
+          onClick={() => setViewType?.(ViewType.Main)}
+        >
+          <svg fill="currentColor" viewBox="0 0 32 32" aria-hidden="true"><path d="M28 15H6.28l4.85-5.25a1 1 0 0 0-.05-1.42 1 1 0 0 0-1.41.06l-6.4 6.93a.7.7 0 0 0-.1.16.75.75 0 0 0-.09.15 1 1 0 0 0 0 .74.75.75 0 0 0 .09.15.7.7 0 0 0 .1.16l6.4 6.93a1 1 0 0 0 1.41.06 1 1 0 0 0 .05-1.42L6.28 17H28a1 1 0 0 0 0-2z" /></svg>
+          <span>{getLocale('braveShieldsStandalone')}</span>
+        </Button>
+      </Footer>
+    </S.Box>
+  )
+}
+
+function TreeList (props: Props) {
   const allowedList = props.allowedList ?? [];
   const allowedScriptsByOrigin = React.useMemo(() =>
     groupByOrigin(allowedList), [allowedList])
@@ -80,24 +144,15 @@ function TreeList (props: Props) {
     }
 
   return (
-    <S.Box>
-      <S.HeaderBox>
-        <S.SiteTitleBox>
-          <S.FavIconBox>
-            <img src={siteBlockInfo?.faviconUrl.url} />
-          </S.FavIconBox>
-          <S.SiteTitle>{siteBlockInfo?.host}</S.SiteTitle>
-        </S.SiteTitleBox>
-      </S.HeaderBox>
-      <S.Scroller>
-        {allowedList.length > 0 && (
+    <SidePanel>
+      {allowedList.length > 0 && (
         <>
           <ScriptsInfo>
             <span>{allowedList.length}</span>
             <span>{props.totalAllowedTitle}</span>
             <span>{<a href="#" onClick={handleBlockAllScripts}>
-                {getLocale('braveShieldsBlockScriptsAll')}
-              </a>
+              {getLocale('braveShieldsBlockScriptsAll')}
+            </a>
             }</span>
           </ScriptsInfo>
           <ScriptsList>
@@ -112,40 +167,65 @@ function TreeList (props: Props) {
             })}
           </ScriptsList>
         </>
+      )}
+      <ScriptsInfo>
+        <span>{props.blockedList.length}</span>
+        <span>{props.totalBlockedTitle}</span>
+        {props.allowedList && (<span>
+          {<a href="#" onClick={handleAllowAllScripts}>
+            {getLocale('braveShieldsAllowScriptsAll')}
+          </a>
+          }</span>
         )}
-        <ScriptsInfo>
-          <span>{props.blockedList.length}</span>
-          <span>{props.totalBlockedTitle}</span>
-          {props.allowedList && (<span>
-            {<a href="#" onClick={handleAllowAllScripts}>
-                {getLocale('braveShieldsAllowScriptsAll')}
-              </a>
-            }</span>
-          )}
-        </ScriptsInfo>
-        <ScriptsList>
-          {[...blockedScriptsByOrigin.keys()].map((origin, idx) => {
-            return (<TreeNode
-              key={origin}
-              host={origin}
-              resourceList={blockedScriptsByOrigin.get(origin) ?? []}
-              onPermissionButtonClick={handleAllowScript}
-              permissionButtonTitle={getLocale('braveShieldsAllowScriptOnce')}
-            />)
-          })}
-        </ScriptsList>
-      </S.Scroller>
-      <Footer>
-        <Button
-          aria-label="Back to previous screen"
-          onClick={() => setViewType?.(ViewType.Main)}
-        >
-          <svg fill="currentColor" viewBox="0 0 32 32" aria-hidden="true"><path d="M28 15H6.28l4.85-5.25a1 1 0 0 0-.05-1.42 1 1 0 0 0-1.41.06l-6.4 6.93a.7.7 0 0 0-.1.16.75.75 0 0 0-.09.15 1 1 0 0 0 0 .74.75.75 0 0 0 .09.15.7.7 0 0 0 .1.16l6.4 6.93a1 1 0 0 0 1.41.06 1 1 0 0 0 .05-1.42L6.28 17H28a1 1 0 0 0 0-2z"/></svg>
-          <span>{getLocale('braveShieldsStandalone')}</span>
-        </Button>
-      </Footer>
-    </S.Box>
+      </ScriptsInfo>
+      <ScriptsList>
+        {[...blockedScriptsByOrigin.keys()].map((origin, idx) => {
+          return (<TreeNode
+            key={origin}
+            host={origin}
+            resourceList={blockedScriptsByOrigin.get(origin) ?? []}
+            onPermissionButtonClick={handleAllowScript}
+            permissionButtonTitle={getLocale('braveShieldsAllowScriptOnce')}
+          />)
+        })}
+      </ScriptsList>
+    </SidePanel>
   )
+}
+
+export function ToggleList (props: { webcompatSettings: Map<ContentSettingsType, boolean>, totalBlockedTitle: string }) {
+  const { siteBlockInfo } = React.useContext(DataContext)
+  const invokedWebcompatList = siteBlockInfo?.invokedWebcompatList;
+  const activeProtectionCountSpan = document.getElementById("active-protection-count");
+  const [count, setCount] = React.useState(countActiveProtections(props.webcompatSettings, invokedWebcompatList));
+  const handleWebcompatToggle = (feature: ContentSettingsType, isEnabled: boolean) => {
+    getPanelBrowserAPI().dataHandler.setWebcompatEnabled(feature, !isEnabled);
+    setCount(count + (isEnabled ? 1 : -1));
+    if (activeProtectionCountSpan) {
+      activeProtectionCountSpan.innerText = count.toString();
+    }
+  };
+  const entries = generateWebcompatEntries(invokedWebcompatList);
+  return (<SidePanel>
+    <ScriptsInfo>
+      <span id='active-protection-count'>{count}</span>
+      <span>{props.totalBlockedTitle}</span>
+    </ScriptsInfo>
+    <ToggleListContainer>
+      {entries.map(([name, value]: [string, number]) => (
+        <label key={name}>
+          <span>{name}</span>
+          <Toggle
+            onChange={(isEnabled: boolean) => handleWebcompatToggle(value, isEnabled)}
+            isOn={props.webcompatSettings[value] !== true}
+            size='sm'
+            accessibleLabel={name}
+            disabled={false}
+          />
+        </label>
+      ))}
+    </ToggleListContainer>
+  </SidePanel>)
 }
 
 export default TreeList
