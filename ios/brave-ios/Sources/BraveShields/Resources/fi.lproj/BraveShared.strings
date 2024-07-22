@@ -1,3 +1,12 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Lisää muita luottamasi yhteisön luomia ja ylläpitämiä luetteloita.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Liity vain luottamiesi tahojen listoille.** Selaimesi tarkistaa säännöllisesti listan päivitykset antamastasi URL-osoitteesta.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Lisää suodatin URL-osoitteella";
+
 /* A discription of the Brave Player. */
 "AntiAdBlockWarningBravePlayerDescription" = "**Brave-mediasoitin** takaa videokokemuksen ilman mainoksia ja keskeytyksiä.";
 
@@ -28,6 +37,9 @@
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Vakio";
 
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Estä 'Vaihda sovellukseen' -ilmoitukset";
+
 /* Title for the brave player feature */
 "BravePlayer" = "Brave Player";
 
@@ -45,6 +57,36 @@
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Katso sen sijaan Brave-mediasoittimessa";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Sisällön suodatus";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Ota käyttöön mukautetut suodattimet, jotka estävät alueelliset ja kielikohtaiset seuraimet ja häiriötekijät";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Mukautettu suodatinluettelo";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Mukautetun suodatinluettelon URL";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Mukautetut suodattimet";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Lisää tässä mukautetut suodattimet. Muista käyttää Adblock-suodatinsyntaksia.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Virheellinen sääntö ”%1$@” rivillä %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Lisää tässä mukautetut suodattimesi, yksi kullekin riville.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Mukautetut suodattimet tukevat korkeintaan %i riviä";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Oletusarvoiset suodatinluettelot";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
 "DomainBlockedGoBackAction" = "Palaa takaisin";
@@ -70,6 +112,54 @@
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Ota Global Privacy Control käyttöön";
 
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Ulkoiset suodatinluettelot";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Annettu URL-osoite on virheellinen";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Vain suojatut (https) URL-osoitteet sallitaan mukautetuissa suodatinluetteloissa";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Lisää";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Muita suosittuja yhteisön luetteloita. Huomaa, että liian monen suodattinen ottaminen käyttöön hidastaa selausnopeutta.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Lataus epäonnistui.";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Odottaa latausta";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Muokkaa";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Anna suodatinluettelon URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Viimeksi päivitetty %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Kirjoita suodatinluettelon URL-osoite tähän";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Tiukka";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Sivustoa ei ole suojattu";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Yhteyttä sivustoon %@ ei ole suojattu";
+
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Seurantaohjelmat ja mainostenesto";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Nosta yhteystasoksi HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Tämä varoitus näytetään, koska sivusto ei tue HTTPS-protokollaa.";
 

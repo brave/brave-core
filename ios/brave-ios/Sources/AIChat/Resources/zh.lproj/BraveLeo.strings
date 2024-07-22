@@ -1,11 +1,17 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "您的 Brave 帐户会话已过期。请访问您的账户页面刷新，然后回来使用高级功能。";
+
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "添加反馈";
 
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "开启以显示从网址列启动 Leo 的捷径";
+
 /* The title for the settings to show search suggestions from Leo in url-address bar */
-"aichat.advancedSettingsAutocompleteTitle" = "在網址列顯示自動完成建議";
+"aichat.advancedSettingsAutocompleteTitle" = "显示在网址列中";
 
 /* The title for the settings to change default model for conversations */
-"aichat.advancedSettingsDefaultModelTitle" = "新对话的默认模型";
+"aichat.advancedSettingsDefaultModelTitle" = "默认模型";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo 是采用 AI 技术的智慧助理，内置于浏览器中。";
@@ -33,6 +39,9 @@
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "询问 Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo 目前忙碌中，请稍后再试。";
 
 /* The subtitle for intro view which triggers just chat */
 "aichat.chatIntroJustTalkSubTitle" = "您可以问我任何问题！我们可以讨论任何您想讨论的话题。我一直在学习和进步，以提供更好的答案。";
@@ -116,19 +125,34 @@
 "aichat.infoAboutPageContext" = "根据页面内容生成答复";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "嗨，我是 Leo。我由 Brave 代理，并由 Claude Instant 支持，该模型由 Anthropic 创建，用于支持对话和文本处理任务。";
+"aichat.introMessageClaudeHaikuMessageDescription" = "嗨，我是 Leo。我是由 Brave 代理 ，并使用 Anthropic 创建的 Claude 3 Haiku 模型来处理对话和文字工作。";
 
-/* The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator */
-"aichat.introMessageClaudeInstantModelDescription" = "Claude Instant by Anthropic";
+/* The model and creator for intro message - Claude Haiku is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeHaikuModelDescription" = "由 Anthropic 建置的 Claude Haiku";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "快速流畅的聊天";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "嗨，我是 Leo。我由 Brave 代理，并由 Claude 3 Sonnet 支持，该模型由 Anthropic 创建，用于支持对话和文本处理任务。";
+
+/* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
+"aichat.introMessageClaudeSonnetModelDescription" = "由 Anthropic 建置的 Claude Sonnet";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "兼顾速度与智慧";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "你好，我是 Leo，Brave 的智能助手。我由 %@ 研发支持。问我问题，我会尽力解答。";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "嗨，我是 Leo。我是由 Brave 托管的人工智能助手。我由 Llama 13B 提供支持，Llama 13B 是由 Meta 创建的模型，性能卓越，适用于多种用例。";
+"aichat.introMessageLlamaMessageDescription" = "您好，我是Leo。我是 Brave 的完全托管型人工智慧助理。我由 Llama 3 8B 提供技术支援，Llama 3 8B 是由 Meta 建立的模型，效能卓越且适用于许多使用案例。";
 
 /* The model and creator for intro message - Llama 3 8b is the model name -- Meta is the creator */
 "aichat.introMessageLlamaModelDescription" = "Llama 3 8b by Meta";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "通用聊天工具";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageMixtralMessageDescription" = "你好，我是 Leo。我是由 Brave 托管的人工智能助手。我使用的是 Mixtral 8x7B，这是由 Mistral AI 开发的模型，可以处理高级任务。";
@@ -136,17 +160,38 @@
 /* The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator */
 "aichat.introMessageMixtralModelDescription" = "Mixtral by Mistral AI";
 
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageMixtralModelPurposeDescription" = "高级聊天任务";
+
 /* The title for intro message */
 "aichat.introMessageTitle" = "会话";
 
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "改善以下的搜尋結果：";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "正在改善 Brave Search 的搜尋結果…";
+
 /* The title of the advanced settings view */
-"aichat.leoNavigationTitle" = "Leo";
+"aichat.leoNavigationTitle" = "Leo 人工智能";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "点击询问本页内容。其内容将与您的信息一起发送给 Brave Leo。";
 
 /* The accessibility text to read out loud when the user taps on the info icon on the page context view */
 "aichat.leoPageContextInfoIconAccessibilityTitle" = "页面上下文信息";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "斜线工具";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "无";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "未知";
 
 /* The title to display when the duration of the subscription is unknown */
 "aichat.leoSubscriptionUnknownDateTitle" = "N/A";
@@ -192,9 +237,6 @@
 
 /* The error description when in app purcahse is erroneous. */
 "aichat.paywallPurchaseErrorDescription" = "无法完成购买。请重试，或在 Apple 网站查看您的付款详细信息，然后重试。";
-
-/* The title for dismiss button when rate limit is shown after sending a message */
-"aichat.paywallRateLimitDismissActionTitle" = "继续使用基础模型";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "通过订阅高级版解锁更高响应率，或稍后再试。";
@@ -265,6 +307,9 @@
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "准确率答复";
 
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "刷新";
+
 /* The title for the button where it triggers reset leo data */
 "aichat.resetLeoDataActionTitle" = "重置并清除 Leo 数据";
 
@@ -308,7 +353,7 @@
 "aichat.termsConditionsApproveActionTitle" = "我理解";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo 是一个私密的人工智能助手，可以增强您对互联网的使用体验。Leo 的基础版是免费的，但功能有限。Brave Leo 高级版提供更多模型、更少限制，并为订阅用户提供新功能的早期访问权限。当前所有用户的默认模型是 Mixtral 8x7B。请参阅 **[Brave 维基](%1$@)** 获取更多详细信息。\n\n默认情况下，当您向 Leo 提问时，它可能会向 Brave Leo 发送并使用您当前浏览的网页内容或您在页面上突出显示的任何文本，以获取回应。回答的准确性不能保证，可能包含不准确、误导或虚假的信息。Leo 使用来自 Brave Search 的数据来提高回答的质量。请不要提交敏感或私人信息，并谨慎对待与健康、财务、个人安全或类似问题相关的任何答案。您可以随时在设定中调整 Leo 的选项。前往设定 Leo。\n\nLeo 不会收集与您相关联的标识符，例如您的 IP 地址。没有数据被用于训练 AI 模型，AI 模型也不会保留个人数据（除了 Anthropic 在删除之前会保留 30 天的数据）。请查看 **[隐私政策](%2$@)** 以获取更多信息。";
+"aichat.termsConditionsDescription" = "Brave Leo 是私人 AI 智慧助理，可提升您的网络使用体验。您可以免费使用 Leo，但存取权限会受到限制。Brave Leo Premium 提供更多模型、提高上限，订阅者还能抢先使用新功能。目前所有使用者的预设模型为 Mixtral 8x7B。如需了解详细资讯，请浏览 Brave **[说明中心](%1$@)**。\n\n根据预设，当您向 Leo 提问，系統可能会传送并使用您正在浏览的网页內容，或将您在页面上醒目标示的任何文字传送給 Brave Leo，以便为您提供回应。某些情況下，Leo 会将您输入內容所衍生的查询传送到 Brave Search，並使用搜寻结果为您提供更好的答案。我們无法保证回应的准确度，且其中可能含有不准确、误导或错误的咨询。请勿送出敏感资料或私人信息，并请谨慎使用任何有关健康、财务、个人安全或类似主题的答案。您可以随时前往「设定」调整 Leo 的选项。如要调整，请依序前往「设定」和「Leo」。\n\nLeo 不会收集识别码，例如可连接到您所在位置的 IP 位址等。我們不会使用资料來训练 AI 模型，AI 模型也不会保留任何个人资料 (除了 Anthropic 会保留资料 30 天后再刪除)。如需了解详细资讯，请参阅**[隐私权政策](%2$@)**。";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "与 Brave Leo 私密聊天";
@@ -321,4 +366,7 @@
 
 /* Title showing yearly subscription - annual */
 "aichat.yearlySubscriptionTitle" = "包年订阅";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "你";
 

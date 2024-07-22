@@ -13,20 +13,8 @@
 /* See http://mzl.la/1G7uHo7 */
 "AccessPhotoDeniedAlertTitle" = "Brave 브라우저가 내 사진에 액세스하려고 합니다.";
 
-/* Button to add a bookmark */
-"AddBookmark" = "북마크 추가";
-
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "북마크 추가";
-
-/* A title within a cell where a user can navigate to an add screen. */
-"AddCustomFilterList" = "맞춤 필터 목록 추가";
-
-/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "신뢰할 수 있는 커뮤니티가 만들고 관리하는 목록을 추가합니다.";
-
-/* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**출처를 신뢰할 수 있는 목록만 구독하세요**. 입력하신 URL에서 받은 목록 업데이트를 브라우저가 주기적으로 확인합니다.";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "즐겨찾기에 추가";
@@ -114,9 +102,6 @@
 
 /* title for section showing page blocking statistics */
 "BlockingMonitor" = "차단 모니터";
-
-/* A title for setting which blocks 'switch to app' popups */
-"blockMobileAnnoyances" = "'앱으로 전환' 요청 차단";
 
 /* Setting to enable popup blocking */
 "BlockPopups" = "팝업 차단";
@@ -460,6 +445,12 @@
 /* Button title to close a menu. */
 "Close" = "닫기";
 
+/* We ask users this prompt before attempting to close all tabs except active one via context menu */
+"closeAllOtherTabsPrompt" = "다른 열린 탭을 모두 닫으시겠습니까?";
+
+/* Title for asking user to close all tabs except the active tab. */
+"closeAllOtherTabsTitle" = "다른 모든 탭 닫기";
+
 /* We ask users this prompt before attempting to close multiple tabs via context menu */
 "closeAllTabsPrompt" = "열린 탭을 모두 닫으시겠습니까?";
 
@@ -480,12 +471,6 @@
 
 /* No comment provided by engineer. */
 "Confirm" = "확인";
-
-/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
-"ContentFiltering" = "콘텐츠 필터링";
-
-/* A description of the content filtering page. */
-"ContentFilteringDescription" = "맞춤 필터를 활성화하여 특정 지역 및 언어에 특화된 트래커 등 짜증 나는 요소를 차단합니다.";
 
 /* Cookie settings option title */
 "CookieControl" = "쿠키 제어";
@@ -528,15 +513,6 @@
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "현재 사용 중인 검색 엔진";
-
-/* Title for the custom filter list add screen found in the navigation bar. */
-"CustomFilterList" = "맞춤 필터 목록";
-
-/* A title for a section that contains all custom filter lists */
-"CustomFilterLists" = "맞춤 필터 목록";
-
-/* A section heading above a cell that allows you to enter a filter list URL. */
-"CustomFilterListsURL" = "맞춤 필터 목록 URL";
 
 /* Button title for Adding Engine in navigation Bar */
 "customSearchEngine.addButtonTitle" = "추가";
@@ -631,9 +607,6 @@
 /* No comment provided by engineer. */
 "defaultBrowserCalloutCloseAccesabilityLabel" = "기본 브라우저 설정 안내 닫기";
 
-/* A section title that contains default (predefined) filter lists a user can enable/diable. */
-"DefaultFilterLists" = "기본 필터 목록";
-
 /* Name for default Brave theme. */
 "defaultThemeName" = "Brave 기본값";
 
@@ -666,6 +639,15 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "기기 %1$@(%2$@)";
+
+/* A confirmation button title for a alert option to dismiss changes in a form or text input */
+"DismissChangesButtonTitle" = "변경사항 버리기";
+
+/* A confirmation message that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationMessage" = "이들 변경사항을 버리시겠습니까? 모든 수정 내용이 소실됩니다.";
+
+/* A confirmation title that appears in an alert to dismiss changes in a form or text input */
+"DismissChangesConfirmationTitle" = "변경사항을 버리시겠습니까?";
 
 /* Button title that when tapped displays a websites HTTPS security certificate information */
 "DisplayCertificate" = "보안 인증서";
@@ -801,36 +783,6 @@
 
 /* No comment provided by engineer. */
 "Features" = "기능";
-
-/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
-"FilterListAddInvalidURLError" = "입력한 URL이 유효하지 않음";
-
-/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
-"FilterListAddOnlyHTTPSAllowedError" = "보안(https) URL만 맞춤 필터 목록에 추가할 수 있음";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "추가";
-
-/* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "추가적인 인기 커뮤니티 목록입니다. 너무 많은 필터를 활성화하면 브라우징 속도가 느려집니다.";
-
-/* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "다운로드 실패";
-
-/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
-"FilterListsDownloadPending" = "다운로드 대기 중";
-
-/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "편집";
-
-/* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "필터 목록 URL 입력";
-
-/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
-"FilterListsLastUpdatedLabel" = "최근 업데이트 %@";
-
-/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
-"FilterListURLTextFieldPlaceholder" = "여기에 필터 목록 URL 입력";
 
 /* Share action title */
 "FindInPage" = "페이지에서 찾기";
@@ -2524,6 +2476,9 @@
 /* Label for the button used to save data */
 "SaveButtonTitle" = "저장";
 
+/* Label for the button used to save changes in some text input. */
+"SaveChangesButtonTitle" = "변경사항 저장";
+
 /* Settings item for clearing passwords and login data */
 "SavedLogins" = "저장된 로그인 정보";
 
@@ -3071,13 +3026,13 @@
 "SyncAddDeviceScan" = "체인 QR 코드 동기화";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+"SyncAddDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하세요. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "동기화 코드 입력";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+"SyncAddDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n\n 이 코드는 일종의 비밀번호로 취급하세요. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "코드 단어 입력";
@@ -3090,6 +3045,12 @@
 
 /* Header for device choosing screen. */
 "SyncChooseDeviceHeader" = "동기화할 기기 유형을 선택하십시오.";
+
+/* Error title explaining the sync code is expired and it must be genrated all over again. */
+"SyncCodeExpirationTitleLabel" = "코드가 만료되었습니다. 아래 버튼을 클릭하여 새로 생성하세요.";
+
+/* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
+"SyncCodeTimeRemainingTitleLabel" = "임시 코드는 다음 %@ 동안 유효함";
 
 /* Computer device button title */
 "SyncComputerDevice" = "컴퓨터";
