@@ -323,7 +323,7 @@ void MigrateToV41(mojom::DBTransactionInfo* const transaction) {
             DELETE FROM
               ad_events
             WHERE
-              ad_type == 'search_result_ad'
+              type == 'search_result_ad'
               AND confirmation_type != 'click';)";
     transaction->commands.push_back(std::move(command));
   }
