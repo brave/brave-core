@@ -2942,7 +2942,7 @@ extension Strings {
     "SyncCodeExpirationTitleLabel",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Code expired. Generate a new one by clicking the button below.",
+    value: "Code expired. Generate a new one by tapping the button below.",
     comment: "Error title explaining the sync code is expired and it must be genrated all over again."
   )
   public static let syncCodeTimeRemainingTitleLabel = NSLocalizedString(
