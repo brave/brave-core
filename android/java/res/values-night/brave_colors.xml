@@ -269,4 +269,6 @@
     <color name="primary_20">#2A118E</color>
     <color name="button_background">#3f39e8</color>
     <color name="systemfeedback_error_text">#ffb1b0</color>
+
+    <color name="location_bar_background_color_for_ntp">#383839</color>
 </resources>

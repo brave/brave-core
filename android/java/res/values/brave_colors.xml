@@ -410,4 +410,6 @@
     <color name="primitive_primary_80">#2a118e</color>
 
     <color name="divider_interactive">#545ff8</color>
+
+    <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
 </resources>
