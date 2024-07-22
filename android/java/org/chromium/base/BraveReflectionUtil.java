@@ -67,6 +67,20 @@ public class BraveReflectionUtil {
         return null;
     }
 
+    public static void setIntField(Class ownerClass, String fieldName, Object obj, int newValue) {
+        try {
+            Field field = ownerClass.getDeclaredField(fieldName);
+            if (!field.isAccessible()) field.setAccessible(true);
+            field.setInt(obj, newValue);
+        } catch (NoSuchFieldException e) {
+            Log.e(TAG, "Field not found: " + e);
+            assert (false);
+        } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            Log.e(TAG, "Get field failed: " + e);
+            assert (false);
+        }
+    }
+
     // Types should be compatible after bytecode patching
     @SuppressWarnings("EqualsIncompatibleType")
     public static Boolean EqualTypes(Class type1, Class type2) {
