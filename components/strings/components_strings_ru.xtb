@@ -40,12 +40,14 @@
 <translation id="1070901266639972381">До ночи</translation>
 <translation id="1073690811593784042">Стекло (цветное)</translation>
 <translation id="1074497978438210769">Не защищено</translation>
+<translation id="1074779248866616641">Результат</translation>
 <translation id="1075364221219156102">Использовать ключ доступа</translation>
 <translation id="1080116354587839789">Выровнять по ширине окна</translation>
 <translation id="1081061862829655580">Лоток 19</translation>
 <translation id="1082026381988252344">Прокрутка и изменение масштаба содержимого демонстрируемой вкладки</translation>
 <translation id="1089439967362294234">Сменить пароль</translation>
 <translation id="1090629319939036170">Меню VR</translation>
+<translation id="1091779689406092804">скриншотов</translation>
 <translation id="1094777233105318927">Информация о вашем браузере, ОС, устройстве, установленном ПО и файлах.</translation>
 <translation id="1096545575934602868">Максимальное число записей в этом поле: <ph name="MAX_ITEMS_LIMIT"/>. Остальные записи не будут сохранены.</translation>
 <translation id="1097803577928227769">Парки и скверы</translation>
@@ -144,7 +146,6 @@
 <translation id="8101828947363663989"><ph name="MANAGE_CHROME_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Нажмите Tab, а затем Ввод, чтобы задать настройки Brave.</translation>
 <translation id="1264309058268477500">Другой</translation>
 <translation id="1264974993859112054">Спорт</translation>
-<translation id="1266469291454105242">Разблокировка устройства</translation>
 <translation id="126728463333482584">Теперь вам доступна функция "Защита от слежения". Она позволяет ограничивать для сайтов возможность использовать сторонние файлы cookie для отслеживания ваших действий в интернете.</translation>
 <translation id="1268480293435976622">Конверт Chinese 7</translation>
 <translation id="53564677632020212">Быстро создать сайт в Brave Сайтах</translation>
@@ -191,6 +192,7 @@
           <ph name="LIST_ITEM"/>вашему системному администратору;
           <ph name="LIST_ITEM"/>интернет-провайдеру.
         <ph name="END_LIST"/></translation>
+<translation id="1335042910556016570">Отслеживайте этот товар</translation>
 <translation id="1337692097987160377">Поделиться вкладкой</translation>
 <translation id="1339601241726513588">Регистрация домена:</translation>
 <translation id="1340482604681802745">Адрес выдачи</translation>
@@ -242,7 +244,6 @@
 <translation id="1432187715652018471">Страница пытается установить обработчик службы</translation>
 <translation id="1432581352905426595">Управление поисковыми системами</translation>
 <translation id="1433225466058025572">Попробуйте перенести файлы ещё раз.</translation>
-<translation id="783200745622992168">В Brave есть функции, защищающие вас при работе в браузере. Например, к ним относится сервис "Brave Безопасный просмотр". Недавно он <ph name="BEGIN_LINK"/>обнаружил вредоносное ПО на странице <ph name="SITE"/><ph name="END_LINK"/>, встроенной в сайт, который вы хотите посетить.</translation>
 <translation id="1435940442311036198">Использовать ключ доступа на другом устройстве</translation>
 <translation id="1436185428532214179">Может запрашивать разрешение на редактирование файлов и папок на устройстве</translation>
 <translation id="1441816242347931036">Откройте, чтобы продолжить</translation>
@@ -293,7 +294,6 @@
 <translation id="1532118530259321453">Подтвердите действие</translation>
 <translation id="1533966801397200693">Вы используете управляемый профиль. Администратор может удаленно изменять настройки профиля, анализировать отчеты с информацией о браузере и выполнять другие задачи. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="1536390784834419204">Перевести страницу</translation>
-<translation id="1537807545287921620">Этот файл PDF недоступен. Откройте контекстное меню и включите функцию "Извлекать текст из файлов PDF".</translation>
 <translation id="1539840569003678498">Отчет отправлен:</translation>
 <translation id="1542105669288201090">Бизнес-образование</translation>
 <translation id="1545757265410828525">История изменения цен</translation>
@@ -358,6 +358,7 @@
 <translation id="1641976391427233992">Задержать вывод результатов</translation>
 <translation id="8088023492467080559">Кнопка "Проверка безопасности Brave" позволяет перейти на страницу проверки безопасности в настройках</translation>
 <translation id="1644574205037202324">История</translation>
+<translation id="1645004815457365098">Источник неизвестен</translation>
 <translation id="1645368109819982629">Неподдерживаемый протокол</translation>
 <translation id="1995056549836388472">Открыть настройки Brave</translation>
 <translation id="1652415888492971589">JIS B8</translation>
@@ -451,6 +452,7 @@
 <translation id="1812527064848182527">горизонтальная ориентация</translation>
 <translation id="1812975699435941848">Санитарное просвещение и медицинское образование</translation>
 <translation id="1816436748874040213">Может запрашивать разрешение на изменение масштаба и прокрутку содержимого демонстрируемых вкладок</translation>
+<translation id="8221062743840200789">Роль: совет по работе с Brave. Ярлык специальных возможностей: "<ph name="CHROME_TIP"/>".</translation>
 <translation id="1818522458013171885">Разблокировать</translation>
 <translation id="1818585559878922121">Документальные фильмы</translation>
 <translation id="182139138257690338">автоматическое скачивание</translation>
@@ -468,6 +470,7 @@
 <translation id="1840009953725035797">Домашние кинотеатры</translation>
 <translation id="1842969606798536927">Оплатить</translation>
 <translation id="1846432862466000825">Пластик (архивный)</translation>
+<translation id="1848640291751752317">скачанных файлов</translation>
 <translation id="1848982255014129637">Фотобумага (с высоким лоском)</translation>
 <translation id="1853392626017747777">Диалоговое окно создания виртуальной карты закрыто</translation>
 <translation id="1854180393107901205">Прекратить трансляцию</translation>
@@ -560,18 +563,17 @@
 <translation id="2036983605131262583">Другой рулон</translation>
 <translation id="2040463897538655645">Съемный накопитель</translation>
 <translation id="2040894699575719559">Доступ к местоположению закрыт</translation>
+<translation id="2041788246978549610">Использование доступных микрофонов (<ph name="MICS_COUNT"/>)</translation>
 <translation id="2042213636306070719">Лоток 7</translation>
 <translation id="3163988908275223348">Войти, чтобы использовать пароли, сохраненные в аккаунте Brave</translation>
 <translation id="2045871135676061132">Конверт Personal</translation>
 <translation id="2046951263634619614">Книжные магазины</translation>
 <translation id="2048261947532620704">Перевод страницы…</translation>
 <translation id="2053111141626950936">Страницы на этом языке (<ph name="LANGUAGE"/>) не будут переводиться автоматически.</translation>
-<translation id="2055461225779831292">Использование и перемещение камер (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="2056492565825767809">Заблокировать указатель мыши</translation>
 <translation id="5469355573019315764">Сайты могут запрашивать у Brave информацию, чтобы персонализировать рекламу для вас.</translation>
 <translation id="2059166748188874810">Муниципалитет</translation>
 <translation id="2059202684901022309">22 x 34 дюйма</translation>
-<translation id="206275378685759380">Рекомендуется подождать с покупкой</translation>
 <translation id="2064568741209980952">Кредиты и займы</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 вариант}one{# вариант}few{# варианта}many{# вариантов}other{# варианта}}</translation>
 <translation id="2066915425250589881">запросить ее удаление</translation>
@@ -645,7 +647,6 @@
 <translation id="2170417331417184438">Карта сохранена только на устройстве</translation>
 <translation id="2172089022819052306">Ремонт и обслуживание транспортных средств</translation>
 <translation id="2175630235841878061">Файлы больше 100 МБ недоступны для скачивания</translation>
-<translation id="2176198174348007293">Использование камер (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="2176974405772725904">Сохранение адреса в аккаунте</translation>
 <translation id="7453373354666409887">Кнопка "Обновить Brave". Нажмите ее, чтобы обновить Brave.</translation>
 <translation id="2181821976797666341">Правила</translation>
@@ -748,6 +749,7 @@
 <translation id="2366689192918515749">Мясо и морепродукты</translation>
 <translation id="2367567093518048410">Уровень</translation>
 <translation id="23703388716193220">Инвентарь для гольфа</translation>
+<translation id="2370368710215137370">Загрузка файлов</translation>
 <translation id="2377241607395428273">ПО для работы с графикой и анимацией</translation>
 <translation id="2378084239755710604">Окно сохранения данных карты закрыто.</translation>
 <translation id="237978325638124213">Духи и парфюмерия</translation>
@@ -781,7 +783,6 @@
 <translation id="2456755709261364512">Уровень заряда батареи должен быть выше <ph name="REQUIRED_BATTERY_PRECENT"/> %</translation>
 <translation id="2461822463642141190">Сейчас</translation>
 <translation id="2462932596748424101">Социальные сети</translation>
-<translation id="2463739503403862330">Заполнить</translation>
 <translation id="2465688316154986572">Скоба</translation>
 <translation id="4058615531773510267">Управлять скачанными файлами в Brave</translation>
 <translation id="2466004615675155314">Показывать информацию из интернета</translation>
@@ -871,6 +872,7 @@
 <translation id="2655752832536625875">Ванная комната</translation>
 <translation id="2657637947725373811">{0,plural, =1{Передать конфиденциальный файл?}one{Передать конфиденциальные файлы?}few{Передать конфиденциальные файлы?}many{Передать конфиденциальные файлы?}other{Передать конфиденциальные файлы?}}</translation>
 <translation id="2658843814961855121">Трудовое законодательство</translation>
+<translation id="2658944305627908367">Транзакции, превышающие баланс, не будут обработаны.</translation>
 <translation id="2660779039299703961">Событие</translation>
 <translation id="2664887757054927933">{COUNT,plural, =0{Нет}=1{1 пароль (для <ph name="DOMAIN_LIST"/>)}=2{2 пароля (для <ph name="DOMAIN_LIST"/>)}one{# пароль (для <ph name="DOMAIN_LIST"/>)}few{# пароля (для <ph name="DOMAIN_LIST"/>)}many{# паролей (для <ph name="DOMAIN_LIST"/>)}other{# пароля (для <ph name="DOMAIN_LIST"/>)}}</translation>
 <translation id="2666092431469916601">Наверх</translation>
@@ -944,7 +946,6 @@
 <translation id="2799758406651937857">Мужская одежда</translation>
 <translation id="2807052079800581569">Положение изображения по оси Y</translation>
 <translation id="2808278141522721006">Включить или отключить Windows Hello можно в разделе "<ph name="SETTINGS"/>"</translation>
-<translation id="2814184336982254349">Этот файл PDF недоступен. Нажмите Поиск + M, чтобы открыть контекстное меню, и включите функцию "Извлекать текст из файлов PDF".</translation>
 <translation id="2818338148457093657">Салоны красоты и спа-центры</translation>
 <translation id="2820957248982571256">Поиск…</translation>
 <translation id="2824775600643448204">Адресная строка и строка поиска</translation>
@@ -1061,6 +1062,7 @@
 <translation id="3090667236485488075">Стекло</translation>
 <translation id="3095940652251934233">Statement</translation>
 <translation id="3098513225387949945">Игнорируется, так как список "Отключено" содержит шаблон "*", что приравнивается к отключению правила.</translation>
+<translation id="3099619114405539473">Использование доступных камер (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="3102312643185441063">Сберегательный счет</translation>
 <translation id="3103188521861412364">Акции и облигации</translation>
 <translation id="3105172416063519923">Идентификатор объекта:</translation>
@@ -1303,6 +1305,7 @@
 <translation id="353816159217417898">Экранная форма (с разбивкой на страницы)</translation>
 <translation id="3542628208405253498">Изображение карты</translation>
 <translation id="3542768452570884558">Открыть ссылку в новом окне</translation>
+<translation id="3547442767634383572">Общие сведения о рабочем профиле.</translation>
 <translation id="3547746132308051926">20 x 24 дюйма</translation>
 <translation id="3552155506104542239">Внимание! Это правило противоречит правилу <ph name="POLICY_NAME"/> и не влияет на приложения Android. В остальном оно работает, как задумано.</translation>
 <translation id="3552297013052089404">Шрифт без засечек</translation>
@@ -1329,6 +1332,7 @@
 <translation id="3583757800736429874">&amp;Повторить перемещение</translation>
 <translation id="3584299510153766161">Два отверстия снизу</translation>
 <translation id="3584755835709800788">Научно-фантастические и фэнтезийные фильмы</translation>
+<translation id="3585455899094692781">Использование и перемещение доступных камер (<ph name="CAMERAS_COUNT"/>)</translation>
 <translation id="3586833803451155175">Влажная пленка</translation>
 <translation id="3586931643579894722">Скрыть подробности</translation>
 <translation id="3587738293690942763">Середина</translation>
@@ -1354,7 +1358,6 @@
       удалите ее из списка и добавьте туда снова.</translation>
 <translation id="3599570280787620691">Кнопка "Найти устройство". Нажмите ее, чтобы найти устройство в аккаунте Brave.</translation>
 <translation id="3630699740441428070">Администраторы этого устройства настроили подключение к Интернету так, чтобы видеть ваш сетевой трафик, в том числе сайты, которые вы посещаете.</translation>
-<translation id="3631244953324577188">Биометрия</translation>
 <translation id="3632503704576938756">Демонстрация экрана возобновлена</translation>
 <translation id="3632892046558972264">Демонстрация экрана приостановлена</translation>
 <translation id="3634530185120165534">Лоток 5</translation>
@@ -1364,6 +1367,7 @@
 <translation id="3642638418806704195">Приложение:</translation>
 <translation id="3646643500201740985">Оценка эффективности рекламы</translation>
 <translation id="3647286794400715637">Каждая запись должна содержать 1–2 URL.</translation>
+<translation id="5085151248144746413">Кнопка "Закрыть совет по работе с Brave". Для выполнения действия нажмите Ввод. <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/>.</translation>
 <translation id="3650584904733503804">Проверка выполнена успешно</translation>
 <translation id="3650594806107685466">Чтобы получить доступ к данным банковской карты, введите CVC-код (<ph name="SIDE_OF_CARD"/>).</translation>
 <translation id="3650917416636556301">Пеший туризм и кемпинг</translation>
@@ -1389,6 +1393,7 @@
 <translation id="3682094733650754138">Выбран вариант "Подставить адрес"</translation>
 <translation id="3687920599421452763">Фургоны и минивэны</translation>
 <translation id="3693327506115126094">Выберите способ подтверждения личности</translation>
+<translation id="3698353241727597930">Администратор настроил сохранение <ph name="FILES"/> в хранилище (<ph name="CLOUD_STORAGE"/>), управляемое организацией. Эти файлы могут просматриваться, проверяться и оставаться в хранилище после удаления.</translation>
 <translation id="974818914962304978">Кнопка "Создать сайт". Нажмите ее, чтобы быстро создать сайт на платформе Brave.</translation>
 <translation id="3701325639446035885">Продажа билетов на мероприятия</translation>
 <translation id="3701427423622901115">Сброс подтвержден.</translation>
@@ -1434,7 +1439,6 @@
 <translation id="3767485424735936570">Администратор не рекомендует копировать и вставлять этот контент в окно <ph name="VM_NAME"/>.</translation>
 <translation id="3772211998634047851">Бумага (высокосортная)</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Чтобы быстро создать заметку в Brave Keep, нажмите Tab, а затем Ввод.</translation>
-<translation id="6473814193688111215">В Brave есть функции, защищающие вас при работе в браузере. Например, к ним относится сервис "Brave Безопасный просмотр". Недавно он <ph name="BEGIN_LINK"/>обнаружил вредоносное ПО на странице <ph name="SITE"/><ph name="END_LINK"/>, встроенной в сайт, на который вы хотите перейти.</translation>
 <translation id="3780694243617746492">Выходной лоток</translation>
 <translation id="3781428340399460090">Ярко-розовый</translation>
 <translation id="3783418713923659662">Mastercard</translation>
@@ -1447,6 +1451,7 @@
 <translation id="3799805948399000906">Шрифт запрошен</translation>
 <translation id="3801265110651850478">Отправлять Do Not Track в запросах веб-страниц</translation>
 <translation id="380329542618494757">Имя</translation>
+<translation id="3803801106042434208">Эти поисковые системы популярны в вашем регионе.</translation>
 <translation id="4435991890010083520">Если вы посетите этот сайт, злоумышленники могут обманом заставить вас установить ПО или раскрыть личные данные, такие как пароль, номер телефона или кредитной карты. Мы настоятельно рекомендуем вернуться на безопасную страницу. <ph name="BEGIN_LEARN_MORE_LINK"/>Подробнее…<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3807366285948165054">Смещение изображения по оси X</translation>
 <translation id="3807709094043295184">Классический рок и ретромузыка</translation>
@@ -1464,6 +1469,7 @@
 <translation id="3826050100957962900">Вход через сторонние сервисы</translation>
 <translation id="3827112369919217609">Абсолютный</translation>
 <translation id="3828924085048779000">Пустые кодовые фразы запрещены.</translation>
+<translation id="3830139096297532361">Этот файл PDF недоступен. Не удалось скачать файлы для извлечения текста. Повторите попытку позже.</translation>
 <translation id="3830470485672984938">Использовать другой ключ доступа</translation>
 <translation id="3831065134033923230">Проверьте сохраненные пароли</translation>
 <translation id="3831915413245941253">Администратор <ph name="ENROLLMENT_DOMAIN"/> установил расширения с дополнительными функциями для браузера. У расширений есть доступ к некоторым вашим данным.</translation>
@@ -1518,7 +1524,6 @@
 <translation id="3950820424414687140">Вход</translation>
 <translation id="3953505489397572035">Это средняя цена</translation>
 <translation id="3958057596965527988">4 x 4 дюйма</translation>
-<translation id="8475602291812563124">В Brave есть функции, защищающие вас при работе в браузере. Например, к ним относится сервис "Brave Безопасный просмотр". Недавно он <ph name="BEGIN_LINK"/>обнаружил фишинговую страницу <ph name="SITE"/><ph name="END_LINK"/>, встроенную в сайт, который вы хотите посетить.<ph name="NEW_LINE"/>Помните, что злоумышленники могут взламывать даже защищенные сайты. Если вы считаете, что переход заблокирован по ошибке и сайт не представляет опасности, <ph name="BEGIN_ERROR_LINK"/>сообщите нам об этом<ph name="END_ERROR_LINK"/>.</translation>
 <translation id="3961148744525529027">Лист с обработчиком платежа открыт на половину высоты</translation>
 <translation id="3962859241508114581">Предыдущий трек</translation>
 <translation id="3963721102035795474">Режим чтения</translation>
@@ -1564,7 +1569,6 @@
 <translation id="4060880210388108757">Инди и альтернативная музыка</translation>
 <translation id="4161619938555288542">Разрешите Brave находить скидки на товары, которые вы добавляете в корзину</translation>
 <translation id="406358100705415968">Средства индивидуальной защиты</translation>
-<translation id="4063924980214801036">Использовать разблокировку устройства для быстрого подтверждения карт</translation>
 <translation id="4065659219963895623">Рестораны</translation>
 <translation id="4067774859633143413">Чтобы выйти из полноэкранного режима и увидеть скачиваемый файл, нажмите и удерживайте |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4067947977115446013">Введите действительный адрес</translation>
@@ -1640,6 +1644,7 @@
 <translation id="4202554117186904723">Пятый рулон</translation>
 <translation id="4203769790323223880">Доступ к камере запрещен</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>Проверьте настройки брандмауэра и антивирусного ПО<ph name="END_LINK"/>.</translation>
+<translation id="4207195957038009075">Brave Диск</translation>
 <translation id="4209092469652827314">Крупный</translation>
 <translation id="4210602799576081649">Код подтверждения больше не действителен. Запросите новый.</translation>
 <translation id="421066178035138955">Использование устройств и данных виртуальной реальности.</translation>
@@ -1870,7 +1875,6 @@
 <translation id="4703342001883078444">Семья и взаимоотношения</translation>
 <translation id="4708268264240856090">Соединение прервано</translation>
 <translation id="4708276642004148190">Водоснабжение и водное хозяйство</translation>
-<translation id="4712404868219726379">Windows Hello</translation>
 <translation id="471880041731876836">Доступ запрещен</translation>
 <translation id="4718897478554657123">600 x 900 мм</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Выполните диагностику сети в Windows<ph name="END_LINK"/></translation>
@@ -2139,6 +2143,7 @@
 <translation id="5230733896359313003">Адрес доставки</translation>
 <translation id="5230815978613972521">B8</translation>
 <translation id="523149107733989821">A4 Extra</translation>
+<translation id="5233071178832586743">Администратор имеет доступ к управляемому профилю, браузеру и некоторой информации об устройстве. Он также может просматривать:</translation>
 <translation id="5234764350956374838">Закрыть</translation>
 <translation id="5238301240406177137">Сохранить в аккаунте</translation>
 <translation id="5239119062986868403">Средняя цена</translation>
@@ -2152,6 +2157,7 @@
 <translation id="6055400808586511449">Подробнее о функциях Brave</translation>
 <translation id="5251803541071282808">Облако</translation>
 <translation id="5254043433801397071">Оптимизировать контент для печати</translation>
+<translation id="5255583962255635076">Действующие в рабочем профиле правила браузера.</translation>
 <translation id="5255690596502591079">Все равно записать</translation>
 <translation id="5255833070095767006">350 x 460 мм</translation>
 <translation id="5257739419779698609">{0,plural, =1{Администратор не рекомендует копировать этот файл в место назначения "<ph name="DESTINATION_NAME"/>".}one{Администратор не рекомендует копировать эти файлы в место назначения "<ph name="DESTINATION_NAME"/>".}few{Администратор не рекомендует копировать эти файлы в место назначения "<ph name="DESTINATION_NAME"/>".}many{Администратор не рекомендует копировать эти файлы в место назначения "<ph name="DESTINATION_NAME"/>".}other{Администратор не рекомендует копировать эти файлы в место назначения "<ph name="DESTINATION_NAME"/>".}}</translation>
@@ -2233,6 +2239,7 @@
 <translation id="541416427766103491">Укладчик 4</translation>
 <translation id="5414446060143308245">Проверьте файлы, перед тем как переносить их</translation>
 <translation id="5414511064953050917">Все равно переместить</translation>
+<translation id="5419311651396341287">Вашему администратору может быть доступна следующая информация:</translation>
 <translation id="5421408724705443535">Рок-музыка</translation>
 <translation id="5423269318075950257">Отслеживание цен</translation>
 <translation id="5425082381151187189">Обустройство дома и отделка помещений</translation>
@@ -2367,7 +2374,7 @@
 <translation id="5667827081946850877">Аудиокниги</translation>
 <translation id="5675650730144413517">Страница недоступна</translation>
 <translation id="5675809467256309336">Танцевальная и электронная музыка</translation>
-<translation id="5677928146339483299">Заблокированы</translation>
+<translation id="5677928146339483299">Заблокировано</translation>
 <translation id="5678007133659493065">Фольга</translation>
 <translation id="5680642791693447368">Триллеры, криминальные и детективные фильмы</translation>
 <translation id="568292603005599551">Положение изображения по оси X</translation>
@@ -2420,12 +2427,10 @@
 <translation id="57838592816432529">Отключить звук</translation>
 <translation id="5784606427469807560">Не удалось подтвердить данные карты. Проверьте подключение к Интернету и повторите попытку.</translation>
 <translation id="5785756445106461925">Обратите внимание, что на странице обнаружен небезопасный контент. Возможно, при передаче ресурсы просматриваются третьими лицами, а злоумышленники могут получить доступ к странице и изменить ее поведение или внешний вид.</translation>
-<translation id="5786044859038896871">Заполнить данные банковской карты?</translation>
 <translation id="5789643057113097023">:</translation>
 <translation id="5793317771769868848">Этот способ оплаты будет удален с устройства.</translation>
 <translation id="5800727402210090597">Ремонт и обслуживание мобильных телефонов</translation>
 <translation id="580241730938216256">Обновить</translation>
-<translation id="5803412860119678065">Заполнить данные банковской карты <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Разрешения</translation>
 <translation id="5806871454498484178">Изменение масштаба и прокрутка заблокированы</translation>
 <translation id="5937482014241669139">Посмотреть историю Brave</translation>
@@ -2545,6 +2550,7 @@
 <translation id="6035491133925068289">Легкая атлетика</translation>
 <translation id="6039846035001940113">Если проблема не исчезнет, свяжитесь с владельцем сайта.</translation>
 <translation id="6040143037577758943">Закрыть</translation>
+<translation id="6040539895181423374">Информация о ценах</translation>
 <translation id="604124094241169006">Автоматически</translation>
 <translation id="6041777658117377052">Температура камеры</translation>
 <translation id="6042308850641462728">Ещё</translation>
@@ -2615,6 +2621,7 @@
 <translation id="6165508094623778733">Подробнее</translation>
 <translation id="6167577165590485365">Последняя попытка получения:</translation>
 <translation id="1057223975912338979">Brave пытается подтвердить вашу личность, чтобы ввести платежные данные.</translation>
+<translation id="6173208311907792313">Завершите покупку с помощью Windows Hello.</translation>
 <translation id="6176387967264100435">Это высокая цена</translation>
 <translation id="6177128806592000436">Подключение к сайту не защищено</translation>
 <translation id="6177531123306197852">Конверт C2</translation>
@@ -2667,6 +2674,7 @@
 <translation id="6270066318535733958">Лодочный спорт</translation>
 <translation id="1300170712564922349">Посмотреть похожие действия в истории Brave</translation>
 <translation id="9136010393039243713">Brave Update</translation>
+<translation id="6278015583149890680">Brave Диск и OneDrive</translation>
 <translation id="6280223929691119688">Невозможно доставить заказ по этому адресу. Выберите другой вариант.</translation>
 <translation id="6284292079994426700">26 x 38 дюймов</translation>
 <translation id="6284449872909111707">Текстовые и мгновенные сообщения</translation>
@@ -2917,7 +2925,6 @@
 <translation id="6753269504797312559">Значение правила</translation>
 <translation id="6753434778807740853">Удалить запись "<ph name="ENTRY_VOICEOVER"/>"</translation>
 <translation id="6754547388777247439">Сберегательные счета</translation>
-<translation id="6755241357817244406">chrome://flags</translation>
 <translation id="6757797048963528358">Устройство находится в спящем режиме.</translation>
 <translation id="1002792787295210684">Не удалось сохранить карту в аккаунте Brave. Она была сохранена в Brave на этом устройстве.</translation>
 <translation id="6766558780547452153">Кулинария и рецепты</translation>
@@ -3040,7 +3047,6 @@
 <translation id="7003278537452757231">Ковры и коврики</translation>
 <translation id="7003322000677139268">Запчасти и аксессуары для транспортных средств</translation>
 <translation id="7004499039102548441">Недавние вкладки</translation>
-<translation id="7004583254764674281">Использовать Windows Hello для быстрого подтверждения карт</translation>
 <translation id="7006930604109697472">Все равно отправить</translation>
 <translation id="7010658264061801199">Еда и напитки</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
@@ -3058,6 +3064,7 @@
 <translation id="7031646650991750659">Приложения, установленные из Google Play.</translation>
 <translation id="7035705295266423040">Банку нужно убедиться, что это действительно вы</translation>
 <translation id="8918349693525256593"><ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Нажмите Tab, а затем Ввод, чтобы перейти в настройки конфиденциальности аккаунта Brave.</translation>
+<translation id="7042616127917168121">Уточнить запрос</translation>
 <translation id="7043552168914147882">Разделитель</translation>
 <translation id="7044081119134178347">Дано разовое разрешение на доступ к камере</translation>
 <translation id="7048095965575426564">European Fanfold</translation>
@@ -3077,7 +3084,6 @@
 <translation id="7078665357168027058">RA3</translation>
 <translation id="7079138647457502205">Улучшенная защита данных в интернете</translation>
 <translation id="7079718277001814089">Этот сайт содержит вредоносное ПО</translation>
-<translation id="7081308185095828845">Функция недоступна на вашем устройстве</translation>
 <translation id="7081311540357715807">Продуктовые магазины</translation>
 <translation id="7083258188081898530">Лоток 9</translation>
 <translation id="7086090958708083563">Загрузка запрошена пользователем</translation>
@@ -3104,6 +3110,7 @@
 <translation id="7119063404975271297">Телевизионные драмы</translation>
 <translation id="7119371694555167493">Превышено время ожидания</translation>
 <translation id="7119414471315195487">Закройте другие вкладки и программы.</translation>
+<translation id="7120588595737538743">скриншотов и скачанных файлов</translation>
 <translation id="7124354851782353862">Введите CVC-код</translation>
 <translation id="7129409597930077180">Невозможно отправить заказ по этому адресу. Выберите другой вариант.</translation>
 <translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
@@ -3146,7 +3153,6 @@
 <translation id="719464814642662924">Visa</translation>
 <translation id="7195852673246414183">Включите параметр и вернитесь на эту вкладку, чтобы начать писать.</translation>
 <translation id="7199278868241956094">Oficio</translation>
-<translation id="7201591969684833065">Администратор может отслеживать:</translation>
 <translation id="2540471381262404386">Сделать Brave браузером по умолчанию</translation>
 <translation id="7210863904660874423">Сайт <ph name="HOST_NAME"/> не соответствует стандартам безопасности.</translation>
 <translation id="7210993021468939304">Действия Linux в контейнере (также он может устанавливать и запускать приложения Linux из контейнера).</translation>
@@ -3261,6 +3267,7 @@
 <translation id="7421067045979951561">обработчики протоколов</translation>
 <translation id="7422347648202898039">Этикетки (защитные)</translation>
 <translation id="4814329941923406129">Кнопка "Открыть настройки файлов cookie". Нажмите ее, чтобы задать параметры файлов cookie в настройках Brave.</translation>
+<translation id="742435751935045381">Приложения и расширения, установленные в рабочем профиле</translation>
 <translation id="7424421098814895617">Нажата кнопка "Удалить адрес"</translation>
 <translation id="7425037327577270384">Генератор текстов</translation>
 <translation id="7425878584435172632">Изобразительные искусства и дизайн</translation>
@@ -3294,8 +3301,10 @@
 <translation id="7481312909269577407">Вперед</translation>
 <translation id="7481603210197454575">Конверт Italian</translation>
 <translation id="7483482939016730822">Школьные принадлежности и оборудование для аудиторий</translation>
+<translation id="8224801806731717248"><ph name="CHROME_TIP"/>. Если вы хотите закрыть совет по работе с Brave, нажмите Tab, а затем Ввод.</translation>
 <translation id="7485085230273446323">Бизнес и промышленность</translation>
 <translation id="7485870689360869515">Данные не найдены.</translation>
+<translation id="7486880426035242089">OneDrive</translation>
 <translation id="7489392576326061356">Шампуни и кондиционеры для волос</translation>
 <translation id="7495528107193238112">Этот контент заблокирован. Чтобы устранить неполадку, свяжитесь с владельцем сайта.</translation>
 <translation id="749865518782565832">Сантехнические работы</translation>
@@ -3545,7 +3554,6 @@
 <translation id="3227327027957060968"><ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Чтобы узнать больше о функциях Brave, нажмите Tab, а затем Ввод.</translation>
 <translation id="7949135979217012031">Антивирусы и защита от вредоносного ПО</translation>
 <translation id="1535074845255182168">Задать параметры файлов cookie в настройках Brave</translation>
-<translation id="7950440490184876634">Использование микрофонов (<ph name="MICS_COUNT"/>)</translation>
 <translation id="7951415247503192394">(32 бит)</translation>
 <translation id="7952192831285741665">European EDP</translation>
 <translation id="7952250633095257243">Нужно указать быструю команду.</translation>
@@ -3759,6 +3767,7 @@
 <translation id="8332188693563227489">Доступ к <ph name="HOST_NAME"/> запрещен</translation>
 <translation id="833262891116910667">Выделить</translation>
 <translation id="8339163506404995330">Страницы на этом языке (<ph name="LANGUAGE"/>) не будут переводиться автоматически</translation>
+<translation id="8339275256517065202">Завершите покупку с помощью Touch ID.</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="8344776605855290140">Диалоговое окно создания виртуальной карты открыто на весь экран</translation>
 <translation id="8350416046273606058">Быстрая команда "<ph name="SHORTCUT_NAME"/>" не должна содержать пробелов.</translation>
@@ -3801,6 +3810,7 @@
 Подробнее:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8416874502399604126">Дано разовое разрешение на доступ к микрофону</translation>
+<translation id="8421158157346464398">Информацию о рабочем профиле, например имя пользователя.</translation>
 <translation id="8422228580902424274">Если вы посетите этот сайт, злоумышленники могут обманом заставить вас установить ПО или раскрыть личные данные, такие как пароль, номер телефона или кредитной карты.</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8425213833346101688">Изменить</translation>
@@ -3949,6 +3959,7 @@
 <translation id="8726549941689275341">Размер страницы:</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="8731268612289859741">Защитный код</translation>
+<translation id="8731917264694569036">Завершите покупку с помощью устройства.</translation>
 <translation id="8733345475331865475">Автострахование</translation>
 <translation id="2184048523283917559">Вы можете заблокировать темы, которыми не хотите делиться с сайтами. Кроме того, Brave автоматически удаляет темы, добавленные более четырех недель назад. Подробнее…</translation>
 <translation id="8734529307927223492">Вашим устройством <ph name="DEVICE_TYPE"/> управляет <ph name="MANAGER"/></translation>
@@ -4139,6 +4150,7 @@
 <translation id="7839260860373627374">Подробнее о рекламе в Brave</translation>
 <translation id="2628864952962474930"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Нажмите Tab и затем Ввод, чтобы посмотреть похожие запросы в истории Brave.</translation>
 <translation id="9119042192571987207">Загружен</translation>
+<translation id="9119308212838450857">Чтобы войти на сайт <ph name="PROVIDER_ORIGIN"/>, подтвердите свою личность</translation>
 <translation id="912327514020027767">Юбки</translation>
 <translation id="912414390325846156">Ранее вы запретили использовать эту функцию на сайте.</translation>
 <translation id="9128870381267983090">Подключитесь к сети</translation>
@@ -4162,9 +4174,9 @@
 <translation id="9155646082713385498">Журналы</translation>
 <translation id="9157595877708044936">Настройка...</translation>
 <translation id="9161794544616754735">{0,plural, =1{Файл "<ph name="FILE_NAME"/>" может содержать конфиденциальные данные.}one{<ph name="FILE_COUNT"/> файл может содержать конфиденциальные данные.}few{<ph name="FILE_COUNT"/> файла могут содержать конфиденциальные данные.}many{<ph name="FILE_COUNT"/> файлов могут содержать конфиденциальные данные.}other{<ph name="FILE_COUNT"/> файла могут содержать конфиденциальные данные.}}</translation>
-<translation id="9164742147345933553">os://flags</translation>
 <translation id="9165305804774426672">Посещаемые вами сайты также могут определять ваши интересы исходя из ваших действий. Например, если вы посетите сайт, на котором продаются кроссовки для бега на длинные дистанции, он может определить, что вам интересны марафоны.</translation>
 <translation id="9166851138617700776">Подробнее о рекламе, предлагаемой сайтами, и оценке ее эффективности</translation>
+<translation id="9167054383925257837">Сведения о браузере и операционной системе устройства, например их версии.</translation>
 <translation id="9167594211215946097">Прямой доступ к принтерам.</translation>
 <translation id="9168814207360376865">Разрешить сайтам проверять наличие сохраненных способов оплаты</translation>
 <translation id="9169664750068251925">Всегда блокировать на этом сайте</translation>
@@ -4191,6 +4203,7 @@
 <translation id="920643408853370361">Туристическое страхование</translation>
 <translation id="9207861905230894330">Не удалось добавить статью</translation>
 <translation id="9210825002219699214">Авиаперелеты</translation>
+<translation id="9211461151375991073">Введите @, чтобы выполнить поиск по сайтам <ph name="FEATURED_SEARCH_LIST"/>.</translation>
 <translation id="9213433120051936369">Настроить вид</translation>
 <translation id="2206050430829841793">Приложение не позволяет Brave безопасно подключиться к этому сайту</translation>
 <translation id="92178312226016010">Вы следите за ценой на этот товар.</translation>
@@ -4291,6 +4304,7 @@
     &lt;p&gt;Не забудьте включить его снова, когда закончите работу.&lt;/p&gt;
     &lt;h4&gt;Шаг 5. Обратитесь за помощью&lt;/h4&gt;
     &lt;p&gt;Если проблему решить не удалось, обратитесь к владельцу сайта.&lt;/p&gt;</translation>
+<translation id="3175975165999941341">Вы видите это предупреждение, потому что сайт не поддерживает протокол HTTPS и вы находитесь в режиме инкогнито. <ph name="BEGIN_LEARN_MORE_LINK"/>Подробнее…<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="8108906085747235166">Спросить в профиле</translation>
 <translation id="317153861231603077">Спросить в профиле</translation>
 <translation id="2977472760057091832">Открыть ссылку в приватном окне</translation>

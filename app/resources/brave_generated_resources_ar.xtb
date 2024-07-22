@@ -43,6 +43,7 @@
 <translation id="7897433216002294926">فوري <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">هذه نافذة خاصة عبر متصفح تور</translation>
 <translation id="1037341607922068025">افتح نافذة خاصة من خلال متصفح تور</translation>
+<translation id="607982085107926247">افتح في Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">تم حذف حساب Brave Sync هذا من جهاز آخر. إذا كنت لا تقصد تعطيل المزامنة،<ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>إعادة إنشاء الحساب</translation>
 <translation id="6965382102122355670">موافق</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">النشر واسترداد الملفات من IPFS</translation>
 <translation id="9220923434129933852">قراءة إعدادات IPFS وتعديلها</translation>
 <translation id="7398397225367092613">.onion</translation>
-<translation id="406832631167785034">افتح باستخدام عنوان .onion</translation>
+<translation id="2269780537090240241">افتح باستخدام عنوان .onion: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">فرض اللصق</translation>
 <translation id="4901618511712685702">استيراد إلى IPFS</translation>
 <translation id="6794469945030154569">هذه الصفحة</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">لا يتتبعك Brave أو يتتبع استفساراتك أو نقراتك. كما إنه مستقل تمامًا عن شركات التكنولوجيا الكبيرة.</translation>
 <translation id="42032117189492785">بحث مدعم بالذكاء الاصطناعي باستخدام فهرس فريد.</translation>
 <translation id="8606416238399082160">يتسم بخصوية كاملة، ومستقل تمامًا بنسبة 100%، ومزود بميزات الذكاء الاصطناعي الرائعة.</translation>
+<translation id="7706528608480893054">DDG هو مجرد Bing مخفي. حان الوقت للتمتع بخصوصية حقيقية ونتائج أفضل وفهرس مستقل. حان الوقت لـ Brave Search.</translation>
+<translation id="3818133234428578803">التخلص من تراكيب الأصوات</translation>
+<translation id="14817360483752259">لا يتعقبك Brave Search أو يتتبع استفساراتك أو نقراتك. (على عكس DDG) لا يقتصر الأمر على Bing المخفي.</translation>
+<translation id="4381193110021038941">الحصول على نتائج أفضل</translation>
+<translation id="3846545273704969734">تم التحقق من Brave Search بشكل مستقل للحصول على نتائج أفضل من Bing (أو نُسخ Bing مثل DuckDuckGo).</translation>
+<translation id="2841164160723712537">تحسين نتائج البحث</translation>
+<translation id="4639001639513524869">يتمتع Brave Search بنتائج أفضل من DuckDuckGo بالنسبة لمعظم الاستفسارات. كما يتمع بقدر حقيقي من الخصوصية.</translation>
 <translation id="5240031343741051161">تجربة البحث في Brave</translation>
 <translation id="5234764350956374838">رفض</translation>
+<translation id="9218430445555521422">تعيين كافتراضي</translation>
 <translation id="2370739752330685659">ربما لاحقًا</translation>
 <translation id="5100490448228945668">قم برفض تحويل البحث في Brave، اضغط على Enter لإزالة هذا الاقتراح</translation>
 <translation id="9194637241566114638">ساعد في تحسين<ph name="SEARCH_NAME"/>عن طريق إرسال بيانات استخدام مجهولة الهوية.<ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">بالنقر فوق "موافق"، فإنك تقر بأن تثبيت Brave لن يتلقى إصلاحات أمان مهمة حتى تقوم بالتحديث إلى Windows 10 أو إصدار أحدث. لن يظهر هذا التحذير مرة أخرى.</translation>
 <translation id="9164786361657554526">بالنقر فوق "موافق"، فإنك تقر بأن تثبيت Brave لن يتلقى إصلاحات أمان مهمة حتى تقوم بالتحديث إلى macOS 10.15 أو إصدار أحدث. لن يظهر هذا التحذير مرة أخرى.</translation>
 <translation id="2770465223704140727">إزالة من القائمة</translation>
+<translation id="6020553119523541665">علامة التبويب هذه نشطة في نافذة أخرى</translation>
+<translation id="4987392683074136770">سيؤدي النقر فوق علامة التبويب هذه إلى إحضار محتوياتها إلى هذه النافذة</translation>
+<translation id="8355523213948477234">زر قائمة العرض المُقسم</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="2104347391516032700">خدمة Bat Rewards</translation>
 <translation id="6040143037577758943">إغلاق</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">انقر بزر الفأرة الأيمن للإزالة</translation>
 <translation id="495046168593986294">التمرير لأعلى</translation>
 <translation id="4021716437419160885">التمرير لأسفل</translation>
-<translation id="1907157509746585817">الإشارات المرجعية</translation>
-<translation id="4840597165888262798">قائمة القراءة</translation>
+<translation id="2702801445560668637">قائمة القراءة</translation>
 <translation id="2533715613366623756">مدير الإشارات المرجعية</translation>
 <translation id="3405021928725149239">مدير الإشارات المرجعية</translation>
 <translation id="6284218950354553099">الإرسال التلقائي لأداة البينج للاستخدام اليومي إلى Brave</translation>
@@ -251,7 +262,6 @@
 <translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>
 <translation id="8487693399751278191">استيراد الإشارات المرجعية الآن...</translation>
 <translation id="2557899542277210112">ضع إشاراتك المرجعية على شريط الإشارات هنا للوصول إليها بسرعة.</translation>
-<translation id="2702801445560668637">قائمة القراءة</translation>
 <translation id="1968543937259008435">هل أنت جاهز لخوض أفضل تجربة خصوصية عبر الإنترنت؟</translation>
 <translation id="6817415381278637662">قم بتعيين Brave كمتصفحك الافتراضي للحصول على حماية خصوصية Brave على كل صفحة ويب تفتحها.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
@@ -349,6 +359,7 @@
 <translation id="2113977810652731515">بطاقة</translation>
 <translation id="4096343215397759358">بطاقة مع معاينة</translation>
 <translation id="5297085818601043899">تعريف الأدوات</translation>
+<translation id="5219886318310413094">إظهار علامات التبويب المُثبّتة في جميع النوافذ</translation>
 <translation id="2396127686705429331">عرض زر الإشارات المرجعية</translation>
 <translation id="2814998458708016836">استخدام شريط عناوين عريض</translation>
 <translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
@@ -463,10 +474,6 @@
 <translation id="2808630562319398131">إعادة تعيين بيانات مكافآت Brave...</translation>
 <translation id="6438096877646138757">المواقع التي تقوم بمسح ملفات تعريف الارتباط بمجرد إغلاقها</translation>
 <translation id="2988792685798128092">مسح عند إغلاق الموقع</translation>
-<translation id="4663317021223369617">ملفات تعريف الارتباط وبيانات المواقع</translation>
-<translation id="7050661313034564003">إظهار جميع ملفات تعريف الارتباط والبيانات المخزنة محليًا لهذا الموقع</translation>
-<translation id="8339059274628563283">بيانات <ph name="SITE"/> المخزنة محليًا</translation>
-<translation id="1963227389609234879">إزالة كلمات المرور كلّها</translation>
 <translation id="7702907602086592255">النطاق</translation>
 <translation id="3202131003361292969">المسار</translation>
 <translation id="5390743329570580756">الإرسال إلى</translation>

@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">Brave Stats 보기</translation>
 <translation id="8297488609722895137"><ph name="PHOTO_BY"/>의 사진</translation>
 <translation id="4761229094276239865">Brave Rewards 사용 시작을 탭하면 <ph name="TERMS_OF_SERVICE"/>에 동의하는 것입니다.</translation>
-<translation id="3794079107601824147">이 배경 이미지를 보고 수익을 올리세요.</translation>
 <translation id="7136586167396205364">스폰서 이미지 숨기기</translation>
-<translation id="2927095357213611519">토큰으로 웹 제작자를 지원할 수 있습니다.\n개인정보를 보호하는 광고를 보고 토큰을 받으십시오.</translation>
 <translation id="2898634658146274982">Brave에서 외부 링크 열기</translation>
 <translation id="5616508928556767259">Brave 웹 보기에서 다른 앱 링크를 엽니다. 참고: Brave가 기본 그라우저로 설정되어 있어야 합니다.</translation>
 <translation id="2394961582378297792">로그아웃됨</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">위</translation>
 <translation id="4963218453264888510">아래</translation>
 <translation id="7474113515179313724">Brave의 개인 정보 보호없이 이 사이트를 탐색하고 있습니다. 실드가 제대로 작동하지 않습니까?</translation>
+<translation id="4226543734057230801">이더리움 네트워크</translation>
+<translation id="3504157706952484145">Filecoin 네트워크</translation>
+<translation id="1561541094377237745">Solana 네트워크</translation>
+<translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="9055546041146396417">이 사이트가 손상된 것 같으면 실드 다운을 시도합니다.</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">대한민국 웹 포털 및 검색</translation>
 <translation id="177282784098234156">프라이빗, 독립적, 사용자 우선</translation>
 <translation id="1410130669636877548">여러분이 웹에서 검색을 할 때, 어떤 검색 엔진은 다른 엔진에 비해 여러분의 개인 정보를 더욱 잘 보호합니다.</translation>
-<translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
-<translation id="8622329973403382303">역사에 리워드 락스타로 남을 수 있도록 어떻게 작동하는지에 대해 간단히 복습해 봅시다!</translation>
 <translation id="3479552764303398839">나중에</translation>
 <translation id="7138272885617540195">앱 링크가 Brave 외부 앱에서 열릴 수 있게 허용</translation>
 <translation id="4954512758656527938">기본 이더리움 월렛</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">매달 갱신</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / 월</translation>
 <translation id="1163809943099641131">1년</translation>
-<translation id="7574007394522199115">연간 갱신하여 <ph name="PERCENTAGE_AMOUNT"/>%% 절약</translation>
+<translation id="172859718096975160">연간 갱신하면 <ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%% 절약<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 년</translation>
-<translation id="2655185358771731232">7일간 무료로 체험하세요. 7일 후에는 플랜 가격이 청구됩니다. 모든 구독은 자동 갱신되지만 갱신 전 언제든 취소할 수 있습니다.</translation>
+<translation id="5125233570742276182">구독 대금은 Google 계정을 통해 청구됩니다.구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.</translation>
+<translation id="5035172357624830412">brave.com에서 이미 구매하셨습니까?</translation>
+<translation id="713136183174551885">자격증명 새로고침</translation>
 <translation id="6053992191006521518">무료 평가판 이용</translation>
 <translation id="5903391101107992067">무료 7일 평가판</translation>
 <translation id="721747358270435486">VPN 설치</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">추가</translation>
 <translation id="6889920539620318793">활성으로 설정</translation>
 <translation id="2653659639078652383">제출</translation>
-<translation id="4556601961751528347">연결된 계정 변경</translation>
+<translation id="4945690646623486292">네트워크 선택</translation>
 <translation id="5233638681132016545">새 탭</translation>
 <translation id="8006088103295786154">Brave 월렛에 액세스</translation>
 <translation id="8030169304546394654">연결 해제됨</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">이 토큰을 가져오시겠습니까?</translation>
 <translation id="1324417023773393937">Brave 브라우저</translation>
 <translation id="6044189892950611565">Brave 브라우저의 알림 채널</translation>
-<translation id="1173919438868967364">계정 선택</translation>
+<translation id="4556601961751528347">연결된 계정 변경</translation>
 <translation id="8922793255489232731">다음에 일치하는 시간대를 가져올 수 없음: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>에 연결됨</translation>
 <translation id="1968852757206592413">평가판</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">날짜</translation>
 <translation id="346505172740911461">시장 가격</translation>
 <translation id="5494920125229734069">모두 선택</translation>
-<translation id="5972844218283131174">모두 선택 취소</translation>
 <translation id="6129027151000961048">레오</translation>
 <translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>

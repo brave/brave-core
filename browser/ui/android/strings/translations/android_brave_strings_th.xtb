@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">แสดงสถิติ Brave</translation>
 <translation id="8297488609722895137">ภาพถ่ายโดย <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">เมื่อแตะเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับ <ph name="TERMS_OF_SERVICE"/></translation>
-<translation id="3794079107601824147">รับรายได้เพื่อดูรูปภาพพื้นหลังนี้</translation>
 <translation id="7136586167396205364">ซ่อนรูปภาพที่มีผู้สนับสนุน</translation>
-<translation id="2927095357213611519">คุณสามารถสนับสนุนผู้สร้างเว็บได้ด้วยโทเคน\nรับโทเคนผ่านการชมโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัว</translation>
 <translation id="2898634658146274982">เปิดลิงก์ภายนอกใน Brave</translation>
 <translation id="5616508928556767259">เปิดลิงก์จากแอปอื่นๆ ใน Brave Webview หมายเหตุ: ต้องตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="2394961582378297792">ออกจากระบบ</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">ขึ้น</translation>
 <translation id="4963218453264888510">ลง</translation>
 <translation id="7474113515179313724">คุณกำลังค้นเว็บนี้โดยไม่มีการป้องกันความเป็นส่วนตัวของ Brave เว็บนี้ทำงานไม่ถูกต้องเมื่อเปิด Shields หรือ?</translation>
+<translation id="4226543734057230801">เครือข่าย Ethereum</translation>
+<translation id="3504157706952484145">เครือข่าย Filecoin</translation>
+<translation id="1561541094377237745">เครือข่าย Solana</translation>
+<translation id="7141438739990875547">เครือข่าย Bitcoin</translation>
 <translation id="9055546041146396417">หากเว็บดูเหมือนมีปัญหา ลองปิด Shields ดู</translation>
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="8510478288840333677">แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องเมื่อเปิดระบบปกป้อง:</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">เว็บพอร์ทัลและการค้นหาของเกาหลีใต้</translation>
 <translation id="177282784098234156">ส่วนตัว เป็นอิสระ ผู้ใช้มาเป็นอันดับแรก</translation>
 <translation id="1410130669636877548">เสิร์ชเอนจินบางตัวช่วยปกป้องความเป็นส่วนตัวได้ดีกว่าเสิร์ชเอนจินอื่นๆ เมื่อคุณค้นหาข้อมูลบนเว็บไซต์</translation>
-<translation id="5187052478998910855">อยากฟื้นวิชาเก็บ Reward รึเปล่า</translation>
-<translation id="8622329973403382303">ดูบทแนะนำฉบับย่อเพื่อเติมเกร็ดความรู้ว่าคุณต้องทำอย่างไรเพื่อให้ถูกจารึกเป็นดาวเด่นแห่งวงการ Reward</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="7138272885617540195">อนุญาตให้เปิดลิงก์แอปในแอปนอก Brave</translation>
 <translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">ต่ออายุรายเดือน</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / เดือน</translation>
 <translation id="1163809943099641131">1 ปี</translation>
-<translation id="7574007394522199115">ต่ออายุรายปีเพื่อประหยัดถึง <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">ต่ออายุรายปี<ph name="DISCOUNT_TEXT_START"/>ประหยัด <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ปี</translation>
-<translation id="2655185358771731232">ทดลองใช้ฟรีเป็นเวลา 7 วัน โดยหลังจาก 7 วันแล้ว ระบบจะเรียกเก็บเงินในราคาตามแผน ทั้งนี้ การสมัครสมาชิกทั้งหมดจะต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกได้ก่อนจะมีการต่ออายุ</translation>
+<translation id="5125233570742276182">ค่าสมัครสมาชิกจะถูกเรียกเก็บผ่านทางบัญชีของ Google หากมีส่วนที่ไม่ได้ใช้งานในช่วงทดลองใช้ฟรี ส่วนนี้จะถูกริบคืนเมื่อคุณซื้อการสมัครสมาชิก\n\nการสมัครของคุณจะต่ออายุโดยอัตโนมัติเว้นแต่จะว่าถูกยกเลิกอย่างน้อย 24 ชั่วโมงก่อนสิ้นสุดระยะเวลาใช้งานในปัจจุบัน\n\nคุณสามารถจัดการการสมัครสมาชิกของคุณได้ในการตั้งค่า\nการใช้งาน Brave นั้นแสดงว่าคุณได้ยอมรับข้อกำหนดการใช้งานและนโยบายความเป็นส่วนตัวแล้ว</translation>
+<translation id="5035172357624830412">เคยทำการซื้อกับ brave.com แล้วเหรอ</translation>
+<translation id="713136183174551885">รีเฟรชข้อมูลประจำตัวของคุณ</translation>
 <translation id="6053992191006521518">ทดลองใช้ฟรี</translation>
 <translation id="5903391101107992067">ทดลองใช้ฟรี 7 วัน</translation>
 <translation id="721747358270435486">ติดตั้ง VPN</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="6889920539620318793">ตั้งค่าเป็นใช้งาน</translation>
 <translation id="2653659639078652383">ส่ง</translation>
-<translation id="4556601961751528347">เปลี่ยนบัญชีที่เชื่อมต่อ</translation>
+<translation id="4945690646623486292">เลือกเครือข่าย</translation>
 <translation id="5233638681132016545">แท็บใหม่</translation>
 <translation id="8006088103295786154">เข้าถึง Brave Wallet</translation>
 <translation id="8030169304546394654">ไม่ได้เชื่อมต่อ</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">คุณต้องการนำเข้าโทเค็นเหล่านี้หรือไม่</translation>
 <translation id="1324417023773393937">เบราว์เซอร์ Brave</translation>
 <translation id="6044189892950611565">ช่องทางการแจ้งเตือนสำหรับเบราว์เซอร์ Brave</translation>
-<translation id="1173919438868967364">เลือกบัญชี</translation>
+<translation id="4556601961751528347">เปลี่ยนบัญชีที่เชื่อมต่อ</translation>
 <translation id="8922793255489232731">ไม่พบเขตเวลาที่ตรงกันสำหรับ: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">เชื่อมต่อกับ <ph name="VALUE"/> แล้ว</translation>
 <translation id="1968852757206592413">ทดลองใช้งาน</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">วันที่</translation>
 <translation id="346505172740911461">ราคาตลาด</translation>
 <translation id="5494920125229734069">เลือกทั้งหมด</translation>
-<translation id="5972844218283131174">ยกเลิกการเลือกทั้งหมด</translation>
 <translation id="6129027151000961048">ลีโอ</translation>
 <translation id="8613144770663526433">ลงชื่อเข้าใช้ด้วย Brave Wallet</translation>
 <translation id="3696514931437952995">คุณกำลังลงชื่อเข้าใช้ <ph name="ORIGIN"/> Brave Wallet จะแบ่งปันที่อยู่ Wallet ของคุณกับ <ph name="ORIGIN"/></translation>

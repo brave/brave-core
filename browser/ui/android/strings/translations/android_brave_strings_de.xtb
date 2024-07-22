@@ -417,9 +417,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7275773481201277457">Brave-Statistiken anzeigen</translation>
 <translation id="8297488609722895137">Foto von <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Durch Tippen auf Brave Rewards jetzt nutzen, stimmen Sie den <ph name="TERMS_OF_SERVICE"/> zu.</translation>
-<translation id="3794079107601824147">Lassen Sie sich für das Ansehen dieses Hintergrundbilds bezahlen.</translation>
 <translation id="7136586167396205364">Gesponserte Bilder ausblenden</translation>
-<translation id="2927095357213611519">Sie können Ersteller von Web-Inhalten mit Token unterstützen.\nVerdienen Sie Token, indem Sie sich Werbung ansehen, die Ihre Privatsphäre respektiert.</translation>
 <translation id="2898634658146274982">Externe Links in Brave öffnen</translation>
 <translation id="5616508928556767259">Öffnet Links aus anderen Apps in einer Brave-Webansicht. Hinweis: Brave muss als Standardbrowser festgelegt sein.</translation>
 <translation id="2394961582378297792">Abgemeldet</translation>
@@ -477,6 +475,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8912304686498704084">HOCH</translation>
 <translation id="4963218453264888510">RUNTER</translation>
 <translation id="7474113515179313724">Sie browsen diese Seite ohne die Datenschutzvorkehrungen von Brave. Funktioniert sie nicht richtig, wenn Schutz an ist?</translation>
+<translation id="4226543734057230801">Ethereum-Netzwerke</translation>
+<translation id="3504157706952484145">Filecoin-Netzwerke</translation>
+<translation id="1561541094377237745">Solana-Netzwerke</translation>
+<translation id="7141438739990875547">Bitcoin-Netzwerke</translation>
 <translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Schutz aus ist.</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
@@ -575,8 +577,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="2422627462367776805">Südkoreanische Website und Suche</translation>
 <translation id="177282784098234156">Privat, unabhängig und nutzerzentriert</translation>
 <translation id="1410130669636877548">Einige Suchmaschinen schützen Ihre Daten besser als andere, wenn Sie etwas im Internet suchen.</translation>
-<translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
-<translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="7138272885617540195">Erlauben, dass Anwendungslinks in Anwendungen außerhalb von Brave geöffnet werden</translation>
 <translation id="4954512758656527938">Standard-Ethereum-Wallet</translation>
@@ -702,9 +702,11 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6748319398471481216">Wird monatlich erneuert</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / Mo.</translation>
 <translation id="1163809943099641131">Ein Jahr</translation>
-<translation id="7574007394522199115">Mit einem jährlichen Abo sparen Sie <ph name="PERCENTAGE_AMOUNT"/> %%</translation>
+<translation id="172859718096975160">Schließen Sie ein Jahresabo ab und <ph name="DISCOUNT_TEXT_START"/>sparen Sie <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
-<translation id="2655185358771731232">Sieben Tage kostenlos ausprobieren. Nach sieben Tagen wird Ihnen der Abopreis in Rechnung gestellt. Alle Abonnements werden automatisch verlängert, können aber vor der Verlängerung gekündigt werden.</translation>
+<translation id="5125233570742276182">Abonnements werden über Ihr Google-Konto abgerechnet. Wenn Ihnen eine kostenlose Testversion angeboten wurde, verfällt deren nicht genutzter Teil beim Kauf eines Abonnements.\n\nIhr Abonnement verlängert sich automatisch, wenn Sie es nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums kündigen.\n\nSie können Ihre Abonnements in den Einstellungen verwalten.\n\nDurch die Verwendung von Brave stimmen Sie den Nutzungsbedingungen und den Datenschutzbestimmungen zu.</translation>
+<translation id="5035172357624830412">Haben Sie bereits einen Kauf auf brave.com getätigt?</translation>
+<translation id="713136183174551885">Zugangsdaten erneut eingeben</translation>
 <translation id="6053992191006521518">KOSTENLOS testen</translation>
 <translation id="5903391101107992067">7 Tage lang kostenlos ausprobieren</translation>
 <translation id="721747358270435486">VPN installieren</translation>
@@ -850,7 +852,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7791543448312431591">Hinzufügen</translation>
 <translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="2653659639078652383">Senden</translation>
-<translation id="4556601961751528347">Verbundenes Konto wechseln</translation>
+<translation id="4945690646623486292">Netzwerk auswählen</translation>
 <translation id="5233638681132016545">Neuer Tab</translation>
 <translation id="8006088103295786154">Zugriff auf Brave-Wallet</translation>
 <translation id="8030169304546394654">Verbindung getrennt</translation>
@@ -907,7 +909,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2322227405137827074">Möchten Sie dieses Token importieren?</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
 <translation id="6044189892950611565">Benachrichtigungskanal für den Brave-Browser</translation>
-<translation id="1173919438868967364">Konto auswählen</translation>
+<translation id="4556601961751528347">Verbundenes Konto wechseln</translation>
 <translation id="8922793255489232731">Passende Zeitzone für <ph name="VALUE"/> konnte nicht abgerufen werden</translation>
 <translation id="6471216025161697462">Verbunden mit <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Testversion</translation>
@@ -1063,7 +1065,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Marktpreis</translation>
 <translation id="5494920125229734069">Alle auswählen</translation>
-<translation id="5972844218283131174">Gesamte Auswahl aufheben</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Mit Brave Wallet anmelden</translation>
 <translation id="3696514931437952995">Sie melden sich bei <ph name="ORIGIN"/> an. Brave Wallet teilt Ihre Wallet-Adresse mit <ph name="ORIGIN"/>.</translation>

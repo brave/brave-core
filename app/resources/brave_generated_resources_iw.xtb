@@ -42,6 +42,7 @@
 <translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">זהו חלון פרטי עם Tor</translation>
 <translation id="1037341607922068025">פתח חלון פרטי עם Tor</translation>
+<translation id="607982085107926247">פתחו ב- Tor: <ph name="ADDRESS"/></translation>
 <translation id="496896260395129787">חשבון Brave Sync זה נמחק ממכשיר אחר. אם לא התכוונת להשבית את הסנכרון,
 <ph name="LINK_TEXT"/></translation>
 <translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ליצור מחדש את החשבון</translation>
@@ -53,7 +54,7 @@
 <translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
 <translation id="9220923434129933852">קרא ושנה את הגדרות IPFS</translation>
 <translation id="7398397225367092613">.בצל</translation>
-<translation id="406832631167785034">לפתוח באמצעות כתובת onion.</translation>
+<translation id="2269780537090240241">פתחו על ידי שימוש בכתובת בצל: <ph name="ADDRESS"/></translation>
 <translation id="4759098689276706664">הדבקה ישירה</translation>
 <translation id="4901618511712685702">יבוא אל IPFS</translation>
 <translation id="6794469945030154569">עמוד זה</translation>
@@ -119,8 +120,16 @@
 <translation id="45040495135337202">Brave לא עוקבת אחריך, אחרי השאילתות שלך או אחרי הקליקים שלך. והיא 100% בלתי תלויה בביג טק.</translation>
 <translation id="42032117189492785">חיפוש מוטבע בינה מלאכותית עם אינדקס ייחודי.</translation>
 <translation id="8606416238399082160">פרטית לחלוטין, 100% עצמאית ועם תכונות בינה מלאכותית מעולות.</translation>
+<translation id="7706528608480893054">DDG הוא רק בינג בתחפושת. הגיע הזמן לפרטיות אמיתית, תוצאות טובות יותר ואינדקס עצמאי. הגיע הזמן לחיפוש Brave.</translation>
+<translation id="3818133234428578803">עזבו את הברווזים הצולעים</translation>
+<translation id="14817360483752259">חיפוש Brave אינו עוקב אחריכם, השאילתות שלכם או הקליקים שלכם. (בניגוד ל-DDG) ואינו רק בינג בתחפושת.</translation>
+<translation id="4381193110021038941">קבלו תוצאות טובות יותר</translation>
+<translation id="3846545273704969734">חיפוש Brave נבדק עצמאית ונמצא כי הוא נותן תוצאות טובות יותר מ-Bing (או שיבוטים שלו כגון DuckDuckGo)</translation>
+<translation id="2841164160723712537">שפרו את תוצאות החיפוש שלכם</translation>
+<translation id="4639001639513524869">לחיפוש Brave תוצאות טובות יותר מאשר DuckDuckGo עבור מרבית החיפושים. והוא באמת פרטי</translation>
 <translation id="5240031343741051161">שווה לנסות את Brave Search</translation>
 <translation id="5234764350956374838">סגור</translation>
+<translation id="9218430445555521422">הגדר כברירת מחדל</translation>
 <translation id="2370739752330685659">אולי מאוחר יותר</translation>
 <translation id="5100490448228945668">בטל את המרת חיפוש Brave, לחץ על Enter כדי להסיר הצעה זו</translation>
 <translation id="9194637241566114638">עזרו לשפר את <ph name="SEARCH_NAME"/> על-ידי שליחת נתוני שימוש אנונימיים. <ph name="MORE_INFO"/></translation>
@@ -130,6 +139,9 @@
 <translation id="1162706247109707219">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-Windows 10 ואילך. אזהרה זו לא תופיע שוב.</translation>
 <translation id="9164786361657554526">על ידי לחיצה על אישור, אתה מאשר שההתקנה שלך של Brave לא תקבל תיקוני אבטחה קריטיים עד שתעדכן ל-macOS 10.15 ואילך. אזהרה זו לא תופיע שוב.</translation>
 <translation id="2770465223704140727">הסר מהרשימה</translation>
+<translation id="6020553119523541665">הלשונית הזאת פעילה בחלון אחר</translation>
+<translation id="4987392683074136770">הקשה על לשונית זו תביא את תוכנו לחלון זה</translation>
+<translation id="8355523213948477234">כפתור תפריט לתצוגה חצויה</translation>
 <translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="2104347391516032700">שירות Bat Ads</translation>
 <translation id="6040143037577758943">סגירה</translation>
@@ -166,8 +178,7 @@
 <translation id="6959315322491671328">לחיצה ימנית כדי לזוז</translation>
 <translation id="495046168593986294">לגלול מעלה</translation>
 <translation id="4021716437419160885">גלול מטה</translation>
-<translation id="1907157509746585817">סימניות</translation>
-<translation id="4840597165888262798">רשימת קריאה</translation>
+<translation id="2702801445560668637">רשימת קריאה</translation>
 <translation id="2533715613366623756">מנהל הסימניות</translation>
 <translation id="3405021928725149239">מנהל הסימניות</translation>
 <translation id="6284218950354553099">שלח PING של שימוש יומי ל-Brave</translation>
@@ -250,7 +261,6 @@
 <translation id="796831669370432378">כדי להוסיף סימנייה, לחצו על כפתור הסימנייה שליד שורת הכתובת</translation>
 <translation id="8487693399751278191">ייבא סימניות עכשיו...</translation>
 <translation id="2557899542277210112">לגישה מהירה, יש למקם את הסימניות שלך כאן בסרגל הסימניות.</translation>
-<translation id="2702801445560668637">רשימת קריאה</translation>
 <translation id="1968543937259008435">מוכנים לפרטיות הטובה ביותר ברשת?</translation>
 <translation id="6817415381278637662">הגדירו את Brave כדפדפן ברירת המחדל שלכם כדי לקבל את הגנת הפרטיות של Brave בכל דף אינטרנט שאתם פותחים.</translation>
 <translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
@@ -347,6 +357,7 @@
 <translation id="2113977810652731515">כרטיס</translation>
 <translation id="4096343215397759358">כרטיס עם תצוגה מקדימה</translation>
 <translation id="5297085818601043899">טיפים לכלי עבודה</translation>
+<translation id="5219886318310413094">הראה את הלשונות הצמודות בכל החלונות</translation>
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
@@ -461,10 +472,6 @@
 <translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 <translation id="6438096877646138757">אתרים שמנקים קובצי עוגיות כאשר הם נסגרים</translation>
 <translation id="2988792685798128092">נקה עם סגירת האתר</translation>
-<translation id="4663317021223369617">קובצי Cookie ונתוני אתר</translation>
-<translation id="7050661313034564003">הצג את כל קובצי ה-cookie והנתונים המאוחסנים מקומית עבור אתר זה</translation>
-<translation id="8339059274628563283">נתונים המאוחסנים באופן מקומי עבור <ph name="SITE"/></translation>
-<translation id="1963227389609234879">הסר הכל</translation>
 <translation id="7702907602086592255">דומיין</translation>
 <translation id="3202131003361292969">נתיב</translation>
 <translation id="5390743329570580756">שלח עבור</translation>

@@ -417,9 +417,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
 <translation id="8297488609722895137">Fotka od: <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Klepnutím na Začít používat Brave Rewards souhlasíte s dokumentem <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Dostávejte za prohlížení tohoto pozadí zaplaceno.</translation>
 <translation id="7136586167396205364">Skrýt sponzorované obrázky</translation>
-<translation id="2927095357213611519">Žetony můžete podpořit tvůrce stránek.\nVydělejte si známky prohlížením reklam, které berou ohled na soukromí.</translation>
 <translation id="2898634658146274982">Otevírat externí odkazy v prohlížeči Brave</translation>
 <translation id="5616508928556767259">Otevírat odkazy z jiných aplikací v prohlížeči Brave. Poznámka: Brave musí být nastaven jako váš výchozí prohlížeč.</translation>
 <translation id="2394961582378297792">Odhlášeno</translation>
@@ -477,6 +475,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8912304686498704084">NAHORU</translation>
 <translation id="4963218453264888510">DOLŮ</translation>
 <translation id="7474113515179313724">Tuto stránku prohlížíte bez ochrany soukromí od Brave. Se zapnutými Štíty nefunguje?</translation>
+<translation id="4226543734057230801">Sítě Ethereum</translation>
+<translation id="3504157706952484145">Sítě Filecoin</translation>
+<translation id="1561541094377237745">Sítě Solana</translation>
+<translation id="7141438739990875547">Sítě Bitcoin</translation>
 <translation id="9055546041146396417">Pokud se stránka zdá nefunkční, zkuste Vypnutí štítů.</translation>
 <translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
 <translation id="8510478288840333677">Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
@@ -575,8 +577,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2422627462367776805">Jihokorejský webový portál a vyhledávání</translation>
 <translation id="177282784098234156">Soukromý, nezávislý, zaměřený na uživatele</translation>
 <translation id="1410130669636877548">Při vyhledávání na webu některé vyhledávače chrání vaše soukromí lépe než jiné.</translation>
-<translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
-<translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
 <translation id="3479552764303398839">Teď ne</translation>
 <translation id="7138272885617540195">Povolení otevírání odkazů na aplikace v aplikacích mimo Brave</translation>
 <translation id="4954512758656527938">Základní peněženka Ethereum</translation>
@@ -702,9 +702,11 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6748319398471481216">Obnovuje se každý měsíc</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / měs.</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
-<translation id="7574007394522199115">Obnovovat ročně, abyste ušetřili <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Obnovovat ročně <ph name="DISCOUNT_TEXT_START"/>uložit <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / rok.</translation>
-<translation id="2655185358771731232">Vyzkoušejte zdarma na 7 dní. Po 7 dnech vám bude účtována cena balíčku. Všechna předplatná se automaticky obnovují, ale lze je před obnovením zrušit.</translation>
+<translation id="5125233570742276182">Předplatné bude účtováno prostřednictvím vašeho účtu Google. Jakákoli nevyužitá část bezplatné zkušební verze, pokud je nabídnuta, propadne při zakoupení předplatného.\n\nVaše předplatné se automaticky obnoví, pokud nebude zrušeno alespoň 24 hodin před koncem aktuálního období.\n\nVaše předplatné můžete spravovat v Nastavení.\nPoužíváním Brave souhlasíte s podmínkami použití a zásadami ochrany osobních údajů.</translation>
+<translation id="5035172357624830412">Už jste na brave.com provedli nákup?</translation>
+<translation id="713136183174551885">Obnovte si své identifikační údaje</translation>
 <translation id="6053992191006521518">Vyzkoušejte ZDARMA</translation>
 <translation id="5903391101107992067">Vyzkoušejte zdarma po dobu 7 dní</translation>
 <translation id="721747358270435486">Instalace sítě VPN</translation>
@@ -850,7 +852,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="7791543448312431591">Přidat</translation>
 <translation id="6889920539620318793">Nastavit jako aktivní</translation>
 <translation id="2653659639078652383">Odeslat</translation>
-<translation id="4556601961751528347">Změnit připojený účet</translation>
+<translation id="4945690646623486292">Zvolit síť</translation>
 <translation id="5233638681132016545">Nová karta</translation>
 <translation id="8006088103295786154">Otevřít peněženku Brave</translation>
 <translation id="8030169304546394654">Odpojeno</translation>
@@ -907,7 +909,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2322227405137827074">Přejete si importovat tyto tokeny?</translation>
 <translation id="1324417023773393937">Prohlížeč Brave</translation>
 <translation id="6044189892950611565">Kanál oznámení pro prohlížeč Brave</translation>
-<translation id="1173919438868967364">Zvolit účet</translation>
+<translation id="4556601961751528347">Změnit připojený účet</translation>
 <translation id="8922793255489232731">Nepodařilo se získat odpovídající časové pásmo pro: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Připojeno k <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Zkušební období</translation>
@@ -1063,7 +1065,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Tržní cena</translation>
 <translation id="5494920125229734069">Vybrat vše</translation>
-<translation id="5972844218283131174">Zrušit výběr</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Přihlásit se peněženkou Brave Wallet</translation>
 <translation id="3696514931437952995">Přihlašujete se do <ph name="ORIGIN"/>. Peněženka Brave Wallet bude s <ph name="ORIGIN"/> sdílet adresu vaší peněženky.</translation>

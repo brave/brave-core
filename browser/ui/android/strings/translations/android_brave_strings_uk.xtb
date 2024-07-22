@@ -417,9 +417,7 @@
 <translation id="7275773481201277457">Показати статистику Brave</translation>
 <translation id="8297488609722895137">Фото зроблене <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Натиснувши "Почати користуватися Brave Rewards", ви приймаєте <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">Отримати плату за перегляд цього фонового зображення.</translation>
 <translation id="7136586167396205364">Сховати Спонсоровані Зображення</translation>
-<translation id="2927095357213611519">Ви можете підтримати веб-творців токенами.\nЗаробляйте токени, переглядаючи рекламу, що поважає приватність.</translation>
 <translation id="2898634658146274982">Відкривати зовнішні посилання в Brave</translation>
 <translation id="5616508928556767259">Відкривати посилання з інших застосунків у вебрежимі Brave. Примітка: Brave має бути типовим браузером.</translation>
 <translation id="2394961582378297792">Вихід виконано</translation>
@@ -477,6 +475,10 @@
 <translation id="8912304686498704084">УВЕРХ</translation>
 <translation id="4963218453264888510">ДОНИЗУ</translation>
 <translation id="7474113515179313724">Ви переглядаєте цей сайт без засобів захисту конфіденційності Brave. Вам не сподобалася робота з увімкненими Екранами?</translation>
+<translation id="4226543734057230801">Мережі Ethereum</translation>
+<translation id="3504157706952484145">Мережі Filecoin</translation>
+<translation id="1561541094377237745">Мережі Solana</translation>
+<translation id="7141438739990875547">Мережі Bitcoin</translation>
 <translation id="9055546041146396417">Якщо цей сайт здається нефункціонуючим, спробуйте відключити Екрани.</translation>
 <translation id="1209739344687072997">Повідомити про зламаний сайт</translation>
 <translation id="8510478288840333677">Повідомте розробникам Brave, що цей сайт погано працює із Щитами:</translation>
@@ -575,8 +577,6 @@
 <translation id="2422627462367776805">Південнокорейський вебпортал і пошук</translation>
 <translation id="177282784098234156">Приватний, незалежний, орієнтований на користувача</translation>
 <translation id="1410130669636877548">Під час пошуку в мережі деякі пошуковики захищають вашу конфіденційність краще за інші.</translation>
-<translation id="5187052478998910855">Потрібно освіжити пам'ять щодо нагород?</translation>
-<translation id="8622329973403382303">Перегляньте короткий огляд, щоб згадати, як це працює, і увійти в історію як ґуру нагород!</translation>
 <translation id="3479552764303398839">Не зараз</translation>
 <translation id="7138272885617540195">Дозволити відкривати посилання з додатків за межами Brave</translation>
 <translation id="4954512758656527938">Типовий гаманець Ethereum</translation>
@@ -702,9 +702,11 @@
 <translation id="6748319398471481216">Поновлюється щомісяця</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/>/міс.</translation>
 <translation id="1163809943099641131">Один рік</translation>
-<translation id="7574007394522199115">Поновлюйте щороку та заощаджуйте <ph name="PERCENTAGE_AMOUNT"/>%%</translation>
+<translation id="172859718096975160">Оновлюйте щороку <ph name="DISCOUNT_TEXT_START"/>і заощаджуйте <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / р.</translation>
-<translation id="2655185358771731232">Спробуйте безкоштовно протягом 7 днів. Через 7 днів з вас почне стягуватися плата відповідно до тарифного плану. Усі підписки автоматично поновлюються, але їх можна скасувати до поновлення.</translation>
+<translation id="5125233570742276182">Передплата стягується з вашого рахунку в Google. Будь-яка невикористана частина безкоштовної пробної версії, якщо вона пропонується, втрачається під час здійснення передплати.\n\nВаша передплата подовжується автоматично, якщо її не скасовано щонайменше за 24 години до закінчення поточного періоду.\n\nВи можете керувати своїми передплатами в налаштуваннях.\nВикористовуючи Brave, ви погоджуєтеся з Умовами використання та Політикою приватності.</translation>
+<translation id="5035172357624830412">Уже придбали на brave.com?</translation>
+<translation id="713136183174551885">Оновити облікові дані</translation>
 <translation id="6053992191006521518">Спробуйте БЕЗКОШТОВНО</translation>
 <translation id="5903391101107992067">Спробувати 7 днів безплатно</translation>
 <translation id="721747358270435486">Установити VPN</translation>
@@ -850,7 +852,7 @@
 <translation id="7791543448312431591">Додати</translation>
 <translation id="6889920539620318793">Установити як активну</translation>
 <translation id="2653659639078652383">Надіслати</translation>
-<translation id="4556601961751528347">Змінити під’єднаний обліковий запис</translation>
+<translation id="4945690646623486292">Вибрати мережу</translation>
 <translation id="5233638681132016545">Нова вкладка</translation>
 <translation id="8006088103295786154">Перейти у Brave Wallet</translation>
 <translation id="8030169304546394654">Від'єднано</translation>
@@ -907,7 +909,7 @@
 <translation id="2322227405137827074">Імпортувати цей токен?</translation>
 <translation id="1324417023773393937">Браузер Brave</translation>
 <translation id="6044189892950611565">Канал сповіщення для браузера Brave</translation>
-<translation id="1173919438868967364">Вибір облікового запису</translation>
+<translation id="4556601961751528347">Змінити під’єднаний обліковий запис</translation>
 <translation id="8922793255489232731">Не вдалося знайти відповідний часовий пояс для <ph name="VALUE"/></translation>
 <translation id="6471216025161697462">Підключено до <ph name="VALUE"/></translation>
 <translation id="1968852757206592413">Пробний період</translation>
@@ -1063,7 +1065,6 @@
 <translation id="4932733599132424254">Дата</translation>
 <translation id="346505172740911461">Ринкова ціна</translation>
 <translation id="5494920125229734069">Вибрати все</translation>
-<translation id="5972844218283131174">Зняти все виділення</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8613144770663526433">Увійти до гаманця Brave</translation>
 <translation id="3696514931437952995">Ви входите до <ph name="ORIGIN"/>. Гаманець Brave передасть вашу адресу гаманця в <ph name="ORIGIN"/>.</translation>

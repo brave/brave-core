@@ -416,9 +416,7 @@
 <translation id="7275773481201277457">Brave পরিসংখ্যান দেখান</translation>
 <translation id="8297488609722895137">ছবি এর দ্বারা <ph name="PHOTO_BY"/></translation>
 <translation id="4761229094276239865">Brave Rewards ব্যবহার শুরু করতে চাপ দিয়ে, আপনি এর সাথে সম্মত হন <ph name="TERMS_OF_SERVICE"/>.</translation>
-<translation id="3794079107601824147">এই পটভূমির ছবি দেখে অর্থ-প্রদান আয় করুন।</translation>
 <translation id="7136586167396205364">স্পনসর করা ছবিগুলি লুকিয়ে রাখুন</translation>
-<translation id="2927095357213611519">আপনি স্মারক দিয়ে ওয়েব নির্মাতাদের সাহায্য ও সমর্থন করতে পারেন।\nগোপনীয়তা-মান্যতাজনিত বিজ্ঞাপনগুলি দেখে স্মারকগুলি আয় করুন।</translation>
 <translation id="2898634658146274982">Brave-এ এক্সটারনাল লিঙ্ক খুলুন</translation>
 <translation id="5616508928556767259">Brave ওয়েবভিউতে অন্যান্য অ্যাপের লিঙ্ক খোলে। মনে রাখবেন: Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করা আবশ্যক।</translation>
 <translation id="2394961582378297792">লগ আউট করেছেন</translation>
@@ -476,6 +474,10 @@
 <translation id="8912304686498704084">আপ</translation>
 <translation id="4963218453264888510">নীচে</translation>
 <translation id="7474113515179313724">আপনি ব্রেভ-এর গোপনীয়তা সুরক্ষাগুলি ছাড়াই এই সাইটটি ব্রাউজ করছেন। শিল্ডগুলি উপরে উঠিয়ে রাখলে এটি কি ঠিক মতো কাজ করে না?</translation>
+<translation id="4226543734057230801">Ethereum নেটওয়ার্ক</translation>
+<translation id="3504157706952484145">Filecoin নেটওয়ার্ক</translation>
+<translation id="1561541094377237745">Solana নেটওয়ার্ক</translation>
+<translation id="7141438739990875547">Bitcoin নেটওয়ার্ক</translation>
 <translation id="9055546041146396417">যদি এই সাইটটি বিচ্ছিন্ন দেখায়, শিল্ডগুলি নীচে করার চেষ্টা করুন।</translation>
 <translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="8510478288840333677">এই সাইটটি শিল্ডগুলির সাথে সঠিকভাবে কাজ করছে না তা Brave-এর ডেভলপারকে জানান:</translation>
@@ -574,8 +576,6 @@
 <translation id="2422627462367776805">দক্ষিণ কোরিয়ার ওয়েব পোর্টাল &amp; অনুসন্ধান</translation>
 <translation id="177282784098234156">ব্যক্তিগত, স্বাধিন, ব্যবহারকারী-সর্বপ্রথম</translation>
 <translation id="1410130669636877548">কিছু ওয়েব অনুসন্ধান ইঞ্জিন আপনার গোপনীয়তা অন্যদের থেকে সুরক্ষিত করে আপনি যখন ওয়েবে অনুসন্ধান করেন।</translation>
-<translation id="5187052478998910855">পুরষ্কারে একটি রিফ্রেশার দরকার?</translation>
-<translation id="8622329973403382303">পুরষ্কার রকস্টার হিসাবে ইতিহাসে এটি কীভাবে নামতে সাহায্য করে তা ব্রাশ আপ করার জন্য দ্রুত ভ্রমণ করুন!</translation>
 <translation id="3479552764303398839">এখনই নয়</translation>
 <translation id="7138272885617540195">Brave-এর বাইরে অ্যাপ খোলার জন্য অ্যাপ লিঙ্ক করার অনুমতি দিন</translation>
 <translation id="4954512758656527938">ডিফল্ট ইথেরিয়াম ওয়ালেট</translation>
@@ -701,9 +701,11 @@
 <translation id="6748319398471481216">মাসিক রিনিউ হয়</translation>
 <translation id="7734634586133069282"><ph name="MONTHLY_AMOUNT"/> / মাস।</translation>
 <translation id="1163809943099641131">এক বছর</translation>
-<translation id="7574007394522199115">পুনর্নবীকরণ করান আর বার্ষিক <ph name="PERCENTAGE_AMOUNT"/>%% বাঁচান</translation>
+<translation id="172859718096975160">বার্ষিক রিনিউ করুন <ph name="DISCOUNT_TEXT_START"/>সেভ করুন <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / বছর</translation>
-<translation id="2655185358771731232">7 দিনের জন্য বিনামূল্যে ব্যবহার করুন। 7 দিন পরে, আপনার থেকে প্ল্যানের দাম নেওয়া হবে। সব সাবস্ক্রিপশন স্বয়ংক্রিয়ভাবে পুনর্নবীকরণ হয় তবে পুনর্নবীকরণের আগে তা বাতিল করা যেতে পারে।</translation>
+<translation id="5125233570742276182">সাবস্ক্রিপশেনের দাম বা মূল্য আপনার Google অ্যাকাউন্টের মাধ্যেম পরিশোধ করা হবে। বিনামূল্যে ট্রায়ালের যে কোনো অব্যবহৃত অংশ, যদি অফার করা হয়, তাহলে আপনি সাবস্ক্রিপশন কিনলে তা বাজেয়াপ্ত হয়ে যাবে।\n\nএটি বর্তমান মেয়াদ শেষ হওয়ার কমপক্ষে 24 ঘণ্টা আগে বাতিল না করা হলে, আপনার সাবস্ক্রিপশন স্বয়ংক্রিয়ভাবে রিনিউ হবে।\n\nআপনি সেটিংসে গিয়ে আপনার সাবস্ক্রিপশন পরিচালনা করতে পারেন।\nBrave ব্যবহার করে, আপনি ব্যবহারের শর্তাবলী এবং গোপনীয়তা নীতিতে সম্মত হচ্ছেন।</translation>
+<translation id="5035172357624830412">brave.com থেকে আগেই কিনেছেন?</translation>
+<translation id="713136183174551885">আপনার ক্রেডেনশিয়াল রিফ্রেশ করুন</translation>
 <translation id="6053992191006521518">বিনামূল্যে ব্যবহার করে দেখুন</translation>
 <translation id="5903391101107992067">7 দিন ফ্রিতে ব্যবহার করে দেখুন</translation>
 <translation id="721747358270435486">VPN ইনস্টল করুন</translation>
@@ -849,7 +851,7 @@
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="6889920539620318793">অ্যাক্টিভ হিসেবে সেট করুন</translation>
 <translation id="2653659639078652383">জমা দিন</translation>
-<translation id="4556601961751528347">সংযুক্ত অ্যাকাউন্ট পরিবর্তন করুন</translation>
+<translation id="4945690646623486292">নেটওয়ার্ক নির্বাচন করুন</translation>
 <translation id="5233638681132016545">নতুন ট্যাব</translation>
 <translation id="8006088103295786154">Brave ওয়ালেট অ্যাক্সেস করুন</translation>
 <translation id="8030169304546394654">সংযোগবিচ্ছিন্ন</translation>
@@ -906,7 +908,7 @@
 <translation id="2322227405137827074">আপনি কি এই টোকেনটি ইম্পোর্ট করতে চান?</translation>
 <translation id="1324417023773393937">Brave ব্রাউজার</translation>
 <translation id="6044189892950611565">Brave ব্রাউজারের জন্য বিজ্ঞপ্তির চ্যানেল</translation>
-<translation id="1173919438868967364">অ্যাকাউন্ট নির্বাচন করুন</translation>
+<translation id="4556601961751528347">সংযুক্ত অ্যাকাউন্ট পরিবর্তন করুন</translation>
 <translation id="8922793255489232731">এর জন্য ম্যাচিং টাইমজোন পাওয়া যায়নি: <ph name="VALUE"/></translation>
 <translation id="6471216025161697462"><ph name="VALUE"/>-এ সংযুক্ত হয়েছে</translation>
 <translation id="1968852757206592413">ট্রায়াল</translation>
@@ -1062,7 +1064,6 @@
 <translation id="4932733599132424254">তারিখ</translation>
 <translation id="346505172740911461">মার্কেটের দাম</translation>
 <translation id="5494920125229734069">সকল বেছে নিন</translation>
-<translation id="5972844218283131174">সব বেছে নেওয়া বাদ দিন</translation>
 <translation id="6129027151000961048">লিও</translation>
 <translation id="8613144770663526433">Brave ওয়ালেটে সাইন ইন করুন</translation>
 <translation id="3696514931437952995">আপনি <ph name="ORIGIN"/> এ সাইন ইন করেছেন। <ph name="ORIGIN"/> দিয়ে Brave ওয়ালেট আপনার ওয়ালেটের ঠিকানা শেয়ার করবে।</translation>
