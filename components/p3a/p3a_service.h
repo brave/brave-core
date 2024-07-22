@@ -21,6 +21,7 @@
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -112,6 +113,8 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   void LoadDynamicMetrics();
 
+  void OnP3AEnabledChanged();
+
   void OnHistogramChangedOnUI(const char* histogram_name,
                               base::HistogramBase::Sample sample,
                               size_t bucket);
@@ -127,6 +130,9 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   const raw_ref<PrefService> local_state_;
   P3AConfig config_;
+
+  PrefChangeRegistrar pref_change_registrar_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   // Contains metrics added via `RegisterDynamicMetric`
   base::flat_map<std::string, MetricLogType> dynamic_metric_log_types_;

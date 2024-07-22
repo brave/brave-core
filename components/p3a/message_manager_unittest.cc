@@ -161,7 +161,7 @@ class P3AMessageManagerTest : public testing::Test,
     message_manager_ = std::make_unique<MessageManager>(
         *local_state_, &p3a_config_, *this, "release", "2099-01-01");
 
-    message_manager_->Init(shared_url_loader_factory_);
+    message_manager_->Start(shared_url_loader_factory_);
 
     task_environment_.RunUntilIdle();
   }
@@ -661,6 +661,7 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
     }
 
     local_state_->SetBoolean(kP3AEnabled, false);
+    message_manager_->Stop();
 
     task_environment_.FastForwardBy(
         base::Seconds(kUploadIntervalSeconds * 100));
@@ -678,6 +679,20 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
     EXPECT_EQ(points_requests_made_[log_type], 0U);
     EXPECT_EQ(p3a_constellation_sent_messages_[log_type].size(), 0U);
   }
+}
+
+TEST_F(P3AMessageManagerTest, ShouldNotSendIfStopped) {
+  InitFeatures(true);
+  SetUpManager();
+
+  message_manager_->Stop();
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_TRUE(points_requests_made_.empty());
+  EXPECT_TRUE(p3a_json_sent_metrics_.empty());
+  EXPECT_TRUE(p2a_json_sent_metrics_.empty());
+  EXPECT_TRUE(p3a_constellation_sent_messages_.empty());
 }
 
 }  // namespace p3a

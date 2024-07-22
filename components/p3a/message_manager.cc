@@ -71,7 +71,7 @@ void MessageManager::RegisterPrefs(PrefRegistrySimple* registry) {
   RotationScheduler::RegisterPrefs(registry);
 }
 
-void MessageManager::Init(
+void MessageManager::Start(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   // Init other components.
   uploader_ = std::make_unique<Uploader>(
@@ -120,6 +120,15 @@ void MessageManager::Init(
       constellation_helper_->UpdateRandomnessServerInfo(log_type);
     }
   }
+}
+
+void MessageManager::Stop() {
+  uploader_ = nullptr;
+  constellation_helper_ = nullptr;
+  rotation_scheduler_ = nullptr;
+  json_upload_schedulers_.clear();
+  constellation_prep_schedulers_.clear();
+  constellation_upload_schedulers_.clear();
 }
 
 void MessageManager::UpdateMetricValue(
@@ -254,10 +263,7 @@ void MessageManager::OnRandomnessServerInfoReady(
 
 void MessageManager::StartScheduledUpload(bool is_constellation,
                                           MetricLogType log_type) {
-  bool p3a_enabled = local_state_->GetBoolean(p3a::kP3AEnabled);
-  if (!p3a_enabled) {
-    return;
-  }
+  CHECK(local_state_->GetBoolean(p3a::kP3AEnabled));
   metrics::LogStore* log_store;
   Scheduler* scheduler;
   std::string logging_prefix =
@@ -317,10 +323,7 @@ void MessageManager::StartScheduledUpload(bool is_constellation,
 
 void MessageManager::StartScheduledConstellationPrep(MetricLogType log_type) {
   CHECK(features::IsConstellationEnabled());
-  bool p3a_enabled = local_state_->GetBoolean(p3a::kP3AEnabled);
-  if (!p3a_enabled) {
-    return;
-  }
+  CHECK(local_state_->GetBoolean(p3a::kP3AEnabled));
   auto* scheduler = constellation_prep_schedulers_[log_type].get();
   auto* log_store = constellation_prep_log_stores_[log_type].get();
   std::string logging_prefix =

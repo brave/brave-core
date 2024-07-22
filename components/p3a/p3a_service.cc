@@ -82,6 +82,10 @@ P3AService::P3AService(PrefService& local_state,
   LoadDynamicMetrics();
   message_manager_ = std::make_unique<MessageManager>(
       local_state, &config_, *this, channel, week_of_install);
+  pref_change_registrar_.Init(&local_state);
+  pref_change_registrar_.Add(
+      kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,
+                                       base::Unretained(this)));
 }
 
 P3AService::~P3AService() = default;
@@ -180,7 +184,10 @@ bool P3AService::IsP3AEnabled() const {
 
 void P3AService::Init(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
-  message_manager_->Init(url_loader_factory);
+  url_loader_factory_ = url_loader_factory;
+  if (local_state_->GetBoolean(kP3AEnabled)) {
+    message_manager_->Start(url_loader_factory);
+  }
 
   // Init basic prefs.
   initialized_ = true;
@@ -220,6 +227,14 @@ void P3AService::LoadDynamicMetrics() {
         static_cast<MetricLogType>(log_type_ordinal.GetInt());
 
     dynamic_metric_log_types_[histogram_name] = log_type;
+  }
+}
+
+void P3AService::OnP3AEnabledChanged() {
+  if (local_state_->GetBoolean(kP3AEnabled)) {
+    message_manager_->Start(url_loader_factory_);
+  } else {
+    message_manager_->Stop();
   }
 }
 
