@@ -120,13 +120,30 @@ class Tab: NSObject {
       lastKnownSecureContentState = .unknown
       return
     }
-    lastKnownSecureContentState = switch sslStatus.securityStyle {
-    case .unknown: .unknown
-    case .authenticated: .secure
-    case .authenticationBroken: .missingSSL // FIXME: Not sure what status to use for this
-    case .unauthenticated: .missingSSL
-    @unknown default: .unknown
-    }
+    lastKnownSecureContentState = await {
+      switch sslStatus.securityStyle {
+      case .unknown: 
+        return .unknown
+      case .authenticated:
+        if !sslStatus.hasOnlySecureContent {
+          return .mixedContent
+        }
+        return .secure
+      case .authenticationBroken: 
+        return .missingSSL // FIXME: Not sure what status to use for this
+      case .unauthenticated:
+        if let lastCommittedURL = await webView?.lastCommittedURL,
+           let internalURL = InternalURL(lastCommittedURL) {
+          if internalURL.isErrorPage, ErrorPageHelper.certificateError(for: lastCommittedURL) != 0 {
+            return .invalidCert
+          }
+          return .localhost
+        }
+        return .missingSSL
+      @unknown default:
+        return .unknown
+      }
+    }()
     if lastKnownSecureContentState == .secure && !sslStatus.hasOnlySecureContent {
       lastKnownSecureContentState = .mixedContent
     }
