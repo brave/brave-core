@@ -15,7 +15,7 @@ void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
                                   const std::u16string& decrypted_card_number,
                                   const std::string& origin) {
   autofill::PersonalDataManager* personal_data =
-      autofill::PersonalDataManagerFactory::GetForProfile(profile_);
+      autofill::PersonalDataManagerFactory::GetForBrowserContext(profile_);
 
   autofill::CreditCard credit_card = autofill::CreditCard(
       base::Uuid::GenerateRandomV4().AsLowercaseString(), origin);
